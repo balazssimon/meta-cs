@@ -28,6 +28,7 @@ namespace MetaDslx.Compiler
         public AnnotatedAntlr4Parser.GrammarSpecContext ParseTree { get; private set; }
         public AnnotatedAntlr4Lexer Lexer { get; private set; }
         public AnnotatedAntlr4Parser Parser { get; private set; }
+        public Antlr4Grammar Grammar { get; private set; }
 
         public string Antlr4Jar { get; private set; }
 
@@ -35,6 +36,7 @@ namespace MetaDslx.Compiler
         public string OutputDirectory { get; private set; }
         public string Antlr4Source { get; private set; }
         public string GeneratedSource { get; private set; }
+        public string LiteralsSource { get; private set; }
         public bool IsLexer { get; internal set; }
         public bool IsParser { get; internal set; }
         public bool HasAnnotatedAntlr4Errors { get; private set; }
@@ -57,9 +59,9 @@ namespace MetaDslx.Compiler
                 Antlr4Jar = Path.Combine(metaDslxDir, Resources.Antlr4JarName);
                 if (!File.Exists(Antlr4Jar))
                 {
-                    File.WriteAllBytes(Antlr4Jar, Resources.antlr_4_5_1_complete);
+                    File.WriteAllBytes(Antlr4Jar, Resources.antlr_4_5_3_complete);
                 }
-                return new FileInfo(Antlr4Jar).Length == Resources.antlr_4_5_1_complete.Length;
+                return new FileInfo(Antlr4Jar).Length == Resources.antlr_4_5_3_complete.Length;
             }
             catch(Exception ex)
             {
@@ -210,7 +212,13 @@ namespace MetaDslx.Compiler
                         proc.StartInfo.Arguments = "-jar \"" + this.Antlr4Jar + "\" -Dlanguage=CSharp \"" + antlr4File + "\" -lib . -listener -visitor -o \"" + tmpDir + "\"";
                     }
                     proc.Start();
-                    proc.WaitForExit();
+                    int timeout = 30000;
+                    bool terminated = proc.WaitForExit(timeout);
+                    if (!terminated)
+                    {
+                        this.Diagnostics.AddError("ANTLR4 timed out after 30 seconds. Please, try compiling again.", this.FileName, (object)null, false);
+                        proc.Kill();
+                    }
                     /*using (StreamWriter writer = new StreamWriter(Path.Combine(this.OutputDirectory, bareFileName + ".stdout")))
                     {
                         proc.StandardOutput.BaseStream.CopyTo(writer.BaseStream);
@@ -219,22 +227,25 @@ namespace MetaDslx.Compiler
                     {
                         proc.StandardError.BaseStream.CopyTo(writer.BaseStream);
                     }*/
-                    while (!proc.StandardError.EndOfStream)
+                    if (terminated)
                     {
-                        string line = proc.StandardError.ReadLine();
-                        this.ProcessAntlr4ErrorLine(line);
-                    }
-                    this.HasAntlr4Errors = this.Diagnostics.HasErrors();
-                    if (this.GenerateOutput && !this.HasAntlr4Errors)
-                    {
-                        this.CopyParserToOutput(tmpDir, bareFileName + ".cs");
-                        this.CopyToOutput(tmpDir, bareFileName + ".tokens");
-                        if (this.IsParser)
+                        while (!proc.StandardError.EndOfStream)
                         {
-                            this.CopyToOutput(tmpDir, bareFileName + "BaseVisitor.cs");
-                            this.CopyToOutput(tmpDir, bareFileName + "BaseListener.cs");
-                            this.CopyToOutput(tmpDir, bareFileName + "Visitor.cs");
-                            this.CopyToOutput(tmpDir, bareFileName + "Listener.cs");
+                            string line = proc.StandardError.ReadLine();
+                            this.ProcessAntlr4ErrorLine(line);
+                        }
+                        this.HasAntlr4Errors = this.Diagnostics.HasErrors();
+                        if (this.GenerateOutput && !this.HasAntlr4Errors)
+                        {
+                            this.CopyParserToOutput(tmpDir, bareFileName + ".cs");
+                            this.CopyToOutput(tmpDir, bareFileName + ".tokens");
+                            if (this.IsParser)
+                            {
+                                this.CopyToOutput(tmpDir, bareFileName + "BaseVisitor.cs");
+                                this.CopyToOutput(tmpDir, bareFileName + "BaseListener.cs");
+                                this.CopyToOutput(tmpDir, bareFileName + "Visitor.cs");
+                                this.CopyToOutput(tmpDir, bareFileName + "Listener.cs");
+                            }
                         }
                     }
                 }
@@ -268,12 +279,138 @@ namespace MetaDslx.Compiler
             this.LexerAnnotations = annotator.LexerAnnotations;
             this.ModeAnnotations = annotator.ModeAnnotations;
             this.TokenAnnotations = annotator.TokenAnnotations;
+            this.Grammar = av.Grammar;
+            this.CollectLiterals();
+            this.LiteralsSource = this.GenerateLiteralsSource();
 
             this.HasAnnotatedAntlr4Errors = this.Diagnostics.HasErrors();
             if (!this.HasAnnotatedAntlr4Errors && this.PrepareAntlr4())
             {
                 this.CompileAntlr4();
             }
+        }
+
+        private void CollectLiterals()
+        {
+            bool added = true;
+            while (added)
+            {
+                added = false;
+                foreach (var literalCandidate in this.Grammar.LiteralCandidates)
+                {
+                    Antlr4LexerRule literal = this.Grammar.Literals.FirstOrDefault(l => literalCandidate.Literal == l.Name);
+                    if (literal != null)
+                    {
+                        //literalCandidate.Literal = literal.Literal;
+                        this.Grammar.Literals.Add(literalCandidate);
+                        added = true;
+                    }
+                }
+                this.Grammar.LiteralCandidates.RemoveAll(l => this.Grammar.Literals.Contains(l));
+            }
+            foreach (var rule in this.Grammar.ParserRules)
+            {
+                if (rule.Alternatives.Count > 0)
+                {
+                    foreach (var alt in rule.Alternatives)
+                    {
+                        foreach (var elem in alt.Elements)
+                        {
+                            elem.IsLiteral = this.Grammar.Literals.Any(l => l.Name == elem.Type);
+                            /*if (alt.Name != null && !elem.IsOptional)
+                            {
+                                elem.IsOptional = !rule.Alternatives.All(a => a.Elements.Any(e => e.Name == elem.Name));
+                            }*/
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var elem in rule.Elements)
+                    {
+                        elem.IsLiteral = this.Grammar.Literals.Any(l => l.Name == elem.Type);
+                    }
+                }
+            }
+        }
+
+        private string GenerateLiteralsSource()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var literal in this.Grammar.Literals)
+            {
+                sb.AppendFormat("{0}={1}", literal.Name, literal.Literal);
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        public static string LiteralToCSharpString(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            if (value.Length >= 2 && value.StartsWith("'") && value.EndsWith("'"))
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append('"');
+                value = value.Substring(1, value.Length - 2);
+                for (int i = 0; i < value.Length; ++i)
+                {
+                    if (i + 1 < value.Length && value[i] == '\\')
+                    {
+                        sb.Append(value[i]);
+                        sb.Append(value[i + 1]);
+                        ++i;
+                    }
+                    else if (value[i] == '"')
+                    {
+                        sb.Append("\\\"");
+                    }
+                    else
+                    {
+                        sb.Append(value[i]);
+                    }
+                }
+                sb.Append('"');
+                value = sb.ToString();
+                return value;
+            }
+            return value;
+        }
+
+        public static string LiteralToText(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            if (value.Length >= 2 && value.StartsWith("'") && value.EndsWith("'"))
+            {
+                StringBuilder sb = new StringBuilder();
+                value = value.Substring(1, value.Length - 2);
+                for (int i = 0; i < value.Length; ++i)
+                {
+                    if (i + 1 < value.Length && value[i] == '\\')
+                    {
+                        switch (value[i + 1])
+                        {
+                            case 'b': sb.Append("\b"); break;
+                            case 't': sb.Append("\t"); break;
+                            case 'n': sb.Append("\n"); break;
+                            case 'f': sb.Append("\f"); break;
+                            case 'r': sb.Append("\r"); break;
+                            case '"': sb.Append("\""); break;
+                            case '\'': sb.Append("\'"); break;
+                            case '\\': sb.Append("\\"); break;
+                            default: sb.Append(value[i + 1]); break;
+                        }
+                        ++i;
+                    }
+                    else
+                    {
+                        sb.Append(value[i]);
+                    }
+                }
+                value = sb.ToString();
+                return value;
+            }
+            return value;
         }
     }
 
@@ -324,11 +461,11 @@ namespace MetaDslx.Compiler
 
         public override object VisitOption([NotNull] AnnotatedAntlr4Parser.OptionContext context)
         {
-            if (context.id().GetText() == "generateCompiler")
+            if (context.identifier().GetText() == "generateCompiler")
             {
                 this.RemoveText(context);
             }
-            else if (context.id().GetText() == "generateCompilerBase")
+            else if (context.identifier().GetText() == "generateCompilerBase")
             {
                 this.RemoveText(context);
             }
@@ -367,13 +504,18 @@ namespace MetaDslx.Compiler
         private bool generateCompiler = true;
         private bool generateCompilerBase = false;
 
-        private List<AnnotationType> annotationTypes = new List<AnnotationType>();
-        private Grammar currentGrammar;
-        private Mode currentMode;
-        private LexerRule currentLexerRule;
-        private ParserRule currentParserRule;
-        private ParserRule currentParserRuleAlt;
-        private ParserRuleElement currentElement;
+        private bool isInOptional = false;
+        private bool isInArray = false;
+
+        private List<Antlr4AnnotationType> annotationTypes = new List<Antlr4AnnotationType>();
+        private Antlr4Grammar currentGrammar;
+        private Antlr4Mode currentMode;
+        private Antlr4LexerRule currentLexerRule;
+        private Antlr4ParserRule currentParserRule;
+        private Antlr4ParserRule currentParserRuleAlt;
+        private Antlr4ParserRuleElement currentElement;
+
+        public Antlr4Grammar Grammar { get { return this.currentGrammar; } }
 
         public Antlr4AnnotationVisitor(AnnotatedAntlr4Compiler compiler)
         {
@@ -435,27 +577,27 @@ namespace MetaDslx.Compiler
         {
             if (context.grammarType().PARSER() != null)
             {
-                this.parserName = context.id().GetText();
+                this.parserName = context.identifier().GetText();
                 this.lexerName = this.parserName;
                 this.compiler.IsLexer = false;
                 this.compiler.IsParser = true;
             }
             else if (context.grammarType().LEXER() != null)
             {
-                this.lexerName = context.id().GetText();
+                this.lexerName = context.identifier().GetText();
                 this.compiler.IsLexer = true;
                 this.compiler.IsParser = false;
             }
             else
             {
-                this.parserName = context.id().GetText();
+                this.parserName = context.identifier().GetText();
                 this.lexerName = this.parserName;
                 this.compiler.IsLexer = true;
                 this.compiler.IsParser = true;
             }
-            currentGrammar = new Grammar();
-            currentGrammar.Name = context.id().GetText();
-            currentMode = new Mode();
+            currentGrammar = new Antlr4Grammar();
+            currentGrammar.Name = context.identifier().GetText();
+            currentMode = new Antlr4Mode();
             currentMode.Name = "DEFAULT_MODE";
             currentGrammar.Modes.Add(currentMode);
             this.CollectAnnotations(context.annotation());
@@ -464,16 +606,21 @@ namespace MetaDslx.Compiler
 
         public override object VisitTokensSpec([NotNull] AnnotatedAntlr4Parser.TokensSpecContext context)
         {
-            foreach (var id in context.annotatedId())
+            if (context.idList() != null)
             {
-                this.currentLexerRule = new LexerRule();
-                this.currentLexerRule.Name = id.id().GetText();
-                if (this.currentLexerRule != null)
+                foreach (var id in context.idList().annotatedIdentifier())
                 {
-                    this.currentGrammar.LexerRules.Add(this.currentLexerRule);
-                    this.currentMode.LexerRules.Add(this.currentLexerRule);
-                    this.CollectAnnotations(id.annotation());
-                    this.currentLexerRule = null;
+                    this.currentLexerRule = new Antlr4LexerRule();
+                    this.currentLexerRule.Name = id.identifier().GetText();
+                    this.currentLexerRule.Literal = id.identifier().GetText();
+                    if (this.currentLexerRule != null)
+                    {
+                        this.currentGrammar.Literals.Add(this.currentLexerRule);
+                        this.currentGrammar.LexerRules.Add(this.currentLexerRule);
+                        this.currentMode.LexerRules.Add(this.currentLexerRule);
+                        this.CollectAnnotations(id.annotation());
+                        this.currentLexerRule = null;
+                    }
                 }
             }
             return null;
@@ -481,24 +628,82 @@ namespace MetaDslx.Compiler
 
         public override object VisitOption(AnnotatedAntlr4Parser.OptionContext context)
         {
-            if (context.id().GetText() == "tokenVocab")
+            if (context.identifier().GetText() == "tokenVocab")
             {
                 this.lexerName = context.optionValue().GetText();
             }
-            if (context.id().GetText() == "generateCompiler")
+            if (context.identifier().GetText() == "generateCompiler")
             {
                 this.generateCompiler = context.optionValue().GetText() == "true";
             }
-            if (context.id().GetText() == "generateCompilerBase")
+            if (context.identifier().GetText() == "generateCompilerBase")
             {
                 this.generateCompilerBase = context.optionValue().GetText() == "true";
+            }
+            if (context.identifier().GetText() == "tokenVocab")
+            {
+                string tokenVocabName = context.optionValue().GetText();
+                string tokenVocabFileName = Path.Combine(this.compiler.OutputDirectory, tokenVocabName + ".tokens");
+                string literalVocabFileName = Path.Combine(this.compiler.OutputDirectory, tokenVocabName + ".literals");
+                if (File.Exists(tokenVocabFileName))
+                {
+                    using (StreamReader reader = new StreamReader(tokenVocabFileName))
+                    {
+                        while(!reader.EndOfStream)
+                        {
+                            string line = reader.ReadLine();
+                            if (!string.IsNullOrEmpty(line))
+                            {
+                                int eqIndex = line.IndexOf('=');
+                                if (eqIndex > 0)
+                                {
+                                    string tokenName = line.Substring(0, eqIndex);
+                                    int tokenId;
+                                    if (!tokenName.StartsWith("'") && int.TryParse(line.Substring(eqIndex+1), out tokenId))
+                                    {
+                                        Antlr4LexerRule rule = new Antlr4LexerRule();
+                                        rule.Name = tokenName;
+                                        rule.Kind = tokenId;
+                                        rule.Artificial = true;
+                                        this.currentGrammar.LexerRules.Add(rule);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (File.Exists(literalVocabFileName))
+                {
+                    using (StreamReader reader = new StreamReader(literalVocabFileName))
+                    {
+                        while (!reader.EndOfStream)
+                        {
+                            string line = reader.ReadLine();
+                            if (!string.IsNullOrEmpty(line))
+                            {
+                                int eqIndex = line.IndexOf('=');
+                                if (eqIndex > 0)
+                                {
+                                    string tokenName = line.Substring(0, eqIndex);
+                                    string literal = line.Substring(eqIndex + 1);
+                                    Antlr4LexerRule rule = this.currentGrammar.LexerRules.FirstOrDefault(r => r.Name == tokenName);
+                                    if (rule != null)
+                                    {
+                                        rule.Literal = literal;
+                                        this.currentGrammar.Literals.Add(rule);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
             return base.VisitOption(context);
         }
 
         public override object VisitAction(AnnotatedAntlr4Parser.ActionContext context)
         {
-            string id = context.id().GetText();
+            string id = context.identifier().GetText();
             if (id == "header")
             {
                 string scopeName = null;
@@ -506,7 +711,7 @@ namespace MetaDslx.Compiler
                 {
                     scopeName = context.actionScopeName().GetText();
                 }
-                string action = context.ACTION().GetText();
+                string action = context.actionBlock().GetText();
                 int first = action.IndexOf('{');
                 int last = action.LastIndexOf('}');
                 if (first >= 0 && last >= 0)
@@ -527,25 +732,63 @@ namespace MetaDslx.Compiler
 
         public override object VisitModeSpec(AnnotatedAntlr4Parser.ModeSpecContext context)
         {
-            currentMode = new Mode();
-            if (context.id() != null)
+            currentMode = new Antlr4Mode();
+            if (context.identifier() != null)
             {
-                currentMode.Name = context.id().GetText();
+                currentMode.Name = context.identifier().GetText();
             }
             currentGrammar.Modes.Add(currentMode);
             this.CollectAnnotations(context.annotation());
             return base.VisitModeSpec(context);
         }
 
-        public override object VisitLexerRule(AnnotatedAntlr4Parser.LexerRuleContext context)
+        public override object VisitLexerRuleSpec(AnnotatedAntlr4Parser.LexerRuleSpecContext context)
         {
             if (context.FRAGMENT() == null)
             {
-                this.currentLexerRule = new LexerRule();
+                this.currentLexerRule = new Antlr4LexerRule();
                 this.currentLexerRule.Name = context.TOKEN_REF().GetText();
-                base.VisitLexerRule(context);
+                base.VisitLexerRuleSpec(context);
                 if (this.currentLexerRule != null)
                 {
+                    if (context.lexerRuleBlock().lexerAltList().lexerAlt().Length == 1)
+                    {
+                        AnnotatedAntlr4Parser.LexerAltContext lexerAlt = context.lexerRuleBlock().lexerAltList().lexerAlt(0);
+                        if (lexerAlt.lexerElements().lexerElement().Length == 1)
+                        {
+                            AnnotatedAntlr4Parser.LexerElementContext lexerElement = lexerAlt.lexerElements().lexerElement(0);
+                            if (lexerElement.ebnfSuffix() == null)
+                            {
+                                AnnotatedAntlr4Parser.LexerAtomContext lexerAtom = null;
+                                if (lexerElement.labeledLexerElement() != null)
+                                {
+                                    AnnotatedAntlr4Parser.LabeledLexerElementContext labeledLexerElement = lexerElement.labeledLexerElement();
+                                    if (labeledLexerElement.lexerAtom() != null)
+                                    {
+                                        lexerAtom = labeledLexerElement.lexerAtom();
+                                    }
+                                }
+                                else if (lexerElement.lexerAtom() != null)
+                                {
+                                    lexerAtom = lexerElement.lexerAtom();
+                                }
+                                if (lexerAtom != null && lexerAtom.terminal() != null)
+                                {
+                                    if (lexerAtom.terminal().TOKEN_REF() != null)
+                                    {
+                                        this.currentLexerRule.Literal = lexerAtom.terminal().TOKEN_REF().GetText();
+                                        this.currentGrammar.LiteralCandidates.Add(this.currentLexerRule);
+                                    }
+                                    else if (lexerAtom.terminal().STRING_LITERAL() != null)
+                                    {
+                                        string literal = lexerAtom.terminal().STRING_LITERAL().GetText();
+                                        this.currentLexerRule.Literal = literal;
+                                        this.currentGrammar.Literals.Add(this.currentLexerRule);
+                                    }
+                                }
+                            }
+                        }
+                    }
                     this.currentGrammar.LexerRules.Add(this.currentLexerRule);
                     this.currentMode.LexerRules.Add(this.currentLexerRule);
                     this.CollectAnnotations(context.annotation());
@@ -566,7 +809,9 @@ namespace MetaDslx.Compiler
 
         public override object VisitParserRuleSpec(AnnotatedAntlr4Parser.ParserRuleSpecContext context)
         {
-            this.currentParserRule = new ParserRule();
+            this.isInArray = false;
+            this.isInOptional = false;
+            this.currentParserRule = new Antlr4ParserRule();
             this.currentParserRule.Name = context.RULE_REF().GetText();
             base.VisitParserRuleSpec(context);
             if (this.currentParserRule != null)
@@ -582,10 +827,11 @@ namespace MetaDslx.Compiler
 
         public override object VisitLabeledAlt(AnnotatedAntlr4Parser.LabeledAltContext context)
         {
-            if (context.id() != null)
+            bool oldInOptional = this.isInOptional;
+            if (context.identifier() != null)
             {
-                this.currentParserRuleAlt = new ParserRule();
-                this.currentParserRuleAlt.Name = context.id().GetText();
+                this.currentParserRuleAlt = new Antlr4ParserRule();
+                this.currentParserRuleAlt.Name = context.identifier().GetText();
                 if (context.propertiesBlock() != null)
                 {
                     this.currentParserRuleAlt.PropertiesBlock = context.propertiesBlock();
@@ -595,6 +841,7 @@ namespace MetaDslx.Compiler
             }
             else
             {
+                this.isInOptional = ((AnnotatedAntlr4Parser.RuleAltListContext)context.Parent).labeledAlt().Length > 1;
                 if (context.propertiesBlock() != null)
                 {
                     if (this.currentParserRule.PropertiesBlock != null)
@@ -608,6 +855,28 @@ namespace MetaDslx.Compiler
             this.HandleAutoSymbols(this.currentParserRuleAlt);
             this.HandleAutoProperties(this.currentParserRuleAlt);
             this.currentParserRuleAlt = null;
+            this.isInOptional = oldInOptional;
+            return null;
+        }
+
+        public override object VisitAltList([NotNull] AnnotatedAntlr4Parser.AltListContext context)
+        {
+            bool oldInOptional = this.isInOptional;
+            this.isInOptional = context.alternative().Length > 1;
+            base.VisitAltList(context);
+            this.isInOptional = oldInOptional;
+            return null;
+        }
+
+        public override object VisitEbnf([NotNull] AnnotatedAntlr4Parser.EbnfContext context)
+        {
+            bool oldInArray = this.isInArray;
+            bool oldInOptional = this.isInOptional;
+            this.isInArray |= context.blockSuffix() != null && (context.blockSuffix().ebnfSuffix().PLUS() != null || context.blockSuffix().ebnfSuffix().STAR() != null);
+            this.isInOptional |= context.blockSuffix() != null && (context.blockSuffix().ebnfSuffix().QUESTION() != null || context.blockSuffix().ebnfSuffix().STAR() != null);
+            base.VisitEbnf(context);
+            this.isInArray = oldInArray;
+            this.isInOptional = oldInOptional;
             return null;
         }
 
@@ -634,28 +903,30 @@ namespace MetaDslx.Compiler
                 AnnotatedAntlr4Parser.ElementContext element = context.Parent as AnnotatedAntlr4Parser.ElementContext;
                 if (element != null)
                 {
-                    this.currentElement = new ParserRuleElement();
+                    this.currentElement = new Antlr4ParserRuleElement();
                     this.currentElement.Name = name;
                     this.currentElement.Type = name;
-                    this.currentElement.IsArray = element.ebnfSuffix() != null && (element.ebnfSuffix().PLUS() != null || element.ebnfSuffix().STAR() != null);
+                    this.currentElement.IsArray = this.isInArray;
+                    this.currentElement.IsOptional = this.isInOptional;
                 }
                 else
                 {
                     AnnotatedAntlr4Parser.LabeledElementContext labeledElement = context.Parent as AnnotatedAntlr4Parser.LabeledElementContext;
                     if (labeledElement != null)
                     {
-                        this.currentElement = new ParserRuleElement();
-                        this.currentElement.Name = labeledElement.id().GetText();
+                        this.currentElement = new Antlr4ParserRuleElement();
+                        this.currentElement.Name = labeledElement.identifier().GetText();
                         this.currentElement.Type = labeledElement.atom().GetText();
                         element = labeledElement.Parent as AnnotatedAntlr4Parser.ElementContext;
-                        this.currentElement.IsArray = element.ebnfSuffix() != null && (element.ebnfSuffix().PLUS() != null || element.ebnfSuffix().STAR() != null);
+                        this.currentElement.IsArray = this.isInArray;
+                        this.currentElement.IsOptional = this.isInOptional;
                     }
                 }
                 if (this.currentElement != null)
                 {
                     if (this.currentParserRuleAlt != null)
                     {
-                        ParserRuleElement oldElement = this.currentParserRuleAlt.Elements.FirstOrDefault(e => e.Name == currentElement.Name);
+                        Antlr4ParserRuleElement oldElement = this.currentParserRuleAlt.Elements.FirstOrDefault(e => e.Name == currentElement.Name);
                         if (oldElement != null)
                         {
                             this.currentElement = oldElement;
@@ -668,7 +939,7 @@ namespace MetaDslx.Compiler
                     }
                     else if (this.currentParserRule != null)
                     {
-                        ParserRuleElement oldElement = this.currentParserRule.Elements.FirstOrDefault(e => e.Name == currentElement.Name);
+                        Antlr4ParserRuleElement oldElement = this.currentParserRule.Elements.FirstOrDefault(e => e.Name == currentElement.Name);
                         if (oldElement != null)
                         {
                             this.currentElement = oldElement;
@@ -690,10 +961,10 @@ namespace MetaDslx.Compiler
             return null;
         }
 
-        private void HandleAutoSymbols(ParserRule rule)
+        private void HandleAutoSymbols(Antlr4ParserRule rule)
         {
             if (rule == null) return;
-            Annotation autoSymbol = rule.Annotations.FirstOrDefault(a => a.Type.Name == "AutoSymbol");
+            Antlr4Annotation autoSymbol = rule.Annotations.FirstOrDefault(a => a.Type.Name == "AutoSymbol");
             if (autoSymbol != null)
             {
                 rule.Annotations.RemoveAll(a => a.Type.Name == "AutoSymbol");
@@ -711,10 +982,10 @@ namespace MetaDslx.Compiler
             }
         }
 
-        private void HandleAutoProperties(ParserRule rule)
+        private void HandleAutoProperties(Antlr4ParserRule rule)
         {
             if (rule == null) return;
-            Annotation autoSymbol = rule.Annotations.FirstOrDefault(a => a.Type.Name == "AutoProperty");
+            Antlr4Annotation autoSymbol = rule.Annotations.FirstOrDefault(a => a.Type.Name == "AutoProperty");
             if (autoSymbol != null)
             {
                 rule.Annotations.RemoveAll(a => a.Type.Name == "AutoProperty");
@@ -732,13 +1003,13 @@ namespace MetaDslx.Compiler
             }
         }
 
-        private void CreateSymbolAnnotations(ParserRule rule)
+        private void CreateSymbolAnnotations(Antlr4ParserRule rule)
         {
             if (rule == null) return;
             if (!rule.Annotations.Any(a => a.Type.Name == "Symbol"))
             {
-                AnnotationType symbolType = this.RegisterAnnotationType("Symbol");
-                Annotation symbolAnnot = new Annotation();
+                Antlr4AnnotationType symbolType = this.RegisterAnnotationType("Symbol");
+                Antlr4Annotation symbolAnnot = new Antlr4Annotation();
                 symbolAnnot.Type = symbolType;
                 symbolAnnot.Value = this.ToPascalCase(rule.Name);
                 rule.Annotations.Add(symbolAnnot);
@@ -746,15 +1017,15 @@ namespace MetaDslx.Compiler
             this.CreatePropertyAnnotations(rule);
         }
 
-        private void CreatePropertyAnnotations(ParserRule rule)
+        private void CreatePropertyAnnotations(Antlr4ParserRule rule)
         {
             foreach (var elem in rule.Elements)
             {
                 if (elem.IsParserRule)
                 {
                     if (elem.Annotations.Any(a => a.Type.Name == "Property")) continue;
-                    AnnotationType propType = this.RegisterAnnotationType("Property");
-                    Annotation propAnnot = new Annotation();
+                    Antlr4AnnotationType propType = this.RegisterAnnotationType("Property");
+                    Antlr4Annotation propAnnot = new Antlr4Annotation();
                     propAnnot.Type = propType;
                     propAnnot.Value = this.ToPascalCase(elem.Name);
                     elem.Annotations.Add(propAnnot);
@@ -762,12 +1033,12 @@ namespace MetaDslx.Compiler
             }
         }
 
-        private AnnotationType RegisterAnnotationType(string name)
+        private Antlr4AnnotationType RegisterAnnotationType(string name)
         {
-            AnnotationType annotationType = this.annotationTypes.FirstOrDefault(at => at.Name == name);
+            Antlr4AnnotationType annotationType = this.annotationTypes.FirstOrDefault(at => at.Name == name);
             if (annotationType == null)
             {
-                annotationType = new AnnotationType();
+                annotationType = new Antlr4AnnotationType();
                 annotationType.Name = name;
                 this.annotationTypes.Add(annotationType);
             }
@@ -780,8 +1051,8 @@ namespace MetaDslx.Compiler
             foreach (var annot in annotations)
             {
                 string name = annot.qualifiedName().GetText();
-                AnnotationType annotationType = this.RegisterAnnotationType(name);
-                Annotation annotation = new Annotation();
+                Antlr4AnnotationType annotationType = this.RegisterAnnotationType(name);
+                Antlr4Annotation annotation = new Antlr4Annotation();
                 annotation.Type = annotationType;
                 if (this.currentElement != null)
                 {
@@ -817,8 +1088,8 @@ namespace MetaDslx.Compiler
                     {
                         foreach (var attr in annot.annotationBody().annotationAttributeList().annotationAttribute())
                         {
-                            AnnotationProperty property = new AnnotationProperty();
-                            property.Name = attr.identifier().GetText();
+                            Antlr4AnnotationProperty property = new Antlr4AnnotationProperty();
+                            property.Name = attr.annotationIdentifier().GetText();
                             if (attr.expression() != null)
                             {
                                 string value = attr.expression().GetText();
@@ -955,8 +1226,8 @@ namespace MetaDslx.Compiler
                         if (this.parserName != null)
                         {
                             string[] values = value.Split('.');
-                            ParserRule pr = null;
-                            ParserRuleElement pre = null;
+                            Antlr4ParserRule pr = null;
+                            Antlr4ParserRuleElement pre = null;
                             foreach (var rule in this.currentGrammar.ParserRules)
                             {
                                 if (rule.Name == values[0])
@@ -1062,11 +1333,11 @@ namespace MetaDslx.Compiler
                     {
                         if (annot.Properties.Count(p => p.Name == "first") == 0)
                         {
-                            annot.Properties.Add(new AnnotationProperty() { Name = "first", Value = token.Name });
+                            annot.Properties.Add(new Antlr4AnnotationProperty() { Name = "first", Value = token.Name });
                         }
                         if (annot.Properties.Count(p => p.Name == "last") == 0)
                         {
-                            annot.Properties.Add(new AnnotationProperty() { Name = "last", Value = token.Name });
+                            annot.Properties.Add(new Antlr4AnnotationProperty() { Name = "last", Value = token.Name });
                         }
                     }
                 }
@@ -1079,11 +1350,11 @@ namespace MetaDslx.Compiler
                     {
                         if (annot.Properties.Count(p => p.Name == "first") == 0)
                         {
-                            annot.Properties.Add(new AnnotationProperty() { Name = "first", Value = mode.Name });
+                            annot.Properties.Add(new Antlr4AnnotationProperty() { Name = "first", Value = mode.Name });
                         }
                         if (annot.Properties.Count(p => p.Name == "last") == 0)
                         {
-                            annot.Properties.Add(new AnnotationProperty() { Name = "last", Value = mode.Name });
+                            annot.Properties.Add(new Antlr4AnnotationProperty() { Name = "last", Value = mode.Name });
                         }
                     }
                 }
@@ -1492,7 +1763,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        private void GenerateAnnotatorVisitMethod(ParserRule rule, ParserRule parentRule)
+        private void GenerateAnnotatorVisitMethod(Antlr4ParserRule rule, Antlr4ParserRule parentRule)
         {
             WriteLine();
             WriteLine("public override object Visit{0}({1} context)", ToPascalCase(rule.Name), ToContextType(rule.Name));
@@ -1594,7 +1865,7 @@ namespace MetaDslx.Compiler
             WriteLine("}");
         }
 
-        private void GenerateAnnotationCreation(Annotation annot, string variableName, bool createVariable)
+        private void GenerateAnnotationCreation(Antlr4Annotation annot, string variableName, bool createVariable)
         {
             string annotName = this.ToAnnotationName(annot.Type.Name);
             if (createVariable)
@@ -1783,7 +2054,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        private void GeneratePropertyVisitMethod(ParserRule rule, ParserRule parentRule)
+        private void GeneratePropertyVisitMethod(Antlr4ParserRule rule, Antlr4ParserRule parentRule)
         {
             WriteLine();
             WriteLine("public virtual object Visit{0}({1} context)", ToPascalCase(rule.Name), ToContextType(rule.Name));
@@ -1791,10 +2062,10 @@ namespace MetaDslx.Compiler
             IncIndent();
             if (rule.PropertiesBlock != null)
             {
-                Antlr4TextSpan Antlr4TextSpan = new Antlr4TextSpan(rule.PropertiesBlock.ACTION());
+                Antlr4TextSpan Antlr4TextSpan = new Antlr4TextSpan(rule.PropertiesBlock.actionBlock());
                 this.propertiesBlockCompiler.StartLine = Antlr4TextSpan.StartLine;
                 this.propertiesBlockCompiler.StartPos = Antlr4TextSpan.StartPosition;
-                string text = rule.PropertiesBlock.ACTION().GetText();
+                string text = rule.PropertiesBlock.actionBlock().GetText();
                 AnnotatedAntlr4PropertiesParser.PropertiesBlockContext propertiesBlock = this.propertiesBlockCompiler.Compile(text);
                 if (!this.propertiesBlockCompiler.HasErrors && propertiesBlock != null)
                 {
@@ -1824,7 +2095,7 @@ namespace MetaDslx.Compiler
             {
                 name += "Compiler";
             }
-            ParserRule rootRule = this.currentGrammar.ParserRules.FirstOrDefault();
+            Antlr4ParserRule rootRule = this.currentGrammar.ParserRules.FirstOrDefault();
             string rootName = null;
             string rootType = null;
             if (rootRule != null)
@@ -1897,131 +2168,6 @@ namespace MetaDslx.Compiler
             DecIndent();
             WriteLine("}");
         }
-
-        public class AnnotationType
-        {
-            public AnnotationType()
-            {
-                this.Properties = new List<string>();
-            }
-            public string Name { get; set; }
-            public List<string> Properties { get; private set; }
-            public bool IsDynamic { get; set; }
-        }
-        public class Annotation
-        {
-            public Annotation()
-            {
-                this.Properties = new List<AnnotationProperty>();
-                this.Values = new List<string>();
-            }
-            public AnnotationType Type { get; set; }
-            public List<AnnotationProperty> Properties { get; private set; }
-            public string Value
-            {
-                get;
-                set;
-            }
-            public List<string> Values { get; private set; }
-        }
-        public class AnnotationProperty
-        {
-            public AnnotationProperty()
-            {
-                this.Values = new List<string>();
-            }
-            public string Name { get; set; }
-            public string Value
-            {
-                get;
-                set;
-            }
-            public List<string> Values { get; private set; }
-        }
-        public class Grammar
-        {
-            public Grammar()
-            {
-                this.Annotations = new List<Annotation>();
-                this.ParserRules = new List<ParserRule>();
-                this.LexerRules = new List<LexerRule>();
-                this.Modes = new List<Mode>();
-            }
-            public string Name { get; set; }
-            public List<Annotation> Annotations { get; private set; }
-            public List<ParserRule> ParserRules { get; private set; }
-            public List<LexerRule> LexerRules { get; private set; }
-            public List<Mode> Modes { get; private set; }
-        }
-        public class ParserRule
-        {
-            public ParserRule()
-            {
-                this.Annotations = new List<Annotation>();
-                this.Elements = new List<ParserRuleElement>();
-                this.Alternatives = new List<ParserRule>();
-            }
-            public string Name { get; set; }
-            public List<Annotation> Annotations { get; private set; }
-            public List<ParserRuleElement> Elements { get; private set; }
-            public List<ParserRule> Alternatives { get; private set; }
-            public AnnotatedAntlr4Parser.PropertiesBlockContext PropertiesBlock { get; set; }
-            public bool HasElementAnnotations()
-            {
-                foreach (var elem in this.Elements)
-                {
-                    if (elem.Annotations.Count > 0) return true;
-                }
-                return false;
-            }
-        }
-        public class ParserRuleElement
-        {
-            public ParserRuleElement()
-            {
-                this.Annotations = new List<Annotation>();
-            }
-            public string Name { get; set; }
-            public string Type { get; set; }
-            public List<Annotation> Annotations { get; private set; }
-            public bool IsArray { get; set; }
-            public bool IsToken { get { return !this.IsParserRule; } }
-            public bool IsParserRule { get { return !string.IsNullOrEmpty(this.Type) && char.IsLower(this.Type[0]); } }
-            public string GetAccessorName()
-            {
-                string prefix = string.Empty;
-                if (reservedNames.Contains(this.Name)) prefix = "@";
-                if (this.Name != this.Type)
-                {
-                    return prefix + this.Name;
-                }
-                else
-                {
-                    return prefix + this.Type + "()";
-                }
-            }
-        }
-        public class Mode
-        {
-            public Mode()
-            {
-                this.Annotations = new List<Annotation>();
-                this.LexerRules = new List<LexerRule>();
-            }
-            public string Name { get; set; }
-            public List<Annotation> Annotations { get; private set; }
-            public List<LexerRule> LexerRules { get; private set; }
-        }
-        public class LexerRule
-        {
-            public LexerRule()
-            {
-                this.Annotations = new List<Annotation>();
-            }
-            public string Name { get; set; }
-            public List<Annotation> Annotations { get; private set; }
-        }
-
 
         public class AnnotatedAntlr4PropertiesBlockCompiler : IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
         {
@@ -2115,7 +2261,7 @@ namespace MetaDslx.Compiler
         public class AnnotatedAntlr4PropertyBlockExpressionPrinter : AnnotatedAntlr4PropertiesParserBaseVisitor<object>
         {
             private Antlr4AnnotationVisitor output;
-            public ParserRule ParserRule { get; set; }
+            public Antlr4ParserRule ParserRule { get; set; }
             public int StartLine { get; set; }
             public int StartPos { get; set; }
 
@@ -2136,7 +2282,7 @@ namespace MetaDslx.Compiler
                 return Antlr4TextSpan;
             }
 
-            private ParserRuleElement GetElement(string name)
+            private Antlr4ParserRuleElement GetElement(string name)
             {
                 foreach (var elem in this.ParserRule.Elements)
                 {
@@ -2187,7 +2333,7 @@ namespace MetaDslx.Compiler
                 {
                     string elemName = propSels[0].name.GetText();
                     string propName = propSels[1].name.GetText();
-                    ParserRuleElement elem = this.GetElement(elemName);
+                    Antlr4ParserRuleElement elem = this.GetElement(elemName);
                     if (elem != null)
                     {
                         if (selectorCount == 1)
@@ -2248,7 +2394,7 @@ namespace MetaDslx.Compiler
                 else if (propSels.Length == 1)
                 {
                     string elemName = propSels[0].name.GetText();
-                    ParserRuleElement elem = this.GetElement(elemName);
+                    Antlr4ParserRuleElement elem = this.GetElement(elemName);
                     if (elem != null)
                     {
                         output.compiler.Diagnostics.AddError("Cannot assign a value to an element.", output.compiler.FileName, this.GetAntlr4TextSpan(propSels[0].name), false);
@@ -2351,7 +2497,7 @@ namespace MetaDslx.Compiler
                 else if (propSels.Length > 0)
                 {
                     string elemName = propSels[0].name.GetText();
-                    ParserRuleElement elem = this.GetElement(elemName);
+                    Antlr4ParserRuleElement elem = this.GetElement(elemName);
                     int minI = 0;
                     if (elem != null)
                     {
@@ -2418,7 +2564,7 @@ namespace MetaDslx.Compiler
 
         }
 
-        private static readonly string[] reservedNames =
+        internal static readonly string[] reservedNames =
         {
                 "abstract",
                 "as",
@@ -2500,6 +2646,140 @@ namespace MetaDslx.Compiler
             };
 
 
+    }
+
+
+    public class Antlr4AnnotationType
+    {
+        public Antlr4AnnotationType()
+        {
+            this.Properties = new List<string>();
+        }
+        public string Name { get; set; }
+        public List<string> Properties { get; private set; }
+        public bool IsDynamic { get; set; }
+    }
+    public class Antlr4Annotation
+    {
+        public Antlr4Annotation()
+        {
+            this.Properties = new List<Antlr4AnnotationProperty>();
+            this.Values = new List<string>();
+        }
+        public Antlr4AnnotationType Type { get; set; }
+        public List<Antlr4AnnotationProperty> Properties { get; private set; }
+        public string Value
+        {
+            get;
+            set;
+        }
+        public List<string> Values { get; private set; }
+    }
+    public class Antlr4AnnotationProperty
+    {
+        public Antlr4AnnotationProperty()
+        {
+            this.Values = new List<string>();
+        }
+        public string Name { get; set; }
+        public string Value
+        {
+            get;
+            set;
+        }
+        public List<string> Values { get; private set; }
+    }
+    public class Antlr4Grammar
+    {
+        public Antlr4Grammar()
+        {
+            this.Annotations = new List<Antlr4Annotation>();
+            this.ParserRules = new List<Antlr4ParserRule>();
+            this.LexerRules = new List<Antlr4LexerRule>();
+            this.Modes = new List<Antlr4Mode>();
+            this.LiteralCandidates = new List<Antlr4LexerRule>();
+            this.Literals = new List<Antlr4LexerRule>();
+        }
+        public string Name { get; set; }
+        public List<Antlr4Annotation> Annotations { get; private set; }
+        public List<Antlr4ParserRule> ParserRules { get; private set; }
+        public List<Antlr4LexerRule> LexerRules { get; private set; }
+        public List<Antlr4Mode> Modes { get; private set; }
+        internal List<Antlr4LexerRule> LiteralCandidates { get; private set; }
+        public List<Antlr4LexerRule> Literals { get; private set; }
+    }
+    public class Antlr4ParserRule
+    {
+        public Antlr4ParserRule()
+        {
+            this.Annotations = new List<Antlr4Annotation>();
+            this.Elements = new List<Antlr4ParserRuleElement>();
+            this.Alternatives = new List<Antlr4ParserRule>();
+        }
+        public string Name { get; set; }
+        public List<Antlr4Annotation> Annotations { get; private set; }
+        public List<Antlr4ParserRuleElement> Elements { get; private set; }
+        public List<Antlr4ParserRule> Alternatives { get; private set; }
+        public AnnotatedAntlr4Parser.PropertiesBlockContext PropertiesBlock { get; set; }
+        public bool HasElementAnnotations()
+        {
+            foreach (var elem in this.Elements)
+            {
+                if (elem.Annotations.Count > 0) return true;
+            }
+            return false;
+        }
+    }
+    public class Antlr4ParserRuleElement
+    {
+        public Antlr4ParserRuleElement()
+        {
+            this.Annotations = new List<Antlr4Annotation>();
+        }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public List<Antlr4Annotation> Annotations { get; private set; }
+        public bool IsOptional { get; set; }
+        public bool IsLiteral { get; set; }
+        public bool IsArray { get; set; }
+        public bool IsToken { get { return !this.IsParserRule; } }
+        public bool IsParserRule { get { return !string.IsNullOrEmpty(this.Type) && char.IsLower(this.Type[0]); } }
+        public string GetAccessorName()
+        {
+            string prefix = string.Empty;
+            if (Antlr4AnnotationVisitor.reservedNames.Contains(this.Name)) prefix = "@";
+            if (this.Name != this.Type)
+            {
+                return prefix + this.Name;
+            }
+            else
+            {
+                return prefix + this.Type + "()";
+            }
+        }
+    }
+    public class Antlr4Mode
+    {
+        public Antlr4Mode()
+        {
+            this.Annotations = new List<Antlr4Annotation>();
+            this.LexerRules = new List<Antlr4LexerRule>();
+        }
+        public string Name { get; set; }
+        public List<Antlr4Annotation> Annotations { get; private set; }
+        public List<Antlr4LexerRule> LexerRules { get; private set; }
+    }
+    public class Antlr4LexerRule
+    {
+        public Antlr4LexerRule()
+        {
+            this.Annotations = new List<Antlr4Annotation>();
+        }
+        public string Name { get; set; }
+        public string Literal { get; set; }
+        public int Kind { get; set; }
+        public bool Artificial { get; set; }
+        public List<Antlr4Annotation> Annotations { get; private set; }
     }
 
 }

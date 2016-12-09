@@ -10,27 +10,42 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core
 {
-    public interface ImmutableSymbol
+    public enum MutableCreationMode
+    {
+        ReturnOriginal,
+        CreateNewIfChanged,
+        ForceCreateNew
+    }
+
+    public interface IMetaSymbol
     {
         ModelSymbolInfo MSymbolInfo { get; }
         Type MSymbolImmutableType { get; }
         Type MSymbolMutableType { get; }
         MetaModel MMetaModel { get; }
         MetaClass MMetaClass { get; }
+        SymbolId MId { get; }
 
+        string MName { get; }
+        bool MIsScope { get; }
+        bool MIsType { get; }
+
+        IMetaSymbol MParent { get; }
+        IReadOnlyList<IMetaSymbol> MChildren { get; }
+    }
+
+    public interface ImmutableSymbol : IMetaSymbol
+    {
         ImmutableModel MModel { get; }
-        ImmutableSymbol MParent { get; }
-        ImmutableModelList<ImmutableSymbol> MChildren { get; }
+        new ImmutableSymbol MParent { get; }
+        new ImmutableModelList<ImmutableSymbol> MChildren { get; }
 
         ImmutableList<ModelProperty> MProperties { get; }
         ImmutableList<ModelProperty> MAllProperties { get; }
         ModelProperty MGetProperty(string name);
         ImmutableList<ModelProperty> MGetProperties(string name);
 
-        string MName { get; }
         ImmutableSymbol MType { get; }
-        bool MIsScope { get; }
-        bool MIsType { get; }
 
         object MGet(ModelProperty property);
         bool MHasConcreteValue(ModelProperty property);
@@ -40,18 +55,12 @@ namespace MetaDslx.Core
         MutableSymbol ToMutable(MutableModel mutableModel);
     }
 
-    public interface MutableSymbol
+    public interface MutableSymbol : IMetaSymbol
     {
-        ModelSymbolInfo MSymbolInfo { get; }
-        Type MSymbolImmutableType { get; }
-        Type MSymbolMutableType { get; }
-        MetaModel MMetaModel { get; }
-        MetaClass MMetaClass { get; }
-
         bool MIsReadOnly { get; }
         MutableModel MModel { get; }
-        MutableSymbol MParent { get; }
-        ImmutableModelList<MutableSymbol> MChildren { get; }
+        new MutableSymbol MParent { get; }
+        new ImmutableModelList<MutableSymbol> MChildren { get; }
 
         ImmutableList<ModelProperty> MProperties { get; }
         ImmutableList<ModelProperty> MAllProperties { get; }
@@ -59,10 +68,8 @@ namespace MetaDslx.Core
         ImmutableList<ModelProperty> MGetProperties(string name);
         void MAttachProperty(ModelProperty property);
 
-        string MName { get; set; }
+        new string MName { get; set; }
         MutableSymbol MType { get; set; }
-        bool MIsScope { get; }
-        bool MIsType { get; }
 
         object MGet(ModelProperty property);
         bool MHasConcreteValue(ModelProperty property);
@@ -102,17 +109,20 @@ namespace MetaDslx.Core
             return mutableModel.GetSymbol(this);
         }
 
-        internal SymbolId Id { get { return this.id; } }
+        public SymbolId MId { get { return this.id; } }
 
-        public ModelSymbolInfo MSymbolInfo { get { return this.Id.ModelSymbolInfo; } }
-        public Type MSymbolImmutableType { get { return this.Id.ImmutableType; } }
-        public Type MSymbolMutableType { get { return this.Id.MutableType; } }
+        public ModelSymbolInfo MSymbolInfo { get { return this.MId.ModelSymbolInfo; } }
+        public Type MSymbolImmutableType { get { return this.MId.ImmutableType; } }
+        public Type MSymbolMutableType { get { return this.MId.MutableType; } }
         public abstract MetaModel MMetaModel { get; }
         public abstract MetaClass MMetaClass { get; }
 
         public ImmutableModel MModel { get { return this.model; } }
         public ImmutableSymbol MParent { get { return this.model.MParent(this.id); } }
         public ImmutableModelList<ImmutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
+
+        IMetaSymbol IMetaSymbol.MParent { get { return this.model.MParent(this.id); } }
+        IReadOnlyList<IMetaSymbol> IMetaSymbol.MChildren { get { return this.model.MChildren(this.id); } }
 
         public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -257,19 +267,22 @@ namespace MetaDslx.Core
             return immutableModel.GetSymbol(this);
         }
 
-        internal SymbolId Id { get { return this.id; } }
+        public SymbolId MId { get { return this.id; } }
         internal bool MIsBeingCreated { get { return this.creating; } }
         public bool MIsReadOnly { get { return this.model.IsReadOnly; } }
 
-        public ModelSymbolInfo MSymbolInfo { get { return this.Id.ModelSymbolInfo; } }
-        public Type MSymbolImmutableType { get { return this.Id.ImmutableType; } }
-        public Type MSymbolMutableType { get { return this.Id.MutableType; } }
+        public ModelSymbolInfo MSymbolInfo { get { return this.MId.ModelSymbolInfo; } }
+        public Type MSymbolImmutableType { get { return this.MId.ImmutableType; } }
+        public Type MSymbolMutableType { get { return this.MId.MutableType; } }
         public abstract MetaModel MMetaModel { get; }
         public abstract MetaClass MMetaClass { get; }
 
         public MutableModel MModel { get { return this.model; } }
         public MutableSymbol MParent { get { return this.model.MParent(this.id); } }
         public ImmutableModelList<MutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
+
+        IMetaSymbol IMetaSymbol.MParent { get { return this.model.MParent(this.id); } }
+        IReadOnlyList<IMetaSymbol> IMetaSymbol.MChildren { get { return this.model.MChildren(this.id); } }
 
         public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -570,13 +583,13 @@ namespace MetaDslx.Core
         public ImmutableSymbol GetSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return null;
-            return this.GetSymbol(((MutableSymbolBase)symbol).Id);
+            return this.GetSymbol(((MutableSymbolBase)symbol).MId);
         }
 
         public ImmutableSymbol GetSymbol(ImmutableSymbol symbol)
         {
             if (symbol == null) return null;
-            return this.GetSymbol(((ImmutableSymbolBase)symbol).Id);
+            return this.GetSymbol(((ImmutableSymbolBase)symbol).MId);
         }
 
         internal bool ContainsSymbol(SymbolId sid)
@@ -588,55 +601,48 @@ namespace MetaDslx.Core
         public bool ContainsSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(((MutableSymbolBase)symbol).Id);
+            return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
         }
 
         public bool ContainsSymbol(ImmutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).Id);
+            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).MId);
         }
 
-        public MutableModel ToMutable(bool createNew = false)
+        public MutableModel ToMutable(MutableCreationMode creationMode = MutableCreationMode.ReturnOriginal)
         {
             MutableModel result = null;
-            if (!createNew)
+            if (creationMode == MutableCreationMode.ReturnOriginal || creationMode == MutableCreationMode.CreateNewIfChanged)
             {
-                lock (this.mutableModel)
+                if (this.mutableModel.TryGetTarget(out result) && result != null)
                 {
-                    if (this.mutableModel.TryGetTarget(out result) && result != null)
+                    if (creationMode == MutableCreationMode.ReturnOriginal)
                     {
                         return result;
+                    }
+                    else
+                    {
+                        if (this.group != null && result.ModelGroup != null)
+                        {
+                            if (this.group.Green == result.ModelGroup.Green) return result;
+                        }
+                        else if (this.group == null && result.ModelGroup == null)
+                        {
+                            if (result.Green == this.Green) return result;
+                        }
                     }
                 }
             }
             MutableModel newModel = null;
             if (this.group != null)
             {
-                MutableModelGroup mutableGroup = this.group.ToMutable(createNew);
+                MutableModelGroup mutableGroup = this.group.ToMutable(creationMode);
                 newModel = mutableGroup.GetModel(this.green.Id);
             }
             else
             {
                 newModel = new MutableModel(this.green, this);
-            }
-            if (newModel != null)
-            {
-                if (!createNew)
-                {
-                    lock (this.mutableModel)
-                    {
-                        MutableModel oldModel;
-                        if (this.mutableModel.TryGetTarget(out oldModel) && oldModel != null)
-                        {
-                            return oldModel;
-                        }
-                        else
-                        {
-                            this.mutableModel.SetTarget(newModel);
-                        }
-                    }
-                }
             }
             return newModel;
         }
@@ -645,11 +651,11 @@ namespace MetaDslx.Core
         {
             if (value is ImmutableSymbolBase)
             {
-                return ((ImmutableSymbolBase)value).Id;
+                return ((ImmutableSymbolBase)value).MId;
             }
             if (value is MutableSymbolBase)
             {
-                return ((MutableSymbolBase)value).Id;
+                return ((MutableSymbolBase)value).MId;
             }
             return value;
         }
@@ -661,11 +667,11 @@ namespace MetaDslx.Core
                 object redValue = ((GreenDerivedValue)value).CreateRedValue();
                 if (value is ImmutableSymbolBase)
                 {
-                    return this.ResolveSymbol(((ImmutableSymbolBase)value).Id);
+                    return this.ResolveSymbol(((ImmutableSymbolBase)value).MId);
                 }
                 else if (value is MutableSymbolBase)
                 {
-                    return this.ResolveSymbol(((MutableSymbolBase)value).Id);
+                    return this.ResolveSymbol(((MutableSymbolBase)value).MId);
                 }
                 return redValue;
             }
@@ -1003,13 +1009,13 @@ namespace MetaDslx.Core
         public MutableSymbol GetSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return null;
-            return this.GetSymbol(((MutableSymbolBase)symbol).Id);
+            return this.GetSymbol(((MutableSymbolBase)symbol).MId);
         }
 
         public MutableSymbol GetSymbol(ImmutableSymbol symbol)
         {
             if (symbol == null) return null;
-            return this.GetSymbol(((ImmutableSymbolBase)symbol).Id);
+            return this.GetSymbol(((ImmutableSymbolBase)symbol).MId);
         }
 
         internal bool ContainsSymbol(SymbolId sid)
@@ -1029,13 +1035,13 @@ namespace MetaDslx.Core
         public bool ContainsSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(((MutableSymbolBase)symbol).Id);
+            return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
         }
 
         public bool ContainsSymbol(ImmutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).Id);
+            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).MId);
         }
 
         public bool RemoveSymbol(MutableSymbol symbol)
@@ -1046,7 +1052,7 @@ namespace MetaDslx.Core
             do
             {
                 ctx = this.BeginUpdate();
-                result = ctx.Updater.RemoveSymbol(this.id, ((MutableSymbolBase)symbol).Id);
+                result = ctx.Updater.RemoveSymbol(this.id, ((MutableSymbolBase)symbol).MId);
             } while (!this.EndUpdate(ctx));
             return result;
         }
@@ -1059,7 +1065,7 @@ namespace MetaDslx.Core
             do
             {
                 ctx = this.BeginUpdate();
-                ctx.Updater.MergeSymbols(this.id, ((ImmutableSymbolBase)targetSymbol).Id, ((ImmutableSymbolBase)partSymbol).Id);
+                ctx.Updater.MergeSymbols(this.id, ((ImmutableSymbolBase)targetSymbol).MId, ((ImmutableSymbolBase)partSymbol).MId);
             } while (!this.EndUpdate(ctx));
         }
 
@@ -1100,18 +1106,15 @@ namespace MetaDslx.Core
             else
             {
                 GreenModel currentGreen = this.Green;
-                lock (this.immutableModel)
+                if (this.immutableModel.TryGetTarget(out result) && result != null && result.Green == currentGreen)
                 {
-                    if (this.immutableModel.TryGetTarget(out result) && result != null && result.Green == currentGreen)
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        result = new ImmutableModel(currentGreen, this);
-                        this.immutableModel.SetTarget(result);
-                        return result;
-                    }
+                    return result;
+                }
+                else
+                {
+                    result = new ImmutableModel(currentGreen, this);
+                    Interlocked.Exchange(ref this.immutableModel, new WeakReference<ImmutableModel>(result));
+                    return result;
                 }
             }
             return null;
@@ -1163,11 +1166,11 @@ namespace MetaDslx.Core
         {
             if (value is ImmutableSymbolBase)
             {
-                return ((ImmutableSymbolBase)value).Id;
+                return ((ImmutableSymbolBase)value).MId;
             }
             if (value is MutableSymbolBase)
             {
-                return ((MutableSymbolBase)value).Id;
+                return ((MutableSymbolBase)value).MId;
             }
             return value;
         }
@@ -1179,11 +1182,11 @@ namespace MetaDslx.Core
                 object redValue = ((GreenDerivedValue)value).CreateRedValue();
                 if (value is ImmutableSymbolBase)
                 {
-                    return this.ResolveSymbol(((ImmutableSymbolBase)value).Id);
+                    return this.ResolveSymbol(((ImmutableSymbolBase)value).MId);
                 }
                 else if (value is MutableSymbolBase)
                 {
-                    return this.ResolveSymbol(((MutableSymbolBase)value).Id);
+                    return this.ResolveSymbol(((MutableSymbolBase)value).MId);
                 }
                 return redValue;
             }
@@ -1528,7 +1531,7 @@ namespace MetaDslx.Core
             }
             else
             {
-                return this.GetValue(symbol.Id, property);
+                return this.GetValue(symbol.MId, property);
             }
         }
         internal void MAttachProperty(SymbolId sid, ModelProperty property)
@@ -1583,28 +1586,22 @@ namespace MetaDslx.Core
 
         private MutableModel GetMutableReference(ModelId mid)
         {
-            lock (this.mutableModelGroup)
+            MutableModelGroup result;
+            if (this.mutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
             {
-                MutableModelGroup result;
-                if (this.mutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
-                {
-                    return result.GetReference(mid);
-                }
-                return null;
+                return result.GetReference(mid);
             }
+            return null;
         }
 
         private MutableModel GetMutableModel(ModelId mid)
         {
-            lock (this.mutableModelGroup)
+            MutableModelGroup result;
+            if (this.mutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
             {
-                MutableModelGroup result;
-                if (this.mutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
-                {
-                    return result.GetModel(mid);
-                }
-                return null;
+                return result.GetModel(mid);
             }
+            return null;
         }
 
         private ImmutableModel GetExistingReference(ModelId mid)
@@ -1673,46 +1670,33 @@ namespace MetaDslx.Core
         public bool ContainsSymbol(ImmutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).Id);
+            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).MId);
         }
 
         public bool ContainsSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(((MutableSymbolBase)symbol).Id);
+            return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
         }
 
-        public MutableModelGroup ToMutable(bool createNew = false)
+        public MutableModelGroup ToMutable(MutableCreationMode creationMode = MutableCreationMode.ReturnOriginal)
         {
             MutableModelGroup result;
-            if (!createNew)
+            if (creationMode == MutableCreationMode.ReturnOriginal || creationMode == MutableCreationMode.CreateNewIfChanged)
             {
-                lock (this.mutableModelGroup)
+                if (this.mutableModelGroup.TryGetTarget(out result) && result != null)
                 {
-                    if (this.mutableModelGroup.TryGetTarget(out result) && result != null)
+                    if (creationMode == MutableCreationMode.ReturnOriginal)
+                    {
+                        return result;
+                    }
+                    else if (result.Green == this.Green)
                     {
                         return result;
                     }
                 }
             }
-            result = new MutableModelGroup(this.green, this);
-            if (!createNew)
-            {
-                lock (this.mutableModelGroup)
-                {
-                    MutableModelGroup oldGroup = null;
-                    if (this.mutableModelGroup.TryGetTarget(out oldGroup) && oldGroup != null)
-                    {
-                        return oldGroup;
-                    }
-                    else
-                    {
-                        this.mutableModelGroup.SetTarget(result);
-                        return result;
-                    }
-                }
-            }
-            return result;
+            return new MutableModelGroup(this.green, this);
         }
     }
 
@@ -1777,28 +1761,22 @@ namespace MetaDslx.Core
 
         private ImmutableModel GetImmutableReference(ModelId mid)
         {
-            lock (this.immutableModelGroup)
+            ImmutableModelGroup result;
+            if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
             {
-                ImmutableModelGroup result;
-                if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
-                {
-                    return result.GetReference(mid);
-                }
-                return null;
+                return result.GetReference(mid);
             }
+            return null;
         }
 
         private ImmutableModel GetImmutableModel(ModelId mid)
         {
-            lock (this.immutableModelGroup)
+            ImmutableModelGroup result;
+            if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
             {
-                ImmutableModelGroup result;
-                if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
-                {
-                    return result.GetModel(mid);
-                }
-                return null;
+                return result.GetModel(mid);
             }
+            return null;
         }
 
         private MutableModel GetExistingReference(ModelId mid)
@@ -1872,26 +1850,26 @@ namespace MetaDslx.Core
         public bool ContainsSymbol(ImmutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).Id);
+            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).MId);
         }
 
         public bool ContainsSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return false;
-            return this.ContainsSymbol(((MutableSymbolBase)symbol).Id);
+            return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
         }
 
         public ImmutableModelGroup ToImmutable()
         {
-            lock (this.immutableModelGroup)
+            ImmutableModelGroup result;
+            if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
             {
-                ImmutableModelGroup result;
-                if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
-                {
-                    return result;
-                }
+                return result;
+            }
+            else
+            {
                 result = new ImmutableModelGroup(this.Green, this);
-                this.immutableModelGroup.SetTarget(result);
+                Interlocked.Exchange(ref this.immutableModelGroup, new WeakReference<ImmutableModelGroup>(result));
                 return result;
             }
         }

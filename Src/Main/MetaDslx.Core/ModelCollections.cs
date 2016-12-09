@@ -1043,7 +1043,7 @@ namespace MetaDslx.Core
 
         private GreenList GetGreen(bool lazyEval)
         {
-            return this.symbol.MModel.GetGreenList(this.symbol.Id, property, lazyEval);
+            return this.symbol.MModel.GetGreenList(this.symbol.MId, property, lazyEval);
         }
 
         public override int Count
@@ -1063,7 +1063,7 @@ namespace MetaDslx.Core
 
         public override void Add(T item)
         {
-            this.symbol.MModel.AddItem(this.symbol.Id, this.property, item, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.AddItem(this.symbol.MId, this.property, item, this.symbol.MIsBeingCreated);
         }
 
         public override void AddRange(IEnumerable<T> items)
@@ -1076,7 +1076,7 @@ namespace MetaDslx.Core
 
         public override void AddLazy(Func<T> item)
         {
-            this.symbol.MModel.AddLazyItem(this.symbol.Id, this.property, (Func<object>)(object)item, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, (Func<object>)(object)item, this.symbol.MIsBeingCreated);
         }
 
         public override void AddRangeLazy(IEnumerable<Func<T>> items)
@@ -1089,12 +1089,12 @@ namespace MetaDslx.Core
 
         public override void Clear()
         {
-            this.symbol.MModel.ClearItems(this.symbol.Id, this.property, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.ClearItems(this.symbol.MId, this.property, this.symbol.MIsBeingCreated);
         }
 
         public override void ClearLazy()
         {
-            this.symbol.MModel.ClearLazyItems(this.symbol.Id, this.property, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.ClearLazyItems(this.symbol.MId, this.property, this.symbol.MIsBeingCreated);
         }
 
         public override bool Contains(T item)
@@ -1126,12 +1126,12 @@ namespace MetaDslx.Core
 
         public override bool Remove(T item)
         {
-            return this.symbol.MModel.RemoveItem(this.symbol.Id, this.property, item, this.symbol.MIsBeingCreated);
+            return this.symbol.MModel.RemoveItem(this.symbol.MId, this.property, item, this.symbol.MIsBeingCreated);
         }
 
         public override bool RemoveAll(T item)
         {
-            return this.symbol.MModel.RemoveAllItems(this.symbol.Id, this.property, item, this.symbol.MIsBeingCreated);
+            return this.symbol.MModel.RemoveAllItems(this.symbol.MId, this.property, item, this.symbol.MIsBeingCreated);
         }
 
         private string DebuggerDisplay
@@ -1453,7 +1453,7 @@ namespace MetaDslx.Core
 
         private GreenList GetGreen(bool lazyEval)
         {
-            return this.symbol.MModel.GetGreenList(this.symbol.Id, property, lazyEval);
+            return this.symbol.MModel.GetGreenList(this.symbol.MId, property, lazyEval);
         }
 
         public override int Count
@@ -1480,13 +1480,13 @@ namespace MetaDslx.Core
             }
             set
             {
-                this.symbol.MModel.ReplaceItem(this.symbol.Id, this.property, index, value, this.symbol.MIsBeingCreated);
+                this.symbol.MModel.ReplaceItem(this.symbol.MId, this.property, index, value, this.symbol.MIsBeingCreated);
             }
         }
 
         public override void Add(T item)
         {
-            this.symbol.MModel.AddItem(this.symbol.Id, this.property, item, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.AddItem(this.symbol.MId, this.property, item, this.symbol.MIsBeingCreated);
         }
 
         public override void AddRange(IEnumerable<T> items)
@@ -1499,7 +1499,7 @@ namespace MetaDslx.Core
 
         public override void AddLazy(Func<T> item)
         {
-            this.symbol.MModel.AddLazyItem(this.symbol.Id, this.property, (Func<object>)(object)item, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, (Func<object>)(object)item, this.symbol.MIsBeingCreated);
         }
 
         public override void AddRangeLazy(IEnumerable<Func<T>> items)
@@ -1512,12 +1512,12 @@ namespace MetaDslx.Core
 
         public override void Clear()
         {
-            this.symbol.MModel.ClearItems(this.symbol.Id, this.property, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.ClearItems(this.symbol.MId, this.property, this.symbol.MIsBeingCreated);
         }
 
         public override void ClearLazy()
         {
-            this.symbol.MModel.ClearLazyItems(this.symbol.Id, this.property, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.ClearLazyItems(this.symbol.MId, this.property, this.symbol.MIsBeingCreated);
         }
 
         public override bool Contains(T item)
@@ -1556,22 +1556,22 @@ namespace MetaDslx.Core
 
         public override void Insert(int index, T item)
         {
-            this.symbol.MModel.InsertItem(this.symbol.Id, this.property, index, item, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.InsertItem(this.symbol.MId, this.property, index, item, this.symbol.MIsBeingCreated);
         }
 
         public override bool Remove(T item)
         {
-            return this.symbol.MModel.RemoveItem(this.symbol.Id, this.property, item, this.symbol.MIsBeingCreated);
+            return this.symbol.MModel.RemoveItem(this.symbol.MId, this.property, item, this.symbol.MIsBeingCreated);
         }
 
         public override bool RemoveAll(T item)
         {
-            return this.symbol.MModel.RemoveAllItems(this.symbol.Id, this.property, item, this.symbol.MIsBeingCreated);
+            return this.symbol.MModel.RemoveAllItems(this.symbol.MId, this.property, item, this.symbol.MIsBeingCreated);
         }
 
         public override void RemoveAt(int index)
         {
-            this.symbol.MModel.RemoveItemAt(this.symbol.Id, this.property, index, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.RemoveItemAt(this.symbol.MId, this.property, index, this.symbol.MIsBeingCreated);
         }
 
         private string DebuggerDisplay

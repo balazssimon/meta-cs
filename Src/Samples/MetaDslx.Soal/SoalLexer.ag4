@@ -171,7 +171,7 @@ RegularStringLiteral
     | '\'' SingleQuoteTextCharacter* '\'';
 
 DoubleQuoteVerbatimStringLiteralStart : '@"' -> more, mode(DOUBLEQUOTE_VERBATIM_STRING);
-SingleQuoteVerbatimStringLiteralStart : '@''' -> more, mode(SINGLEQUOTE_VERBATIM_STRING);
+SingleQuoteVerbatimStringLiteralStart : '@\'' -> more, mode(SINGLEQUOTE_VERBATIM_STRING);
 fragment SingleQuoteTextCharacter 
     : SingleQuoteTextSimple | CharacterEscapeSimple | CharacterEscapeUnicode;
 fragment SingleQuoteTextSimple 

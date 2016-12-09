@@ -1,7 +1,8 @@
 ﻿/*
  * [The "BSD license"]
- *  Copyright (c) 2014 Terence Parr
- *  Copyright (c) 2014 Sam Harwell
+ *  Copyright (c) 2012-2015 Terence Parr
+ *  Copyright (c) 2012-2015 Sam Harwell
+ *  Copyright (c) 2015 Gerald Rosenberg
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -27,281 +28,343 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-/** A grammar for ANTLR v4 tokens */
+
+/**
+ *	A grammar for ANTLR v4 implemented using v4 syntax
+ *
+ *	Modified 2015.06.16 gbr
+ *	-- update for compatibility with Antlr v4.5
+ */
 lexer grammar AnnotatedAntlr4Lexer;
 
-tokens {
+options
+   { superClass = LexerAdaptor; }
+import LexBasic;
+
+// Standard set of fragments
+tokens { 
 	                                    
 	TOKEN_REF,
-	                                   
-	RULE_REF,
+	                                   	
+	RULE_REF, 
 	                                 
-	LEXER_CHAR_SET
+	LEXER_CHAR_SET 
 }
 
-@members {
-	/** Track whether we are inside of a rule and whether it is lexical parser.
-	 *  _currentRuleType==Token.INVALID_TYPE means that we are outside of a rule.
-	 *  At the first sign of a rule name reference and _currentRuleType==invalid,
-	 *  we can assume that we are starting a parser rule. Similarly, seeing
-	 *  a token reference when not already in rule means starting a token
-	 *  rule. The terminating ';' of a rule, flips this back to invalid type.
-	 *
-	 *  This is not perfect logic but works. For example, "grammar T;" means
-	 *  that we start and stop a lexical rule for the "T;". Dangerous but works.
-	 *
-	 *  The whole point of this state information is to distinguish
-	 *  between [..arg actions..] and [charsets]. Char sets can only occur in
-	 *  lexical rules and arg actions cannot occur.
-	 */
-    private static int INVALID_TYPE = -1;
+channels
+   { OFF_CHANNEL }
 
-    private int _currentRuleType = INVALID_TYPE;
-
-	public int getCurrentRuleType() {
-		return _currentRuleType;
-	}
-
-	public void setCurrentRuleType(int ruleType) {
-		this._currentRuleType = ruleType;
-	}
-
-	protected void handleBeginArgAction() {
-		if (inLexerRule()) {
-			PushMode(LexerCharSet);
-			More();
-		}
-		else {
-			PushMode(ArgAction);
-			More();
-		}
-	}
-
-	public override IToken Emit() {
-		if (Type == ID) {
-			string firstChar = this.Text;
-			if (char.IsUpper(firstChar[0])) {
-				Type = TOKEN_REF;
-			} else {
-				Type = RULE_REF;
-			}
-
-			if (_currentRuleType == INVALID_TYPE) { // if outside of rule def
-				_currentRuleType = Type;                 // set to inside lexer or parser rule
-			}
-		}
-		else if (Type == SEMI) {                  // exit rule def
-			_currentRuleType = INVALID_TYPE;
-		}
-
-		return base.Emit();
-	}
-
-	private bool inLexerRule() {
-		return _currentRuleType == TOKEN_REF;
-	}
-	private bool inParserRule() { // not used, but added for clarity
-		return _currentRuleType == RULE_REF;
-	}
-}
+// ======================================================
+// Lexer specification
+//
+// -------------------------
+// Comments
 
                                    
 DOC_COMMENT_START
-	:	'/**' -> more, mode(DOC_COMMENT_MODE), channel(HIDDEN)
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
 	;
 
+
                                 
-COMMENT_START : '/*' -> more, mode(BLOCK_COMMENT_MODE), channel(HIDDEN)
-	;
+COMMENT_START 
+   : '/*' -> more, pushMode(BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+   ;
+
 
                                 
 LINE_COMMENT
-	:	'//' ~[\r\n]*  -> channel(HIDDEN)
-	;
+   : LineComment -> channel (OFF_CHANNEL)
+   ;
 
-BEGIN_ARG_ACTION
-	:	'[' {handleBeginArgAction();}
-	;
 
-// OPTIONS and TOKENS must also consume the opening brace that captures
-// their option block, as this is teh easiest way to parse it separate
-// to an ACTION block, despite it usingthe same {} delimiters.
+// -------------------------
+// Integer
 //
-                                      
-OPTIONS      : 'options' [ \t\f\n\r]* '{'  ;
-                                      
-TOKENS		 : 'tokens'  [ \t\f\n\r]* '{'  ;
-
-                                                         
-IMPORT       : 'import'               ;
-FRAGMENT     : 'fragment'             ;
-LEXER        : 'lexer'                ;
-PARSER       : 'parser'               ;
-GRAMMAR      : 'grammar'              ;
-PROTECTED    : 'protected'            ;
-PUBLIC       : 'public'               ;
-PRIVATE      : 'private'              ;
-RETURNS      : 'returns'              ;
-LOCALS       : 'locals'               ;
-THROWS       : 'throws'               ;
-CATCH        : 'catch'                ;
-FINALLY      : 'finally'              ;
-MODE         : 'mode'                 ;
-TRUE : 'true';
-FALSE : 'false';
-NULL : 'null';
-
-COLON        : ':'                    ;
-COLONCOLON   : '::'                   ;
-COMMA        : ','                    ;
-SEMI         : ';'                    ;
-LPAREN       : '('                    ;
-RPAREN       : ')'                    ;
-RARROW       : '->'                   ;
-DRARROW      : '=>'                   ;
-LT           : '<'                    ;
-GT           : '>'                    ;
-ASSIGN       : '='                    ;
-QUESTION     : '?'                    ;
-STAR         : '*'                    ;
-PLUS         : '+'                    ;
-PLUS_ASSIGN  : '+='                   ;
-OR           : '|'                    ;
-DOLLAR       : '$'                    ;
-DOT		     : '.'                    ;
-RANGE        : '..'                   ;
-AT           : '@'                    ;
-POUND        : '#'                    ;
-NOT          : '~'                    ;
-LBRACE       : '{'                    ;
-RBRACE       : '}'                    ;
-LBRACKET     : '['                    ;
-RBRACKET     : ']'                    ;
-
-/** Allow unicode rule/token names */
-                                   
-ID	:	NameStartChar NameChar*;
-
-fragment
-NameChar
-	:   NameStartChar
-	|   '0'..'9'
-	|   '_'
-	|   '\u00B7'
-	|   '\u0300'..'\u036F'
-	|   '\u203F'..'\u2040'
-	;
-
-fragment
-NameStartChar
-	:   'A'..'Z'
-	|   'a'..'z'
-	|   '\u00C0'..'\u00D6'
-	|   '\u00D8'..'\u00F6'
-	|   '\u00F8'..'\u02FF'
-	|   '\u0370'..'\u037D'
-	|   '\u037F'..'\u1FFF'
-	|   '\u200C'..'\u200D'
-	|   '\u2070'..'\u218F'
-	|   '\u2C00'..'\u2FEF'
-	|   '\u3001'..'\uD7FF'
-	|   '\uF900'..'\uFDCF'
-	|   '\uFDF0'..'\uFFFD'
-	; // ignores | ['\u10000-'\uEFFFF] ;
 
                                
-INTEGER_LITERAL : DecimalDigits | Hexadecimal;
+INT
+   : DecimalNumeral
+   ;
 
-                               
-DECIMAL_LITERAL : DecimalDigit+ '.' DecimalDigit+;
-
-                               
-SCIENTIFIC_LITERAL : DECIMAL_LITERAL [eE] Sign? DecimalDigit+;
-fragment DecimalDigits : DecimalDigit+;
-fragment DecimalDigit : [0-9];
-fragment Sign : '+' | '-';
-fragment Hexadecimal : ('0x'|'0X') HexDigit*;
-fragment HexDigit : [0-9a-fA-F];
-
+// -------------------------
+// Literal string
+//
 // ANTLR makes no distinction between a single character literal and a
 // multi-character string. All literals are single quote delimited and
 // may contain unicode escape sequences of the form \uxxxx, where x
-// is a valid hexadecimal number (as per Java basically).
+// is a valid hexadecimal number (per Unicode standard).
+
                                
 STRING_LITERAL
-	:  '\'' (ESC_SEQ | ~['\r\n\\])* '\''
-	;
+   : SQuoteLiteral
+   ;
+
 
                                
 UNTERMINATED_STRING_LITERAL
-	:  '\'' (ESC_SEQ | ~['\r\n\\])*
-	;
+   : USQuoteLiteral
+   ;
 
-// Any kind of escaped character that we can embed within ANTLR
-// literal strings.
-fragment
-ESC_SEQ
-	:	'\\'
-		(	// The standard escaped character set such as tab, newline, etc.
-			[btnfr"'\\]
-		|	// A Java style Unicode escape sequence
-			UNICODE_ESC
-		|	// Invalid escape
-			.
-		|	// Invalid escape at end of file
-			EOF
-		)
-	;
+// -------------------------
+// Arguments
+//
+// Certain argument lists, such as those specifying call parameters
+// to a rule invocation, or input parameters to a rule specification
+// are contained within square brackets.
 
-fragment
-UNICODE_ESC
-    :   'u' (HEX_DIGIT (HEX_DIGIT (HEX_DIGIT HEX_DIGIT?)?)?)?
-    ;
-
-fragment
-HEX_DIGIT : [0-9a-fA-F]	;
-
-WS  :	[ \t\r\n\f]+ -> channel(HIDDEN)	;
-
-// Many language targets use {} as block delimiters and so we
-// must recursively match {} delimited blocks to balance the
-// braces. Additionally, we must make some assumptions about
-// literal string representation in the target language. We assume
-// that they are delimited by ' or " and so consume these
-// in their own alts so as not to inadvertantly match {}.
+BEGIN_ARGUMENT
+   : LBrack{ handleBeginArgument(); };
+   
+// -------------------------
+// Actions
 
                                      
-ACTION
-	:	'{'
-		(	ACTION
-		|	ACTION_ESCAPE
-        |	ACTION_STRING_LITERAL
-        |	ACTION_CHAR_LITERAL
-        |	'/*' .*? '*/' // ('*/' | EOF)
-        |	'//' ~[\r\n]*
-        |	.
-		)*?
-		('}'|EOF)
-	;
+BEGIN_ACTION
+   : LBrace -> pushMode (ActionMode)
+   ;
 
-fragment
-ACTION_ESCAPE
-		:   '\\' .
-		;
+// -------------------------
+// Keywords
+//
+// Keywords may not be used as labels for rules or in any other context where
+// they would be ambiguous with the keyword vs some other identifier.  OPTIONS,
+// TOKENS, & CHANNELS blocks are handled idiomatically in dedicated lexical modes.
 
-fragment
-ACTION_STRING_LITERAL
-        :	'"' (ACTION_ESCAPE | ~["\\])* '"'
-        ;
+                                      
+OPTIONS
+   : 'options' -> pushMode (Options)
+   ;
 
-fragment
-ACTION_CHAR_LITERAL
-        :	'\'' (ACTION_ESCAPE | ~['\\])* '\''
-        ;
 
-// -----------------
-// Illegal Character
+                                      
+TOKENS
+   : 'tokens' -> pushMode (Tokens)
+   ;
+
+
+                                      
+CHANNELS
+   : 'channels' -> pushMode (Channels)
+   ;
+
+   
+                                                         
+IMPORT
+   : 'import'
+   ;
+
+
+FRAGMENT
+   : 'fragment'
+   ;
+
+
+LEXER
+   : 'lexer'
+   ;
+
+
+PARSER
+   : 'parser'
+   ;
+
+
+GRAMMAR
+   : 'grammar'
+   ;
+
+
+PROTECTED
+   : 'protected'
+   ;
+
+
+PUBLIC
+   : 'public'
+   ;
+
+
+PRIVATE
+   : 'private'
+   ;
+
+
+RETURNS
+   : 'returns'
+   ;
+
+
+LOCALS
+   : 'locals'
+   ;
+
+
+THROWS
+   : 'throws'
+   ;
+
+
+CATCH
+   : 'catch'
+   ;
+
+
+FINALLY
+   : 'finally'
+   ;
+
+
+MODE
+   : 'mode'
+   ;
+
+
+// -------------------------
+// Boolean
+
+TRUE : 'true';
+FALSE : 'false';
+   
+// -------------------------
+// Null
+
+NULL : 'null';
+   
+// -------------------------
+// Punctuation
+
+COLON
+   : Colon
+   ;
+
+
+COLONCOLON
+   : DColon
+   ;
+
+
+COMMA
+   : Comma
+   ;
+
+
+SEMI
+   : Semi
+   ;
+
+
+LPAREN
+   : LParen
+   ;
+
+
+RPAREN
+   : RParen
+   ;
+
+
+LBRACE
+   : LBrace
+   ;
+
+
+RBRACE
+   : RBrace
+   ;
+
+
+RARROW
+   : RArrow
+   ;
+
+
+LT
+   : Lt
+   ;
+
+
+GT
+   : Gt
+   ;
+
+
+ASSIGN
+   : Equal
+   ;
+
+
+QUESTION
+   : Question
+   ;
+
+
+STAR
+   : Star
+   ;
+
+
+PLUS_ASSIGN
+   : PlusAssign
+   ;
+
+
+PLUS
+   : Plus
+   ;
+
+
+OR
+   : Pipe
+   ;
+
+
+DOLLAR
+   : Dollar
+   ;
+
+
+RANGE
+   : Range
+   ;
+
+
+DOT
+   : Dot
+   ;
+
+
+AT
+   : At
+   ;
+
+
+POUND
+   : Pound
+   ;
+
+
+NOT
+   : Tilde
+   ;
+
+// -------------------------
+// Identifiers - allows unicode rule/token names
+
+                                   
+ID
+   : Id
+   ;
+
+// -------------------------
+// Whitespace
+
+WS
+   : Ws + -> channel (OFF_CHANNEL)
+   ;
+
+// -------------------------
+// Illegal Characters
 //
 // This is an illegal character trap which is always the last rule in the
 // lexer specification. It matches a single character of any value and being
@@ -311,78 +374,321 @@ ACTION_CHAR_LITERAL
 // but we will not try to analyse or code generate from a file with lexical
 // errors.
 //
+// Comment this rule out to allow the error to be propagated to the parser
+
 ERRCHAR
-	:	.	-> channel(HIDDEN)
-	;
+   : . -> channel (HIDDEN)
+   ;
 
+// ======================================================
+// Lexer modes
+// -------------------------
+// Arguments
+mode Argument;
+// E.g., [int x, List<String> a[]]
+NESTED_ARGUMENT
+   : LBrack -> type (ARGUMENT_CONTENT) , pushMode (Argument)
+   ;
+
+ARGUMENT_ESCAPE
+   : EscAny -> type (ARGUMENT_CONTENT)
+   ;
+
+ARGUMENT_STRING_LITERAL
+   : DQuoteLiteral -> type (ARGUMENT_CONTENT)
+   ;
+
+ARGUMENT_CHAR_LITERAL
+   : SQuoteLiteral -> type (ARGUMENT_CONTENT)
+   ;
+
+END_ARGUMENT
+   : RBrack{ handleEndArgument(); };
+      
+// added this to return non-EOF token type here. EOF does something weird
+UNTERMINATED_ARGUMENT
+   : EOF -> popMode
+   ;
+
+ARGUMENT_CONTENT
+   : .
+   ;
+
+// -------------------------
+// Actions
+//
+// Many language targets use {} as block delimiters and so we
+// must recursively match {} delimited blocks to balance the
+// braces. Additionally, we must make some assumptions about
+// literal string representation in the target language. We assume
+// that they are delimited by ' or " and so consume these
+// in their own alts so as not to inadvertantly match {}.
                                      
-mode ArgAction; // E.g., [int x, List<String> a[]]
+mode ActionMode;
+NESTED_ACTION
+   : LBrace -> type (ACTION_CONTENT) , pushMode (ActionMode)
+   ;
 
-	NESTED_ARG_ACTION
-		:	'['                         -> more, pushMode(ArgAction)
-		;
+ACTION_ESCAPE
+   : EscAny -> type (ACTION_CONTENT)
+   ;
 
-	ARG_ACTION_ESCAPE
-		:   '\\' .                      -> more
-		;
+ACTION_STRING_LITERAL
+   : DQuoteLiteral -> type (ACTION_CONTENT)
+   ;
 
-    ARG_ACTION_STRING_LITERAL
-        :	('"' ('\\' . | ~["\\])* '"')-> more
-        ;
+ACTION_CHAR_LITERAL
+   : SQuoteLiteral -> type (ACTION_CONTENT)
+   ;
 
-    ARG_ACTION_CHAR_LITERAL
-        :	('"' '\\' . | ~["\\] '"')   -> more
-        ;
+ACTION_DOC_COMMENT_BEGIN
+	:	'/**' -> more, pushMode(ACTION_DOC_COMMENT_MODE), channel(OFF_CHANNEL)
+   ;
 
-	                                     
-    ARG_ACTION
-		:   ']'                         -> popMode
-		;
+ACTION_BLOCK_COMMENT_BEGIN
+	:	'/*' -> more, pushMode(ACTION_BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+   ;
 
-	                                     
-	UNTERMINATED_ARG_ACTION // added this to return non-EOF token type here. EOF did something weird
-		:	EOF							-> popMode
-		;
+ACTION_LINE_COMMENT
+   : LineComment -> type (ACTION_CONTENT)
+   ;
 
-    ARG_ACTION_CHAR // must be last
-        :   .                           -> more
-        ;
+END_ACTION
+   : RBrace{ handleEndAction(); };
 
+UNTERMINATED_ACTION
+   : EOF -> popMode
+   ;
 
+ACTION_CONTENT
+   : .
+   ;
 
+// -------------------------
+                                      
+mode Options;
+OPT_DOC_COMMENT
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
+   ;
+
+OPT_BLOCK_COMMENT
+	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+   ;
+
+OPT_LINE_COMMENT
+   : LineComment -> type (LINE_COMMENT) , channel (OFF_CHANNEL)
+   ;
+
+OPT_LBRACE
+   : LBrace -> type (LBRACE)
+   ;
+
+OPT_RBRACE
+   : RBrace -> type (RBRACE) , popMode
+   ;
+
+OPT_TRUE : TRUE -> type(TRUE);
+OPT_FALSE : FALSE -> type(FALSE);
+OPT_NULL : NULL -> type(NULL);
+OPT_DOLLAR : Dollar -> type(DOLLAR);
+OPT_LPAREN : LParen -> type(LPAREN);
+OPT_RPAREN : RParen -> type(RPAREN);
+
+OPT_ID
+   : Id -> type (ID)
+   ;
+
+OPT_DOT
+   : Dot -> type (DOT)
+   ;
+
+OPT_ASSIGN
+   : Equal -> type (ASSIGN)
+   ;
+
+OPT_STRING_LITERAL
+   : SQuoteLiteral -> type (STRING_LITERAL)
+   ;
+
+OPT_INT
+   : Int -> type (INT)
+   ;
+
+OPT_STAR
+   : Star -> type (STAR)
+   ;
+
+OPT_SEMI
+   : Semi -> type (SEMI)
+   ;
+
+OPT_WS
+   : Ws + -> type (WS) , channel (OFF_CHANNEL)
+   ;
+
+// -------------------------
+                                      
+mode Tokens;
+TOK_DOC_COMMENT
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
+   ;
+
+TOK_BLOCK_COMMENT
+	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+   ;
+
+TOK_LINE_COMMENT
+   : LineComment -> type (LINE_COMMENT) , channel (OFF_CHANNEL)
+   ;
+
+TOK_LBRACE
+   : LBrace -> type (LBRACE)
+   ;
+
+TOK_RBRACE
+   : RBrace -> type (RBRACE) , popMode
+   ;
+
+TOK_TRUE : TRUE -> type(TRUE);
+TOK_FALSE : FALSE -> type(FALSE);
+TOK_NULL : NULL -> type(NULL);
+TOK_DOLLAR : Dollar -> type(DOLLAR);
+TOK_LPAREN : LParen -> type(LPAREN);
+TOK_RPAREN : RParen -> type(RPAREN);
+TOK_ASSIGN : Equal -> type(ASSIGN);
+   
+TOK_ID
+   : Id -> type (ID)
+   ;
+
+TOK_DOT
+   : Dot -> type (DOT)
+   ;
+
+TOK_COMMA
+   : Comma -> type (COMMA)
+   ;
+
+TOK_WS
+   : Ws + -> type (WS) , channel (OFF_CHANNEL)
+   ;
+
+// -------------------------
+                                      
+mode Channels;
+// currently same as Tokens mode; distinguished by keyword
+CHN_DOC_COMMENT
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
+   ;
+
+CHN_BLOCK_COMMENT
+	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+   ;
+
+CHN_LINE_COMMENT
+   : LineComment -> type (LINE_COMMENT) , channel (OFF_CHANNEL)
+   ;
+
+CHN_LBRACE
+   : LBrace -> type (LBRACE)
+   ;
+
+CHN_RBRACE
+   : RBrace -> type (RBRACE) , popMode
+   ;
+
+CHN_TRUE : TRUE -> type(TRUE);
+CHN_FALSE : FALSE -> type(FALSE);
+CHN_NULL : NULL -> type(NULL);
+CHN_DOLLAR : Dollar -> type(DOLLAR);
+CHN_LPAREN : LParen -> type(LPAREN);
+CHN_RPAREN : RParen -> type(RPAREN);
+CHN_ASSIGN : Equal -> type(ASSIGN);
+   
+CHN_ID
+   : Id -> type (ID)
+   ;
+
+CHN_DOT
+   : Dot -> type (DOT)
+   ;
+
+CHN_COMMA
+   : Comma -> type (COMMA)
+   ;
+
+CHN_WS
+   : Ws + -> type (WS) , channel (OFF_CHANNEL)
+   ;
+
+// -------------------------
 mode LexerCharSet;
+LEXER_CHAR_SET_BODY
+   : (~ [\]\\] | EscAny) + -> more
+   ;
 
-	LEXER_CHAR_SET_BODY
-		:	(	~[\]\\]
-			|	'\\' .
-			)+
-                                        -> more
-		;
+LEXER_CHAR_SET
+   : RBrack -> popMode
+   ;
 
-	LEXER_CHAR_SET
-		:   ']'                         -> popMode
-		;
+UNTERMINATED_CHAR_SET
+   : EOF -> popMode
+   ;
 
-	UNTERMINATED_CHAR_SET
-		:	EOF							-> popMode
-		;
+// ------------------------------------------------------------------------------
+// Grammar specific Keywords, Punctuation, etc.
+fragment Id
+   : NameStartChar NameChar*
+   ;
 
+// ------------------------------------------------------------------------------
+// Documentation comment:
+   
                                    
 mode DOC_COMMENT_MODE;
 
-	DOC_COMMENT_CRLF : '\r'? '\n' -> more, channel(HIDDEN);
-	DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(HIDDEN);
-	DOC_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(HIDDEN);
-	                                
-	DOC_COMMENT : '*/' -> mode(DEFAULT_MODE), channel(HIDDEN);
-	DOC_COMMENT_STAR : '*' -> more, channel(HIDDEN);
+DOC_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
+DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
+DOC_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
+                                
+DOC_COMMENT : '*/' -> popMode, channel(OFF_CHANNEL);
+DOC_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
 
+	
+// ------------------------------------------------------------------------------
+// Block comment:
+   
                                 
 mode BLOCK_COMMENT_MODE;
 
-	BLOCK_COMMENT_CRLF : '\r'? '\n' -> more, channel(HIDDEN);
-	BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(HIDDEN);
-	BLOCK_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(HIDDEN);
-	                                
-	BLOCK_COMMENT : '*/' -> mode(DEFAULT_MODE), channel(HIDDEN);
-	BLOCK_COMMENT_STAR : '*' -> more, channel(HIDDEN);
+BLOCK_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
+BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
+BLOCK_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
+                                
+BLOCK_COMMENT : '*/' -> popMode, channel(OFF_CHANNEL);
+BLOCK_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
+
+// ------------------------------------------------------------------------------
+// Documentation comment in actions:
+   
+                                   
+mode ACTION_DOC_COMMENT_MODE;
+
+ACTION_DOC_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
+ACTION_DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
+ACTION_DOC_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
+ACTION_DOC_COMMENT : '*/' -> popMode, type(ACTION_CONTENT), channel(OFF_CHANNEL);
+ACTION_DOC_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
+
+	
+// ------------------------------------------------------------------------------
+// Block comment in actions:
+   
+                                
+mode ACTION_BLOCK_COMMENT_MODE;
+
+ACTION_BLOCK_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
+ACTION_BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
+ACTION_BLOCK_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
+ACTION_BLOCK_COMMENT : '*/' -> popMode, type(ACTION_CONTENT), channel(OFF_CHANNEL);
+ACTION_BLOCK_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
