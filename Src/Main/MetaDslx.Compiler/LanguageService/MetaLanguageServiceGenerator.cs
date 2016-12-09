@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler //1:1
 {
-    using __Hidden_MetaLanguageServiceGenerator_500982597;
-    namespace __Hidden_MetaLanguageServiceGenerator_500982597
+    using __Hidden_MetaLanguageServiceGenerator_1487572713;
+    namespace __Hidden_MetaLanguageServiceGenerator_1487572713
     {
         internal static class __Extensions
         {

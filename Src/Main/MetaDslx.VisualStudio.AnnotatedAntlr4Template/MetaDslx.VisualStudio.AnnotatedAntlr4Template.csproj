@@ -22,6 +22,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -33,7 +34,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MetaDslx.VisualStudio.AnnotatedAntlr4Template</RootNamespace>
     <AssemblyName>MetaDslx.VisualStudio.AnnotatedAntlr4Template</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
@@ -79,15 +80,11 @@
     <None Include="MetaDslx.VisualStudio.AnnotatedAntlr4Template.ico" />
     <None Include="Lexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>Lexer.g4</LastGenOutput>
     </None>
     <None Include="Parser.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>Parser.g4</LastGenOutput>
-    </None>
-    <None Include="Parser.g4">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Parser.ag4</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

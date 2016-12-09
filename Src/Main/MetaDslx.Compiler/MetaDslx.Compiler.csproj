@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MetaDslx.Compiler</RootNamespace>
     <AssemblyName>MetaDslx.Compiler</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>39dbf24a</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -172,6 +173,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AnnotatedAntlr4Lexer.ag4</DependentUpon>
     </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.literals">
+      <DependentUpon>AnnotatedAntlr4Lexer.ag4</DependentUpon>
+    </None>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4Lexer.tokens">
       <DependentUpon>AnnotatedAntlr4Lexer.ag4</DependentUpon>
     </None>
@@ -193,6 +197,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
     </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.literals">
+      <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
+    </None>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4Parser.tokens">
       <DependentUpon>AnnotatedAntlr4Parser.ag4</DependentUpon>
     </None>
@@ -201,12 +208,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AnnotatedAntlr4PropertiesLexer.ag4</DependentUpon>
     </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.literals">
+      <DependentUpon>AnnotatedAntlr4PropertiesLexer.ag4</DependentUpon>
+    </None>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.tokens">
       <DependentUpon>AnnotatedAntlr4PropertiesLexer.ag4</DependentUpon>
     </None>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.g4">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
+    </None>
+    <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.literals">
       <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
     </None>
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.tokens">
@@ -237,6 +250,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
     </None>
+    <None Include="MetaGenerator\MetaGeneratorLexer.literals">
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+    </None>
     <None Include="MetaGenerator\MetaGeneratorLexer.tokens">
       <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
     </None>
@@ -250,6 +266,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
     </None>
+    <None Include="MetaGenerator\MetaGeneratorParser.literals">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </None>
     <None Include="MetaGenerator\MetaGeneratorParser.tokens">
       <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
     </None>
@@ -261,6 +280,9 @@
     <None Include="MetaModel\MetaModelLexer.g4">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelLexer.ag4</DependentUpon>
+    </None>
+    <None Include="MetaModel\MetaModelLexer.literals">
       <DependentUpon>MetaModelLexer.ag4</DependentUpon>
     </None>
     <None Include="MetaModel\MetaModelLexer.tokens">
@@ -289,6 +311,9 @@
     <None Include="MetaModel\MetaModelParser.g4">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </None>
+    <None Include="MetaModel\MetaModelParser.literals">
       <DependentUpon>MetaModelParser.ag4</DependentUpon>
     </None>
     <None Include="MetaModel\MetaModelParser.tokens">
