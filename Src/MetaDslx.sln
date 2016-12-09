@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio.Annot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Soal", "Samples\MetaDslx.Soal\MetaDslx.Soal.csproj", "{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Compiler.Core", "Main\MetaDslx.Compiler.Core\MetaDslx.Compiler.Core.csproj", "{A0690B8B-257B-49BE-A05A-23BD4AE670FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0690B8B-257B-49BE-A05A-23BD4AE670FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0690B8B-257B-49BE-A05A-23BD4AE670FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0690B8B-257B-49BE-A05A-23BD4AE670FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0690B8B-257B-49BE-A05A-23BD4AE670FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
