@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\rstvsp2s.0cg\AnnotatedAntlr4Parser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\jkrct1q5.lt3\AnnotatedAntlr4Parser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -125,7 +125,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// <return>The visitor result.</return>
 	public virtual Result VisitTokensSpec([NotNull] AnnotatedAntlr4Parser.TokensSpecContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotatedId"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.channelsSpec"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -133,7 +133,27 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitAnnotatedId([NotNull] AnnotatedAntlr4Parser.AnnotatedIdContext context) { return VisitChildren(context); }
+	public virtual Result VisitChannelsSpec([NotNull] AnnotatedAntlr4Parser.ChannelsSpecContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.idList"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitIdList([NotNull] AnnotatedAntlr4Parser.IdListContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotatedIdentifier"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitAnnotatedIdentifier([NotNull] AnnotatedAntlr4Parser.AnnotatedIdentifierContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.action"/>.
 	/// <para>
@@ -154,6 +174,26 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitActionScopeName([NotNull] AnnotatedAntlr4Parser.ActionScopeNameContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.actionBlock"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitActionBlock([NotNull] AnnotatedAntlr4Parser.ActionBlockContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.argActionBlock"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitArgActionBlock([NotNull] AnnotatedAntlr4Parser.ArgActionBlockContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.modeSpec"/>.
 	/// <para>
@@ -335,7 +375,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// <return>The visitor result.</return>
 	public virtual Result VisitPropertiesBlock([NotNull] AnnotatedAntlr4Parser.PropertiesBlockContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.lexerRule"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.lexerRuleSpec"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -343,7 +383,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitLexerRule([NotNull] AnnotatedAntlr4Parser.LexerRuleContext context) { return VisitChildren(context); }
+	public virtual Result VisitLexerRuleSpec([NotNull] AnnotatedAntlr4Parser.LexerRuleSpecContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.lexerRuleBlock"/>.
 	/// <para>
@@ -595,7 +635,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// <return>The visitor result.</return>
 	public virtual Result VisitRuleref([NotNull] AnnotatedAntlr4Parser.RulerefContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.range"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.characterRange"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -603,7 +643,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitRange([NotNull] AnnotatedAntlr4Parser.RangeContext context) { return VisitChildren(context); }
+	public virtual Result VisitCharacterRange([NotNull] AnnotatedAntlr4Parser.CharacterRangeContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.terminal"/>.
 	/// <para>
@@ -635,7 +675,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// <return>The visitor result.</return>
 	public virtual Result VisitElementOption([NotNull] AnnotatedAntlr4Parser.ElementOptionContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.id"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.identifier"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -643,7 +683,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitId([NotNull] AnnotatedAntlr4Parser.IdContext context) { return VisitChildren(context); }
+	public virtual Result VisitIdentifier([NotNull] AnnotatedAntlr4Parser.IdentifierContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotation"/>.
 	/// <para>
@@ -725,7 +765,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// <return>The visitor result.</return>
 	public virtual Result VisitLiteral([NotNull] AnnotatedAntlr4Parser.LiteralContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.identifier"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotationIdentifier"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -733,7 +773,7 @@ public partial class AnnotatedAntlr4ParserBaseVisitor<Result> : AbstractParseTre
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIdentifier([NotNull] AnnotatedAntlr4Parser.IdentifierContext context) { return VisitChildren(context); }
+	public virtual Result VisitAnnotationIdentifier([NotNull] AnnotatedAntlr4Parser.AnnotationIdentifierContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolLiteral"/>.
 	/// <para>

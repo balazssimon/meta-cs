@@ -69,11 +69,11 @@ namespace MetaDslx.Core
             object value = lazy();
             if (value is MutableSymbolBase)
             {
-                return ((MutableSymbolBase)value).Id;
+                return ((MutableSymbolBase)value).MId;
             }
             else if (value is ImmutableSymbolBase)
             {
-                return ((ImmutableSymbolBase)value).Id;
+                return ((ImmutableSymbolBase)value).MId;
             }
             return value;
         }

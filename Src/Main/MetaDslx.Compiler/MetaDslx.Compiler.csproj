@@ -100,6 +100,7 @@
     <Compile Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParserVisitor.cs">
       <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
     </Compile>
+    <Compile Include="AnnotatedAntlr4\LexerAdaptor.cs" />
     <Compile Include="LanguageService\MetaLanguageServiceGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -225,6 +226,7 @@
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesParser.tokens">
       <DependentUpon>AnnotatedAntlr4PropertiesParser.ag4</DependentUpon>
     </None>
+    <None Include="AnnotatedAntlr4\LexBasic.g4" />
     <None Include="MetaDslxKey.snk" />
     <None Include="AnnotatedAntlr4\AnnotatedAntlr4PropertiesLexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
@@ -319,7 +321,7 @@
     <None Include="MetaModel\MetaModelParser.tokens">
       <DependentUpon>MetaModelParser.ag4</DependentUpon>
     </None>
-    <None Include="Resources\antlr-4.5.1-complete.jar" />
+    <None Include="Resources\antlr-4.5.3-complete.jar" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -160,10 +160,22 @@ namespace MetaDslx.Compiler
             return base.VisitTokensSpec(context);
         }
         
-        public override object VisitAnnotatedId(AnnotatedAntlr4Parser.AnnotatedIdContext context)
+        public override object VisitChannelsSpec(AnnotatedAntlr4Parser.ChannelsSpecContext context)
         {
             this.HandleSymbolType(context);
-            return base.VisitAnnotatedId(context);
+            return base.VisitChannelsSpec(context);
+        }
+        
+        public override object VisitIdList(AnnotatedAntlr4Parser.IdListContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitIdList(context);
+        }
+        
+        public override object VisitAnnotatedIdentifier(AnnotatedAntlr4Parser.AnnotatedIdentifierContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitAnnotatedIdentifier(context);
         }
         
         public override object VisitAction(AnnotatedAntlr4Parser.ActionContext context)
@@ -176,6 +188,18 @@ namespace MetaDslx.Compiler
         {
             this.HandleSymbolType(context);
             return base.VisitActionScopeName(context);
+        }
+        
+        public override object VisitActionBlock(AnnotatedAntlr4Parser.ActionBlockContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitActionBlock(context);
+        }
+        
+        public override object VisitArgActionBlock(AnnotatedAntlr4Parser.ArgActionBlockContext context)
+        {
+            this.HandleSymbolType(context);
+            return base.VisitArgActionBlock(context);
         }
         
         public override object VisitModeSpec(AnnotatedAntlr4Parser.ModeSpecContext context)
@@ -286,10 +310,10 @@ namespace MetaDslx.Compiler
             return base.VisitPropertiesBlock(context);
         }
         
-        public override object VisitLexerRule(AnnotatedAntlr4Parser.LexerRuleContext context)
+        public override object VisitLexerRuleSpec(AnnotatedAntlr4Parser.LexerRuleSpecContext context)
         {
             this.HandleSymbolType(context);
-            return base.VisitLexerRule(context);
+            return base.VisitLexerRuleSpec(context);
         }
         
         public override object VisitLexerRuleBlock(AnnotatedAntlr4Parser.LexerRuleBlockContext context)
@@ -442,10 +466,10 @@ namespace MetaDslx.Compiler
             return base.VisitRuleref(context);
         }
         
-        public override object VisitRange(AnnotatedAntlr4Parser.RangeContext context)
+        public override object VisitCharacterRange(AnnotatedAntlr4Parser.CharacterRangeContext context)
         {
             this.HandleSymbolType(context);
-            return base.VisitRange(context);
+            return base.VisitCharacterRange(context);
         }
         
         public override object VisitTerminal(AnnotatedAntlr4Parser.TerminalContext context)
@@ -466,10 +490,10 @@ namespace MetaDslx.Compiler
             return base.VisitElementOption(context);
         }
         
-        public override object VisitId(AnnotatedAntlr4Parser.IdContext context)
+        public override object VisitIdentifier(AnnotatedAntlr4Parser.IdentifierContext context)
         {
             this.HandleSymbolType(context);
-            return base.VisitId(context);
+            return base.VisitIdentifier(context);
         }
         
         public override object VisitAnnotation(AnnotatedAntlr4Parser.AnnotationContext context)
@@ -520,10 +544,10 @@ namespace MetaDslx.Compiler
             return base.VisitLiteral(context);
         }
         
-        public override object VisitIdentifier(AnnotatedAntlr4Parser.IdentifierContext context)
+        public override object VisitAnnotationIdentifier(AnnotatedAntlr4Parser.AnnotationIdentifierContext context)
         {
             this.HandleSymbolType(context);
-            return base.VisitIdentifier(context);
+            return base.VisitAnnotationIdentifier(context);
         }
         
         public override object VisitBoolLiteral(AnnotatedAntlr4Parser.BoolLiteralContext context)
@@ -591,7 +615,17 @@ namespace MetaDslx.Compiler
             return this.VisitChildren(context);
         }
         
-        public virtual object VisitAnnotatedId(AnnotatedAntlr4Parser.AnnotatedIdContext context)
+        public virtual object VisitChannelsSpec(AnnotatedAntlr4Parser.ChannelsSpecContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitIdList(AnnotatedAntlr4Parser.IdListContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitAnnotatedIdentifier(AnnotatedAntlr4Parser.AnnotatedIdentifierContext context)
         {
             return this.VisitChildren(context);
         }
@@ -602,6 +636,16 @@ namespace MetaDslx.Compiler
         }
         
         public virtual object VisitActionScopeName(AnnotatedAntlr4Parser.ActionScopeNameContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitActionBlock(AnnotatedAntlr4Parser.ActionBlockContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitArgActionBlock(AnnotatedAntlr4Parser.ArgActionBlockContext context)
         {
             return this.VisitChildren(context);
         }
@@ -696,7 +740,7 @@ namespace MetaDslx.Compiler
             return this.VisitChildren(context);
         }
         
-        public virtual object VisitLexerRule(AnnotatedAntlr4Parser.LexerRuleContext context)
+        public virtual object VisitLexerRuleSpec(AnnotatedAntlr4Parser.LexerRuleSpecContext context)
         {
             return this.VisitChildren(context);
         }
@@ -826,7 +870,7 @@ namespace MetaDslx.Compiler
             return this.VisitChildren(context);
         }
         
-        public virtual object VisitRange(AnnotatedAntlr4Parser.RangeContext context)
+        public virtual object VisitCharacterRange(AnnotatedAntlr4Parser.CharacterRangeContext context)
         {
             return this.VisitChildren(context);
         }
@@ -846,7 +890,7 @@ namespace MetaDslx.Compiler
             return this.VisitChildren(context);
         }
         
-        public virtual object VisitId(AnnotatedAntlr4Parser.IdContext context)
+        public virtual object VisitIdentifier(AnnotatedAntlr4Parser.IdentifierContext context)
         {
             return this.VisitChildren(context);
         }
@@ -891,7 +935,7 @@ namespace MetaDslx.Compiler
             return this.VisitChildren(context);
         }
         
-        public virtual object VisitIdentifier(AnnotatedAntlr4Parser.IdentifierContext context)
+        public virtual object VisitAnnotationIdentifier(AnnotatedAntlr4Parser.AnnotationIdentifierContext context)
         {
             return this.VisitChildren(context);
         }

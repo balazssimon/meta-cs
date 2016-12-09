@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\rstvsp2s.0cg\AnnotatedAntlr4Parser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\jkrct1q5.lt3\AnnotatedAntlr4Parser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -87,11 +87,23 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitTokensSpec([NotNull] AnnotatedAntlr4Parser.TokensSpecContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotatedId"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.channelsSpec"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAnnotatedId([NotNull] AnnotatedAntlr4Parser.AnnotatedIdContext context);
+	Result VisitChannelsSpec([NotNull] AnnotatedAntlr4Parser.ChannelsSpecContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.idList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdList([NotNull] AnnotatedAntlr4Parser.IdListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotatedIdentifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotatedIdentifier([NotNull] AnnotatedAntlr4Parser.AnnotatedIdentifierContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.action"/>.
 	/// </summary>
@@ -104,6 +116,18 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitActionScopeName([NotNull] AnnotatedAntlr4Parser.ActionScopeNameContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.actionBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitActionBlock([NotNull] AnnotatedAntlr4Parser.ActionBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.argActionBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArgActionBlock([NotNull] AnnotatedAntlr4Parser.ArgActionBlockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.modeSpec"/>.
 	/// </summary>
@@ -213,11 +237,11 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitPropertiesBlock([NotNull] AnnotatedAntlr4Parser.PropertiesBlockContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.lexerRule"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.lexerRuleSpec"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLexerRule([NotNull] AnnotatedAntlr4Parser.LexerRuleContext context);
+	Result VisitLexerRuleSpec([NotNull] AnnotatedAntlr4Parser.LexerRuleSpecContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.lexerRuleBlock"/>.
 	/// </summary>
@@ -369,11 +393,11 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitRuleref([NotNull] AnnotatedAntlr4Parser.RulerefContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.range"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.characterRange"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitRange([NotNull] AnnotatedAntlr4Parser.RangeContext context);
+	Result VisitCharacterRange([NotNull] AnnotatedAntlr4Parser.CharacterRangeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.terminal"/>.
 	/// </summary>
@@ -393,11 +417,11 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitElementOption([NotNull] AnnotatedAntlr4Parser.ElementOptionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.id"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.identifier"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitId([NotNull] AnnotatedAntlr4Parser.IdContext context);
+	Result VisitIdentifier([NotNull] AnnotatedAntlr4Parser.IdentifierContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotation"/>.
 	/// </summary>
@@ -447,11 +471,11 @@ public interface IAnnotatedAntlr4ParserVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitLiteral([NotNull] AnnotatedAntlr4Parser.LiteralContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.identifier"/>.
+	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.annotationIdentifier"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIdentifier([NotNull] AnnotatedAntlr4Parser.IdentifierContext context);
+	Result VisitAnnotationIdentifier([NotNull] AnnotatedAntlr4Parser.AnnotationIdentifierContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="AnnotatedAntlr4Parser.boolLiteral"/>.
 	/// </summary>

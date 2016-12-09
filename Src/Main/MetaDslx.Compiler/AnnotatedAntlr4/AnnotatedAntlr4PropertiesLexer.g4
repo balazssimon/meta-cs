@@ -7,7 +7,7 @@ DOC_COMMENT_START
 
 COMMENT_START : '/*' -> more, mode(BLOCK_COMMENT_MODE), channel(HIDDEN)
 	;
-
+	
 LINE_COMMENT
 	:	'//' ~[\r\n]*  -> channel(HIDDEN)
 	;

@@ -12828,7 +12828,7 @@ namespace MetaDslx.Soal.Internal
 		internal SoalBuilderInstance()
 		{
 			this.ModelGroup = new global::MetaDslx.Core.MutableModelGroup();
-			this.ModelGroup.AddReference(global::MetaDslx.Core.MetaInstance.Model.ToMutable(true));
+			this.ModelGroup.AddReference(global::MetaDslx.Core.MetaInstance.Model.ToMutable(Core.MutableCreationMode.ForceCreateNew));
 			this.Model = this.ModelGroup.CreateModel();
 		}
 	
