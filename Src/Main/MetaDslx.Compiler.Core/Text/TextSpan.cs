@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using MetaDslx.Compiler.Core.Utilities;
+using MetaDslx.Compiler.Utilities;
 using System;
 
-namespace MetaDslx.Compiler.Core.Text
+namespace MetaDslx.Compiler.Text
 {
     /// <summary>
     /// Immutable abstract representation of a span of text.  For example, in an error diagnostic that reports a
@@ -11,6 +11,8 @@ namespace MetaDslx.Compiler.Core.Text
     /// </summary>
     public class TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     {
+        public static readonly TextSpan Default = new TextSpan(0, 0);
+
         /// <summary>
         /// Creates a TextSpan instance beginning with the position Start and having the Length
         /// specified with <paramref name="length" />.

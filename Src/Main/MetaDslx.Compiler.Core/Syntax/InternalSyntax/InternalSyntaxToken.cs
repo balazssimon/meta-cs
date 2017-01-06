@@ -1,12 +1,13 @@
-﻿using MetaDslx.Compiler.Core.Utilities;
+﻿using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler.Core.Diagnostics;
+using MetaDslx.Compiler.Diagnostics;
+using System.Diagnostics;
 
-namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
+namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
     public abstract class InternalSyntaxToken : GreenNode
     {
@@ -31,10 +32,23 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
             get { return this.Language.SyntaxFacts.GetText(this.RawKind); }
         }
 
+        public override int SlotCount
+        {
+            get { return 0; }
+        }
+
         public override GreenNode GetSlot(int index)
         {
             throw ExceptionUtilities.Unreachable;
         }
+
+        public override RedNode CreateRed(RedNode parent, int position, int index)
+        {
+            Debug.Assert(parent is SyntaxNode, "parent must be a SyntaxNode");
+            return this.CreateRed(parent as SyntaxNode, position, index);
+        }
+
+        public abstract SyntaxToken CreateRed(SyntaxNode parent, int position, int index);
 
         /// <summary>
         /// Returns the string representation of this token, not including its leading and trailing trivia.
@@ -146,14 +160,15 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
         public virtual GreenNode GetLeadingTrivia() { return null; }
         public virtual GreenNode GetTrailingTrivia() { return null; }
 
-        public virtual GreenNode WithLeadingTrivia(GreenNode trivia)
+        public virtual InternalSyntaxToken WithLeadingTrivia(GreenNode trivia)
         {
             return this;
         }
 
-        public virtual GreenNode WithTrailingTrivia(GreenNode trivia)
+        public virtual InternalSyntaxToken WithTrailingTrivia(GreenNode trivia)
         {
             return this;
         }
     }
+
 }

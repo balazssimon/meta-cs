@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D31D2069-6F71-4208-AA67-60AE8104CDC6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MetaDslx.Compiler.Antlr4Roslyn</RootNamespace>
+    <AssemblyName>MetaDslx.Compiler.Antlr4</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr4.Runtime" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Collections.Immutable" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Compiler\Antlr4RoslynCompiler.cs" />
+    <Compile Include="Compiler\Antlr4RoslynErrors.cs" />
+    <Compile Include="Compiler\Antlr4RoslynLexer.cs">
+      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Compiler\Antlr4RoslynMessageProvider.cs" />
+    <Compile Include="Compiler\Antlr4RoslynParser.cs">
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Compiler\Antlr4RoslynParserBaseListener.cs">
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Compiler\Antlr4RoslynParserBaseVisitor.cs">
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Compiler\Antlr4RoslynParserListener.cs">
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Compiler\Antlr4RoslynParserVisitor.cs">
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Compiler\LexerAdaptor.cs" />
+    <Compile Include="Generator\CompilerGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompilerGenerator.mgen</DependentUpon>
+    </Compile>
+    <Compile Include="Generator\CompilerGeneratorUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Compiler\Antlr4RoslynLexer.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>Antlr4RoslynLexer.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Compiler.Antlr4Roslyn</CustomToolNamespace>
+    </None>
+    <None Include="Compiler\Antlr4RoslynLexer.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
+    </None>
+    <None Include="Compiler\Antlr4RoslynLexer.literals">
+      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
+    </None>
+    <None Include="Compiler\Antlr4RoslynLexer.tokens">
+      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
+    </None>
+    <None Include="Compiler\Antlr4RoslynParser.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>Antlr4RoslynParser.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Compiler.Antlr4Roslyn</CustomToolNamespace>
+    </None>
+    <None Include="Compiler\Antlr4RoslynParser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
+    </None>
+    <None Include="Compiler\Antlr4RoslynParser.literals">
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
+    </None>
+    <None Include="Compiler\Antlr4RoslynParser.tokens">
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
+    </None>
+    <None Include="Compiler\LexBasic.g4" />
+    <None Include="Generator\CompilerGenerator.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>CompilerGenerator.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MetaDslx.Compiler.Core\MetaDslx.Compiler.Core.csproj">
+      <Project>{a0690b8b-257b-49be-a05a-23bd4ae670fb}</Project>
+      <Name>MetaDslx.Compiler.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">
+      <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
+      <Name>MetaDslx.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

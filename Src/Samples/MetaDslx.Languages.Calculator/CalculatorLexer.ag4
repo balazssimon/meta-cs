@@ -1,0 +1,31 @@
+﻿lexer grammar CalculatorLexer;
+
+TSemicolon : ';';
+TOpenParen : '(';
+TCloseParen : ')';
+TComma : ',';
+TAssign : '=';
+TAdd : '+';
+TSub : '-';
+TMul : '*';
+TDiv : '/';
+
+$Keywords(first=KPrint, last=KPrint)
+KPrint : 'print';
+
+STRING : '"' (' '..'~')* '"';
+ID     : ('a'..'z'|'A'..'Z'|'_')+;
+INT    : ('0'..'9')+;
+
+$Whitespace
+UTF8BOM : [\u00EF][\u00BB][\u00BF] -> channel(WHITESPACE);
+
+$Whitespace
+WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(WHITESPACE);
+
+$Whitespace(eol=true)
+ENDL   : '\r'? '\n' -> channel(WHITESPACE);
+
+$Comment
+COMMENT : '//' ~[\r\n]* -> channel(COMMENT);
+

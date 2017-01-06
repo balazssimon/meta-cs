@@ -4,12 +4,12 @@
 
 using System;
 using System.Diagnostics;
-using MetaDslx.Compiler.Core.Utilities;
+using MetaDslx.Compiler.Utilities;
 
 #if STATS
 using System.Threading;
 #endif
-namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
+namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
     /// <summary>
     /// Provides caching functionality for green nonterminals with up to 3 children.

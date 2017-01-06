@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace MetaDslx.Compiler.Core.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     // Implements simple cache of limited size that could hold 
     // a number of previously created/mapped items.

@@ -3,7 +3,7 @@
 using System.Diagnostics;
 using System.Text;
 
-namespace MetaDslx.Compiler.Core.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     /// <summary>
     /// The usage is:

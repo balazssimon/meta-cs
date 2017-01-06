@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler.Core.Diagnostics;
-using MetaDslx.Compiler.Core.Utilities;
+using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Utilities;
 using System.Diagnostics;
 
-namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
+namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
     public abstract class InternalSyntaxTrivia : GreenNode
     {
@@ -39,10 +39,23 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
             return this.Text;
         }
 
+        public override int SlotCount
+        {
+            get { return 0; }
+        }
+
         public override GreenNode GetSlot(int index)
         {
             throw ExceptionUtilities.Unreachable;
         }
+
+        public override RedNode CreateRed(RedNode parent, int position, int index)
+        {
+            Debug.Assert(parent is SyntaxToken, "parent must be a SyntaxToken");
+            return this.CreateRed(parent as SyntaxToken, position, index);
+        }
+
+        public abstract SyntaxTrivia CreateRed(SyntaxToken parent, int position, int index);
 
         public override int Width
         {
@@ -76,11 +89,6 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
             }
 
             return true;
-        }
-
-        public override RedNode CreateRed(SyntaxNode parent, int position)
-        {
-            throw ExceptionUtilities.Unreachable;
         }
     }
 }

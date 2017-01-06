@@ -1,5 +1,5 @@
-﻿using MetaDslx.Compiler.Core.Diagnostics;
-using MetaDslx.Compiler.Core.Utilities;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
+namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public abstract class GreenNode
@@ -21,7 +21,6 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
 
         private readonly int _kind;
         private NodeFlags flags;
-        private byte _slotCount;
         private int _fullWidth;
 
         private static readonly ConditionalWeakTable<GreenNode, DiagnosticInfo[]> s_diagnosticsTable =
@@ -62,6 +61,16 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
             _fullWidth += node._fullWidth;
         }
 
+        protected void AddFlags(NodeFlags flags)
+        {
+            this.flags |= flags;
+        }
+
+        protected void RemoveFlags(NodeFlags flags)
+        {
+            this.flags &= ~flags;
+        }
+
         public abstract Language Language { get; }
 
         public int RawKind
@@ -73,39 +82,17 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
         {
             get { return this.Language.SyntaxFacts.GetKindText(_kind); }
         }
-        public virtual bool IsStructuredTrivia { get { return false; } }
+
+        public virtual bool HasStructure { get { return false; } }
         public virtual bool IsDirective { get { return false; } }
         public virtual bool IsToken { get { return false; } }
         public virtual bool IsNode { get { return false; } }
         public virtual bool IsTrivia { get { return false; } }
         public virtual bool IsList { get { return false; } }
 
-        public int SlotCount
-        {
-            get
-            {
-                int count = _slotCount;
-                if (count == byte.MaxValue)
-                {
-                    count = GetSlotCount();
-                }
-
-                return count;
-            }
-
-            protected set
-            {
-                _slotCount = (byte)value;
-            }
-        }
+        public abstract int SlotCount { get; }
 
         public abstract GreenNode GetSlot(int index);
-
-        // for slot counts >= byte.MaxValue
-        public virtual int GetSlotCount()
-        {
-            return _slotCount;
-        }
 
         public virtual int GetSlotOffset(int index)
         {
@@ -164,7 +151,7 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
         {
             None = 0,
             ContainsDiagnostics = 1 << 0,
-            ContainsStructuredTrivia = 1 << 1,
+            ContainsStructuredElement = 1 << 1,
             ContainsDirectives = 1 << 2,
             ContainsSkippedText = 1 << 3,
             ContainsAnnotations = 1 << 4,
@@ -204,11 +191,11 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
             }
         }
 
-        public bool ContainsStructuredTrivia
+        public bool ContainsStructuredElement
         {
             get
             {
-                return (this.flags & NodeFlags.ContainsStructuredTrivia) != 0;
+                return (this.flags & NodeFlags.ContainsStructuredElement) != 0;
             }
         }
 
@@ -235,6 +222,18 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
                 return (this.flags & NodeFlags.ContainsAnnotations) != 0;
             }
         }
+
+        public RedNode CreateRed()
+        {
+            return this.CreateRed(null, 0, 0);
+        }
+
+        public RedNode CreateRed(RedNode parent, int position)
+        {
+            return this.CreateRed(parent, position, 0);
+        }
+
+        public abstract RedNode CreateRed(RedNode parent, int position, int index);
 
         public int FullWidth
         {
@@ -415,7 +414,7 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
             return s_noAnnotations;
         }
 
-        public abstract GreenNode SetAnnotations(SyntaxAnnotation[] annotations);
+        public abstract GreenNode WithAnnotations(SyntaxAnnotation[] annotations);
 
         public DiagnosticInfo[] GetDiagnostics()
         {
@@ -431,7 +430,106 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
             return s_noDiagnostics;
         }
 
-        public abstract GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics);
+        public abstract GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics);
+
+
+        // Use conditional weak table so we always return same identity for structured token
+        private static readonly ConditionalWeakTable<SyntaxNode, Dictionary<SyntaxToken, SyntaxNode>> s_structuredTokensTable
+            = new ConditionalWeakTable<SyntaxNode, Dictionary<SyntaxToken, SyntaxNode>>();
+
+        /// <summary>
+        /// Gets the syntax node represented the structure of this token, if any. The HasStructure property can be used to 
+        /// determine if this token has structure.
+        /// </summary>
+        /// <returns>
+        /// A InternalSyntaxBase derived from StructuredTokenSyntax, with the structured view of this token node. 
+        /// If this token node does not have structure, returns null.
+        /// </returns>
+        /// <remarks>
+        /// Some types of token have structure that can be accessed as additional syntax nodes.
+        /// These forms of token include: 
+        ///   directives, where the structure describes the structure of the directive.
+        ///   documentation comments, where the structure describes the XML structure of the comment.
+        ///   skipped tokens, where the structure describes the tokens that were skipped by the parser.
+        /// </remarks>
+
+        public SyntaxNode GetStructure(SyntaxToken token)
+        {
+            if (token.HasStructure)
+            {
+                var parent = token.Parent;
+                if (parent != null)
+                {
+                    SyntaxNode structure;
+                    var structsInParent = s_structuredTokensTable.GetOrCreateValue(parent);
+                    lock (structsInParent)
+                    {
+                        if (!structsInParent.TryGetValue(token, out structure))
+                        {
+                            structure = this.Language.SyntaxFactory.StructuredToken(token);
+                            structsInParent.Add(token, structure);
+                        }
+                    }
+
+                    return structure;
+                }
+                else
+                {
+                    return this.Language.SyntaxFactory.StructuredToken(token);
+                }
+            }
+
+            return null;
+        }
+
+        // Use conditional weak table so we always return same identity for structured trivia
+        private static readonly ConditionalWeakTable<SyntaxNode, Dictionary<SyntaxTrivia, SyntaxNode>> s_structuredTriviaTable
+            = new ConditionalWeakTable<SyntaxNode, Dictionary<SyntaxTrivia, SyntaxNode>>();
+
+        /// <summary>
+        /// Gets the syntax node represented the structure of this trivia, if any. The HasStructure property can be used to 
+        /// determine if this trivia has structure.
+        /// </summary>
+        /// <returns>
+        /// A InternalSyntaxBase derived from StructuredTriviaSyntax, with the structured view of this trivia node. 
+        /// If this trivia node does not have structure, returns null.
+        /// </returns>
+        /// <remarks>
+        /// Some types of trivia have structure that can be accessed as additional syntax nodes.
+        /// These forms of trivia include: 
+        ///   directives, where the structure describes the structure of the directive.
+        ///   documentation comments, where the structure describes the XML structure of the comment.
+        ///   skipped tokens, where the structure describes the tokens that were skipped by the parser.
+        /// </remarks>
+
+        public SyntaxNode GetStructure(SyntaxTrivia trivia)
+        {
+            if (trivia.HasStructure)
+            {
+                var parent = trivia.Token.Parent;
+                if (parent != null)
+                {
+                    SyntaxNode structure;
+                    var structsInParent = s_structuredTriviaTable.GetOrCreateValue(parent);
+                    lock (structsInParent)
+                    {
+                        if (!structsInParent.TryGetValue(trivia, out structure))
+                        {
+                            structure = this.Language.SyntaxFactory.StructuredTrivia(trivia);
+                            structsInParent.Add(trivia, structure);
+                        }
+                    }
+
+                    return structure;
+                }
+                else
+                {
+                    return this.Language.SyntaxFactory.StructuredTrivia(trivia);
+                }
+            }
+
+            return null;
+        }
 
         public override string ToString()
         {
@@ -496,7 +594,7 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
                     }
                 }
                 node = firstChild;
-            } while (node?._slotCount > 0);
+            } while (node?.SlotCount > 0);
 
             return node;
         }
@@ -518,7 +616,7 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
                     }
                 }
                 node = lastChild;
-            } while (node?._slotCount > 0);
+            } while (node?.SlotCount > 0);
 
             return node;
         }
@@ -541,7 +639,7 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
                 }
                 node = nonmissingChild;
             }
-            while (node?._slotCount > 0);
+            while (node?.SlotCount > 0);
 
             return node;
         }
@@ -607,13 +705,6 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
 
             return true;
         }
-
-        public RedNode CreateRed()
-        {
-            return CreateRed(null, 0);
-        }
-
-        public abstract RedNode CreateRed(SyntaxNode parent, int position);
 
         internal const int MaxCachedChildNum = 3;
 

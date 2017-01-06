@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Core.Syntax
+namespace MetaDslx.Compiler.Syntax
 {
     /// <summary>
     /// A SyntaxAnnotation is used to annotate syntax elements with additional information. 

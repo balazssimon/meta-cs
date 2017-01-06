@@ -1,21 +1,24 @@
-﻿using MetaDslx.Compiler.Core.Syntax;
-using MetaDslx.Compiler.Core.Syntax.InternalSyntax;
+﻿using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Syntax.InternalSyntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Core
+namespace MetaDslx.Compiler
 {
     public abstract class Language
     {
         internal static readonly Language Default = new DefaultLanguage();
 
         public abstract string Name { get; }
-        public abstract SyntaxFacts SyntaxFacts { get; }
-        public abstract SyntaxFactory SyntaxFactory { get; }
-        public abstract InternalSyntaxFactory InternalSyntaxFactory { get; }
+        public SyntaxFacts SyntaxFacts { get { return this.SyntaxFactsCore; } }
+        protected abstract SyntaxFacts SyntaxFactsCore { get; }
+        public SyntaxFactory SyntaxFactory { get { return this.SyntaxFactoryCore; } }
+        protected abstract SyntaxFactory SyntaxFactoryCore { get; }
+        internal protected InternalSyntaxFactory InternalSyntaxFactory { get { return this.InternalSyntaxFactoryCore; } }
+        protected abstract InternalSyntaxFactory InternalSyntaxFactoryCore { get; }
     }
 
     internal class DefaultLanguage : Language
@@ -28,7 +31,7 @@ namespace MetaDslx.Compiler.Core
             }
         }
 
-        public override SyntaxFacts SyntaxFacts
+        protected override SyntaxFacts SyntaxFactsCore
         {
             get
             {
@@ -36,7 +39,7 @@ namespace MetaDslx.Compiler.Core
             }
         }
 
-        public override SyntaxFactory SyntaxFactory
+        protected override SyntaxFactory SyntaxFactoryCore
         {
             get
             {
@@ -44,7 +47,7 @@ namespace MetaDslx.Compiler.Core
             }
         }
 
-        public override InternalSyntaxFactory InternalSyntaxFactory
+        protected override InternalSyntaxFactory InternalSyntaxFactoryCore
         {
             get
             {

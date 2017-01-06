@@ -18,7 +18,7 @@ using System.Threading;
 using System.Runtime.CompilerServices;
 
 #endif
-namespace MetaDslx.Compiler.Core.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     /// <summary>
     /// Generic implementation of object pooling pattern with predefined pool size limit. The main

@@ -7,7 +7,7 @@
     <ProjectGuid>{A0690B8B-257B-49BE-A05A-23BD4AE670FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MetaDslx.Compiler.Core</RootNamespace>
+    <RootNamespace>MetaDslx.Compiler</RootNamespace>
     <AssemblyName>MetaDslx.Compiler.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,35 +41,56 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compilation\Compilation.cs" />
     <Compile Include="Compilation\CompilationOptions.cs" />
     <Compile Include="Compilation\Language.cs" />
+    <Compile Include="Diagnostics\CommonMessageProvider.cs" />
+    <Compile Include="Diagnostics\Diagnostic.cs" />
+    <Compile Include="Diagnostics\DiagnosticBag.cs" />
     <Compile Include="Diagnostics\DiagnosticInfo.cs" />
+    <Compile Include="Diagnostics\DiagnosticSeverity.cs" />
+    <Compile Include="Diagnostics\ExternalFileLocation.cs" />
+    <Compile Include="Diagnostics\FileLinePositionSpan.cs" />
+    <Compile Include="Diagnostics\IMessageSerializable.cs" />
+    <Compile Include="Diagnostics\Location.cs" />
+    <Compile Include="Diagnostics\LocationKind.cs" />
+    <Compile Include="Diagnostics\NoLocation.cs" />
+    <Compile Include="Diagnostics\ReportDiagnostic.cs" />
+    <Compile Include="Diagnostics\SourceLocation.cs" />
+    <Compile Include="MetaModel\MetaCompilerAnnotation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Syntax\InternalSyntax\GreenNode.cs" />
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxFactory.cs" />
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxList.cs" />
+    <Compile Include="Syntax\InternalSyntax\InternalSyntaxListBuilder.cs" />
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxNode.cs" />
     <Compile Include="Syntax\InternalSyntax\SyntaxNodeCache.cs" />
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxToken.cs" />
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxTrivia.cs" />
+    <Compile Include="Syntax\InternalSyntax\SyntaxParser.cs" />
     <Compile Include="Syntax\RedNode.cs" />
     <Compile Include="Compilation\SyntaxTree.cs" />
-    <Compile Include="Syntax\SeparatedSyntaxList.cs" />
     <Compile Include="Syntax\SyntaxAnnotation.cs" />
     <Compile Include="Syntax\SyntaxFactory.cs" />
     <Compile Include="Syntax\SyntaxFacts.cs" />
     <Compile Include="Syntax\SyntaxKind.cs" />
     <Compile Include="Syntax\SyntaxList.cs" />
+    <Compile Include="Syntax\SyntaxListBuilder.cs" />
     <Compile Include="Syntax\SyntaxNode.cs" />
+    <Compile Include="Syntax\SyntaxRewriter.cs" />
     <Compile Include="Syntax\SyntaxToken.cs" />
     <Compile Include="Syntax\SyntaxTrivia.cs" />
+    <Compile Include="Syntax\SyntaxVisitor.cs" />
+    <Compile Include="Text\LinePosition.cs" />
+    <Compile Include="Text\LinePositionSpan.cs" />
     <Compile Include="Text\TextSpan.cs" />
     <Compile Include="Utilities\CachingFactory.cs" />
     <Compile Include="Utilities\CollectionUtilities.cs" />
     <Compile Include="Utilities\ConcurrentCache.cs" />
+    <Compile Include="Utilities\EmptyCollections.cs" />
     <Compile Include="Utilities\ExceptionUtilities.cs" />
     <Compile Include="Utilities\Hash.cs" />
     <Compile Include="Utilities\ObjectPool`1.cs" />
@@ -78,6 +100,12 @@
     <Folder Include="Binder\" />
     <Folder Include="Declarations\" />
     <Folder Include="Symbols\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">
+      <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
+      <Name>MetaDslx.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

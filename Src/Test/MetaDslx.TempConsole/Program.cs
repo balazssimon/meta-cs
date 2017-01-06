@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler;
+using MetaDslx.Compiler.Antlr4Roslyn;
 using MetaDslx.Core;
 using MetaDslx.Soal;
 using System;
@@ -61,7 +62,7 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Samples\MetaDslx.Soal\Soal.cs"
                     );
                 //*/
-                //*
+                /*
                 string source = "";
                 string fileName = @"HelloWorld.soal";
                 using (StreamReader reader = new StreamReader(@"..\..\" + fileName))
@@ -249,6 +250,10 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel1.cs"
                     );
                 //*/
+                //*
+                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
+                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
+                //*/
             }
             catch (System.Exception ex)
             {
@@ -286,6 +291,78 @@ namespace MetaDslx.TempConsole
                     Console.WriteLine(msg);
                 }
             }
+        }
+
+        private static void Antlr4ToRoslyn(string directory, string fileName, string defaultNamespace)
+        {
+            string fullPath = Path.Combine(directory, fileName);
+            string source;
+            using (StreamReader reader = new StreamReader(Path.Combine(directory, fileName)))
+            {
+                source = reader.ReadToEnd();
+            }
+            Antlr4RoslynCompiler a4c = new Antlr4RoslynCompiler(source, defaultNamespace, directory, fileName);
+            a4c.Compile();
+            foreach (var msg in a4c.Diagnostics)
+            {
+                Console.WriteLine(msg);
+            }
+            //*
+            Directory.CreateDirectory(Path.Combine(directory, @"Syntax\InternalSyntax"));
+            Directory.CreateDirectory(Path.Combine(directory, @"Errors"));
+            Directory.CreateDirectory(Path.Combine(directory, @"Parser"));
+            Directory.CreateDirectory(Path.Combine(directory, @"Compilation"));
+            string outputFileName = Path.Combine(directory, @"Syntax\InternalSyntax\" + a4c.LanguageName + "InternalSyntax.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedInternalSyntax);
+            }
+            outputFileName = Path.Combine(directory, @"Syntax\" + a4c.LanguageName + "Syntax.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedSyntax);
+            }
+            outputFileName = Path.Combine(directory, @"Syntax\" + a4c.LanguageName + "SyntaxTree.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedSyntaxTree);
+            }
+            outputFileName = Path.Combine(directory, @"Errors\" + a4c.LanguageName + @"ErrorCode.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedErrorCode);
+            }
+            outputFileName = Path.Combine(directory, @"Parser\" + a4c.LanguageName + @"SyntaxParser.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedSyntaxParser);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"Language.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedLanguage);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"LanguageVersion.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedLanguageVersion);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"ParseOptions.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedParseOptions);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"Feature.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedFeature);
+            }
+            //*/
+            /*outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"Compilation.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedCompilation);
+            }*/
         }
 
         private static void PrintScope(string indent, MutableSymbol scope)

@@ -1,5 +1,5 @@
-﻿using MetaDslx.Compiler.Core.Syntax.InternalSyntax;
-using MetaDslx.Compiler.Core.Text;
+﻿using MetaDslx.Compiler.Syntax.InternalSyntax;
+using MetaDslx.Compiler.Text;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Core.Syntax
+namespace MetaDslx.Compiler.Syntax
 {
     /// <summary>
     /// Represents a node in the syntax tree.
@@ -24,7 +24,6 @@ namespace MetaDslx.Compiler.Core.Syntax
 
         private readonly GreenNode _green;
         private readonly SyntaxNode _parent;
-        private SyntaxTree _syntaxTree;
         private readonly int _position;
 
         internal RedNode(GreenNode green, SyntaxNode parent, int position)
@@ -36,17 +35,6 @@ namespace MetaDslx.Compiler.Core.Syntax
             _position = position;
             _green = green;
             _parent = parent;
-        }
-
-        internal RedNode(GreenNode green, SyntaxTree syntaxTree, int position)
-        {
-            Debug.Assert(green != null, "green cannot be null");
-            Debug.Assert(syntaxTree != null, "syntaxTree cannot be null");
-            Debug.Assert(position >= 0, "position cannot be negative");
-
-            _position = position;
-            _green = green;
-            _syntaxTree = syntaxTree;
         }
 
         public GreenNode Green { get { return this._green; } }
@@ -71,9 +59,19 @@ namespace MetaDslx.Compiler.Core.Syntax
         public bool IsTrivia => this.Green.IsTrivia;
 
         /// <summary>
-        /// Determines whether this node represents a structured trivia.
+        /// Determines whether this node has a structure.
         /// </summary>
-        public bool IsStructuredTrivia => this.Green.IsStructuredTrivia;
+        public bool HasStructure => this.Green.HasStructure;
+
+        /// <summary>
+        /// Returns the child non-terminal node representing the syntax tree structure under this structured element.
+        /// </summary>
+        /// <returns>The child non-terminal node representing the syntax tree structure under this structured
+        /// element.</returns>
+        public virtual SyntaxNode GetStructure()
+        {
+            return null;
+        }
 
         /// <summary>
         /// Determines whether this trivia represents a preprocessor directive.
@@ -235,18 +233,203 @@ namespace MetaDslx.Compiler.Core.Syntax
             return this.Position + offset;
         }
 
+
+        // this is used in cases where we know that a child is a node of particular type.
+        public RedNode GetRed(ref RedNode field, int slot)
+        {
+            var result = field;
+
+            if (result == null)
+            {
+                var green = this.Green.GetSlot(slot);
+                if (green != null)
+                {
+                    result = green.CreateRed(this, this.GetChildPosition(slot));
+                    result = Interlocked.CompareExchange(ref field, result, null) ?? result;
+                }
+            }
+
+            return result;
+        }
+
+        // special case of above function where slot = 0, does not need GetChildPosition 
+        public RedNode GetRedAtZero(ref RedNode field)
+        {
+            var result = field;
+
+            if (result == null)
+            {
+                var green = this.Green.GetSlot(0);
+                if (green != null)
+                {
+                    result = green.CreateRed(this, this.Position);
+                    result = Interlocked.CompareExchange(ref field, result, null) ?? result;
+                }
+            }
+
+            return result;
+        }
+
+        public T GetRed<T>(ref T field, int slot) where T : RedNode
+        {
+            var result = field;
+
+            if (result == null)
+            {
+                var green = this.Green.GetSlot(slot);
+                if (green != null)
+                {
+                    result = (T)green.CreateRed(this, this.GetChildPosition(slot));
+                    result = Interlocked.CompareExchange(ref field, result, null) ?? result;
+                }
+            }
+
+            return result;
+        }
+
+        // special case of above function where slot = 0, does not need GetChildPosition 
+        public T GetRedAtZero<T>(ref T field) where T : RedNode
+        {
+            var result = field;
+
+            if (result == null)
+            {
+                var green = this.Green.GetSlot(0);
+                if (green != null)
+                {
+                    result = (T)green.CreateRed(this, this.Position);
+                    result = Interlocked.CompareExchange(ref field, result, null) ?? result;
+                }
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// This works the same as GetRed, but intended to be used in lists
+        /// The only difference is that the public parent of the node is not the list, 
+        /// but the list's parent. (element's grand parent).
+        /// </summary>
+        internal RedNode GetRedElement(ref RedNode element, int slot)
+        {
+            var result = element;
+
+            if (result == null)
+            {
+                var green = this.Green.GetSlot(slot) as InternalSyntaxNode;
+                if (green == null) return result;
+                result = green.CreateRed(this.Parent, this.GetChildPosition(slot)); // <- passing list's parent
+                if (Interlocked.CompareExchange(ref element, result, null) != null)
+                {
+                    result = element;
+                }
+            }
+
+            return result;
+        }
+
+        internal RedNode GetWeakRedElement(ref WeakReference<RedNode> slot, int index)
+        {
+            RedNode value = null;
+            if (slot?.TryGetTarget(out value) == true)
+            {
+                return value;
+            }
+
+            return CreateWeakItem(ref slot, index);
+        }
+
+        // handle a miss
+        private RedNode CreateWeakItem(ref WeakReference<RedNode> slot, int index)
+        {
+            var greenChild = this.Green.GetSlot(index) as InternalSyntaxNode;
+            if (greenChild == null) return null;
+            var newNode = greenChild.CreateRed(this.Parent, GetChildPosition(index));
+            var newWeakReference = new WeakReference<RedNode>(newNode);
+
+            while (true)
+            {
+                RedNode previousNode = null;
+                WeakReference<RedNode> previousWeakReference = slot;
+                if (previousWeakReference?.TryGetTarget(out previousNode) == true)
+                {
+                    return previousNode;
+                }
+
+                if (Interlocked.CompareExchange(ref slot, newWeakReference, previousWeakReference) == previousWeakReference)
+                {
+                    return newNode;
+                }
+            }
+        }
+
         /// <summary>
         /// Returns SyntaxTree that owns the node or null if node does not belong to a
         /// SyntaxTree
         /// </summary>
         public virtual SyntaxTree SyntaxTree
         {
-            get
-            {
-                if (this._syntaxTree != null) return this._syntaxTree;
-                Interlocked.CompareExchange(ref this._syntaxTree, this.Parent?.SyntaxTree, null);
-                return this._syntaxTree;
-            }
+            get { return this._parent?.SyntaxTree; }
+        }
+
+
+        /// <summary>
+        /// Determines whether this node or any sub node, token or trivia has annotations.
+        /// </summary>
+        public bool ContainsAnnotations => this.Green.ContainsAnnotations;
+        
+        /// <summary>
+        /// Determines whether this node has any annotations with the specific annotation kind.
+        /// </summary>
+        public bool HasAnnotations(string annotationKind)
+        {
+            return this.Green.HasAnnotations(annotationKind);
+        }
+
+        /// <summary>
+        /// Determines whether this node has any annotations with any of the specific annotation kinds.
+        /// </summary>
+        public bool HasAnnotations(IEnumerable<string> annotationKinds)
+        {
+            return this.Green.HasAnnotations(annotationKinds);
+        }
+
+        /// <summary>
+        /// Determines whether this node has the specific annotation.
+        /// </summary>
+        public bool HasAnnotation(SyntaxAnnotation annotation)
+        {
+            return this.Green.HasAnnotation(annotation);
+        }
+
+        /// <summary>
+        /// Gets all the annotations with the specified annotation kind. 
+        /// </summary>
+        public IEnumerable<SyntaxAnnotation> GetAnnotations(string annotationKind)
+        {
+            return this.Green.GetAnnotations(annotationKind);
+        }
+
+        /// <summary>
+        /// Gets all the annotations with the specified annotation kinds. 
+        /// </summary>
+        public IEnumerable<SyntaxAnnotation> GetAnnotations(IEnumerable<string> annotationKinds)
+        {
+            return this.Green.GetAnnotations(annotationKinds);
+        }
+
+        /// <summary>
+        /// Get all the annotations of the specified annotation kinds.
+        /// </summary>
+        public IEnumerable<SyntaxAnnotation> GetAnnotations(params string[] annotationKinds)
+        {
+            return this.Green.GetAnnotations(annotationKinds);
+        }
+
+        public SyntaxAnnotation[] GetAnnotations()
+        {
+            return this.Green.GetAnnotations();
         }
 
         /// <summary>
@@ -278,6 +461,14 @@ namespace MetaDslx.Compiler.Core.Syntax
         }
 
         /// <summary>
+        /// Writes the full text of this node to the specified <see cref="TextWriter"/>.
+        /// </summary>
+        public virtual void WriteTo(TextWriter writer, bool leading, bool trailing)
+        {
+            this.Green.WriteTo(writer, leading, trailing);
+        }
+
+        /// <summary>
         /// Gets node at given node index. 
         /// This WILL force node creation if node has not yet been created.
         /// </summary>
@@ -288,5 +479,6 @@ namespace MetaDslx.Compiler.Core.Syntax
         /// If node was not created it would return null.
         /// </summary>
         public abstract SyntaxNode GetCachedSlot(int index);
+
     }
 }

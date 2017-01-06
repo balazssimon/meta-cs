@@ -1,28 +1,46 @@
-﻿using MetaDslx.Compiler.Core.Utilities;
+﻿using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Core.Syntax
+namespace MetaDslx.Compiler.Syntax
 {
     public abstract class SyntaxFacts
     {
         internal static readonly SyntaxFacts Default = new DefaultSyntaxFacts();
 
-        public abstract string GetKindText(int kind);
-        public abstract string GetText(int tokenKind);
+        internal protected abstract string GetKindText(int rawKind);
+        internal protected abstract string GetText(int rawKind);
+        internal protected abstract bool IsToken(int rawKind);
+        internal protected abstract bool IsFixedToken(int rawKind);
+        internal protected abstract bool IsTriviaWithEndOfLine(int rawKind);
     }
 
     internal class DefaultSyntaxFacts : SyntaxFacts
     {
-        public override string GetKindText(int kind)
+        internal protected override string GetKindText(int kind)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override string GetText(int tokenKind)
+        internal protected override string GetText(int tokenKind)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        internal protected override bool IsToken(int kind)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        internal protected override bool IsFixedToken(int kind)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        internal protected override bool IsTriviaWithEndOfLine(int kind)
         {
             throw ExceptionUtilities.Unreachable;
         }

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler.Core.Diagnostics;
+using MetaDslx.Compiler.Diagnostics;
+using System.Diagnostics;
 
-namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
+namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
     public abstract class InternalSyntaxNode : GreenNode
     {
@@ -18,5 +19,13 @@ namespace MetaDslx.Compiler.Core.Syntax.InternalSyntax
         {
             get { return true; }
         }
+
+        public override RedNode CreateRed(RedNode parent, int position, int index)
+        {
+            Debug.Assert(parent is SyntaxNode, "parent must be a SyntaxNode");
+            return this.CreateRed(parent as SyntaxNode, position);
+        }
+
+        public abstract SyntaxNode CreateRed(SyntaxNode parent, int position);
     }
 }
