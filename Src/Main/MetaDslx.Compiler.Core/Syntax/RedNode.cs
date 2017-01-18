@@ -527,6 +527,25 @@ namespace MetaDslx.Compiler.Syntax
         }
 
         /// <summary>
+        /// Gets the full text of this node as an new <see cref="SourceText"/> instance.
+        /// </summary>
+        /// <param name="encoding">
+        /// Encoding of the file that the text was read from or is going to be saved to.
+        /// <c>null</c> if the encoding is unspecified.
+        /// If the encoding is not specified the <see cref="SourceText"/> isn't debuggable.
+        /// If an encoding-less <see cref="SourceText"/> is written to a file a <see cref="Encoding.UTF8"/> shall be used as a default.
+        /// </param>
+        /// <param name="checksumAlgorithm">
+        /// Hash algorithm to use to calculate checksum of the text that's saved to PDB.
+        /// </param>
+        /// <exception cref="ArgumentException"><paramref name="checksumAlgorithm"/> is not supported.</exception>
+        public SourceText GetText(Encoding encoding = null, SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1)
+        {
+            var builder = new StringBuilder();
+            this.WriteTo(new StringWriter(builder));
+            return new StringBuilderText(builder, encoding, checksumAlgorithm);
+        }
+        /// <summary>
         /// Gets node at given node index. 
         /// This WILL force node creation if node has not yet been created.
         /// </summary>

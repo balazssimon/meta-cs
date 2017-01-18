@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Compiler;
+using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
@@ -35,6 +36,16 @@ namespace [Properties.DefaultNamespace]
         public override string Name
         {
             get { return [Properties.LanguageName]Language.LanguageName; }
+        }
+^
+        protected override MessageProvider MessageProviderCore
+        {
+            get { return [Properties.LanguageName]MessageProvider.Instance; }
+        }
+^
+        public new [Properties.LanguageName]MessageProvider MessageProvider
+        {
+            get { return ([Properties.LanguageName]MessageProvider)base.MessageProvider; }
         }
 ^
         protected override SyntaxFacts SyntaxFactsCore
@@ -662,9 +673,9 @@ namespace [Properties.DefaultNamespace].Syntax
         /// Ensure that <see cref="SyntaxTree.HasCompilationUnitRoot"/> is true for this tree prior to invoking this method.
         /// </remarks>
         /// <exception cref="InvalidCastException">Throws this exception if <see cref="SyntaxTree.HasCompilationUnitRoot"/> is false.</exception>
-        public MainSyntax GetCompilationUnitRoot(CancellationToken cancellationToken = default(CancellationToken))
+        public [Instances.MainRule().RedName()] GetCompilationUnitRoot(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return (MainSyntax)this.GetRoot(cancellationToken);
+            return ([Instances.MainRule().RedName()])this.GetRoot(cancellationToken);
         }
         /// <summary>
         /// Creates a new syntax based off this tree using a new source text.
@@ -706,7 +717,7 @@ namespace [Properties.DefaultNamespace].Syntax
             }
             using (var parser = [Properties.LanguageName]Language.Instance.SyntaxFactory.MakeParser(newText, this.Options, oldTree?.GetRoot(), changes))
             {
-                var compilationUnit = (MainSyntax)parser.Parse().CreateRed();
+                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
                 var tree = new ParsedSyntaxTree(newText, newText.Encoding, newText.ChecksumAlgorithm, this.FilePath, this.Options, compilationUnit, parser.Directives);
                 tree.VerifySource(changes);
                 return tree;
@@ -796,7 +807,7 @@ namespace [Properties.DefaultNamespace].Syntax
             options = options ?? [Properties.LanguageName]ParseOptions.Default;
             using (var parser = [Properties.LanguageName]Language.Instance.SyntaxFactory.MakeParser(text, options, oldTree: null, changes: null))
             {
-                var compilationUnit = (MainSyntax)parser.Parse().CreateRed();
+                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
                 var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.Directives);
                 tree.VerifySource();
                 return tree;
@@ -854,10 +865,10 @@ namespace [Properties.DefaultNamespace].Syntax
         }
         private sealed class DummySyntaxTree : [Properties.LanguageName]SyntaxTree
         {
-            private readonly MainSyntax _node;
+            private readonly [Instances.MainRule().RedName()] _node;
             public DummySyntaxTree()
             {
-                _node = this.CloneNodeAsRoot((MainSyntax)[Properties.LanguageName]Language.Instance.InternalSyntaxFactory.Main(null, null, true).CreateRed());
+                _node = new [Instances.MainRule().RedName()]([Properties.LanguageName]Language.Instance.InternalSyntaxFactory.Main(null, null, true), this, 0);
             }
             public override string ToString()
             {
@@ -930,7 +941,7 @@ namespace [Properties.DefaultNamespace].Syntax
                 _checksumAlgorithm = checksumAlgorithm;
                 _options = options;
                 _path = path;
-                _root = cloneRoot ? this.CloneNodeAsRoot(root) : root;
+                _root = cloneRoot ? new [Instances.MainRule().RedName()]((InternalSyntaxNode)root.Green, this, 0) : root;
                 _hasCompilationUnitRoot = root.Kind == [Properties.LanguageName]SyntaxKind.Main;
                 this.SetDirectiveStack(directives);
             }
@@ -1735,6 +1746,11 @@ namespace [Properties.DefaultNamespace].Syntax
 ^
     public abstract class [Properties.LanguageName]SyntaxNode : SyntaxNode
     {
+        protected [Properties.LanguageName]SyntaxNode(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+            : base(green, syntaxTree, position)
+        {
+        }
+^
         protected [Properties.LanguageName]SyntaxNode(InternalSyntaxNode green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
@@ -1834,8 +1850,12 @@ template GenerateSyntaxRule(Antlr4ParserRule rule, Antlr4ParserRule superRule)
 ^
 public abstract class [rule.RedName()] : [Properties.LanguageName]SyntaxNode
 {
+    protected [rule.RedName()](InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+        : base(green, syntaxTree, position)
+    {
+    }
 ^
-    public [rule.RedName()](InternalSyntaxNode green, SyntaxNode parent, int position)
+    protected [rule.RedName()](InternalSyntaxNode green, SyntaxNode parent, int position)
         : base(green, parent, position)
     {
     }
@@ -1846,9 +1866,9 @@ public abstract class [rule.RedName()] : [Properties.LanguageName]SyntaxNode
 [else]
 ^
 	[if (superRule != null)]
-public class [rule.RedName()] : [superRule.RedName()][GetCompilationUnit(rule)]
+public sealed class [rule.RedName()] : [superRule.RedName()][GetCompilationUnit(rule)]
 	[else]
-public class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCompilationUnit(rule)]
+public sealed class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCompilationUnit(rule)]
 	[end if]
 {
 	[loop(elem:rule.AllElements)]
@@ -1856,6 +1876,11 @@ public class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCompilati
     private [elem.RedFieldType()] [elem.FieldName()];
 		[end if]
 	[end loop]
+^
+    public [rule.RedName()](InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+        : base(green, syntaxTree, position)
+    {
+    }
 ^
     public [rule.RedName()](InternalSyntaxNode green, SyntaxNode parent, int position)
         : base(green, parent, position)

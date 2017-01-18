@@ -246,7 +246,7 @@ namespace MetaDslx.Languages.Calculator.Syntax
             private readonly MainSyntax _node;
             public DummySyntaxTree()
             {
-                _node = this.CloneNodeAsRoot((MainSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.Main(null, null, true).CreateRed());
+                _node = new MainSyntax(CalculatorLanguage.Instance.InternalSyntaxFactory.Main(null, null, true), this, 0);
             }
             public override string ToString()
             {
@@ -319,7 +319,7 @@ namespace MetaDslx.Languages.Calculator.Syntax
                 _checksumAlgorithm = checksumAlgorithm;
                 _options = options;
                 _path = path;
-                _root = cloneRoot ? this.CloneNodeAsRoot(root) : root;
+                _root = cloneRoot ? new MainSyntax((InternalSyntaxNode)root.Green, this, 0) : root;
                 _hasCompilationUnitRoot = root.Kind == CalculatorSyntaxKind.Main;
                 this.SetDirectiveStack(directives);
             }

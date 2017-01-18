@@ -59,6 +59,11 @@ namespace MetaDslx.Languages.Calculator.Syntax
 
     public abstract class CalculatorSyntaxNode : SyntaxNode
     {
+        protected CalculatorSyntaxNode(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+            : base(green, syntaxTree, position)
+        {
+        }
+
         protected CalculatorSyntaxNode(InternalSyntaxNode green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
@@ -128,9 +133,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
         }
     }
 	
-	public class MainSyntax : CalculatorSyntaxNode, ICompilationUnitSyntax
+	public sealed class MainSyntax : CalculatorSyntaxNode, ICompilationUnitSyntax
 	{
 	    private SyntaxNodeList statementLine;
+	
+	    public MainSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public MainSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -209,9 +219,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class StatementLineSyntax : CalculatorSyntaxNode
+	public sealed class StatementLineSyntax : CalculatorSyntaxNode
 	{
 	    private StatementSyntax statement;
+	
+	    public StatementLineSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public StatementLineSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -277,10 +292,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class StatementSyntax : CalculatorSyntaxNode
+	public sealed class StatementSyntax : CalculatorSyntaxNode
 	{
 	    private AssignmentSyntax assignment;
 	    private ExpressionSyntax expression;
+	
+	    public StatementSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public StatementSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -363,10 +383,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class AssignmentSyntax : CalculatorSyntaxNode
+	public sealed class AssignmentSyntax : CalculatorSyntaxNode
 	{
 	    private IdentifierSyntax identifier;
 	    private ExpressionSyntax expression;
+	
+	    public AssignmentSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public AssignmentSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -446,16 +471,25 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	
 	public abstract class ExpressionSyntax : CalculatorSyntaxNode
 	{
+	    protected ExpressionSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
-	    public ExpressionSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
+	    protected ExpressionSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	}
 	
-	public class ParenExpressionSyntax : ExpressionSyntax
+	public sealed class ParenExpressionSyntax : ExpressionSyntax
 	{
 	    private ExpressionSyntax expression;
+	
+	    public ParenExpressionSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public ParenExpressionSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -528,10 +562,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class MulOrDivExpressionSyntax : ExpressionSyntax
+	public sealed class MulOrDivExpressionSyntax : ExpressionSyntax
 	{
 	    private ExpressionSyntax left;
 	    private ExpressionSyntax right;
+	
+	    public MulOrDivExpressionSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public MulOrDivExpressionSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -609,10 +648,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class AddOrSubExpressionSyntax : ExpressionSyntax
+	public sealed class AddOrSubExpressionSyntax : ExpressionSyntax
 	{
 	    private ExpressionSyntax left;
 	    private ExpressionSyntax right;
+	
+	    public AddOrSubExpressionSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public AddOrSubExpressionSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -690,9 +734,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class PrintExpressionSyntax : ExpressionSyntax
+	public sealed class PrintExpressionSyntax : ExpressionSyntax
 	{
 	    private ArgsSyntax args;
+	
+	    public PrintExpressionSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public PrintExpressionSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -758,9 +807,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class ValueExpressionSyntax : ExpressionSyntax
+	public sealed class ValueExpressionSyntax : ExpressionSyntax
 	{
 	    private ValueSyntax value;
+	
+	    public ValueExpressionSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public ValueExpressionSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -819,9 +873,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class ArgsSyntax : CalculatorSyntaxNode
+	public sealed class ArgsSyntax : CalculatorSyntaxNode
 	{
 	    private SeparatedSyntaxNodeList arg;
+	
+	    public ArgsSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public ArgsSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -893,11 +952,16 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class ValueSyntax : CalculatorSyntaxNode
+	public sealed class ValueSyntax : CalculatorSyntaxNode
 	{
 	    private IdentifierSyntax identifier;
 	    private StringSyntax _string;
 	    private IntegerSyntax integer;
+	
+	    public ValueSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public ValueSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -1004,8 +1068,13 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class IdentifierSyntax : CalculatorSyntaxNode
+	public sealed class IdentifierSyntax : CalculatorSyntaxNode
 	{
+	
+	    public IdentifierSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public IdentifierSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -1059,8 +1128,13 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class StringSyntax : CalculatorSyntaxNode
+	public sealed class StringSyntax : CalculatorSyntaxNode
 	{
+	
+	    public StringSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public StringSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -1114,8 +1188,13 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class IntegerSyntax : CalculatorSyntaxNode
+	public sealed class IntegerSyntax : CalculatorSyntaxNode
 	{
+	
+	    public IntegerSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public IntegerSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
@@ -1169,9 +1248,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    }
 	}
 	
-	public class ArgSyntax : CalculatorSyntaxNode
+	public sealed class ArgSyntax : CalculatorSyntaxNode
 	{
 	    private ValueSyntax value;
+	
+	    public ArgSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
 	
 	    public ArgSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
