@@ -30,6 +30,11 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             ElasticZeroSpace = Whitespace(string.Empty, elastic: true);
         }
 
+        internal InternalSyntaxFactory(bool defaultFactory)
+        {
+
+        }
+
         public InternalSyntaxTrivia CarriageReturnLineFeed { get; }
         public InternalSyntaxTrivia LineFeed { get; }
         public InternalSyntaxTrivia CarriageReturn { get; }
@@ -118,6 +123,11 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
     internal class DefaultInternalSyntaxFactory : InternalSyntaxFactory
     {
+        public DefaultInternalSyntaxFactory() : base(true)
+        {
+
+        }
+
         public override InternalSyntaxToken MissingToken(int kind)
         {
             throw ExceptionUtilities.Unreachable;

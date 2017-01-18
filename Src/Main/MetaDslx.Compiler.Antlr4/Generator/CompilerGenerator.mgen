@@ -387,6 +387,7 @@ using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.MetaModel;
+using MetaDslx.Compiler.Utilities;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
@@ -527,16 +528,16 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 				[if(elem.IsSeparated)]
     [Properties.LanguageName]Parser.[elem.PlainType()]Context["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
     ITerminalNode["[]"] [elem.Separator.FieldName()]Context = context.[elem.Separator.GetAccessorName()];
-    InternalSeparatedNodeListBuilder<[elem.GreenInnerType()]> [elem.FieldName()]Builder = new InternalSeparatedNodeListBuilder<[elem.GreenInnerType()]>([elem.FieldName()]Context.Length+[elem.Separator.FieldName()]Context.Length);
+    ArrayBuilder<GreenNode> [elem.FieldName()]Builder = ArrayBuilder<GreenNode>.GetInstance([elem.FieldName()]Context.Length+[elem.Separator.FieldName()]Context.Length);
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
     {
         [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.Visit([elem.FieldName()]Context["[i]"]));
         if (i < [elem.Separator.FieldName()]Context.Length)
         {
-            [elem.FieldName()]Builder.AddSeparator((InternalSyntaxToken)this.VisitTerminal([elem.Separator.FieldName()]Context["[i]"]));
+            [elem.FieldName()]Builder.Add((InternalSyntaxToken)this.VisitTerminal([elem.Separator.FieldName()]Context["[i]"]));
         }
     }
-	[elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.FieldName()]Builder.ToList();
+	[elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.GreenType(TypeKind.Public)].Create([elem.FieldName()]Builder.ToArrayAndFree());
 	if ([elem.FieldName()] != null)
 	{
 		[GenerateSemanticAnnotations(elem.Annotations, elem.FieldName(), false)]
@@ -544,20 +545,20 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 				[else]
 					[if(elem.IsToken)]
     ITerminalNode["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
-    InternalTokenListBuilder<[elem.GreenInnerType()]> [elem.FieldName()]Builder = new InternalTokenListBuilder<[elem.GreenInnerType()]>([elem.FieldName()]Context.Length);
+    ArrayBuilder<[elem.GreenInnerType()]> [elem.FieldName()]Builder = ArrayBuilder<[elem.GreenInnerType()]>.GetInstance([elem.FieldName()]Context.Length);
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
     {
         [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.VisitTerminal([elem.FieldName()]Context["[i]"]));
     }
-    [elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.FieldName()]Builder.ToList();
+    [elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.GreenType(TypeKind.Public)].Create([elem.FieldName()]Builder.ToArrayAndFree());
 					[else]
     [Properties.LanguageName]Parser.[elem.PlainType()]Context["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
-    InternalNodeListBuilder<[elem.GreenInnerType()]> [elem.FieldName()]Builder = new InternalNodeListBuilder<[elem.GreenInnerType()]>([elem.FieldName()]Context.Length);
+    ArrayBuilder<[elem.GreenInnerType()]> [elem.FieldName()]Builder = ArrayBuilder<[elem.GreenInnerType()]>.GetInstance([elem.FieldName()]Context.Length);
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
     {
         [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.Visit([elem.FieldName()]Context["[i]"]));
     }
-	[elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.FieldName()]Builder.ToList();
+	[elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.GreenType(TypeKind.Public)].Create([elem.FieldName()]Builder.ToArrayAndFree());
 	if ([elem.FieldName()] != null)
 	{
 		[GenerateSemanticAnnotations(elem.Annotations, elem.FieldName(), false)]

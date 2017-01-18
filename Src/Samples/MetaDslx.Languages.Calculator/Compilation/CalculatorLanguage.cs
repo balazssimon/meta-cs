@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Compiler;
+using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Languages.Calculator.Syntax.InternalSyntax;
-using MetaDslx.Compiler.Diagnostics;
 
 namespace MetaDslx.Languages.Calculator
 {

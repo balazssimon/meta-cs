@@ -11,6 +11,7 @@ using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.MetaModel;
+using MetaDslx.Compiler.Utilities;
 namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 {
     public class CalculatorSyntaxParser : Antlr4SyntaxParser<CalculatorLexer, CalculatorParser>
@@ -78,12 +79,12 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 			    CalculatorParser.StatementLineContext[] statementLineContext = context.statementLine();
-			    InternalNodeListBuilder<StatementLineGreen> statementLineBuilder = new InternalNodeListBuilder<StatementLineGreen>(statementLineContext.Length);
+			    ArrayBuilder<StatementLineGreen> statementLineBuilder = ArrayBuilder<StatementLineGreen>.GetInstance(statementLineContext.Length);
 			    for (int i = 0; i < statementLineContext.Length; i++)
 			    {
 			        statementLineBuilder.Add((StatementLineGreen)this.Visit(statementLineContext[i]));
 			    }
-				InternalSyntaxNodeList statementLine = statementLineBuilder.ToList();
+				InternalSyntaxNodeList statementLine = InternalSyntaxNodeList.Create(statementLineBuilder.ToArrayAndFree());
 				if (statementLine != null)
 				{
 				}
@@ -239,16 +240,16 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 				if (context == null) return null;
 			    CalculatorParser.ArgContext[] argContext = context.arg();
 			    ITerminalNode[] tCommaContext = context.TComma();
-			    InternalSeparatedNodeListBuilder<ArgGreen> argBuilder = new InternalSeparatedNodeListBuilder<ArgGreen>(argContext.Length+tCommaContext.Length);
+			    ArrayBuilder<GreenNode> argBuilder = ArrayBuilder<GreenNode>.GetInstance(argContext.Length+tCommaContext.Length);
 			    for (int i = 0; i < argContext.Length; i++)
 			    {
 			        argBuilder.Add((ArgGreen)this.Visit(argContext[i]));
 			        if (i < tCommaContext.Length)
 			        {
-			            argBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i]));
+			            argBuilder.Add((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i]));
 			        }
 			    }
-				InternalSeparatedSyntaxNodeList arg = argBuilder.ToList();
+				InternalSeparatedSyntaxNodeList arg = InternalSeparatedSyntaxNodeList.Create(argBuilder.ToArrayAndFree());
 				if (arg != null)
 				{
 				}

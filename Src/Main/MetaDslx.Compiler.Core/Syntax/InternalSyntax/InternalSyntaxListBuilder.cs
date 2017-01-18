@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
+    /*
     public sealed class InternalTokenListBuilder
     {
         public InternalTokenListBuilder(int size)
@@ -59,5 +60,5 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         {
             return null;
         }
-    }
+    }*/
 }

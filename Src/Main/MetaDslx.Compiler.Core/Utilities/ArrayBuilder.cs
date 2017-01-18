@@ -9,7 +9,7 @@ namespace MetaDslx.Compiler.Utilities
 {
     [DebuggerDisplay("Count = {Count,nq}")]
     [DebuggerTypeProxy(typeof(ArrayBuilder<>.DebuggerProxy))]
-    internal sealed partial class ArrayBuilder<T> : IReadOnlyCollection<T>, IReadOnlyList<T>
+    public sealed partial class ArrayBuilder<T> : IReadOnlyCollection<T>, IReadOnlyList<T>
     {
         #region DebuggerProxy
 
@@ -317,12 +317,12 @@ namespace MetaDslx.Compiler.Utilities
             return builder;
         }
 
-        public static ObjectPool<ArrayBuilder<T>> CreatePool()
+        internal static ObjectPool<ArrayBuilder<T>> CreatePool()
         {
             return CreatePool(128); // we rarely need more than 10
         }
 
-        public static ObjectPool<ArrayBuilder<T>> CreatePool(int size)
+        internal static ObjectPool<ArrayBuilder<T>> CreatePool(int size)
         {
             ObjectPool<ArrayBuilder<T>> pool = null;
             pool = new ObjectPool<ArrayBuilder<T>>(() => new ArrayBuilder<T>(pool), size);

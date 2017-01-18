@@ -216,6 +216,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         }
 
         internal abstract InternalSyntaxNodeList CreateList(InternalSyntaxNode[] items);
+
+        public static InternalSyntaxNodeList Create(InternalSyntaxNode[] items, bool weak = false)
+        {
+            if (weak) return new InternalWeakSyntaxNodeList(items, null, null);
+            else return new InternalStrongSyntaxNodeList(items, null, null);
+        }
     }
 
     public abstract class InternalSeparatedSyntaxNodeList : InternalSyntaxNodeListBase, IReadOnlyList<GreenNode>
@@ -324,6 +330,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         }
 
         internal abstract InternalSeparatedSyntaxNodeList CreateList(GreenNode[] items);
+
+        public static InternalSeparatedSyntaxNodeList Create(GreenNode[] items, bool weak = false)
+        {
+            if (weak) return new InternalWeakSeparatedSyntaxNodeList(items, null, null);
+            else return new InternalStrongSeparatedSyntaxNodeList(items, null, null);
+        }
     }
 
     internal sealed class InternalStrongSyntaxNodeList : InternalSyntaxNodeList

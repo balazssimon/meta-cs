@@ -1,6 +1,7 @@
 ﻿using MetaDslx.Compiler;
 using MetaDslx.Compiler.Antlr4Roslyn;
 using MetaDslx.Core;
+using MetaDslx.Languages.Calculator;
 using MetaDslx.Soal;
 using System;
 using System.Collections.Generic;
@@ -250,9 +251,21 @@ namespace MetaDslx.TempConsole
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel1.cs"
                     );
                 //*/
-                //*
+                /*
                 Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
                 Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
+                //*/
+                //*
+                var factory = CalculatorLanguage.Instance.SyntaxFactory;
+                var node0 = factory.ParseSyntaxTree("hello=5");
+                var node1 = factory.ID("hello");//.WithTrailingTrivia(factory.Whitespace(" "));
+                var node2 = factory.Identifier(node1);
+                var node3 = factory.Value(factory.Integer(factory.INT("5", 5)/*.WithLeadingTrivia(factory.Whitespace(" "))*/));
+                var node4 = factory.ValueExpression(node3);
+                var node5 = factory.Assignment(node2, node4);
+                Console.WriteLine(node5.SyntaxTree);
+                Console.WriteLine(node1);
+                Console.WriteLine(node2);
                 //*/
             }
             catch (System.Exception ex)

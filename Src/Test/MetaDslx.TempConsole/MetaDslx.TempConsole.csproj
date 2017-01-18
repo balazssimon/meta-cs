@@ -69,6 +69,10 @@
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Samples\MetaDslx.Languages.Calculator\MetaDslx.Languages.Calculator.csproj">
+      <Project>{c7bd8655-44d1-46a5-9fd9-7487c41538db}</Project>
+      <Name>MetaDslx.Languages.Calculator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Samples\MetaDslx.Soal\MetaDslx.Soal.csproj">
       <Project>{baace3cc-f257-49d1-9832-e07db36df2be}</Project>
       <Name>MetaDslx.Soal</Name>

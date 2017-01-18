@@ -10,7 +10,7 @@ using Antlr4.Runtime.Tree;
 
 // The variable '...' is assigned but its value is never used
 #pragma warning disable 0219
-
+/*
 namespace MetaDslx.Languages.Calculator
 {
     public class CalculatorParserAnnotator : CalculatorParserBaseVisitor<object>
@@ -323,3 +323,4 @@ namespace MetaDslx.Languages.Calculator
         public CalculatorParser Parser { get; private set; }
     }
 }
+*/
