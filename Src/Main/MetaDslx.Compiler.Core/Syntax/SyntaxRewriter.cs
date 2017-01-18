@@ -72,13 +72,13 @@ namespace MetaDslx.Compiler.Syntax
             Debug.Assert(trailingTrivia == null || !trailingTrivia.IsList || trailingTrivia.SlotCount > 0);
 
             SyntaxToken originalToken = token;
-            TriviaList leading = null;
-            TriviaList trailing = null;
+            SyntaxTriviaList leading = null;
+            SyntaxTriviaList trailing = null;
             int index = 0;
             if (leadingTrivia != null)
             {
                 // PERF: Expand token.LeadingTrivia when node is not null.
-                leading = this.VisitList(new TriviaList(leadingTrivia, originalToken, 0, 0));
+                leading = this.VisitList(new SyntaxTriviaList(leadingTrivia, originalToken, 0, 0));
                 index = leadingTrivia.IsList ? leadingTrivia.SlotCount : 1;
             }
 
@@ -101,7 +101,7 @@ namespace MetaDslx.Compiler.Syntax
 
             if (trailingTrivia != null)
             {
-                trailing = this.VisitList(new TriviaList(trailingTrivia, originalToken, originalToken.Position + node.FullWidth - trailingTrivia.FullWidth, index));
+                trailing = this.VisitList(new SyntaxTriviaList(trailingTrivia, originalToken, originalToken.Position + node.FullWidth - trailingTrivia.FullWidth, index));
             }
 
             if (leadingTrivia != null && leading.Green != leadingTrivia)
@@ -137,7 +137,7 @@ namespace MetaDslx.Compiler.Syntax
             return trivia;
         }
 
-        public virtual NodeList<TNode> VisitList<TNode>(NodeList<TNode> list) where TNode : SyntaxNode
+        public virtual SyntaxNodeList<TNode> VisitList<TNode>(SyntaxNodeList<TNode> list) where TNode : SyntaxNode
         {
             NodeListBuilder<TNode> alternate = null;
             for (int i = 0, n = list.Count; i < n; i++)
@@ -169,7 +169,7 @@ namespace MetaDslx.Compiler.Syntax
             return (TNode)this.Visit(node);
         }
 
-        public virtual SeparatedNodeList<TNode> VisitList<TNode>(SeparatedNodeList<TNode> list) where TNode : SyntaxNode
+        public virtual SeparatedSyntaxNodeList<TNode> VisitList<TNode>(SeparatedSyntaxNodeList<TNode> list) where TNode : SyntaxNode
         {
             var count = list.Count;
             var sepCount = list.SeparatorCount;
@@ -249,7 +249,7 @@ namespace MetaDslx.Compiler.Syntax
             return this.VisitToken(separator);
         }
 
-        public virtual TokenList VisitList(TokenList list)
+        public virtual SyntaxTokenList VisitList(SyntaxTokenList list)
         {
             TokenListBuilder alternate = null;
             var count = list.Count;
@@ -278,7 +278,7 @@ namespace MetaDslx.Compiler.Syntax
             return list;
         }
 
-        public virtual TriviaList VisitList(TriviaList list)
+        public virtual SyntaxTriviaList VisitList(SyntaxTriviaList list)
         {
             var count = list.Count;
             if (count != 0)

@@ -1,9 +1,11 @@
 ﻿using MetaDslx.Compiler.Syntax.InternalSyntax;
+using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Syntax
@@ -23,6 +25,10 @@ namespace MetaDslx.Compiler.Syntax
         internal protected abstract SyntaxTrivia Trivia(SyntaxNode triviaStructure);
         internal protected abstract SyntaxNode StructuredToken(SyntaxToken token);
         internal protected abstract SyntaxNode StructuredTrivia(SyntaxTrivia trivia);
+
+        protected abstract SyntaxTree ParseSyntaxTreeCore(SourceText text, ParseOptions options = null, string path = "", CancellationToken cancellationToken = default(CancellationToken));
+        public abstract SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes);
+        public abstract SyntaxParser MakeParser(string text);
     }
 
     internal class DefaultSyntaxFactory : SyntaxFactory
@@ -58,6 +64,21 @@ namespace MetaDslx.Compiler.Syntax
         }
 
         internal protected override SyntaxTrivia Trivia(SyntaxNode triviaStructure)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        protected override SyntaxTree ParseSyntaxTreeCore(SourceText text, ParseOptions options = null, string path = "", CancellationToken cancellationToken = default(CancellationToken))
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        public override SyntaxParser MakeParser(string text)
         {
             throw ExceptionUtilities.Unreachable;
         }

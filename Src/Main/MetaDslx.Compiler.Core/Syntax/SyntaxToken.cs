@@ -12,6 +12,10 @@ namespace MetaDslx.Compiler.Syntax
     {
         private int index;
 
+        //internal static readonly SyntaxToken Default = new DefaultSyntaxToken();
+        internal static readonly Func<SyntaxToken, bool> NonZeroWidth = t => t.Width > 0;
+        internal static readonly Func<SyntaxToken, bool> Any = t => true;
+
         protected SyntaxToken(InternalSyntaxToken green, SyntaxNode parent, int position, int index)
             : base(green, parent, position) 
         {
@@ -27,6 +31,12 @@ namespace MetaDslx.Compiler.Syntax
         {
             get { return (InternalSyntaxToken)this.Green; }
         }
+
+        /// <summary>
+        /// Determines whether this token is a structured token.
+        /// </summary>
+        public bool HasStructure => Green?.IsStructuredToken ?? false;
+
 
         /// <summary>
         /// Returns the child non-terminal node representing the syntax tree structure under this structured token.
@@ -51,13 +61,33 @@ namespace MetaDslx.Compiler.Syntax
         public string ValueText => GreenToken.ValueText;
 
         /// <summary>
+        /// Determines whether this token has any leading trivia.
+        /// </summary>
+        public bool HasLeadingTrivia => this.LeadingTrivia.Count > 0;
+
+        /// <summary>
+        /// Determines whether this token has any trailing trivia.
+        /// </summary>
+        public bool HasTrailingTrivia => this.TrailingTrivia.Count > 0;
+
+        /// <summary>
+        /// Full width of the leading trivia of this token.
+        /// </summary>
+        internal int LeadingWidth => Green.GetLeadingTriviaWidth();
+
+        /// <summary>
+        /// Full width of the trailing trivia of this token.
+        /// </summary>
+        internal int TrailingWidth => Green.GetTrailingTriviaWidth();
+
+        /// <summary>
         /// The list of trivia that appear before this token in the source code.
         /// </summary>
-        public TriviaList LeadingTrivia
+        public SyntaxTriviaList LeadingTrivia
         {
             get
             {
-                return new TriviaList(GreenToken.GetLeadingTrivia(), this, this.Position, 0);
+                return new SyntaxTriviaList(GreenToken.GetLeadingTrivia(), this, this.Position, 0);
             }
         }
 
@@ -65,7 +95,7 @@ namespace MetaDslx.Compiler.Syntax
         /// The list of trivia that appear after this token in the source code and are attached to this token or any of
         /// its descendants.
         /// </summary>
-        public TriviaList TrailingTrivia
+        public SyntaxTriviaList TrailingTrivia
         {
             get
             {
@@ -83,7 +113,7 @@ namespace MetaDslx.Compiler.Syntax
                     trailingPosition -= trailingGreen.FullWidth;
                 }
 
-                return new TriviaList(trailingGreen, this, trailingPosition, index);
+                return new SyntaxTriviaList(trailingGreen, this, trailingPosition, index);
             }
         }
 
@@ -98,7 +128,7 @@ namespace MetaDslx.Compiler.Syntax
         /// <summary>
         /// Creates a new token from this token with the leading trivia specified.
         /// </summary>
-        public SyntaxToken WithLeadingTrivia(TriviaList trivia)
+        public SyntaxToken WithLeadingTrivia(SyntaxTriviaList trivia)
         {
             return this.WithLeadingTrivia((IEnumerable<SyntaxTrivia>)trivia);
         }
@@ -123,7 +153,7 @@ namespace MetaDslx.Compiler.Syntax
         /// <summary>
         /// Creates a new token from this token with the trailing trivia specified.
         /// </summary>
-        public SyntaxToken WithTrailingTrivia(TriviaList trivia)
+        public SyntaxToken WithTrailingTrivia(SyntaxTriviaList trivia)
         {
             return this.WithTrailingTrivia((IEnumerable<SyntaxTrivia>)trivia);
         }

@@ -23,14 +23,6 @@ namespace MetaDslx.Languages.Calculator
         /// Gets the language version.
         /// </summary>
         public LanguageVersion LanguageVersion { get; private set; }
-        internal ImmutableArray<string> PreprocessorSymbols { get; private set; }
-        /// <summary>
-        /// Gets the names of defined preprocessor symbols.
-        /// </summary>
-        public override IEnumerable<string> PreprocessorSymbolNames
-        {
-            get { return PreprocessorSymbols; }
-        }
         public CalculatorParseOptions(
             LanguageVersion languageVersion = LanguageVersion.Calculator1,
             DocumentationMode documentationMode = DocumentationMode.Parse,

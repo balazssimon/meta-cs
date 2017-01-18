@@ -13,7 +13,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         }
 
-        public InternalTokenList ToList()
+        public InternalSyntaxTokenList ToList()
         {
             return null;
         }
@@ -26,7 +26,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         }
 
-        public InternalTriviaList ToList()
+        public InternalSyntaxTriviaList ToList()
         {
             return null;
         }
@@ -41,7 +41,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         }
 
-        public InternalNodeList ToList(bool weak = false)
+        public InternalSyntaxNodeList ToList(bool weak = false)
         {
             return null;
         }
@@ -55,7 +55,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         }
 
-        public InternalSeparatedNodeList ToList(bool weak = false)
+        public InternalSeparatedSyntaxNodeList ToList(bool weak = false)
         {
             return null;
         }

@@ -77,17 +77,17 @@ namespace MetaDslx.Compiler.Syntax
             }
         }
 
-        public void AddRange(NodeList<TNode> list) 
+        public void AddRange(SyntaxNodeList<TNode> list) 
         {
             this.AddRange(list, 0, list.Count);
         }
 
-        public void AddRange(NodeList<TNode> list, int offset, int count) 
+        public void AddRange(SyntaxNodeList<TNode> list, int offset, int count) 
         {
             this.AddRange(list.Green, offset, count);
         }
 
-        private void AddRange(InternalNodeList list, int offset, int count)
+        private void AddRange(InternalSyntaxNodeList list, int offset, int count)
         {
             if (_nodes == null || this.Count + count > _nodes.Length)
             {
@@ -126,12 +126,12 @@ namespace MetaDslx.Compiler.Syntax
             return false;
         }
 
-        public NodeList<TNode> ToList(bool weak = false)
+        public SyntaxNodeList<TNode> ToList(bool weak = false)
         {
-            return new NodeList<TNode>(
+            return new SyntaxNodeList<TNode>(
                 weak 
-                ? (NodeList)new WeakNodeList(new InternalWeakNodeList(this._nodes, null, null), null, 0) 
-                : (NodeList)new StrongNodeList(new InternalStrongNodeList(this._nodes, null, null), null, 0));
+                ? (SyntaxNodeList)new WeakSyntaxNodeList(new InternalWeakSyntaxNodeList(this._nodes, null, null), null, 0) 
+                : (SyntaxNodeList)new StrongSyntaxNodeList(new InternalStrongSyntaxNodeList(this._nodes, null, null), null, 0));
         }
     }
 
@@ -149,7 +149,7 @@ namespace MetaDslx.Compiler.Syntax
             _expectedSeparator = false;
         }
 
-        public SeparatedNodeListBuilder(SeparatedNodeList list)
+        public SeparatedNodeListBuilder(SeparatedSyntaxNodeList list)
         {
             _items = list.GreenList.ToArray();
             _count = _items.Length;
@@ -217,7 +217,7 @@ namespace MetaDslx.Compiler.Syntax
             this.AddInternal(separatorToken.Green);
         }
 
-        public void AddRange(SeparatedNodeList<TNode> nodes)
+        public void AddRange(SeparatedSyntaxNodeList<TNode> nodes)
         {
             CheckExpectedElement();
             var list = nodes.Green.Children;
@@ -225,7 +225,7 @@ namespace MetaDslx.Compiler.Syntax
             _expectedSeparator = ((_count & 1) != 0);
         }
 
-        public void AddRange(SeparatedNodeList<TNode> nodes, int count)
+        public void AddRange(SeparatedSyntaxNodeList<TNode> nodes, int count)
         {
             CheckExpectedElement();
             var list = nodes.Green.Children;
@@ -283,12 +283,12 @@ namespace MetaDslx.Compiler.Syntax
             return false;
         }
 
-        public SeparatedNodeList<TNode> ToList(bool weak = false)
+        public SeparatedSyntaxNodeList<TNode> ToList(bool weak = false)
         {
-            return new SeparatedNodeList<TNode>(
+            return new SeparatedSyntaxNodeList<TNode>(
                 weak
-                ? (SeparatedNodeList)new WeakSeparatedNodeList(new InternalWeakSeparatedNodeList(this._items, null, null), null, 0, 0)
-                : (SeparatedNodeList)new StrongSeparatedNodeList(new InternalStrongSeparatedNodeList(this._items, null, null), null, 0, 0));
+                ? (SeparatedSyntaxNodeList)new WeakSeparatedSyntaxNodeList(new InternalWeakSeparatedSyntaxNodeList(this._items, null, null), null, 0, 0)
+                : (SeparatedSyntaxNodeList)new StrongSeparatedSyntaxNodeList(new InternalStrongSeparatedSyntaxNodeList(this._items, null, null), null, 0, 0));
         }
     }
 
@@ -361,23 +361,23 @@ namespace MetaDslx.Compiler.Syntax
             }
         }
 
-        public void AddRange(TokenList list)
+        public void AddRange(SyntaxTokenList list)
         {
             this.AddRange(list, 0, list.Count);
         }
 
-        public void AddRange(TokenList list, int offset, int count)
+        public void AddRange(SyntaxTokenList list, int offset, int count)
         {
-            if (list.IsList) this.AddRange((InternalTokenList)list.Green, offset, count);
+            if (list.IsList) this.AddRange((InternalSyntaxTokenList)list.Green, offset, count);
             else if (offset == 0 && count > 0) this.AddInternal((InternalSyntaxToken)list.Green);
         }
 
-        private void AddRange(InternalTokenList list)
+        private void AddRange(InternalSyntaxTokenList list)
         {
             this.AddRange(list, 0, list.Count);
         }
 
-        private void AddRange(InternalTokenList list, int offset, int count)
+        private void AddRange(InternalSyntaxTokenList list, int offset, int count)
         {
             if (tokens == null || this.Count + count > tokens.Length)
             {
@@ -416,16 +416,16 @@ namespace MetaDslx.Compiler.Syntax
             return false;
         }
 
-        public TokenList ToList()
+        public SyntaxTokenList ToList()
         {
             switch (this.tokens.Length)
             {
                 case 0:
                     return null;
                 case 1:
-                    return new TokenList(this.tokens[0], null, 0, 0);
+                    return new SyntaxTokenList(this.tokens[0], null, 0, 0);
                 default:
-                    return new TokenList(new InternalTokenList(this.tokens, null, null), null, 0, 0);
+                    return new SyntaxTokenList(new InternalSyntaxTokenList(this.tokens, null, null), null, 0, 0);
             }
         }
     }
@@ -499,23 +499,23 @@ namespace MetaDslx.Compiler.Syntax
             }
         }
 
-        public void AddRange(TriviaList list)
+        public void AddRange(SyntaxTriviaList list)
         {
             this.AddRange(list, 0, list.Count);
         }
 
-        public void AddRange(TriviaList list, int offset, int count)
+        public void AddRange(SyntaxTriviaList list, int offset, int count)
         {
-            if (list.IsList) this.AddRange((InternalTriviaList)list.Green, offset, count);
+            if (list.IsList) this.AddRange((InternalSyntaxTriviaList)list.Green, offset, count);
             else if (offset == 0 && count > 0) this.AddInternal((InternalSyntaxTrivia)list.Green);
         }
 
-        private void AddRange(InternalTriviaList list)
+        private void AddRange(InternalSyntaxTriviaList list)
         {
             this.AddRange(list, 0, list.Count);
         }
 
-        private void AddRange(InternalTriviaList list, int offset, int count)
+        private void AddRange(InternalSyntaxTriviaList list, int offset, int count)
         {
             if (trivia == null || this.Count + count > trivia.Length)
             {
@@ -554,16 +554,16 @@ namespace MetaDslx.Compiler.Syntax
             return false;
         }
 
-        public TriviaList ToList()
+        public SyntaxTriviaList ToList()
         {
             switch (this.trivia.Length)
             {
                 case 0:
                     return null;
                 case 1:
-                    return new TriviaList(this.trivia[0], null, 0, 0);
+                    return new SyntaxTriviaList(this.trivia[0], null, 0, 0);
                 default:
-                    return new TriviaList(new InternalTriviaList(this.trivia, null, null), null, 0, 0);
+                    return new SyntaxTriviaList(new InternalSyntaxTriviaList(this.trivia, null, null), null, 0, 0);
             }
         }
     }

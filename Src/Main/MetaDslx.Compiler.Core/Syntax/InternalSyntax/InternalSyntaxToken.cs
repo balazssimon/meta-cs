@@ -11,6 +11,8 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
     public abstract class InternalSyntaxToken : GreenNode
     {
+        internal static readonly InternalSyntaxToken Default = new DefaultInternalSyntaxToken();
+
         protected InternalSyntaxToken(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(kind, 0, diagnostics, annotations)
         {
@@ -74,6 +76,8 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         {
             get { return this.Text.Length; }
         }
+
+        public IEnumerable<object> TrailingTrivia { get; internal set; }
 
         public override int GetLeadingTriviaWidth()
         {
@@ -169,6 +173,34 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         {
             return this;
         }
-    }
 
+
+        private class DefaultInternalSyntaxToken : InternalSyntaxToken
+        {
+            public DefaultInternalSyntaxToken() 
+                : base(SyntaxKind.None, 0, null, null)
+            {
+            }
+
+            public override Language Language
+            {
+                get { throw ExceptionUtilities.Unreachable; }
+            }
+
+            public override SyntaxToken CreateRed(SyntaxNode parent, int position, int index)
+            {
+                throw ExceptionUtilities.Unreachable;
+            }
+
+            public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
+            {
+                throw ExceptionUtilities.Unreachable;
+            }
+
+            public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+            {
+                throw ExceptionUtilities.Unreachable;
+            }
+        }
+    }
 }

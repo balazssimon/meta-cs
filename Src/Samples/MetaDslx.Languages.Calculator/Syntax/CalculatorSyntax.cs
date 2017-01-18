@@ -119,37 +119,37 @@ namespace MetaDslx.Languages.Calculator.Syntax
 
         protected override SyntaxToken WithLeadingTriviaCore(InternalSyntaxTrivia[] leading)
         {
-            return new CalculatorSyntaxToken(this.GreenToken.WithLeadingTrivia(new InternalTriviaList(leading, null, null)), null, 0, 0);
+            return new CalculatorSyntaxToken(this.GreenToken.WithLeadingTrivia(new InternalSyntaxTriviaList(leading, null, null)), null, 0, 0);
         }
 
         protected override SyntaxToken WithTrailingTriviaCore(InternalSyntaxTrivia[] trailing)
         {
-            return new CalculatorSyntaxToken(this.GreenToken.WithTrailingTrivia(new InternalTriviaList(trailing, null, null)), null, 0, 0);
+            return new CalculatorSyntaxToken(this.GreenToken.WithTrailingTrivia(new InternalSyntaxTriviaList(trailing, null, null)), null, 0, 0);
         }
     }
 	
-	public class MainSyntax : CalculatorSyntaxNode
+	public class MainSyntax : CalculatorSyntaxNode, ICompilationUnitSyntax
 	{
-	    private NodeList statementLine;
+	    private SyntaxNodeList statementLine;
 	
 	    public MainSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public NodeList<StatementLineSyntax> StatementLine 
+	    public SyntaxNodeList<StatementLineSyntax> StatementLine 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.statementLine, 0);
 				if (red != null)
 				{
-					return new NodeList<StatementLineSyntax>(red);
+					return new SyntaxNodeList<StatementLineSyntax>(red);
 				}
 				return null;
 			} 
 		}
-	    public SyntaxToken EOF { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.MainGreen)this.Green).EOF, this, this.GetChildPosition(1), this.GetChildIndex(1)); } }
+	    public SyntaxToken Eof { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.MainGreen)this.Green).Eof, this, this.GetChildPosition(1), this.GetChildIndex(1)); } }
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -169,9 +169,9 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        }
 	    }
 	
-	    public MainSyntax WithStatementLine(NodeList<StatementLineSyntax> statementLine)
+	    public MainSyntax WithStatementLine(SyntaxNodeList<StatementLineSyntax> statementLine)
 		{
-			return this.Update(StatementLine, this.EOF);
+			return this.Update(StatementLine, this.Eof);
 		}
 	
 	    public MainSyntax AddStatementLine(params StatementLineSyntax[] statementLine)
@@ -179,15 +179,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 			return this.WithStatementLine(this.StatementLine.AddRange(statementLine));
 		}
 	
-	    public MainSyntax WithEOF(SyntaxToken eof)
+	    public MainSyntax WithEof(SyntaxToken eof)
 		{
-			return this.Update(this.StatementLine, EOF);
+			return this.Update(this.StatementLine, Eof);
 		}
 	
-	    public MainSyntax Update(NodeList<StatementLineSyntax> statementLine, SyntaxToken eof)
+	    public MainSyntax Update(SyntaxNodeList<StatementLineSyntax> statementLine, SyntaxToken eof)
 	    {
 	        if (this.StatementLine.Node != statementLine.Node ||
-				this.EOF != eof)
+				this.Eof != eof)
 	        {
 	            SyntaxNode newNode = CalculatorLanguage.Instance.SyntaxFactory.Main(statementLine, eof);
 	            var annotations = this.GetAnnotations();
@@ -821,21 +821,21 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	
 	public class ArgsSyntax : CalculatorSyntaxNode
 	{
-	    private SeparatedNodeList arg;
+	    private SeparatedSyntaxNodeList arg;
 	
 	    public ArgsSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
 	
-	    public SeparatedNodeList<ArgSyntax> Arg 
+	    public SeparatedSyntaxNodeList<ArgSyntax> Arg 
 		{ 
 			get
 			{
 				var red = this.GetRed(ref this.arg, 0);
 				if (red != null)
 				{
-					return new SeparatedNodeList<ArgSyntax>(red);
+					return new SeparatedSyntaxNodeList<ArgSyntax>(red);
 				}
 				return null;
 			} 
@@ -859,7 +859,7 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        }
 	    }
 	
-	    public ArgsSyntax WithArg(SeparatedNodeList<ArgSyntax> arg)
+	    public ArgsSyntax WithArg(SeparatedSyntaxNodeList<ArgSyntax> arg)
 		{
 			return this.Update(Arg);
 		}
@@ -869,7 +869,7 @@ namespace MetaDslx.Languages.Calculator.Syntax
 			return this.WithArg(this.Arg.AddRange(arg));
 		}
 	
-	    public ArgsSyntax Update(SeparatedNodeList<ArgSyntax> arg)
+	    public ArgsSyntax Update(SeparatedSyntaxNodeList<ArgSyntax> arg)
 	    {
 	        if (this.Arg.Node != arg.Node)
 	        {
@@ -1244,7 +1244,7 @@ namespace MetaDslx.Languages.Calculator
 	{
 		internal static readonly CalculatorSyntaxFacts Instance = new CalculatorSyntaxFacts();
 	
-		protected override bool IsToken(int rawKind)
+		public override bool IsToken(int rawKind)
 		{
 			return this.IsToken((CalculatorSyntaxKind)rawKind);
 		}
@@ -1277,7 +1277,7 @@ namespace MetaDslx.Languages.Calculator
 			}
 		}
 	
-		protected override bool IsFixedToken(int rawKind)
+		public override bool IsFixedToken(int rawKind)
 		{
 			return this.IsFixedToken((CalculatorSyntaxKind)rawKind);
 		}
@@ -1303,7 +1303,7 @@ namespace MetaDslx.Languages.Calculator
 			}
 		}
 	
-		protected override string GetText(int rawKind)
+		public override string GetText(int rawKind)
 		{
 			return this.GetText((CalculatorSyntaxKind)rawKind);
 		}
@@ -1366,7 +1366,7 @@ namespace MetaDslx.Languages.Calculator
 			}
 		}
 	
-	    protected override string GetKindText(int rawKind)
+	    public override string GetKindText(int rawKind)
 	    {
 	        return this.GetKindText((CalculatorSyntaxKind)rawKind);
 	    }
@@ -1376,7 +1376,7 @@ namespace MetaDslx.Languages.Calculator
 	        return kind.ToString();
 	    }
 	
-	    protected override bool IsTriviaWithEndOfLine(int rawKind)
+	    public override bool IsTriviaWithEndOfLine(int rawKind)
 		{
 			return this.IsTriviaWithEndOfLine((CalculatorSyntaxKind)rawKind);
 		}
@@ -1624,7 +1624,7 @@ namespace MetaDslx.Languages.Calculator
 		public virtual SyntaxNode VisitMain(MainSyntax node)
 		{
 		    var statementLine = this.VisitList(node.StatementLine);
-		    var eof = this.VisitToken(node.EOF);
+		    var eof = this.VisitToken(node.Eof);
 			return node.Update(statementLine, eof);
 		}
 		
@@ -1794,22 +1794,22 @@ namespace MetaDslx.Languages.Calculator
 	
 	    protected override SyntaxNode StructuredToken(SyntaxToken token)
 	    {
-	        throw ExceptionUtilities.Unreachable;
+	        throw new NotImplementedException();
 	    }
 	
 	    protected override SyntaxNode StructuredTrivia(SyntaxTrivia trivia)
 	    {
-	        throw ExceptionUtilities.Unreachable;
+	        throw new NotImplementedException();
 	    }
 	
 	    protected override SyntaxToken Token(SyntaxNode tokenStructure)
 	    {
-	        throw ExceptionUtilities.Unreachable;
+	        throw new NotImplementedException();
 	    }
 	
 	    protected override SyntaxTrivia Trivia(SyntaxNode triviaStructure)
 	    {
-	        throw ExceptionUtilities.Unreachable;
+	        throw new NotImplementedException();
 	    }
 	
 		/// <summary>
@@ -1828,44 +1828,48 @@ namespace MetaDslx.Languages.Calculator
 			return (SyntaxTrivia)CalculatorLanguage.Instance.InternalSyntaxFactory.Trivia(kind, text).CreateRed();
 		}
 	
-	    /// <summary>
-	    /// Create a new syntax tree from a syntax node.
-	    /// </summary>
-	    public CalculatorSyntaxTree SyntaxTree(SyntaxNode root, CalculatorParseOptions options = null, string path = "", Encoding encoding = null)
-	    {
-	        return CalculatorSyntaxTree.Create((CalculatorSyntaxNode)root, (CalculatorParseOptions)options, path, encoding);
-	    }
-	    /// <summary>
-	    /// Produces a syntax tree by parsing the source text.
-	    /// </summary>
-	    public CalculatorSyntaxTree ParseSyntaxTree(
-	        string text,
-	        CalculatorParseOptions options = null,
-	        string path = "",
-	        Encoding encoding = null,
-	        CancellationToken cancellationToken = default(CancellationToken))
-	    {
-	        return (CalculatorSyntaxTree)this.ParseSyntaxTreeCore(SourceText.From(text, encoding), options, path, cancellationToken);
-	    }
-	    /// <summary>
-	    /// Produces a syntax tree by parsing the source text.
-	    /// </summary>
-	    public CalculatorSyntaxTree ParseSyntaxTree(
-	        SourceText text,
-	        CalculatorParseOptions options = null,
-	        string path = "",
-	        CancellationToken cancellationToken = default(CancellationToken))
-	    {
-	        return (CalculatorSyntaxTree)this.ParseSyntaxTreeCore(text, options, path, cancellationToken);
-	    }
-		protected override SyntaxTree ParseSyntaxTreeCore(
+		/// <summary>
+		/// Create a new syntax tree from a syntax node.
+		/// </summary>
+		public CalculatorSyntaxTree SyntaxTree(SyntaxNode root, CalculatorParseOptions options = null, string path = "", Encoding encoding = null)
+		{
+		    return CalculatorSyntaxTree.Create((CalculatorSyntaxNode)root, (CalculatorParseOptions)options, path, encoding);
+		}
+	
+		/// <summary>
+		/// Produces a syntax tree by parsing the source text.
+		/// </summary>
+		public CalculatorSyntaxTree ParseSyntaxTree(
+		    string text,
+		    CalculatorParseOptions options = null,
+		    string path = "",
+		    Encoding encoding = null,
+		    CancellationToken cancellationToken = default(CancellationToken))
+		{
+		    return (CalculatorSyntaxTree)this.ParseSyntaxTreeCore(SourceText.From(text, encoding), options, path, cancellationToken);
+		}
+	
+		/// <summary>
+		/// Produces a syntax tree by parsing the source text.
+		/// </summary>
+		public CalculatorSyntaxTree ParseSyntaxTree(
 		    SourceText text,
-		    ParseOptions options = null,
+		    CalculatorParseOptions options = null,
 		    string path = "",
 		    CancellationToken cancellationToken = default(CancellationToken))
 		{
-		    return CalculatorSyntaxTree.ParseText(text, (CalculatorParseOptions)options, path, cancellationToken);
+		    return (CalculatorSyntaxTree)this.ParseSyntaxTreeCore(text, options, path, cancellationToken);
 		}
+	
+		protected override SyntaxTree ParseSyntaxTreeCore(
+			SourceText text,
+			ParseOptions options = null,
+			string path = "",
+			CancellationToken cancellationToken = default(CancellationToken))
+		{
+			return CalculatorSyntaxTree.ParseText(text, (CalculatorParseOptions)options, path, cancellationToken);
+		}
+	
 	    public MainSyntax ParseMain(string text)
 	    {
 	        // note that we do not need a "consumeFullText" parameter, because parsing a compilation unit always must
@@ -1878,15 +1882,16 @@ namespace MetaDslx.Languages.Calculator
 	            return (MainSyntax)node.CreateRed();
 	        }
 	    }
-	    public override SyntaxParser MakeParser(SourceText text, ParseOptions options, AbstractSyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
-	    {
-			// SB-TODO: oldTree, changes
-	        return new CalculatorSyntaxParser(text, (CalculatorParseOptions)options);
-	    }
-	    public override SyntaxParser MakeParser(string text)
-	    {
-	        return new CalculatorSyntaxParser(SourceText.From(text, Encoding.UTF8), CalculatorParseOptions.Default);
-	    }
+	
+		public override SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes)
+		{
+		    return new CalculatorSyntaxParser(text, (CalculatorParseOptions)options, oldTree, changes);
+		}
+	
+		public override SyntaxParser MakeParser(string text)
+		{
+		    return new CalculatorSyntaxParser(SourceText.From(text, Encoding.UTF8), CalculatorParseOptions.Default, null, null);
+		}
 	
 	    public SyntaxToken STRING(string text)
 	    {
@@ -1958,7 +1963,7 @@ namespace MetaDslx.Languages.Calculator
 	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.COMMENT(text, value).CreateRed();
 	    }
 		
-		public MainSyntax Main(NodeList<StatementLineSyntax> statementLine, SyntaxToken eof)
+		public MainSyntax Main(SyntaxNodeList<StatementLineSyntax> statementLine, SyntaxToken eof)
 		{
 		    if (statementLine == null) throw new ArgumentNullException(nameof(statementLine));
 		    if (eof == null) throw new ArgumentNullException(nameof(eof));
@@ -2055,7 +2060,7 @@ namespace MetaDslx.Languages.Calculator
 		    return (ValueExpressionSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.ValueExpression((Syntax.InternalSyntax.ValueGreen)value.Green).CreateRed();
 		}
 		
-		public ArgsSyntax Args(SeparatedNodeList<ArgSyntax> arg)
+		public ArgsSyntax Args(SeparatedSyntaxNodeList<ArgSyntax> arg)
 		{
 		    if (arg == null) throw new ArgumentNullException(nameof(arg));
 		    return (ArgsSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.Args(arg.Green).CreateRed();

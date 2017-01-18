@@ -53,15 +53,64 @@ namespace MetaDslx.Compiler.Syntax
 
         internal int EndPosition => Position + Green.FullWidth;
 
+        public bool IsStructuredToken => this.Green.IsStructuredToken;
+        public bool IsStructuredTrivia => this.Green.IsStructuredTrivia;
         public bool IsList => this.Green.IsList;
         public bool IsNode => this.Green.IsNode;
         public bool IsToken => this.Green.IsToken;
         public bool IsTrivia => this.Green.IsTrivia;
 
+
         /// <summary>
-        /// Determines whether this node has a structure.
+        /// Determines whether this node is a descendant of a structured token.
         /// </summary>
-        public bool HasStructure => this.Green.HasStructure;
+        public bool IsPartOfStructuredToken()
+        {
+            for (var node = this; node != null; node = node.Parent)
+            {
+                if (node.IsStructuredToken)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether a descendant token of this node is structured.
+        /// </summary>
+        public bool HasStructuredToken
+        {
+            get
+            {
+                return this.Green.ContainsStructuredToken && !this.Green.IsStructuredToken;
+            }
+        }
+
+
+        /// <summary>
+        /// Determines whether this node is a descendant of a structured trivia.
+        /// </summary>
+        public bool IsPartOfStructuredTrivia()
+        {
+            for (var node = this; node != null; node = node.Parent)
+            {
+                if (node.IsStructuredTrivia)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether a descendant trivia of this node is structured.
+        /// </summary>
+        public bool HasStructuredTrivia
+        {
+            get
+            {
+                return this.Green.ContainsStructuredTrivia && !this.Green.IsStructuredTrivia;
+            }
+        }
 
         /// <summary>
         /// Returns the child non-terminal node representing the syntax tree structure under this structured element.
@@ -373,6 +422,15 @@ namespace MetaDslx.Compiler.Syntax
             get { return this._parent?.SyntaxTree; }
         }
 
+        /// <summary>
+        /// Determines whether this node has any descendant skipped text.
+        /// </summary>
+        public bool ContainsSkippedText => this.Green.ContainsSkippedText;
+        
+        /// <summary>
+        /// Determines whether this node or any sub node, token or trivia has diagnostics.
+        /// </summary>
+        public bool ContainsDiagnostics => this.Green.ContainsDiagnostics;
 
         /// <summary>
         /// Determines whether this node or any sub node, token or trivia has annotations.

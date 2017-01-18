@@ -1,21 +1,19 @@
-﻿using MetaDslx.Compiler.Utilities;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using MetaDslx.Compiler.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Text
 {
     /// <summary>
-    /// Immutable representation of a line number and position within a source text.
+    /// Immutable representation of a line number and position within a SourceText instance.
     /// </summary>
-    public class LinePosition : IEquatable<LinePosition>, IComparable<LinePosition>
+    public struct LinePosition : IEquatable<LinePosition>, IComparable<LinePosition>
     {
         /// <summary>
         /// A <see cref="LinePosition"/> that represents position 0 at line 0.
         /// </summary>
-        public static LinePosition Zero => new LinePosition(0, 0);
+        public static readonly LinePosition Zero = new LinePosition(0, 0);
 
         private readonly int _line;
         private readonly int _character;
@@ -46,6 +44,21 @@ namespace MetaDslx.Compiler.Text
             _character = character;
         }
 
+        // internal constructor that supports a line number == -1.
+        // VB allows users to specify a 1-based line number of 0 when processing
+        // externalsource directives, which get decremented during conversion to 0-based line numbers.
+        // in this case the line number can be -1.
+        internal LinePosition(int character)
+        {
+            if (character < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(character));
+            }
+
+            _line = -1;
+            _character = character;
+        }
+
         /// <summary>
         /// The line number. The first line in a file is defined as line 0 (zero based line numbering).
         /// </summary>
@@ -60,6 +73,22 @@ namespace MetaDslx.Compiler.Text
         public int Character
         {
             get { return _character; }
+        }
+
+        /// <summary>
+        /// Determines whether two <see cref="LinePosition"/> are the same.
+        /// </summary>
+        public static bool operator ==(LinePosition left, LinePosition right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Determines whether two <see cref="LinePosition"/> are different.
+        /// </summary>
+        public static bool operator !=(LinePosition left, LinePosition right)
+        {
+            return !left.Equals(right);
         }
 
         /// <summary>
@@ -102,6 +131,5 @@ namespace MetaDslx.Compiler.Text
             int result = _line.CompareTo(other._line);
             return (result != 0) ? result : _character.CompareTo(other.Character);
         }
-
     }
 }

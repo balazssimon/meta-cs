@@ -15,6 +15,8 @@ namespace MetaDslx.Compiler.Syntax
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public abstract class SyntaxTrivia : RedNode
     {
+        internal static readonly Func<SyntaxTrivia, bool> Any = t => true;
+
         private SyntaxToken token;
         private int index;
 
@@ -45,7 +47,12 @@ namespace MetaDslx.Compiler.Syntax
         {
             get { return (InternalSyntaxTrivia)this.Green; }
         }
-        
+
+        /// <summary>
+        /// Determines whether this trivia is a structured trivia.
+        /// </summary>
+        public bool HasStructure => Green?.IsStructuredTrivia ?? false;
+
         /// <summary>
         /// Returns the child non-terminal node representing the syntax tree structure under this structured trivia.
         /// </summary>

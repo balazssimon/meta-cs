@@ -1,5 +1,9 @@
-﻿using System;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Text;
+using MetaDslx.Compiler.Utilities;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -7,19 +11,68 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
-    public class SyntaxParser
+    public abstract partial class SyntaxParser : IDisposable
     {
-        public SyntaxParser(string text, Language language, CancellationToken cancellationToken = default(CancellationToken))
+        protected readonly SourceText text;
+        protected readonly Language language;
+        protected readonly ParseOptions options;
+        protected readonly CancellationToken cancellationToken;
+
+        protected SyntaxParser(
+            SourceText text,
+            Language language,
+            ParseOptions options,
+            SyntaxNode oldTree,
+            IEnumerable<TextChangeRange> changes,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Text = text;
-            this.Language = language;
-            this.CancellationToken = cancellationToken;
+            this.text = text;
+            this.language = language;
+            this.options = options;
+            this.cancellationToken = cancellationToken;
         }
 
-        public string Text { get; private set; }
+        public abstract GreenNode Parse();
 
-        public Language Language { get; private set; }
+        public void Dispose()
+        {
+        }
 
-        public CancellationToken CancellationToken { get; private set; }
+        public Language Language
+        {
+            get { return this.language; }
+        }
+
+        public ParseOptions Options
+        {
+            get { return this.options; }
+        }
+
+        public bool IsScript
+        {
+            get { return Options.Kind == SourceCodeKind.Script; }
+        }
+
+        public abstract DirectiveStack Directives { get; }
+
+        protected SyntaxDiagnosticInfo MakeError(int offset, int width, int code)
+        {
+            return new SyntaxDiagnosticInfo(this.language.MessageProvider, offset, width, code);
+        }
+
+        protected SyntaxDiagnosticInfo MakeError(int offset, int width, int code, params object[] args)
+        {
+            return new SyntaxDiagnosticInfo(this.language.MessageProvider, offset, width, code, args);
+        }
+
+        protected SyntaxDiagnosticInfo MakeError(InternalSyntaxNode node, int code, params object[] args)
+        {
+            return new SyntaxDiagnosticInfo(this.language.MessageProvider, node.GetLeadingTriviaWidth(), node.Width, code, args);
+        }
+
+        protected SyntaxDiagnosticInfo MakeError(int code, params object[] args)
+        {
+            return new SyntaxDiagnosticInfo(this.language.MessageProvider, code, args);
+        }
     }
 }

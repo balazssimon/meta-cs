@@ -87,12 +87,14 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
         public static string GreenName(this Antlr4ParserRuleElement elem)
         {
-            return elem.Name.ToPascalCase();
+            if (elem.Name == "EOF") return "Eof";
+            else return elem.Name.ToPascalCase();
         }
 
         public static string RedName(this Antlr4ParserRuleElement elem)
         {
-            return elem.Name.ToPascalCase();
+            if (elem.Name == "EOF") return "Eof";
+            else return elem.Name.ToPascalCase();
         }
 
         public static string Antlr4Name(this Antlr4ParserRuleElement elem)
@@ -176,9 +178,9 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 }
                 else if (elem.IsList)
                 {
-                    if (elem.IsToken) return "InternalTokenList";
-                    else if (elem.IsSeparated) return "InternalSeparatedNodeList";
-                    else return "InternalNodeList";
+                    if (elem.IsToken) return "InternalSyntaxTokenList";
+                    else if (elem.IsSeparated) return "InternalSeparatedSyntaxNodeList";
+                    else return "InternalSyntaxNodeList";
                 }
                 else if (elem.IsToken) return "InternalSyntaxToken";
                 else return elem.Type.ToPascalCase() + "Green";
@@ -207,9 +209,9 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             }
             else if (elem.IsList)
             {
-                if (elem.IsSeparated) return "SeparatedNodeList";
+                if (elem.IsSeparated) return "SeparatedSyntaxNodeList";
                 else if (elem.IsToken) return "SyntaxTokenList";
-                else return "NodeList";
+                else return "SyntaxNodeList";
             }
             else if (elem.IsToken) return "SyntaxToken";
             else return elem.Type.ToPascalCase() + "Syntax";
@@ -224,9 +226,9 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             }
             else if (elem.IsList)
             {
-                if (elem.IsSeparated) return "SeparatedNodeList<" + elem.Type.ToPascalCase() + "Syntax>";
+                if (elem.IsSeparated) return "SeparatedSyntaxNodeList<" + elem.Type.ToPascalCase() + "Syntax>";
                 else if (elem.IsToken) return "SyntaxTokenList";
-                else return "NodeList<" + elem.Type.ToPascalCase() + "Syntax>";
+                else return "SyntaxNodeList<" + elem.Type.ToPascalCase() + "Syntax>";
             }
             else if (elem.IsToken) return "SyntaxToken";
             else return elem.Type.ToPascalCase() + "Syntax";

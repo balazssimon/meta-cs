@@ -16,9 +16,10 @@ namespace MetaDslx.Languages.Calculator.Syntax
     /// <summary>
     /// The parsed representation of a Calculator source document.
     /// </summary>
-    public abstract class CalculatorSyntaxTree : AbstractSyntaxTree
+    public abstract class CalculatorSyntaxTree : SyntaxTree
     {
         internal static readonly SyntaxTree Dummy = new DummySyntaxTree();
+        public override Language Language => CalculatorLanguage.Instance;
         /// <summary>
         /// The options used by the parser to produce the syntax tree.
         /// </summary>
@@ -86,7 +87,7 @@ namespace MetaDslx.Languages.Calculator.Syntax
             }
             var oldTree = this;
             // if changes is entire text do a full reparse
-            if (changes.Count == 1 && changes[0].Span == new TextSpan(0, this.Length) && changes[0].NewLength == newText.Length)
+            if (changes.Count == 1 && new TextSpan(0, this.Length).Equals(changes[0].Span) && changes[0].NewLength == newText.Length)
             {
                 // parser will do a full parse if we give it no changes
                 changes = null;
@@ -112,9 +113,7 @@ namespace MetaDslx.Languages.Calculator.Syntax
             {
                 throw new ArgumentNullException(nameof(root));
             }
-            var directives = root.Kind == CalculatorSyntaxKind.Main ?
-                ((MainSyntax)root).GetConditionalDirectivesStack() :
-                DirectiveStack.Empty;
+            var directives = DirectiveStack.Empty;
             return new ParsedSyntaxTree(
                 textOpt: null,
                 encodingOpt: encoding,
@@ -278,10 +277,6 @@ namespace MetaDslx.Languages.Calculator.Syntax
             {
                 get { return string.Empty; }
             }
-            public override SyntaxReference GetReference(SyntaxNode node)
-            {
-                return new SimpleSyntaxReference(node);
-            }
             public override CalculatorSyntaxNode GetRoot(CancellationToken cancellationToken)
             {
                 return _node;
@@ -294,10 +289,6 @@ namespace MetaDslx.Languages.Calculator.Syntax
             public override bool HasCompilationUnitRoot
             {
                 get { return true; }
-            }
-            public override FileLinePositionSpan GetLineSpan(TextSpan span, CancellationToken cancellationToken = default(CancellationToken))
-            {
-                return default(FileLinePositionSpan);
             }
             public override CalculatorSyntaxTree WithRootAndOptions(SyntaxNode root, ParseOptions options)
             {
@@ -379,10 +370,6 @@ namespace MetaDslx.Languages.Calculator.Syntax
                 {
                     return _options;
                 }
-            }
-            public override SyntaxReference GetReference(SyntaxNode node)
-            {
-                return new SimpleSyntaxReference(node);
             }
             public override CalculatorSyntaxTree WithRootAndOptions(SyntaxNode root, ParseOptions options)
             {

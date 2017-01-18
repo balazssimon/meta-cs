@@ -11,6 +11,8 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
     public abstract class InternalSyntaxTrivia : GreenNode
     {
+        internal static readonly InternalSyntaxTrivia Default = new DefaultInternalSyntaxTrivia();
+
         private string text;
 
         protected InternalSyntaxTrivia(int kind, string text, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations) 
@@ -89,6 +91,34 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             }
 
             return true;
+        }
+
+        private class DefaultInternalSyntaxTrivia : InternalSyntaxTrivia
+        {
+            public DefaultInternalSyntaxTrivia() 
+                : base(SyntaxKind.None, string.Empty, null, null)
+            {
+            }
+
+            public override Language Language
+            {
+                get { throw ExceptionUtilities.Unreachable; }
+            }
+
+            public override SyntaxTrivia CreateRed(SyntaxToken parent, int position, int index)
+            {
+                throw ExceptionUtilities.Unreachable;
+            }
+
+            public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
+            {
+                throw ExceptionUtilities.Unreachable;
+            }
+
+            public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+            {
+                throw ExceptionUtilities.Unreachable;
+            }
         }
     }
 }

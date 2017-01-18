@@ -1,16 +1,14 @@
-﻿using MetaDslx.Compiler.Utilities;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using MetaDslx.Compiler.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Text
 {
     /// <summary>
     /// Immutable span represented by a pair of line number and index within the line.
     /// </summary>
-    public class LinePositionSpan : IEquatable<LinePositionSpan>
+    public struct LinePositionSpan : IEquatable<LinePositionSpan>
     {
         public static readonly LinePositionSpan Zero = new LinePositionSpan(LinePosition.Zero, LinePosition.Zero);
 
@@ -27,7 +25,7 @@ namespace MetaDslx.Compiler.Text
         {
             if (end.CompareTo(start) < 0)
             {
-                throw new ArgumentException("End must not be less than start.", nameof(end));
+                throw new ArgumentException("The end must not be less than the start.", nameof(end));
             }
 
             _start = start;

@@ -66,9 +66,15 @@
     <Compile Include="CalculatorParserVisitor.cs">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </Compile>
+    <Compile Include="Compilation\CalculatorFeature.cs" />
     <Compile Include="Compilation\CalculatorLanguage.cs" />
+    <Compile Include="Compilation\CalculatorLanguageVersion.cs" />
+    <Compile Include="Compilation\CalculatorParseOptions.cs" />
+    <Compile Include="Errors\CalculatorErrorCode.cs" />
+    <Compile Include="Parser\CalculatorSyntaxParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Syntax\CalculatorSyntax.cs" />
+    <Compile Include="Syntax\CalculatorSyntaxTree.cs" />
     <Compile Include="Syntax\InternalSyntax\CalculatorInternalSyntax.cs" />
     <Compile Include="TempAnnotations.cs" />
   </ItemGroup>
@@ -99,6 +105,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Main\MetaDslx.Compiler.Antlr4\MetaDslx.Compiler.Antlr4.csproj">
+      <Project>{d31d2069-6f71-4208-aa67-60ae8104cdc6}</Project>
+      <Name>MetaDslx.Compiler.Antlr4</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Main\MetaDslx.Compiler.Core\MetaDslx.Compiler.Core.csproj">
       <Project>{a0690b8b-257b-49be-a05a-23bd4ae670fb}</Project>
       <Name>MetaDslx.Compiler.Core</Name>
@@ -108,9 +118,7 @@
       <Name>MetaDslx.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parser\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

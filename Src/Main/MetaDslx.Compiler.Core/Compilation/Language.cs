@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Syntax;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,13 @@ namespace MetaDslx.Compiler
         internal static readonly Language Default = new DefaultLanguage();
 
         public abstract string Name { get; }
+        public MessageProvider MessageProvider { get { return this.MessageProviderCore; } }
+        protected abstract MessageProvider MessageProviderCore { get; }
         public SyntaxFacts SyntaxFacts { get { return this.SyntaxFactsCore; } }
         protected abstract SyntaxFacts SyntaxFactsCore { get; }
         public SyntaxFactory SyntaxFactory { get { return this.SyntaxFactoryCore; } }
         protected abstract SyntaxFactory SyntaxFactoryCore { get; }
-        internal protected InternalSyntaxFactory InternalSyntaxFactory { get { return this.InternalSyntaxFactoryCore; } }
+        public InternalSyntaxFactory InternalSyntaxFactory { get { return this.InternalSyntaxFactoryCore; } }
         protected abstract InternalSyntaxFactory InternalSyntaxFactoryCore { get; }
     }
 
@@ -52,6 +55,14 @@ namespace MetaDslx.Compiler
             get
             {
                 return InternalSyntaxFactory.Default;
+            }
+        }
+
+        protected override MessageProvider MessageProviderCore
+        {
+            get
+            {
+                return MessageProvider.Default;
             }
         }
     }

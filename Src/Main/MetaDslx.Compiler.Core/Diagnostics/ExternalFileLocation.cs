@@ -61,7 +61,7 @@ namespace MetaDslx.Compiler.Diagnostics
             }
 
             return obj != null
-                && _sourceSpan == obj._sourceSpan
+                && _sourceSpan.Equals(obj._sourceSpan)
                 && _lineSpan.Equals(obj._lineSpan);
         }
 

@@ -25,12 +25,12 @@ namespace MetaDslx.Languages.Calculator
             return (int)value;
         }
 
-        internal static ErrorCode GetErrorCode(this LanguageVersion version)
+        internal static CalculatorErrorCode GetErrorCode(this LanguageVersion version)
         {
             switch (version)
             {
                 case LanguageVersion.Calculator1:
-                    return ErrorCode.ERR_FeatureNotAvailableInVersion1;
+                    return CalculatorErrorCode.ERR_FeatureNotAvailableInVersion1;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(version), "Unexpected value: "+version);
             }

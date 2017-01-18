@@ -23,8 +23,8 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         private InternalSyntaxFactory factory;
         private IList<IToken> tokens;
 
-        public Antlr4SyntaxParser(string text, Language language, CancellationToken cancellationToken = default(CancellationToken))
-            : base(text, language, cancellationToken)
+        public Antlr4SyntaxParser(SourceText text, Language language, ParseOptions options, SyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default(CancellationToken))
+            : base(text, language, options, oldTree, changes, cancellationToken)
         {
             this.Antlr4Errors = new Dictionary<int, string>();
             AntlrInputStream inputStream = new AntlrInputStream(text.ToString());
@@ -111,7 +111,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                     trivia = (InternalSyntaxTrivia)this.AddDiagnostic(trivia, i);
                     triviaArray[i - startIndex] = trivia;
                 }
-                return this.factory.List(SyntaxKind.List, triviaArray);
+                return new InternalSyntaxTriviaList(triviaArray, null, null);
             }
             return null;
         }
@@ -131,7 +131,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                     trivia = (InternalSyntaxTrivia)this.AddDiagnostic(trivia, i);
                     triviaArray[i - startIndex] = trivia;
                 }
-                return this.factory.List(SyntaxKind.List, triviaArray);
+                return new InternalSyntaxTriviaList(triviaArray, null, null);
             }
             return null;
         }
@@ -141,8 +141,8 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             string errorMessage;
             if (this.Antlr4Errors.TryGetValue(tokenIndex, out errorMessage))
             {
-                SyntaxDiagnosticInfo diagnosticInfo = this.GetSyntaxError(token.GetLeadingTriviaWidth(), token.Width, errorMessage);
-                return token.WithDiagnosticsGreen(new DiagnosticInfo[] { diagnosticInfo });
+                SyntaxDiagnosticInfo diagnosticInfo = this.MakeError(token.GetLeadingTriviaWidth(), token.Width, ErrorCode.SyntaxError, errorMessage);
+                return token.WithDiagnostics(new DiagnosticInfo[] { diagnosticInfo });
             }
             return token;
         }

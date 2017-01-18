@@ -8,7 +8,7 @@ using MetaDslx.Core;
 
 namespace MetaDslx.Compiler.Antlr4Roslyn
 {
-    public class Antlr4RoslynMessageProvider : CommonMessageProvider
+    public class Antlr4RoslynMessageProvider : MessageProvider
     {
         public static readonly Antlr4RoslynMessageProvider Instance = new Antlr4RoslynMessageProvider();
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Languages.Calculator
 {
-    internal enum ErrorCode
+    internal enum CalculatorErrorCode
     {
         ERR_FeatureNotAvailableInVersion1
     }

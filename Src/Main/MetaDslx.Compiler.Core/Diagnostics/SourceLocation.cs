@@ -103,7 +103,7 @@ namespace MetaDslx.Compiler.Diagnostics
                 return true;
             }
 
-            return other != null && other._syntaxTree == _syntaxTree && other._span == _span;
+            return other != null && other._syntaxTree == _syntaxTree && other._span.Equals(_span);
         }
 
         public override bool Equals(object obj)

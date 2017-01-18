@@ -106,54 +106,54 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         }
 
 
-        protected abstract InternalSyntaxToken Token(int kind);
-        protected abstract InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing);
-        protected abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing);
-        protected abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing);
-        protected abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing);
-        protected abstract InternalSyntaxToken MissingToken(int kind);
-        protected abstract InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing);
-        protected abstract InternalSyntaxTrivia Trivia(int kind, string text);
+        public abstract InternalSyntaxToken Token(int kind);
+        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing);
+        public abstract InternalSyntaxToken MissingToken(int kind);
+        public abstract InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing);
+        public abstract InternalSyntaxTrivia Trivia(int kind, string text);
     }
 
     internal class DefaultInternalSyntaxFactory : InternalSyntaxFactory
     {
-        protected override InternalSyntaxToken MissingToken(int kind)
+        public override InternalSyntaxToken MissingToken(int kind)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected override InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing)
+        public override InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected override InternalSyntaxToken Token(int kind)
+        public override InternalSyntaxToken Token(int kind)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected override InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing)
+        public override InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected override InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing)
+        public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected override InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing)
+        public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected override InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing)
+        public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected override InternalSyntaxTrivia Trivia(int kind, string text)
+        public override InternalSyntaxTrivia Trivia(int kind, string text)
         {
             throw ExceptionUtilities.Unreachable;
         }

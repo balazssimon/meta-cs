@@ -9,7 +9,7 @@ namespace MetaDslx.Compiler.Text
     /// Immutable abstract representation of a span of text.  For example, in an error diagnostic that reports a
     /// location, it could come from a parsed string, text from a tool editor buffer, etc.
     /// </summary>
-    public class TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
+    public struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     {
         public static readonly TextSpan Default = new TextSpan(0, 0);
 
@@ -110,14 +110,14 @@ namespace MetaDslx.Compiler.Text
         /// <returns>
         /// The overlap of the spans, or null if the overlap is empty.
         /// </returns>
-        public TextSpan Overlap(TextSpan span)
+        public TextSpan? Overlap(TextSpan span)
         {
             int overlapStart = Math.Max(Start, span.Start);
             int overlapEnd = Math.Min(this.End, span.End);
 
             return overlapStart < overlapEnd
                 ? TextSpan.FromBounds(overlapStart, overlapEnd)
-                : null;
+                : (TextSpan?)null;
         }
 
         /// <summary>
@@ -161,14 +161,14 @@ namespace MetaDslx.Compiler.Text
         /// <returns>
         /// The intersection of the spans, or null if the intersection is empty.
         /// </returns>
-        public TextSpan Intersection(TextSpan span)
+        public TextSpan? Intersection(TextSpan span)
         {
             int intersectStart = Math.Max(Start, span.Start);
             int intersectEnd = Math.Min(this.End, span.End);
 
             return intersectStart <= intersectEnd
                 ? TextSpan.FromBounds(intersectStart, intersectEnd)
-                : null;
+                : (TextSpan?)null;
         }
 
         /// <summary>

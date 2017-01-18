@@ -31,12 +31,12 @@ namespace MetaDslx.Compiler.Diagnostics
             _isSuppressed = isSuppressed;
         }
 
-        public static Diagnostic Create(CommonMessageProvider messageProvider, Location location, int errorCode)
+        public static Diagnostic Create(MessageProvider messageProvider, Location location, int errorCode)
         {
             return Create(new DefaultDiagnosticInfo(messageProvider, errorCode), location);
         }
 
-        public static Diagnostic Create(CommonMessageProvider messageProvider, Location location, int errorCode, params object[] arguments)
+        public static Diagnostic Create(MessageProvider messageProvider, Location location, int errorCode, params object[] arguments)
         {
             return Create(new DefaultDiagnosticInfo(messageProvider, errorCode, arguments), location);
         }

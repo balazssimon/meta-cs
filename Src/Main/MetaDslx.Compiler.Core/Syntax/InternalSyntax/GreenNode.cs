@@ -83,12 +83,14 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             get { return this.Language.SyntaxFacts.GetKindText(_kind); }
         }
 
-        public virtual bool HasStructure { get { return false; } }
+        public virtual bool IsStructuredToken { get { return false; } }
+        public virtual bool IsStructuredTrivia { get { return false; } }
         public virtual bool IsDirective { get { return false; } }
         public virtual bool IsToken { get { return false; } }
         public virtual bool IsNode { get { return false; } }
         public virtual bool IsTrivia { get { return false; } }
         public virtual bool IsList { get { return false; } }
+
 
         public abstract int SlotCount { get; }
 
@@ -151,11 +153,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         {
             None = 0,
             ContainsDiagnostics = 1 << 0,
-            ContainsStructuredElement = 1 << 1,
-            ContainsDirectives = 1 << 2,
-            ContainsSkippedText = 1 << 3,
-            ContainsAnnotations = 1 << 4,
-            IsMissing = 1 << 5,
+            ContainsStructuredToken = 1 << 1,
+            ContainsStructuredTrivia = 1 << 2,
+            ContainsDirectives = 1 << 3,
+            ContainsSkippedText = 1 << 4,
+            ContainsAnnotations = 1 << 5,
+            IsMissing = 1 << 6,
 
             InheritMask = byte.MaxValue,
         }
@@ -191,14 +194,6 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             }
         }
 
-        public bool ContainsStructuredElement
-        {
-            get
-            {
-                return (this.flags & NodeFlags.ContainsStructuredElement) != 0;
-            }
-        }
-
         public bool ContainsDirectives
         {
             get
@@ -220,6 +215,22 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             get
             {
                 return (this.flags & NodeFlags.ContainsAnnotations) != 0;
+            }
+        }
+
+        public bool ContainsStructuredToken
+        {
+            get
+            {
+                return (this.flags & NodeFlags.ContainsStructuredToken) != 0;
+            }
+        }
+
+        public bool ContainsStructuredTrivia
+        {
+            get
+            {
+                return (this.flags & NodeFlags.ContainsStructuredTrivia) != 0;
             }
         }
 
@@ -431,6 +442,72 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         }
 
         public abstract GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics);
+
+        public GreenNode WithAdditionalAnnotationsGreen(IEnumerable<SyntaxAnnotation> annotations)
+        {
+            var existingAnnotations = this.GetAnnotations();
+
+            if (annotations == null)
+            {
+                return this;
+            }
+
+            var newAnnotations = ArrayBuilder<SyntaxAnnotation>.GetInstance();
+            newAnnotations.AddRange(existingAnnotations);
+
+            foreach (var candidate in annotations)
+            {
+                if (!newAnnotations.Contains(candidate))
+                {
+                    newAnnotations.Add(candidate);
+                }
+            }
+
+            if (newAnnotations.Count == existingAnnotations.Length)
+            {
+                newAnnotations.Free();
+                return this;
+            }
+            else
+            {
+                return this.WithAnnotations(newAnnotations.ToArrayAndFree());
+            }
+        }
+
+        public GreenNode WithoutAnnotationsGreen(IEnumerable<SyntaxAnnotation> annotations) 
+        {
+            var existingAnnotations = this.GetAnnotations();
+
+            if (annotations == null || existingAnnotations.Length == 0)
+            {
+                return this;
+            }
+
+            var removalAnnotations = ArrayBuilder<SyntaxAnnotation>.GetInstance();
+            removalAnnotations.AddRange(annotations);
+            try
+            {
+                if (removalAnnotations.Count == 0)
+                {
+                    return this;
+                }
+
+                var newAnnotations = ArrayBuilder<SyntaxAnnotation>.GetInstance();
+                foreach (var candidate in existingAnnotations)
+                {
+                    if (!removalAnnotations.Contains(candidate))
+                    {
+                        newAnnotations.Add(candidate);
+                    }
+                }
+
+                return this.WithAnnotations(newAnnotations.ToArrayAndFree());
+            }
+            finally
+            {
+                removalAnnotations.Free();
+            }
+        }
 
 
         // Use conditional weak table so we always return same identity for structured token

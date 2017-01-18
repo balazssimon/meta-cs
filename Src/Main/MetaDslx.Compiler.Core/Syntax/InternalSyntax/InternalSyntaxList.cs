@@ -98,12 +98,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
     }
 
 
-    public abstract class InternalNodeListBase : InternalSyntaxNode
+    public abstract class InternalSyntaxNodeListBase : InternalSyntaxNode
     {
         private readonly int[] _childOffsets;
         private readonly GreenNode[] children;
 
-        internal InternalNodeListBase(GreenNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        internal InternalSyntaxNodeListBase(GreenNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(SyntaxKind.List, 0, diagnostics, annotations)
         {
             Debug.Assert(children != null && children.Length > 0, "Chilren array must not be empty.");
@@ -193,9 +193,9 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
     }
 
-    public abstract class InternalNodeList : InternalNodeListBase, IReadOnlyList<InternalSyntaxNode>
+    public abstract class InternalSyntaxNodeList : InternalSyntaxNodeListBase, IReadOnlyList<InternalSyntaxNode>
     {
-        internal InternalNodeList(InternalSyntaxNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations) 
+        internal InternalSyntaxNodeList(InternalSyntaxNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations) 
             : base(children, diagnostics, annotations)
         {
         }
@@ -215,12 +215,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             return this.Children.GetEnumerator();
         }
 
-        internal abstract InternalNodeList CreateList(InternalSyntaxNode[] items);
+        internal abstract InternalSyntaxNodeList CreateList(InternalSyntaxNode[] items);
     }
 
-    public abstract class InternalSeparatedNodeList : InternalNodeListBase, IReadOnlyList<GreenNode>
+    public abstract class InternalSeparatedSyntaxNodeList : InternalSyntaxNodeListBase, IReadOnlyList<GreenNode>
     {
-        internal InternalSeparatedNodeList(GreenNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        internal InternalSeparatedSyntaxNodeList(GreenNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(children, diagnostics, annotations)
         {
         }
@@ -323,12 +323,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             return this.Children.GetEnumerator();
         }
 
-        internal abstract InternalSeparatedNodeList CreateList(GreenNode[] items);
+        internal abstract InternalSeparatedSyntaxNodeList CreateList(GreenNode[] items);
     }
 
-    internal sealed class InternalStrongNodeList : InternalNodeList
+    internal sealed class InternalStrongSyntaxNodeList : InternalSyntaxNodeList
     {
-        internal InternalStrongNodeList(InternalSyntaxNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        internal InternalStrongSyntaxNodeList(InternalSyntaxNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(children, diagnostics, annotations)
         {
         }
@@ -340,28 +340,28 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public override SyntaxNode CreateRed(SyntaxNode parent, int position)
         {
-            return new StrongNodeList(this, parent, position);
+            return new StrongSyntaxNodeList(this, parent, position);
         }
 
         public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
         {
-            return new InternalStrongNodeList((InternalSyntaxNode[])this.Children, this.GetDiagnostics(), annotations);
+            return new InternalStrongSyntaxNodeList((InternalSyntaxNode[])this.Children, this.GetDiagnostics(), annotations);
         }
 
         public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
         {
-            return new InternalStrongNodeList((InternalSyntaxNode[])this.Children, diagnostics, this.GetAnnotations());
+            return new InternalStrongSyntaxNodeList((InternalSyntaxNode[])this.Children, diagnostics, this.GetAnnotations());
         }
 
-        internal override InternalNodeList CreateList(InternalSyntaxNode[] items)
+        internal override InternalSyntaxNodeList CreateList(InternalSyntaxNode[] items)
         {
-            return new InternalStrongNodeList(items, null, null);
+            return new InternalStrongSyntaxNodeList(items, null, null);
         }
     }
 
-    internal sealed class InternalStrongSeparatedNodeList : InternalSeparatedNodeList
+    internal sealed class InternalStrongSeparatedSyntaxNodeList : InternalSeparatedSyntaxNodeList
     {
-        internal InternalStrongSeparatedNodeList(GreenNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        internal InternalStrongSeparatedSyntaxNodeList(GreenNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(children, diagnostics, annotations)
         {
         }
@@ -373,33 +373,33 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public override SyntaxNode CreateRed(SyntaxNode parent, int position)
         {
-            return new StrongSeparatedNodeList(this, parent, position, 0);
+            return new StrongSeparatedSyntaxNodeList(this, parent, position, 0);
         }
 
         public override RedNode CreateRed(RedNode parent, int position, int index)
         {
-            return new StrongSeparatedNodeList(this, parent as SyntaxNode, position, index);
+            return new StrongSeparatedSyntaxNodeList(this, parent as SyntaxNode, position, index);
         }
 
         public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
         {
-            return new InternalStrongSeparatedNodeList(this.Children, this.GetDiagnostics(), annotations);
+            return new InternalStrongSeparatedSyntaxNodeList(this.Children, this.GetDiagnostics(), annotations);
         }
 
         public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
         {
-            return new InternalStrongSeparatedNodeList(this.Children, diagnostics, this.GetAnnotations());
+            return new InternalStrongSeparatedSyntaxNodeList(this.Children, diagnostics, this.GetAnnotations());
         }
 
-        internal override InternalSeparatedNodeList CreateList(GreenNode[] items)
+        internal override InternalSeparatedSyntaxNodeList CreateList(GreenNode[] items)
         {
-            return new InternalStrongSeparatedNodeList(items, null, null);
+            return new InternalStrongSeparatedSyntaxNodeList(items, null, null);
         }
     }
 
-    internal sealed class InternalWeakNodeList : InternalNodeList
+    internal sealed class InternalWeakSyntaxNodeList : InternalSyntaxNodeList
     {
-        internal InternalWeakNodeList(InternalSyntaxNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        internal InternalWeakSyntaxNodeList(InternalSyntaxNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(children, diagnostics, annotations)
         {
         }
@@ -411,28 +411,28 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public override SyntaxNode CreateRed(SyntaxNode parent, int position)
         {
-            return new WeakNodeList(this, parent, position);
+            return new WeakSyntaxNodeList(this, parent, position);
         }
 
         public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
         {
-            return new InternalWeakNodeList((InternalSyntaxNode[])this.Children, this.GetDiagnostics(), annotations);
+            return new InternalWeakSyntaxNodeList((InternalSyntaxNode[])this.Children, this.GetDiagnostics(), annotations);
         }
 
         public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
         {
-            return new InternalWeakNodeList((InternalSyntaxNode[])this.Children, diagnostics, this.GetAnnotations());
+            return new InternalWeakSyntaxNodeList((InternalSyntaxNode[])this.Children, diagnostics, this.GetAnnotations());
         }
 
-        internal override InternalNodeList CreateList(InternalSyntaxNode[] items)
+        internal override InternalSyntaxNodeList CreateList(InternalSyntaxNode[] items)
         {
-            return new InternalWeakNodeList(items, null, null);
+            return new InternalWeakSyntaxNodeList(items, null, null);
         }
     }
 
-    internal sealed class InternalWeakSeparatedNodeList : InternalSeparatedNodeList
+    internal sealed class InternalWeakSeparatedSyntaxNodeList : InternalSeparatedSyntaxNodeList
     {
-        internal InternalWeakSeparatedNodeList(GreenNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        internal InternalWeakSeparatedSyntaxNodeList(GreenNode[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(children, diagnostics, annotations)
         {
         }
@@ -444,34 +444,34 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public override SyntaxNode CreateRed(SyntaxNode parent, int position)
         {
-            return new WeakSeparatedNodeList(this, parent, position, 0);
+            return new WeakSeparatedSyntaxNodeList(this, parent, position, 0);
         }
 
         public override RedNode CreateRed(RedNode parent, int position, int index)
         {
-            return new WeakSeparatedNodeList(this, parent as SyntaxNode, position, index);
+            return new WeakSeparatedSyntaxNodeList(this, parent as SyntaxNode, position, index);
         }
 
         public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
         {
-            return new InternalWeakSeparatedNodeList(this.Children, this.GetDiagnostics(), annotations);
+            return new InternalWeakSeparatedSyntaxNodeList(this.Children, this.GetDiagnostics(), annotations);
         }
 
         public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
         {
-            return new InternalWeakSeparatedNodeList(this.Children, diagnostics, this.GetAnnotations());
+            return new InternalWeakSeparatedSyntaxNodeList(this.Children, diagnostics, this.GetAnnotations());
         }
 
-        internal override InternalSeparatedNodeList CreateList(GreenNode[] items)
+        internal override InternalSeparatedSyntaxNodeList CreateList(GreenNode[] items)
         {
-            return new InternalWeakSeparatedNodeList(items, null, null);
+            return new InternalWeakSeparatedSyntaxNodeList(items, null, null);
         }
     }
 
 
-    public sealed class InternalTokenList : InternalSyntaxList, IReadOnlyList<InternalSyntaxToken>
+    public sealed class InternalSyntaxTokenList : InternalSyntaxList, IReadOnlyList<InternalSyntaxToken>
     {
-        public InternalTokenList(InternalSyntaxToken[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        public InternalSyntaxTokenList(InternalSyntaxToken[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(children, diagnostics, annotations)
         {
         }
@@ -484,7 +484,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         public override RedNode CreateRed(RedNode parent, int position, int index)
         {
             Debug.Assert(parent is SyntaxNode);
-            return new TokenList(this, parent as SyntaxNode, position, index);
+            return new SyntaxTokenList(this, parent as SyntaxNode, position, index);
         }
 
         public IEnumerator<InternalSyntaxToken> GetEnumerator()
@@ -494,12 +494,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
         {
-            return new InternalTokenList((InternalSyntaxToken[])this.Children, this.GetDiagnostics(), annotations);
+            return new InternalSyntaxTokenList((InternalSyntaxToken[])this.Children, this.GetDiagnostics(), annotations);
         }
 
         public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
         {
-            return new InternalTokenList((InternalSyntaxToken[])this.Children, diagnostics, this.GetAnnotations());
+            return new InternalSyntaxTokenList((InternalSyntaxToken[])this.Children, diagnostics, this.GetAnnotations());
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -508,9 +508,9 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         }
     }
 
-    public sealed class InternalTriviaList : InternalSyntaxList, IReadOnlyList<InternalSyntaxTrivia>
+    public sealed class InternalSyntaxTriviaList : InternalSyntaxList, IReadOnlyList<InternalSyntaxTrivia>
     {
-        public InternalTriviaList(InternalSyntaxTrivia[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        public InternalSyntaxTriviaList(InternalSyntaxTrivia[] children, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(children, diagnostics, annotations)
         {
         }
@@ -523,7 +523,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         public override RedNode CreateRed(RedNode parent, int position, int index)
         {
             Debug.Assert(parent is SyntaxToken);
-            return new TriviaList(this, parent as SyntaxToken, position, index);
+            return new SyntaxTriviaList(this, parent as SyntaxToken, position, index);
         }
 
         public IEnumerator<InternalSyntaxTrivia> GetEnumerator()
@@ -533,12 +533,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
         {
-            return new InternalTriviaList((InternalSyntaxTrivia[])this.Children, this.GetDiagnostics(), annotations);
+            return new InternalSyntaxTriviaList((InternalSyntaxTrivia[])this.Children, this.GetDiagnostics(), annotations);
         }
 
         public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
         {
-            return new InternalTriviaList((InternalSyntaxTrivia[])this.Children, diagnostics, this.GetAnnotations());
+            return new InternalSyntaxTriviaList((InternalSyntaxTrivia[])this.Children, diagnostics, this.GetAnnotations());
         }
 
         IEnumerator IEnumerable.GetEnumerator()

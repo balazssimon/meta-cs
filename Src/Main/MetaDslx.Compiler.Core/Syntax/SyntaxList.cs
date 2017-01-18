@@ -51,19 +51,691 @@ namespace MetaDslx.Compiler.Syntax
         }
     }
 
-    public abstract class NodeListBase : SyntaxNode
+    public sealed class ChildSyntaxList : IEquatable<ChildSyntaxList>, IReadOnlyList<RedNode>
+    {
+        private readonly SyntaxNode _node;
+        private readonly int _count;
+
+        internal ChildSyntaxList(SyntaxNode node)
+        {
+            _node = node;
+            _count = CountNodes(node.Green);
+        }
+
+        /// <summary>
+        /// Gets the number of children contained in the <see cref="ChildSyntaxList"/>.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return _count;
+            }
+        }
+
+        internal static int CountNodes(GreenNode green)
+        {
+            int n = 0;
+
+            for (int i = 0, s = green.SlotCount; i < s; i++)
+            {
+                var child = green.GetSlot(i);
+                if (child != null)
+                {
+                    if (!child.IsList)
+                    {
+                        n++;
+                    }
+                    else
+                    {
+                        n += child.SlotCount;
+                    }
+                }
+            }
+
+            return n;
+        }
+
+        /// <summary>Gets the child at the specified index.</summary>
+        /// <param name="index">The zero-based index of the child to get.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        ///   <paramref name="index"/> is less than 0.-or-<paramref name="index" /> is equal to or greater than <see cref="ChildSyntaxList.Count"/>. </exception>
+        public RedNode this[int index]
+        {
+            get
+            {
+                if (unchecked((uint)index < (uint)_count))
+                {
+                    return ItemInternal(_node, index);
+                }
+
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        internal SyntaxNode Node
+        {
+            get { return _node; }
+        }
+
+        private static int Occupancy(GreenNode green)
+        {
+            return green.IsList ? green.SlotCount : 1;
+        }
+
+        /// <summary>
+        /// internal indexer that does not verify index.
+        /// Used when caller has already ensured that index is within bounds.
+        /// </summary>
+        internal static RedNode ItemInternal(SyntaxNode node, int index)
+        {
+            GreenNode greenChild;
+            var green = node.Green;
+            var idx = index;
+            var slotIndex = 0;
+            var position = node.Position;
+
+            // find a slot that contains the node or its parent list (if node is in a list)
+            // we will be skipping whole slots here so we will not loop for long
+            // the max possible number of slots is 11 (TypeDeclarationSyntax)
+            // and typically much less than that
+            //
+            // at the end of this loop we will have
+            // 1) slot index - slotIdx
+            // 2) if the slot is a list, node index in the list - idx
+            // 3) slot position - position
+            while (true)
+            {
+                greenChild = green.GetSlot(slotIndex);
+                if (greenChild != null)
+                {
+                    int currentOccupancy = Occupancy(greenChild);
+                    if (idx < currentOccupancy)
+                    {
+                        break;
+                    }
+
+                    idx -= currentOccupancy;
+                    position += greenChild.FullWidth;
+                }
+
+                slotIndex++;
+            }
+
+            // get node that represents this slot
+            var red = node.GetNodeSlot(slotIndex);
+            if (!greenChild.IsList)
+            {
+                // this is a single node or token
+                // if it is a node, we are done
+                // otherwise will have to make a token with current gChild and position
+                if (red != null)
+                {
+                    return red;
+                }
+            }
+            else if (red != null)
+            {
+                // it is a red list of nodes (separated or not), most common case
+                var redChild = red.GetNodeSlot(idx);
+                if (redChild != null)
+                {
+                    // this is our node
+                    return redChild;
+                }
+
+                // must be a separator
+                // update gChild and position and let it be handled as a token
+                greenChild = greenChild.GetSlot(idx);
+                position = red.GetChildPosition(idx);
+            }
+            else
+            {
+                // it is a token from a token list, uncommon case
+                // update gChild and position and let it be handled as a token
+                position += greenChild.GetSlotOffset(idx);
+                greenChild = greenChild.GetSlot(idx);
+            }
+
+            return greenChild.CreateRed(node, position, index);
+        }
+
+        /// <summary>
+        /// Locate the node or token that is a child of the given <see cref="SyntaxNode"/> and contains the given position.
+        /// </summary>
+        /// <param name="node">The <see cref="SyntaxNode"/> to search.</param>
+        /// <param name="targetPosition">The position.</param>
+        /// <returns>The node or token that spans the given position.</returns>
+        /// <remarks>
+        /// Assumes that <paramref name="targetPosition"/> is within the span of <paramref name="node"/>.
+        /// </remarks>
+        internal static RedNode ChildThatContainsPosition(SyntaxNode node, int targetPosition)
+        {
+            // The targetPosition must already be within this node
+            Debug.Assert(node.FullSpan.Contains(targetPosition));
+
+            var green = node.Green;
+            var position = node.Position;
+            var index = 0;
+
+            Debug.Assert(!green.IsList);
+
+            // Find the green node that spans the target position.
+            // We will be skipping whole slots here so we will not loop for long
+            // The max possible number of slots is 11 (TypeDeclarationSyntax)
+            // and typically much less than that
+            int slot;
+            for (slot = 0; ; slot++)
+            {
+                GreenNode greenChild = green.GetSlot(slot);
+                if (greenChild != null)
+                {
+                    var endPosition = position + greenChild.FullWidth;
+                    if (targetPosition < endPosition)
+                    {
+                        // Descend into the child element
+                        green = greenChild;
+                        break;
+                    }
+
+                    position = endPosition;
+                    index += Occupancy(greenChild);
+                }
+            }
+
+            // Realize the red node (if any)
+            var red = node.GetNodeSlot(slot);
+            if (!green.IsList)
+            {
+                // This is a single node or token.
+                // If it is a node, we are done.
+                if (red != null)
+                {
+                    return red;
+                }
+
+                // Otherwise will have to make a token with current green and position
+            }
+            else
+            {
+                slot = green.FindSlotIndexContainingOffset(targetPosition - position);
+
+                // Realize the red node (if any)
+                if (red != null)
+                {
+                    // It is a red list of nodes (separated or not)
+                    red = red.GetNodeSlot(slot);
+                    if (red != null)
+                    {
+                        return red;
+                    }
+
+                    // Must be a separator
+                }
+
+                // Otherwise we have a token.
+                position += green.GetSlotOffset(slot);
+                green = green.GetSlot(slot);
+
+                // Since we can't have "lists of lists", the Occupancy calculation for
+                // child elements in a list is simple.
+                index += slot;
+            }
+
+            // Make a token with current child and position.
+            return green.CreateRed(node, position, index);
+        }
+
+        /// <summary>
+        /// internal indexer that does not verify index.
+        /// Used when caller has already ensured that index is within bounds.
+        /// </summary>
+        internal static SyntaxNode ItemInternalAsNode(SyntaxNode node, int index)
+        {
+            GreenNode greenChild;
+            var green = node.Green;
+            var idx = index;
+            var slotIndex = 0;
+
+            // find a slot that contains the node or its parent list (if node is in a list)
+            // we will be skipping whole slots here so we will not loop for long
+            // the max possible number of slots is 11 (TypeDeclarationSyntax)
+            // and typically much less than that
+            //
+            // at the end of this loop we will have
+            // 1) slot index - slotIdx
+            // 2) if the slot is a list, node index in the list - idx
+            while (true)
+            {
+                greenChild = green.GetSlot(slotIndex);
+                if (greenChild != null)
+                {
+                    int currentOccupancy = Occupancy(greenChild);
+                    if (idx < currentOccupancy)
+                    {
+                        break;
+                    }
+
+                    idx -= currentOccupancy;
+                }
+
+                slotIndex++;
+            }
+
+            // get node that represents this slot
+            var red = node.GetNodeSlot(slotIndex);
+            if (greenChild.IsList && red != null)
+            {
+                // it is a red list of nodes (separated or not), most common case
+                return red.GetNodeSlot(idx);
+            }
+
+            // this is a single node or token
+            return red;
+        }
+
+        // for debugging
+        private RedNode[] Nodes
+        {
+            get
+            {
+                return this.ToArray();
+            }
+        }
+
+        public bool Any()
+        {
+            return _count != 0;
+        }
+
+        /// <summary>
+        /// Returns the first child in the list.
+        /// </summary>
+        /// <returns>The first child in the list.</returns>
+        /// <exception cref="System.InvalidOperationException">The list is empty.</exception>    
+        public RedNode First()
+        {
+            if (Any())
+            {
+                return this[0];
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        /// <summary>
+        /// Returns the last child in the list.
+        /// </summary>
+        /// <returns>The last child in the list.</returns>
+        /// <exception cref="System.InvalidOperationException">The list is empty.</exception>    
+        public RedNode Last()
+        {
+            if (Any())
+            {
+                return this[_count - 1];
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        /// <summary>
+        /// Returns a list which contains all children of <see cref="ChildSyntaxList"/> in reversed order.
+        /// </summary>
+        /// <returns><see cref="Reversed"/> which contains all children of <see cref="ChildSyntaxList"/> in reversed order</returns>
+        public Reversed Reverse()
+        {
+            return new Reversed(_node, _count);
+        }
+
+        /// <summary>Returns an enumerator that iterates through the <see cref="ChildSyntaxList"/>.</summary>
+        /// <returns>A <see cref="Enumerator"/> for the <see cref="ChildSyntaxList"/>.</returns>
+        public Enumerator GetEnumerator()
+        {
+            if (_node == null)
+            {
+                return default(Enumerator);
+            }
+
+            return new Enumerator(_node, _count);
+        }
+
+        IEnumerator<RedNode> IEnumerable<RedNode>.GetEnumerator()
+        {
+            if (_node == null)
+            {
+                return EmptyCollections.Enumerator<RedNode>();
+            }
+
+            return new EnumeratorImpl(_node, _count);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            if (_node == null)
+            {
+                return EmptyCollections.Enumerator<RedNode>();
+            }
+
+            return new EnumeratorImpl(_node, _count);
+        }
+
+        /// <summary>Determines whether the specified object is equal to the current instance.</summary>
+        /// <returns>true if the specified object is a <see cref="ChildSyntaxList" /> structure and is equal to the current instance; otherwise, false.</returns>
+        /// <param name="obj">The object to be compared with the current instance.</param>
+        public override bool Equals(object obj)
+        {
+            return obj is ChildSyntaxList && Equals((ChildSyntaxList)obj);
+        }
+
+        /// <summary>Determines whether the specified <see cref="ChildSyntaxList" /> structure is equal to the current instance.</summary>
+        /// <returns>true if the specified <see cref="ChildSyntaxList" /> structure is equal to the current instance; otherwise, false.</returns>
+        /// <param name="other">The <see cref="ChildSyntaxList" /> structure to be compared with the current instance.</param>
+        public bool Equals(ChildSyntaxList other)
+        {
+            return _node == other._node;
+        }
+
+        /// <summary>Returns the hash code for the current instance.</summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
+        public override int GetHashCode()
+        {
+            return _node?.GetHashCode() ?? 0;
+        }
+
+        /// <summary>Enumerates the elements of a <see cref="ChildSyntaxList" />.</summary>
+        public struct Enumerator
+        {
+            private SyntaxNode _node;
+            private int _count;
+            private int _childIndex;
+            private RedNode _current;
+
+            internal Enumerator(SyntaxNode node, int count)
+            {
+                _node = node;
+                _count = count;
+                _childIndex = -1;
+                _current = null;
+            }
+
+            // PERF: Initialize an Enumerator directly from a SyntaxNode without going
+            // via ChildNodesAndTokens. This saves constructing an intermediate ChildSyntaxList
+            internal void InitializeFrom(SyntaxNode node)
+            {
+                _node = node;
+                _count = CountNodes(node.Green);
+                _childIndex = -1;
+                _current = null;
+            }
+
+            /// <summary>Advances the enumerator to the next element of the <see cref="ChildSyntaxList" />.</summary>
+            /// <returns>true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.</returns>
+            public bool MoveNext()
+            {
+                _current = null;
+                var newIndex = _childIndex + 1;
+                if (newIndex < _count)
+                {
+                    _childIndex = newIndex;
+                    return true;
+                }
+
+                return false;
+            }
+
+            /// <summary>Gets the element at the current position of the enumerator.</summary>
+            /// <returns>The element in the <see cref="ChildSyntaxList" /> at the current position of the enumerator.</returns>
+            public RedNode Current
+            {
+                get
+                {
+                    if (_current == null)
+                    {
+                        _current = ItemInternal(_node, _childIndex);
+                    }
+                    return _current;
+                }
+            }
+
+            /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
+            public void Reset()
+            {
+                _childIndex = -1;
+                _current = null;
+            }
+
+            internal bool MoveToNextNode()
+            {
+                while (MoveNext())
+                {
+                    var nodeValue = ItemInternalAsNode(_node, _childIndex);
+                    if (nodeValue != null)
+                    {
+                        _current = nodeValue;
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        private class EnumeratorImpl : IEnumerator<RedNode>
+        {
+            private Enumerator _enumerator;
+
+            internal EnumeratorImpl(SyntaxNode node, int count)
+            {
+                _enumerator = new Enumerator(node, count);
+            }
+
+            /// <summary>
+            /// Gets the element in the collection at the current position of the enumerator.
+            /// </summary>
+            /// <returns>
+            /// The element in the collection at the current position of the enumerator.
+            ///   </returns>
+            public RedNode Current
+            {
+                get { return _enumerator.Current; }
+            }
+
+            /// <summary>
+            /// Gets the element in the collection at the current position of the enumerator.
+            /// </summary>
+            /// <returns>
+            /// The element in the collection at the current position of the enumerator.
+            ///   </returns>
+            object IEnumerator.Current
+            {
+                get { return _enumerator.Current; }
+            }
+
+            /// <summary>
+            /// Advances the enumerator to the next element of the collection.
+            /// </summary>
+            /// <returns>
+            /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+            /// </returns>
+            public bool MoveNext()
+            {
+                return _enumerator.MoveNext();
+            }
+
+            /// <summary>
+            /// Sets the enumerator to its initial position, which is before the first element in the collection.
+            /// </summary>
+            public void Reset()
+            {
+                _enumerator.Reset();
+            }
+
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            public void Dispose()
+            { }
+        }
+
+        public struct Reversed : IEnumerable<RedNode>, IEquatable<Reversed>
+        {
+            private readonly SyntaxNode _node;
+            private readonly int _count;
+
+            internal Reversed(SyntaxNode node, int count)
+            {
+                _node = node;
+                _count = count;
+            }
+
+            public Enumerator GetEnumerator()
+            {
+                return new Enumerator(_node, _count);
+            }
+
+            IEnumerator<RedNode> IEnumerable<RedNode>.GetEnumerator()
+            {
+                if (_node == null)
+                {
+                    return EmptyCollections.Enumerator<RedNode>();
+                }
+
+                return new EnumeratorImpl(_node, _count);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                if (_node == null)
+                {
+                    return EmptyCollections.Enumerator<RedNode>();
+                }
+
+                return new EnumeratorImpl(_node, _count);
+            }
+
+            public override int GetHashCode()
+            {
+                return _node != null ? Hash.Combine(_node.GetHashCode(), _count) : 0;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return (obj is Reversed) && Equals((Reversed)obj);
+            }
+
+            public bool Equals(Reversed other)
+            {
+                return _node == other._node
+                    && _count == other._count;
+            }
+
+            public struct Enumerator
+            {
+                private readonly SyntaxNode _node;
+                private readonly int _count;
+                private int _childIndex;
+
+                internal Enumerator(SyntaxNode node, int count)
+                {
+                    _node = node;
+                    _count = count;
+                    _childIndex = count;
+                }
+
+                public bool MoveNext()
+                {
+                    return --_childIndex >= 0;
+                }
+
+                public RedNode Current
+                {
+                    get
+                    {
+                        return ItemInternal(_node, _childIndex);
+                    }
+                }
+
+                public void Reset()
+                {
+                    _childIndex = _count;
+                }
+            }
+
+            private class EnumeratorImpl : IEnumerator<RedNode>
+            {
+                private Enumerator _enumerator;
+
+                internal EnumeratorImpl(SyntaxNode node, int count)
+                {
+                    _enumerator = new Enumerator(node, count);
+                }
+
+                /// <summary>
+                /// Gets the element in the collection at the current position of the enumerator.
+                /// </summary>
+                /// <returns>
+                /// The element in the collection at the current position of the enumerator.
+                ///   </returns>
+                public RedNode Current
+                {
+                    get { return _enumerator.Current; }
+                }
+
+                /// <summary>
+                /// Gets the element in the collection at the current position of the enumerator.
+                /// </summary>
+                /// <returns>
+                /// The element in the collection at the current position of the enumerator.
+                ///   </returns>
+                object IEnumerator.Current
+                {
+                    get { return _enumerator.Current; }
+                }
+
+                /// <summary>
+                /// Advances the enumerator to the next element of the collection.
+                /// </summary>
+                /// <returns>
+                /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+                /// </returns>
+                /// <exception cref="InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+                public bool MoveNext()
+                {
+                    return _enumerator.MoveNext();
+                }
+
+                /// <summary>
+                /// Sets the enumerator to its initial position, which is before the first element in the collection.
+                /// </summary>
+                /// <exception cref="InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+                public void Reset()
+                {
+                    _enumerator.Reset();
+                }
+
+                /// <summary>
+                /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+                /// </summary>
+                public void Dispose()
+                { }
+            }
+        }
+
+    }
+
+    public abstract class SyntaxNodeListBase : SyntaxNode
     {
         private readonly RedNode[] _children;
 
-        internal NodeListBase(InternalNodeListBase green, SyntaxNode parent, int position)
+        internal SyntaxNodeListBase(InternalSyntaxNodeListBase green, SyntaxNode parent, int position)
             : base(green, parent, position) 
         {
             _children = new RedNode[green.SlotCount];
         }
 
-        internal InternalNodeListBase GreenList
+        internal InternalSyntaxNodeListBase GreenList
         {
-            get { return (InternalNodeListBase)this.Green; }
+            get { return (InternalSyntaxNodeListBase)this.Green; }
         }
 
         internal bool IsWeak
@@ -92,32 +764,32 @@ namespace MetaDslx.Compiler.Syntax
         }
     }
 
-    public abstract class NodeList : NodeListBase
+    public abstract class SyntaxNodeList : SyntaxNodeListBase
     {
-        internal NodeList(InternalNodeList green, SyntaxNode parent, int position)
+        internal SyntaxNodeList(InternalSyntaxNodeList green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
         }
 
-        public new InternalNodeList GreenList
+        public new InternalSyntaxNodeList GreenList
         {
-            get { return (InternalNodeList)this.Green; }
+            get { return (InternalSyntaxNodeList)this.Green; }
         }
     }
 
-    public abstract class SeparatedNodeList : NodeListBase
+    public abstract class SeparatedSyntaxNodeList : SyntaxNodeListBase
     {
         private int index;
 
-        internal SeparatedNodeList(InternalSeparatedNodeList green, SyntaxNode parent, int position, int index)
+        internal SeparatedSyntaxNodeList(InternalSeparatedSyntaxNodeList green, SyntaxNode parent, int position, int index)
             : base(green, parent, position)
         {
             this.index = index;
         }
 
-        public new InternalSeparatedNodeList GreenList
+        public new InternalSeparatedSyntaxNodeList GreenList
         {
-            get { return (InternalSeparatedNodeList)this.Green; }
+            get { return (InternalSeparatedSyntaxNodeList)this.Green; }
         }
 
         internal int Index
@@ -126,11 +798,11 @@ namespace MetaDslx.Compiler.Syntax
         }
     }
 
-    internal sealed class StrongNodeList : NodeList
+    internal sealed class StrongSyntaxNodeList : SyntaxNodeList
     {
         private readonly RedNode[] _children;
 
-        internal StrongNodeList(InternalNodeList green, SyntaxNode parent, int position)
+        internal StrongSyntaxNodeList(InternalSyntaxNodeList green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
             _children = new RedNode[green.SlotCount];
@@ -147,11 +819,11 @@ namespace MetaDslx.Compiler.Syntax
         }
     }
 
-    internal sealed class StrongSeparatedNodeList : SeparatedNodeList
+    internal sealed class StrongSeparatedSyntaxNodeList : SeparatedSyntaxNodeList
     {
         private readonly RedNode[] _children;
 
-        internal StrongSeparatedNodeList(InternalSeparatedNodeList green, SyntaxNode parent, int position, int index)
+        internal StrongSeparatedSyntaxNodeList(InternalSeparatedSyntaxNodeList green, SyntaxNode parent, int position, int index)
             : base(green, parent, position, index)
         {
             _children = new RedNode[(green.SlotCount + 1) >> 1];
@@ -181,7 +853,7 @@ namespace MetaDslx.Compiler.Syntax
         }
     }
 
-    internal sealed class WeakNodeList : NodeList
+    internal sealed class WeakSyntaxNodeList : SyntaxNodeList
     {
         private readonly WeakReference<RedNode>[] _children;
 
@@ -190,7 +862,7 @@ namespace MetaDslx.Compiler.Syntax
         // the position of a child later requires traversing all previous siblings.
         private readonly int[] _childPositions;
 
-        internal WeakNodeList(InternalWeakNodeList green, SyntaxNode parent, int position)
+        internal WeakSyntaxNodeList(InternalWeakSyntaxNodeList green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
             int count = green.SlotCount;
@@ -227,7 +899,7 @@ namespace MetaDslx.Compiler.Syntax
         }
     }
 
-    internal sealed class WeakSeparatedNodeList : SeparatedNodeList
+    internal sealed class WeakSeparatedSyntaxNodeList : SeparatedSyntaxNodeList
     {
         private readonly WeakReference<RedNode>[] _children;
 
@@ -236,7 +908,7 @@ namespace MetaDslx.Compiler.Syntax
         // the position of a child later requires traversing all previous siblings.
         private readonly int[] _childPositions;
 
-        internal WeakSeparatedNodeList(InternalWeakSeparatedNodeList green, SyntaxNode parent, int position, int index)
+        internal WeakSeparatedSyntaxNodeList(InternalWeakSeparatedSyntaxNodeList green, SyntaxNode parent, int position, int index)
             : base(green, parent, position, index)
         {
             int count = (green.SlotCount + 1) >> 1;
@@ -284,14 +956,14 @@ namespace MetaDslx.Compiler.Syntax
         }
     }
     
-    public sealed class TokenList : SyntaxList, IReadOnlyList<SyntaxToken>
+    public sealed class SyntaxTokenList : SyntaxList, IReadOnlyList<SyntaxToken>
     {
-        internal TokenList(InternalTokenList green, SyntaxNode parent, int position, int index)
+        internal SyntaxTokenList(InternalSyntaxTokenList green, SyntaxNode parent, int position, int index)
             : base(green, parent, position, index)
         {
         }
 
-        internal TokenList(InternalSyntaxToken green, SyntaxNode parent, int position, int index)
+        internal SyntaxTokenList(InternalSyntaxToken green, SyntaxNode parent, int position, int index)
             : base(green, parent, position, index)
         {
         }
@@ -393,7 +1065,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new <see cref="SyntaxTokenList"/> with the specified token added to the end.
         /// </summary>
         /// <param name="token">The token to add.</param>
-        public TokenList Add(SyntaxToken token)
+        public SyntaxTokenList Add(SyntaxToken token)
         {
             return Insert(this.Count, token);
         }
@@ -402,7 +1074,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new <see cref="SyntaxTokenList"/> with the specified tokens added to the end.
         /// </summary>
         /// <param name="tokens">The tokens to add.</param>
-        public TokenList AddRange(IEnumerable<SyntaxToken> tokens)
+        public SyntaxTokenList AddRange(IEnumerable<SyntaxToken> tokens)
         {
             return InsertRange(this.Count, tokens);
         }
@@ -412,7 +1084,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="index">The index to insert the new token.</param>
         /// <param name="token">The token to insert.</param>
-        public TokenList Insert(int index, SyntaxToken token)
+        public SyntaxTokenList Insert(int index, SyntaxToken token)
         {
             if (token == null)
             {
@@ -426,7 +1098,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="index">The index to insert the new tokens.</param>
         /// <param name="tokens">The tokens to insert.</param>
-        public TokenList InsertRange(int index, IEnumerable<SyntaxToken> tokens)
+        public SyntaxTokenList InsertRange(int index, IEnumerable<SyntaxToken> tokens)
         {
             if (index < 0 || index > this.Count)
             {
@@ -452,14 +1124,14 @@ namespace MetaDslx.Compiler.Syntax
                 return this;
             }
 
-            return new TokenList(new InternalTokenList(list.Select(n => n.GreenToken).ToArray(), null, null), null, 0, 0);
+            return new SyntaxTokenList(new InternalSyntaxTokenList(list.Select(n => n.GreenToken).ToArray(), null, null), null, 0, 0);
         }
 
         /// <summary>
         /// Creates a new <see cref="SyntaxTokenList"/> with the token at the specified index removed.
         /// </summary>
         /// <param name="index">The index of the token to remove.</param>
-        public TokenList RemoveAt(int index)
+        public SyntaxTokenList RemoveAt(int index)
         {
             if (index < 0 || index >= this.Count)
             {
@@ -468,14 +1140,14 @@ namespace MetaDslx.Compiler.Syntax
 
             var list = this.ToList();
             list.RemoveAt(index);
-            return new TokenList(new InternalTokenList(list.Select(n => n.GreenToken).ToArray(), null, null), null, 0, 0);
+            return new SyntaxTokenList(new InternalSyntaxTokenList(list.Select(n => n.GreenToken).ToArray(), null, null), null, 0, 0);
         }
 
         /// <summary>
         /// Creates a new <see cref="SyntaxTokenList"/> with the specified token removed.
         /// </summary>
         /// <param name="tokenInList">The token to remove.</param>
-        public TokenList Remove(SyntaxToken tokenInList)
+        public SyntaxTokenList Remove(SyntaxToken tokenInList)
         {
             var index = this.IndexOf(tokenInList);
             if (index >= 0 && index <= this.Count)
@@ -491,7 +1163,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="tokenInList">The token to replace.</param>
         /// <param name="newToken">The new token.</param>
-        public TokenList Replace(SyntaxToken tokenInList, SyntaxToken newToken)
+        public SyntaxTokenList Replace(SyntaxToken tokenInList, SyntaxToken newToken)
         {
             if (newToken == null)
             {
@@ -506,7 +1178,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="tokenInList">The token to replace.</param>
         /// <param name="newTokens">The new tokens.</param>
-        public TokenList ReplaceRange(SyntaxToken tokenInList, IEnumerable<SyntaxToken> newTokens)
+        public SyntaxTokenList ReplaceRange(SyntaxToken tokenInList, IEnumerable<SyntaxToken> newTokens)
         {
             var index = this.IndexOf(tokenInList);
             if (index >= 0 && index <= this.Count)
@@ -514,7 +1186,7 @@ namespace MetaDslx.Compiler.Syntax
                 var list = this.ToList();
                 list.RemoveAt(index);
                 list.InsertRange(index, newTokens);
-                return new TokenList(new InternalTokenList(list.Select(n => n.GreenToken).ToArray(), null, null), null, 0, 0);
+                return new SyntaxTokenList(new InternalSyntaxTokenList(list.Select(n => n.GreenToken).ToArray(), null, null), null, 0, 0);
             }
 
             throw new ArgumentOutOfRangeException(nameof(tokenInList));
@@ -547,7 +1219,7 @@ namespace MetaDslx.Compiler.Syntax
             return node.IsList ? node.GetSlot(i) : node;
         }
 
-        public bool Equals(TokenList other)
+        public bool Equals(SyntaxTokenList other)
         {
             return Green == other.Green && Parent == other.Parent && Index == other.Index;
         }
@@ -558,7 +1230,7 @@ namespace MetaDslx.Compiler.Syntax
         /// <returns>True if the two objects are equal.</returns>
         public override bool Equals(object obj)
         {
-            return obj is TokenList && Equals((TokenList)obj);
+            return obj is SyntaxTokenList && Equals((SyntaxTokenList)obj);
         }
 
         /// <summary>
@@ -629,7 +1301,7 @@ namespace MetaDslx.Compiler.Syntax
             private GreenNode _current;
             private int _position;
 
-            internal Enumerator(TokenList list)
+            internal Enumerator(SyntaxTokenList list)
             {
                 _parent = list.Parent;
                 _singleNodeOrList = list.Green;
@@ -704,7 +1376,7 @@ namespace MetaDslx.Compiler.Syntax
             private Enumerator _enumerator;
 
             // SyntaxTriviaList is a relatively big struct so is passed by ref
-            internal EnumeratorImpl(TokenList list)
+            internal EnumeratorImpl(SyntaxTokenList list)
             {
                 _enumerator = new Enumerator(list);
             }
@@ -729,23 +1401,23 @@ namespace MetaDslx.Compiler.Syntax
         }
     }
 
-    public sealed class TriviaList : SyntaxList, IReadOnlyList<SyntaxTrivia>
+    public sealed class SyntaxTriviaList : SyntaxList, IReadOnlyList<SyntaxTrivia>
     {
         private SyntaxToken token;
 
-        internal TriviaList(GreenNode node, SyntaxToken token, int position, int index)
+        internal SyntaxTriviaList(GreenNode node, SyntaxToken token, int position, int index)
             : base(node, token.Parent, position, index)
         {
             this.token = token;
         }
 
-        internal TriviaList(InternalTriviaList node, SyntaxToken token, int position, int index)
+        internal SyntaxTriviaList(InternalSyntaxTriviaList node, SyntaxToken token, int position, int index)
             : base(node, token.Parent, position, index)
         {
             this.token = token;
         }
 
-        internal TriviaList(InternalSyntaxTrivia node, SyntaxToken token, int position, int index)
+        internal SyntaxTriviaList(InternalSyntaxTrivia node, SyntaxToken token, int position, int index)
             : base(node, token.Parent, position, index)
         {
             this.token = token;
@@ -851,7 +1523,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new <see cref="SyntaxTriviaList"/> with the specified trivia added to the end.
         /// </summary>
         /// <param name="trivia">The trivia to add.</param>
-        public TriviaList Add(SyntaxTrivia trivia)
+        public SyntaxTriviaList Add(SyntaxTrivia trivia)
         {
             return Insert(this.Count, trivia);
         }
@@ -860,7 +1532,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new <see cref="SyntaxTriviaList"/> with the specified trivia added to the end.
         /// </summary>
         /// <param name="trivia">The trivia to add.</param>
-        public TriviaList AddRange(IEnumerable<SyntaxTrivia> trivia)
+        public SyntaxTriviaList AddRange(IEnumerable<SyntaxTrivia> trivia)
         {
             return InsertRange(this.Count, trivia);
         }
@@ -870,7 +1542,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="index">The index in the list to insert the trivia at.</param>
         /// <param name="trivia">The trivia to insert.</param>
-        public TriviaList Insert(int index, SyntaxTrivia trivia)
+        public SyntaxTriviaList Insert(int index, SyntaxTrivia trivia)
         {
             if (trivia == null)
             {
@@ -884,7 +1556,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="index">The index in the list to insert the trivia at.</param>
         /// <param name="trivia">The trivia to insert.</param>
-        public TriviaList InsertRange(int index, IEnumerable<SyntaxTrivia> trivia)
+        public SyntaxTriviaList InsertRange(int index, IEnumerable<SyntaxTrivia> trivia)
         {
             if (index < 0 || index > this.Count)
             {
@@ -905,14 +1577,14 @@ namespace MetaDslx.Compiler.Syntax
                 return this;
             }
 
-            return new TriviaList(new InternalTriviaList(list.Select(n => n.GreenTrivia).ToArray(), null, null), null, 0, 0);
+            return new SyntaxTriviaList(new InternalSyntaxTriviaList(list.Select(n => n.GreenTrivia).ToArray(), null, null), null, 0, 0);
         }
 
         /// <summary>
         /// Creates a new <see cref="SyntaxTriviaList"/> with the element at the specified index removed.
         /// </summary>
         /// <param name="index">The index identifying the element to remove.</param>
-        public TriviaList RemoveAt(int index)
+        public SyntaxTriviaList RemoveAt(int index)
         {
             if (index < 0 || index >= this.Count)
             {
@@ -921,14 +1593,14 @@ namespace MetaDslx.Compiler.Syntax
 
             var list = this.ToList();
             list.RemoveAt(index);
-            return new TriviaList(new InternalTriviaList(list.Select(n => n.GreenTrivia).ToArray(), null, null), null, 0, 0);
+            return new SyntaxTriviaList(new InternalSyntaxTriviaList(list.Select(n => n.GreenTrivia).ToArray(), null, null), null, 0, 0);
         }
 
         /// <summary>
         /// Creates a new <see cref="SyntaxTriviaList"/> with the specified element removed.
         /// </summary>
         /// <param name="triviaInList">The trivia element to remove.</param>
-        public TriviaList Remove(SyntaxTrivia triviaInList)
+        public SyntaxTriviaList Remove(SyntaxTrivia triviaInList)
         {
             var index = this.IndexOf(triviaInList);
             if (index >= 0 && index < this.Count)
@@ -944,7 +1616,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="triviaInList">The trivia element to replace.</param>
         /// <param name="newTrivia">The trivia to replace the element with.</param>
-        public TriviaList Replace(SyntaxTrivia triviaInList, SyntaxTrivia newTrivia)
+        public SyntaxTriviaList Replace(SyntaxTrivia triviaInList, SyntaxTrivia newTrivia)
         {
             if (newTrivia == null)
             {
@@ -959,7 +1631,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="triviaInList">The trivia element to replace.</param>
         /// <param name="newTrivia">The trivia to replace the element with.</param>
-        public TriviaList ReplaceRange(SyntaxTrivia triviaInList, IEnumerable<SyntaxTrivia> newTrivia)
+        public SyntaxTriviaList ReplaceRange(SyntaxTrivia triviaInList, IEnumerable<SyntaxTrivia> newTrivia)
         {
             var index = this.IndexOf(triviaInList);
             if (index >= 0 && index < this.Count)
@@ -967,7 +1639,7 @@ namespace MetaDslx.Compiler.Syntax
                 var list = this.ToList();
                 list.RemoveAt(index);
                 list.InsertRange(index, newTrivia);
-                return new TriviaList(new InternalTriviaList(list.Select(n => n.GreenTrivia).ToArray(), null, null), null, 0, 0);
+                return new SyntaxTriviaList(new InternalSyntaxTriviaList(list.Select(n => n.GreenTrivia).ToArray(), null, null), null, 0, 0);
             }
 
             throw new ArgumentOutOfRangeException(nameof(triviaInList));
@@ -1019,14 +1691,14 @@ namespace MetaDslx.Compiler.Syntax
             return node.IsList ? node.GetSlot(i) : node;
         }
 
-        public bool Equals(TriviaList other)
+        public bool Equals(SyntaxTriviaList other)
         {
             return Green == other.Green && Index == other.Index && Token.Equals(other.Token);
         }
 
         public override bool Equals(object obj)
         {
-            return (obj is TriviaList) && Equals((TriviaList)obj);
+            return (obj is SyntaxTriviaList) && Equals((SyntaxTriviaList)obj);
         }
 
         public override int GetHashCode()
@@ -1056,7 +1728,7 @@ namespace MetaDslx.Compiler.Syntax
             private GreenNode _current;
             private int _position;
 
-            internal Enumerator(TriviaList list)
+            internal Enumerator(SyntaxTriviaList list)
             {
                 _token = list.Token;
                 _singleNodeOrList = list.Green;
@@ -1092,7 +1764,7 @@ namespace MetaDslx.Compiler.Syntax
             // PERF: Used to initialize an enumerator for trailing trivia directly from a token.
             // This saves constructing an intermediate SyntaxTriviaList. Also, passing token
             // by ref since it's a non-trivial struct
-            internal void InitializeFromTrailingTrivia(ref SyntaxToken token)
+            internal void InitializeFromTrailingTrivia(SyntaxToken token)
             {
                 var leading = token.GreenToken.GetLeadingTrivia();
                 int index = 0;
@@ -1144,17 +1816,6 @@ namespace MetaDslx.Compiler.Syntax
                     return (SyntaxTrivia)_current.CreateRed(_token, _position, _baseIndex + _index);
                 }
             }
-
-            internal bool TryMoveNextAndGetCurrent(SyntaxTrivia current)
-            {
-                if (!MoveNext())
-                {
-                    return false;
-                }
-
-                current = (SyntaxTrivia)_current.CreateRed(_token, _position, _baseIndex + _index);
-                return true;
-            }
         }
 
         private class EnumeratorImpl : IEnumerator<SyntaxTrivia>
@@ -1162,7 +1823,7 @@ namespace MetaDslx.Compiler.Syntax
             private Enumerator _enumerator;
 
             // SyntaxTriviaList is a relatively big struct so is passed as ref
-            internal EnumeratorImpl(TriviaList list)
+            internal EnumeratorImpl(SyntaxTriviaList list)
             {
                 _enumerator = new Enumerator(list);
             }
@@ -1188,14 +1849,14 @@ namespace MetaDslx.Compiler.Syntax
 
     }
 
-    public sealed class NodeList<TNode> : IReadOnlyList<TNode>
+    public sealed class SyntaxNodeList<TNode> : IReadOnlyList<TNode>
         where TNode: SyntaxNode
     {
-        private static readonly NodeList<TNode> Empty = new NodeList<TNode>(null);
+        private static readonly SyntaxNodeList<TNode> Empty = new SyntaxNodeList<TNode>(null);
 
         private readonly SyntaxNode _node;
 
-        public NodeList(SyntaxNode node)
+        public SyntaxNodeList(SyntaxNode node)
         {
             _node = node;
         }
@@ -1205,11 +1866,11 @@ namespace MetaDslx.Compiler.Syntax
             get { return _node; }
         }
 
-        public InternalNodeList Green
+        public InternalSyntaxNodeList Green
         {
             get
             {
-                return _node?.GreenNode as InternalNodeList;
+                return _node?.GreenNode as InternalSyntaxNodeList;
             }
         }
 
@@ -1328,7 +1989,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new list with the specified node added at the end.
         /// </summary>
         /// <param name="node">The node to add.</param>
-        public NodeList<TNode> Add(TNode node)
+        public SyntaxNodeList<TNode> Add(TNode node)
         {
             return this.Insert(this.Count, node);
         }
@@ -1337,7 +1998,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new list with the specified nodes added at the end.
         /// </summary>
         /// <param name="nodes">The nodes to add.</param>
-        public NodeList<TNode> AddRange(IEnumerable<TNode> nodes)
+        public SyntaxNodeList<TNode> AddRange(IEnumerable<TNode> nodes)
         {
             return this.InsertRange(this.Count, nodes);
         }
@@ -1347,7 +2008,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="index">The index to insert at.</param>
         /// <param name="node">The node to insert.</param>
-        public NodeList<TNode> Insert(int index, TNode node)
+        public SyntaxNodeList<TNode> Insert(int index, TNode node)
         {
             if (node == null)
             {
@@ -1362,7 +2023,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="index">The index to insert at.</param>
         /// <param name="nodes">The nodes to insert.</param>
-        public NodeList<TNode> InsertRange(int index, IEnumerable<TNode> nodes)
+        public SyntaxNodeList<TNode> InsertRange(int index, IEnumerable<TNode> nodes)
         {
             if (index < 0 || index > this.Count)
             {
@@ -1391,7 +2052,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new list with the element at specified index removed.
         /// </summary>
         /// <param name="index">The index of the element to remove.</param>
-        public NodeList<TNode> RemoveAt(int index)
+        public SyntaxNodeList<TNode> RemoveAt(int index)
         {
             if (index < 0 || index > this.Count)
             {
@@ -1405,7 +2066,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new list with the element removed.
         /// </summary>
         /// <param name="node">The element to remove.</param>
-        public NodeList<TNode> Remove(TNode node)
+        public SyntaxNodeList<TNode> Remove(TNode node)
         {
             return CreateList(this.Green, this.Where(x => x != node).ToList());
         }
@@ -1415,7 +2076,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="nodeInList">The element to replace.</param>
         /// <param name="newNode">The new node.</param>
-        public NodeList<TNode> Replace(TNode nodeInList, TNode newNode)
+        public SyntaxNodeList<TNode> Replace(TNode nodeInList, TNode newNode)
         {
             return ReplaceRange(nodeInList, new[] { newNode });
         }
@@ -1425,7 +2086,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="nodeInList">The element to replace.</param>
         /// <param name="newNodes">The new nodes.</param>
-        public NodeList<TNode> ReplaceRange(TNode nodeInList, IEnumerable<TNode> newNodes)
+        public SyntaxNodeList<TNode> ReplaceRange(TNode nodeInList, IEnumerable<TNode> newNodes)
         {
             if (nodeInList == null)
             {
@@ -1451,23 +2112,23 @@ namespace MetaDslx.Compiler.Syntax
             }
         }
 
-        private static NodeList<TNode> CreateList(InternalNodeList creator, List<TNode> items)
+        private static SyntaxNodeList<TNode> CreateList(InternalSyntaxNodeList creator, List<TNode> items)
         {
             if (items.Count == 0)
             {
-                return NodeList<TNode>.Empty;
+                return SyntaxNodeList<TNode>.Empty;
             }
 
-            InternalNodeList newGreen;
+            InternalSyntaxNodeList newGreen;
             if (creator == null)
             {
-                newGreen = new InternalStrongNodeList(items.Select(n => n.GreenNode).ToArray(), null, null);
+                newGreen = new InternalStrongSyntaxNodeList(items.Select(n => n.GreenNode).ToArray(), null, null);
             }
             else
             {
                 newGreen = creator.CreateList(items.Select(n => n.GreenNode).ToArray());
             }
-            return new NodeList<TNode>((NodeList)newGreen.CreateRed());
+            return new SyntaxNodeList<TNode>((SyntaxNodeList)newGreen.CreateRed());
         }
 
         /// <summary>
@@ -1546,7 +2207,7 @@ namespace MetaDslx.Compiler.Syntax
                 return new EnumeratorImpl(this);
             }
 
-            return EmptyCollections.EmptyEnumerator<TNode>();
+            return EmptyCollections.Enumerator<TNode>();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -1556,17 +2217,17 @@ namespace MetaDslx.Compiler.Syntax
                 return new EnumeratorImpl(this);
             }
 
-            return EmptyCollections.EmptyEnumerator<TNode>();
+            return EmptyCollections.Enumerator<TNode>();
         }
 
-        public bool Equals(NodeList<TNode> other)
+        public bool Equals(SyntaxNodeList<TNode> other)
         {
             return _node == other._node;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is NodeList<TNode> && Equals((NodeList<TNode>)obj);
+            return obj is SyntaxNodeList<TNode> && Equals((SyntaxNodeList<TNode>)obj);
         }
 
         public override int GetHashCode()
@@ -1654,10 +2315,10 @@ namespace MetaDslx.Compiler.Syntax
         [SuppressMessage("Performance", "RS0008", Justification = "Equality not actually implemented")]
         public struct Enumerator
         {
-            private NodeList<TNode> _list;
+            private SyntaxNodeList<TNode> _list;
             private int _index;
 
-            internal Enumerator(NodeList<TNode> list)
+            internal Enumerator(SyntaxNodeList<TNode> list)
             {
                 _list = list;
                 _index = -1;
@@ -1703,7 +2364,7 @@ namespace MetaDslx.Compiler.Syntax
         {
             private Enumerator _e;
 
-            internal EnumeratorImpl(NodeList<TNode> list)
+            internal EnumeratorImpl(SyntaxNodeList<TNode> list)
             {
                 _e = new Enumerator(list);
             }
@@ -1741,14 +2402,14 @@ namespace MetaDslx.Compiler.Syntax
 
     }
 
-    public sealed class SeparatedNodeList<TNode> : IReadOnlyList<TNode>
+    public sealed class SeparatedSyntaxNodeList<TNode> : IReadOnlyList<TNode>
         where TNode : SyntaxNode
     {
-        private readonly SeparatedNodeList _list;
+        private readonly SeparatedSyntaxNodeList _list;
         private readonly int _count;
         private readonly int _separatorCount;
 
-        public SeparatedNodeList(SeparatedNodeList list)
+        public SeparatedSyntaxNodeList(SeparatedSyntaxNodeList list)
         {
             Validate(list.GreenList);
 
@@ -1763,7 +2424,7 @@ namespace MetaDslx.Compiler.Syntax
         }
 
         [Conditional("DEBUG")]
-        private static void Validate(InternalSeparatedNodeList list)
+        private static void Validate(InternalSeparatedSyntaxNodeList list)
         {
             for (int i = 0; i < list.Count; i++)
             {
@@ -1784,7 +2445,7 @@ namespace MetaDslx.Compiler.Syntax
             get { return _list; }
         }
 
-        public InternalSeparatedNodeList Green
+        public InternalSeparatedSyntaxNodeList Green
         {
             get
             {
@@ -2007,14 +2668,14 @@ namespace MetaDslx.Compiler.Syntax
             return _list != null;
         }
 
-        public bool Equals(SeparatedNodeList<TNode> other)
+        public bool Equals(SeparatedSyntaxNodeList<TNode> other)
         {
             return _list == other._list;
         }
 
         public override bool Equals(object obj)
         {
-            return (obj is SeparatedNodeList<TNode>) && Equals((SeparatedNodeList<TNode>)obj);
+            return (obj is SeparatedSyntaxNodeList<TNode>) && Equals((SeparatedSyntaxNodeList<TNode>)obj);
         }
 
         public override int GetHashCode()
@@ -2026,7 +2687,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new list with the specified node added to the end.
         /// </summary>
         /// <param name="node">The node to add.</param>
-        public SeparatedNodeList<TNode> Add(TNode node)
+        public SeparatedSyntaxNodeList<TNode> Add(TNode node)
         {
             return Insert(this.Count, node);
         }
@@ -2035,7 +2696,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new list with the specified nodes added to the end.
         /// </summary>
         /// <param name="nodes">The nodes to add.</param>
-        public SeparatedNodeList<TNode> AddRange(IEnumerable<TNode> nodes)
+        public SeparatedSyntaxNodeList<TNode> AddRange(IEnumerable<TNode> nodes)
         {
             return InsertRange(this.Count, nodes);
         }
@@ -2045,7 +2706,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="index">The index to insert at.</param>
         /// <param name="node">The node to insert.</param>
-        public SeparatedNodeList<TNode> Insert(int index, TNode node)
+        public SeparatedSyntaxNodeList<TNode> Insert(int index, TNode node)
         {
             if (node == null)
             {
@@ -2060,7 +2721,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="index">The index to insert at.</param>
         /// <param name="nodes">The nodes to insert.</param>
-        public SeparatedNodeList<TNode> InsertRange(int index, IEnumerable<TNode> nodes)
+        public SeparatedSyntaxNodeList<TNode> InsertRange(int index, IEnumerable<TNode> nodes)
         {
             if (nodes == null)
             {
@@ -2131,7 +2792,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new list with the element at the specified index removed.
         /// </summary>
         /// <param name="index">The index of the element to remove.</param>
-        public SeparatedNodeList<TNode> RemoveAt(int index)
+        public SeparatedSyntaxNodeList<TNode> RemoveAt(int index)
         {
             if (index < 0 || index > this.Count)
             {
@@ -2145,7 +2806,7 @@ namespace MetaDslx.Compiler.Syntax
         /// Creates a new list with specified element removed.
         /// </summary>
         /// <param name="node">The element to remove.</param>
-        public SeparatedNodeList<TNode> Remove(TNode node)
+        public SeparatedSyntaxNodeList<TNode> Remove(TNode node)
         {
             var nodesWithSeps = this.NodesWithSeparators;
             int index = nodesWithSeps.IndexOf(node);
@@ -2175,7 +2836,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="nodeInList">The element to replace.</param>
         /// <param name="newNode">The new node.</param>
-        public SeparatedNodeList<TNode> Replace(TNode nodeInList, TNode newNode)
+        public SeparatedSyntaxNodeList<TNode> Replace(TNode nodeInList, TNode newNode)
         {
             if (newNode == null)
             {
@@ -2198,7 +2859,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="nodeInList">The element to replace.</param>
         /// <param name="newNodes">The new nodes.</param>
-        public SeparatedNodeList<TNode> ReplaceRange(TNode nodeInList, IEnumerable<TNode> newNodes)
+        public SeparatedSyntaxNodeList<TNode> ReplaceRange(TNode nodeInList, IEnumerable<TNode> newNodes)
         {
             if (newNodes == null)
             {
@@ -2233,7 +2894,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         /// <param name="separatorToken">The separator token to be replaced.</param>
         /// <param name="newSeparator">The new separator token.</param>
-        public SeparatedNodeList<TNode> ReplaceSeparator(SyntaxToken separatorToken, SyntaxToken newSeparator)
+        public SeparatedSyntaxNodeList<TNode> ReplaceSeparator(SyntaxToken separatorToken, SyntaxToken newSeparator)
         {
             var nodesWithSeps = this.NodesWithSeparators;
             var index = nodesWithSeps.IndexOf(separatorToken);
@@ -2280,9 +2941,9 @@ namespace MetaDslx.Compiler.Syntax
             }
         }
 
-        private SeparatedNodeList<TNode> CreateList(List<RedNode> nodesWithSeps)
+        private SeparatedSyntaxNodeList<TNode> CreateList(List<RedNode> nodesWithSeps)
         {
-            return new SeparatedNodeList<TNode>((SeparatedNodeList)this._list.GreenList.CreateList(nodesWithSeps.Select(n => n.Green).ToArray()).CreateRed());
+            return new SeparatedSyntaxNodeList<TNode>((SeparatedSyntaxNodeList)this._list.GreenList.CreateList(nodesWithSeps.Select(n => n.Green).ToArray()).CreateRed());
         }
 
         public Enumerator GetEnumerator()
@@ -2297,7 +2958,7 @@ namespace MetaDslx.Compiler.Syntax
                 return new EnumeratorImpl(this);
             }
 
-            return EmptyCollections.EmptyEnumerator<TNode>();
+            return EmptyCollections.Enumerator<TNode>();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -2307,7 +2968,7 @@ namespace MetaDslx.Compiler.Syntax
                 return new EnumeratorImpl(this);
             }
 
-            return EmptyCollections.EmptyEnumerator<TNode>();
+            return EmptyCollections.Enumerator<TNode>();
         }
 
         // Public struct enumerator
@@ -2316,10 +2977,10 @@ namespace MetaDslx.Compiler.Syntax
         [SuppressMessage("Performance", "RS0008", Justification = "Equality not actually implemented")]
         public struct Enumerator
         {
-            private readonly SeparatedNodeList<TNode> _list;
+            private readonly SeparatedSyntaxNodeList<TNode> _list;
             private int _index;
 
-            internal Enumerator(SeparatedNodeList<TNode> list)
+            internal Enumerator(SeparatedSyntaxNodeList<TNode> list)
             {
                 _list = list;
                 _index = -1;
@@ -2366,7 +3027,7 @@ namespace MetaDslx.Compiler.Syntax
         {
             private Enumerator _e;
 
-            internal EnumeratorImpl(SeparatedNodeList<TNode> list)
+            internal EnumeratorImpl(SeparatedSyntaxNodeList<TNode> list)
             {
                 _e = new Enumerator(list);
             }

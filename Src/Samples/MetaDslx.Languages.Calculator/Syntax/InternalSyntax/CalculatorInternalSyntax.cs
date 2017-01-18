@@ -672,10 +672,10 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	
 	internal class MainGreen : CalculatorGreenNode
 	{
-	    private InternalNodeList statementLine;
+	    private InternalSyntaxNodeList statementLine;
 	    private InternalSyntaxToken eof;
 	
-	    public MainGreen(CalculatorSyntaxKind kind, InternalNodeList statementLine, InternalSyntaxToken eof)
+	    public MainGreen(CalculatorSyntaxKind kind, InternalSyntaxNodeList statementLine, InternalSyntaxToken eof)
 	        : base(kind, null, null)
 	    {
 			if (statementLine != null)
@@ -690,7 +690,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public MainGreen(CalculatorSyntaxKind kind, InternalNodeList statementLine, InternalSyntaxToken eof, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public MainGreen(CalculatorSyntaxKind kind, InternalSyntaxNodeList statementLine, InternalSyntaxToken eof, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			if (statementLine != null)
@@ -707,8 +707,8 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	
 		public override int SlotCount { get { return 2; } }
 	
-	    public InternalNodeList StatementLine { get { return this.statementLine; } }
-	    public InternalSyntaxToken EOF { get { return this.eof; } }
+	    public InternalSyntaxNodeList StatementLine { get { return this.statementLine; } }
+	    public InternalSyntaxToken Eof { get { return this.eof; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -735,7 +735,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	        return new MainGreen(this.Kind, this.statementLine, this.eof, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public MainGreen Update(InternalNodeList statementLine, InternalSyntaxToken eof)
+	    public MainGreen Update(InternalSyntaxNodeList statementLine, InternalSyntaxToken eof)
 	    {
 	        if (this.statementLine != statementLine ||
 				this.eof != eof)
@@ -1485,9 +1485,9 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	
 	internal class ArgsGreen : CalculatorGreenNode
 	{
-	    private InternalSeparatedNodeList arg;
+	    private InternalSeparatedSyntaxNodeList arg;
 	
-	    public ArgsGreen(CalculatorSyntaxKind kind, InternalSeparatedNodeList arg)
+	    public ArgsGreen(CalculatorSyntaxKind kind, InternalSeparatedSyntaxNodeList arg)
 	        : base(kind, null, null)
 	    {
 			if (arg != null)
@@ -1497,7 +1497,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public ArgsGreen(CalculatorSyntaxKind kind, InternalSeparatedNodeList arg, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public ArgsGreen(CalculatorSyntaxKind kind, InternalSeparatedSyntaxNodeList arg, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			if (arg != null)
@@ -1509,7 +1509,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	
 		public override int SlotCount { get { return 1; } }
 	
-	    public InternalSeparatedNodeList Arg { get { return this.arg; } }
+	    public InternalSeparatedSyntaxNodeList Arg { get { return this.arg; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -1535,7 +1535,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	        return new ArgsGreen(this.Kind, this.arg, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ArgsGreen Update(InternalSeparatedNodeList arg)
+	    public ArgsGreen Update(InternalSeparatedSyntaxNodeList arg)
 	    {
 	        if (this.arg != arg)
 	        {
@@ -1964,7 +1964,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 		    return new CalculatorGreenTrivia(kind, text, null, null);
 		}
 	
-		protected override InternalSyntaxTrivia Trivia(int kind, string text)
+		public override InternalSyntaxTrivia Trivia(int kind, string text)
 		{
 		    return new CalculatorGreenTrivia((CalculatorSyntaxKind)kind, text, null, null);
 		}
@@ -1974,7 +1974,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 		    return CalculatorGreenToken.CreateMissing(kind, null, null);
 		}
 	
-		protected override InternalSyntaxToken MissingToken(int kind)
+		public override InternalSyntaxToken MissingToken(int kind)
 		{
 		    return CalculatorGreenToken.CreateMissing((CalculatorSyntaxKind)kind, null, null);
 		}
@@ -1984,7 +1984,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 		    return CalculatorGreenToken.CreateMissing(kind, leading, trailing);
 		}
 	
-		protected override InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing)
+		public override InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing)
 		{
 		    return CalculatorGreenToken.CreateMissing((CalculatorSyntaxKind)kind, leading, trailing);
 		}
@@ -1994,7 +1994,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 		    return CalculatorGreenToken.Create(kind);
 		}
 	
-		protected override InternalSyntaxToken Token(int kind)
+		public override InternalSyntaxToken Token(int kind)
 		{
 		    return CalculatorGreenToken.Create((CalculatorSyntaxKind)kind);
 		}
@@ -2004,7 +2004,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 		    return CalculatorGreenToken.Create(kind, leading, trailing);
 		}
 	
-	    protected override InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing)
+	    public override InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing)
 		{
 		    return CalculatorGreenToken.Create((CalculatorSyntaxKind)kind, leading, trailing);
 		}
@@ -2018,7 +2018,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 		        : CalculatorGreenToken.WithText(kind, leading, text, trailing);
 		}
 	
-	    protected override InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing)
+	    public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing)
 	    {
 	        return this.Token(leading, (CalculatorSyntaxKind)kind, text, trailing);
 	    }
@@ -2032,7 +2032,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 		        : CalculatorGreenToken.WithValue(kind, leading, text, valueText, trailing);
 		}
 	
-	    protected override InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing)
+	    public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing)
 	    {
 	        return this.Token(leading, (CalculatorSyntaxKind)kind, text, valueText, trailing);
 	    }
@@ -2046,7 +2046,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 		        : CalculatorGreenToken.WithValue(kind, leading, text, value, trailing);
 		}
 	
-	    protected override InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing)
+	    public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing)
 	    {
 	        return this.Token(leading, (CalculatorSyntaxKind)kind, text, value, trailing);
 	    }
@@ -2127,7 +2127,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	        return Token(null, CalculatorSyntaxKind.COMMENT, text, value, null);
 	    }
 	
-		public MainGreen Main(InternalNodeList statementLine, InternalSyntaxToken eof, bool errorNode = false)
+		public MainGreen Main(InternalSyntaxNodeList statementLine, InternalSyntaxToken eof, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
@@ -2333,7 +2333,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ArgsGreen Args(InternalSeparatedNodeList arg, bool errorNode = false)
+		public ArgsGreen Args(InternalSeparatedSyntaxNodeList arg, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)

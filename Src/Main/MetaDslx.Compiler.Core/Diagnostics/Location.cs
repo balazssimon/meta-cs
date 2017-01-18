@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Text;
+﻿using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Text;
 using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
@@ -113,21 +114,6 @@ namespace MetaDslx.Compiler.Diagnostics
             }
 
             return result;
-        }
-
-        public static bool operator ==(Location left, Location right)
-        {
-            if (object.ReferenceEquals(left, null))
-            {
-                return object.ReferenceEquals(right, null);
-            }
-
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(Location left, Location right)
-        {
-            return !(left == right);
         }
 
         protected virtual string GetDebuggerDisplay()

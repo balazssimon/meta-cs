@@ -20,13 +20,13 @@ namespace MetaDslx.Compiler.Diagnostics
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public abstract class DiagnosticInfo : IMessageSerializable
     {
-        private readonly CommonMessageProvider _messageProvider;
+        private readonly MessageProvider _messageProvider;
         private readonly int _errorCode;
         private readonly DiagnosticSeverity _defaultSeverity;
         private readonly DiagnosticSeverity _effectiveSeverity;
         private readonly object[] _arguments;
 
-        protected DiagnosticInfo(CommonMessageProvider messageProvider, int errorCode)
+        protected DiagnosticInfo(MessageProvider messageProvider, int errorCode)
         {
             _messageProvider = messageProvider;
             _errorCode = errorCode;
@@ -34,7 +34,7 @@ namespace MetaDslx.Compiler.Diagnostics
             _effectiveSeverity = _defaultSeverity;
         }
 
-        protected DiagnosticInfo(CommonMessageProvider messageProvider, int errorCode, params object[] arguments)
+        protected DiagnosticInfo(MessageProvider messageProvider, int errorCode, params object[] arguments)
         {
             AssertMessageSerializable(arguments);
 
@@ -82,7 +82,7 @@ namespace MetaDslx.Compiler.Diagnostics
         }
 
         // Only the compiler creates instances.
-        internal DiagnosticInfo(CommonMessageProvider messageProvider, bool isWarningAsError, int errorCode, params object[] arguments)
+        internal DiagnosticInfo(MessageProvider messageProvider, bool isWarningAsError, int errorCode, params object[] arguments)
             : this(messageProvider, errorCode, arguments)
         {
             Debug.Assert(!isWarningAsError || _defaultSeverity == DiagnosticSeverity.Warning);
@@ -266,7 +266,7 @@ namespace MetaDslx.Compiler.Diagnostics
             get { return _arguments; }
         }
 
-        internal CommonMessageProvider MessageProvider
+        internal MessageProvider MessageProvider
         {
             get { return _messageProvider; }
         }
@@ -342,13 +342,13 @@ namespace MetaDslx.Compiler.Diagnostics
     internal sealed class DefaultDiagnosticInfo : DiagnosticInfo
     {
         // Only the compiler creates instances.
-        internal DefaultDiagnosticInfo(CommonMessageProvider messageProvider, int errorCode)
+        internal DefaultDiagnosticInfo(MessageProvider messageProvider, int errorCode)
             : base(messageProvider, errorCode)
         {
         }
 
         // Only the compiler creates instances.
-        internal DefaultDiagnosticInfo(CommonMessageProvider messageProvider, int errorCode, params object[] arguments)
+        internal DefaultDiagnosticInfo(MessageProvider messageProvider, int errorCode, params object[] arguments)
             : base(messageProvider, errorCode, arguments)
         {
         }

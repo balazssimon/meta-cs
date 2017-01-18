@@ -12,8 +12,10 @@ namespace MetaDslx.Compiler.Diagnostics
     /// Abstracts the ability to classify and load messages for error codes. Allows the error
     /// infrastructure to be reused between C# and VB.
     /// </summary>
-    public abstract class CommonMessageProvider
+    public abstract class MessageProvider
     {
+        internal static readonly MessageProvider Default = new DefaultMessageProvider();
+
         /// <summary>
         /// Given an error code, get the severity (warning or error) of the code.
         /// </summary>
@@ -155,5 +157,31 @@ namespace MetaDslx.Compiler.Diagnostics
             }
         }
 
+    }
+
+    internal sealed class DefaultMessageProvider : MessageProvider
+    {
+        public override string CodePrefix
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
+
+        public override string GetMessageFormat(int code)
+        {
+            return string.Empty;
+        }
+
+        public override DiagnosticSeverity GetSeverity(int code)
+        {
+            return DiagnosticSeverity.Error;
+        }
+
+        public override int GetWarningLevel(int code)
+        {
+            return 0;
+        }
     }
 }

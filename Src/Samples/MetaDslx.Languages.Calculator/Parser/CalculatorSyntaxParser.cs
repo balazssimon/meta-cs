@@ -18,8 +18,10 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
         public CalculatorSyntaxParser(
             SourceText text,
             CalculatorParseOptions options,
+            SyntaxNode oldTree, 
+            IEnumerable<TextChangeRange> changes,
             CancellationToken cancellationToken = default(CancellationToken))
-            : base(text, CalculatorLanguage.Instance, options, cancellationToken)
+            : base(text, CalculatorLanguage.Instance, options, oldTree, changes, cancellationToken)
         {
         }
         public override DirectiveStack Directives
@@ -37,27 +39,11 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
         {
             return new CalculatorParser(tokenStream);
         }
-        public override InternalSyntaxToken CurrentToken
-        {
-            get
-            {
-                // TODO
-                return null;
-            }
-        }
-        public override InternalSyntaxTrivia PrevTokenTrailingTrivia
-        {
-            get
-            {
-                // TODO
-                return null;
-            }
-        }
         public override GreenNode Parse()
         {
             return this.ParseMain();
         }
-        public MainGreen ParseMain()
+        internal MainGreen ParseMain()
         {
             Antlr4ToRoslynVisitor visitor = new Antlr4ToRoslynVisitor(this);
             var tree = this.Parser.main();
@@ -97,7 +83,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			    {
 			        statementLineBuilder.Add((StatementLineGreen)this.Visit(statementLineContext[i]));
 			    }
-				InternalNodeList statementLine = statementLineBuilder.ToList();
+				InternalSyntaxNodeList statementLine = statementLineBuilder.ToList();
 				if (statementLine != null)
 				{
 				}
@@ -262,7 +248,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			            argBuilder.AddSeparator((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i]));
 			        }
 			    }
-				InternalSeparatedNodeList arg = argBuilder.ToList();
+				InternalSeparatedSyntaxNodeList arg = argBuilder.ToList();
 				if (arg != null)
 				{
 				}
