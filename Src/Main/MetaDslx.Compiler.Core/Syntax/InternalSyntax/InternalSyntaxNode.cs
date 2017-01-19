@@ -22,7 +22,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public override RedNode CreateRed(RedNode parent, int position, int index)
         {
-            Debug.Assert(parent is SyntaxNode, "parent must be a SyntaxNode");
+            Debug.Assert(parent == null || parent is SyntaxNode, "parent must be a SyntaxNode");
             return this.CreateRed(parent as SyntaxNode, position);
         }
 

@@ -63,12 +63,12 @@ namespace MetaDslx.Compiler.Syntax
         /// <summary>
         /// Determines whether this token has any leading trivia.
         /// </summary>
-        public bool HasLeadingTrivia => this.LeadingTrivia.Count > 0;
+        public bool HasLeadingTrivia => this.LeadingTrivia?.Count > 0;
 
         /// <summary>
         /// Determines whether this token has any trailing trivia.
         /// </summary>
-        public bool HasTrailingTrivia => this.TrailingTrivia.Count > 0;
+        public bool HasTrailingTrivia => this.TrailingTrivia?.Count > 0;
 
         /// <summary>
         /// Full width of the leading trivia of this token.
@@ -87,7 +87,9 @@ namespace MetaDslx.Compiler.Syntax
         {
             get
             {
-                return new SyntaxTriviaList(GreenToken.GetLeadingTrivia(), this, this.Position, 0);
+                var leading = GreenToken.GetLeadingTrivia();
+                if (leading == null) return null;
+                return new SyntaxTriviaList(leading, this, this.Position, 0);
             }
         }
 
@@ -99,18 +101,19 @@ namespace MetaDslx.Compiler.Syntax
         {
             get
             {
+                var trailingGreen = GreenToken.GetTrailingTrivia();
+                if (trailingGreen == null) return null;
+                int trailingPosition = Position + this.FullWidth;
+                if (trailingGreen != null)
+                {
+                    trailingPosition -= trailingGreen.FullWidth;
+                }
+
                 var leading = GreenToken.GetLeadingTrivia();
                 int index = 0;
                 if (leading != null)
                 {
                     index = leading.IsList ? leading.SlotCount : 1;
-                }
-
-                var trailingGreen = GreenToken.GetTrailingTrivia();
-                int trailingPosition = Position + this.FullWidth;
-                if (trailingGreen != null)
-                {
-                    trailingPosition -= trailingGreen.FullWidth;
                 }
 
                 return new SyntaxTriviaList(trailingGreen, this, trailingPosition, index);

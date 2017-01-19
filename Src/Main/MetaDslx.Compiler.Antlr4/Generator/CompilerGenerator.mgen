@@ -2254,7 +2254,30 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 ^
 	public [Properties.LanguageName]SyntaxFactory() 
 	{
+		this.CarriageReturnLineFeed = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.CarriageReturnLineFeed.CreateRed();
+		this.LineFeed = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.LineFeed.CreateRed();
+		this.CarriageReturn = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.CarriageReturn.CreateRed();
+		this.Space = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.Space.CreateRed();
+		this.Tab = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.Tab.CreateRed();
+		this.ElasticCarriageReturnLineFeed = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticCarriageReturnLineFeed.CreateRed();
+		this.ElasticLineFeed = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticLineFeed.CreateRed();
+		this.ElasticCarriageReturn = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticCarriageReturn.CreateRed();
+		this.ElasticSpace = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticSpace.CreateRed();
+		this.ElasticTab = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticTab.CreateRed();
+		this.ElasticZeroSpace = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticZeroSpace.CreateRed();
 	}
+^
+    public [Properties.LanguageName]SyntaxTrivia CarriageReturnLineFeed { get; }
+    public [Properties.LanguageName]SyntaxTrivia LineFeed { get; }
+    public [Properties.LanguageName]SyntaxTrivia CarriageReturn { get; }
+    public [Properties.LanguageName]SyntaxTrivia Space { get; }
+    public [Properties.LanguageName]SyntaxTrivia Tab { get; }
+    public [Properties.LanguageName]SyntaxTrivia ElasticCarriageReturnLineFeed { get; }
+    public [Properties.LanguageName]SyntaxTrivia ElasticLineFeed { get; }
+    public [Properties.LanguageName]SyntaxTrivia ElasticCarriageReturn { get; }
+    public [Properties.LanguageName]SyntaxTrivia ElasticSpace { get; }
+    public [Properties.LanguageName]SyntaxTrivia ElasticTab { get; }
+    public [Properties.LanguageName]SyntaxTrivia ElasticZeroSpace { get; }
 ^
 	private SyntaxToken defaultToken = null;
     protected override SyntaxToken DefaultToken

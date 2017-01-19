@@ -1,7 +1,9 @@
 ﻿using MetaDslx.Compiler;
 using MetaDslx.Compiler.Antlr4Roslyn;
+using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Core;
 using MetaDslx.Languages.Calculator;
+using MetaDslx.Languages.Calculator.Syntax;
 using MetaDslx.Soal;
 using System;
 using System.Collections.Generic;
@@ -255,17 +257,33 @@ namespace MetaDslx.TempConsole
                 Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
                 Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
                 //*/
-                //*
+                /*
                 var factory = CalculatorLanguage.Instance.SyntaxFactory;
-                var node0 = factory.ParseSyntaxTree("hello=5");
-                var node1 = factory.ID("hello");//.WithTrailingTrivia(factory.Whitespace(" "));
+                var node0 = factory.ParseSyntaxTree("hello = 5");
+                var node1 = factory.ID("hello").WithTrailingTrivia(factory.Space);
                 var node2 = factory.Identifier(node1);
-                var node3 = factory.Value(factory.Integer(factory.INT("5", 5)/*.WithLeadingTrivia(factory.Whitespace(" "))*/));
+                var node3 = factory.Value(factory.Integer(factory.INT("5", 5).WithLeadingTrivia(factory.Space)));
                 var node4 = factory.ValueExpression(node3);
                 var node5 = factory.Assignment(node2, node4);
-                Console.WriteLine(node5.SyntaxTree);
+                Console.WriteLine(node5.ToString());
                 Console.WriteLine(node1);
                 Console.WriteLine(node2);
+                Console.WriteLine(node0);
+                //*/
+                //*
+                string fileName = "../../Calc1.txt";
+                string source = null;
+                using (StreamReader reader = new StreamReader(fileName))
+                {
+                    source = reader.ReadToEnd();
+                }
+                CalculatorSyntaxTree tree = CalculatorSyntaxTree.ParseText(source);
+                MainSyntax main = (MainSyntax)tree.GetRoot();
+                Console.WriteLine(main);
+                foreach (var diag in tree.GetDiagnostics())
+                {
+                    Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
+                }
                 //*/
             }
             catch (System.Exception ex)

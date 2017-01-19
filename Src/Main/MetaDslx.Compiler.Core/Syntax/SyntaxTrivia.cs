@@ -21,7 +21,7 @@ namespace MetaDslx.Compiler.Syntax
         private int index;
 
         protected SyntaxTrivia(InternalSyntaxTrivia green, SyntaxToken token, int position, int index) 
-            : base(green, token.Parent, position)
+            : base(green, token?.Parent, position)
         {
             this.token = token;
             this.index = index;

@@ -1841,7 +1841,30 @@ namespace MetaDslx.Languages.Calculator
 	
 		public CalculatorSyntaxFactory() 
 		{
+			this.CarriageReturnLineFeed = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.CarriageReturnLineFeed.CreateRed();
+			this.LineFeed = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.LineFeed.CreateRed();
+			this.CarriageReturn = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.CarriageReturn.CreateRed();
+			this.Space = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.Space.CreateRed();
+			this.Tab = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.Tab.CreateRed();
+			this.ElasticCarriageReturnLineFeed = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticCarriageReturnLineFeed.CreateRed();
+			this.ElasticLineFeed = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticLineFeed.CreateRed();
+			this.ElasticCarriageReturn = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticCarriageReturn.CreateRed();
+			this.ElasticSpace = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticSpace.CreateRed();
+			this.ElasticTab = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticTab.CreateRed();
+			this.ElasticZeroSpace = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticZeroSpace.CreateRed();
 		}
+	
+	    public CalculatorSyntaxTrivia CarriageReturnLineFeed { get; }
+	    public CalculatorSyntaxTrivia LineFeed { get; }
+	    public CalculatorSyntaxTrivia CarriageReturn { get; }
+	    public CalculatorSyntaxTrivia Space { get; }
+	    public CalculatorSyntaxTrivia Tab { get; }
+	    public CalculatorSyntaxTrivia ElasticCarriageReturnLineFeed { get; }
+	    public CalculatorSyntaxTrivia ElasticLineFeed { get; }
+	    public CalculatorSyntaxTrivia ElasticCarriageReturn { get; }
+	    public CalculatorSyntaxTrivia ElasticSpace { get; }
+	    public CalculatorSyntaxTrivia ElasticTab { get; }
+	    public CalculatorSyntaxTrivia ElasticZeroSpace { get; }
 	
 		private SyntaxToken defaultToken = null;
 	    protected override SyntaxToken DefaultToken

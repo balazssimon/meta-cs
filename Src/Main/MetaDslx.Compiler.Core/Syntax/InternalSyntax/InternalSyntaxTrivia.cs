@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Utilities;
 using System.Diagnostics;
+using System.IO;
 
 namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
@@ -53,7 +54,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public override RedNode CreateRed(RedNode parent, int position, int index)
         {
-            Debug.Assert(parent is SyntaxToken, "parent must be a SyntaxToken");
+            Debug.Assert(parent == null || parent is SyntaxToken, "parent must be a SyntaxToken");
             return this.CreateRed(parent as SyntaxToken, position, index);
         }
 
@@ -76,6 +77,11 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         public override int GetTrailingTriviaWidth()
         {
             return 0;
+        }
+
+        protected internal override void WriteTo(TextWriter writer, bool leading, bool trailing)
+        {
+            writer.Write(this.text);
         }
 
         public override bool IsEquivalentTo(GreenNode other)

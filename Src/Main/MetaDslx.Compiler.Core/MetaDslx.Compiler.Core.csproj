@@ -52,6 +52,7 @@
     <Compile Include="Compilation\SourceCodeKind.cs" />
     <Compile Include="Compilation\SourceFileResolver.cs" />
     <Compile Include="Compilation\SourceReferenceResolver.cs" />
+    <Compile Include="Diagnostics\DiagnosticFormatter.cs" />
     <Compile Include="Diagnostics\MessageProvider.cs" />
     <Compile Include="Diagnostics\Diagnostic.cs" />
     <Compile Include="Diagnostics\DiagnosticBag.cs" />

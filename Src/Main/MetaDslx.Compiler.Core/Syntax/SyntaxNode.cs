@@ -27,7 +27,7 @@ namespace MetaDslx.Compiler.Syntax
         protected SyntaxNode(InternalSyntaxNode green, SyntaxNode parent, int position) 
             : base(green, parent, position)
         {
-            Debug.Assert(parent != null, "parent cannot be null");
+            //Debug.Assert(parent != null, "parent cannot be null");
         }
 
         internal InternalSyntaxNode GreenNode
@@ -90,7 +90,7 @@ namespace MetaDslx.Compiler.Syntax
         {
             get
             {
-                return this.GetLeadingTrivia().Count > 0;
+                return this.GetLeadingTrivia()?.Count > 0;
             }
         }
 
@@ -101,7 +101,7 @@ namespace MetaDslx.Compiler.Syntax
         {
             get
             {
-                return this.GetTrailingTrivia().Count > 0;
+                return this.GetTrailingTrivia()?.Count > 0;
             }
         }
 
