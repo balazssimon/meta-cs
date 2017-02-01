@@ -40,7 +40,7 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        [ModelSymbolDescriptor(typeof(Test.Husband), typeof(Test.HusbandBuilder))]
+        [ModelSymbolDescriptor(null, typeof(Test.Husband))]
         public static class Husband
         {
             static Husband()
@@ -60,7 +60,7 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableWife), null),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Wife), null));
         }
-        [ModelSymbolDescriptor(typeof(Test.Wife), null)]
+        [ModelSymbolDescriptor(null, typeof(Test.Wife))]
         public static class Wife
         {
             static Wife()
@@ -80,7 +80,7 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableHusband), null),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Husband), null));
         }
-        [ModelSymbolDescriptor(typeof(Test.ListChild), null)]
+        [ModelSymbolDescriptor(null, typeof(Test.ListChild))]
         public static class ListChild
         {
             static ListChild()
@@ -100,7 +100,7 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableListParent), null),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ListParent), null));
         }
-        [ModelSymbolDescriptor(typeof(Test.ListParent), null)]
+        [ModelSymbolDescriptor(null, typeof(Test.ListParent))]
         public static class ListParent
         {
             static ListParent()
@@ -121,7 +121,7 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableListChild), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutableListChild>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ListChild), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.ListChild>)));
         }
-        [ModelSymbolDescriptor(typeof(Test.User), null)]
+        [ModelSymbolDescriptor(null, typeof(Test.User))]
         public static class User
         {
             static User()
@@ -141,7 +141,7 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableRole), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutableRole>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Role), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.Role>)));
         }
-        [ModelSymbolDescriptor(typeof(Test.Role), null)]
+        [ModelSymbolDescriptor(null, typeof(Test.Role))]
         public static class Role
         {
             static Role()
@@ -161,7 +161,7 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableUser), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutableUser>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.User), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.User>)));
         }
-        [ModelSymbolDescriptor(typeof(Test.Person), null)]
+        [ModelSymbolDescriptor(null, typeof(Test.Person))]
         public static class Person
         {
             static Person()
@@ -181,7 +181,7 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutablePet), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutablePet>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Pet), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.Pet>)));
         }
-        [ModelSymbolDescriptor(typeof(Test.Student), null, BaseSymbolDescriptors = new Type[] { typeof(Person) })]
+        [ModelSymbolDescriptor(null, typeof(Test.Student), BaseSymbolDescriptors = new Type[] { typeof(Person) })]
         public static class Student
         {
             static Student()
@@ -198,7 +198,7 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableDog), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutableDog>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Dog), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.Dog>)));
         }
-        [ModelSymbolDescriptor(typeof(Test.Pet), null)]
+        [ModelSymbolDescriptor(null, typeof(Test.Pet))]
         public static class Pet
         {
             static Pet()
@@ -218,7 +218,7 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutablePerson), null),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Person), null));
         }
-        [ModelSymbolDescriptor(typeof(Test.Dog), null, BaseSymbolDescriptors = new Type[] { typeof(Pet) })]
+        [ModelSymbolDescriptor(null, typeof(Test.Dog), BaseSymbolDescriptors = new Type[] { typeof(Pet) })]
         public static class Dog
         {
             static Dog()
