@@ -880,8 +880,8 @@ namespace MetaDslx.Compiler
                         {
                             foreach (var symbolType in symbolTypes)
                             {
-                                if (symbolType.IsAssignableFrom(entryObject.MSymbolImmutableType) ||
-                                    symbolType.IsAssignableFrom(entryObject.MSymbolMutableType))
+                                if (symbolType.IsAssignableFrom(entryObject.MId.SymbolInfo.ImmutableType) ||
+                                    symbolType.IsAssignableFrom(entryObject.MId.SymbolInfo.MutableType))
                                 {
                                     typeOK = true;
                                     break;

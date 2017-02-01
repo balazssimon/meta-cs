@@ -350,8 +350,9 @@ namespace MetaDslx.Compiler
         public static bool IsMetaScope(this Type symbolType)
         {
             if (symbolType == null) return false;
-            var attributes = symbolType.GetCustomAttributes(typeof(ScopeAttribute), true);
-            return attributes.Length > 0;
+            ModelSymbolInfo info = ModelSymbolInfo.GetSymbolInfo(symbolType);
+            return info?.IsScope ?? false;
+            //return symbolType.GetCustomAttributes(typeof(ScopeAttribute), true).Length > 0;
         }
     }
 
@@ -951,8 +952,8 @@ namespace MetaDslx.Compiler
             {
                 foreach (var symbolType in propertyAnnotation.SymbolTypes)
                 {
-                    if (symbolType.IsAssignableFrom(symbol.MSymbolImmutableType) ||
-                        symbolType.IsAssignableFrom(symbol.MSymbolMutableType))
+                    if (symbolType.IsAssignableFrom(symbol.MId.SymbolInfo.ImmutableType) ||
+                        symbolType.IsAssignableFrom(symbol.MId.SymbolInfo.MutableType))
                     {
                         symbolOK = true;
                         break;
@@ -1029,8 +1030,8 @@ namespace MetaDslx.Compiler
             {
                 foreach (var symbolType in propertyAnnotation.SymbolTypes)
                 {
-                    if (symbolType.IsAssignableFrom(symbol.MSymbolImmutableType) ||
-                        symbolType.IsAssignableFrom(symbol.MSymbolMutableType))
+                    if (symbolType.IsAssignableFrom(symbol.MId.SymbolInfo.ImmutableType) ||
+                        symbolType.IsAssignableFrom(symbol.MId.SymbolInfo.MutableType))
                     {
                         symbolOK = true;
                         break;
@@ -1053,7 +1054,7 @@ namespace MetaDslx.Compiler
         protected virtual bool SetNameProperty(IParseTree node, MutableSymbol symbol, string value)
         {
             if (symbol == null) return false;
-            if (symbol.MSymbolInfo.NameProperty == null)
+            if (symbol.MId.SymbolInfo.NameProperty == null)
             {
                 this.Compiler.Diagnostics.AddError("Could not find property with [Name] annotation in '" + symbol + "'.", this.Compiler.FileName, node, true);
                 return false;
@@ -1065,7 +1066,7 @@ namespace MetaDslx.Compiler
         protected virtual string GetNameProperty(IParseTree node, MutableSymbol symbol)
         {
             if (symbol == null) return null;
-            if (symbol.MSymbolInfo.NameProperty == null)
+            if (symbol.MId.SymbolInfo.NameProperty == null)
             {
                 this.Compiler.Diagnostics.AddError("Could not find property with [Name] annotation in '" + symbol + "'.", this.Compiler.FileName, node, true);
                 return null;
@@ -1583,8 +1584,8 @@ namespace MetaDslx.Compiler
                 bool valid = false;
                 foreach (var type in types)
                 {
-                    if (type.IsAssignableFrom(mobj.MSymbolImmutableType) ||
-                        type.IsAssignableFrom(mobj.MSymbolMutableType))
+                    if (type.IsAssignableFrom(mobj.MId.SymbolInfo.ImmutableType) ||
+                        type.IsAssignableFrom(mobj.MId.SymbolInfo.MutableType))
                     {
                         valid = true;
                         break;
@@ -1784,8 +1785,8 @@ namespace MetaDslx.Compiler
                         {
                             foreach (var symbolType in ta.SymbolTypes)
                             {
-                                if (symbolType.IsAssignableFrom(symbol.MSymbolImmutableType) ||
-                                    symbolType.IsAssignableFrom(symbol.MSymbolMutableType))
+                                if (symbolType.IsAssignableFrom(symbol.MId.SymbolInfo.ImmutableType) ||
+                                    symbolType.IsAssignableFrom(symbol.MId.SymbolInfo.MutableType))
                                 {
                                     symbolOK = true;
                                     break;

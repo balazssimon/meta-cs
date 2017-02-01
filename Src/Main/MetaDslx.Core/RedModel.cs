@@ -10,18 +10,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core
 {
-    public enum MutableCreationMode
-    {
-        ReturnOriginal,
-        CreateNewIfChanged,
-        ForceCreateNew
-    }
-
     public interface IMetaSymbol
     {
-        ModelSymbolInfo MSymbolInfo { get; }
-        Type MSymbolImmutableType { get; }
-        Type MSymbolMutableType { get; }
         MetaModel MMetaModel { get; }
         MetaClass MMetaClass { get; }
         SymbolId MId { get; }
@@ -111,9 +101,6 @@ namespace MetaDslx.Core
 
         public SymbolId MId { get { return this.id; } }
 
-        public ModelSymbolInfo MSymbolInfo { get { return this.MId.ModelSymbolInfo; } }
-        public Type MSymbolImmutableType { get { return this.MId.ImmutableType; } }
-        public Type MSymbolMutableType { get { return this.MId.MutableType; } }
         public abstract MetaModel MMetaModel { get; }
         public abstract MetaClass MMetaClass { get; }
 
@@ -145,7 +132,7 @@ namespace MetaDslx.Core
         {
             get
             {
-                ModelProperty nameProperty = this.id.ModelSymbolInfo.NameProperty;
+                ModelProperty nameProperty = this.id.SymbolInfo.NameProperty;
                 if (nameProperty != null)
                 {
                     object nameObj = this.MGet(nameProperty);
@@ -159,7 +146,7 @@ namespace MetaDslx.Core
         {
             get
             {
-                ModelProperty typeProperty = this.id.ModelSymbolInfo.TypeProperty;
+                ModelProperty typeProperty = this.id.SymbolInfo.TypeProperty;
                 if (typeProperty != null)
                 {
                     object typeObj = this.MGet(typeProperty);
@@ -168,8 +155,8 @@ namespace MetaDslx.Core
                 return null;
             }
         }
-        public bool MIsScope { get { return this.id.ModelSymbolInfo.IsScope; } }
-        public bool MIsType { get { return this.id.ModelSymbolInfo.IsType; } }
+        public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
+        public bool MIsType { get { return this.id.SymbolInfo.IsType; } }
 
 
         public object MGet(ModelProperty property)
@@ -230,7 +217,7 @@ namespace MetaDslx.Core
 
         public override string ToString()
         {
-            string result = this.id.ImmutableType.Name;
+            string result = this.id.SymbolInfo.ImmutableType?.Name;
             string name = this.MName;
             if (name != null)
             {
@@ -271,9 +258,6 @@ namespace MetaDslx.Core
         internal bool MIsBeingCreated { get { return this.creating; } }
         public bool MIsReadOnly { get { return this.model.IsReadOnly; } }
 
-        public ModelSymbolInfo MSymbolInfo { get { return this.MId.ModelSymbolInfo; } }
-        public Type MSymbolImmutableType { get { return this.MId.ImmutableType; } }
-        public Type MSymbolMutableType { get { return this.MId.MutableType; } }
         public abstract MetaModel MMetaModel { get; }
         public abstract MetaClass MMetaClass { get; }
 
@@ -309,7 +293,7 @@ namespace MetaDslx.Core
         {
             get
             {
-                ModelProperty nameProperty = this.id.ModelSymbolInfo.NameProperty;
+                ModelProperty nameProperty = this.id.SymbolInfo.NameProperty;
                 if (nameProperty != null)
                 {
                     object nameObj = this.MGet(nameProperty);
@@ -320,7 +304,7 @@ namespace MetaDslx.Core
             }
             set
             {
-                ModelProperty nameProperty = this.id.ModelSymbolInfo.NameProperty;
+                ModelProperty nameProperty = this.id.SymbolInfo.NameProperty;
                 if (nameProperty != null)
                 {
                     this.SetReference(nameProperty, value);
@@ -331,7 +315,7 @@ namespace MetaDslx.Core
         {
             get
             {
-                ModelProperty typeProperty = this.id.ModelSymbolInfo.TypeProperty;
+                ModelProperty typeProperty = this.id.SymbolInfo.TypeProperty;
                 if (typeProperty != null)
                 {
                     object typeObj = this.MGet(typeProperty);
@@ -341,15 +325,15 @@ namespace MetaDslx.Core
             }
             set
             {
-                ModelProperty typeProperty = this.id.ModelSymbolInfo.TypeProperty;
+                ModelProperty typeProperty = this.id.SymbolInfo.TypeProperty;
                 if (typeProperty != null)
                 {
                     this.SetReference(typeProperty, value);
                 }
             }
         }
-        public bool MIsScope { get { return this.id.ModelSymbolInfo.IsScope; } }
-        public bool MIsType { get { return this.id.ModelSymbolInfo.IsType; } }
+        public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
+        public bool MIsType { get { return this.id.SymbolInfo.IsType; } }
 
         protected virtual void MInit()
         {
@@ -488,7 +472,7 @@ namespace MetaDslx.Core
 
         public override string ToString()
         {
-            string result = this.id.ImmutableType.Name;
+            string result = this.id.SymbolInfo.ImmutableType?.Name;
             string name = this.MName;
             if (name != null)
             {
@@ -610,34 +594,20 @@ namespace MetaDslx.Core
             return this.ContainsSymbol(((ImmutableSymbolBase)symbol).MId);
         }
 
-        public MutableModel ToMutable(MutableCreationMode creationMode = MutableCreationMode.ReturnOriginal)
+        public MutableModel ToMutable(bool createNew = false)
         {
             MutableModel result = null;
-            if (creationMode == MutableCreationMode.ReturnOriginal || creationMode == MutableCreationMode.CreateNewIfChanged)
+            if (!createNew)
             {
                 if (this.mutableModel.TryGetTarget(out result) && result != null)
                 {
-                    if (creationMode == MutableCreationMode.ReturnOriginal)
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        if (this.group != null && result.ModelGroup != null)
-                        {
-                            if (this.group.Green == result.ModelGroup.Green) return result;
-                        }
-                        else if (this.group == null && result.ModelGroup == null)
-                        {
-                            if (result.Green == this.Green) return result;
-                        }
-                    }
+                    return result;
                 }
             }
             MutableModel newModel = null;
             if (this.group != null)
             {
-                MutableModelGroup mutableGroup = this.group.ToMutable(creationMode);
+                MutableModelGroup mutableGroup = this.group.ToMutable(createNew);
                 newModel = mutableGroup.GetModel(this.green.Id);
             }
             else
@@ -705,7 +675,7 @@ namespace MetaDslx.Core
             if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
-                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
                 if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue))
                 {
@@ -722,7 +692,7 @@ namespace MetaDslx.Core
             if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
-                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
                 if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
                 {
@@ -739,7 +709,7 @@ namespace MetaDslx.Core
             if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
-                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
                 if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
                 {
@@ -771,7 +741,7 @@ namespace MetaDslx.Core
 
         internal ImmutableList<ModelProperty> MProperties(SymbolId sid)
         {
-            ModelSymbolInfo msi = sid.ModelSymbolInfo;
+            ModelSymbolInfo msi = sid.SymbolInfo;
             if (msi != null)
             {
                 return msi.Properties;
@@ -813,7 +783,7 @@ namespace MetaDslx.Core
                 if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
                 {
                     object greenValue;
-                    ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
                     if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                     if (greenSymbol.Properties.TryGetValue(property, out greenValue))
                     {
@@ -836,7 +806,7 @@ namespace MetaDslx.Core
                 if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
                 {
                     object greenValue;
-                    ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
                     if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                     if (greenSymbol.Properties.TryGetValue(property, out greenValue))
                     {
@@ -1259,7 +1229,7 @@ namespace MetaDslx.Core
                 if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
                 {
                     object greenValue;
-                    ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
                     if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                     if (greenSymbol.Properties.TryGetValue(property, out greenValue))
                     {
@@ -1282,7 +1252,7 @@ namespace MetaDslx.Core
                 if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
                 {
                     object greenValue;
-                    ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
                     if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                     if (greenSymbol.Properties.TryGetValue(property, out greenValue))
                     {
@@ -1310,7 +1280,7 @@ namespace MetaDslx.Core
             if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
-                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
                 if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenLazyValue)
                 {
@@ -1337,7 +1307,7 @@ namespace MetaDslx.Core
             if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
             {
                 object greenValue;
-                ModelPropertyInfo mpi = sid.ModelSymbolInfo.GetPropertyInfo(property);
+                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
                 if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
                 {
@@ -1505,7 +1475,7 @@ namespace MetaDslx.Core
 
         internal ImmutableList<ModelProperty> MProperties(SymbolId sid)
         {
-            ModelSymbolInfo msi = sid.ModelSymbolInfo;
+            ModelSymbolInfo msi = sid.SymbolInfo;
             if (msi != null)
             {
                 return msi.Properties;
@@ -1679,21 +1649,14 @@ namespace MetaDslx.Core
             return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
         }
 
-        public MutableModelGroup ToMutable(MutableCreationMode creationMode = MutableCreationMode.ReturnOriginal)
+        public MutableModelGroup ToMutable(bool createNew = false)
         {
             MutableModelGroup result;
-            if (creationMode == MutableCreationMode.ReturnOriginal || creationMode == MutableCreationMode.CreateNewIfChanged)
+            if (!createNew)
             {
                 if (this.mutableModelGroup.TryGetTarget(out result) && result != null)
                 {
-                    if (creationMode == MutableCreationMode.ReturnOriginal)
-                    {
-                        return result;
-                    }
-                    else if (result.Green == this.Green)
-                    {
-                        return result;
-                    }
+                    return result;
                 }
             }
             return new MutableModelGroup(this.green, this);

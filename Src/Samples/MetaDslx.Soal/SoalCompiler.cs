@@ -13,7 +13,7 @@ namespace MetaDslx.Soal
             : base(source, fileName)
         {
             this.Factory = new SoalFactory(this.Model);
-            MutableModel soalInstance = SoalInstance.Model.ToMutable(MutableCreationMode.ForceCreateNew);
+            MutableModel soalInstance = SoalInstance.Model.ToMutable(true);
             this.ModelGroup.AddReference(soalInstance);
             this.GlobalScope.BuiltInEntries.Add(SoalInstance.Object.ToMutable(soalInstance));
             this.GlobalScope.BuiltInEntries.Add(SoalInstance.String.ToMutable(soalInstance));

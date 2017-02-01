@@ -19,9 +19,7 @@ namespace MetaDslx.Core
             this.id = Guid.NewGuid().ToString();
         }
         public string Id { get { return this.id; } }
-        public abstract ModelSymbolInfo ModelSymbolInfo { get; }
-        public abstract Type ImmutableType { get; }
-        public abstract Type MutableType { get; }
+        public abstract ModelSymbolInfo SymbolInfo { get; }
         public abstract ImmutableSymbolBase CreateImmutable(ImmutableModel model);
         public abstract MutableSymbolBase CreateMutable(MutableModel model, bool creating);
     }
@@ -364,7 +362,7 @@ namespace MetaDslx.Core
         internal GreenModel AddSymbol(SymbolId id, bool weak)
         {
             Debug.Assert(!this.symbols.ContainsKey(id), "The green model already contains this symbol.");
-            return this.Update(this.symbols.Add(id, id.ModelSymbolInfo.EmptyGreenSymbol), weak ? this.strongSymbols : this.strongSymbols.Add(id), this.lazyProperties, this.references);
+            return this.Update(this.symbols.Add(id, id.SymbolInfo.EmptyGreenSymbol), weak ? this.strongSymbols : this.strongSymbols.Add(id), this.lazyProperties, this.references);
         }
 
         internal GreenModel RemoveSymbol(SymbolId id)
@@ -1037,7 +1035,7 @@ namespace MetaDslx.Core
                     ImmutableHashSet<ModelProperty> lazyProperties;
                     if (model.LazyProperties.TryGetValue(sid, out lazyProperties) && lazyProperties.Count > 0)
                     {
-                        ModelSymbolInfo symbolInfo = sid.ModelSymbolInfo;
+                        ModelSymbolInfo symbolInfo = sid.SymbolInfo;
                         if (symbolInfo != null)
                         {
                             ModelPropertyInfo propertyInfo = symbolInfo.GetPropertyInfo(property);
@@ -1088,7 +1086,7 @@ namespace MetaDslx.Core
             object oldValue; 
             if (symbol.Properties.TryGetValue(property, out oldValue) && value != oldValue)
             {
-                if (!sid.ModelSymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
+                if (!sid.SymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
                 {
                     this.SetValueCore(symbolRef, property, reassign, value);
                     this.UpdateModel(symbolRef.Model);
@@ -1119,7 +1117,7 @@ namespace MetaDslx.Core
             bool changed = false;
             if (symbol.Properties.ContainsKey(property))
             {
-                if (!sid.ModelSymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
+                if (!sid.SymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
                 {
                     object oldValue = null;
                     if (replace && index >= 0) changed = this.RemoveItemCore(symbolRef, property, true, reassign, index, false, ref oldValue) || changed;
@@ -1145,7 +1143,7 @@ namespace MetaDslx.Core
             bool changed = false;
             if (symbol.Properties.ContainsKey(property))
             {
-                if (!sid.ModelSymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
+                if (!sid.SymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
                 {
                     changed = this.RemoveItemCore(symbolRef, property, true, reassign, index, removeAll, ref value) || changed;
                     this.UpdateModel(symbolRef.Model);
@@ -1168,7 +1166,7 @@ namespace MetaDslx.Core
             {
                 GreenList list = (GreenList)listValue;
                 changed = list.Count > 0 || list.HasLazyItems;
-                if (property.IsSymbol || sid.ModelSymbolInfo.HasAffectedProperties(property))
+                if (property.IsSymbol || sid.SymbolInfo.HasAffectedProperties(property))
                 {
                     this.ClearLazyItems(mid, sid, property, reassign);
                     foreach (var value in list)
@@ -1222,7 +1220,7 @@ namespace MetaDslx.Core
             if (model.LazyProperties.TryGetValue(sid, out properties))
             {
                 changed = properties.Count > 0;
-                var propList = symbolRef.Id.ModelSymbolInfo.Properties;
+                var propList = symbolRef.Id.SymbolInfo.Properties;
                 foreach (var prop in propList)
                 {
                     if (properties.Contains(prop))
@@ -1282,7 +1280,7 @@ namespace MetaDslx.Core
         private ModelProperty GetRepresentingProperty(SymbolId symbolId, ModelProperty property)
         {
             ModelProperty result = property;
-            ModelSymbolInfo symbolInfo = symbolId.ModelSymbolInfo;
+            ModelSymbolInfo symbolInfo = symbolId.SymbolInfo;
             if (symbolInfo != null)
             {
                 ModelPropertyInfo propInfo = symbolInfo.GetPropertyInfo(property);
@@ -1375,7 +1373,7 @@ namespace MetaDslx.Core
                 throw new ModelException("Null value cannot be assigned to property: " + this.PropertyRef(symbolRef.Id, property));
             }
             if (!(value == null || value == GreenSymbol.Unassigned || (value is GreenLazyValue) || (value is GreenDerivedValue) ||
-                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).MutableType))) ||
+                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))) ||
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
                 throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
@@ -1404,7 +1402,7 @@ namespace MetaDslx.Core
                 throw new ModelException("Null value cannot be added to property: " + this.PropertyRef(symbolRef.Id, property));
             }
             if (!(value == null || (value is GreenLazyValue) || 
-                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).MutableType))) ||
+                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))) ||
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
                 throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
@@ -1544,7 +1542,7 @@ namespace MetaDslx.Core
                 {
                     if (index < list.Count) value = list[index];
                 }
-                ModelSymbolInfo symbolInfo = symbolRef.Id.ModelSymbolInfo;
+                ModelSymbolInfo symbolInfo = symbolRef.Id.SymbolInfo;
                 if (symbolInfo != null)
                 {
                     ModelPropertyInfo propInfo = symbolInfo.GetPropertyInfo(property);
@@ -1616,7 +1614,7 @@ namespace MetaDslx.Core
         private bool SlowAddValueCore(ModelId mid, SymbolId sid, ModelProperty property, bool reassign, int index, object value, HashSet<ModelProperty> valueAddedToSelf, HashSet<ModelProperty> valueAddedToOpposite)
         {
             if (valueAddedToSelf != null && valueAddedToSelf.Contains(property)) return false;
-            ModelSymbolInfo info = sid.ModelSymbolInfo;
+            ModelSymbolInfo info = sid.SymbolInfo;
             if (info == null) return false;
             ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
             if (propertyInfo == null) return false;
@@ -1661,7 +1659,7 @@ namespace MetaDslx.Core
                 {
                     foreach (var eqProp in propertyInfo.EquivalentProperties)
                     {
-                        if (!eqProp.MutableTypeInfo.Type.IsAssignableFrom(valueId.MutableType))
+                        if (!eqProp.MutableTypeInfo.Type.IsAssignableFrom(valueId.SymbolInfo.MutableType))
                         {
                             if (eqProp.IsCollection)
                             {
@@ -1775,7 +1773,7 @@ namespace MetaDslx.Core
         private bool SlowRemoveValueCore(ModelId mid, SymbolId sid, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, object value, HashSet<ModelProperty> valueRemovedFromSelf, HashSet<ModelProperty> valueRemovedFromOpposite)
         {
             if (valueRemovedFromSelf != null && valueRemovedFromSelf.Contains(property)) return false;
-            ModelSymbolInfo info = sid.ModelSymbolInfo;
+            ModelSymbolInfo info = sid.SymbolInfo;
             if (info == null) return false;
             ModelPropertyInfo propertyInfo = info.GetPropertyInfo(property);
             if (propertyInfo == null) return false;

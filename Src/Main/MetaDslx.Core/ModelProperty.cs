@@ -14,19 +14,23 @@ namespace MetaDslx.Core
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public sealed class ModelSymbolDescriptorAttribute : Attribute
     {
-        private ImmutableArray<Type> baseSymbolDescriptors;
+        private static Type[] EmptyTypeArray = new Type[0];
 
         public ModelSymbolDescriptorAttribute()
         {
-            this.baseSymbolDescriptors = ImmutableArray<Type>.Empty;
+            this.BaseSymbolDescriptors = EmptyTypeArray;
         }
 
-        public ModelSymbolDescriptorAttribute(params Type[] baseSymbolDescriptors)
+        public ModelSymbolDescriptorAttribute(Type immutableType, Type mutableType)
         {
-            this.baseSymbolDescriptors = baseSymbolDescriptors.ToImmutableArray();
+            this.ImmutableType = immutableType;
+            this.MutableType = mutableType;
+            this.BaseSymbolDescriptors = EmptyTypeArray;
         }
 
-        public ImmutableArray<Type> BaseSymbolDescriptors { get { return this.baseSymbolDescriptors; } }
+        public Type[] BaseSymbolDescriptors { get; set; }
+        public Type ImmutableType { get; }
+        public Type MutableType { get; }
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
@@ -249,7 +253,7 @@ namespace MetaDslx.Core
 
         public static ModelProperty Register(Type declaringType, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty = null)
         {
-            ModelSymbolInfo symbolInfo = ModelSymbolInfo.GetSymbolInfo(declaringType);
+            ModelSymbolInfo symbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(declaringType);
             ModelProperty result = new ModelProperty(symbolInfo, name, immutableTypeInfo, mutableTypeInfo, metaProperty);
             symbolInfo.AddProperty(result);
             return result;
@@ -459,7 +463,7 @@ namespace MetaDslx.Core
                     if (annot is SubsetsAttribute)
                     {
                         SubsetsAttribute propAnnot = (SubsetsAttribute)annot;
-                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetSymbolInfo(propAnnot.DeclaringType);
+                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetDescriptorSymbolInfo(propAnnot.DeclaringType);
                         ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
                         if (prop == null)
                         {
@@ -479,7 +483,7 @@ namespace MetaDslx.Core
                     else if (annot is RedefinesAttribute)
                     {
                         RedefinesAttribute propAnnot = (RedefinesAttribute)annot;
-                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetSymbolInfo(propAnnot.DeclaringType);
+                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetDescriptorSymbolInfo(propAnnot.DeclaringType);
                         ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
                         if (prop == null)
                         {
@@ -502,7 +506,7 @@ namespace MetaDslx.Core
                     else if (annot is OppositeAttribute)
                     {
                         OppositeAttribute propAnnot = (OppositeAttribute)annot;
-                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetSymbolInfo(propAnnot.DeclaringType);
+                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetDescriptorSymbolInfo(propAnnot.DeclaringType);
                         ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
                         if (prop == null)
                         {
@@ -799,13 +803,17 @@ namespace MetaDslx.Core
 
     public sealed class ModelSymbolInfo
     {
-        private static ImmutableDictionary<Type, ModelSymbolInfo> symbols = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
+        private static ImmutableDictionary<Type, ModelSymbolInfo> descriptors = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
+        private static ImmutableDictionary<Type, ModelSymbolInfo> immutableTypes = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
+        private static ImmutableDictionary<Type, ModelSymbolInfo> mutableTypes = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
 
         private bool initialized;
         private bool initializedBaseSymbols;
         private Type symbolDescriptorType;
         private GreenSymbol emptyGreenSymbol;
         private MetaModelSymbolFlags metaFlags;
+        private Type immutableType;
+        private Type mutableType;
         private ModelProperty nameProperty;
         private ModelProperty typeProperty;
         private ImmutableList<Attribute> annotations;
@@ -823,7 +831,13 @@ namespace MetaDslx.Core
             this.metaFlags = MetaModelSymbolFlags.None;
             foreach (var annot in this.annotations)
             {
-                if (annot is ScopeAttribute)
+                if (annot is ModelSymbolDescriptorAttribute)
+                {
+                    ModelSymbolDescriptorAttribute da = (ModelSymbolDescriptorAttribute)annot;
+                    this.immutableType = da.ImmutableType;
+                    this.mutableType = da.MutableType;
+                }
+                else if (annot is ScopeAttribute)
                 {
                     this.metaFlags |= MetaModelSymbolFlags.Scope;
                 }
@@ -841,25 +855,72 @@ namespace MetaDslx.Core
             this.properties = ImmutableList<ModelProperty>.Empty;
         }
 
-        public static ModelSymbolInfo GetSymbolInfo(Type symbolDescriptorType)
+        public static ModelSymbolInfo GetSymbolInfo(Type type)
+        {
+            ModelSymbolInfo result = null;
+            if (ModelSymbolInfo.immutableTypes.TryGetValue(type, out result))
+            {
+                return result;
+            }
+            if (ModelSymbolInfo.mutableTypes.TryGetValue(type, out result))
+            {
+                return result;
+            }
+            return result;
+        }
+
+        public static ModelSymbolInfo GetDescriptorSymbolInfo(Type symbolDescriptorType)
         {
             ImmutableDictionary<Type, ModelSymbolInfo> oldSymbols;
             ImmutableDictionary<Type, ModelSymbolInfo> newSymbols;
             ModelSymbolInfo newSymbolInfo = null;
             do
             {
-                oldSymbols = ModelSymbolInfo.symbols;
+                oldSymbols = ModelSymbolInfo.descriptors;
                 ModelSymbolInfo result;
                 if (oldSymbols.TryGetValue(symbolDescriptorType, out result))
                 {
-                    return result;
+                    newSymbolInfo = result;
+                    break;
                 }
                 else
                 {
                     if (newSymbolInfo == null) newSymbolInfo = new ModelSymbolInfo(symbolDescriptorType);
                     newSymbols = oldSymbols.Add(symbolDescriptorType, newSymbolInfo);
                 }
-            } while (Interlocked.CompareExchange(ref ModelSymbolInfo.symbols, newSymbols, oldSymbols) != oldSymbols);
+            } while (Interlocked.CompareExchange(ref ModelSymbolInfo.descriptors, newSymbols, oldSymbols) != oldSymbols);
+            if (newSymbolInfo.immutableType != null)
+            {
+                do
+                {
+                    oldSymbols = ModelSymbolInfo.immutableTypes;
+                    ModelSymbolInfo result;
+                    if (oldSymbols.TryGetValue(newSymbolInfo.immutableType, out result))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        newSymbols = oldSymbols.Add(newSymbolInfo.immutableType, newSymbolInfo);
+                    }
+                } while (Interlocked.CompareExchange(ref ModelSymbolInfo.immutableTypes, newSymbols, oldSymbols) != oldSymbols);
+            }
+            if (newSymbolInfo.mutableType != null)
+            {
+                do
+                {
+                    oldSymbols = ModelSymbolInfo.mutableTypes;
+                    ModelSymbolInfo result;
+                    if (oldSymbols.TryGetValue(newSymbolInfo.mutableType, out result))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        newSymbols = oldSymbols.Add(newSymbolInfo.mutableType, newSymbolInfo);
+                    }
+                } while (Interlocked.CompareExchange(ref ModelSymbolInfo.mutableTypes, newSymbols, oldSymbols) != oldSymbols);
+            }
             return newSymbolInfo;
         }
 
@@ -871,7 +932,7 @@ namespace MetaDslx.Core
 
         public static ImmutableDictionary<Type, ModelSymbolInfo> Symbols
         {
-            get { return ModelSymbolInfo.symbols; }
+            get { return ModelSymbolInfo.descriptors; }
         }
 
         private void AddBaseSymbol(ModelSymbolInfo baseSymbol)
@@ -923,6 +984,14 @@ namespace MetaDslx.Core
         internal bool Initialized { get { return this.initialized; } }
         internal Type SymbolDescriptorType { get { return this.symbolDescriptorType; } }
         public ImmutableList<Attribute> Annotations { get { return this.annotations; } }
+        public Type ImmutableType
+        {
+            get { return this.immutableType; }
+        }
+        public Type MutableType
+        {
+            get { return this.mutableType; }
+        }
         public ImmutableList<ModelSymbolInfo> BaseSymbols 
         {
             get
@@ -1003,7 +1072,7 @@ namespace MetaDslx.Core
                         ModelSymbolDescriptorAttribute descrAnnot = (ModelSymbolDescriptorAttribute)annot;
                         foreach (var baseType in descrAnnot.BaseSymbolDescriptors)
                         {
-                            this.AddBaseSymbol(ModelSymbolInfo.GetSymbolInfo(baseType));
+                            this.AddBaseSymbol(ModelSymbolInfo.GetDescriptorSymbolInfo(baseType));
                         }
                     }
                 }

@@ -433,21 +433,17 @@ end template
 template GenerateDescriptorClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
 [GenerateAnnotations(cls)]
-[if (cls.SuperClasses.Count > 0)]
-["["+Properties.CoreNs+".ModelSymbolDescriptorAttribute("][GetDescriptorAncestors(model, cls)][")]"]
-[else]
-["["+Properties.CoreNs+".ModelSymbolDescriptorAttribute]"]
-[end if]
+["["+Properties.CoreNs].ModelSymbolDescriptorAttribute(typeof([cls.CSharpName(null, ClassKind.Immutable, true)]), typeof([cls.CSharpName(null, ClassKind.Builder, true)])[GetDescriptorAncestors(model, cls)])["]"]
 public static class [cls.CSharpName(model, ClassKind.Descriptor)]
 {
 	private static [Properties.CoreNs].ModelSymbolInfo modelSymbolInfo;
 ^
 	static [cls.CSharpName(model, ClassKind.Descriptor)]()
 	{
-		modelSymbolInfo = [Properties.CoreNs].ModelSymbolInfo.GetSymbolInfo(typeof([cls.CSharpName(model, ClassKind.Descriptor)]));
+		modelSymbolInfo = [Properties.CoreNs].ModelSymbolInfo.GetDescriptorSymbolInfo(typeof([cls.CSharpName(model, ClassKind.Descriptor)]));
 	}
 ^
-	public static [Properties.CoreNs].ModelSymbolInfo ModelSymbolInfo
+	public static [Properties.CoreNs].ModelSymbolInfo SymbolInfo
 	{
 		get { return modelSymbolInfo; }
 	}
@@ -471,6 +467,9 @@ function string GetDescriptorAncestors(MetaModel model, MetaClass cls)
 	loop(cls->super:SuperClasses; separator delim = ", ")
 		result += "typeof("+super.CSharpName(model, ClassKind.Descriptor, true)+")"+delim;
 	end loop
+	if (result.Length > 0)
+		result = ", BaseSymbolDescriptors = new global::System.Type[] { "+result+" }";
+	end if
 	return result;
 end function
 
@@ -747,9 +746,7 @@ end template
 template GenerateIdClass(MetaModel model, MetaClass cls)
 internal class [cls.CSharpName(model, ClassKind.Id)] : [Properties.CoreNs].SymbolId
 {
-	public override [Properties.CoreNs].ModelSymbolInfo ModelSymbolInfo { get { return [cls.CSharpName(null, ClassKind.Descriptor, true)].ModelSymbolInfo; } }
-	public override global::System.Type ImmutableType { get { return typeof([cls.CSharpName(model, ClassKind.Immutable)]); } }
-	public override global::System.Type MutableType { get { return typeof([cls.CSharpName(model, ClassKind.Builder)]); } }
+	public override [Properties.CoreNs].ModelSymbolInfo SymbolInfo { get { return [cls.CSharpName(null, ClassKind.Descriptor, true)].SymbolInfo; } }
 ^
 	public override [Properties.CoreNs].ImmutableSymbolBase CreateImmutable([Properties.CoreNs].ImmutableModel model)
 	{
@@ -765,7 +762,6 @@ end template
 
 template GenerateImmutableClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
-[GenerateAnnotations(cls)]
 public interface [cls.CSharpName(model, ClassKind.Immutable)][GetImmutableAncestors(model, cls)]
 {
 	[loop(cls->prop:Properties)]
@@ -814,7 +810,6 @@ end function
 
 template GenerateBuilderClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
-[GenerateAnnotations(cls)]
 public interface [cls.CSharpName(model, ClassKind.Builder)][GetBuilderAncestors(model, cls)]
 {
 	[loop(cls->prop:Properties)]

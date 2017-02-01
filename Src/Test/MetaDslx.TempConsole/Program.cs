@@ -4,7 +4,6 @@ using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Core;
 using MetaDslx.Languages.Calculator;
 using MetaDslx.Languages.Calculator.Syntax;
-using MetaDslx.Soal;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -246,7 +245,7 @@ namespace MetaDslx.TempConsole
                 /*
                 GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel3.cs");
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.mm",
@@ -270,7 +269,7 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine(node2);
                 Console.WriteLine(node0);
                 //*/
-                //*
+                /*
                 string fileName = "../../Calc1.txt";
                 string source = null;
                 using (StreamReader reader = new StreamReader(fileName))

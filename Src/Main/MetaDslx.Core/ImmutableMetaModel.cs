@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -405,7 +405,6 @@ namespace MetaDslx.Core
 	{
 	}
 	
-	[global::MetaDslx.Core.Scope]
 	public interface RootScope : global::MetaDslx.Core.ImmutableSymbol
 	{
 		global::MetaDslx.Core.ImmutableModelList<object> BuiltInEntries { get; }
@@ -416,7 +415,6 @@ namespace MetaDslx.Core
 		new RootScopeBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Scope]
 	public interface RootScopeBuilder : global::MetaDslx.Core.MutableSymbol
 	{
 		global::MetaDslx.Core.MutableModelList<object> BuiltInEntries { get; }
@@ -508,7 +506,6 @@ namespace MetaDslx.Core
 		new MetaTypedElement ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Type]
 	public interface MetaType : global::MetaDslx.Core.ImmutableSymbol
 	{
 	
@@ -517,7 +514,6 @@ namespace MetaDslx.Core
 		new MetaTypeBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Type]
 	public interface MetaTypeBuilder : global::MetaDslx.Core.MutableSymbol
 	{
 	
@@ -540,7 +536,6 @@ namespace MetaDslx.Core
 		new MetaAnnotation ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Scope]
 	public interface MetaNamespace : MetaNamedElement, MetaAnnotatedElement
 	{
 		MetaNamespace Parent { get; }
@@ -554,7 +549,6 @@ namespace MetaDslx.Core
 		new MetaNamespaceBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Scope]
 	public interface MetaNamespaceBuilder : MetaNamedElementBuilder, MetaAnnotatedElementBuilder
 	{
 		MetaNamespaceBuilder Parent { get; set; }
@@ -665,7 +659,6 @@ namespace MetaDslx.Core
 		new MetaPrimitiveType ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Scope]
 	public interface MetaEnum : MetaType, MetaDeclaration
 	{
 		global::MetaDslx.Core.ImmutableModelList<MetaEnumLiteral> EnumLiterals { get; }
@@ -676,7 +669,6 @@ namespace MetaDslx.Core
 		new MetaEnumBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Scope]
 	public interface MetaEnumBuilder : MetaTypeBuilder, MetaDeclarationBuilder
 	{
 		global::MetaDslx.Core.MutableModelList<MetaEnumLiteralBuilder> EnumLiterals { get; }
@@ -719,7 +711,6 @@ namespace MetaDslx.Core
 		new MetaConstant ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Scope]
 	public interface MetaClass : MetaType, MetaDeclaration
 	{
 		bool IsAbstract { get; }
@@ -740,7 +731,6 @@ namespace MetaDslx.Core
 		new MetaClassBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	[global::MetaDslx.Core.Scope]
 	public interface MetaClassBuilder : MetaTypeBuilder, MetaDeclarationBuilder
 	{
 		bool IsAbstract { get; set; }
@@ -940,17 +930,17 @@ namespace MetaDslx.Core
 		public const string Uri = "http://metadslx.core/1.0";
 	
 		[global::MetaDslx.Core.Scope]
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.RootScope), typeof(global::MetaDslx.Core.RootScopeBuilder))]
 		public static class RootScope
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static RootScope()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(RootScope));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(RootScope));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -981,17 +971,17 @@ namespace MetaDslx.Core
 		 * Represents an annotated element.
 		 * </summary>
 		 */
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaAnnotatedElement), typeof(global::MetaDslx.Core.MetaAnnotatedElementBuilder))]
 		public static class MetaAnnotatedElement
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaAnnotatedElement()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaAnnotatedElement));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaAnnotatedElement));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1014,17 +1004,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaAnnotatedElement_Annotations);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaDocumentedElement), typeof(global::MetaDslx.Core.MetaDocumentedElementBuilder))]
 		public static class MetaDocumentedElement
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaDocumentedElement()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaDocumentedElement));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaDocumentedElement));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1041,17 +1031,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaDocumentedElement_Documentation);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaDocumentedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaNamedElement), typeof(global::MetaDslx.Core.MetaNamedElementBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDocumentedElement) })]
 		public static class MetaNamedElement
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaNamedElement()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaNamedElement));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaNamedElement));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1069,17 +1059,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaNamedElement_Name);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaTypedElement), typeof(global::MetaDslx.Core.MetaTypedElementBuilder))]
 		public static class MetaTypedElement
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaTypedElement()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaTypedElement));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaTypedElement));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1098,17 +1088,17 @@ namespace MetaDslx.Core
 		}
 	
 		[global::MetaDslx.Core.Type]
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaType), typeof(global::MetaDslx.Core.MetaTypeBuilder))]
 		public static class MetaType
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaType()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaType));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaType));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1119,17 +1109,17 @@ namespace MetaDslx.Core
 			}
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaNamedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaAnnotation), typeof(global::MetaDslx.Core.MetaAnnotationBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaAnnotation
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaAnnotation()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaAnnotation));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaAnnotation));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1141,17 +1131,17 @@ namespace MetaDslx.Core
 		}
 	
 		[global::MetaDslx.Core.Scope]
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaNamespace), typeof(global::MetaDslx.Core.MetaNamespaceBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaNamespace
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaNamespace()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaNamespace));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaNamespace));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1202,17 +1192,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaNamespace_Declarations);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaDeclaration), typeof(global::MetaDslx.Core.MetaDeclarationBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaDeclaration
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaDeclaration()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaDeclaration));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaDeclaration));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1237,17 +1227,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaDeclaration_MetaModel);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaModel), typeof(global::MetaDslx.Core.MetaModelBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaModel
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaModel()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaModel));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaModel));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1271,17 +1261,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaModel_Namespace);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaType))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaCollectionType), typeof(global::MetaDslx.Core.MetaCollectionTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaCollectionType
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaCollectionType()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaCollectionType));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaCollectionType));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1304,17 +1294,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaCollectionType_InnerType);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaType))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaNullableType), typeof(global::MetaDslx.Core.MetaNullableTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaNullableType
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaNullableType()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaNullableType));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaNullableType));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1331,17 +1321,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaNullableType_InnerType);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaNamedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaPrimitiveType), typeof(global::MetaDslx.Core.MetaPrimitiveTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaPrimitiveType
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaPrimitiveType()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaPrimitiveType));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaPrimitiveType));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1353,17 +1343,17 @@ namespace MetaDslx.Core
 		}
 	
 		[global::MetaDslx.Core.Scope]
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaDeclaration))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaEnum), typeof(global::MetaDslx.Core.MetaEnumBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaEnum
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaEnum()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaEnum));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaEnum));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1392,17 +1382,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaEnum_Operations);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaEnumLiteral), typeof(global::MetaDslx.Core.MetaEnumLiteralBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaEnumLiteral
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaEnumLiteral()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaEnumLiteral));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaEnumLiteral));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1421,17 +1411,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaEnumLiteral_Enum);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaDeclaration))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaConstant), typeof(global::MetaDslx.Core.MetaConstantBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaConstant
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaConstant()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaConstant));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaConstant));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1443,17 +1433,17 @@ namespace MetaDslx.Core
 		}
 	
 		[global::MetaDslx.Core.Scope]
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaDeclaration))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaClass), typeof(global::MetaDslx.Core.MetaClassBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaClass
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaClass()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaClass));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaClass));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1503,17 +1493,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaClass_Constructor);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaType))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaFunctionType), typeof(global::MetaDslx.Core.MetaFunctionTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaFunctionType
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaFunctionType()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaFunctionType));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaFunctionType));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1536,17 +1526,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaFunctionType_ReturnType);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaFunction), typeof(global::MetaDslx.Core.MetaFunctionBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaFunction
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaFunction()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaFunction));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaFunction));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1580,17 +1570,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaFunction_ReturnType);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaFunction))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaOperation), typeof(global::MetaDslx.Core.MetaOperationBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaFunction) })]
 		public static class MetaOperation
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaOperation()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaOperation));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaOperation));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1609,17 +1599,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaOperation_Parent);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaConstructor), typeof(global::MetaDslx.Core.MetaConstructorBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaConstructor
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaConstructor()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaConstructor));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaConstructor));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1637,17 +1627,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaConstructor_Parent);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaParameter), typeof(global::MetaDslx.Core.MetaParameterBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaParameter
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaParameter()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaParameter));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaParameter));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1665,17 +1655,17 @@ namespace MetaDslx.Core
 					() => global::MetaDslx.Core.MetaInstance.MetaParameter_Function);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement))]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Core.MetaProperty), typeof(global::MetaDslx.Core.MetaPropertyBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaProperty
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
 		
 			static MetaProperty()
 			{
-				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetSymbolInfo(typeof(MetaProperty));
+				modelSymbolInfo = global::MetaDslx.Core.ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(MetaProperty));
 			}
 		
-			public static global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo
+			public static global::MetaDslx.Core.ModelSymbolInfo SymbolInfo
 			{
 				get { return modelSymbolInfo; }
 			}
@@ -1741,9 +1731,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class RootScopeId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.RootScope.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(RootScope); } }
-		public override global::System.Type MutableType { get { return typeof(RootScopeBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.RootScope.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -1851,9 +1839,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaAnnotatedElementId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaAnnotatedElement); } }
-		public override global::System.Type MutableType { get { return typeof(MetaAnnotatedElementBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaAnnotatedElement.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -1946,9 +1932,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaDocumentedElementId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaDocumentedElement); } }
-		public override global::System.Type MutableType { get { return typeof(MetaDocumentedElementBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaDocumentedElement.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -2053,9 +2037,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaNamedElementId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaNamedElement); } }
-		public override global::System.Type MutableType { get { return typeof(MetaNamedElementBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaNamedElement.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -2201,9 +2183,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaTypedElementId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaTypedElement); } }
-		public override global::System.Type MutableType { get { return typeof(MetaTypedElementBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaTypedElement.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -2302,9 +2282,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaTypeId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaType.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaType); } }
-		public override global::System.Type MutableType { get { return typeof(MetaTypeBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaType.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -2382,9 +2360,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaAnnotationId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaAnnotation.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaAnnotation); } }
-		public override global::System.Type MutableType { get { return typeof(MetaAnnotationBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaAnnotation.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -2550,9 +2526,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaNamespaceId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaNamespace.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaNamespace); } }
-		public override global::System.Type MutableType { get { return typeof(MetaNamespaceBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaNamespace.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -2840,9 +2814,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaDeclarationId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaDeclaration); } }
-		public override global::System.Type MutableType { get { return typeof(MetaDeclarationBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaDeclaration.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -3084,9 +3056,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaModelId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaModel.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaModel); } }
-		public override global::System.Type MutableType { get { return typeof(MetaModelBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaModel.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -3329,9 +3299,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaCollectionTypeId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaCollectionType); } }
-		public override global::System.Type MutableType { get { return typeof(MetaCollectionTypeBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaCollectionType.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -3471,9 +3439,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaNullableTypeId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaNullableType.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaNullableType); } }
-		public override global::System.Type MutableType { get { return typeof(MetaNullableTypeBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaNullableType.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -3592,9 +3558,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaPrimitiveTypeId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaPrimitiveType.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaPrimitiveType); } }
-		public override global::System.Type MutableType { get { return typeof(MetaPrimitiveTypeBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaPrimitiveType.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -3780,9 +3744,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaEnumId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaEnum.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaEnum); } }
-		public override global::System.Type MutableType { get { return typeof(MetaEnumBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaEnum.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -4094,9 +4056,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaEnumLiteralId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaEnumLiteral); } }
-		public override global::System.Type MutableType { get { return typeof(MetaEnumLiteralBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaEnumLiteral.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -4324,9 +4284,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaConstantId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaConstant.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaConstant); } }
-		public override global::System.Type MutableType { get { return typeof(MetaConstantBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaConstant.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -4629,9 +4587,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaClassId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaClass.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaClass); } }
-		public override global::System.Type MutableType { get { return typeof(MetaClassBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaClass.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -5042,9 +4998,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaFunctionTypeId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaFunctionType.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaFunctionType); } }
-		public override global::System.Type MutableType { get { return typeof(MetaFunctionTypeBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaFunctionType.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -5178,9 +5132,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaFunctionId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaFunction.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaFunction); } }
-		public override global::System.Type MutableType { get { return typeof(MetaFunctionBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaFunction.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -5481,9 +5433,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaOperationId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaOperation.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaOperation); } }
-		public override global::System.Type MutableType { get { return typeof(MetaOperationBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaOperation.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -5825,9 +5775,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaConstructorId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaConstructor.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaConstructor); } }
-		public override global::System.Type MutableType { get { return typeof(MetaConstructorBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaConstructor.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -6049,9 +5997,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaParameterId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaParameter.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaParameter); } }
-		public override global::System.Type MutableType { get { return typeof(MetaParameterBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaParameter.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -6314,9 +6260,7 @@ namespace MetaDslx.Core.Internal
 	
 	internal class MetaPropertyId : global::MetaDslx.Core.SymbolId
 	{
-		public override global::MetaDslx.Core.ModelSymbolInfo ModelSymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaProperty.ModelSymbolInfo; } }
-		public override global::System.Type ImmutableType { get { return typeof(MetaProperty); } }
-		public override global::System.Type MutableType { get { return typeof(MetaPropertyBuilder); } }
+		public override global::MetaDslx.Core.ModelSymbolInfo SymbolInfo { get { return global::MetaDslx.Core.MetaDescriptor.MetaProperty.SymbolInfo; } }
 	
 		public override global::MetaDslx.Core.ImmutableSymbolBase CreateImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
@@ -8521,3 +8465,4 @@ namespace MetaDslx.Core.Internal
 		}
 	}
 }
+

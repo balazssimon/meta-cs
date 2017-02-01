@@ -15,7 +15,7 @@ namespace MetaDslx.Compiler
         public MetaModelCompiler(string source, string fileName)
             : base(source, fileName)
         {
-            MutableModel metaInstance = MetaInstance.Model.ToMutable(MutableCreationMode.ForceCreateNew);
+            MutableModel metaInstance = MetaInstance.Model.ToMutable(true);
             this.ModelGroup.AddReference(metaInstance);
             foreach (var type in MetaConstants.Types)
             {
