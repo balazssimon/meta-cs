@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binder\SoalDeclarationTreeBuilder.cs" />
+    <Compile Include="Compilation\SoalCompilation.cs" />
+    <Compile Include="Compilation\SoalCompilationOptions.cs" />
     <Compile Include="Compilation\SoalFeature.cs" />
     <Compile Include="Compilation\SoalLanguage.cs" />
     <Compile Include="Compilation\SoalLanguageVersion.cs" />

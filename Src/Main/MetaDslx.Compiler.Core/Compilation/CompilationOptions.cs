@@ -47,7 +47,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="diagnostic"></param>
         /// <returns>The modified diagnostic, or null</returns>
-        internal abstract Diagnostic FilterDiagnostic(Diagnostic diagnostic);
+        protected abstract Diagnostic FilterDiagnostic(Diagnostic diagnostic);
 
         /// <summary>
         /// Warning report option for each warning.
@@ -74,7 +74,7 @@ namespace MetaDslx.Compiler
         private readonly Lazy<ImmutableArray<Diagnostic>> _lazyErrors;
 
         // Expects correct arguments.
-        internal CompilationOptions(
+        protected CompilationOptions(
             bool reportSuppressedDiagnostics,
             string scriptClassName,
             ReportDiagnostic generalDiagnosticOption,
@@ -103,7 +103,7 @@ namespace MetaDslx.Compiler
             });
         }
 
-        internal abstract ImmutableArray<string> GetImports();
+        protected abstract ImmutableArray<string> GetImports();
 
         /// <summary>
         /// Creates a new options instance with the specified general diagnostic option.
@@ -166,7 +166,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Performs validation of options compatibilities and generates diagnostics if needed
         /// </summary>
-        internal abstract void ValidateOptions(ArrayBuilder<Diagnostic> builder);
+        protected abstract void ValidateOptions(ArrayBuilder<Diagnostic> builder);
 
         /// <summary>
         /// Errors collection related to an incompatible set of compilation options

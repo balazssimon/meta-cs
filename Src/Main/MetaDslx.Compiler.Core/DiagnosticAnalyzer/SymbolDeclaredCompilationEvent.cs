@@ -13,7 +13,7 @@ namespace MetaDslx.Compiler.Diagnostics
     /// Note that some symbols may have multiple declarations (namespaces, partial types) and may therefore
     /// have multiple events.
     /// </summary>
-    internal sealed class SymbolDeclaredCompilationEvent : CompilationEvent
+    public sealed class SymbolDeclaredCompilationEvent : CompilationEvent
     {
         private readonly Lazy<ImmutableArray<SyntaxReference>> _lazyCachedDeclaringReferences;
 

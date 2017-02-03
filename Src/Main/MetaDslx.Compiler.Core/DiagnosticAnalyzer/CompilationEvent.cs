@@ -2,7 +2,7 @@
 
 namespace MetaDslx.Compiler.Diagnostics
 {
-    internal abstract class CompilationEvent
+    public abstract class CompilationEvent
     {
         internal CompilationEvent(Compilation compilation)
         {

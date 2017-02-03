@@ -31,26 +31,20 @@ namespace MetaDslx.Compiler
         /// </summary>
         public abstract bool IsCaseSensitive { get; }
 
-        private readonly IReadOnlyDictionary<string, string> _features;
-
         public ScriptCompilationInfo ScriptCompilationInfo => CommonScriptCompilationInfo;
-        internal abstract ScriptCompilationInfo CommonScriptCompilationInfo { get; }
+        protected abstract ScriptCompilationInfo CommonScriptCompilationInfo { get; }
 
-        internal Compilation(
+        protected Compilation(
             string name,
             ImmutableArray<ImmutableModel> references,
-            IReadOnlyDictionary<string, string> features,
             bool isSubmission,
             AsyncQueue<CompilationEvent> eventQueue)
         {
             Debug.Assert(!references.IsDefault);
-            Debug.Assert(features != null);
 
             this.CompilationName = name;
             this.ExternalReferences = references;
             this.EventQueue = eventQueue;
-
-            _features = features;
         }
 
         /// <summary>
@@ -71,8 +65,13 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Returns a new compilation with a given event queue.
         /// </summary>
-        internal abstract Compilation WithEventQueue(AsyncQueue<CompilationEvent> eventQueue);
+        public Compilation WithEventQueue(AsyncQueue<CompilationEvent> eventQueue)
+        {
+            return CommonWithEventQueue(eventQueue);
+        }
 
+        protected abstract Compilation CommonWithEventQueue(AsyncQueue<CompilationEvent> eventQueue);
+        
         /// <summary>
         /// Gets a new <see cref="SemanticModel"/> for the specified syntax tree.
         /// </summary>
@@ -231,13 +230,13 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The event queue that this compilation was created with.
         /// </summary>
-        internal readonly AsyncQueue<CompilationEvent> EventQueue;
+        public AsyncQueue<CompilationEvent> EventQueue { get; protected set; }
 
         #endregion
 
         #region References
 
-        internal static ImmutableArray<ImmutableModel> ValidateReferences<T>(IEnumerable<ImmutableModel> references)
+        protected static ImmutableArray<ImmutableModel> ValidateReferences<T>(IEnumerable<ImmutableModel> references)
         {
             if (references == null) return ImmutableArray<ImmutableModel>.Empty;
             var result = references.ToImmutableArray();
@@ -448,7 +447,7 @@ namespace MetaDslx.Compiler
 
         #region Diagnostics
 
-        internal static readonly CompilationStage DefaultDiagnosticsStage = CompilationStage.Compile;
+        public static readonly CompilationStage DefaultDiagnosticsStage = CompilationStage.Compile;
 
         /// <summary>
         /// Gets the diagnostics produced during the parsing stage.
@@ -467,12 +466,12 @@ namespace MetaDslx.Compiler
         /// </summary>
         public abstract ImmutableArray<Diagnostic> GetDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
 
-        internal abstract MessageProvider MessageProvider { get; }
+        public abstract MessageProvider MessageProvider { get; }
 
         /// <param name="accumulator">Bag to which filtered diagnostics will be added.</param>
         /// <param name="incoming">Diagnostics to be filtered.</param>
         /// <returns>True if there were no errors or warnings-as-errors.</returns>
-        internal abstract bool FilterAndAppendAndFreeDiagnostics(DiagnosticBag accumulator, ref DiagnosticBag incoming);
+        public abstract bool FilterAndAppendAndFreeDiagnostics(DiagnosticBag accumulator, ref DiagnosticBag incoming);
 
         #endregion
 
@@ -481,7 +480,7 @@ namespace MetaDslx.Compiler
         /// in some cases, because emit order for fields in structures, for example, is semantically important.
         /// This function defines an ordering among syntax trees in this compilation.
         /// </summary>
-        internal int CompareSyntaxTreeOrdering(SyntaxTree tree1, SyntaxTree tree2)
+        public int CompareSyntaxTreeOrdering(SyntaxTree tree1, SyntaxTree tree2)
         {
             if (tree1 == tree2)
             {
@@ -494,18 +493,18 @@ namespace MetaDslx.Compiler
             return this.GetSyntaxTreeOrdinal(tree1) - this.GetSyntaxTreeOrdinal(tree2);
         }
 
-        internal abstract int GetSyntaxTreeOrdinal(SyntaxTree tree);
+        public abstract int GetSyntaxTreeOrdinal(SyntaxTree tree);
 
         /// <summary>
         /// Compare two source locations, using their containing trees, and then by Span.First within a tree. 
         /// Can be used to get a total ordering on declarations, for example.
         /// </summary>
-        internal abstract int CompareSourceLocations(Location loc1, Location loc2);
+        public abstract int CompareSourceLocations(Location loc1, Location loc2);
 
         /// <summary>
         /// Return the lexically first of two locations.
         /// </summary>
-        internal TLocation FirstSourceLocation<TLocation>(TLocation first, TLocation second)
+        public TLocation FirstSourceLocation<TLocation>(TLocation first, TLocation second)
             where TLocation : Location
         {
             if (CompareSourceLocations(first, second) <= 0)
@@ -521,7 +520,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Return the lexically first of multiple locations.
         /// </summary>
-        internal TLocation FirstSourceLocation<TLocation>(ImmutableArray<TLocation> locations)
+        public TLocation FirstSourceLocation<TLocation>(ImmutableArray<TLocation> locations)
             where TLocation : Location
         {
             if (locations.IsEmpty)
@@ -548,12 +547,12 @@ namespace MetaDslx.Compiler
 
         // Note: Most of the below helpers are unused at the moment - but we would like to keep them around in
         // case we decide we need more verbose logging in certain cases for debugging.
-        internal string GetMessage(CompilationStage stage)
+        public string GetMessage(CompilationStage stage)
         {
             return string.Format("{0} ({1})", this.CompilationName, stage.ToString());
         }
 
-        internal string GetMessage(IMetaSymbol source, IMetaSymbol destination)
+        public string GetMessage(IMetaSymbol source, IMetaSymbol destination)
         {
             if (source == null || destination == null) return this.CompilationName;
             return string.Format("{0}: {1} {2} -> {3} {4}", this.CompilationName, source.MMetaClass.MName, source.MName, destination.MMetaClass.MName, destination.MName);

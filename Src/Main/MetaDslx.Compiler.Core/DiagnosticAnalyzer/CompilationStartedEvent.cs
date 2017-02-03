@@ -5,7 +5,7 @@ namespace MetaDslx.Compiler.Diagnostics
     /// <summary>
     /// The first event placed into a compilation's event queue.
     /// </summary>
-    internal sealed class CompilationStartedEvent : CompilationEvent
+    public sealed class CompilationStartedEvent : CompilationEvent
     {
         public CompilationStartedEvent(Compilation compilation) : base(compilation) { }
         public override string ToString()

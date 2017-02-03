@@ -10,7 +10,7 @@ namespace MetaDslx.Compiler
     /// Represents the possible compilation stages for which it is possible to get diagnostics
     /// (errors).
     /// </summary>
-    internal enum CompilationStage
+    public enum CompilationStage
     {
         Parse,
         Declare,

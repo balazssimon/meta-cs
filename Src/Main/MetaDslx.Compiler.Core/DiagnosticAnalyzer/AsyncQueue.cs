@@ -14,7 +14,7 @@ namespace MetaDslx.Compiler.Diagnostics
     /// A queue whose enqueue and dequeue operations can be performed in parallel.
     /// </summary>
     /// <typeparam name="TElement">The type of values kept by the queue.</typeparam>
-    internal sealed class AsyncQueue<TElement>
+    public sealed class AsyncQueue<TElement>
     {
         private readonly TaskCompletionSource<bool> _whenCompleted = new TaskCompletionSource<bool>();
 
