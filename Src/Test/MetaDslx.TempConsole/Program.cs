@@ -245,7 +245,7 @@ namespace MetaDslx.TempConsole
                 /*
                 GenerateImmutableMeta(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel3.cs");
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.mm",
@@ -255,6 +255,17 @@ namespace MetaDslx.TempConsole
                 /*
                 Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
                 Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileMeta(
+                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.mm",
+                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.cs"
+                    );
+                //*/
+                //*
+                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Soal", "SoalLexer.ag4", "MetaDslx.Languages.Soal");
+                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Soal", "SoalParser.ag4", "MetaDslx.Languages.Soal");
                 //*/
                 /*
                 var factory = CalculatorLanguage.Instance.SyntaxFactory;
@@ -342,6 +353,7 @@ namespace MetaDslx.TempConsole
             Directory.CreateDirectory(Path.Combine(directory, @"Errors"));
             Directory.CreateDirectory(Path.Combine(directory, @"Parser"));
             Directory.CreateDirectory(Path.Combine(directory, @"Compilation"));
+            Directory.CreateDirectory(Path.Combine(directory, @"Binder"));
             string outputFileName = Path.Combine(directory, @"Syntax\InternalSyntax\" + a4c.LanguageName + "InternalSyntax.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
@@ -386,6 +398,11 @@ namespace MetaDslx.TempConsole
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
                 writer.WriteLine(a4c.GeneratedFeature);
+            }
+            outputFileName = Path.Combine(directory, @"Binder\" + a4c.LanguageName + @"DeclarationTreeBuilder.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedDeclarationTreeBuilder);
             }
             //*/
             /*outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"Compilation.cs");

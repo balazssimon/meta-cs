@@ -18,7 +18,7 @@ namespace MetaDslx.Languages.Calculator.Syntax
         BadToken                      = SyntaxKind.BadToken,
         Eof                           = SyntaxKind.Eof,
 
-		// Tokens with fixed text:
+		// Tokens:
 		TSemicolon = 1,
 		TOpenParen,
 		TCloseParen,
@@ -29,8 +29,6 @@ namespace MetaDslx.Languages.Calculator.Syntax
 		TMul,
 		TDiv,
 		KPrint,
-
-		// Tokens with variable text:
 		STRING,
 		ID,
 		INT,
@@ -76,25 +74,25 @@ namespace MetaDslx.Languages.Calculator.Syntax
 
         public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
         {
-            CalculatorSyntaxVisitor<TResult> typedVisitor = visitor as CalculatorSyntaxVisitor<TResult>;
+            ICalculatorSyntaxVisitor<TResult> typedVisitor = visitor as ICalculatorSyntaxVisitor<TResult>;
             if (typedVisitor != null)
             {
-                return this.Accept(visitor);
+                return this.Accept(typedVisitor);
             }
             return default(TResult);
         }
 
-        public abstract TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor);
+        public abstract TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor);
 
         public override void Accept(SyntaxVisitor visitor)
         {
-            CalculatorSyntaxVisitor typedVisitor = visitor as CalculatorSyntaxVisitor;
+            ICalculatorSyntaxVisitor typedVisitor = visitor as ICalculatorSyntaxVisitor;
             if (typedVisitor != null)
             {
-                this.Accept(visitor);
+                this.Accept(typedVisitor);
             }
         }
-        public abstract void Accept(CalculatorSyntaxVisitor visitor);
+        public abstract void Accept(ICalculatorSyntaxVisitor visitor);
     }
 
     public class CalculatorSyntaxTrivia : SyntaxTrivia
@@ -159,7 +157,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 				return null;
 			} 
 		}
-	    public SyntaxToken Eof { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.MainGreen)this.Green).Eof, this, this.GetChildPosition(1), this.GetChildIndex(1)); } }
+	    public SyntaxToken Eof 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.MainGreen)this.Green;
+				var greenToken = green.Eof;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(1), this.GetChildIndex(1)); 
+			}
+		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -208,14 +214,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitMain(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitMain(this);
 	    }
 	}
 	
@@ -237,7 +243,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 		{ 
 			get { return this.GetRed(ref this.statement, 0); } 
 		}
-	    public SyntaxToken TSemicolon { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.StatementLineGreen)this.Green).TSemicolon, this, this.GetChildPosition(1), this.GetChildIndex(1)); } }
+	    public SyntaxToken TSemicolon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.StatementLineGreen)this.Green;
+				var greenToken = green.TSemicolon;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(1), this.GetChildIndex(1)); 
+			}
+		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -281,14 +295,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitStatementLine(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitStatementLine(this);
 	    }
 	}
 	
@@ -372,14 +386,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitStatement(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitStatement(this);
 	    }
 	}
 	
@@ -402,7 +416,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 		{ 
 			get { return this.GetRed(ref this.identifier, 0); } 
 		}
-	    public SyntaxToken TAssign { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.AssignmentGreen)this.Green).TAssign, this, this.GetChildPosition(1), this.GetChildIndex(1)); } }
+	    public SyntaxToken TAssign 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.AssignmentGreen)this.Green;
+				var greenToken = green.TAssign;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(1), this.GetChildIndex(1)); 
+			}
+		}
 	    public ExpressionSyntax Expression 
 		{ 
 			get { return this.GetRed(ref this.expression, 2); } 
@@ -458,14 +480,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitAssignment(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitAssignment(this);
 	    }
 	}
 	
@@ -496,12 +518,28 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken TOpenParen { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.ParenExpressionGreen)this.Green).TOpenParen, this, this.GetChildPosition(0), this.GetChildIndex(0)); } }
+	    public SyntaxToken TOpenParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.ParenExpressionGreen)this.Green;
+				var greenToken = green.TOpenParen;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
+			}
+		}
 	    public ExpressionSyntax Expression 
 		{ 
 			get { return this.GetRed(ref this.expression, 1); } 
 		}
-	    public SyntaxToken TCloseParen { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.ParenExpressionGreen)this.Green).TCloseParen, this, this.GetChildPosition(2), this.GetChildIndex(2)); } }
+	    public SyntaxToken TCloseParen 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.ParenExpressionGreen)this.Green;
+				var greenToken = green.TCloseParen;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(2), this.GetChildIndex(2)); 
+			}
+		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -551,14 +589,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitParenExpression(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitParenExpression(this);
 	    }
 	}
 	
@@ -581,7 +619,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 		{ 
 			get { return this.GetRed(ref this.left, 0); } 
 		}
-	    public SyntaxToken Operator { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.MulOrDivExpressionGreen)this.Green).Operator, this, this.GetChildPosition(1), this.GetChildIndex(1)); } }
+	    public SyntaxToken Operator 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.MulOrDivExpressionGreen)this.Green;
+				var greenToken = green.Operator;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(1), this.GetChildIndex(1)); 
+			}
+		}
 	    public ExpressionSyntax Right 
 		{ 
 			get { return this.GetRed(ref this.right, 2); } 
@@ -637,14 +683,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitMulOrDivExpression(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitMulOrDivExpression(this);
 	    }
 	}
 	
@@ -667,7 +713,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 		{ 
 			get { return this.GetRed(ref this.left, 0); } 
 		}
-	    public SyntaxToken Operator { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.AddOrSubExpressionGreen)this.Green).Operator, this, this.GetChildPosition(1), this.GetChildIndex(1)); } }
+	    public SyntaxToken Operator 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.AddOrSubExpressionGreen)this.Green;
+				var greenToken = green.Operator;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(1), this.GetChildIndex(1)); 
+			}
+		}
 	    public ExpressionSyntax Right 
 		{ 
 			get { return this.GetRed(ref this.right, 2); } 
@@ -723,14 +777,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitAddOrSubExpression(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitAddOrSubExpression(this);
 	    }
 	}
 	
@@ -748,7 +802,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken KPrint { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.PrintExpressionGreen)this.Green).KPrint, this, this.GetChildPosition(0), this.GetChildIndex(0)); } }
+	    public SyntaxToken KPrint 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.PrintExpressionGreen)this.Green;
+				var greenToken = green.KPrint;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
+			}
+		}
 	    public ArgsSyntax Args 
 		{ 
 			get { return this.GetRed(ref this.args, 1); } 
@@ -796,14 +858,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitPrintExpression(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitPrintExpression(this);
 	    }
 	}
 	
@@ -862,14 +924,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitValueExpression(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitValueExpression(this);
 	    }
 	}
 	
@@ -941,14 +1003,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitArgs(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitArgs(this);
 	    }
 	}
 	
@@ -1057,14 +1119,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitValue(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitValue(this);
 	    }
 	}
 	
@@ -1081,7 +1143,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken ID { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.IdentifierGreen)this.Green).ID, this, this.GetChildPosition(0), this.GetChildIndex(0)); } }
+	    public SyntaxToken ID 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.IdentifierGreen)this.Green;
+				var greenToken = green.ID;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
+			}
+		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -1117,14 +1187,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitIdentifier(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitIdentifier(this);
 	    }
 	}
 	
@@ -1141,7 +1211,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken STRING { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.StringGreen)this.Green).STRING, this, this.GetChildPosition(0), this.GetChildIndex(0)); } }
+	    public SyntaxToken STRING 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.StringGreen)this.Green;
+				var greenToken = green.STRING;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
+			}
+		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -1177,14 +1255,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitString(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitString(this);
 	    }
 	}
 	
@@ -1201,7 +1279,15 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken INT { get { return new CalculatorSyntaxToken(((global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.IntegerGreen)this.Green).INT, this, this.GetChildPosition(0), this.GetChildIndex(0)); } }
+	    public SyntaxToken INT 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.IntegerGreen)this.Green;
+				var greenToken = green.INT;
+				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
+			}
+		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -1237,14 +1323,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitInteger(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitInteger(this);
 	    }
 	}
 	
@@ -1303,14 +1389,14 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        return this;
 	    }
 	
-	    public override TResult Accept<TResult>(CalculatorSyntaxVisitor<TResult> visitor)
+	    public override TResult Accept<TResult>(ICalculatorSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.Visit(this);
+	        return visitor.VisitArg(this);
 	    }
 	
-	    public override void Accept(CalculatorSyntaxVisitor visitor)
+	    public override void Accept(ICalculatorSyntaxVisitor visitor)
 	    {
-	        visitor.Visit(this);
+	        visitor.VisitArg(this);
 	    }
 	}
 }
@@ -1585,6 +1671,103 @@ namespace MetaDslx.Languages.Calculator
 		}
 	}
 
+	public class CalculatorDetailedSyntaxVisitor : DetailedSyntaxVisitor, ICalculatorSyntaxVisitor
+	{
+	    public CalculatorDetailedSyntaxVisitor(bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
+			: base(visitIntoStructuredToken, visitIntoStructuredTrivia)
+	    {
+	    }
+		
+		public virtual void VisitMain(MainSyntax node)
+		{
+			this.VisitList(node.StatementLine);
+			this.VisitToken(node.Eof);
+		}
+		
+		public virtual void VisitStatementLine(StatementLineSyntax node)
+		{
+			this.Visit(node.Statement);
+			this.VisitToken(node.TSemicolon);
+		}
+		
+		public virtual void VisitStatement(StatementSyntax node)
+		{
+			this.Visit(node.Assignment);
+			this.Visit(node.Expression);
+		}
+		
+		public virtual void VisitAssignment(AssignmentSyntax node)
+		{
+			this.Visit(node.Identifier);
+			this.VisitToken(node.TAssign);
+			this.Visit(node.Expression);
+		}
+		
+		public virtual void VisitParenExpression(ParenExpressionSyntax node)
+		{
+			this.VisitToken(node.TOpenParen);
+			this.Visit(node.Expression);
+			this.VisitToken(node.TCloseParen);
+		}
+		
+		public virtual void VisitMulOrDivExpression(MulOrDivExpressionSyntax node)
+		{
+			this.Visit(node.Left);
+			this.VisitToken(node.Operator);
+			this.Visit(node.Right);
+		}
+		
+		public virtual void VisitAddOrSubExpression(AddOrSubExpressionSyntax node)
+		{
+			this.Visit(node.Left);
+			this.VisitToken(node.Operator);
+			this.Visit(node.Right);
+		}
+		
+		public virtual void VisitPrintExpression(PrintExpressionSyntax node)
+		{
+			this.VisitToken(node.KPrint);
+			this.Visit(node.Args);
+		}
+		
+		public virtual void VisitValueExpression(ValueExpressionSyntax node)
+		{
+			this.Visit(node.Value);
+		}
+		
+		public virtual void VisitArgs(ArgsSyntax node)
+		{
+			this.VisitList(node.Arg);
+		}
+		
+		public virtual void VisitValue(ValueSyntax node)
+		{
+			this.Visit(node.Identifier);
+			this.Visit(node.String);
+			this.Visit(node.Integer);
+		}
+		
+		public virtual void VisitIdentifier(IdentifierSyntax node)
+		{
+			this.VisitToken(node.ID);
+		}
+		
+		public virtual void VisitString(StringSyntax node)
+		{
+			this.VisitToken(node.STRING);
+		}
+		
+		public virtual void VisitInteger(IntegerSyntax node)
+		{
+			this.VisitToken(node.INT);
+		}
+		
+		public virtual void VisitArg(ArgSyntax node)
+		{
+			this.Visit(node.Value);
+		}
+	}
+
 	public interface ICalculatorSyntaxVisitor<TResult> 
 	{
 		
@@ -1700,8 +1883,8 @@ namespace MetaDslx.Languages.Calculator
 
 	public class CalculatorSyntaxRewriter : SyntaxRewriter, ICalculatorSyntaxVisitor<SyntaxNode>
 	{
-	    public CalculatorSyntaxRewriter(bool visitIntoStructuredTrivia = false)
-			: base(visitIntoStructuredTrivia)
+	    public CalculatorSyntaxRewriter(bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
+			: base(visitIntoStructuredToken, visitIntoStructuredTrivia)
 	    {
 	    }
 		

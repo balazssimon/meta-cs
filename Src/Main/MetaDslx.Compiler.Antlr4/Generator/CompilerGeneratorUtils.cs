@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetaDslx.Compiler.MetaModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -267,6 +268,45 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public static string FixedTokenToCSharpString(this string literal)
         {
             return Antlr4RoslynCompiler.FixedTokenToCSharpString(literal);
+        }
+
+        public static bool IsDeclaration(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation("NameDef") || annots.HasAnnotation("TypeDef");
+        }
+
+        public static bool IsSymbolType(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation("SymbolType");
+        }
+
+        public static bool IsIdentifier(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation("Identifier");
+        }
+
+        public static bool IsName(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation("Name");
+        }
+
+        public static bool IsQualifiedName(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation("QualifiedName");
+        }
+        public static string GetSymbolType(this MetaCompilerAnnotations annots)
+        {
+            MetaCompilerAnnotation nameDef = annots.GetAnnotation("NameDef");
+            if (nameDef != null)
+            {
+                return "typeof(Symbols." + nameDef.GetValue("symbolType") + ")";
+            }
+            MetaCompilerAnnotation typeDef = annots.GetAnnotation("TypeDef");
+            if (typeDef != null)
+            {
+                return "typeof(Symbols." + typeDef.GetValue("symbolType") + ")";
+            }
+            return "null";
         }
 
 

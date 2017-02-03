@@ -1295,7 +1295,10 @@ namespace MetaDslx.Core
 
         public override string ToString()
         {
-            return this.GetType().FullName;
+            if (this.immutableType != null) return this.immutableType.FullName;
+            else if (this.mutableType != null) return this.mutableType.FullName;
+            else if (this.symbolDescriptorType != null) return this.symbolDescriptorType.FullName;
+            else return base.ToString();
         }
     }
 

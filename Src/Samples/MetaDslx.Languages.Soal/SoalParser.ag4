@@ -1,0 +1,449 @@
+﻿parser grammar SoalParser;
+
+options {
+	tokenVocab=SoalLexer;
+	generateCompiler=true;
+	generateCompilerBase=true;
+}
+
+main : namespaceDeclaration* EOF;
+
+$QualifiedName
+qualifiedName : identifier (TDot identifier)*;
+identifierList : identifier (TComma identifier)*;
+qualifiedNameList : qualifiedName (TComma qualifiedName)*;
+
+annotationList : annotation+;
+
+returnAnnotationList : returnAnnotation+;
+
+$Property(Annotations)
+$Symbol(Annotation)
+annotation : TOpenBracket annotationBody TCloseBracket;
+
+$Property(Annotations)
+$Symbol(Annotation)
+returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
+
+annotationBody : $Property(Name) $Value nameDef annotationProperties?;
+
+annotationProperties : TOpenParen annotationPropertyList? TCloseParen;
+
+annotationPropertyList : annotationProperty (TComma annotationProperty)*;
+
+$Property(Properties)
+$Symbol(AnnotationProperty)
+annotationProperty : $Property(Name) $Value nameDef TAssign $Property(Value) annotationPropertyValue;
+
+annotationPropertyValue
+	: constantValue
+	| typeofValue
+	;
+
+$NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
+namespaceDeclaration: annotationList? KNamespace qualifiedNameDef TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
+
+$Property(Declarations)
+declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | assemblyDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
+
+// Enums
+
+$TypeDef(Enum)
+enumDeclaration : annotationList? KEnum nameDef (TColon $Property(BaseType) $TypeUse(symbolType=Enum,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
+
+enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
+
+$Property(EnumLiterals)
+$NameDef(EnumLiteral)
+enumLiteral : annotationList? nameDef;
+
+// Structs and exceptions
+
+$TypeDef(Struct)
+structDeclaration : annotationList? KStruct nameDef (TColon $Property(BaseType) $TypeUse(symbolType=Struct,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+
+$Property(Properties)
+$NameDef(Property)
+propertyDeclaration : annotationList? $Property(Type) $TypeUse typeReference nameDef TSemicolon;
+
+
+// Database
+
+$TypeDef(Database)
+databaseDeclaration : annotationList? KDatabase nameDef TOpenBrace entityReference* operationDeclaration* TCloseBrace;
+
+$Property(Entities)
+entityReference : KEntity $TypeUse(Struct) qualifiedName TSemicolon;
+
+
+// Interface
+
+$TypeDef(Interface)
+interfaceDeclaration : annotationList? KInterface nameDef TOpenBrace operationDeclaration* TCloseBrace;
+
+$Property(Operations)
+$NameDef(Operation)
+operationDeclaration : annotationList? operationResult nameDef TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Struct) qualifiedNameList)? TSemicolon;
+
+parameterList : parameter (TComma parameter)*;
+
+$Property(Parameters)
+$NameDef(InputParameter)
+parameter : annotationList? $Property(Type) $TypeUse typeReference nameDef;
+
+$Property(Result)
+$Symbol(OutputParameter)
+operationResult : returnAnnotationList? operationReturnType;
+
+// Component
+
+$TypeDef(Component)
+componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent nameDef (TColon $Property(BaseComponent) $TypeUse(symbolType=Component,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+
+componentElements : componentElement+;
+
+componentElement
+	: componentService
+	| componentReference
+	| componentProperty
+	| componentImplementation
+	| componentLanguage
+	;
+
+$Property(Services)
+$Symbol(Service)
+componentService : KService $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
+$Property(References)
+$Symbol(Reference)
+componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
+
+componentServiceOrReferenceBody 
+	: TSemicolon #componentServiceOrReferenceEmptyBody
+	| TOpenBrace componentServiceOrReferenceElement* TCloseBrace #componentServiceOrReferenceNonEmptyBody;
+
+componentServiceOrReferenceElement
+	: KBinding $Property(Binding) $NameUse(Binding) qualifiedName TSemicolon;
+
+$Property(Properties)
+$NameDef(Property)
+componentProperty : $TypeUse typeReference nameDef TSemicolon;
+
+$Property(Implementation)
+$NameDef(Implementation)
+componentImplementation : KImplementation nameDef TSemicolon;
+
+$Property(Language)
+$NameDef(Language)
+componentLanguage : KLanguage nameDef TSemicolon;
+
+$TypeDef(Composite)
+compositeDeclaration : KComposite nameDef (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+
+$TypeDef(Assembly)
+assemblyDeclaration : KAssembly nameDef (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+
+compositeElements : compositeElement+;
+
+compositeElement
+	: componentService
+	| componentReference
+	| componentProperty
+	| componentImplementation
+	| componentLanguage
+	| compositeComponent
+	| compositeWire
+	;
+
+$Property(Components)
+compositeComponent : KComponent $NameUse(Component) qualifiedName TSemicolon;
+
+$Property(Wires)
+$Symbol(Wire)
+compositeWire : KWire wireSource KTo wireTarget TSemicolon;
+
+wireSource : $Property(Source) $NameUse(Port) qualifiedName;
+wireTarget : $Property(Target) $NameUse(Port) qualifiedName;
+
+$NameDef(Deployment)
+deploymentDeclaration : KDeployment nameDef TOpenBrace deploymentElements? TCloseBrace;
+
+deploymentElements : deploymentElement+;
+
+deploymentElement
+	: environmentDeclaration
+	| compositeWire
+	;
+
+$Property(Environments)
+$NameDef(Environment)
+environmentDeclaration : KEnvironment nameDef TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
+
+$Property(Runtime)
+$NameDef(Runtime)
+runtimeDeclaration : KRuntime nameDef TSemicolon;
+
+runtimeReference
+	: assemblyReference
+	| databaseReference
+	;
+
+$Property(Assemblies)
+assemblyReference : KAssembly $TypeUse(Assembly) qualifiedName TSemicolon;
+
+$Property(Databases)
+databaseReference : KDatabase $TypeUse(Database) qualifiedName TSemicolon;
+
+// Binding
+
+$NameDef(Binding)
+bindingDeclaration : KBinding nameDef TOpenBrace bindingLayers? TCloseBrace;
+
+bindingLayers : transportLayer encodingLayer+ protocolLayer*;
+
+
+$Property(Transport)
+transportLayer 
+	: httpTransportLayer 
+	| restTransportLayer 
+	| webSocketTransportLayer
+	;
+
+$Symbol(HttpTransportBindingElement) 
+httpTransportLayer : KTransport IHTTP httpTransportLayerBody;
+
+httpTransportLayerBody
+	: TSemicolon #httpTransportLayerEmptyBody
+	| TOpenBrace httpTransportLayerProperties* TCloseBrace #httpTransportLayerNonEmptyBody;
+
+$Symbol(RestTransportBindingElement) 
+restTransportLayer : KTransport IREST restTransportLayerBody;
+
+restTransportLayerBody
+	: TSemicolon #restTransportLayerEmptyBody
+	| TOpenBrace TCloseBrace #restTransportLayerNonEmptyBody;
+
+$Symbol(WebSocketTransportBindingElement) 
+webSocketTransportLayer : KTransport IWebSocket webSocketTransportLayerBody;
+
+webSocketTransportLayerBody
+	: TSemicolon #webSocketTransportLayerEmptyBody
+	| TOpenBrace TCloseBrace #webSocketTransportLayerNonEmptyBody;
+
+
+httpTransportLayerProperties
+	: httpSslProperty
+	| httpClientAuthenticationProperty
+	;
+
+$Property(Ssl)
+httpSslProperty : ISSL TAssign $Value booleanLiteral TSemicolon;
+$Property(ClientAuthentication)
+httpClientAuthenticationProperty : IClientAuthentication TAssign $Value booleanLiteral TSemicolon;
+
+$Property(Encodings)
+encodingLayer 
+	: soapEncodingLayer
+	| xmlEncodingLayer
+	| jsonEncodingLayer
+	;
+
+$Symbol(SoapEncodingBindingElement) 
+soapEncodingLayer : KEncoding ISOAP soapEncodingLayerBody;
+
+soapEncodingLayerBody
+	: TSemicolon #soapEncodingLayerEmptyBody
+	| TOpenBrace soapEncodingProperties* TCloseBrace #soapEncodingLayerNonEmptyBody;
+
+$Symbol(XmlEncodingBindingElement) 
+xmlEncodingLayer : KEncoding IXML xmlEncodingLayerBody;
+
+xmlEncodingLayerBody
+	: TSemicolon #xmlEncodingLayerEmptyBody
+	| TOpenBrace TCloseBrace #xmlEncodingLayerNonEmptyBody;
+
+$Symbol(JsonEncodingBindingElement) 
+jsonEncodingLayer : KEncoding IJSON jsonEncodingLayerBody;
+
+jsonEncodingLayerBody
+	: TSemicolon #jsonEncodingLayerEmptyBody
+	| TOpenBrace TCloseBrace #jsonEncodingLayerNonEmptyBody;
+
+soapEncodingProperties
+	: soapVersionProperty
+	| soapMtomProperty
+	| soapStyleProperty
+	;
+
+$Property(Version)
+soapVersionProperty : IVersion TAssign $EnumValue(SoapVersion) identifier TSemicolon;
+
+$Property(Mtom)
+soapMtomProperty : IMTOM TAssign $Value booleanLiteral TSemicolon;
+
+$Property(Style)
+soapStyleProperty : IStyle TAssign $EnumValue(SoapEncodingStyle) identifier TSemicolon;
+
+$Property(Protocols)
+$Symbol
+protocolLayer : KProtocol protocolLayerKind TSemicolon;
+
+protocolLayerKind : 
+	$SymbolType(name='WsAddressing',symbolType=WsAddressingBindingElement) 
+	identifier;
+
+// Endpoint:
+
+$NameDef(Endpoint)
+endpointDeclaration : KEndpoint nameDef TColon $Property(Interface) $TypeUse(Interface) qualifiedName TOpenBrace endpointProperties? TCloseBrace;
+
+endpointProperties : endpointProperty+;
+
+endpointProperty
+	: endpointBindingProperty
+	| endpointAddressProperty
+	;
+
+endpointBindingProperty : KBinding $Property(Binding) $NameUse(Binding) qualifiedName TSemicolon;
+endpointAddressProperty : KAddress $Property(Address) $Value stringLiteral TSemicolon;
+
+// Types
+
+returnType 
+	: typeReference
+	| voidType
+	;
+
+typeReference 
+	: nonNullableArrayType
+	| arrayType
+	| simpleType
+	| nulledType
+	;
+
+simpleType : valueType | objectType | qualifiedName;
+
+nulledType : nullableType | nonNullableType;
+
+referenceType : objectType | qualifiedName;
+
+objectType 
+	: KObject 
+	| KString
+	;
+
+valueType 
+	: KInt 
+	| KLong 
+	| KFloat 
+	| KDouble 
+	| KByte 
+	| KBool
+	| IDate
+	| ITime
+	| IDateTime
+	| ITimeSpan
+	;
+
+voidType 
+	: KVoid
+	;
+
+
+onewayType
+	: KOneway
+	;
+
+operationReturnType
+	: $Property(Type) $TypeUse returnType
+	| $Property(name=Type,value=SoalInstance.Void) $Property(name=IsOneway,value=true) onewayType
+	;
+
+$TypeCtr(NullableType)
+nullableType : $Property(InnerType) $TypeUse valueType TQuestion;
+
+$TypeCtr(NonNullableType)
+nonNullableType : $Property(InnerType) $TypeUse referenceType TExclamation;
+
+$TypeCtr(NonNullableType)
+nonNullableArrayType : $Property(InnerType) $TypeUse arrayType TExclamation;
+
+arrayType
+	: simpleArrayType
+	| nulledArrayType
+	;
+
+$TypeCtr(ArrayType)
+simpleArrayType : $Property(InnerType) $TypeUse simpleType TOpenBracket TCloseBracket;
+
+$TypeCtr(ArrayType)
+nulledArrayType : $Property(InnerType) $TypeUse nulledType TOpenBracket TCloseBracket;
+
+
+constantValue
+	: literal
+	| identifier
+	;
+
+typeofValue : KTypeof TOpenParen $TypeUse returnType TCloseParen;
+
+$Name
+nameDef : identifier;
+
+$Name
+qualifiedNameDef : qualifiedName;
+
+// Identifiers
+$Identifier
+identifier 
+	: identifiers
+	| contextualKeywords;
+
+identifiers
+	: IdentifierNormal 
+	| IdentifierVerbatim
+	;
+
+// Literals
+literal 
+    : $Value nullLiteral
+	| $Value booleanLiteral
+	| $Value integerLiteral
+	| $Value decimalLiteral
+	| $Value scientificLiteral
+    | $Value stringLiteral
+	;
+
+// Null literal
+nullLiteral : KNull;
+
+// Boolean literals
+booleanLiteral : KTrue | KFalse;
+
+// Number literals
+integerLiteral : LInteger;
+decimalLiteral : LDecimal;
+scientificLiteral : LScientific;
+
+// String literals
+stringLiteral 
+	: LRegularString
+	| LSingleQuoteVerbatimString 
+	| LDoubleQuoteVerbatimString;
+
+contextualKeywords
+	: IDate
+	| ITime
+	| IDateTime
+	| ITimeSpan
+	| IVersion
+	| IStyle
+	| IMTOM
+	| ISSL
+	| IHTTP
+	| IREST
+	| IWebSocket
+	| ISOAP
+	| IXML
+	| IJSON
+	| IClientAuthentication
+	;

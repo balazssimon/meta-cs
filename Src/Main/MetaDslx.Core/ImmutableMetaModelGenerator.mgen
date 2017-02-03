@@ -413,6 +413,9 @@ public static class [model.CSharpName(ModelKind.Descriptor)]
 	static [model.CSharpName(ModelKind.Descriptor)]()
 	{
 		properties = new global::System.Collections.Generic.List<[Properties.CoreNs].ModelProperty>();
+		[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
+		[cls.CSharpName(model, ClassKind.Descriptor)].Initialize();
+		[end loop]
 		[loop(model.Namespace.Declarations->cls:typeof(MetaClass)->prop:Properties)]
 		properties.Add([prop.CSharpName(model, PropertyKind.Descriptor, true)]);
 		[end loop]
@@ -441,6 +444,10 @@ public static class [cls.CSharpName(model, ClassKind.Descriptor)]
 	static [cls.CSharpName(model, ClassKind.Descriptor)]()
 	{
 		modelSymbolInfo = [Properties.CoreNs].ModelSymbolInfo.GetDescriptorSymbolInfo(typeof([cls.CSharpName(model, ClassKind.Descriptor)]));
+	}
+^
+	internal static void Initialize()
+	{
 	}
 ^
 	public static [Properties.CoreNs].ModelSymbolInfo SymbolInfo

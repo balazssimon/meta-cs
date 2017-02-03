@@ -17,7 +17,7 @@ namespace MetaDslx.Compiler.Syntax
         private readonly bool _visitIntoStructuredToken;
         private readonly bool _visitIntoStructuredTrivia;
 
-        public SyntaxRewriter(bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
+        public SyntaxRewriter(bool visitIntoStructuredToken, bool visitIntoStructuredTrivia)
         {
             _visitIntoStructuredToken = visitIntoStructuredToken;
             _visitIntoStructuredTrivia = visitIntoStructuredTrivia;
@@ -55,6 +55,7 @@ namespace MetaDslx.Compiler.Syntax
 
         public virtual SyntaxToken VisitToken(SyntaxToken token)
         {
+            if (token == null) return null;
             // PERF: This is a hot method, so it has been written to minimize the following:
             // 1. Virtual method calls
             // 2. Copying of structs
@@ -117,6 +118,7 @@ namespace MetaDslx.Compiler.Syntax
 
         public virtual SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
         {
+            if (trivia == null) return null;
             if (this.VisitIntoStructuredTrivia && trivia.HasStructure)
             {
                 var structure = trivia.GetStructure();
@@ -139,6 +141,7 @@ namespace MetaDslx.Compiler.Syntax
 
         public virtual SyntaxNodeList<TNode> VisitList<TNode>(SyntaxNodeList<TNode> list) where TNode : SyntaxNode
         {
+            if (list == null) return null;
             NodeListBuilder<TNode> alternate = null;
             for (int i = 0, n = list.Count; i < n; i++)
             {
@@ -166,11 +169,13 @@ namespace MetaDslx.Compiler.Syntax
 
         public virtual TNode VisitListElement<TNode>(TNode node) where TNode : SyntaxNode
         {
+            if (node == null) return null;
             return (TNode)this.Visit(node);
         }
 
         public virtual SeparatedSyntaxNodeList<TNode> VisitList<TNode>(SeparatedSyntaxNodeList<TNode> list) where TNode : SyntaxNode
         {
+            if (list == null) return null;
             var count = list.Count;
             var sepCount = list.SeparatorCount;
 
@@ -246,11 +251,13 @@ namespace MetaDslx.Compiler.Syntax
 
         public virtual SyntaxToken VisitListSeparator(SyntaxToken separator)
         {
+            if (separator == null) return null;
             return this.VisitToken(separator);
         }
 
         public virtual SyntaxTokenList VisitList(SyntaxTokenList list)
         {
+            if (list == null) return null;
             TokenListBuilder alternate = null;
             var count = list.Count;
             var index = -1;
@@ -280,6 +287,7 @@ namespace MetaDslx.Compiler.Syntax
 
         public virtual SyntaxTriviaList VisitList(SyntaxTriviaList list)
         {
+            if (list == null) return null;
             var count = list.Count;
             if (count != 0)
             {
@@ -313,6 +321,7 @@ namespace MetaDslx.Compiler.Syntax
 
         public virtual SyntaxTrivia VisitListElement(SyntaxTrivia element)
         {
+            if (element == null) return null;
             return this.VisitTrivia(element);
         }
     }

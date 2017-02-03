@@ -84,6 +84,30 @@ namespace MetaDslx.Compiler.MetaModel
 
         public IReadOnlyList<MetaCompilerAnnotation> Annotations { get; }
 
+        public bool HasAnnotation(string name)
+        {
+            return this.Annotations.Any(a => a.Name == name);
+        }
+
+        public MetaCompilerAnnotation GetAnnotation(string name)
+        {
+            return this.Annotations.FirstOrDefault(a => a.Name == name);
+        }
+
+        public string GetPropertyValue(string name, string property)
+        {
+            MetaCompilerAnnotation annot = this.Annotations.FirstOrDefault(a => a.Name == name);
+            if (annot == null) return null;
+            return annot.Properties.First(p => p.Name == property)?.Value;
+        }
+
+        public IReadOnlyList<string> GetPropertyValues(string name, string property)
+        {
+            MetaCompilerAnnotation annot = this.Annotations.FirstOrDefault(a => a.Name == name);
+            if (annot == null) return null;
+            return annot.Properties.First(p => p.Name == property)?.Values;
+        }
+
         public MetaCompilerAnnotations Add(MetaCompilerAnnotation annotation)
         {
             List<MetaCompilerAnnotation> newAnnotations = new List<MetaModel.MetaCompilerAnnotation>(this.Annotations);

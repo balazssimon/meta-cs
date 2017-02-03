@@ -609,10 +609,14 @@ if ([greenNode] != null)
 end template
 
 template GenerateAnnotationsCore(MetaCompilerAnnotations mannots, string greenNode)
+end template
+
+/*
+template GenerateAnnotationsCore(MetaCompilerAnnotations mannots, string greenNode)
 // [mannots]
 [greenNode] = [greenNode].WithAdditionalAnnotationsGreen(new["[]"] { new SyntaxAnnotation(MetaCompilerAnnotationInfo.Id, "[mannots.Serialize()]") });
 end template
-
+*/
 
 template GenerateCompilation()
 end template
@@ -869,7 +873,7 @@ namespace [Properties.DefaultNamespace].Syntax
             private readonly [Instances.MainRule().RedName()] _node;
             public DummySyntaxTree()
             {
-                _node = new [Instances.MainRule().RedName()]([Properties.LanguageName]Language.Instance.InternalSyntaxFactory.Main(null, null, true), this, 0);
+                _node = new [Instances.MainRule().RedName()]([Properties.LanguageName]Language.Instance.InternalSyntaxFactory.[Instances.MainRule().PlainName()]([GetElemNullParamList(Instances.MainRule(), false, true)]true), this, 0);
             }
             public override string ToString()
             {
@@ -1715,19 +1719,10 @@ namespace [Properties.DefaultNamespace].Syntax
         BadToken                      = SyntaxKind.BadToken,
         Eof                           = SyntaxKind.Eof,
 ^
-		// Tokens with fixed text:
-		[loop(rule:Instances.LexerRules where rule.FixedToken != null)]
+		// Tokens:
+		[loop(rule:Instances.LexerRules)]
 			[if (Instances.LexerRules[0] == rule)]
-		[rule.PlainName()] = 1,
-			[else]
-		[rule.PlainName()],
-			[end if]
-		[end loop]
-^
-		// Tokens with variable text:
-		[loop(rule:Instances.LexerRules where rule.FixedToken == null)]
-			[if (Instances.LexerRules[0] == rule)]
-		[rule.PlainName()] = 1,
+		[rule.PlainName()] = [rule.Kind],
 			[else]
 		[rule.PlainName()],
 			[end if]
@@ -1764,26 +1759,26 @@ namespace [Properties.DefaultNamespace].Syntax
 ^
         public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
         {
-            [Properties.LanguageName]SyntaxVisitor<TResult> typedVisitor = visitor as [Properties.LanguageName]SyntaxVisitor<TResult>;
+            I[Properties.LanguageName]SyntaxVisitor<TResult> typedVisitor = visitor as I[Properties.LanguageName]SyntaxVisitor<TResult>;
             if (typedVisitor != null)
             {
-                return this.Accept(visitor);
+                return this.Accept(typedVisitor);
             }
             return default(TResult);
         }
 ^
-        public abstract TResult Accept<TResult>([Properties.LanguageName]SyntaxVisitor<TResult> visitor);
+        public abstract TResult Accept<TResult>(I[Properties.LanguageName]SyntaxVisitor<TResult> visitor);
 ^
         public override void Accept(SyntaxVisitor visitor)
         {
-            [Properties.LanguageName]SyntaxVisitor typedVisitor = visitor as [Properties.LanguageName]SyntaxVisitor;
+            I[Properties.LanguageName]SyntaxVisitor typedVisitor = visitor as I[Properties.LanguageName]SyntaxVisitor;
             if (typedVisitor != null)
             {
-                this.Accept(visitor);
+                this.Accept(typedVisitor);
             }
         }
 
-        public abstract void Accept([Properties.LanguageName]SyntaxVisitor visitor);
+        public abstract void Accept(I[Properties.LanguageName]SyntaxVisitor visitor);
     }
 ^
     public class [Properties.LanguageName]SyntaxTrivia : SyntaxTrivia
@@ -1837,6 +1832,8 @@ namespace [Properties.DefaultNamespace]
 	[GenerateSyntaxFacts()]
 ^
 	[GenerateSyntaxVisitor()]
+^
+	[GenerateDetailedSyntaxVisitor()]
 ^
 	[GenerateSyntaxTypedVisitor()]
 ^
@@ -1913,7 +1910,15 @@ public sealed class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCo
 	}
 		[else]
 			[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-    public [elem.RedType()] [elem.RedName()] { get { return new [Properties.LanguageName]SyntaxToken(((global::[Properties.DefaultNamespace].Syntax.InternalSyntax.[rule.GreenName()])this.Green).[elem.GreenName()], this, this.GetChildPosition([rule.IndexOf(elem)]), this.GetChildIndex([rule.IndexOf(elem)])); } }
+    public [elem.RedType()] [elem.RedName()] 
+	{ 
+		get 
+		{ 
+			var green = (global::[Properties.DefaultNamespace].Syntax.InternalSyntax.[rule.GreenName()])this.Green;
+			var greenToken = green.[elem.GreenName()];
+			return greenToken == null ? null : new [Properties.LanguageName]SyntaxToken(greenToken, this, this.GetChildPosition([rule.IndexOf(elem)]), this.GetChildIndex([rule.IndexOf(elem)])); 
+		}
+	}
 			[else]
     public [elem.RedType()] [elem.RedName()] 
 	{ 
@@ -1998,14 +2003,14 @@ public sealed class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCo
     }
 	[end if]
 ^
-    public override TResult Accept<TResult>([Properties.LanguageName]SyntaxVisitor<TResult> visitor)
+    public override TResult Accept<TResult>(I[Properties.LanguageName]SyntaxVisitor<TResult> visitor)
     {
-        return visitor.Visit(this);
+        return visitor.Visit[rule.PlainName()](this);
     }
 ^
-    public override void Accept([Properties.LanguageName]SyntaxVisitor visitor)
+    public override void Accept(I[Properties.LanguageName]SyntaxVisitor visitor)
     {
-        visitor.Visit(this);
+        visitor.Visit[rule.PlainName()](this);
     }
 }
 [end if]
@@ -2189,11 +2194,62 @@ public virtual TResult Visit[rule.PlainName()]([rule.RedName()] node)
 [end if]
 end template
 
+template GenerateDetailedSyntaxVisitor()
+public class [Properties.LanguageName]DetailedSyntaxVisitor : DetailedSyntaxVisitor, I[Properties.LanguageName]SyntaxVisitor
+{
+    public [Properties.LanguageName]DetailedSyntaxVisitor(bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
+		: base(visitIntoStructuredToken, visitIntoStructuredTrivia)
+    {
+    }
+   	[loop(rule:Instances.ParserRules)]
+		[if (rule.Alternatives.Count > 0)]
+			[loop(alt:rule.Alternatives)]
+	[GenerateDetailedSyntaxVisitorVisit(alt)]
+			[end loop]
+		[else]
+	[GenerateDetailedSyntaxVisitorVisit(rule)]
+		[end if]
+	[end loop]
+}
+end template
+
+template GenerateDetailedSyntaxVisitorVisit(Antlr4ParserRule rule)
+^
+public virtual void Visit[rule.PlainName()]([rule.RedName()] node)
+{
+	[if (rule.IsSimpleAlt)]
+		[loop(elem:rule.Elements)]
+			[if (elem.IsList)]
+	this.VisitList(node.[elem.RedName()]);
+			[else]
+				[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
+	this.Visit(node.[elem.RedName()]);
+				[else]
+	this.Visit(node.[elem.RedName()]);
+				[end if]
+			[end if]
+		[end loop] 
+	[else]
+		[loop(elem:rule.AllElements)]
+			[if (elem.IsList)]
+	this.VisitList(node.[elem.RedName()]);
+			[else]
+				[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
+	this.VisitToken(node.[elem.RedName()]);
+				[else]
+	this.Visit(node.[elem.RedName()]);
+				[end if]
+			[end if]
+		[end loop]    
+	[end if]
+}
+end template
+
 template GenerateSyntaxRewriter()
 public class [Properties.LanguageName]SyntaxRewriter : SyntaxRewriter, I[Properties.LanguageName]SyntaxVisitor<SyntaxNode>
 {
-    public [Properties.LanguageName]SyntaxRewriter(bool visitIntoStructuredTrivia = false)
-		: base(visitIntoStructuredTrivia)
+    public [Properties.LanguageName]SyntaxRewriter(bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
+		: base(visitIntoStructuredToken, visitIntoStructuredTrivia)
     {
     }
    	[loop(rule:Instances.ParserRules)]
@@ -3107,3 +3163,150 @@ public class [Properties.LanguageName]GreenToken : InternalSyntaxToken
 }
 end template
 
+
+template GenerateDeclarationTreeBuilder()
+using System.Collections.Immutable;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Declarations;
+using [Properties.DefaultNamespace].Syntax;
+^
+namespace [Properties.DefaultNamespace].Binder
+{
+	public class [Properties.LanguageName]DeclarationTreeBuilder : DeclarationTreeBuilder, I[Properties.LanguageName]SyntaxVisitor
+	{
+        protected [Properties.LanguageName]DeclarationTreeBuilder([Properties.LanguageName]SyntaxTree syntaxTree, string scriptClassName, bool isSubmission, bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
+            : base(syntaxTree, scriptClassName, isSubmission, visitIntoStructuredToken, visitIntoStructuredTrivia)
+        {
+        }
+^
+        public static RootSingleDeclaration ForTree(
+            [Properties.LanguageName]SyntaxTree syntaxTree,
+            string scriptClassName,
+            bool isSubmission)
+        {
+            var builder = new [Properties.LanguageName]DeclarationTreeBuilder(syntaxTree, scriptClassName, isSubmission);
+            return builder.CreateRoot(syntaxTree.GetRoot(), typeof(Symbols.Namespace));
+        }
+   		[loop(rule:Instances.ParserRules)]
+			[if (rule.Alternatives.Count > 0)]
+				[loop(alt:rule.Alternatives)]
+		[GenerateDeclarationTreeBuilderVisit(alt)]
+				[end loop]
+			[else]
+		[GenerateDeclarationTreeBuilderVisit(rule)]
+			[end if]
+		[end loop]
+	}
+}
+end template
+
+template GenerateDeclarationTreeBuilderVisit(Antlr4ParserRule rule)
+^
+public virtual void Visit[rule.PlainName()]([rule.RedName()] node)
+{
+	[GetDeclarationTreeBuilderVisitBody(rule)]
+}
+end template
+
+template GenerateDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
+[if (rule.IsSimpleAlt)]
+	[loop(elem:rule.Elements)]
+[GetDeclarationTreeBuilderVisitElement(rule, elem)]
+	[end loop] 
+[else]
+	[loop(elem:rule.AllElements)]
+[GetDeclarationTreeBuilderVisitElement(rule, elem)]
+	[end loop]    
+[end if]
+end template
+
+template GenerateDeclarationTreeBuilderVisitElement(Antlr4ParserRuleElement elem)
+	[if (elem.IsList)]
+this.VisitList(node.[elem.RedName()]);
+	[else]
+		[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
+this.VisitToken(node.[elem.RedName()]);
+		[else]
+this.Visit(node.[elem.RedName()]);
+		[end if]
+	[end if]
+end template
+
+template GenerateDeclarationTreeBuilderDeclaration(MetaCompilerAnnotations annots, string body)
+this.BeginDeclaration([annots.GetSymbolType()]);
+try
+{
+	[body]
+}
+finally
+{
+	DeclarationInfo decl = this.EndDeclaration();
+	this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+}
+end template
+
+template GenerateDeclarationTreeBuilderQualifiedName(MetaCompilerAnnotations annots, string body)
+this.BeginQualifiedName();
+try
+{
+	[body]
+}
+finally
+{
+	this.EndQualifiedName();
+}
+end template
+
+template GenerateDeclarationTreeBuilderName(MetaCompilerAnnotations annots, string body)
+this.BeginName();
+try
+{
+	[body]
+}
+finally
+{
+	this.EndName();
+}
+end template
+
+template GenerateDeclarationTreeBuilderIdentifier(MetaCompilerAnnotations annots, string name, string body)
+this.RegisterIdentifier([name]);
+[body]
+end template
+
+function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
+	string body = GenerateDeclarationTreeBuilderVisitBody(rule);
+	if (rule.Annotations.IsIdentifier())
+		body = GenerateDeclarationTreeBuilderIdentifier(rule.Annotations, "node", body);
+	end if
+	if (rule.Annotations.IsName())
+		body = GenerateDeclarationTreeBuilderName(rule.Annotations, body);
+	end if
+	if (rule.Annotations.IsQualifiedName())
+		body = GenerateDeclarationTreeBuilderQualifiedName(rule.Annotations, body);
+	end if
+	if (rule.Annotations.IsDeclaration())
+		body = GenerateDeclarationTreeBuilderDeclaration(rule.Annotations, body);
+	end if
+	return body;
+end function
+
+function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
+	string body = GenerateDeclarationTreeBuilderVisitElement(elem);
+	if (elem.Annotations.IsIdentifier())
+		body = GenerateDeclarationTreeBuilderIdentifier(elem.Annotations, "node."+elem.RedName(), body);
+	end if
+	if (elem.Annotations.IsName())
+		body = GenerateDeclarationTreeBuilderName(elem.Annotations, body);
+	end if
+	if (elem.Annotations.IsQualifiedName())
+		body = GenerateDeclarationTreeBuilderQualifiedName(elem.Annotations, body);
+	end if
+	if (elem.Annotations.IsDeclaration())
+		body = GenerateDeclarationTreeBuilderDeclaration(elem.Annotations, body);
+	end if
+	return body;
+end function

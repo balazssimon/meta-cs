@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\51zuztj2.dkc\SoalLexer.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\5isqxjlb.wxp\SoalLexer.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -49,17 +49,16 @@ public partial class SoalLexer : Lexer {
 		THatAssign=85, TBarAssign=86, IDate=87, ITime=88, IDateTime=89, ITimeSpan=90, 
 		IVersion=91, IStyle=92, IMTOM=93, ISSL=94, IHTTP=95, IREST=96, IWebSocket=97, 
 		ISOAP=98, IXML=99, IJSON=100, IClientAuthentication=101, IdentifierNormal=102, 
-		IdentifierVerbatim=103, IntegerLiteral=104, DecimalLiteral=105, ScientificLiteral=106, 
-		DateTimeOffsetLiteral=107, DateTimeLiteral=108, DateLiteral=109, TimeLiteral=110, 
-		RegularStringLiteral=111, GuidLiteral=112, UTF8BOM=113, WHITESPACE=114, 
-		CRLF=115, LINEBREAK=116, LINE_COMMENT=117, COMMENT=118, DoubleQuoteVerbatimStringLiteral=119, 
-		SingleQuoteVerbatimStringLiteral=120, DoubleQuoteVerbatimStringLiteralStart=121, 
+		IdentifierVerbatim=103, LInteger=104, LDecimal=105, LScientific=106, LDateTimeOffset=107, 
+		LDateTime=108, LDate=109, LTime=110, LRegularString=111, LGuid=112, LUtf8Bom=113, 
+		LWhiteSpace=114, LCrLf=115, LLineEnd=116, LSingleLineComment=117, COMMENT=118, 
+		LDoubleQuoteVerbatimString=119, LSingleQuoteVerbatimString=120, DoubleQuoteVerbatimStringLiteralStart=121, 
 		SingleQuoteVerbatimStringLiteralStart=122;
-	public const int MULTILINE_COMMENT = 1;
+	public const int LMultilineComment = 1;
 	public const int DOUBLEQUOTE_VERBATIM_STRING = 2;
 	public const int SINGLEQUOTE_VERBATIM_STRING = 3;
 	public static string[] modeNames = {
-		"DEFAULT_MODE", "MULTILINE_COMMENT", "DOUBLEQUOTE_VERBATIM_STRING", "SINGLEQUOTE_VERBATIM_STRING"
+		"DEFAULT_MODE", "LMultilineComment", "DOUBLEQUOTE_VERBATIM_STRING", "SINGLEQUOTE_VERBATIM_STRING"
 	};
 
 	public static readonly string[] ruleNames = {
@@ -82,21 +81,20 @@ public partial class SoalLexer : Lexer {
 		"IWebSocket", "ISOAP", "IXML", "IJSON", "IClientAuthentication", "IdentifierNormal", 
 		"IdentifierVerbatim", "IdentifierBegin", "IdentifierCharacter", "IdentifierVerbatimCharacter", 
 		"IdentifierVerbatimEscape", "IdentifierGeneralBegin", "IdentifierGeneralCharacter", 
-		"IntegerLiteral", "DecimalLiteral", "ScientificLiteral", "DecimalDigits", 
-		"DecimalDigit", "Sign", "Hexadecimal", "HexDigit", "DateTimeOffsetLiteral", 
-		"DateTimeLiteral", "DateLiteral", "TimeLiteral", "DateDay", "DateMonth", 
-		"DateYear", "TimeZone", "OffsetTimeHour", "OffsetTimeHourMinute", "TimeHour", 
-		"TimeHourMinute", "TimeMinute", "TimeSecond", "TimeSecondDecimalPart", 
-		"RegularStringLiteral", "DoubleQuoteVerbatimStringLiteralStart", "SingleQuoteVerbatimStringLiteralStart", 
-		"SingleQuoteTextCharacter", "SingleQuoteTextSimple", "SingleQuoteTextVerbatimCharacter", 
-		"SingleQuoteTextVerbatimCharacterEscape", "SingleQuoteTextVerbatimCharacters", 
-		"DoubleQuoteTextCharacter", "DoubleQuoteTextSimple", "DoubleQuoteTextVerbatimCharacter", 
-		"DoubleQuoteTextVerbatimCharacterEscape", "DoubleQuoteTextVerbatimCharacters", 
-		"CharacterEscapeSimple", "CharacterEscapeSimpleCharacter", "CharacterEscapeUnicode", 
-		"GuidLiteral", "UTF8BOM", "WHITESPACE", "CRLF", "LINEBREAK", "LINE_COMMENT", 
-		"COMMENT_START", "COMMENT_CRLF", "COMMENT_LINEBREAK", "COMMENT_TEXT", 
-		"COMMENT", "COMMENT_STAR", "DoubleQuoteVerbatimStringText", "DoubleQuoteVerbatimStringLiteral", 
-		"SingleQuoteVerbatimStringText", "SingleQuoteVerbatimStringLiteral"
+		"LInteger", "LDecimal", "LScientific", "DecimalDigits", "DecimalDigit", 
+		"Sign", "Hexadecimal", "HexDigit", "LDateTimeOffset", "LDateTime", "LDate", 
+		"LTime", "DateDay", "DateMonth", "DateYear", "TimeZone", "OffsetTimeHour", 
+		"OffsetTimeHourMinute", "TimeHour", "TimeHourMinute", "TimeMinute", "TimeSecond", 
+		"TimeSecondDecimalPart", "LRegularString", "DoubleQuoteVerbatimStringLiteralStart", 
+		"SingleQuoteVerbatimStringLiteralStart", "SingleQuoteTextCharacter", "SingleQuoteTextSimple", 
+		"SingleQuoteTextVerbatimCharacter", "SingleQuoteTextVerbatimCharacterEscape", 
+		"SingleQuoteTextVerbatimCharacters", "DoubleQuoteTextCharacter", "DoubleQuoteTextSimple", 
+		"DoubleQuoteTextVerbatimCharacter", "DoubleQuoteTextVerbatimCharacterEscape", 
+		"DoubleQuoteTextVerbatimCharacters", "CharacterEscapeSimple", "CharacterEscapeSimpleCharacter", 
+		"CharacterEscapeUnicode", "LGuid", "LUtf8Bom", "LWhiteSpace", "LCrLf", 
+		"LLineEnd", "LSingleLineComment", "LCommentStart", "COMMENT_CRLF", "COMMENT_LINEBREAK", 
+		"COMMENT_TEXT", "COMMENT", "COMMENT_STAR", "DoubleQuoteVerbatimStringText", 
+		"LDoubleQuoteVerbatimString", "SingleQuoteVerbatimStringText", "LSingleQuoteVerbatimString"
 	};
 
 
@@ -142,11 +140,10 @@ public partial class SoalLexer : Lexer {
 		"TAmpersandAssign", "THatAssign", "TBarAssign", "IDate", "ITime", "IDateTime", 
 		"ITimeSpan", "IVersion", "IStyle", "IMTOM", "ISSL", "IHTTP", "IREST", 
 		"IWebSocket", "ISOAP", "IXML", "IJSON", "IClientAuthentication", "IdentifierNormal", 
-		"IdentifierVerbatim", "IntegerLiteral", "DecimalLiteral", "ScientificLiteral", 
-		"DateTimeOffsetLiteral", "DateTimeLiteral", "DateLiteral", "TimeLiteral", 
-		"RegularStringLiteral", "GuidLiteral", "UTF8BOM", "WHITESPACE", "CRLF", 
-		"LINEBREAK", "LINE_COMMENT", "COMMENT", "DoubleQuoteVerbatimStringLiteral", 
-		"SingleQuoteVerbatimStringLiteral", "DoubleQuoteVerbatimStringLiteralStart", 
+		"IdentifierVerbatim", "LInteger", "LDecimal", "LScientific", "LDateTimeOffset", 
+		"LDateTime", "LDate", "LTime", "LRegularString", "LGuid", "LUtf8Bom", 
+		"LWhiteSpace", "LCrLf", "LLineEnd", "LSingleLineComment", "COMMENT", "LDoubleQuoteVerbatimString", 
+		"LSingleQuoteVerbatimString", "DoubleQuoteVerbatimStringLiteralStart", 
 		"SingleQuoteVerbatimStringLiteralStart"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);

@@ -91,9 +91,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SoalLexer.ag4</DependentUpon>
     </None>
-    <None Include="SoalLexer.literals">
-      <DependentUpon>SoalLexer.ag4</DependentUpon>
-    </None>
     <None Include="SoalLexer.tokens">
       <DependentUpon>SoalLexer.ag4</DependentUpon>
     </None>

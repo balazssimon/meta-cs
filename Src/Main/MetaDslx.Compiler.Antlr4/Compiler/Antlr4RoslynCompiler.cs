@@ -44,6 +44,8 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public string GeneratedParseOptions { get; private set; }
         public string GeneratedFeature { get; private set; }
 
+        public string GeneratedDeclarationTreeBuilder { get; private set; }
+
         public Antlr4RoslynCompiler(string source, string defaultNamespace, string outputDirectory, string fileName)
         {
             this.Source = source;
@@ -98,6 +100,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.GeneratedLanguageVersion = generator.GenerateLanguageVersion();
             this.GeneratedParseOptions = generator.GenerateParseOptions();
             this.GeneratedFeature = generator.GenerateFeature();
+            this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
         }
 
         private void SimplifyElements()

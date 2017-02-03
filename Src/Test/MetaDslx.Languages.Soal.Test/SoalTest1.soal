@@ -1,0 +1,125 @@
+﻿namespace CalculatorNs = "calc"
+{
+	struct MathFault
+	{
+		int ErrorCode;
+		string ErrorMessage;
+	}
+
+	struct Complex
+	{
+		double Re;
+		double Im;
+	}
+
+	struct Entity2
+	{
+		int Id;
+	}
+
+	struct Entity1 : Entity2
+	{
+		string Name;
+	}
+
+	database ComplexDB
+	{
+		entity Entity1;
+		entity Entity2;
+
+		Complex FindComplex(int id);
+	}
+
+	interface ICalculator
+	{
+		double Add(double left, double right);
+		double Subtract(double left, double right);
+		double Multiply(double left, double right);
+		double Divide(double left, double right) throws MathFault;
+		Complex ComplexAdd(Complex left, Complex right);
+		void Hello(string message);
+		oneway HelloOneway(string msg);
+	}
+
+	component CalcComp1
+	{
+		service ICalculator CalcS;
+		reference ICalculator CalcR;
+	}
+
+	component CalcComp2
+	{
+		service ICalculator;
+		reference ICalculator CalcR;
+	}
+
+	component CalcComp3
+	{
+		service ICalculator CalcS;
+		reference ICalculator;
+	}
+
+	component CalcComp4
+	{
+		service ICalculator;
+		reference ICalculator;
+	}
+
+	composite Composite1 
+	{
+		service ICalculator CS;
+		reference ICalculator CR;
+		component CalcComp1;
+		component CalcComp2;
+		wire CS to CalcComp1.CalcS;
+		wire CalcComp1.CalcR to CalcComp2.ICalculator;
+		wire CalcComp2.ICalculator to CR;
+	}
+
+	assembly Assembly1 : Composite1
+	{
+		implementation AspNet;
+		language CSharp;
+	}
+
+	assembly Assembly2 : Assembly3
+	{
+		implementation AspNet;
+		language CSharp;
+	}
+
+	assembly Assembly3 : Assembly2
+	{
+		implementation AspNet;
+		language CSharp;
+	}	
+
+	deployment Deployment1
+	{
+		environment Env1
+		{
+			runtime MySQL;
+			database ComplexDB;
+		}
+		environment IIS
+		{
+			runtime IIS;
+			assembly Assembly2;
+			assembly Assembly3;
+		}
+		wire CalcComp1.CalcR to CalcComp2.ICalculator;
+	}
+	
+	binding SoapHttp
+	{
+		transport HTTP;
+		encoding SOAP;
+		protocol WsAddressing;
+	}
+
+	endpoint Calculator : ICalculator
+	{
+		binding SoapHttp;
+		address "http://localhost/Calculator";
+	}
+}

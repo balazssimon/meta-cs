@@ -219,6 +219,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public static InternalSyntaxNodeList Create(InternalSyntaxNode[] items, bool weak = false)
         {
+            if (items == null || items.Length == 0) return null;
             if (weak) return new InternalWeakSyntaxNodeList(items, null, null);
             else return new InternalStrongSyntaxNodeList(items, null, null);
         }

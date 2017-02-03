@@ -52,6 +52,15 @@
     <Compile Include="Compilation\SourceCodeKind.cs" />
     <Compile Include="Compilation\SourceFileResolver.cs" />
     <Compile Include="Compilation\SourceReferenceResolver.cs" />
+    <Compile Include="Compilation\SymbolFilter.cs" />
+    <Compile Include="Declarations\Declaration.cs" />
+    <Compile Include="Declarations\DeclarationTable.Cache.cs" />
+    <Compile Include="Declarations\DeclarationTable.cs" />
+    <Compile Include="Declarations\DeclarationTreeBuilder.cs" />
+    <Compile Include="Syntax\DetailedSyntaxVisitor.cs" />
+    <Compile Include="Declarations\MergedDeclaration.cs" />
+    <Compile Include="Declarations\RootSingleDeclaration.cs" />
+    <Compile Include="Declarations\SingleDeclaration.cs" />
     <Compile Include="Diagnostics\DiagnosticFormatter.cs" />
     <Compile Include="Diagnostics\MessageProvider.cs" />
     <Compile Include="Diagnostics\Diagnostic.cs" />
@@ -140,15 +149,17 @@
     <Compile Include="Utilities\ArrayUtilities.cs" />
     <Compile Include="Text\SourceHashProvider.cs" />
     <Compile Include="Utilities\ImmutableArrayExtensions.cs" />
+    <Compile Include="Utilities\ImmutableSetWithInsertionOrder`1.cs" />
     <Compile Include="Utilities\ObjectPool`1.cs" />
     <Compile Include="Utilities\PooledDictionary.cs" />
     <Compile Include="Utilities\PooledHashSet.cs" />
     <Compile Include="Utilities\PooledStringBuilder.cs" />
+    <Compile Include="Utilities\SpecializedCollections.cs" />
     <Compile Include="Utilities\StreamUtilities.cs" />
+    <Compile Include="Utilities\UnionCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Binder\" />
-    <Folder Include="Declarations\" />
     <Folder Include="Symbols\" />
   </ItemGroup>
   <ItemGroup>
