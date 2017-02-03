@@ -3861,7 +3861,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	public sealed class ComponentServiceSyntax : SoalSyntaxNode
 	{
 	    private QualifiedNameSyntax qualifiedName;
-	    private IdentifierSyntax identifier;
+	    private NameDefSyntax nameDef;
 	    private ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody;
 	
 	    public ComponentServiceSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
@@ -3887,9 +3887,9 @@ namespace MetaDslx.Languages.Soal.Syntax
 		{ 
 			get { return this.GetRed(ref this.qualifiedName, 1); } 
 		}
-	    public IdentifierSyntax Identifier 
+	    public NameDefSyntax NameDef 
 		{ 
-			get { return this.GetRed(ref this.identifier, 2); } 
+			get { return this.GetRed(ref this.nameDef, 2); } 
 		}
 	    public ComponentServiceOrReferenceBodySyntax ComponentServiceOrReferenceBody 
 		{ 
@@ -3901,7 +3901,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	        switch (index)
 	        {
 				case 1: return this.GetRed(ref this.qualifiedName, 1);
-				case 2: return this.GetRed(ref this.identifier, 2);
+				case 2: return this.GetRed(ref this.nameDef, 2);
 				case 3: return this.GetRed(ref this.componentServiceOrReferenceBody, 3);
 				default: return null;
 	        }
@@ -3912,7 +3912,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	        switch (index)
 	        {
 				case 1: return this.qualifiedName;
-				case 2: return this.identifier;
+				case 2: return this.nameDef;
 				case 3: return this.componentServiceOrReferenceBody;
 				default: return null;
 	        }
@@ -3920,32 +3920,32 @@ namespace MetaDslx.Languages.Soal.Syntax
 	
 	    public ComponentServiceSyntax WithKService(SyntaxToken kService)
 		{
-			return this.Update(KService, this.QualifiedName, this.Identifier, this.ComponentServiceOrReferenceBody);
+			return this.Update(KService, this.QualifiedName, this.NameDef, this.ComponentServiceOrReferenceBody);
 		}
 	
 	    public ComponentServiceSyntax WithQualifiedName(QualifiedNameSyntax qualifiedName)
 		{
-			return this.Update(this.KService, QualifiedName, this.Identifier, this.ComponentServiceOrReferenceBody);
+			return this.Update(this.KService, QualifiedName, this.NameDef, this.ComponentServiceOrReferenceBody);
 		}
 	
-	    public ComponentServiceSyntax WithIdentifier(IdentifierSyntax identifier)
+	    public ComponentServiceSyntax WithNameDef(NameDefSyntax nameDef)
 		{
-			return this.Update(this.KService, this.QualifiedName, Identifier, this.ComponentServiceOrReferenceBody);
+			return this.Update(this.KService, this.QualifiedName, NameDef, this.ComponentServiceOrReferenceBody);
 		}
 	
 	    public ComponentServiceSyntax WithComponentServiceOrReferenceBody(ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
 		{
-			return this.Update(this.KService, this.QualifiedName, this.Identifier, ComponentServiceOrReferenceBody);
+			return this.Update(this.KService, this.QualifiedName, this.NameDef, ComponentServiceOrReferenceBody);
 		}
 	
-	    public ComponentServiceSyntax Update(SyntaxToken kService, QualifiedNameSyntax qualifiedName, IdentifierSyntax identifier, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
+	    public ComponentServiceSyntax Update(SyntaxToken kService, QualifiedNameSyntax qualifiedName, NameDefSyntax nameDef, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
 	    {
 	        if (this.KService != kService ||
 				this.QualifiedName != qualifiedName ||
-				this.Identifier != identifier ||
+				this.NameDef != nameDef ||
 				this.ComponentServiceOrReferenceBody != componentServiceOrReferenceBody)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ComponentService(kService, qualifiedName, identifier, componentServiceOrReferenceBody);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ComponentService(kService, qualifiedName, nameDef, componentServiceOrReferenceBody);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -3968,7 +3968,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	public sealed class ComponentReferenceSyntax : SoalSyntaxNode
 	{
 	    private QualifiedNameSyntax qualifiedName;
-	    private IdentifierSyntax identifier;
+	    private NameDefSyntax nameDef;
 	    private ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody;
 	
 	    public ComponentReferenceSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
@@ -3994,9 +3994,9 @@ namespace MetaDslx.Languages.Soal.Syntax
 		{ 
 			get { return this.GetRed(ref this.qualifiedName, 1); } 
 		}
-	    public IdentifierSyntax Identifier 
+	    public NameDefSyntax NameDef 
 		{ 
-			get { return this.GetRed(ref this.identifier, 2); } 
+			get { return this.GetRed(ref this.nameDef, 2); } 
 		}
 	    public ComponentServiceOrReferenceBodySyntax ComponentServiceOrReferenceBody 
 		{ 
@@ -4008,7 +4008,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	        switch (index)
 	        {
 				case 1: return this.GetRed(ref this.qualifiedName, 1);
-				case 2: return this.GetRed(ref this.identifier, 2);
+				case 2: return this.GetRed(ref this.nameDef, 2);
 				case 3: return this.GetRed(ref this.componentServiceOrReferenceBody, 3);
 				default: return null;
 	        }
@@ -4019,7 +4019,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	        switch (index)
 	        {
 				case 1: return this.qualifiedName;
-				case 2: return this.identifier;
+				case 2: return this.nameDef;
 				case 3: return this.componentServiceOrReferenceBody;
 				default: return null;
 	        }
@@ -4027,32 +4027,32 @@ namespace MetaDslx.Languages.Soal.Syntax
 	
 	    public ComponentReferenceSyntax WithKReference(SyntaxToken kReference)
 		{
-			return this.Update(KReference, this.QualifiedName, this.Identifier, this.ComponentServiceOrReferenceBody);
+			return this.Update(KReference, this.QualifiedName, this.NameDef, this.ComponentServiceOrReferenceBody);
 		}
 	
 	    public ComponentReferenceSyntax WithQualifiedName(QualifiedNameSyntax qualifiedName)
 		{
-			return this.Update(this.KReference, QualifiedName, this.Identifier, this.ComponentServiceOrReferenceBody);
+			return this.Update(this.KReference, QualifiedName, this.NameDef, this.ComponentServiceOrReferenceBody);
 		}
 	
-	    public ComponentReferenceSyntax WithIdentifier(IdentifierSyntax identifier)
+	    public ComponentReferenceSyntax WithNameDef(NameDefSyntax nameDef)
 		{
-			return this.Update(this.KReference, this.QualifiedName, Identifier, this.ComponentServiceOrReferenceBody);
+			return this.Update(this.KReference, this.QualifiedName, NameDef, this.ComponentServiceOrReferenceBody);
 		}
 	
 	    public ComponentReferenceSyntax WithComponentServiceOrReferenceBody(ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
 		{
-			return this.Update(this.KReference, this.QualifiedName, this.Identifier, ComponentServiceOrReferenceBody);
+			return this.Update(this.KReference, this.QualifiedName, this.NameDef, ComponentServiceOrReferenceBody);
 		}
 	
-	    public ComponentReferenceSyntax Update(SyntaxToken kReference, QualifiedNameSyntax qualifiedName, IdentifierSyntax identifier, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
+	    public ComponentReferenceSyntax Update(SyntaxToken kReference, QualifiedNameSyntax qualifiedName, NameDefSyntax nameDef, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
 	    {
 	        if (this.KReference != kReference ||
 				this.QualifiedName != qualifiedName ||
-				this.Identifier != identifier ||
+				this.NameDef != nameDef ||
 				this.ComponentServiceOrReferenceBody != componentServiceOrReferenceBody)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ComponentReference(kReference, qualifiedName, identifier, componentServiceOrReferenceBody);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ComponentReference(kReference, qualifiedName, nameDef, componentServiceOrReferenceBody);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14337,7 +14337,7 @@ namespace MetaDslx.Languages.Soal
 		{
 			this.VisitToken(node.KService);
 			this.Visit(node.QualifiedName);
-			this.Visit(node.Identifier);
+			this.Visit(node.NameDef);
 			this.Visit(node.ComponentServiceOrReferenceBody);
 		}
 		
@@ -14345,7 +14345,7 @@ namespace MetaDslx.Languages.Soal
 		{
 			this.VisitToken(node.KReference);
 			this.Visit(node.QualifiedName);
-			this.Visit(node.Identifier);
+			this.Visit(node.NameDef);
 			this.Visit(node.ComponentServiceOrReferenceBody);
 		}
 		
@@ -16137,18 +16137,18 @@ namespace MetaDslx.Languages.Soal
 		{
 		    var kService = this.VisitToken(node.KService);
 		    var qualifiedName = (QualifiedNameSyntax)this.Visit(node.QualifiedName);
-		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
+		    var nameDef = (NameDefSyntax)this.Visit(node.NameDef);
 		    var componentServiceOrReferenceBody = (ComponentServiceOrReferenceBodySyntax)this.Visit(node.ComponentServiceOrReferenceBody);
-			return node.Update(kService, qualifiedName, identifier, componentServiceOrReferenceBody);
+			return node.Update(kService, qualifiedName, nameDef, componentServiceOrReferenceBody);
 		}
 		
 		public virtual SyntaxNode VisitComponentReference(ComponentReferenceSyntax node)
 		{
 		    var kReference = this.VisitToken(node.KReference);
 		    var qualifiedName = (QualifiedNameSyntax)this.Visit(node.QualifiedName);
-		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
+		    var nameDef = (NameDefSyntax)this.Visit(node.NameDef);
 		    var componentServiceOrReferenceBody = (ComponentServiceOrReferenceBodySyntax)this.Visit(node.ComponentServiceOrReferenceBody);
-			return node.Update(kReference, qualifiedName, identifier, componentServiceOrReferenceBody);
+			return node.Update(kReference, qualifiedName, nameDef, componentServiceOrReferenceBody);
 		}
 		
 		public virtual SyntaxNode VisitComponentServiceOrReferenceEmptyBody(ComponentServiceOrReferenceEmptyBodySyntax node)
@@ -17882,13 +17882,13 @@ namespace MetaDslx.Languages.Soal
 		    return (ComponentElementSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ComponentElement((Syntax.InternalSyntax.ComponentLanguageGreen)componentLanguage.Green).CreateRed();
 		}
 		
-		public ComponentServiceSyntax ComponentService(SyntaxToken kService, QualifiedNameSyntax qualifiedName, IdentifierSyntax identifier, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
+		public ComponentServiceSyntax ComponentService(SyntaxToken kService, QualifiedNameSyntax qualifiedName, NameDefSyntax nameDef, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
 		{
 		    if (kService == null) throw new ArgumentNullException(nameof(kService));
 		    if (kService.RawKind != (int)SoalSyntaxKind.KService) throw new ArgumentException(nameof(kService));
 		    if (qualifiedName == null) throw new ArgumentNullException(nameof(qualifiedName));
 		    if (componentServiceOrReferenceBody == null) throw new ArgumentNullException(nameof(componentServiceOrReferenceBody));
-		    return (ComponentServiceSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ComponentService((InternalSyntaxToken)kService.Green, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, identifier == null ? null : (Syntax.InternalSyntax.IdentifierGreen)identifier.Green, (Syntax.InternalSyntax.ComponentServiceOrReferenceBodyGreen)componentServiceOrReferenceBody.Green).CreateRed();
+		    return (ComponentServiceSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ComponentService((InternalSyntaxToken)kService.Green, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, nameDef == null ? null : (Syntax.InternalSyntax.NameDefGreen)nameDef.Green, (Syntax.InternalSyntax.ComponentServiceOrReferenceBodyGreen)componentServiceOrReferenceBody.Green).CreateRed();
 		}
 		
 		public ComponentServiceSyntax ComponentService(QualifiedNameSyntax qualifiedName, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
@@ -17896,13 +17896,13 @@ namespace MetaDslx.Languages.Soal
 			return this.ComponentService(this.Token(SoalSyntaxKind.KService), qualifiedName, null, componentServiceOrReferenceBody);
 		}
 		
-		public ComponentReferenceSyntax ComponentReference(SyntaxToken kReference, QualifiedNameSyntax qualifiedName, IdentifierSyntax identifier, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
+		public ComponentReferenceSyntax ComponentReference(SyntaxToken kReference, QualifiedNameSyntax qualifiedName, NameDefSyntax nameDef, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)
 		{
 		    if (kReference == null) throw new ArgumentNullException(nameof(kReference));
 		    if (kReference.RawKind != (int)SoalSyntaxKind.KReference) throw new ArgumentException(nameof(kReference));
 		    if (qualifiedName == null) throw new ArgumentNullException(nameof(qualifiedName));
 		    if (componentServiceOrReferenceBody == null) throw new ArgumentNullException(nameof(componentServiceOrReferenceBody));
-		    return (ComponentReferenceSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ComponentReference((InternalSyntaxToken)kReference.Green, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, identifier == null ? null : (Syntax.InternalSyntax.IdentifierGreen)identifier.Green, (Syntax.InternalSyntax.ComponentServiceOrReferenceBodyGreen)componentServiceOrReferenceBody.Green).CreateRed();
+		    return (ComponentReferenceSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ComponentReference((InternalSyntaxToken)kReference.Green, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, nameDef == null ? null : (Syntax.InternalSyntax.NameDefGreen)nameDef.Green, (Syntax.InternalSyntax.ComponentServiceOrReferenceBodyGreen)componentServiceOrReferenceBody.Green).CreateRed();
 		}
 		
 		public ComponentReferenceSyntax ComponentReference(QualifiedNameSyntax qualifiedName, ComponentServiceOrReferenceBodySyntax componentServiceOrReferenceBody)

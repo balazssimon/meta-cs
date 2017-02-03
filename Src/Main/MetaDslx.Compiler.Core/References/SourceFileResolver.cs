@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
-namespace MetaDslx.Compiler
+namespace MetaDslx.Compiler.References
 {
     /// <summary>
     /// Resolves references to source files specified in source code.

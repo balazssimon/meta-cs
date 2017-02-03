@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.References;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;

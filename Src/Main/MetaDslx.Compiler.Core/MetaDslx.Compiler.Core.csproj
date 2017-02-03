@@ -44,19 +44,34 @@
     <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compilation\CandidateReason.cs" />
     <Compile Include="Compilation\Compilation.cs" />
     <Compile Include="Compilation\CompilationOptions.cs" />
+    <Compile Include="Compilation\CompilationStage.cs" />
     <Compile Include="Compilation\DocumentationMode.cs" />
     <Compile Include="Compilation\Language.cs" />
     <Compile Include="Compilation\ParseOptions.cs" />
+    <Compile Include="Compilation\ScriptCompilationInfo.cs" />
+    <Compile Include="Compilation\SemanticModel.cs" />
     <Compile Include="Compilation\SourceCodeKind.cs" />
-    <Compile Include="Compilation\SourceFileResolver.cs" />
-    <Compile Include="Compilation\SourceReferenceResolver.cs" />
+    <Compile Include="Compilation\SymbolInfo.cs" />
+    <Compile Include="Compilation\TypeInfo.cs" />
+    <Compile Include="DiagnosticAnalyzer\AsyncQueue.cs" />
+    <Compile Include="DiagnosticAnalyzer\CompilationCompletedEvent.cs" />
+    <Compile Include="DiagnosticAnalyzer\CompilationEvent.cs" />
+    <Compile Include="DiagnosticAnalyzer\CompilationStartedEvent.cs" />
+    <Compile Include="DiagnosticAnalyzer\CompilationUnitCompletedEvent.cs" />
+    <Compile Include="DiagnosticAnalyzer\SymbolDeclaredCompilationEvent.cs" />
+    <Compile Include="References\SourceFileResolver.cs" />
+    <Compile Include="References\SourceReferenceResolver.cs" />
     <Compile Include="Compilation\SymbolFilter.cs" />
     <Compile Include="Declarations\Declaration.cs" />
     <Compile Include="Declarations\DeclarationTable.Cache.cs" />
     <Compile Include="Declarations\DeclarationTable.cs" />
     <Compile Include="Declarations\DeclarationTreeBuilder.cs" />
+    <Compile Include="References\MetadataReferenceResolver.cs" />
+    <Compile Include="Symbols\AttachedProperties.cs" />
+    <Compile Include="Symbols\WellKnownMemberNames.cs" />
     <Compile Include="Syntax\DetailedSyntaxVisitor.cs" />
     <Compile Include="Declarations\MergedDeclaration.cs" />
     <Compile Include="Declarations\RootSingleDeclaration.cs" />
@@ -144,6 +159,7 @@
     <Compile Include="Utilities\CollectionUtilities.cs" />
     <Compile Include="Utilities\ConcurrentCache.cs" />
     <Compile Include="Utilities\EmptyCollections.cs" />
+    <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\ExceptionUtilities.cs" />
     <Compile Include="Utilities\Hash.cs" />
     <Compile Include="Utilities\ArrayUtilities.cs" />
@@ -160,7 +176,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Binder\" />
-    <Folder Include="Symbols\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">

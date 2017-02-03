@@ -65,22 +65,22 @@ namespace MetaDslx.Compiler.Declarations
 
         public bool IsType
         {
-            get { return this.Kind.IsType; }
+            get { return this.Kind != null && this.Kind.IsType; }
         }
 
         public bool IsScope
         {
-            get { return this.Kind.IsScope; }
+            get { return this.Kind != null && this.Kind.IsScope; }
         }
 
         public bool IsNamespace
         {
-            get { return !this.Kind.IsType && this.Kind.IsScope; }
+            get { return this.Kind != null && !this.Kind.IsType && this.Kind.IsScope; }
         }
 
         public bool IsMember
         {
-            get { return !this.Kind.IsType && !this.Kind.IsScope; }
+            get { return this.Kind != null && !this.Kind.IsType && !this.Kind.IsScope; }
         }
     }
 }

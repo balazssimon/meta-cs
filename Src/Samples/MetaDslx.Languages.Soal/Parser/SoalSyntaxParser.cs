@@ -853,11 +853,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
 				}
-				SoalParser.IdentifierContext identifierContext = context.identifier();
-				IdentifierGreen identifier = null;
-				if (identifierContext != null)
+				SoalParser.NameDefContext nameDefContext = context.nameDef();
+				NameDefGreen nameDef = null;
+				if (nameDefContext != null)
 				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
+					nameDef = (NameDefGreen)this.Visit(nameDefContext);
 				}
 				SoalParser.ComponentServiceOrReferenceBodyContext componentServiceOrReferenceBodyContext = context.componentServiceOrReferenceBody();
 				ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody = null;
@@ -865,7 +865,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					componentServiceOrReferenceBody = (ComponentServiceOrReferenceBodyGreen)this.Visit(componentServiceOrReferenceBodyContext);
 				}
-				GreenNode greenNode = this.factory.ComponentService(kService, qualifiedName, identifier, componentServiceOrReferenceBody, true);
+				GreenNode greenNode = this.factory.ComponentService(kService, qualifiedName, nameDef, componentServiceOrReferenceBody, true);
 				return greenNode;
 			}
 			
@@ -879,11 +879,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
 				}
-				SoalParser.IdentifierContext identifierContext = context.identifier();
-				IdentifierGreen identifier = null;
-				if (identifierContext != null)
+				SoalParser.NameDefContext nameDefContext = context.nameDef();
+				NameDefGreen nameDef = null;
+				if (nameDefContext != null)
 				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
+					nameDef = (NameDefGreen)this.Visit(nameDefContext);
 				}
 				SoalParser.ComponentServiceOrReferenceBodyContext componentServiceOrReferenceBodyContext = context.componentServiceOrReferenceBody();
 				ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody = null;
@@ -891,7 +891,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					componentServiceOrReferenceBody = (ComponentServiceOrReferenceBodyGreen)this.Visit(componentServiceOrReferenceBodyContext);
 				}
-				GreenNode greenNode = this.factory.ComponentReference(kReference, qualifiedName, identifier, componentServiceOrReferenceBody, true);
+				GreenNode greenNode = this.factory.ComponentReference(kReference, qualifiedName, nameDef, componentServiceOrReferenceBody, true);
 				return greenNode;
 			}
 			

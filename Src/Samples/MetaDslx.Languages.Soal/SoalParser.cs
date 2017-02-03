@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\nl2bne5r.dgm\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\oxsmi0ds.qmw\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -2391,8 +2391,8 @@ public partial class SoalParser : Parser {
 		public ComponentServiceOrReferenceBodyContext componentServiceOrReferenceBody() {
 			return GetRuleContext<ComponentServiceOrReferenceBodyContext>(0);
 		}
-		public IdentifierContext identifier() {
-			return GetRuleContext<IdentifierContext>(0);
+		public NameDefContext nameDef() {
+			return GetRuleContext<NameDefContext>(0);
 		}
 		public ComponentServiceContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2428,7 +2428,7 @@ public partial class SoalParser : Parser {
 			_la = TokenStream.La(1);
 			if (((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 495; identifier();
+				State = 495; nameDef();
 				}
 			}
 
@@ -2454,8 +2454,8 @@ public partial class SoalParser : Parser {
 		public ComponentServiceOrReferenceBodyContext componentServiceOrReferenceBody() {
 			return GetRuleContext<ComponentServiceOrReferenceBodyContext>(0);
 		}
-		public IdentifierContext identifier() {
-			return GetRuleContext<IdentifierContext>(0);
+		public NameDefContext nameDef() {
+			return GetRuleContext<NameDefContext>(0);
 		}
 		public ComponentReferenceContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2491,7 +2491,7 @@ public partial class SoalParser : Parser {
 			_la = TokenStream.La(1);
 			if (((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 502; identifier();
+				State = 502; nameDef();
 				}
 			}
 
@@ -7711,10 +7711,10 @@ public partial class SoalParser : Parser {
 		sb.Append("\x5\x46$\x2\x1EB\x1EE\x5H%\x2\x1EC\x1EE\x5J&\x2\x1ED\x1E8\x3");
 		sb.Append("\x2\x2\x2\x1ED\x1E9\x3\x2\x2\x2\x1ED\x1EA\x3\x2\x2\x2\x1ED\x1EB");
 		sb.Append("\x3\x2\x2\x2\x1ED\x1EC\x3\x2\x2\x2\x1EE=\x3\x2\x2\x2\x1EF\x1F0");
-		sb.Append("\a\x17\x2\x2\x1F0\x1F2\x5\x4\x3\x2\x1F1\x1F3\x5\xD0i\x2\x1F2");
+		sb.Append("\a\x17\x2\x2\x1F0\x1F2\x5\x4\x3\x2\x1F1\x1F3\x5\xCCg\x2\x1F2");
 		sb.Append("\x1F1\x3\x2\x2\x2\x1F2\x1F3\x3\x2\x2\x2\x1F3\x1F4\x3\x2\x2\x2");
 		sb.Append("\x1F4\x1F5\x5\x42\"\x2\x1F5?\x3\x2\x2\x2\x1F6\x1F7\a\x16\x2");
-		sb.Append("\x2\x1F7\x1F9\x5\x4\x3\x2\x1F8\x1FA\x5\xD0i\x2\x1F9\x1F8\x3");
+		sb.Append("\x2\x1F7\x1F9\x5\x4\x3\x2\x1F8\x1FA\x5\xCCg\x2\x1F9\x1F8\x3");
 		sb.Append("\x2\x2\x2\x1F9\x1FA\x3\x2\x2\x2\x1FA\x1FB\x3\x2\x2\x2\x1FB\x1FC");
 		sb.Append("\x5\x42\"\x2\x1FC\x41\x3\x2\x2\x2\x1FD\x207\a.\x2\x2\x1FE\x202");
 		sb.Append("\a\x37\x2\x2\x1FF\x201\x5\x44#\x2\x200\x1FF\x3\x2\x2\x2\x201");

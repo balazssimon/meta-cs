@@ -6,6 +6,7 @@ options {
 	generateCompilerBase=true;
 }
 
+$RootScope(Namespace)
 main : namespaceDeclaration* EOF;
 
 $QualifiedName
@@ -111,11 +112,11 @@ componentElement
 	;
 
 $Property(Services)
-$Symbol(Service)
-componentService : KService $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
+$NameDef(Service)
+componentService : KService $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value nameDef? componentServiceOrReferenceBody;
 $Property(References)
-$Symbol(Reference)
-componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value identifier? componentServiceOrReferenceBody;
+$NameDef(Reference)
+componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value nameDef? componentServiceOrReferenceBody;
 
 componentServiceOrReferenceBody 
 	: TSemicolon #componentServiceOrReferenceEmptyBody

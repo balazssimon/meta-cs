@@ -21,6 +21,7 @@ namespace MetaDslx.Compiler.MetaModel
         public const string TypeCtr = "TypeCtr";
         public const string NameUse = "NameUse";
         public const string TypeUse = "TypeUse";
+        public const string RootScope = "RootScope";
         public const string Scope = "Scope";
         public const string Symbol = "Symbol";
         public const string SymbolType = "SymbolType";
@@ -66,6 +67,7 @@ namespace MetaDslx.Compiler.MetaModel
             DefaultProperties.Add(TypeCtr, "symbolType");
             DefaultProperties.Add(NameUse, "symbolTypes");
             DefaultProperties.Add(TypeUse, "symbolTypes");
+            DefaultProperties.Add(RootScope, "symbolType");
             DefaultProperties.Add(Scope, "symbolType");
             DefaultProperties.Add(Symbol, "symbolType");
             DefaultProperties.Add(SymbolType, "symbolType");

@@ -22,6 +22,15 @@ namespace MetaDslx.Core
 
         IMetaSymbol MParent { get; }
         IReadOnlyList<IMetaSymbol> MChildren { get; }
+
+        ImmutableList<ModelProperty> MProperties { get; }
+        ImmutableList<ModelProperty> MAllProperties { get; }
+        ModelProperty MGetProperty(string name);
+        ImmutableList<ModelProperty> MGetProperties(string name);
+
+        object MGet(ModelProperty property);
+        bool MHasConcreteValue(ModelProperty property);
+        bool MIsSet(ModelProperty property);
     }
 
     public interface ImmutableSymbol : IMetaSymbol
@@ -30,16 +39,7 @@ namespace MetaDslx.Core
         new ImmutableSymbol MParent { get; }
         new ImmutableModelList<ImmutableSymbol> MChildren { get; }
 
-        ImmutableList<ModelProperty> MProperties { get; }
-        ImmutableList<ModelProperty> MAllProperties { get; }
-        ModelProperty MGetProperty(string name);
-        ImmutableList<ModelProperty> MGetProperties(string name);
-
         ImmutableSymbol MType { get; }
-
-        object MGet(ModelProperty property);
-        bool MHasConcreteValue(ModelProperty property);
-        bool MIsSet(ModelProperty property);
 
         MutableSymbol ToMutable();
         MutableSymbol ToMutable(MutableModel mutableModel);
@@ -52,18 +52,11 @@ namespace MetaDslx.Core
         new MutableSymbol MParent { get; }
         new ImmutableModelList<MutableSymbol> MChildren { get; }
 
-        ImmutableList<ModelProperty> MProperties { get; }
-        ImmutableList<ModelProperty> MAllProperties { get; }
-        ModelProperty MGetProperty(string name);
-        ImmutableList<ModelProperty> MGetProperties(string name);
         void MAttachProperty(ModelProperty property);
 
         new string MName { get; set; }
         MutableSymbol MType { get; set; }
 
-        object MGet(ModelProperty property);
-        bool MHasConcreteValue(ModelProperty property);
-        bool MIsSet(ModelProperty property);
         void MSet(ModelProperty property, object value);
         void MSetLazy(ModelProperty property, Func<object> value);
         void MAdd(ModelProperty property, object value);

@@ -6,6 +6,7 @@ options {
 	                          
 }
 
+                     
 main : namespaceDeclaration* EOF;
 
               
@@ -111,11 +112,11 @@ componentElement
 	;
 
                    
-                
-componentService : KService                                          qualifiedName                                identifier? componentServiceOrReferenceBody;
+                 
+componentService : KService                                          qualifiedName                                nameDef? componentServiceOrReferenceBody;
                      
-                  
-componentReference : KReference                                          qualifiedName                                identifier? componentServiceOrReferenceBody;
+                   
+componentReference : KReference                                          qualifiedName                                nameDef? componentServiceOrReferenceBody;
 
 componentServiceOrReferenceBody 
 	: TSemicolon #componentServiceOrReferenceEmptyBody

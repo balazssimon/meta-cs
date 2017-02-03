@@ -272,12 +272,22 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
         public static bool IsDeclaration(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation("NameDef") || annots.HasAnnotation("TypeDef");
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameDef) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeDef);
+        }
+
+        public static bool IsSymbolBoundary(this MetaCompilerAnnotations annots)
+        {
+            return annots.Annotations.Any(a => MetaCompilerAnnotationInfo.SymbolBoundary.Contains(a.Name));
         }
 
         public static bool IsSymbolType(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation("SymbolType");
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolType);
+        }
+
+        public static bool IsRootScope(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.RootScope);
         }
 
         public static bool IsIdentifier(this MetaCompilerAnnotations annots)
@@ -294,17 +304,30 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         {
             return annots.HasAnnotation("QualifiedName");
         }
+
+        public static string GetSymbolType(this MetaCompilerAnnotations annots, string name)
+        {
+            foreach (var annot in annots.Annotations)
+            {
+                if (annot.Name == name)
+                {
+                    foreach (var prop in annot.Properties)
+                    {
+                        if (prop.Name == "symbolType") return "typeof(Symbols." + prop.Value + ")";
+                    }
+                }
+            }
+            return "null";
+        }
+
         public static string GetSymbolType(this MetaCompilerAnnotations annots)
         {
-            MetaCompilerAnnotation nameDef = annots.GetAnnotation("NameDef");
-            if (nameDef != null)
+            foreach (var annot in annots.Annotations)
             {
-                return "typeof(Symbols." + nameDef.GetValue("symbolType") + ")";
-            }
-            MetaCompilerAnnotation typeDef = annots.GetAnnotation("TypeDef");
-            if (typeDef != null)
-            {
-                return "typeof(Symbols." + typeDef.GetValue("symbolType") + ")";
+                foreach (var prop in annot.Properties)
+                {
+                    if (prop.Name == "symbolType") return "typeof(Symbols." + prop.Value + ")";
+                }
             }
             return "null";
         }

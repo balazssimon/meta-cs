@@ -36,7 +36,7 @@ namespace MetaDslx.Compiler.Declarations
             return this.CreateRoot(node, kind);
         }
 
-        protected RootSingleDeclaration CreateRoot(SyntaxNode node, ModelSymbolInfo kind)
+        private RootSingleDeclaration CreateRoot(SyntaxNode node, ModelSymbolInfo kind)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace MetaDslx.Compiler.Declarations
         protected virtual RootSingleDeclaration CreateRootDeclaration(SyntaxNode node, ModelSymbolInfo kind)
         {
             DeclarationInfo decl = null;
-            this.BeginDeclaration(kind.ImmutableType);
+            this.BeginDeclaration(kind?.ImmutableType);
             try
             {
                 this.Visit(node);
@@ -125,7 +125,13 @@ namespace MetaDslx.Compiler.Declarations
 
         protected void EndSymbol()
         {
-
+            if (_declarationInfoStack.Count > 0) _declarationInfoStack.RemoveAt(_declarationInfoStack.Count - 1);
+            if (_declarationInfoStack.Count > 0) _currentDeclarationInfo = _declarationInfoStack[_declarationInfoStack.Count - 1];
+            else _currentDeclarationInfo = null;
+            if (_currentDeclarationInfo != null)
+            {
+                _currentChildren = _currentDeclarationInfo.ChildrenBuilder;
+            }
         }
 
         protected void BeginName()
@@ -180,6 +186,12 @@ namespace MetaDslx.Compiler.Declarations
 
         protected void CreateDeclaration(SyntaxNode node, ModelSymbolInfo kind, List<List<RedNode>> names, ImmutableArray<SingleDeclaration> children)
         {
+            if (_currentChildren == null) return;
+            if (names == null)
+            {
+                _currentChildren.Add(new SingleDeclaration(null, kind, _syntaxTree.GetReference(node), null, ImmutableArray<SingleDeclaration>.Empty));
+                return;
+            }
             foreach (var name in names)
             {
                 int count = name.Count;

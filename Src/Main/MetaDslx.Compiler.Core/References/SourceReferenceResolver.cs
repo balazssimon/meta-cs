@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MetaDslx.Compiler
+namespace MetaDslx.Compiler.References
 {
     /// <summary>
     /// Resolves references to source documents specified in the source.

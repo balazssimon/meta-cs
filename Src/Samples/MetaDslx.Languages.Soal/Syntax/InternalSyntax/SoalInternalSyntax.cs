@@ -4130,10 +4130,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	{
 	    private InternalSyntaxToken kService;
 	    private QualifiedNameGreen qualifiedName;
-	    private IdentifierGreen identifier;
+	    private NameDefGreen nameDef;
 	    private ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody;
 	
-	    public ComponentServiceGreen(SoalSyntaxKind kind, InternalSyntaxToken kService, QualifiedNameGreen qualifiedName, IdentifierGreen identifier, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody)
+	    public ComponentServiceGreen(SoalSyntaxKind kind, InternalSyntaxToken kService, QualifiedNameGreen qualifiedName, NameDefGreen nameDef, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody)
 	        : base(kind, null, null)
 	    {
 			if (kService != null)
@@ -4146,10 +4146,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(qualifiedName);
 				this.qualifiedName = qualifiedName;
 			}
-			if (identifier != null)
+			if (nameDef != null)
 			{
-				this.AdjustFlagsAndWidth(identifier);
-				this.identifier = identifier;
+				this.AdjustFlagsAndWidth(nameDef);
+				this.nameDef = nameDef;
 			}
 			if (componentServiceOrReferenceBody != null)
 			{
@@ -4158,7 +4158,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public ComponentServiceGreen(SoalSyntaxKind kind, InternalSyntaxToken kService, QualifiedNameGreen qualifiedName, IdentifierGreen identifier, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public ComponentServiceGreen(SoalSyntaxKind kind, InternalSyntaxToken kService, QualifiedNameGreen qualifiedName, NameDefGreen nameDef, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			if (kService != null)
@@ -4171,10 +4171,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(qualifiedName);
 				this.qualifiedName = qualifiedName;
 			}
-			if (identifier != null)
+			if (nameDef != null)
 			{
-				this.AdjustFlagsAndWidth(identifier);
-				this.identifier = identifier;
+				this.AdjustFlagsAndWidth(nameDef);
+				this.nameDef = nameDef;
 			}
 			if (componentServiceOrReferenceBody != null)
 			{
@@ -4187,7 +4187,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	    public InternalSyntaxToken KService { get { return this.kService; } }
 	    public QualifiedNameGreen QualifiedName { get { return this.qualifiedName; } }
-	    public IdentifierGreen Identifier { get { return this.identifier; } }
+	    public NameDefGreen NameDef { get { return this.nameDef; } }
 	    public ComponentServiceOrReferenceBodyGreen ComponentServiceOrReferenceBody { get { return this.componentServiceOrReferenceBody; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -4201,7 +4201,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	        {
 	            case 0: return this.kService;
 	            case 1: return this.qualifiedName;
-	            case 2: return this.identifier;
+	            case 2: return this.nameDef;
 	            case 3: return this.componentServiceOrReferenceBody;
 	            default: return null;
 	        }
@@ -4209,22 +4209,22 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new ComponentServiceGreen(this.Kind, this.kService, this.qualifiedName, this.identifier, this.componentServiceOrReferenceBody, diagnostics, this.GetAnnotations());
+	        return new ComponentServiceGreen(this.Kind, this.kService, this.qualifiedName, this.nameDef, this.componentServiceOrReferenceBody, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new ComponentServiceGreen(this.Kind, this.kService, this.qualifiedName, this.identifier, this.componentServiceOrReferenceBody, this.GetDiagnostics(), annotations);
+	        return new ComponentServiceGreen(this.Kind, this.kService, this.qualifiedName, this.nameDef, this.componentServiceOrReferenceBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ComponentServiceGreen Update(InternalSyntaxToken kService, QualifiedNameGreen qualifiedName, IdentifierGreen identifier, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody)
+	    public ComponentServiceGreen Update(InternalSyntaxToken kService, QualifiedNameGreen qualifiedName, NameDefGreen nameDef, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody)
 	    {
 	        if (this.kService != kService ||
 				this.qualifiedName != qualifiedName ||
-				this.identifier != identifier ||
+				this.nameDef != nameDef ||
 				this.componentServiceOrReferenceBody != componentServiceOrReferenceBody)
 	        {
-	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ComponentService(kService, qualifiedName, identifier, componentServiceOrReferenceBody);
+	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ComponentService(kService, qualifiedName, nameDef, componentServiceOrReferenceBody);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -4241,10 +4241,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	{
 	    private InternalSyntaxToken kReference;
 	    private QualifiedNameGreen qualifiedName;
-	    private IdentifierGreen identifier;
+	    private NameDefGreen nameDef;
 	    private ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody;
 	
-	    public ComponentReferenceGreen(SoalSyntaxKind kind, InternalSyntaxToken kReference, QualifiedNameGreen qualifiedName, IdentifierGreen identifier, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody)
+	    public ComponentReferenceGreen(SoalSyntaxKind kind, InternalSyntaxToken kReference, QualifiedNameGreen qualifiedName, NameDefGreen nameDef, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody)
 	        : base(kind, null, null)
 	    {
 			if (kReference != null)
@@ -4257,10 +4257,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(qualifiedName);
 				this.qualifiedName = qualifiedName;
 			}
-			if (identifier != null)
+			if (nameDef != null)
 			{
-				this.AdjustFlagsAndWidth(identifier);
-				this.identifier = identifier;
+				this.AdjustFlagsAndWidth(nameDef);
+				this.nameDef = nameDef;
 			}
 			if (componentServiceOrReferenceBody != null)
 			{
@@ -4269,7 +4269,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public ComponentReferenceGreen(SoalSyntaxKind kind, InternalSyntaxToken kReference, QualifiedNameGreen qualifiedName, IdentifierGreen identifier, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public ComponentReferenceGreen(SoalSyntaxKind kind, InternalSyntaxToken kReference, QualifiedNameGreen qualifiedName, NameDefGreen nameDef, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			if (kReference != null)
@@ -4282,10 +4282,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(qualifiedName);
 				this.qualifiedName = qualifiedName;
 			}
-			if (identifier != null)
+			if (nameDef != null)
 			{
-				this.AdjustFlagsAndWidth(identifier);
-				this.identifier = identifier;
+				this.AdjustFlagsAndWidth(nameDef);
+				this.nameDef = nameDef;
 			}
 			if (componentServiceOrReferenceBody != null)
 			{
@@ -4298,7 +4298,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	    public InternalSyntaxToken KReference { get { return this.kReference; } }
 	    public QualifiedNameGreen QualifiedName { get { return this.qualifiedName; } }
-	    public IdentifierGreen Identifier { get { return this.identifier; } }
+	    public NameDefGreen NameDef { get { return this.nameDef; } }
 	    public ComponentServiceOrReferenceBodyGreen ComponentServiceOrReferenceBody { get { return this.componentServiceOrReferenceBody; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -4312,7 +4312,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	        {
 	            case 0: return this.kReference;
 	            case 1: return this.qualifiedName;
-	            case 2: return this.identifier;
+	            case 2: return this.nameDef;
 	            case 3: return this.componentServiceOrReferenceBody;
 	            default: return null;
 	        }
@@ -4320,22 +4320,22 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new ComponentReferenceGreen(this.Kind, this.kReference, this.qualifiedName, this.identifier, this.componentServiceOrReferenceBody, diagnostics, this.GetAnnotations());
+	        return new ComponentReferenceGreen(this.Kind, this.kReference, this.qualifiedName, this.nameDef, this.componentServiceOrReferenceBody, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new ComponentReferenceGreen(this.Kind, this.kReference, this.qualifiedName, this.identifier, this.componentServiceOrReferenceBody, this.GetDiagnostics(), annotations);
+	        return new ComponentReferenceGreen(this.Kind, this.kReference, this.qualifiedName, this.nameDef, this.componentServiceOrReferenceBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ComponentReferenceGreen Update(InternalSyntaxToken kReference, QualifiedNameGreen qualifiedName, IdentifierGreen identifier, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody)
+	    public ComponentReferenceGreen Update(InternalSyntaxToken kReference, QualifiedNameGreen qualifiedName, NameDefGreen nameDef, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody)
 	    {
 	        if (this.kReference != kReference ||
 				this.qualifiedName != qualifiedName ||
-				this.identifier != identifier ||
+				this.nameDef != nameDef ||
 				this.componentServiceOrReferenceBody != componentServiceOrReferenceBody)
 	        {
-	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ComponentReference(kReference, qualifiedName, identifier, componentServiceOrReferenceBody);
+	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ComponentReference(kReference, qualifiedName, nameDef, componentServiceOrReferenceBody);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -13950,7 +13950,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			return new ComponentElementGreen(SoalSyntaxKind.ComponentElement, null, null, null, null, componentLanguage);
 	    }
 	
-		public ComponentServiceGreen ComponentService(InternalSyntaxToken kService, QualifiedNameGreen qualifiedName, IdentifierGreen identifier, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody, bool errorNode = false)
+		public ComponentServiceGreen ComponentService(InternalSyntaxToken kService, QualifiedNameGreen qualifiedName, NameDefGreen nameDef, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
@@ -13961,10 +13961,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				if (componentServiceOrReferenceBody == null) throw new ArgumentNullException(nameof(componentServiceOrReferenceBody));
 			}
 	#endif
-	        return new ComponentServiceGreen(SoalSyntaxKind.ComponentService, kService, qualifiedName, identifier, componentServiceOrReferenceBody);
+	        return new ComponentServiceGreen(SoalSyntaxKind.ComponentService, kService, qualifiedName, nameDef, componentServiceOrReferenceBody);
 	    }
 	
-		public ComponentReferenceGreen ComponentReference(InternalSyntaxToken kReference, QualifiedNameGreen qualifiedName, IdentifierGreen identifier, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody, bool errorNode = false)
+		public ComponentReferenceGreen ComponentReference(InternalSyntaxToken kReference, QualifiedNameGreen qualifiedName, NameDefGreen nameDef, ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
@@ -13975,7 +13975,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				if (componentServiceOrReferenceBody == null) throw new ArgumentNullException(nameof(componentServiceOrReferenceBody));
 			}
 	#endif
-	        return new ComponentReferenceGreen(SoalSyntaxKind.ComponentReference, kReference, qualifiedName, identifier, componentServiceOrReferenceBody);
+	        return new ComponentReferenceGreen(SoalSyntaxKind.ComponentReference, kReference, qualifiedName, nameDef, componentServiceOrReferenceBody);
 	    }
 	
 		public ComponentServiceOrReferenceEmptyBodyGreen ComponentServiceOrReferenceEmptyBody(InternalSyntaxToken tSemicolon, bool errorNode = false)

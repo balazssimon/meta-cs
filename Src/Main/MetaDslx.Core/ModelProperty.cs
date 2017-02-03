@@ -857,6 +857,7 @@ namespace MetaDslx.Core
 
         public static ModelSymbolInfo GetSymbolInfo(Type type)
         {
+            if (type == null) return null;
             ModelSymbolInfo result = null;
             if (ModelSymbolInfo.immutableTypes.TryGetValue(type, out result))
             {

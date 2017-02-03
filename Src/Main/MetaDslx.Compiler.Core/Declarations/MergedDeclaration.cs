@@ -16,7 +16,7 @@ namespace MetaDslx.Compiler.Declarations
     {
         private readonly ImmutableArray<SingleDeclaration> _declarations;
         private ImmutableArray<MergedDeclaration> _lazyChildren;
-
+        
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations[0].Name)
         {

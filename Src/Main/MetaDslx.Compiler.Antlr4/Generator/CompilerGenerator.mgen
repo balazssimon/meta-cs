@@ -3188,7 +3188,7 @@ namespace [Properties.DefaultNamespace].Binder
             bool isSubmission)
         {
             var builder = new [Properties.LanguageName]DeclarationTreeBuilder(syntaxTree, scriptClassName, isSubmission);
-            return builder.CreateRoot(syntaxTree.GetRoot(), typeof(Symbols.Namespace));
+            return builder.CreateRoot(syntaxTree.GetRoot(), [Instances.MainRule().Annotations.GetSymbolType(MetaCompilerAnnotationInfo.RootScope)]);
         }
    		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]
@@ -3248,6 +3248,18 @@ finally
 }
 end template
 
+template GenerateDeclarationTreeBuilderSymbol(MetaCompilerAnnotations annots, string body)
+this.BeginSymbol();
+try
+{
+	[body]
+}
+finally
+{
+	this.EndSymbol();
+}
+end template
+
 template GenerateDeclarationTreeBuilderQualifiedName(MetaCompilerAnnotations annots, string body)
 this.BeginQualifiedName();
 try
@@ -3273,12 +3285,20 @@ finally
 end template
 
 template GenerateDeclarationTreeBuilderIdentifier(MetaCompilerAnnotations annots, string name, string body)
-this.RegisterIdentifier([name]);
+if ([name] != null) this.RegisterIdentifier([name]);
+[body]
+end template
+
+template GenerateDeclarationTreeBuilderSymbolType(MetaCompilerAnnotations annots, string name, string body)
+if ([name] != null) this.RegisterDeclarationType([annots.GetSymbolType(MetaCompilerAnnotationInfo.SymbolType)]);
 [body]
 end template
 
 function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 	string body = GenerateDeclarationTreeBuilderVisitBody(rule);
+	if (rule.Annotations.IsSymbolType())
+		body = GenerateDeclarationTreeBuilderSymbolType(rule.Annotations, "node", body);
+	end if
 	if (rule.Annotations.IsIdentifier())
 		body = GenerateDeclarationTreeBuilderIdentifier(rule.Annotations, "node", body);
 	end if
@@ -3290,12 +3310,19 @@ function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 	end if
 	if (rule.Annotations.IsDeclaration())
 		body = GenerateDeclarationTreeBuilderDeclaration(rule.Annotations, body);
+	else
+		if (rule.Annotations.IsSymbolBoundary())
+			body = GenerateDeclarationTreeBuilderSymbol(rule.Annotations, body);
+		end if
 	end if
 	return body;
 end function
 
 function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
 	string body = GenerateDeclarationTreeBuilderVisitElement(elem);
+	if (elem.Annotations.IsSymbolType())
+		body = GenerateDeclarationTreeBuilderSymbolType(elem.Annotations, "node."+elem.RedName(), body);
+	end if
 	if (elem.Annotations.IsIdentifier())
 		body = GenerateDeclarationTreeBuilderIdentifier(elem.Annotations, "node."+elem.RedName(), body);
 	end if
@@ -3307,6 +3334,10 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 	end if
 	if (elem.Annotations.IsDeclaration())
 		body = GenerateDeclarationTreeBuilderDeclaration(elem.Annotations, body);
+	else
+		if (elem.Annotations.IsSymbolBoundary())
+			body = GenerateDeclarationTreeBuilderSymbol(elem.Annotations, body);
+		end if
 	end if
 	return body;
 end function
