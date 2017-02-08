@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.Compiler.References;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
@@ -36,6 +38,7 @@ namespace MetaDslx.Compiler.Declarations
 
         private readonly Lazy<ICollection<string>> _typeNames;
         private readonly Lazy<ICollection<string>> _namespaceNames;
+        private readonly Lazy<ICollection<ReferenceDirective>> _referenceDirectives;
 
         private DeclarationTable(
             ImmutableSetWithInsertionOrder<RootSingleDeclaration> allOlderRootDeclarations,
@@ -48,6 +51,7 @@ namespace MetaDslx.Compiler.Declarations
             _mergedRoot = new Lazy<MergedDeclaration>(GetMergedRoot);
             _typeNames = new Lazy<ICollection<string>>(GetMergedTypeNames);
             _namespaceNames = new Lazy<ICollection<string>>(GetMergedNamespaceNames);
+            _referenceDirectives = new Lazy<ICollection<ReferenceDirective>>(GetMergedReferenceDirectives);
         }
 
         public DeclarationTable AddRootDeclaration(Lazy<RootSingleDeclaration> lazyRootDeclaration)
@@ -158,6 +162,20 @@ namespace MetaDslx.Compiler.Declarations
             }
         }
 
+        private ICollection<ReferenceDirective> GetMergedReferenceDirectives()
+        {
+            var cachedReferenceDirectives = _cache.ReferenceDirectives.Value;
+
+            if (_latestLazyRootDeclaration == null)
+            {
+                return cachedReferenceDirectives;
+            }
+            else
+            {
+                return UnionCollection<ReferenceDirective>.Create(cachedReferenceDirectives, _latestLazyRootDeclaration.Value.ReferenceDirectives);
+            }
+        }
+
         private static readonly Predicate<Declaration> s_isNamespacePredicate = d => d.IsNamespace;
         private static readonly Predicate<Declaration> s_isTypePredicate = d => d.IsType;
 
@@ -220,6 +238,14 @@ namespace MetaDslx.Compiler.Declarations
             get
             {
                 return _namespaceNames.Value;
+            }
+        }
+
+        public IEnumerable<ReferenceDirective> ReferenceDirectives
+        {
+            get
+            {
+                return _referenceDirectives.Value;
             }
         }
 

@@ -46,9 +46,12 @@
   <ItemGroup>
     <Compile Include="Binding\Binder.cs" />
     <Compile Include="Binding\BinderFactory.cs" />
+    <Compile Include="Binding\IBinderFactoryVisitor.cs" />
     <Compile Include="Binding\BuckStopsHereBinder.cs" />
     <Compile Include="Binding\Conversions.cs" />
     <Compile Include="Binding\Imports.cs" />
+    <Compile Include="Binding\InContainerBinder.cs" />
+    <Compile Include="Binding\NameResolution.cs" />
     <Compile Include="Binding\OverloadResolution.cs" />
     <Compile Include="Compilation\CandidateReason.cs" />
     <Compile Include="Compilation\Compilation.cs" />
@@ -73,10 +76,13 @@
     <Compile Include="DiagnosticAnalyzer\CompilationStartedEvent.cs" />
     <Compile Include="DiagnosticAnalyzer\CompilationUnitCompletedEvent.cs" />
     <Compile Include="DiagnosticAnalyzer\SymbolDeclaredCompilationEvent.cs" />
+    <Compile Include="Diagnostics\SymbolDiagnosticInfo.cs" />
     <Compile Include="References\CompilationReference.cs" />
     <Compile Include="References\MetadataReference.cs" />
     <Compile Include="References\ModelGroupReference.cs" />
+    <Compile Include="References\ModelIdentity.cs" />
     <Compile Include="References\ModelReference.cs" />
+    <Compile Include="References\ReferenceDirective.cs" />
     <Compile Include="References\ReferenceManager.cs" />
     <Compile Include="References\SourceFileResolver.cs" />
     <Compile Include="References\SourceReferenceResolver.cs" />
@@ -177,6 +183,7 @@
     <Compile Include="Utilities\CollectionUtilities.cs" />
     <Compile Include="Utilities\ConcurrentCache.cs" />
     <Compile Include="Utilities\ConcurrentSet.cs" />
+    <Compile Include="Utilities\ConsList`1.cs" />
     <Compile Include="Utilities\EmptyCollections.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\ExceptionUtilities.cs" />

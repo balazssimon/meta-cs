@@ -413,7 +413,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// All reference directives used in this compilation.
         /// </summary>
-        internal abstract IEnumerable<SyntaxNode> ReferenceDirectives { get; }
+        internal abstract IEnumerable<ReferenceDirective> ReferenceDirectives { get; }
 
         /// <summary>
         /// Maps values of #r references to resolved metadata references.
@@ -578,15 +578,82 @@ namespace MetaDslx.Compiler
             return this.RemoveReferences(oldReference).AddReferences(newReference);
         }
 
+        /// <summary>
+        /// Gets the <see cref="IAssemblySymbol"/> or <see cref="IModuleSymbol"/> for a metadata reference used to create this
+        /// compilation.
+        /// </summary>
+        /// <param name="reference">The target reference.</param>
+        /// <returns>
+        /// Assembly or module symbol corresponding to the given reference or null if there is none.
+        /// </returns>
+        public ImmutableModel GetReferencedModel(MetadataReference reference)
+        {
+            return CommonGetReferencedModel(reference);
+        }
+
+        protected abstract ImmutableModel CommonGetReferencedModel(MetadataReference reference);
+
+        /// <summary>
+        /// Gets the <see cref="MetadataReference"/> that corresponds to the assembly symbol. 
+        /// </summary>
+        /// <param name="assemblySymbol">The target symbol.</param>
+        public MetadataReference GetMetadataReference(ImmutableModel model)
+        {
+            return GetBoundReferenceManager().GetMetadataReference(model);
+        }
+
+        /// <summary>
+        /// Model identities of all models directly referenced by this compilation.
+        /// </summary>
+        /// <remarks>
+        /// Includes identities of references passed in the compilation constructor 
+        /// as well as those specified via directives in source code. 
+        /// </remarks>
+        public abstract IEnumerable<ModelIdentity> ReferencedModelNames { get; }
+
         #endregion
 
         #region Symbols
 
+        private ImmutableModelGroup _lazyModelGroup;
+        private ImmutableModel _lazyModel;
+
+        protected abstract ModelId ModelId { get; }
+
         /// <summary>
-        /// The <see cref="IMetaSymbol"/> that represents the compilation.
+        /// The <see cref="ImmutableModelGroup"/> that represents the model group being created 
+        /// with the compilation model and all model references.
         /// </summary>
-        public IMetaSymbol CompilationSymbol { get { return CommonCompilationSymbol; } }
-        protected abstract IMetaSymbol CommonCompilationSymbol { get; }
+        public ImmutableModelGroup ModelGroup
+        {
+            get
+            {
+                if (_lazyModelGroup == null)
+                {
+                    this.ModelGroupBuilder.GetModel(this.ModelId)?.EvaluateLazyValues();
+                    Interlocked.CompareExchange(ref _lazyModelGroup, this.ModelGroupBuilder.ToImmutable(), null);
+                }
+                return _lazyModelGroup;
+            }
+        }
+        protected abstract MutableModelGroup ModelGroupBuilder { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ImmutableModel"/> for the model being created by compiling all of
+        /// the source code.
+        /// </summary>
+        public ImmutableModel Model
+        {
+            get
+            {
+                if (_lazyModel == null)
+                {
+                    Interlocked.CompareExchange(ref _lazyModel, this.ModelGroup.GetModel(this.ModelId), null);
+                }
+                return _lazyModel;
+            }
+        }
+        protected abstract MutableModel ModelBuilder { get; }
 
         /// <summary>
         /// The root namespace that contains all namespaces and types defined in source code or in 
@@ -661,8 +728,8 @@ namespace MetaDslx.Compiler
         /// A symbol representing the implicit Script class. This is null if the class is not
         /// defined in the compilation.
         /// </summary>
-        public IMetaSymbol ScriptClass { get { return CommonScriptClass; } }
-        protected abstract IMetaSymbol CommonScriptClass { get; }
+        public IMetaSymbol ScriptSymbol { get { return CommonScriptSymbol; } }
+        protected abstract IMetaSymbol CommonScriptSymbol { get; }
 
         /// <summary>
         /// Gets the type within the compilation's assembly and all referenced assemblies (other than
@@ -852,7 +919,7 @@ namespace MetaDslx.Compiler
         internal string GetMessage(IMetaSymbol source, IMetaSymbol destination)
         {
             if (source == null || destination == null) return this.CompilationName;
-            return string.Format("{0}: {1} {2} -> {3} {4}", this.CompilationName, source.MType?.MName, source.MName, destination.MType?.MName, destination.MName);
+            return string.Format("{0}: {1} {2} -> {3} {4}", this.CompilationName, source.MMetaClass?.MName ?? source.MId.SymbolInfo.ImmutableType.Name, source.MName, destination.MMetaClass?.MName ?? destination.MId.SymbolInfo.ImmutableType.Name, destination.MName);
         }
 
         #endregion

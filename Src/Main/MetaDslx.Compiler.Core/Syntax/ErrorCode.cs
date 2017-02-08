@@ -9,5 +9,6 @@ namespace MetaDslx.Compiler.Syntax
     public class ErrorCode
     {
         public const int SyntaxError = 1;
+        public const int UnusedSymbol = 2;
     }
 }

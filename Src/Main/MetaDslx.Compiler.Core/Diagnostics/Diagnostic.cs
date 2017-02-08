@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Text;
+﻿using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
@@ -211,6 +212,44 @@ namespace MetaDslx.Compiler.Diagnostics
 
                 default:
                     return 1;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the diagnostic location (or any additional location) is within the given tree and intersects with the filterSpanWithinTree, if non-null.
+        /// </summary>
+        internal bool HasIntersectingLocation(SyntaxTree tree, TextSpan? filterSpanWithinTree = null)
+        {
+            var locations = this.GetDiagnosticLocationsWithinTree(tree);
+
+            foreach (var location in locations)
+            {
+                if (!filterSpanWithinTree.HasValue || filterSpanWithinTree.Value.IntersectsWith(location.SourceSpan))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        private IEnumerable<Location> GetDiagnosticLocationsWithinTree(SyntaxTree tree)
+        {
+            if (this.Location.SourceTree == tree)
+            {
+                yield return this.Location;
+            }
+
+            if (this.AdditionalLocations != null)
+            {
+                foreach (var additionalLocation in this.AdditionalLocations)
+                {
+                    if (additionalLocation.SourceTree == tree)
+                    {
+                        yield return additionalLocation;
+                    }
+                }
             }
         }
 

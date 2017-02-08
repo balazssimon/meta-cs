@@ -11,7 +11,23 @@ namespace MetaDslx.Compiler.Binding
     /// Represents symbols imported to the binding scope via using namespace, using alias, and extern alias.
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(),nq}")]
-    internal sealed class Imports
-    { 
+    public sealed class Imports
+    {
+        public static readonly Imports Empty = new Imports();
+
+        public static Imports FromGlobalUsings(CompilationBase compilationBase)
+        {
+            return Imports.Empty;
+        }
+
+        public static Imports ExpandPreviousSubmissionImports(Imports imports, CompilationBase compilationBase)
+        {
+            return imports;
+        }
+
+        public Imports Concat(Imports imports)
+        {
+            return this;
+        }
     }
 }

@@ -1613,13 +1613,13 @@ namespace MetaDslx.Core
             return this.models.GetValue(mid, key => new ImmutableModel(key, this, this.Green.Models.GetValueOrDefault(key), false, this.GetMutableReference(key)));
         }
 
-        internal ImmutableModel GetReference(ModelId mid)
+        public ImmutableModel GetReference(ModelId mid)
         {
             if (mid == null || !this.Green.References.ContainsKey(mid)) return null;
             return this.GetExistingReference(mid);
         }
 
-        internal ImmutableModel GetModel(ModelId mid)
+        public ImmutableModel GetModel(ModelId mid)
         {
             if (mid == null || !this.Green.Models.ContainsKey(mid)) return null;
             return this.GetExistingModel(mid);
@@ -1798,13 +1798,13 @@ namespace MetaDslx.Core
             return this.models.GetValue(mid, key => new MutableModel(key, this, false, this.GetImmutableReference(key)));
         }
 
-        internal MutableModel GetReference(ModelId mid)
+        public MutableModel GetReference(ModelId mid)
         {
             if (mid == null || !this.Green.References.ContainsKey(mid)) return null;
             return this.GetExistingReference(mid);
         }
 
-        internal MutableModel GetModel(ModelId mid)
+        public MutableModel GetModel(ModelId mid)
         {
             if (mid == null || !this.Green.Models.ContainsKey(mid)) return null;
             return this.GetExistingModel(mid);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Syntax
 {
-    public class SyntaxVisitor<TResult>
+    public class SyntaxVisitor<TResult> 
     {
         public virtual TResult Visit(SyntaxNode node)
         {
@@ -25,7 +25,7 @@ namespace MetaDslx.Compiler.Syntax
         }
     }
 
-    public class SyntaxVisitor
+    public class SyntaxVisitor 
     {
         public virtual void Visit(SyntaxNode node)
         {

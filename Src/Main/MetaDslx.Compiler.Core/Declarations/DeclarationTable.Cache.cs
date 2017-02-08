@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using MetaDslx.Compiler.Utilities;
+using MetaDslx.Compiler.References;
 
 namespace MetaDslx.Compiler.Declarations
 {
@@ -25,6 +26,7 @@ namespace MetaDslx.Compiler.Declarations
             // All the simple type names for all the types in the 'old' declarations.
             internal readonly Lazy<ISet<string>> TypeNames;
             internal readonly Lazy<ISet<string>> NamespaceNames;
+            internal readonly Lazy<ImmutableArray<ReferenceDirective>> ReferenceDirectives;
 
             public Cache(DeclarationTable table)
             {
@@ -36,6 +38,10 @@ namespace MetaDslx.Compiler.Declarations
 
                 this.NamespaceNames = new Lazy<ISet<string>>(
                     () => GetNamespaceNames(this.MergedRoot.Value));
+
+                this.ReferenceDirectives = new Lazy<ImmutableArray<ReferenceDirective>>(
+                    () => MergedRoot.Value.Declarations.OfType<RootSingleDeclaration>().SelectMany(r => r.ReferenceDirectives).ToImmutableArray());
+
             }
         }
     }

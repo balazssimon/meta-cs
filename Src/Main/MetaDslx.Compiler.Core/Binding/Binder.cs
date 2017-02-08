@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MetaDslx.Compiler.Utilities;
+using MetaDslx.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -33,6 +35,30 @@ namespace MetaDslx.Compiler.Binding
             this.Compilation = next.Compilation;
         }
 
+        /// <summary>
+        /// Get the next binder in which to look up a name, if not found by this binder.
+        /// </summary>
+        internal protected Binder Next
+        {
+            get
+            {
+                return _next;
+            }
+        }
+
+        private NameResolution _lazyNameResolution;
+        internal NameResolution NameResolution
+        {
+            get
+            {
+                if (_lazyNameResolution == null)
+                {
+                    Interlocked.CompareExchange(ref _lazyNameResolution, new NameResolution(this), null);
+                }
+
+                return _lazyNameResolution;
+            }
+        }
 
         private Conversions _lazyConversions;
         internal Conversions Conversions
@@ -60,6 +86,11 @@ namespace MetaDslx.Compiler.Binding
 
                 return _lazyOverloadResolution;
             }
+        }
+
+        public virtual Imports GetImports(ConsList<IMetaSymbol> basesBeingResolved)
+        {
+            return Imports.Empty;
         }
     }
 }

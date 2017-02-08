@@ -1,4 +1,6 @@
-﻿using MetaDslx.Compiler.Utilities;
+﻿using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Utilities;
+using MetaDslx.Core;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -23,7 +25,7 @@ namespace MetaDslx.Compiler.Diagnostics
     /// <remarks>The bag is optimized to be efficient when containing zero errors.</remarks>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     [DebuggerTypeProxy(typeof(DebuggerProxy))]
-    internal class DiagnosticBag
+    public class DiagnosticBag
     {
         // The lazyBag field is populated lazily -- the first time an error is added.
         private ConcurrentQueue<Diagnostic> _lazyBag;
@@ -301,5 +303,78 @@ namespace MetaDslx.Compiler.Diagnostics
             return "Count = " + (_lazyBag?.Count ?? 0);
         }
         #endregion
+
+        /// <summary>
+        /// Add a diagnostic to the bag.
+        /// </summary>
+        /// <param name="diagnostics"></param>
+        /// <param name="code"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public DiagnosticInfo Add(MessageProvider messageProvider, Location location, int code)
+        {
+            var diag = Diagnostic.Create(messageProvider, location, code);
+            this.Add(diag);
+            return diag.Info;
+        }
+
+        /// <summary>
+        /// Add a diagnostic to the bag.
+        /// </summary>
+        /// <param name="diagnostics"></param>
+        /// <param name="code"></param>
+        /// <param name="location"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public DiagnosticInfo Add(MessageProvider messageProvider, Location location, int code, params object[] args)
+        {
+            var diag = Diagnostic.Create(messageProvider, location, code, args);
+            this.Add(diag);
+            return diag.Info;
+        }
+
+        public DiagnosticInfo Add(MessageProvider messageProvider, Location location, int code, ImmutableArray<IMetaSymbol> symbols, params object[] args)
+        {
+            var info = new SymbolDiagnosticInfo(messageProvider, symbols, code, args);
+            var diag = Diagnostic.Create(info, location);
+            this.Add(diag);
+            return info;
+        }
+
+        public void Add(DiagnosticInfo info, Location location)
+        {
+            var diag = Diagnostic.Create(info, location);
+            this.Add(diag);
+        }
+
+        /// <summary>
+        /// Adds diagnostics from useSiteDiagnostics into diagnostics and returns True if there were any errors.
+        /// </summary>
+        public bool Add(SyntaxNode node, HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            return this.Add(node.GetLocation(), useSiteDiagnostics);
+        }
+
+        public bool Add(Location location, HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            if (useSiteDiagnostics == null || !useSiteDiagnostics.Any())
+            {
+                return false;
+            }
+
+            bool haveErrors = false;
+
+            foreach (var info in useSiteDiagnostics)
+            {
+                if (info.Severity == DiagnosticSeverity.Error)
+                {
+                    haveErrors = true;
+                }
+
+                this.Add(Diagnostic.Create(info, location));
+            }
+
+            return haveErrors;
+        }
     }
 }

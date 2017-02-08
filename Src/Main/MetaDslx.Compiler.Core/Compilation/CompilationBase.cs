@@ -35,7 +35,7 @@ namespace MetaDslx.Compiler
         private readonly Lazy<Imports> _globalImports;
         private readonly Lazy<Imports> _previousSubmissionImports;
         private readonly Lazy<IMetaSymbol> _globalNamespaceAlias;  // alias symbol used to resolve "global::".
-        private readonly Lazy<IMetaSymbol> _scriptClass;
+        private readonly Lazy<IMetaSymbol> _scriptSymbol;
 
         // All imports (using directives and extern aliases) in syntax trees in this compilation.
         // NOTE: We need to de-dup since the Imports objects that populate the list may be GC'd
@@ -56,6 +56,20 @@ namespace MetaDslx.Compiler
             }
         }
 
+        private NameResolution _nameResolution;
+        internal NameResolution NameResolution
+        {
+            get
+            {
+                if (_conversions == null)
+                {
+                    Interlocked.CompareExchange(ref _nameResolution, new BuckStopsHereBinder(this).NameResolution, null);
+                }
+
+                return _nameResolution;
+            }
+        }
+
         /// <summary>
         /// Manages anonymous types declared in this compilation. Unifies types that are structurally equivalent.
         /// </summary>
@@ -63,13 +77,17 @@ namespace MetaDslx.Compiler
 
         private IMetaSymbol _lazyGlobalNamespace;
 
+        private ModelId _lazyModelId;
+
         /// <summary>
-        /// The <see cref="IMetaSymbol"/> for this compilation. Do not access directly, use CompilationSymbol property
+        /// The <see cref="MutableModelGroup"/> for this compilation. Do not access directly, use the ModelGroupBuilder property
         /// instead. This field is lazily initialized by ReferenceManager, ReferenceManager.CacheLockObject must be locked
         /// while ReferenceManager "calculates" the value and assigns it, several threads must not perform duplicate
         /// "calculation" simultaneously.
         /// </summary>
-        private IMetaSymbol _lazyCompilationSymbol;
+        private MutableModelGroup _lazyModelGroupBuilder;
+
+        private MutableModel _lazyModelBuilder;
 
         /// <summary>
         /// Holds onto data related to reference binding.
@@ -108,14 +126,56 @@ namespace MetaDslx.Compiler
 
         #region Constructors and Factories
 
-        public CompilationBase(
-            string name, 
-            ImmutableArray<MetadataReference> references, 
-            IReadOnlyDictionary<string, string> features, 
-            bool isSubmission, 
-            AsyncQueue<CompilationEvent> eventQueue) 
-            : base(name, references, features, isSubmission, eventQueue)
+        protected CompilationBase(
+            string assemblyName,
+            CompilationOptions options,
+            ImmutableArray<MetadataReference> references,
+            Compilation previousSubmission,
+            Type submissionReturnType,
+            Type hostObjectType,
+            bool isSubmission,
+            ReferenceManager referenceManager,
+            bool reuseReferenceManager,
+            SyntaxAndDeclarationManager syntaxAndDeclarations,
+            AsyncQueue<CompilationEvent> eventQueue = null)
+            : base(assemblyName, references, SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
         {
+            _options = options;
+
+            _scriptSymbol = new Lazy<IMetaSymbol>(BindScriptSymbol);
+            _globalImports = new Lazy<Imports>(BindGlobalImports);
+            _previousSubmissionImports = new Lazy<Imports>(ExpandPreviousSubmissionImports);
+            _globalNamespaceAlias = new Lazy<IMetaSymbol>(CreateGlobalNamespaceAlias);
+            _anonymousTypeManager = this.Language.CompilationFactory.CreateAnonymousTypeManager(this);
+
+            if (isSubmission)
+            {
+                Debug.Assert(previousSubmission == null || previousSubmission.HostObjectType == hostObjectType);
+                _scriptCompilationInfo = this.Language.CompilationFactory.CreateScriptCompilationInfo(previousSubmission, submissionReturnType, hostObjectType);
+            }
+            else
+            {
+                Debug.Assert(previousSubmission == null && submissionReturnType == null && hostObjectType == null);
+            }
+
+            if (reuseReferenceManager)
+            {
+                referenceManager.AssertCanReuseForCompilation(this);
+                _referenceManager = referenceManager;
+            }
+            else
+            {
+                _referenceManager = new ReferenceManager(
+                    MakeSourceAssemblySimpleName(),
+                    this.Options.AssemblyIdentityComparer,
+                    observedMetadata: referenceManager?.ObservedMetadata);
+            }
+
+            _syntaxAndDeclarations = syntaxAndDeclarations;
+
+            Debug.Assert((object)_lazyModelBuilder == null);
+            Debug.Assert((object)_lazyModelGroupBuilder == null);
+            if (EventQueue != null) EventQueue.TryEnqueue(new CompilationStartedEvent(this));
         }
 
 
@@ -125,7 +185,16 @@ namespace MetaDslx.Compiler
 
         #region Submission
 
-        internal Compilation PreviousSubmission => ScriptCompilationInfo?.PreviousScriptCompilation;
+        private readonly ScriptCompilationInfo _scriptCompilationInfo;
+        protected override ScriptCompilationInfo CommonScriptCompilationInfo
+        {
+            get
+            {
+                return _scriptCompilationInfo;
+            }
+        }
+
+        internal CompilationBase PreviousSubmission => (CompilationBase)ScriptCompilationInfo?.PreviousScriptCompilation;
 
         protected override bool HasSubmissionResult()
         {
@@ -364,15 +433,10 @@ namespace MetaDslx.Compiler
 
         protected override ReferenceManager CommonGetBoundReferenceManager()
         {
-            return GetBoundReferenceManager();
-        }
-
-        internal new ReferenceManager GetBoundReferenceManager()
-        {
-            if ((object)_lazyCompilationSymbol == null)
+            if ((object)_lazyModelBuilder == null)
             {
-                _referenceManager.CreateSourceAssemblyForCompilation(this);
-                Debug.Assert((object)_lazyCompilationSymbol != null);
+                _referenceManager.CreateModelBuilderForCompilation(this);
+                Debug.Assert((object)_lazyModelBuilder != null);
             }
 
             // referenceManager can only be accessed after we initialized the lazyAssemblySymbol.
@@ -412,22 +476,37 @@ namespace MetaDslx.Compiler
         }
 
         /// <summary>
-        /// All reference directives used in this compilation.
+        /// Gets the <see cref="ImmutableModel"/> for a metadata reference used to create this compilation.
         /// </summary>
-        internal override IEnumerable<SyntaxNode> ReferenceDirectives
+        /// <returns><see cref="ImmutableModel"/> corresponding to the given reference or null if there is none.</returns>
+        /// <remarks>
+        /// Uses object identity when comparing two references. 
+        /// </remarks>
+        protected override ImmutableModel CommonGetReferencedModel(MetadataReference reference)
         {
-            get { return this.Declarations.ReferenceDirectives; }
+            if (reference == null)
+            {
+                throw new ArgumentNullException(nameof(reference));
+            }
+
+            return GetBoundReferenceManager().GetReferencedModel(reference);
         }
 
-        /// <summary>
-        /// Returns a metadata reference that a given #r resolves to.
-        /// </summary>
-        /// <param name="directive">#r directive.</param>
-        /// <returns>Metadata reference the specified directive resolves to, or null if the <paramref name="directive"/> doesn't match any #r directive in the compilation.</returns>
-        public MetadataReference GetDirectiveReference(SyntaxNode directive)
+        public override IEnumerable<ModelIdentity> ReferencedModelNames
         {
-            MetadataReference reference;
-            return ReferenceDirectiveMap.TryGetValue(Tuple.Create(directive.SyntaxTree.FilePath, directive.File.ValueText), out reference) ? reference : null;
+            get
+            {
+                return GetBoundReferenceManager().GetReferencedModelNames();
+            }
+        }
+
+
+        /// <summary>
+        /// All reference directives used in this compilation.
+        /// </summary>
+        internal override IEnumerable<ReferenceDirective> ReferenceDirectives
+        {
+            get { return this.Declarations.ReferenceDirectives; }
         }
 
         /// <summary>
@@ -491,7 +570,7 @@ namespace MetaDslx.Compiler
         /// the use of an extern alias directive. So exclude them from this list which is used to construct
         /// the global namespace.
         /// </summary>
-        private void GetAllUnaliasedModels(ArrayBuilder<IMetaSymbol> models)
+        private void GetAllUnaliasedModels(ArrayBuilder<IMetaSymbol> rootNamespaces)
         {
             var referenceManager = GetBoundReferenceManager();
 
@@ -499,7 +578,7 @@ namespace MetaDslx.Compiler
             {
                 if (referenceManager.DeclarationsAccessibleWithoutAlias(i))
                 {
-                    models.AddRange(referenceManager.ReferencedModels[i].Symbols.Where(s => s.MIsScope && s.MName != null && s.MParent == null));
+                    rootNamespaces.AddRange(referenceManager.GetRootNamespaces(i));
                 }
             }
         }
@@ -508,15 +587,36 @@ namespace MetaDslx.Compiler
 
         #region Symbols
 
-        /// <summary>
-        /// The CompilationSymbol that represents the compilation.
-        /// </summary>
-        protected override IMetaSymbol CommonCompilationSymbol
+        protected override ModelId ModelId
         {
             get
             {
                 GetBoundReferenceManager();
-                return _lazyCompilationSymbol;
+                return _lazyModelId;
+            }
+        }
+
+        /// <summary>
+        /// The ModelGroupBuilder that represents the compilation.
+        /// </summary>
+        protected override MutableModelGroup ModelGroupBuilder
+        {
+            get
+            {
+                GetBoundReferenceManager();
+                return _lazyModelGroupBuilder;
+            }
+        }
+
+        /// <summary>
+        /// The ModelBuilder that represents the compilation.
+        /// </summary>
+        protected override MutableModel ModelBuilder
+        {
+            get
+            {
+                GetBoundReferenceManager();
+                return _lazyModelBuilder;
             }
         }
 
@@ -534,12 +634,12 @@ namespace MetaDslx.Compiler
                     // Get all modules in this compilation, ones referenced directly by the compilation 
                     // as well as those referenced by all referenced assemblies.
 
-                    var models = ArrayBuilder<IMetaSymbol>.GetInstance();
-                    GetAllUnaliasedModels(models);
+                    var rootNamespaces = ArrayBuilder<IMetaSymbol>.GetInstance();
+                    GetAllUnaliasedModels(rootNamespaces);
 
-                    var result = this.Language.CompilationFactory.CreateMergedRootNamespace(this, models);
+                    var result = this.Language.CompilationFactory.CreateMergedNamespace(this, null, rootNamespaces);
 
-                    models.Free();
+                    rootNamespaces.Free();
 
                     Interlocked.CompareExchange(ref _lazyGlobalNamespace, result, null);
                 }
@@ -557,9 +657,9 @@ namespace MetaDslx.Compiler
         protected override IMetaSymbol CommonGetCompilationNamespace(IMetaSymbol namespaceSymbol)
         {
             if (namespaceSymbol.MIsScope && namespaceSymbol.MName == null &&
-                namespaceSymbol.ContainingCompilation == this)
+                namespaceSymbol.MGet(CompilerAttachedProperties.ContainingCompilationProperty) == this)
             {
-                return (IMetaSymbol)namespaceSymbol;
+                return namespaceSymbol;
             }
 
             var containingNamespace = namespaceSymbol.MParent;
@@ -571,19 +671,67 @@ namespace MetaDslx.Compiler
             var current = GetCompilationNamespace(containingNamespace);
             if ((object)current != null)
             {
-                return current.GetNestedNamespace(namespaceSymbol.MName);
+                return this.Language.CompilationFactory.GetNestedNamespace(namespaceSymbol);
             }
 
             return null;
+        }
+
+        private ConcurrentDictionary<string, IMetaSymbol> _externAliasTargets;
+
+        internal bool GetExternAliasTarget(string aliasName, out IMetaSymbol @namespace)
+        {
+            if (_externAliasTargets == null)
+            {
+                Interlocked.CompareExchange(ref _externAliasTargets, new ConcurrentDictionary<string, IMetaSymbol>(), null);
+            }
+
+            ArrayBuilder<IMetaSymbol> builder = null;
+            var referenceManager = GetBoundReferenceManager();
+            for (int i = 0; i < referenceManager.ReferencedModels.Length; i++)
+            {
+                if (referenceManager.AliasesOfReferencedModels[i].Contains(aliasName))
+                {
+                    builder = builder ?? ArrayBuilder<IMetaSymbol>.GetInstance();
+                    builder.AddRange(referenceManager.GetRootNamespaces(i));
+                }
+            }
+
+            bool foundNamespace = builder != null;
+
+            // We want to cache failures as well as successes so that subsequent incorrect extern aliases with the
+            // same alias will have the same target.
+            @namespace = foundNamespace
+                ? this.Language.CompilationFactory.CreateMergedNamespace(this, namespacesToMerge: builder.ToImmutableAndFree(), containingNamespace: null)
+                : this.Language.CompilationFactory.CreateNamespace(this, null, null);
+
+            // Use GetOrAdd in case another thread beat us to the punch (i.e. should return the same object for the same alias, every time).
+            @namespace = _externAliasTargets.GetOrAdd(aliasName, @namespace);
+
+            return foundNamespace;
         }
 
         /// <summary>
         /// A symbol representing the implicit Script class. This is null if the class is not
         /// defined in the compilation.
         /// </summary>
-        protected override IMetaSymbol CommonScriptClass
+        protected override IMetaSymbol CommonScriptSymbol
         {
-            get { return _scriptClass.Value; }
+            get { return _scriptSymbol.Value; }
+        }
+
+        /// <summary>
+        /// Resolves a symbol that represents script container (Script class). Uses the
+        /// full name of the container class stored in <see cref="CompilationOptions.ScriptClassName"/> to find the symbol.
+        /// </summary>
+        /// <returns>The Script class symbol or null if it is not defined.</returns>
+        private IMetaSymbol BindScriptSymbol()
+        {
+            if (_options.ScriptClassName == null)
+            {
+                return null;
+            }
+            return this.NameResolution.GetNamespaceOrTypeByQualifiedName(_options.ScriptClassName);
         }
 
         internal bool IsSubmissionSyntaxTree(SyntaxTree tree)
@@ -615,7 +763,7 @@ namespace MetaDslx.Compiler
                 return Imports.Empty;
             }
 
-            var binder = GetBinderFactory(tree).GetImportsBinder(tree.GetRoot());
+            var binder = GetBinderFactory(tree).GetBinder(tree.GetRoot());
             return binder.GetImports(basesBeingResolved: null);
         }
 
@@ -733,12 +881,12 @@ namespace MetaDslx.Compiler
         /// </summary>
         internal Imports GetImports(SingleDeclaration declaration)
         {
-            return GetBinderFactory(declaration.SyntaxReference.SyntaxTree).GetImportsBinder(declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
+            return GetBinderFactory(declaration.SyntaxReference.SyntaxTree).GetBinder(declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
         }
 
         private IMetaSymbol CreateGlobalNamespaceAlias()
         {
-            return IMetaSymbol.CreateGlobalNamespaceAlias(this.GlobalNamespace, new InContainerBinder(this.GlobalNamespace, new BuckStopsHereBinder(this)));
+            return this.Language.CompilationFactory.CreateGlobalNamespaceAlias(this.GlobalNamespace, new InContainerBinder(this.GlobalNamespace, new BuckStopsHereBinder(this)));
         }
 
         private void CompleteTree(SyntaxTree tree)
@@ -776,10 +924,8 @@ namespace MetaDslx.Compiler
                         TextSpan infoSpan = info.Span;
                         if (!this.IsImportDirectiveUsed(infoTree, infoSpan.Start))
                         {
-                            ErrorCode code = info.Kind == SyntaxKind.ExternAliasDirective
-                                ? ErrorCode.HDN_UnusedExternAlias
-                                : ErrorCode.HDN_UnusedUsingDirective;
-                            diagnostics.Add(code, infoTree.GetLocation(infoSpan));
+                            int code = ErrorCode.UnusedSymbol;
+                            diagnostics.Add(this.MessageProvider, infoTree.GetLocation(infoSpan), code);
                         }
                     }
                 }
@@ -958,12 +1104,12 @@ namespace MetaDslx.Compiler
                                         : DefaultParallelOptions;
 
                     Parallel.For(0, syntaxTrees.Length, parallelOptions,
-                        UICultureUtilities.WithCurrentUICulture<int>(i =>
+                        i =>
                         {
                             var syntaxTree = syntaxTrees[i];
                             AppendLoadDirectiveDiagnostics(builder, _syntaxAndDeclarations, syntaxTree);
                             builder.AddRange(syntaxTree.GetDiagnostics(cancellationToken));
-                        }));
+                        });
                 }
                 else
                 {
@@ -997,7 +1143,7 @@ namespace MetaDslx.Compiler
             if (stage == CompilationStage.Compile || stage > CompilationStage.Compile && includeEarlierStages)
             {
                 var symbolDiagnostics = DiagnosticBag.GetInstance();
-                GetDiagnosticsForAllMethodBodies(symbolDiagnostics, cancellationToken);
+                GetDiagnosticsForAllSymbols(symbolDiagnostics, cancellationToken);
                 builder.AddRangeAndFree(symbolDiagnostics);
             }
 
@@ -1005,7 +1151,7 @@ namespace MetaDslx.Compiler
             // to honor the compiler options (e.g., /nowarn, /warnaserror and /warn) and the pragmas.
             var result = DiagnosticBag.GetInstance();
             FilterAndAppendAndFreeDiagnostics(result, ref builder);
-            return result.ToReadOnlyAndFree<Diagnostic>();
+            return result.ToReadOnlyAndFree();
         }
 
         private static void AppendLoadDirectiveDiagnostics(DiagnosticBag builder, SyntaxAndDeclarationManager syntaxAndDeclarations, SyntaxTree syntaxTree, Func<IEnumerable<Diagnostic>, IEnumerable<Diagnostic>> locationFilterOpt = null)
@@ -1136,7 +1282,7 @@ namespace MetaDslx.Compiler
                 result = locationFilterOpt(result, syntaxTree, filterSpanWithinTree);
             }
 
-            return result.AsImmutable();
+            return result.ToImmutableArray();
         }
 
         private static IEnumerable<Diagnostic> FilterDiagnosticsByLocation(IEnumerable<Diagnostic> diagnostics, SyntaxTree tree, TextSpan? filterSpanWithinTree)

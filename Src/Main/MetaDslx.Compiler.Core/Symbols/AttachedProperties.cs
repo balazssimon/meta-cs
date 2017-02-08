@@ -17,5 +17,9 @@ namespace MetaDslx.Compiler.Symbols
                 new ModelPropertyTypeInfo(typeof(ImmutableArray<SyntaxReference>), null),
                 new ModelPropertyTypeInfo(typeof(ImmutableArray<SyntaxReference>), null));
 
+        public static readonly ModelProperty ContainingCompilationProperty =
+            ModelProperty.Register(typeof(CompilerAttachedProperties), "ContainingCompilation",
+                new ModelPropertyTypeInfo(typeof(Compilation), null),
+                new ModelPropertyTypeInfo(typeof(Compilation), null));
     }
 }
