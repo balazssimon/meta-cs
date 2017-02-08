@@ -57,6 +57,17 @@ namespace MetaDslx.Compiler.References
         /// </summary>
         internal static object SymbolCacheAndReferenceManagerStateGuard = new object();
 
+        public ReferenceManager(string simpleAssemblyName, Dictionary<MetadataReference, object> observedMetadata)
+        {
+        }
+
+        /// <summary>
+        /// Metadata observed by the compiler.
+        /// May be shared across multiple Reference Managers.
+        /// Access only under lock(<see cref="ObservedMetadata"/>).
+        /// </summary>
+        internal readonly Dictionary<MetadataReference, object> ObservedMetadata;
+
         public ImmutableArray<ImmutableModel> ReferencedModels { get; }
 
         public ImmutableArray<ImmutableArray<string>> AliasesOfReferencedModels { get; }
@@ -102,6 +113,16 @@ namespace MetaDslx.Compiler.References
         }
 
         internal IEnumerable<ModelIdentity> GetReferencedModelNames()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal MetadataReference GetMetadataReference(ImmutableModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void AssertCanReuseForCompilation(CompilationBase compilationBase)
         {
             throw new NotImplementedException();
         }

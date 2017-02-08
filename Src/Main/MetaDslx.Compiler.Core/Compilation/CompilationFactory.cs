@@ -25,10 +25,11 @@ namespace MetaDslx.Compiler
         public abstract string GetLoadDirectiveFileName(SyntaxNode loadDirective);
         public abstract bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree);
         public abstract IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
-        internal abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder);
-        internal abstract AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilationBase);
-        internal abstract ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType);
-        internal abstract ImmutableArray<IMetaSymbol> TranslateImports(ImmutableModel model, DiagnosticBag diagnostics);
+        public abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder);
+        public abstract AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilationBase);
+        public abstract ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType);
+        public abstract ImmutableArray<IMetaSymbol> TranslateImports(ImmutableModel model, DiagnosticBag diagnostics);
+        public abstract SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilationBase, SyntaxTree syntaxTree, bool ignoreAccessibility);
 
         public virtual IMetaSymbol GetNestedNamespace(IMetaSymbol namespaceSymbol)
         {
@@ -39,16 +40,47 @@ namespace MetaDslx.Compiler
             }
             return null;
         }
+
     }
 
     internal sealed class DefaultCompilationFactory : CompilationFactory
     {
+        public override AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilationBase)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
+        {
+            throw new NotImplementedException();
+        }
+
         public override RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override IMetaSymbol CreateMergedNamespace(Compilation compilation, IEnumerable<IMetaSymbol> namespaces)
+        public override IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IMetaSymbol CreateMergedNamespace(Compilation compilation, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IMetaSymbol CreateNamespace(Compilation compilation, IMetaSymbol containingNamespace, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilationBase, SyntaxTree syntaxTree, bool ignoreAccessibility)
         {
             throw new NotImplementedException();
         }
@@ -64,6 +96,11 @@ namespace MetaDslx.Compiler
         }
 
         public override bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ImmutableArray<IMetaSymbol> TranslateImports(ImmutableModel model, DiagnosticBag diagnostics)
         {
             throw new NotImplementedException();
         }

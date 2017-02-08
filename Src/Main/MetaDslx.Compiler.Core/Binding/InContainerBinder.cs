@@ -15,7 +15,7 @@ namespace MetaDslx.Compiler.Binding
     /// A binder that places the members of a symbol in scope.  If there is a container declaration
     /// with using directives, those are merged when looking up names.
     /// </summary>
-    internal sealed class InContainerBinder : Binder
+    public sealed class InContainerBinder : Binder
     {
         private readonly IMetaSymbol _container;
         private readonly Func<ConsList<IMetaSymbol>, Imports> _computeImports;

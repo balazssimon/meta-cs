@@ -166,8 +166,7 @@ namespace MetaDslx.Compiler
             else
             {
                 _referenceManager = new ReferenceManager(
-                    MakeSourceAssemblySimpleName(),
-                    this.Options.AssemblyIdentityComparer,
+                    this.CompilationName,
                     observedMetadata: referenceManager?.ObservedMetadata);
             }
 
@@ -813,7 +812,7 @@ namespace MetaDslx.Compiler
                 throw new ArgumentException(string.Format("SyntaxTree '{0}' not found to remove", syntaxTree), nameof(syntaxTree));
             }
 
-            return new SyntaxTreeSemanticModel(this, syntaxTree, ignoreAccessibility);
+            return this.Language.CompilationFactory.CreateSyntaxTreeSemanticModel(this, syntaxTree, ignoreAccessibility);
         }
 
         // When building symbols from the declaration table (lazily), or inside a type, or when
@@ -1187,14 +1186,32 @@ namespace MetaDslx.Compiler
             this.ReportUnusedImports(diagnostics, cancellationToken);
         }
 
-        private static bool IsDefinedOrImplementedInSourceTree(IMetaSymbol symbol, SyntaxTree tree, TextSpan? span)
+        protected bool IsSymbolDefinedInSourceTree(IMetaSymbol symbol, SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (symbol.IsDefinedInSourceTree(tree, span))
+            if (symbol == null) return false;
+            if (tree == null) return false;
+
+            var declaringReferencesObj = symbol.MGet(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty);
+            ImmutableArray<SyntaxReference> declaringReferences = declaringReferencesObj != null ? (ImmutableArray<SyntaxReference>)declaringReferencesObj : ImmutableArray<SyntaxReference>.Empty;
+            if (declaringReferences.Length == 0)
             {
-                return true;
+                return this.IsSymbolDefinedInSourceTree(symbol.MParent, tree, definedWithinSpan, cancellationToken);
             }
+
+            foreach (var syntaxRef in declaringReferences)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (syntaxRef.SyntaxTree == tree &&
+                    (!definedWithinSpan.HasValue || syntaxRef.Span.IntersectsWith(definedWithinSpan.Value)))
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
+
 
         private ImmutableArray<Diagnostic> GetDiagnosticsForSymbolsInTree(SyntaxTree tree, TextSpan? span, CancellationToken cancellationToken)
         {
@@ -1205,7 +1222,7 @@ namespace MetaDslx.Compiler
                 moduleBeingBuiltOpt: null,
                 hasDeclarationErrors: false,
                 diagnostics: diagnostics,
-                filterOpt: s => IsDefinedOrImplementedInSourceTree(s, tree, span),
+                filterOpt: s => IsSymbolDefinedInSourceTree(s, tree, span, cancellationToken),
                 cancellationToken: cancellationToken);
 
             // Report unused directives only if computing diagnostics for the entire tree.
@@ -1272,7 +1289,7 @@ namespace MetaDslx.Compiler
                     new SourceLocation(root);
             }
 
-            Assembly.ForceComplete(location, cancellationToken);
+            this.ForceCompleteModel(location, cancellationToken);
 
             var result = this.FreezeDeclarationDiagnostics();
 
@@ -1284,6 +1301,10 @@ namespace MetaDslx.Compiler
 
             return result.ToImmutableArray();
         }
+
+        protected abstract void ForceCompleteModel(SourceLocation location, CancellationToken cancellationToken = default(CancellationToken));
+
+        protected abstract void ForceCompleteSymbol(IMetaSymbol symbol, SourceLocation location, CancellationToken cancellationToken = default(CancellationToken));
 
         private static IEnumerable<Diagnostic> FilterDiagnosticsByLocation(IEnumerable<Diagnostic> diagnostics, SyntaxTree tree, TextSpan? filterSpanWithinTree)
         {
@@ -1539,9 +1560,7 @@ namespace MetaDslx.Compiler
                 {
                     foreach (var member in container.MChildren)
                     {
-                        if (!member.IsTypeOrTypeAlias() &&
-                            (member.CanBeReferencedByName || member.IsExplicitInterfaceImplementation() || member.IsIndexer()) &&
-                            predicate(member.MName))
+                        if (member.MName != null && predicate(member.MName))
                         {
                             set.Add(member);
                         }
@@ -1591,14 +1610,7 @@ namespace MetaDslx.Compiler
                     return _compilation.GlobalNamespace;
                 }
 
-                if (declaration.IsNamespace)
-                {
-                    AddCache(container.GetMembers(declaration.Name).OfType<IMetaSymbol>());
-                }
-                else
-                {
-                    AddCache(container.GetTypeMembers(declaration.Name));
-                }
+                AddCache(container.MChildren.Where(child => child.MName == declaration.Name));
 
                 return GetCachedSymbol(declaration);
             }
@@ -1607,24 +1619,11 @@ namespace MetaDslx.Compiler
             {
                 foreach (var symbol in symbols)
                 {
-                    var mergedNamespace = symbol as MergedNamespaceSymbol;
+                    var mergedNamespace = (Declaration)symbol.MGet(CompilerAttachedProperties.MergedDeclarationProperty);
                     if (mergedNamespace != null)
                     {
-                        _cache[mergedNamespace.ConstituentNamespaces.OfType<SourceNamespaceSymbol>().First().MergedDeclaration] = symbol;
+                        _cache[mergedNamespace] = symbol;
                         continue;
-                    }
-
-                    var sourceNamespace = symbol as SourceNamespaceSymbol;
-                    if (sourceNamespace != null)
-                    {
-                        _cache[sourceNamespace.MergedDeclaration] = sourceNamespace;
-                        continue;
-                    }
-
-                    var sourceType = symbol as SourceMemberContainerTypeSymbol;
-                    if (sourceType != null)
-                    {
-                        _cache[sourceType.MergedDeclaration] = sourceType;
                     }
                 }
             }

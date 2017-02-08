@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Syntax;
+﻿using MetaDslx.Compiler.Declarations;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
@@ -21,5 +22,11 @@ namespace MetaDslx.Compiler.Symbols
             ModelProperty.Register(typeof(CompilerAttachedProperties), "ContainingCompilation",
                 new ModelPropertyTypeInfo(typeof(Compilation), null),
                 new ModelPropertyTypeInfo(typeof(Compilation), null));
+
+        public static readonly ModelProperty MergedDeclarationProperty =
+            ModelProperty.Register(typeof(CompilerAttachedProperties), "MergedDeclaration",
+                new ModelPropertyTypeInfo(typeof(MergedDeclaration), null),
+                new ModelPropertyTypeInfo(typeof(MergedDeclaration), null));
+
     }
 }

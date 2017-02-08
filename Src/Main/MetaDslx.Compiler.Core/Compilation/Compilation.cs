@@ -62,6 +62,7 @@ namespace MetaDslx.Compiler
         protected static IReadOnlyDictionary<string, string> SyntaxTreeCommonFeatures(IEnumerable<SyntaxTree> trees)
         {
             IReadOnlyDictionary<string, string> set = null;
+            HashSet<KeyValuePair<string, string>> hashSet = null;
 
             foreach (var tree in trees)
             {
@@ -69,10 +70,11 @@ namespace MetaDslx.Compiler
                 if (set == null)
                 {
                     set = treeFeatures;
+                    hashSet = new HashSet<KeyValuePair<string, string>>(set);
                 }
                 else
                 {
-                    if ((object)set != treeFeatures && !set.SetEquals(treeFeatures))
+                    if ((object)set != treeFeatures && !hashSet.SetEquals(treeFeatures))
                     {
                         throw new ArgumentException("inconsistent syntax tree features", nameof(trees));
                     }

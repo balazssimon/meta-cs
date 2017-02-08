@@ -47,7 +47,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="diagnostic"></param>
         /// <returns>The modified diagnostic, or null</returns>
-        protected abstract Diagnostic FilterDiagnostic(Diagnostic diagnostic);
+        public abstract Diagnostic FilterDiagnostic(Diagnostic diagnostic);
 
         /// <summary>
         /// Warning report option for each warning.

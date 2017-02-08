@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
@@ -28,6 +29,11 @@ namespace MetaDslx.Compiler.Binding
         public Imports Concat(Imports imports)
         {
             return this;
+        }
+
+        internal void Complete(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }
