@@ -17,6 +17,7 @@ namespace MetaDslx.Core
         SymbolId MId { get; }
 
         string MName { get; }
+        IMetaSymbol MType { get; }
         bool MIsScope { get; }
         bool MIsType { get; }
 
@@ -39,7 +40,7 @@ namespace MetaDslx.Core
         new ImmutableSymbol MParent { get; }
         new ImmutableModelList<ImmutableSymbol> MChildren { get; }
 
-        ImmutableSymbol MType { get; }
+        new ImmutableSymbol MType { get; }
 
         MutableSymbol ToMutable();
         MutableSymbol ToMutable(MutableModel mutableModel);
@@ -55,7 +56,7 @@ namespace MetaDslx.Core
         void MAttachProperty(ModelProperty property);
 
         new string MName { get; set; }
-        MutableSymbol MType { get; set; }
+        new MutableSymbol MType { get; set; }
 
         void MSet(ModelProperty property, object value);
         void MSetLazy(ModelProperty property, Func<object> value);
@@ -151,6 +152,13 @@ namespace MetaDslx.Core
         public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
         public bool MIsType { get { return this.id.SymbolInfo.IsType; } }
 
+        IMetaSymbol IMetaSymbol.MType
+        {
+            get
+            {
+                return this.MType;
+            }
+        }
 
         public object MGet(ModelProperty property)
         {
@@ -327,6 +335,14 @@ namespace MetaDslx.Core
         }
         public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
         public bool MIsType { get { return this.id.SymbolInfo.IsType; } }
+
+        IMetaSymbol IMetaSymbol.MType
+        {
+            get
+            {
+                return this.MType;
+            }
+        }
 
         protected virtual void MInit()
         {
@@ -509,7 +525,8 @@ namespace MetaDslx.Core
             this.mutableModel = new WeakReference<MutableModel>(mutableModel);
         }
 
-        internal ModelId Id { get { return this.id; } }
+        public ModelId Id { get { return this.id; } }
+        public string Name { get { return this.green.Name; } }
         internal GreenModel Green { get { return this.green; } }
         public ImmutableModelGroup ModelGroup { get { return this.group; } }
         public IEnumerable<ImmutableSymbol> Symbols
@@ -848,8 +865,8 @@ namespace MetaDslx.Core
         private ConditionalWeakTable<SymbolId, MutableSymbol> symbols;
         private ThreadLocal<GreenModelUpdater> updater;
 
-        public MutableModel()
-            : this(new GreenModel(new ModelId()), null)
+        public MutableModel(string name = null)
+            : this(new GreenModel(new ModelId(), name), null)
         {
         }
 
@@ -875,7 +892,23 @@ namespace MetaDslx.Core
             this.immutableModel = new WeakReference<ImmutableModel>(immutableModel);
         }
 
-        internal ModelId Id { get { return this.id; } }
+        public ModelId Id
+        {
+            get { return this.Green.Id; }
+        }
+        public string Name
+        {
+            get { return this.Green.Name; }
+            set
+            {
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.SetName(value);
+                } while (!this.EndUpdate(ctx));
+            }
+        }
         internal GreenModel Green
         {
             get
@@ -1526,6 +1559,9 @@ namespace MetaDslx.Core
 
         internal GreenModelGroup Green { get { return this.green; } }
 
+        public ModelId Id { get { return this.green.Id; } }
+        public string Name { get { return this.green.Name; } }
+
         public IEnumerable<ImmutableModel> References
         {
             get
@@ -1692,6 +1728,23 @@ namespace MetaDslx.Core
             get
             {
                 return this.updater.Value;
+            }
+        }
+        public ModelId Id
+        {
+            get { return this.Green.Id; }
+        }
+        public string Name
+        {
+            get { return this.Green.Name; }
+            set
+            {
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.SetName(value);
+                } while (!this.EndUpdate(ctx));
             }
         }
         public IEnumerable<MutableModel> References
@@ -1909,7 +1962,7 @@ namespace MetaDslx.Core
             throw new NotImplementedException();
         }
 
-        public MutableModel CreateModel()
+        public MutableModel CreateModel(string name = null)
         {
             ModelId mid = new ModelId();
             MutableModel model = new MutableModel(mid, this, false, null);
@@ -1919,7 +1972,7 @@ namespace MetaDslx.Core
             do
             {
                 ctx = this.BeginUpdate();
-                greenModel = ctx.Updater.CreateModel(mid);
+                greenModel = ctx.Updater.CreateModel(mid, name);
             } while (!this.EndUpdate(ctx));
             return model;
         }

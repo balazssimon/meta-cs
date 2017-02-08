@@ -1,6 +1,7 @@
 ﻿using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Text;
+using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,16 @@ namespace MetaDslx.Compiler
         public abstract string Language { get; }
 
         /// <summary>
+        /// The root node of the syntax tree that this binding is based on.
+        /// </summary>
+        public SyntaxNode Root
+        {
+            get { return this.RootCore; }
+        }
+
+        protected abstract SyntaxNode RootCore { get; }
+
+        /// <summary>
         /// The compilation this model was obtained from.
         /// </summary>
         public Compilation Compilation
@@ -67,6 +78,32 @@ namespace MetaDslx.Compiler
         protected abstract SyntaxTree SyntaxTreeCore { get; }
 
         /// <summary>
+        /// Returns true if this is a SemanticModel that ignores accessibility rules when answering semantic questions.
+        /// </summary>
+        public virtual bool IgnoresAccessibility
+        {
+            get { return false; }
+        }
+
+        protected void CheckSyntaxNode(SyntaxNode node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            if (!IsInTree(node))
+            {
+                throw new ArgumentException("Syntax node is not within syntax tree");
+            }
+        }
+
+        internal bool IsInTree(SyntaxNode node)
+        {
+            return node.SyntaxTree == this.SyntaxTree;
+        }
+
+        /// <summary>
         /// Gets symbol information about a syntax node.
         /// </summary>
         /// <param name="node">The syntax node to get semantic information for.</param>
@@ -86,6 +123,92 @@ namespace MetaDslx.Compiler
         protected abstract SymbolInfo GetSymbolInfoCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
+        /// Binds the node in the context of the specified location and get semantic information
+        /// such as type, symbols and diagnostics. This method is used to get semantic information
+        /// about an expression that did not actually appear in the source code.
+        /// </summary>
+        /// <param name="position">A character position used to identify a declaration scope and
+        /// accessibility. This character position must be within the FullSpan of the Root syntax
+        /// node in this SemanticModel.
+        /// </param>
+        /// <param name="expression">A syntax node that represents a parsed expression. This syntax
+        /// node need not and typically does not appear in the source code referred to  SemanticModel
+        /// instance.</param>
+        /// <param name="bindingOption">Indicates whether to binding the expression as a full expressions,
+        /// or as a type or namespace. If SpeculativeBindingOption.BindAsTypeOrNamespace is supplied, then
+        /// expression should derive from TypeSyntax.</param>
+        /// <returns>The semantic information for the topmost node of the expression.</returns>
+        /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
+        /// appeared by itself somewhere within the scope that encloses "position".</remarks>
+        internal SymbolInfo GetSpeculativeSymbolInfo(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption)
+        {
+            return GetSpeculativeSymbolInfoCore(position, expression, bindingOption);
+        }
+
+        /// <summary>
+        /// Binds the node in the context of the specified location and get semantic information
+        /// such as type, symbols and diagnostics. This method is used to get semantic information
+        /// about an expression that did not actually appear in the source code.
+        /// </summary>
+        /// <param name="position">A character position used to identify a declaration scope and
+        /// accessibility. This character position must be within the FullSpan of the Root syntax
+        /// node in this SemanticModel.
+        /// </param>
+        /// <param name="expression">A syntax node that represents a parsed expression. This syntax
+        /// node need not and typically does not appear in the source code referred to  SemanticModel
+        /// instance.</param>
+        /// <param name="bindingOption">Indicates whether to binding the expression as a full expressions,
+        /// or as a type or namespace. If SpeculativeBindingOption.BindAsTypeOrNamespace is supplied, then
+        /// expression should derive from TypeSyntax.</param>
+        /// <returns>The semantic information for the topmost node of the expression.</returns>
+        /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
+        /// appeared by itself somewhere within the scope that encloses "position".</remarks>
+        protected abstract SymbolInfo GetSpeculativeSymbolInfoCore(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption);
+
+        /// <summary>
+        /// Binds the node in the context of the specified location and get semantic information
+        /// such as type, symbols and diagnostics. This method is used to get semantic information
+        /// about an expression that did not actually appear in the source code.
+        /// </summary>
+        /// <param name="position">A character position used to identify a declaration scope and
+        /// accessibility. This character position must be within the FullSpan of the Root syntax
+        /// node in this SemanticModel.
+        /// </param>
+        /// <param name="expression">A syntax node that represents a parsed expression. This syntax
+        /// node need not and typically does not appear in the source code referred to  SemanticModel
+        /// instance.</param>
+        /// <param name="bindingOption">Indicates whether to binding the expression as a full expressions,
+        /// or as a type or namespace. If SpeculativeBindingOption.BindAsTypeOrNamespace is supplied, then
+        /// expression should derive from TypeSyntax.</param>
+        /// <returns>The semantic information for the topmost node of the expression.</returns>
+        /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
+        /// appeared by itself somewhere within the scope that encloses "position".</remarks>
+        internal TypeInfo GetSpeculativeTypeInfo(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption)
+        {
+            return GetSpeculativeTypeInfoCore(position, expression, bindingOption);
+        }
+
+        /// <summary>
+        /// Binds the node in the context of the specified location and get semantic information
+        /// such as type, symbols and diagnostics. This method is used to get semantic information
+        /// about an expression that did not actually appear in the source code.
+        /// </summary>
+        /// <param name="position">A character position used to identify a declaration scope and
+        /// accessibility. This character position must be within the FullSpan of the Root syntax
+        /// node in this SemanticModel.
+        /// </param>
+        /// <param name="expression">A syntax node that represents a parsed expression. This syntax
+        /// node need not and typically does not appear in the source code referred to  SemanticModel
+        /// instance.</param>
+        /// <param name="bindingOption">Indicates whether to binding the expression as a full expressions,
+        /// or as a type or namespace. If SpeculativeBindingOption.BindAsTypeOrNamespace is supplied, then
+        /// expression should derive from TypeSyntax.</param>
+        /// <returns>The semantic information for the topmost node of the expression.</returns>
+        /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
+        /// appeared by itself somewhere within the scope that encloses "position".</remarks>
+        protected abstract TypeInfo GetSpeculativeTypeInfoCore(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption);
+
+        /// <summary>
         /// Gets type information about a syntax node.
         /// </summary>
         /// <param name="node">The syntax node to get semantic information for.</param>
@@ -103,6 +226,41 @@ namespace MetaDslx.Compiler
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the
         /// process of obtaining the semantic info.</param>
         protected abstract TypeInfo GetTypeInfoCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Returns true if this is a speculative semantic model created with any of the TryGetSpeculativeSemanticModel methods.
+        /// </summary>
+        public abstract bool IsSpeculativeSemanticModel
+        {
+            get;
+        }
+
+        /// <summary>
+        /// If this is a speculative semantic model, returns the original position at which the speculative model was created.
+        /// Otherwise, returns 0.
+        /// </summary>
+        public abstract int OriginalPositionForSpeculation
+        {
+            get;
+        }
+
+        /// <summary>
+        /// If this is a speculative semantic model, then returns its parent semantic model.
+        /// Otherwise, returns null.
+        /// </summary>
+        public SemanticModel ParentModel
+        {
+            get { return this.ParentModelCore; }
+        }
+
+        /// <summary>
+        /// If this is a speculative semantic model, then returns its parent semantic model.
+        /// Otherwise, returns null.
+        /// </summary>
+        protected abstract SemanticModel ParentModelCore
+        {
+            get;
+        }
 
         /// <summary>
         /// Get all of the syntax errors within the syntax tree associated with this
@@ -357,6 +515,98 @@ namespace MetaDslx.Compiler
             IMetaSymbol container,
             string name);
 
+        /// <summary>
+        /// If the node provided has a constant value an Optional value will be returned with
+        /// HasValue set to true and with Value set to the constant.  If the node does not have an
+        /// constant value, an Optional will be returned with HasValue set to false.
+        /// </summary>
+        public Optional<object> GetConstantValue(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return GetConstantValueCore(node, cancellationToken);
+        }
 
+        /// <summary>
+        /// If the node provided has a constant value an Optional value will be returned with
+        /// HasValue set to true and with Value set to the constant.  If the node does not have an
+        /// constant value, an Optional will be returned with HasValue set to false.
+        /// </summary>
+        protected abstract Optional<object> GetConstantValueCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// When getting information for a symbol that resolves to a method group or property group,
+        /// from which a method is then chosen; the chosen method or property is present in Symbol;
+        /// all methods in the group that was consulted are placed in this property.
+        /// </summary>
+        internal ImmutableArray<IMetaSymbol> GetMemberGroup(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return GetMemberGroupCore(node, cancellationToken);
+        }
+
+        /// <summary>
+        /// When getting information for a symbol that resolves to a method group or property group,
+        /// from which a method is then chosen; the chosen method or property is present in Symbol;
+        /// all methods in the group that was consulted are placed in this property.
+        /// </summary>
+        protected abstract ImmutableArray<IMetaSymbol> GetMemberGroupCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Given a position in the SyntaxTree for this SemanticModel returns the innermost Symbol
+        /// that the position is considered inside of.
+        /// </summary>
+        public IMetaSymbol GetEnclosingSymbol(int position, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return GetEnclosingSymbolCore(position, cancellationToken);
+        }
+
+        /// <summary>
+        /// Given a position in the SyntaxTree for this SemanticModel returns the innermost Symbol
+        /// that the position is considered inside of.
+        /// </summary>
+        protected abstract IMetaSymbol GetEnclosingSymbolCore(int position, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Determines if the symbol is accessible from the specified location. 
+        /// </summary>
+        /// <param name="position">A character position used to identify a declaration scope and
+        /// accessibility. This character position must be within the FullSpan of the Root syntax
+        /// node in this SemanticModel.
+        /// </param>
+        /// <param name="symbol">The symbol that we are checking to see if it accessible.</param>
+        /// <returns>
+        /// True if "symbol is accessible, false otherwise.</returns>
+        /// <remarks>
+        /// This method only checks accessibility from the point of view of the accessibility
+        /// modifiers on symbol and its containing types. Even if true is returned, the given symbol
+        /// may not be able to be referenced for other reasons, such as name hiding.
+        /// </remarks>
+        public bool IsAccessible(int position, IMetaSymbol symbol)
+        {
+            return IsAccessibleCore(position, symbol);
+        }
+
+        /// <summary>
+        /// Determines if the symbol is accessible from the specified location. 
+        /// </summary>
+        /// <param name="position">A character position used to identify a declaration scope and
+        /// accessibility. This character position must be within the FullSpan of the Root syntax
+        /// node in this SemanticModel.
+        /// </param>
+        /// <param name="symbol">The symbol that we are checking to see if it accessible.</param>
+        /// <returns>
+        /// True if "symbol is accessible, false otherwise.</returns>
+        /// <remarks>
+        /// This method only checks accessibility from the point of view of the accessibility
+        /// modifiers on symbol and its containing types. Even if true is returned, the given symbol
+        /// may not be able to be referenced for other reasons, such as name hiding.
+        /// </remarks>
+        protected abstract bool IsAccessibleCore(int position, IMetaSymbol symbol);
+
+        /// <summary>
+        /// Takes a Symbol and syntax for one of its declaring syntax reference and returns the topmost syntax node to be used by syntax analyzer.
+        /// </summary>
+        protected internal virtual SyntaxNode GetTopmostNodeForDiagnosticAnalysis(IMetaSymbol symbol, SyntaxNode declaringSyntax)
+        {
+            return declaringSyntax;
+        }
     }
 }

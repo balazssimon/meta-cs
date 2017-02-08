@@ -22,6 +22,8 @@ namespace MetaDslx.Compiler
         protected abstract SyntaxFactory SyntaxFactoryCore { get; }
         public InternalSyntaxFactory InternalSyntaxFactory { get { return this.InternalSyntaxFactoryCore; } }
         protected abstract InternalSyntaxFactory InternalSyntaxFactoryCore { get; }
+        public CompilationFactory CompilationFactory { get { return this.CompilationFactoryCore; } }
+        protected abstract CompilationFactory CompilationFactoryCore { get; }
     }
 
     internal class DefaultLanguage : Language
@@ -63,6 +65,14 @@ namespace MetaDslx.Compiler
             get
             {
                 return MessageProvider.Default;
+            }
+        }
+
+        protected override CompilationFactory CompilationFactoryCore
+        {
+            get
+            {
+                return CompilationFactory.Default;
             }
         }
     }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using MetaDslx.Compiler.Utilities;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -9,7 +11,19 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Diagnostics
 {
-    public class DiagnosticBag
+    /// <summary>
+    /// Represents a mutable bag of diagnostics. You can add diagnostics to the bag,
+    /// and also get all the diagnostics out of the bag (the bag implements
+    /// IEnumerable&lt;Diagnostics&gt;. Once added, diagnostics cannot be removed, and no ordering
+    /// is guaranteed.
+    /// 
+    /// It is ok to Add diagnostics to the same bag concurrently on multiple threads.
+    /// It is NOT ok to Add concurrently with Clear or Free operations.
+    /// </summary>
+    /// <remarks>The bag is optimized to be efficient when containing zero errors.</remarks>
+    [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
+    [DebuggerTypeProxy(typeof(DebuggerProxy))]
+    internal class DiagnosticBag
     {
         // The lazyBag field is populated lazily -- the first time an error is added.
         private ConcurrentQueue<Diagnostic> _lazyBag;
@@ -62,27 +76,39 @@ namespace MetaDslx.Compiler.Diagnostics
         }
 
         /// <summary>
+        /// Returns true if the bag has any non-lazy diagnostics with Severity=Error.
+        /// </summary>
+        /// <remarks>
+        /// Does not resolve any lazy diagnostics in the bag.
+        /// 
+        /// Generally, this should only be called by the creator (modulo pooling) of the bag (i.e. don't use bags to communicate -
+        /// if you need more info, pass more info).
+        /// </remarks>
+        internal bool HasAnyResolvedErrors()
+        {
+            if (IsEmptyWithoutResolution)
+            {
+                return false;
+            }
+
+            foreach (Diagnostic diagnostic in Bag)
+            {
+                if (diagnostic.Severity == DiagnosticSeverity.Error)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Add a diagnostic to the bag.
         /// </summary>
         public void Add(Diagnostic diag)
         {
             ConcurrentQueue<Diagnostic> bag = this.Bag;
             bag.Enqueue(diag);
-        }
-
-        /// <summary>
-        /// Add multiple diagnostics to the bag.
-        /// </summary>
-        public void AddRange(ImmutableArray<Diagnostic> diagnostics)
-        {
-            if (!diagnostics.IsDefaultOrEmpty)
-            {
-                ConcurrentQueue<Diagnostic> bag = this.Bag;
-                for (int i = 0; i < diagnostics.Length; i++)
-                {
-                    bag.Enqueue(diagnostics[i]);
-                }
-            }
         }
 
         /// <summary>
@@ -108,6 +134,84 @@ namespace MetaDslx.Compiler.Diagnostics
         }
 
         /// <summary>
+        /// Add another DiagnosticBag to the bag and free the argument.
+        /// </summary>
+        public void AddRangeAndFree(DiagnosticBag bag)
+        {
+            AddRange(bag);
+            bag.Free();
+        }
+
+        /// <summary>
+        /// Seal the bag so no further errors can be added, while clearing it and returning the old set of errors.
+        /// Return the bag to the pool.
+        /// </summary>
+        public ImmutableArray<Diagnostic> ToReadOnlyAndFree()
+        {
+            ConcurrentQueue<Diagnostic> oldBag = _lazyBag;
+            Free();
+
+            return ToReadOnlyCore(oldBag);
+        }
+
+        public ImmutableArray<Diagnostic> ToReadOnly()
+        {
+            ConcurrentQueue<Diagnostic> oldBag = _lazyBag;
+            return ToReadOnlyCore(oldBag);
+        }
+
+        private static ImmutableArray<Diagnostic> ToReadOnlyCore(ConcurrentQueue<Diagnostic> oldBag) 
+        {
+            if (oldBag == null)
+            {
+                return ImmutableArray<Diagnostic>.Empty;
+            }
+
+            ArrayBuilder<Diagnostic> builder = ArrayBuilder<Diagnostic>.GetInstance();
+
+            foreach (Diagnostic diagnostic in oldBag) // Cast should be safe since all diagnostics should be from same language.
+            {
+                builder.Add(diagnostic);
+            }
+
+            return builder.ToImmutableAndFree();
+        }
+
+
+        /// <remarks>
+        /// Generally, this should only be called by the creator (modulo pooling) of the bag (i.e. don't use bags to communicate -
+        /// if you need more info, pass more info).
+        /// </remarks>
+        public IEnumerable<Diagnostic> AsEnumerable()
+        {
+            return this.Bag;
+        }
+
+        internal IEnumerable<Diagnostic> AsEnumerableWithoutResolution()
+        {
+            // PERF: don't make a defensive copy - callers are internal and won't modify the bag.
+            return _lazyBag ?? EmptyCollections.Enumerable<Diagnostic>();
+        }
+
+        public override string ToString()
+        {
+            if (this.IsEmptyWithoutResolution)
+            {
+                // TODO(cyrusn): do we need to localize this?
+                return "<no errors>";
+            }
+            else
+            {
+                StringBuilder builder = new StringBuilder();
+                foreach (Diagnostic diag in Bag) // NOTE: don't force resolution
+                {
+                    builder.AppendLine(diag.ToString());
+                }
+                return builder.ToString();
+            }
+        }
+
+        /// <summary>
         /// Get the underlying concurrent storage, creating it on demand if needed.
         /// NOTE: Concurrent Adding to the bag is supported, but concurrent Clearing is not.
         ///       If one thread adds to the bug while another clears it, the scenario is 
@@ -128,33 +232,74 @@ namespace MetaDslx.Compiler.Diagnostics
             }
         }
 
-        public ImmutableArray<Diagnostic> ToReadOnly()
+        // clears the bag.
+        /// NOTE: Concurrent Adding to the bag is supported, but concurrent Clearing is not.
+        ///       If one thread adds to the bug while another clears it, the scenario is 
+        ///       broken and we cannot do anything about it here.
+        internal void Clear()
         {
-            ConcurrentQueue<Diagnostic> oldBag = _lazyBag;
-            return ToReadOnlyCore(oldBag);
+            ConcurrentQueue<Diagnostic> bag = _lazyBag;
+            if (bag != null)
+            {
+                _lazyBag = null;
+            }
         }
 
-        private static ImmutableArray<Diagnostic> ToReadOnlyCore(ConcurrentQueue<Diagnostic> oldBag)
+        #region "Poolable"
+
+        internal static DiagnosticBag GetInstance()
         {
-            if (oldBag == null)
-            {
-                return ImmutableArray<Diagnostic>.Empty;
-            }
-
-            ImmutableArray<Diagnostic>.Builder builder = ImmutableArray.CreateBuilder<Diagnostic>();
-
-            foreach (Diagnostic diagnostic in oldBag) // Cast should be safe since all diagnostics should be from same language.
-            {
-                builder.Add(diagnostic);
-            }
-
-            return builder.ToImmutable();
+            DiagnosticBag bag = s_poolInstance.Allocate();
+            return bag;
         }
 
+        internal void Free()
+        {
+            Clear();
+            s_poolInstance.Free(this);
+        }
+
+        private static readonly ObjectPool<DiagnosticBag> s_poolInstance = CreatePool(128);
+        private static ObjectPool<DiagnosticBag> CreatePool(int size)
+        {
+            return new ObjectPool<DiagnosticBag>(() => new DiagnosticBag(), size);
+        }
+
+        #endregion
+
+        #region Debugger View
+
+        internal sealed class DebuggerProxy
+        {
+            private readonly DiagnosticBag _bag;
+
+            public DebuggerProxy(DiagnosticBag bag)
+            {
+                _bag = bag;
+            }
+
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public object[] Diagnostics
+            {
+                get
+                {
+                    ConcurrentQueue<Diagnostic> lazyBag = _bag._lazyBag;
+                    if (lazyBag != null)
+                    {
+                        return lazyBag.ToArray();
+                    }
+                    else
+                    {
+                        return EmptyCollections.ObjectArray;
+                    }
+                }
+            }
+        }
 
         private string GetDebuggerDisplay()
         {
             return "Count = " + (_lazyBag?.Count ?? 0);
         }
+        #endregion
     }
 }

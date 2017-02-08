@@ -1,18 +1,23 @@
 ﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.References;
+using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler
 {
+
     /// <summary>
     /// The compilation object is an immutable representation of a single invocation of the
     /// compiler. Although immutable, a compilation is also on-demand, and will realize and cache
@@ -31,26 +36,93 @@ namespace MetaDslx.Compiler
         /// </summary>
         public abstract bool IsCaseSensitive { get; }
 
+        private readonly IReadOnlyDictionary<string, string> _features;
+
         public ScriptCompilationInfo ScriptCompilationInfo => CommonScriptCompilationInfo;
         protected abstract ScriptCompilationInfo CommonScriptCompilationInfo { get; }
 
         protected Compilation(
             string name,
-            ImmutableArray<ImmutableModel> references,
+            ImmutableArray<MetadataReference> references,
+            IReadOnlyDictionary<string, string> features,
             bool isSubmission,
             AsyncQueue<CompilationEvent> eventQueue)
         {
             Debug.Assert(!references.IsDefault);
+            Debug.Assert(features != null);
 
             this.CompilationName = name;
             this.ExternalReferences = references;
             this.EventQueue = eventQueue;
+
+            _lazySubmissionSlotIndex = isSubmission ? SubmissionSlotIndexToBeAllocated : SubmissionSlotIndexNotApplicable;
+            _features = features;
+        }
+
+        protected static IReadOnlyDictionary<string, string> SyntaxTreeCommonFeatures(IEnumerable<SyntaxTree> trees)
+        {
+            IReadOnlyDictionary<string, string> set = null;
+
+            foreach (var tree in trees)
+            {
+                var treeFeatures = tree.Options.Features;
+                if (set == null)
+                {
+                    set = treeFeatures;
+                }
+                else
+                {
+                    if ((object)set != treeFeatures && !set.SetEquals(treeFeatures))
+                    {
+                        throw new ArgumentException("inconsistent syntax tree features", nameof(trees));
+                    }
+                }
+            }
+
+            if (set == null)
+            {
+                // Edge case where there are no syntax trees
+                set = ImmutableDictionary<string, string>.Empty;
+            }
+
+            return set;
         }
 
         /// <summary>
         /// Gets the source language ("C#" or "Visual Basic").
         /// </summary>
         public abstract Language Language { get; }
+
+        internal static void ValidateScriptCompilationParameters(Compilation previousScriptCompilation, Type returnType, ref Type globalsType)
+        {
+            if (globalsType != null && !IsValidHostObjectType(globalsType))
+            {
+                throw new ArgumentException("Return type can't be a value type, pointer, by-ref or open generic type", nameof(globalsType));
+            }
+
+            if (returnType != null && !IsValidSubmissionReturnType(returnType))
+            {
+                throw new ArgumentException("Return type can't be void, by-ref or open generic type", nameof(returnType));
+            }
+
+            if (previousScriptCompilation != null)
+            {
+                if (globalsType == null)
+                {
+                    globalsType = previousScriptCompilation.HostObjectType;
+                }
+                else if (globalsType != previousScriptCompilation.HostObjectType)
+                {
+                    throw new ArgumentException("Type must be same as host object type of previous submission.", nameof(globalsType));
+                }
+
+                // Force the previous submission to be analyzed. This is required for anonymous types unification.
+                if (previousScriptCompilation.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error))
+                {
+                    throw new InvalidOperationException("Previous submission has errors.");
+                }
+            }
+        }
 
         /// <summary>
         /// Creates a new compilation equivalent to this one with different symbol instances.
@@ -65,13 +137,8 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Returns a new compilation with a given event queue.
         /// </summary>
-        public Compilation WithEventQueue(AsyncQueue<CompilationEvent> eventQueue)
-        {
-            return CommonWithEventQueue(eventQueue);
-        }
+        internal abstract Compilation WithEventQueue(AsyncQueue<CompilationEvent> eventQueue);
 
-        protected abstract Compilation CommonWithEventQueue(AsyncQueue<CompilationEvent> eventQueue);
-        
         /// <summary>
         /// Gets a new <see cref="SemanticModel"/> for the specified syntax tree.
         /// </summary>
@@ -86,13 +153,6 @@ namespace MetaDslx.Compiler
 
         protected abstract SemanticModel CommonGetSemanticModel(SyntaxTree syntaxTree, bool ignoreAccessibility);
 
-        /// <summary>
-        /// Returns a new INamedTypeSymbol representing an error type with the given name and arity
-        /// in the given optional container.
-        /// </summary>
-        public abstract IMetaSymbol CreateErrorTypeSymbol(IMetaSymbol container, string name, int arity);
-
-
         #region Name
 
         /// <summary>
@@ -101,9 +161,9 @@ namespace MetaDslx.Compiler
         public string CompilationName { get; }
 
         /// <summary>
-        /// Creates a compilation with the specified compilation name.
+        /// Creates a compilation with the specified assembly name.
         /// </summary>
-        /// <param name="compilationName">The new compilation name.</param>
+        /// <param name="assemblyName">The new assembly name.</param>
         /// <returns>A new compilation.</returns>
         public Compilation WithCompilationName(string compilationName)
         {
@@ -134,6 +194,80 @@ namespace MetaDslx.Compiler
         }
 
         protected abstract Compilation CommonWithOptions(CompilationOptions options);
+
+        #endregion
+
+        #region Submissions
+
+        // An index in the submission slot array. Allocated lazily in compilation phase based upon the slot index of the previous submission.
+        // Special values:
+        // -1 ... neither this nor previous submissions in the chain allocated a slot (the submissions don't contain code)
+        // -2 ... the slot of this submission hasn't been determined yet
+        // -3 ... this is not a submission compilation
+        private int _lazySubmissionSlotIndex;
+        private const int SubmissionSlotIndexNotApplicable = -3;
+        private const int SubmissionSlotIndexToBeAllocated = -2;
+
+        /// <summary>
+        /// True if the compilation represents an interactive submission.
+        /// </summary>
+        internal bool IsSubmission
+        {
+            get
+            {
+                return _lazySubmissionSlotIndex != SubmissionSlotIndexNotApplicable;
+            }
+        }
+
+        /// <summary>
+        /// Gets or allocates a runtime submission slot index for this compilation.
+        /// </summary>
+        /// <returns>Non-negative integer if this is a submission and it or a previous submission contains code, negative integer otherwise.</returns>
+        internal int GetSubmissionSlotIndex()
+        {
+            if (_lazySubmissionSlotIndex == SubmissionSlotIndexToBeAllocated)
+            {
+                // TODO (tomat): remove recursion
+                int lastSlotIndex = ScriptCompilationInfo.PreviousScriptCompilation?.GetSubmissionSlotIndex() ?? 0;
+                _lazySubmissionSlotIndex = HasCodeToEmit() ? lastSlotIndex + 1 : lastSlotIndex;
+            }
+
+            return _lazySubmissionSlotIndex;
+        }
+
+        // The type of interactive submission result requested by the host, or null if this compilation doesn't represent a submission. 
+        //
+        // The type is resolved to a symbol when the Script's instance ctor symbol is constructed. The symbol needs to be resolved against
+        // the references of this compilation.
+        //
+        // Consider (tomat): As an alternative to Reflection Type we could hold onto any piece of information that lets us 
+        // resolve the type symbol when needed.
+
+        /// <summary>
+        /// The type object that represents the type of submission result the host requested.
+        /// </summary>
+        internal Type SubmissionReturnType => ScriptCompilationInfo?.ReturnType;
+
+        internal static bool IsValidSubmissionReturnType(Type type)
+        {
+            return !(type == typeof(void) || type.IsByRef || type.GetTypeInfo().ContainsGenericParameters);
+        }
+
+        /// <summary>
+        /// The type of the globals object or null if not specified for this compilation.
+        /// </summary>
+        internal Type HostObjectType => ScriptCompilationInfo?.GlobalsType;
+
+        internal static bool IsValidHostObjectType(Type type)
+        {
+            var info = type.GetTypeInfo();
+            return !(info.IsValueType || info.IsPointer || info.IsByRef || info.ContainsGenericParameters);
+        }
+
+        protected abstract bool HasSubmissionResult();
+
+        public Compilation WithScriptCompilationInfo(ScriptCompilationInfo info) => CommonWithScriptCompilationInfo(info);
+        protected abstract Compilation CommonWithScriptCompilationInfo(ScriptCompilationInfo info);
 
         #endregion
 
@@ -230,15 +364,16 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The event queue that this compilation was created with.
         /// </summary>
-        public AsyncQueue<CompilationEvent> EventQueue { get; protected set; }
+        internal readonly AsyncQueue<CompilationEvent> EventQueue;
 
         #endregion
 
         #region References
 
-        protected static ImmutableArray<ImmutableModel> ValidateReferences<T>(IEnumerable<ImmutableModel> references)
+        internal static ImmutableArray<MetadataReference> ValidateReferences<T>(IEnumerable<MetadataReference> references)
+            where T : CompilationReference
         {
-            if (references == null) return ImmutableArray<ImmutableModel>.Empty;
+            if (references == null) return ImmutableArray<MetadataReference>.Empty;
             var result = references.ToImmutableArray();
             for (int i = 0; i < result.Length; i++)
             {
@@ -247,24 +382,61 @@ namespace MetaDslx.Compiler
                 {
                     throw new ArgumentNullException("references[" + i + "]");
                 }
+
+                if (!(reference is T))
+                {
+                    Debug.Assert(reference is UnresolvedMetadataReference || reference is CompilationReference);
+                    throw new ArgumentException(String.Format("Reference of type '{0}' is not valid for this compilation.", reference.GetType()), "references[" + i + "]");
+                }
             }
+
             return result;
         }
+
+        internal ReferenceManager GetBoundReferenceManager()
+        {
+            return CommonGetBoundReferenceManager();
+        }
+
+        protected abstract ReferenceManager CommonGetBoundReferenceManager();
 
         /// <summary>
         /// Metadata references passed to the compilation constructor.
         /// </summary>
-        public ImmutableArray<ImmutableModel> ExternalReferences { get; }
+        public ImmutableArray<MetadataReference> ExternalReferences { get; }
+
+        /// <summary>
+        /// Unique metadata references specified via #r directive in the source code of this compilation.
+        /// </summary>
+        public abstract ImmutableArray<MetadataReference> DirectiveReferences { get; }
+
+        /// <summary>
+        /// All reference directives used in this compilation.
+        /// </summary>
+        internal abstract IEnumerable<SyntaxNode> ReferenceDirectives { get; }
+
+        /// <summary>
+        /// Maps values of #r references to resolved metadata references.
+        /// </summary>
+        internal abstract IDictionary<Tuple<string, string>, MetadataReference> ReferenceDirectiveMap { get; }
 
         /// <summary>
         /// All metadata references -- references passed to the compilation
         /// constructor as well as references specified via #r directives.
         /// </summary>
-        public IEnumerable<ImmutableModel> References
+        public IEnumerable<MetadataReference> References
         {
             get
             {
-                return this.ExternalReferences;
+                foreach (var reference in ExternalReferences)
+                {
+                    yield return reference;
+                }
+
+                foreach (var reference in DirectiveReferences)
+                {
+                    yield return reference;
+                }
             }
         }
 
@@ -274,11 +446,7 @@ namespace MetaDslx.Compiler
         /// <param name="aliases">
         /// Optional aliases that can be used to refer to the compilation root namespace via extern alias directive.
         /// </param>
-        /// <param name="embedInteropTypes">
-        /// Embed the COM types from the reference so that the compiled
-        /// application no longer requires a primary interop assembly (PIA).
-        /// </param>
-        public abstract ImmutableModelGroup ToMetadataReference(ImmutableArray<string> aliases = default(ImmutableArray<string>));
+        public abstract CompilationReference ToMetadataReference(ImmutableArray<string> aliases = default(ImmutableArray<string>));
 
         /// <summary>
         /// Creates a new compilation with the specified references.
@@ -287,7 +455,7 @@ namespace MetaDslx.Compiler
         /// The new references.
         /// </param>
         /// <returns>A new compilation.</returns>
-        public Compilation WithReferences(IEnumerable<ImmutableModel> newReferences)
+        public Compilation WithReferences(IEnumerable<MetadataReference> newReferences)
         {
             return this.CommonWithReferences(newReferences);
         }
@@ -297,24 +465,24 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="newReferences">The new references.</param>
         /// <returns>A new compilation.</returns>
-        public Compilation WithReferences(params ImmutableModel[] newReferences)
+        public Compilation WithReferences(params MetadataReference[] newReferences)
         {
-            return this.WithReferences((IEnumerable<ImmutableModel>)newReferences);
+            return this.WithReferences((IEnumerable<MetadataReference>)newReferences);
         }
 
         /// <summary>
         /// Creates a new compilation with the specified references.
         /// </summary>
-        protected abstract Compilation CommonWithReferences(IEnumerable<ImmutableModel> newReferences);
+        protected abstract Compilation CommonWithReferences(IEnumerable<MetadataReference> newReferences);
 
         /// <summary>
         /// Creates a new compilation with additional metadata references.
         /// </summary>
         /// <param name="references">The new references.</param>
         /// <returns>A new compilation.</returns>
-        public Compilation AddReferences(params ImmutableModel[] references)
+        public Compilation AddReferences(params MetadataReference[] references)
         {
-            return AddReferences((IEnumerable<ImmutableModel>)references);
+            return AddReferences((IEnumerable<MetadataReference>)references);
         }
 
         /// <summary>
@@ -322,7 +490,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="references">The new references.</param>
         /// <returns>A new compilation.</returns>
-        public Compilation AddReferences(IEnumerable<ImmutableModel> references)
+        public Compilation AddReferences(IEnumerable<MetadataReference> references)
         {
             if (references == null)
             {
@@ -342,9 +510,9 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="references">The new references.</param>
         /// <returns>A new compilation.</returns>
-        public Compilation RemoveReferences(params ImmutableModel[] references)
+        public Compilation RemoveReferences(params MetadataReference[] references)
         {
-            return RemoveReferences((IEnumerable<ImmutableModel>)references);
+            return RemoveReferences((IEnumerable<MetadataReference>)references);
         }
 
         /// <summary>
@@ -352,7 +520,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="references">The new references.</param>
         /// <returns>A new compilation.</returns>
-        public Compilation RemoveReferences(IEnumerable<ImmutableModel> references)
+        public Compilation RemoveReferences(IEnumerable<MetadataReference> references)
         {
             if (references == null)
             {
@@ -364,7 +532,7 @@ namespace MetaDslx.Compiler
                 return this;
             }
 
-            var refSet = new HashSet<ImmutableModel>(this.ExternalReferences);
+            var refSet = new HashSet<MetadataReference>(this.ExternalReferences);
 
             //EDMAURER if AddingReferences accepts duplicates, then a consumer supplying a list with
             //duplicates to add will not know exactly which to remove. Let them supply a list with
@@ -385,7 +553,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         public Compilation RemoveAllReferences()
         {
-            return CommonWithReferences(EmptyCollections.Enumerable<ImmutableModel>());
+            return CommonWithReferences(EmptyCollections.Enumerable<MetadataReference>());
         }
 
         /// <summary>
@@ -395,7 +563,7 @@ namespace MetaDslx.Compiler
         /// <param name="newReference">The new reference.</param>
         /// <param name="oldReference">The old reference.</param>
         /// <returns>A new compilation.</returns>
-        public Compilation ReplaceReference(ImmutableModel oldReference, ImmutableModel newReference)
+        public Compilation ReplaceReference(MetadataReference oldReference, MetadataReference newReference)
         {
             if (oldReference == null)
             {
@@ -415,11 +583,10 @@ namespace MetaDslx.Compiler
         #region Symbols
 
         /// <summary>
-        /// Gets the <see cref="ImmutableModelGroup"/> for the model being created by compiling all of
-        /// the source code.
+        /// The <see cref="IMetaSymbol"/> that represents the compilation.
         /// </summary>
-        public ImmutableModelGroup SourceModel { get { return CommonSourceModel; } }
-        protected abstract ImmutableModelGroup CommonSourceModel { get; }
+        public IMetaSymbol CompilationSymbol { get { return CommonCompilationSymbol; } }
+        protected abstract IMetaSymbol CommonCompilationSymbol { get; }
 
         /// <summary>
         /// The root namespace that contains all namespaces and types defined in source code or in 
@@ -427,6 +594,75 @@ namespace MetaDslx.Compiler
         /// </summary>
         public IMetaSymbol GlobalNamespace { get { return CommonGlobalNamespace; } }
         protected abstract IMetaSymbol CommonGlobalNamespace { get; }
+
+        /// <summary>
+        /// Gets the corresponding compilation namespace for the specified module or assembly namespace.
+        /// </summary>
+        public IMetaSymbol GetCompilationNamespace(IMetaSymbol namespaceSymbol)
+        {
+            return CommonGetCompilationNamespace(namespaceSymbol);
+        }
+
+        protected abstract IMetaSymbol CommonGetCompilationNamespace(IMetaSymbol namespaceSymbol);
+
+        public AnonymousTypeManager AnonymousTypeManager
+        {
+            get { return this.CommonAnonymousTypeManager; }
+        }
+
+        protected abstract AnonymousTypeManager CommonAnonymousTypeManager { get; }
+
+        /// <summary>
+        /// Returns the Main method that will serves as the entry point of the assembly, if it is
+        /// executable (and not a script).
+        /// </summary>
+        public IMetaSymbol GetEntryPoint(CancellationToken cancellationToken)
+        {
+            return CommonGetEntryPoint(cancellationToken);
+        }
+
+        protected abstract IMetaSymbol CommonGetEntryPoint(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Get the symbol for the predefined type referenced by this
+        /// compilation.
+        /// </summary>
+        public IMetaSymbol GetSpecialType(Type specialType)
+        {
+            return CommonGetSpecialType(specialType);
+        }
+
+        protected abstract IMetaSymbol CommonGetSpecialType(Type specialType);
+
+        /// <summary>
+        /// Returns true if the type is System.Type.
+        /// </summary>
+        internal abstract bool IsSystemTypeReference(IMetaSymbol type);
+
+        /// <summary>
+        /// Returns true if the specified type is equal to or derives from System.Attribute well-known type.
+        /// </summary>
+        internal abstract bool IsAttributeType(IMetaSymbol type);
+
+        /// <summary>
+        /// The IMetaSymbol for the .NET System.Object type, which could have a TypeKind of
+        /// Error if there was no COR Library in this Compilation.
+        /// </summary>
+        public IMetaSymbol ObjectType { get { return CommonObjectType; } }
+        protected abstract IMetaSymbol CommonObjectType { get; }
+
+        /// <summary>
+        /// The TypeSymbol for the type 'dynamic' in this Compilation.
+        /// </summary>
+        public IMetaSymbol DynamicType { get { return CommonDynamicType; } }
+        protected abstract IMetaSymbol CommonDynamicType { get; }
+
+        /// <summary>
+        /// A symbol representing the implicit Script class. This is null if the class is not
+        /// defined in the compilation.
+        /// </summary>
+        public IMetaSymbol ScriptClass { get { return CommonScriptClass; } }
+        protected abstract IMetaSymbol CommonScriptClass { get; }
 
         /// <summary>
         /// Gets the type within the compilation's assembly and all referenced assemblies (other than
@@ -447,7 +683,7 @@ namespace MetaDslx.Compiler
 
         #region Diagnostics
 
-        public static readonly CompilationStage DefaultDiagnosticsStage = CompilationStage.Compile;
+        internal static readonly CompilationStage DefaultDiagnosticsStage = CompilationStage.Compile;
 
         /// <summary>
         /// Gets the diagnostics produced during the parsing stage.
@@ -460,27 +696,88 @@ namespace MetaDslx.Compiler
         public abstract ImmutableArray<Diagnostic> GetDeclarationDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
+        /// Gets the diagnostics produced during the analysis of method bodies and field initializers.
+        /// </summary>
+        public abstract ImmutableArray<Diagnostic> GetCompilationDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
         /// Gets all the diagnostics for the compilation, including syntax, declaration, and
         /// binding. Does not include any diagnostics that might be produced during emit, see
         /// <see cref="EmitResult"/>.
         /// </summary>
         public abstract ImmutableArray<Diagnostic> GetDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
 
-        public abstract MessageProvider MessageProvider { get; }
+        internal abstract MessageProvider MessageProvider { get; }
 
         /// <param name="accumulator">Bag to which filtered diagnostics will be added.</param>
         /// <param name="incoming">Diagnostics to be filtered.</param>
         /// <returns>True if there were no errors or warnings-as-errors.</returns>
-        public abstract bool FilterAndAppendAndFreeDiagnostics(DiagnosticBag accumulator, ref DiagnosticBag incoming);
+        internal abstract bool FilterAndAppendAndFreeDiagnostics(DiagnosticBag accumulator, ref DiagnosticBag incoming);
 
         #endregion
+
+
+        #region Emit
+
+        /// <summary>
+        /// Return true if the compilation contains any code or types.
+        /// </summary>
+        internal abstract bool HasCodeToEmit();
+
+        internal string Feature(string p)
+        {
+            string v;
+            return _features.TryGetValue(p, out v) ? v : null;
+        }
+
+        #endregion
+
+        private ConcurrentDictionary<SyntaxTree, SmallConcurrentSetOfInts> _lazyTreeToUsedImportDirectivesMap;
+        private static readonly Func<SyntaxTree, SmallConcurrentSetOfInts> s_createSetCallback = t => new SmallConcurrentSetOfInts();
+
+        private ConcurrentDictionary<SyntaxTree, SmallConcurrentSetOfInts> TreeToUsedImportDirectivesMap
+        {
+            get
+            {
+                return LazyInitializer.EnsureInitialized(ref _lazyTreeToUsedImportDirectivesMap);
+            }
+        }
+
+        internal void MarkImportDirectiveAsUsed(SyntaxNode node)
+        {
+            MarkImportDirectiveAsUsed(node.SyntaxTree, node.Span.Start);
+        }
+
+        internal void MarkImportDirectiveAsUsed(SyntaxTree syntaxTree, int position)
+        {
+            // Optimization: Don't initialize TreeToUsedImportDirectivesMap in submissions.
+            if (!IsSubmission && syntaxTree != null)
+            {
+                var set = TreeToUsedImportDirectivesMap.GetOrAdd(syntaxTree, s_createSetCallback);
+                set.Add(position);
+            }
+        }
+
+        internal bool IsImportDirectiveUsed(SyntaxTree syntaxTree, int position)
+        {
+            if (IsSubmission)
+            {
+                // Since usings apply to subsequent submissions, we have to assume they are used.
+                return true;
+            }
+
+            SmallConcurrentSetOfInts usedImports;
+            return syntaxTree != null &&
+                TreeToUsedImportDirectivesMap.TryGetValue(syntaxTree, out usedImports) &&
+                usedImports.Contains(position);
+        }
 
         /// <summary>
         /// The compiler needs to define an ordering among different partial class in different syntax trees
         /// in some cases, because emit order for fields in structures, for example, is semantically important.
         /// This function defines an ordering among syntax trees in this compilation.
         /// </summary>
-        public int CompareSyntaxTreeOrdering(SyntaxTree tree1, SyntaxTree tree2)
+        internal int CompareSyntaxTreeOrdering(SyntaxTree tree1, SyntaxTree tree2)
         {
             if (tree1 == tree2)
             {
@@ -493,18 +790,18 @@ namespace MetaDslx.Compiler
             return this.GetSyntaxTreeOrdinal(tree1) - this.GetSyntaxTreeOrdinal(tree2);
         }
 
-        public abstract int GetSyntaxTreeOrdinal(SyntaxTree tree);
+        internal abstract int GetSyntaxTreeOrdinal(SyntaxTree tree);
 
         /// <summary>
         /// Compare two source locations, using their containing trees, and then by Span.First within a tree. 
         /// Can be used to get a total ordering on declarations, for example.
         /// </summary>
-        public abstract int CompareSourceLocations(Location loc1, Location loc2);
+        internal abstract int CompareSourceLocations(Location loc1, Location loc2);
 
         /// <summary>
         /// Return the lexically first of two locations.
         /// </summary>
-        public TLocation FirstSourceLocation<TLocation>(TLocation first, TLocation second)
+        internal TLocation FirstSourceLocation<TLocation>(TLocation first, TLocation second)
             where TLocation : Location
         {
             if (CompareSourceLocations(first, second) <= 0)
@@ -520,7 +817,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Return the lexically first of multiple locations.
         /// </summary>
-        public TLocation FirstSourceLocation<TLocation>(ImmutableArray<TLocation> locations)
+        internal TLocation FirstSourceLocation<TLocation>(ImmutableArray<TLocation> locations)
             where TLocation : Location
         {
             if (locations.IsEmpty)
@@ -547,15 +844,15 @@ namespace MetaDslx.Compiler
 
         // Note: Most of the below helpers are unused at the moment - but we would like to keep them around in
         // case we decide we need more verbose logging in certain cases for debugging.
-        public string GetMessage(CompilationStage stage)
+        internal string GetMessage(CompilationStage stage)
         {
             return string.Format("{0} ({1})", this.CompilationName, stage.ToString());
         }
 
-        public string GetMessage(IMetaSymbol source, IMetaSymbol destination)
+        internal string GetMessage(IMetaSymbol source, IMetaSymbol destination)
         {
             if (source == null || destination == null) return this.CompilationName;
-            return string.Format("{0}: {1} {2} -> {3} {4}", this.CompilationName, source.MMetaClass.MName, source.MName, destination.MMetaClass.MName, destination.MName);
+            return string.Format("{0}: {1} {2} -> {3} {4}", this.CompilationName, source.MType?.MName, source.MName, destination.MType?.MName, destination.MName);
         }
 
         #endregion
@@ -574,5 +871,4 @@ namespace MetaDslx.Compiler
 
         #endregion
     }
-
 }

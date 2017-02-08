@@ -15,6 +15,6 @@ namespace MetaDslx.Compiler.References
     {
         public abstract override bool Equals(object other);
         public abstract override int GetHashCode();
-        public abstract ImmutableArray<ImmutableModel> ResolveReference(string reference, string baseFilePath);
+        public abstract ImmutableArray<MetadataReference> ResolveReference(string reference, string baseFilePath);
     }
 }

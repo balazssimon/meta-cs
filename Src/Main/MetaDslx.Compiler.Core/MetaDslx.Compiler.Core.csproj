@@ -44,8 +44,16 @@
     <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binding\Binder.cs" />
+    <Compile Include="Binding\BinderFactory.cs" />
+    <Compile Include="Binding\BuckStopsHereBinder.cs" />
+    <Compile Include="Binding\Conversions.cs" />
+    <Compile Include="Binding\Imports.cs" />
+    <Compile Include="Binding\OverloadResolution.cs" />
     <Compile Include="Compilation\CandidateReason.cs" />
     <Compile Include="Compilation\Compilation.cs" />
+    <Compile Include="Compilation\CompilationBase.cs" />
+    <Compile Include="Compilation\CompilationFactory.cs" />
     <Compile Include="Compilation\CompilationOptions.cs" />
     <Compile Include="Compilation\CompilationStage.cs" />
     <Compile Include="Compilation\DocumentationMode.cs" />
@@ -54,14 +62,22 @@
     <Compile Include="Compilation\ScriptCompilationInfo.cs" />
     <Compile Include="Compilation\SemanticModel.cs" />
     <Compile Include="Compilation\SourceCodeKind.cs" />
+    <Compile Include="Compilation\SpeculativeBindingOption.cs" />
+    <Compile Include="Compilation\SymbolCompiler.cs" />
     <Compile Include="Compilation\SymbolInfo.cs" />
     <Compile Include="Compilation\TypeInfo.cs" />
+    <Compile Include="Declarations\SyntaxAndDeclarationManager.cs" />
     <Compile Include="DiagnosticAnalyzer\AsyncQueue.cs" />
     <Compile Include="DiagnosticAnalyzer\CompilationCompletedEvent.cs" />
     <Compile Include="DiagnosticAnalyzer\CompilationEvent.cs" />
     <Compile Include="DiagnosticAnalyzer\CompilationStartedEvent.cs" />
     <Compile Include="DiagnosticAnalyzer\CompilationUnitCompletedEvent.cs" />
     <Compile Include="DiagnosticAnalyzer\SymbolDeclaredCompilationEvent.cs" />
+    <Compile Include="References\CompilationReference.cs" />
+    <Compile Include="References\MetadataReference.cs" />
+    <Compile Include="References\ModelGroupReference.cs" />
+    <Compile Include="References\ModelReference.cs" />
+    <Compile Include="References\ReferenceManager.cs" />
     <Compile Include="References\SourceFileResolver.cs" />
     <Compile Include="References\SourceReferenceResolver.cs" />
     <Compile Include="Compilation\SymbolFilter.cs" />
@@ -70,6 +86,8 @@
     <Compile Include="Declarations\DeclarationTable.cs" />
     <Compile Include="Declarations\DeclarationTreeBuilder.cs" />
     <Compile Include="References\MetadataReferenceResolver.cs" />
+    <Compile Include="References\UnresolvedMetadataReference.cs" />
+    <Compile Include="Symbols\AnonymousTypeManager.cs" />
     <Compile Include="Symbols\AttachedProperties.cs" />
     <Compile Include="Symbols\WellKnownMemberNames.cs" />
     <Compile Include="Syntax\DetailedSyntaxVisitor.cs" />
@@ -158,6 +176,7 @@
     <Compile Include="Utilities\CachingFactory.cs" />
     <Compile Include="Utilities\CollectionUtilities.cs" />
     <Compile Include="Utilities\ConcurrentCache.cs" />
+    <Compile Include="Utilities\ConcurrentSet.cs" />
     <Compile Include="Utilities\EmptyCollections.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\ExceptionUtilities.cs" />
@@ -166,17 +185,18 @@
     <Compile Include="Text\SourceHashProvider.cs" />
     <Compile Include="Utilities\ImmutableArrayExtensions.cs" />
     <Compile Include="Utilities\ImmutableSetWithInsertionOrder`1.cs" />
+    <Compile Include="Utilities\ISetExtensions.cs" />
     <Compile Include="Utilities\ObjectPool`1.cs" />
+    <Compile Include="Utilities\Optional.cs" />
     <Compile Include="Utilities\PooledDictionary.cs" />
     <Compile Include="Utilities\PooledHashSet.cs" />
     <Compile Include="Utilities\PooledStringBuilder.cs" />
+    <Compile Include="Utilities\SmallConcurrentSetOfInts.cs" />
     <Compile Include="Utilities\SpecializedCollections.cs" />
     <Compile Include="Utilities\StreamUtilities.cs" />
     <Compile Include="Utilities\UnionCollection.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Binder\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
