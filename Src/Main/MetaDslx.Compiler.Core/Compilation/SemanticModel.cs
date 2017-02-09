@@ -39,7 +39,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Gets the source language ("C#" or "Visual Basic").
         /// </summary>
-        public abstract string Language { get; }
+        public abstract Language Language { get; }
 
         /// <summary>
         /// The root node of the syntax tree that this binding is based on.
@@ -54,7 +54,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The compilation this model was obtained from.
         /// </summary>
-        public Compilation Compilation
+        public CompilationBase Compilation
         {
             get { return CompilationCore; }
         }
@@ -62,7 +62,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The compilation this model was obtained from.
         /// </summary>
-        protected abstract Compilation CompilationCore { get; }
+        protected abstract CompilationBase CompilationCore { get; }
 
         /// <summary>
         /// The syntax tree this model was obtained from.
@@ -85,7 +85,7 @@ namespace MetaDslx.Compiler
             get { return false; }
         }
 
-        protected void CheckSyntaxNode(SyntaxNode node)
+        protected virtual void CheckSyntaxNode(SyntaxNode node)
         {
             if (node == null)
             {
@@ -109,7 +109,7 @@ namespace MetaDslx.Compiler
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the
         /// process of obtaining the semantic info.</param>
-        internal SymbolInfo GetSymbolInfo(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        public SymbolInfo GetSymbolInfo(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetSymbolInfoCore(node, cancellationToken);
         }
@@ -134,15 +134,12 @@ namespace MetaDslx.Compiler
         /// <param name="expression">A syntax node that represents a parsed expression. This syntax
         /// node need not and typically does not appear in the source code referred to  SemanticModel
         /// instance.</param>
-        /// <param name="bindingOption">Indicates whether to binding the expression as a full expressions,
-        /// or as a type or namespace. If SpeculativeBindingOption.BindAsTypeOrNamespace is supplied, then
-        /// expression should derive from TypeSyntax.</param>
         /// <returns>The semantic information for the topmost node of the expression.</returns>
         /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
         /// appeared by itself somewhere within the scope that encloses "position".</remarks>
-        internal SymbolInfo GetSpeculativeSymbolInfo(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption)
+        public SymbolInfo GetSpeculativeSymbolInfo(int position, SyntaxNode expression)
         {
-            return GetSpeculativeSymbolInfoCore(position, expression, bindingOption);
+            return GetSpeculativeSymbolInfoCore(position, expression);
         }
 
         /// <summary>
@@ -157,56 +154,10 @@ namespace MetaDslx.Compiler
         /// <param name="expression">A syntax node that represents a parsed expression. This syntax
         /// node need not and typically does not appear in the source code referred to  SemanticModel
         /// instance.</param>
-        /// <param name="bindingOption">Indicates whether to binding the expression as a full expressions,
-        /// or as a type or namespace. If SpeculativeBindingOption.BindAsTypeOrNamespace is supplied, then
-        /// expression should derive from TypeSyntax.</param>
         /// <returns>The semantic information for the topmost node of the expression.</returns>
         /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
         /// appeared by itself somewhere within the scope that encloses "position".</remarks>
-        protected abstract SymbolInfo GetSpeculativeSymbolInfoCore(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption);
-
-        /// <summary>
-        /// Binds the node in the context of the specified location and get semantic information
-        /// such as type, symbols and diagnostics. This method is used to get semantic information
-        /// about an expression that did not actually appear in the source code.
-        /// </summary>
-        /// <param name="position">A character position used to identify a declaration scope and
-        /// accessibility. This character position must be within the FullSpan of the Root syntax
-        /// node in this SemanticModel.
-        /// </param>
-        /// <param name="expression">A syntax node that represents a parsed expression. This syntax
-        /// node need not and typically does not appear in the source code referred to  SemanticModel
-        /// instance.</param>
-        /// <param name="bindingOption">Indicates whether to binding the expression as a full expressions,
-        /// or as a type or namespace. If SpeculativeBindingOption.BindAsTypeOrNamespace is supplied, then
-        /// expression should derive from TypeSyntax.</param>
-        /// <returns>The semantic information for the topmost node of the expression.</returns>
-        /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
-        /// appeared by itself somewhere within the scope that encloses "position".</remarks>
-        internal TypeInfo GetSpeculativeTypeInfo(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption)
-        {
-            return GetSpeculativeTypeInfoCore(position, expression, bindingOption);
-        }
-
-        /// <summary>
-        /// Binds the node in the context of the specified location and get semantic information
-        /// such as type, symbols and diagnostics. This method is used to get semantic information
-        /// about an expression that did not actually appear in the source code.
-        /// </summary>
-        /// <param name="position">A character position used to identify a declaration scope and
-        /// accessibility. This character position must be within the FullSpan of the Root syntax
-        /// node in this SemanticModel.
-        /// </param>
-        /// <param name="expression">A syntax node that represents a parsed expression. This syntax
-        /// node need not and typically does not appear in the source code referred to  SemanticModel
-        /// instance.</param>
-        /// <param name="bindingOption">Indicates whether to binding the expression as a full expressions,
-        /// or as a type or namespace. If SpeculativeBindingOption.BindAsTypeOrNamespace is supplied, then
-        /// expression should derive from TypeSyntax.</param>
-        /// <returns>The semantic information for the topmost node of the expression.</returns>
-        /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
-        /// appeared by itself somewhere within the scope that encloses "position".</remarks>
-        protected abstract TypeInfo GetSpeculativeTypeInfoCore(int position, SyntaxNode expression, SpeculativeBindingOption bindingOption);
+        protected abstract SymbolInfo GetSpeculativeSymbolInfoCore(int position, SyntaxNode expression);
 
         /// <summary>
         /// Gets type information about a syntax node.
@@ -214,7 +165,7 @@ namespace MetaDslx.Compiler
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the
         /// process of obtaining the semantic info.</param>
-        internal TypeInfo GetTypeInfo(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        public TypeInfo GetTypeInfo(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetTypeInfoCore(node, cancellationToken);
         }
@@ -226,6 +177,43 @@ namespace MetaDslx.Compiler
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the
         /// process of obtaining the semantic info.</param>
         protected abstract TypeInfo GetTypeInfoCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Binds the node in the context of the specified location and get semantic information
+        /// such as type, symbols and diagnostics. This method is used to get semantic information
+        /// about an expression that did not actually appear in the source code.
+        /// </summary>
+        /// <param name="position">A character position used to identify a declaration scope and
+        /// accessibility. This character position must be within the FullSpan of the Root syntax
+        /// node in this SemanticModel.
+        /// </param>
+        /// <param name="expression">A syntax node that represents a parsed expression. This syntax
+        /// node need not and typically does not appear in the source code referred to  SemanticModel
+        /// instance.</param>
+        /// <returns>The semantic information for the topmost node of the expression.</returns>
+        /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
+        /// appeared by itself somewhere within the scope that encloses "position".</remarks>
+        public TypeInfo GetSpeculativeTypeInfo(int position, SyntaxNode expression)
+        {
+            return GetSpeculativeTypeInfoCore(position, expression);
+        }
+
+        /// <summary>
+        /// Binds the node in the context of the specified location and get semantic information
+        /// such as type, symbols and diagnostics. This method is used to get semantic information
+        /// about an expression that did not actually appear in the source code.
+        /// </summary>
+        /// <param name="position">A character position used to identify a declaration scope and
+        /// accessibility. This character position must be within the FullSpan of the Root syntax
+        /// node in this SemanticModel.
+        /// </param>
+        /// <param name="expression">A syntax node that represents a parsed expression. This syntax
+        /// node need not and typically does not appear in the source code referred to  SemanticModel
+        /// instance.</param>
+        /// <returns>The semantic information for the topmost node of the expression.</returns>
+        /// <remarks>The passed in expression is interpreted as a stand-alone expression, as if it
+        /// appeared by itself somewhere within the scope that encloses "position".</remarks>
+        protected abstract TypeInfo GetSpeculativeTypeInfoCore(int position, SyntaxNode expression);
 
         /// <summary>
         /// Returns true if this is a speculative semantic model created with any of the TryGetSpeculativeSemanticModel methods.
@@ -287,6 +275,20 @@ namespace MetaDslx.Compiler
         public abstract ImmutableArray<Diagnostic> GetDeclarationDiagnostics(TextSpan? span = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
+        /// Get all of the semantic errors within the syntax tree associated with this
+        /// object. Does not get errors involving incorrect syntax or declarations.
+        /// </summary>
+        /// <param name="span">Optional span within the syntax tree for which to get diagnostics.
+        /// If no argument is specified, then diagnostics for the entire tree are returned.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used to cancel the
+        /// process of obtaining the diagnostics.</param>
+        /// <remarks>The method body errors for a syntax tree are not cached. The first time this method
+        /// is called, all method bodies are analyzed for diagnostics. Calling this a second time
+        /// will repeat this work.
+        /// </remarks>
+        public abstract ImmutableArray<Diagnostic> GetSemanticDiagnostics(TextSpan? span = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
         /// Get all the errors within the syntax tree associated with this object. Includes errors
         /// involving compiling method bodies or initializers, in addition to the errors returned by
         /// GetDeclarationDiagnostics.
@@ -312,7 +314,7 @@ namespace MetaDslx.Compiler
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbol declared by the node or null if the node is not a declaration.</returns>
-        internal IMetaSymbol GetDeclaredSymbolForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        public IMetaSymbol GetDeclaredSymbolForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDeclaredSymbolCore(declaration, cancellationToken);
         }
@@ -339,7 +341,7 @@ namespace MetaDslx.Compiler
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbols declared by the node.</returns>
-        internal ImmutableArray<IMetaSymbol> GetDeclaredSymbolsForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        public ImmutableArray<IMetaSymbol> GetDeclaredSymbolsForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDeclaredSymbolsCore(declaration, cancellationToken);
         }
@@ -367,24 +369,18 @@ namespace MetaDslx.Compiler
         /// scope around position is used.</param>
         /// <param name="name">The name of the symbol to find. If null is specified then symbols
         /// with any names are returned.</param>
-        /// <param name="includeReducedExtensionMethods">Consider (reduced) extension methods.</param>
         /// <returns>A list of symbols that were found. If no symbols were found, an empty list is returned.</returns>
         /// <remarks>
         /// The "position" is used to determine what variables are visible and accessible. Even if "container" is
         /// specified, the "position" location is significant for determining which members of "containing" are
         /// accessible. 
-        /// 
-        /// Labels are not considered (see <see cref="LookupLabels"/>).
-        /// 
-        /// Non-reduced extension methods are considered regardless of the value of <paramref name="includeReducedExtensionMethods"/>.
         /// </remarks>
         public ImmutableArray<IMetaSymbol> LookupSymbols(
             int position,
             IMetaSymbol container = null,
-            string name = null,
-            bool includeReducedExtensionMethods = false)
+            string name = null)
         {
-            return LookupSymbolsCore(position, container, name, includeReducedExtensionMethods);
+            return LookupSymbolsCore(position, container, name);
         }
 
         /// <summary>
@@ -393,8 +389,7 @@ namespace MetaDslx.Compiler
         protected abstract ImmutableArray<IMetaSymbol> LookupSymbolsCore(
             int position,
             IMetaSymbol container,
-            string name,
-            bool includeReducedExtensionMethods);
+            string name);
 
         /// <summary>
         /// Gets the available base type members in the context of the specified location.  Akin to
@@ -537,9 +532,9 @@ namespace MetaDslx.Compiler
         /// from which a method is then chosen; the chosen method or property is present in Symbol;
         /// all methods in the group that was consulted are placed in this property.
         /// </summary>
-        internal ImmutableArray<IMetaSymbol> GetMemberGroup(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        public ImmutableArray<IMetaSymbol> GetMembers(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return GetMemberGroupCore(node, cancellationToken);
+            return GetMembersCore(node, cancellationToken);
         }
 
         /// <summary>
@@ -547,7 +542,7 @@ namespace MetaDslx.Compiler
         /// from which a method is then chosen; the chosen method or property is present in Symbol;
         /// all methods in the group that was consulted are placed in this property.
         /// </summary>
-        protected abstract ImmutableArray<IMetaSymbol> GetMemberGroupCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<IMetaSymbol> GetMembersCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Given a position in the SyntaxTree for this SemanticModel returns the innermost Symbol

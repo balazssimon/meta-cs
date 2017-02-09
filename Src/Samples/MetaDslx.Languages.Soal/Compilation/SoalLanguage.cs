@@ -65,6 +65,16 @@ namespace MetaDslx.Languages.Soal
         {
             get { return (SoalSyntaxFactory)base.SyntaxFactory; }
         }
+
+        protected override CompilationFactory CompilationFactoryCore
+        {
+            get { return SoalCompilationFactory.Instance; }
+        }
+
+        public new SoalCompilationFactory CompilationFactory
+        {
+            get { return (SoalCompilationFactory)base.CompilationFactory; }
+        }
     }
 }
 

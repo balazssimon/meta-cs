@@ -28,5 +28,9 @@ namespace MetaDslx.Compiler.Symbols
                 new ModelPropertyTypeInfo(typeof(MergedDeclaration), null),
                 new ModelPropertyTypeInfo(typeof(MergedDeclaration), null));
 
+        public static readonly ModelProperty IsScriptClassProperty =
+            ModelProperty.Register(typeof(CompilerAttachedProperties), "IsScriptClass",
+                new ModelPropertyTypeInfo(typeof(bool), null),
+                new ModelPropertyTypeInfo(typeof(bool), null));
     }
 }

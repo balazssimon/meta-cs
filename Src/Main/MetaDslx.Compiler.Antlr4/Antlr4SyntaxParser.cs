@@ -157,7 +157,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             if (token.Type >= 0)
             {
                 int kind = token.Type;
-                if (token.StartIndex < 0 || token.StopIndex <= token.StartIndex)
+                if (token.StartIndex < 0 || token.StopIndex < token.StartIndex)
                 {
                     result = this.factory.MissingToken(kind);
                     return this.AddDiagnostic(result, token.TokenIndex);

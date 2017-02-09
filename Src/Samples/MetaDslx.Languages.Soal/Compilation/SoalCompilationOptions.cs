@@ -30,7 +30,8 @@ namespace MetaDslx.Languages.Soal
                    specificDiagnosticOptions != null ? specificDiagnosticOptions.ToImmutableDictionary() : ImmutableDictionary<string, ReportDiagnostic>.Empty, 
                    concurrentBuild, deterministic,
                    sourceReferenceResolver: sourceReferenceResolver,
-                   metadataReferenceResolver: metadataReferenceResolver)
+                   metadataReferenceResolver: metadataReferenceResolver,
+                   referencesSupersedeLowerVersions: false)
         {
         }
 
@@ -44,7 +45,8 @@ namespace MetaDslx.Languages.Soal
             bool concurrentBuild,
             bool deterministic,
             SourceReferenceResolver sourceReferenceResolver,
-            MetadataReferenceResolver metadataReferenceResolver)
+            MetadataReferenceResolver metadataReferenceResolver,
+            bool referencesSupersedeLowerVersions)
             : base(reportSuppressedDiagnostics, 
                   scriptClassName,
                   generalDiagnosticOption,
@@ -53,7 +55,8 @@ namespace MetaDslx.Languages.Soal
                   concurrentBuild,
                   deterministic,
                   sourceReferenceResolver,
-                  metadataReferenceResolver)
+                  metadataReferenceResolver, 
+                  referencesSupersedeLowerVersions)
         {
         }
 
@@ -66,7 +69,8 @@ namespace MetaDslx.Languages.Soal
             deterministic: other.Deterministic,
             sourceReferenceResolver: other.SourceReferenceResolver,
             metadataReferenceResolver: other.MetadataReferenceResolver,
-            reportSuppressedDiagnostics: other.ReportSuppressedDiagnostics)
+            reportSuppressedDiagnostics: other.ReportSuppressedDiagnostics,
+            referencesSupersedeLowerVersions: other.ReferencesSupersedeLowerVersions)
         {
         }
 
@@ -77,6 +81,15 @@ namespace MetaDslx.Languages.Soal
                 return this;
             }
             return new SoalCompilationOptions(this) { Deterministic = deterministic };
+        }
+
+        public new SoalCompilationOptions WithReferencesSupersedeLowerVersions(bool value)
+        {
+            if (this.ReferencesSupersedeLowerVersions == value)
+            {
+                return this;
+            }
+            return new SoalCompilationOptions(this) { ReferencesSupersedeLowerVersions = value };
         }
 
         public new SoalCompilationOptions WithGeneralDiagnosticOption(ReportDiagnostic generalDiagnosticOption)
@@ -140,6 +153,11 @@ namespace MetaDslx.Languages.Soal
             return this.WithDeterministic(deterministic);
         }
 
+        protected override CompilationOptions CommonWithReferencesSupersedeLowerVersions(bool value)
+        {
+            return this.CommonWithDeterministic(value);
+        }
+
         protected override CompilationOptions CommonWithGeneralDiagnosticOption(ReportDiagnostic generalDiagnosticOption)
         {
             return this.WithGeneralDiagnosticOption(generalDiagnosticOption);
@@ -170,7 +188,7 @@ namespace MetaDslx.Languages.Soal
             return this.WithSpecificDiagnosticOptions(specificDiagnosticOptions);
         }
 
-        protected override Diagnostic FilterDiagnostic(Diagnostic diagnostic)
+        public override Diagnostic FilterDiagnostic(Diagnostic diagnostic)
         {
             return diagnostic;
         }

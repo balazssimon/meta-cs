@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Symbols
+namespace MetaDslx.Compiler.Binding
 {
     /// <summary>
     /// Manages anonymous types created in owning compilation. All requests for 

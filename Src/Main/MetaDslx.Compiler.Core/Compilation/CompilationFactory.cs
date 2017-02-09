@@ -11,6 +11,7 @@ using MetaDslx.Compiler.Binding;
 using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Diagnostics;
 using System.Collections.Immutable;
+using MetaDslx.Compiler.References;
 
 namespace MetaDslx.Compiler
 {
@@ -21,14 +22,11 @@ namespace MetaDslx.Compiler
         public abstract IMetaSymbol CreateMergedNamespace(Compilation compilation, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge);
         public abstract IMetaSymbol CreateNamespace(Compilation compilation, IMetaSymbol containingNamespace, string name);
         public abstract RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
-        public abstract IEnumerable<SyntaxNode> GetLoadDirectives(SyntaxTree syntaxTree);
-        public abstract string GetLoadDirectiveFileName(SyntaxNode loadDirective);
         public abstract bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree);
         public abstract IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
         public abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder);
         public abstract AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilationBase);
         public abstract ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType);
-        public abstract ImmutableArray<IMetaSymbol> TranslateImports(ImmutableModel model, DiagnosticBag diagnostics);
         public abstract SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilationBase, SyntaxTree syntaxTree, bool ignoreAccessibility);
 
         public virtual IMetaSymbol GetNestedNamespace(IMetaSymbol namespaceSymbol)
@@ -40,7 +38,6 @@ namespace MetaDslx.Compiler
             }
             return null;
         }
-
     }
 
     internal sealed class DefaultCompilationFactory : CompilationFactory
@@ -85,22 +82,7 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override string GetLoadDirectiveFileName(SyntaxNode loadDirective)
-        {
-            throw ExceptionUtilities.Unreachable;
-        }
-
-        public override IEnumerable<SyntaxNode> GetLoadDirectives(SyntaxTree syntaxTree)
-        {
-            throw ExceptionUtilities.Unreachable;
-        }
-
         public override bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImmutableArray<IMetaSymbol> TranslateImports(ImmutableModel model, DiagnosticBag diagnostics)
         {
             throw new NotImplementedException();
         }

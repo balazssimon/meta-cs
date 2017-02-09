@@ -61,9 +61,9 @@ namespace MetaDslx.Compiler
         {
             get
             {
-                if (_conversions == null)
+                if (_nameResolution == null)
                 {
-                    Interlocked.CompareExchange(ref _nameResolution, new BuckStopsHereBinder(this).NameResolution, null);
+                    Interlocked.CompareExchange(ref _nameResolution, new NameResolution(this), null);
                 }
 
                 return _nameResolution;
@@ -77,7 +77,7 @@ namespace MetaDslx.Compiler
 
         private IMetaSymbol _lazyGlobalNamespace;
 
-        private ModelId _lazyModelId;
+        internal ModelId _lazyModelId;
 
         /// <summary>
         /// The <see cref="MutableModelGroup"/> for this compilation. Do not access directly, use the ModelGroupBuilder property
@@ -85,9 +85,9 @@ namespace MetaDslx.Compiler
         /// while ReferenceManager "calculates" the value and assigns it, several threads must not perform duplicate
         /// "calculation" simultaneously.
         /// </summary>
-        private MutableModelGroup _lazyModelGroupBuilder;
+        internal MutableModelGroup _lazyModelGroupBuilder;
 
-        private MutableModel _lazyModelBuilder;
+        internal MutableModel _lazyModelBuilder;
 
         /// <summary>
         /// Holds onto data related to reference binding.
@@ -96,9 +96,14 @@ namespace MetaDslx.Compiler
         /// metadata reference (a metadata reference that refers back to the compilation) we need to avoid sharing of the binding results.
         /// We do so by creating a new reference manager for such compilation. 
         /// </summary>
-        private ReferenceManager _referenceManager;
+        internal ReferenceManager _referenceManager;
 
         private readonly SyntaxAndDeclarationManager _syntaxAndDeclarations;
+
+        protected SyntaxAndDeclarationManager SyntaxAndDeclarations
+        {
+            get { return _syntaxAndDeclarations; }
+        }
 
         /// <summary>
         /// The set of trees for which a <see cref="CompilationUnitCompletedEvent"/> has been added to the queue.
@@ -127,7 +132,7 @@ namespace MetaDslx.Compiler
         #region Constructors and Factories
 
         protected CompilationBase(
-            string assemblyName,
+            string name,
             CompilationOptions options,
             ImmutableArray<MetadataReference> references,
             Compilation previousSubmission,
@@ -138,7 +143,7 @@ namespace MetaDslx.Compiler
             bool reuseReferenceManager,
             SyntaxAndDeclarationManager syntaxAndDeclarations,
             AsyncQueue<CompilationEvent> eventQueue = null)
-            : base(assemblyName, references, SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
+            : base(name, references, SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
         {
             _options = options;
 
@@ -165,9 +170,7 @@ namespace MetaDslx.Compiler
             }
             else
             {
-                _referenceManager = new ReferenceManager(
-                    this.CompilationName,
-                    observedMetadata: referenceManager?.ObservedMetadata);
+                _referenceManager = new ReferenceManager(this.CompilationName);
             }
 
             _syntaxAndDeclarations = syntaxAndDeclarations;
@@ -193,13 +196,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        internal CompilationBase PreviousSubmission => (CompilationBase)ScriptCompilationInfo?.PreviousScriptCompilation;
-
-        protected override bool HasSubmissionResult()
-        {
-            Debug.Assert(IsSubmission);
-            return false;
-        }
+        protected CompilationBase PreviousSubmission => (CompilationBase)ScriptCompilationInfo?.PreviousScriptCompilation;
 
         #endregion
 
@@ -429,6 +426,11 @@ namespace MetaDslx.Compiler
         #endregion
 
         #region References
+
+        protected ReferenceManager GetUnboundReferenceManager()
+        {
+            return _referenceManager;
+        }
 
         protected override ReferenceManager CommonGetBoundReferenceManager()
         {
@@ -724,13 +726,13 @@ namespace MetaDslx.Compiler
         /// full name of the container class stored in <see cref="CompilationOptions.ScriptClassName"/> to find the symbol.
         /// </summary>
         /// <returns>The Script class symbol or null if it is not defined.</returns>
-        private IMetaSymbol BindScriptSymbol()
+        protected virtual IMetaSymbol BindScriptSymbol()
         {
             if (_options.ScriptClassName == null)
             {
                 return null;
             }
-            return this.NameResolution.GetNamespaceOrTypeByQualifiedName(_options.ScriptClassName);
+            return this.NameResolution.GetSymbolByQualifiedName(null, _options.ScriptClassName, '.').FirstOrDefault();
         }
 
         internal bool IsSubmissionSyntaxTree(SyntaxTree tree)
@@ -824,7 +826,7 @@ namespace MetaDslx.Compiler
         // to be recycled.
         private WeakReference<BinderFactory>[] _binderFactories;
 
-        internal BinderFactory GetBinderFactory(SyntaxTree syntaxTree)
+        public BinderFactory GetBinderFactory(SyntaxTree syntaxTree)
         {
             var treeNum = GetSyntaxTreeOrdinal(syntaxTree);
             var binderFactories = _binderFactories;
@@ -1046,7 +1048,7 @@ namespace MetaDslx.Compiler
 
         private readonly DiagnosticBag _additionalCodegenWarnings = new DiagnosticBag();
 
-        internal DeclarationTable Declarations
+        public DeclarationTable Declarations
         {
             get
             {
@@ -1058,14 +1060,13 @@ namespace MetaDslx.Compiler
         /// Gets the diagnostics produced during the parsing stage of a compilation. There are no diagnostics for declarations or accessor or
         /// method bodies, for example.
         /// </summary>
-        public override ImmutableArray<Diagnostic> GetParseDiagnostics(CancellationToken cancellationToken = default(CancellationToken))
+        public override ImmutableArray<Diagnostic> GetSyntaxDiagnostics(CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDiagnostics(CompilationStage.Parse, false, cancellationToken);
         }
 
         /// <summary>
-        /// Gets the diagnostics produced during symbol declaration headers.  There are no diagnostics for accessor or
-        /// method bodies, for example.
+        /// Gets the diagnostics produced during symbol declaration headers.  There are no diagnostics for semantic analysis.
         /// </summary>
         public override ImmutableArray<Diagnostic> GetDeclarationDiagnostics(CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -1073,9 +1074,9 @@ namespace MetaDslx.Compiler
         }
 
         /// <summary>
-        /// Gets the diagnostics produced during the analysis of method bodies and field initializers.
+        /// Gets the diagnostics produced during the semantic analysis.
         /// </summary>
-        public override ImmutableArray<Diagnostic> GetCompilationDiagnostics(CancellationToken cancellationToken = default(CancellationToken))
+        public override ImmutableArray<Diagnostic> GetSemanticDiagnostics(CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDiagnostics(CompilationStage.Compile, false, cancellationToken);
         }
@@ -1460,7 +1461,7 @@ namespace MetaDslx.Compiler
                 throw new ArgumentException("SearchCriteria is expected.", nameof(filter));
             }
 
-            return new SymbolSearcher(this).GetSymbolsWithName(predicate, filter, cancellationToken);
+            return this.NameResolution.GetSymbolsWithName(predicate, filter, cancellationToken);
         }
 
         #endregion
@@ -1468,165 +1469,6 @@ namespace MetaDslx.Compiler
         internal void SymbolDeclaredEvent(IMetaSymbol symbol)
         {
             EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
-        }
-
-        private class SymbolSearcher
-        {
-            private readonly Dictionary<Declaration, IMetaSymbol> _cache;
-            private readonly CompilationBase _compilation;
-
-            public SymbolSearcher(CompilationBase compilation)
-            {
-                _cache = new Dictionary<Declaration, IMetaSymbol>();
-                _compilation = compilation;
-            }
-
-            public IEnumerable<IMetaSymbol> GetSymbolsWithName(Func<string, bool> predicate, SymbolFilter filter, CancellationToken cancellationToken)
-            {
-                var result = new HashSet<IMetaSymbol>();
-                var spine = new List<MergedDeclaration>();
-
-                AppendSymbolsWithName(spine, _compilation.Declarations.MergedRoot, predicate, filter, result, cancellationToken);
-
-                return result;
-            }
-
-            private void AppendSymbolsWithName(
-                List<MergedDeclaration> spine, MergedDeclaration current,
-                Func<string, bool> predicate, SymbolFilter filter, HashSet<IMetaSymbol> set, CancellationToken cancellationToken)
-            {
-                var includeNamespace = (filter & SymbolFilter.Namespace) == SymbolFilter.Namespace;
-                var includeType = (filter & SymbolFilter.Type) == SymbolFilter.Type;
-                var includeMember = (filter & SymbolFilter.Member) == SymbolFilter.Member;
-
-                if (current.IsNamespace)
-                {
-                    if (includeNamespace && predicate(current.Name))
-                    {
-                        var container = GetSpineSymbol(spine);
-                        var symbol = GetSymbol(container, current);
-                        if (symbol != null)
-                        {
-                            set.Add(symbol);
-                        }
-                    }
-                }
-                else
-                {
-                    if (includeType && predicate(current.Name))
-                    {
-                        var container = GetSpineSymbol(spine);
-                        var symbol = GetSymbol(container, current);
-                        if (symbol != null)
-                        {
-                            set.Add(symbol);
-                        }
-                    }
-
-                    if (includeMember)
-                    {
-                        AppendMemberSymbolsWithName(spine, current, predicate, set, cancellationToken);
-                    }
-                }
-
-                spine.Add(current);
-
-                foreach (var child in current.Children.OfType<MergedDeclaration>())
-                {
-                    if (includeMember || includeType)
-                    {
-                        AppendSymbolsWithName(spine, child, predicate, filter, set, cancellationToken);
-                        continue;
-                    }
-
-                    if (child.IsNamespace)
-                    {
-                        AppendSymbolsWithName(spine, child, predicate, filter, set, cancellationToken);
-                    }
-                }
-
-                // pop last one
-                spine.RemoveAt(spine.Count - 1);
-            }
-
-            private void AppendMemberSymbolsWithName(
-                List<MergedDeclaration> spine, MergedDeclaration current,
-                Func<string, bool> predicate, HashSet<IMetaSymbol> set, CancellationToken cancellationToken)
-            {
-                spine.Add(current);
-
-                var container = GetSpineSymbol(spine);
-                if (container != null)
-                {
-                    foreach (var member in container.MChildren)
-                    {
-                        if (member.MName != null && predicate(member.MName))
-                        {
-                            set.Add(member);
-                        }
-                    }
-                }
-
-                spine.RemoveAt(spine.Count - 1);
-            }
-
-            private IMetaSymbol GetSpineSymbol(List<MergedDeclaration> spine)
-            {
-                if (spine.Count == 0)
-                {
-                    return null;
-                }
-
-                var symbol = GetCachedSymbol(spine[spine.Count - 1]);
-                if (symbol != null)
-                {
-                    return symbol;
-                }
-
-                var current = _compilation.GlobalNamespace as IMetaSymbol;
-                for (var i = 1; i < spine.Count; i++)
-                {
-                    current = GetSymbol(current, spine[i]);
-                }
-
-                return current;
-            }
-
-            private IMetaSymbol GetCachedSymbol(MergedDeclaration declaration)
-            {
-                IMetaSymbol symbol;
-                if (_cache.TryGetValue(declaration, out symbol))
-                {
-                    return symbol;
-                }
-
-                return null;
-            }
-
-            private IMetaSymbol GetSymbol(IMetaSymbol container, MergedDeclaration declaration)
-            {
-                if (container == null)
-                {
-                    return _compilation.GlobalNamespace;
-                }
-
-                AddCache(container.MChildren.Where(child => child.MName == declaration.Name));
-
-                return GetCachedSymbol(declaration);
-            }
-
-            private void AddCache(IEnumerable<IMetaSymbol> symbols)
-            {
-                foreach (var symbol in symbols)
-                {
-                    var mergedNamespace = (Declaration)symbol.MGet(CompilerAttachedProperties.MergedDeclarationProperty);
-                    if (mergedNamespace != null)
-                    {
-                        _cache[mergedNamespace] = symbol;
-                        continue;
-                    }
-                }
-            }
         }
     }
 }

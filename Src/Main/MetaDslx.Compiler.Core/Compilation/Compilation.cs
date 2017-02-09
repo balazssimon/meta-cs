@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Diagnostics;
+﻿using MetaDslx.Compiler.Binding;
+using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.References;
 using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Syntax;
@@ -95,7 +96,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         public abstract Language Language { get; }
 
-        internal static void ValidateScriptCompilationParameters(Compilation previousScriptCompilation, Type returnType, ref Type globalsType)
+        protected static void ValidateScriptCompilationParameters(Compilation previousScriptCompilation, Type returnType, ref Type globalsType)
         {
             if (globalsType != null && !IsValidHostObjectType(globalsType))
             {
@@ -139,7 +140,12 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Returns a new compilation with a given event queue.
         /// </summary>
-        internal abstract Compilation WithEventQueue(AsyncQueue<CompilationEvent> eventQueue);
+        public Compilation WithEventQueue(AsyncQueue<CompilationEvent> eventQueue)
+        {
+            return this.CommonWithEventQueue(eventQueue);
+        }
+
+        protected abstract Compilation CommonWithEventQueue(AsyncQueue<CompilationEvent> eventQueue);
 
         /// <summary>
         /// Gets a new <see cref="SemanticModel"/> for the specified syntax tree.
@@ -213,7 +219,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// True if the compilation represents an interactive submission.
         /// </summary>
-        internal bool IsSubmission
+        public bool IsSubmission
         {
             get
             {
@@ -248,7 +254,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The type object that represents the type of submission result the host requested.
         /// </summary>
-        internal Type SubmissionReturnType => ScriptCompilationInfo?.ReturnType;
+        public Type SubmissionReturnType => ScriptCompilationInfo?.ReturnType;
 
         internal static bool IsValidSubmissionReturnType(Type type)
         {
@@ -258,7 +264,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The type of the globals object or null if not specified for this compilation.
         /// </summary>
-        internal Type HostObjectType => ScriptCompilationInfo?.GlobalsType;
+        public Type HostObjectType => ScriptCompilationInfo?.GlobalsType;
 
         internal static bool IsValidHostObjectType(Type type)
         {
@@ -266,7 +272,7 @@ namespace MetaDslx.Compiler
             return !(info.IsValueType || info.IsPointer || info.IsByRef || info.ContainsGenericParameters);
         }
 
-        protected abstract bool HasSubmissionResult();
+        public abstract bool HasSubmissionResult();
 
         public Compilation WithScriptCompilationInfo(ScriptCompilationInfo info) => CommonWithScriptCompilationInfo(info);
         protected abstract Compilation CommonWithScriptCompilationInfo(ScriptCompilationInfo info);
@@ -372,7 +378,7 @@ namespace MetaDslx.Compiler
 
         #region References
 
-        internal static ImmutableArray<MetadataReference> ValidateReferences<T>(IEnumerable<MetadataReference> references)
+        protected static ImmutableArray<MetadataReference> ValidateReferences<T>(IEnumerable<MetadataReference> references)
             where T : CompilationReference
         {
             if (references == null) return ImmutableArray<MetadataReference>.Empty;
@@ -395,7 +401,7 @@ namespace MetaDslx.Compiler
             return result;
         }
 
-        internal ReferenceManager GetBoundReferenceManager()
+        public ReferenceManager GetBoundReferenceManager()
         {
             return CommonGetBoundReferenceManager();
         }
@@ -706,12 +712,12 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Returns true if the type is System.Type.
         /// </summary>
-        internal abstract bool IsSystemTypeReference(IMetaSymbol type);
+        public abstract bool IsSystemTypeReference(IMetaSymbol type);
 
         /// <summary>
         /// Returns true if the specified type is equal to or derives from System.Attribute well-known type.
         /// </summary>
-        internal abstract bool IsAttributeType(IMetaSymbol type);
+        public abstract bool IsAttributeType(IMetaSymbol type);
 
         /// <summary>
         /// The IMetaSymbol for the .NET System.Object type, which could have a TypeKind of
@@ -757,7 +763,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Gets the diagnostics produced during the parsing stage.
         /// </summary>
-        public abstract ImmutableArray<Diagnostic> GetParseDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
+        public abstract ImmutableArray<Diagnostic> GetSyntaxDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the diagnostics produced during symbol declaration.
@@ -765,14 +771,13 @@ namespace MetaDslx.Compiler
         public abstract ImmutableArray<Diagnostic> GetDeclarationDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Gets the diagnostics produced during the analysis of method bodies and field initializers.
+        /// Gets the diagnostics produced during the semantic analysis.
         /// </summary>
-        public abstract ImmutableArray<Diagnostic> GetCompilationDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
+        public abstract ImmutableArray<Diagnostic> GetSemanticDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets all the diagnostics for the compilation, including syntax, declaration, and
-        /// binding. Does not include any diagnostics that might be produced during emit, see
-        /// <see cref="EmitResult"/>.
+        /// binding. Does not include any diagnostics that might be produced during emit.
         /// </summary>
         public abstract ImmutableArray<Diagnostic> GetDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
 
@@ -791,9 +796,9 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Return true if the compilation contains any code or types.
         /// </summary>
-        internal abstract bool HasCodeToEmit();
+        public abstract bool HasCodeToEmit();
 
-        internal string Feature(string p)
+        protected string Feature(string p)
         {
             string v;
             return _features.TryGetValue(p, out v) ? v : null;

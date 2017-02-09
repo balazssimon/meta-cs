@@ -6,7 +6,7 @@ using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Declarations;
 using MetaDslx.Languages.Soal.Syntax;
 
-namespace MetaDslx.Languages.Soal.Binder
+namespace MetaDslx.Languages.Soal.Binding
 {
 	public class SoalDeclarationTreeBuilder : DeclarationTreeBuilder, ISoalSyntaxVisitor
 	{

@@ -42,14 +42,19 @@
     <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binder\SoalDeclarationTreeBuilder.cs" />
+    <Compile Include="Binding\SoalAnonymousTypeManager.cs" />
+    <Compile Include="Binding\SoalDeclarationTreeBuilder.cs" />
     <Compile Include="Compilation\SoalCompilation.cs" />
+    <Compile Include="Compilation\SoalCompilationFactory.cs" />
     <Compile Include="Compilation\SoalCompilationOptions.cs" />
     <Compile Include="Compilation\SoalFeature.cs" />
     <Compile Include="Compilation\SoalLanguage.cs" />
     <Compile Include="Compilation\SoalLanguageVersion.cs" />
     <Compile Include="Compilation\SoalMessageProvider.cs" />
     <Compile Include="Compilation\SoalParseOptions.cs" />
+    <Compile Include="Compilation\SoalScriptCompilationInfo.cs" />
+    <Compile Include="Compilation\SoalSemanticModel.cs" />
+    <Compile Include="Compilation\SpeculativeBindingOption.cs" />
     <Compile Include="Errors\SoalErrorCode.cs" />
     <Compile Include="Parser\SoalSyntaxParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

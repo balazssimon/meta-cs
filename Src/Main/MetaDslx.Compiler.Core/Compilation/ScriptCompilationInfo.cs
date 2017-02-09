@@ -11,16 +11,16 @@ namespace MetaDslx.Compiler
         public Type ReturnType { get; }
         public Type GlobalsType { get; }
 
-        internal ScriptCompilationInfo(Type returnType, Type globalsType)
+        protected ScriptCompilationInfo(Type returnType, Type globalsType)
         {
             ReturnType = returnType ?? typeof(object);
             GlobalsType = globalsType;
         }
 
         public Compilation PreviousScriptCompilation => CommonPreviousScriptCompilation;
-        internal abstract Compilation CommonPreviousScriptCompilation { get; }
+        protected abstract Compilation CommonPreviousScriptCompilation { get; }
 
         public ScriptCompilationInfo WithPreviousScriptCompilation(Compilation compilation) => CommonWithPreviousScriptCompilation(compilation);
-        internal abstract ScriptCompilationInfo CommonWithPreviousScriptCompilation(Compilation compilation);
+        protected abstract ScriptCompilationInfo CommonWithPreviousScriptCompilation(Compilation compilation);
     }
 }

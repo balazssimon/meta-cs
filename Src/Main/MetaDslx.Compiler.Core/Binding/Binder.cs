@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Utilities;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
@@ -46,20 +47,6 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        private NameResolution _lazyNameResolution;
-        internal NameResolution NameResolution
-        {
-            get
-            {
-                if (_lazyNameResolution == null)
-                {
-                    Interlocked.CompareExchange(ref _lazyNameResolution, new NameResolution(this), null);
-                }
-
-                return _lazyNameResolution;
-            }
-        }
-
         private Conversions _lazyConversions;
         internal Conversions Conversions
         {
@@ -91,6 +78,88 @@ namespace MetaDslx.Compiler.Binding
         public virtual Imports GetImports(ConsList<IMetaSymbol> basesBeingResolved)
         {
             return Imports.Empty;
+        }
+
+        /// <summary>
+        /// The member containing the binding context.  Note that for the purposes of the compiler,
+        /// a lambda expression is considered a "member" of its enclosing method, field, or lambda.
+        /// </summary>
+        public virtual IMetaSymbol ContainingMember
+        {
+            get
+            {
+                return Next.ContainingMember;
+            }
+        }
+
+        public virtual bool IsSemanticModelBinder
+        {
+            get { return true; }
+        }
+
+        public virtual bool IgnoreAccessibility
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Look for names in scope
+        /// </summary>
+        public void AddLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, LookupOptions options)
+        {
+            for (var scope = this; scope != null; scope = scope.Next)
+            {
+                scope.AddLookupSymbolsInfoInSingleBinder(result, options, originalBinder: this);
+            }
+        }
+
+        protected virtual void AddLookupSymbolsInfoInSingleBinder(ArrayBuilder<IMetaSymbol> info, LookupOptions options, Binder originalBinder)
+        {
+            // overridden in other binders
+        }
+
+        /// <summary>
+        /// Look for names of members
+        /// </summary>
+        public virtual void AddMemberLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, IMetaSymbol nsOrType, LookupOptions options, Binder originalBinder)
+        {
+            // overridden in other binders
+        }
+
+        /// <summary>
+        /// Check whether "symbol" is accessible from this binder.
+        /// Also checks protected access via "accessThroughType".
+        /// </summary>
+        internal bool IsAccessible(IMetaSymbol symbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, IMetaSymbol accessThroughType = null, ConsList<IMetaSymbol> basesBeingResolved = null)
+        {
+            bool failedThroughTypeCheck;
+            return IsAccessible(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
+        }
+
+        /// <summary>
+        /// Check whether "symbol" is accessible from this binder.
+        /// Also checks protected access via "accessThroughType", and sets "failedThroughTypeCheck" if fails
+        /// the protected access check.
+        /// </summary>
+        internal bool IsAccessible(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved = null)
+        {
+            if (this.IgnoreAccessibility)
+            {
+                failedThroughTypeCheck = false;
+                return true;
+            }
+
+            return IsAccessibleHelper(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
+        }
+
+        /// <remarks>
+        /// Should only be called by <see cref="IsAccessible(Symbol, TypeSymbol, out bool, ref HashSet{DiagnosticInfo}, ConsList{Symbol})"/>,
+        /// which will already have checked for <see cref="BinderFlags.IgnoreAccessibility"/>.
+        /// </remarks>
+        internal virtual bool IsAccessibleHelper(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved)
+        {
+            // By default, just delegate to containing binder.
+            return Next.IsAccessibleHelper(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
         }
     }
 }

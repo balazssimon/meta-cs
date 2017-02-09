@@ -18,7 +18,7 @@ namespace MetaDslx.Compiler.Declarations
         private ImmutableArray<MergedDeclaration> _lazyChildren;
         
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
-            : base(declarations[0].Name)
+            : base(declarations.IsEmpty ? string.Empty : declarations[0].Name)
         {
             this._declarations = declarations;
         }
@@ -44,7 +44,7 @@ namespace MetaDslx.Compiler.Declarations
         {
             get
             {
-                return this._declarations[0].Kind;
+                return this._declarations.IsEmpty ? null : this._declarations[0].Kind;
             }
         }
 

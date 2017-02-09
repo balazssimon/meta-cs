@@ -9,7 +9,7 @@ using MetaDslx.Compiler.References;
 
 namespace MetaDslx.Compiler.Declarations
 {
-    internal partial class DeclarationTable
+    public partial class DeclarationTable
     {
         // The structure of the DeclarationTable provides us with a set of 'old' declarations that
         // stay relatively unchanged and a 'new' declaration that is repeatedly added and removed.

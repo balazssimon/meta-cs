@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Compiler.Diagnostics;
+using System.Diagnostics;
 
 namespace MetaDslx.Compiler.References
 {
@@ -41,15 +42,13 @@ namespace MetaDslx.Compiler.References
     /// 
     /// The only public entry point of this class is CreateSourceAssembly() method.
     /// </summary>
-    public class ReferenceManager
+    public sealed class ReferenceManager
     {
         /// <summary>
         /// Must be acquired whenever the following data are about to be modified:
-        /// - Compilation.lazyAssemblySymbol
+        /// - Compilation._lazyModel...
         /// - Compilation.referenceManager
         /// - ReferenceManager state
-        /// - <see cref="AssemblyMetadata.CachedSymbols"/>
-        /// - <see cref="Compilation.RetargetingAssemblySymbols"/>
         /// 
         /// All the above data should be updated at once while holding this lock.
         /// Once lazyAssemblySymbol is set the Compilation.referenceManager field and ReferenceManager
@@ -57,74 +56,87 @@ namespace MetaDslx.Compiler.References
         /// </summary>
         internal static object SymbolCacheAndReferenceManagerStateGuard = new object();
 
-        public ReferenceManager(string simpleAssemblyName, Dictionary<MetadataReference, object> observedMetadata)
+        public ReferenceManager(string compilationName)
         {
         }
 
-        /// <summary>
-        /// Metadata observed by the compiler.
-        /// May be shared across multiple Reference Managers.
-        /// Access only under lock(<see cref="ObservedMetadata"/>).
-        /// </summary>
-        internal readonly Dictionary<MetadataReference, object> ObservedMetadata;
+        public ImmutableArray<ImmutableModel> ReferencedModels
+        {
+            get { return ImmutableArray<ImmutableModel>.Empty; }
+        }
 
-        public ImmutableArray<ImmutableModel> ReferencedModels { get; }
-
-        public ImmutableArray<ImmutableArray<string>> AliasesOfReferencedModels { get; }
+        public ImmutableArray<ImmutableArray<string>> AliasesOfReferencedModels
+        {
+            get { return ImmutableArray<ImmutableArray<string>>.Empty; }
+        }
 
         internal bool DeclarationsAccessibleWithoutAlias(int i)
         {
             return true;
         }
 
-        internal void CreateModelBuilderForCompilation(CompilationBase compilationBase)
+        internal void CreateModelBuilderForCompilation(CompilationBase compilation)
         {
-            throw new NotImplementedException();
+            MutableModelGroup modelGroup = new MutableModelGroup();
+            MutableModel model = modelGroup.CreateModel(compilation.CompilationName);
+            if ((object)compilation._lazyModelGroupBuilder == null)
+            {
+                lock (SymbolCacheAndReferenceManagerStateGuard)
+                {
+                    if ((object)compilation._lazyModelGroupBuilder == null)
+                    {
+                        compilation._lazyModelGroupBuilder = modelGroup;
+                        compilation._lazyModelBuilder = model;
+                        compilation._lazyModelId = model.Id;
+                        Debug.Assert(ReferenceEquals(compilation._referenceManager, this));
+                    }
+                }
+            }
         }
 
-        internal ArrayBuilder<IMetaSymbol> GetRootNamespaces(int i)
+        public ImmutableArray<IMetaSymbol> GetRootNamespaces(int i)
         {
-            throw new NotImplementedException();
+            return ImmutableArray<IMetaSymbol>.Empty;
         }
 
         public ImmutableArray<Diagnostic> Diagnostics
         {
-            get;
+            get { return ImmutableArray<Diagnostic>.Empty; }
         }
 
         public ImmutableArray<MetadataReference> DirectiveReferences
         {
-            get;
+            get { return ImmutableArray<MetadataReference>.Empty; }
         }
 
         public IDictionary<Tuple<string, string>, MetadataReference> ReferenceDirectiveMap
         {
-            get;
+            get { return null; }
         }
 
         public IEnumerable<string> ExternAliases
         {
-            get;
+            get { return EmptyCollections.Enumerable<string>(); }
         }
 
         internal ImmutableModel GetReferencedModel(MetadataReference reference)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         internal IEnumerable<ModelIdentity> GetReferencedModelNames()
         {
-            throw new NotImplementedException();
+            return EmptyCollections.Enumerable<ModelIdentity>();
         }
 
         internal MetadataReference GetMetadataReference(ImmutableModel model)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         internal void AssertCanReuseForCompilation(CompilationBase compilationBase)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

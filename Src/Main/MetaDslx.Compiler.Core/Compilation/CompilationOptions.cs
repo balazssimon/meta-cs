@@ -71,6 +71,11 @@ namespace MetaDslx.Compiler
         /// </summary>
         public SourceReferenceResolver SourceReferenceResolver { get; protected set; }
 
+        /// <summary>
+        /// Apply additional disambiguation rules during resolution of referenced assemblies.
+        /// </summary>
+        public bool ReferencesSupersedeLowerVersions { get; protected set; }
+
         private readonly Lazy<ImmutableArray<Diagnostic>> _lazyErrors;
 
         // Expects correct arguments.
@@ -83,7 +88,8 @@ namespace MetaDslx.Compiler
             bool concurrentBuild,
             bool deterministic,
             SourceReferenceResolver sourceReferenceResolver,
-            MetadataReferenceResolver metadataReferenceResolver)
+            MetadataReferenceResolver metadataReferenceResolver,
+            bool referencesSupersedeLowerVersions)
         {
             this.ScriptClassName = scriptClassName ?? WellKnownMemberNames.DefaultScriptClassName;
             this.GeneralDiagnosticOption = generalDiagnosticOption;
@@ -94,6 +100,7 @@ namespace MetaDslx.Compiler
             this.Deterministic = deterministic;
             this.SourceReferenceResolver = sourceReferenceResolver;
             this.MetadataReferenceResolver = metadataReferenceResolver;
+            this.ReferencesSupersedeLowerVersions = referencesSupersedeLowerVersions;
 
             _lazyErrors = new Lazy<ImmutableArray<Diagnostic>>(() =>
             {
@@ -102,6 +109,17 @@ namespace MetaDslx.Compiler
                 return builder.ToImmutableAndFree();
             });
         }
+
+        public bool CanReuseCompilationReferenceManager(CompilationOptions other)
+        {
+            // This condition has to include all options the Assembly Manager depends on when binding references.
+            // In addition, the assembly name is determined based upon output kind. It is special for netmodules.
+            // Can't reuse when file resolver or identity comparers change.
+            // Can reuse even if StrongNameProvider changes. When resolving a cyclic reference only the simple name is considered, not the strong name.
+            return this.ReferencesSupersedeLowerVersions == other.ReferencesSupersedeLowerVersions
+                && object.Equals(this.MetadataReferenceResolver, other.MetadataReferenceResolver);
+        }
+
 
         protected abstract ImmutableArray<string> GetImports();
 
@@ -145,6 +163,11 @@ namespace MetaDslx.Compiler
             return CommonWithDeterministic(deterministic);
         }
 
+        public CompilationOptions WithReferencesSupersedeLowerVersions(bool value)
+        {
+            return CommonWithReferencesSupersedeLowerVersions(value);
+        }
+
         public CompilationOptions WithSourceReferenceResolver(SourceReferenceResolver resolver)
         {
             return CommonWithSourceReferenceResolver(resolver);
@@ -156,6 +179,7 @@ namespace MetaDslx.Compiler
         }
 
         protected abstract CompilationOptions CommonWithDeterministic(bool deterministic);
+        protected abstract CompilationOptions CommonWithReferencesSupersedeLowerVersions(bool value);
         protected abstract CompilationOptions CommonWithSourceReferenceResolver(SourceReferenceResolver resolver);
         protected abstract CompilationOptions CommonWithMetadataReferenceResolver(MetadataReferenceResolver resolver);
         protected abstract CompilationOptions CommonWithGeneralDiagnosticOption(ReportDiagnostic generalDiagnosticOption);
@@ -191,6 +215,7 @@ namespace MetaDslx.Compiler
                    this.ConcurrentBuild == other.ConcurrentBuild &&
                    this.Deterministic == other.Deterministic &&
                    this.GeneralDiagnosticOption == other.GeneralDiagnosticOption &&
+                   this.ReferencesSupersedeLowerVersions == other.ReferencesSupersedeLowerVersions &&
                    this.ReportSuppressedDiagnostics == other.ReportSuppressedDiagnostics &&
                    string.Equals(this.ScriptClassName, other.ScriptClassName, StringComparison.Ordinal) &&
                    this.SpecificDiagnosticOptions.SequenceEqual(other.SpecificDiagnosticOptions, (left, right) => (left.Key == right.Key) && (left.Value == right.Value)) &&
@@ -208,12 +233,13 @@ namespace MetaDslx.Compiler
             return Hash.Combine(this.ConcurrentBuild,
                    Hash.Combine(this.Deterministic,
                    Hash.Combine((int)this.GeneralDiagnosticOption,
+                   Hash.Combine(this.ReferencesSupersedeLowerVersions,
                    Hash.Combine(this.ReportSuppressedDiagnostics,
                    Hash.Combine(this.ScriptClassName != null ? StringComparer.Ordinal.GetHashCode(this.ScriptClassName) : 0,
                    Hash.Combine(Hash.CombineValues(this.SpecificDiagnosticOptions),
                    Hash.Combine(this.WarningLevel,
                    Hash.Combine(this.MetadataReferenceResolver,
-                   Hash.Combine(this.SourceReferenceResolver, 0)))))))));
+                   Hash.Combine(this.SourceReferenceResolver, 0))))))))));
         }
     }
 

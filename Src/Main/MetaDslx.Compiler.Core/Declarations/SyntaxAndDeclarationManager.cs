@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Declarations
 {
-    public class SyntaxAndDeclarationManager
+    public sealed class SyntaxAndDeclarationManager
     {
-        internal readonly ImmutableArray<SyntaxTree> ExternalSyntaxTrees;
-        internal readonly string ScriptClassName;
-        internal readonly SourceReferenceResolver Resolver;
-        internal readonly MessageProvider MessageProvider;
-        internal readonly bool IsSubmission;
+        public readonly ImmutableArray<SyntaxTree> ExternalSyntaxTrees;
+        public readonly string ScriptClassName;
+        public readonly SourceReferenceResolver Resolver;
+        public readonly MessageProvider MessageProvider;
+        public readonly bool IsSubmission;
 
         private ImmutableDictionary<SyntaxTree, ImmutableArray<Diagnostic>> _syntaxTreeLoadDirectiveMap;
         // This ImmutableDictionary will use default (case-sensitive) comparison
@@ -30,7 +30,7 @@ namespace MetaDslx.Compiler.Declarations
 
         private State _lazyState;
 
-        internal SyntaxAndDeclarationManager(
+        private SyntaxAndDeclarationManager(
             ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
@@ -44,6 +44,16 @@ namespace MetaDslx.Compiler.Declarations
             this.MessageProvider = messageProvider;
             this.IsSubmission = isSubmission;
             _lazyState = state;
+        }
+
+        public static SyntaxAndDeclarationManager Create(
+            ImmutableArray<SyntaxTree> externalSyntaxTrees,
+            string scriptClassName,
+            SourceReferenceResolver resolver,
+            MessageProvider messageProvider,
+            bool isSubmission)
+        {
+            return new SyntaxAndDeclarationManager(externalSyntaxTrees, scriptClassName, resolver, messageProvider, isSubmission, state: null);
         }
 
         internal State GetLazyState()

@@ -181,6 +181,63 @@ namespace MetaDslx.Compiler.Syntax
         protected abstract SyntaxToken WithLeadingTriviaCore(InternalSyntaxTrivia[] leading);
         protected abstract SyntaxToken WithTrailingTriviaCore(InternalSyntaxTrivia[] trailing);
 
+        /// <summary>
+        /// Gets the token that follows this token in the syntax tree.
+        /// </summary>
+        /// <returns>The token that follows this token in the syntax tree.</returns>
+        public SyntaxToken GetNextToken(bool includeZeroWidth = false)
+        {
+            if (this.Parent == null)
+            {
+                return null;
+            }
+
+            return this.Parent.Navigator.GetNextToken(this, includeZeroWidth);
+        }
+
+        /// <summary>
+        /// Returns the token after this token in the syntax tree.
+        /// </summary>
+        /// <param name="predicate">Delegate applied to each token.  The token is returned if the predicate returns
+        /// true.</param>
+        /// <param name="stepInto">Delegate applied to trivia.  If this delegate is present then trailing trivia is
+        /// included in the search.</param>
+        internal SyntaxToken GetNextToken(Func<SyntaxToken, bool> predicate, Func<SyntaxTrivia, bool> stepInto = null)
+        {
+            if (this.Parent == null)
+            {
+                return default(SyntaxToken);
+            }
+
+            return this.Parent.Navigator.GetNextToken(this, predicate, stepInto);
+        }
+
+        /// <summary>
+        /// Gets the token that precedes this token in the syntax tree.
+        /// </summary>
+        /// <returns>The next token that follows this token in the syntax tree.</returns>
+        public SyntaxToken GetPreviousToken(bool includeZeroWidth = false)
+        {
+            if (this.Parent == null)
+            {
+                return default(SyntaxToken);
+            }
+
+            return this.Parent.Navigator.GetPreviousToken(this, includeZeroWidth);
+        }
+
+        /// <summary>
+        /// Returns the token before this token in the syntax tree.
+        /// </summary>
+        /// <param name="predicate">Delegate applied to each token.  The token is returned if the predicate returns
+        /// true.</param>
+        /// <param name="stepInto">Delegate applied to trivia.  If this delegate is present then trailing trivia is
+        /// included in the search.</param>
+        internal SyntaxToken GetPreviousToken(Func<SyntaxToken, bool> predicate, Func<SyntaxTrivia, bool> stepInto = null)
+        {
+            return this.Parent.Navigator.GetPreviousToken(this, predicate, stepInto);
+        }
+
 
         /// <summary>
         /// Determines whether the supplied <see cref="SyntaxToken"/> is equal to this

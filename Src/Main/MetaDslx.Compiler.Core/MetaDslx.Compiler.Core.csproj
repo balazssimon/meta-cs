@@ -51,6 +51,7 @@
     <Compile Include="Binding\Conversions.cs" />
     <Compile Include="Binding\Imports.cs" />
     <Compile Include="Binding\InContainerBinder.cs" />
+    <Compile Include="Binding\LookupOptions.cs" />
     <Compile Include="Binding\NameResolution.cs" />
     <Compile Include="Binding\OverloadResolution.cs" />
     <Compile Include="Compilation\CandidateReason.cs" />
@@ -64,8 +65,8 @@
     <Compile Include="Compilation\ParseOptions.cs" />
     <Compile Include="Compilation\ScriptCompilationInfo.cs" />
     <Compile Include="Compilation\SemanticModel.cs" />
+    <Compile Include="Compilation\SemanticModelBase.cs" />
     <Compile Include="Compilation\SourceCodeKind.cs" />
-    <Compile Include="Compilation\SpeculativeBindingOption.cs" />
     <Compile Include="Compilation\SymbolCompiler.cs" />
     <Compile Include="Compilation\SymbolInfo.cs" />
     <Compile Include="Compilation\TypeInfo.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="Declarations\DeclarationTreeBuilder.cs" />
     <Compile Include="References\MetadataReferenceResolver.cs" />
     <Compile Include="References\UnresolvedMetadataReference.cs" />
-    <Compile Include="Symbols\AnonymousTypeManager.cs" />
+    <Compile Include="Binding\AnonymousTypeManager.cs" />
     <Compile Include="Symbols\AttachedProperties.cs" />
     <Compile Include="Symbols\WellKnownMemberNames.cs" />
     <Compile Include="Syntax\DetailedSyntaxVisitor.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxList.cs" />
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxListBuilder.cs" />
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxNode.cs" />
+    <Compile Include="Syntax\InternalSyntax\SyntaxDiagnosticInfoList.cs" />
     <Compile Include="Syntax\InternalSyntax\SyntaxNodeCache.cs" />
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxToken.cs" />
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxTrivia.cs" />

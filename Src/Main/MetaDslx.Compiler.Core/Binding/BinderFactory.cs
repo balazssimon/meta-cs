@@ -99,7 +99,7 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Note, there is no guarantee that the factory always gives back the same binder instance for the same <param name="node"/>.
         /// </summary>
-        internal Binder GetBinder(SyntaxNode node)
+        public Binder GetBinder(SyntaxNode node)
         {
             int position = node.SpanStart;
 
@@ -116,7 +116,7 @@ namespace MetaDslx.Compiler.Binding
             return GetBinder(node.Parent, position);
         }
 
-        internal Binder GetBinder(SyntaxNode node, int position)
+        public Binder GetBinder(SyntaxNode node, int position)
         {
             Debug.Assert(node != null);
 

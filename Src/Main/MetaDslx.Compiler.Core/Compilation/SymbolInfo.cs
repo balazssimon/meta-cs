@@ -9,9 +9,9 @@ using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Compiler
 {
-    public struct SymbolInfo : IEquatable<SymbolInfo>
+    public sealed class SymbolInfo : IEquatable<SymbolInfo>
     {
-        internal static readonly SymbolInfo None = new SymbolInfo(null, ImmutableArray<IMetaSymbol>.Empty, CandidateReason.None);
+        public static readonly SymbolInfo None = new SymbolInfo(null, ImmutableArray<IMetaSymbol>.Empty, CandidateReason.None);
 
         private ImmutableArray<IMetaSymbol> _candidateSymbols;
 
@@ -38,7 +38,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        internal ImmutableArray<IMetaSymbol> GetAllSymbols()
+        public ImmutableArray<IMetaSymbol> GetAllSymbols()
         {
             if (this.Symbol != null)
             {
@@ -57,23 +57,22 @@ namespace MetaDslx.Compiler
         /// </summary>
         public CandidateReason CandidateReason { get; }
 
-        internal SymbolInfo(IMetaSymbol symbol)
+        public SymbolInfo(IMetaSymbol symbol)
             : this(symbol, ImmutableArray<IMetaSymbol>.Empty, CandidateReason.None)
         {
         }
 
-        internal SymbolInfo(IMetaSymbol symbol, CandidateReason reason)
+        public SymbolInfo(IMetaSymbol symbol, CandidateReason reason)
             : this(symbol, ImmutableArray<IMetaSymbol>.Empty, reason)
         {
         }
 
-        internal SymbolInfo(ImmutableArray<IMetaSymbol> candidateSymbols, CandidateReason candidateReason)
+        public SymbolInfo(ImmutableArray<IMetaSymbol> candidateSymbols, CandidateReason candidateReason)
             : this(null, candidateSymbols, candidateReason)
         {
         }
 
-        internal SymbolInfo(IMetaSymbol symbol, ImmutableArray<IMetaSymbol> candidateSymbols, CandidateReason candidateReason)
-            : this()
+        public SymbolInfo(IMetaSymbol symbol, ImmutableArray<IMetaSymbol> candidateSymbols, CandidateReason candidateReason)
         {
             this.Symbol = symbol;
             _candidateSymbols = candidateSymbols.IsDefault ? ImmutableArray.Create<IMetaSymbol>() : candidateSymbols;
@@ -97,7 +96,7 @@ namespace MetaDslx.Compiler
             return Hash.Combine(this.Symbol, Hash.Combine(Hash.CombineValues(_candidateSymbols, 4), (int)this.CandidateReason));
         }
 
-        internal bool IsEmpty
+        public bool IsEmpty
         {
             get
             {

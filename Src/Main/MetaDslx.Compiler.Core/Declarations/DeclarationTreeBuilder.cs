@@ -8,6 +8,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.Compiler.References;
 
 namespace MetaDslx.Compiler.Declarations
 {
@@ -71,7 +72,12 @@ namespace MetaDslx.Compiler.Declarations
             {
                 decl = this.EndDeclaration();
             }
-            return new RootSingleDeclaration(kind, _syntaxTree.GetReference(node), decl.Children);
+            return new RootSingleDeclaration(kind, _syntaxTree.GetReference(node), decl.Children, GetReferenceDirectives(node));
+        }
+
+        protected virtual ImmutableArray<ReferenceDirective> GetReferenceDirectives(SyntaxNode node)
+        {
+            return ImmutableArray<ReferenceDirective>.Empty;
         }
 
         protected virtual RootSingleDeclaration CreateScriptRootDeclaration(SyntaxNode node, ModelSymbolInfo kind)

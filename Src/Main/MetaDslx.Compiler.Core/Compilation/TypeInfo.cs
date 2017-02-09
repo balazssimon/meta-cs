@@ -6,9 +6,9 @@ using System;
 
 namespace MetaDslx.Compiler
 {
-    public class TypeInfo : IEquatable<TypeInfo>
+    public sealed class TypeInfo : IEquatable<TypeInfo>
     {
-        internal static readonly TypeInfo None = new TypeInfo(null, null);
+        public static readonly TypeInfo None = new TypeInfo(null, null);
 
         /// <summary>
         /// The type of the expression represented by the syntax node. For expressions that do not
@@ -23,7 +23,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         public IMetaSymbol ConvertedType { get; }
 
-        internal TypeInfo(IMetaSymbol type, IMetaSymbol convertedType)
+        public TypeInfo(IMetaSymbol type, IMetaSymbol convertedType)
         {
             this.Type = type;
             this.ConvertedType = convertedType;

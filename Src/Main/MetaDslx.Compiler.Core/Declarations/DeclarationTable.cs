@@ -18,7 +18,7 @@ namespace MetaDslx.Compiler.Declarations
     /// "merging" the root declarations into one big summary declaration; this cache is efficiently
     /// re-used provided that the pattern of adds and removes is as we expect.
     /// </summary>
-    internal sealed partial class DeclarationTable
+    public sealed partial class DeclarationTable
     {
         public static readonly DeclarationTable Empty = new DeclarationTable(
             allOlderRootDeclarations: ImmutableSetWithInsertionOrder<RootSingleDeclaration>.Empty,

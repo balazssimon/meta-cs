@@ -73,6 +73,24 @@ namespace MetaDslx.Compiler.Syntax
             return this.SyntaxTree.GetDiagnostics(this);
         }
 
+        public bool HasErrors
+        {
+            get
+            {
+                if (!this.ContainsDiagnostics)
+                {
+                    return false;
+                }
+
+                return HasErrorsSlow();
+            }
+        }
+
+        private bool HasErrorsSlow()
+        {
+            return new Syntax.InternalSyntax.SyntaxDiagnosticInfoList(this.Green).Any((info) => info.Severity == DiagnosticSeverity.Error);
+        }
+
         /// <summary>
         /// Gets a <see cref="SyntaxReference"/> for this syntax node. CommonSyntaxReferences can be used to
         /// regain access to a syntax node without keeping the entire tree and source text in

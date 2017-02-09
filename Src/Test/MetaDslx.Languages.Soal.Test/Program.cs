@@ -1,5 +1,5 @@
 ﻿using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Languages.Soal.Binder;
+using MetaDslx.Languages.Soal.Binding;
 using MetaDslx.Languages.Soal.Syntax;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,8 @@ namespace MetaDslx.Languages.Soal.Test
     {
         static void Main(string[] args)
         {
+            /*try
+            {*/
             string fileName = "../../SoalTest1.soal";
             string source = null;
             using (StreamReader reader = new StreamReader(fileName))
@@ -30,6 +32,34 @@ namespace MetaDslx.Languages.Soal.Test
             Soal.Symbols.SoalDescriptor.Initialize();
             var rootDecl = SoalDeclarationTreeBuilder.ForTree(tree, string.Empty, false);
             Console.WriteLine(rootDecl);
+            Console.WriteLine("----");
+
+            SoalCompilation comp = SoalCompilation.Create("SoalTest1").AddSyntaxTrees(tree);
+            Console.WriteLine(comp.Declarations.MergedRoot);
+
+            Console.WriteLine("----");
+            foreach (var diag in comp.GetSyntaxDiagnostics())
+            {
+                Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
+            }
+
+            Console.WriteLine("----");
+            var sm = comp.GetSemanticModel(tree);
+            Console.WriteLine(sm);
+
+            var root = (MainSyntax)tree.GetRoot();
+            var ns = root.NamespaceDeclaration[0];
+
+            var info = sm.GetSymbolInfo(ns);
+            Console.WriteLine(info);
+
+            Console.WriteLine(comp.Model);
+                
+            /*}
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }*/
         }
     }
 }
