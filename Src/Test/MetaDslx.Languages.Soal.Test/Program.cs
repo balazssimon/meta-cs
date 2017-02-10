@@ -44,6 +44,9 @@ namespace MetaDslx.Languages.Soal.Test
             }
 
             Console.WriteLine("----");
+            Console.WriteLine(comp.GlobalNamespace);
+
+            Console.WriteLine("----");
             var sm = comp.GetSemanticModel(tree);
             Console.WriteLine(sm);
 

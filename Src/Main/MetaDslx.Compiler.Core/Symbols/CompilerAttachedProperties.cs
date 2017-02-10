@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MetaDslx.Compiler.Symbols
 {
     [ModelSymbolDescriptor]
-    internal static class CompilerAttachedProperties
+    public static class CompilerAttachedProperties
     {
         public static readonly ModelProperty DeclaringSyntaxReferencesProperty =
             ModelProperty.Register(typeof(CompilerAttachedProperties), "DeclaringSyntaxReferences",

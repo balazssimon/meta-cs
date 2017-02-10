@@ -105,7 +105,7 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Look for names in scope
         /// </summary>
-        public void AddLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, LookupOptions options)
+        public void AddLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, BindingOptions options)
         {
             for (var scope = this; scope != null; scope = scope.Next)
             {
@@ -113,7 +113,7 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        protected virtual void AddLookupSymbolsInfoInSingleBinder(ArrayBuilder<IMetaSymbol> info, LookupOptions options, Binder originalBinder)
+        protected virtual void AddLookupSymbolsInfoInSingleBinder(ArrayBuilder<IMetaSymbol> info, BindingOptions options, Binder originalBinder)
         {
             // overridden in other binders
         }
@@ -121,7 +121,7 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Look for names of members
         /// </summary>
-        public virtual void AddMemberLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, IMetaSymbol nsOrType, LookupOptions options, Binder originalBinder)
+        public virtual void AddMemberLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, IMetaSymbol nsOrType, BindingOptions options, Binder originalBinder)
         {
             // overridden in other binders
         }
@@ -154,7 +154,7 @@ namespace MetaDslx.Compiler.Binding
 
         /// <remarks>
         /// Should only be called by <see cref="IsAccessible(Symbol, TypeSymbol, out bool, ref HashSet{DiagnosticInfo}, ConsList{Symbol})"/>,
-        /// which will already have checked for <see cref="BinderFlags.IgnoreAccessibility"/>.
+        /// which will already have checked for <see cref="BindingOptions.IgnoreAccessibility"/>.
         /// </remarks>
         internal virtual bool IsAccessibleHelper(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved)
         {

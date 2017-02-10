@@ -39,7 +39,10 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Gets the source language ("C#" or "Visual Basic").
         /// </summary>
-        public abstract Language Language { get; }
+        public virtual Language Language
+        {
+            get { return this.Compilation.Language; }
+        }
 
         /// <summary>
         /// The root node of the syntax tree that this binding is based on.

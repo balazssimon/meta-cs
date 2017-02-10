@@ -39,7 +39,7 @@ namespace MetaDslx.Compiler
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="options">Options to control behavior.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected abstract SymbolInfo GetSymbolInfoWorker(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract SymbolInfo GetSymbolInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets type information about a syntax node. This is overridden by various specializations of SemanticModel.
@@ -48,7 +48,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected abstract TypeInfo GetTypeInfoWorker(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract TypeInfo GetTypeInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets a list of method or indexed property symbols for a syntax node. This is overridden by various specializations of SemanticModel.
@@ -58,7 +58,7 @@ namespace MetaDslx.Compiler
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="options"></param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected abstract ImmutableArray<IMetaSymbol> GetMembersWorker(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<IMetaSymbol> GetMembersWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the constant value for a syntax node. This is overridden by various specializations of SemanticModel.
@@ -67,11 +67,11 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected abstract Optional<object> GetConstantValueWorker(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract Optional<object> GetConstantValueWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
-        protected abstract IMetaSymbol GetDeclaredSymbolWorker(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract IMetaSymbol GetDeclaredSymbolWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
-        protected abstract ImmutableArray<IMetaSymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<IMetaSymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         #endregion Abstract worker methods
 
@@ -199,7 +199,7 @@ namespace MetaDslx.Compiler
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
-                ? GetSymbolInfoWorker(node, cancellationToken)
+                ? GetSymbolInfoWorker(node, BindingOptions.Default, cancellationToken)
                 : SymbolInfo.None;
         }
 
@@ -208,7 +208,7 @@ namespace MetaDslx.Compiler
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
-                ? GetTypeInfoWorker(node, cancellationToken)
+                ? GetTypeInfoWorker(node, BindingOptions.Default, cancellationToken)
                 : TypeInfo.None;
         }
 
@@ -222,7 +222,7 @@ namespace MetaDslx.Compiler
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
-                ? this.GetMembersWorker(node, cancellationToken)
+                ? this.GetMembersWorker(node, BindingOptions.Default, cancellationToken)
                 : ImmutableArray<IMetaSymbol>.Empty;
         }
 
@@ -231,7 +231,7 @@ namespace MetaDslx.Compiler
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
-                ? this.GetConstantValueWorker(node, cancellationToken)
+                ? this.GetConstantValueWorker(node, BindingOptions.Default, cancellationToken)
                 : default(Optional<object>);
         }
 
@@ -249,18 +249,18 @@ namespace MetaDslx.Compiler
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return this.GetDeclaredSymbolWorker(declaration, cancellationToken);
+            return this.GetDeclaredSymbolWorker(declaration, BindingOptions.Default, cancellationToken);
         }
 
         protected sealed override ImmutableArray<IMetaSymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            ImmutableArray<IMetaSymbol> result = this.GetDeclaredSymbolsWorker(declaration, cancellationToken);
+            ImmutableArray<IMetaSymbol> result = this.GetDeclaredSymbolsWorker(declaration, BindingOptions.Default, cancellationToken);
 
             if (result.IsDefault)
             {
-                var symbol = this.GetDeclaredSymbolWorker(declaration, cancellationToken);
+                var symbol = this.GetDeclaredSymbolWorker(declaration, BindingOptions.Default, cancellationToken);
                 if (symbol != null)
                 {
                     return ImmutableArray.Create(symbol);
@@ -321,7 +321,7 @@ namespace MetaDslx.Compiler
             IMetaSymbol container = null,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container, name, LookupOptions.Default);
+            return LookupSymbolsInternal(position, container, name, BindingOptions.Default);
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace MetaDslx.Compiler
             int position,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container: null, name: name, options: new LookupOptions(useBaseReferenceAccessibility: true));
+            return LookupSymbolsInternal(position, container: null, name: name, options: BindingOptions.Default.WithLookupUseBaseReferenceAccessibility(true));
         }
 
         /// <summary>
@@ -389,7 +389,7 @@ namespace MetaDslx.Compiler
             IMetaSymbol container = null,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container, name, new LookupOptions(mustNotBeInstance: true));
+            return LookupSymbolsInternal(position, container, name, BindingOptions.None.WithLookupStaticMembers(true));
         }
 
         /// <summary>
@@ -415,7 +415,7 @@ namespace MetaDslx.Compiler
             IMetaSymbol container = null,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container, name, new LookupOptions(namespacesOrTypesOnly: true));
+            return LookupSymbolsInternal(position, container, name, BindingOptions.None.WithLookupNamespacesOrTypes(true));
         }
 
         /// <summary>
@@ -442,7 +442,7 @@ namespace MetaDslx.Compiler
             int position,
             IMetaSymbol container,
             string name,
-            LookupOptions options)
+            BindingOptions options)
         {
             SyntaxToken token;
             position = CheckAndAdjustPosition(position, out token);

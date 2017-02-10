@@ -638,7 +638,7 @@ namespace MetaDslx.Compiler
                     var rootNamespaces = ArrayBuilder<IMetaSymbol>.GetInstance();
                     GetAllUnaliasedModels(rootNamespaces);
 
-                    var result = this.Language.CompilationFactory.CreateMergedNamespace(this, null, rootNamespaces);
+                    var result = this.Language.CompilationFactory.CreateMergedNamespace(this, this.ModelBuilder, null, rootNamespaces);
 
                     rootNamespaces.Free();
 
@@ -703,8 +703,8 @@ namespace MetaDslx.Compiler
             // We want to cache failures as well as successes so that subsequent incorrect extern aliases with the
             // same alias will have the same target.
             @namespace = foundNamespace
-                ? this.Language.CompilationFactory.CreateMergedNamespace(this, namespacesToMerge: builder.ToImmutableAndFree(), containingNamespace: null)
-                : this.Language.CompilationFactory.CreateNamespace(this, null, null);
+                ? this.Language.CompilationFactory.CreateMergedNamespace(this, this.ModelBuilder, namespacesToMerge: builder.ToImmutableAndFree(), containingNamespace: null)
+                : this.Language.CompilationFactory.CreateNamespace(this, this.ModelBuilder, null, null);
 
             // Use GetOrAdd in case another thread beat us to the punch (i.e. should return the same object for the same alias, every time).
             @namespace = _externAliasTargets.GetOrAdd(aliasName, @namespace);

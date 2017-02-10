@@ -11,6 +11,7 @@ using MetaDslx.Compiler.Syntax;
 using MetaDslx.Core;
 using MetaDslx.Languages.Soal.Binding;
 using MetaDslx.Languages.Soal.Syntax;
+using MetaDslx.Languages.Soal.Symbols;
 
 namespace MetaDslx.Languages.Soal
 {
@@ -38,24 +39,32 @@ namespace MetaDslx.Languages.Soal
             throw new NotImplementedException();
         }
 
-        public override IMetaSymbol CreateMergedNamespace(Compilation compilation, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge)
+        public override IMetaSymbol CreateMergedNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge)
         {
-            throw new NotImplementedException();
+            var nsList = namespacesToMerge.ToList();
+            return this.CreateNamespace(compilation, modelBuilder, containingNamespace, nsList.Count > 0 ? nsList[0].MName : string.Empty);
         }
 
-        public override IMetaSymbol CreateNamespace(Compilation compilation, IMetaSymbol containingNamespace, string name)
+        public override IMetaSymbol CreateNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, string name)
         {
-            throw new NotImplementedException();
+            SoalFactory f = new SoalFactory(modelBuilder);
+            var result = f.Namespace();
+            result.Name = name;
+            if (containingNamespace != null)
+            {
+                ((NamespaceBuilder)containingNamespace).Declarations.Add(result);
+            }
+            else if (compilation != null)
+            {
+                result.MAttachProperty(CompilerAttachedProperties.ContainingCompilationProperty);
+                result.MSet(CompilerAttachedProperties.ContainingCompilationProperty, compilation);
+            }
+            return result;
         }
 
         public override ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType)
         {
             return new SoalScriptCompilationInfo((SoalCompilation)previousSubmission, submissionReturnType, hostObjectType);
-        }
-
-        public override SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilationBase, SyntaxTree syntaxTree, bool ignoreAccessibility)
-        {
-            return new SoalSyntaxTreeSemanticModel((SoalCompilation)compilationBase, (SoalSyntaxTree)syntaxTree, ignoreAccessibility);
         }
 
         public override bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree)

@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Binding\Binder.cs" />
     <Compile Include="Binding\BinderFactory.cs" />
+    <Compile Include="Binding\BindingOptions.cs" />
     <Compile Include="Binding\IBinderFactoryVisitor.cs" />
     <Compile Include="Binding\BuckStopsHereBinder.cs" />
     <Compile Include="Binding\Conversions.cs" />
@@ -54,6 +55,8 @@
     <Compile Include="Binding\LookupOptions.cs" />
     <Compile Include="Binding\NameResolution.cs" />
     <Compile Include="Binding\OverloadResolution.cs" />
+    <Compile Include="Binding\SpeculativeSyntaxTreeSemanticModel.cs" />
+    <Compile Include="Binding\SyntaxTreeSemanticModel.cs" />
     <Compile Include="Compilation\CandidateReason.cs" />
     <Compile Include="Compilation\Compilation.cs" />
     <Compile Include="Compilation\CompilationBase.cs" />
@@ -95,7 +98,8 @@
     <Compile Include="References\MetadataReferenceResolver.cs" />
     <Compile Include="References\UnresolvedMetadataReference.cs" />
     <Compile Include="Binding\AnonymousTypeManager.cs" />
-    <Compile Include="Symbols\AttachedProperties.cs" />
+    <Compile Include="Symbols\CompilerAttachedMethods.cs" />
+    <Compile Include="Symbols\CompilerAttachedProperties.cs" />
     <Compile Include="Symbols\WellKnownMemberNames.cs" />
     <Compile Include="Syntax\DetailedSyntaxVisitor.cs" />
     <Compile Include="Declarations\MergedDeclaration.cs" />

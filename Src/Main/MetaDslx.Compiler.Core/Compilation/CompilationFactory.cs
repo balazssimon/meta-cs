@@ -19,15 +19,18 @@ namespace MetaDslx.Compiler
     {
         internal static readonly CompilationFactory Default = new DefaultCompilationFactory();
 
-        public abstract IMetaSymbol CreateMergedNamespace(Compilation compilation, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge);
-        public abstract IMetaSymbol CreateNamespace(Compilation compilation, IMetaSymbol containingNamespace, string name);
+        public abstract IMetaSymbol CreateMergedNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge);
+        public abstract IMetaSymbol CreateNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, string name);
         public abstract RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
         public abstract bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree);
         public abstract IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
         public abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder);
-        public abstract AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilationBase);
+        public abstract AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilation);
         public abstract ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType);
-        public abstract SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilationBase, SyntaxTree syntaxTree, bool ignoreAccessibility);
+        public virtual SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilation, SyntaxTree syntaxTree, bool ignoreAccessibility)
+        {
+            return new SyntaxTreeSemanticModel(compilation, syntaxTree, ignoreAccessibility);
+        }
 
         public virtual IMetaSymbol GetNestedNamespace(IMetaSymbol namespaceSymbol)
         {
@@ -62,12 +65,12 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override IMetaSymbol CreateMergedNamespace(Compilation compilation, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge)
+        public override IMetaSymbol CreateMergedNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge)
         {
             throw new NotImplementedException();
         }
 
-        public override IMetaSymbol CreateNamespace(Compilation compilation, IMetaSymbol containingNamespace, string name)
+        public override IMetaSymbol CreateNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, string name)
         {
             throw new NotImplementedException();
         }
