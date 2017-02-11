@@ -7,7 +7,7 @@ options {
 }
 
                      
-main : namespaceDeclaration* EOF;
+main :                         namespaceDeclaration* EOF;
 
               
 qualifiedName : identifier (TDot identifier)*;

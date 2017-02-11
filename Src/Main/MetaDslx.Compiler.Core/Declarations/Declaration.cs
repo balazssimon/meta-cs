@@ -37,18 +37,22 @@ namespace MetaDslx.Compiler.Declarations
     public abstract class Declaration
     {
         private readonly string name;
+        private readonly string parentPropertyToAddTo;
 
-        protected Declaration(string name)
+        protected Declaration(string name, string parentPropertyToAddTo)
         {
             this.name = name;
+            this.parentPropertyToAddTo = parentPropertyToAddTo;
         }
 
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
+            get { return this.name; }
+        }
+
+        public string ParentPropertyToAddTo
+        {
+            get { return this.parentPropertyToAddTo; }
         }
 
         public abstract ModelSymbolInfo Kind { get; }

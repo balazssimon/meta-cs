@@ -77,6 +77,16 @@ namespace [Properties.DefaultNamespace]
         {
             get { return ([Properties.LanguageName]SyntaxFactory)base.SyntaxFactory; }
         }
+^
+        protected override CompilationFactory CompilationFactoryCore
+        {
+            get { return [Properties.LanguageName]CompilationFactory.Instance; }
+        }
+^
+        public new [Properties.LanguageName]CompilationFactory CompilationFactory
+        {
+            get { return ([Properties.LanguageName]CompilationFactory)base.CompilationFactory; }
+        }
     }
 }
 end template
@@ -3173,7 +3183,7 @@ using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Declarations;
 using [Properties.DefaultNamespace].Syntax;
 ^
-namespace [Properties.DefaultNamespace].Binder
+namespace [Properties.DefaultNamespace].Binding
 {
 	public class [Properties.LanguageName]DeclarationTreeBuilder : DeclarationTreeBuilder, I[Properties.LanguageName]SyntaxVisitor
 	{
@@ -3239,12 +3249,15 @@ template GenerateDeclarationTreeBuilderDeclaration(MetaCompilerAnnotations annot
 this.BeginDeclaration([annots.GetSymbolType()]);
 try
 {
+	[if (annots.HasProperty("nestingProperty"))]
+	this.RegisterNestingProperty([annots.GetNestingProperty()]);
+	[end if]
 	[body]
 }
 finally
 {
 	DeclarationInfo decl = this.EndDeclaration();
-	this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+	this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 }
 end template
 
@@ -3284,6 +3297,18 @@ finally
 }
 end template
 
+template GenerateDeclarationTreeBuilderProperty(MetaCompilerAnnotations annots, string body)
+this.BeginProperty("[annots.GetPropertyValue(MetaCompilerAnnotationInfo.Property, "name")]");
+try
+{
+	[body]
+}
+finally
+{
+	this.EndProperty();
+}
+end template
+
 template GenerateDeclarationTreeBuilderIdentifier(MetaCompilerAnnotations annots, string name, string body)
 if ([name] != null) this.RegisterIdentifier([name]);
 [body]
@@ -3315,6 +3340,9 @@ function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 			body = GenerateDeclarationTreeBuilderSymbol(rule.Annotations, body);
 		end if
 	end if
+	if (rule.Annotations.IsProperty())
+		body = GenerateDeclarationTreeBuilderProperty(rule.Annotations, body);
+	end if
 	return body;
 end function
 
@@ -3338,6 +3366,9 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 		if (elem.Annotations.IsSymbolBoundary())
 			body = GenerateDeclarationTreeBuilderSymbol(elem.Annotations, body);
 		end if
+	end if
+	if (elem.Annotations.IsProperty())
+		body = GenerateDeclarationTreeBuilderProperty(elem.Annotations, body);
 	end if
 	return body;
 end function

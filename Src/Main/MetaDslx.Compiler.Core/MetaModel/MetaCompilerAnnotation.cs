@@ -71,6 +71,7 @@ namespace MetaDslx.Compiler.MetaModel
             DefaultProperties.Add(Scope, "symbolType");
             DefaultProperties.Add(Symbol, "symbolType");
             DefaultProperties.Add(SymbolType, "symbolType");
+            DefaultProperties.Add(Property, "name");
         }
     }
 
@@ -94,6 +95,22 @@ namespace MetaDslx.Compiler.MetaModel
         public MetaCompilerAnnotation GetAnnotation(string name)
         {
             return this.Annotations.FirstOrDefault(a => a.Name == name);
+        }
+
+        public bool HasProperty(string property)
+        {
+            foreach (var annot in this.Annotations)
+            {
+                if (annot.Properties.Any(p => p.Name == property)) return true;
+            }
+            return false;
+        }
+
+        public bool HasProperty(string name, string property)
+        {
+            MetaCompilerAnnotation annot = this.Annotations.FirstOrDefault(a => a.Name == name);
+            if (annot == null) return false;
+            return annot.Properties.Any(p => p.Name == property);
         }
 
         public string GetPropertyValue(string name, string property)

@@ -26,7 +26,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
-			this.VisitList(node.NamespaceDeclaration);
+			this.BeginProperty("Declarations");
+			try
+			{
+				this.VisitList(node.NamespaceDeclaration);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 			this.VisitToken(node.Eof);
 		}
 		
@@ -65,39 +73,63 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitAnnotation(AnnotationSyntax node)
 		{
-			this.BeginSymbol();
+			this.BeginProperty("Annotations");
 			try
 			{
-				this.VisitToken(node.TOpenBracket);
-				this.Visit(node.AnnotationBody);
-				this.VisitToken(node.TCloseBracket);
+				this.BeginSymbol();
+				try
+				{
+					this.VisitToken(node.TOpenBracket);
+					this.Visit(node.AnnotationBody);
+					this.VisitToken(node.TCloseBracket);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitReturnAnnotation(ReturnAnnotationSyntax node)
 		{
-			this.BeginSymbol();
+			this.BeginProperty("Annotations");
 			try
 			{
-				this.VisitToken(node.TOpenBracket);
-				this.VisitToken(node.KReturn);
-				this.VisitToken(node.TColon);
-				this.Visit(node.AnnotationBody);
-				this.VisitToken(node.TCloseBracket);
+				this.BeginSymbol();
+				try
+				{
+					this.VisitToken(node.TOpenBracket);
+					this.VisitToken(node.KReturn);
+					this.VisitToken(node.TColon);
+					this.Visit(node.AnnotationBody);
+					this.VisitToken(node.TCloseBracket);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitAnnotationBody(AnnotationBodySyntax node)
 		{
-			this.Visit(node.NameDef);
+			this.BeginProperty("Name");
+			try
+			{
+				this.Visit(node.NameDef);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 			this.Visit(node.AnnotationProperties);
 		}
 		
@@ -115,16 +147,40 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitAnnotationProperty(AnnotationPropertySyntax node)
 		{
-			this.BeginSymbol();
+			this.BeginProperty("Properties");
 			try
 			{
-				this.Visit(node.NameDef);
-				this.VisitToken(node.TAssign);
-				this.Visit(node.AnnotationPropertyValue);
+				this.BeginSymbol();
+				try
+				{
+					this.BeginProperty("Name");
+					try
+					{
+						this.Visit(node.NameDef);
+					}
+					finally
+					{
+						this.EndProperty();
+					}
+					this.VisitToken(node.TAssign);
+					this.BeginProperty("Value");
+					try
+					{
+						this.Visit(node.AnnotationPropertyValue);
+					}
+					finally
+					{
+						this.EndProperty();
+					}
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
 		}
 		
@@ -139,13 +195,30 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginDeclaration(typeof(Symbols.Namespace));
 			try
 			{
+				this.RegisterNestingProperty("Declarations");
 				this.Visit(node.AnnotationList);
 				this.VisitToken(node.KNamespace);
 				this.Visit(node.QualifiedNameDef);
 				this.VisitToken(node.TAssign);
-				this.Visit(node.Identifier);
+				this.BeginProperty("Prefix");
+				try
+				{
+					this.Visit(node.Identifier);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
 				this.VisitToken(node.TColon);
-				this.Visit(node.StringLiteral);
+				this.BeginProperty("Uri");
+				try
+				{
+					this.Visit(node.StringLiteral);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
 				this.VisitToken(node.TOpenBrace);
 				this.VisitList(node.Declaration);
 				this.VisitToken(node.TCloseBrace);
@@ -153,22 +226,30 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
 		public virtual void VisitDeclaration(DeclarationSyntax node)
 		{
-			this.Visit(node.EnumDeclaration);
-			this.Visit(node.StructDeclaration);
-			this.Visit(node.DatabaseDeclaration);
-			this.Visit(node.InterfaceDeclaration);
-			this.Visit(node.ComponentDeclaration);
-			this.Visit(node.CompositeDeclaration);
-			this.Visit(node.AssemblyDeclaration);
-			this.Visit(node.BindingDeclaration);
-			this.Visit(node.EndpointDeclaration);
-			this.Visit(node.DeploymentDeclaration);
+			this.BeginProperty("Declarations");
+			try
+			{
+				this.Visit(node.EnumDeclaration);
+				this.Visit(node.StructDeclaration);
+				this.Visit(node.DatabaseDeclaration);
+				this.Visit(node.InterfaceDeclaration);
+				this.Visit(node.ComponentDeclaration);
+				this.Visit(node.CompositeDeclaration);
+				this.Visit(node.AssemblyDeclaration);
+				this.Visit(node.BindingDeclaration);
+				this.Visit(node.EndpointDeclaration);
+				this.Visit(node.DeploymentDeclaration);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 		}
 		
 		public virtual void VisitEnumDeclaration(EnumDeclarationSyntax node)
@@ -180,14 +261,22 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.VisitToken(node.KEnum);
 				this.Visit(node.NameDef);
 				this.VisitToken(node.TColon);
-				this.BeginSymbol();
+				this.BeginProperty("BaseType");
 				try
 				{
-					this.Visit(node.QualifiedName);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.QualifiedName);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.EnumLiterals);
@@ -196,7 +285,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
@@ -207,16 +296,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitEnumLiteral(EnumLiteralSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.EnumLiteral));
+			this.BeginProperty("EnumLiterals");
 			try
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.NameDef);
+				this.BeginDeclaration(typeof(Symbols.EnumLiteral));
+				try
+				{
+					this.Visit(node.AnnotationList);
+					this.Visit(node.NameDef);
+				}
+				finally
+				{
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				}
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
@@ -229,14 +326,22 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.VisitToken(node.KStruct);
 				this.Visit(node.NameDef);
 				this.VisitToken(node.TColon);
-				this.BeginSymbol();
+				this.BeginProperty("BaseType");
 				try
 				{
-					this.Visit(node.QualifiedName);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.QualifiedName);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TOpenBrace);
 				this.VisitList(node.PropertyDeclaration);
@@ -245,32 +350,48 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
 		public virtual void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.Property));
+			this.BeginProperty("Properties");
 			try
 			{
-				this.Visit(node.AnnotationList);
-				this.BeginSymbol();
+				this.BeginDeclaration(typeof(Symbols.Property));
 				try
 				{
-					this.Visit(node.TypeReference);
+					this.Visit(node.AnnotationList);
+					this.BeginProperty("Type");
+					try
+					{
+						this.BeginSymbol();
+						try
+						{
+							this.Visit(node.TypeReference);
+						}
+						finally
+						{
+							this.EndSymbol();
+						}
+					}
+					finally
+					{
+						this.EndProperty();
+					}
+					this.Visit(node.NameDef);
+					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
-					this.EndSymbol();
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 				}
-				this.Visit(node.NameDef);
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
@@ -290,23 +411,31 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
 		public virtual void VisitEntityReference(EntityReferenceSyntax node)
 		{
-			this.VisitToken(node.KEntity);
-			this.BeginSymbol();
+			this.BeginProperty("Entities");
 			try
 			{
-				this.Visit(node.QualifiedName);
+				this.VisitToken(node.KEntity);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.QualifiedName);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
+				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
@@ -324,37 +453,53 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
 		public virtual void VisitOperationDeclaration(OperationDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.Operation));
+			this.BeginProperty("Operations");
 			try
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.OperationResult);
-				this.Visit(node.NameDef);
-				this.VisitToken(node.TOpenParen);
-				this.Visit(node.ParameterList);
-				this.VisitToken(node.TCloseParen);
-				this.VisitToken(node.KThrows);
-				this.BeginSymbol();
+				this.BeginDeclaration(typeof(Symbols.Operation));
 				try
 				{
-					this.Visit(node.QualifiedNameList);
+					this.Visit(node.AnnotationList);
+					this.Visit(node.OperationResult);
+					this.Visit(node.NameDef);
+					this.VisitToken(node.TOpenParen);
+					this.Visit(node.ParameterList);
+					this.VisitToken(node.TCloseParen);
+					this.VisitToken(node.KThrows);
+					this.BeginProperty("Exceptions");
+					try
+					{
+						this.BeginSymbol();
+						try
+						{
+							this.Visit(node.QualifiedNameList);
+						}
+						finally
+						{
+							this.EndSymbol();
+						}
+					}
+					finally
+					{
+						this.EndProperty();
+					}
+					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
-					this.EndSymbol();
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 				}
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
@@ -365,39 +510,63 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitParameter(ParameterSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.InputParameter));
+			this.BeginProperty("Parameters");
 			try
 			{
-				this.Visit(node.AnnotationList);
-				this.BeginSymbol();
+				this.BeginDeclaration(typeof(Symbols.InputParameter));
 				try
 				{
-					this.Visit(node.TypeReference);
+					this.Visit(node.AnnotationList);
+					this.BeginProperty("Type");
+					try
+					{
+						this.BeginSymbol();
+						try
+						{
+							this.Visit(node.TypeReference);
+						}
+						finally
+						{
+							this.EndSymbol();
+						}
+					}
+					finally
+					{
+						this.EndProperty();
+					}
+					this.Visit(node.NameDef);
 				}
 				finally
 				{
-					this.EndSymbol();
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 				}
-				this.Visit(node.NameDef);
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitOperationResult(OperationResultSyntax node)
 		{
-			this.BeginSymbol();
+			this.BeginProperty("Result");
 			try
 			{
-				this.Visit(node.ReturnAnnotationList);
-				this.Visit(node.OperationReturnType);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.ReturnAnnotationList);
+					this.Visit(node.OperationReturnType);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
 		}
 		
@@ -406,18 +575,34 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginDeclaration(typeof(Symbols.Component));
 			try
 			{
-				this.VisitToken(node.KAbstract);
-				this.VisitToken(node.KComponent);
-				this.Visit(node.NameDef);
-				this.VisitToken(node.TColon);
-				this.BeginSymbol();
+				this.BeginProperty("IsAbstract");
 				try
 				{
-					this.Visit(node.QualifiedName);
+					this.VisitToken(node.KAbstract);
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
+				}
+				this.VisitToken(node.KComponent);
+				this.Visit(node.NameDef);
+				this.VisitToken(node.TColon);
+				this.BeginProperty("BaseComponent");
+				try
+				{
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.QualifiedName);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
+				}
+				finally
+				{
+					this.EndProperty();
 				}
 				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.ComponentElements);
@@ -426,7 +611,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
@@ -446,51 +631,99 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitComponentService(ComponentServiceSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.Service));
+			this.BeginProperty("Services");
 			try
 			{
-				this.VisitToken(node.KService);
-				this.BeginSymbol();
+				this.BeginDeclaration(typeof(Symbols.Service));
 				try
 				{
-					this.Visit(node.QualifiedName);
+					this.VisitToken(node.KService);
+					this.BeginProperty("Interface");
+					try
+					{
+						this.BeginSymbol();
+						try
+						{
+							this.Visit(node.QualifiedName);
+						}
+						finally
+						{
+							this.EndSymbol();
+						}
+					}
+					finally
+					{
+						this.EndProperty();
+					}
+					this.BeginProperty("OptionalName");
+					try
+					{
+						this.Visit(node.NameDef);
+					}
+					finally
+					{
+						this.EndProperty();
+					}
+					this.Visit(node.ComponentServiceOrReferenceBody);
 				}
 				finally
 				{
-					this.EndSymbol();
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 				}
-				this.Visit(node.NameDef);
-				this.Visit(node.ComponentServiceOrReferenceBody);
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitComponentReference(ComponentReferenceSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.Reference));
+			this.BeginProperty("References");
 			try
 			{
-				this.VisitToken(node.KReference);
-				this.BeginSymbol();
+				this.BeginDeclaration(typeof(Symbols.Reference));
 				try
 				{
-					this.Visit(node.QualifiedName);
+					this.VisitToken(node.KReference);
+					this.BeginProperty("Interface");
+					try
+					{
+						this.BeginSymbol();
+						try
+						{
+							this.Visit(node.QualifiedName);
+						}
+						finally
+						{
+							this.EndSymbol();
+						}
+					}
+					finally
+					{
+						this.EndProperty();
+					}
+					this.BeginProperty("OptionalName");
+					try
+					{
+						this.Visit(node.NameDef);
+					}
+					finally
+					{
+						this.EndProperty();
+					}
+					this.Visit(node.ComponentServiceOrReferenceBody);
 				}
 				finally
 				{
-					this.EndSymbol();
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 				}
-				this.Visit(node.NameDef);
-				this.Visit(node.ComponentServiceOrReferenceBody);
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
@@ -509,71 +742,103 @@ namespace MetaDslx.Languages.Soal.Binding
 		public virtual void VisitComponentServiceOrReferenceElement(ComponentServiceOrReferenceElementSyntax node)
 		{
 			this.VisitToken(node.KBinding);
-			this.BeginSymbol();
+			this.BeginProperty("Binding");
 			try
 			{
-				this.Visit(node.QualifiedName);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.QualifiedName);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
 			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitComponentProperty(ComponentPropertySyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.Property));
+			this.BeginProperty("Properties");
 			try
 			{
-				this.BeginSymbol();
+				this.BeginDeclaration(typeof(Symbols.Property));
 				try
 				{
-					this.Visit(node.TypeReference);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.TypeReference);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
+					this.Visit(node.NameDef);
+					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
-					this.EndSymbol();
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 				}
-				this.Visit(node.NameDef);
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitComponentImplementation(ComponentImplementationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.Implementation));
+			this.BeginProperty("Implementation");
 			try
 			{
-				this.VisitToken(node.KImplementation);
-				this.Visit(node.NameDef);
-				this.VisitToken(node.TSemicolon);
+				this.BeginDeclaration(typeof(Symbols.Implementation));
+				try
+				{
+					this.VisitToken(node.KImplementation);
+					this.Visit(node.NameDef);
+					this.VisitToken(node.TSemicolon);
+				}
+				finally
+				{
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				}
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitComponentLanguage(ComponentLanguageSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.Language));
+			this.BeginProperty("Language");
 			try
 			{
-				this.VisitToken(node.KLanguage);
-				this.Visit(node.NameDef);
-				this.VisitToken(node.TSemicolon);
+				this.BeginDeclaration(typeof(Symbols.Language));
+				try
+				{
+					this.VisitToken(node.KLanguage);
+					this.Visit(node.NameDef);
+					this.VisitToken(node.TSemicolon);
+				}
+				finally
+				{
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				}
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
@@ -585,14 +850,22 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.VisitToken(node.KComposite);
 				this.Visit(node.NameDef);
 				this.VisitToken(node.TColon);
-				this.BeginSymbol();
+				this.BeginProperty("BaseComponent");
 				try
 				{
-					this.Visit(node.QualifiedName);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.QualifiedName);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.CompositeElements);
@@ -601,7 +874,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
@@ -613,14 +886,22 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.VisitToken(node.KAssembly);
 				this.Visit(node.NameDef);
 				this.VisitToken(node.TColon);
-				this.BeginSymbol();
+				this.BeginProperty("BaseComponent");
 				try
 				{
-					this.Visit(node.QualifiedName);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.QualifiedName);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.CompositeElements);
@@ -629,7 +910,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
@@ -651,59 +932,91 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitCompositeComponent(CompositeComponentSyntax node)
 		{
-			this.VisitToken(node.KComponent);
-			this.BeginSymbol();
+			this.BeginProperty("Components");
 			try
 			{
-				this.Visit(node.QualifiedName);
-			}
-			finally
-			{
-				this.EndSymbol();
-			}
-			this.VisitToken(node.TSemicolon);
-		}
-		
-		public virtual void VisitCompositeWire(CompositeWireSyntax node)
-		{
-			this.BeginSymbol();
-			try
-			{
-				this.VisitToken(node.KWire);
-				this.Visit(node.WireSource);
-				this.VisitToken(node.KTo);
-				this.Visit(node.WireTarget);
+				this.VisitToken(node.KComponent);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.QualifiedName);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitCompositeWire(CompositeWireSyntax node)
+		{
+			this.BeginProperty("Wires");
+			try
+			{
+				this.BeginSymbol();
+				try
+				{
+					this.VisitToken(node.KWire);
+					this.Visit(node.WireSource);
+					this.VisitToken(node.KTo);
+					this.Visit(node.WireTarget);
+					this.VisitToken(node.TSemicolon);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitWireSource(WireSourceSyntax node)
 		{
-			this.BeginSymbol();
+			this.BeginProperty("Source");
 			try
 			{
-				this.Visit(node.QualifiedName);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.QualifiedName);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitWireTarget(WireTargetSyntax node)
 		{
-			this.BeginSymbol();
+			this.BeginProperty("Target");
 			try
 			{
-				this.Visit(node.QualifiedName);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.QualifiedName);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
 		}
 		
@@ -721,7 +1034,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
@@ -738,36 +1051,52 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitEnvironmentDeclaration(EnvironmentDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.Environment));
+			this.BeginProperty("Environments");
 			try
 			{
-				this.VisitToken(node.KEnvironment);
-				this.Visit(node.NameDef);
-				this.VisitToken(node.TOpenBrace);
-				this.Visit(node.RuntimeDeclaration);
-				this.VisitList(node.RuntimeReference);
-				this.VisitToken(node.TCloseBrace);
+				this.BeginDeclaration(typeof(Symbols.Environment));
+				try
+				{
+					this.VisitToken(node.KEnvironment);
+					this.Visit(node.NameDef);
+					this.VisitToken(node.TOpenBrace);
+					this.Visit(node.RuntimeDeclaration);
+					this.VisitList(node.RuntimeReference);
+					this.VisitToken(node.TCloseBrace);
+				}
+				finally
+				{
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				}
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitRuntimeDeclaration(RuntimeDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.Runtime));
+			this.BeginProperty("Runtime");
 			try
 			{
-				this.VisitToken(node.KRuntime);
-				this.Visit(node.NameDef);
-				this.VisitToken(node.TSemicolon);
+				this.BeginDeclaration(typeof(Symbols.Runtime));
+				try
+				{
+					this.VisitToken(node.KRuntime);
+					this.Visit(node.NameDef);
+					this.VisitToken(node.TSemicolon);
+				}
+				finally
+				{
+					DeclarationInfo decl = this.EndDeclaration();
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				}
 			}
 			finally
 			{
-				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.EndProperty();
 			}
 		}
 		
@@ -779,32 +1108,48 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitAssemblyReference(AssemblyReferenceSyntax node)
 		{
-			this.VisitToken(node.KAssembly);
-			this.BeginSymbol();
+			this.BeginProperty("Assemblies");
 			try
 			{
-				this.Visit(node.QualifiedName);
+				this.VisitToken(node.KAssembly);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.QualifiedName);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
+				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitDatabaseReference(DatabaseReferenceSyntax node)
 		{
-			this.VisitToken(node.KDatabase);
-			this.BeginSymbol();
+			this.BeginProperty("Databases");
 			try
 			{
-				this.Visit(node.QualifiedName);
+				this.VisitToken(node.KDatabase);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.QualifiedName);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
+				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitBindingDeclaration(BindingDeclarationSyntax node)
@@ -821,7 +1166,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
@@ -834,9 +1179,17 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitTransportLayer(TransportLayerSyntax node)
 		{
-			this.Visit(node.HttpTransportLayer);
-			this.Visit(node.RestTransportLayer);
-			this.Visit(node.WebSocketTransportLayer);
+			this.BeginProperty("Transport");
+			try
+			{
+				this.Visit(node.HttpTransportLayer);
+				this.Visit(node.RestTransportLayer);
+				this.Visit(node.WebSocketTransportLayer);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 		}
 		
 		public virtual void VisitHttpTransportLayer(HttpTransportLayerSyntax node)
@@ -926,25 +1279,49 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitHttpSslProperty(HttpSslPropertySyntax node)
 		{
-			this.VisitToken(node.ISSL);
-			this.VisitToken(node.TAssign);
-			this.Visit(node.BooleanLiteral);
-			this.VisitToken(node.TSemicolon);
+			this.BeginProperty("Ssl");
+			try
+			{
+				this.VisitToken(node.ISSL);
+				this.VisitToken(node.TAssign);
+				this.Visit(node.BooleanLiteral);
+				this.VisitToken(node.TSemicolon);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 		}
 		
 		public virtual void VisitHttpClientAuthenticationProperty(HttpClientAuthenticationPropertySyntax node)
 		{
-			this.VisitToken(node.IClientAuthentication);
-			this.VisitToken(node.TAssign);
-			this.Visit(node.BooleanLiteral);
-			this.VisitToken(node.TSemicolon);
+			this.BeginProperty("ClientAuthentication");
+			try
+			{
+				this.VisitToken(node.IClientAuthentication);
+				this.VisitToken(node.TAssign);
+				this.Visit(node.BooleanLiteral);
+				this.VisitToken(node.TSemicolon);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 		}
 		
 		public virtual void VisitEncodingLayer(EncodingLayerSyntax node)
 		{
-			this.Visit(node.SoapEncodingLayer);
-			this.Visit(node.XmlEncodingLayer);
-			this.Visit(node.JsonEncodingLayer);
+			this.BeginProperty("Encodings");
+			try
+			{
+				this.Visit(node.SoapEncodingLayer);
+				this.Visit(node.XmlEncodingLayer);
+				this.Visit(node.JsonEncodingLayer);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 		}
 		
 		public virtual void VisitSoapEncodingLayer(SoapEncodingLayerSyntax node)
@@ -1035,40 +1412,72 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitSoapVersionProperty(SoapVersionPropertySyntax node)
 		{
-			this.VisitToken(node.IVersion);
-			this.VisitToken(node.TAssign);
-			this.Visit(node.Identifier);
-			this.VisitToken(node.TSemicolon);
-		}
-		
-		public virtual void VisitSoapMtomProperty(SoapMtomPropertySyntax node)
-		{
-			this.VisitToken(node.IMTOM);
-			this.VisitToken(node.TAssign);
-			this.Visit(node.BooleanLiteral);
-			this.VisitToken(node.TSemicolon);
-		}
-		
-		public virtual void VisitSoapStyleProperty(SoapStylePropertySyntax node)
-		{
-			this.VisitToken(node.IStyle);
-			this.VisitToken(node.TAssign);
-			this.Visit(node.Identifier);
-			this.VisitToken(node.TSemicolon);
-		}
-		
-		public virtual void VisitProtocolLayer(ProtocolLayerSyntax node)
-		{
-			this.BeginSymbol();
+			this.BeginProperty("Version");
 			try
 			{
-				this.VisitToken(node.KProtocol);
-				this.Visit(node.ProtocolLayerKind);
+				this.VisitToken(node.IVersion);
+				this.VisitToken(node.TAssign);
+				this.Visit(node.Identifier);
 				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitSoapMtomProperty(SoapMtomPropertySyntax node)
+		{
+			this.BeginProperty("Mtom");
+			try
+			{
+				this.VisitToken(node.IMTOM);
+				this.VisitToken(node.TAssign);
+				this.Visit(node.BooleanLiteral);
+				this.VisitToken(node.TSemicolon);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitSoapStyleProperty(SoapStylePropertySyntax node)
+		{
+			this.BeginProperty("Style");
+			try
+			{
+				this.VisitToken(node.IStyle);
+				this.VisitToken(node.TAssign);
+				this.Visit(node.Identifier);
+				this.VisitToken(node.TSemicolon);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitProtocolLayer(ProtocolLayerSyntax node)
+		{
+			this.BeginProperty("Protocols");
+			try
+			{
+				this.BeginSymbol();
+				try
+				{
+					this.VisitToken(node.KProtocol);
+					this.Visit(node.ProtocolLayerKind);
+					this.VisitToken(node.TSemicolon);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
@@ -1086,14 +1495,22 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.VisitToken(node.KEndpoint);
 				this.Visit(node.NameDef);
 				this.VisitToken(node.TColon);
-				this.BeginSymbol();
+				this.BeginProperty("Interface");
 				try
 				{
-					this.Visit(node.QualifiedName);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.QualifiedName);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.EndpointProperties);
@@ -1102,7 +1519,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
@@ -1120,14 +1537,22 @@ namespace MetaDslx.Languages.Soal.Binding
 		public virtual void VisitEndpointBindingProperty(EndpointBindingPropertySyntax node)
 		{
 			this.VisitToken(node.KBinding);
-			this.BeginSymbol();
+			this.BeginProperty("Binding");
 			try
 			{
-				this.Visit(node.QualifiedName);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.QualifiedName);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
 			this.VisitToken(node.TSemicolon);
 		}
@@ -1135,7 +1560,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		public virtual void VisitEndpointAddressProperty(EndpointAddressPropertySyntax node)
 		{
 			this.VisitToken(node.KAddress);
-			this.Visit(node.StringLiteral);
+			this.BeginProperty("Address");
+			try
+			{
+				this.Visit(node.StringLiteral);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 			this.VisitToken(node.TSemicolon);
 		}
 		
@@ -1194,16 +1627,32 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitOperationReturnType(OperationReturnTypeSyntax node)
 		{
-			this.BeginSymbol();
+			this.BeginProperty("Type");
 			try
 			{
-				this.Visit(node.ReturnType);
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.ReturnType);
+				}
+				finally
+				{
+					this.EndSymbol();
+				}
 			}
 			finally
 			{
-				this.EndSymbol();
+				this.EndProperty();
 			}
-			this.Visit(node.OnewayType);
+			this.BeginProperty("Type");
+			try
+			{
+				this.Visit(node.OnewayType);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 		}
 		
 		public virtual void VisitNullableType(NullableTypeSyntax node)
@@ -1211,14 +1660,22 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.BeginSymbol();
+				this.BeginProperty("InnerType");
 				try
 				{
-					this.Visit(node.ValueType);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.ValueType);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TQuestion);
 			}
@@ -1233,14 +1690,22 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.BeginSymbol();
+				this.BeginProperty("InnerType");
 				try
 				{
-					this.Visit(node.ReferenceType);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.ReferenceType);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TExclamation);
 			}
@@ -1255,14 +1720,22 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.BeginSymbol();
+				this.BeginProperty("InnerType");
 				try
 				{
-					this.Visit(node.ArrayType);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.ArrayType);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TExclamation);
 			}
@@ -1283,14 +1756,22 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.BeginSymbol();
+				this.BeginProperty("InnerType");
 				try
 				{
-					this.Visit(node.SimpleType);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.SimpleType);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TOpenBracket);
 				this.VisitToken(node.TCloseBracket);
@@ -1306,14 +1787,22 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.BeginSymbol();
+				this.BeginProperty("InnerType");
 				try
 				{
-					this.Visit(node.NulledType);
+					this.BeginSymbol();
+					try
+					{
+						this.Visit(node.NulledType);
+					}
+					finally
+					{
+						this.EndSymbol();
+					}
 				}
 				finally
 				{
-					this.EndSymbol();
+					this.EndProperty();
 				}
 				this.VisitToken(node.TOpenBracket);
 				this.VisitToken(node.TCloseBracket);

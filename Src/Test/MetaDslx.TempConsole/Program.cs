@@ -348,12 +348,13 @@ namespace MetaDslx.TempConsole
             {
                 Console.WriteLine(msg);
             }
+            if (!a4c.IsParser) return;
             //*
             Directory.CreateDirectory(Path.Combine(directory, @"Syntax\InternalSyntax"));
             Directory.CreateDirectory(Path.Combine(directory, @"Errors"));
             Directory.CreateDirectory(Path.Combine(directory, @"Parser"));
             Directory.CreateDirectory(Path.Combine(directory, @"Compilation"));
-            Directory.CreateDirectory(Path.Combine(directory, @"Binder"));
+            Directory.CreateDirectory(Path.Combine(directory, @"Binding"));
             string outputFileName = Path.Combine(directory, @"Syntax\InternalSyntax\" + a4c.LanguageName + "InternalSyntax.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
@@ -399,7 +400,7 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(a4c.GeneratedFeature);
             }
-            outputFileName = Path.Combine(directory, @"Binder\" + a4c.LanguageName + @"DeclarationTreeBuilder.cs");
+            outputFileName = Path.Combine(directory, @"Binding\" + a4c.LanguageName + @"DeclarationTreeBuilder.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
                 writer.WriteLine(a4c.GeneratedDeclarationTreeBuilder);

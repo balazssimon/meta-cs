@@ -300,9 +300,26 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             return annots.HasAnnotation("Name");
         }
 
+        public static bool IsProperty(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation("Property");
+        }
+
         public static bool IsQualifiedName(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation("QualifiedName");
+        }
+
+        public static string GetNestingProperty(this MetaCompilerAnnotations annots)
+        {
+            foreach (var annot in annots.Annotations)
+            {
+                foreach (var prop in annot.Properties)
+                {
+                    if (prop.Name == "nestingProperty") return "\"" + prop.Value + "\"";
+                }
+            }
+            return "null";
         }
 
         public static string GetSymbolType(this MetaCompilerAnnotations annots, string name)
@@ -319,7 +336,6 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             }
             return "null";
         }
-
         public static string GetSymbolType(this MetaCompilerAnnotations annots)
         {
             foreach (var annot in annots.Annotations)

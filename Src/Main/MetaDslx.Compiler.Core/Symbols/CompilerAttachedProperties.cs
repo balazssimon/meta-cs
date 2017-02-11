@@ -28,6 +28,11 @@ namespace MetaDslx.Compiler.Symbols
                 new ModelPropertyTypeInfo(typeof(MergedDeclaration), null),
                 new ModelPropertyTypeInfo(typeof(MergedDeclaration), null));
 
+        public static readonly ModelProperty PropertiesToMembersMapProperty =
+            ModelProperty.Register(typeof(CompilerAttachedProperties), "PropertiesToMembersMap",
+                new ModelPropertyTypeInfo(typeof(Dictionary<string, ImmutableArray<IMetaSymbol>>), null),
+                new ModelPropertyTypeInfo(typeof(Dictionary<string, ImmutableArray<IMetaSymbol>>), null));
+
         public static readonly ModelProperty IsScriptClassProperty =
             ModelProperty.Register(typeof(CompilerAttachedProperties), "IsScriptClass",
                 new ModelPropertyTypeInfo(typeof(bool), null),

@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Languages.Soal.Binding;
+using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Languages.Soal.Syntax;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,17 @@ namespace MetaDslx.Languages.Soal.Test
 
             Console.WriteLine("----");
             Console.WriteLine(comp.GlobalNamespace);
+
+            NamespaceBuilder gns = (NamespaceBuilder)comp.GlobalNamespace;
+            Console.WriteLine(gns.Declarations.Count);
+            foreach (var childNs in gns.Declarations)
+            {
+                Console.WriteLine(childNs);
+                foreach (var decl in ((NamespaceBuilder)childNs).Declarations)
+                {
+                    Console.WriteLine("  "+decl);
+                }
+            }
 
             Console.WriteLine("----");
             var sm = comp.GetSemanticModel(tree);

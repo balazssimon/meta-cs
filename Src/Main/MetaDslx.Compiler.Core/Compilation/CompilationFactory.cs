@@ -22,6 +22,7 @@ namespace MetaDslx.Compiler
         public abstract IMetaSymbol CreateMergedNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge);
         public abstract IMetaSymbol CreateNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, string name);
         public abstract RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
+        public abstract IMetaSymbol CreateDeclarationSymbol(Compilation compilation, MutableModel modelBuilder, IMetaSymbol container, MergedDeclaration declaration);
         public abstract bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree);
         public abstract IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
         public abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder);
@@ -51,6 +52,11 @@ namespace MetaDslx.Compiler
         }
 
         public override IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IMetaSymbol CreateDeclarationSymbol(Compilation compilation, MutableModel modelBuilder, IMetaSymbol container, MergedDeclaration declaration)
         {
             throw new NotImplementedException();
         }

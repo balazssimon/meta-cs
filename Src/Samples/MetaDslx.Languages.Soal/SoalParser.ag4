@@ -7,7 +7,7 @@ options {
 }
 
 $RootScope(Namespace)
-main : namespaceDeclaration* EOF;
+main : $Property(Declarations) namespaceDeclaration* EOF;
 
 $QualifiedName
 qualifiedName : identifier (TDot identifier)*;

@@ -16,9 +16,11 @@ namespace MetaDslx.Compiler.Declarations
     {
         private readonly ImmutableArray<SingleDeclaration> _declarations;
         private ImmutableArray<MergedDeclaration> _lazyChildren;
-        
+        private IReadOnlyDictionary<string, ImmutableArray<MergedDeclaration>> _lazyChildrenByParentProperties;
+
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
-            : base(declarations.IsEmpty ? string.Empty : declarations[0].Name)
+            : base(declarations.IsEmpty ? string.Empty : declarations[0].Name,
+                  declarations.IsEmpty ? string.Empty : declarations[0].ParentPropertyToAddTo)
         {
             this._declarations = declarations;
         }
@@ -146,6 +148,24 @@ namespace MetaDslx.Compiler.Declarations
                 }
 
                 return _lazyChildren;
+            }
+        }
+
+        public IReadOnlyDictionary<string, ImmutableArray<MergedDeclaration>> ChildrenByParentProperties
+        {
+            get
+            {
+                if (_lazyChildrenByParentProperties == null)
+                {
+                    var result =
+                        this.Children.GroupBy(
+                            c => c.ParentPropertyToAddTo,
+                            c => c,
+                            (key, group) => new { Property = key, Items = group.ToImmutableArray() }
+                        ).ToDictionary(kvp => kvp.Property, kvp => kvp.Items);
+                    Interlocked.CompareExchange(ref _lazyChildrenByParentProperties, result, null);
+                }
+                return _lazyChildrenByParentProperties;
             }
         }
 

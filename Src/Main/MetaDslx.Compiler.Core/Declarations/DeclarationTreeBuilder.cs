@@ -20,8 +20,11 @@ namespace MetaDslx.Compiler.Declarations
         private List<DeclarationInfo> _declarationInfoStack;
         private DeclarationInfo _currentDeclarationInfo;
         private ArrayBuilder<SingleDeclaration> _currentChildren;
-        private List<List<RedNode>> _currentNames;
-        private List<RedNode> _currentName;
+        private ArrayBuilder<ImmutableArray<RedNode>> _currentNames;
+        private ArrayBuilder<RedNode> _currentName;
+        private List<string> _rootPropertyStack;
+        private List<string> _currentPropertyStack;
+        private string _currentProperty;
 
         protected DeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission, bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
             : base(visitIntoStructuredToken, visitIntoStructuredTrivia)
@@ -42,6 +45,7 @@ namespace MetaDslx.Compiler.Declarations
             try
             {
                 _declarationInfoStack = new List<DeclarationInfo>();
+                _rootPropertyStack = new List<string>();
                 if (_syntaxTree.Options.Kind != SourceCodeKind.Regular)
                 {
                     return this.CreateScriptRootDeclaration(node, kind);
@@ -54,9 +58,12 @@ namespace MetaDslx.Compiler.Declarations
             finally
             {
                 _declarationInfoStack = null;
+                _rootPropertyStack = null;
                 _currentChildren = null;
                 _currentNames = null;
                 _currentName = null;
+                _currentPropertyStack = null;
+                _currentProperty = null;
             }
         }
 
@@ -90,7 +97,11 @@ namespace MetaDslx.Compiler.Declarations
         {
             public Type Type { get; set; }
             public ModelSymbolInfo Kind { get; set; }
-            public List<List<RedNode>> Names { get; set; }
+            public string NestingProperty { get; set; }
+            public string ParentPropertyToAddTo { get; set; }
+            public ArrayBuilder<ImmutableArray<RedNode>> NamesBuilder { get; set; }
+            public ImmutableArray<ImmutableArray<RedNode>> Names { get; set; }
+            public List<string> PropertyStack { get; set; }
             public ArrayBuilder<SingleDeclaration> ChildrenBuilder { get; set; }
             public ImmutableArray<SingleDeclaration> Children { get; set; }
         }
@@ -102,23 +113,69 @@ namespace MetaDslx.Compiler.Declarations
             _declarationInfoStack.Add(_currentDeclarationInfo);
             _currentChildren = ArrayBuilder<SingleDeclaration>.GetInstance();
             _currentDeclarationInfo.ChildrenBuilder = _currentChildren;
+            _currentNames = null;
+            _currentName = null;
+            _currentPropertyStack = null;
+            _currentProperty = null;
         }
 
         protected DeclarationInfo EndDeclaration()
         {
             if (_currentDeclarationInfo == null) throw new InvalidOperationException("No declaration is open.");
             var result = _currentDeclarationInfo;
-            result.Children = result.ChildrenBuilder.ToImmutableAndFree();
-            result.ChildrenBuilder = null;
+            if (result.ChildrenBuilder != null)
+            {
+                result.Children = result.ChildrenBuilder.ToImmutableAndFree();
+                result.ChildrenBuilder = null;
+            }
+            else
+            {
+                result.Children = ImmutableArray<SingleDeclaration>.Empty;
+            }
+            if (result.NamesBuilder != null)
+            {
+                result.Names = result.NamesBuilder.ToImmutableAndFree();
+                result.NamesBuilder = null;
+            }
+            else
+            {
+                result.Names = ImmutableArray<ImmutableArray<RedNode>>.Empty;
+            }
             result.Kind = ModelSymbolInfo.GetSymbolInfo(result.Type);
             if (_declarationInfoStack.Count > 0) _declarationInfoStack.RemoveAt(_declarationInfoStack.Count - 1);
             if (_declarationInfoStack.Count > 0) _currentDeclarationInfo = _declarationInfoStack[_declarationInfoStack.Count - 1];
             else _currentDeclarationInfo = null;
+            this.RestoreParentSymbol();
+            result.ParentPropertyToAddTo = _currentProperty;
+            return result;
+        }
+
+        private void RestoreParentSymbol()
+        {
             if (_currentDeclarationInfo != null)
             {
                 _currentChildren = _currentDeclarationInfo.ChildrenBuilder;
+                _currentNames = null;
             }
-            return result;
+            this.RestorePropertyStack();
+        }
+
+        private void RestorePropertyStack()
+        {
+            if (_currentDeclarationInfo != null)
+            {
+                _currentPropertyStack = _currentDeclarationInfo.PropertyStack;
+            }
+            else if (_declarationInfoStack.Count == 0)
+            {
+                _currentPropertyStack = _rootPropertyStack;
+            }
+            else
+            {
+                _currentPropertyStack = null;
+            }
+            if (_currentPropertyStack != null && _currentPropertyStack.Count > 0) _currentProperty = _currentPropertyStack[_currentPropertyStack.Count - 1];
+            else _currentProperty = null;
         }
 
         protected void BeginSymbol()
@@ -127,6 +184,8 @@ namespace MetaDslx.Compiler.Declarations
             _declarationInfoStack.Add(_currentDeclarationInfo);
             _currentChildren = null;
             _currentNames = null;
+            _currentPropertyStack = null;
+            _currentProperty = null;
         }
 
         protected void EndSymbol()
@@ -134,39 +193,62 @@ namespace MetaDslx.Compiler.Declarations
             if (_declarationInfoStack.Count > 0) _declarationInfoStack.RemoveAt(_declarationInfoStack.Count - 1);
             if (_declarationInfoStack.Count > 0) _currentDeclarationInfo = _declarationInfoStack[_declarationInfoStack.Count - 1];
             else _currentDeclarationInfo = null;
-            if (_currentDeclarationInfo != null)
-            {
-                _currentChildren = _currentDeclarationInfo.ChildrenBuilder;
-            }
+            this.RestoreParentSymbol();
         }
 
         protected void BeginName()
         {
             if (_currentDeclarationInfo == null) return;
-            _currentNames = _currentDeclarationInfo.Names;
+            _currentNames = _currentDeclarationInfo.NamesBuilder;
             if (_currentNames == null)
             {
-                _currentNames = new List<List<RedNode>>();
-                _currentDeclarationInfo.Names = _currentNames;
+                _currentNames = ArrayBuilder<ImmutableArray<RedNode>>.GetInstance();
+                _currentDeclarationInfo.NamesBuilder = _currentNames;
+                _currentPropertyStack = null;
+                _currentProperty = null;
             }
         }
 
         protected void EndName()
         {
             _currentNames = null;
+            this.RestorePropertyStack();
         }
 
         protected void BeginQualifiedName()
         {
             if (_currentNames == null) return;
             if (_currentName != null) throw new InvalidOperationException("Qualified names cannot be nested.");
-            _currentName = new List<RedNode>();
-            _currentNames.Add(_currentName);
+            _currentName = ArrayBuilder<RedNode>.GetInstance();
+            _currentPropertyStack = null;
+            _currentProperty = null;
         }
 
         protected void EndQualifiedName()
         {
+            if (_currentNames == null) return;
+            _currentNames.Add(_currentName.ToImmutableAndFree());
             _currentName = null;
+            this.RestorePropertyStack();
+        }
+
+        protected void BeginProperty(string name)
+        {
+            if (_currentDeclarationInfo == null) return;
+            if (_currentPropertyStack == null)
+            {
+                _currentPropertyStack = new List<string>();
+                _currentDeclarationInfo.PropertyStack = _currentPropertyStack;
+            }
+            _currentProperty = name;
+            _currentPropertyStack.Add(_currentProperty);
+        }
+
+        protected void EndProperty()
+        {
+            _currentName = null;
+            _currentProperty = null;
+            this.RestorePropertyStack();
         }
 
         protected void RegisterIdentifier(RedNode node)
@@ -178,8 +260,7 @@ namespace MetaDslx.Compiler.Declarations
             }
             else
             {
-                List<RedNode> singleName = new List<RedNode>();
-                singleName.Add(node);
+                ImmutableArray<RedNode> singleName = ImmutableArray.Create(node);
                 _currentNames.Add(singleName);
             }
         }
@@ -190,24 +271,30 @@ namespace MetaDslx.Compiler.Declarations
             _currentDeclarationInfo.Type = type;
         }
 
-        protected void CreateDeclaration(SyntaxNode node, ModelSymbolInfo kind, List<List<RedNode>> names, ImmutableArray<SingleDeclaration> children)
+        protected void RegisterNestingProperty(string name)
+        {
+            if (_currentDeclarationInfo == null) return;
+            _currentDeclarationInfo.NestingProperty = name;
+        }
+
+        protected void CreateDeclaration(SyntaxNode node, ModelSymbolInfo kind, ImmutableArray<ImmutableArray<RedNode>> names, string parentPropertyToAddTo, ImmutableArray<SingleDeclaration> children)
         {
             if (_currentChildren == null) return;
-            if (names == null)
+            if (names == null || names.Length == 0)
             {
-                _currentChildren.Add(new SingleDeclaration(null, kind, _syntaxTree.GetReference(node), null, ImmutableArray<SingleDeclaration>.Empty));
+                _currentChildren.Add(new SingleDeclaration(null, kind, _syntaxTree.GetReference(node), null, parentPropertyToAddTo, ImmutableArray<SingleDeclaration>.Empty));
                 return;
             }
             foreach (var name in names)
             {
-                int count = name.Count;
+                int count = name.Length;
                 if (count > 0)
                 {
                     var nameTexts = name.Select(n => n.ToString()).ToArray();
-                    var decl = new SingleDeclaration(nameTexts[count - 1], kind, _syntaxTree.GetReference(node), new SourceLocation(name[count - 1]), children);
+                    var decl = new SingleDeclaration(nameTexts[count - 1], kind, _syntaxTree.GetReference(node), new SourceLocation(name[count - 1]), parentPropertyToAddTo, children);
                     for (int i = count - 2; i >= 0; i--)
                     {
-                        decl = new SingleDeclaration(nameTexts[i], kind, _syntaxTree.GetReference(node), new SourceLocation(name[i]), ImmutableArray.Create(decl));
+                        decl = new SingleDeclaration(nameTexts[i], kind, _syntaxTree.GetReference(node), new SourceLocation(name[i]), parentPropertyToAddTo, ImmutableArray.Create(decl));
                     }
                     _currentChildren.Add(decl);
                 }

@@ -27,9 +27,10 @@ namespace MetaDslx.Compiler.Declarations
             string name, 
             ModelSymbolInfo kind,
             SyntaxReference syntaxReference,
-            SourceLocation nameLocation, 
+            SourceLocation nameLocation,
+            string parentPropertyToAddTo,
             ImmutableArray<SingleDeclaration> children)
-            : base(name)
+            : base(name, parentPropertyToAddTo)
         {
             this.kind = kind;
             this.syntaxReference = syntaxReference;
@@ -132,7 +133,7 @@ namespace MetaDslx.Compiler.Declarations
             public override int GetHashCode()
             {
                 var thisDecl = _decl;
-                return Hash.Combine(thisDecl.Name.GetHashCode(), thisDecl.Kind.GetHashCode());
+                return Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.Kind?.GetHashCode() ?? 0);
             }
         }
 

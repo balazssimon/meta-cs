@@ -12,6 +12,8 @@ using MetaDslx.Core;
 using MetaDslx.Languages.Soal.Binding;
 using MetaDslx.Languages.Soal.Syntax;
 using MetaDslx.Languages.Soal.Symbols;
+using System.Collections.Immutable;
+using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Languages.Soal
 {
@@ -27,6 +29,90 @@ namespace MetaDslx.Languages.Soal
         public override IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
             throw new NotImplementedException();
+        }
+
+        public override IMetaSymbol CreateDeclarationSymbol(Compilation compilation, MutableModel modelBuilder, IMetaSymbol container, MergedDeclaration declaration)
+        {
+            SoalFactory f = new SoalFactory(modelBuilder);
+            MutableSymbol result = f.Create(declaration.Kind.ImmutableType);
+            result.MSet(result.MId.SymbolInfo.NameProperty, declaration.Name);
+            MutableSymbol parent = container as MutableSymbol;
+            if (parent != null)
+            {
+                ModelProperty parentProperty = result.MGetProperty(declaration.ParentPropertyToAddTo);
+                if (parentProperty != null)
+                {
+                    parent.MAdd(parentProperty, result);
+                }
+            }
+            else if (compilation != null)
+            {
+                result.MAttachProperty(CompilerAttachedProperties.ContainingCompilationProperty);
+                result.MSet(CompilerAttachedProperties.ContainingCompilationProperty, compilation);
+            }
+            result.MAttachProperty(CompilerAttachedProperties.MergedDeclarationProperty);
+            result.MSet(CompilerAttachedProperties.MergedDeclarationProperty, declaration);
+            result.MAttachProperty(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty);
+            result.MSet(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty, declaration.SyntaxReferences);
+            if (declaration.Children.Length > 0)
+            {
+                result.MAttachProperty(CompilerAttachedProperties.PropertiesToMembersMapProperty);
+                result.MSetLazy(CompilerAttachedProperties.PropertiesToMembersMapProperty,
+                    () =>
+                    {
+                        var map = new Dictionary<string, ImmutableArray<IMetaSymbol>>();
+                        var cbp = declaration.ChildrenByParentProperties;
+                        foreach (var kvp in cbp)
+                        {
+                            ArrayBuilder<IMetaSymbol> symbolsBuilder = ArrayBuilder<IMetaSymbol>.GetInstance();
+                            try
+                            {
+                                foreach (var item in kvp.Value)
+                                {
+                                    var symbol = CreateDeclarationSymbol(compilation, modelBuilder, result, item);
+                                    symbolsBuilder.Add(symbol);
+                                }
+                            }
+                            finally
+                            {
+                                var symbols = symbolsBuilder.ToImmutableAndFree();
+                                map.Add(kvp.Key, symbols);
+                            }
+                        };
+                        return map;
+                    });
+                foreach (var kvp in declaration.ChildrenByParentProperties)
+                {
+                    ModelProperty parentProperty = result.MGetProperty(kvp.Key);
+                    if (parentProperty != null)
+                    {
+                        if (parentProperty.IsCollection)
+                        {
+                            for (int i = 0; i < kvp.Value.Length; i++)
+                            {
+                                int index = i;
+                                result.MAddLazy(parentProperty,
+                                    () =>
+                                    {
+                                        var map = (Dictionary<string, ImmutableArray<IMetaSymbol>>)result.MGet(CompilerAttachedProperties.PropertiesToMembersMapProperty);
+                                        var symbols = map[kvp.Key];
+                                        return symbols[index];
+                                    });
+                            }
+                        }
+                        else
+                        {
+                            result.MSetLazy(parentProperty,
+                                () =>
+                                {
+                                    var map = (Dictionary<string, ImmutableArray<IMetaSymbol>>)result.MGet(CompilerAttachedProperties.PropertiesToMembersMapProperty);
+                                    return map[kvp.Key].FirstOrDefault();
+                                });
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public override RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)

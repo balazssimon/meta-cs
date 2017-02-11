@@ -65,6 +65,14 @@ namespace MetaDslx.Languages.Calculator
         {
             get { return (CalculatorSyntaxFactory)base.SyntaxFactory; }
         }
+
+        protected override CompilationFactory CompilationFactoryCore
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
 

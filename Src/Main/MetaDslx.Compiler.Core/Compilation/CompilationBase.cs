@@ -75,7 +75,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         private readonly AnonymousTypeManager _anonymousTypeManager;
 
-        private IMetaSymbol _lazyGlobalNamespace;
+        internal IMetaSymbol _lazyGlobalNamespace;
 
         internal ModelId _lazyModelId;
 
@@ -629,22 +629,21 @@ namespace MetaDslx.Compiler
         {
             get
             {
-                if ((object)_lazyGlobalNamespace == null)
-                {
-                    // Get the root namespace from each module, and merge them all together
-                    // Get all modules in this compilation, ones referenced directly by the compilation 
-                    // as well as those referenced by all referenced assemblies.
+                //// SB-TODO:
+                //if ((object)_lazyGlobalNamespace == null)
+                //{
+                //    // Get the root namespace from each module, and merge them all together
+                //    // Get all modules in this compilation, ones referenced directly by the compilation 
+                //    // as well as those referenced by all referenced assemblies.
 
-                    var rootNamespaces = ArrayBuilder<IMetaSymbol>.GetInstance();
-                    GetAllUnaliasedModels(rootNamespaces);
+                //    var rootNamespaces = ArrayBuilder<IMetaSymbol>.GetInstance();
+                //    GetAllUnaliasedModels(rootNamespaces);
+                //    var result = this.Language.CompilationFactory.CreateMergedNamespace(this, this.ModelBuilder, null, rootNamespaces);
+                //    rootNamespaces.Free();
 
-                    var result = this.Language.CompilationFactory.CreateMergedNamespace(this, this.ModelBuilder, null, rootNamespaces);
-
-                    rootNamespaces.Free();
-
-                    Interlocked.CompareExchange(ref _lazyGlobalNamespace, result, null);
-                }
-
+                //    Interlocked.CompareExchange(ref _lazyGlobalNamespace, result, null);
+                //}
+                GetBoundReferenceManager();
                 return _lazyGlobalNamespace;
             }
         }
