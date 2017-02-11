@@ -223,11 +223,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			public override GreenNode VisitAnnotationBody(SoalParser.AnnotationBodyContext context)
 			{
 				if (context == null) return null;
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.IdentifierContext identifierContext = context.identifier();
+				IdentifierGreen identifier = null;
+				if (identifierContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					identifier = (IdentifierGreen)this.Visit(identifierContext);
 				}
 				SoalParser.AnnotationPropertiesContext annotationPropertiesContext = context.annotationProperties();
 				AnnotationPropertiesGreen annotationProperties = null;
@@ -235,7 +235,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					annotationProperties = (AnnotationPropertiesGreen)this.Visit(annotationPropertiesContext);
 				}
-				return this.factory.AnnotationBody(nameDef, annotationProperties, true);
+				return this.factory.AnnotationBody(identifier, annotationProperties, true);
 			}
 			
 			public override GreenNode VisitAnnotationProperties(SoalParser.AnnotationPropertiesContext context)
@@ -276,11 +276,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			public override GreenNode VisitAnnotationProperty(SoalParser.AnnotationPropertyContext context)
 			{
 				if (context == null) return null;
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.IdentifierContext identifierContext = context.identifier();
+				IdentifierGreen identifier = null;
+				if (identifierContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					identifier = (IdentifierGreen)this.Visit(identifierContext);
 				}
 				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign());
 				SoalParser.AnnotationPropertyValueContext annotationPropertyValueContext = context.annotationPropertyValue();
@@ -289,7 +289,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					annotationPropertyValue = (AnnotationPropertyValueGreen)this.Visit(annotationPropertyValueContext);
 				}
-				GreenNode greenNode = this.factory.AnnotationProperty(nameDef, tAssign, annotationPropertyValue, true);
+				GreenNode greenNode = this.factory.AnnotationProperty(identifier, tAssign, annotationPropertyValue, true);
 				return greenNode;
 			}
 			

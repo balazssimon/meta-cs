@@ -663,6 +663,8 @@ namespace MetaDslx.Compiler
         }
         protected abstract MutableModel ModelBuilder { get; }
 
+        internal protected abstract SymbolBuilder SymbolBuilder { get; }
+
         /// <summary>
         /// The root namespace that contains all namespaces and types defined in source code or in 
         /// referenced metadata, merged into a single namespace hierarchy.

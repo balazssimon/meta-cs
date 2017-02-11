@@ -56,6 +56,8 @@
     <Compile Include="Binding\NameResolution.cs" />
     <Compile Include="Binding\OverloadResolution.cs" />
     <Compile Include="Binding\SpeculativeSyntaxTreeSemanticModel.cs" />
+    <Compile Include="Binding\SymbolBuilder.cs" />
+    <Compile Include="Binding\SymbolBuilderVisitor.cs" />
     <Compile Include="Binding\SyntaxTreeSemanticModel.cs" />
     <Compile Include="Compilation\CandidateReason.cs" />
     <Compile Include="Compilation\Compilation.cs" />

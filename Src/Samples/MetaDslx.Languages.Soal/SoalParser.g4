@@ -26,7 +26,7 @@ annotation : TOpenBracket annotationBody TCloseBracket;
                    
 returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
 
-annotationBody :                        nameDef annotationProperties?;
+annotationBody :                        identifier annotationProperties?;
 
 annotationProperties : TOpenParen annotationPropertyList? TCloseParen;
 
@@ -34,7 +34,7 @@ annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
                      
                            
-annotationProperty :                        nameDef TAssign                  annotationPropertyValue;
+annotationProperty :                        identifier TAssign                  annotationPropertyValue;
 
 annotationPropertyValue
 	: constantValue
@@ -113,10 +113,10 @@ componentElement
 
                    
                  
-componentService : KService                                          qualifiedName                                nameDef? componentServiceOrReferenceBody;
+componentService : KService                                          qualifiedName nameDef? componentServiceOrReferenceBody;
                      
                    
-componentReference : KReference                                          qualifiedName                                nameDef? componentServiceOrReferenceBody;
+componentReference : KReference                                          qualifiedName nameDef? componentServiceOrReferenceBody;
 
 componentServiceOrReferenceBody 
 	: TSemicolon #componentServiceOrReferenceEmptyBody
@@ -237,9 +237,9 @@ httpTransportLayerProperties
 	;
 
               
-httpSslProperty : ISSL TAssign        booleanLiteral TSemicolon;
+httpSslProperty : ISSL TAssign booleanLiteral TSemicolon;
                                
-httpClientAuthenticationProperty : IClientAuthentication TAssign        booleanLiteral TSemicolon;
+httpClientAuthenticationProperty : IClientAuthentication TAssign booleanLiteral TSemicolon;
 
                     
 encodingLayer 
@@ -279,7 +279,7 @@ soapEncodingProperties
 soapVersionProperty : IVersion TAssign                         identifier TSemicolon;
 
                
-soapMtomProperty : IMTOM TAssign        booleanLiteral TSemicolon;
+soapMtomProperty : IMTOM TAssign booleanLiteral TSemicolon;
 
                 
 soapStyleProperty : IStyle TAssign                               identifier TSemicolon;
@@ -305,7 +305,7 @@ endpointProperty
 	;
 
 endpointBindingProperty : KBinding                                      qualifiedName TSemicolon;
-endpointAddressProperty : KAddress                           stringLiteral TSemicolon;
+endpointAddressProperty : KAddress                    stringLiteral TSemicolon;
 
 // Types
 
@@ -406,26 +406,32 @@ identifiers
 
 // Literals
 literal 
-    :        nullLiteral
-	|        booleanLiteral
-	|        integerLiteral
-	|        decimalLiteral
-	|        scientificLiteral
-    |        stringLiteral
+    : nullLiteral
+	| booleanLiteral
+	| integerLiteral
+	| decimalLiteral
+	| scientificLiteral
+    | stringLiteral
 	;
 
 // Null literal
+         
 nullLiteral : KNull;
 
 // Boolean literals
+         
 booleanLiteral : KTrue | KFalse;
 
 // Number literals
+         
 integerLiteral : LInteger;
+         
 decimalLiteral : LDecimal;
+         
 scientificLiteral : LScientific;
 
 // String literals
+         
 stringLiteral 
 	: LRegularString
 	| LSingleQuoteVerbatimString 

@@ -124,7 +124,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Name");
 			try
 			{
-				this.Visit(node.NameDef);
+				this.Visit(node.Identifier);
 			}
 			finally
 			{
@@ -156,7 +156,7 @@ namespace MetaDslx.Languages.Soal.Binding
 					this.BeginProperty("Name");
 					try
 					{
-						this.Visit(node.NameDef);
+						this.Visit(node.Identifier);
 					}
 					finally
 					{
@@ -655,15 +655,7 @@ namespace MetaDslx.Languages.Soal.Binding
 					{
 						this.EndProperty();
 					}
-					this.BeginProperty("OptionalName");
-					try
-					{
-						this.Visit(node.NameDef);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
+					this.Visit(node.NameDef);
 					this.Visit(node.ComponentServiceOrReferenceBody);
 				}
 				finally
@@ -704,15 +696,7 @@ namespace MetaDslx.Languages.Soal.Binding
 					{
 						this.EndProperty();
 					}
-					this.BeginProperty("OptionalName");
-					try
-					{
-						this.Visit(node.NameDef);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
+					this.Visit(node.NameDef);
 					this.Visit(node.ComponentServiceOrReferenceBody);
 				}
 				finally

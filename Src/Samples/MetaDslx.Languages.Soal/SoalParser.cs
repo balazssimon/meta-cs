@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\i1q5ab2h.ybn\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\xqdlvsuy.hya\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -686,8 +686,8 @@ public partial class SoalParser : Parser {
 	}
 
 	public partial class AnnotationBodyContext : ParserRuleContext {
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public IdentifierContext identifier() {
+			return GetRuleContext<IdentifierContext>(0);
 		}
 		public AnnotationPropertiesContext annotationProperties() {
 			return GetRuleContext<AnnotationPropertiesContext>(0);
@@ -720,7 +720,7 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 278; nameDef();
+			State = 278; identifier();
 			State = 280;
 			_la = TokenStream.La(1);
 			if (_la==TOpenParen) {
@@ -867,8 +867,8 @@ public partial class SoalParser : Parser {
 	}
 
 	public partial class AnnotationPropertyContext : ParserRuleContext {
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public IdentifierContext identifier() {
+			return GetRuleContext<IdentifierContext>(0);
 		}
 		public ITerminalNode TAssign() { return GetToken(SoalParser.TAssign, 0); }
 		public AnnotationPropertyValueContext annotationPropertyValue() {
@@ -901,7 +901,7 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 296; nameDef();
+			State = 296; identifier();
 			State = 297; Match(TAssign);
 			State = 298; annotationPropertyValue();
 			}
@@ -7618,7 +7618,7 @@ public partial class SoalParser : Parser {
 		sb.Append("\x2\x10F\x110\x5\x12\n\x2\x110\x111\a\x36\x2\x2\x111\xF\x3\x2");
 		sb.Append("\x2\x2\x112\x113\a\x35\x2\x2\x113\x114\a\n\x2\x2\x114\x115\a");
 		sb.Append("/\x2\x2\x115\x116\x5\x12\n\x2\x116\x117\a\x36\x2\x2\x117\x11");
-		sb.Append("\x3\x2\x2\x2\x118\x11A\x5\xCCg\x2\x119\x11B\x5\x14\v\x2\x11A");
+		sb.Append("\x3\x2\x2\x2\x118\x11A\x5\xD0i\x2\x119\x11B\x5\x14\v\x2\x11A");
 		sb.Append("\x119\x3\x2\x2\x2\x11A\x11B\x3\x2\x2\x2\x11B\x13\x3\x2\x2\x2");
 		sb.Append("\x11C\x11E\a\x33\x2\x2\x11D\x11F\x5\x16\f\x2\x11E\x11D\x3\x2");
 		sb.Append("\x2\x2\x11E\x11F\x3\x2\x2\x2\x11F\x120\x3\x2\x2\x2\x120\x121");
@@ -7626,7 +7626,7 @@ public partial class SoalParser : Parser {
 		sb.Append("\x124\a\x31\x2\x2\x124\x126\x5\x18\r\x2\x125\x123\x3\x2\x2\x2");
 		sb.Append("\x126\x129\x3\x2\x2\x2\x127\x125\x3\x2\x2\x2\x127\x128\x3\x2");
 		sb.Append("\x2\x2\x128\x17\x3\x2\x2\x2\x129\x127\x3\x2\x2\x2\x12A\x12B");
-		sb.Append("\x5\xCCg\x2\x12B\x12C\a\x32\x2\x2\x12C\x12D\x5\x1A\xE\x2\x12D");
+		sb.Append("\x5\xD0i\x2\x12B\x12C\a\x32\x2\x2\x12C\x12D\x5\x1A\xE\x2\x12D");
 		sb.Append("\x19\x3\x2\x2\x2\x12E\x131\x5\xC8\x65\x2\x12F\x131\x5\xCA\x66");
 		sb.Append("\x2\x130\x12E\x3\x2\x2\x2\x130\x12F\x3\x2\x2\x2\x131\x1B\x3");
 		sb.Append("\x2\x2\x2\x132\x134\x5\n\x6\x2\x133\x132\x3\x2\x2\x2\x133\x134");

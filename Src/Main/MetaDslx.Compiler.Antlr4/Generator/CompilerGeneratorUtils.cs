@@ -292,22 +292,52 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
         public static bool IsIdentifier(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation("Identifier");
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Identifier);
         }
 
         public static bool IsName(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation("Name");
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Name);
         }
 
         public static bool IsProperty(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation("Property");
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Property);
         }
 
         public static bool IsQualifiedName(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation("QualifiedName");
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.QualifiedName);
+        }
+
+        public static bool IsNameCtr(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameCtr);
+        }
+
+        public static bool IsTypeCtr(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeCtr);
+        }
+
+        public static bool IsNameUse(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameUse);
+        }
+
+        public static bool IsTypeUse(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeUse);
+        }
+
+        public static bool IsConstant(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Constant);
+        }
+
+        public static bool IsValue(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Value);
         }
 
         public static string GetNestingProperty(this MetaCompilerAnnotations annots)

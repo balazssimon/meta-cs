@@ -26,7 +26,7 @@ $Property(Annotations)
 $Symbol(Annotation)
 returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
 
-annotationBody : $Property(Name) $Value nameDef annotationProperties?;
+annotationBody : $Property(Name) $Value identifier annotationProperties?;
 
 annotationProperties : TOpenParen annotationPropertyList? TCloseParen;
 
@@ -34,7 +34,7 @@ annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
 $Property(Properties)
 $Symbol(AnnotationProperty)
-annotationProperty : $Property(Name) $Value nameDef TAssign $Property(Value) annotationPropertyValue;
+annotationProperty : $Property(Name) $Value identifier TAssign $Property(Value) annotationPropertyValue;
 
 annotationPropertyValue
 	: constantValue
@@ -113,10 +113,10 @@ componentElement
 
 $Property(Services)
 $NameDef(Service)
-componentService : KService $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value nameDef? componentServiceOrReferenceBody;
+componentService : KService $Property(Interface) $TypeUse(Interface) qualifiedName nameDef? componentServiceOrReferenceBody;
 $Property(References)
 $NameDef(Reference)
-componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifiedName $Property(OptionalName) $Value nameDef? componentServiceOrReferenceBody;
+componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifiedName nameDef? componentServiceOrReferenceBody;
 
 componentServiceOrReferenceBody 
 	: TSemicolon #componentServiceOrReferenceEmptyBody
@@ -237,9 +237,9 @@ httpTransportLayerProperties
 	;
 
 $Property(Ssl)
-httpSslProperty : ISSL TAssign $Value booleanLiteral TSemicolon;
+httpSslProperty : ISSL TAssign booleanLiteral TSemicolon;
 $Property(ClientAuthentication)
-httpClientAuthenticationProperty : IClientAuthentication TAssign $Value booleanLiteral TSemicolon;
+httpClientAuthenticationProperty : IClientAuthentication TAssign booleanLiteral TSemicolon;
 
 $Property(Encodings)
 encodingLayer 
@@ -279,7 +279,7 @@ $Property(Version)
 soapVersionProperty : IVersion TAssign $EnumValue(SoapVersion) identifier TSemicolon;
 
 $Property(Mtom)
-soapMtomProperty : IMTOM TAssign $Value booleanLiteral TSemicolon;
+soapMtomProperty : IMTOM TAssign booleanLiteral TSemicolon;
 
 $Property(Style)
 soapStyleProperty : IStyle TAssign $EnumValue(SoapEncodingStyle) identifier TSemicolon;
@@ -305,7 +305,7 @@ endpointProperty
 	;
 
 endpointBindingProperty : KBinding $Property(Binding) $NameUse(Binding) qualifiedName TSemicolon;
-endpointAddressProperty : KAddress $Property(Address) $Value stringLiteral TSemicolon;
+endpointAddressProperty : KAddress $Property(Address) stringLiteral TSemicolon;
 
 // Types
 
@@ -406,26 +406,32 @@ identifiers
 
 // Literals
 literal 
-    : $Value nullLiteral
-	| $Value booleanLiteral
-	| $Value integerLiteral
-	| $Value decimalLiteral
-	| $Value scientificLiteral
-    | $Value stringLiteral
+    : nullLiteral
+	| booleanLiteral
+	| integerLiteral
+	| decimalLiteral
+	| scientificLiteral
+    | stringLiteral
 	;
 
 // Null literal
+$Constant
 nullLiteral : KNull;
 
 // Boolean literals
+$Constant
 booleanLiteral : KTrue | KFalse;
 
 // Number literals
+$Constant
 integerLiteral : LInteger;
+$Constant
 decimalLiteral : LDecimal;
+$Constant
 scientificLiteral : LScientific;
 
 // String literals
+$Constant
 stringLiteral 
 	: LRegularString
 	| LSingleQuoteVerbatimString 

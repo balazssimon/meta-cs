@@ -3213,6 +3213,7 @@ namespace [Properties.DefaultNamespace].Binding
 }
 end template
 
+
 template GenerateDeclarationTreeBuilderVisit(Antlr4ParserRule rule)
 ^
 public virtual void Visit[rule.PlainName()]([rule.RedName()] node)
@@ -3369,6 +3370,170 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 	end if
 	if (elem.Annotations.IsProperty())
 		body = GenerateDeclarationTreeBuilderProperty(elem.Annotations, body);
+	end if
+	return body;
+end function
+
+
+template GenerateSymbolBuilderVisitor()
+using MetaDslx.Compiler.Binding;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MetaDslx.Compiler.Declarations;
+using MetaDslx.Core;
+using [Properties.DefaultNamespace].Syntax;
+using [Properties.DefaultNamespace].Symbols;
+^
+namespace [Properties.DefaultNamespace].Binding
+{
+    public class [Properties.LanguageName]SymbolBuilderVisitor : [Properties.LanguageName]DetailedSyntaxVisitor, ISymbolBuilderVisitor
+    {
+        private MergedDeclaration _declaration;
+        private MutableSymbol _symbol;
+^
+        public [Properties.LanguageName]SymbolBuilderVisitor(SymbolBuilder symbolBuilder)
+        {
+^
+        }
+^
+        public MergedDeclaration Declaration
+        {
+            get { return _declaration; }
+            set { _declaration = value; }
+        }
+^
+        public MutableSymbol Symbol
+        {
+            get { return _symbol; }
+            set { _symbol = value; }
+        }
+   		[loop(rule:Instances.ParserRules)]
+			[if (rule.Alternatives.Count > 0)]
+				[loop(alt:rule.Alternatives)]
+		[GenerateSymbolBuilderVisit(alt)]
+				[end loop]
+			[else]
+		[GenerateSymbolBuilderVisit(rule)]
+			[end if]
+		[end loop]
+    }
+}
+end template
+
+
+template GenerateSymbolBuilderVisit(Antlr4ParserRule rule)
+^
+public override void Visit[rule.PlainName()]([rule.RedName()] node)
+{
+	[GetSymbolBuilderVisitBody(rule)]
+}
+end template
+
+template GenerateSymbolBuilderVisitBody(Antlr4ParserRule rule)
+[if (rule.IsSimpleAlt)]
+	[loop(elem:rule.Elements)]
+[GetSymbolBuilderVisitElement(rule, elem)]
+	[end loop] 
+[else]
+	[loop(elem:rule.AllElements)]
+[GetSymbolBuilderVisitElement(rule, elem)]
+	[end loop]    
+[end if]
+end template
+
+template GenerateSymbolBuilderVisitElement(Antlr4ParserRuleElement elem)
+	[if (elem.IsList)]
+this.VisitList(node.[elem.RedName()]);
+	[else]
+		[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
+this.VisitToken(node.[elem.RedName()]);
+		[else]
+this.Visit(node.[elem.RedName()]);
+		[end if]
+	[end if]
+end template
+
+template GenerateSymbolBuilderConstant(MetaCompilerAnnotations annots, string body)
+[body]
+end template
+
+template GenerateSymbolBuilderValue(MetaCompilerAnnotations annots, string body)
+[body]
+end template
+
+template GenerateSymbolBuilderNameCtr(MetaCompilerAnnotations annots, string body)
+[body]
+end template
+
+template GenerateSymbolBuilderTypeCtr(MetaCompilerAnnotations annots, string body)
+[body]
+end template
+
+template GenerateSymbolBuilderNameUse(MetaCompilerAnnotations annots, string body)
+[body]
+end template
+
+template GenerateSymbolBuilderTypeUse(MetaCompilerAnnotations annots, string body)
+[body]
+end template
+
+template GenerateSymbolBuilderProperty(MetaCompilerAnnotations annots, string body)
+[body]
+end template
+
+
+
+function string GetSymbolBuilderVisitBody(Antlr4ParserRule rule)
+	string body = GenerateSymbolBuilderVisitBody(rule);
+	if (rule.Annotations.IsConstant())
+		body = GenerateSymbolBuilderConstant(rule.Annotations, body);
+	end if
+	if (rule.Annotations.IsValue())
+		body = GenerateSymbolBuilderValue(rule.Annotations, body);
+	end if
+	if (rule.Annotations.IsNameCtr())
+		body = GenerateSymbolBuilderNameCtr(rule.Annotations, body);
+	end if
+	if (rule.Annotations.IsTypeCtr())
+		body = GenerateSymbolBuilderTypeCtr(rule.Annotations, body);
+	end if
+	if (rule.Annotations.IsNameUse())
+		body = GenerateSymbolBuilderNameUse(rule.Annotations, body);
+	end if
+	if (rule.Annotations.IsTypeUse())
+		body = GenerateSymbolBuilderTypeUse(rule.Annotations, body);
+	end if
+	if (rule.Annotations.IsProperty())
+		body = GenerateSymbolBuilderProperty(rule.Annotations, body);
+	end if
+	return body;
+end function
+
+function string GetSymbolBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
+	string body = GenerateSymbolBuilderVisitElement(elem);
+	if (elem.Annotations.IsConstant())
+		body = GenerateSymbolBuilderConstant(elem.Annotations, body);
+	end if
+	if (elem.Annotations.IsValue())
+		body = GenerateSymbolBuilderValue(elem.Annotations, body);
+	end if
+	if (elem.Annotations.IsNameCtr())
+		body = GenerateSymbolBuilderNameCtr(elem.Annotations, body);
+	end if
+	if (elem.Annotations.IsTypeCtr())
+		body = GenerateSymbolBuilderTypeCtr(elem.Annotations, body);
+	end if
+	if (elem.Annotations.IsNameUse())
+		body = GenerateSymbolBuilderNameUse(elem.Annotations, body);
+	end if
+	if (elem.Annotations.IsTypeUse())
+		body = GenerateSymbolBuilderTypeUse(elem.Annotations, body);
+	end if
+	if (elem.Annotations.IsProperty())
+		body = GenerateSymbolBuilderProperty(elem.Annotations, body);
 	end if
 	return body;
 end function

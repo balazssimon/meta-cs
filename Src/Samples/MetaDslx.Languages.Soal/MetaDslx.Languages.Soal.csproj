@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Binding\SoalAnonymousTypeManager.cs" />
     <Compile Include="Binding\SoalDeclarationTreeBuilder.cs" />
+    <Compile Include="Binding\SoalSymbolBuilderVisitor.cs" />
     <Compile Include="Compilation\SoalCompilation.cs" />
     <Compile Include="Compilation\SoalCompilationFactory.cs" />
     <Compile Include="Compilation\SoalCompilationOptions.cs" />

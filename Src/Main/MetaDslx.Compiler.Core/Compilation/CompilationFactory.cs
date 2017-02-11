@@ -19,15 +19,18 @@ namespace MetaDslx.Compiler
     {
         internal static readonly CompilationFactory Default = new DefaultCompilationFactory();
 
+        public abstract RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
+        public abstract ModelFactory CreateModelFactory(MutableModel modelBuilder);
+        public abstract ISymbolBuilderVisitor CreateSymbolBuilderVisitor(SymbolBuilder symbolBuilder);
+
         public abstract IMetaSymbol CreateMergedNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge);
         public abstract IMetaSymbol CreateNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, string name);
-        public abstract RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
-        public abstract IMetaSymbol CreateDeclarationSymbol(Compilation compilation, MutableModel modelBuilder, IMetaSymbol container, MergedDeclaration declaration);
         public abstract bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree);
         public abstract IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
         public abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder);
         public abstract AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilation);
         public abstract ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType);
+
         public virtual SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilation, SyntaxTree syntaxTree, bool ignoreAccessibility)
         {
             return new SyntaxTreeSemanticModel(compilation, syntaxTree, ignoreAccessibility);
@@ -56,11 +59,6 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override IMetaSymbol CreateDeclarationSymbol(Compilation compilation, MutableModel modelBuilder, IMetaSymbol container, MergedDeclaration declaration)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             throw ExceptionUtilities.Unreachable;
@@ -76,12 +74,22 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
+        public override ModelFactory CreateModelFactory(MutableModel modelBuilder)
+        {
+            throw new NotImplementedException();
+        }
+
         public override IMetaSymbol CreateNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, string name)
         {
             throw new NotImplementedException();
         }
 
         public override ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ISymbolBuilderVisitor CreateSymbolBuilderVisitor(SymbolBuilder symbolBuilder)
         {
             throw new NotImplementedException();
         }

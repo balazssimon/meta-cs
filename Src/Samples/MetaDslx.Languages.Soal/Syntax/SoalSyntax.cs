@@ -1054,7 +1054,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	
 	public sealed class AnnotationBodySyntax : SoalSyntaxNode
 	{
-	    private NameDefSyntax nameDef;
+	    private IdentifierSyntax identifier;
 	    private AnnotationPropertiesSyntax annotationProperties;
 	
 	    public AnnotationBodySyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
@@ -1067,9 +1067,9 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	    }
 	
-	    public NameDefSyntax NameDef 
+	    public IdentifierSyntax Identifier 
 		{ 
-			get { return this.GetRed(ref this.nameDef, 0); } 
+			get { return this.GetRed(ref this.identifier, 0); } 
 		}
 	    public AnnotationPropertiesSyntax AnnotationProperties 
 		{ 
@@ -1080,7 +1080,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.nameDef, 0);
+				case 0: return this.GetRed(ref this.identifier, 0);
 				case 1: return this.GetRed(ref this.annotationProperties, 1);
 				default: return null;
 	        }
@@ -1090,28 +1090,28 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.nameDef;
+				case 0: return this.identifier;
 				case 1: return this.annotationProperties;
 				default: return null;
 	        }
 	    }
 	
-	    public AnnotationBodySyntax WithNameDef(NameDefSyntax nameDef)
+	    public AnnotationBodySyntax WithIdentifier(IdentifierSyntax identifier)
 		{
-			return this.Update(NameDef, this.AnnotationProperties);
+			return this.Update(Identifier, this.AnnotationProperties);
 		}
 	
 	    public AnnotationBodySyntax WithAnnotationProperties(AnnotationPropertiesSyntax annotationProperties)
 		{
-			return this.Update(this.NameDef, AnnotationProperties);
+			return this.Update(this.Identifier, AnnotationProperties);
 		}
 	
-	    public AnnotationBodySyntax Update(NameDefSyntax nameDef, AnnotationPropertiesSyntax annotationProperties)
+	    public AnnotationBodySyntax Update(IdentifierSyntax identifier, AnnotationPropertiesSyntax annotationProperties)
 	    {
-	        if (this.NameDef != nameDef ||
+	        if (this.Identifier != identifier ||
 				this.AnnotationProperties != annotationProperties)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.AnnotationBody(nameDef, annotationProperties);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.AnnotationBody(identifier, annotationProperties);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1308,7 +1308,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	
 	public sealed class AnnotationPropertySyntax : SoalSyntaxNode
 	{
-	    private NameDefSyntax nameDef;
+	    private IdentifierSyntax identifier;
 	    private AnnotationPropertyValueSyntax annotationPropertyValue;
 	
 	    public AnnotationPropertySyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
@@ -1321,9 +1321,9 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	    }
 	
-	    public NameDefSyntax NameDef 
+	    public IdentifierSyntax Identifier 
 		{ 
-			get { return this.GetRed(ref this.nameDef, 0); } 
+			get { return this.GetRed(ref this.identifier, 0); } 
 		}
 	    public SyntaxToken TAssign 
 		{ 
@@ -1343,7 +1343,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.nameDef, 0);
+				case 0: return this.GetRed(ref this.identifier, 0);
 				case 2: return this.GetRed(ref this.annotationPropertyValue, 2);
 				default: return null;
 	        }
@@ -1353,34 +1353,34 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.nameDef;
+				case 0: return this.identifier;
 				case 2: return this.annotationPropertyValue;
 				default: return null;
 	        }
 	    }
 	
-	    public AnnotationPropertySyntax WithNameDef(NameDefSyntax nameDef)
+	    public AnnotationPropertySyntax WithIdentifier(IdentifierSyntax identifier)
 		{
-			return this.Update(NameDef, this.TAssign, this.AnnotationPropertyValue);
+			return this.Update(Identifier, this.TAssign, this.AnnotationPropertyValue);
 		}
 	
 	    public AnnotationPropertySyntax WithTAssign(SyntaxToken tAssign)
 		{
-			return this.Update(this.NameDef, TAssign, this.AnnotationPropertyValue);
+			return this.Update(this.Identifier, TAssign, this.AnnotationPropertyValue);
 		}
 	
 	    public AnnotationPropertySyntax WithAnnotationPropertyValue(AnnotationPropertyValueSyntax annotationPropertyValue)
 		{
-			return this.Update(this.NameDef, this.TAssign, AnnotationPropertyValue);
+			return this.Update(this.Identifier, this.TAssign, AnnotationPropertyValue);
 		}
 	
-	    public AnnotationPropertySyntax Update(NameDefSyntax nameDef, SyntaxToken tAssign, AnnotationPropertyValueSyntax annotationPropertyValue)
+	    public AnnotationPropertySyntax Update(IdentifierSyntax identifier, SyntaxToken tAssign, AnnotationPropertyValueSyntax annotationPropertyValue)
 	    {
-	        if (this.NameDef != nameDef ||
+	        if (this.Identifier != identifier ||
 				this.TAssign != tAssign ||
 				this.AnnotationPropertyValue != annotationPropertyValue)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.AnnotationProperty(nameDef, tAssign, annotationPropertyValue);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.AnnotationProperty(identifier, tAssign, annotationPropertyValue);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -14148,7 +14148,7 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual void VisitAnnotationBody(AnnotationBodySyntax node)
 		{
-			this.Visit(node.NameDef);
+			this.Visit(node.Identifier);
 			this.Visit(node.AnnotationProperties);
 		}
 		
@@ -14166,7 +14166,7 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual void VisitAnnotationProperty(AnnotationPropertySyntax node)
 		{
-			this.Visit(node.NameDef);
+			this.Visit(node.Identifier);
 			this.VisitToken(node.TAssign);
 			this.Visit(node.AnnotationPropertyValue);
 		}
@@ -15841,9 +15841,9 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual SyntaxNode VisitAnnotationBody(AnnotationBodySyntax node)
 		{
-		    var nameDef = (NameDefSyntax)this.Visit(node.NameDef);
+		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
 		    var annotationProperties = (AnnotationPropertiesSyntax)this.Visit(node.AnnotationProperties);
-			return node.Update(nameDef, annotationProperties);
+			return node.Update(identifier, annotationProperties);
 		}
 		
 		public virtual SyntaxNode VisitAnnotationProperties(AnnotationPropertiesSyntax node)
@@ -15862,10 +15862,10 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual SyntaxNode VisitAnnotationProperty(AnnotationPropertySyntax node)
 		{
-		    var nameDef = (NameDefSyntax)this.Visit(node.NameDef);
+		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
 		    var tAssign = this.VisitToken(node.TAssign);
 		    var annotationPropertyValue = (AnnotationPropertyValueSyntax)this.Visit(node.AnnotationPropertyValue);
-			return node.Update(nameDef, tAssign, annotationPropertyValue);
+			return node.Update(identifier, tAssign, annotationPropertyValue);
 		}
 		
 		public virtual SyntaxNode VisitAnnotationPropertyValue(AnnotationPropertyValueSyntax node)
@@ -17515,15 +17515,15 @@ namespace MetaDslx.Languages.Soal
 			return this.ReturnAnnotation(this.Token(SoalSyntaxKind.TOpenBracket), this.Token(SoalSyntaxKind.KReturn), this.Token(SoalSyntaxKind.TColon), annotationBody, this.Token(SoalSyntaxKind.TCloseBracket));
 		}
 		
-		public AnnotationBodySyntax AnnotationBody(NameDefSyntax nameDef, AnnotationPropertiesSyntax annotationProperties)
+		public AnnotationBodySyntax AnnotationBody(IdentifierSyntax identifier, AnnotationPropertiesSyntax annotationProperties)
 		{
-		    if (nameDef == null) throw new ArgumentNullException(nameof(nameDef));
-		    return (AnnotationBodySyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationBody((Syntax.InternalSyntax.NameDefGreen)nameDef.Green, annotationProperties == null ? null : (Syntax.InternalSyntax.AnnotationPropertiesGreen)annotationProperties.Green).CreateRed();
+		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
+		    return (AnnotationBodySyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationBody((Syntax.InternalSyntax.IdentifierGreen)identifier.Green, annotationProperties == null ? null : (Syntax.InternalSyntax.AnnotationPropertiesGreen)annotationProperties.Green).CreateRed();
 		}
 		
-		public AnnotationBodySyntax AnnotationBody(NameDefSyntax nameDef)
+		public AnnotationBodySyntax AnnotationBody(IdentifierSyntax identifier)
 		{
-			return this.AnnotationBody(nameDef, null);
+			return this.AnnotationBody(identifier, null);
 		}
 		
 		public AnnotationPropertiesSyntax AnnotationProperties(SyntaxToken tOpenParen, AnnotationPropertyListSyntax annotationPropertyList, SyntaxToken tCloseParen)
@@ -17546,18 +17546,18 @@ namespace MetaDslx.Languages.Soal
 		    return (AnnotationPropertyListSyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationPropertyList(annotationProperty.Green).CreateRed();
 		}
 		
-		public AnnotationPropertySyntax AnnotationProperty(NameDefSyntax nameDef, SyntaxToken tAssign, AnnotationPropertyValueSyntax annotationPropertyValue)
+		public AnnotationPropertySyntax AnnotationProperty(IdentifierSyntax identifier, SyntaxToken tAssign, AnnotationPropertyValueSyntax annotationPropertyValue)
 		{
-		    if (nameDef == null) throw new ArgumentNullException(nameof(nameDef));
+		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
 		    if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
 		    if (tAssign.RawKind != (int)SoalSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
 		    if (annotationPropertyValue == null) throw new ArgumentNullException(nameof(annotationPropertyValue));
-		    return (AnnotationPropertySyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationProperty((Syntax.InternalSyntax.NameDefGreen)nameDef.Green, (InternalSyntaxToken)tAssign.Green, (Syntax.InternalSyntax.AnnotationPropertyValueGreen)annotationPropertyValue.Green).CreateRed();
+		    return (AnnotationPropertySyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationProperty((Syntax.InternalSyntax.IdentifierGreen)identifier.Green, (InternalSyntaxToken)tAssign.Green, (Syntax.InternalSyntax.AnnotationPropertyValueGreen)annotationPropertyValue.Green).CreateRed();
 		}
 		
-		public AnnotationPropertySyntax AnnotationProperty(NameDefSyntax nameDef, AnnotationPropertyValueSyntax annotationPropertyValue)
+		public AnnotationPropertySyntax AnnotationProperty(IdentifierSyntax identifier, AnnotationPropertyValueSyntax annotationPropertyValue)
 		{
-			return this.AnnotationProperty(nameDef, this.Token(SoalSyntaxKind.TAssign), annotationPropertyValue);
+			return this.AnnotationProperty(identifier, this.Token(SoalSyntaxKind.TAssign), annotationPropertyValue);
 		}
 		
 		public AnnotationPropertyValueSyntax AnnotationPropertyValue(ConstantValueSyntax constantValue)

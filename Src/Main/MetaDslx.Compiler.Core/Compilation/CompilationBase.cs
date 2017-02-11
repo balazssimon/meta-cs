@@ -89,6 +89,8 @@ namespace MetaDslx.Compiler
 
         internal MutableModel _lazyModelBuilder;
 
+        private SymbolBuilder _lazySymbolBuilder;
+
         /// <summary>
         /// Holds onto data related to reference binding.
         /// The manager is shared among multiple compilations that we expect to have the same result of reference binding.
@@ -618,6 +620,22 @@ namespace MetaDslx.Compiler
             {
                 GetBoundReferenceManager();
                 return _lazyModelBuilder;
+            }
+        }
+
+        /// <summary>
+        /// The ModelBuilder that represents the compilation.
+        /// </summary>
+        internal protected override SymbolBuilder SymbolBuilder
+        {
+            get
+            {
+                GetBoundReferenceManager();
+                if (_lazySymbolBuilder == null)
+                {
+                    Interlocked.CompareExchange(ref _lazySymbolBuilder, new SymbolBuilder(this), null);
+                }
+                return _lazySymbolBuilder;
             }
         }
 

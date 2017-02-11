@@ -13,6 +13,7 @@ namespace MetaDslx.Compiler.MetaModel
     {
         public const string Id = "MetaDslx.MetaAnnotations";
 
+        public const string Identifier = "Identifier";
         public const string Name = "Name";
         public const string QualifiedName = "QualifiedName";
         public const string NameDef = "NameDef";
@@ -27,6 +28,8 @@ namespace MetaDslx.Compiler.MetaModel
         public const string SymbolType = "SymbolType";
         public const string PreDefSymbol = "PreDefSymbol";
         public const string Property = "Property";
+        public const string Value = "Value";
+        public const string Constant = "Constant";
 
         public static readonly string[] SemanticAnnotations = 
             {
