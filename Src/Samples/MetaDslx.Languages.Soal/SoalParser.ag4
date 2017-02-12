@@ -42,7 +42,8 @@ annotationPropertyValue
 	;
 
 $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
-namespaceDeclaration: annotationList? KNamespace qualifiedNameDef TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral TOpenBrace declaration* TCloseBrace;
+namespaceDeclaration: annotationList? KNamespace qualifiedNameDef TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral $Body namespaceBody;
+namespaceBody: TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations)
 declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | assemblyDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;

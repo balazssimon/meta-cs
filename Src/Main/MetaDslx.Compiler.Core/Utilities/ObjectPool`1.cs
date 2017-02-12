@@ -37,7 +37,7 @@ namespace MetaDslx.Compiler.Utilities
     /// Rationale: 
     ///    If there is no intent for reusing the object, do not use pool - just use "new". 
     /// </summary>
-    internal class ObjectPool<T> where T : class
+    public class ObjectPool<T> where T : class
     {
         [DebuggerDisplay("{Value,nq}")]
         private struct Element
@@ -49,7 +49,7 @@ namespace MetaDslx.Compiler.Utilities
         /// Not using System.Func{T} because this file is linked into the (debugger) Formatter,
         /// which does not have that type (since it compiles against .NET 2.0).
         /// </remarks>
-        internal delegate T Factory();
+        public delegate T Factory();
 
         // Storage for the pool objects. The first item is stored in a dedicated field because we
         // expect to be able to satisfy most requests from it.
@@ -102,11 +102,11 @@ namespace MetaDslx.Compiler.Utilities
         }
 #endif      
 
-        internal ObjectPool(Factory factory)
+        public ObjectPool(Factory factory)
             : this(factory, Environment.ProcessorCount * 2)
         { }
 
-        internal ObjectPool(Factory factory, int size)
+        public ObjectPool(Factory factory, int size)
         {
             Debug.Assert(size >= 1);
             _factory = factory;
@@ -127,7 +127,7 @@ namespace MetaDslx.Compiler.Utilities
         /// Note that Free will try to store recycled objects close to the start thus statistically 
         /// reducing how far we will typically search.
         /// </remarks>
-        internal T Allocate()
+        public T Allocate()
         {
             // PERF: Examine the first element. If that fails, AllocateSlow will look at the remaining elements.
             // Note that the initial read is optimistically not synchronized. That is intentional. 
@@ -181,7 +181,7 @@ namespace MetaDslx.Compiler.Utilities
         /// Note that Free will try to store recycled objects close to the start thus statistically 
         /// reducing how far we will typically search in Allocate.
         /// </remarks>
-        internal void Free(T obj)
+        public void Free(T obj)
         {
             Validate(obj);
             ForgetTrackedObject(obj);

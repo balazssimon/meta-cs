@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Declarations;
+﻿using MetaDslx.Compiler.Binding;
+using MetaDslx.Compiler.Declarations;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Core;
 using System;
@@ -37,5 +38,6 @@ namespace MetaDslx.Compiler.Symbols
             ModelProperty.Register(typeof(CompilerAttachedProperties), "IsScriptClass",
                 new ModelPropertyTypeInfo(typeof(bool), null),
                 new ModelPropertyTypeInfo(typeof(bool), null));
+
     }
 }

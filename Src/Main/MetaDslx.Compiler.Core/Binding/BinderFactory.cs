@@ -51,14 +51,14 @@ namespace MetaDslx.Compiler.Binding
         // In a typing scenario, GetBinder is regularly called with a non-zero position.
         // This results in a lot of allocations of BinderFactoryVisitors. Pooling them
         // reduces this churn to almost nothing.
-        private readonly ObjectPool<IBinderFactoryVisitor> _binderFactoryVisitorPool;
+        private readonly ObjectPool<BinderFactoryVisitor> _binderFactoryVisitorPool;
 
         internal BinderFactory(Compilation compilation, SyntaxTree syntaxTree)
         {
             _compilation = compilation;
             _syntaxTree = syntaxTree;
 
-            _binderFactoryVisitorPool = new ObjectPool<IBinderFactoryVisitor>(() => compilation.Language.CompilationFactory.CreateBinderFactoryVisitor(this), 64);
+            _binderFactoryVisitorPool = new ObjectPool<BinderFactoryVisitor>(() => compilation.Language.CompilationFactory.CreateBinderFactoryVisitor(this), 64);
 
             // 50 is more or less a guess, but it seems to work fine for scenarios that I tried.
             // we need something big enough to keep binders for most classes and some methods 
@@ -70,6 +70,11 @@ namespace MetaDslx.Compiler.Binding
             _binderCache = new ConcurrentCache<BinderCacheKey, Binder>(50);
 
             _buckStopsHereBinder = new BuckStopsHereBinder(compilation);
+        }
+
+        public CompilationBase Compilation
+        {
+            get { return (CompilationBase)_compilation; }
         }
 
         public SyntaxTree SyntaxTree
@@ -99,7 +104,7 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Note, there is no guarantee that the factory always gives back the same binder instance for the same <param name="node"/>.
         /// </summary>
-        public Binder GetBinder(SyntaxNode node)
+        public Binder GetBinder(RedNode node)
         {
             int position = node.SpanStart;
 
@@ -108,11 +113,17 @@ namespace MetaDslx.Compiler.Binding
             // directly since it's parent would be null.
             if (InScript && node.Parent == null)
             {
-                return GetBinder(node, position);
+                SyntaxNode rootNode = node as SyntaxNode;
+                if (rootNode != null)
+                {
+                    return GetBinder(rootNode, position);
+                }
+                else
+                {
+                    return null;
+                }
             }
 
-            // ACASEY: Using node.Parent here to maintain existing behavior,
-            // but I have no idea why.
             return GetBinder(node.Parent, position);
         }
 
@@ -122,10 +133,16 @@ namespace MetaDslx.Compiler.Binding
 
             Binder result = null;
 
-            IBinderFactoryVisitor visitor = _binderFactoryVisitorPool.Allocate();
-            visitor.Position = position;
-            result = node.Accept(((object)visitor) as SyntaxVisitor<Binder>);
-            _binderFactoryVisitorPool.Free(visitor);
+            BinderFactoryVisitor visitor = _binderFactoryVisitorPool.Allocate();
+            try
+            {
+                visitor.Reset(position);
+                result = node.Accept(visitor);
+            }
+            finally
+            {
+                _binderFactoryVisitorPool.Free(visitor);
+            }
 
             return result;
         }

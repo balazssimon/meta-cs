@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binding\SoalAnonymousTypeManager.cs" />
+    <Compile Include="Binding\SoalBinderFactoryVisitor.cs" />
     <Compile Include="Binding\SoalDeclarationTreeBuilder.cs" />
     <Compile Include="Binding\SoalSymbolBuilderVisitor.cs" />
     <Compile Include="Compilation\SoalCompilation.cs" />

@@ -42,7 +42,8 @@ annotationPropertyValue
 	;
 
                                                                       
-namespaceDeclaration: annotationList? KNamespace qualifiedNameDef TAssign (                         identifier TColon)?                       stringLiteral TOpenBrace declaration* TCloseBrace;
+namespaceDeclaration: annotationList? KNamespace qualifiedNameDef TAssign (                         identifier TColon)?                       stringLiteral       namespaceBody;
+namespaceBody: TOpenBrace declaration* TCloseBrace;
 
                        
 declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | assemblyDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;

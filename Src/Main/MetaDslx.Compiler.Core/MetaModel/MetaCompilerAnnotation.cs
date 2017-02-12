@@ -30,6 +30,7 @@ namespace MetaDslx.Compiler.MetaModel
         public const string Property = "Property";
         public const string Value = "Value";
         public const string Constant = "Constant";
+        public const string Body = "Body";
 
         public static readonly string[] SemanticAnnotations = 
             {

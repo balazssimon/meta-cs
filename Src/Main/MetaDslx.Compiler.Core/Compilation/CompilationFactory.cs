@@ -21,12 +21,11 @@ namespace MetaDslx.Compiler
 
         public abstract RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
         public abstract ModelFactory CreateModelFactory(MutableModel modelBuilder);
-        public abstract ISymbolBuilderVisitor CreateSymbolBuilderVisitor(SymbolBuilder symbolBuilder);
+        public abstract SymbolBuilderVisitor CreateSymbolBuilderVisitor(SymbolBuilder symbolBuilder);
 
-        public abstract IMetaSymbol CreateMergedNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge);
-        public abstract IMetaSymbol CreateNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, string name);
+        public abstract IMetaSymbol CreateGlobalNamespace(Compilation compilation, MutableModel modelBuilder, IEnumerable<IMetaSymbol> namespacesToMerge);
         public abstract bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree);
-        public abstract IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
+        public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
         public abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder);
         public abstract AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilation);
         public abstract ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType);
@@ -54,7 +53,7 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
+        public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
             throw new NotImplementedException();
         }
@@ -69,7 +68,7 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override IMetaSymbol CreateMergedNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge)
+        public override IMetaSymbol CreateGlobalNamespace(Compilation compilation, MutableModel modelBuilder, IEnumerable<IMetaSymbol> namespacesToMerge)
         {
             throw new NotImplementedException();
         }
@@ -79,17 +78,12 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override IMetaSymbol CreateNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public override ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType)
         {
             throw new NotImplementedException();
         }
 
-        public override ISymbolBuilderVisitor CreateSymbolBuilderVisitor(SymbolBuilder symbolBuilder)
+        public override SymbolBuilderVisitor CreateSymbolBuilderVisitor(SymbolBuilder symbolBuilder)
         {
             throw new NotImplementedException();
         }

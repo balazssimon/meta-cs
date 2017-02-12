@@ -1773,11 +1773,9 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    private IdentifierGreen identifier;
 	    private InternalSyntaxToken tColon;
 	    private StringLiteralGreen stringLiteral;
-	    private InternalSyntaxToken tOpenBrace;
-	    private InternalSyntaxNodeList declaration;
-	    private InternalSyntaxToken tCloseBrace;
+	    private NamespaceBodyGreen namespaceBody;
 	
-	    public NamespaceDeclarationGreen(SoalSyntaxKind kind, AnnotationListGreen annotationList, InternalSyntaxToken kNamespace, QualifiedNameDefGreen qualifiedNameDef, InternalSyntaxToken tAssign, IdentifierGreen identifier, InternalSyntaxToken tColon, StringLiteralGreen stringLiteral, InternalSyntaxToken tOpenBrace, InternalSyntaxNodeList declaration, InternalSyntaxToken tCloseBrace)
+	    public NamespaceDeclarationGreen(SoalSyntaxKind kind, AnnotationListGreen annotationList, InternalSyntaxToken kNamespace, QualifiedNameDefGreen qualifiedNameDef, InternalSyntaxToken tAssign, IdentifierGreen identifier, InternalSyntaxToken tColon, StringLiteralGreen stringLiteral, NamespaceBodyGreen namespaceBody)
 	        : base(kind, null, null)
 	    {
 			if (annotationList != null)
@@ -1815,24 +1813,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(stringLiteral);
 				this.stringLiteral = stringLiteral;
 			}
-			if (tOpenBrace != null)
+			if (namespaceBody != null)
 			{
-				this.AdjustFlagsAndWidth(tOpenBrace);
-				this.tOpenBrace = tOpenBrace;
-			}
-			if (declaration != null)
-			{
-				this.AdjustFlagsAndWidth(declaration);
-				this.declaration = declaration;
-			}
-			if (tCloseBrace != null)
-			{
-				this.AdjustFlagsAndWidth(tCloseBrace);
-				this.tCloseBrace = tCloseBrace;
+				this.AdjustFlagsAndWidth(namespaceBody);
+				this.namespaceBody = namespaceBody;
 			}
 	    }
 	
-	    public NamespaceDeclarationGreen(SoalSyntaxKind kind, AnnotationListGreen annotationList, InternalSyntaxToken kNamespace, QualifiedNameDefGreen qualifiedNameDef, InternalSyntaxToken tAssign, IdentifierGreen identifier, InternalSyntaxToken tColon, StringLiteralGreen stringLiteral, InternalSyntaxToken tOpenBrace, InternalSyntaxNodeList declaration, InternalSyntaxToken tCloseBrace, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public NamespaceDeclarationGreen(SoalSyntaxKind kind, AnnotationListGreen annotationList, InternalSyntaxToken kNamespace, QualifiedNameDefGreen qualifiedNameDef, InternalSyntaxToken tAssign, IdentifierGreen identifier, InternalSyntaxToken tColon, StringLiteralGreen stringLiteral, NamespaceBodyGreen namespaceBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			if (annotationList != null)
@@ -1870,24 +1858,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(stringLiteral);
 				this.stringLiteral = stringLiteral;
 			}
-			if (tOpenBrace != null)
+			if (namespaceBody != null)
 			{
-				this.AdjustFlagsAndWidth(tOpenBrace);
-				this.tOpenBrace = tOpenBrace;
-			}
-			if (declaration != null)
-			{
-				this.AdjustFlagsAndWidth(declaration);
-				this.declaration = declaration;
-			}
-			if (tCloseBrace != null)
-			{
-				this.AdjustFlagsAndWidth(tCloseBrace);
-				this.tCloseBrace = tCloseBrace;
+				this.AdjustFlagsAndWidth(namespaceBody);
+				this.namespaceBody = namespaceBody;
 			}
 	    }
 	
-		public override int SlotCount { get { return 10; } }
+		public override int SlotCount { get { return 8; } }
 	
 	    public AnnotationListGreen AnnotationList { get { return this.annotationList; } }
 	    public InternalSyntaxToken KNamespace { get { return this.kNamespace; } }
@@ -1896,9 +1874,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    public IdentifierGreen Identifier { get { return this.identifier; } }
 	    public InternalSyntaxToken TColon { get { return this.tColon; } }
 	    public StringLiteralGreen StringLiteral { get { return this.stringLiteral; } }
-	    public InternalSyntaxToken TOpenBrace { get { return this.tOpenBrace; } }
-	    public InternalSyntaxNodeList Declaration { get { return this.declaration; } }
-	    public InternalSyntaxToken TCloseBrace { get { return this.tCloseBrace; } }
+	    public NamespaceBodyGreen NamespaceBody { get { return this.namespaceBody; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -1916,24 +1892,22 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	            case 4: return this.identifier;
 	            case 5: return this.tColon;
 	            case 6: return this.stringLiteral;
-	            case 7: return this.tOpenBrace;
-	            case 8: return this.declaration;
-	            case 9: return this.tCloseBrace;
+	            case 7: return this.namespaceBody;
 	            default: return null;
 	        }
 	    }
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new NamespaceDeclarationGreen(this.Kind, this.annotationList, this.kNamespace, this.qualifiedNameDef, this.tAssign, this.identifier, this.tColon, this.stringLiteral, this.tOpenBrace, this.declaration, this.tCloseBrace, diagnostics, this.GetAnnotations());
+	        return new NamespaceDeclarationGreen(this.Kind, this.annotationList, this.kNamespace, this.qualifiedNameDef, this.tAssign, this.identifier, this.tColon, this.stringLiteral, this.namespaceBody, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new NamespaceDeclarationGreen(this.Kind, this.annotationList, this.kNamespace, this.qualifiedNameDef, this.tAssign, this.identifier, this.tColon, this.stringLiteral, this.tOpenBrace, this.declaration, this.tCloseBrace, this.GetDiagnostics(), annotations);
+	        return new NamespaceDeclarationGreen(this.Kind, this.annotationList, this.kNamespace, this.qualifiedNameDef, this.tAssign, this.identifier, this.tColon, this.stringLiteral, this.namespaceBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public NamespaceDeclarationGreen Update(AnnotationListGreen annotationList, InternalSyntaxToken kNamespace, QualifiedNameDefGreen qualifiedNameDef, InternalSyntaxToken tAssign, IdentifierGreen identifier, InternalSyntaxToken tColon, StringLiteralGreen stringLiteral, InternalSyntaxToken tOpenBrace, InternalSyntaxNodeList declaration, InternalSyntaxToken tCloseBrace)
+	    public NamespaceDeclarationGreen Update(AnnotationListGreen annotationList, InternalSyntaxToken kNamespace, QualifiedNameDefGreen qualifiedNameDef, InternalSyntaxToken tAssign, IdentifierGreen identifier, InternalSyntaxToken tColon, StringLiteralGreen stringLiteral, NamespaceBodyGreen namespaceBody)
 	    {
 	        if (this.annotationList != annotationList ||
 				this.kNamespace != kNamespace ||
@@ -1942,11 +1916,9 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.identifier != identifier ||
 				this.tColon != tColon ||
 				this.stringLiteral != stringLiteral ||
-				this.tOpenBrace != tOpenBrace ||
-				this.declaration != declaration ||
-				this.tCloseBrace != tCloseBrace)
+				this.namespaceBody != namespaceBody)
 	        {
-	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.NamespaceDeclaration(annotationList, kNamespace, qualifiedNameDef, tAssign, identifier, tColon, stringLiteral, tOpenBrace, declaration, tCloseBrace);
+	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.NamespaceDeclaration(annotationList, kNamespace, qualifiedNameDef, tAssign, identifier, tColon, stringLiteral, namespaceBody);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -1954,6 +1926,103 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (NamespaceDeclarationGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class NamespaceBodyGreen : SoalGreenNode
+	{
+	    private InternalSyntaxToken tOpenBrace;
+	    private InternalSyntaxNodeList declaration;
+	    private InternalSyntaxToken tCloseBrace;
+	
+	    public NamespaceBodyGreen(SoalSyntaxKind kind, InternalSyntaxToken tOpenBrace, InternalSyntaxNodeList declaration, InternalSyntaxToken tCloseBrace)
+	        : base(kind, null, null)
+	    {
+			if (tOpenBrace != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenBrace);
+				this.tOpenBrace = tOpenBrace;
+			}
+			if (declaration != null)
+			{
+				this.AdjustFlagsAndWidth(declaration);
+				this.declaration = declaration;
+			}
+			if (tCloseBrace != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseBrace);
+				this.tCloseBrace = tCloseBrace;
+			}
+	    }
+	
+	    public NamespaceBodyGreen(SoalSyntaxKind kind, InternalSyntaxToken tOpenBrace, InternalSyntaxNodeList declaration, InternalSyntaxToken tCloseBrace, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			if (tOpenBrace != null)
+			{
+				this.AdjustFlagsAndWidth(tOpenBrace);
+				this.tOpenBrace = tOpenBrace;
+			}
+			if (declaration != null)
+			{
+				this.AdjustFlagsAndWidth(declaration);
+				this.declaration = declaration;
+			}
+			if (tCloseBrace != null)
+			{
+				this.AdjustFlagsAndWidth(tCloseBrace);
+				this.tCloseBrace = tCloseBrace;
+			}
+	    }
+	
+		public override int SlotCount { get { return 3; } }
+	
+	    public InternalSyntaxToken TOpenBrace { get { return this.tOpenBrace; } }
+	    public InternalSyntaxNodeList Declaration { get { return this.declaration; } }
+	    public InternalSyntaxToken TCloseBrace { get { return this.tCloseBrace; } }
+	
+	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Soal.Syntax.NamespaceBodySyntax(this, parent, position);
+	    }
+	
+	    public override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.tOpenBrace;
+	            case 1: return this.declaration;
+	            case 2: return this.tCloseBrace;
+	            default: return null;
+	        }
+	    }
+	
+	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new NamespaceBodyGreen(this.Kind, this.tOpenBrace, this.declaration, this.tCloseBrace, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new NamespaceBodyGreen(this.Kind, this.tOpenBrace, this.declaration, this.tCloseBrace, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public NamespaceBodyGreen Update(InternalSyntaxToken tOpenBrace, InternalSyntaxNodeList declaration, InternalSyntaxToken tCloseBrace)
+	    {
+	        if (this.tOpenBrace != tOpenBrace ||
+				this.declaration != declaration ||
+				this.tCloseBrace != tCloseBrace)
+	        {
+	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.NamespaceBody(tOpenBrace, declaration, tCloseBrace);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (NamespaceBodyGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -13497,7 +13566,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public NamespaceDeclarationGreen NamespaceDeclaration(AnnotationListGreen annotationList, InternalSyntaxToken kNamespace, QualifiedNameDefGreen qualifiedNameDef, InternalSyntaxToken tAssign, IdentifierGreen identifier, InternalSyntaxToken tColon, StringLiteralGreen stringLiteral, InternalSyntaxToken tOpenBrace, InternalSyntaxNodeList declaration, InternalSyntaxToken tCloseBrace, bool errorNode = false)
+		public NamespaceDeclarationGreen NamespaceDeclaration(AnnotationListGreen annotationList, InternalSyntaxToken kNamespace, QualifiedNameDefGreen qualifiedNameDef, InternalSyntaxToken tAssign, IdentifierGreen identifier, InternalSyntaxToken tColon, StringLiteralGreen stringLiteral, NamespaceBodyGreen namespaceBody, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
@@ -13511,13 +13580,32 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				if (tColon == null) throw new ArgumentNullException(nameof(tColon));
 				if (tColon.RawKind != (int)SoalSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 				if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
+				if (namespaceBody == null) throw new ArgumentNullException(nameof(namespaceBody));
+			}
+	#endif
+	        return new NamespaceDeclarationGreen(SoalSyntaxKind.NamespaceDeclaration, annotationList, kNamespace, qualifiedNameDef, tAssign, identifier, tColon, stringLiteral, namespaceBody);
+	    }
+	
+		public NamespaceBodyGreen NamespaceBody(InternalSyntaxToken tOpenBrace, InternalSyntaxNodeList declaration, InternalSyntaxToken tCloseBrace, bool errorNode = false)
+	    {
+	#if DEBUG
+			if (!errorNode)
+			{
 				if (tOpenBrace == null) throw new ArgumentNullException(nameof(tOpenBrace));
 				if (tOpenBrace.RawKind != (int)SoalSyntaxKind.TOpenBrace) throw new ArgumentException(nameof(tOpenBrace));
 				if (tCloseBrace == null) throw new ArgumentNullException(nameof(tCloseBrace));
 				if (tCloseBrace.RawKind != (int)SoalSyntaxKind.TCloseBrace) throw new ArgumentException(nameof(tCloseBrace));
 			}
 	#endif
-	        return new NamespaceDeclarationGreen(SoalSyntaxKind.NamespaceDeclaration, annotationList, kNamespace, qualifiedNameDef, tAssign, identifier, tColon, stringLiteral, tOpenBrace, declaration, tCloseBrace);
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)SoalSyntaxKind.NamespaceBody, tOpenBrace, declaration, tCloseBrace, out hash);
+			if (cached != null) return (NamespaceBodyGreen)cached;
+			var result = new NamespaceBodyGreen(SoalSyntaxKind.NamespaceBody, tOpenBrace, declaration, tCloseBrace);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
 	    }
 	
 		public DeclarationGreen Declaration(EnumDeclarationGreen enumDeclaration, bool errorNode = false)
@@ -16255,6 +16343,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				typeof(AnnotationPropertyGreen),
 				typeof(AnnotationPropertyValueGreen),
 				typeof(NamespaceDeclarationGreen),
+				typeof(NamespaceBodyGreen),
 				typeof(DeclarationGreen),
 				typeof(EnumDeclarationGreen),
 				typeof(EnumLiteralsGreen),

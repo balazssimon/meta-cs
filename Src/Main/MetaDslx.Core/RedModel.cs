@@ -1491,12 +1491,14 @@ namespace MetaDslx.Core
 
         internal ImmutableModelList<MutableSymbol> MChildren(SymbolId sid)
         {
-            GreenSymbol greenSymbol;
-            if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
+            ImmutableList<SymbolId> children;
+            ModelUpdateContext ctx;
+            do
             {
-                return ImmutableModelList<MutableSymbol>.FromSymbolIdList(greenSymbol.Children, this);
-            }
-            return null;
+                ctx = this.BeginUpdate();
+                children = ctx.Updater.GetChildren(this.id, sid);
+            } while (!this.EndUpdate(ctx));
+            return ImmutableModelList<MutableSymbol>.FromSymbolIdList(children, this);
         }
 
         internal ImmutableList<ModelProperty> MProperties(SymbolId sid)

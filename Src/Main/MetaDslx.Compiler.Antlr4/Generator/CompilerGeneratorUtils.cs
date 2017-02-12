@@ -275,6 +275,13 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameDef) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeDef);
         }
 
+        public static bool IsSymbol(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameDef) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeDef) ||
+                annots.HasAnnotation(MetaCompilerAnnotationInfo.NameCtr) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeCtr) ||
+                annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol) || annots.HasAnnotation(MetaCompilerAnnotationInfo.PreDefSymbol);
+        }
+
         public static bool IsSymbolBoundary(this MetaCompilerAnnotations annots)
         {
             return annots.Annotations.Any(a => MetaCompilerAnnotationInfo.SymbolBoundary.Contains(a.Name));
@@ -338,6 +345,11 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public static bool IsValue(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Value);
+        }
+
+        public static bool IsBody(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Body);
         }
 
         public static string GetNestingProperty(this MetaCompilerAnnotations annots)

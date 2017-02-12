@@ -18,6 +18,7 @@ namespace MetaDslx.Compiler.Binding
 
         NamespacesOrTypes = Namespaces | Types,
         Members = InstanceMembers | StaticMembers,
+        Names = Namespaces | Members,
         NamespacesOrTypesOrMembers = NamespacesOrTypes | Members
     }
 
@@ -219,23 +220,4 @@ namespace MetaDslx.Compiler.Binding
         }
     }
 
-    public class SpeculativeBindingOptions : BindingOptions
-    {
-        public static new readonly SpeculativeBindingOptions None = new SpeculativeBindingOptions(LookupFlags.None, BindingFlags.None);
-        public static new readonly SpeculativeBindingOptions Default = new SpeculativeBindingOptions(LookupFlags.NamespacesOrTypesOrMembers, BindingFlags.None);
-
-        public SpeculativeBindingOptions(LookupFlags lookupFlags, BindingFlags bindingFlags) 
-            : base(lookupFlags, bindingFlags)
-        {
-        }
-
-        protected override BindingOptions Update(LookupFlags lookupFlags, BindingFlags bindingFlags)
-        {
-            if (this.LookupFlags != lookupFlags || this.BindingFlags != bindingFlags)
-            {
-                return new SpeculativeBindingOptions(lookupFlags, bindingFlags);
-            }
-            return this;
-        }
-    }
 }

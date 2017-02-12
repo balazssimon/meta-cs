@@ -1025,6 +1025,33 @@ namespace MetaDslx.Core
             return true;
         }
 
+        internal ImmutableList<SymbolId> GetChildren(ModelId mid, SymbolId sid)
+        {
+            SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
+            Debug.Assert(symbolRef != null);
+            GreenModel model = symbolRef.Model;
+            ImmutableHashSet<ModelProperty> properties;
+            if (model.LazyProperties.TryGetValue(sid, out properties))
+            {
+                bool changed = false;
+                var propList = symbolRef.Id.SymbolInfo.Properties;
+                foreach (var prop in propList)
+                {
+                    if (prop.IsContainment && properties.Contains(prop))
+                    {
+                        properties = properties.Remove(prop);
+                        this.GetValue(mid, sid, prop, true);
+                        changed = true;
+                    }
+                }
+                if (changed)
+                {
+                    symbolRef = this.ResolveSymbol(mid, sid, true);
+                }
+            }
+            return symbolRef.Symbol.Children;
+        }
+
         internal bool TryGetValue(ModelId mid, SymbolId sid, ModelProperty property, out object value)
         {
             property = this.GetRepresentingProperty(sid, property);

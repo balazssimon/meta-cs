@@ -18,12 +18,12 @@ namespace MetaDslx.Compiler.Binding
     {
         private readonly CompilationBase _compilation;
         private ModelFactory _lazyFactory;
-        private readonly ObjectPool<ISymbolBuilderVisitor> _symbolBuilderVisitorPool;
+        private readonly ObjectPool<SymbolBuilderVisitor> _symbolBuilderVisitorPool;
 
         public SymbolBuilder(CompilationBase compilation)
         {
             _compilation = compilation;
-            _symbolBuilderVisitorPool = new ObjectPool<ISymbolBuilderVisitor>(() => compilation.Language.CompilationFactory.CreateSymbolBuilderVisitor(this), 64);
+            _symbolBuilderVisitorPool = new ObjectPool<SymbolBuilderVisitor>(() => compilation.Language.CompilationFactory.CreateSymbolBuilderVisitor(this), 64);
         }
 
         public CompilationBase Compilation
@@ -46,6 +46,39 @@ namespace MetaDslx.Compiler.Binding
                 }
                 return _lazyFactory;
             }
+        }
+
+        public Binder GetBinder(RedNode node)
+        {
+            return this.Compilation.GetBinder(node);
+        }
+
+        public Binder GetBinder(SyntaxNode syntax, int position)
+        {
+            return this.Compilation.GetBinder(syntax, position);
+        }
+
+        public IMetaSymbol BuildSymbol(IMetaSymbol container, SyntaxNode node, string parentPropertyToAddTo, Type symbolType)
+        {
+            MutableSymbol symbol = this.Factory.Create(symbolType);
+            MutableSymbol parent = container as MutableSymbol;
+            if (parent != null)
+            {
+                ModelProperty parentProperty = symbol.MGetProperty(parentPropertyToAddTo);
+                if (parentProperty != null)
+                {
+                    parent.MAdd(parentProperty, symbol);
+                }
+            }
+            else if (_compilation != null)
+            {
+                symbol.MAttachProperty(CompilerAttachedProperties.ContainingCompilationProperty);
+                symbol.MSet(CompilerAttachedProperties.ContainingCompilationProperty, _compilation);
+            }
+            symbol.MAttachProperty(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty);
+            symbol.MSet(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty, node.GetReference());
+            this.BuildSymbolProperties(symbol, node);
+            return symbol;
         }
 
         public IMetaSymbol BuildDeclarationSymbol(IMetaSymbol container, MergedDeclaration declaration)
@@ -75,8 +108,8 @@ namespace MetaDslx.Compiler.Binding
                 symbol.MAttachProperty(CompilerAttachedProperties.PropertiesToMembersMapProperty);
                 symbol.MSetLazy(CompilerAttachedProperties.PropertiesToMembersMapProperty, () => BuildDeclarationParentPropertyToMemberMap(symbol, container, declaration));
                 this.BuildDeclarationSymbolProperties(symbol, declaration);
-                this.BuildSymbolProperties(symbol, declaration);
             }
+            this.BuildSymbolProperties(symbol, declaration);
             return symbol;
         }
 
@@ -142,17 +175,38 @@ namespace MetaDslx.Compiler.Binding
         {
             Debug.Assert(symbol != null);
 
+            SymbolBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
+            try
+            {
+                visitor.Reset(symbol, declaration);
+                foreach (var reference in declaration.SyntaxReferences)
+                {
+                    var node = reference.GetSyntax();
+                    node.Accept(visitor);
+                }
+            }
+            finally
+            {
+                _symbolBuilderVisitorPool.Free(visitor);
+            }
+        }
+
+        private void BuildSymbolProperties(MutableSymbol symbol, SyntaxNode node)
+        {
+            Debug.Assert(symbol != null);
+
             Binder result = null;
 
-            ISymbolBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
-            visitor.Symbol = symbol;
-            visitor.Declaration = declaration;
-            foreach (var reference in declaration.SyntaxReferences)
+            SymbolBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
+            try
             {
-                var node = reference.GetSyntax();
+                visitor.Reset(symbol, null);
                 result = node.Accept(((object)visitor) as SyntaxVisitor<Binder>);
             }
-            _symbolBuilderVisitorPool.Free(visitor);
+            finally
+            {
+                _symbolBuilderVisitorPool.Free(visitor);
+            }
         }
     }
 }

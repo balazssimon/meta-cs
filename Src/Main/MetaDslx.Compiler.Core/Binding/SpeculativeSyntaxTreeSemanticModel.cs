@@ -15,9 +15,9 @@ namespace MetaDslx.Compiler.Binding
         private readonly SyntaxNode _root;
         private readonly Binder _rootBinder;
         private readonly int _position;
-        private readonly SpeculativeBindingOptions _bindingOption;
+        private readonly BindingOptions _bindingOption;
 
-        private static SpeculativeSyntaxTreeSemanticModel CreateCore(SemanticModel parentSemanticModel, SyntaxNode root, Binder rootBinder, int position, SpeculativeBindingOptions bindingOption)
+        private static SpeculativeSyntaxTreeSemanticModel CreateCore(SemanticModel parentSemanticModel, SyntaxNode root, Binder rootBinder, int position, BindingOptions bindingOption)
         {
             Debug.Assert(parentSemanticModel is SyntaxTreeSemanticModel);
             Debug.Assert(root != null);
@@ -28,7 +28,7 @@ namespace MetaDslx.Compiler.Binding
             return speculativeModel;
         }
 
-        private SpeculativeSyntaxTreeSemanticModel(SemanticModel parentSemanticModel, SyntaxNode root, Binder rootBinder, int position, SpeculativeBindingOptions bindingOption)
+        private SpeculativeSyntaxTreeSemanticModel(SemanticModel parentSemanticModel, SyntaxNode root, Binder rootBinder, int position, BindingOptions bindingOption)
             : base(parentSemanticModel.Compilation, parentSemanticModel.SyntaxTree, root.SyntaxTree)
         {
             _parentSemanticModel = parentSemanticModel;

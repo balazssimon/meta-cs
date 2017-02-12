@@ -46,6 +46,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
         public string GeneratedDeclarationTreeBuilder { get; private set; }
         public string GeneratedSymbolBuilderVisitor { get; private set; }
+        public string GeneratedBinderFactoryVisitor { get; private set; }
 
         public Antlr4RoslynCompiler(string source, string defaultNamespace, string outputDirectory, string fileName)
         {
@@ -89,6 +90,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         {
             if (!this.IsParser) return;
             if (this.DiagnosticBag.HasAnyErrors()) return;
+            this.CollectHasAnnotationFlags();
             CompilerGenerator generator = new CompilerGenerator(this.Grammar);
             generator.Properties.DefaultNamespace = this.DefaultNamespace;
             generator.Properties.LanguageName = this.LanguageName;
@@ -103,6 +105,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.GeneratedFeature = generator.GenerateFeature();
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
             this.GeneratedSymbolBuilderVisitor = generator.GenerateSymbolBuilderVisitor();
+            this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
         }
 
         private void SimplifyElements()
@@ -135,6 +138,43 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             }
         }
 
+        private void CollectHasAnnotationFlags()
+        {
+            if (this.DiagnosticBag.HasAnyErrors()) return;
+            bool foundNewFlag = true;
+            while (foundNewFlag)
+            {
+                foundNewFlag = false;
+                foreach (var rule in this.Grammar.ParserRules)
+                {
+                    bool foundRuleFlag = this.CollectHasAnnotationFlags(rule);
+                    if (!foundRuleFlag && !rule.ContainsAnnotations && rule.Annotations.Annotations.Count > 0)
+                    {
+                        foundRuleFlag = true;
+                    }
+                    if (foundRuleFlag)
+                    {
+                        rule.ContainsAnnotations = true;
+                        foundNewFlag = true;
+                    }
+                    foreach (var alt in rule.Alternatives)
+                    {
+                        foundRuleFlag = this.CollectHasAnnotationFlags(alt);
+                        if (!foundRuleFlag && !alt.ContainsAnnotations && alt.Annotations.Annotations.Count > 0)
+                        {
+                            foundRuleFlag = true;
+                        }
+                        if (foundRuleFlag)
+                        {
+                            alt.ContainsAnnotations = true;
+                            rule.ContainsAnnotations = true;
+                            foundNewFlag = true;
+                        }
+                    }
+                }
+            }
+        }
+
         private bool SimplifyElement(Antlr4ParserRuleElement elem)
         {
             /*if (!elem.IsList && !elem.IsBlock && !elem.IsToken)
@@ -159,6 +199,32 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 }
             }*/
             return false;
+        }
+
+        private bool CollectHasAnnotationFlags(Antlr4ParserRule rule)
+        {
+            bool foundElemFlag = false;
+            foreach (var elem in rule.AllElements)
+            {
+                if (!elem.ContainsAnnotations)
+                {
+                    if (elem.Annotations.Annotations.Count > 0)
+                    {
+                        elem.ContainsAnnotations = true;
+                        foundElemFlag = true;
+                    }
+                }
+                if (!elem.ContainsAnnotations)
+                {
+                    Antlr4ParserRule elemTypeRule = this.Grammar.FindParserRule(elem.Type);
+                    if (elemTypeRule != null && elemTypeRule.ContainsAnnotations)
+                    {
+                        elem.ContainsAnnotations = true;
+                        foundElemFlag = true;
+                    }
+                }
+            }
+            return foundElemFlag;
         }
 
         public static string FixedTokenToCSharpString(string value)
@@ -1275,6 +1341,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.Annotations = MetaCompilerAnnotations.Empty;
         }
         public MetaCompilerAnnotations Annotations { get; internal set; }
+        public bool ContainsAnnotations { get; internal set; }
     }
     public class Antlr4Grammar : Antlr4AnnotatedObject
     {

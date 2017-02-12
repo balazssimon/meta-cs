@@ -35,7 +35,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.EndProperty();
 			}
-			this.VisitToken(node.Eof);
 		}
 		
 		public virtual void VisitQualifiedName(QualifiedNameSyntax node)
@@ -79,9 +78,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginSymbol();
 				try
 				{
-					this.VisitToken(node.TOpenBracket);
 					this.Visit(node.AnnotationBody);
-					this.VisitToken(node.TCloseBracket);
 				}
 				finally
 				{
@@ -102,11 +99,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginSymbol();
 				try
 				{
-					this.VisitToken(node.TOpenBracket);
-					this.VisitToken(node.KReturn);
-					this.VisitToken(node.TColon);
 					this.Visit(node.AnnotationBody);
-					this.VisitToken(node.TCloseBracket);
 				}
 				finally
 				{
@@ -135,9 +128,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitAnnotationProperties(AnnotationPropertiesSyntax node)
 		{
-			this.VisitToken(node.TOpenParen);
 			this.Visit(node.AnnotationPropertyList);
-			this.VisitToken(node.TCloseParen);
 		}
 		
 		public virtual void VisitAnnotationPropertyList(AnnotationPropertyListSyntax node)
@@ -162,7 +153,6 @@ namespace MetaDslx.Languages.Soal.Binding
 					{
 						this.EndProperty();
 					}
-					this.VisitToken(node.TAssign);
 					this.BeginProperty("Value");
 					try
 					{
@@ -197,9 +187,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.RegisterNestingProperty("Declarations");
 				this.Visit(node.AnnotationList);
-				this.VisitToken(node.KNamespace);
 				this.Visit(node.QualifiedNameDef);
-				this.VisitToken(node.TAssign);
 				this.BeginProperty("Prefix");
 				try
 				{
@@ -209,7 +197,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TColon);
 				this.BeginProperty("Uri");
 				try
 				{
@@ -219,15 +206,18 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TOpenBrace);
-				this.VisitList(node.Declaration);
-				this.VisitToken(node.TCloseBrace);
+				this.Visit(node.NamespaceBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
 				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitNamespaceBody(NamespaceBodySyntax node)
+		{
+			this.VisitList(node.Declaration);
 		}
 		
 		public virtual void VisitDeclaration(DeclarationSyntax node)
@@ -258,9 +248,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.Visit(node.AnnotationList);
-				this.VisitToken(node.KEnum);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TColon);
 				this.BeginProperty("BaseType");
 				try
 				{
@@ -278,9 +266,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.EnumLiterals);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -323,9 +309,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.Visit(node.AnnotationList);
-				this.VisitToken(node.KStruct);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TColon);
 				this.BeginProperty("BaseType");
 				try
 				{
@@ -343,9 +327,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TOpenBrace);
 				this.VisitList(node.PropertyDeclaration);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -381,7 +363,6 @@ namespace MetaDslx.Languages.Soal.Binding
 						this.EndProperty();
 					}
 					this.Visit(node.NameDef);
-					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
@@ -401,12 +382,9 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.Visit(node.AnnotationList);
-				this.VisitToken(node.KDatabase);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TOpenBrace);
 				this.VisitList(node.EntityReference);
 				this.VisitList(node.OperationDeclaration);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -420,7 +398,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Entities");
 			try
 			{
-				this.VisitToken(node.KEntity);
 				this.BeginSymbol();
 				try
 				{
@@ -430,7 +407,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndSymbol();
 				}
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
@@ -444,11 +420,8 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.Visit(node.AnnotationList);
-				this.VisitToken(node.KInterface);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TOpenBrace);
 				this.VisitList(node.OperationDeclaration);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -468,10 +441,7 @@ namespace MetaDslx.Languages.Soal.Binding
 					this.Visit(node.AnnotationList);
 					this.Visit(node.OperationResult);
 					this.Visit(node.NameDef);
-					this.VisitToken(node.TOpenParen);
 					this.Visit(node.ParameterList);
-					this.VisitToken(node.TCloseParen);
-					this.VisitToken(node.KThrows);
 					this.BeginProperty("Exceptions");
 					try
 					{
@@ -489,7 +459,6 @@ namespace MetaDslx.Languages.Soal.Binding
 					{
 						this.EndProperty();
 					}
-					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
@@ -584,9 +553,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.KComponent);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TColon);
 				this.BeginProperty("BaseComponent");
 				try
 				{
@@ -604,9 +571,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.ComponentElements);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -637,7 +602,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginDeclaration(typeof(Symbols.Service));
 				try
 				{
-					this.VisitToken(node.KService);
 					this.BeginProperty("Interface");
 					try
 					{
@@ -678,7 +642,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginDeclaration(typeof(Symbols.Reference));
 				try
 				{
-					this.VisitToken(node.KReference);
 					this.BeginProperty("Interface");
 					try
 					{
@@ -713,19 +676,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitComponentServiceOrReferenceEmptyBody(ComponentServiceOrReferenceEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitComponentServiceOrReferenceNonEmptyBody(ComponentServiceOrReferenceNonEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TOpenBrace);
 			this.VisitList(node.ComponentServiceOrReferenceElement);
-			this.VisitToken(node.TCloseBrace);
 		}
 		
 		public virtual void VisitComponentServiceOrReferenceElement(ComponentServiceOrReferenceElementSyntax node)
 		{
-			this.VisitToken(node.KBinding);
 			this.BeginProperty("Binding");
 			try
 			{
@@ -743,7 +702,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.EndProperty();
 			}
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitComponentProperty(ComponentPropertySyntax node)
@@ -764,7 +722,6 @@ namespace MetaDslx.Languages.Soal.Binding
 						this.EndSymbol();
 					}
 					this.Visit(node.NameDef);
-					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
@@ -786,9 +743,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginDeclaration(typeof(Symbols.Implementation));
 				try
 				{
-					this.VisitToken(node.KImplementation);
 					this.Visit(node.NameDef);
-					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
@@ -810,9 +765,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginDeclaration(typeof(Symbols.Language));
 				try
 				{
-					this.VisitToken(node.KLanguage);
 					this.Visit(node.NameDef);
-					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
@@ -831,9 +784,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginDeclaration(typeof(Symbols.Composite));
 			try
 			{
-				this.VisitToken(node.KComposite);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TColon);
 				this.BeginProperty("BaseComponent");
 				try
 				{
@@ -851,9 +802,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.CompositeElements);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -867,9 +816,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginDeclaration(typeof(Symbols.Assembly));
 			try
 			{
-				this.VisitToken(node.KAssembly);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TColon);
 				this.BeginProperty("BaseComponent");
 				try
 				{
@@ -887,9 +834,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.CompositeElements);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -919,7 +864,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Components");
 			try
 			{
-				this.VisitToken(node.KComponent);
 				this.BeginSymbol();
 				try
 				{
@@ -929,7 +873,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndSymbol();
 				}
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
@@ -945,11 +888,8 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginSymbol();
 				try
 				{
-					this.VisitToken(node.KWire);
 					this.Visit(node.WireSource);
-					this.VisitToken(node.KTo);
 					this.Visit(node.WireTarget);
-					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
@@ -1009,11 +949,8 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginDeclaration(typeof(Symbols.Deployment));
 			try
 			{
-				this.VisitToken(node.KDeployment);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.DeploymentElements);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -1041,12 +978,9 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginDeclaration(typeof(Symbols.Environment));
 				try
 				{
-					this.VisitToken(node.KEnvironment);
 					this.Visit(node.NameDef);
-					this.VisitToken(node.TOpenBrace);
 					this.Visit(node.RuntimeDeclaration);
 					this.VisitList(node.RuntimeReference);
-					this.VisitToken(node.TCloseBrace);
 				}
 				finally
 				{
@@ -1068,9 +1002,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginDeclaration(typeof(Symbols.Runtime));
 				try
 				{
-					this.VisitToken(node.KRuntime);
 					this.Visit(node.NameDef);
-					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
@@ -1095,7 +1027,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Assemblies");
 			try
 			{
-				this.VisitToken(node.KAssembly);
 				this.BeginSymbol();
 				try
 				{
@@ -1105,7 +1036,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndSymbol();
 				}
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
@@ -1118,7 +1048,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Databases");
 			try
 			{
-				this.VisitToken(node.KDatabase);
 				this.BeginSymbol();
 				try
 				{
@@ -1128,7 +1057,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndSymbol();
 				}
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
@@ -1141,11 +1069,8 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginDeclaration(typeof(Symbols.Binding));
 			try
 			{
-				this.VisitToken(node.KBinding);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.BindingLayers);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -1181,8 +1106,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.VisitToken(node.KTransport);
-				this.VisitToken(node.IHTTP);
 				this.Visit(node.HttpTransportLayerBody);
 			}
 			finally
@@ -1193,14 +1116,11 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitHttpTransportLayerEmptyBody(HttpTransportLayerEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitHttpTransportLayerNonEmptyBody(HttpTransportLayerNonEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TOpenBrace);
 			this.VisitList(node.HttpTransportLayerProperties);
-			this.VisitToken(node.TCloseBrace);
 		}
 		
 		public virtual void VisitRestTransportLayer(RestTransportLayerSyntax node)
@@ -1208,9 +1128,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.VisitToken(node.KTransport);
-				this.VisitToken(node.IREST);
-				this.Visit(node.RestTransportLayerBody);
 			}
 			finally
 			{
@@ -1220,13 +1137,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitRestTransportLayerEmptyBody(RestTransportLayerEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitRestTransportLayerNonEmptyBody(RestTransportLayerNonEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TOpenBrace);
-			this.VisitToken(node.TCloseBrace);
 		}
 		
 		public virtual void VisitWebSocketTransportLayer(WebSocketTransportLayerSyntax node)
@@ -1234,9 +1148,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.VisitToken(node.KTransport);
-				this.VisitToken(node.IWebSocket);
-				this.Visit(node.WebSocketTransportLayerBody);
 			}
 			finally
 			{
@@ -1246,13 +1157,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitWebSocketTransportLayerEmptyBody(WebSocketTransportLayerEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitWebSocketTransportLayerNonEmptyBody(WebSocketTransportLayerNonEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TOpenBrace);
-			this.VisitToken(node.TCloseBrace);
 		}
 		
 		public virtual void VisitHttpTransportLayerProperties(HttpTransportLayerPropertiesSyntax node)
@@ -1266,10 +1174,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Ssl");
 			try
 			{
-				this.VisitToken(node.ISSL);
-				this.VisitToken(node.TAssign);
 				this.Visit(node.BooleanLiteral);
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
@@ -1282,10 +1187,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("ClientAuthentication");
 			try
 			{
-				this.VisitToken(node.IClientAuthentication);
-				this.VisitToken(node.TAssign);
 				this.Visit(node.BooleanLiteral);
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
@@ -1313,8 +1215,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.VisitToken(node.KEncoding);
-				this.VisitToken(node.ISOAP);
 				this.Visit(node.SoapEncodingLayerBody);
 			}
 			finally
@@ -1325,14 +1225,11 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitSoapEncodingLayerEmptyBody(SoapEncodingLayerEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitSoapEncodingLayerNonEmptyBody(SoapEncodingLayerNonEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TOpenBrace);
 			this.VisitList(node.SoapEncodingProperties);
-			this.VisitToken(node.TCloseBrace);
 		}
 		
 		public virtual void VisitXmlEncodingLayer(XmlEncodingLayerSyntax node)
@@ -1340,9 +1237,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.VisitToken(node.KEncoding);
-				this.VisitToken(node.IXML);
-				this.Visit(node.XmlEncodingLayerBody);
 			}
 			finally
 			{
@@ -1352,13 +1246,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitXmlEncodingLayerEmptyBody(XmlEncodingLayerEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitXmlEncodingLayerNonEmptyBody(XmlEncodingLayerNonEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TOpenBrace);
-			this.VisitToken(node.TCloseBrace);
 		}
 		
 		public virtual void VisitJsonEncodingLayer(JsonEncodingLayerSyntax node)
@@ -1366,9 +1257,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
-				this.VisitToken(node.KEncoding);
-				this.VisitToken(node.IJSON);
-				this.Visit(node.JsonEncodingLayerBody);
 			}
 			finally
 			{
@@ -1378,13 +1266,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitJsonEncodingLayerEmptyBody(JsonEncodingLayerEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitJsonEncodingLayerNonEmptyBody(JsonEncodingLayerNonEmptyBodySyntax node)
 		{
-			this.VisitToken(node.TOpenBrace);
-			this.VisitToken(node.TCloseBrace);
 		}
 		
 		public virtual void VisitSoapEncodingProperties(SoapEncodingPropertiesSyntax node)
@@ -1399,10 +1284,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Version");
 			try
 			{
-				this.VisitToken(node.IVersion);
-				this.VisitToken(node.TAssign);
 				this.Visit(node.Identifier);
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
@@ -1415,10 +1297,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Mtom");
 			try
 			{
-				this.VisitToken(node.IMTOM);
-				this.VisitToken(node.TAssign);
 				this.Visit(node.BooleanLiteral);
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
@@ -1431,10 +1310,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Style");
 			try
 			{
-				this.VisitToken(node.IStyle);
-				this.VisitToken(node.TAssign);
 				this.Visit(node.Identifier);
-				this.VisitToken(node.TSemicolon);
 			}
 			finally
 			{
@@ -1450,9 +1326,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginSymbol();
 				try
 				{
-					this.VisitToken(node.KProtocol);
 					this.Visit(node.ProtocolLayerKind);
-					this.VisitToken(node.TSemicolon);
 				}
 				finally
 				{
@@ -1476,9 +1350,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginDeclaration(typeof(Symbols.Endpoint));
 			try
 			{
-				this.VisitToken(node.KEndpoint);
 				this.Visit(node.NameDef);
-				this.VisitToken(node.TColon);
 				this.BeginProperty("Interface");
 				try
 				{
@@ -1496,9 +1368,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TOpenBrace);
 				this.Visit(node.EndpointProperties);
-				this.VisitToken(node.TCloseBrace);
 			}
 			finally
 			{
@@ -1520,7 +1390,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitEndpointBindingProperty(EndpointBindingPropertySyntax node)
 		{
-			this.VisitToken(node.KBinding);
 			this.BeginProperty("Binding");
 			try
 			{
@@ -1538,12 +1407,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.EndProperty();
 			}
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitEndpointAddressProperty(EndpointAddressPropertySyntax node)
 		{
-			this.VisitToken(node.KAddress);
 			this.BeginProperty("Address");
 			try
 			{
@@ -1553,13 +1420,11 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.EndProperty();
 			}
-			this.VisitToken(node.TSemicolon);
 		}
 		
 		public virtual void VisitReturnType(ReturnTypeSyntax node)
 		{
 			this.Visit(node.TypeReference);
-			this.Visit(node.VoidType);
 		}
 		
 		public virtual void VisitTypeReference(TypeReferenceSyntax node)
@@ -1572,8 +1437,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitSimpleType(SimpleTypeSyntax node)
 		{
-			this.Visit(node.ValueType);
-			this.Visit(node.ObjectType);
 			this.Visit(node.QualifiedName);
 		}
 		
@@ -1585,28 +1448,23 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitReferenceType(ReferenceTypeSyntax node)
 		{
-			this.Visit(node.ObjectType);
 			this.Visit(node.QualifiedName);
 		}
 		
 		public virtual void VisitObjectType(ObjectTypeSyntax node)
 		{
-			this.VisitToken(node.ObjectType);
 		}
 		
 		public virtual void VisitValueType(ValueTypeSyntax node)
 		{
-			this.VisitToken(node.ValueType);
 		}
 		
 		public virtual void VisitVoidType(VoidTypeSyntax node)
 		{
-			this.VisitToken(node.KVoid);
 		}
 		
 		public virtual void VisitOnewayType(OnewayTypeSyntax node)
 		{
-			this.VisitToken(node.KOneway);
 		}
 		
 		public virtual void VisitOperationReturnType(OperationReturnTypeSyntax node)
@@ -1661,7 +1519,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TQuestion);
 			}
 			finally
 			{
@@ -1691,7 +1548,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TExclamation);
 			}
 			finally
 			{
@@ -1721,7 +1577,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TExclamation);
 			}
 			finally
 			{
@@ -1757,8 +1612,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TOpenBracket);
-				this.VisitToken(node.TCloseBracket);
 			}
 			finally
 			{
@@ -1788,8 +1641,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitToken(node.TOpenBracket);
-				this.VisitToken(node.TCloseBracket);
 			}
 			finally
 			{
@@ -1805,8 +1656,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitTypeofValue(TypeofValueSyntax node)
 		{
-			this.VisitToken(node.KTypeof);
-			this.VisitToken(node.TOpenParen);
 			this.BeginSymbol();
 			try
 			{
@@ -1816,7 +1665,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.EndSymbol();
 			}
-			this.VisitToken(node.TCloseParen);
 		}
 		
 		public virtual void VisitNameDef(NameDefSyntax node)
@@ -1848,13 +1696,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		public virtual void VisitIdentifier(IdentifierSyntax node)
 		{
 			if (node != null) this.RegisterIdentifier(node);
-			this.Visit(node.Identifiers);
-			this.Visit(node.ContextualKeywords);
 		}
 		
 		public virtual void VisitIdentifiers(IdentifiersSyntax node)
 		{
-			this.VisitToken(node.Identifiers);
 		}
 		
 		public virtual void VisitLiteral(LiteralSyntax node)
@@ -1869,37 +1714,30 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitNullLiteral(NullLiteralSyntax node)
 		{
-			this.VisitToken(node.KNull);
 		}
 		
 		public virtual void VisitBooleanLiteral(BooleanLiteralSyntax node)
 		{
-			this.VisitToken(node.BooleanLiteral);
 		}
 		
 		public virtual void VisitIntegerLiteral(IntegerLiteralSyntax node)
 		{
-			this.VisitToken(node.LInteger);
 		}
 		
 		public virtual void VisitDecimalLiteral(DecimalLiteralSyntax node)
 		{
-			this.VisitToken(node.LDecimal);
 		}
 		
 		public virtual void VisitScientificLiteral(ScientificLiteralSyntax node)
 		{
-			this.VisitToken(node.LScientific);
 		}
 		
 		public virtual void VisitStringLiteral(StringLiteralSyntax node)
 		{
-			this.VisitToken(node.StringLiteral);
 		}
 		
 		public virtual void VisitContextualKeywords(ContextualKeywordsSyntax node)
 		{
-			this.VisitToken(node.ContextualKeywords);
 		}
 	}
 }

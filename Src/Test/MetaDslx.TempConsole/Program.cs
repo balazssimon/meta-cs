@@ -410,6 +410,11 @@ namespace MetaDslx.TempConsole
             {
                 writer.WriteLine(a4c.GeneratedSymbolBuilderVisitor);
             }
+            outputFileName = Path.Combine(directory, @"Binding\" + a4c.LanguageName + @"BinderFactoryVisitor.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedBinderFactoryVisitor);
+            }
             //*/
             /*outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"Compilation.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))

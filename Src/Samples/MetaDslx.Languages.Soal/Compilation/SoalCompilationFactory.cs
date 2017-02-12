@@ -26,9 +26,9 @@ namespace MetaDslx.Languages.Soal
             return new SoalAnonymousTypeManager();
         }
 
-        public override IBinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
+        public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
-            throw new NotImplementedException();
+            return new SoalBinderFactoryVisitor(binderFactory);
         }
 
         public override RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
@@ -41,27 +41,14 @@ namespace MetaDslx.Languages.Soal
             throw new NotImplementedException();
         }
 
-        public override IMetaSymbol CreateMergedNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, IEnumerable<IMetaSymbol> namespacesToMerge)
+        public override IMetaSymbol CreateGlobalNamespace(Compilation compilation, MutableModel modelBuilder, IEnumerable<IMetaSymbol> namespacesToMerge)
         {
             var nsList = namespacesToMerge.ToList();
-            return this.CreateNamespace(compilation, modelBuilder, containingNamespace, nsList.Count > 0 ? nsList[0].MName : string.Empty);
-        }
-
-        public override ModelFactory CreateModelFactory(MutableModel modelBuilder)
-        {
-            return new SoalFactory(modelBuilder);
-        }
-
-        public override IMetaSymbol CreateNamespace(Compilation compilation, MutableModel modelBuilder, IMetaSymbol containingNamespace, string name)
-        {
+            string name = nsList.Count > 0 ? nsList[0].MName : string.Empty;
             SoalFactory f = new SoalFactory(modelBuilder);
             var result = f.Namespace();
             result.Name = name;
-            if (containingNamespace != null)
-            {
-                ((NamespaceBuilder)containingNamespace).Declarations.Add(result);
-            }
-            else if (compilation != null)
+            if (compilation != null)
             {
                 result.MAttachProperty(CompilerAttachedProperties.ContainingCompilationProperty);
                 result.MSet(CompilerAttachedProperties.ContainingCompilationProperty, compilation);
@@ -69,12 +56,17 @@ namespace MetaDslx.Languages.Soal
             return result;
         }
 
+        public override ModelFactory CreateModelFactory(MutableModel modelBuilder)
+        {
+            return new SoalFactory(modelBuilder);
+        }
+
         public override ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType)
         {
             return new SoalScriptCompilationInfo((SoalCompilation)previousSubmission, submissionReturnType, hostObjectType);
         }
 
-        public override ISymbolBuilderVisitor CreateSymbolBuilderVisitor(SymbolBuilder symbolBuilder)
+        public override SymbolBuilderVisitor CreateSymbolBuilderVisitor(SymbolBuilder symbolBuilder)
         {
             return new SoalSymbolBuilderVisitor(symbolBuilder);
         }

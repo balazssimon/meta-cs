@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
@@ -23,13 +24,13 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Used to create a root binder.
         /// </summary>
-        internal Binder(Compilation compilation)
+        public Binder(Compilation compilation)
         {
             Debug.Assert(compilation != null);
             this.Compilation = compilation;
         }
 
-        internal Binder(Binder next)
+        public Binder(Binder next)
         {
             Debug.Assert(next != null);
             _next = next;
@@ -39,7 +40,7 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Get the next binder in which to look up a name, if not found by this binder.
         /// </summary>
-        internal protected Binder Next
+        public Binder Next
         {
             get
             {
@@ -48,7 +49,7 @@ namespace MetaDslx.Compiler.Binding
         }
 
         private Conversions _lazyConversions;
-        internal Conversions Conversions
+        public Conversions Conversions
         {
             get
             {
@@ -62,7 +63,7 @@ namespace MetaDslx.Compiler.Binding
         }
 
         private OverloadResolution _lazyOverloadResolution;
-        internal OverloadResolution OverloadResolution
+        public OverloadResolution OverloadResolution
         {
             get
             {
@@ -84,11 +85,11 @@ namespace MetaDslx.Compiler.Binding
         /// The member containing the binding context.  Note that for the purposes of the compiler,
         /// a lambda expression is considered a "member" of its enclosing method, field, or lambda.
         /// </summary>
-        public virtual IMetaSymbol ContainingMember
+        public virtual IMetaSymbol ContainingSymbol
         {
             get
             {
-                return Next.ContainingMember;
+                return Next.ContainingSymbol;
             }
         }
 
@@ -121,7 +122,7 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Look for names of members
         /// </summary>
-        public virtual void AddMemberLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, IMetaSymbol nsOrType, BindingOptions options, Binder originalBinder)
+        public virtual void AddMemberLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, IMetaSymbol container, BindingOptions options, Binder originalBinder)
         {
             // overridden in other binders
         }
@@ -130,7 +131,7 @@ namespace MetaDslx.Compiler.Binding
         /// Check whether "symbol" is accessible from this binder.
         /// Also checks protected access via "accessThroughType".
         /// </summary>
-        internal bool IsAccessible(IMetaSymbol symbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, IMetaSymbol accessThroughType = null, ConsList<IMetaSymbol> basesBeingResolved = null)
+        public bool IsAccessible(IMetaSymbol symbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, IMetaSymbol accessThroughType = null, ConsList<IMetaSymbol> basesBeingResolved = null)
         {
             bool failedThroughTypeCheck;
             return IsAccessible(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
@@ -141,7 +142,7 @@ namespace MetaDslx.Compiler.Binding
         /// Also checks protected access via "accessThroughType", and sets "failedThroughTypeCheck" if fails
         /// the protected access check.
         /// </summary>
-        internal bool IsAccessible(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved = null)
+        public bool IsAccessible(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved = null)
         {
             if (this.IgnoreAccessibility)
             {
@@ -156,10 +157,54 @@ namespace MetaDslx.Compiler.Binding
         /// Should only be called by <see cref="IsAccessible(Symbol, TypeSymbol, out bool, ref HashSet{DiagnosticInfo}, ConsList{Symbol})"/>,
         /// which will already have checked for <see cref="BindingOptions.IgnoreAccessibility"/>.
         /// </remarks>
-        internal virtual bool IsAccessibleHelper(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved)
+        protected virtual bool IsAccessibleHelper(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved)
         {
             // By default, just delegate to containing binder.
             return Next.IsAccessibleHelper(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);
         }
+
+
+        internal Binder LookupSymbols(LookupResult result, string name, BindingOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            Debug.Assert(result.IsClear);
+
+            Binder binder = null;
+            for (var scope = this; scope != null && !result.IsMultiViable; scope = scope.Next)
+            {
+                if (binder != null)
+                {
+                    var tmp = LookupResult.GetInstance();
+                    scope.LookupSymbolsInSingleBinder(tmp, name, options, this, diagnose, ref useSiteDiagnostics);
+                    result.MergeEqual(tmp);
+                    tmp.Free();
+                }
+                else
+                {
+                    scope.LookupSymbolsInSingleBinder(result, name, options, this, diagnose, ref useSiteDiagnostics);
+                    if (!result.IsClear)
+                    {
+                        binder = scope;
+                    }
+                }
+            }
+            return binder;
+        }
+
+        internal virtual void LookupSymbolsInSingleBinder(LookupResult result, string name, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+        }
+
+#if DEBUG
+        // Helper to allow displaying the binder hierarchy in the debugger.
+        public Binder[] GetAllBinders()
+        {
+            var binders = ArrayBuilder<Binder>.GetInstance();
+            for (var binder = this; binder != null; binder = binder.Next)
+            {
+                binders.Add(binder);
+            }
+            return binders.ToArrayAndFree();
+        }
+#endif
     }
 }

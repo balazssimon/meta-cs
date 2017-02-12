@@ -46,7 +46,7 @@ namespace MetaDslx.Compiler.Syntax
         /// <remarks>
         /// More performant than GetSyntax().GetLocation().
         /// </remarks>
-        internal Location GetLocation()
+        public Location GetLocation()
         {
             return this.SyntaxTree.GetLocation(this.Span);
         }

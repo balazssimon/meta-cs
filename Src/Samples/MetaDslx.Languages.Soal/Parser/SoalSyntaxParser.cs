@@ -341,6 +341,19 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					stringLiteral = (StringLiteralGreen)this.Visit(stringLiteralContext);
 				}
+				SoalParser.NamespaceBodyContext namespaceBodyContext = context.namespaceBody();
+				NamespaceBodyGreen namespaceBody = null;
+				if (namespaceBodyContext != null)
+				{
+					namespaceBody = (NamespaceBodyGreen)this.Visit(namespaceBodyContext);
+				}
+				GreenNode greenNode = this.factory.NamespaceDeclaration(annotationList, kNamespace, qualifiedNameDef, tAssign, identifier, tColon, stringLiteral, namespaceBody, true);
+				return greenNode;
+			}
+			
+			public override GreenNode VisitNamespaceBody(SoalParser.NamespaceBodyContext context)
+			{
+				if (context == null) return null;
 				InternalSyntaxToken tOpenBrace = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBrace());
 			    SoalParser.DeclarationContext[] declarationContext = context.declaration();
 			    ArrayBuilder<DeclarationGreen> declarationBuilder = ArrayBuilder<DeclarationGreen>.GetInstance(declarationContext.Length);
@@ -353,8 +366,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 				}
 				InternalSyntaxToken tCloseBrace = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBrace());
-				GreenNode greenNode = this.factory.NamespaceDeclaration(annotationList, kNamespace, qualifiedNameDef, tAssign, identifier, tColon, stringLiteral, tOpenBrace, declaration, tCloseBrace, true);
-				return greenNode;
+				return this.factory.NamespaceBody(tOpenBrace, declaration, tCloseBrace, true);
 			}
 			
 			public override GreenNode VisitDeclaration(SoalParser.DeclarationContext context)

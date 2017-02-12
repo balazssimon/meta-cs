@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\xqdlvsuy.hya\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\incskjbe.0ao\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -203,6 +203,18 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitNamespaceDeclaration([NotNull] SoalParser.NamespaceDeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.namespaceBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNamespaceBody([NotNull] SoalParser.NamespaceBodyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.namespaceBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNamespaceBody([NotNull] SoalParser.NamespaceBodyContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.declaration"/>.
 	/// <para>The default implementation does nothing.</para>

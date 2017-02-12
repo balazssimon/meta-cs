@@ -720,8 +720,8 @@ namespace MetaDslx.Compiler
             // We want to cache failures as well as successes so that subsequent incorrect extern aliases with the
             // same alias will have the same target.
             @namespace = foundNamespace
-                ? this.Language.CompilationFactory.CreateMergedNamespace(this, this.ModelBuilder, namespacesToMerge: builder.ToImmutableAndFree(), containingNamespace: null)
-                : this.Language.CompilationFactory.CreateNamespace(this, this.ModelBuilder, null, null);
+                ? this.Language.CompilationFactory.CreateGlobalNamespace(this, this.ModelBuilder, namespacesToMerge: builder.ToImmutableAndFree())
+                : this.Language.CompilationFactory.CreateGlobalNamespace(this, this.ModelBuilder, namespacesToMerge: null);
 
             // Use GetOrAdd in case another thread beat us to the punch (i.e. should return the same object for the same alias, every time).
             @namespace = _externAliasTargets.GetOrAdd(aliasName, @namespace);
@@ -889,9 +889,14 @@ namespace MetaDslx.Compiler
             return GetBinderFactory(reference.SyntaxTree).GetBinder(reference.GetSyntax());
         }
 
-        internal Binder GetBinder(SyntaxNode syntax)
+        internal Binder GetBinder(RedNode syntax)
         {
             return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax);
+        }
+
+        internal Binder GetBinder(SyntaxNode syntax, int position)
+        {
+            return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax, position);
         }
 
         /// <summary>
@@ -942,7 +947,7 @@ namespace MetaDslx.Compiler
                         TextSpan infoSpan = info.Span;
                         if (!this.IsImportDirectiveUsed(infoTree, infoSpan.Start))
                         {
-                            int code = ErrorCode.UnusedSymbol;
+                            int code = ErrorCode.HDN_UnusedSymbol;
                             diagnostics.Add(this.MessageProvider, infoTree.GetLocation(infoSpan), code);
                         }
                     }
