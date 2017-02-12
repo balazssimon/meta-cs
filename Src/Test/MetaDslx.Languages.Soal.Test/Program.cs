@@ -48,10 +48,11 @@ namespace MetaDslx.Languages.Soal.Test
             Console.WriteLine(comp.GlobalNamespace);
 
             NamespaceBuilder gns = (NamespaceBuilder)comp.GlobalNamespace;
-            Console.WriteLine(gns.Declarations.Count);
+            Console.WriteLine(gns.Declarations.LazyCount);
             foreach (var childNs in gns.Declarations)
             {
                 Console.WriteLine(childNs);
+                Console.WriteLine(((NamespaceBuilder)childNs).Declarations.LazyCount);
                 foreach (var decl in ((NamespaceBuilder)childNs).Declarations)
                 {
                     Console.WriteLine("  "+decl);
