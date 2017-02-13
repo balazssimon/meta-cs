@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\0crvcb1z.lp0\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\l3mhdzl2.agz\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -42,25 +42,15 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitMain([NotNull] SoalParser.MainContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.nameDef"/>.
+	/// Enter a parse tree produced by <see cref="SoalParser.name"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterNameDef([NotNull] SoalParser.NameDefContext context);
+	void EnterName([NotNull] SoalParser.NameContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.nameDef"/>.
+	/// Exit a parse tree produced by <see cref="SoalParser.name"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitNameDef([NotNull] SoalParser.NameDefContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.qualifiedNameDef"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterQualifiedNameDef([NotNull] SoalParser.QualifiedNameDefContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.qualifiedNameDef"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitQualifiedNameDef([NotNull] SoalParser.QualifiedNameDefContext context);
+	void ExitName([NotNull] SoalParser.NameContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.qualifiedName"/>.
 	/// </summary>
@@ -72,6 +62,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitQualifiedName([NotNull] SoalParser.QualifiedNameContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.qualifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterQualifier([NotNull] SoalParser.QualifierContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.qualifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitQualifier([NotNull] SoalParser.QualifierContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.identifierList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -82,15 +82,15 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitIdentifierList([NotNull] SoalParser.IdentifierListContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.qualifiedNameList"/>.
+	/// Enter a parse tree produced by <see cref="SoalParser.qualifierList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterQualifiedNameList([NotNull] SoalParser.QualifiedNameListContext context);
+	void EnterQualifierList([NotNull] SoalParser.QualifierListContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.qualifiedNameList"/>.
+	/// Exit a parse tree produced by <see cref="SoalParser.qualifierList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitQualifiedNameList([NotNull] SoalParser.QualifiedNameListContext context);
+	void ExitQualifierList([NotNull] SoalParser.QualifierListContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.annotationList"/>.
 	/// </summary>

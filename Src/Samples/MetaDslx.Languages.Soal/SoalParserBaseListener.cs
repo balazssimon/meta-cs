@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\0crvcb1z.lp0\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\l3mhdzl2.agz\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -48,29 +48,17 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMain([NotNull] SoalParser.MainContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.nameDef"/>.
+	/// Enter a parse tree produced by <see cref="SoalParser.name"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNameDef([NotNull] SoalParser.NameDefContext context) { }
+	public virtual void EnterName([NotNull] SoalParser.NameContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.nameDef"/>.
+	/// Exit a parse tree produced by <see cref="SoalParser.name"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNameDef([NotNull] SoalParser.NameDefContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.qualifiedNameDef"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterQualifiedNameDef([NotNull] SoalParser.QualifiedNameDefContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.qualifiedNameDef"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitQualifiedNameDef([NotNull] SoalParser.QualifiedNameDefContext context) { }
+	public virtual void ExitName([NotNull] SoalParser.NameContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.qualifiedName"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -84,6 +72,18 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitQualifiedName([NotNull] SoalParser.QualifiedNameContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.qualifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterQualifier([NotNull] SoalParser.QualifierContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.qualifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitQualifier([NotNull] SoalParser.QualifierContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.identifierList"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -96,17 +96,17 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIdentifierList([NotNull] SoalParser.IdentifierListContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.qualifiedNameList"/>.
+	/// Enter a parse tree produced by <see cref="SoalParser.qualifierList"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterQualifiedNameList([NotNull] SoalParser.QualifiedNameListContext context) { }
+	public virtual void EnterQualifierList([NotNull] SoalParser.QualifierListContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.qualifiedNameList"/>.
+	/// Exit a parse tree produced by <see cref="SoalParser.qualifierList"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitQualifiedNameList([NotNull] SoalParser.QualifiedNameListContext context) { }
+	public virtual void ExitQualifierList([NotNull] SoalParser.QualifierListContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.annotationList"/>.
 	/// <para>The default implementation does nothing.</para>

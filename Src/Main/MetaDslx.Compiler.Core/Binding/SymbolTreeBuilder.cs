@@ -14,16 +14,16 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public sealed class SymbolBuilder
+    public sealed class SymbolTreeBuilder
     {
         private readonly CompilationBase _compilation;
         private ModelFactory _lazyFactory;
-        private readonly ObjectPool<SymbolBuilderVisitor> _symbolBuilderVisitorPool;
+        private readonly ObjectPool<SymbolTreeBuilderVisitor> _symbolBuilderVisitorPool;
 
-        public SymbolBuilder(CompilationBase compilation)
+        public SymbolTreeBuilder(CompilationBase compilation)
         {
             _compilation = compilation;
-            _symbolBuilderVisitorPool = new ObjectPool<SymbolBuilderVisitor>(() => compilation.Language.CompilationFactory.CreateSymbolBuilderVisitor(this), 64);
+            _symbolBuilderVisitorPool = new ObjectPool<SymbolTreeBuilderVisitor>(() => compilation.Language.CompilationFactory.CreateSymbolTreeBuilderVisitor(this), 64);
         }
 
         public CompilationBase Compilation
@@ -175,7 +175,7 @@ namespace MetaDslx.Compiler.Binding
         {
             Debug.Assert(symbol != null);
 
-            SymbolBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
+            SymbolTreeBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
             try
             {
                 visitor.Reset(symbol, declaration);
@@ -197,7 +197,7 @@ namespace MetaDslx.Compiler.Binding
 
             Binder result = null;
 
-            SymbolBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
+            SymbolTreeBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
             try
             {
                 visitor.Reset(symbol, null);

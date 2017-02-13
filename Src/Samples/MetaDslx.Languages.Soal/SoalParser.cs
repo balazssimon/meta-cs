@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\0crvcb1z.lp0\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\l3mhdzl2.agz\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -58,8 +58,8 @@ public partial class SoalParser : Parser {
 		LDoubleQuoteVerbatimString=119, LSingleQuoteVerbatimString=120, DoubleQuoteVerbatimStringLiteralStart=121, 
 		SingleQuoteVerbatimStringLiteralStart=122;
 	public const int
-		RULE_main = 0, RULE_nameDef = 1, RULE_qualifiedNameDef = 2, RULE_qualifiedName = 3, 
-		RULE_identifierList = 4, RULE_qualifiedNameList = 5, RULE_annotationList = 6, 
+		RULE_main = 0, RULE_name = 1, RULE_qualifiedName = 2, RULE_qualifier = 3, 
+		RULE_identifierList = 4, RULE_qualifierList = 5, RULE_annotationList = 6, 
 		RULE_returnAnnotationList = 7, RULE_annotation = 8, RULE_returnAnnotation = 9, 
 		RULE_annotationHead = 10, RULE_annotationBody = 11, RULE_annotationPropertyList = 12, 
 		RULE_annotationProperty = 13, RULE_annotationPropertyValue = 14, RULE_namespaceDeclaration = 15, 
@@ -100,17 +100,16 @@ public partial class SoalParser : Parser {
 		RULE_booleanLiteral = 119, RULE_integerLiteral = 120, RULE_decimalLiteral = 121, 
 		RULE_scientificLiteral = 122, RULE_stringLiteral = 123, RULE_contextualKeywords = 124;
 	public static readonly string[] ruleNames = {
-		"main", "nameDef", "qualifiedNameDef", "qualifiedName", "identifierList", 
-		"qualifiedNameList", "annotationList", "returnAnnotationList", "annotation", 
-		"returnAnnotation", "annotationHead", "annotationBody", "annotationPropertyList", 
-		"annotationProperty", "annotationPropertyValue", "namespaceDeclaration", 
-		"namespaceBody", "declaration", "enumDeclaration", "enumBody", "enumLiterals", 
-		"enumLiteral", "structDeclaration", "structBody", "propertyDeclaration", 
-		"databaseDeclaration", "databaseBody", "entityReference", "interfaceDeclaration", 
-		"interfaceBody", "operationDeclaration", "operationHead", "parameterList", 
-		"parameter", "operationResult", "componentDeclaration", "componentBody", 
-		"componentElements", "componentElement", "componentService", "componentReference", 
-		"componentServiceOrReferenceBody", "componentServiceOrReferenceElement", 
+		"main", "name", "qualifiedName", "qualifier", "identifierList", "qualifierList", 
+		"annotationList", "returnAnnotationList", "annotation", "returnAnnotation", 
+		"annotationHead", "annotationBody", "annotationPropertyList", "annotationProperty", 
+		"annotationPropertyValue", "namespaceDeclaration", "namespaceBody", "declaration", 
+		"enumDeclaration", "enumBody", "enumLiterals", "enumLiteral", "structDeclaration", 
+		"structBody", "propertyDeclaration", "databaseDeclaration", "databaseBody", 
+		"entityReference", "interfaceDeclaration", "interfaceBody", "operationDeclaration", 
+		"operationHead", "parameterList", "parameter", "operationResult", "componentDeclaration", 
+		"componentBody", "componentElements", "componentElement", "componentService", 
+		"componentReference", "componentServiceOrReferenceBody", "componentServiceOrReferenceElement", 
 		"componentProperty", "componentImplementation", "componentLanguage", "compositeDeclaration", 
 		"compositeBody", "assemblyDeclaration", "compositeElements", "compositeElement", 
 		"compositeComponent", "compositeWire", "wireSource", "wireTarget", "deploymentDeclaration", 
@@ -261,34 +260,34 @@ public partial class SoalParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NameDefContext : ParserRuleContext {
+	public partial class NameContext : ParserRuleContext {
 		public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
-		public NameDefContext(ParserRuleContext parent, int invokingState)
+		public NameContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_nameDef; } }
+		public override int RuleIndex { get { return RULE_name; } }
 		public override void EnterRule(IParseTreeListener listener) {
 			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.EnterNameDef(this);
+			if (typedListener != null) typedListener.EnterName(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
 			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.ExitNameDef(this);
+			if (typedListener != null) typedListener.ExitName(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitNameDef(this);
+			if (typedVisitor != null) return typedVisitor.VisitName(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public NameDefContext nameDef() {
-		NameDefContext _localctx = new NameDefContext(Context, State);
-		EnterRule(_localctx, 2, RULE_nameDef);
+	public NameContext name() {
+		NameContext _localctx = new NameContext(Context, State);
+		EnterRule(_localctx, 2, RULE_name);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -306,61 +305,9 @@ public partial class SoalParser : Parser {
 		return _localctx;
 	}
 
-	public partial class QualifiedNameDefContext : ParserRuleContext {
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
-		}
-		public QualifiedNameDefContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_qualifiedNameDef; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.EnterQualifiedNameDef(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.ExitQualifiedNameDef(this);
-		}
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitQualifiedNameDef(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public QualifiedNameDefContext qualifiedNameDef() {
-		QualifiedNameDefContext _localctx = new QualifiedNameDefContext(Context, State);
-		EnterRule(_localctx, 4, RULE_qualifiedNameDef);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 260; qualifiedName();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
 	public partial class QualifiedNameContext : ParserRuleContext {
-		public IdentifierContext[] identifier() {
-			return GetRuleContexts<IdentifierContext>();
-		}
-		public IdentifierContext identifier(int i) {
-			return GetRuleContext<IdentifierContext>(i);
-		}
-		public ITerminalNode[] TDot() { return GetTokens(SoalParser.TDot); }
-		public ITerminalNode TDot(int i) {
-			return GetToken(SoalParser.TDot, i);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public QualifiedNameContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -385,7 +332,59 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public QualifiedNameContext qualifiedName() {
 		QualifiedNameContext _localctx = new QualifiedNameContext(Context, State);
-		EnterRule(_localctx, 6, RULE_qualifiedName);
+		EnterRule(_localctx, 4, RULE_qualifiedName);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 260; qualifier();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class QualifierContext : ParserRuleContext {
+		public IdentifierContext[] identifier() {
+			return GetRuleContexts<IdentifierContext>();
+		}
+		public IdentifierContext identifier(int i) {
+			return GetRuleContext<IdentifierContext>(i);
+		}
+		public ITerminalNode[] TDot() { return GetTokens(SoalParser.TDot); }
+		public ITerminalNode TDot(int i) {
+			return GetToken(SoalParser.TDot, i);
+		}
+		public QualifierContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_qualifier; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterQualifier(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitQualifier(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitQualifier(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public QualifierContext qualifier() {
+		QualifierContext _localctx = new QualifierContext(Context, State);
+		EnterRule(_localctx, 6, RULE_qualifier);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
@@ -485,46 +484,46 @@ public partial class SoalParser : Parser {
 		return _localctx;
 	}
 
-	public partial class QualifiedNameListContext : ParserRuleContext {
-		public QualifiedNameContext[] qualifiedName() {
-			return GetRuleContexts<QualifiedNameContext>();
+	public partial class QualifierListContext : ParserRuleContext {
+		public QualifierContext[] qualifier() {
+			return GetRuleContexts<QualifierContext>();
 		}
-		public QualifiedNameContext qualifiedName(int i) {
-			return GetRuleContext<QualifiedNameContext>(i);
+		public QualifierContext qualifier(int i) {
+			return GetRuleContext<QualifierContext>(i);
 		}
 		public ITerminalNode[] TComma() { return GetTokens(SoalParser.TComma); }
 		public ITerminalNode TComma(int i) {
 			return GetToken(SoalParser.TComma, i);
 		}
-		public QualifiedNameListContext(ParserRuleContext parent, int invokingState)
+		public QualifierListContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_qualifiedNameList; } }
+		public override int RuleIndex { get { return RULE_qualifierList; } }
 		public override void EnterRule(IParseTreeListener listener) {
 			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.EnterQualifiedNameList(this);
+			if (typedListener != null) typedListener.EnterQualifierList(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
 			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.ExitQualifiedNameList(this);
+			if (typedListener != null) typedListener.ExitQualifierList(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitQualifiedNameList(this);
+			if (typedVisitor != null) return typedVisitor.VisitQualifierList(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public QualifiedNameListContext qualifiedNameList() {
-		QualifiedNameListContext _localctx = new QualifiedNameListContext(Context, State);
-		EnterRule(_localctx, 10, RULE_qualifiedNameList);
+	public QualifierListContext qualifierList() {
+		QualifierListContext _localctx = new QualifierListContext(Context, State);
+		EnterRule(_localctx, 10, RULE_qualifierList);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 278; qualifiedName();
+			State = 278; qualifier();
 			State = 283;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
@@ -532,7 +531,7 @@ public partial class SoalParser : Parser {
 				{
 				{
 				State = 279; Match(TComma);
-				State = 280; qualifiedName();
+				State = 280; qualifier();
 				}
 				}
 				State = 285;
@@ -1102,8 +1101,8 @@ public partial class SoalParser : Parser {
 
 	public partial class NamespaceDeclarationContext : ParserRuleContext {
 		public ITerminalNode KNamespace() { return GetToken(SoalParser.KNamespace, 0); }
-		public QualifiedNameDefContext qualifiedNameDef() {
-			return GetRuleContext<QualifiedNameDefContext>(0);
+		public QualifiedNameContext qualifiedName() {
+			return GetRuleContext<QualifiedNameContext>(0);
 		}
 		public ITerminalNode TAssign() { return GetToken(SoalParser.TAssign, 0); }
 		public StringLiteralContext stringLiteral() {
@@ -1156,7 +1155,7 @@ public partial class SoalParser : Parser {
 			}
 
 			State = 335; Match(KNamespace);
-			State = 336; qualifiedNameDef();
+			State = 336; qualifiedName();
 			State = 337; Match(TAssign);
 			State = 341;
 			_la = TokenStream.La(1);
@@ -1381,8 +1380,8 @@ public partial class SoalParser : Parser {
 
 	public partial class EnumDeclarationContext : ParserRuleContext {
 		public ITerminalNode KEnum() { return GetToken(SoalParser.KEnum, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public EnumBodyContext enumBody() {
 			return GetRuleContext<EnumBodyContext>(0);
@@ -1391,8 +1390,8 @@ public partial class SoalParser : Parser {
 			return GetRuleContext<AnnotationListContext>(0);
 		}
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public EnumDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1431,13 +1430,13 @@ public partial class SoalParser : Parser {
 			}
 
 			State = 370; Match(KEnum);
-			State = 371; nameDef();
+			State = 371; name();
 			State = 374;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
 				State = 372; Match(TColon);
-				State = 373; qualifiedName();
+				State = 373; qualifier();
 				}
 			}
 
@@ -1591,8 +1590,8 @@ public partial class SoalParser : Parser {
 	}
 
 	public partial class EnumLiteralContext : ParserRuleContext {
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public AnnotationListContext annotationList() {
 			return GetRuleContext<AnnotationListContext>(0);
@@ -1633,7 +1632,7 @@ public partial class SoalParser : Parser {
 				}
 			}
 
-			State = 398; nameDef();
+			State = 398; name();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1649,8 +1648,8 @@ public partial class SoalParser : Parser {
 
 	public partial class StructDeclarationContext : ParserRuleContext {
 		public ITerminalNode KStruct() { return GetToken(SoalParser.KStruct, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public StructBodyContext structBody() {
 			return GetRuleContext<StructBodyContext>(0);
@@ -1659,8 +1658,8 @@ public partial class SoalParser : Parser {
 			return GetRuleContext<AnnotationListContext>(0);
 		}
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public StructDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1699,13 +1698,13 @@ public partial class SoalParser : Parser {
 			}
 
 			State = 403; Match(KStruct);
-			State = 404; nameDef();
+			State = 404; name();
 			State = 407;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
 				State = 405; Match(TColon);
-				State = 406; qualifiedName();
+				State = 406; qualifier();
 				}
 			}
 
@@ -1792,8 +1791,8 @@ public partial class SoalParser : Parser {
 		public TypeReferenceContext typeReference() {
 			return GetRuleContext<TypeReferenceContext>(0);
 		}
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public AnnotationListContext annotationList() {
@@ -1836,7 +1835,7 @@ public partial class SoalParser : Parser {
 			}
 
 			State = 423; typeReference();
-			State = 424; nameDef();
+			State = 424; name();
 			State = 425; Match(TSemicolon);
 			}
 		}
@@ -1853,8 +1852,8 @@ public partial class SoalParser : Parser {
 
 	public partial class DatabaseDeclarationContext : ParserRuleContext {
 		public ITerminalNode KDatabase() { return GetToken(SoalParser.KDatabase, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public DatabaseBodyContext databaseBody() {
 			return GetRuleContext<DatabaseBodyContext>(0);
@@ -1899,7 +1898,7 @@ public partial class SoalParser : Parser {
 			}
 
 			State = 430; Match(KDatabase);
-			State = 431; nameDef();
+			State = 431; name();
 			State = 432; databaseBody();
 			}
 		}
@@ -2000,8 +1999,8 @@ public partial class SoalParser : Parser {
 
 	public partial class EntityReferenceContext : ParserRuleContext {
 		public ITerminalNode KEntity() { return GetToken(SoalParser.KEntity, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public EntityReferenceContext(ParserRuleContext parent, int invokingState)
@@ -2032,7 +2031,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 449; Match(KEntity);
-			State = 450; qualifiedName();
+			State = 450; qualifier();
 			State = 451; Match(TSemicolon);
 			}
 		}
@@ -2049,8 +2048,8 @@ public partial class SoalParser : Parser {
 
 	public partial class InterfaceDeclarationContext : ParserRuleContext {
 		public ITerminalNode KInterface() { return GetToken(SoalParser.KInterface, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public InterfaceBodyContext interfaceBody() {
 			return GetRuleContext<InterfaceBodyContext>(0);
@@ -2095,7 +2094,7 @@ public partial class SoalParser : Parser {
 			}
 
 			State = 456; Match(KInterface);
-			State = 457; nameDef();
+			State = 457; name();
 			State = 458; interfaceBody();
 			}
 		}
@@ -2226,8 +2225,8 @@ public partial class SoalParser : Parser {
 		public OperationResultContext operationResult() {
 			return GetRuleContext<OperationResultContext>(0);
 		}
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ITerminalNode TOpenParen() { return GetToken(SoalParser.TOpenParen, 0); }
 		public ITerminalNode TCloseParen() { return GetToken(SoalParser.TCloseParen, 0); }
@@ -2238,8 +2237,8 @@ public partial class SoalParser : Parser {
 			return GetRuleContext<ParameterListContext>(0);
 		}
 		public ITerminalNode KThrows() { return GetToken(SoalParser.KThrows, 0); }
-		public QualifiedNameListContext qualifiedNameList() {
-			return GetRuleContext<QualifiedNameListContext>(0);
+		public QualifierListContext qualifierList() {
+			return GetRuleContext<QualifierListContext>(0);
 		}
 		public OperationHeadContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2279,7 +2278,7 @@ public partial class SoalParser : Parser {
 				break;
 			}
 			State = 475; operationResult();
-			State = 476; nameDef();
+			State = 476; name();
 			State = 477; Match(TOpenParen);
 			State = 479;
 			_la = TokenStream.La(1);
@@ -2295,7 +2294,7 @@ public partial class SoalParser : Parser {
 			if (_la==KThrows) {
 				{
 				State = 482; Match(KThrows);
-				State = 483; qualifiedNameList();
+				State = 483; qualifierList();
 				}
 			}
 
@@ -2383,8 +2382,8 @@ public partial class SoalParser : Parser {
 		public TypeReferenceContext typeReference() {
 			return GetRuleContext<TypeReferenceContext>(0);
 		}
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public AnnotationListContext annotationList() {
 			return GetRuleContext<AnnotationListContext>(0);
@@ -2426,7 +2425,7 @@ public partial class SoalParser : Parser {
 			}
 
 			State = 497; typeReference();
-			State = 498; nameDef();
+			State = 498; name();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2499,16 +2498,16 @@ public partial class SoalParser : Parser {
 
 	public partial class ComponentDeclarationContext : ParserRuleContext {
 		public ITerminalNode KComponent() { return GetToken(SoalParser.KComponent, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ComponentBodyContext componentBody() {
 			return GetRuleContext<ComponentBodyContext>(0);
 		}
 		public ITerminalNode KAbstract() { return GetToken(SoalParser.KAbstract, 0); }
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ComponentDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2547,13 +2546,13 @@ public partial class SoalParser : Parser {
 			}
 
 			State = 508; Match(KComponent);
-			State = 509; nameDef();
+			State = 509; name();
 			State = 512;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
 				State = 510; Match(TColon);
-				State = 511; qualifiedName();
+				State = 511; qualifier();
 				}
 			}
 
@@ -2803,14 +2802,14 @@ public partial class SoalParser : Parser {
 
 	public partial class ComponentServiceContext : ParserRuleContext {
 		public ITerminalNode KService() { return GetToken(SoalParser.KService, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ComponentServiceOrReferenceBodyContext componentServiceOrReferenceBody() {
 			return GetRuleContext<ComponentServiceOrReferenceBodyContext>(0);
 		}
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ComponentServiceContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2841,12 +2840,12 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 534; Match(KService);
-			State = 535; qualifiedName();
+			State = 535; qualifier();
 			State = 537;
 			_la = TokenStream.La(1);
 			if (((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 536; nameDef();
+				State = 536; name();
 				}
 			}
 
@@ -2866,14 +2865,14 @@ public partial class SoalParser : Parser {
 
 	public partial class ComponentReferenceContext : ParserRuleContext {
 		public ITerminalNode KReference() { return GetToken(SoalParser.KReference, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ComponentServiceOrReferenceBodyContext componentServiceOrReferenceBody() {
 			return GetRuleContext<ComponentServiceOrReferenceBodyContext>(0);
 		}
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ComponentReferenceContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2904,12 +2903,12 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 541; Match(KReference);
-			State = 542; qualifiedName();
+			State = 542; qualifier();
 			State = 544;
 			_la = TokenStream.La(1);
 			if (((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 543; nameDef();
+				State = 543; name();
 				}
 			}
 
@@ -3034,8 +3033,8 @@ public partial class SoalParser : Parser {
 
 	public partial class ComponentServiceOrReferenceElementContext : ParserRuleContext {
 		public ITerminalNode KBinding() { return GetToken(SoalParser.KBinding, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public ComponentServiceOrReferenceElementContext(ParserRuleContext parent, int invokingState)
@@ -3066,7 +3065,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 559; Match(KBinding);
-			State = 560; qualifiedName();
+			State = 560; qualifier();
 			State = 561; Match(TSemicolon);
 			}
 		}
@@ -3085,8 +3084,8 @@ public partial class SoalParser : Parser {
 		public TypeReferenceContext typeReference() {
 			return GetRuleContext<TypeReferenceContext>(0);
 		}
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public ComponentPropertyContext(ParserRuleContext parent, int invokingState)
@@ -3117,7 +3116,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 563; typeReference();
-			State = 564; nameDef();
+			State = 564; name();
 			State = 565; Match(TSemicolon);
 			}
 		}
@@ -3134,8 +3133,8 @@ public partial class SoalParser : Parser {
 
 	public partial class ComponentImplementationContext : ParserRuleContext {
 		public ITerminalNode KImplementation() { return GetToken(SoalParser.KImplementation, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public ComponentImplementationContext(ParserRuleContext parent, int invokingState)
@@ -3166,7 +3165,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 567; Match(KImplementation);
-			State = 568; nameDef();
+			State = 568; name();
 			State = 569; Match(TSemicolon);
 			}
 		}
@@ -3183,8 +3182,8 @@ public partial class SoalParser : Parser {
 
 	public partial class ComponentLanguageContext : ParserRuleContext {
 		public ITerminalNode KLanguage() { return GetToken(SoalParser.KLanguage, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public ComponentLanguageContext(ParserRuleContext parent, int invokingState)
@@ -3215,7 +3214,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 571; Match(KLanguage);
-			State = 572; nameDef();
+			State = 572; name();
 			State = 573; Match(TSemicolon);
 			}
 		}
@@ -3232,15 +3231,15 @@ public partial class SoalParser : Parser {
 
 	public partial class CompositeDeclarationContext : ParserRuleContext {
 		public ITerminalNode KComposite() { return GetToken(SoalParser.KComposite, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public CompositeBodyContext compositeBody() {
 			return GetRuleContext<CompositeBodyContext>(0);
 		}
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public CompositeDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3271,13 +3270,13 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 575; Match(KComposite);
-			State = 576; nameDef();
+			State = 576; name();
 			State = 579;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
 				State = 577; Match(TColon);
-				State = 578; qualifiedName();
+				State = 578; qualifier();
 				}
 			}
 
@@ -3354,15 +3353,15 @@ public partial class SoalParser : Parser {
 
 	public partial class AssemblyDeclarationContext : ParserRuleContext {
 		public ITerminalNode KAssembly() { return GetToken(SoalParser.KAssembly, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public CompositeBodyContext compositeBody() {
 			return GetRuleContext<CompositeBodyContext>(0);
 		}
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public AssemblyDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3393,13 +3392,13 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 589; Match(KAssembly);
-			State = 590; nameDef();
+			State = 590; name();
 			State = 593;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
 				State = 591; Match(TColon);
-				State = 592; qualifiedName();
+				State = 592; qualifier();
 				}
 			}
 
@@ -3610,8 +3609,8 @@ public partial class SoalParser : Parser {
 
 	public partial class CompositeComponentContext : ParserRuleContext {
 		public ITerminalNode KComponent() { return GetToken(SoalParser.KComponent, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public CompositeComponentContext(ParserRuleContext parent, int invokingState)
@@ -3642,7 +3641,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 611; Match(KComponent);
-			State = 612; qualifiedName();
+			State = 612; qualifier();
 			State = 613; Match(TSemicolon);
 			}
 		}
@@ -3713,8 +3712,8 @@ public partial class SoalParser : Parser {
 	}
 
 	public partial class WireSourceContext : ParserRuleContext {
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public WireSourceContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3743,7 +3742,7 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 621; qualifiedName();
+			State = 621; qualifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3758,8 +3757,8 @@ public partial class SoalParser : Parser {
 	}
 
 	public partial class WireTargetContext : ParserRuleContext {
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public WireTargetContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3788,7 +3787,7 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 623; qualifiedName();
+			State = 623; qualifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3804,8 +3803,8 @@ public partial class SoalParser : Parser {
 
 	public partial class DeploymentDeclarationContext : ParserRuleContext {
 		public ITerminalNode KDeployment() { return GetToken(SoalParser.KDeployment, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public DeploymentBodyContext deploymentBody() {
 			return GetRuleContext<DeploymentBodyContext>(0);
@@ -3838,7 +3837,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 625; Match(KDeployment);
-			State = 626; nameDef();
+			State = 626; name();
 			State = 627; deploymentBody();
 			}
 		}
@@ -4034,8 +4033,8 @@ public partial class SoalParser : Parser {
 
 	public partial class EnvironmentDeclarationContext : ParserRuleContext {
 		public ITerminalNode KEnvironment() { return GetToken(SoalParser.KEnvironment, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public EnvironmentBodyContext environmentBody() {
 			return GetRuleContext<EnvironmentBodyContext>(0);
@@ -4068,7 +4067,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 644; Match(KEnvironment);
-			State = 645; nameDef();
+			State = 645; name();
 			State = 646; environmentBody();
 			}
 		}
@@ -4154,8 +4153,8 @@ public partial class SoalParser : Parser {
 
 	public partial class RuntimeDeclarationContext : ParserRuleContext {
 		public ITerminalNode KRuntime() { return GetToken(SoalParser.KRuntime, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public RuntimeDeclarationContext(ParserRuleContext parent, int invokingState)
@@ -4186,7 +4185,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 658; Match(KRuntime);
-			State = 659; nameDef();
+			State = 659; name();
 			State = 660; Match(TSemicolon);
 			}
 		}
@@ -4264,8 +4263,8 @@ public partial class SoalParser : Parser {
 
 	public partial class AssemblyReferenceContext : ParserRuleContext {
 		public ITerminalNode KAssembly() { return GetToken(SoalParser.KAssembly, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public AssemblyReferenceContext(ParserRuleContext parent, int invokingState)
@@ -4296,7 +4295,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 666; Match(KAssembly);
-			State = 667; qualifiedName();
+			State = 667; qualifier();
 			State = 668; Match(TSemicolon);
 			}
 		}
@@ -4313,8 +4312,8 @@ public partial class SoalParser : Parser {
 
 	public partial class DatabaseReferenceContext : ParserRuleContext {
 		public ITerminalNode KDatabase() { return GetToken(SoalParser.KDatabase, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public DatabaseReferenceContext(ParserRuleContext parent, int invokingState)
@@ -4345,7 +4344,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 670; Match(KDatabase);
-			State = 671; qualifiedName();
+			State = 671; qualifier();
 			State = 672; Match(TSemicolon);
 			}
 		}
@@ -4362,8 +4361,8 @@ public partial class SoalParser : Parser {
 
 	public partial class BindingDeclarationContext : ParserRuleContext {
 		public ITerminalNode KBinding() { return GetToken(SoalParser.KBinding, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public BindingBodyContext bindingBody() {
 			return GetRuleContext<BindingBodyContext>(0);
@@ -4396,7 +4395,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 674; Match(KBinding);
-			State = 675; nameDef();
+			State = 675; name();
 			State = 676; bindingBody();
 			}
 		}
@@ -6016,12 +6015,12 @@ public partial class SoalParser : Parser {
 
 	public partial class EndpointDeclarationContext : ParserRuleContext {
 		public ITerminalNode KEndpoint() { return GetToken(SoalParser.KEndpoint, 0); }
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
+		public NameContext name() {
+			return GetRuleContext<NameContext>(0);
 		}
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public EndpointBodyContext endpointBody() {
 			return GetRuleContext<EndpointBodyContext>(0);
@@ -6054,9 +6053,9 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 812; Match(KEndpoint);
-			State = 813; nameDef();
+			State = 813; name();
 			State = 814; Match(TColon);
-			State = 815; qualifiedName();
+			State = 815; qualifier();
 			State = 816; endpointBody();
 			}
 		}
@@ -6252,8 +6251,8 @@ public partial class SoalParser : Parser {
 
 	public partial class EndpointBindingPropertyContext : ParserRuleContext {
 		public ITerminalNode KBinding() { return GetToken(SoalParser.KBinding, 0); }
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
 		public EndpointBindingPropertyContext(ParserRuleContext parent, int invokingState)
@@ -6284,7 +6283,7 @@ public partial class SoalParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 833; Match(KBinding);
-			State = 834; qualifiedName();
+			State = 834; qualifier();
 			State = 835; Match(TSemicolon);
 			}
 		}
@@ -6518,8 +6517,8 @@ public partial class SoalParser : Parser {
 		public ObjectTypeContext objectType() {
 			return GetRuleContext<ObjectTypeContext>(0);
 		}
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public SimpleTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -6564,7 +6563,7 @@ public partial class SoalParser : Parser {
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 853; qualifiedName();
+				State = 853; qualifier();
 				}
 				break;
 			}
@@ -6644,8 +6643,8 @@ public partial class SoalParser : Parser {
 		public ObjectTypeContext objectType() {
 			return GetRuleContext<ObjectTypeContext>(0);
 		}
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
+		public QualifierContext qualifier() {
+			return GetRuleContext<QualifierContext>(0);
 		}
 		public ReferenceTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -6700,7 +6699,7 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 861; qualifiedName();
+				State = 861; qualifier();
 				}
 				break;
 			default:

@@ -11,9 +11,9 @@ using MetaDslx.Languages.Soal.Symbols;
 
 namespace MetaDslx.Languages.Soal.Binding
 {
-    public class SoalSymbolBuilderVisitor : SymbolBuilderVisitor, ISoalSyntaxVisitor
+    public class SoalSymbolTreeBuilderVisitor : SymbolTreeBuilderVisitor, ISoalSyntaxVisitor
     {
-        public SoalSymbolBuilderVisitor(SymbolBuilder symbolBuilder)
+        public SoalSymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder)
 			: base(symbolBuilder)
         {
 

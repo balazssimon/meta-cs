@@ -89,7 +89,7 @@ namespace MetaDslx.Compiler
 
         internal MutableModel _lazyModelBuilder;
 
-        private SymbolBuilder _lazySymbolBuilder;
+        private SymbolTreeBuilder _lazySymbolTreeBuilder;
 
         /// <summary>
         /// Holds onto data related to reference binding.
@@ -624,18 +624,18 @@ namespace MetaDslx.Compiler
         }
 
         /// <summary>
-        /// The ModelBuilder that represents the compilation.
+        /// The SymbolTreeBuilder that creates properties for symbols not defined in the declaration tree.
         /// </summary>
-        internal protected override SymbolBuilder SymbolBuilder
+        internal protected override SymbolTreeBuilder SymbolTreeBuilder
         {
             get
             {
                 GetBoundReferenceManager();
-                if (_lazySymbolBuilder == null)
+                if (_lazySymbolTreeBuilder == null)
                 {
-                    Interlocked.CompareExchange(ref _lazySymbolBuilder, new SymbolBuilder(this), null);
+                    Interlocked.CompareExchange(ref _lazySymbolTreeBuilder, new SymbolTreeBuilder(this), null);
                 }
-                return _lazySymbolBuilder;
+                return _lazySymbolTreeBuilder;
             }
         }
 

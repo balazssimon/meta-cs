@@ -319,7 +319,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
         public static bool IsQualifiedName(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.QualifiedName);
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Qualifier);
         }
 
         public static bool IsNameCtr(this MetaCompilerAnnotations annots)

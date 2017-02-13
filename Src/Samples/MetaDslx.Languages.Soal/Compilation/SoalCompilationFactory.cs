@@ -26,14 +26,24 @@ namespace MetaDslx.Languages.Soal
             return new SoalAnonymousTypeManager();
         }
 
+        public override RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
+        {
+            return SoalDeclarationTreeBuilder.ForTree((SoalSyntaxTree)syntaxTree, scriptClassName, isSubmission);
+        }
+
+        public override SymbolTreeBuilderVisitor CreateSymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder)
+        {
+            return new SoalSymbolTreeBuilderVisitor(symbolBuilder);
+        }
+
         public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
             return new SoalBinderFactoryVisitor(binderFactory);
         }
 
-        public override RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
+        public override BindVisitor CreateBindVisitor(Binder binder)
         {
-            return SoalDeclarationTreeBuilder.ForTree((SoalSyntaxTree)syntaxTree, scriptClassName, isSubmission);
+            return new SoalBindVisitor(binder);
         }
 
         public override IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder)
@@ -64,11 +74,6 @@ namespace MetaDslx.Languages.Soal
         public override ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType)
         {
             return new SoalScriptCompilationInfo((SoalCompilation)previousSubmission, submissionReturnType, hostObjectType);
-        }
-
-        public override SymbolBuilderVisitor CreateSymbolBuilderVisitor(SymbolBuilder symbolBuilder)
-        {
-            return new SoalSymbolBuilderVisitor(symbolBuilder);
         }
 
         public override bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree)

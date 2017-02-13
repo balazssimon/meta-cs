@@ -3380,7 +3380,7 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 end function
 
 
-template GenerateSymbolBuilderVisitor()
+template GenerateSymbolTreeBuilderVisitor()
 using MetaDslx.Compiler.Binding;
 using System;
 using System.Collections.Generic;
@@ -3394,9 +3394,9 @@ using [Properties.DefaultNamespace].Symbols;
 ^
 namespace [Properties.DefaultNamespace].Binding
 {
-    public class [Properties.LanguageName]SymbolBuilderVisitor : SymbolBuilderVisitor, I[Properties.LanguageName]SyntaxVisitor
+    public class [Properties.LanguageName]SymbolTreeBuilderVisitor : SymbolTreeBuilderVisitor, I[Properties.LanguageName]SyntaxVisitor
     {
-        public [Properties.LanguageName]SymbolBuilderVisitor(SymbolBuilder symbolBuilder)
+        public [Properties.LanguageName]SymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder)
 			: base(symbolBuilder)
         {
 ^
@@ -3404,10 +3404,10 @@ namespace [Properties.DefaultNamespace].Binding
    		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]
 				[loop(alt:rule.Alternatives)]
-		[GenerateSymbolBuilderVisit(alt)]
+		[GenerateSymbolTreeBuilderVisit(alt)]
 				[end loop]
 			[else]
-		[GenerateSymbolBuilderVisit(rule)]
+		[GenerateSymbolTreeBuilderVisit(rule)]
 			[end if]
 		[end loop]
     }
@@ -3415,33 +3415,33 @@ namespace [Properties.DefaultNamespace].Binding
 end template
 
 
-template GenerateSymbolBuilderVisit(Antlr4ParserRule rule)
+template GenerateSymbolTreeBuilderVisit(Antlr4ParserRule rule)
 ^
 public void Visit[rule.PlainName()]([rule.RedName()] node)
 {
-	[GenerateSymbolBuilderVisitBody(rule)]
+	[GenerateSymbolTreeBuilderVisitBody(rule)]
 }
 end template
 
-template GenerateSymbolBuilderVisitBody(Antlr4ParserRule rule)
+template GenerateSymbolTreeBuilderVisitBody(Antlr4ParserRule rule)
 end template
 
 /*
-template GenerateSymbolBuilderVisitBody(Antlr4ParserRule rule)
+template GenerateSymbolTreeBuilderVisitBody(Antlr4ParserRule rule)
 [if (rule.ContainsAnnotations)]
 [if (rule.IsSimpleAlt)]
 	[loop(elem:rule.Elements where elem.ContainsAnnotations)]
-[GetSymbolBuilderVisitElement(rule, elem)]
+[GetSymbolTreeBuilderVisitElement(rule, elem)]
 	[end loop] 
 [else]
 	[loop(elem:rule.AllElements where elem.ContainsAnnotations)]
-[GetSymbolBuilderVisitElement(rule, elem)]
+[GetSymbolTreeBuilderVisitElement(rule, elem)]
 	[end loop]    
 [end if]
 [end if]
 end template
 */
-template GenerateSymbolBuilderVisitElement(Antlr4ParserRuleElement elem)
+template GenerateSymbolTreeBuilderVisitElement(Antlr4ParserRuleElement elem)
 	[if (elem.IsList)]
 this.VisitList(node.[elem.RedName()]);
 	[else]
@@ -3453,22 +3453,22 @@ this.Visit(node.[elem.RedName()]);
 	[end if]
 end template
 
-template GenerateSymbolBuilderConstant(MetaCompilerAnnotations annots, string name, string body)
+template GenerateSymbolTreeBuilderConstant(MetaCompilerAnnotations annots, string name, string body)
 if (name != null) this.RegisterConstant(name);
 [body]
 end template
 
-template GenerateSymbolBuilderValue(MetaCompilerAnnotations annots, string name, string body)
+template GenerateSymbolTreeBuilderValue(MetaCompilerAnnotations annots, string name, string body)
 if (name != null) this.RegisterValue(name);
 [body]
 end template
 
-template GenerateSymbolBuilderSymbolType(MetaCompilerAnnotations annots, string name, string body)
+template GenerateSymbolTreeBuilderSymbolType(MetaCompilerAnnotations annots, string name, string body)
 if ([name] != null) this.RegisterSymbolType([annots.GetSymbolType(MetaCompilerAnnotationInfo.SymbolType)]);
 [body]
 end template
 
-template GenerateSymbolBuilderSymbol(MetaCompilerAnnotations annots, string body)
+template GenerateSymbolTreeBuilderSymbol(MetaCompilerAnnotations annots, string body)
 this.BeginSymbol([annots.GetSymbolType()]);
 try
 {
@@ -3480,23 +3480,23 @@ finally
 }
 end template
 
-template GenerateSymbolBuilderNameCtr(MetaCompilerAnnotations annots, string body)
+template GenerateSymbolTreeBuilderNameCtr(MetaCompilerAnnotations annots, string body)
 [body]
 end template
 
-template GenerateSymbolBuilderTypeCtr(MetaCompilerAnnotations annots, string body)
+template GenerateSymbolTreeBuilderTypeCtr(MetaCompilerAnnotations annots, string body)
 [body]
 end template
 
-template GenerateSymbolBuilderNameUse(MetaCompilerAnnotations annots, string body)
+template GenerateSymbolTreeBuilderNameUse(MetaCompilerAnnotations annots, string body)
 [body]
 end template
 
-template GenerateSymbolBuilderTypeUse(MetaCompilerAnnotations annots, string body)
+template GenerateSymbolTreeBuilderTypeUse(MetaCompilerAnnotations annots, string body)
 [body]
 end template
 
-template GenerateSymbolBuilderDeclaration(MetaCompilerAnnotations annots, string body)
+template GenerateSymbolTreeBuilderDeclaration(MetaCompilerAnnotations annots, string body)
 this.BeginDeclaration();
 try
 {
@@ -3508,7 +3508,7 @@ finally
 }
 end template
 
-template GenerateSymbolBuilderProperty(MetaCompilerAnnotations annots, string body)
+template GenerateSymbolTreeBuilderProperty(MetaCompilerAnnotations annots, string body)
 this.BeginProperty("[annots.GetPropertyValue(MetaCompilerAnnotationInfo.Property, "name")]");
 try
 {
@@ -3522,66 +3522,66 @@ end template
 
 
 
-function string GetSymbolBuilderVisitBody(Antlr4ParserRule rule)
-	string body = GenerateSymbolBuilderVisitBody(rule);
+function string GetSymbolTreeBuilderVisitBody(Antlr4ParserRule rule)
+	string body = GenerateSymbolTreeBuilderVisitBody(rule);
 	if (rule.Annotations.IsConstant())
-		body = GenerateSymbolBuilderConstant(rule.Annotations, "node", body);
+		body = GenerateSymbolTreeBuilderConstant(rule.Annotations, "node", body);
 	end if
 	if (rule.Annotations.IsValue())
-		body = GenerateSymbolBuilderValue(rule.Annotations, "node", body);
+		body = GenerateSymbolTreeBuilderValue(rule.Annotations, "node", body);
 	end if
 	if (rule.Annotations.IsSymbolType())
-		body = GenerateSymbolBuilderSymbolType(rule.Annotations, "node", body);
+		body = GenerateSymbolTreeBuilderSymbolType(rule.Annotations, "node", body);
 	end if
 	if (rule.Annotations.IsSymbol())
-		body = GenerateSymbolBuilderSymbol(rule.Annotations, body);
+		body = GenerateSymbolTreeBuilderSymbol(rule.Annotations, body);
 	end if
 	if (rule.Annotations.IsNameCtr())
-		body = GenerateSymbolBuilderNameCtr(rule.Annotations, body);
+		body = GenerateSymbolTreeBuilderNameCtr(rule.Annotations, body);
 	end if
 	if (rule.Annotations.IsTypeCtr())
-		body = GenerateSymbolBuilderTypeCtr(rule.Annotations, body);
+		body = GenerateSymbolTreeBuilderTypeCtr(rule.Annotations, body);
 	end if
 	if (rule.Annotations.IsNameUse())
-		body = GenerateSymbolBuilderNameUse(rule.Annotations, body);
+		body = GenerateSymbolTreeBuilderNameUse(rule.Annotations, body);
 	end if
 	if (rule.Annotations.IsTypeUse())
-		body = GenerateSymbolBuilderTypeUse(rule.Annotations, body);
+		body = GenerateSymbolTreeBuilderTypeUse(rule.Annotations, body);
 	end if
 	if (rule.Annotations.IsProperty())
-		body = GenerateSymbolBuilderProperty(rule.Annotations, body);
+		body = GenerateSymbolTreeBuilderProperty(rule.Annotations, body);
 	end if
 	return body;
 end function
 
-function string GetSymbolBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	string body = GenerateSymbolBuilderVisitElement(elem);
+function string GetSymbolTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
+	string body = GenerateSymbolTreeBuilderVisitElement(elem);
 	if (elem.Annotations.IsConstant())
-		body = GenerateSymbolBuilderConstant(elem.Annotations, "node."+elem.RedName(), body);
+		body = GenerateSymbolTreeBuilderConstant(elem.Annotations, "node."+elem.RedName(), body);
 	end if
 	if (elem.Annotations.IsValue())
-		body = GenerateSymbolBuilderValue(elem.Annotations, "node."+elem.RedName(), body);
+		body = GenerateSymbolTreeBuilderValue(elem.Annotations, "node."+elem.RedName(), body);
 	end if
 	if (elem.Annotations.IsSymbolType())
-		body = GenerateSymbolBuilderSymbolType(elem.Annotations, "node."+elem.RedName(), body);
+		body = GenerateSymbolTreeBuilderSymbolType(elem.Annotations, "node."+elem.RedName(), body);
 	end if
 	if (elem.Annotations.IsSymbol())
-		body = GenerateSymbolBuilderSymbol(elem.Annotations, body);
+		body = GenerateSymbolTreeBuilderSymbol(elem.Annotations, body);
 	end if
 	if (elem.Annotations.IsNameCtr())
-		body = GenerateSymbolBuilderNameCtr(elem.Annotations, body);
+		body = GenerateSymbolTreeBuilderNameCtr(elem.Annotations, body);
 	end if
 	if (elem.Annotations.IsTypeCtr())
-		body = GenerateSymbolBuilderTypeCtr(elem.Annotations, body);
+		body = GenerateSymbolTreeBuilderTypeCtr(elem.Annotations, body);
 	end if
 	if (elem.Annotations.IsNameUse())
-		body = GenerateSymbolBuilderNameUse(elem.Annotations, body);
+		body = GenerateSymbolTreeBuilderNameUse(elem.Annotations, body);
 	end if
 	if (elem.Annotations.IsTypeUse())
-		body = GenerateSymbolBuilderTypeUse(elem.Annotations, body);
+		body = GenerateSymbolTreeBuilderTypeUse(elem.Annotations, body);
 	end if
 	if (elem.Annotations.IsProperty())
-		body = GenerateSymbolBuilderProperty(elem.Annotations, body);
+		body = GenerateSymbolTreeBuilderProperty(elem.Annotations, body);
 	end if
 	return body;
 end function

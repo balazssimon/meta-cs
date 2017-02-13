@@ -15,7 +15,7 @@ namespace MetaDslx.Compiler.MetaModel
 
         public const string Identifier = "Identifier";
         public const string Name = "Name";
-        public const string QualifiedName = "QualifiedName";
+        public const string Qualifier = "Qualifier";
         public const string NameDef = "NameDef";
         public const string TypeDef = "TypeDef";
         public const string NameCtr = "NameCtr";
@@ -34,13 +34,13 @@ namespace MetaDslx.Compiler.MetaModel
 
         public static readonly string[] SemanticAnnotations = 
             {
-                Name, QualifiedName, NameDef, TypeDef, NameCtr, TypeCtr,
+                Name, Qualifier, NameDef, TypeDef, NameCtr, TypeCtr,
                 NameUse, TypeUse, Scope, Symbol, SymbolType, PreDefSymbol, Property
             };
         public static readonly string[] DeclarationTreeEntry = { NameDef, TypeDef };
         public static readonly string[] ScopeBoundary = { NameDef, TypeDef, NameCtr, TypeCtr, Symbol, PreDefSymbol, Scope };
         public static readonly string[] SymbolBoundary = { NameDef, TypeDef, NameCtr, TypeCtr, NameUse, TypeUse, Symbol, PreDefSymbol, Scope };
-        public static readonly string[] VisitBoundary = { Name, QualifiedName };
+        public static readonly string[] VisitBoundary = { Name, Qualifier };
 
         public static string GetDefaultProperty(string annotationType)
         {

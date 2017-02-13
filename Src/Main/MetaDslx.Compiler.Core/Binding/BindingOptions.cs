@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,16 +40,18 @@ namespace MetaDslx.Compiler.Binding
 
     public class BindingOptions
     {
-        public static readonly BindingOptions None = new BindingOptions(LookupFlags.None, BindingFlags.None);
-        public static readonly BindingOptions Default = new BindingOptions(LookupFlags.NamespacesOrTypesOrMembers, BindingFlags.None);
+        public static readonly BindingOptions None = new BindingOptions(LookupFlags.None, BindingFlags.None, null);
+        public static readonly BindingOptions Default = new BindingOptions(LookupFlags.NamespacesOrTypesOrMembers, BindingFlags.None, null);
 
         private LookupFlags lookupFlags;
         private BindingFlags bindingFlags;
+        private Type[] symbolTypes;
 
-        protected BindingOptions(LookupFlags lookupFlags, BindingFlags bindingFlags)
+        protected BindingOptions(LookupFlags lookupFlags, BindingFlags bindingFlags, Type[] symbolTypes)
         {
             this.lookupFlags = lookupFlags;
             this.bindingFlags = bindingFlags;
+            this.symbolTypes = symbolTypes;
         }
 
         public bool IsDefault
@@ -56,14 +59,19 @@ namespace MetaDslx.Compiler.Binding
             get { return this == BindingOptions.Default; }
         }
 
-        protected LookupFlags LookupFlags
+        public LookupFlags LookupFlags
         {
             get { return this.lookupFlags; }
         }
 
-        protected BindingFlags BindingFlags
+        public BindingFlags BindingFlags
         {
             get { return this.bindingFlags; }
+        }
+
+        public Type[] SymbolTypes
+        {
+            get { return this.symbolTypes; }
         }
 
         public bool LookupUseBaseReferenceAccessibility
@@ -96,127 +104,78 @@ namespace MetaDslx.Compiler.Binding
             get { return (this.bindingFlags & BindingFlags.SemanticModel) != 0; }
         }
 
-        protected virtual BindingOptions Update(LookupFlags lookupFlags, BindingFlags bindingFlags)
+        protected virtual BindingOptions Update(LookupFlags lookupFlags, BindingFlags bindingFlags, Type[] symbolTypes)
         {
-            if (this.lookupFlags != lookupFlags || this.bindingFlags != bindingFlags)
+            if (this.lookupFlags != lookupFlags || this.bindingFlags != bindingFlags || this.symbolTypes != symbolTypes)
             {
-                return new BindingOptions(lookupFlags, bindingFlags);
+                return new BindingOptions(lookupFlags, bindingFlags, symbolTypes);
             }
             return this;
         }
 
-        protected BindingOptions SetLookupFlags(LookupFlags flags)
+        public BindingOptions SetLookupFlags(LookupFlags flags)
         {
             return this.SetLookupFlagsCore(flags);
         }
 
         protected virtual BindingOptions SetLookupFlagsCore(LookupFlags flags)
         {
-            return this.Update(flags, this.bindingFlags);
+            return this.Update(flags, this.bindingFlags, this.symbolTypes);
         }
 
-        protected BindingOptions AddLookupFlags(LookupFlags flags)
+        public BindingOptions AddLookupFlags(LookupFlags flags)
         {
             return this.AddLookupFlagsCore(flags);
         }
 
         protected virtual BindingOptions AddLookupFlagsCore(LookupFlags flags)
         {
-            return this.Update(this.lookupFlags | flags, this.bindingFlags);
+            return this.Update(this.lookupFlags | flags, this.bindingFlags, this.symbolTypes);
         }
 
-        protected BindingOptions RemoveLookupFlags(LookupFlags flags)
+        public BindingOptions RemoveLookupFlags(LookupFlags flags)
         {
             return this.RemoveLookupFlagsCore(flags);
         }
 
         protected virtual BindingOptions RemoveLookupFlagsCore(LookupFlags flags)
         {
-            return this.Update(this.lookupFlags & ~flags, this.bindingFlags);
+            return this.Update(this.lookupFlags & ~flags, this.bindingFlags, this.symbolTypes);
         }
 
-        protected BindingOptions SetBindingFlags(BindingFlags flags)
+        public BindingOptions SetBindingFlags(BindingFlags flags)
         {
             return this.SetBindingFlagsCore(flags);
         }
 
         protected virtual BindingOptions SetBindingFlagsCore(BindingFlags flags)
         {
-            return this.Update(this.lookupFlags, flags);
+            return this.Update(this.lookupFlags, flags, this.symbolTypes);
         }
 
-        protected BindingOptions AddBindingFlags(BindingFlags flags)
+        public BindingOptions AddBindingFlags(BindingFlags flags)
         {
             return this.AddBindingFlagsCore(flags);
         }
 
         protected virtual BindingOptions AddBindingFlagsCore(BindingFlags flags)
         {
-            return this.Update(this.lookupFlags, this.bindingFlags | flags);
+            return this.Update(this.lookupFlags, this.bindingFlags | flags, this.symbolTypes);
         }
 
-        protected BindingOptions RemoveBindingFlags(BindingFlags flags)
+        public BindingOptions RemoveBindingFlags(BindingFlags flags)
         {
             return this.RemoveBindingFlagsCore(flags);
         }
 
         protected virtual BindingOptions RemoveBindingFlagsCore(BindingFlags flags)
         {
-            return this.Update(this.lookupFlags, this.bindingFlags & ~flags);
+            return this.Update(this.lookupFlags, this.bindingFlags & ~flags, this.symbolTypes);
         }
 
-        public BindingOptions WithLookupUseBaseReferenceAccessibility(bool value)
+        public BindingOptions WithSymbolTypes(Type[] symbolTypes)
         {
-            if (value) return this.AddLookupFlags(LookupFlags.UseBaseReferenceAccessibility);
-            else return this.RemoveLookupFlags(LookupFlags.UseBaseReferenceAccessibility);
-        }
-
-        public BindingOptions WithLookupNamespacesOrTypesOrMembers(bool value)
-        {
-            if (value) return this.AddLookupFlags(LookupFlags.NamespacesOrTypesOrMembers);
-            else return this.RemoveLookupFlags(LookupFlags.NamespacesOrTypesOrMembers);
-        }
-
-        public BindingOptions WithLookupNamespacesOrTypes(bool value)
-        {
-            if (value) return this.AddLookupFlags(LookupFlags.NamespacesOrTypes);
-            else return this.RemoveLookupFlags(LookupFlags.NamespacesOrTypes);
-        }
-
-        public BindingOptions WithLookupNamespaces(bool value)
-        {
-            if (value) return this.AddLookupFlags(LookupFlags.Namespaces);
-            else return this.RemoveLookupFlags(LookupFlags.Namespaces);
-        }
-
-        public BindingOptions WithLookupTypes(bool value)
-        {
-            if (value) return this.AddLookupFlags(LookupFlags.Types);
-            else return this.RemoveLookupFlags(LookupFlags.Types);
-        }
-
-        public BindingOptions WithLookupMembers(bool value)
-        {
-            if (value) return this.AddLookupFlags(LookupFlags.Members);
-            else return this.RemoveLookupFlags(LookupFlags.Members);
-        }
-
-        public BindingOptions WithLookupInstanceMembers(bool value)
-        {
-            if (value) return this.AddLookupFlags(LookupFlags.InstanceMembers);
-            else return this.RemoveLookupFlags(LookupFlags.InstanceMembers);
-        }
-
-        public BindingOptions WithLookupStaticMembers(bool value)
-        {
-            if (value) return this.AddLookupFlags(LookupFlags.StaticMembers);
-            else return this.RemoveLookupFlags(LookupFlags.StaticMembers);
-        }
-
-        public BindingOptions WithBindSemanticModel(bool value)
-        {
-            if (value) return this.AddBindingFlags(BindingFlags.SemanticModel);
-            else return this.RemoveBindingFlags(BindingFlags.SemanticModel);
+            return this.Update(this.lookupFlags, this.bindingFlags, symbolTypes);
         }
     }
 

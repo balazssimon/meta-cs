@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\0crvcb1z.lp0\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\l3mhdzl2.agz\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -39,17 +39,11 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMain([NotNull] SoalParser.MainContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SoalParser.nameDef"/>.
+	/// Visit a parse tree produced by <see cref="SoalParser.name"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitNameDef([NotNull] SoalParser.NameDefContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="SoalParser.qualifiedNameDef"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitQualifiedNameDef([NotNull] SoalParser.QualifiedNameDefContext context);
+	Result VisitName([NotNull] SoalParser.NameContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.qualifiedName"/>.
 	/// </summary>
@@ -57,17 +51,23 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitQualifiedName([NotNull] SoalParser.QualifiedNameContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.qualifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitQualifier([NotNull] SoalParser.QualifierContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.identifierList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIdentifierList([NotNull] SoalParser.IdentifierListContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SoalParser.qualifiedNameList"/>.
+	/// Visit a parse tree produced by <see cref="SoalParser.qualifierList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitQualifiedNameList([NotNull] SoalParser.QualifiedNameListContext context);
+	Result VisitQualifierList([NotNull] SoalParser.QualifierListContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.annotationList"/>.
 	/// </summary>

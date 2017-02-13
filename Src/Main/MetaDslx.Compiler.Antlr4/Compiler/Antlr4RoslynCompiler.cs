@@ -104,7 +104,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.GeneratedParseOptions = generator.GenerateParseOptions();
             this.GeneratedFeature = generator.GenerateFeature();
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
-            this.GeneratedSymbolBuilderVisitor = generator.GenerateSymbolBuilderVisitor();
+            this.GeneratedSymbolBuilderVisitor = generator.GenerateSymbolTreeBuilderVisitor();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
         }
 

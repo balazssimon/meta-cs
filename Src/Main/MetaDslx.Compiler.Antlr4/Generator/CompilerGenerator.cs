@@ -9,8 +9,8 @@ using MetaDslx.Compiler.MetaModel; //5:1
 
 namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
 {
-    using __Hidden_CompilerGenerator_510456461;
-    namespace __Hidden_CompilerGenerator_510456461
+    using __Hidden_CompilerGenerator_581769780;
+    namespace __Hidden_CompilerGenerator_581769780
     {
         internal static class __Extensions
         {
@@ -34719,7 +34719,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return body; //3379:2
         }
 
-        public string GenerateSymbolBuilderVisitor() //3383:1
+        public string GenerateSymbolTreeBuilderVisitor() //3383:1
         {
             StringBuilder __out = new StringBuilder();
             __out.Append("using MetaDslx.Compiler.Binding;"); //3384:1
@@ -34870,7 +34870,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
                     if (!__tmp19_last) __out.AppendLine(true);
                 }
             }
-            string __tmp20_line = "SymbolBuilderVisitor : SymbolBuilderVisitor, I"; //3397:43
+            string __tmp20_line = "SymbolTreeBuilderVisitor : SymbolTreeBuilderVisitor, I"; //3397:43
             if (!string.IsNullOrEmpty(__tmp20_line))
             {
                 __out.Append(__tmp20_line);
@@ -34893,7 +34893,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
                     if (!__tmp21_last) __out.AppendLine(true);
                 }
             }
-            string __tmp22_line = "SyntaxVisitor"; //3397:114
+            string __tmp22_line = "SyntaxVisitor"; //3397:122
             if (!string.IsNullOrEmpty(__tmp22_line))
             {
                 __out.Append(__tmp22_line);
@@ -34902,7 +34902,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             if (__tmp17_outputWritten) __out.AppendLine(true);
             if (__tmp17_outputWritten)
             {
-                __out.AppendLine(false); //3397:127
+                __out.AppendLine(false); //3397:135
             }
             __out.Append("    {"); //3398:1
             __out.AppendLine(false); //3398:6
@@ -34930,7 +34930,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
                     if (!__tmp26_last) __out.AppendLine(true);
                 }
             }
-            string __tmp27_line = "SymbolBuilderVisitor(SymbolBuilder symbolBuilder)"; //3399:41
+            string __tmp27_line = "SymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder)"; //3399:41
             if (!string.IsNullOrEmpty(__tmp27_line))
             {
                 __out.Append(__tmp27_line);
@@ -34939,7 +34939,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             if (__tmp24_outputWritten) __out.AppendLine(true);
             if (__tmp24_outputWritten)
             {
-                __out.AppendLine(false); //3399:90
+                __out.AppendLine(false); //3399:98
             }
             __out.Append("			: base(symbolBuilder)"); //3400:1
             __out.AppendLine(false); //3400:25
@@ -34969,7 +34969,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
                         bool __tmp31_outputWritten = false;
                         string __tmp30Prefix = "		"; //3407:1
                         StringBuilder __tmp32 = new StringBuilder();
-                        __tmp32.Append(GenerateSymbolBuilderVisit(alt));
+                        __tmp32.Append(GenerateSymbolTreeBuilderVisit(alt));
                         using(StreamReader __tmp32Reader = new StreamReader(this.__ToStream(__tmp32.ToString())))
                         {
                             bool __tmp32_last = __tmp32Reader.EndOfStream;
@@ -34992,7 +34992,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
                         }
                         if (__tmp31_outputWritten)
                         {
-                            __out.AppendLine(false); //3407:36
+                            __out.AppendLine(false); //3407:40
                         }
                     }
                 }
@@ -35001,7 +35001,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
                     bool __tmp34_outputWritten = false;
                     string __tmp33Prefix = "		"; //3410:1
                     StringBuilder __tmp35 = new StringBuilder();
-                    __tmp35.Append(GenerateSymbolBuilderVisit(rule));
+                    __tmp35.Append(GenerateSymbolTreeBuilderVisit(rule));
                     using(StreamReader __tmp35Reader = new StreamReader(this.__ToStream(__tmp35.ToString())))
                     {
                         bool __tmp35_last = __tmp35Reader.EndOfStream;
@@ -35024,7 +35024,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
                     }
                     if (__tmp34_outputWritten)
                     {
-                        __out.AppendLine(false); //3410:37
+                        __out.AppendLine(false); //3410:41
                     }
                 }
             }
@@ -35035,7 +35035,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderVisit(Antlr4ParserRule rule) //3418:1
+        public string GenerateSymbolTreeBuilderVisit(Antlr4ParserRule rule) //3418:1
         {
             StringBuilder __out = new StringBuilder();
             __out.AppendLine(true); //3419:1
@@ -35102,7 +35102,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             bool __tmp9_outputWritten = false;
             string __tmp8Prefix = "	"; //3422:1
             StringBuilder __tmp10 = new StringBuilder();
-            __tmp10.Append(GenerateSymbolBuilderVisitBody(rule));
+            __tmp10.Append(GenerateSymbolTreeBuilderVisitBody(rule));
             using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
             {
                 bool __tmp10_last = __tmp10Reader.EndOfStream;
@@ -35125,20 +35125,20 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             }
             if (__tmp9_outputWritten)
             {
-                __out.AppendLine(false); //3422:40
+                __out.AppendLine(false); //3422:44
             }
             __out.Append("}"); //3423:1
             __out.AppendLine(false); //3423:2
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderVisitBody(Antlr4ParserRule rule) //3426:1
+        public string GenerateSymbolTreeBuilderVisitBody(Antlr4ParserRule rule) //3426:1
         {
             StringBuilder __out = new StringBuilder();
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderVisitElement(Antlr4ParserRuleElement elem) //3444:1
+        public string GenerateSymbolTreeBuilderVisitElement(Antlr4ParserRuleElement elem) //3444:1
         {
             StringBuilder __out = new StringBuilder();
             if (elem.IsList) //3445:3
@@ -35261,7 +35261,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderConstant(MetaCompilerAnnotations annots, string name, string body) //3456:1
+        public string GenerateSymbolTreeBuilderConstant(MetaCompilerAnnotations annots, string name, string body) //3456:1
         {
             StringBuilder __out = new StringBuilder();
             __out.Append("if (name != null) this.RegisterConstant(name);"); //3457:1
@@ -35291,7 +35291,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderValue(MetaCompilerAnnotations annots, string name, string body) //3461:1
+        public string GenerateSymbolTreeBuilderValue(MetaCompilerAnnotations annots, string name, string body) //3461:1
         {
             StringBuilder __out = new StringBuilder();
             __out.Append("if (name != null) this.RegisterValue(name);"); //3462:1
@@ -35321,7 +35321,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderSymbolType(MetaCompilerAnnotations annots, string name, string body) //3466:1
+        public string GenerateSymbolTreeBuilderSymbolType(MetaCompilerAnnotations annots, string name, string body) //3466:1
         {
             StringBuilder __out = new StringBuilder();
             bool __tmp2_outputWritten = false;
@@ -35407,7 +35407,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderSymbol(MetaCompilerAnnotations annots, string body) //3471:1
+        public string GenerateSymbolTreeBuilderSymbol(MetaCompilerAnnotations annots, string body) //3471:1
         {
             StringBuilder __out = new StringBuilder();
             bool __tmp2_outputWritten = false;
@@ -35490,7 +35490,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderNameCtr(MetaCompilerAnnotations annots, string body) //3483:1
+        public string GenerateSymbolTreeBuilderNameCtr(MetaCompilerAnnotations annots, string body) //3483:1
         {
             StringBuilder __out = new StringBuilder();
             bool __tmp2_outputWritten = false;
@@ -35518,7 +35518,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderTypeCtr(MetaCompilerAnnotations annots, string body) //3487:1
+        public string GenerateSymbolTreeBuilderTypeCtr(MetaCompilerAnnotations annots, string body) //3487:1
         {
             StringBuilder __out = new StringBuilder();
             bool __tmp2_outputWritten = false;
@@ -35546,7 +35546,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderNameUse(MetaCompilerAnnotations annots, string body) //3491:1
+        public string GenerateSymbolTreeBuilderNameUse(MetaCompilerAnnotations annots, string body) //3491:1
         {
             StringBuilder __out = new StringBuilder();
             bool __tmp2_outputWritten = false;
@@ -35574,7 +35574,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderTypeUse(MetaCompilerAnnotations annots, string body) //3495:1
+        public string GenerateSymbolTreeBuilderTypeUse(MetaCompilerAnnotations annots, string body) //3495:1
         {
             StringBuilder __out = new StringBuilder();
             bool __tmp2_outputWritten = false;
@@ -35602,7 +35602,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderDeclaration(MetaCompilerAnnotations annots, string body) //3499:1
+        public string GenerateSymbolTreeBuilderDeclaration(MetaCompilerAnnotations annots, string body) //3499:1
         {
             StringBuilder __out = new StringBuilder();
             __out.Append("this.BeginDeclaration();"); //3500:1
@@ -35652,7 +35652,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilderProperty(MetaCompilerAnnotations annots, string body) //3511:1
+        public string GenerateSymbolTreeBuilderProperty(MetaCompilerAnnotations annots, string body) //3511:1
         {
             StringBuilder __out = new StringBuilder();
             bool __tmp2_outputWritten = false;
@@ -35735,86 +35735,86 @@ namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
             return __out.ToString();
         }
 
-        public string GetSymbolBuilderVisitBody(Antlr4ParserRule rule) //3525:1
+        public string GetSymbolTreeBuilderVisitBody(Antlr4ParserRule rule) //3525:1
         {
-            string body = GenerateSymbolBuilderVisitBody(rule); //3526:2
+            string body = GenerateSymbolTreeBuilderVisitBody(rule); //3526:2
             if (rule.Annotations.IsConstant()) //3527:2
             {
-                body = GenerateSymbolBuilderConstant(rule.Annotations, "node", body); //3528:3
+                body = GenerateSymbolTreeBuilderConstant(rule.Annotations, "node", body); //3528:3
             }
             if (rule.Annotations.IsValue()) //3530:2
             {
-                body = GenerateSymbolBuilderValue(rule.Annotations, "node", body); //3531:3
+                body = GenerateSymbolTreeBuilderValue(rule.Annotations, "node", body); //3531:3
             }
             if (rule.Annotations.IsSymbolType()) //3533:2
             {
-                body = GenerateSymbolBuilderSymbolType(rule.Annotations, "node", body); //3534:3
+                body = GenerateSymbolTreeBuilderSymbolType(rule.Annotations, "node", body); //3534:3
             }
             if (rule.Annotations.IsSymbol()) //3536:2
             {
-                body = GenerateSymbolBuilderSymbol(rule.Annotations, body); //3537:3
+                body = GenerateSymbolTreeBuilderSymbol(rule.Annotations, body); //3537:3
             }
             if (rule.Annotations.IsNameCtr()) //3539:2
             {
-                body = GenerateSymbolBuilderNameCtr(rule.Annotations, body); //3540:3
+                body = GenerateSymbolTreeBuilderNameCtr(rule.Annotations, body); //3540:3
             }
             if (rule.Annotations.IsTypeCtr()) //3542:2
             {
-                body = GenerateSymbolBuilderTypeCtr(rule.Annotations, body); //3543:3
+                body = GenerateSymbolTreeBuilderTypeCtr(rule.Annotations, body); //3543:3
             }
             if (rule.Annotations.IsNameUse()) //3545:2
             {
-                body = GenerateSymbolBuilderNameUse(rule.Annotations, body); //3546:3
+                body = GenerateSymbolTreeBuilderNameUse(rule.Annotations, body); //3546:3
             }
             if (rule.Annotations.IsTypeUse()) //3548:2
             {
-                body = GenerateSymbolBuilderTypeUse(rule.Annotations, body); //3549:3
+                body = GenerateSymbolTreeBuilderTypeUse(rule.Annotations, body); //3549:3
             }
             if (rule.Annotations.IsProperty()) //3551:2
             {
-                body = GenerateSymbolBuilderProperty(rule.Annotations, body); //3552:3
+                body = GenerateSymbolTreeBuilderProperty(rule.Annotations, body); //3552:3
             }
             return body; //3554:2
         }
 
-        public string GetSymbolBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //3557:1
+        public string GetSymbolTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //3557:1
         {
-            string body = GenerateSymbolBuilderVisitElement(elem); //3558:2
+            string body = GenerateSymbolTreeBuilderVisitElement(elem); //3558:2
             if (elem.Annotations.IsConstant()) //3559:2
             {
-                body = GenerateSymbolBuilderConstant(elem.Annotations, "node." + elem.RedName(), body); //3560:3
+                body = GenerateSymbolTreeBuilderConstant(elem.Annotations, "node." + elem.RedName(), body); //3560:3
             }
             if (elem.Annotations.IsValue()) //3562:2
             {
-                body = GenerateSymbolBuilderValue(elem.Annotations, "node." + elem.RedName(), body); //3563:3
+                body = GenerateSymbolTreeBuilderValue(elem.Annotations, "node." + elem.RedName(), body); //3563:3
             }
             if (elem.Annotations.IsSymbolType()) //3565:2
             {
-                body = GenerateSymbolBuilderSymbolType(elem.Annotations, "node." + elem.RedName(), body); //3566:3
+                body = GenerateSymbolTreeBuilderSymbolType(elem.Annotations, "node." + elem.RedName(), body); //3566:3
             }
             if (elem.Annotations.IsSymbol()) //3568:2
             {
-                body = GenerateSymbolBuilderSymbol(elem.Annotations, body); //3569:3
+                body = GenerateSymbolTreeBuilderSymbol(elem.Annotations, body); //3569:3
             }
             if (elem.Annotations.IsNameCtr()) //3571:2
             {
-                body = GenerateSymbolBuilderNameCtr(elem.Annotations, body); //3572:3
+                body = GenerateSymbolTreeBuilderNameCtr(elem.Annotations, body); //3572:3
             }
             if (elem.Annotations.IsTypeCtr()) //3574:2
             {
-                body = GenerateSymbolBuilderTypeCtr(elem.Annotations, body); //3575:3
+                body = GenerateSymbolTreeBuilderTypeCtr(elem.Annotations, body); //3575:3
             }
             if (elem.Annotations.IsNameUse()) //3577:2
             {
-                body = GenerateSymbolBuilderNameUse(elem.Annotations, body); //3578:3
+                body = GenerateSymbolTreeBuilderNameUse(elem.Annotations, body); //3578:3
             }
             if (elem.Annotations.IsTypeUse()) //3580:2
             {
-                body = GenerateSymbolBuilderTypeUse(elem.Annotations, body); //3581:3
+                body = GenerateSymbolTreeBuilderTypeUse(elem.Annotations, body); //3581:3
             }
             if (elem.Annotations.IsProperty()) //3583:2
             {
-                body = GenerateSymbolBuilderProperty(elem.Annotations, body); //3584:3
+                body = GenerateSymbolTreeBuilderProperty(elem.Annotations, body); //3584:3
             }
             return body; //3586:2
         }

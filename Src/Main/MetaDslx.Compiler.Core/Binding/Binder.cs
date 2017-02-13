@@ -4,6 +4,7 @@ using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 namespace MetaDslx.Compiler.Binding
 {
     /// <summary>
-    /// A Binder converts names in to symbols and syntax nodes into bound trees. It is context
+    /// A Binder converts names to symbols and syntax nodes into bound trees. It is context
     /// dependent, relative to a location in source code.
     /// </summary>
     public abstract class Binder
@@ -28,6 +29,8 @@ namespace MetaDslx.Compiler.Binding
         {
             Debug.Assert(compilation != null);
             this.Compilation = compilation;
+
+            _bindVisitorPool = new ObjectPool<BindVisitor>(() => compilation.Language.CompilationFactory.CreateBindVisitor(this), 64);
         }
 
         public Binder(Binder next)
@@ -35,7 +38,14 @@ namespace MetaDslx.Compiler.Binding
             Debug.Assert(next != null);
             _next = next;
             this.Compilation = next.Compilation;
+
+            _bindVisitorPool = new ObjectPool<BindVisitor>(() => this.Compilation.Language.CompilationFactory.CreateBindVisitor(this), 64);
         }
+
+        // In a typing scenario, Bind is regularly called with a non-zero position.
+        // This results in a lot of allocations of BindVisitors. Pooling them
+        // reduces this churn to almost nothing.
+        private readonly ObjectPool<BindVisitor> _bindVisitorPool;
 
         /// <summary>
         /// Get the next binder in which to look up a name, if not found by this binder.
@@ -105,27 +115,46 @@ namespace MetaDslx.Compiler.Binding
 
         public virtual IMetaSymbol Bind(SyntaxNode node, DiagnosticBag diagnostics)
         {
-            string name = node.ToString();
-            BindingOptions options = BindingOptions.Default;
-            return this.Bind(node, name, options, diagnostics);
+            BindVisitor visitor = _bindVisitorPool.Allocate();
+            try
+            {
+                visitor.Reset(diagnostics, false);
+                IMetaSymbol symbol = node.Accept(visitor);
+                visitor.Free();
+                return symbol;
+            }
+            finally
+            {
+                _bindVisitorPool.Free(visitor);
+            }
         }
 
-        public virtual IMetaSymbol Bind(SyntaxNode node, string name, BindingOptions options, DiagnosticBag diagnostics)
+        /*
+        public virtual IMetaSymbol Bind(SyntaxNode node, ImmutableArray<NameQualifier> qualifiedName, BindingOptions options, DiagnosticBag diagnostics)
         {
             LookupResult result = LookupResult.GetInstance();
             try
             {
-                bool wasError;
+                IMetaSymbol resultSymbol = null;
                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                this.LookupSymbolsWithFallback(result, name, null, BindingOptions.Default, ref useSiteDiagnostics);
-                diagnostics.Add(node, useSiteDiagnostics);
-                return ResultSymbol(result, node, name, options, diagnostics, false, out wasError);
+                for (int i = 0; i < qualifiedName.Length; i++)
+                {
+                    bool wasError;
+                    BindingOptions currentOptions = i < qualifiedName.Length - 1 ? BindingOptions.Default : options;
+                    var name = qualifiedName[i];
+                    result.Clear();
+                    this.LookupSymbolsWithFallback(result, name.Name, null, currentOptions, ref useSiteDiagnostics);
+                    diagnostics.Add(node, useSiteDiagnostics);
+                    resultSymbol = ResultSymbol(result, node, name.Name, currentOptions, diagnostics, false, out wasError);
+                    if (wasError) break;
+                }
+                return resultSymbol;
             }
             finally
             {
                 result.Free();
             }
-        }
+        }*/
 
         /// <summary>
         /// Look for names in scope
@@ -301,32 +330,28 @@ namespace MetaDslx.Compiler.Binding
         {
             error = null;
             bool isViableType = true;
-            if (options is SimpleSymbolBindingOptions)
+            if (options.SymbolTypes != null)
             {
-                var soptions = (SimpleSymbolBindingOptions)options;
-                if (soptions.SymbolTypes != null)
+                isViableType = false;
+                foreach (var symbolType in options.SymbolTypes)
                 {
-                    isViableType = false;
-                    foreach (var symbolType in soptions.SymbolTypes)
+                    if (symbolType.IsAssignableFrom(symbol.MId.SymbolInfo.ImmutableType))
                     {
-                        if (symbolType.IsAssignableFrom(symbol.MId.SymbolInfo.ImmutableType))
-                        {
-                            isViableType = true;
-                            break;
-                        }
+                        isViableType = true;
+                        break;
                     }
                 }
-                if (diagnose && !isViableType)
+            }
+            if (diagnose && !isViableType)
+            {
+                ArrayBuilder<string> expected = ArrayBuilder<string>.GetInstance();
+                foreach (var symbolType in options.SymbolTypes)
                 {
-                    ArrayBuilder<string> expected = ArrayBuilder<string>.GetInstance();
-                    foreach (var symbolType in soptions.SymbolTypes)
-                    {
-                        expected.Add(symbolType.Name);
-                    }
-                    string message = this.ConstructErrorMessage(expected);
-                    expected.Free();
-                    error = new DefaultDiagnosticInfo(this.Compilation.MessageProvider, ErrorCode.ERR_WrongSymbolType, symbol, message);
+                    expected.Add(symbolType.Name);
                 }
+                string message = this.ConstructErrorMessage(expected);
+                expected.Free();
+                error = new DefaultDiagnosticInfo(this.Compilation.MessageProvider, ErrorCode.ERR_WrongSymbolType, symbol, message);
             }
             return isViableType;
         }

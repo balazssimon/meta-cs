@@ -363,7 +363,7 @@ namespace MetaDslx.Compiler
             int position,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container: null, name: name, options: BindingOptions.Default.WithLookupUseBaseReferenceAccessibility(true));
+            return LookupSymbolsInternal(position, container: null, name: name, options: BindingOptions.Default.AddLookupFlags(LookupFlags.UseBaseReferenceAccessibility));
         }
 
         /// <summary>
@@ -389,7 +389,7 @@ namespace MetaDslx.Compiler
             IMetaSymbol container = null,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container, name, BindingOptions.None.WithLookupStaticMembers(true));
+            return LookupSymbolsInternal(position, container, name, BindingOptions.None.SetLookupFlags(LookupFlags.StaticMembers));
         }
 
         /// <summary>
@@ -415,7 +415,7 @@ namespace MetaDslx.Compiler
             IMetaSymbol container = null,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container, name, BindingOptions.None.WithLookupNamespacesOrTypes(true));
+            return LookupSymbolsInternal(position, container, name, BindingOptions.None.SetLookupFlags(LookupFlags.NamespacesOrTypes));
         }
 
         /// <summary>

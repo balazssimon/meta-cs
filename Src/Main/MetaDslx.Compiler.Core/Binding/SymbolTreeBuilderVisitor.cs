@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public class SymbolBuilderVisitor : DetailedSyntaxVisitor
+    public class SymbolTreeBuilderVisitor : DetailedSyntaxVisitor
     {
-        private SymbolBuilder _symbolBuilder;
+        private SymbolTreeBuilder _symbolBuilder;
         private MutableSymbol _symbol;
         private MergedDeclaration _declaration;
         private List<string> _propertyStack;
         private string _currentProperty;
 
-        public SymbolBuilderVisitor(SymbolBuilder symbolBuilder)
+        public SymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder)
             : base(false, false)
         {
             _symbolBuilder = symbolBuilder;
@@ -43,7 +43,7 @@ namespace MetaDslx.Compiler.Binding
             get { return _symbol; }
         }
 
-        public SymbolBuilder SymbolBuilder
+        public SymbolTreeBuilder SymbolBuilder
         {
             get { return _symbolBuilder; }
         }
