@@ -571,5 +571,19 @@ namespace MetaDslx.Compiler
                 CompilationStage.Compile, this.SyntaxTree, span, includeEarlierStages: true, cancellationToken: cancellationToken);
         }
 
+        // Gets symbol info for a type or namespace or alias reference. It is assumed that any error cases will come in
+        // as a type whose OriginalDefinition is an error symbol from which the ResultKind can be retrieved.
+        protected static SymbolInfo GetSymbolInfoForSymbol(IMetaSymbol symbol, BindingOptions options)
+        {
+            Debug.Assert((object)symbol != null);
+            return new SymbolInfo(symbol, ImmutableArray<IMetaSymbol>.Empty, CandidateReason.None);
+        }
+
+        // Gets TypeInfo for a type or namespace or alias reference.
+        protected static TypeInfo GetTypeInfoForSymbol(IMetaSymbol symbol, BindingOptions options)
+        {
+            Debug.Assert((object)symbol != null);
+            return new TypeInfo(symbol, symbol);
+        }
     }
 }

@@ -59,7 +59,7 @@ namespace MetaDslx.Compiler.Binding
     /// We might want to extend this to a more general priority scheme.
     /// 
     /// </remarks>
-    internal sealed class LookupResult
+    public sealed class LookupResult
     {
         // the kind of result.
         private LookupResultKind _kind;

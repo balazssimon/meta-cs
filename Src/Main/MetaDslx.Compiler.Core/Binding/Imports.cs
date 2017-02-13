@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MetaDslx.Compiler.Utilities;
+using MetaDslx.Core;
 
 namespace MetaDslx.Compiler.Binding
 {
@@ -33,7 +35,12 @@ namespace MetaDslx.Compiler.Binding
 
         internal void Complete(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            
+        }
+
+        internal void AddLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, BindingOptions options, Binder originalBinder)
+        {
+            
         }
     }
 }

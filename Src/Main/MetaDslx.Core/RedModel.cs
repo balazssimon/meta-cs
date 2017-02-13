@@ -32,6 +32,9 @@ namespace MetaDslx.Core
         object MGet(ModelProperty property);
         bool MHasConcreteValue(ModelProperty property);
         bool MIsSet(ModelProperty property);
+        IReadOnlyList<IMetaSymbol> MGetImports();
+        IReadOnlyList<IMetaSymbol> MGetBaseTypes();
+        IReadOnlyList<IMetaSymbol> MGetAllBaseTypes();
     }
 
     public interface ImmutableSymbol : IMetaSymbol
@@ -104,6 +107,10 @@ namespace MetaDslx.Core
 
         IMetaSymbol IMetaSymbol.MParent { get { return this.model.MParent(this.id); } }
         IReadOnlyList<IMetaSymbol> IMetaSymbol.MChildren { get { return this.model.MChildren(this.id); } }
+
+        public IReadOnlyList<IMetaSymbol> MGetImports() { return this.model.MGetImports(this.id); }
+        public IReadOnlyList<IMetaSymbol> MGetBaseTypes() { return this.model.MGetBaseTypes(this.id); }
+        public IReadOnlyList<IMetaSymbol> MGetAllBaseTypes() { return this.model.MGetAllBaseTypes(this.id); }
 
         public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -268,6 +275,10 @@ namespace MetaDslx.Core
 
         IMetaSymbol IMetaSymbol.MParent { get { return this.model.MParent(this.id); } }
         IReadOnlyList<IMetaSymbol> IMetaSymbol.MChildren { get { return this.model.MChildren(this.id); } }
+
+        public IReadOnlyList<IMetaSymbol> MGetImports() { return this.model.MGetImports(this.id); }
+        public IReadOnlyList<IMetaSymbol> MGetBaseTypes() { return this.model.MGetBaseTypes(this.id); }
+        public IReadOnlyList<IMetaSymbol> MGetAllBaseTypes() { return this.model.MGetAllBaseTypes(this.id); }
 
         public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -746,6 +757,24 @@ namespace MetaDslx.Core
             {
                 return ImmutableModelList<ImmutableSymbol>.FromSymbolIdList(greenSymbol.Children, this);
             }
+            return ImmutableModelList<ImmutableSymbol>.Empty;
+        }
+
+        internal ImmutableModelList<ImmutableSymbol> MGetImports(SymbolId id)
+        {
+            // TODO:
+            return ImmutableModelList<ImmutableSymbol>.Empty;
+        }
+
+        internal ImmutableModelList<ImmutableSymbol> MGetBaseTypes(SymbolId id)
+        {
+            // TODO:
+            return ImmutableModelList<ImmutableSymbol>.Empty;
+        }
+
+        internal ImmutableModelList<ImmutableSymbol> MGetAllBaseTypes(SymbolId id)
+        {
+            // TODO:
             return ImmutableModelList<ImmutableSymbol>.Empty;
         }
 
@@ -1499,6 +1528,24 @@ namespace MetaDslx.Core
                 children = ctx.Updater.GetChildren(this.id, sid);
             } while (!this.EndUpdate(ctx));
             return ImmutableModelList<MutableSymbol>.FromSymbolIdList(children, this);
+        }
+
+        internal ImmutableModelList<MutableSymbol> MGetImports(SymbolId id)
+        {
+            // TODO:
+            return ImmutableModelList<MutableSymbol>.Empty;
+        }
+
+        internal ImmutableModelList<MutableSymbol> MGetBaseTypes(SymbolId id)
+        {
+            // TODO:
+            return ImmutableModelList<MutableSymbol>.Empty;
+        }
+
+        internal ImmutableModelList<MutableSymbol> MGetAllBaseTypes(SymbolId id)
+        {
+            // TODO:
+            return ImmutableModelList<MutableSymbol>.Empty;
         }
 
         internal ImmutableList<ModelProperty> MProperties(SymbolId sid)

@@ -10,6 +10,7 @@ namespace MetaDslx.Compiler.Syntax
     {
         public const int ERR_SyntaxError = 1;
         public const int HDN_UnusedSymbol = 2;
-        public const int ERR_WrongSymbol = 3;
+        public const int ERR_WrongSymbolKind = 3;
+        public const int ERR_WrongSymbolType = 4;
     }
 }

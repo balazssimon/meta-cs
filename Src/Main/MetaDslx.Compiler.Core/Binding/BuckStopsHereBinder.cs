@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 
 namespace MetaDslx.Compiler.Binding
@@ -12,7 +14,7 @@ namespace MetaDslx.Compiler.Binding
     /// </summary>
     public sealed class BuckStopsHereBinder : Binder
     {
-        internal BuckStopsHereBinder(Compilation compilation)
+        internal BuckStopsHereBinder(CompilationBase compilation)
             : base(compilation)
         {
         }
@@ -23,6 +25,12 @@ namespace MetaDslx.Compiler.Binding
             {
                 return null;
             }
+        }
+
+        protected override bool IsAccessibleHelper(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved)
+        {
+            failedThroughTypeCheck = false;
+            return true;
         }
     }
 }

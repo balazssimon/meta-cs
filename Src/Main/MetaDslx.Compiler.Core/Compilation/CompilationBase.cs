@@ -198,7 +198,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected CompilationBase PreviousSubmission => (CompilationBase)ScriptCompilationInfo?.PreviousScriptCompilation;
+        internal protected CompilationBase PreviousSubmission => (CompilationBase)ScriptCompilationInfo?.PreviousScriptCompilation;
 
         #endregion
 

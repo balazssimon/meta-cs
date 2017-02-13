@@ -55,7 +55,7 @@ namespace MetaDslx.Compiler.Binding
         // reduces this churn to almost nothing.
         private readonly ObjectPool<BinderFactoryVisitor> _binderFactoryVisitorPool;
 
-        internal BinderFactory(Compilation compilation, SyntaxTree syntaxTree)
+        internal BinderFactory(CompilationBase compilation, SyntaxTree syntaxTree)
         {
             _compilation = compilation;
             _syntaxTree = syntaxTree;

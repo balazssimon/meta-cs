@@ -1,5 +1,4 @@
 ﻿using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
@@ -16,7 +15,7 @@ namespace MetaDslx.Compiler.Binding
     /// A binder that places the members of a symbol in scope.  If there is a container declaration
     /// with using directives, those are merged when looking up names.
     /// </summary>
-    public sealed class InContainerBinder : Binder
+    public class InContainerBinder : Binder
     {
         private readonly IMetaSymbol _container;
         private readonly Func<ConsList<IMetaSymbol>, Imports> _computeImports;
@@ -46,7 +45,6 @@ namespace MetaDslx.Compiler.Binding
             _computeImports = computeImports;
         }
 
-
         public override IMetaSymbol ContainingSymbol
         {
             get
@@ -55,47 +53,70 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        internal override void LookupSymbolsInSingleBinder(LookupResult result, string name, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public virtual bool IsSubmissionClass
+        {
+            get { return false; }
+        }
+
+        public virtual bool IsScriptClass
+        {
+            get { return false; }
+        }
+
+        protected override void AddLookupSymbolsInfoInSingleBinder(ArrayBuilder<IMetaSymbol> result, BindingOptions options, Binder originalBinder)
+        {
+            if (_container != null)
+            {
+                this.AddMemberLookupSymbolsInfo(result, _container, options, originalBinder);
+            }
+
+            // Submission imports are handled by AddMemberLookupSymbolsInfo (above).
+            if (!IsSubmissionClass)
+            {
+                var imports = GetImports(basesBeingResolved: null);
+                imports.AddLookupSymbolsInfo(result, options, originalBinder);
+            }
+        }
+
+        public override void AddMemberLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, IMetaSymbol container, BindingOptions options, Binder originalBinder)
+        {
+            this.AddMemberLookupSymbolsInfoInType(result, container, options, originalBinder, null);
+        }
+
+        private void AddMemberLookupSymbolsInfoInType(ArrayBuilder<IMetaSymbol> result, IMetaSymbol type, BindingOptions options, Binder originalBinder, IMetaSymbol accessThroughType)
+        {
+            AddMemberLookupSymbolsInfoWithoutInheritance(result, type, options, originalBinder, accessThroughType);
+
+            foreach (var baseType in type.MGetAllBaseTypes())
+            {
+                AddMemberLookupSymbolsInfoWithoutInheritance(result, baseType, options, originalBinder, accessThroughType);
+            }
+
+            // SB-TODO: add Object type here, if needed:
+            //this.AddMemberLookupSymbolsInfoInClass(result, Compilation.GetSpecialType(SpecialType.System_Object), options, originalBinder, accessThroughType);
+        }
+
+        private static void AddMemberLookupSymbolsInfoWithoutInheritance(ArrayBuilder<IMetaSymbol> result, IMetaSymbol symbol, BindingOptions options, Binder originalBinder, IMetaSymbol accessThroughType)
+        {
+            HashSet<DiagnosticInfo> discardedDiagnostics = null;
+            foreach (var member in symbol.MChildren)
+            {
+                SingleLookupResult lookupResult = originalBinder.CheckViability(member, options, accessThroughType, false, ref discardedDiagnostics);
+                if (lookupResult.Kind == LookupResultKind.Viable)
+                {
+                    result.Add(member);
+                }
+            }
+        }
+
+        protected override void LookupSymbolsInSingleBinder(LookupResult result, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             foreach (var child in _container.MChildren)
             {
                 if (child.MName != null && child.MName == name)
                 {
-                    result.MergeEqual(this.CheckViability(child, options, diagnose, ref useSiteDiagnostics));
+                    result.MergeEqual(this.CheckViability(child, options, null, diagnose, ref useSiteDiagnostics));
                 }
-            }
-        }
-
-        private SingleLookupResult CheckViability(IMetaSymbol symbol, BindingOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
-        {
-            bool isType = symbol.MIsType;
-            bool isMember = !symbol.MIsScope && !symbol.MIsType;
-            bool isNamespace = symbol.MIsScope && !symbol.MIsType;
-            bool isViableKind = (isNamespace && options.LookupNamespaces) || (isType && options.LookupTypes) || (isMember && (options.LookupInstanceMembers || options.LookupStaticMembers));
-            bool isViableType = true;
-            if (options is SimpleSymbolBindingOptions)
-            {
-                var soptions = (SimpleSymbolBindingOptions)options;
-                if (soptions.SymbolTypes != null)
-                {
-                    isViableType = false;
-                    foreach (var symbolType in soptions.SymbolTypes)
-                    {
-                        if (symbolType.IsAssignableFrom(symbol.MId.SymbolInfo.ImmutableType))
-                        {
-                            isViableType = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (isViableKind && isViableType)
-            {
-                return LookupResult.Good(symbol);
-            }
-            else
-            {
-                return LookupResult.Wrong(symbol, new DefaultDiagnosticInfo(this.Compilation.MessageProvider, ErrorCode.ERR_WrongSymbol));
             }
         }
 
@@ -110,7 +131,5 @@ namespace MetaDslx.Compiler.Binding
 
             return _lazyImports;
         }
-
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Syntax;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
@@ -94,14 +95,40 @@ namespace MetaDslx.Compiler.Binding
 
         protected override SymbolInfo GetSymbolInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            Binder binder = this.Compilation.GetBinder(node);
+            var binder = this.GetEnclosingBinder(GetAdjustedNodePosition(node));
+            if (binder != null)
+            {
+                var diagnostics = DiagnosticBag.GetInstance();
+                try
+                {
+                    IMetaSymbol symbol = binder.Bind(node, diagnostics);
+                    return (object)symbol != null ? GetSymbolInfoForSymbol(symbol, options) : SymbolInfo.None;
+                }
+                finally
+                {
+                    diagnostics.Free();
+                }
+            }
             return null;
-            //throw new NotImplementedException();
         }
 
         protected override TypeInfo GetTypeInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            var binder = this.GetEnclosingBinder(GetAdjustedNodePosition(node));
+            if (binder != null)
+            {
+                var diagnostics = DiagnosticBag.GetInstance();
+                try
+                {
+                    IMetaSymbol symbol = binder.Bind(node, diagnostics);
+                    return (object)symbol != null ? GetTypeInfoForSymbol(symbol, options) : TypeInfo.None;
+                }
+                finally
+                {
+                    diagnostics.Free();
+                }
+            }
+            return null;
         }
 
         protected override ImmutableArray<IMetaSymbol> GetMembersWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
