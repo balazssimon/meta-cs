@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\incskjbe.0ao\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\0crvcb1z.lp0\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -41,6 +41,26 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitMain([NotNull] SoalParser.MainContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.nameDef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNameDef([NotNull] SoalParser.NameDefContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.nameDef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNameDef([NotNull] SoalParser.NameDefContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.qualifiedNameDef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterQualifiedNameDef([NotNull] SoalParser.QualifiedNameDefContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.qualifiedNameDef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitQualifiedNameDef([NotNull] SoalParser.QualifiedNameDefContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.qualifiedName"/>.
 	/// </summary>
@@ -112,6 +132,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitReturnAnnotation([NotNull] SoalParser.ReturnAnnotationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.annotationHead"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnnotationHead([NotNull] SoalParser.AnnotationHeadContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.annotationHead"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnnotationHead([NotNull] SoalParser.AnnotationHeadContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.annotationBody"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -121,16 +151,6 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitAnnotationBody([NotNull] SoalParser.AnnotationBodyContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.annotationProperties"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAnnotationProperties([NotNull] SoalParser.AnnotationPropertiesContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.annotationProperties"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAnnotationProperties([NotNull] SoalParser.AnnotationPropertiesContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.annotationPropertyList"/>.
 	/// </summary>
@@ -202,6 +222,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitEnumDeclaration([NotNull] SoalParser.EnumDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.enumBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEnumBody([NotNull] SoalParser.EnumBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.enumBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEnumBody([NotNull] SoalParser.EnumBodyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.enumLiterals"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -232,6 +262,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStructDeclaration([NotNull] SoalParser.StructDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.structBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStructBody([NotNull] SoalParser.StructBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.structBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStructBody([NotNull] SoalParser.StructBodyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.propertyDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -251,6 +291,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitDatabaseDeclaration([NotNull] SoalParser.DatabaseDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.databaseBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDatabaseBody([NotNull] SoalParser.DatabaseBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.databaseBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDatabaseBody([NotNull] SoalParser.DatabaseBodyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.entityReference"/>.
 	/// </summary>
@@ -272,6 +322,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitInterfaceDeclaration([NotNull] SoalParser.InterfaceDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.interfaceBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInterfaceBody([NotNull] SoalParser.InterfaceBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.interfaceBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInterfaceBody([NotNull] SoalParser.InterfaceBodyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.operationDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -281,6 +341,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitOperationDeclaration([NotNull] SoalParser.OperationDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.operationHead"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOperationHead([NotNull] SoalParser.OperationHeadContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.operationHead"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOperationHead([NotNull] SoalParser.OperationHeadContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.parameterList"/>.
 	/// </summary>
@@ -321,6 +391,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitComponentDeclaration([NotNull] SoalParser.ComponentDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentBody([NotNull] SoalParser.ComponentBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentBody([NotNull] SoalParser.ComponentBodyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.componentElements"/>.
 	/// </summary>
@@ -436,6 +516,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCompositeDeclaration([NotNull] SoalParser.CompositeDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.compositeBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCompositeBody([NotNull] SoalParser.CompositeBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.compositeBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCompositeBody([NotNull] SoalParser.CompositeBodyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.assemblyDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -516,6 +606,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitDeploymentDeclaration([NotNull] SoalParser.DeploymentDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.deploymentBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDeploymentBody([NotNull] SoalParser.DeploymentBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.deploymentBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDeploymentBody([NotNull] SoalParser.DeploymentBodyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.deploymentElements"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -545,6 +645,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitEnvironmentDeclaration([NotNull] SoalParser.EnvironmentDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.environmentBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEnvironmentBody([NotNull] SoalParser.EnvironmentBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.environmentBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEnvironmentBody([NotNull] SoalParser.EnvironmentBodyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.runtimeDeclaration"/>.
 	/// </summary>
@@ -595,6 +705,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitBindingDeclaration([NotNull] SoalParser.BindingDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.bindingBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBindingBody([NotNull] SoalParser.BindingBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.bindingBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBindingBody([NotNull] SoalParser.BindingBodyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.bindingLayers"/>.
 	/// </summary>
@@ -930,6 +1050,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitEndpointDeclaration([NotNull] SoalParser.EndpointDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.endpointBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEndpointBody([NotNull] SoalParser.EndpointBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.endpointBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEndpointBody([NotNull] SoalParser.EndpointBodyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.endpointProperties"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -1149,26 +1279,6 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitTypeofValue([NotNull] SoalParser.TypeofValueContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.nameDef"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNameDef([NotNull] SoalParser.NameDefContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.nameDef"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNameDef([NotNull] SoalParser.NameDefContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="SoalParser.qualifiedNameDef"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterQualifiedNameDef([NotNull] SoalParser.QualifiedNameDefContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="SoalParser.qualifiedNameDef"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitQualifiedNameDef([NotNull] SoalParser.QualifiedNameDefContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.identifier"/>.
 	/// </summary>

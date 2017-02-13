@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Compiler.Binding;
 using MetaDslx.Compiler.Declarations;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Core;
 using MetaDslx.Languages.Soal.Syntax;
 using MetaDslx.Languages.Soal.Symbols;
@@ -21,6 +22,26 @@ namespace MetaDslx.Languages.Soal.Binding
         }
 		
 		public Binder VisitMain(MainSyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.Visit(node.Parent);
+		}
+		
+		public Binder VisitNameDef(NameDefSyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.Visit(node.Parent);
+		}
+		
+		public Binder VisitQualifiedNameDef(QualifiedNameDefSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
@@ -100,7 +121,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			return this.GetBinderForSymbol(node);
 		}
 		
-		public Binder VisitAnnotationBody(AnnotationBodySyntax node)
+		public Binder VisitAnnotationHead(AnnotationHeadSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
@@ -110,14 +131,14 @@ namespace MetaDslx.Languages.Soal.Binding
 			return this.Visit(node.Parent);
 		}
 		
-		public Binder VisitAnnotationProperties(AnnotationPropertiesSyntax node)
+		public Binder VisitAnnotationBody(AnnotationBodySyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
 		        return this.Visit(node.Parent);
 		    }
-			return this.Visit(node.Parent);
+			return this.GetBinderForSymbol(node, inBody: true);
 		}
 		
 		public Binder VisitAnnotationPropertyList(AnnotationPropertyListSyntax node)
@@ -157,10 +178,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		    {
 		        return this.Visit(node.Parent);
 		    }
-			if (node.NamespaceBody.FullSpan.Contains(this.Position))
-			{
-			    return this.GetBinderForSymbol(node, inBody: true);
-			}
 			return this.GetBinderForSymbol(node);
 		}
 		
@@ -171,7 +188,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    {
 		        return this.Visit(node.Parent);
 		    }
-			return this.Visit(node.Parent);
+			return this.GetBinderForSymbol(node, inBody: true);
 		}
 		
 		public Binder VisitDeclaration(DeclarationSyntax node)
@@ -192,6 +209,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return this.Visit(node.Parent);
 		    }
 			return this.GetBinderForSymbol(node);
+		}
+		
+		public Binder VisitEnumBody(EnumBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
 		}
 		
 		public Binder VisitEnumLiterals(EnumLiteralsSyntax node)
@@ -224,6 +251,16 @@ namespace MetaDslx.Languages.Soal.Binding
 			return this.GetBinderForSymbol(node);
 		}
 		
+		public Binder VisitStructBody(StructBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
+		}
+		
 		public Binder VisitPropertyDeclaration(PropertyDeclarationSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
@@ -242,6 +279,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return this.Visit(node.Parent);
 		    }
 			return this.GetBinderForSymbol(node);
+		}
+		
+		public Binder VisitDatabaseBody(DatabaseBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
 		}
 		
 		public Binder VisitEntityReference(EntityReferenceSyntax node)
@@ -264,6 +311,16 @@ namespace MetaDslx.Languages.Soal.Binding
 			return this.GetBinderForSymbol(node);
 		}
 		
+		public Binder VisitInterfaceBody(InterfaceBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
+		}
+		
 		public Binder VisitOperationDeclaration(OperationDeclarationSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
@@ -272,6 +329,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return this.Visit(node.Parent);
 		    }
 			return this.GetBinderForSymbol(node);
+		}
+		
+		public Binder VisitOperationHead(OperationHeadSyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.Visit(node.Parent);
 		}
 		
 		public Binder VisitParameterList(ParameterListSyntax node)
@@ -312,6 +379,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return this.Visit(node.Parent);
 		    }
 			return this.GetBinderForSymbol(node);
+		}
+		
+		public Binder VisitComponentBody(ComponentBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
 		}
 		
 		public Binder VisitComponentElements(ComponentElementsSyntax node)
@@ -424,6 +501,16 @@ namespace MetaDslx.Languages.Soal.Binding
 			return this.GetBinderForSymbol(node);
 		}
 		
+		public Binder VisitCompositeBody(CompositeBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
+		}
+		
 		public Binder VisitAssemblyDeclaration(AssemblyDeclarationSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
@@ -504,6 +591,16 @@ namespace MetaDslx.Languages.Soal.Binding
 			return this.GetBinderForSymbol(node);
 		}
 		
+		public Binder VisitDeploymentBody(DeploymentBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
+		}
+		
 		public Binder VisitDeploymentElements(DeploymentElementsSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
@@ -532,6 +629,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return this.Visit(node.Parent);
 		    }
 			return this.GetBinderForSymbol(node);
+		}
+		
+		public Binder VisitEnvironmentBody(EnvironmentBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
 		}
 		
 		public Binder VisitRuntimeDeclaration(RuntimeDeclarationSyntax node)
@@ -582,6 +689,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return this.Visit(node.Parent);
 		    }
 			return this.GetBinderForSymbol(node);
+		}
+		
+		public Binder VisitBindingBody(BindingBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
 		}
 		
 		public Binder VisitBindingLayers(BindingLayersSyntax node)
@@ -894,6 +1011,16 @@ namespace MetaDslx.Languages.Soal.Binding
 			return this.GetBinderForSymbol(node);
 		}
 		
+		public Binder VisitEndpointBody(EndpointBodySyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node, inBody: true);
+		}
+		
 		public Binder VisitEndpointProperties(EndpointPropertiesSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
@@ -1105,26 +1232,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		}
 		
 		public Binder VisitTypeofValue(TypeofValueSyntax node)
-		{
-		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
-		    if (!node.FullSpan.Contains(this.Position))
-		    {
-		        return this.Visit(node.Parent);
-		    }
-			return this.Visit(node.Parent);
-		}
-		
-		public Binder VisitNameDef(NameDefSyntax node)
-		{
-		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
-		    if (!node.FullSpan.Contains(this.Position))
-		    {
-		        return this.Visit(node.Parent);
-		    }
-			return this.Visit(node.Parent);
-		}
-		
-		public Binder VisitQualifiedNameDef(QualifiedNameDefSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))

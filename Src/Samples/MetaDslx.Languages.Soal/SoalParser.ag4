@@ -9,6 +9,12 @@ options {
 $RootScope(Namespace)
 main : $Property(Declarations) namespaceDeclaration* EOF;
 
+$Name
+nameDef : identifier;
+
+$Name
+qualifiedNameDef : qualifiedName;
+
 $QualifiedName
 qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
@@ -20,15 +26,16 @@ returnAnnotationList : returnAnnotation+;
 
 $Property(Annotations)
 $Symbol(Annotation)
-annotation : TOpenBracket annotationBody TCloseBracket;
+annotation : TOpenBracket annotationHead TCloseBracket;
 
 $Property(Annotations)
 $Symbol(Annotation)
-returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
+returnAnnotation : TOpenBracket KReturn TColon annotationHead TCloseBracket;
 
-annotationBody : $Property(Name) $Value identifier annotationProperties?;
+annotationHead : $Property(Name) $Value identifier annotationBody?;
 
-annotationProperties : TOpenParen annotationPropertyList? TCloseParen;
+$Body
+annotationBody : TOpenParen annotationPropertyList? TCloseParen;
 
 annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
@@ -42,8 +49,10 @@ annotationPropertyValue
 	;
 
 $NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
-namespaceDeclaration: annotationList? KNamespace qualifiedNameDef TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral $Body namespaceBody;
-namespaceBody: TOpenBrace declaration* TCloseBrace;
+namespaceDeclaration : annotationList? KNamespace qualifiedNameDef TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral namespaceBody;
+
+$Body 
+namespaceBody : TOpenBrace declaration* TCloseBrace;
 
 $Property(Declarations)
 declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | assemblyDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
@@ -51,8 +60,10 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 // Enums
 
 $TypeDef(Enum)
-enumDeclaration : annotationList? KEnum nameDef (TColon $Property(BaseType) $TypeUse(symbolType=Enum,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
+enumDeclaration : annotationList? KEnum nameDef (TColon $Property(BaseType) $TypeUse(symbolType=Enum,location=ResolutionLocation.Parent) qualifiedName)? enumBody;
 
+$Body
+enumBody: TOpenBrace enumLiterals? TCloseBrace;
 enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 
 $Property(EnumLiterals)
@@ -62,7 +73,10 @@ enumLiteral : annotationList? nameDef;
 // Structs and exceptions
 
 $TypeDef(Struct)
-structDeclaration : annotationList? KStruct nameDef (TColon $Property(BaseType) $TypeUse(symbolType=Struct,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : annotationList? KStruct nameDef (TColon $Property(BaseType) $TypeUse(symbolType=Struct,location=ResolutionLocation.Parent) qualifiedName)? structBody;
+
+$Body
+structBody : TOpenBrace propertyDeclaration* TCloseBrace;
 
 $Property(Properties)
 $NameDef(Property)
@@ -72,7 +86,10 @@ propertyDeclaration : annotationList? $Property(Type) $TypeUse typeReference nam
 // Database
 
 $TypeDef(Database)
-databaseDeclaration : annotationList? KDatabase nameDef TOpenBrace entityReference* operationDeclaration* TCloseBrace;
+databaseDeclaration : annotationList? KDatabase nameDef databaseBody;
+
+$Body
+databaseBody : TOpenBrace entityReference* operationDeclaration* TCloseBrace;
 
 $Property(Entities)
 entityReference : KEntity $TypeUse(Struct) qualifiedName TSemicolon;
@@ -81,11 +98,16 @@ entityReference : KEntity $TypeUse(Struct) qualifiedName TSemicolon;
 // Interface
 
 $TypeDef(Interface)
-interfaceDeclaration : annotationList? KInterface nameDef TOpenBrace operationDeclaration* TCloseBrace;
+interfaceDeclaration : annotationList? KInterface nameDef interfaceBody;
+
+$Body
+interfaceBody : TOpenBrace operationDeclaration* TCloseBrace;
 
 $Property(Operations)
 $NameDef(Operation)
-operationDeclaration : annotationList? operationResult nameDef TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Struct) qualifiedNameList)? TSemicolon;
+operationDeclaration : operationHead TSemicolon;
+
+operationHead : annotationList? operationResult nameDef TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Struct) qualifiedNameList)?;
 
 parameterList : parameter (TComma parameter)*;
 
@@ -100,7 +122,10 @@ operationResult : returnAnnotationList? operationReturnType;
 // Component
 
 $TypeDef(Component)
-componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent nameDef (TColon $Property(BaseComponent) $TypeUse(symbolType=Component,location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent nameDef (TColon $Property(BaseComponent) $TypeUse(symbolType=Component,location=ResolutionLocation.Parent) qualifiedName)? componentBody;
+
+$Body
+componentBody : TOpenBrace componentElements? TCloseBrace;
 
 componentElements : componentElement+;
 
@@ -119,6 +144,7 @@ $Property(References)
 $NameDef(Reference)
 componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifiedName nameDef? componentServiceOrReferenceBody;
 
+$Body
 componentServiceOrReferenceBody 
 	: TSemicolon #componentServiceOrReferenceEmptyBody
 	| TOpenBrace componentServiceOrReferenceElement* TCloseBrace #componentServiceOrReferenceNonEmptyBody;
@@ -139,10 +165,13 @@ $NameDef(Language)
 componentLanguage : KLanguage nameDef TSemicolon;
 
 $TypeDef(Composite)
-compositeDeclaration : KComposite nameDef (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+compositeDeclaration : KComposite nameDef (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),location=ResolutionLocation.Parent) qualifiedName)? compositeBody;
+
+$Body
+compositeBody : TOpenBrace compositeElements? TCloseBrace;
 
 $TypeDef(Assembly)
-assemblyDeclaration : KAssembly nameDef (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),location=ResolutionLocation.Parent) qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+assemblyDeclaration : KAssembly nameDef (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite),location=ResolutionLocation.Parent) qualifiedName)? compositeBody;
 
 compositeElements : compositeElement+;
 
@@ -167,7 +196,10 @@ wireSource : $Property(Source) $NameUse(Port) qualifiedName;
 wireTarget : $Property(Target) $NameUse(Port) qualifiedName;
 
 $NameDef(Deployment)
-deploymentDeclaration : KDeployment nameDef TOpenBrace deploymentElements? TCloseBrace;
+deploymentDeclaration : KDeployment nameDef deploymentBody;
+
+$Body
+deploymentBody : TOpenBrace deploymentElements? TCloseBrace;
 
 deploymentElements : deploymentElement+;
 
@@ -178,7 +210,10 @@ deploymentElement
 
 $Property(Environments)
 $NameDef(Environment)
-environmentDeclaration : KEnvironment nameDef TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
+environmentDeclaration : KEnvironment nameDef environmentBody;
+
+$Body
+environmentBody : TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
 
 $Property(Runtime)
 $NameDef(Runtime)
@@ -198,7 +233,10 @@ databaseReference : KDatabase $TypeUse(Database) qualifiedName TSemicolon;
 // Binding
 
 $NameDef(Binding)
-bindingDeclaration : KBinding nameDef TOpenBrace bindingLayers? TCloseBrace;
+bindingDeclaration : KBinding nameDef bindingBody;
+
+$Body
+bindingBody : TOpenBrace bindingLayers? TCloseBrace;
 
 bindingLayers : transportLayer encodingLayer+ protocolLayer*;
 
@@ -213,6 +251,7 @@ transportLayer
 $Symbol(HttpTransportBindingElement) 
 httpTransportLayer : KTransport IHTTP httpTransportLayerBody;
 
+$Body
 httpTransportLayerBody
 	: TSemicolon #httpTransportLayerEmptyBody
 	| TOpenBrace httpTransportLayerProperties* TCloseBrace #httpTransportLayerNonEmptyBody;
@@ -220,6 +259,7 @@ httpTransportLayerBody
 $Symbol(RestTransportBindingElement) 
 restTransportLayer : KTransport IREST restTransportLayerBody;
 
+$Body
 restTransportLayerBody
 	: TSemicolon #restTransportLayerEmptyBody
 	| TOpenBrace TCloseBrace #restTransportLayerNonEmptyBody;
@@ -227,6 +267,7 @@ restTransportLayerBody
 $Symbol(WebSocketTransportBindingElement) 
 webSocketTransportLayer : KTransport IWebSocket webSocketTransportLayerBody;
 
+$Body
 webSocketTransportLayerBody
 	: TSemicolon #webSocketTransportLayerEmptyBody
 	| TOpenBrace TCloseBrace #webSocketTransportLayerNonEmptyBody;
@@ -252,6 +293,7 @@ encodingLayer
 $Symbol(SoapEncodingBindingElement) 
 soapEncodingLayer : KEncoding ISOAP soapEncodingLayerBody;
 
+$Body
 soapEncodingLayerBody
 	: TSemicolon #soapEncodingLayerEmptyBody
 	| TOpenBrace soapEncodingProperties* TCloseBrace #soapEncodingLayerNonEmptyBody;
@@ -259,6 +301,7 @@ soapEncodingLayerBody
 $Symbol(XmlEncodingBindingElement) 
 xmlEncodingLayer : KEncoding IXML xmlEncodingLayerBody;
 
+$Body
 xmlEncodingLayerBody
 	: TSemicolon #xmlEncodingLayerEmptyBody
 	| TOpenBrace TCloseBrace #xmlEncodingLayerNonEmptyBody;
@@ -266,6 +309,7 @@ xmlEncodingLayerBody
 $Symbol(JsonEncodingBindingElement) 
 jsonEncodingLayer : KEncoding IJSON jsonEncodingLayerBody;
 
+$Body
 jsonEncodingLayerBody
 	: TSemicolon #jsonEncodingLayerEmptyBody
 	| TOpenBrace TCloseBrace #jsonEncodingLayerNonEmptyBody;
@@ -296,7 +340,10 @@ protocolLayerKind :
 // Endpoint:
 
 $NameDef(Endpoint)
-endpointDeclaration : KEndpoint nameDef TColon $Property(Interface) $TypeUse(Interface) qualifiedName TOpenBrace endpointProperties? TCloseBrace;
+endpointDeclaration : KEndpoint nameDef TColon $Property(Interface) $TypeUse(Interface) qualifiedName endpointBody;
+
+$Body
+endpointBody : TOpenBrace endpointProperties? TCloseBrace;
 
 endpointProperties : endpointProperty+;
 
@@ -387,12 +434,6 @@ constantValue
 	;
 
 typeofValue : KTypeof TOpenParen $TypeUse returnType TCloseParen;
-
-$Name
-nameDef : identifier;
-
-$Name
-qualifiedNameDef : qualifiedName;
 
 // Identifiers
 $Identifier

@@ -97,6 +97,7 @@ namespace MetaDslx.Compiler.Declarations
         {
             public Type Type { get; set; }
             public ModelSymbolInfo Kind { get; set; }
+            public bool CanMerge { get; set; }
             public string NestingProperty { get; set; }
             public string ParentPropertyToAddTo { get; set; }
             public ArrayBuilder<ImmutableArray<RedNode>> NamesBuilder { get; set; }
@@ -277,12 +278,18 @@ namespace MetaDslx.Compiler.Declarations
             _currentDeclarationInfo.NestingProperty = name;
         }
 
-        protected void CreateDeclaration(SyntaxNode node, ModelSymbolInfo kind, ImmutableArray<ImmutableArray<RedNode>> names, string parentPropertyToAddTo, ImmutableArray<SingleDeclaration> children)
+        protected void RegisterCanMerge(bool canMerge)
+        {
+            if (_currentDeclarationInfo == null) return;
+            _currentDeclarationInfo.CanMerge = canMerge;
+        }
+
+        protected void CreateDeclaration(SyntaxNode node, ModelSymbolInfo kind, ImmutableArray<ImmutableArray<RedNode>> names, bool canMerge, string parentPropertyToAddTo, ImmutableArray<SingleDeclaration> children)
         {
             if (_currentChildren == null) return;
             if (names == null || names.Length == 0)
             {
-                _currentChildren.Add(new SingleDeclaration(null, kind, _syntaxTree.GetReference(node), null, parentPropertyToAddTo, ImmutableArray<SingleDeclaration>.Empty));
+                _currentChildren.Add(new SingleDeclaration(null, kind, _syntaxTree.GetReference(node), null, canMerge, parentPropertyToAddTo, ImmutableArray<SingleDeclaration>.Empty));
                 return;
             }
             foreach (var name in names)
@@ -291,10 +298,10 @@ namespace MetaDslx.Compiler.Declarations
                 if (count > 0)
                 {
                     var nameTexts = name.Select(n => n.ToString()).ToArray();
-                    var decl = new SingleDeclaration(nameTexts[count - 1], kind, _syntaxTree.GetReference(node), new SourceLocation(name[count - 1]), parentPropertyToAddTo, children);
+                    var decl = new SingleDeclaration(nameTexts[count - 1], kind, _syntaxTree.GetReference(node), new SourceLocation(name[count - 1]), canMerge, parentPropertyToAddTo, children);
                     for (int i = count - 2; i >= 0; i--)
                     {
-                        decl = new SingleDeclaration(nameTexts[i], kind, _syntaxTree.GetReference(node), new SourceLocation(name[i]), parentPropertyToAddTo, ImmutableArray.Create(decl));
+                        decl = new SingleDeclaration(nameTexts[i], kind, _syntaxTree.GetReference(node), new SourceLocation(name[i]), canMerge, parentPropertyToAddTo, ImmutableArray.Create(decl));
                     }
                     _currentChildren.Add(decl);
                 }

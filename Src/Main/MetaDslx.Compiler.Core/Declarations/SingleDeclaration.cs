@@ -28,9 +28,10 @@ namespace MetaDslx.Compiler.Declarations
             ModelSymbolInfo kind,
             SyntaxReference syntaxReference,
             SourceLocation nameLocation,
+            bool canMerge,
             string parentPropertyToAddTo,
             ImmutableArray<SingleDeclaration> children)
-            : base(name, parentPropertyToAddTo)
+            : base(name, canMerge, parentPropertyToAddTo)
         {
             this.kind = kind;
             this.syntaxReference = syntaxReference;
@@ -68,23 +69,13 @@ namespace MetaDslx.Compiler.Declarations
         }
 
         /// <summary>
-        /// Identity based on name and kind. Two declarations can be merge if their names and kinds are the same.
+        /// Identity based on name and kind. Two declarations can be merged if their names and kinds are the same.
         /// </summary>
         /// <param name="declaration">The declaration for which to create the identity.</param>
         /// <returns>The identity for the declaration.</returns>
         public static IDeclarationIdentity NameAndKindIdentity(SingleDeclaration declaration)
         {
             return new DeclarationNameAndKindIdentity(declaration);
-        }
-
-        /// <summary>
-        /// No identity is allowed. The two declarations cannot be merged.
-        /// </summary>
-        /// <param name="declaration">The declaration for which to create the identity.</param>
-        /// <returns>The identity for the declaration.</returns>
-        public static IDeclarationIdentity NoIdentity(SingleDeclaration declaration)
-        {
-            return new DeclarationNoIdentity(declaration);
         }
 
         // identity that is used when collecting all declarations 
@@ -126,63 +117,14 @@ namespace MetaDslx.Compiler.Declarations
                     return false;
                 }
 
-                // partial allowed:
-                return true;
+                // whether merge is allowed:
+                return this._decl.CanMerge;
             }
 
             public override int GetHashCode()
             {
                 var thisDecl = _decl;
                 return Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.Kind?.GetHashCode() ?? 0);
-            }
-        }
-
-        // identity that is used when collecting all declarations 
-        // of same type across multiple containers
-        private class DeclarationNoIdentity : IDeclarationIdentity
-        {
-            private readonly SingleDeclaration _decl;
-
-            internal DeclarationNoIdentity(SingleDeclaration decl)
-            {
-                _decl = decl;
-            }
-
-            public override bool Equals(object obj)
-            {
-                return obj is DeclarationNameAndKindIdentity && Equals((DeclarationNameAndKindIdentity)obj);
-            }
-
-            public bool Equals(IDeclarationIdentity obj)
-            {
-                return obj is DeclarationNameAndKindIdentity && Equals((DeclarationNameAndKindIdentity)obj);
-            }
-
-            public bool Equals(DeclarationNoIdentity other)
-            {
-                var thisDecl = _decl;
-                var otherDecl = other._decl;
-
-                // same as itself
-                if ((object)thisDecl == otherDecl)
-                {
-                    return true;
-                }
-
-                // kind and name must match
-                if ((thisDecl.Kind != otherDecl.Kind) ||
-                    (thisDecl.Name != otherDecl.Name))
-                {
-                    return false;
-                }
-
-                // partial not allowed:
-                return false;
-            }
-
-            public override int GetHashCode()
-            {
-                return _decl.GetHashCode();
             }
         }
     }

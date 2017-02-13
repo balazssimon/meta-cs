@@ -37,17 +37,24 @@ namespace MetaDslx.Compiler.Declarations
     public abstract class Declaration
     {
         private readonly string name;
+        private readonly bool canMerge;
         private readonly string parentPropertyToAddTo;
 
-        protected Declaration(string name, string parentPropertyToAddTo)
+        protected Declaration(string name, bool canMerge, string parentPropertyToAddTo)
         {
             this.name = name;
+            this.canMerge = canMerge;
             this.parentPropertyToAddTo = parentPropertyToAddTo;
         }
 
         public string Name
         {
             get { return this.name; }
+        }
+
+        public bool CanMerge
+        {
+            get { return this.canMerge; }
         }
 
         public string ParentPropertyToAddTo

@@ -275,11 +275,16 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameDef) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeDef);
         }
 
-        public static bool IsSymbol(this MetaCompilerAnnotations annots)
+        public static bool IsAnySymbol(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameDef) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeDef) ||
                 annots.HasAnnotation(MetaCompilerAnnotationInfo.NameCtr) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeCtr) ||
                 annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol) || annots.HasAnnotation(MetaCompilerAnnotationInfo.PreDefSymbol);
+        }
+
+        public static bool IsSymbol(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol);
         }
 
         public static bool IsSymbolBoundary(this MetaCompilerAnnotations annots)
@@ -350,6 +355,18 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public static bool IsBody(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Body);
+        }
+
+        public static string GetCanMerge(this MetaCompilerAnnotations annots)
+        {
+            foreach (var annot in annots.Annotations)
+            {
+                foreach (var prop in annot.Properties)
+                {
+                    if (prop.Name == "merge") return prop.Value;
+                }
+            }
+            return "false";
         }
 
         public static string GetNestingProperty(this MetaCompilerAnnotations annots)

@@ -37,6 +37,32 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 		}
 		
+		public virtual void VisitNameDef(NameDefSyntax node)
+		{
+			this.BeginName();
+			try
+			{
+				this.Visit(node.Identifier);
+			}
+			finally
+			{
+				this.EndName();
+			}
+		}
+		
+		public virtual void VisitQualifiedNameDef(QualifiedNameDefSyntax node)
+		{
+			this.BeginName();
+			try
+			{
+				this.Visit(node.QualifiedName);
+			}
+			finally
+			{
+				this.EndName();
+			}
+		}
+		
 		public virtual void VisitQualifiedName(QualifiedNameSyntax node)
 		{
 			this.BeginQualifiedName();
@@ -78,7 +104,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginSymbol();
 				try
 				{
-					this.Visit(node.AnnotationBody);
+					this.Visit(node.AnnotationHead);
 				}
 				finally
 				{
@@ -99,7 +125,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginSymbol();
 				try
 				{
-					this.Visit(node.AnnotationBody);
+					this.Visit(node.AnnotationHead);
 				}
 				finally
 				{
@@ -112,7 +138,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 		}
 		
-		public virtual void VisitAnnotationBody(AnnotationBodySyntax node)
+		public virtual void VisitAnnotationHead(AnnotationHeadSyntax node)
 		{
 			this.BeginProperty("Name");
 			try
@@ -123,10 +149,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.EndProperty();
 			}
-			this.Visit(node.AnnotationProperties);
+			this.Visit(node.AnnotationBody);
 		}
 		
-		public virtual void VisitAnnotationProperties(AnnotationPropertiesSyntax node)
+		public virtual void VisitAnnotationBody(AnnotationBodySyntax node)
 		{
 			this.Visit(node.AnnotationPropertyList);
 		}
@@ -186,6 +212,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.RegisterNestingProperty("Declarations");
+				this.RegisterCanMerge(true);
 				this.Visit(node.AnnotationList);
 				this.Visit(node.QualifiedNameDef);
 				this.BeginProperty("Prefix");
@@ -211,7 +238,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
@@ -266,13 +293,18 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.Visit(node.EnumLiterals);
+				this.Visit(node.EnumBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitEnumBody(EnumBodySyntax node)
+		{
+			this.Visit(node.EnumLiterals);
 		}
 		
 		public virtual void VisitEnumLiterals(EnumLiteralsSyntax node)
@@ -294,7 +326,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
@@ -327,13 +359,18 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.VisitList(node.PropertyDeclaration);
+				this.Visit(node.StructBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitStructBody(StructBodySyntax node)
+		{
+			this.VisitList(node.PropertyDeclaration);
 		}
 		
 		public virtual void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
@@ -367,7 +404,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
@@ -383,14 +420,19 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.Visit(node.AnnotationList);
 				this.Visit(node.NameDef);
-				this.VisitList(node.EntityReference);
-				this.VisitList(node.OperationDeclaration);
+				this.Visit(node.DatabaseBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitDatabaseBody(DatabaseBodySyntax node)
+		{
+			this.VisitList(node.EntityReference);
+			this.VisitList(node.OperationDeclaration);
 		}
 		
 		public virtual void VisitEntityReference(EntityReferenceSyntax node)
@@ -421,13 +463,18 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.Visit(node.AnnotationList);
 				this.Visit(node.NameDef);
-				this.VisitList(node.OperationDeclaration);
+				this.Visit(node.InterfaceBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitInterfaceBody(InterfaceBodySyntax node)
+		{
+			this.VisitList(node.OperationDeclaration);
 		}
 		
 		public virtual void VisitOperationDeclaration(OperationDeclarationSyntax node)
@@ -438,32 +485,37 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginDeclaration(typeof(Symbols.Operation));
 				try
 				{
-					this.Visit(node.AnnotationList);
-					this.Visit(node.OperationResult);
-					this.Visit(node.NameDef);
-					this.Visit(node.ParameterList);
-					this.BeginProperty("Exceptions");
-					try
-					{
-						this.BeginSymbol();
-						try
-						{
-							this.Visit(node.QualifiedNameList);
-						}
-						finally
-						{
-							this.EndSymbol();
-						}
-					}
-					finally
-					{
-						this.EndProperty();
-					}
+					this.Visit(node.OperationHead);
 				}
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
+				}
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitOperationHead(OperationHeadSyntax node)
+		{
+			this.Visit(node.AnnotationList);
+			this.Visit(node.OperationResult);
+			this.Visit(node.NameDef);
+			this.Visit(node.ParameterList);
+			this.BeginProperty("Exceptions");
+			try
+			{
+				this.BeginSymbol();
+				try
+				{
+					this.Visit(node.QualifiedNameList);
+				}
+				finally
+				{
+					this.EndSymbol();
 				}
 			}
 			finally
@@ -508,7 +560,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
@@ -571,13 +623,18 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.Visit(node.ComponentElements);
+				this.Visit(node.ComponentBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitComponentBody(ComponentBodySyntax node)
+		{
+			this.Visit(node.ComponentElements);
 		}
 		
 		public virtual void VisitComponentElements(ComponentElementsSyntax node)
@@ -625,7 +682,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
@@ -665,7 +722,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
@@ -726,7 +783,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
@@ -748,7 +805,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
@@ -770,7 +827,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
@@ -802,13 +859,18 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.Visit(node.CompositeElements);
+				this.Visit(node.CompositeBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitCompositeBody(CompositeBodySyntax node)
+		{
+			this.Visit(node.CompositeElements);
 		}
 		
 		public virtual void VisitAssemblyDeclaration(AssemblyDeclarationSyntax node)
@@ -834,12 +896,12 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.Visit(node.CompositeElements);
+				this.Visit(node.CompositeBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
 		}
 		
@@ -950,13 +1012,18 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.Visit(node.NameDef);
-				this.Visit(node.DeploymentElements);
+				this.Visit(node.DeploymentBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitDeploymentBody(DeploymentBodySyntax node)
+		{
+			this.Visit(node.DeploymentElements);
 		}
 		
 		public virtual void VisitDeploymentElements(DeploymentElementsSyntax node)
@@ -979,19 +1046,24 @@ namespace MetaDslx.Languages.Soal.Binding
 				try
 				{
 					this.Visit(node.NameDef);
-					this.Visit(node.RuntimeDeclaration);
-					this.VisitList(node.RuntimeReference);
+					this.Visit(node.EnvironmentBody);
 				}
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
 			{
 				this.EndProperty();
 			}
+		}
+		
+		public virtual void VisitEnvironmentBody(EnvironmentBodySyntax node)
+		{
+			this.Visit(node.RuntimeDeclaration);
+			this.VisitList(node.RuntimeReference);
 		}
 		
 		public virtual void VisitRuntimeDeclaration(RuntimeDeclarationSyntax node)
@@ -1007,7 +1079,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				finally
 				{
 					DeclarationInfo decl = this.EndDeclaration();
-					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+					this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 				}
 			}
 			finally
@@ -1070,13 +1142,18 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.Visit(node.NameDef);
-				this.Visit(node.BindingLayers);
+				this.Visit(node.BindingBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitBindingBody(BindingBodySyntax node)
+		{
+			this.Visit(node.BindingLayers);
 		}
 		
 		public virtual void VisitBindingLayers(BindingLayersSyntax node)
@@ -1128,6 +1205,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
+				this.Visit(node.RestTransportLayerBody);
 			}
 			finally
 			{
@@ -1148,6 +1226,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
+				this.Visit(node.WebSocketTransportLayerBody);
 			}
 			finally
 			{
@@ -1237,6 +1316,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
+				this.Visit(node.XmlEncodingLayerBody);
 			}
 			finally
 			{
@@ -1257,6 +1337,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginSymbol();
 			try
 			{
+				this.Visit(node.JsonEncodingLayerBody);
 			}
 			finally
 			{
@@ -1368,13 +1449,18 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					this.EndProperty();
 				}
-				this.Visit(node.EndpointProperties);
+				this.Visit(node.EndpointBody);
 			}
 			finally
 			{
 				DeclarationInfo decl = this.EndDeclaration();
-				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+				this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 			}
+		}
+		
+		public virtual void VisitEndpointBody(EndpointBodySyntax node)
+		{
+			this.Visit(node.EndpointProperties);
 		}
 		
 		public virtual void VisitEndpointProperties(EndpointPropertiesSyntax node)
@@ -1664,32 +1750,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			finally
 			{
 				this.EndSymbol();
-			}
-		}
-		
-		public virtual void VisitNameDef(NameDefSyntax node)
-		{
-			this.BeginName();
-			try
-			{
-				this.Visit(node.Identifier);
-			}
-			finally
-			{
-				this.EndName();
-			}
-		}
-		
-		public virtual void VisitQualifiedNameDef(QualifiedNameDefSyntax node)
-		{
-			this.BeginName();
-			try
-			{
-				this.Visit(node.QualifiedName);
-			}
-			finally
-			{
-				this.EndName();
 			}
 		}
 		

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\incskjbe.0ao\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\0crvcb1z.lp0\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -58,73 +58,80 @@ public partial class SoalParser : Parser {
 		LDoubleQuoteVerbatimString=119, LSingleQuoteVerbatimString=120, DoubleQuoteVerbatimStringLiteralStart=121, 
 		SingleQuoteVerbatimStringLiteralStart=122;
 	public const int
-		RULE_main = 0, RULE_qualifiedName = 1, RULE_identifierList = 2, RULE_qualifiedNameList = 3, 
-		RULE_annotationList = 4, RULE_returnAnnotationList = 5, RULE_annotation = 6, 
-		RULE_returnAnnotation = 7, RULE_annotationBody = 8, RULE_annotationProperties = 9, 
-		RULE_annotationPropertyList = 10, RULE_annotationProperty = 11, RULE_annotationPropertyValue = 12, 
-		RULE_namespaceDeclaration = 13, RULE_namespaceBody = 14, RULE_declaration = 15, 
-		RULE_enumDeclaration = 16, RULE_enumLiterals = 17, RULE_enumLiteral = 18, 
-		RULE_structDeclaration = 19, RULE_propertyDeclaration = 20, RULE_databaseDeclaration = 21, 
-		RULE_entityReference = 22, RULE_interfaceDeclaration = 23, RULE_operationDeclaration = 24, 
-		RULE_parameterList = 25, RULE_parameter = 26, RULE_operationResult = 27, 
-		RULE_componentDeclaration = 28, RULE_componentElements = 29, RULE_componentElement = 30, 
-		RULE_componentService = 31, RULE_componentReference = 32, RULE_componentServiceOrReferenceBody = 33, 
-		RULE_componentServiceOrReferenceElement = 34, RULE_componentProperty = 35, 
-		RULE_componentImplementation = 36, RULE_componentLanguage = 37, RULE_compositeDeclaration = 38, 
-		RULE_assemblyDeclaration = 39, RULE_compositeElements = 40, RULE_compositeElement = 41, 
-		RULE_compositeComponent = 42, RULE_compositeWire = 43, RULE_wireSource = 44, 
-		RULE_wireTarget = 45, RULE_deploymentDeclaration = 46, RULE_deploymentElements = 47, 
-		RULE_deploymentElement = 48, RULE_environmentDeclaration = 49, RULE_runtimeDeclaration = 50, 
-		RULE_runtimeReference = 51, RULE_assemblyReference = 52, RULE_databaseReference = 53, 
-		RULE_bindingDeclaration = 54, RULE_bindingLayers = 55, RULE_transportLayer = 56, 
-		RULE_httpTransportLayer = 57, RULE_httpTransportLayerBody = 58, RULE_restTransportLayer = 59, 
-		RULE_restTransportLayerBody = 60, RULE_webSocketTransportLayer = 61, RULE_webSocketTransportLayerBody = 62, 
-		RULE_httpTransportLayerProperties = 63, RULE_httpSslProperty = 64, RULE_httpClientAuthenticationProperty = 65, 
-		RULE_encodingLayer = 66, RULE_soapEncodingLayer = 67, RULE_soapEncodingLayerBody = 68, 
-		RULE_xmlEncodingLayer = 69, RULE_xmlEncodingLayerBody = 70, RULE_jsonEncodingLayer = 71, 
-		RULE_jsonEncodingLayerBody = 72, RULE_soapEncodingProperties = 73, RULE_soapVersionProperty = 74, 
-		RULE_soapMtomProperty = 75, RULE_soapStyleProperty = 76, RULE_protocolLayer = 77, 
-		RULE_protocolLayerKind = 78, RULE_endpointDeclaration = 79, RULE_endpointProperties = 80, 
-		RULE_endpointProperty = 81, RULE_endpointBindingProperty = 82, RULE_endpointAddressProperty = 83, 
-		RULE_returnType = 84, RULE_typeReference = 85, RULE_simpleType = 86, RULE_nulledType = 87, 
-		RULE_referenceType = 88, RULE_objectType = 89, RULE_valueType = 90, RULE_voidType = 91, 
-		RULE_onewayType = 92, RULE_operationReturnType = 93, RULE_nullableType = 94, 
-		RULE_nonNullableType = 95, RULE_nonNullableArrayType = 96, RULE_arrayType = 97, 
-		RULE_simpleArrayType = 98, RULE_nulledArrayType = 99, RULE_constantValue = 100, 
-		RULE_typeofValue = 101, RULE_nameDef = 102, RULE_qualifiedNameDef = 103, 
-		RULE_identifier = 104, RULE_identifiers = 105, RULE_literal = 106, RULE_nullLiteral = 107, 
-		RULE_booleanLiteral = 108, RULE_integerLiteral = 109, RULE_decimalLiteral = 110, 
-		RULE_scientificLiteral = 111, RULE_stringLiteral = 112, RULE_contextualKeywords = 113;
+		RULE_main = 0, RULE_nameDef = 1, RULE_qualifiedNameDef = 2, RULE_qualifiedName = 3, 
+		RULE_identifierList = 4, RULE_qualifiedNameList = 5, RULE_annotationList = 6, 
+		RULE_returnAnnotationList = 7, RULE_annotation = 8, RULE_returnAnnotation = 9, 
+		RULE_annotationHead = 10, RULE_annotationBody = 11, RULE_annotationPropertyList = 12, 
+		RULE_annotationProperty = 13, RULE_annotationPropertyValue = 14, RULE_namespaceDeclaration = 15, 
+		RULE_namespaceBody = 16, RULE_declaration = 17, RULE_enumDeclaration = 18, 
+		RULE_enumBody = 19, RULE_enumLiterals = 20, RULE_enumLiteral = 21, RULE_structDeclaration = 22, 
+		RULE_structBody = 23, RULE_propertyDeclaration = 24, RULE_databaseDeclaration = 25, 
+		RULE_databaseBody = 26, RULE_entityReference = 27, RULE_interfaceDeclaration = 28, 
+		RULE_interfaceBody = 29, RULE_operationDeclaration = 30, RULE_operationHead = 31, 
+		RULE_parameterList = 32, RULE_parameter = 33, RULE_operationResult = 34, 
+		RULE_componentDeclaration = 35, RULE_componentBody = 36, RULE_componentElements = 37, 
+		RULE_componentElement = 38, RULE_componentService = 39, RULE_componentReference = 40, 
+		RULE_componentServiceOrReferenceBody = 41, RULE_componentServiceOrReferenceElement = 42, 
+		RULE_componentProperty = 43, RULE_componentImplementation = 44, RULE_componentLanguage = 45, 
+		RULE_compositeDeclaration = 46, RULE_compositeBody = 47, RULE_assemblyDeclaration = 48, 
+		RULE_compositeElements = 49, RULE_compositeElement = 50, RULE_compositeComponent = 51, 
+		RULE_compositeWire = 52, RULE_wireSource = 53, RULE_wireTarget = 54, RULE_deploymentDeclaration = 55, 
+		RULE_deploymentBody = 56, RULE_deploymentElements = 57, RULE_deploymentElement = 58, 
+		RULE_environmentDeclaration = 59, RULE_environmentBody = 60, RULE_runtimeDeclaration = 61, 
+		RULE_runtimeReference = 62, RULE_assemblyReference = 63, RULE_databaseReference = 64, 
+		RULE_bindingDeclaration = 65, RULE_bindingBody = 66, RULE_bindingLayers = 67, 
+		RULE_transportLayer = 68, RULE_httpTransportLayer = 69, RULE_httpTransportLayerBody = 70, 
+		RULE_restTransportLayer = 71, RULE_restTransportLayerBody = 72, RULE_webSocketTransportLayer = 73, 
+		RULE_webSocketTransportLayerBody = 74, RULE_httpTransportLayerProperties = 75, 
+		RULE_httpSslProperty = 76, RULE_httpClientAuthenticationProperty = 77, 
+		RULE_encodingLayer = 78, RULE_soapEncodingLayer = 79, RULE_soapEncodingLayerBody = 80, 
+		RULE_xmlEncodingLayer = 81, RULE_xmlEncodingLayerBody = 82, RULE_jsonEncodingLayer = 83, 
+		RULE_jsonEncodingLayerBody = 84, RULE_soapEncodingProperties = 85, RULE_soapVersionProperty = 86, 
+		RULE_soapMtomProperty = 87, RULE_soapStyleProperty = 88, RULE_protocolLayer = 89, 
+		RULE_protocolLayerKind = 90, RULE_endpointDeclaration = 91, RULE_endpointBody = 92, 
+		RULE_endpointProperties = 93, RULE_endpointProperty = 94, RULE_endpointBindingProperty = 95, 
+		RULE_endpointAddressProperty = 96, RULE_returnType = 97, RULE_typeReference = 98, 
+		RULE_simpleType = 99, RULE_nulledType = 100, RULE_referenceType = 101, 
+		RULE_objectType = 102, RULE_valueType = 103, RULE_voidType = 104, RULE_onewayType = 105, 
+		RULE_operationReturnType = 106, RULE_nullableType = 107, RULE_nonNullableType = 108, 
+		RULE_nonNullableArrayType = 109, RULE_arrayType = 110, RULE_simpleArrayType = 111, 
+		RULE_nulledArrayType = 112, RULE_constantValue = 113, RULE_typeofValue = 114, 
+		RULE_identifier = 115, RULE_identifiers = 116, RULE_literal = 117, RULE_nullLiteral = 118, 
+		RULE_booleanLiteral = 119, RULE_integerLiteral = 120, RULE_decimalLiteral = 121, 
+		RULE_scientificLiteral = 122, RULE_stringLiteral = 123, RULE_contextualKeywords = 124;
 	public static readonly string[] ruleNames = {
-		"main", "qualifiedName", "identifierList", "qualifiedNameList", "annotationList", 
-		"returnAnnotationList", "annotation", "returnAnnotation", "annotationBody", 
-		"annotationProperties", "annotationPropertyList", "annotationProperty", 
-		"annotationPropertyValue", "namespaceDeclaration", "namespaceBody", "declaration", 
-		"enumDeclaration", "enumLiterals", "enumLiteral", "structDeclaration", 
-		"propertyDeclaration", "databaseDeclaration", "entityReference", "interfaceDeclaration", 
-		"operationDeclaration", "parameterList", "parameter", "operationResult", 
-		"componentDeclaration", "componentElements", "componentElement", "componentService", 
-		"componentReference", "componentServiceOrReferenceBody", "componentServiceOrReferenceElement", 
+		"main", "nameDef", "qualifiedNameDef", "qualifiedName", "identifierList", 
+		"qualifiedNameList", "annotationList", "returnAnnotationList", "annotation", 
+		"returnAnnotation", "annotationHead", "annotationBody", "annotationPropertyList", 
+		"annotationProperty", "annotationPropertyValue", "namespaceDeclaration", 
+		"namespaceBody", "declaration", "enumDeclaration", "enumBody", "enumLiterals", 
+		"enumLiteral", "structDeclaration", "structBody", "propertyDeclaration", 
+		"databaseDeclaration", "databaseBody", "entityReference", "interfaceDeclaration", 
+		"interfaceBody", "operationDeclaration", "operationHead", "parameterList", 
+		"parameter", "operationResult", "componentDeclaration", "componentBody", 
+		"componentElements", "componentElement", "componentService", "componentReference", 
+		"componentServiceOrReferenceBody", "componentServiceOrReferenceElement", 
 		"componentProperty", "componentImplementation", "componentLanguage", "compositeDeclaration", 
-		"assemblyDeclaration", "compositeElements", "compositeElement", "compositeComponent", 
-		"compositeWire", "wireSource", "wireTarget", "deploymentDeclaration", 
-		"deploymentElements", "deploymentElement", "environmentDeclaration", "runtimeDeclaration", 
-		"runtimeReference", "assemblyReference", "databaseReference", "bindingDeclaration", 
-		"bindingLayers", "transportLayer", "httpTransportLayer", "httpTransportLayerBody", 
-		"restTransportLayer", "restTransportLayerBody", "webSocketTransportLayer", 
-		"webSocketTransportLayerBody", "httpTransportLayerProperties", "httpSslProperty", 
-		"httpClientAuthenticationProperty", "encodingLayer", "soapEncodingLayer", 
-		"soapEncodingLayerBody", "xmlEncodingLayer", "xmlEncodingLayerBody", "jsonEncodingLayer", 
-		"jsonEncodingLayerBody", "soapEncodingProperties", "soapVersionProperty", 
-		"soapMtomProperty", "soapStyleProperty", "protocolLayer", "protocolLayerKind", 
-		"endpointDeclaration", "endpointProperties", "endpointProperty", "endpointBindingProperty", 
-		"endpointAddressProperty", "returnType", "typeReference", "simpleType", 
-		"nulledType", "referenceType", "objectType", "valueType", "voidType", 
-		"onewayType", "operationReturnType", "nullableType", "nonNullableType", 
-		"nonNullableArrayType", "arrayType", "simpleArrayType", "nulledArrayType", 
-		"constantValue", "typeofValue", "nameDef", "qualifiedNameDef", "identifier", 
-		"identifiers", "literal", "nullLiteral", "booleanLiteral", "integerLiteral", 
-		"decimalLiteral", "scientificLiteral", "stringLiteral", "contextualKeywords"
+		"compositeBody", "assemblyDeclaration", "compositeElements", "compositeElement", 
+		"compositeComponent", "compositeWire", "wireSource", "wireTarget", "deploymentDeclaration", 
+		"deploymentBody", "deploymentElements", "deploymentElement", "environmentDeclaration", 
+		"environmentBody", "runtimeDeclaration", "runtimeReference", "assemblyReference", 
+		"databaseReference", "bindingDeclaration", "bindingBody", "bindingLayers", 
+		"transportLayer", "httpTransportLayer", "httpTransportLayerBody", "restTransportLayer", 
+		"restTransportLayerBody", "webSocketTransportLayer", "webSocketTransportLayerBody", 
+		"httpTransportLayerProperties", "httpSslProperty", "httpClientAuthenticationProperty", 
+		"encodingLayer", "soapEncodingLayer", "soapEncodingLayerBody", "xmlEncodingLayer", 
+		"xmlEncodingLayerBody", "jsonEncodingLayer", "jsonEncodingLayerBody", 
+		"soapEncodingProperties", "soapVersionProperty", "soapMtomProperty", "soapStyleProperty", 
+		"protocolLayer", "protocolLayerKind", "endpointDeclaration", "endpointBody", 
+		"endpointProperties", "endpointProperty", "endpointBindingProperty", "endpointAddressProperty", 
+		"returnType", "typeReference", "simpleType", "nulledType", "referenceType", 
+		"objectType", "valueType", "voidType", "onewayType", "operationReturnType", 
+		"nullableType", "nonNullableType", "nonNullableArrayType", "arrayType", 
+		"simpleArrayType", "nulledArrayType", "constantValue", "typeofValue", 
+		"identifier", "identifiers", "literal", "nullLiteral", "booleanLiteral", 
+		"integerLiteral", "decimalLiteral", "scientificLiteral", "stringLiteral", 
+		"contextualKeywords"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -227,20 +234,110 @@ public partial class SoalParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 231;
+			State = 253;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==KNamespace || _la==TOpenBracket) {
 				{
 				{
-				State = 228; namespaceDeclaration();
+				State = 250; namespaceDeclaration();
 				}
 				}
-				State = 233;
+				State = 255;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 234; Match(Eof);
+			State = 256; Match(Eof);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class NameDefContext : ParserRuleContext {
+		public IdentifierContext identifier() {
+			return GetRuleContext<IdentifierContext>(0);
+		}
+		public NameDefContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_nameDef; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterNameDef(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitNameDef(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitNameDef(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public NameDefContext nameDef() {
+		NameDefContext _localctx = new NameDefContext(Context, State);
+		EnterRule(_localctx, 2, RULE_nameDef);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 258; identifier();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class QualifiedNameDefContext : ParserRuleContext {
+		public QualifiedNameContext qualifiedName() {
+			return GetRuleContext<QualifiedNameContext>(0);
+		}
+		public QualifiedNameDefContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_qualifiedNameDef; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterQualifiedNameDef(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitQualifiedNameDef(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitQualifiedNameDef(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public QualifiedNameDefContext qualifiedNameDef() {
+		QualifiedNameDefContext _localctx = new QualifiedNameDefContext(Context, State);
+		EnterRule(_localctx, 4, RULE_qualifiedNameDef);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 260; qualifiedName();
 			}
 		}
 		catch (RecognitionException re) {
@@ -288,23 +385,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public QualifiedNameContext qualifiedName() {
 		QualifiedNameContext _localctx = new QualifiedNameContext(Context, State);
-		EnterRule(_localctx, 2, RULE_qualifiedName);
+		EnterRule(_localctx, 6, RULE_qualifiedName);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 236; identifier();
-			State = 241;
+			State = 262; identifier();
+			State = 267;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==TDot) {
 				{
 				{
-				State = 237; Match(TDot);
-				State = 238; identifier();
+				State = 263; Match(TDot);
+				State = 264; identifier();
 				}
 				}
-				State = 243;
+				State = 269;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -355,23 +452,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public IdentifierListContext identifierList() {
 		IdentifierListContext _localctx = new IdentifierListContext(Context, State);
-		EnterRule(_localctx, 4, RULE_identifierList);
+		EnterRule(_localctx, 8, RULE_identifierList);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 244; identifier();
-			State = 249;
+			State = 270; identifier();
+			State = 275;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 245; Match(TComma);
-				State = 246; identifier();
+				State = 271; Match(TComma);
+				State = 272; identifier();
 				}
 				}
-				State = 251;
+				State = 277;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -422,23 +519,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public QualifiedNameListContext qualifiedNameList() {
 		QualifiedNameListContext _localctx = new QualifiedNameListContext(Context, State);
-		EnterRule(_localctx, 6, RULE_qualifiedNameList);
+		EnterRule(_localctx, 10, RULE_qualifiedNameList);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 252; qualifiedName();
-			State = 257;
+			State = 278; qualifiedName();
+			State = 283;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 253; Match(TComma);
-				State = 254; qualifiedName();
+				State = 279; Match(TComma);
+				State = 280; qualifiedName();
 				}
 				}
-				State = 259;
+				State = 285;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -485,12 +582,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public AnnotationListContext annotationList() {
 		AnnotationListContext _localctx = new AnnotationListContext(Context, State);
-		EnterRule(_localctx, 8, RULE_annotationList);
+		EnterRule(_localctx, 12, RULE_annotationList);
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 261;
+			State = 287;
 			ErrorHandler.Sync(this);
 			_alt = 1;
 			do {
@@ -498,14 +595,14 @@ public partial class SoalParser : Parser {
 				case 1:
 					{
 					{
-					State = 260; annotation();
+					State = 286; annotation();
 					}
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
-				State = 263;
+				State = 289;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,4,Context);
 			} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.InvalidAltNumber );
@@ -552,21 +649,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ReturnAnnotationListContext returnAnnotationList() {
 		ReturnAnnotationListContext _localctx = new ReturnAnnotationListContext(Context, State);
-		EnterRule(_localctx, 10, RULE_returnAnnotationList);
+		EnterRule(_localctx, 14, RULE_returnAnnotationList);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 266;
+			State = 292;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 265; returnAnnotation();
+				State = 291; returnAnnotation();
 				}
 				}
-				State = 268;
+				State = 294;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			} while ( _la==TOpenBracket );
@@ -585,8 +682,8 @@ public partial class SoalParser : Parser {
 
 	public partial class AnnotationContext : ParserRuleContext {
 		public ITerminalNode TOpenBracket() { return GetToken(SoalParser.TOpenBracket, 0); }
-		public AnnotationBodyContext annotationBody() {
-			return GetRuleContext<AnnotationBodyContext>(0);
+		public AnnotationHeadContext annotationHead() {
+			return GetRuleContext<AnnotationHeadContext>(0);
 		}
 		public ITerminalNode TCloseBracket() { return GetToken(SoalParser.TCloseBracket, 0); }
 		public AnnotationContext(ParserRuleContext parent, int invokingState)
@@ -612,13 +709,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public AnnotationContext annotation() {
 		AnnotationContext _localctx = new AnnotationContext(Context, State);
-		EnterRule(_localctx, 12, RULE_annotation);
+		EnterRule(_localctx, 16, RULE_annotation);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 270; Match(TOpenBracket);
-			State = 271; annotationBody();
-			State = 272; Match(TCloseBracket);
+			State = 296; Match(TOpenBracket);
+			State = 297; annotationHead();
+			State = 298; Match(TCloseBracket);
 			}
 		}
 		catch (RecognitionException re) {
@@ -636,8 +733,8 @@ public partial class SoalParser : Parser {
 		public ITerminalNode TOpenBracket() { return GetToken(SoalParser.TOpenBracket, 0); }
 		public ITerminalNode KReturn() { return GetToken(SoalParser.KReturn, 0); }
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
-		public AnnotationBodyContext annotationBody() {
-			return GetRuleContext<AnnotationBodyContext>(0);
+		public AnnotationHeadContext annotationHead() {
+			return GetRuleContext<AnnotationHeadContext>(0);
 		}
 		public ITerminalNode TCloseBracket() { return GetToken(SoalParser.TCloseBracket, 0); }
 		public ReturnAnnotationContext(ParserRuleContext parent, int invokingState)
@@ -663,15 +760,72 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ReturnAnnotationContext returnAnnotation() {
 		ReturnAnnotationContext _localctx = new ReturnAnnotationContext(Context, State);
-		EnterRule(_localctx, 14, RULE_returnAnnotation);
+		EnterRule(_localctx, 18, RULE_returnAnnotation);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 274; Match(TOpenBracket);
-			State = 275; Match(KReturn);
-			State = 276; Match(TColon);
-			State = 277; annotationBody();
-			State = 278; Match(TCloseBracket);
+			State = 300; Match(TOpenBracket);
+			State = 301; Match(KReturn);
+			State = 302; Match(TColon);
+			State = 303; annotationHead();
+			State = 304; Match(TCloseBracket);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class AnnotationHeadContext : ParserRuleContext {
+		public IdentifierContext identifier() {
+			return GetRuleContext<IdentifierContext>(0);
+		}
+		public AnnotationBodyContext annotationBody() {
+			return GetRuleContext<AnnotationBodyContext>(0);
+		}
+		public AnnotationHeadContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_annotationHead; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterAnnotationHead(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitAnnotationHead(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitAnnotationHead(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public AnnotationHeadContext annotationHead() {
+		AnnotationHeadContext _localctx = new AnnotationHeadContext(Context, State);
+		EnterRule(_localctx, 20, RULE_annotationHead);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 306; identifier();
+			State = 308;
+			_la = TokenStream.La(1);
+			if (_la==TOpenParen) {
+				{
+				State = 307; annotationBody();
+				}
+			}
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -686,11 +840,10 @@ public partial class SoalParser : Parser {
 	}
 
 	public partial class AnnotationBodyContext : ParserRuleContext {
-		public IdentifierContext identifier() {
-			return GetRuleContext<IdentifierContext>(0);
-		}
-		public AnnotationPropertiesContext annotationProperties() {
-			return GetRuleContext<AnnotationPropertiesContext>(0);
+		public ITerminalNode TOpenParen() { return GetToken(SoalParser.TOpenParen, 0); }
+		public ITerminalNode TCloseParen() { return GetToken(SoalParser.TCloseParen, 0); }
+		public AnnotationPropertyListContext annotationPropertyList() {
+			return GetRuleContext<AnnotationPropertyListContext>(0);
 		}
 		public AnnotationBodyContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -715,77 +868,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public AnnotationBodyContext annotationBody() {
 		AnnotationBodyContext _localctx = new AnnotationBodyContext(Context, State);
-		EnterRule(_localctx, 16, RULE_annotationBody);
+		EnterRule(_localctx, 22, RULE_annotationBody);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 280; identifier();
-			State = 282;
-			_la = TokenStream.La(1);
-			if (_la==TOpenParen) {
-				{
-				State = 281; annotationProperties();
-				}
-			}
-
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class AnnotationPropertiesContext : ParserRuleContext {
-		public ITerminalNode TOpenParen() { return GetToken(SoalParser.TOpenParen, 0); }
-		public ITerminalNode TCloseParen() { return GetToken(SoalParser.TCloseParen, 0); }
-		public AnnotationPropertyListContext annotationPropertyList() {
-			return GetRuleContext<AnnotationPropertyListContext>(0);
-		}
-		public AnnotationPropertiesContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_annotationProperties; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.EnterAnnotationProperties(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.ExitAnnotationProperties(this);
-		}
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitAnnotationProperties(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public AnnotationPropertiesContext annotationProperties() {
-		AnnotationPropertiesContext _localctx = new AnnotationPropertiesContext(Context, State);
-		EnterRule(_localctx, 18, RULE_annotationProperties);
-		int _la;
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 284; Match(TOpenParen);
-			State = 286;
+			State = 310; Match(TOpenParen);
+			State = 312;
 			_la = TokenStream.La(1);
 			if (((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 285; annotationPropertyList();
+				State = 311; annotationPropertyList();
 				}
 			}
 
-			State = 288; Match(TCloseParen);
+			State = 314; Match(TCloseParen);
 			}
 		}
 		catch (RecognitionException re) {
@@ -833,23 +930,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public AnnotationPropertyListContext annotationPropertyList() {
 		AnnotationPropertyListContext _localctx = new AnnotationPropertyListContext(Context, State);
-		EnterRule(_localctx, 20, RULE_annotationPropertyList);
+		EnterRule(_localctx, 24, RULE_annotationPropertyList);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 290; annotationProperty();
-			State = 295;
+			State = 316; annotationProperty();
+			State = 321;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 291; Match(TComma);
-				State = 292; annotationProperty();
+				State = 317; Match(TComma);
+				State = 318; annotationProperty();
 				}
 				}
-				State = 297;
+				State = 323;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -897,13 +994,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public AnnotationPropertyContext annotationProperty() {
 		AnnotationPropertyContext _localctx = new AnnotationPropertyContext(Context, State);
-		EnterRule(_localctx, 22, RULE_annotationProperty);
+		EnterRule(_localctx, 26, RULE_annotationProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 298; identifier();
-			State = 299; Match(TAssign);
-			State = 300; annotationPropertyValue();
+			State = 324; identifier();
+			State = 325; Match(TAssign);
+			State = 326; annotationPropertyValue();
 			}
 		}
 		catch (RecognitionException re) {
@@ -947,9 +1044,9 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public AnnotationPropertyValueContext annotationPropertyValue() {
 		AnnotationPropertyValueContext _localctx = new AnnotationPropertyValueContext(Context, State);
-		EnterRule(_localctx, 24, RULE_annotationPropertyValue);
+		EnterRule(_localctx, 28, RULE_annotationPropertyValue);
 		try {
-			State = 304;
+			State = 330;
 			switch (TokenStream.La(1)) {
 			case KNull:
 			case KTrue:
@@ -979,13 +1076,13 @@ public partial class SoalParser : Parser {
 			case LSingleQuoteVerbatimString:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 302; constantValue();
+				State = 328; constantValue();
 				}
 				break;
 			case KTypeof:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 303; typeofValue();
+				State = 329; typeofValue();
 				}
 				break;
 			default:
@@ -1045,33 +1142,33 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NamespaceDeclarationContext namespaceDeclaration() {
 		NamespaceDeclarationContext _localctx = new NamespaceDeclarationContext(Context, State);
-		EnterRule(_localctx, 26, RULE_namespaceDeclaration);
+		EnterRule(_localctx, 30, RULE_namespaceDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 307;
+			State = 333;
 			_la = TokenStream.La(1);
 			if (_la==TOpenBracket) {
 				{
-				State = 306; annotationList();
+				State = 332; annotationList();
 				}
 			}
 
-			State = 309; Match(KNamespace);
-			State = 310; qualifiedNameDef();
-			State = 311; Match(TAssign);
-			State = 315;
+			State = 335; Match(KNamespace);
+			State = 336; qualifiedNameDef();
+			State = 337; Match(TAssign);
+			State = 341;
 			_la = TokenStream.La(1);
 			if (((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 312; identifier();
-				State = 313; Match(TColon);
+				State = 338; identifier();
+				State = 339; Match(TColon);
 				}
 			}
 
-			State = 317; stringLiteral();
-			State = 318; namespaceBody();
+			State = 343; stringLiteral();
+			State = 344; namespaceBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1117,26 +1214,26 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NamespaceBodyContext namespaceBody() {
 		NamespaceBodyContext _localctx = new NamespaceBodyContext(Context, State);
-		EnterRule(_localctx, 28, RULE_namespaceBody);
+		EnterRule(_localctx, 32, RULE_namespaceBody);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 320; Match(TOpenBrace);
-			State = 324;
+			State = 346; Match(TOpenBrace);
+			State = 350;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KEnum) | (1L << KStruct) | (1L << KInterface) | (1L << KBinding) | (1L << KEndpoint) | (1L << KDatabase) | (1L << KAbstract) | (1L << KComponent) | (1L << KComposite) | (1L << KAssembly) | (1L << KDeployment) | (1L << TOpenBracket))) != 0)) {
 				{
 				{
-				State = 321; declaration();
+				State = 347; declaration();
 				}
 				}
-				State = 326;
+				State = 352;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 327; Match(TCloseBrace);
+			State = 353; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1204,69 +1301,69 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public DeclarationContext declaration() {
 		DeclarationContext _localctx = new DeclarationContext(Context, State);
-		EnterRule(_localctx, 30, RULE_declaration);
+		EnterRule(_localctx, 34, RULE_declaration);
 		try {
-			State = 339;
+			State = 365;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,13,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 329; enumDeclaration();
+				State = 355; enumDeclaration();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 330; structDeclaration();
+				State = 356; structDeclaration();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 331; databaseDeclaration();
+				State = 357; databaseDeclaration();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 332; interfaceDeclaration();
+				State = 358; interfaceDeclaration();
 				}
 				break;
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 333; componentDeclaration();
+				State = 359; componentDeclaration();
 				}
 				break;
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 334; compositeDeclaration();
+				State = 360; compositeDeclaration();
 				}
 				break;
 			case 7:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 335; assemblyDeclaration();
+				State = 361; assemblyDeclaration();
 				}
 				break;
 			case 8:
 				EnterOuterAlt(_localctx, 8);
 				{
-				State = 336; bindingDeclaration();
+				State = 362; bindingDeclaration();
 				}
 				break;
 			case 9:
 				EnterOuterAlt(_localctx, 9);
 				{
-				State = 337; endpointDeclaration();
+				State = 363; endpointDeclaration();
 				}
 				break;
 			case 10:
 				EnterOuterAlt(_localctx, 10);
 				{
-				State = 338; deploymentDeclaration();
+				State = 364; deploymentDeclaration();
 				}
 				break;
 			}
@@ -1287,17 +1384,15 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public EnumBodyContext enumBody() {
+			return GetRuleContext<EnumBodyContext>(0);
+		}
 		public AnnotationListContext annotationList() {
 			return GetRuleContext<AnnotationListContext>(0);
 		}
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
-		}
-		public EnumLiteralsContext enumLiterals() {
-			return GetRuleContext<EnumLiteralsContext>(0);
 		}
 		public EnumDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1322,40 +1417,88 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EnumDeclarationContext enumDeclaration() {
 		EnumDeclarationContext _localctx = new EnumDeclarationContext(Context, State);
-		EnterRule(_localctx, 32, RULE_enumDeclaration);
+		EnterRule(_localctx, 36, RULE_enumDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 342;
+			State = 368;
 			_la = TokenStream.La(1);
 			if (_la==TOpenBracket) {
 				{
-				State = 341; annotationList();
+				State = 367; annotationList();
 				}
 			}
 
-			State = 344; Match(KEnum);
-			State = 345; nameDef();
-			State = 348;
+			State = 370; Match(KEnum);
+			State = 371; nameDef();
+			State = 374;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
-				State = 346; Match(TColon);
-				State = 347; qualifiedName();
+				State = 372; Match(TColon);
+				State = 373; qualifiedName();
 				}
 			}
 
-			State = 350; Match(TOpenBrace);
-			State = 352;
+			State = 376; enumBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class EnumBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public EnumLiteralsContext enumLiterals() {
+			return GetRuleContext<EnumLiteralsContext>(0);
+		}
+		public EnumBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_enumBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterEnumBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitEnumBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitEnumBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public EnumBodyContext enumBody() {
+		EnumBodyContext _localctx = new EnumBodyContext(Context, State);
+		EnterRule(_localctx, 38, RULE_enumBody);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 378; Match(TOpenBrace);
+			State = 380;
 			_la = TokenStream.La(1);
 			if (((((_la - 51)) & ~0x3f) == 0 && ((1L << (_la - 51)) & ((1L << (TOpenBracket - 51)) | (1L << (IDate - 51)) | (1L << (ITime - 51)) | (1L << (IDateTime - 51)) | (1L << (ITimeSpan - 51)) | (1L << (IVersion - 51)) | (1L << (IStyle - 51)) | (1L << (IMTOM - 51)) | (1L << (ISSL - 51)) | (1L << (IHTTP - 51)) | (1L << (IREST - 51)) | (1L << (IWebSocket - 51)) | (1L << (ISOAP - 51)) | (1L << (IXML - 51)) | (1L << (IJSON - 51)) | (1L << (IClientAuthentication - 51)) | (1L << (IdentifierNormal - 51)) | (1L << (IdentifierVerbatim - 51)))) != 0)) {
 				{
-				State = 351; enumLiterals();
+				State = 379; enumLiterals();
 				}
 			}
 
-			State = 354; Match(TCloseBrace);
+			State = 382; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1403,34 +1546,34 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EnumLiteralsContext enumLiterals() {
 		EnumLiteralsContext _localctx = new EnumLiteralsContext(Context, State);
-		EnterRule(_localctx, 34, RULE_enumLiterals);
+		EnterRule(_localctx, 40, RULE_enumLiterals);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 356; enumLiteral();
-			State = 361;
+			State = 384; enumLiteral();
+			State = 389;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,17,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.InvalidAltNumber ) {
 				if ( _alt==1 ) {
 					{
 					{
-					State = 357; Match(TComma);
-					State = 358; enumLiteral();
+					State = 385; Match(TComma);
+					State = 386; enumLiteral();
 					}
 					} 
 				}
-				State = 363;
+				State = 391;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,17,Context);
 			}
-			State = 365;
+			State = 393;
 			_la = TokenStream.La(1);
 			if (_la==TComma) {
 				{
-				State = 364; Match(TComma);
+				State = 392; Match(TComma);
 				}
 			}
 
@@ -1477,20 +1620,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EnumLiteralContext enumLiteral() {
 		EnumLiteralContext _localctx = new EnumLiteralContext(Context, State);
-		EnterRule(_localctx, 36, RULE_enumLiteral);
+		EnterRule(_localctx, 42, RULE_enumLiteral);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 368;
+			State = 396;
 			_la = TokenStream.La(1);
 			if (_la==TOpenBracket) {
 				{
-				State = 367; annotationList();
+				State = 395; annotationList();
 				}
 			}
 
-			State = 370; nameDef();
+			State = 398; nameDef();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1509,20 +1652,15 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public StructBodyContext structBody() {
+			return GetRuleContext<StructBodyContext>(0);
+		}
 		public AnnotationListContext annotationList() {
 			return GetRuleContext<AnnotationListContext>(0);
 		}
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
-		}
-		public PropertyDeclarationContext[] propertyDeclaration() {
-			return GetRuleContexts<PropertyDeclarationContext>();
-		}
-		public PropertyDeclarationContext propertyDeclaration(int i) {
-			return GetRuleContext<PropertyDeclarationContext>(i);
 		}
 		public StructDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1547,45 +1685,96 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public StructDeclarationContext structDeclaration() {
 		StructDeclarationContext _localctx = new StructDeclarationContext(Context, State);
-		EnterRule(_localctx, 38, RULE_structDeclaration);
+		EnterRule(_localctx, 44, RULE_structDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 373;
+			State = 401;
 			_la = TokenStream.La(1);
 			if (_la==TOpenBracket) {
 				{
-				State = 372; annotationList();
+				State = 400; annotationList();
 				}
 			}
 
-			State = 375; Match(KStruct);
-			State = 376; nameDef();
-			State = 379;
+			State = 403; Match(KStruct);
+			State = 404; nameDef();
+			State = 407;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
-				State = 377; Match(TColon);
-				State = 378; qualifiedName();
+				State = 405; Match(TColon);
+				State = 406; qualifiedName();
 				}
 			}
 
-			State = 381; Match(TOpenBrace);
-			State = 385;
+			State = 409; structBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class StructBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public PropertyDeclarationContext[] propertyDeclaration() {
+			return GetRuleContexts<PropertyDeclarationContext>();
+		}
+		public PropertyDeclarationContext propertyDeclaration(int i) {
+			return GetRuleContext<PropertyDeclarationContext>(i);
+		}
+		public StructBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_structBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterStructBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitStructBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitStructBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public StructBodyContext structBody() {
+		StructBodyContext _localctx = new StructBodyContext(Context, State);
+		EnterRule(_localctx, 46, RULE_structBody);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 411; Match(TOpenBrace);
+			State = 415;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << TOpenBracket))) != 0) || ((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
 				{
-				State = 382; propertyDeclaration();
+				State = 412; propertyDeclaration();
 				}
 				}
-				State = 387;
+				State = 417;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 388; Match(TCloseBrace);
+			State = 418; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1633,22 +1822,22 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public PropertyDeclarationContext propertyDeclaration() {
 		PropertyDeclarationContext _localctx = new PropertyDeclarationContext(Context, State);
-		EnterRule(_localctx, 40, RULE_propertyDeclaration);
+		EnterRule(_localctx, 48, RULE_propertyDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 391;
+			State = 421;
 			_la = TokenStream.La(1);
 			if (_la==TOpenBracket) {
 				{
-				State = 390; annotationList();
+				State = 420; annotationList();
 				}
 			}
 
-			State = 393; typeReference();
-			State = 394; nameDef();
-			State = 395; Match(TSemicolon);
+			State = 423; typeReference();
+			State = 424; nameDef();
+			State = 425; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1667,22 +1856,11 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public DatabaseBodyContext databaseBody() {
+			return GetRuleContext<DatabaseBodyContext>(0);
+		}
 		public AnnotationListContext annotationList() {
 			return GetRuleContext<AnnotationListContext>(0);
-		}
-		public EntityReferenceContext[] entityReference() {
-			return GetRuleContexts<EntityReferenceContext>();
-		}
-		public EntityReferenceContext entityReference(int i) {
-			return GetRuleContext<EntityReferenceContext>(i);
-		}
-		public OperationDeclarationContext[] operationDeclaration() {
-			return GetRuleContexts<OperationDeclarationContext>();
-		}
-		public OperationDeclarationContext operationDeclaration(int i) {
-			return GetRuleContext<OperationDeclarationContext>(i);
 		}
 		public DatabaseDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1707,49 +1885,106 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public DatabaseDeclarationContext databaseDeclaration() {
 		DatabaseDeclarationContext _localctx = new DatabaseDeclarationContext(Context, State);
-		EnterRule(_localctx, 42, RULE_databaseDeclaration);
+		EnterRule(_localctx, 50, RULE_databaseDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 398;
+			State = 428;
 			_la = TokenStream.La(1);
 			if (_la==TOpenBracket) {
 				{
-				State = 397; annotationList();
+				State = 427; annotationList();
 				}
 			}
 
-			State = 400; Match(KDatabase);
-			State = 401; nameDef();
-			State = 402; Match(TOpenBrace);
-			State = 406;
+			State = 430; Match(KDatabase);
+			State = 431; nameDef();
+			State = 432; databaseBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class DatabaseBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public EntityReferenceContext[] entityReference() {
+			return GetRuleContexts<EntityReferenceContext>();
+		}
+		public EntityReferenceContext entityReference(int i) {
+			return GetRuleContext<EntityReferenceContext>(i);
+		}
+		public OperationDeclarationContext[] operationDeclaration() {
+			return GetRuleContexts<OperationDeclarationContext>();
+		}
+		public OperationDeclarationContext operationDeclaration(int i) {
+			return GetRuleContext<OperationDeclarationContext>(i);
+		}
+		public DatabaseBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_databaseBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterDatabaseBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitDatabaseBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitDatabaseBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public DatabaseBodyContext databaseBody() {
+		DatabaseBodyContext _localctx = new DatabaseBodyContext(Context, State);
+		EnterRule(_localctx, 52, RULE_databaseBody);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 434; Match(TOpenBrace);
+			State = 438;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==KEntity) {
 				{
 				{
-				State = 403; entityReference();
+				State = 435; entityReference();
 				}
 				}
-				State = 408;
+				State = 440;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 412;
+			State = 444;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KOneway) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KVoid) | (1L << TOpenBracket))) != 0) || ((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
 				{
-				State = 409; operationDeclaration();
+				State = 441; operationDeclaration();
 				}
 				}
-				State = 414;
+				State = 446;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 415; Match(TCloseBrace);
+			State = 447; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1792,13 +2027,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EntityReferenceContext entityReference() {
 		EntityReferenceContext _localctx = new EntityReferenceContext(Context, State);
-		EnterRule(_localctx, 44, RULE_entityReference);
+		EnterRule(_localctx, 54, RULE_entityReference);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 417; Match(KEntity);
-			State = 418; qualifiedName();
-			State = 419; Match(TSemicolon);
+			State = 449; Match(KEntity);
+			State = 450; qualifiedName();
+			State = 451; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1817,16 +2052,11 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public InterfaceBodyContext interfaceBody() {
+			return GetRuleContext<InterfaceBodyContext>(0);
+		}
 		public AnnotationListContext annotationList() {
 			return GetRuleContext<AnnotationListContext>(0);
-		}
-		public OperationDeclarationContext[] operationDeclaration() {
-			return GetRuleContexts<OperationDeclarationContext>();
-		}
-		public OperationDeclarationContext operationDeclaration(int i) {
-			return GetRuleContext<OperationDeclarationContext>(i);
 		}
 		public InterfaceDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1851,36 +2081,87 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public InterfaceDeclarationContext interfaceDeclaration() {
 		InterfaceDeclarationContext _localctx = new InterfaceDeclarationContext(Context, State);
-		EnterRule(_localctx, 46, RULE_interfaceDeclaration);
+		EnterRule(_localctx, 56, RULE_interfaceDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 422;
+			State = 454;
 			_la = TokenStream.La(1);
 			if (_la==TOpenBracket) {
 				{
-				State = 421; annotationList();
+				State = 453; annotationList();
 				}
 			}
 
-			State = 424; Match(KInterface);
-			State = 425; nameDef();
-			State = 426; Match(TOpenBrace);
-			State = 430;
+			State = 456; Match(KInterface);
+			State = 457; nameDef();
+			State = 458; interfaceBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class InterfaceBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public OperationDeclarationContext[] operationDeclaration() {
+			return GetRuleContexts<OperationDeclarationContext>();
+		}
+		public OperationDeclarationContext operationDeclaration(int i) {
+			return GetRuleContext<OperationDeclarationContext>(i);
+		}
+		public InterfaceBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_interfaceBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterInterfaceBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitInterfaceBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitInterfaceBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public InterfaceBodyContext interfaceBody() {
+		InterfaceBodyContext _localctx = new InterfaceBodyContext(Context, State);
+		EnterRule(_localctx, 58, RULE_interfaceBody);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 460; Match(TOpenBrace);
+			State = 464;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KOneway) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KVoid) | (1L << TOpenBracket))) != 0) || ((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
 				{
-				State = 427; operationDeclaration();
+				State = 461; operationDeclaration();
 				}
 				}
-				State = 432;
+				State = 466;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 433; Match(TCloseBrace);
+			State = 467; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1895,25 +2176,10 @@ public partial class SoalParser : Parser {
 	}
 
 	public partial class OperationDeclarationContext : ParserRuleContext {
-		public OperationResultContext operationResult() {
-			return GetRuleContext<OperationResultContext>(0);
+		public OperationHeadContext operationHead() {
+			return GetRuleContext<OperationHeadContext>(0);
 		}
-		public NameDefContext nameDef() {
-			return GetRuleContext<NameDefContext>(0);
-		}
-		public ITerminalNode TOpenParen() { return GetToken(SoalParser.TOpenParen, 0); }
-		public ITerminalNode TCloseParen() { return GetToken(SoalParser.TCloseParen, 0); }
 		public ITerminalNode TSemicolon() { return GetToken(SoalParser.TSemicolon, 0); }
-		public AnnotationListContext annotationList() {
-			return GetRuleContext<AnnotationListContext>(0);
-		}
-		public ParameterListContext parameterList() {
-			return GetRuleContext<ParameterListContext>(0);
-		}
-		public ITerminalNode KThrows() { return GetToken(SoalParser.KThrows, 0); }
-		public QualifiedNameListContext qualifiedNameList() {
-			return GetRuleContext<QualifiedNameListContext>(0);
-		}
 		public OperationDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -1937,42 +2203,102 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public OperationDeclarationContext operationDeclaration() {
 		OperationDeclarationContext _localctx = new OperationDeclarationContext(Context, State);
-		EnterRule(_localctx, 48, RULE_operationDeclaration);
+		EnterRule(_localctx, 60, RULE_operationDeclaration);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 469; operationHead();
+			State = 470; Match(TSemicolon);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class OperationHeadContext : ParserRuleContext {
+		public OperationResultContext operationResult() {
+			return GetRuleContext<OperationResultContext>(0);
+		}
+		public NameDefContext nameDef() {
+			return GetRuleContext<NameDefContext>(0);
+		}
+		public ITerminalNode TOpenParen() { return GetToken(SoalParser.TOpenParen, 0); }
+		public ITerminalNode TCloseParen() { return GetToken(SoalParser.TCloseParen, 0); }
+		public AnnotationListContext annotationList() {
+			return GetRuleContext<AnnotationListContext>(0);
+		}
+		public ParameterListContext parameterList() {
+			return GetRuleContext<ParameterListContext>(0);
+		}
+		public ITerminalNode KThrows() { return GetToken(SoalParser.KThrows, 0); }
+		public QualifiedNameListContext qualifiedNameList() {
+			return GetRuleContext<QualifiedNameListContext>(0);
+		}
+		public OperationHeadContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_operationHead; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterOperationHead(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitOperationHead(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitOperationHead(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public OperationHeadContext operationHead() {
+		OperationHeadContext _localctx = new OperationHeadContext(Context, State);
+		EnterRule(_localctx, 62, RULE_operationHead);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 436;
+			State = 473;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,29,Context) ) {
 			case 1:
 				{
-				State = 435; annotationList();
+				State = 472; annotationList();
 				}
 				break;
 			}
-			State = 438; operationResult();
-			State = 439; nameDef();
-			State = 440; Match(TOpenParen);
-			State = 442;
+			State = 475; operationResult();
+			State = 476; nameDef();
+			State = 477; Match(TOpenParen);
+			State = 479;
 			_la = TokenStream.La(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << TOpenBracket))) != 0) || ((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 441; parameterList();
+				State = 478; parameterList();
 				}
 			}
 
-			State = 444; Match(TCloseParen);
-			State = 447;
+			State = 481; Match(TCloseParen);
+			State = 484;
 			_la = TokenStream.La(1);
 			if (_la==KThrows) {
 				{
-				State = 445; Match(KThrows);
-				State = 446; qualifiedNameList();
+				State = 482; Match(KThrows);
+				State = 483; qualifiedNameList();
 				}
 			}
 
-			State = 449; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2020,23 +2346,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ParameterListContext parameterList() {
 		ParameterListContext _localctx = new ParameterListContext(Context, State);
-		EnterRule(_localctx, 50, RULE_parameterList);
+		EnterRule(_localctx, 64, RULE_parameterList);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 451; parameter();
-			State = 456;
+			State = 486; parameter();
+			State = 491;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 452; Match(TComma);
-				State = 453; parameter();
+				State = 487; Match(TComma);
+				State = 488; parameter();
 				}
 				}
-				State = 458;
+				State = 493;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -2086,21 +2412,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ParameterContext parameter() {
 		ParameterContext _localctx = new ParameterContext(Context, State);
-		EnterRule(_localctx, 52, RULE_parameter);
+		EnterRule(_localctx, 66, RULE_parameter);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 460;
+			State = 495;
 			_la = TokenStream.La(1);
 			if (_la==TOpenBracket) {
 				{
-				State = 459; annotationList();
+				State = 494; annotationList();
 				}
 			}
 
-			State = 462; typeReference();
-			State = 463; nameDef();
+			State = 497; typeReference();
+			State = 498; nameDef();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2144,20 +2470,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public OperationResultContext operationResult() {
 		OperationResultContext _localctx = new OperationResultContext(Context, State);
-		EnterRule(_localctx, 54, RULE_operationResult);
+		EnterRule(_localctx, 68, RULE_operationResult);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 466;
+			State = 501;
 			_la = TokenStream.La(1);
 			if (_la==TOpenBracket) {
 				{
-				State = 465; returnAnnotationList();
+				State = 500; returnAnnotationList();
 				}
 			}
 
-			State = 468; operationReturnType();
+			State = 503; operationReturnType();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2176,15 +2502,13 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public ComponentBodyContext componentBody() {
+			return GetRuleContext<ComponentBodyContext>(0);
+		}
 		public ITerminalNode KAbstract() { return GetToken(SoalParser.KAbstract, 0); }
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
-		}
-		public ComponentElementsContext componentElements() {
-			return GetRuleContext<ComponentElementsContext>(0);
 		}
 		public ComponentDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2209,40 +2533,88 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentDeclarationContext componentDeclaration() {
 		ComponentDeclarationContext _localctx = new ComponentDeclarationContext(Context, State);
-		EnterRule(_localctx, 56, RULE_componentDeclaration);
+		EnterRule(_localctx, 70, RULE_componentDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 471;
+			State = 506;
 			_la = TokenStream.La(1);
 			if (_la==KAbstract) {
 				{
-				State = 470; Match(KAbstract);
+				State = 505; Match(KAbstract);
 				}
 			}
 
-			State = 473; Match(KComponent);
-			State = 474; nameDef();
-			State = 477;
+			State = 508; Match(KComponent);
+			State = 509; nameDef();
+			State = 512;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
-				State = 475; Match(TColon);
-				State = 476; qualifiedName();
+				State = 510; Match(TColon);
+				State = 511; qualifiedName();
 				}
 			}
 
-			State = 479; Match(TOpenBrace);
-			State = 481;
+			State = 514; componentBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class ComponentBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public ComponentElementsContext componentElements() {
+			return GetRuleContext<ComponentElementsContext>(0);
+		}
+		public ComponentBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_componentBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterComponentBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitComponentBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitComponentBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public ComponentBodyContext componentBody() {
+		ComponentBodyContext _localctx = new ComponentBodyContext(Context, State);
+		EnterRule(_localctx, 72, RULE_componentBody);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 516; Match(TOpenBrace);
+			State = 518;
 			_la = TokenStream.La(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KReference) | (1L << KService) | (1L << KImplementation) | (1L << KLanguage) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || ((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 480; componentElements();
+				State = 517; componentElements();
 				}
 			}
 
-			State = 483; Match(TCloseBrace);
+			State = 520; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2286,21 +2658,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentElementsContext componentElements() {
 		ComponentElementsContext _localctx = new ComponentElementsContext(Context, State);
-		EnterRule(_localctx, 58, RULE_componentElements);
+		EnterRule(_localctx, 74, RULE_componentElements);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 486;
+			State = 523;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 485; componentElement();
+				State = 522; componentElement();
 				}
 				}
-				State = 488;
+				State = 525;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KReference) | (1L << KService) | (1L << KImplementation) | (1L << KLanguage) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || ((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0) );
@@ -2356,20 +2728,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentElementContext componentElement() {
 		ComponentElementContext _localctx = new ComponentElementContext(Context, State);
-		EnterRule(_localctx, 60, RULE_componentElement);
+		EnterRule(_localctx, 76, RULE_componentElement);
 		try {
-			State = 495;
+			State = 532;
 			switch (TokenStream.La(1)) {
 			case KService:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 490; componentService();
+				State = 527; componentService();
 				}
 				break;
 			case KReference:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 491; componentReference();
+				State = 528; componentReference();
 				}
 				break;
 			case KObject:
@@ -2399,19 +2771,19 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 492; componentProperty();
+				State = 529; componentProperty();
 				}
 				break;
 			case KImplementation:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 493; componentImplementation();
+				State = 530; componentImplementation();
 				}
 				break;
 			case KLanguage:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 494; componentLanguage();
+				State = 531; componentLanguage();
 				}
 				break;
 			default:
@@ -2463,22 +2835,22 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentServiceContext componentService() {
 		ComponentServiceContext _localctx = new ComponentServiceContext(Context, State);
-		EnterRule(_localctx, 62, RULE_componentService);
+		EnterRule(_localctx, 78, RULE_componentService);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 497; Match(KService);
-			State = 498; qualifiedName();
-			State = 500;
+			State = 534; Match(KService);
+			State = 535; qualifiedName();
+			State = 537;
 			_la = TokenStream.La(1);
 			if (((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 499; nameDef();
+				State = 536; nameDef();
 				}
 			}
 
-			State = 502; componentServiceOrReferenceBody();
+			State = 539; componentServiceOrReferenceBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2526,22 +2898,22 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentReferenceContext componentReference() {
 		ComponentReferenceContext _localctx = new ComponentReferenceContext(Context, State);
-		EnterRule(_localctx, 64, RULE_componentReference);
+		EnterRule(_localctx, 80, RULE_componentReference);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 504; Match(KReference);
-			State = 505; qualifiedName();
-			State = 507;
+			State = 541; Match(KReference);
+			State = 542; qualifiedName();
+			State = 544;
 			_la = TokenStream.La(1);
 			if (((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 506; nameDef();
+				State = 543; nameDef();
 				}
 			}
 
-			State = 509; componentServiceOrReferenceBody();
+			State = 546; componentServiceOrReferenceBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2612,37 +2984,37 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentServiceOrReferenceBodyContext componentServiceOrReferenceBody() {
 		ComponentServiceOrReferenceBodyContext _localctx = new ComponentServiceOrReferenceBodyContext(Context, State);
-		EnterRule(_localctx, 66, RULE_componentServiceOrReferenceBody);
+		EnterRule(_localctx, 82, RULE_componentServiceOrReferenceBody);
 		int _la;
 		try {
-			State = 520;
+			State = 557;
 			switch (TokenStream.La(1)) {
 			case TSemicolon:
 				_localctx = new ComponentServiceOrReferenceEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 511; Match(TSemicolon);
+				State = 548; Match(TSemicolon);
 				}
 				break;
 			case TOpenBrace:
 				_localctx = new ComponentServiceOrReferenceNonEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 512; Match(TOpenBrace);
-				State = 516;
+				State = 549; Match(TOpenBrace);
+				State = 553;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 				while (_la==KBinding) {
 					{
 					{
-					State = 513; componentServiceOrReferenceElement();
+					State = 550; componentServiceOrReferenceElement();
 					}
 					}
-					State = 518;
+					State = 555;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.La(1);
 				}
-				State = 519; Match(TCloseBrace);
+				State = 556; Match(TCloseBrace);
 				}
 				break;
 			default:
@@ -2689,13 +3061,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentServiceOrReferenceElementContext componentServiceOrReferenceElement() {
 		ComponentServiceOrReferenceElementContext _localctx = new ComponentServiceOrReferenceElementContext(Context, State);
-		EnterRule(_localctx, 68, RULE_componentServiceOrReferenceElement);
+		EnterRule(_localctx, 84, RULE_componentServiceOrReferenceElement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 522; Match(KBinding);
-			State = 523; qualifiedName();
-			State = 524; Match(TSemicolon);
+			State = 559; Match(KBinding);
+			State = 560; qualifiedName();
+			State = 561; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2740,13 +3112,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentPropertyContext componentProperty() {
 		ComponentPropertyContext _localctx = new ComponentPropertyContext(Context, State);
-		EnterRule(_localctx, 70, RULE_componentProperty);
+		EnterRule(_localctx, 86, RULE_componentProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 526; typeReference();
-			State = 527; nameDef();
-			State = 528; Match(TSemicolon);
+			State = 563; typeReference();
+			State = 564; nameDef();
+			State = 565; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2789,13 +3161,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentImplementationContext componentImplementation() {
 		ComponentImplementationContext _localctx = new ComponentImplementationContext(Context, State);
-		EnterRule(_localctx, 72, RULE_componentImplementation);
+		EnterRule(_localctx, 88, RULE_componentImplementation);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 530; Match(KImplementation);
-			State = 531; nameDef();
-			State = 532; Match(TSemicolon);
+			State = 567; Match(KImplementation);
+			State = 568; nameDef();
+			State = 569; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2838,13 +3210,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ComponentLanguageContext componentLanguage() {
 		ComponentLanguageContext _localctx = new ComponentLanguageContext(Context, State);
-		EnterRule(_localctx, 74, RULE_componentLanguage);
+		EnterRule(_localctx, 90, RULE_componentLanguage);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 534; Match(KLanguage);
-			State = 535; nameDef();
-			State = 536; Match(TSemicolon);
+			State = 571; Match(KLanguage);
+			State = 572; nameDef();
+			State = 573; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2863,14 +3235,12 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public CompositeBodyContext compositeBody() {
+			return GetRuleContext<CompositeBodyContext>(0);
+		}
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
-		}
-		public CompositeElementsContext compositeElements() {
-			return GetRuleContext<CompositeElementsContext>(0);
 		}
 		public CompositeDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2895,32 +3265,80 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeDeclarationContext compositeDeclaration() {
 		CompositeDeclarationContext _localctx = new CompositeDeclarationContext(Context, State);
-		EnterRule(_localctx, 76, RULE_compositeDeclaration);
+		EnterRule(_localctx, 92, RULE_compositeDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 538; Match(KComposite);
-			State = 539; nameDef();
-			State = 542;
+			State = 575; Match(KComposite);
+			State = 576; nameDef();
+			State = 579;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
-				State = 540; Match(TColon);
-				State = 541; qualifiedName();
+				State = 577; Match(TColon);
+				State = 578; qualifiedName();
 				}
 			}
 
-			State = 544; Match(TOpenBrace);
-			State = 546;
+			State = 581; compositeBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class CompositeBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public CompositeElementsContext compositeElements() {
+			return GetRuleContext<CompositeElementsContext>(0);
+		}
+		public CompositeBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_compositeBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterCompositeBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitCompositeBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitCompositeBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public CompositeBodyContext compositeBody() {
+		CompositeBodyContext _localctx = new CompositeBodyContext(Context, State);
+		EnterRule(_localctx, 94, RULE_compositeBody);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 583; Match(TOpenBrace);
+			State = 585;
 			_la = TokenStream.La(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KComponent) | (1L << KReference) | (1L << KService) | (1L << KWire) | (1L << KImplementation) | (1L << KLanguage) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || ((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
 				{
-				State = 545; compositeElements();
+				State = 584; compositeElements();
 				}
 			}
 
-			State = 548; Match(TCloseBrace);
+			State = 587; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2939,14 +3357,12 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public CompositeBodyContext compositeBody() {
+			return GetRuleContext<CompositeBodyContext>(0);
+		}
 		public ITerminalNode TColon() { return GetToken(SoalParser.TColon, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
-		}
-		public CompositeElementsContext compositeElements() {
-			return GetRuleContext<CompositeElementsContext>(0);
 		}
 		public AssemblyDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2971,32 +3387,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public AssemblyDeclarationContext assemblyDeclaration() {
 		AssemblyDeclarationContext _localctx = new AssemblyDeclarationContext(Context, State);
-		EnterRule(_localctx, 78, RULE_assemblyDeclaration);
+		EnterRule(_localctx, 96, RULE_assemblyDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 550; Match(KAssembly);
-			State = 551; nameDef();
-			State = 554;
+			State = 589; Match(KAssembly);
+			State = 590; nameDef();
+			State = 593;
 			_la = TokenStream.La(1);
 			if (_la==TColon) {
 				{
-				State = 552; Match(TColon);
-				State = 553; qualifiedName();
+				State = 591; Match(TColon);
+				State = 592; qualifiedName();
 				}
 			}
 
-			State = 556; Match(TOpenBrace);
-			State = 558;
-			_la = TokenStream.La(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KComponent) | (1L << KReference) | (1L << KService) | (1L << KWire) | (1L << KImplementation) | (1L << KLanguage) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || ((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0)) {
-				{
-				State = 557; compositeElements();
-				}
-			}
-
-			State = 560; Match(TCloseBrace);
+			State = 595; compositeBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3040,21 +3447,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeElementsContext compositeElements() {
 		CompositeElementsContext _localctx = new CompositeElementsContext(Context, State);
-		EnterRule(_localctx, 80, RULE_compositeElements);
+		EnterRule(_localctx, 98, RULE_compositeElements);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 563;
+			State = 598;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 562; compositeElement();
+				State = 597; compositeElement();
 				}
 				}
-				State = 565;
+				State = 600;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KComponent) | (1L << KReference) | (1L << KService) | (1L << KWire) | (1L << KImplementation) | (1L << KLanguage) | (1L << KObject) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0) || ((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)) | (1L << (IdentifierNormal - 87)) | (1L << (IdentifierVerbatim - 87)))) != 0) );
@@ -3116,20 +3523,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeElementContext compositeElement() {
 		CompositeElementContext _localctx = new CompositeElementContext(Context, State);
-		EnterRule(_localctx, 82, RULE_compositeElement);
+		EnterRule(_localctx, 100, RULE_compositeElement);
 		try {
-			State = 574;
+			State = 609;
 			switch (TokenStream.La(1)) {
 			case KService:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 567; componentService();
+				State = 602; componentService();
 				}
 				break;
 			case KReference:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 568; componentReference();
+				State = 603; componentReference();
 				}
 				break;
 			case KObject:
@@ -3159,31 +3566,31 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 569; componentProperty();
+				State = 604; componentProperty();
 				}
 				break;
 			case KImplementation:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 570; componentImplementation();
+				State = 605; componentImplementation();
 				}
 				break;
 			case KLanguage:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 571; componentLanguage();
+				State = 606; componentLanguage();
 				}
 				break;
 			case KComponent:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 572; compositeComponent();
+				State = 607; compositeComponent();
 				}
 				break;
 			case KWire:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 573; compositeWire();
+				State = 608; compositeWire();
 				}
 				break;
 			default:
@@ -3230,13 +3637,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeComponentContext compositeComponent() {
 		CompositeComponentContext _localctx = new CompositeComponentContext(Context, State);
-		EnterRule(_localctx, 84, RULE_compositeComponent);
+		EnterRule(_localctx, 102, RULE_compositeComponent);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 576; Match(KComponent);
-			State = 577; qualifiedName();
-			State = 578; Match(TSemicolon);
+			State = 611; Match(KComponent);
+			State = 612; qualifiedName();
+			State = 613; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3283,15 +3690,15 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public CompositeWireContext compositeWire() {
 		CompositeWireContext _localctx = new CompositeWireContext(Context, State);
-		EnterRule(_localctx, 86, RULE_compositeWire);
+		EnterRule(_localctx, 104, RULE_compositeWire);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 580; Match(KWire);
-			State = 581; wireSource();
-			State = 582; Match(KTo);
-			State = 583; wireTarget();
-			State = 584; Match(TSemicolon);
+			State = 615; Match(KWire);
+			State = 616; wireSource();
+			State = 617; Match(KTo);
+			State = 618; wireTarget();
+			State = 619; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3332,11 +3739,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public WireSourceContext wireSource() {
 		WireSourceContext _localctx = new WireSourceContext(Context, State);
-		EnterRule(_localctx, 88, RULE_wireSource);
+		EnterRule(_localctx, 106, RULE_wireSource);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 586; qualifiedName();
+			State = 621; qualifiedName();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3377,11 +3784,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public WireTargetContext wireTarget() {
 		WireTargetContext _localctx = new WireTargetContext(Context, State);
-		EnterRule(_localctx, 90, RULE_wireTarget);
+		EnterRule(_localctx, 108, RULE_wireTarget);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 588; qualifiedName();
+			State = 623; qualifiedName();
 			}
 		}
 		catch (RecognitionException re) {
@@ -3400,10 +3807,8 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
-		public DeploymentElementsContext deploymentElements() {
-			return GetRuleContext<DeploymentElementsContext>(0);
+		public DeploymentBodyContext deploymentBody() {
+			return GetRuleContext<DeploymentBodyContext>(0);
 		}
 		public DeploymentDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3428,23 +3833,70 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public DeploymentDeclarationContext deploymentDeclaration() {
 		DeploymentDeclarationContext _localctx = new DeploymentDeclarationContext(Context, State);
-		EnterRule(_localctx, 92, RULE_deploymentDeclaration);
+		EnterRule(_localctx, 110, RULE_deploymentDeclaration);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 625; Match(KDeployment);
+			State = 626; nameDef();
+			State = 627; deploymentBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class DeploymentBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public DeploymentElementsContext deploymentElements() {
+			return GetRuleContext<DeploymentElementsContext>(0);
+		}
+		public DeploymentBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_deploymentBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterDeploymentBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitDeploymentBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitDeploymentBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public DeploymentBodyContext deploymentBody() {
+		DeploymentBodyContext _localctx = new DeploymentBodyContext(Context, State);
+		EnterRule(_localctx, 112, RULE_deploymentBody);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 590; Match(KDeployment);
-			State = 591; nameDef();
-			State = 592; Match(TOpenBrace);
-			State = 594;
+			State = 629; Match(TOpenBrace);
+			State = 631;
 			_la = TokenStream.La(1);
 			if (_la==KWire || _la==KEnvironment) {
 				{
-				State = 593; deploymentElements();
+				State = 630; deploymentElements();
 				}
 			}
 
-			State = 596; Match(TCloseBrace);
+			State = 633; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3488,21 +3940,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public DeploymentElementsContext deploymentElements() {
 		DeploymentElementsContext _localctx = new DeploymentElementsContext(Context, State);
-		EnterRule(_localctx, 94, RULE_deploymentElements);
+		EnterRule(_localctx, 114, RULE_deploymentElements);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 599;
+			State = 636;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 598; deploymentElement();
+				State = 635; deploymentElement();
 				}
 				}
-				State = 601;
+				State = 638;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			} while ( _la==KWire || _la==KEnvironment );
@@ -3549,20 +4001,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public DeploymentElementContext deploymentElement() {
 		DeploymentElementContext _localctx = new DeploymentElementContext(Context, State);
-		EnterRule(_localctx, 96, RULE_deploymentElement);
+		EnterRule(_localctx, 116, RULE_deploymentElement);
 		try {
-			State = 605;
+			State = 642;
 			switch (TokenStream.La(1)) {
 			case KEnvironment:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 603; environmentDeclaration();
+				State = 640; environmentDeclaration();
 				}
 				break;
 			case KWire:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 604; compositeWire();
+				State = 641; compositeWire();
 				}
 				break;
 			default:
@@ -3585,16 +4037,8 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public RuntimeDeclarationContext runtimeDeclaration() {
-			return GetRuleContext<RuntimeDeclarationContext>(0);
-		}
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
-		public RuntimeReferenceContext[] runtimeReference() {
-			return GetRuleContexts<RuntimeReferenceContext>();
-		}
-		public RuntimeReferenceContext runtimeReference(int i) {
-			return GetRuleContext<RuntimeReferenceContext>(i);
+		public EnvironmentBodyContext environmentBody() {
+			return GetRuleContext<EnvironmentBodyContext>(0);
 		}
 		public EnvironmentDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3619,29 +4063,82 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EnvironmentDeclarationContext environmentDeclaration() {
 		EnvironmentDeclarationContext _localctx = new EnvironmentDeclarationContext(Context, State);
-		EnterRule(_localctx, 98, RULE_environmentDeclaration);
+		EnterRule(_localctx, 118, RULE_environmentDeclaration);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 644; Match(KEnvironment);
+			State = 645; nameDef();
+			State = 646; environmentBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class EnvironmentBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public RuntimeDeclarationContext runtimeDeclaration() {
+			return GetRuleContext<RuntimeDeclarationContext>(0);
+		}
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public RuntimeReferenceContext[] runtimeReference() {
+			return GetRuleContexts<RuntimeReferenceContext>();
+		}
+		public RuntimeReferenceContext runtimeReference(int i) {
+			return GetRuleContext<RuntimeReferenceContext>(i);
+		}
+		public EnvironmentBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_environmentBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterEnvironmentBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitEnvironmentBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitEnvironmentBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public EnvironmentBodyContext environmentBody() {
+		EnvironmentBodyContext _localctx = new EnvironmentBodyContext(Context, State);
+		EnterRule(_localctx, 120, RULE_environmentBody);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 607; Match(KEnvironment);
-			State = 608; nameDef();
-			State = 609; Match(TOpenBrace);
-			State = 610; runtimeDeclaration();
-			State = 614;
+			State = 648; Match(TOpenBrace);
+			State = 649; runtimeDeclaration();
+			State = 653;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==KDatabase || _la==KAssembly) {
 				{
 				{
-				State = 611; runtimeReference();
+				State = 650; runtimeReference();
 				}
 				}
-				State = 616;
+				State = 655;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
-			State = 617; Match(TCloseBrace);
+			State = 656; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3684,13 +4181,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public RuntimeDeclarationContext runtimeDeclaration() {
 		RuntimeDeclarationContext _localctx = new RuntimeDeclarationContext(Context, State);
-		EnterRule(_localctx, 100, RULE_runtimeDeclaration);
+		EnterRule(_localctx, 122, RULE_runtimeDeclaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 619; Match(KRuntime);
-			State = 620; nameDef();
-			State = 621; Match(TSemicolon);
+			State = 658; Match(KRuntime);
+			State = 659; nameDef();
+			State = 660; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3734,20 +4231,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public RuntimeReferenceContext runtimeReference() {
 		RuntimeReferenceContext _localctx = new RuntimeReferenceContext(Context, State);
-		EnterRule(_localctx, 102, RULE_runtimeReference);
+		EnterRule(_localctx, 124, RULE_runtimeReference);
 		try {
-			State = 625;
+			State = 664;
 			switch (TokenStream.La(1)) {
 			case KAssembly:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 623; assemblyReference();
+				State = 662; assemblyReference();
 				}
 				break;
 			case KDatabase:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 624; databaseReference();
+				State = 663; databaseReference();
 				}
 				break;
 			default:
@@ -3794,13 +4291,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public AssemblyReferenceContext assemblyReference() {
 		AssemblyReferenceContext _localctx = new AssemblyReferenceContext(Context, State);
-		EnterRule(_localctx, 104, RULE_assemblyReference);
+		EnterRule(_localctx, 126, RULE_assemblyReference);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 627; Match(KAssembly);
-			State = 628; qualifiedName();
-			State = 629; Match(TSemicolon);
+			State = 666; Match(KAssembly);
+			State = 667; qualifiedName();
+			State = 668; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3843,13 +4340,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public DatabaseReferenceContext databaseReference() {
 		DatabaseReferenceContext _localctx = new DatabaseReferenceContext(Context, State);
-		EnterRule(_localctx, 106, RULE_databaseReference);
+		EnterRule(_localctx, 128, RULE_databaseReference);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 631; Match(KDatabase);
-			State = 632; qualifiedName();
-			State = 633; Match(TSemicolon);
+			State = 670; Match(KDatabase);
+			State = 671; qualifiedName();
+			State = 672; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3868,10 +4365,8 @@ public partial class SoalParser : Parser {
 		public NameDefContext nameDef() {
 			return GetRuleContext<NameDefContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
-		public BindingLayersContext bindingLayers() {
-			return GetRuleContext<BindingLayersContext>(0);
+		public BindingBodyContext bindingBody() {
+			return GetRuleContext<BindingBodyContext>(0);
 		}
 		public BindingDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3896,23 +4391,70 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public BindingDeclarationContext bindingDeclaration() {
 		BindingDeclarationContext _localctx = new BindingDeclarationContext(Context, State);
-		EnterRule(_localctx, 108, RULE_bindingDeclaration);
+		EnterRule(_localctx, 130, RULE_bindingDeclaration);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 674; Match(KBinding);
+			State = 675; nameDef();
+			State = 676; bindingBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class BindingBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public BindingLayersContext bindingLayers() {
+			return GetRuleContext<BindingLayersContext>(0);
+		}
+		public BindingBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_bindingBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterBindingBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitBindingBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitBindingBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public BindingBodyContext bindingBody() {
+		BindingBodyContext _localctx = new BindingBodyContext(Context, State);
+		EnterRule(_localctx, 132, RULE_bindingBody);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 635; Match(KBinding);
-			State = 636; nameDef();
-			State = 637; Match(TOpenBrace);
-			State = 639;
+			State = 678; Match(TOpenBrace);
+			State = 680;
 			_la = TokenStream.La(1);
 			if (_la==KTransport) {
 				{
-				State = 638; bindingLayers();
+				State = 679; bindingLayers();
 				}
 			}
 
-			State = 641; Match(TCloseBrace);
+			State = 682; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3965,35 +4507,35 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public BindingLayersContext bindingLayers() {
 		BindingLayersContext _localctx = new BindingLayersContext(Context, State);
-		EnterRule(_localctx, 110, RULE_bindingLayers);
+		EnterRule(_localctx, 134, RULE_bindingLayers);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 643; transportLayer();
-			State = 645;
+			State = 684; transportLayer();
+			State = 686;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 644; encodingLayer();
+				State = 685; encodingLayer();
 				}
 				}
-				State = 647;
+				State = 688;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			} while ( _la==KEncoding );
-			State = 652;
+			State = 693;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			while (_la==KProtocol) {
 				{
 				{
-				State = 649; protocolLayer();
+				State = 690; protocolLayer();
 				}
 				}
-				State = 654;
+				State = 695;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			}
@@ -4043,27 +4585,27 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public TransportLayerContext transportLayer() {
 		TransportLayerContext _localctx = new TransportLayerContext(Context, State);
-		EnterRule(_localctx, 112, RULE_transportLayer);
+		EnterRule(_localctx, 136, RULE_transportLayer);
 		try {
-			State = 658;
+			State = 699;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,58,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,57,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 655; httpTransportLayer();
+				State = 696; httpTransportLayer();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 656; restTransportLayer();
+				State = 697; restTransportLayer();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 657; webSocketTransportLayer();
+				State = 698; webSocketTransportLayer();
 				}
 				break;
 			}
@@ -4108,13 +4650,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public HttpTransportLayerContext httpTransportLayer() {
 		HttpTransportLayerContext _localctx = new HttpTransportLayerContext(Context, State);
-		EnterRule(_localctx, 114, RULE_httpTransportLayer);
+		EnterRule(_localctx, 138, RULE_httpTransportLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 660; Match(KTransport);
-			State = 661; Match(IHTTP);
-			State = 662; httpTransportLayerBody();
+			State = 701; Match(KTransport);
+			State = 702; Match(IHTTP);
+			State = 703; httpTransportLayerBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4185,37 +4727,37 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public HttpTransportLayerBodyContext httpTransportLayerBody() {
 		HttpTransportLayerBodyContext _localctx = new HttpTransportLayerBodyContext(Context, State);
-		EnterRule(_localctx, 116, RULE_httpTransportLayerBody);
+		EnterRule(_localctx, 140, RULE_httpTransportLayerBody);
 		int _la;
 		try {
-			State = 673;
+			State = 714;
 			switch (TokenStream.La(1)) {
 			case TSemicolon:
 				_localctx = new HttpTransportLayerEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 664; Match(TSemicolon);
+				State = 705; Match(TSemicolon);
 				}
 				break;
 			case TOpenBrace:
 				_localctx = new HttpTransportLayerNonEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 665; Match(TOpenBrace);
-				State = 669;
+				State = 706; Match(TOpenBrace);
+				State = 710;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 				while (_la==ISSL || _la==IClientAuthentication) {
 					{
 					{
-					State = 666; httpTransportLayerProperties();
+					State = 707; httpTransportLayerProperties();
 					}
 					}
-					State = 671;
+					State = 712;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.La(1);
 				}
-				State = 672; Match(TCloseBrace);
+				State = 713; Match(TCloseBrace);
 				}
 				break;
 			default:
@@ -4262,13 +4804,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public RestTransportLayerContext restTransportLayer() {
 		RestTransportLayerContext _localctx = new RestTransportLayerContext(Context, State);
-		EnterRule(_localctx, 118, RULE_restTransportLayer);
+		EnterRule(_localctx, 142, RULE_restTransportLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 675; Match(KTransport);
-			State = 676; Match(IREST);
-			State = 677; restTransportLayerBody();
+			State = 716; Match(KTransport);
+			State = 717; Match(IREST);
+			State = 718; restTransportLayerBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4333,23 +4875,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public RestTransportLayerBodyContext restTransportLayerBody() {
 		RestTransportLayerBodyContext _localctx = new RestTransportLayerBodyContext(Context, State);
-		EnterRule(_localctx, 120, RULE_restTransportLayerBody);
+		EnterRule(_localctx, 144, RULE_restTransportLayerBody);
 		try {
-			State = 682;
+			State = 723;
 			switch (TokenStream.La(1)) {
 			case TSemicolon:
 				_localctx = new RestTransportLayerEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 679; Match(TSemicolon);
+				State = 720; Match(TSemicolon);
 				}
 				break;
 			case TOpenBrace:
 				_localctx = new RestTransportLayerNonEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 680; Match(TOpenBrace);
-				State = 681; Match(TCloseBrace);
+				State = 721; Match(TOpenBrace);
+				State = 722; Match(TCloseBrace);
 				}
 				break;
 			default:
@@ -4396,13 +4938,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public WebSocketTransportLayerContext webSocketTransportLayer() {
 		WebSocketTransportLayerContext _localctx = new WebSocketTransportLayerContext(Context, State);
-		EnterRule(_localctx, 122, RULE_webSocketTransportLayer);
+		EnterRule(_localctx, 146, RULE_webSocketTransportLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 684; Match(KTransport);
-			State = 685; Match(IWebSocket);
-			State = 686; webSocketTransportLayerBody();
+			State = 725; Match(KTransport);
+			State = 726; Match(IWebSocket);
+			State = 727; webSocketTransportLayerBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4467,23 +5009,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public WebSocketTransportLayerBodyContext webSocketTransportLayerBody() {
 		WebSocketTransportLayerBodyContext _localctx = new WebSocketTransportLayerBodyContext(Context, State);
-		EnterRule(_localctx, 124, RULE_webSocketTransportLayerBody);
+		EnterRule(_localctx, 148, RULE_webSocketTransportLayerBody);
 		try {
-			State = 691;
+			State = 732;
 			switch (TokenStream.La(1)) {
 			case TSemicolon:
 				_localctx = new WebSocketTransportLayerEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 688; Match(TSemicolon);
+				State = 729; Match(TSemicolon);
 				}
 				break;
 			case TOpenBrace:
 				_localctx = new WebSocketTransportLayerNonEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 689; Match(TOpenBrace);
-				State = 690; Match(TCloseBrace);
+				State = 730; Match(TOpenBrace);
+				State = 731; Match(TCloseBrace);
 				}
 				break;
 			default:
@@ -4531,20 +5073,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public HttpTransportLayerPropertiesContext httpTransportLayerProperties() {
 		HttpTransportLayerPropertiesContext _localctx = new HttpTransportLayerPropertiesContext(Context, State);
-		EnterRule(_localctx, 126, RULE_httpTransportLayerProperties);
+		EnterRule(_localctx, 150, RULE_httpTransportLayerProperties);
 		try {
-			State = 695;
+			State = 736;
 			switch (TokenStream.La(1)) {
 			case ISSL:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 693; httpSslProperty();
+				State = 734; httpSslProperty();
 				}
 				break;
 			case IClientAuthentication:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 694; httpClientAuthenticationProperty();
+				State = 735; httpClientAuthenticationProperty();
 				}
 				break;
 			default:
@@ -4592,14 +5134,14 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public HttpSslPropertyContext httpSslProperty() {
 		HttpSslPropertyContext _localctx = new HttpSslPropertyContext(Context, State);
-		EnterRule(_localctx, 128, RULE_httpSslProperty);
+		EnterRule(_localctx, 152, RULE_httpSslProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 697; Match(ISSL);
-			State = 698; Match(TAssign);
-			State = 699; booleanLiteral();
-			State = 700; Match(TSemicolon);
+			State = 738; Match(ISSL);
+			State = 739; Match(TAssign);
+			State = 740; booleanLiteral();
+			State = 741; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -4643,14 +5185,14 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public HttpClientAuthenticationPropertyContext httpClientAuthenticationProperty() {
 		HttpClientAuthenticationPropertyContext _localctx = new HttpClientAuthenticationPropertyContext(Context, State);
-		EnterRule(_localctx, 130, RULE_httpClientAuthenticationProperty);
+		EnterRule(_localctx, 154, RULE_httpClientAuthenticationProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 702; Match(IClientAuthentication);
-			State = 703; Match(TAssign);
-			State = 704; booleanLiteral();
-			State = 705; Match(TSemicolon);
+			State = 743; Match(IClientAuthentication);
+			State = 744; Match(TAssign);
+			State = 745; booleanLiteral();
+			State = 746; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -4697,27 +5239,27 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EncodingLayerContext encodingLayer() {
 		EncodingLayerContext _localctx = new EncodingLayerContext(Context, State);
-		EnterRule(_localctx, 132, RULE_encodingLayer);
+		EnterRule(_localctx, 156, RULE_encodingLayer);
 		try {
-			State = 710;
+			State = 751;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,64,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,63,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 707; soapEncodingLayer();
+				State = 748; soapEncodingLayer();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 708; xmlEncodingLayer();
+				State = 749; xmlEncodingLayer();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 709; jsonEncodingLayer();
+				State = 750; jsonEncodingLayer();
 				}
 				break;
 			}
@@ -4762,13 +5304,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public SoapEncodingLayerContext soapEncodingLayer() {
 		SoapEncodingLayerContext _localctx = new SoapEncodingLayerContext(Context, State);
-		EnterRule(_localctx, 134, RULE_soapEncodingLayer);
+		EnterRule(_localctx, 158, RULE_soapEncodingLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 712; Match(KEncoding);
-			State = 713; Match(ISOAP);
-			State = 714; soapEncodingLayerBody();
+			State = 753; Match(KEncoding);
+			State = 754; Match(ISOAP);
+			State = 755; soapEncodingLayerBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4839,37 +5381,37 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public SoapEncodingLayerBodyContext soapEncodingLayerBody() {
 		SoapEncodingLayerBodyContext _localctx = new SoapEncodingLayerBodyContext(Context, State);
-		EnterRule(_localctx, 136, RULE_soapEncodingLayerBody);
+		EnterRule(_localctx, 160, RULE_soapEncodingLayerBody);
 		int _la;
 		try {
-			State = 725;
+			State = 766;
 			switch (TokenStream.La(1)) {
 			case TSemicolon:
 				_localctx = new SoapEncodingLayerEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 716; Match(TSemicolon);
+				State = 757; Match(TSemicolon);
 				}
 				break;
 			case TOpenBrace:
 				_localctx = new SoapEncodingLayerNonEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 717; Match(TOpenBrace);
-				State = 721;
+				State = 758; Match(TOpenBrace);
+				State = 762;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 				while (((((_la - 91)) & ~0x3f) == 0 && ((1L << (_la - 91)) & ((1L << (IVersion - 91)) | (1L << (IStyle - 91)) | (1L << (IMTOM - 91)))) != 0)) {
 					{
 					{
-					State = 718; soapEncodingProperties();
+					State = 759; soapEncodingProperties();
 					}
 					}
-					State = 723;
+					State = 764;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.La(1);
 				}
-				State = 724; Match(TCloseBrace);
+				State = 765; Match(TCloseBrace);
 				}
 				break;
 			default:
@@ -4916,13 +5458,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public XmlEncodingLayerContext xmlEncodingLayer() {
 		XmlEncodingLayerContext _localctx = new XmlEncodingLayerContext(Context, State);
-		EnterRule(_localctx, 138, RULE_xmlEncodingLayer);
+		EnterRule(_localctx, 162, RULE_xmlEncodingLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 727; Match(KEncoding);
-			State = 728; Match(IXML);
-			State = 729; xmlEncodingLayerBody();
+			State = 768; Match(KEncoding);
+			State = 769; Match(IXML);
+			State = 770; xmlEncodingLayerBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -4987,23 +5529,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public XmlEncodingLayerBodyContext xmlEncodingLayerBody() {
 		XmlEncodingLayerBodyContext _localctx = new XmlEncodingLayerBodyContext(Context, State);
-		EnterRule(_localctx, 140, RULE_xmlEncodingLayerBody);
+		EnterRule(_localctx, 164, RULE_xmlEncodingLayerBody);
 		try {
-			State = 734;
+			State = 775;
 			switch (TokenStream.La(1)) {
 			case TSemicolon:
 				_localctx = new XmlEncodingLayerEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 731; Match(TSemicolon);
+				State = 772; Match(TSemicolon);
 				}
 				break;
 			case TOpenBrace:
 				_localctx = new XmlEncodingLayerNonEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 732; Match(TOpenBrace);
-				State = 733; Match(TCloseBrace);
+				State = 773; Match(TOpenBrace);
+				State = 774; Match(TCloseBrace);
 				}
 				break;
 			default:
@@ -5050,13 +5592,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public JsonEncodingLayerContext jsonEncodingLayer() {
 		JsonEncodingLayerContext _localctx = new JsonEncodingLayerContext(Context, State);
-		EnterRule(_localctx, 142, RULE_jsonEncodingLayer);
+		EnterRule(_localctx, 166, RULE_jsonEncodingLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 736; Match(KEncoding);
-			State = 737; Match(IJSON);
-			State = 738; jsonEncodingLayerBody();
+			State = 777; Match(KEncoding);
+			State = 778; Match(IJSON);
+			State = 779; jsonEncodingLayerBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5121,23 +5663,23 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public JsonEncodingLayerBodyContext jsonEncodingLayerBody() {
 		JsonEncodingLayerBodyContext _localctx = new JsonEncodingLayerBodyContext(Context, State);
-		EnterRule(_localctx, 144, RULE_jsonEncodingLayerBody);
+		EnterRule(_localctx, 168, RULE_jsonEncodingLayerBody);
 		try {
-			State = 743;
+			State = 784;
 			switch (TokenStream.La(1)) {
 			case TSemicolon:
 				_localctx = new JsonEncodingLayerEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 740; Match(TSemicolon);
+				State = 781; Match(TSemicolon);
 				}
 				break;
 			case TOpenBrace:
 				_localctx = new JsonEncodingLayerNonEmptyBodyContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 741; Match(TOpenBrace);
-				State = 742; Match(TCloseBrace);
+				State = 782; Match(TOpenBrace);
+				State = 783; Match(TCloseBrace);
 				}
 				break;
 			default:
@@ -5188,26 +5730,26 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public SoapEncodingPropertiesContext soapEncodingProperties() {
 		SoapEncodingPropertiesContext _localctx = new SoapEncodingPropertiesContext(Context, State);
-		EnterRule(_localctx, 146, RULE_soapEncodingProperties);
+		EnterRule(_localctx, 170, RULE_soapEncodingProperties);
 		try {
-			State = 748;
+			State = 789;
 			switch (TokenStream.La(1)) {
 			case IVersion:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 745; soapVersionProperty();
+				State = 786; soapVersionProperty();
 				}
 				break;
 			case IMTOM:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 746; soapMtomProperty();
+				State = 787; soapMtomProperty();
 				}
 				break;
 			case IStyle:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 747; soapStyleProperty();
+				State = 788; soapStyleProperty();
 				}
 				break;
 			default:
@@ -5255,14 +5797,14 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public SoapVersionPropertyContext soapVersionProperty() {
 		SoapVersionPropertyContext _localctx = new SoapVersionPropertyContext(Context, State);
-		EnterRule(_localctx, 148, RULE_soapVersionProperty);
+		EnterRule(_localctx, 172, RULE_soapVersionProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 750; Match(IVersion);
-			State = 751; Match(TAssign);
-			State = 752; identifier();
-			State = 753; Match(TSemicolon);
+			State = 791; Match(IVersion);
+			State = 792; Match(TAssign);
+			State = 793; identifier();
+			State = 794; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5306,14 +5848,14 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public SoapMtomPropertyContext soapMtomProperty() {
 		SoapMtomPropertyContext _localctx = new SoapMtomPropertyContext(Context, State);
-		EnterRule(_localctx, 150, RULE_soapMtomProperty);
+		EnterRule(_localctx, 174, RULE_soapMtomProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 755; Match(IMTOM);
-			State = 756; Match(TAssign);
-			State = 757; booleanLiteral();
-			State = 758; Match(TSemicolon);
+			State = 796; Match(IMTOM);
+			State = 797; Match(TAssign);
+			State = 798; booleanLiteral();
+			State = 799; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5357,14 +5899,14 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public SoapStylePropertyContext soapStyleProperty() {
 		SoapStylePropertyContext _localctx = new SoapStylePropertyContext(Context, State);
-		EnterRule(_localctx, 152, RULE_soapStyleProperty);
+		EnterRule(_localctx, 176, RULE_soapStyleProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 760; Match(IStyle);
-			State = 761; Match(TAssign);
-			State = 762; identifier();
-			State = 763; Match(TSemicolon);
+			State = 801; Match(IStyle);
+			State = 802; Match(TAssign);
+			State = 803; identifier();
+			State = 804; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5407,13 +5949,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ProtocolLayerContext protocolLayer() {
 		ProtocolLayerContext _localctx = new ProtocolLayerContext(Context, State);
-		EnterRule(_localctx, 154, RULE_protocolLayer);
+		EnterRule(_localctx, 178, RULE_protocolLayer);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 765; Match(KProtocol);
-			State = 766; protocolLayerKind();
-			State = 767; Match(TSemicolon);
+			State = 806; Match(KProtocol);
+			State = 807; protocolLayerKind();
+			State = 808; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5454,11 +5996,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ProtocolLayerKindContext protocolLayerKind() {
 		ProtocolLayerKindContext _localctx = new ProtocolLayerKindContext(Context, State);
-		EnterRule(_localctx, 156, RULE_protocolLayerKind);
+		EnterRule(_localctx, 180, RULE_protocolLayerKind);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 769; identifier();
+			State = 810; identifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5481,10 +6023,8 @@ public partial class SoalParser : Parser {
 		public QualifiedNameContext qualifiedName() {
 			return GetRuleContext<QualifiedNameContext>(0);
 		}
-		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
-		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
-		public EndpointPropertiesContext endpointProperties() {
-			return GetRuleContext<EndpointPropertiesContext>(0);
+		public EndpointBodyContext endpointBody() {
+			return GetRuleContext<EndpointBodyContext>(0);
 		}
 		public EndpointDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -5509,25 +6049,72 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointDeclarationContext endpointDeclaration() {
 		EndpointDeclarationContext _localctx = new EndpointDeclarationContext(Context, State);
-		EnterRule(_localctx, 158, RULE_endpointDeclaration);
+		EnterRule(_localctx, 182, RULE_endpointDeclaration);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 812; Match(KEndpoint);
+			State = 813; nameDef();
+			State = 814; Match(TColon);
+			State = 815; qualifiedName();
+			State = 816; endpointBody();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class EndpointBodyContext : ParserRuleContext {
+		public ITerminalNode TOpenBrace() { return GetToken(SoalParser.TOpenBrace, 0); }
+		public ITerminalNode TCloseBrace() { return GetToken(SoalParser.TCloseBrace, 0); }
+		public EndpointPropertiesContext endpointProperties() {
+			return GetRuleContext<EndpointPropertiesContext>(0);
+		}
+		public EndpointBodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_endpointBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.EnterEndpointBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISoalParserListener typedListener = listener as ISoalParserListener;
+			if (typedListener != null) typedListener.ExitEndpointBody(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitEndpointBody(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public EndpointBodyContext endpointBody() {
+		EndpointBodyContext _localctx = new EndpointBodyContext(Context, State);
+		EnterRule(_localctx, 184, RULE_endpointBody);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 771; Match(KEndpoint);
-			State = 772; nameDef();
-			State = 773; Match(TColon);
-			State = 774; qualifiedName();
-			State = 775; Match(TOpenBrace);
-			State = 777;
+			State = 818; Match(TOpenBrace);
+			State = 820;
 			_la = TokenStream.La(1);
 			if (_la==KBinding || _la==KAddress) {
 				{
-				State = 776; endpointProperties();
+				State = 819; endpointProperties();
 				}
 			}
 
-			State = 779; Match(TCloseBrace);
+			State = 822; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5571,21 +6158,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointPropertiesContext endpointProperties() {
 		EndpointPropertiesContext _localctx = new EndpointPropertiesContext(Context, State);
-		EnterRule(_localctx, 160, RULE_endpointProperties);
+		EnterRule(_localctx, 186, RULE_endpointProperties);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 782;
+			State = 825;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.La(1);
 			do {
 				{
 				{
-				State = 781; endpointProperty();
+				State = 824; endpointProperty();
 				}
 				}
-				State = 784;
+				State = 827;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.La(1);
 			} while ( _la==KBinding || _la==KAddress );
@@ -5632,20 +6219,20 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointPropertyContext endpointProperty() {
 		EndpointPropertyContext _localctx = new EndpointPropertyContext(Context, State);
-		EnterRule(_localctx, 162, RULE_endpointProperty);
+		EnterRule(_localctx, 188, RULE_endpointProperty);
 		try {
-			State = 788;
+			State = 831;
 			switch (TokenStream.La(1)) {
 			case KBinding:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 786; endpointBindingProperty();
+				State = 829; endpointBindingProperty();
 				}
 				break;
 			case KAddress:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 787; endpointAddressProperty();
+				State = 830; endpointAddressProperty();
 				}
 				break;
 			default:
@@ -5692,13 +6279,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointBindingPropertyContext endpointBindingProperty() {
 		EndpointBindingPropertyContext _localctx = new EndpointBindingPropertyContext(Context, State);
-		EnterRule(_localctx, 164, RULE_endpointBindingProperty);
+		EnterRule(_localctx, 190, RULE_endpointBindingProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 790; Match(KBinding);
-			State = 791; qualifiedName();
-			State = 792; Match(TSemicolon);
+			State = 833; Match(KBinding);
+			State = 834; qualifiedName();
+			State = 835; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5741,13 +6328,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public EndpointAddressPropertyContext endpointAddressProperty() {
 		EndpointAddressPropertyContext _localctx = new EndpointAddressPropertyContext(Context, State);
-		EnterRule(_localctx, 166, RULE_endpointAddressProperty);
+		EnterRule(_localctx, 192, RULE_endpointAddressProperty);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 794; Match(KAddress);
-			State = 795; stringLiteral();
-			State = 796; Match(TSemicolon);
+			State = 837; Match(KAddress);
+			State = 838; stringLiteral();
+			State = 839; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5791,9 +6378,9 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ReturnTypeContext returnType() {
 		ReturnTypeContext _localctx = new ReturnTypeContext(Context, State);
-		EnterRule(_localctx, 168, RULE_returnType);
+		EnterRule(_localctx, 194, RULE_returnType);
 		try {
-			State = 800;
+			State = 843;
 			switch (TokenStream.La(1)) {
 			case KObject:
 			case KString:
@@ -5822,13 +6409,13 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 798; typeReference();
+				State = 841; typeReference();
 				}
 				break;
 			case KVoid:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 799; voidType();
+				State = 842; voidType();
 				}
 				break;
 			default:
@@ -5882,33 +6469,33 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public TypeReferenceContext typeReference() {
 		TypeReferenceContext _localctx = new TypeReferenceContext(Context, State);
-		EnterRule(_localctx, 170, RULE_typeReference);
+		EnterRule(_localctx, 196, RULE_typeReference);
 		try {
-			State = 806;
+			State = 849;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,74,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,73,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 802; nonNullableArrayType();
+				State = 845; nonNullableArrayType();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 803; arrayType();
+				State = 846; arrayType();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 804; simpleType();
+				State = 847; simpleType();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 805; nulledType();
+				State = 848; nulledType();
 				}
 				break;
 			}
@@ -5957,27 +6544,27 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public SimpleTypeContext simpleType() {
 		SimpleTypeContext _localctx = new SimpleTypeContext(Context, State);
-		EnterRule(_localctx, 172, RULE_simpleType);
+		EnterRule(_localctx, 198, RULE_simpleType);
 		try {
-			State = 811;
+			State = 854;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,75,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,74,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 808; valueType();
+				State = 851; valueType();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 809; objectType();
+				State = 852; objectType();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 810; qualifiedName();
+				State = 853; qualifiedName();
 				}
 				break;
 			}
@@ -6023,21 +6610,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NulledTypeContext nulledType() {
 		NulledTypeContext _localctx = new NulledTypeContext(Context, State);
-		EnterRule(_localctx, 174, RULE_nulledType);
+		EnterRule(_localctx, 200, RULE_nulledType);
 		try {
-			State = 815;
+			State = 858;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,76,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,75,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 813; nullableType();
+				State = 856; nullableType();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 814; nonNullableType();
+				State = 857; nonNullableType();
 				}
 				break;
 			}
@@ -6083,15 +6670,15 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ReferenceTypeContext referenceType() {
 		ReferenceTypeContext _localctx = new ReferenceTypeContext(Context, State);
-		EnterRule(_localctx, 176, RULE_referenceType);
+		EnterRule(_localctx, 202, RULE_referenceType);
 		try {
-			State = 819;
+			State = 862;
 			switch (TokenStream.La(1)) {
 			case KObject:
 			case KString:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 817; objectType();
+				State = 860; objectType();
 				}
 				break;
 			case IDate:
@@ -6113,7 +6700,7 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 818; qualifiedName();
+				State = 861; qualifiedName();
 				}
 				break;
 			default:
@@ -6157,12 +6744,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ObjectTypeContext objectType() {
 		ObjectTypeContext _localctx = new ObjectTypeContext(Context, State);
-		EnterRule(_localctx, 178, RULE_objectType);
+		EnterRule(_localctx, 204, RULE_objectType);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 821;
+			State = 864;
 			_la = TokenStream.La(1);
 			if ( !(_la==KObject || _la==KString) ) {
 			ErrorHandler.RecoverInline(this);
@@ -6217,12 +6804,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ValueTypeContext valueType() {
 		ValueTypeContext _localctx = new ValueTypeContext(Context, State);
-		EnterRule(_localctx, 180, RULE_valueType);
+		EnterRule(_localctx, 206, RULE_valueType);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 823;
+			State = 866;
 			_la = TokenStream.La(1);
 			if ( !(((((_la - 35)) & ~0x3f) == 0 && ((1L << (_la - 35)) & ((1L << (KInt - 35)) | (1L << (KLong - 35)) | (1L << (KFloat - 35)) | (1L << (KDouble - 35)) | (1L << (KByte - 35)) | (1L << (KBool - 35)) | (1L << (IDate - 35)) | (1L << (ITime - 35)) | (1L << (IDateTime - 35)) | (1L << (ITimeSpan - 35)))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -6268,11 +6855,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public VoidTypeContext voidType() {
 		VoidTypeContext _localctx = new VoidTypeContext(Context, State);
-		EnterRule(_localctx, 182, RULE_voidType);
+		EnterRule(_localctx, 208, RULE_voidType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 825; Match(KVoid);
+			State = 868; Match(KVoid);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6311,11 +6898,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public OnewayTypeContext onewayType() {
 		OnewayTypeContext _localctx = new OnewayTypeContext(Context, State);
-		EnterRule(_localctx, 184, RULE_onewayType);
+		EnterRule(_localctx, 210, RULE_onewayType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 827; Match(KOneway);
+			State = 870; Match(KOneway);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6359,9 +6946,9 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public OperationReturnTypeContext operationReturnType() {
 		OperationReturnTypeContext _localctx = new OperationReturnTypeContext(Context, State);
-		EnterRule(_localctx, 186, RULE_operationReturnType);
+		EnterRule(_localctx, 212, RULE_operationReturnType);
 		try {
-			State = 831;
+			State = 874;
 			switch (TokenStream.La(1)) {
 			case KObject:
 			case KString:
@@ -6391,13 +6978,13 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 829; returnType();
+				State = 872; returnType();
 				}
 				break;
 			case KOneway:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 830; onewayType();
+				State = 873; onewayType();
 				}
 				break;
 			default:
@@ -6443,12 +7030,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NullableTypeContext nullableType() {
 		NullableTypeContext _localctx = new NullableTypeContext(Context, State);
-		EnterRule(_localctx, 188, RULE_nullableType);
+		EnterRule(_localctx, 214, RULE_nullableType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 833; valueType();
-			State = 834; Match(TQuestion);
+			State = 876; valueType();
+			State = 877; Match(TQuestion);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6490,12 +7077,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NonNullableTypeContext nonNullableType() {
 		NonNullableTypeContext _localctx = new NonNullableTypeContext(Context, State);
-		EnterRule(_localctx, 190, RULE_nonNullableType);
+		EnterRule(_localctx, 216, RULE_nonNullableType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 836; referenceType();
-			State = 837; Match(TExclamation);
+			State = 879; referenceType();
+			State = 880; Match(TExclamation);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6537,12 +7124,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NonNullableArrayTypeContext nonNullableArrayType() {
 		NonNullableArrayTypeContext _localctx = new NonNullableArrayTypeContext(Context, State);
-		EnterRule(_localctx, 192, RULE_nonNullableArrayType);
+		EnterRule(_localctx, 218, RULE_nonNullableArrayType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 839; arrayType();
-			State = 840; Match(TExclamation);
+			State = 882; arrayType();
+			State = 883; Match(TExclamation);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6586,21 +7173,21 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ArrayTypeContext arrayType() {
 		ArrayTypeContext _localctx = new ArrayTypeContext(Context, State);
-		EnterRule(_localctx, 194, RULE_arrayType);
+		EnterRule(_localctx, 220, RULE_arrayType);
 		try {
-			State = 844;
+			State = 887;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,79,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,78,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 842; simpleArrayType();
+				State = 885; simpleArrayType();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 843; nulledArrayType();
+				State = 886; nulledArrayType();
 				}
 				break;
 			}
@@ -6645,13 +7232,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public SimpleArrayTypeContext simpleArrayType() {
 		SimpleArrayTypeContext _localctx = new SimpleArrayTypeContext(Context, State);
-		EnterRule(_localctx, 196, RULE_simpleArrayType);
+		EnterRule(_localctx, 222, RULE_simpleArrayType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 846; simpleType();
-			State = 847; Match(TOpenBracket);
-			State = 848; Match(TCloseBracket);
+			State = 889; simpleType();
+			State = 890; Match(TOpenBracket);
+			State = 891; Match(TCloseBracket);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6694,13 +7281,13 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NulledArrayTypeContext nulledArrayType() {
 		NulledArrayTypeContext _localctx = new NulledArrayTypeContext(Context, State);
-		EnterRule(_localctx, 198, RULE_nulledArrayType);
+		EnterRule(_localctx, 224, RULE_nulledArrayType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 850; nulledType();
-			State = 851; Match(TOpenBracket);
-			State = 852; Match(TCloseBracket);
+			State = 893; nulledType();
+			State = 894; Match(TOpenBracket);
+			State = 895; Match(TCloseBracket);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6744,9 +7331,9 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ConstantValueContext constantValue() {
 		ConstantValueContext _localctx = new ConstantValueContext(Context, State);
-		EnterRule(_localctx, 200, RULE_constantValue);
+		EnterRule(_localctx, 226, RULE_constantValue);
 		try {
-			State = 856;
+			State = 899;
 			switch (TokenStream.La(1)) {
 			case KNull:
 			case KTrue:
@@ -6759,7 +7346,7 @@ public partial class SoalParser : Parser {
 			case LSingleQuoteVerbatimString:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 854; literal();
+				State = 897; literal();
 				}
 				break;
 			case IDate:
@@ -6781,7 +7368,7 @@ public partial class SoalParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 855; identifier();
+				State = 898; identifier();
 				}
 				break;
 			default:
@@ -6829,104 +7416,14 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public TypeofValueContext typeofValue() {
 		TypeofValueContext _localctx = new TypeofValueContext(Context, State);
-		EnterRule(_localctx, 202, RULE_typeofValue);
+		EnterRule(_localctx, 228, RULE_typeofValue);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 858; Match(KTypeof);
-			State = 859; Match(TOpenParen);
-			State = 860; returnType();
-			State = 861; Match(TCloseParen);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class NameDefContext : ParserRuleContext {
-		public IdentifierContext identifier() {
-			return GetRuleContext<IdentifierContext>(0);
-		}
-		public NameDefContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_nameDef; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.EnterNameDef(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.ExitNameDef(this);
-		}
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitNameDef(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public NameDefContext nameDef() {
-		NameDefContext _localctx = new NameDefContext(Context, State);
-		EnterRule(_localctx, 204, RULE_nameDef);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 863; identifier();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class QualifiedNameDefContext : ParserRuleContext {
-		public QualifiedNameContext qualifiedName() {
-			return GetRuleContext<QualifiedNameContext>(0);
-		}
-		public QualifiedNameDefContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_qualifiedNameDef; } }
-		public override void EnterRule(IParseTreeListener listener) {
-			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.EnterQualifiedNameDef(this);
-		}
-		public override void ExitRule(IParseTreeListener listener) {
-			ISoalParserListener typedListener = listener as ISoalParserListener;
-			if (typedListener != null) typedListener.ExitQualifiedNameDef(this);
-		}
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ISoalParserVisitor<TResult> typedVisitor = visitor as ISoalParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitQualifiedNameDef(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public QualifiedNameDefContext qualifiedNameDef() {
-		QualifiedNameDefContext _localctx = new QualifiedNameDefContext(Context, State);
-		EnterRule(_localctx, 206, RULE_qualifiedNameDef);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 865; qualifiedName();
+			State = 901; Match(KTypeof);
+			State = 902; Match(TOpenParen);
+			State = 903; returnType();
+			State = 904; Match(TCloseParen);
 			}
 		}
 		catch (RecognitionException re) {
@@ -6970,15 +7467,15 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public IdentifierContext identifier() {
 		IdentifierContext _localctx = new IdentifierContext(Context, State);
-		EnterRule(_localctx, 208, RULE_identifier);
+		EnterRule(_localctx, 230, RULE_identifier);
 		try {
-			State = 869;
+			State = 908;
 			switch (TokenStream.La(1)) {
 			case IdentifierNormal:
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 867; identifiers();
+				State = 906; identifiers();
 				}
 				break;
 			case IDate:
@@ -6998,7 +7495,7 @@ public partial class SoalParser : Parser {
 			case IClientAuthentication:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 868; contextualKeywords();
+				State = 907; contextualKeywords();
 				}
 				break;
 			default:
@@ -7042,12 +7539,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public IdentifiersContext identifiers() {
 		IdentifiersContext _localctx = new IdentifiersContext(Context, State);
-		EnterRule(_localctx, 210, RULE_identifiers);
+		EnterRule(_localctx, 232, RULE_identifiers);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 871;
+			State = 910;
 			_la = TokenStream.La(1);
 			if ( !(_la==IdentifierNormal || _la==IdentifierVerbatim) ) {
 			ErrorHandler.RecoverInline(this);
@@ -7110,39 +7607,39 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public LiteralContext literal() {
 		LiteralContext _localctx = new LiteralContext(Context, State);
-		EnterRule(_localctx, 212, RULE_literal);
+		EnterRule(_localctx, 234, RULE_literal);
 		try {
-			State = 879;
+			State = 918;
 			switch (TokenStream.La(1)) {
 			case KNull:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 873; nullLiteral();
+				State = 912; nullLiteral();
 				}
 				break;
 			case KTrue:
 			case KFalse:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 874; booleanLiteral();
+				State = 913; booleanLiteral();
 				}
 				break;
 			case LInteger:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 875; integerLiteral();
+				State = 914; integerLiteral();
 				}
 				break;
 			case LDecimal:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 876; decimalLiteral();
+				State = 915; decimalLiteral();
 				}
 				break;
 			case LScientific:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 877; scientificLiteral();
+				State = 916; scientificLiteral();
 				}
 				break;
 			case LRegularString:
@@ -7150,7 +7647,7 @@ public partial class SoalParser : Parser {
 			case LSingleQuoteVerbatimString:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 878; stringLiteral();
+				State = 917; stringLiteral();
 				}
 				break;
 			default:
@@ -7193,11 +7690,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public NullLiteralContext nullLiteral() {
 		NullLiteralContext _localctx = new NullLiteralContext(Context, State);
-		EnterRule(_localctx, 214, RULE_nullLiteral);
+		EnterRule(_localctx, 236, RULE_nullLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 881; Match(KNull);
+			State = 920; Match(KNull);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7237,12 +7734,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public BooleanLiteralContext booleanLiteral() {
 		BooleanLiteralContext _localctx = new BooleanLiteralContext(Context, State);
-		EnterRule(_localctx, 216, RULE_booleanLiteral);
+		EnterRule(_localctx, 238, RULE_booleanLiteral);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 883;
+			State = 922;
 			_la = TokenStream.La(1);
 			if ( !(_la==KTrue || _la==KFalse) ) {
 			ErrorHandler.RecoverInline(this);
@@ -7288,11 +7785,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public IntegerLiteralContext integerLiteral() {
 		IntegerLiteralContext _localctx = new IntegerLiteralContext(Context, State);
-		EnterRule(_localctx, 218, RULE_integerLiteral);
+		EnterRule(_localctx, 240, RULE_integerLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 885; Match(LInteger);
+			State = 924; Match(LInteger);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7331,11 +7828,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public DecimalLiteralContext decimalLiteral() {
 		DecimalLiteralContext _localctx = new DecimalLiteralContext(Context, State);
-		EnterRule(_localctx, 220, RULE_decimalLiteral);
+		EnterRule(_localctx, 242, RULE_decimalLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 887; Match(LDecimal);
+			State = 926; Match(LDecimal);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7374,11 +7871,11 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ScientificLiteralContext scientificLiteral() {
 		ScientificLiteralContext _localctx = new ScientificLiteralContext(Context, State);
-		EnterRule(_localctx, 222, RULE_scientificLiteral);
+		EnterRule(_localctx, 244, RULE_scientificLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 889; Match(LScientific);
+			State = 928; Match(LScientific);
 			}
 		}
 		catch (RecognitionException re) {
@@ -7419,12 +7916,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public StringLiteralContext stringLiteral() {
 		StringLiteralContext _localctx = new StringLiteralContext(Context, State);
-		EnterRule(_localctx, 224, RULE_stringLiteral);
+		EnterRule(_localctx, 246, RULE_stringLiteral);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 891;
+			State = 930;
 			_la = TokenStream.La(1);
 			if ( !(((((_la - 111)) & ~0x3f) == 0 && ((1L << (_la - 111)) & ((1L << (LRegularString - 111)) | (1L << (LDoubleQuoteVerbatimString - 111)) | (1L << (LSingleQuoteVerbatimString - 111)))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -7484,12 +7981,12 @@ public partial class SoalParser : Parser {
 	[RuleVersion(0)]
 	public ContextualKeywordsContext contextualKeywords() {
 		ContextualKeywordsContext _localctx = new ContextualKeywordsContext(Context, State);
-		EnterRule(_localctx, 226, RULE_contextualKeywords);
+		EnterRule(_localctx, 248, RULE_contextualKeywords);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 893;
+			State = 932;
 			_la = TokenStream.La(1);
 			if ( !(((((_la - 87)) & ~0x3f) == 0 && ((1L << (_la - 87)) & ((1L << (IDate - 87)) | (1L << (ITime - 87)) | (1L << (IDateTime - 87)) | (1L << (ITimeSpan - 87)) | (1L << (IVersion - 87)) | (1L << (IStyle - 87)) | (1L << (IMTOM - 87)) | (1L << (ISSL - 87)) | (1L << (IHTTP - 87)) | (1L << (IREST - 87)) | (1L << (IWebSocket - 87)) | (1L << (ISOAP - 87)) | (1L << (IXML - 87)) | (1L << (IJSON - 87)) | (1L << (IClientAuthentication - 87)))) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -7514,7 +8011,7 @@ public partial class SoalParser : Parser {
 	private static string _serializeATN()
 	{
 	    StringBuilder sb = new StringBuilder();
-	    sb.Append("\x3\x430\xD6D1\x8206\xAD2D\x4417\xAEF1\x8D80\xAADD\x3|\x382");
+	    sb.Append("\x3\x430\xD6D1\x8206\xAD2D\x4417\xAEF1\x8D80\xAADD\x3|\x3A9");
 		sb.Append("\x4\x2\t\x2\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a");
 		sb.Append("\t\a\x4\b\t\b\x4\t\t\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4");
 		sb.Append("\xE\t\xE\x4\xF\t\xF\x4\x10\t\x10\x4\x11\t\x11\x4\x12\t\x12\x4");
@@ -7532,398 +8029,409 @@ public partial class SoalParser : Parser {
 		sb.Append("X\tX\x4Y\tY\x4Z\tZ\x4[\t[\x4\\\t\\\x4]\t]\x4^\t^\x4_\t_\x4`");
 		sb.Append("\t`\x4\x61\t\x61\x4\x62\t\x62\x4\x63\t\x63\x4\x64\t\x64\x4\x65");
 		sb.Append("\t\x65\x4\x66\t\x66\x4g\tg\x4h\th\x4i\ti\x4j\tj\x4k\tk\x4l\t");
-		sb.Append("l\x4m\tm\x4n\tn\x4o\to\x4p\tp\x4q\tq\x4r\tr\x4s\ts\x3\x2\a\x2");
-		sb.Append("\xE8\n\x2\f\x2\xE\x2\xEB\v\x2\x3\x2\x3\x2\x3\x3\x3\x3\x3\x3");
-		sb.Append("\a\x3\xF2\n\x3\f\x3\xE\x3\xF5\v\x3\x3\x4\x3\x4\x3\x4\a\x4\xFA");
-		sb.Append("\n\x4\f\x4\xE\x4\xFD\v\x4\x3\x5\x3\x5\x3\x5\a\x5\x102\n\x5\f");
-		sb.Append("\x5\xE\x5\x105\v\x5\x3\x6\x6\x6\x108\n\x6\r\x6\xE\x6\x109\x3");
-		sb.Append("\a\x6\a\x10D\n\a\r\a\xE\a\x10E\x3\b\x3\b\x3\b\x3\b\x3\t\x3\t");
-		sb.Append("\x3\t\x3\t\x3\t\x3\t\x3\n\x3\n\x5\n\x11D\n\n\x3\v\x3\v\x5\v");
-		sb.Append("\x121\n\v\x3\v\x3\v\x3\f\x3\f\x3\f\a\f\x128\n\f\f\f\xE\f\x12B");
-		sb.Append("\v\f\x3\r\x3\r\x3\r\x3\r\x3\xE\x3\xE\x5\xE\x133\n\xE\x3\xF\x5");
-		sb.Append("\xF\x136\n\xF\x3\xF\x3\xF\x3\xF\x3\xF\x3\xF\x3\xF\x5\xF\x13E");
-		sb.Append("\n\xF\x3\xF\x3\xF\x3\xF\x3\x10\x3\x10\a\x10\x145\n\x10\f\x10");
-		sb.Append("\xE\x10\x148\v\x10\x3\x10\x3\x10\x3\x11\x3\x11\x3\x11\x3\x11");
-		sb.Append("\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11\x5\x11\x156\n\x11");
-		sb.Append("\x3\x12\x5\x12\x159\n\x12\x3\x12\x3\x12\x3\x12\x3\x12\x5\x12");
-		sb.Append("\x15F\n\x12\x3\x12\x3\x12\x5\x12\x163\n\x12\x3\x12\x3\x12\x3");
-		sb.Append("\x13\x3\x13\x3\x13\a\x13\x16A\n\x13\f\x13\xE\x13\x16D\v\x13");
-		sb.Append("\x3\x13\x5\x13\x170\n\x13\x3\x14\x5\x14\x173\n\x14\x3\x14\x3");
-		sb.Append("\x14\x3\x15\x5\x15\x178\n\x15\x3\x15\x3\x15\x3\x15\x3\x15\x5");
-		sb.Append("\x15\x17E\n\x15\x3\x15\x3\x15\a\x15\x182\n\x15\f\x15\xE\x15");
-		sb.Append("\x185\v\x15\x3\x15\x3\x15\x3\x16\x5\x16\x18A\n\x16\x3\x16\x3");
-		sb.Append("\x16\x3\x16\x3\x16\x3\x17\x5\x17\x191\n\x17\x3\x17\x3\x17\x3");
-		sb.Append("\x17\x3\x17\a\x17\x197\n\x17\f\x17\xE\x17\x19A\v\x17\x3\x17");
-		sb.Append("\a\x17\x19D\n\x17\f\x17\xE\x17\x1A0\v\x17\x3\x17\x3\x17\x3\x18");
-		sb.Append("\x3\x18\x3\x18\x3\x18\x3\x19\x5\x19\x1A9\n\x19\x3\x19\x3\x19");
-		sb.Append("\x3\x19\x3\x19\a\x19\x1AF\n\x19\f\x19\xE\x19\x1B2\v\x19\x3\x19");
-		sb.Append("\x3\x19\x3\x1A\x5\x1A\x1B7\n\x1A\x3\x1A\x3\x1A\x3\x1A\x3\x1A");
-		sb.Append("\x5\x1A\x1BD\n\x1A\x3\x1A\x3\x1A\x3\x1A\x5\x1A\x1C2\n\x1A\x3");
-		sb.Append("\x1A\x3\x1A\x3\x1B\x3\x1B\x3\x1B\a\x1B\x1C9\n\x1B\f\x1B\xE\x1B");
-		sb.Append("\x1CC\v\x1B\x3\x1C\x5\x1C\x1CF\n\x1C\x3\x1C\x3\x1C\x3\x1C\x3");
-		sb.Append("\x1D\x5\x1D\x1D5\n\x1D\x3\x1D\x3\x1D\x3\x1E\x5\x1E\x1DA\n\x1E");
-		sb.Append("\x3\x1E\x3\x1E\x3\x1E\x3\x1E\x5\x1E\x1E0\n\x1E\x3\x1E\x3\x1E");
-		sb.Append("\x5\x1E\x1E4\n\x1E\x3\x1E\x3\x1E\x3\x1F\x6\x1F\x1E9\n\x1F\r");
-		sb.Append("\x1F\xE\x1F\x1EA\x3 \x3 \x3 \x3 \x3 \x5 \x1F2\n \x3!\x3!\x3");
-		sb.Append("!\x5!\x1F7\n!\x3!\x3!\x3\"\x3\"\x3\"\x5\"\x1FE\n\"\x3\"\x3\"");
-		sb.Append("\x3#\x3#\x3#\a#\x205\n#\f#\xE#\x208\v#\x3#\x5#\x20B\n#\x3$\x3");
-		sb.Append("$\x3$\x3$\x3%\x3%\x3%\x3%\x3&\x3&\x3&\x3&\x3\'\x3\'\x3\'\x3");
-		sb.Append("\'\x3(\x3(\x3(\x3(\x5(\x221\n(\x3(\x3(\x5(\x225\n(\x3(\x3(\x3");
-		sb.Append(")\x3)\x3)\x3)\x5)\x22D\n)\x3)\x3)\x5)\x231\n)\x3)\x3)\x3*\x6");
-		sb.Append("*\x236\n*\r*\xE*\x237\x3+\x3+\x3+\x3+\x3+\x3+\x3+\x5+\x241\n");
-		sb.Append("+\x3,\x3,\x3,\x3,\x3-\x3-\x3-\x3-\x3-\x3-\x3.\x3.\x3/\x3/\x3");
-		sb.Append("\x30\x3\x30\x3\x30\x3\x30\x5\x30\x255\n\x30\x3\x30\x3\x30\x3");
-		sb.Append("\x31\x6\x31\x25A\n\x31\r\x31\xE\x31\x25B\x3\x32\x3\x32\x5\x32");
-		sb.Append("\x260\n\x32\x3\x33\x3\x33\x3\x33\x3\x33\x3\x33\a\x33\x267\n");
-		sb.Append("\x33\f\x33\xE\x33\x26A\v\x33\x3\x33\x3\x33\x3\x34\x3\x34\x3");
-		sb.Append("\x34\x3\x34\x3\x35\x3\x35\x5\x35\x274\n\x35\x3\x36\x3\x36\x3");
-		sb.Append("\x36\x3\x36\x3\x37\x3\x37\x3\x37\x3\x37\x3\x38\x3\x38\x3\x38");
-		sb.Append("\x3\x38\x5\x38\x282\n\x38\x3\x38\x3\x38\x3\x39\x3\x39\x6\x39");
-		sb.Append("\x288\n\x39\r\x39\xE\x39\x289\x3\x39\a\x39\x28D\n\x39\f\x39");
-		sb.Append("\xE\x39\x290\v\x39\x3:\x3:\x3:\x5:\x295\n:\x3;\x3;\x3;\x3;\x3");
-		sb.Append("<\x3<\x3<\a<\x29E\n<\f<\xE<\x2A1\v<\x3<\x5<\x2A4\n<\x3=\x3=");
-		sb.Append("\x3=\x3=\x3>\x3>\x3>\x5>\x2AD\n>\x3?\x3?\x3?\x3?\x3@\x3@\x3");
-		sb.Append("@\x5@\x2B6\n@\x3\x41\x3\x41\x5\x41\x2BA\n\x41\x3\x42\x3\x42");
-		sb.Append("\x3\x42\x3\x42\x3\x42\x3\x43\x3\x43\x3\x43\x3\x43\x3\x43\x3");
-		sb.Append("\x44\x3\x44\x3\x44\x5\x44\x2C9\n\x44\x3\x45\x3\x45\x3\x45\x3");
-		sb.Append("\x45\x3\x46\x3\x46\x3\x46\a\x46\x2D2\n\x46\f\x46\xE\x46\x2D5");
-		sb.Append("\v\x46\x3\x46\x5\x46\x2D8\n\x46\x3G\x3G\x3G\x3G\x3H\x3H\x3H");
-		sb.Append("\x5H\x2E1\nH\x3I\x3I\x3I\x3I\x3J\x3J\x3J\x5J\x2EA\nJ\x3K\x3");
-		sb.Append("K\x3K\x5K\x2EF\nK\x3L\x3L\x3L\x3L\x3L\x3M\x3M\x3M\x3M\x3M\x3");
-		sb.Append("N\x3N\x3N\x3N\x3N\x3O\x3O\x3O\x3O\x3P\x3P\x3Q\x3Q\x3Q\x3Q\x3");
-		sb.Append("Q\x3Q\x5Q\x30C\nQ\x3Q\x3Q\x3R\x6R\x311\nR\rR\xER\x312\x3S\x3");
-		sb.Append("S\x5S\x317\nS\x3T\x3T\x3T\x3T\x3U\x3U\x3U\x3U\x3V\x3V\x5V\x323");
-		sb.Append("\nV\x3W\x3W\x3W\x3W\x5W\x329\nW\x3X\x3X\x3X\x5X\x32E\nX\x3Y");
-		sb.Append("\x3Y\x5Y\x332\nY\x3Z\x3Z\x5Z\x336\nZ\x3[\x3[\x3\\\x3\\\x3]\x3");
-		sb.Append("]\x3^\x3^\x3_\x3_\x5_\x342\n_\x3`\x3`\x3`\x3\x61\x3\x61\x3\x61");
-		sb.Append("\x3\x62\x3\x62\x3\x62\x3\x63\x3\x63\x5\x63\x34F\n\x63\x3\x64");
-		sb.Append("\x3\x64\x3\x64\x3\x64\x3\x65\x3\x65\x3\x65\x3\x65\x3\x66\x3");
-		sb.Append("\x66\x5\x66\x35B\n\x66\x3g\x3g\x3g\x3g\x3g\x3h\x3h\x3i\x3i\x3");
-		sb.Append("j\x3j\x5j\x368\nj\x3k\x3k\x3l\x3l\x3l\x3l\x3l\x3l\x5l\x372\n");
-		sb.Append("l\x3m\x3m\x3n\x3n\x3o\x3o\x3p\x3p\x3q\x3q\x3r\x3r\x3s\x3s\x3");
-		sb.Append("s\x2\x2t\x2\x4\x6\b\n\f\xE\x10\x12\x14\x16\x18\x1A\x1C\x1E ");
-		sb.Append("\"$&(*,.\x30\x32\x34\x36\x38:<>@\x42\x44\x46HJLNPRTVXZ\\^`\x62");
-		sb.Append("\x64\x66hjlnprtvxz|~\x80\x82\x84\x86\x88\x8A\x8C\x8E\x90\x92");
-		sb.Append("\x94\x96\x98\x9A\x9C\x9E\xA0\xA2\xA4\xA6\xA8\xAA\xAC\xAE\xB0");
-		sb.Append("\xB2\xB4\xB6\xB8\xBA\xBC\xBE\xC0\xC2\xC4\xC6\xC8\xCA\xCC\xCE");
-		sb.Append("\xD0\xD2\xD4\xD6\xD8\xDA\xDC\xDE\xE0\xE2\xE4\x2\b\x3\x2#$\x4");
-		sb.Append("\x2%*Y\\\x3\x2hi\x3\x2!\"\x4\x2qqyz\x3\x2Yg\x37C\x2\xE9\x3\x2");
-		sb.Append("\x2\x2\x4\xEE\x3\x2\x2\x2\x6\xF6\x3\x2\x2\x2\b\xFE\x3\x2\x2");
-		sb.Append("\x2\n\x107\x3\x2\x2\x2\f\x10C\x3\x2\x2\x2\xE\x110\x3\x2\x2\x2");
-		sb.Append("\x10\x114\x3\x2\x2\x2\x12\x11A\x3\x2\x2\x2\x14\x11E\x3\x2\x2");
-		sb.Append("\x2\x16\x124\x3\x2\x2\x2\x18\x12C\x3\x2\x2\x2\x1A\x132\x3\x2");
-		sb.Append("\x2\x2\x1C\x135\x3\x2\x2\x2\x1E\x142\x3\x2\x2\x2 \x155\x3\x2");
-		sb.Append("\x2\x2\"\x158\x3\x2\x2\x2$\x166\x3\x2\x2\x2&\x172\x3\x2\x2\x2");
-		sb.Append("(\x177\x3\x2\x2\x2*\x189\x3\x2\x2\x2,\x190\x3\x2\x2\x2.\x1A3");
-		sb.Append("\x3\x2\x2\x2\x30\x1A8\x3\x2\x2\x2\x32\x1B6\x3\x2\x2\x2\x34\x1C5");
-		sb.Append("\x3\x2\x2\x2\x36\x1CE\x3\x2\x2\x2\x38\x1D4\x3\x2\x2\x2:\x1D9");
-		sb.Append("\x3\x2\x2\x2<\x1E8\x3\x2\x2\x2>\x1F1\x3\x2\x2\x2@\x1F3\x3\x2");
-		sb.Append("\x2\x2\x42\x1FA\x3\x2\x2\x2\x44\x20A\x3\x2\x2\x2\x46\x20C\x3");
-		sb.Append("\x2\x2\x2H\x210\x3\x2\x2\x2J\x214\x3\x2\x2\x2L\x218\x3\x2\x2");
-		sb.Append("\x2N\x21C\x3\x2\x2\x2P\x228\x3\x2\x2\x2R\x235\x3\x2\x2\x2T\x240");
-		sb.Append("\x3\x2\x2\x2V\x242\x3\x2\x2\x2X\x246\x3\x2\x2\x2Z\x24C\x3\x2");
-		sb.Append("\x2\x2\\\x24E\x3\x2\x2\x2^\x250\x3\x2\x2\x2`\x259\x3\x2\x2\x2");
-		sb.Append("\x62\x25F\x3\x2\x2\x2\x64\x261\x3\x2\x2\x2\x66\x26D\x3\x2\x2");
-		sb.Append("\x2h\x273\x3\x2\x2\x2j\x275\x3\x2\x2\x2l\x279\x3\x2\x2\x2n\x27D");
-		sb.Append("\x3\x2\x2\x2p\x285\x3\x2\x2\x2r\x294\x3\x2\x2\x2t\x296\x3\x2");
-		sb.Append("\x2\x2v\x2A3\x3\x2\x2\x2x\x2A5\x3\x2\x2\x2z\x2AC\x3\x2\x2\x2");
-		sb.Append("|\x2AE\x3\x2\x2\x2~\x2B5\x3\x2\x2\x2\x80\x2B9\x3\x2\x2\x2\x82");
-		sb.Append("\x2BB\x3\x2\x2\x2\x84\x2C0\x3\x2\x2\x2\x86\x2C8\x3\x2\x2\x2");
-		sb.Append("\x88\x2CA\x3\x2\x2\x2\x8A\x2D7\x3\x2\x2\x2\x8C\x2D9\x3\x2\x2");
-		sb.Append("\x2\x8E\x2E0\x3\x2\x2\x2\x90\x2E2\x3\x2\x2\x2\x92\x2E9\x3\x2");
-		sb.Append("\x2\x2\x94\x2EE\x3\x2\x2\x2\x96\x2F0\x3\x2\x2\x2\x98\x2F5\x3");
-		sb.Append("\x2\x2\x2\x9A\x2FA\x3\x2\x2\x2\x9C\x2FF\x3\x2\x2\x2\x9E\x303");
-		sb.Append("\x3\x2\x2\x2\xA0\x305\x3\x2\x2\x2\xA2\x310\x3\x2\x2\x2\xA4\x316");
-		sb.Append("\x3\x2\x2\x2\xA6\x318\x3\x2\x2\x2\xA8\x31C\x3\x2\x2\x2\xAA\x322");
-		sb.Append("\x3\x2\x2\x2\xAC\x328\x3\x2\x2\x2\xAE\x32D\x3\x2\x2\x2\xB0\x331");
-		sb.Append("\x3\x2\x2\x2\xB2\x335\x3\x2\x2\x2\xB4\x337\x3\x2\x2\x2\xB6\x339");
-		sb.Append("\x3\x2\x2\x2\xB8\x33B\x3\x2\x2\x2\xBA\x33D\x3\x2\x2\x2\xBC\x341");
-		sb.Append("\x3\x2\x2\x2\xBE\x343\x3\x2\x2\x2\xC0\x346\x3\x2\x2\x2\xC2\x349");
-		sb.Append("\x3\x2\x2\x2\xC4\x34E\x3\x2\x2\x2\xC6\x350\x3\x2\x2\x2\xC8\x354");
-		sb.Append("\x3\x2\x2\x2\xCA\x35A\x3\x2\x2\x2\xCC\x35C\x3\x2\x2\x2\xCE\x361");
-		sb.Append("\x3\x2\x2\x2\xD0\x363\x3\x2\x2\x2\xD2\x367\x3\x2\x2\x2\xD4\x369");
-		sb.Append("\x3\x2\x2\x2\xD6\x371\x3\x2\x2\x2\xD8\x373\x3\x2\x2\x2\xDA\x375");
-		sb.Append("\x3\x2\x2\x2\xDC\x377\x3\x2\x2\x2\xDE\x379\x3\x2\x2\x2\xE0\x37B");
-		sb.Append("\x3\x2\x2\x2\xE2\x37D\x3\x2\x2\x2\xE4\x37F\x3\x2\x2\x2\xE6\xE8");
-		sb.Append("\x5\x1C\xF\x2\xE7\xE6\x3\x2\x2\x2\xE8\xEB\x3\x2\x2\x2\xE9\xE7");
-		sb.Append("\x3\x2\x2\x2\xE9\xEA\x3\x2\x2\x2\xEA\xEC\x3\x2\x2\x2\xEB\xE9");
-		sb.Append("\x3\x2\x2\x2\xEC\xED\a\x2\x2\x3\xED\x3\x3\x2\x2\x2\xEE\xF3\x5");
-		sb.Append("\xD2j\x2\xEF\xF0\a\x30\x2\x2\xF0\xF2\x5\xD2j\x2\xF1\xEF\x3\x2");
-		sb.Append("\x2\x2\xF2\xF5\x3\x2\x2\x2\xF3\xF1\x3\x2\x2\x2\xF3\xF4\x3\x2");
-		sb.Append("\x2\x2\xF4\x5\x3\x2\x2\x2\xF5\xF3\x3\x2\x2\x2\xF6\xFB\x5\xD2");
-		sb.Append("j\x2\xF7\xF8\a\x31\x2\x2\xF8\xFA\x5\xD2j\x2\xF9\xF7\x3\x2\x2");
-		sb.Append("\x2\xFA\xFD\x3\x2\x2\x2\xFB\xF9\x3\x2\x2\x2\xFB\xFC\x3\x2\x2");
-		sb.Append("\x2\xFC\a\x3\x2\x2\x2\xFD\xFB\x3\x2\x2\x2\xFE\x103\x5\x4\x3");
-		sb.Append("\x2\xFF\x100\a\x31\x2\x2\x100\x102\x5\x4\x3\x2\x101\xFF\x3\x2");
-		sb.Append("\x2\x2\x102\x105\x3\x2\x2\x2\x103\x101\x3\x2\x2\x2\x103\x104");
-		sb.Append("\x3\x2\x2\x2\x104\t\x3\x2\x2\x2\x105\x103\x3\x2\x2\x2\x106\x108");
-		sb.Append("\x5\xE\b\x2\x107\x106\x3\x2\x2\x2\x108\x109\x3\x2\x2\x2\x109");
-		sb.Append("\x107\x3\x2\x2\x2\x109\x10A\x3\x2\x2\x2\x10A\v\x3\x2\x2\x2\x10B");
-		sb.Append("\x10D\x5\x10\t\x2\x10C\x10B\x3\x2\x2\x2\x10D\x10E\x3\x2\x2\x2");
-		sb.Append("\x10E\x10C\x3\x2\x2\x2\x10E\x10F\x3\x2\x2\x2\x10F\r\x3\x2\x2");
-		sb.Append("\x2\x110\x111\a\x35\x2\x2\x111\x112\x5\x12\n\x2\x112\x113\a");
-		sb.Append("\x36\x2\x2\x113\xF\x3\x2\x2\x2\x114\x115\a\x35\x2\x2\x115\x116");
-		sb.Append("\a\n\x2\x2\x116\x117\a/\x2\x2\x117\x118\x5\x12\n\x2\x118\x119");
-		sb.Append("\a\x36\x2\x2\x119\x11\x3\x2\x2\x2\x11A\x11C\x5\xD2j\x2\x11B");
-		sb.Append("\x11D\x5\x14\v\x2\x11C\x11B\x3\x2\x2\x2\x11C\x11D\x3\x2\x2\x2");
-		sb.Append("\x11D\x13\x3\x2\x2\x2\x11E\x120\a\x33\x2\x2\x11F\x121\x5\x16");
-		sb.Append("\f\x2\x120\x11F\x3\x2\x2\x2\x120\x121\x3\x2\x2\x2\x121\x122");
-		sb.Append("\x3\x2\x2\x2\x122\x123\a\x34\x2\x2\x123\x15\x3\x2\x2\x2\x124");
-		sb.Append("\x129\x5\x18\r\x2\x125\x126\a\x31\x2\x2\x126\x128\x5\x18\r\x2");
-		sb.Append("\x127\x125\x3\x2\x2\x2\x128\x12B\x3\x2\x2\x2\x129\x127\x3\x2");
-		sb.Append("\x2\x2\x129\x12A\x3\x2\x2\x2\x12A\x17\x3\x2\x2\x2\x12B\x129");
-		sb.Append("\x3\x2\x2\x2\x12C\x12D\x5\xD2j\x2\x12D\x12E\a\x32\x2\x2\x12E");
-		sb.Append("\x12F\x5\x1A\xE\x2\x12F\x19\x3\x2\x2\x2\x130\x133\x5\xCA\x66");
-		sb.Append("\x2\x131\x133\x5\xCCg\x2\x132\x130\x3\x2\x2\x2\x132\x131\x3");
-		sb.Append("\x2\x2\x2\x133\x1B\x3\x2\x2\x2\x134\x136\x5\n\x6\x2\x135\x134");
-		sb.Append("\x3\x2\x2\x2\x135\x136\x3\x2\x2\x2\x136\x137\x3\x2\x2\x2\x137");
-		sb.Append("\x138\a\x3\x2\x2\x138\x139\x5\xD0i\x2\x139\x13D\a\x32\x2\x2");
-		sb.Append("\x13A\x13B\x5\xD2j\x2\x13B\x13C\a/\x2\x2\x13C\x13E\x3\x2\x2");
-		sb.Append("\x2\x13D\x13A\x3\x2\x2\x2\x13D\x13E\x3\x2\x2\x2\x13E\x13F\x3");
-		sb.Append("\x2\x2\x2\x13F\x140\x5\xE2r\x2\x140\x141\x5\x1E\x10\x2\x141");
-		sb.Append("\x1D\x3\x2\x2\x2\x142\x146\a\x37\x2\x2\x143\x145\x5 \x11\x2");
-		sb.Append("\x144\x143\x3\x2\x2\x2\x145\x148\x3\x2\x2\x2\x146\x144\x3\x2");
-		sb.Append("\x2\x2\x146\x147\x3\x2\x2\x2\x147\x149\x3\x2\x2\x2\x148\x146");
-		sb.Append("\x3\x2\x2\x2\x149\x14A\a\x38\x2\x2\x14A\x1F\x3\x2\x2\x2\x14B");
-		sb.Append("\x156\x5\"\x12\x2\x14C\x156\x5(\x15\x2\x14D\x156\x5,\x17\x2");
-		sb.Append("\x14E\x156\x5\x30\x19\x2\x14F\x156\x5:\x1E\x2\x150\x156\x5N");
-		sb.Append("(\x2\x151\x156\x5P)\x2\x152\x156\x5n\x38\x2\x153\x156\x5\xA0");
-		sb.Append("Q\x2\x154\x156\x5^\x30\x2\x155\x14B\x3\x2\x2\x2\x155\x14C\x3");
-		sb.Append("\x2\x2\x2\x155\x14D\x3\x2\x2\x2\x155\x14E\x3\x2\x2\x2\x155\x14F");
-		sb.Append("\x3\x2\x2\x2\x155\x150\x3\x2\x2\x2\x155\x151\x3\x2\x2\x2\x155");
-		sb.Append("\x152\x3\x2\x2\x2\x155\x153\x3\x2\x2\x2\x155\x154\x3\x2\x2\x2");
-		sb.Append("\x156!\x3\x2\x2\x2\x157\x159\x5\n\x6\x2\x158\x157\x3\x2\x2\x2");
-		sb.Append("\x158\x159\x3\x2\x2\x2\x159\x15A\x3\x2\x2\x2\x15A\x15B\a\x4");
-		sb.Append("\x2\x2\x15B\x15E\x5\xCEh\x2\x15C\x15D\a/\x2\x2\x15D\x15F\x5");
-		sb.Append("\x4\x3\x2\x15E\x15C\x3\x2\x2\x2\x15E\x15F\x3\x2\x2\x2\x15F\x160");
-		sb.Append("\x3\x2\x2\x2\x160\x162\a\x37\x2\x2\x161\x163\x5$\x13\x2\x162");
-		sb.Append("\x161\x3\x2\x2\x2\x162\x163\x3\x2\x2\x2\x163\x164\x3\x2\x2\x2");
-		sb.Append("\x164\x165\a\x38\x2\x2\x165#\x3\x2\x2\x2\x166\x16B\x5&\x14\x2");
-		sb.Append("\x167\x168\a\x31\x2\x2\x168\x16A\x5&\x14\x2\x169\x167\x3\x2");
-		sb.Append("\x2\x2\x16A\x16D\x3\x2\x2\x2\x16B\x169\x3\x2\x2\x2\x16B\x16C");
-		sb.Append("\x3\x2\x2\x2\x16C\x16F\x3\x2\x2\x2\x16D\x16B\x3\x2\x2\x2\x16E");
-		sb.Append("\x170\a\x31\x2\x2\x16F\x16E\x3\x2\x2\x2\x16F\x170\x3\x2\x2\x2");
-		sb.Append("\x170%\x3\x2\x2\x2\x171\x173\x5\n\x6\x2\x172\x171\x3\x2\x2\x2");
-		sb.Append("\x172\x173\x3\x2\x2\x2\x173\x174\x3\x2\x2\x2\x174\x175\x5\xCE");
-		sb.Append("h\x2\x175\'\x3\x2\x2\x2\x176\x178\x5\n\x6\x2\x177\x176\x3\x2");
-		sb.Append("\x2\x2\x177\x178\x3\x2\x2\x2\x178\x179\x3\x2\x2\x2\x179\x17A");
-		sb.Append("\a\x6\x2\x2\x17A\x17D\x5\xCEh\x2\x17B\x17C\a/\x2\x2\x17C\x17E");
-		sb.Append("\x5\x4\x3\x2\x17D\x17B\x3\x2\x2\x2\x17D\x17E\x3\x2\x2\x2\x17E");
-		sb.Append("\x17F\x3\x2\x2\x2\x17F\x183\a\x37\x2\x2\x180\x182\x5*\x16\x2");
-		sb.Append("\x181\x180\x3\x2\x2\x2\x182\x185\x3\x2\x2\x2\x183\x181\x3\x2");
-		sb.Append("\x2\x2\x183\x184\x3\x2\x2\x2\x184\x186\x3\x2\x2\x2\x185\x183");
-		sb.Append("\x3\x2\x2\x2\x186\x187\a\x38\x2\x2\x187)\x3\x2\x2\x2\x188\x18A");
-		sb.Append("\x5\n\x6\x2\x189\x188\x3\x2\x2\x2\x189\x18A\x3\x2\x2\x2\x18A");
-		sb.Append("\x18B\x3\x2\x2\x2\x18B\x18C\x5\xACW\x2\x18C\x18D\x5\xCEh\x2");
-		sb.Append("\x18D\x18E\a.\x2\x2\x18E+\x3\x2\x2\x2\x18F\x191\x5\n\x6\x2\x190");
-		sb.Append("\x18F\x3\x2\x2\x2\x190\x191\x3\x2\x2\x2\x191\x192\x3\x2\x2\x2");
-		sb.Append("\x192\x193\a\x11\x2\x2\x193\x194\x5\xCEh\x2\x194\x198\a\x37");
-		sb.Append("\x2\x2\x195\x197\x5.\x18\x2\x196\x195\x3\x2\x2\x2\x197\x19A");
-		sb.Append("\x3\x2\x2\x2\x198\x196\x3\x2\x2\x2\x198\x199\x3\x2\x2\x2\x199");
-		sb.Append("\x19E\x3\x2\x2\x2\x19A\x198\x3\x2\x2\x2\x19B\x19D\x5\x32\x1A");
-		sb.Append("\x2\x19C\x19B\x3\x2\x2\x2\x19D\x1A0\x3\x2\x2\x2\x19E\x19C\x3");
-		sb.Append("\x2\x2\x2\x19E\x19F\x3\x2\x2\x2\x19F\x1A1\x3\x2\x2\x2\x1A0\x19E");
-		sb.Append("\x3\x2\x2\x2\x1A1\x1A2\a\x38\x2\x2\x1A2-\x3\x2\x2\x2\x1A3\x1A4");
-		sb.Append("\a\x12\x2\x2\x1A4\x1A5\x5\x4\x3\x2\x1A5\x1A6\a.\x2\x2\x1A6/");
-		sb.Append("\x3\x2\x2\x2\x1A7\x1A9\x5\n\x6\x2\x1A8\x1A7\x3\x2\x2\x2\x1A8");
-		sb.Append("\x1A9\x3\x2\x2\x2\x1A9\x1AA\x3\x2\x2\x2\x1AA\x1AB\a\a\x2\x2");
-		sb.Append("\x1AB\x1AC\x5\xCEh\x2\x1AC\x1B0\a\x37\x2\x2\x1AD\x1AF\x5\x32");
-		sb.Append("\x1A\x2\x1AE\x1AD\x3\x2\x2\x2\x1AF\x1B2\x3\x2\x2\x2\x1B0\x1AE");
-		sb.Append("\x3\x2\x2\x2\x1B0\x1B1\x3\x2\x2\x2\x1B1\x1B3\x3\x2\x2\x2\x1B2");
-		sb.Append("\x1B0\x3\x2\x2\x2\x1B3\x1B4\a\x38\x2\x2\x1B4\x31\x3\x2\x2\x2");
-		sb.Append("\x1B5\x1B7\x5\n\x6\x2\x1B6\x1B5\x3\x2\x2\x2\x1B6\x1B7\x3\x2");
-		sb.Append("\x2\x2\x1B7\x1B8\x3\x2\x2\x2\x1B8\x1B9\x5\x38\x1D\x2\x1B9\x1BA");
-		sb.Append("\x5\xCEh\x2\x1BA\x1BC\a\x33\x2\x2\x1BB\x1BD\x5\x34\x1B\x2\x1BC");
-		sb.Append("\x1BB\x3\x2\x2\x2\x1BC\x1BD\x3\x2\x2\x2\x1BD\x1BE\x3\x2\x2\x2");
-		sb.Append("\x1BE\x1C1\a\x34\x2\x2\x1BF\x1C0\a\b\x2\x2\x1C0\x1C2\x5\b\x5");
-		sb.Append("\x2\x1C1\x1BF\x3\x2\x2\x2\x1C1\x1C2\x3\x2\x2\x2\x1C2\x1C3\x3");
-		sb.Append("\x2\x2\x2\x1C3\x1C4\a.\x2\x2\x1C4\x33\x3\x2\x2\x2\x1C5\x1CA");
-		sb.Append("\x5\x36\x1C\x2\x1C6\x1C7\a\x31\x2\x2\x1C7\x1C9\x5\x36\x1C\x2");
-		sb.Append("\x1C8\x1C6\x3\x2\x2\x2\x1C9\x1CC\x3\x2\x2\x2\x1CA\x1C8\x3\x2");
-		sb.Append("\x2\x2\x1CA\x1CB\x3\x2\x2\x2\x1CB\x35\x3\x2\x2\x2\x1CC\x1CA");
-		sb.Append("\x3\x2\x2\x2\x1CD\x1CF\x5\n\x6\x2\x1CE\x1CD\x3\x2\x2\x2\x1CE");
-		sb.Append("\x1CF\x3\x2\x2\x2\x1CF\x1D0\x3\x2\x2\x2\x1D0\x1D1\x5\xACW\x2");
-		sb.Append("\x1D1\x1D2\x5\xCEh\x2\x1D2\x37\x3\x2\x2\x2\x1D3\x1D5\x5\f\a");
-		sb.Append("\x2\x1D4\x1D3\x3\x2\x2\x2\x1D4\x1D5\x3\x2\x2\x2\x1D5\x1D6\x3");
-		sb.Append("\x2\x2\x2\x1D6\x1D7\x5\xBC_\x2\x1D7\x39\x3\x2\x2\x2\x1D8\x1DA");
-		sb.Append("\a\x13\x2\x2\x1D9\x1D8\x3\x2\x2\x2\x1D9\x1DA\x3\x2\x2\x2\x1DA");
-		sb.Append("\x1DB\x3\x2\x2\x2\x1DB\x1DC\a\x14\x2\x2\x1DC\x1DF\x5\xCEh\x2");
-		sb.Append("\x1DD\x1DE\a/\x2\x2\x1DE\x1E0\x5\x4\x3\x2\x1DF\x1DD\x3\x2\x2");
-		sb.Append("\x2\x1DF\x1E0\x3\x2\x2\x2\x1E0\x1E1\x3\x2\x2\x2\x1E1\x1E3\a");
-		sb.Append("\x37\x2\x2\x1E2\x1E4\x5<\x1F\x2\x1E3\x1E2\x3\x2\x2\x2\x1E3\x1E4");
-		sb.Append("\x3\x2\x2\x2\x1E4\x1E5\x3\x2\x2\x2\x1E5\x1E6\a\x38\x2\x2\x1E6");
-		sb.Append(";\x3\x2\x2\x2\x1E7\x1E9\x5> \x2\x1E8\x1E7\x3\x2\x2\x2\x1E9\x1EA");
-		sb.Append("\x3\x2\x2\x2\x1EA\x1E8\x3\x2\x2\x2\x1EA\x1EB\x3\x2\x2\x2\x1EB");
-		sb.Append("=\x3\x2\x2\x2\x1EC\x1F2\x5@!\x2\x1ED\x1F2\x5\x42\"\x2\x1EE\x1F2");
-		sb.Append("\x5H%\x2\x1EF\x1F2\x5J&\x2\x1F0\x1F2\x5L\'\x2\x1F1\x1EC\x3\x2");
-		sb.Append("\x2\x2\x1F1\x1ED\x3\x2\x2\x2\x1F1\x1EE\x3\x2\x2\x2\x1F1\x1EF");
-		sb.Append("\x3\x2\x2\x2\x1F1\x1F0\x3\x2\x2\x2\x1F2?\x3\x2\x2\x2\x1F3\x1F4");
-		sb.Append("\a\x17\x2\x2\x1F4\x1F6\x5\x4\x3\x2\x1F5\x1F7\x5\xCEh\x2\x1F6");
-		sb.Append("\x1F5\x3\x2\x2\x2\x1F6\x1F7\x3\x2\x2\x2\x1F7\x1F8\x3\x2\x2\x2");
-		sb.Append("\x1F8\x1F9\x5\x44#\x2\x1F9\x41\x3\x2\x2\x2\x1FA\x1FB\a\x16\x2");
-		sb.Append("\x2\x1FB\x1FD\x5\x4\x3\x2\x1FC\x1FE\x5\xCEh\x2\x1FD\x1FC\x3");
-		sb.Append("\x2\x2\x2\x1FD\x1FE\x3\x2\x2\x2\x1FE\x1FF\x3\x2\x2\x2\x1FF\x200");
-		sb.Append("\x5\x44#\x2\x200\x43\x3\x2\x2\x2\x201\x20B\a.\x2\x2\x202\x206");
-		sb.Append("\a\x37\x2\x2\x203\x205\x5\x46$\x2\x204\x203\x3\x2\x2\x2\x205");
-		sb.Append("\x208\x3\x2\x2\x2\x206\x204\x3\x2\x2\x2\x206\x207\x3\x2\x2\x2");
-		sb.Append("\x207\x209\x3\x2\x2\x2\x208\x206\x3\x2\x2\x2\x209\x20B\a\x38");
-		sb.Append("\x2\x2\x20A\x201\x3\x2\x2\x2\x20A\x202\x3\x2\x2\x2\x20B\x45");
-		sb.Append("\x3\x2\x2\x2\x20C\x20D\a\v\x2\x2\x20D\x20E\x5\x4\x3\x2\x20E");
-		sb.Append("\x20F\a.\x2\x2\x20FG\x3\x2\x2\x2\x210\x211\x5\xACW\x2\x211\x212");
-		sb.Append("\x5\xCEh\x2\x212\x213\a.\x2\x2\x213I\x3\x2\x2\x2\x214\x215\a");
-		sb.Append("\x1A\x2\x2\x215\x216\x5\xCEh\x2\x216\x217\a.\x2\x2\x217K\x3");
-		sb.Append("\x2\x2\x2\x218\x219\a\x1B\x2\x2\x219\x21A\x5\xCEh\x2\x21A\x21B");
-		sb.Append("\a.\x2\x2\x21BM\x3\x2\x2\x2\x21C\x21D\a\x15\x2\x2\x21D\x220");
-		sb.Append("\x5\xCEh\x2\x21E\x21F\a/\x2\x2\x21F\x221\x5\x4\x3\x2\x220\x21E");
-		sb.Append("\x3\x2\x2\x2\x220\x221\x3\x2\x2\x2\x221\x222\x3\x2\x2\x2\x222");
-		sb.Append("\x224\a\x37\x2\x2\x223\x225\x5R*\x2\x224\x223\x3\x2\x2\x2\x224");
-		sb.Append("\x225\x3\x2\x2\x2\x225\x226\x3\x2\x2\x2\x226\x227\a\x38\x2\x2");
-		sb.Append("\x227O\x3\x2\x2\x2\x228\x229\a\x1C\x2\x2\x229\x22C\x5\xCEh\x2");
-		sb.Append("\x22A\x22B\a/\x2\x2\x22B\x22D\x5\x4\x3\x2\x22C\x22A\x3\x2\x2");
-		sb.Append("\x2\x22C\x22D\x3\x2\x2\x2\x22D\x22E\x3\x2\x2\x2\x22E\x230\a");
-		sb.Append("\x37\x2\x2\x22F\x231\x5R*\x2\x230\x22F\x3\x2\x2\x2\x230\x231");
-		sb.Append("\x3\x2\x2\x2\x231\x232\x3\x2\x2\x2\x232\x233\a\x38\x2\x2\x233");
-		sb.Append("Q\x3\x2\x2\x2\x234\x236\x5T+\x2\x235\x234\x3\x2\x2\x2\x236\x237");
-		sb.Append("\x3\x2\x2\x2\x237\x235\x3\x2\x2\x2\x237\x238\x3\x2\x2\x2\x238");
-		sb.Append("S\x3\x2\x2\x2\x239\x241\x5@!\x2\x23A\x241\x5\x42\"\x2\x23B\x241");
-		sb.Append("\x5H%\x2\x23C\x241\x5J&\x2\x23D\x241\x5L\'\x2\x23E\x241\x5V");
-		sb.Append(",\x2\x23F\x241\x5X-\x2\x240\x239\x3\x2\x2\x2\x240\x23A\x3\x2");
-		sb.Append("\x2\x2\x240\x23B\x3\x2\x2\x2\x240\x23C\x3\x2\x2\x2\x240\x23D");
-		sb.Append("\x3\x2\x2\x2\x240\x23E\x3\x2\x2\x2\x240\x23F\x3\x2\x2\x2\x241");
-		sb.Append("U\x3\x2\x2\x2\x242\x243\a\x14\x2\x2\x243\x244\x5\x4\x3\x2\x244");
-		sb.Append("\x245\a.\x2\x2\x245W\x3\x2\x2\x2\x246\x247\a\x18\x2\x2\x247");
-		sb.Append("\x248\x5Z.\x2\x248\x249\a\x19\x2\x2\x249\x24A\x5\\/\x2\x24A");
-		sb.Append("\x24B\a.\x2\x2\x24BY\x3\x2\x2\x2\x24C\x24D\x5\x4\x3\x2\x24D");
-		sb.Append("[\x3\x2\x2\x2\x24E\x24F\x5\x4\x3\x2\x24F]\x3\x2\x2\x2\x250\x251");
-		sb.Append("\a\x1D\x2\x2\x251\x252\x5\xCEh\x2\x252\x254\a\x37\x2\x2\x253");
-		sb.Append("\x255\x5`\x31\x2\x254\x253\x3\x2\x2\x2\x254\x255\x3\x2\x2\x2");
-		sb.Append("\x255\x256\x3\x2\x2\x2\x256\x257\a\x38\x2\x2\x257_\x3\x2\x2");
-		sb.Append("\x2\x258\x25A\x5\x62\x32\x2\x259\x258\x3\x2\x2\x2\x25A\x25B");
-		sb.Append("\x3\x2\x2\x2\x25B\x259\x3\x2\x2\x2\x25B\x25C\x3\x2\x2\x2\x25C");
-		sb.Append("\x61\x3\x2\x2\x2\x25D\x260\x5\x64\x33\x2\x25E\x260\x5X-\x2\x25F");
-		sb.Append("\x25D\x3\x2\x2\x2\x25F\x25E\x3\x2\x2\x2\x260\x63\x3\x2\x2\x2");
-		sb.Append("\x261\x262\a\x1E\x2\x2\x262\x263\x5\xCEh\x2\x263\x264\a\x37");
-		sb.Append("\x2\x2\x264\x268\x5\x66\x34\x2\x265\x267\x5h\x35\x2\x266\x265");
-		sb.Append("\x3\x2\x2\x2\x267\x26A\x3\x2\x2\x2\x268\x266\x3\x2\x2\x2\x268");
-		sb.Append("\x269\x3\x2\x2\x2\x269\x26B\x3\x2\x2\x2\x26A\x268\x3\x2\x2\x2");
-		sb.Append("\x26B\x26C\a\x38\x2\x2\x26C\x65\x3\x2\x2\x2\x26D\x26E\a\x1F");
-		sb.Append("\x2\x2\x26E\x26F\x5\xCEh\x2\x26F\x270\a.\x2\x2\x270g\x3\x2\x2");
-		sb.Append("\x2\x271\x274\x5j\x36\x2\x272\x274\x5l\x37\x2\x273\x271\x3\x2");
-		sb.Append("\x2\x2\x273\x272\x3\x2\x2\x2\x274i\x3\x2\x2\x2\x275\x276\a\x1C");
-		sb.Append("\x2\x2\x276\x277\x5\x4\x3\x2\x277\x278\a.\x2\x2\x278k\x3\x2");
-		sb.Append("\x2\x2\x279\x27A\a\x11\x2\x2\x27A\x27B\x5\x4\x3\x2\x27B\x27C");
-		sb.Append("\a.\x2\x2\x27Cm\x3\x2\x2\x2\x27D\x27E\a\v\x2\x2\x27E\x27F\x5");
-		sb.Append("\xCEh\x2\x27F\x281\a\x37\x2\x2\x280\x282\x5p\x39\x2\x281\x280");
-		sb.Append("\x3\x2\x2\x2\x281\x282\x3\x2\x2\x2\x282\x283\x3\x2\x2\x2\x283");
-		sb.Append("\x284\a\x38\x2\x2\x284o\x3\x2\x2\x2\x285\x287\x5r:\x2\x286\x288");
-		sb.Append("\x5\x86\x44\x2\x287\x286\x3\x2\x2\x2\x288\x289\x3\x2\x2\x2\x289");
-		sb.Append("\x287\x3\x2\x2\x2\x289\x28A\x3\x2\x2\x2\x28A\x28E\x3\x2\x2\x2");
-		sb.Append("\x28B\x28D\x5\x9CO\x2\x28C\x28B\x3\x2\x2\x2\x28D\x290\x3\x2");
-		sb.Append("\x2\x2\x28E\x28C\x3\x2\x2\x2\x28E\x28F\x3\x2\x2\x2\x28Fq\x3");
-		sb.Append("\x2\x2\x2\x290\x28E\x3\x2\x2\x2\x291\x295\x5t;\x2\x292\x295");
-		sb.Append("\x5x=\x2\x293\x295\x5|?\x2\x294\x291\x3\x2\x2\x2\x294\x292\x3");
-		sb.Append("\x2\x2\x2\x294\x293\x3\x2\x2\x2\x295s\x3\x2\x2\x2\x296\x297");
-		sb.Append("\a\f\x2\x2\x297\x298\a\x61\x2\x2\x298\x299\x5v<\x2\x299u\x3");
-		sb.Append("\x2\x2\x2\x29A\x2A4\a.\x2\x2\x29B\x29F\a\x37\x2\x2\x29C\x29E");
-		sb.Append("\x5\x80\x41\x2\x29D\x29C\x3\x2\x2\x2\x29E\x2A1\x3\x2\x2\x2\x29F");
-		sb.Append("\x29D\x3\x2\x2\x2\x29F\x2A0\x3\x2\x2\x2\x2A0\x2A2\x3\x2\x2\x2");
-		sb.Append("\x2A1\x29F\x3\x2\x2\x2\x2A2\x2A4\a\x38\x2\x2\x2A3\x29A\x3\x2");
-		sb.Append("\x2\x2\x2A3\x29B\x3\x2\x2\x2\x2A4w\x3\x2\x2\x2\x2A5\x2A6\a\f");
-		sb.Append("\x2\x2\x2A6\x2A7\a\x62\x2\x2\x2A7\x2A8\x5z>\x2\x2A8y\x3\x2\x2");
-		sb.Append("\x2\x2A9\x2AD\a.\x2\x2\x2AA\x2AB\a\x37\x2\x2\x2AB\x2AD\a\x38");
-		sb.Append("\x2\x2\x2AC\x2A9\x3\x2\x2\x2\x2AC\x2AA\x3\x2\x2\x2\x2AD{\x3");
-		sb.Append("\x2\x2\x2\x2AE\x2AF\a\f\x2\x2\x2AF\x2B0\a\x63\x2\x2\x2B0\x2B1");
-		sb.Append("\x5~@\x2\x2B1}\x3\x2\x2\x2\x2B2\x2B6\a.\x2\x2\x2B3\x2B4\a\x37");
-		sb.Append("\x2\x2\x2B4\x2B6\a\x38\x2\x2\x2B5\x2B2\x3\x2\x2\x2\x2B5\x2B3");
-		sb.Append("\x3\x2\x2\x2\x2B6\x7F\x3\x2\x2\x2\x2B7\x2BA\x5\x82\x42\x2\x2B8");
-		sb.Append("\x2BA\x5\x84\x43\x2\x2B9\x2B7\x3\x2\x2\x2\x2B9\x2B8\x3\x2\x2");
-		sb.Append("\x2\x2BA\x81\x3\x2\x2\x2\x2BB\x2BC\a`\x2\x2\x2BC\x2BD\a\x32");
-		sb.Append("\x2\x2\x2BD\x2BE\x5\xDAn\x2\x2BE\x2BF\a.\x2\x2\x2BF\x83\x3\x2");
-		sb.Append("\x2\x2\x2C0\x2C1\ag\x2\x2\x2C1\x2C2\a\x32\x2\x2\x2C2\x2C3\x5");
-		sb.Append("\xDAn\x2\x2C3\x2C4\a.\x2\x2\x2C4\x85\x3\x2\x2\x2\x2C5\x2C9\x5");
-		sb.Append("\x88\x45\x2\x2C6\x2C9\x5\x8CG\x2\x2C7\x2C9\x5\x90I\x2\x2C8\x2C5");
-		sb.Append("\x3\x2\x2\x2\x2C8\x2C6\x3\x2\x2\x2\x2C8\x2C7\x3\x2\x2\x2\x2C9");
-		sb.Append("\x87\x3\x2\x2\x2\x2CA\x2CB\a\r\x2\x2\x2CB\x2CC\a\x64\x2\x2\x2CC");
-		sb.Append("\x2CD\x5\x8A\x46\x2\x2CD\x89\x3\x2\x2\x2\x2CE\x2D8\a.\x2\x2");
-		sb.Append("\x2CF\x2D3\a\x37\x2\x2\x2D0\x2D2\x5\x94K\x2\x2D1\x2D0\x3\x2");
-		sb.Append("\x2\x2\x2D2\x2D5\x3\x2\x2\x2\x2D3\x2D1\x3\x2\x2\x2\x2D3\x2D4");
-		sb.Append("\x3\x2\x2\x2\x2D4\x2D6\x3\x2\x2\x2\x2D5\x2D3\x3\x2\x2\x2\x2D6");
-		sb.Append("\x2D8\a\x38\x2\x2\x2D7\x2CE\x3\x2\x2\x2\x2D7\x2CF\x3\x2\x2\x2");
-		sb.Append("\x2D8\x8B\x3\x2\x2\x2\x2D9\x2DA\a\r\x2\x2\x2DA\x2DB\a\x65\x2");
-		sb.Append("\x2\x2DB\x2DC\x5\x8EH\x2\x2DC\x8D\x3\x2\x2\x2\x2DD\x2E1\a.\x2");
-		sb.Append("\x2\x2DE\x2DF\a\x37\x2\x2\x2DF\x2E1\a\x38\x2\x2\x2E0\x2DD\x3");
-		sb.Append("\x2\x2\x2\x2E0\x2DE\x3\x2\x2\x2\x2E1\x8F\x3\x2\x2\x2\x2E2\x2E3");
-		sb.Append("\a\r\x2\x2\x2E3\x2E4\a\x66\x2\x2\x2E4\x2E5\x5\x92J\x2\x2E5\x91");
-		sb.Append("\x3\x2\x2\x2\x2E6\x2EA\a.\x2\x2\x2E7\x2E8\a\x37\x2\x2\x2E8\x2EA");
-		sb.Append("\a\x38\x2\x2\x2E9\x2E6\x3\x2\x2\x2\x2E9\x2E7\x3\x2\x2\x2\x2EA");
-		sb.Append("\x93\x3\x2\x2\x2\x2EB\x2EF\x5\x96L\x2\x2EC\x2EF\x5\x98M\x2\x2ED");
-		sb.Append("\x2EF\x5\x9AN\x2\x2EE\x2EB\x3\x2\x2\x2\x2EE\x2EC\x3\x2\x2\x2");
-		sb.Append("\x2EE\x2ED\x3\x2\x2\x2\x2EF\x95\x3\x2\x2\x2\x2F0\x2F1\a]\x2");
-		sb.Append("\x2\x2F1\x2F2\a\x32\x2\x2\x2F2\x2F3\x5\xD2j\x2\x2F3\x2F4\a.");
-		sb.Append("\x2\x2\x2F4\x97\x3\x2\x2\x2\x2F5\x2F6\a_\x2\x2\x2F6\x2F7\a\x32");
-		sb.Append("\x2\x2\x2F7\x2F8\x5\xDAn\x2\x2F8\x2F9\a.\x2\x2\x2F9\x99\x3\x2");
-		sb.Append("\x2\x2\x2FA\x2FB\a^\x2\x2\x2FB\x2FC\a\x32\x2\x2\x2FC\x2FD\x5");
-		sb.Append("\xD2j\x2\x2FD\x2FE\a.\x2\x2\x2FE\x9B\x3\x2\x2\x2\x2FF\x300\a");
-		sb.Append("\xE\x2\x2\x300\x301\x5\x9EP\x2\x301\x302\a.\x2\x2\x302\x9D\x3");
-		sb.Append("\x2\x2\x2\x303\x304\x5\xD2j\x2\x304\x9F\x3\x2\x2\x2\x305\x306");
-		sb.Append("\a\xF\x2\x2\x306\x307\x5\xCEh\x2\x307\x308\a/\x2\x2\x308\x309");
-		sb.Append("\x5\x4\x3\x2\x309\x30B\a\x37\x2\x2\x30A\x30C\x5\xA2R\x2\x30B");
-		sb.Append("\x30A\x3\x2\x2\x2\x30B\x30C\x3\x2\x2\x2\x30C\x30D\x3\x2\x2\x2");
-		sb.Append("\x30D\x30E\a\x38\x2\x2\x30E\xA1\x3\x2\x2\x2\x30F\x311\x5\xA4");
-		sb.Append("S\x2\x310\x30F\x3\x2\x2\x2\x311\x312\x3\x2\x2\x2\x312\x310\x3");
-		sb.Append("\x2\x2\x2\x312\x313\x3\x2\x2\x2\x313\xA3\x3\x2\x2\x2\x314\x317");
-		sb.Append("\x5\xA6T\x2\x315\x317\x5\xA8U\x2\x316\x314\x3\x2\x2\x2\x316");
-		sb.Append("\x315\x3\x2\x2\x2\x317\xA5\x3\x2\x2\x2\x318\x319\a\v\x2\x2\x319");
-		sb.Append("\x31A\x5\x4\x3\x2\x31A\x31B\a.\x2\x2\x31B\xA7\x3\x2\x2\x2\x31C");
-		sb.Append("\x31D\a\x10\x2\x2\x31D\x31E\x5\xE2r\x2\x31E\x31F\a.\x2\x2\x31F");
-		sb.Append("\xA9\x3\x2\x2\x2\x320\x323\x5\xACW\x2\x321\x323\x5\xB8]\x2\x322");
-		sb.Append("\x320\x3\x2\x2\x2\x322\x321\x3\x2\x2\x2\x323\xAB\x3\x2\x2\x2");
-		sb.Append("\x324\x329\x5\xC2\x62\x2\x325\x329\x5\xC4\x63\x2\x326\x329\x5");
-		sb.Append("\xAEX\x2\x327\x329\x5\xB0Y\x2\x328\x324\x3\x2\x2\x2\x328\x325");
-		sb.Append("\x3\x2\x2\x2\x328\x326\x3\x2\x2\x2\x328\x327\x3\x2\x2\x2\x329");
-		sb.Append("\xAD\x3\x2\x2\x2\x32A\x32E\x5\xB6\\\x2\x32B\x32E\x5\xB4[\x2");
-		sb.Append("\x32C\x32E\x5\x4\x3\x2\x32D\x32A\x3\x2\x2\x2\x32D\x32B\x3\x2");
-		sb.Append("\x2\x2\x32D\x32C\x3\x2\x2\x2\x32E\xAF\x3\x2\x2\x2\x32F\x332");
-		sb.Append("\x5\xBE`\x2\x330\x332\x5\xC0\x61\x2\x331\x32F\x3\x2\x2\x2\x331");
-		sb.Append("\x330\x3\x2\x2\x2\x332\xB1\x3\x2\x2\x2\x333\x336\x5\xB4[\x2");
-		sb.Append("\x334\x336\x5\x4\x3\x2\x335\x333\x3\x2\x2\x2\x335\x334\x3\x2");
-		sb.Append("\x2\x2\x336\xB3\x3\x2\x2\x2\x337\x338\t\x2\x2\x2\x338\xB5\x3");
-		sb.Append("\x2\x2\x2\x339\x33A\t\x3\x2\x2\x33A\xB7\x3\x2\x2\x2\x33B\x33C");
-		sb.Append("\a,\x2\x2\x33C\xB9\x3\x2\x2\x2\x33D\x33E\a\t\x2\x2\x33E\xBB");
-		sb.Append("\x3\x2\x2\x2\x33F\x342\x5\xAAV\x2\x340\x342\x5\xBA^\x2\x341");
-		sb.Append("\x33F\x3\x2\x2\x2\x341\x340\x3\x2\x2\x2\x342\xBD\x3\x2\x2\x2");
-		sb.Append("\x343\x344\x5\xB6\\\x2\x344\x345\a;\x2\x2\x345\xBF\x3\x2\x2");
-		sb.Append("\x2\x346\x347\x5\xB2Z\x2\x347\x348\aG\x2\x2\x348\xC1\x3\x2\x2");
-		sb.Append("\x2\x349\x34A\x5\xC4\x63\x2\x34A\x34B\aG\x2\x2\x34B\xC3\x3\x2");
-		sb.Append("\x2\x2\x34C\x34F\x5\xC6\x64\x2\x34D\x34F\x5\xC8\x65\x2\x34E");
-		sb.Append("\x34C\x3\x2\x2\x2\x34E\x34D\x3\x2\x2\x2\x34F\xC5\x3\x2\x2\x2");
-		sb.Append("\x350\x351\x5\xAEX\x2\x351\x352\a\x35\x2\x2\x352\x353\a\x36");
-		sb.Append("\x2\x2\x353\xC7\x3\x2\x2\x2\x354\x355\x5\xB0Y\x2\x355\x356\a");
-		sb.Append("\x35\x2\x2\x356\x357\a\x36\x2\x2\x357\xC9\x3\x2\x2\x2\x358\x35B");
-		sb.Append("\x5\xD6l\x2\x359\x35B\x5\xD2j\x2\x35A\x358\x3\x2\x2\x2\x35A");
-		sb.Append("\x359\x3\x2\x2\x2\x35B\xCB\x3\x2\x2\x2\x35C\x35D\a-\x2\x2\x35D");
-		sb.Append("\x35E\a\x33\x2\x2\x35E\x35F\x5\xAAV\x2\x35F\x360\a\x34\x2\x2");
-		sb.Append("\x360\xCD\x3\x2\x2\x2\x361\x362\x5\xD2j\x2\x362\xCF\x3\x2\x2");
-		sb.Append("\x2\x363\x364\x5\x4\x3\x2\x364\xD1\x3\x2\x2\x2\x365\x368\x5");
-		sb.Append("\xD4k\x2\x366\x368\x5\xE4s\x2\x367\x365\x3\x2\x2\x2\x367\x366");
-		sb.Append("\x3\x2\x2\x2\x368\xD3\x3\x2\x2\x2\x369\x36A\t\x4\x2\x2\x36A");
-		sb.Append("\xD5\x3\x2\x2\x2\x36B\x372\x5\xD8m\x2\x36C\x372\x5\xDAn\x2\x36D");
-		sb.Append("\x372\x5\xDCo\x2\x36E\x372\x5\xDEp\x2\x36F\x372\x5\xE0q\x2\x370");
-		sb.Append("\x372\x5\xE2r\x2\x371\x36B\x3\x2\x2\x2\x371\x36C\x3\x2\x2\x2");
-		sb.Append("\x371\x36D\x3\x2\x2\x2\x371\x36E\x3\x2\x2\x2\x371\x36F\x3\x2");
-		sb.Append("\x2\x2\x371\x370\x3\x2\x2\x2\x372\xD7\x3\x2\x2\x2\x373\x374");
-		sb.Append("\a \x2\x2\x374\xD9\x3\x2\x2\x2\x375\x376\t\x5\x2\x2\x376\xDB");
-		sb.Append("\x3\x2\x2\x2\x377\x378\aj\x2\x2\x378\xDD\x3\x2\x2\x2\x379\x37A");
-		sb.Append("\ak\x2\x2\x37A\xDF\x3\x2\x2\x2\x37B\x37C\al\x2\x2\x37C\xE1\x3");
-		sb.Append("\x2\x2\x2\x37D\x37E\t\x6\x2\x2\x37E\xE3\x3\x2\x2\x2\x37F\x380");
-		sb.Append("\t\a\x2\x2\x380\xE5\x3\x2\x2\x2U\xE9\xF3\xFB\x103\x109\x10E");
-		sb.Append("\x11C\x120\x129\x132\x135\x13D\x146\x155\x158\x15E\x162\x16B");
-		sb.Append("\x16F\x172\x177\x17D\x183\x189\x190\x198\x19E\x1A8\x1B0\x1B6");
-		sb.Append("\x1BC\x1C1\x1CA\x1CE\x1D4\x1D9\x1DF\x1E3\x1EA\x1F1\x1F6\x1FD");
-		sb.Append("\x206\x20A\x220\x224\x22C\x230\x237\x240\x254\x25B\x25F\x268");
-		sb.Append("\x273\x281\x289\x28E\x294\x29F\x2A3\x2AC\x2B5\x2B9\x2C8\x2D3");
-		sb.Append("\x2D7\x2E0\x2E9\x2EE\x30B\x312\x316\x322\x328\x32D\x331\x335");
-		sb.Append("\x341\x34E\x35A\x367\x371");
+		sb.Append("l\x4m\tm\x4n\tn\x4o\to\x4p\tp\x4q\tq\x4r\tr\x4s\ts\x4t\tt\x4");
+		sb.Append("u\tu\x4v\tv\x4w\tw\x4x\tx\x4y\ty\x4z\tz\x4{\t{\x4|\t|\x4}\t");
+		sb.Append("}\x4~\t~\x3\x2\a\x2\xFE\n\x2\f\x2\xE\x2\x101\v\x2\x3\x2\x3\x2");
+		sb.Append("\x3\x3\x3\x3\x3\x4\x3\x4\x3\x5\x3\x5\x3\x5\a\x5\x10C\n\x5\f");
+		sb.Append("\x5\xE\x5\x10F\v\x5\x3\x6\x3\x6\x3\x6\a\x6\x114\n\x6\f\x6\xE");
+		sb.Append("\x6\x117\v\x6\x3\a\x3\a\x3\a\a\a\x11C\n\a\f\a\xE\a\x11F\v\a");
+		sb.Append("\x3\b\x6\b\x122\n\b\r\b\xE\b\x123\x3\t\x6\t\x127\n\t\r\t\xE");
+		sb.Append("\t\x128\x3\n\x3\n\x3\n\x3\n\x3\v\x3\v\x3\v\x3\v\x3\v\x3\v\x3");
+		sb.Append("\f\x3\f\x5\f\x137\n\f\x3\r\x3\r\x5\r\x13B\n\r\x3\r\x3\r\x3\xE");
+		sb.Append("\x3\xE\x3\xE\a\xE\x142\n\xE\f\xE\xE\xE\x145\v\xE\x3\xF\x3\xF");
+		sb.Append("\x3\xF\x3\xF\x3\x10\x3\x10\x5\x10\x14D\n\x10\x3\x11\x5\x11\x150");
+		sb.Append("\n\x11\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11\x3\x11\x5\x11\x158");
+		sb.Append("\n\x11\x3\x11\x3\x11\x3\x11\x3\x12\x3\x12\a\x12\x15F\n\x12\f");
+		sb.Append("\x12\xE\x12\x162\v\x12\x3\x12\x3\x12\x3\x13\x3\x13\x3\x13\x3");
+		sb.Append("\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x5\x13\x170\n");
+		sb.Append("\x13\x3\x14\x5\x14\x173\n\x14\x3\x14\x3\x14\x3\x14\x3\x14\x5");
+		sb.Append("\x14\x179\n\x14\x3\x14\x3\x14\x3\x15\x3\x15\x5\x15\x17F\n\x15");
+		sb.Append("\x3\x15\x3\x15\x3\x16\x3\x16\x3\x16\a\x16\x186\n\x16\f\x16\xE");
+		sb.Append("\x16\x189\v\x16\x3\x16\x5\x16\x18C\n\x16\x3\x17\x5\x17\x18F");
+		sb.Append("\n\x17\x3\x17\x3\x17\x3\x18\x5\x18\x194\n\x18\x3\x18\x3\x18");
+		sb.Append("\x3\x18\x3\x18\x5\x18\x19A\n\x18\x3\x18\x3\x18\x3\x19\x3\x19");
+		sb.Append("\a\x19\x1A0\n\x19\f\x19\xE\x19\x1A3\v\x19\x3\x19\x3\x19\x3\x1A");
+		sb.Append("\x5\x1A\x1A8\n\x1A\x3\x1A\x3\x1A\x3\x1A\x3\x1A\x3\x1B\x5\x1B");
+		sb.Append("\x1AF\n\x1B\x3\x1B\x3\x1B\x3\x1B\x3\x1B\x3\x1C\x3\x1C\a\x1C");
+		sb.Append("\x1B7\n\x1C\f\x1C\xE\x1C\x1BA\v\x1C\x3\x1C\a\x1C\x1BD\n\x1C");
+		sb.Append("\f\x1C\xE\x1C\x1C0\v\x1C\x3\x1C\x3\x1C\x3\x1D\x3\x1D\x3\x1D");
+		sb.Append("\x3\x1D\x3\x1E\x5\x1E\x1C9\n\x1E\x3\x1E\x3\x1E\x3\x1E\x3\x1E");
+		sb.Append("\x3\x1F\x3\x1F\a\x1F\x1D1\n\x1F\f\x1F\xE\x1F\x1D4\v\x1F\x3\x1F");
+		sb.Append("\x3\x1F\x3 \x3 \x3 \x3!\x5!\x1DC\n!\x3!\x3!\x3!\x3!\x5!\x1E2");
+		sb.Append("\n!\x3!\x3!\x3!\x5!\x1E7\n!\x3\"\x3\"\x3\"\a\"\x1EC\n\"\f\"");
+		sb.Append("\xE\"\x1EF\v\"\x3#\x5#\x1F2\n#\x3#\x3#\x3#\x3$\x5$\x1F8\n$\x3");
+		sb.Append("$\x3$\x3%\x5%\x1FD\n%\x3%\x3%\x3%\x3%\x5%\x203\n%\x3%\x3%\x3");
+		sb.Append("&\x3&\x5&\x209\n&\x3&\x3&\x3\'\x6\'\x20E\n\'\r\'\xE\'\x20F\x3");
+		sb.Append("(\x3(\x3(\x3(\x3(\x5(\x217\n(\x3)\x3)\x3)\x5)\x21C\n)\x3)\x3");
+		sb.Append(")\x3*\x3*\x3*\x5*\x223\n*\x3*\x3*\x3+\x3+\x3+\a+\x22A\n+\f+");
+		sb.Append("\xE+\x22D\v+\x3+\x5+\x230\n+\x3,\x3,\x3,\x3,\x3-\x3-\x3-\x3");
+		sb.Append("-\x3.\x3.\x3.\x3.\x3/\x3/\x3/\x3/\x3\x30\x3\x30\x3\x30\x3\x30");
+		sb.Append("\x5\x30\x246\n\x30\x3\x30\x3\x30\x3\x31\x3\x31\x5\x31\x24C\n");
+		sb.Append("\x31\x3\x31\x3\x31\x3\x32\x3\x32\x3\x32\x3\x32\x5\x32\x254\n");
+		sb.Append("\x32\x3\x32\x3\x32\x3\x33\x6\x33\x259\n\x33\r\x33\xE\x33\x25A");
+		sb.Append("\x3\x34\x3\x34\x3\x34\x3\x34\x3\x34\x3\x34\x3\x34\x5\x34\x264");
+		sb.Append("\n\x34\x3\x35\x3\x35\x3\x35\x3\x35\x3\x36\x3\x36\x3\x36\x3\x36");
+		sb.Append("\x3\x36\x3\x36\x3\x37\x3\x37\x3\x38\x3\x38\x3\x39\x3\x39\x3");
+		sb.Append("\x39\x3\x39\x3:\x3:\x5:\x27A\n:\x3:\x3:\x3;\x6;\x27F\n;\r;\xE");
+		sb.Append(";\x280\x3<\x3<\x5<\x285\n<\x3=\x3=\x3=\x3=\x3>\x3>\x3>\a>\x28E");
+		sb.Append("\n>\f>\xE>\x291\v>\x3>\x3>\x3?\x3?\x3?\x3?\x3@\x3@\x5@\x29B");
+		sb.Append("\n@\x3\x41\x3\x41\x3\x41\x3\x41\x3\x42\x3\x42\x3\x42\x3\x42");
+		sb.Append("\x3\x43\x3\x43\x3\x43\x3\x43\x3\x44\x3\x44\x5\x44\x2AB\n\x44");
+		sb.Append("\x3\x44\x3\x44\x3\x45\x3\x45\x6\x45\x2B1\n\x45\r\x45\xE\x45");
+		sb.Append("\x2B2\x3\x45\a\x45\x2B6\n\x45\f\x45\xE\x45\x2B9\v\x45\x3\x46");
+		sb.Append("\x3\x46\x3\x46\x5\x46\x2BE\n\x46\x3G\x3G\x3G\x3G\x3H\x3H\x3");
+		sb.Append("H\aH\x2C7\nH\fH\xEH\x2CA\vH\x3H\x5H\x2CD\nH\x3I\x3I\x3I\x3I");
+		sb.Append("\x3J\x3J\x3J\x5J\x2D6\nJ\x3K\x3K\x3K\x3K\x3L\x3L\x3L\x5L\x2DF");
+		sb.Append("\nL\x3M\x3M\x5M\x2E3\nM\x3N\x3N\x3N\x3N\x3N\x3O\x3O\x3O\x3O");
+		sb.Append("\x3O\x3P\x3P\x3P\x5P\x2F2\nP\x3Q\x3Q\x3Q\x3Q\x3R\x3R\x3R\aR");
+		sb.Append("\x2FB\nR\fR\xER\x2FE\vR\x3R\x5R\x301\nR\x3S\x3S\x3S\x3S\x3T");
+		sb.Append("\x3T\x3T\x5T\x30A\nT\x3U\x3U\x3U\x3U\x3V\x3V\x3V\x5V\x313\n");
+		sb.Append("V\x3W\x3W\x3W\x5W\x318\nW\x3X\x3X\x3X\x3X\x3X\x3Y\x3Y\x3Y\x3");
+		sb.Append("Y\x3Y\x3Z\x3Z\x3Z\x3Z\x3Z\x3[\x3[\x3[\x3[\x3\\\x3\\\x3]\x3]");
+		sb.Append("\x3]\x3]\x3]\x3]\x3^\x3^\x5^\x337\n^\x3^\x3^\x3_\x6_\x33C\n");
+		sb.Append("_\r_\xE_\x33D\x3`\x3`\x5`\x342\n`\x3\x61\x3\x61\x3\x61\x3\x61");
+		sb.Append("\x3\x62\x3\x62\x3\x62\x3\x62\x3\x63\x3\x63\x5\x63\x34E\n\x63");
+		sb.Append("\x3\x64\x3\x64\x3\x64\x3\x64\x5\x64\x354\n\x64\x3\x65\x3\x65");
+		sb.Append("\x3\x65\x5\x65\x359\n\x65\x3\x66\x3\x66\x5\x66\x35D\n\x66\x3");
+		sb.Append("g\x3g\x5g\x361\ng\x3h\x3h\x3i\x3i\x3j\x3j\x3k\x3k\x3l\x3l\x5");
+		sb.Append("l\x36D\nl\x3m\x3m\x3m\x3n\x3n\x3n\x3o\x3o\x3o\x3p\x3p\x5p\x37A");
+		sb.Append("\np\x3q\x3q\x3q\x3q\x3r\x3r\x3r\x3r\x3s\x3s\x5s\x386\ns\x3t");
+		sb.Append("\x3t\x3t\x3t\x3t\x3u\x3u\x5u\x38F\nu\x3v\x3v\x3w\x3w\x3w\x3");
+		sb.Append("w\x3w\x3w\x5w\x399\nw\x3x\x3x\x3y\x3y\x3z\x3z\x3{\x3{\x3|\x3");
+		sb.Append("|\x3}\x3}\x3~\x3~\x3~\x2\x2\x7F\x2\x4\x6\b\n\f\xE\x10\x12\x14");
+		sb.Append("\x16\x18\x1A\x1C\x1E \"$&(*,.\x30\x32\x34\x36\x38:<>@\x42\x44");
+		sb.Append("\x46HJLNPRTVXZ\\^`\x62\x64\x66hjlnprtvxz|~\x80\x82\x84\x86\x88");
+		sb.Append("\x8A\x8C\x8E\x90\x92\x94\x96\x98\x9A\x9C\x9E\xA0\xA2\xA4\xA6");
+		sb.Append("\xA8\xAA\xAC\xAE\xB0\xB2\xB4\xB6\xB8\xBA\xBC\xBE\xC0\xC2\xC4");
+		sb.Append("\xC6\xC8\xCA\xCC\xCE\xD0\xD2\xD4\xD6\xD8\xDA\xDC\xDE\xE0\xE2");
+		sb.Append("\xE4\xE6\xE8\xEA\xEC\xEE\xF0\xF2\xF4\xF6\xF8\xFA\x2\b\x3\x2");
+		sb.Append("#$\x4\x2%*Y\\\x3\x2hi\x3\x2!\"\x4\x2qqyz\x3\x2Yg\x397\x2\xFF");
+		sb.Append("\x3\x2\x2\x2\x4\x104\x3\x2\x2\x2\x6\x106\x3\x2\x2\x2\b\x108");
+		sb.Append("\x3\x2\x2\x2\n\x110\x3\x2\x2\x2\f\x118\x3\x2\x2\x2\xE\x121\x3");
+		sb.Append("\x2\x2\x2\x10\x126\x3\x2\x2\x2\x12\x12A\x3\x2\x2\x2\x14\x12E");
+		sb.Append("\x3\x2\x2\x2\x16\x134\x3\x2\x2\x2\x18\x138\x3\x2\x2\x2\x1A\x13E");
+		sb.Append("\x3\x2\x2\x2\x1C\x146\x3\x2\x2\x2\x1E\x14C\x3\x2\x2\x2 \x14F");
+		sb.Append("\x3\x2\x2\x2\"\x15C\x3\x2\x2\x2$\x16F\x3\x2\x2\x2&\x172\x3\x2");
+		sb.Append("\x2\x2(\x17C\x3\x2\x2\x2*\x182\x3\x2\x2\x2,\x18E\x3\x2\x2\x2");
+		sb.Append(".\x193\x3\x2\x2\x2\x30\x19D\x3\x2\x2\x2\x32\x1A7\x3\x2\x2\x2");
+		sb.Append("\x34\x1AE\x3\x2\x2\x2\x36\x1B4\x3\x2\x2\x2\x38\x1C3\x3\x2\x2");
+		sb.Append("\x2:\x1C8\x3\x2\x2\x2<\x1CE\x3\x2\x2\x2>\x1D7\x3\x2\x2\x2@\x1DB");
+		sb.Append("\x3\x2\x2\x2\x42\x1E8\x3\x2\x2\x2\x44\x1F1\x3\x2\x2\x2\x46\x1F7");
+		sb.Append("\x3\x2\x2\x2H\x1FC\x3\x2\x2\x2J\x206\x3\x2\x2\x2L\x20D\x3\x2");
+		sb.Append("\x2\x2N\x216\x3\x2\x2\x2P\x218\x3\x2\x2\x2R\x21F\x3\x2\x2\x2");
+		sb.Append("T\x22F\x3\x2\x2\x2V\x231\x3\x2\x2\x2X\x235\x3\x2\x2\x2Z\x239");
+		sb.Append("\x3\x2\x2\x2\\\x23D\x3\x2\x2\x2^\x241\x3\x2\x2\x2`\x249\x3\x2");
+		sb.Append("\x2\x2\x62\x24F\x3\x2\x2\x2\x64\x258\x3\x2\x2\x2\x66\x263\x3");
+		sb.Append("\x2\x2\x2h\x265\x3\x2\x2\x2j\x269\x3\x2\x2\x2l\x26F\x3\x2\x2");
+		sb.Append("\x2n\x271\x3\x2\x2\x2p\x273\x3\x2\x2\x2r\x277\x3\x2\x2\x2t\x27E");
+		sb.Append("\x3\x2\x2\x2v\x284\x3\x2\x2\x2x\x286\x3\x2\x2\x2z\x28A\x3\x2");
+		sb.Append("\x2\x2|\x294\x3\x2\x2\x2~\x29A\x3\x2\x2\x2\x80\x29C\x3\x2\x2");
+		sb.Append("\x2\x82\x2A0\x3\x2\x2\x2\x84\x2A4\x3\x2\x2\x2\x86\x2A8\x3\x2");
+		sb.Append("\x2\x2\x88\x2AE\x3\x2\x2\x2\x8A\x2BD\x3\x2\x2\x2\x8C\x2BF\x3");
+		sb.Append("\x2\x2\x2\x8E\x2CC\x3\x2\x2\x2\x90\x2CE\x3\x2\x2\x2\x92\x2D5");
+		sb.Append("\x3\x2\x2\x2\x94\x2D7\x3\x2\x2\x2\x96\x2DE\x3\x2\x2\x2\x98\x2E2");
+		sb.Append("\x3\x2\x2\x2\x9A\x2E4\x3\x2\x2\x2\x9C\x2E9\x3\x2\x2\x2\x9E\x2F1");
+		sb.Append("\x3\x2\x2\x2\xA0\x2F3\x3\x2\x2\x2\xA2\x300\x3\x2\x2\x2\xA4\x302");
+		sb.Append("\x3\x2\x2\x2\xA6\x309\x3\x2\x2\x2\xA8\x30B\x3\x2\x2\x2\xAA\x312");
+		sb.Append("\x3\x2\x2\x2\xAC\x317\x3\x2\x2\x2\xAE\x319\x3\x2\x2\x2\xB0\x31E");
+		sb.Append("\x3\x2\x2\x2\xB2\x323\x3\x2\x2\x2\xB4\x328\x3\x2\x2\x2\xB6\x32C");
+		sb.Append("\x3\x2\x2\x2\xB8\x32E\x3\x2\x2\x2\xBA\x334\x3\x2\x2\x2\xBC\x33B");
+		sb.Append("\x3\x2\x2\x2\xBE\x341\x3\x2\x2\x2\xC0\x343\x3\x2\x2\x2\xC2\x347");
+		sb.Append("\x3\x2\x2\x2\xC4\x34D\x3\x2\x2\x2\xC6\x353\x3\x2\x2\x2\xC8\x358");
+		sb.Append("\x3\x2\x2\x2\xCA\x35C\x3\x2\x2\x2\xCC\x360\x3\x2\x2\x2\xCE\x362");
+		sb.Append("\x3\x2\x2\x2\xD0\x364\x3\x2\x2\x2\xD2\x366\x3\x2\x2\x2\xD4\x368");
+		sb.Append("\x3\x2\x2\x2\xD6\x36C\x3\x2\x2\x2\xD8\x36E\x3\x2\x2\x2\xDA\x371");
+		sb.Append("\x3\x2\x2\x2\xDC\x374\x3\x2\x2\x2\xDE\x379\x3\x2\x2\x2\xE0\x37B");
+		sb.Append("\x3\x2\x2\x2\xE2\x37F\x3\x2\x2\x2\xE4\x385\x3\x2\x2\x2\xE6\x387");
+		sb.Append("\x3\x2\x2\x2\xE8\x38E\x3\x2\x2\x2\xEA\x390\x3\x2\x2\x2\xEC\x398");
+		sb.Append("\x3\x2\x2\x2\xEE\x39A\x3\x2\x2\x2\xF0\x39C\x3\x2\x2\x2\xF2\x39E");
+		sb.Append("\x3\x2\x2\x2\xF4\x3A0\x3\x2\x2\x2\xF6\x3A2\x3\x2\x2\x2\xF8\x3A4");
+		sb.Append("\x3\x2\x2\x2\xFA\x3A6\x3\x2\x2\x2\xFC\xFE\x5 \x11\x2\xFD\xFC");
+		sb.Append("\x3\x2\x2\x2\xFE\x101\x3\x2\x2\x2\xFF\xFD\x3\x2\x2\x2\xFF\x100");
+		sb.Append("\x3\x2\x2\x2\x100\x102\x3\x2\x2\x2\x101\xFF\x3\x2\x2\x2\x102");
+		sb.Append("\x103\a\x2\x2\x3\x103\x3\x3\x2\x2\x2\x104\x105\x5\xE8u\x2\x105");
+		sb.Append("\x5\x3\x2\x2\x2\x106\x107\x5\b\x5\x2\x107\a\x3\x2\x2\x2\x108");
+		sb.Append("\x10D\x5\xE8u\x2\x109\x10A\a\x30\x2\x2\x10A\x10C\x5\xE8u\x2");
+		sb.Append("\x10B\x109\x3\x2\x2\x2\x10C\x10F\x3\x2\x2\x2\x10D\x10B\x3\x2");
+		sb.Append("\x2\x2\x10D\x10E\x3\x2\x2\x2\x10E\t\x3\x2\x2\x2\x10F\x10D\x3");
+		sb.Append("\x2\x2\x2\x110\x115\x5\xE8u\x2\x111\x112\a\x31\x2\x2\x112\x114");
+		sb.Append("\x5\xE8u\x2\x113\x111\x3\x2\x2\x2\x114\x117\x3\x2\x2\x2\x115");
+		sb.Append("\x113\x3\x2\x2\x2\x115\x116\x3\x2\x2\x2\x116\v\x3\x2\x2\x2\x117");
+		sb.Append("\x115\x3\x2\x2\x2\x118\x11D\x5\b\x5\x2\x119\x11A\a\x31\x2\x2");
+		sb.Append("\x11A\x11C\x5\b\x5\x2\x11B\x119\x3\x2\x2\x2\x11C\x11F\x3\x2");
+		sb.Append("\x2\x2\x11D\x11B\x3\x2\x2\x2\x11D\x11E\x3\x2\x2\x2\x11E\r\x3");
+		sb.Append("\x2\x2\x2\x11F\x11D\x3\x2\x2\x2\x120\x122\x5\x12\n\x2\x121\x120");
+		sb.Append("\x3\x2\x2\x2\x122\x123\x3\x2\x2\x2\x123\x121\x3\x2\x2\x2\x123");
+		sb.Append("\x124\x3\x2\x2\x2\x124\xF\x3\x2\x2\x2\x125\x127\x5\x14\v\x2");
+		sb.Append("\x126\x125\x3\x2\x2\x2\x127\x128\x3\x2\x2\x2\x128\x126\x3\x2");
+		sb.Append("\x2\x2\x128\x129\x3\x2\x2\x2\x129\x11\x3\x2\x2\x2\x12A\x12B");
+		sb.Append("\a\x35\x2\x2\x12B\x12C\x5\x16\f\x2\x12C\x12D\a\x36\x2\x2\x12D");
+		sb.Append("\x13\x3\x2\x2\x2\x12E\x12F\a\x35\x2\x2\x12F\x130\a\n\x2\x2\x130");
+		sb.Append("\x131\a/\x2\x2\x131\x132\x5\x16\f\x2\x132\x133\a\x36\x2\x2\x133");
+		sb.Append("\x15\x3\x2\x2\x2\x134\x136\x5\xE8u\x2\x135\x137\x5\x18\r\x2");
+		sb.Append("\x136\x135\x3\x2\x2\x2\x136\x137\x3\x2\x2\x2\x137\x17\x3\x2");
+		sb.Append("\x2\x2\x138\x13A\a\x33\x2\x2\x139\x13B\x5\x1A\xE\x2\x13A\x139");
+		sb.Append("\x3\x2\x2\x2\x13A\x13B\x3\x2\x2\x2\x13B\x13C\x3\x2\x2\x2\x13C");
+		sb.Append("\x13D\a\x34\x2\x2\x13D\x19\x3\x2\x2\x2\x13E\x143\x5\x1C\xF\x2");
+		sb.Append("\x13F\x140\a\x31\x2\x2\x140\x142\x5\x1C\xF\x2\x141\x13F\x3\x2");
+		sb.Append("\x2\x2\x142\x145\x3\x2\x2\x2\x143\x141\x3\x2\x2\x2\x143\x144");
+		sb.Append("\x3\x2\x2\x2\x144\x1B\x3\x2\x2\x2\x145\x143\x3\x2\x2\x2\x146");
+		sb.Append("\x147\x5\xE8u\x2\x147\x148\a\x32\x2\x2\x148\x149\x5\x1E\x10");
+		sb.Append("\x2\x149\x1D\x3\x2\x2\x2\x14A\x14D\x5\xE4s\x2\x14B\x14D\x5\xE6");
+		sb.Append("t\x2\x14C\x14A\x3\x2\x2\x2\x14C\x14B\x3\x2\x2\x2\x14D\x1F\x3");
+		sb.Append("\x2\x2\x2\x14E\x150\x5\xE\b\x2\x14F\x14E\x3\x2\x2\x2\x14F\x150");
+		sb.Append("\x3\x2\x2\x2\x150\x151\x3\x2\x2\x2\x151\x152\a\x3\x2\x2\x152");
+		sb.Append("\x153\x5\x6\x4\x2\x153\x157\a\x32\x2\x2\x154\x155\x5\xE8u\x2");
+		sb.Append("\x155\x156\a/\x2\x2\x156\x158\x3\x2\x2\x2\x157\x154\x3\x2\x2");
+		sb.Append("\x2\x157\x158\x3\x2\x2\x2\x158\x159\x3\x2\x2\x2\x159\x15A\x5");
+		sb.Append("\xF8}\x2\x15A\x15B\x5\"\x12\x2\x15B!\x3\x2\x2\x2\x15C\x160\a");
+		sb.Append("\x37\x2\x2\x15D\x15F\x5$\x13\x2\x15E\x15D\x3\x2\x2\x2\x15F\x162");
+		sb.Append("\x3\x2\x2\x2\x160\x15E\x3\x2\x2\x2\x160\x161\x3\x2\x2\x2\x161");
+		sb.Append("\x163\x3\x2\x2\x2\x162\x160\x3\x2\x2\x2\x163\x164\a\x38\x2\x2");
+		sb.Append("\x164#\x3\x2\x2\x2\x165\x170\x5&\x14\x2\x166\x170\x5.\x18\x2");
+		sb.Append("\x167\x170\x5\x34\x1B\x2\x168\x170\x5:\x1E\x2\x169\x170\x5H");
+		sb.Append("%\x2\x16A\x170\x5^\x30\x2\x16B\x170\x5\x62\x32\x2\x16C\x170");
+		sb.Append("\x5\x84\x43\x2\x16D\x170\x5\xB8]\x2\x16E\x170\x5p\x39\x2\x16F");
+		sb.Append("\x165\x3\x2\x2\x2\x16F\x166\x3\x2\x2\x2\x16F\x167\x3\x2\x2\x2");
+		sb.Append("\x16F\x168\x3\x2\x2\x2\x16F\x169\x3\x2\x2\x2\x16F\x16A\x3\x2");
+		sb.Append("\x2\x2\x16F\x16B\x3\x2\x2\x2\x16F\x16C\x3\x2\x2\x2\x16F\x16D");
+		sb.Append("\x3\x2\x2\x2\x16F\x16E\x3\x2\x2\x2\x170%\x3\x2\x2\x2\x171\x173");
+		sb.Append("\x5\xE\b\x2\x172\x171\x3\x2\x2\x2\x172\x173\x3\x2\x2\x2\x173");
+		sb.Append("\x174\x3\x2\x2\x2\x174\x175\a\x4\x2\x2\x175\x178\x5\x4\x3\x2");
+		sb.Append("\x176\x177\a/\x2\x2\x177\x179\x5\b\x5\x2\x178\x176\x3\x2\x2");
+		sb.Append("\x2\x178\x179\x3\x2\x2\x2\x179\x17A\x3\x2\x2\x2\x17A\x17B\x5");
+		sb.Append("(\x15\x2\x17B\'\x3\x2\x2\x2\x17C\x17E\a\x37\x2\x2\x17D\x17F");
+		sb.Append("\x5*\x16\x2\x17E\x17D\x3\x2\x2\x2\x17E\x17F\x3\x2\x2\x2\x17F");
+		sb.Append("\x180\x3\x2\x2\x2\x180\x181\a\x38\x2\x2\x181)\x3\x2\x2\x2\x182");
+		sb.Append("\x187\x5,\x17\x2\x183\x184\a\x31\x2\x2\x184\x186\x5,\x17\x2");
+		sb.Append("\x185\x183\x3\x2\x2\x2\x186\x189\x3\x2\x2\x2\x187\x185\x3\x2");
+		sb.Append("\x2\x2\x187\x188\x3\x2\x2\x2\x188\x18B\x3\x2\x2\x2\x189\x187");
+		sb.Append("\x3\x2\x2\x2\x18A\x18C\a\x31\x2\x2\x18B\x18A\x3\x2\x2\x2\x18B");
+		sb.Append("\x18C\x3\x2\x2\x2\x18C+\x3\x2\x2\x2\x18D\x18F\x5\xE\b\x2\x18E");
+		sb.Append("\x18D\x3\x2\x2\x2\x18E\x18F\x3\x2\x2\x2\x18F\x190\x3\x2\x2\x2");
+		sb.Append("\x190\x191\x5\x4\x3\x2\x191-\x3\x2\x2\x2\x192\x194\x5\xE\b\x2");
+		sb.Append("\x193\x192\x3\x2\x2\x2\x193\x194\x3\x2\x2\x2\x194\x195\x3\x2");
+		sb.Append("\x2\x2\x195\x196\a\x6\x2\x2\x196\x199\x5\x4\x3\x2\x197\x198");
+		sb.Append("\a/\x2\x2\x198\x19A\x5\b\x5\x2\x199\x197\x3\x2\x2\x2\x199\x19A");
+		sb.Append("\x3\x2\x2\x2\x19A\x19B\x3\x2\x2\x2\x19B\x19C\x5\x30\x19\x2\x19C");
+		sb.Append("/\x3\x2\x2\x2\x19D\x1A1\a\x37\x2\x2\x19E\x1A0\x5\x32\x1A\x2");
+		sb.Append("\x19F\x19E\x3\x2\x2\x2\x1A0\x1A3\x3\x2\x2\x2\x1A1\x19F\x3\x2");
+		sb.Append("\x2\x2\x1A1\x1A2\x3\x2\x2\x2\x1A2\x1A4\x3\x2\x2\x2\x1A3\x1A1");
+		sb.Append("\x3\x2\x2\x2\x1A4\x1A5\a\x38\x2\x2\x1A5\x31\x3\x2\x2\x2\x1A6");
+		sb.Append("\x1A8\x5\xE\b\x2\x1A7\x1A6\x3\x2\x2\x2\x1A7\x1A8\x3\x2\x2\x2");
+		sb.Append("\x1A8\x1A9\x3\x2\x2\x2\x1A9\x1AA\x5\xC6\x64\x2\x1AA\x1AB\x5");
+		sb.Append("\x4\x3\x2\x1AB\x1AC\a.\x2\x2\x1AC\x33\x3\x2\x2\x2\x1AD\x1AF");
+		sb.Append("\x5\xE\b\x2\x1AE\x1AD\x3\x2\x2\x2\x1AE\x1AF\x3\x2\x2\x2\x1AF");
+		sb.Append("\x1B0\x3\x2\x2\x2\x1B0\x1B1\a\x11\x2\x2\x1B1\x1B2\x5\x4\x3\x2");
+		sb.Append("\x1B2\x1B3\x5\x36\x1C\x2\x1B3\x35\x3\x2\x2\x2\x1B4\x1B8\a\x37");
+		sb.Append("\x2\x2\x1B5\x1B7\x5\x38\x1D\x2\x1B6\x1B5\x3\x2\x2\x2\x1B7\x1BA");
+		sb.Append("\x3\x2\x2\x2\x1B8\x1B6\x3\x2\x2\x2\x1B8\x1B9\x3\x2\x2\x2\x1B9");
+		sb.Append("\x1BE\x3\x2\x2\x2\x1BA\x1B8\x3\x2\x2\x2\x1BB\x1BD\x5> \x2\x1BC");
+		sb.Append("\x1BB\x3\x2\x2\x2\x1BD\x1C0\x3\x2\x2\x2\x1BE\x1BC\x3\x2\x2\x2");
+		sb.Append("\x1BE\x1BF\x3\x2\x2\x2\x1BF\x1C1\x3\x2\x2\x2\x1C0\x1BE\x3\x2");
+		sb.Append("\x2\x2\x1C1\x1C2\a\x38\x2\x2\x1C2\x37\x3\x2\x2\x2\x1C3\x1C4");
+		sb.Append("\a\x12\x2\x2\x1C4\x1C5\x5\b\x5\x2\x1C5\x1C6\a.\x2\x2\x1C6\x39");
+		sb.Append("\x3\x2\x2\x2\x1C7\x1C9\x5\xE\b\x2\x1C8\x1C7\x3\x2\x2\x2\x1C8");
+		sb.Append("\x1C9\x3\x2\x2\x2\x1C9\x1CA\x3\x2\x2\x2\x1CA\x1CB\a\a\x2\x2");
+		sb.Append("\x1CB\x1CC\x5\x4\x3\x2\x1CC\x1CD\x5<\x1F\x2\x1CD;\x3\x2\x2\x2");
+		sb.Append("\x1CE\x1D2\a\x37\x2\x2\x1CF\x1D1\x5> \x2\x1D0\x1CF\x3\x2\x2");
+		sb.Append("\x2\x1D1\x1D4\x3\x2\x2\x2\x1D2\x1D0\x3\x2\x2\x2\x1D2\x1D3\x3");
+		sb.Append("\x2\x2\x2\x1D3\x1D5\x3\x2\x2\x2\x1D4\x1D2\x3\x2\x2\x2\x1D5\x1D6");
+		sb.Append("\a\x38\x2\x2\x1D6=\x3\x2\x2\x2\x1D7\x1D8\x5@!\x2\x1D8\x1D9\a");
+		sb.Append(".\x2\x2\x1D9?\x3\x2\x2\x2\x1DA\x1DC\x5\xE\b\x2\x1DB\x1DA\x3");
+		sb.Append("\x2\x2\x2\x1DB\x1DC\x3\x2\x2\x2\x1DC\x1DD\x3\x2\x2\x2\x1DD\x1DE");
+		sb.Append("\x5\x46$\x2\x1DE\x1DF\x5\x4\x3\x2\x1DF\x1E1\a\x33\x2\x2\x1E0");
+		sb.Append("\x1E2\x5\x42\"\x2\x1E1\x1E0\x3\x2\x2\x2\x1E1\x1E2\x3\x2\x2\x2");
+		sb.Append("\x1E2\x1E3\x3\x2\x2\x2\x1E3\x1E6\a\x34\x2\x2\x1E4\x1E5\a\b\x2");
+		sb.Append("\x2\x1E5\x1E7\x5\f\a\x2\x1E6\x1E4\x3\x2\x2\x2\x1E6\x1E7\x3\x2");
+		sb.Append("\x2\x2\x1E7\x41\x3\x2\x2\x2\x1E8\x1ED\x5\x44#\x2\x1E9\x1EA\a");
+		sb.Append("\x31\x2\x2\x1EA\x1EC\x5\x44#\x2\x1EB\x1E9\x3\x2\x2\x2\x1EC\x1EF");
+		sb.Append("\x3\x2\x2\x2\x1ED\x1EB\x3\x2\x2\x2\x1ED\x1EE\x3\x2\x2\x2\x1EE");
+		sb.Append("\x43\x3\x2\x2\x2\x1EF\x1ED\x3\x2\x2\x2\x1F0\x1F2\x5\xE\b\x2");
+		sb.Append("\x1F1\x1F0\x3\x2\x2\x2\x1F1\x1F2\x3\x2\x2\x2\x1F2\x1F3\x3\x2");
+		sb.Append("\x2\x2\x1F3\x1F4\x5\xC6\x64\x2\x1F4\x1F5\x5\x4\x3\x2\x1F5\x45");
+		sb.Append("\x3\x2\x2\x2\x1F6\x1F8\x5\x10\t\x2\x1F7\x1F6\x3\x2\x2\x2\x1F7");
+		sb.Append("\x1F8\x3\x2\x2\x2\x1F8\x1F9\x3\x2\x2\x2\x1F9\x1FA\x5\xD6l\x2");
+		sb.Append("\x1FAG\x3\x2\x2\x2\x1FB\x1FD\a\x13\x2\x2\x1FC\x1FB\x3\x2\x2");
+		sb.Append("\x2\x1FC\x1FD\x3\x2\x2\x2\x1FD\x1FE\x3\x2\x2\x2\x1FE\x1FF\a");
+		sb.Append("\x14\x2\x2\x1FF\x202\x5\x4\x3\x2\x200\x201\a/\x2\x2\x201\x203");
+		sb.Append("\x5\b\x5\x2\x202\x200\x3\x2\x2\x2\x202\x203\x3\x2\x2\x2\x203");
+		sb.Append("\x204\x3\x2\x2\x2\x204\x205\x5J&\x2\x205I\x3\x2\x2\x2\x206\x208");
+		sb.Append("\a\x37\x2\x2\x207\x209\x5L\'\x2\x208\x207\x3\x2\x2\x2\x208\x209");
+		sb.Append("\x3\x2\x2\x2\x209\x20A\x3\x2\x2\x2\x20A\x20B\a\x38\x2\x2\x20B");
+		sb.Append("K\x3\x2\x2\x2\x20C\x20E\x5N(\x2\x20D\x20C\x3\x2\x2\x2\x20E\x20F");
+		sb.Append("\x3\x2\x2\x2\x20F\x20D\x3\x2\x2\x2\x20F\x210\x3\x2\x2\x2\x210");
+		sb.Append("M\x3\x2\x2\x2\x211\x217\x5P)\x2\x212\x217\x5R*\x2\x213\x217");
+		sb.Append("\x5X-\x2\x214\x217\x5Z.\x2\x215\x217\x5\\/\x2\x216\x211\x3\x2");
+		sb.Append("\x2\x2\x216\x212\x3\x2\x2\x2\x216\x213\x3\x2\x2\x2\x216\x214");
+		sb.Append("\x3\x2\x2\x2\x216\x215\x3\x2\x2\x2\x217O\x3\x2\x2\x2\x218\x219");
+		sb.Append("\a\x17\x2\x2\x219\x21B\x5\b\x5\x2\x21A\x21C\x5\x4\x3\x2\x21B");
+		sb.Append("\x21A\x3\x2\x2\x2\x21B\x21C\x3\x2\x2\x2\x21C\x21D\x3\x2\x2\x2");
+		sb.Append("\x21D\x21E\x5T+\x2\x21EQ\x3\x2\x2\x2\x21F\x220\a\x16\x2\x2\x220");
+		sb.Append("\x222\x5\b\x5\x2\x221\x223\x5\x4\x3\x2\x222\x221\x3\x2\x2\x2");
+		sb.Append("\x222\x223\x3\x2\x2\x2\x223\x224\x3\x2\x2\x2\x224\x225\x5T+");
+		sb.Append("\x2\x225S\x3\x2\x2\x2\x226\x230\a.\x2\x2\x227\x22B\a\x37\x2");
+		sb.Append("\x2\x228\x22A\x5V,\x2\x229\x228\x3\x2\x2\x2\x22A\x22D\x3\x2");
+		sb.Append("\x2\x2\x22B\x229\x3\x2\x2\x2\x22B\x22C\x3\x2\x2\x2\x22C\x22E");
+		sb.Append("\x3\x2\x2\x2\x22D\x22B\x3\x2\x2\x2\x22E\x230\a\x38\x2\x2\x22F");
+		sb.Append("\x226\x3\x2\x2\x2\x22F\x227\x3\x2\x2\x2\x230U\x3\x2\x2\x2\x231");
+		sb.Append("\x232\a\v\x2\x2\x232\x233\x5\b\x5\x2\x233\x234\a.\x2\x2\x234");
+		sb.Append("W\x3\x2\x2\x2\x235\x236\x5\xC6\x64\x2\x236\x237\x5\x4\x3\x2");
+		sb.Append("\x237\x238\a.\x2\x2\x238Y\x3\x2\x2\x2\x239\x23A\a\x1A\x2\x2");
+		sb.Append("\x23A\x23B\x5\x4\x3\x2\x23B\x23C\a.\x2\x2\x23C[\x3\x2\x2\x2");
+		sb.Append("\x23D\x23E\a\x1B\x2\x2\x23E\x23F\x5\x4\x3\x2\x23F\x240\a.\x2");
+		sb.Append("\x2\x240]\x3\x2\x2\x2\x241\x242\a\x15\x2\x2\x242\x245\x5\x4");
+		sb.Append("\x3\x2\x243\x244\a/\x2\x2\x244\x246\x5\b\x5\x2\x245\x243\x3");
+		sb.Append("\x2\x2\x2\x245\x246\x3\x2\x2\x2\x246\x247\x3\x2\x2\x2\x247\x248");
+		sb.Append("\x5`\x31\x2\x248_\x3\x2\x2\x2\x249\x24B\a\x37\x2\x2\x24A\x24C");
+		sb.Append("\x5\x64\x33\x2\x24B\x24A\x3\x2\x2\x2\x24B\x24C\x3\x2\x2\x2\x24C");
+		sb.Append("\x24D\x3\x2\x2\x2\x24D\x24E\a\x38\x2\x2\x24E\x61\x3\x2\x2\x2");
+		sb.Append("\x24F\x250\a\x1C\x2\x2\x250\x253\x5\x4\x3\x2\x251\x252\a/\x2");
+		sb.Append("\x2\x252\x254\x5\b\x5\x2\x253\x251\x3\x2\x2\x2\x253\x254\x3");
+		sb.Append("\x2\x2\x2\x254\x255\x3\x2\x2\x2\x255\x256\x5`\x31\x2\x256\x63");
+		sb.Append("\x3\x2\x2\x2\x257\x259\x5\x66\x34\x2\x258\x257\x3\x2\x2\x2\x259");
+		sb.Append("\x25A\x3\x2\x2\x2\x25A\x258\x3\x2\x2\x2\x25A\x25B\x3\x2\x2\x2");
+		sb.Append("\x25B\x65\x3\x2\x2\x2\x25C\x264\x5P)\x2\x25D\x264\x5R*\x2\x25E");
+		sb.Append("\x264\x5X-\x2\x25F\x264\x5Z.\x2\x260\x264\x5\\/\x2\x261\x264");
+		sb.Append("\x5h\x35\x2\x262\x264\x5j\x36\x2\x263\x25C\x3\x2\x2\x2\x263");
+		sb.Append("\x25D\x3\x2\x2\x2\x263\x25E\x3\x2\x2\x2\x263\x25F\x3\x2\x2\x2");
+		sb.Append("\x263\x260\x3\x2\x2\x2\x263\x261\x3\x2\x2\x2\x263\x262\x3\x2");
+		sb.Append("\x2\x2\x264g\x3\x2\x2\x2\x265\x266\a\x14\x2\x2\x266\x267\x5");
+		sb.Append("\b\x5\x2\x267\x268\a.\x2\x2\x268i\x3\x2\x2\x2\x269\x26A\a\x18");
+		sb.Append("\x2\x2\x26A\x26B\x5l\x37\x2\x26B\x26C\a\x19\x2\x2\x26C\x26D");
+		sb.Append("\x5n\x38\x2\x26D\x26E\a.\x2\x2\x26Ek\x3\x2\x2\x2\x26F\x270\x5");
+		sb.Append("\b\x5\x2\x270m\x3\x2\x2\x2\x271\x272\x5\b\x5\x2\x272o\x3\x2");
+		sb.Append("\x2\x2\x273\x274\a\x1D\x2\x2\x274\x275\x5\x4\x3\x2\x275\x276");
+		sb.Append("\x5r:\x2\x276q\x3\x2\x2\x2\x277\x279\a\x37\x2\x2\x278\x27A\x5");
+		sb.Append("t;\x2\x279\x278\x3\x2\x2\x2\x279\x27A\x3\x2\x2\x2\x27A\x27B");
+		sb.Append("\x3\x2\x2\x2\x27B\x27C\a\x38\x2\x2\x27Cs\x3\x2\x2\x2\x27D\x27F");
+		sb.Append("\x5v<\x2\x27E\x27D\x3\x2\x2\x2\x27F\x280\x3\x2\x2\x2\x280\x27E");
+		sb.Append("\x3\x2\x2\x2\x280\x281\x3\x2\x2\x2\x281u\x3\x2\x2\x2\x282\x285");
+		sb.Append("\x5x=\x2\x283\x285\x5j\x36\x2\x284\x282\x3\x2\x2\x2\x284\x283");
+		sb.Append("\x3\x2\x2\x2\x285w\x3\x2\x2\x2\x286\x287\a\x1E\x2\x2\x287\x288");
+		sb.Append("\x5\x4\x3\x2\x288\x289\x5z>\x2\x289y\x3\x2\x2\x2\x28A\x28B\a");
+		sb.Append("\x37\x2\x2\x28B\x28F\x5|?\x2\x28C\x28E\x5~@\x2\x28D\x28C\x3");
+		sb.Append("\x2\x2\x2\x28E\x291\x3\x2\x2\x2\x28F\x28D\x3\x2\x2\x2\x28F\x290");
+		sb.Append("\x3\x2\x2\x2\x290\x292\x3\x2\x2\x2\x291\x28F\x3\x2\x2\x2\x292");
+		sb.Append("\x293\a\x38\x2\x2\x293{\x3\x2\x2\x2\x294\x295\a\x1F\x2\x2\x295");
+		sb.Append("\x296\x5\x4\x3\x2\x296\x297\a.\x2\x2\x297}\x3\x2\x2\x2\x298");
+		sb.Append("\x29B\x5\x80\x41\x2\x299\x29B\x5\x82\x42\x2\x29A\x298\x3\x2");
+		sb.Append("\x2\x2\x29A\x299\x3\x2\x2\x2\x29B\x7F\x3\x2\x2\x2\x29C\x29D");
+		sb.Append("\a\x1C\x2\x2\x29D\x29E\x5\b\x5\x2\x29E\x29F\a.\x2\x2\x29F\x81");
+		sb.Append("\x3\x2\x2\x2\x2A0\x2A1\a\x11\x2\x2\x2A1\x2A2\x5\b\x5\x2\x2A2");
+		sb.Append("\x2A3\a.\x2\x2\x2A3\x83\x3\x2\x2\x2\x2A4\x2A5\a\v\x2\x2\x2A5");
+		sb.Append("\x2A6\x5\x4\x3\x2\x2A6\x2A7\x5\x86\x44\x2\x2A7\x85\x3\x2\x2");
+		sb.Append("\x2\x2A8\x2AA\a\x37\x2\x2\x2A9\x2AB\x5\x88\x45\x2\x2AA\x2A9");
+		sb.Append("\x3\x2\x2\x2\x2AA\x2AB\x3\x2\x2\x2\x2AB\x2AC\x3\x2\x2\x2\x2AC");
+		sb.Append("\x2AD\a\x38\x2\x2\x2AD\x87\x3\x2\x2\x2\x2AE\x2B0\x5\x8A\x46");
+		sb.Append("\x2\x2AF\x2B1\x5\x9EP\x2\x2B0\x2AF\x3\x2\x2\x2\x2B1\x2B2\x3");
+		sb.Append("\x2\x2\x2\x2B2\x2B0\x3\x2\x2\x2\x2B2\x2B3\x3\x2\x2\x2\x2B3\x2B7");
+		sb.Append("\x3\x2\x2\x2\x2B4\x2B6\x5\xB4[\x2\x2B5\x2B4\x3\x2\x2\x2\x2B6");
+		sb.Append("\x2B9\x3\x2\x2\x2\x2B7\x2B5\x3\x2\x2\x2\x2B7\x2B8\x3\x2\x2\x2");
+		sb.Append("\x2B8\x89\x3\x2\x2\x2\x2B9\x2B7\x3\x2\x2\x2\x2BA\x2BE\x5\x8C");
+		sb.Append("G\x2\x2BB\x2BE\x5\x90I\x2\x2BC\x2BE\x5\x94K\x2\x2BD\x2BA\x3");
+		sb.Append("\x2\x2\x2\x2BD\x2BB\x3\x2\x2\x2\x2BD\x2BC\x3\x2\x2\x2\x2BE\x8B");
+		sb.Append("\x3\x2\x2\x2\x2BF\x2C0\a\f\x2\x2\x2C0\x2C1\a\x61\x2\x2\x2C1");
+		sb.Append("\x2C2\x5\x8EH\x2\x2C2\x8D\x3\x2\x2\x2\x2C3\x2CD\a.\x2\x2\x2C4");
+		sb.Append("\x2C8\a\x37\x2\x2\x2C5\x2C7\x5\x98M\x2\x2C6\x2C5\x3\x2\x2\x2");
+		sb.Append("\x2C7\x2CA\x3\x2\x2\x2\x2C8\x2C6\x3\x2\x2\x2\x2C8\x2C9\x3\x2");
+		sb.Append("\x2\x2\x2C9\x2CB\x3\x2\x2\x2\x2CA\x2C8\x3\x2\x2\x2\x2CB\x2CD");
+		sb.Append("\a\x38\x2\x2\x2CC\x2C3\x3\x2\x2\x2\x2CC\x2C4\x3\x2\x2\x2\x2CD");
+		sb.Append("\x8F\x3\x2\x2\x2\x2CE\x2CF\a\f\x2\x2\x2CF\x2D0\a\x62\x2\x2\x2D0");
+		sb.Append("\x2D1\x5\x92J\x2\x2D1\x91\x3\x2\x2\x2\x2D2\x2D6\a.\x2\x2\x2D3");
+		sb.Append("\x2D4\a\x37\x2\x2\x2D4\x2D6\a\x38\x2\x2\x2D5\x2D2\x3\x2\x2\x2");
+		sb.Append("\x2D5\x2D3\x3\x2\x2\x2\x2D6\x93\x3\x2\x2\x2\x2D7\x2D8\a\f\x2");
+		sb.Append("\x2\x2D8\x2D9\a\x63\x2\x2\x2D9\x2DA\x5\x96L\x2\x2DA\x95\x3\x2");
+		sb.Append("\x2\x2\x2DB\x2DF\a.\x2\x2\x2DC\x2DD\a\x37\x2\x2\x2DD\x2DF\a");
+		sb.Append("\x38\x2\x2\x2DE\x2DB\x3\x2\x2\x2\x2DE\x2DC\x3\x2\x2\x2\x2DF");
+		sb.Append("\x97\x3\x2\x2\x2\x2E0\x2E3\x5\x9AN\x2\x2E1\x2E3\x5\x9CO\x2\x2E2");
+		sb.Append("\x2E0\x3\x2\x2\x2\x2E2\x2E1\x3\x2\x2\x2\x2E3\x99\x3\x2\x2\x2");
+		sb.Append("\x2E4\x2E5\a`\x2\x2\x2E5\x2E6\a\x32\x2\x2\x2E6\x2E7\x5\xF0y");
+		sb.Append("\x2\x2E7\x2E8\a.\x2\x2\x2E8\x9B\x3\x2\x2\x2\x2E9\x2EA\ag\x2");
+		sb.Append("\x2\x2EA\x2EB\a\x32\x2\x2\x2EB\x2EC\x5\xF0y\x2\x2EC\x2ED\a.");
+		sb.Append("\x2\x2\x2ED\x9D\x3\x2\x2\x2\x2EE\x2F2\x5\xA0Q\x2\x2EF\x2F2\x5");
+		sb.Append("\xA4S\x2\x2F0\x2F2\x5\xA8U\x2\x2F1\x2EE\x3\x2\x2\x2\x2F1\x2EF");
+		sb.Append("\x3\x2\x2\x2\x2F1\x2F0\x3\x2\x2\x2\x2F2\x9F\x3\x2\x2\x2\x2F3");
+		sb.Append("\x2F4\a\r\x2\x2\x2F4\x2F5\a\x64\x2\x2\x2F5\x2F6\x5\xA2R\x2\x2F6");
+		sb.Append("\xA1\x3\x2\x2\x2\x2F7\x301\a.\x2\x2\x2F8\x2FC\a\x37\x2\x2\x2F9");
+		sb.Append("\x2FB\x5\xACW\x2\x2FA\x2F9\x3\x2\x2\x2\x2FB\x2FE\x3\x2\x2\x2");
+		sb.Append("\x2FC\x2FA\x3\x2\x2\x2\x2FC\x2FD\x3\x2\x2\x2\x2FD\x2FF\x3\x2");
+		sb.Append("\x2\x2\x2FE\x2FC\x3\x2\x2\x2\x2FF\x301\a\x38\x2\x2\x300\x2F7");
+		sb.Append("\x3\x2\x2\x2\x300\x2F8\x3\x2\x2\x2\x301\xA3\x3\x2\x2\x2\x302");
+		sb.Append("\x303\a\r\x2\x2\x303\x304\a\x65\x2\x2\x304\x305\x5\xA6T\x2\x305");
+		sb.Append("\xA5\x3\x2\x2\x2\x306\x30A\a.\x2\x2\x307\x308\a\x37\x2\x2\x308");
+		sb.Append("\x30A\a\x38\x2\x2\x309\x306\x3\x2\x2\x2\x309\x307\x3\x2\x2\x2");
+		sb.Append("\x30A\xA7\x3\x2\x2\x2\x30B\x30C\a\r\x2\x2\x30C\x30D\a\x66\x2");
+		sb.Append("\x2\x30D\x30E\x5\xAAV\x2\x30E\xA9\x3\x2\x2\x2\x30F\x313\a.\x2");
+		sb.Append("\x2\x310\x311\a\x37\x2\x2\x311\x313\a\x38\x2\x2\x312\x30F\x3");
+		sb.Append("\x2\x2\x2\x312\x310\x3\x2\x2\x2\x313\xAB\x3\x2\x2\x2\x314\x318");
+		sb.Append("\x5\xAEX\x2\x315\x318\x5\xB0Y\x2\x316\x318\x5\xB2Z\x2\x317\x314");
+		sb.Append("\x3\x2\x2\x2\x317\x315\x3\x2\x2\x2\x317\x316\x3\x2\x2\x2\x318");
+		sb.Append("\xAD\x3\x2\x2\x2\x319\x31A\a]\x2\x2\x31A\x31B\a\x32\x2\x2\x31B");
+		sb.Append("\x31C\x5\xE8u\x2\x31C\x31D\a.\x2\x2\x31D\xAF\x3\x2\x2\x2\x31E");
+		sb.Append("\x31F\a_\x2\x2\x31F\x320\a\x32\x2\x2\x320\x321\x5\xF0y\x2\x321");
+		sb.Append("\x322\a.\x2\x2\x322\xB1\x3\x2\x2\x2\x323\x324\a^\x2\x2\x324");
+		sb.Append("\x325\a\x32\x2\x2\x325\x326\x5\xE8u\x2\x326\x327\a.\x2\x2\x327");
+		sb.Append("\xB3\x3\x2\x2\x2\x328\x329\a\xE\x2\x2\x329\x32A\x5\xB6\\\x2");
+		sb.Append("\x32A\x32B\a.\x2\x2\x32B\xB5\x3\x2\x2\x2\x32C\x32D\x5\xE8u\x2");
+		sb.Append("\x32D\xB7\x3\x2\x2\x2\x32E\x32F\a\xF\x2\x2\x32F\x330\x5\x4\x3");
+		sb.Append("\x2\x330\x331\a/\x2\x2\x331\x332\x5\b\x5\x2\x332\x333\x5\xBA");
+		sb.Append("^\x2\x333\xB9\x3\x2\x2\x2\x334\x336\a\x37\x2\x2\x335\x337\x5");
+		sb.Append("\xBC_\x2\x336\x335\x3\x2\x2\x2\x336\x337\x3\x2\x2\x2\x337\x338");
+		sb.Append("\x3\x2\x2\x2\x338\x339\a\x38\x2\x2\x339\xBB\x3\x2\x2\x2\x33A");
+		sb.Append("\x33C\x5\xBE`\x2\x33B\x33A\x3\x2\x2\x2\x33C\x33D\x3\x2\x2\x2");
+		sb.Append("\x33D\x33B\x3\x2\x2\x2\x33D\x33E\x3\x2\x2\x2\x33E\xBD\x3\x2");
+		sb.Append("\x2\x2\x33F\x342\x5\xC0\x61\x2\x340\x342\x5\xC2\x62\x2\x341");
+		sb.Append("\x33F\x3\x2\x2\x2\x341\x340\x3\x2\x2\x2\x342\xBF\x3\x2\x2\x2");
+		sb.Append("\x343\x344\a\v\x2\x2\x344\x345\x5\b\x5\x2\x345\x346\a.\x2\x2");
+		sb.Append("\x346\xC1\x3\x2\x2\x2\x347\x348\a\x10\x2\x2\x348\x349\x5\xF8");
+		sb.Append("}\x2\x349\x34A\a.\x2\x2\x34A\xC3\x3\x2\x2\x2\x34B\x34E\x5\xC6");
+		sb.Append("\x64\x2\x34C\x34E\x5\xD2j\x2\x34D\x34B\x3\x2\x2\x2\x34D\x34C");
+		sb.Append("\x3\x2\x2\x2\x34E\xC5\x3\x2\x2\x2\x34F\x354\x5\xDCo\x2\x350");
+		sb.Append("\x354\x5\xDEp\x2\x351\x354\x5\xC8\x65\x2\x352\x354\x5\xCA\x66");
+		sb.Append("\x2\x353\x34F\x3\x2\x2\x2\x353\x350\x3\x2\x2\x2\x353\x351\x3");
+		sb.Append("\x2\x2\x2\x353\x352\x3\x2\x2\x2\x354\xC7\x3\x2\x2\x2\x355\x359");
+		sb.Append("\x5\xD0i\x2\x356\x359\x5\xCEh\x2\x357\x359\x5\b\x5\x2\x358\x355");
+		sb.Append("\x3\x2\x2\x2\x358\x356\x3\x2\x2\x2\x358\x357\x3\x2\x2\x2\x359");
+		sb.Append("\xC9\x3\x2\x2\x2\x35A\x35D\x5\xD8m\x2\x35B\x35D\x5\xDAn\x2\x35C");
+		sb.Append("\x35A\x3\x2\x2\x2\x35C\x35B\x3\x2\x2\x2\x35D\xCB\x3\x2\x2\x2");
+		sb.Append("\x35E\x361\x5\xCEh\x2\x35F\x361\x5\b\x5\x2\x360\x35E\x3\x2\x2");
+		sb.Append("\x2\x360\x35F\x3\x2\x2\x2\x361\xCD\x3\x2\x2\x2\x362\x363\t\x2");
+		sb.Append("\x2\x2\x363\xCF\x3\x2\x2\x2\x364\x365\t\x3\x2\x2\x365\xD1\x3");
+		sb.Append("\x2\x2\x2\x366\x367\a,\x2\x2\x367\xD3\x3\x2\x2\x2\x368\x369");
+		sb.Append("\a\t\x2\x2\x369\xD5\x3\x2\x2\x2\x36A\x36D\x5\xC4\x63\x2\x36B");
+		sb.Append("\x36D\x5\xD4k\x2\x36C\x36A\x3\x2\x2\x2\x36C\x36B\x3\x2\x2\x2");
+		sb.Append("\x36D\xD7\x3\x2\x2\x2\x36E\x36F\x5\xD0i\x2\x36F\x370\a;\x2\x2");
+		sb.Append("\x370\xD9\x3\x2\x2\x2\x371\x372\x5\xCCg\x2\x372\x373\aG\x2\x2");
+		sb.Append("\x373\xDB\x3\x2\x2\x2\x374\x375\x5\xDEp\x2\x375\x376\aG\x2\x2");
+		sb.Append("\x376\xDD\x3\x2\x2\x2\x377\x37A\x5\xE0q\x2\x378\x37A\x5\xE2");
+		sb.Append("r\x2\x379\x377\x3\x2\x2\x2\x379\x378\x3\x2\x2\x2\x37A\xDF\x3");
+		sb.Append("\x2\x2\x2\x37B\x37C\x5\xC8\x65\x2\x37C\x37D\a\x35\x2\x2\x37D");
+		sb.Append("\x37E\a\x36\x2\x2\x37E\xE1\x3\x2\x2\x2\x37F\x380\x5\xCA\x66");
+		sb.Append("\x2\x380\x381\a\x35\x2\x2\x381\x382\a\x36\x2\x2\x382\xE3\x3");
+		sb.Append("\x2\x2\x2\x383\x386\x5\xECw\x2\x384\x386\x5\xE8u\x2\x385\x383");
+		sb.Append("\x3\x2\x2\x2\x385\x384\x3\x2\x2\x2\x386\xE5\x3\x2\x2\x2\x387");
+		sb.Append("\x388\a-\x2\x2\x388\x389\a\x33\x2\x2\x389\x38A\x5\xC4\x63\x2");
+		sb.Append("\x38A\x38B\a\x34\x2\x2\x38B\xE7\x3\x2\x2\x2\x38C\x38F\x5\xEA");
+		sb.Append("v\x2\x38D\x38F\x5\xFA~\x2\x38E\x38C\x3\x2\x2\x2\x38E\x38D\x3");
+		sb.Append("\x2\x2\x2\x38F\xE9\x3\x2\x2\x2\x390\x391\t\x4\x2\x2\x391\xEB");
+		sb.Append("\x3\x2\x2\x2\x392\x399\x5\xEEx\x2\x393\x399\x5\xF0y\x2\x394");
+		sb.Append("\x399\x5\xF2z\x2\x395\x399\x5\xF4{\x2\x396\x399\x5\xF6|\x2\x397");
+		sb.Append("\x399\x5\xF8}\x2\x398\x392\x3\x2\x2\x2\x398\x393\x3\x2\x2\x2");
+		sb.Append("\x398\x394\x3\x2\x2\x2\x398\x395\x3\x2\x2\x2\x398\x396\x3\x2");
+		sb.Append("\x2\x2\x398\x397\x3\x2\x2\x2\x399\xED\x3\x2\x2\x2\x39A\x39B");
+		sb.Append("\a \x2\x2\x39B\xEF\x3\x2\x2\x2\x39C\x39D\t\x5\x2\x2\x39D\xF1");
+		sb.Append("\x3\x2\x2\x2\x39E\x39F\aj\x2\x2\x39F\xF3\x3\x2\x2\x2\x3A0\x3A1");
+		sb.Append("\ak\x2\x2\x3A1\xF5\x3\x2\x2\x2\x3A2\x3A3\al\x2\x2\x3A3\xF7\x3");
+		sb.Append("\x2\x2\x2\x3A4\x3A5\t\x6\x2\x2\x3A5\xF9\x3\x2\x2\x2\x3A6\x3A7");
+		sb.Append("\t\a\x2\x2\x3A7\xFB\x3\x2\x2\x2T\xFF\x10D\x115\x11D\x123\x128");
+		sb.Append("\x136\x13A\x143\x14C\x14F\x157\x160\x16F\x172\x178\x17E\x187");
+		sb.Append("\x18B\x18E\x193\x199\x1A1\x1A7\x1AE\x1B8\x1BE\x1C8\x1D2\x1DB");
+		sb.Append("\x1E1\x1E6\x1ED\x1F1\x1F7\x1FC\x202\x208\x20F\x216\x21B\x222");
+		sb.Append("\x22B\x22F\x245\x24B\x253\x25A\x263\x279\x280\x284\x28F\x29A");
+		sb.Append("\x2AA\x2B2\x2B7\x2BD\x2C8\x2CC\x2D5\x2DE\x2E2\x2F1\x2FC\x300");
+		sb.Append("\x309\x312\x317\x336\x33D\x341\x34D\x353\x358\x35C\x360\x36C");
+		sb.Append("\x379\x385\x38E\x398");
 	    return sb.ToString();
 	}
 

@@ -145,6 +145,7 @@
     <Compile Include="Syntax\InternalSyntax\InternalSyntaxTrivia.cs" />
     <Compile Include="Syntax\InternalSyntax\SyntaxParser.cs" />
     <Compile Include="Syntax\LineVisibility.cs" />
+    <Compile Include="Syntax\LookupPosition.cs" />
     <Compile Include="Syntax\RedNode.cs" />
     <Compile Include="Syntax\SimpleSyntaxReference.cs" />
     <Compile Include="Syntax\SyntaxAnnotation.cs" />

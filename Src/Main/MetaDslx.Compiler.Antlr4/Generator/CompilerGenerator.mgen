@@ -3255,12 +3255,15 @@ try
 	[if (annots.HasProperty("nestingProperty"))]
 	this.RegisterNestingProperty([annots.GetNestingProperty()]);
 	[end if]
+	[if (annots.HasProperty("merge"))]
+	this.RegisterCanMerge([annots.GetCanMerge()]);
+	[end if]
 	[body]
 }
 finally
 {
 	DeclarationInfo decl = this.EndDeclaration();
-	this.CreateDeclaration(node, decl.Kind, decl.Names, decl.ParentPropertyToAddTo, decl.Children);
+	this.CreateDeclaration(node, decl.Kind, decl.Names, decl.CanMerge, decl.ParentPropertyToAddTo, decl.Children);
 }
 end template
 
@@ -3446,12 +3449,31 @@ this.Visit(node.[elem.RedName()]);
 	[end if]
 end template
 
-template GenerateSymbolBuilderConstant(MetaCompilerAnnotations annots, string body)
+template GenerateSymbolBuilderConstant(MetaCompilerAnnotations annots, string name, string body)
+if (name != null) this.RegisterConstant(name);
 [body]
 end template
 
-template GenerateSymbolBuilderValue(MetaCompilerAnnotations annots, string body)
+template GenerateSymbolBuilderValue(MetaCompilerAnnotations annots, string name, string body)
+if (name != null) this.RegisterValue(name);
 [body]
+end template
+
+template GenerateSymbolBuilderSymbolType(MetaCompilerAnnotations annots, string name, string body)
+if ([name] != null) this.RegisterSymbolType([annots.GetSymbolType(MetaCompilerAnnotationInfo.SymbolType)]);
+[body]
+end template
+
+template GenerateSymbolBuilderSymbol(MetaCompilerAnnotations annots, string body)
+this.BeginSymbol([annots.GetSymbolType()]);
+try
+{
+	[body]
+}
+finally
+{
+	this.EndSymbol();
+}
 end template
 
 template GenerateSymbolBuilderNameCtr(MetaCompilerAnnotations annots, string body)
@@ -3470,8 +3492,28 @@ template GenerateSymbolBuilderTypeUse(MetaCompilerAnnotations annots, string bod
 [body]
 end template
 
+template GenerateSymbolBuilderDeclaration(MetaCompilerAnnotations annots, string body)
+this.BeginDeclaration();
+try
+{
+	[body]
+}
+finally
+{
+	this.EndDeclaration();
+}
+end template
+
 template GenerateSymbolBuilderProperty(MetaCompilerAnnotations annots, string body)
-[body]
+this.BeginProperty("[annots.GetPropertyValue(MetaCompilerAnnotationInfo.Property, "name")]");
+try
+{
+	[body]
+}
+finally
+{
+	this.EndProperty();
+}
 end template
 
 
@@ -3479,10 +3521,16 @@ end template
 function string GetSymbolBuilderVisitBody(Antlr4ParserRule rule)
 	string body = GenerateSymbolBuilderVisitBody(rule);
 	if (rule.Annotations.IsConstant())
-		body = GenerateSymbolBuilderConstant(rule.Annotations, body);
+		body = GenerateSymbolBuilderConstant(rule.Annotations, "node", body);
 	end if
 	if (rule.Annotations.IsValue())
-		body = GenerateSymbolBuilderValue(rule.Annotations, body);
+		body = GenerateSymbolBuilderValue(rule.Annotations, "node", body);
+	end if
+	if (rule.Annotations.IsSymbolType())
+		body = GenerateSymbolBuilderSymbolType(rule.Annotations, "node", body);
+	end if
+	if (rule.Annotations.IsSymbol())
+		body = GenerateSymbolBuilderSymbol(rule.Annotations, body);
 	end if
 	if (rule.Annotations.IsNameCtr())
 		body = GenerateSymbolBuilderNameCtr(rule.Annotations, body);
@@ -3505,10 +3553,16 @@ end function
 function string GetSymbolBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
 	string body = GenerateSymbolBuilderVisitElement(elem);
 	if (elem.Annotations.IsConstant())
-		body = GenerateSymbolBuilderConstant(elem.Annotations, body);
+		body = GenerateSymbolBuilderConstant(elem.Annotations, "node."+elem.RedName(), body);
 	end if
 	if (elem.Annotations.IsValue())
-		body = GenerateSymbolBuilderValue(elem.Annotations, body);
+		body = GenerateSymbolBuilderValue(elem.Annotations, "node."+elem.RedName(), body);
+	end if
+	if (elem.Annotations.IsSymbolType())
+		body = GenerateSymbolBuilderSymbolType(elem.Annotations, "node."+elem.RedName(), body);
+	end if
+	if (elem.Annotations.IsSymbol())
+		body = GenerateSymbolBuilderSymbol(elem.Annotations, body);
 	end if
 	if (elem.Annotations.IsNameCtr())
 		body = GenerateSymbolBuilderNameCtr(elem.Annotations, body);
@@ -3538,6 +3592,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Compiler.Binding;
 using MetaDslx.Compiler.Declarations;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Core;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
@@ -3578,7 +3633,7 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] node)
 	[if (rule.Annotations.IsBody())]
 	return this.GetBinderForSymbol(node, inBody: true);
 	[else]
-		[if (rule.Annotations.IsSymbol())]
+		[if (rule.Annotations.IsAnySymbol())]
 	return this.GetBinderForSymbol(node);
 		[else]
 	return this.Visit(node.Parent);
@@ -3603,7 +3658,7 @@ end template
 
 template GenerateBinderFactoryVisitElement(Antlr4ParserRuleElement elem)
 	[if (elem.Annotations.IsBody())]
-if (node.[elem.RedName()].FullSpan.Contains(this.Position))
+if (LookupPosition.IsInBlock(this.Position, node.[elem.RedName()]))
 {
     return this.GetBinderForSymbol(node, inBody: true);
 }

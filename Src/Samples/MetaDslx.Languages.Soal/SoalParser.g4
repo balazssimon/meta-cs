@@ -9,6 +9,12 @@ options {
                      
 main :                         namespaceDeclaration* EOF;
 
+     
+nameDef : identifier;
+
+     
+qualifiedNameDef : qualifiedName;
+
               
 qualifiedName : identifier (TDot identifier)*;
 identifierList : identifier (TComma identifier)*;
@@ -20,15 +26,16 @@ returnAnnotationList : returnAnnotation+;
 
                       
                    
-annotation : TOpenBracket annotationBody TCloseBracket;
+annotation : TOpenBracket annotationHead TCloseBracket;
 
                       
                    
-returnAnnotation : TOpenBracket KReturn TColon annotationBody TCloseBracket;
+returnAnnotation : TOpenBracket KReturn TColon annotationHead TCloseBracket;
 
-annotationBody :                        identifier annotationProperties?;
+annotationHead :                        identifier annotationBody?;
 
-annotationProperties : TOpenParen annotationPropertyList? TCloseParen;
+     
+annotationBody : TOpenParen annotationPropertyList? TCloseParen;
 
 annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
@@ -42,8 +49,10 @@ annotationPropertyValue
 	;
 
                                                                       
-namespaceDeclaration: annotationList? KNamespace qualifiedNameDef TAssign (                         identifier TColon)?                       stringLiteral       namespaceBody;
-namespaceBody: TOpenBrace declaration* TCloseBrace;
+namespaceDeclaration : annotationList? KNamespace qualifiedNameDef TAssign (                         identifier TColon)?                       stringLiteral namespaceBody;
+
+      
+namespaceBody : TOpenBrace declaration* TCloseBrace;
 
                        
 declaration : enumDeclaration | structDeclaration | databaseDeclaration | interfaceDeclaration | componentDeclaration | compositeDeclaration | assemblyDeclaration | bindingDeclaration | endpointDeclaration | deploymentDeclaration;
@@ -51,8 +60,10 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 // Enums
 
               
-enumDeclaration : annotationList? KEnum nameDef (TColon                                                                                  qualifiedName)? TOpenBrace enumLiterals? TCloseBrace;
+enumDeclaration : annotationList? KEnum nameDef (TColon                                                                                  qualifiedName)? enumBody;
 
+     
+enumBody: TOpenBrace enumLiterals? TCloseBrace;
 enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 
                        
@@ -62,7 +73,10 @@ enumLiteral : annotationList? nameDef;
 // Structs and exceptions
 
                 
-structDeclaration : annotationList? KStruct nameDef (TColon                                                                                    qualifiedName)? TOpenBrace propertyDeclaration* TCloseBrace;
+structDeclaration : annotationList? KStruct nameDef (TColon                                                                                    qualifiedName)? structBody;
+
+     
+structBody : TOpenBrace propertyDeclaration* TCloseBrace;
 
                      
                   
@@ -72,7 +86,10 @@ propertyDeclaration : annotationList?                          typeReference nam
 // Database
 
                   
-databaseDeclaration : annotationList? KDatabase nameDef TOpenBrace entityReference* operationDeclaration* TCloseBrace;
+databaseDeclaration : annotationList? KDatabase nameDef databaseBody;
+
+     
+databaseBody : TOpenBrace entityReference* operationDeclaration* TCloseBrace;
 
                    
 entityReference : KEntity                  qualifiedName TSemicolon;
@@ -81,11 +98,16 @@ entityReference : KEntity                  qualifiedName TSemicolon;
 // Interface
 
                    
-interfaceDeclaration : annotationList? KInterface nameDef TOpenBrace operationDeclaration* TCloseBrace;
+interfaceDeclaration : annotationList? KInterface nameDef interfaceBody;
+
+     
+interfaceBody : TOpenBrace operationDeclaration* TCloseBrace;
 
                      
                    
-operationDeclaration : annotationList? operationResult nameDef TOpenParen parameterList? TCloseParen (KThrows                                        qualifiedNameList)? TSemicolon;
+operationDeclaration : operationHead TSemicolon;
+
+operationHead : annotationList? operationResult nameDef TOpenParen parameterList? TCloseParen (KThrows                                        qualifiedNameList)?;
 
 parameterList : parameter (TComma parameter)*;
 
@@ -100,7 +122,10 @@ operationResult : returnAnnotationList? operationReturnType;
 // Component
 
                    
-componentDeclaration :                                       KAbstract? KComponent nameDef (TColon                                                                                            qualifiedName)? TOpenBrace componentElements? TCloseBrace;
+componentDeclaration :                                       KAbstract? KComponent nameDef (TColon                                                                                            qualifiedName)? componentBody;
+
+     
+componentBody : TOpenBrace componentElements? TCloseBrace;
 
 componentElements : componentElement+;
 
@@ -119,6 +144,7 @@ componentService : KService                                          qualifiedNa
                    
 componentReference : KReference                                          qualifiedName nameDef? componentServiceOrReferenceBody;
 
+     
 componentServiceOrReferenceBody 
 	: TSemicolon #componentServiceOrReferenceEmptyBody
 	| TOpenBrace componentServiceOrReferenceElement* TCloseBrace #componentServiceOrReferenceNonEmptyBody;
@@ -139,10 +165,13 @@ componentImplementation : KImplementation nameDef TSemicolon;
 componentLanguage : KLanguage nameDef TSemicolon;
 
                    
-compositeDeclaration : KComposite nameDef (TColon                                                                                                         qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+compositeDeclaration : KComposite nameDef (TColon                                                                                                         qualifiedName)? compositeBody;
+
+     
+compositeBody : TOpenBrace compositeElements? TCloseBrace;
 
                   
-assemblyDeclaration : KAssembly nameDef (TColon                                                                                                         qualifiedName)? TOpenBrace compositeElements? TCloseBrace;
+assemblyDeclaration : KAssembly nameDef (TColon                                                                                                         qualifiedName)? compositeBody;
 
 compositeElements : compositeElement+;
 
@@ -167,7 +196,10 @@ wireSource :                                  qualifiedName;
 wireTarget :                                  qualifiedName;
 
                     
-deploymentDeclaration : KDeployment nameDef TOpenBrace deploymentElements? TCloseBrace;
+deploymentDeclaration : KDeployment nameDef deploymentBody;
+
+     
+deploymentBody : TOpenBrace deploymentElements? TCloseBrace;
 
 deploymentElements : deploymentElement+;
 
@@ -178,7 +210,10 @@ deploymentElement
 
                        
                      
-environmentDeclaration : KEnvironment nameDef TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
+environmentDeclaration : KEnvironment nameDef environmentBody;
+
+     
+environmentBody : TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
 
                   
                  
@@ -198,7 +233,10 @@ databaseReference : KDatabase                    qualifiedName TSemicolon;
 // Binding
 
                  
-bindingDeclaration : KBinding nameDef TOpenBrace bindingLayers? TCloseBrace;
+bindingDeclaration : KBinding nameDef bindingBody;
+
+     
+bindingBody : TOpenBrace bindingLayers? TCloseBrace;
 
 bindingLayers : transportLayer encodingLayer+ protocolLayer*;
 
@@ -213,6 +251,7 @@ transportLayer
                                      
 httpTransportLayer : KTransport IHTTP httpTransportLayerBody;
 
+     
 httpTransportLayerBody
 	: TSemicolon #httpTransportLayerEmptyBody
 	| TOpenBrace httpTransportLayerProperties* TCloseBrace #httpTransportLayerNonEmptyBody;
@@ -220,6 +259,7 @@ httpTransportLayerBody
                                      
 restTransportLayer : KTransport IREST restTransportLayerBody;
 
+     
 restTransportLayerBody
 	: TSemicolon #restTransportLayerEmptyBody
 	| TOpenBrace TCloseBrace #restTransportLayerNonEmptyBody;
@@ -227,6 +267,7 @@ restTransportLayerBody
                                           
 webSocketTransportLayer : KTransport IWebSocket webSocketTransportLayerBody;
 
+     
 webSocketTransportLayerBody
 	: TSemicolon #webSocketTransportLayerEmptyBody
 	| TOpenBrace TCloseBrace #webSocketTransportLayerNonEmptyBody;
@@ -252,6 +293,7 @@ encodingLayer
                                     
 soapEncodingLayer : KEncoding ISOAP soapEncodingLayerBody;
 
+     
 soapEncodingLayerBody
 	: TSemicolon #soapEncodingLayerEmptyBody
 	| TOpenBrace soapEncodingProperties* TCloseBrace #soapEncodingLayerNonEmptyBody;
@@ -259,6 +301,7 @@ soapEncodingLayerBody
                                    
 xmlEncodingLayer : KEncoding IXML xmlEncodingLayerBody;
 
+     
 xmlEncodingLayerBody
 	: TSemicolon #xmlEncodingLayerEmptyBody
 	| TOpenBrace TCloseBrace #xmlEncodingLayerNonEmptyBody;
@@ -266,6 +309,7 @@ xmlEncodingLayerBody
                                     
 jsonEncodingLayer : KEncoding IJSON jsonEncodingLayerBody;
 
+     
 jsonEncodingLayerBody
 	: TSemicolon #jsonEncodingLayerEmptyBody
 	| TOpenBrace TCloseBrace #jsonEncodingLayerNonEmptyBody;
@@ -296,7 +340,10 @@ protocolLayerKind :
 // Endpoint:
 
                   
-endpointDeclaration : KEndpoint nameDef TColon                                          qualifiedName TOpenBrace endpointProperties? TCloseBrace;
+endpointDeclaration : KEndpoint nameDef TColon                                          qualifiedName endpointBody;
+
+     
+endpointBody : TOpenBrace endpointProperties? TCloseBrace;
 
 endpointProperties : endpointProperty+;
 
@@ -387,12 +434,6 @@ constantValue
 	;
 
 typeofValue : KTypeof TOpenParen          returnType TCloseParen;
-
-     
-nameDef : identifier;
-
-     
-qualifiedNameDef : qualifiedName;
 
 // Identifiers
            

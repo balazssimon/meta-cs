@@ -24,6 +24,16 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.VisitList(node.NamespaceDeclaration);
 		}
 		
+		public void VisitNameDef(NameDefSyntax node)
+		{
+			this.Visit(node.Identifier);
+		}
+		
+		public void VisitQualifiedNameDef(QualifiedNameDefSyntax node)
+		{
+			this.Visit(node.QualifiedName);
+		}
+		
 		public void VisitQualifiedName(QualifiedNameSyntax node)
 		{
 			this.VisitList(node.Identifier);
@@ -51,21 +61,21 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitAnnotation(AnnotationSyntax node)
 		{
-			this.Visit(node.AnnotationBody);
+			this.Visit(node.AnnotationHead);
 		}
 		
 		public void VisitReturnAnnotation(ReturnAnnotationSyntax node)
 		{
+			this.Visit(node.AnnotationHead);
+		}
+		
+		public void VisitAnnotationHead(AnnotationHeadSyntax node)
+		{
+			this.Visit(node.Identifier);
 			this.Visit(node.AnnotationBody);
 		}
 		
 		public void VisitAnnotationBody(AnnotationBodySyntax node)
-		{
-			this.Visit(node.Identifier);
-			this.Visit(node.AnnotationProperties);
-		}
-		
-		public void VisitAnnotationProperties(AnnotationPropertiesSyntax node)
 		{
 			this.Visit(node.AnnotationPropertyList);
 		}
@@ -120,6 +130,11 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.Visit(node.AnnotationList);
 			this.Visit(node.NameDef);
 			this.Visit(node.QualifiedName);
+			this.Visit(node.EnumBody);
+		}
+		
+		public void VisitEnumBody(EnumBodySyntax node)
+		{
 			this.Visit(node.EnumLiterals);
 		}
 		
@@ -139,6 +154,11 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.Visit(node.AnnotationList);
 			this.Visit(node.NameDef);
 			this.Visit(node.QualifiedName);
+			this.Visit(node.StructBody);
+		}
+		
+		public void VisitStructBody(StructBodySyntax node)
+		{
 			this.VisitList(node.PropertyDeclaration);
 		}
 		
@@ -153,6 +173,11 @@ namespace MetaDslx.Languages.Soal.Binding
 		{
 			this.Visit(node.AnnotationList);
 			this.Visit(node.NameDef);
+			this.Visit(node.DatabaseBody);
+		}
+		
+		public void VisitDatabaseBody(DatabaseBodySyntax node)
+		{
 			this.VisitList(node.EntityReference);
 			this.VisitList(node.OperationDeclaration);
 		}
@@ -166,10 +191,20 @@ namespace MetaDslx.Languages.Soal.Binding
 		{
 			this.Visit(node.AnnotationList);
 			this.Visit(node.NameDef);
+			this.Visit(node.InterfaceBody);
+		}
+		
+		public void VisitInterfaceBody(InterfaceBodySyntax node)
+		{
 			this.VisitList(node.OperationDeclaration);
 		}
 		
 		public void VisitOperationDeclaration(OperationDeclarationSyntax node)
+		{
+			this.Visit(node.OperationHead);
+		}
+		
+		public void VisitOperationHead(OperationHeadSyntax node)
 		{
 			this.Visit(node.AnnotationList);
 			this.Visit(node.OperationResult);
@@ -201,6 +236,11 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.VisitToken(node.KAbstract);
 			this.Visit(node.NameDef);
 			this.Visit(node.QualifiedName);
+			this.Visit(node.ComponentBody);
+		}
+		
+		public void VisitComponentBody(ComponentBodySyntax node)
+		{
 			this.Visit(node.ComponentElements);
 		}
 		
@@ -266,6 +306,11 @@ namespace MetaDslx.Languages.Soal.Binding
 		{
 			this.Visit(node.NameDef);
 			this.Visit(node.QualifiedName);
+			this.Visit(node.CompositeBody);
+		}
+		
+		public void VisitCompositeBody(CompositeBodySyntax node)
+		{
 			this.Visit(node.CompositeElements);
 		}
 		
@@ -273,7 +318,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		{
 			this.Visit(node.NameDef);
 			this.Visit(node.QualifiedName);
-			this.Visit(node.CompositeElements);
+			this.Visit(node.CompositeBody);
 		}
 		
 		public void VisitCompositeElements(CompositeElementsSyntax node)
@@ -316,6 +361,11 @@ namespace MetaDslx.Languages.Soal.Binding
 		public void VisitDeploymentDeclaration(DeploymentDeclarationSyntax node)
 		{
 			this.Visit(node.NameDef);
+			this.Visit(node.DeploymentBody);
+		}
+		
+		public void VisitDeploymentBody(DeploymentBodySyntax node)
+		{
 			this.Visit(node.DeploymentElements);
 		}
 		
@@ -333,6 +383,11 @@ namespace MetaDslx.Languages.Soal.Binding
 		public void VisitEnvironmentDeclaration(EnvironmentDeclarationSyntax node)
 		{
 			this.Visit(node.NameDef);
+			this.Visit(node.EnvironmentBody);
+		}
+		
+		public void VisitEnvironmentBody(EnvironmentBodySyntax node)
+		{
 			this.Visit(node.RuntimeDeclaration);
 			this.VisitList(node.RuntimeReference);
 		}
@@ -361,6 +416,11 @@ namespace MetaDslx.Languages.Soal.Binding
 		public void VisitBindingDeclaration(BindingDeclarationSyntax node)
 		{
 			this.Visit(node.NameDef);
+			this.Visit(node.BindingBody);
+		}
+		
+		public void VisitBindingBody(BindingBodySyntax node)
+		{
 			this.Visit(node.BindingLayers);
 		}
 		
@@ -394,6 +454,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitRestTransportLayer(RestTransportLayerSyntax node)
 		{
+			this.Visit(node.RestTransportLayerBody);
 		}
 		
 		public void VisitRestTransportLayerEmptyBody(RestTransportLayerEmptyBodySyntax node)
@@ -406,6 +467,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitWebSocketTransportLayer(WebSocketTransportLayerSyntax node)
 		{
+			this.Visit(node.WebSocketTransportLayerBody);
 		}
 		
 		public void VisitWebSocketTransportLayerEmptyBody(WebSocketTransportLayerEmptyBodySyntax node)
@@ -455,6 +517,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitXmlEncodingLayer(XmlEncodingLayerSyntax node)
 		{
+			this.Visit(node.XmlEncodingLayerBody);
 		}
 		
 		public void VisitXmlEncodingLayerEmptyBody(XmlEncodingLayerEmptyBodySyntax node)
@@ -467,6 +530,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitJsonEncodingLayer(JsonEncodingLayerSyntax node)
 		{
+			this.Visit(node.JsonEncodingLayerBody);
 		}
 		
 		public void VisitJsonEncodingLayerEmptyBody(JsonEncodingLayerEmptyBodySyntax node)
@@ -513,6 +577,11 @@ namespace MetaDslx.Languages.Soal.Binding
 		{
 			this.Visit(node.NameDef);
 			this.Visit(node.QualifiedName);
+			this.Visit(node.EndpointBody);
+		}
+		
+		public void VisitEndpointBody(EndpointBodySyntax node)
+		{
 			this.Visit(node.EndpointProperties);
 		}
 		
@@ -628,16 +697,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		public void VisitTypeofValue(TypeofValueSyntax node)
 		{
 			this.Visit(node.ReturnType);
-		}
-		
-		public void VisitNameDef(NameDefSyntax node)
-		{
-			this.Visit(node.Identifier);
-		}
-		
-		public void VisitQualifiedNameDef(QualifiedNameDefSyntax node)
-		{
-			this.Visit(node.QualifiedName);
 		}
 		
 		public void VisitIdentifier(IdentifierSyntax node)
