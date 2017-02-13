@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 
@@ -39,6 +40,11 @@ namespace MetaDslx.Compiler.Binding
         }
 
         internal void AddLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, BindingOptions options, Binder originalBinder)
+        {
+            
+        }
+
+        internal void LookupSymbol(Binder originalBinder, LookupResult result, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             
         }

@@ -64,7 +64,7 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
         public override void Port(PortBuilder _this)
         {
             base.Port(_this);
-            _this.NameLazy = () => _this.OptionalName != null ? _this.OptionalName : (_this.MHasConcreteValue(_this.MGetProperty("Interface")) ? _this.Interface.Name : string.Empty);
+            //_this.NameLazy = () => _this.OptionalName != null ? _this.OptionalName : (_this.MHasConcreteValue(_this.MGetProperty("Interface")) ? _this.Interface.Name : string.Empty);
         }
 
         public override ImmutableModelList<Annotation> AnnotatedElement_GetAnnotations(AnnotatedElement _this, string name)

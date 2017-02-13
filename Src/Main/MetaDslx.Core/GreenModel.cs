@@ -1961,7 +1961,7 @@ namespace MetaDslx.Core
                             {
                                 throw new ModelException("Invalid containment in " + this.PropertyRef(sid, property) + ": a symbol cannot contain itself.");
                             }
-                            if (valueRef.Model != model)
+                            if (valueRef.Model.Id != model.Id)
                             {
                                 throw new ModelException("Invalid containment in " + this.PropertyRef(sid, property) + ": the containing symbol and the contained symbol must be in the same model.");
                             }

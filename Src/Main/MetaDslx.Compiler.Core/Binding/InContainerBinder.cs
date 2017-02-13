@@ -111,6 +111,34 @@ namespace MetaDslx.Compiler.Binding
 
         protected override void LookupSymbolsInSingleBinder(LookupResult result, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
+            Debug.Assert(result.IsClear);
+
+            if (IsSubmissionClass)
+            {
+                this.LookupMembersCore(result, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                return;
+            }
+
+            var imports = GetImports(basesBeingResolved);
+
+            // first lookup members of the namespace
+            if (_container != null)
+            {
+                this.LookupMembersCore(result, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+
+                if (result.IsMultiViable)
+                {
+                    return;
+                }
+            }
+
+            // next try using aliases or symbols in imported namespaces
+            imports.LookupSymbol(originalBinder, result, name, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+        }
+
+        protected override void LookupMembersCore(LookupResult result, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            if (_container == null) return;
             foreach (var child in _container.MChildren)
             {
                 if (child.MName != null && child.MName == name)

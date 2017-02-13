@@ -50,6 +50,8 @@
     <Compile Include="Binding\BinderFactoryVisitor.cs" />
     <Compile Include="Binding\BuckStopsHereBinder.cs" />
     <Compile Include="Binding\Conversions.cs" />
+    <Compile Include="Binding\FindBindableNodeVisitor.cs" />
+    <Compile Include="Binding\FindSymbolNameVisitor.cs" />
     <Compile Include="Binding\Imports.cs" />
     <Compile Include="Binding\InContainerBinder.cs" />
     <Compile Include="Binding\LookupResult.cs" />

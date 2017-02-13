@@ -113,6 +113,14 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
+        internal ArrayBuilder<IMetaSymbol> Symbols
+        {
+            get
+            {
+                return _symbolList;
+            }
+        }
+
         public ImmutableArray<IMetaSymbol> GetSymbols()
         {
             return _symbolList.ToImmutable();

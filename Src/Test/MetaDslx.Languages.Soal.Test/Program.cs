@@ -79,6 +79,10 @@ namespace MetaDslx.Languages.Soal.Test
             var _structBodyInfo = sm.GetSymbolInfo(_structBody);
             Console.WriteLine(_structBodyInfo.Symbol);
 
+            var symbolsInMathStruct = sm.LookupSymbols(_structBody.SpanStart);
+            Console.WriteLine(symbolsInMathStruct);
+
+            Console.WriteLine(comp.Model);
             //Console.WriteLine(comp.Model);
 
             /*}
