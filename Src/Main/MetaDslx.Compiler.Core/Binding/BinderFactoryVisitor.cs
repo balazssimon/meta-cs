@@ -50,6 +50,11 @@ namespace MetaDslx.Compiler.Binding
             _position = position;
         }
 
+        protected virtual Binder CreateContainerBinder(IMetaSymbol symbol, Binder parentBinder)
+        {
+            return new InContainerBinder(symbol, parentBinder);
+        }
+
         protected virtual Binder GetBinderForSymbol(SyntaxNode parent, string name = null, bool inBody = false, Type kind = null, object usage = null)
         {
             if (inBody) return this.GetBinderForSymbolBody(parent, name, kind, usage);
@@ -82,10 +87,10 @@ namespace MetaDslx.Compiler.Binding
                     for (int i = 1; i < ancestors.Count; i++)
                     {
                         var currentSymbol = ancestors[i];
-                        parentBinder = new InContainerBinder(currentSymbol, parentBinder);
+                        parentBinder = this.CreateContainerBinder(currentSymbol, parentBinder);
                     }
                 }
-                resultBinder = new InContainerBinder(symbol, parentBinder);
+                resultBinder = this.CreateContainerBinder(symbol, parentBinder);
                 _binderFactory.TryAddBinder(parent, usage, resultBinder);
             }
             return resultBinder;
@@ -93,13 +98,27 @@ namespace MetaDslx.Compiler.Binding
 
         protected virtual Binder GetBinderForSymbolOutsideOfBody(SyntaxNode parent, string name = null, Type kind = null, object usage = null)
         {
-            return parent.Parent.Accept(this);
+            return this.GetContainingBinder(parent);
         }
 
         protected virtual Binder GetContainingBinder(SyntaxNode node)
         {
-            if (node.Parent == null) return null;
-            else return node.Parent.Accept(this);
+            Binder resultBinder;
+            if (node.Parent == null)
+            {
+                if (!_binderFactory.TryGetBinder(node, null, out resultBinder))
+                {
+                    Binder outerBinder = this.BinderFactory.BuckStopsHereBinder;
+                    var parentSymbol = this.GetContainingSymbol(outerBinder, node);
+                    resultBinder = this.CreateContainerBinder(parentSymbol, outerBinder);
+                    _binderFactory.TryAddBinder(node, null, resultBinder);
+                }
+            }
+            else
+            {
+                resultBinder = node.Parent.Accept(this);
+            }
+            return resultBinder;
         }
 
         protected virtual IMetaSymbol GetContainingSymbol(Binder binder, SyntaxNode node)
@@ -107,9 +126,16 @@ namespace MetaDslx.Compiler.Binding
             var container = binder.ContainingSymbol;
             if ((object)container == null)
             {
-                if (node.Parent == null && this.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
+                if (node.Parent == null)
                 {
-                    container = this.Compilation.ScriptSymbol;
+                    if (this.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
+                    {
+                        container = this.Compilation.ScriptSymbol;
+                    }
+                    else
+                    {
+                        container = this.Compilation.GlobalNamespace;
+                    }
                 }
             }
             return container;
@@ -127,22 +153,13 @@ namespace MetaDslx.Compiler.Binding
                 var syntaxReferences = (ImmutableArray<SyntaxReference>)sym.MGet(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty);
                 foreach (var reference in syntaxReferences)
                 {
-                    if (InSpan(reference.GetLocation(), this.SyntaxTree, childSpan))
+                    if (reference.SyntaxTree == this.SyntaxTree && reference.Span.OverlapsWith(childSpan))
                     {
                         return sym;
                     }
                 }
             }
             return null;
-        }
-
-        /// <summary>
-        /// Returns true if the location is within the syntax tree and span.
-        /// </summary>
-        protected static bool InSpan(Location location, SyntaxTree syntaxTree, TextSpan span)
-        {
-            Debug.Assert(syntaxTree != null);
-            return (location.SourceTree == syntaxTree) && span.Contains(location.SourceSpan);
         }
     }
 }

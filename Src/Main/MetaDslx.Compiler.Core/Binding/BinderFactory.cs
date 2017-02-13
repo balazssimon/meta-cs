@@ -15,13 +15,15 @@ namespace MetaDslx.Compiler.Binding
         // PERF: we are not using ValueTuple because its Equals is relatively slow.
         internal struct BinderCacheKey : IEquatable<BinderCacheKey>
         {
+            private static object GeneralUsage = new object();
+
             public readonly SyntaxNode syntaxNode;
             public readonly object usage;
 
             public BinderCacheKey(SyntaxNode syntaxNode, object usage)
             {
                 this.syntaxNode = syntaxNode;
-                this.usage = usage;
+                this.usage = usage ?? GeneralUsage;
             }
 
             bool IEquatable<BinderCacheKey>.Equals(BinderCacheKey other)
@@ -150,7 +152,7 @@ namespace MetaDslx.Compiler.Binding
         public bool TryGetBinder(SyntaxNode node, object usage, out Binder binder)
         {
             var key = new BinderCacheKey(node, usage);
-            return !_binderCache.TryGetValue(key, out binder);
+            return _binderCache.TryGetValue(key, out binder);
         }
 
         public void TryAddBinder(SyntaxNode node, object usage, Binder binder)

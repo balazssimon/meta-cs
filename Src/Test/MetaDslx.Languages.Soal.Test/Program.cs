@@ -66,11 +66,21 @@ namespace MetaDslx.Languages.Soal.Test
             var root = (MainSyntax)tree.GetRoot();
             var ns = root.NamespaceDeclaration[0];
 
-            var info = sm.GetSymbolInfo(ns);
-            Console.WriteLine(info);
+            var nsInfo = sm.GetSymbolInfo(ns);
+            Console.WriteLine(nsInfo);
 
-            Console.WriteLine(comp.Model);
-                
+            var _struct = root.NamespaceDeclaration[0].NamespaceBody.Declaration[0];
+
+            var _structInfo = sm.GetSymbolInfo(_struct);
+            Console.WriteLine(_structInfo);
+
+            var _structBody = root.NamespaceDeclaration[0].NamespaceBody.Declaration[0].StructDeclaration.StructBody.PropertyDeclaration[0];
+
+            var _structBodyInfo = sm.GetSymbolInfo(_structBody);
+            Console.WriteLine(_structBodyInfo);
+
+            //Console.WriteLine(comp.Model);
+
             /*}
             catch(Exception ex)
             {

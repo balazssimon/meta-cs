@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.Core;
 
 namespace MetaDslx.Compiler.Binding
 {
@@ -16,5 +17,12 @@ namespace MetaDslx.Compiler.Binding
         {
         }
 
+        public override IMetaSymbol ContainingSymbol
+        {
+            get
+            {
+                return null;
+            }
+        }
     }
 }

@@ -28,7 +28,8 @@ namespace MetaDslx.Languages.Soal.Binding
 		    {
 		        return this.Visit(node.Parent);
 		    }
-			return this.Visit(node.Parent);
+		    if (node.Parent == null) return GetBinderForSymbol(node);
+			else return this.Visit(node.Parent);
 		}
 		
 		public Binder VisitNameDef(NameDefSyntax node)

@@ -3419,10 +3419,14 @@ template GenerateSymbolBuilderVisit(Antlr4ParserRule rule)
 ^
 public void Visit[rule.PlainName()]([rule.RedName()] node)
 {
-	[GetSymbolBuilderVisitBody(rule)]
+	[GenerateSymbolBuilderVisitBody(rule)]
 }
 end template
 
+template GenerateSymbolBuilderVisitBody(Antlr4ParserRule rule)
+end template
+
+/*
 template GenerateSymbolBuilderVisitBody(Antlr4ParserRule rule)
 [if (rule.ContainsAnnotations)]
 [if (rule.IsSimpleAlt)]
@@ -3436,7 +3440,7 @@ template GenerateSymbolBuilderVisitBody(Antlr4ParserRule rule)
 [end if]
 [end if]
 end template
-
+*/
 template GenerateSymbolBuilderVisitElement(Antlr4ParserRuleElement elem)
 	[if (elem.IsList)]
 this.VisitList(node.[elem.RedName()]);
@@ -3636,7 +3640,12 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] node)
 		[if (rule.Annotations.IsAnySymbol())]
 	return this.GetBinderForSymbol(node);
 		[else]
+			[if (rule == Instances.MainRule())]
+    if (node.Parent == null) return GetBinderForSymbol(node);
+	else return this.Visit(node.Parent);
+			[else]
 	return this.Visit(node.Parent);
+			[end if]
 		[end if]
 	[end if]
 }

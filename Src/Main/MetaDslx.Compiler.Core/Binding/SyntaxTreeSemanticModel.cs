@@ -94,7 +94,9 @@ namespace MetaDslx.Compiler.Binding
 
         protected override SymbolInfo GetSymbolInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            Binder binder = this.Compilation.GetBinder(node);
+            return null;
+            //throw new NotImplementedException();
         }
 
         protected override TypeInfo GetTypeInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
