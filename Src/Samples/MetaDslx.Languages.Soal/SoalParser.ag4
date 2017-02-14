@@ -48,7 +48,7 @@ annotationPropertyValue
 	| typeofValue
 	;
 
-$NameDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
+$Symbol(symbolType=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration : annotationList? KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral namespaceBody;
 
 $Body 
@@ -59,60 +59,60 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 
 // Enums
 
-$TypeDef(Enum)
-enumDeclaration : annotationList? KEnum name (TColon $Property(BaseType) $TypeUse(symbolType=Enum) qualifier)? enumBody;
+$Symbol(Enum)
+enumDeclaration : annotationList? KEnum name (TColon $Property(BaseType) $SymbolUse(Enum) qualifier)? enumBody;
 
 $Body
 enumBody: TOpenBrace enumLiterals? TCloseBrace;
 enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 
 $Property(EnumLiterals)
-$NameDef(EnumLiteral)
+$Symbol(EnumLiteral)
 enumLiteral : annotationList? name;
 
 // Structs and exceptions
 
-$TypeDef(Struct)
-structDeclaration : annotationList? KStruct name (TColon $Property(BaseType) $TypeUse(symbolType=Struct) qualifier)? structBody;
+$Symbol(Struct)
+structDeclaration : annotationList? KStruct name (TColon $Property(BaseType) $SymbolUse(Struct) qualifier)? structBody;
 
 $Body
 structBody : TOpenBrace propertyDeclaration* TCloseBrace;
 
 $Property(Properties)
-$NameDef(Property)
+$Symbol(Property)
 propertyDeclaration : annotationList? $Property(Type) typeReference name TSemicolon;
 
 
 // Database
 
-$TypeDef(Database)
+$Symbol(Database)
 databaseDeclaration : annotationList? KDatabase name databaseBody;
 
 $Body
 databaseBody : TOpenBrace entityReference* operationDeclaration* TCloseBrace;
 
 $Property(Entities)
-entityReference : KEntity $TypeUse(Struct) qualifier TSemicolon;
+entityReference : KEntity $SymbolUse(Struct) qualifier TSemicolon;
 
 
 // Interface
 
-$TypeDef(Interface)
+$Symbol(Interface)
 interfaceDeclaration : annotationList? KInterface name interfaceBody;
 
 $Body
 interfaceBody : TOpenBrace operationDeclaration* TCloseBrace;
 
 $Property(Operations)
-$NameDef(Operation)
+$Symbol(Operation)
 operationDeclaration : operationHead TSemicolon;
 
-operationHead : annotationList? operationResult name TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $TypeUse(Struct) qualifierList)?;
+operationHead : annotationList? operationResult name TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $SymbolUse(Struct) qualifierList)?;
 
 parameterList : parameter (TComma parameter)*;
 
 $Property(Parameters)
-$NameDef(InputParameter)
+$Symbol(InputParameter)
 parameter : annotationList? $Property(Type) typeReference name;
 
 $Property(Result)
@@ -121,8 +121,8 @@ operationResult : returnAnnotationList? operationReturnType;
 
 // Component
 
-$TypeDef(Component)
-componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent name (TColon $Property(BaseComponent) $TypeUse(symbolType=Component) qualifier)? componentBody;
+$Symbol(Component)
+componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent name (TColon $Property(BaseComponent) $SymbolUse(Component) qualifier)? componentBody;
 
 $Body
 componentBody : TOpenBrace componentElements? TCloseBrace;
@@ -138,11 +138,11 @@ componentElement
 	;
 
 $Property(Services)
-$NameDef(Service)
-componentService : KService $Property(Interface) $TypeUse(Interface) qualifier name? componentServiceOrReferenceBody;
+$Symbol(Service)
+componentService : KService $Property(Interface) $SymbolUse(Interface) qualifier name? componentServiceOrReferenceBody;
 $Property(References)
-$NameDef(Reference)
-componentReference : KReference $Property(Interface) $TypeUse(Interface) qualifier name? componentServiceOrReferenceBody;
+$Symbol(Reference)
+componentReference : KReference $Property(Interface) $SymbolUse(Interface) qualifier name? componentServiceOrReferenceBody;
 
 $Body
 componentServiceOrReferenceBody 
@@ -153,25 +153,25 @@ componentServiceOrReferenceElement
 	: KBinding $Property(Binding) $NameUse(Binding) qualifier TSemicolon;
 
 $Property(Properties)
-$NameDef(Property)
+$Symbol(Property)
 componentProperty : typeReference name TSemicolon;
 
 $Property(Implementation)
-$NameDef(Implementation)
+$Symbol(Implementation)
 componentImplementation : KImplementation name TSemicolon;
 
 $Property(Language)
-$NameDef(Language)
+$Symbol(Language)
 componentLanguage : KLanguage name TSemicolon;
 
-$TypeDef(Composite)
-compositeDeclaration : KComposite name (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite)) qualifier)? compositeBody;
+$Symbol(Composite)
+compositeDeclaration : KComposite name (TColon $Property(BaseComponent) $SymbolUse(Component) qualifier)? compositeBody;
 
 $Body
 compositeBody : TOpenBrace compositeElements? TCloseBrace;
 
-$TypeDef(Assembly)
-assemblyDeclaration : KAssembly name (TColon $Property(BaseComponent) $TypeUse(symbolTypes=(Component,Composite)) qualifier)? compositeBody;
+$Symbol(Assembly)
+assemblyDeclaration : KAssembly name (TColon $Property(BaseComponent) $SymbolUse(Component) qualifier)? compositeBody;
 
 compositeElements : compositeElement+;
 
@@ -195,7 +195,7 @@ compositeWire : KWire wireSource KTo wireTarget TSemicolon;
 wireSource : $Property(Source) $NameUse(Port) qualifier;
 wireTarget : $Property(Target) $NameUse(Port) qualifier;
 
-$NameDef(Deployment)
+$Symbol(Deployment)
 deploymentDeclaration : KDeployment name deploymentBody;
 
 $Body
@@ -209,14 +209,14 @@ deploymentElement
 	;
 
 $Property(Environments)
-$NameDef(Environment)
+$Symbol(Environment)
 environmentDeclaration : KEnvironment name environmentBody;
 
 $Body
 environmentBody : TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
 
 $Property(Runtime)
-$NameDef(Runtime)
+$Symbol(Runtime)
 runtimeDeclaration : KRuntime name TSemicolon;
 
 runtimeReference
@@ -225,14 +225,14 @@ runtimeReference
 	;
 
 $Property(Assemblies)
-assemblyReference : KAssembly $TypeUse(Assembly) qualifier TSemicolon;
+assemblyReference : KAssembly $SymbolUse(Assembly) qualifier TSemicolon;
 
 $Property(Databases)
-databaseReference : KDatabase $TypeUse(Database) qualifier TSemicolon;
+databaseReference : KDatabase $SymbolUse(Database) qualifier TSemicolon;
 
 // Binding
 
-$NameDef(Binding)
+$Symbol(Binding)
 bindingDeclaration : KBinding name bindingBody;
 
 $Body
@@ -339,8 +339,8 @@ protocolLayerKind :
 
 // Endpoint:
 
-$NameDef(Endpoint)
-endpointDeclaration : KEndpoint name TColon $Property(Interface) $TypeUse(Interface) qualifier endpointBody;
+$Symbol(Endpoint)
+endpointDeclaration : KEndpoint name TColon $Property(Interface) $SymbolUse(Interface) qualifier endpointBody;
 
 $Body
 endpointBody : TOpenBrace endpointProperties? TCloseBrace;
@@ -369,19 +369,19 @@ typeReference
 	| nulledType
 	;
 
-simpleType : valueType | objectType | $TypeUse qualifier;
+simpleType : valueType | objectType | $SymbolUse qualifier;
 
 nulledType : nullableType | nonNullableType;
 
-referenceType : objectType | $TypeUse qualifier;
+referenceType : objectType | $SymbolUse qualifier;
 
-$TypeUse
+$SymbolUse
 objectType 
 	: KObject 
 	| KString
 	;
 
-$TypeUse
+$SymbolUse
 valueType 
 	: KInt 
 	| KLong 
@@ -395,12 +395,12 @@ valueType
 	| ITimeSpan
 	;
 
-$TypeUse
+$SymbolUse
 voidType 
 	: KVoid
 	;
 
-$TypeUse
+$SymbolUse
 onewayType
 	: KOneway
 	;
@@ -410,13 +410,13 @@ operationReturnType
 	| $Property(name=Type,value=SoalInstance.Void) $Property(name=IsOneway,value=true) onewayType
 	;
 
-$TypeCtr(NullableType)
+$SymbolCtr(NullableType)
 nullableType : $Property(InnerType) valueType TQuestion;
 
-$TypeCtr(NonNullableType)
+$SymbolCtr(NonNullableType)
 nonNullableType : $Property(InnerType) referenceType TExclamation;
 
-$TypeCtr(NonNullableType)
+$SymbolCtr(NonNullableType)
 nonNullableArrayType : $Property(InnerType) arrayType TExclamation;
 
 arrayType
@@ -424,10 +424,10 @@ arrayType
 	| nulledArrayType
 	;
 
-$TypeCtr(ArrayType)
+$SymbolCtr(ArrayType)
 simpleArrayType : $Property(InnerType) simpleType TOpenBracket TCloseBracket;
 
-$TypeCtr(ArrayType)
+$SymbolCtr(ArrayType)
 nulledArrayType : $Property(InnerType) nulledType TOpenBracket TCloseBracket;
 
 

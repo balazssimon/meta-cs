@@ -11,11 +11,12 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public class BindVisitor : DetailedSyntaxVisitor<IMetaSymbol>
+    public class BindVisitor : DetailedSyntaxVisitor<Optional<object>>
     {
         private Binder _binder;
         private DiagnosticBag _diagnostics;
-        private bool _findBindableParent;
+        private bool _isBinding;
+        private RedNode _node;
         private BindingOptions _options;
         private ArrayBuilder<RedNode> _qualifier;
         private ArrayBuilder<Type> _symbolTypes;
@@ -26,13 +27,14 @@ namespace MetaDslx.Compiler.Binding
             : base(false, false)
         {
             _binder = binder;
-            this.Reset(null, false);
+            this.Reset(null, null);
         }
 
-        public virtual void Reset(DiagnosticBag diagnostics, bool findBindableParent = false)
+        public virtual void Reset(DiagnosticBag diagnostics, RedNode node)
         {
             _diagnostics = diagnostics;
-            _findBindableParent = findBindableParent;
+            _isBinding = false;
+            _node = node;
             _qualifier = ArrayBuilder<RedNode>.GetInstance();
             _symbolTypes = ArrayBuilder<Type>.GetInstance();
             _options = null;
@@ -43,6 +45,36 @@ namespace MetaDslx.Compiler.Binding
             _diagnostics = null;
             _qualifier.Free();
             _symbolTypes.Free();
+        }
+
+        public bool IsBinding
+        {
+            get { return this._isBinding; }
+        }
+
+        public bool StepIntoChild(RedNode child)
+        {
+            bool result = child.FullSpan.Contains(this._node.Position);
+            if (result)
+            {
+                this._isBinding = true;
+            }
+            return result;
+        }
+
+        public Optional<object> Bind()
+        {
+            SyntaxNode syntax = this._node as SyntaxNode;
+            if (syntax != null)
+            {
+                return syntax.Accept(this);
+            }
+            return Optional<object>.Default;
+        }
+
+        public Optional<object> BindResult(SyntaxNode node)
+        {
+            return Optional<object>.Default;
         }
 
         protected ImmutableArray<RedNode> Qualifier
@@ -90,5 +122,7 @@ namespace MetaDslx.Compiler.Binding
         {
             _options = options;
         }
+
+
     }
 }

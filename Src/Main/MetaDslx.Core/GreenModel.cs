@@ -181,12 +181,14 @@ namespace MetaDslx.Core
 
         internal GreenList Add(object value)
         {
+            if (value == null) return this;
             if (this.unique && this.items.Contains(value)) return this;
             return this.Update(this.items.Add(value), this.lazyItems);
         }
 
         internal GreenList AddLazy(GreenLazyValue value)
         {
+            if (value == null) return this;
             return this.Update(this.items, this.lazyItems.Add(value));
         }
 
@@ -195,6 +197,7 @@ namespace MetaDslx.Core
             GreenList result = this;
             foreach (var item in items)
             {
+                if (item == null) continue;
                 if (!this.unique || !this.items.Contains(item))
                 {
                     result = result.Update(this.items.Add(item), this.lazyItems);
@@ -205,6 +208,7 @@ namespace MetaDslx.Core
 
         internal GreenList Insert(int index, object element)
         {
+            if (element == null) return this;
             if (this.unique && this.items.Contains(element))
             {
                 ImmutableList<object> newItems = this.items.Remove(element);
@@ -222,16 +226,19 @@ namespace MetaDslx.Core
 
         internal GreenList Replace(object oldValue, object newValue)
         {
-            return this.Update(this.items.Replace(oldValue, newValue), this.lazyItems);
+            if (newValue == null) return this.Update(this.items.Remove(oldValue), this.lazyItems);
+            else return this.Update(this.items.Replace(oldValue, newValue), this.lazyItems);
         }
 
         internal GreenList Remove(object value)
         {
+            if (value == null) return this;
             return this.Update(this.items.Remove(value), this.lazyItems);
         }
 
         internal GreenList RemoveAll(object value)
         {
+            if (value == null) return this;
             return this.Update(this.items.RemoveAll(v => v == value), this.lazyItems);
         }
 
@@ -242,6 +249,7 @@ namespace MetaDslx.Core
 
         internal GreenList SetItem(int index, object value)
         {
+            if (value == null) return this;
             return this.Update(this.items.SetItem(index, value), this.lazyItems);
         }
 
@@ -1301,20 +1309,33 @@ namespace MetaDslx.Core
             GreenModel model = this.GetModel(mid);
             if (model == null) return false;
             if (model.LazyProperties.Count == 0) return false;
-            bool changed = false;
-            foreach (var sid in model.StrongSymbols)
+            int counter = 0;
+            bool changed = true;
+            bool evaluatedAny = true;
+            while (evaluatedAny)
             {
-                if (model.LazyProperties.ContainsKey(sid))
+                evaluatedAny = false;
+                foreach (var sid in model.StrongSymbols)
                 {
-                    changed = this.EvaluateLazyValues(mid, sid) || changed;
+                    if (model.LazyProperties.ContainsKey(sid))
+                    {
+                        evaluatedAny = this.EvaluateLazyValues(mid, sid) || evaluatedAny;
+                    }
                 }
+                model = this.GetModel(mid);
+                foreach (var sid in model.LazyProperties.Keys)
+                {
+                    evaluatedAny = this.EvaluateLazyValues(mid, sid) || evaluatedAny;
+                }
+                if (evaluatedAny)
+                {
+                    changed = true;
+                }
+                model = this.GetModel(mid);
+                ++counter;
+                if (counter >= 100) break; // exit after 100 iterations to prevent infinite loop
             }
-            model = this.GetModel(mid);
-            foreach (var sid in model.LazyProperties.Keys)
-            {
-                changed = this.EvaluateLazyValues(mid, sid) || changed;
-            }
-            Debug.Assert(this.GetModel(mid).LazyProperties.Count == 0);
+            Debug.Assert(model.LazyProperties.Count == 0);
             return changed;
         }
 

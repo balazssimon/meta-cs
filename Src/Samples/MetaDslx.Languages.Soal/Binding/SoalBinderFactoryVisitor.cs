@@ -32,17 +32,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			else return this.Visit(node.Parent);
 		}
 		
-		public Binder VisitNameDef(NameDefSyntax node)
-		{
-		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
-		    if (!node.FullSpan.Contains(this.Position))
-		    {
-		        return this.Visit(node.Parent);
-		    }
-			return this.Visit(node.Parent);
-		}
-		
-		public Binder VisitQualifiedNameDef(QualifiedNameDefSyntax node)
+		public Binder VisitName(NameSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
@@ -62,6 +52,16 @@ namespace MetaDslx.Languages.Soal.Binding
 			return this.Visit(node.Parent);
 		}
 		
+		public Binder VisitQualifier(QualifierSyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.Visit(node.Parent);
+		}
+		
 		public Binder VisitIdentifierList(IdentifierListSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
@@ -72,7 +72,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			return this.Visit(node.Parent);
 		}
 		
-		public Binder VisitQualifiedNameList(QualifiedNameListSyntax node)
+		public Binder VisitQualifierList(QualifierListSyntax node)
 		{
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))

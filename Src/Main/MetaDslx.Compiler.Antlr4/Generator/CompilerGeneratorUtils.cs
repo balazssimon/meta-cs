@@ -272,34 +272,25 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
         public static bool IsDeclaration(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameDef) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeDef);
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol);
+        }
+
+        public static bool IsDeclarationBoundary(this MetaCompilerAnnotations annots)
+        {
+            if (annots.IsDeclaration()) return false;
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolUse) || annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr) ||
+                annots.HasAnnotation(MetaCompilerAnnotationInfo.Constant) || annots.HasAnnotation(MetaCompilerAnnotationInfo.Value);
         }
 
         public static bool IsAnySymbol(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameDef) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeDef) ||
-                annots.HasAnnotation(MetaCompilerAnnotationInfo.NameCtr) || annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeCtr) ||
-                annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol) || annots.HasAnnotation(MetaCompilerAnnotationInfo.PreDefSymbol);
-        }
-
-        public static bool IsSymbol(this MetaCompilerAnnotations annots)
-        {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol);
-        }
-
-        public static bool IsSymbolBoundary(this MetaCompilerAnnotations annots)
-        {
-            return annots.Annotations.Any(a => MetaCompilerAnnotationInfo.SymbolBoundary.Contains(a.Name));
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol) || annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr) ||
+                annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol);
         }
 
         public static bool IsSymbolType(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolType);
-        }
-
-        public static bool IsRootScope(this MetaCompilerAnnotations annots)
-        {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.RootScope);
         }
 
         public static bool IsIdentifier(this MetaCompilerAnnotations annots)
@@ -317,29 +308,19 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Property);
         }
 
-        public static bool IsQualifiedName(this MetaCompilerAnnotations annots)
+        public static bool IsQualifier(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Qualifier);
         }
 
-        public static bool IsNameCtr(this MetaCompilerAnnotations annots)
+        public static bool IsSymbolUse(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameCtr);
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolUse);
         }
 
-        public static bool IsTypeCtr(this MetaCompilerAnnotations annots)
+        public static bool IsSymbolCtr(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeCtr);
-        }
-
-        public static bool IsNameUse(this MetaCompilerAnnotations annots)
-        {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.NameUse);
-        }
-
-        public static bool IsTypeUse(this MetaCompilerAnnotations annots)
-        {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.TypeUse);
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr);
         }
 
         public static bool IsConstant(this MetaCompilerAnnotations annots)

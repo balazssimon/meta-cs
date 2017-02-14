@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Declarations;
+using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
@@ -42,7 +43,7 @@ namespace MetaDslx.Compiler.Binding
             {
                 if (_lazyFactory == null)
                 {
-                    Interlocked.CompareExchange(ref _lazyFactory, _compilation.Language.CompilationFactory.CreateModelFactory(_compilation._lazyModelBuilder), null);
+                    Interlocked.CompareExchange(ref _lazyFactory, _compilation.Language.CompilationFactory.CreateModelFactory(_compilation._lazyModelBuilder, false), null);
                 }
                 return _lazyFactory;
             }
@@ -84,7 +85,11 @@ namespace MetaDslx.Compiler.Binding
         public IMetaSymbol BuildDeclarationSymbol(IMetaSymbol container, MergedDeclaration declaration)
         {
             MutableSymbol symbol = this.Factory.Create(declaration.Kind.ImmutableType);
-            symbol.MSet(symbol.MId.SymbolInfo.NameProperty, declaration.Name);
+            ModelProperty nameProperty = symbol.MId.SymbolInfo.NameProperty;
+            if (nameProperty != null)
+            {
+                symbol.MSet(symbol.MId.SymbolInfo.NameProperty, declaration.Name);
+            }
             MutableSymbol parent = container as MutableSymbol;
             if (parent != null)
             {
@@ -176,9 +181,10 @@ namespace MetaDslx.Compiler.Binding
             Debug.Assert(symbol != null);
 
             SymbolTreeBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
+            DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
             try
             {
-                visitor.Reset(symbol, declaration);
+                visitor.Reset(symbol, declaration, diagnostics);
                 foreach (var reference in declaration.SyntaxReferences)
                 {
                     var node = reference.GetSyntax();
@@ -187,6 +193,7 @@ namespace MetaDslx.Compiler.Binding
             }
             finally
             {
+                diagnostics.Free();
                 _symbolBuilderVisitorPool.Free(visitor);
             }
         }
@@ -195,16 +202,16 @@ namespace MetaDslx.Compiler.Binding
         {
             Debug.Assert(symbol != null);
 
-            Binder result = null;
-
             SymbolTreeBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
+            DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
             try
             {
-                visitor.Reset(symbol, null);
-                result = node.Accept(((object)visitor) as SyntaxVisitor<Binder>);
+                visitor.Reset(symbol, null, diagnostics);
+                node.Accept(visitor);
             }
             finally
             {
+                diagnostics.Free();
                 _symbolBuilderVisitorPool.Free(visitor);
             }
         }

@@ -92,7 +92,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				return this.factory.Main(namespaceDeclaration, eof, true);
 			}
 			
-			public override GreenNode VisitNameDef(SoalParser.NameDefContext context)
+			public override GreenNode VisitName(SoalParser.NameContext context)
 			{
 				if (context == null) return null;
 				SoalParser.IdentifierContext identifierContext = context.identifier();
@@ -101,24 +101,24 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					identifier = (IdentifierGreen)this.Visit(identifierContext);
 				}
-				GreenNode greenNode = this.factory.NameDef(identifier, true);
-				return greenNode;
-			}
-			
-			public override GreenNode VisitQualifiedNameDef(SoalParser.QualifiedNameDefContext context)
-			{
-				if (context == null) return null;
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
-				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
-				}
-				GreenNode greenNode = this.factory.QualifiedNameDef(qualifiedName, true);
+				GreenNode greenNode = this.factory.Name(identifier, true);
 				return greenNode;
 			}
 			
 			public override GreenNode VisitQualifiedName(SoalParser.QualifiedNameContext context)
+			{
+				if (context == null) return null;
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
+				{
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				}
+				GreenNode greenNode = this.factory.QualifiedName(qualifier, true);
+				return greenNode;
+			}
+			
+			public override GreenNode VisitQualifier(SoalParser.QualifierContext context)
 			{
 				if (context == null) return null;
 			    SoalParser.IdentifierContext[] identifierContext = context.identifier();
@@ -136,7 +136,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				if (identifier != null)
 				{
 				}
-				GreenNode greenNode = this.factory.QualifiedName(identifier, true);
+				GreenNode greenNode = this.factory.Qualifier(identifier, true);
 				return greenNode;
 			}
 			
@@ -161,25 +161,25 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				return this.factory.IdentifierList(identifier, true);
 			}
 			
-			public override GreenNode VisitQualifiedNameList(SoalParser.QualifiedNameListContext context)
+			public override GreenNode VisitQualifierList(SoalParser.QualifierListContext context)
 			{
 				if (context == null) return null;
-			    SoalParser.QualifiedNameContext[] qualifiedNameContext = context.qualifiedName();
+			    SoalParser.QualifierContext[] qualifierContext = context.qualifier();
 			    ITerminalNode[] tCommaContext = context.TComma();
-			    ArrayBuilder<GreenNode> qualifiedNameBuilder = ArrayBuilder<GreenNode>.GetInstance(qualifiedNameContext.Length+tCommaContext.Length);
-			    for (int i = 0; i < qualifiedNameContext.Length; i++)
+			    ArrayBuilder<GreenNode> qualifierBuilder = ArrayBuilder<GreenNode>.GetInstance(qualifierContext.Length+tCommaContext.Length);
+			    for (int i = 0; i < qualifierContext.Length; i++)
 			    {
-			        qualifiedNameBuilder.Add((QualifiedNameGreen)this.Visit(qualifiedNameContext[i]));
+			        qualifierBuilder.Add((QualifierGreen)this.Visit(qualifierContext[i]));
 			        if (i < tCommaContext.Length)
 			        {
-			            qualifiedNameBuilder.Add((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i]));
+			            qualifierBuilder.Add((InternalSyntaxToken)this.VisitTerminal(tCommaContext[i]));
 			        }
 			    }
-				InternalSeparatedSyntaxNodeList qualifiedName = InternalSeparatedSyntaxNodeList.Create(qualifiedNameBuilder.ToArrayAndFree());
-				if (qualifiedName != null)
+				InternalSeparatedSyntaxNodeList qualifier = InternalSeparatedSyntaxNodeList.Create(qualifierBuilder.ToArrayAndFree());
+				if (qualifier != null)
 				{
 				}
-				return this.factory.QualifiedNameList(qualifiedName, true);
+				return this.factory.QualifierList(qualifier, true);
 			}
 			
 			public override GreenNode VisitAnnotationList(SoalParser.AnnotationListContext context)
@@ -347,11 +347,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					annotationList = (AnnotationListGreen)this.Visit(annotationListContext);
 				}
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace());
-				SoalParser.QualifiedNameDefContext qualifiedNameDefContext = context.qualifiedNameDef();
-				QualifiedNameDefGreen qualifiedNameDef = null;
-				if (qualifiedNameDefContext != null)
+				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
+				QualifiedNameGreen qualifiedName = null;
+				if (qualifiedNameContext != null)
 				{
-					qualifiedNameDef = (QualifiedNameDefGreen)this.Visit(qualifiedNameDefContext);
+					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
 				}
 				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign());
 				SoalParser.IdentifierContext identifierContext = context.identifier();
@@ -373,7 +373,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					namespaceBody = (NamespaceBodyGreen)this.Visit(namespaceBodyContext);
 				}
-				GreenNode greenNode = this.factory.NamespaceDeclaration(annotationList, kNamespace, qualifiedNameDef, tAssign, identifier, tColon, stringLiteral, namespaceBody, true);
+				GreenNode greenNode = this.factory.NamespaceDeclaration(annotationList, kNamespace, qualifiedName, tAssign, identifier, tColon, stringLiteral, namespaceBody, true);
 				return greenNode;
 			}
 			
@@ -471,18 +471,18 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					annotationList = (AnnotationListGreen)this.Visit(annotationListContext);
 				}
 				InternalSyntaxToken kEnum = (InternalSyntaxToken)this.VisitTerminal(context.KEnum());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				SoalParser.EnumBodyContext enumBodyContext = context.enumBody();
 				EnumBodyGreen enumBody = null;
@@ -490,7 +490,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					enumBody = (EnumBodyGreen)this.Visit(enumBodyContext);
 				}
-				GreenNode greenNode = this.factory.EnumDeclaration(annotationList, kEnum, nameDef, tColon, qualifiedName, enumBody, true);
+				GreenNode greenNode = this.factory.EnumDeclaration(annotationList, kEnum, name, tColon, qualifier, enumBody, true);
 				return greenNode;
 			}
 			
@@ -538,13 +538,13 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					annotationList = (AnnotationListGreen)this.Visit(annotationListContext);
 				}
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
-				GreenNode greenNode = this.factory.EnumLiteral(annotationList, nameDef, true);
+				GreenNode greenNode = this.factory.EnumLiteral(annotationList, name, true);
 				return greenNode;
 			}
 			
@@ -558,18 +558,18 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					annotationList = (AnnotationListGreen)this.Visit(annotationListContext);
 				}
 				InternalSyntaxToken kStruct = (InternalSyntaxToken)this.VisitTerminal(context.KStruct());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				SoalParser.StructBodyContext structBodyContext = context.structBody();
 				StructBodyGreen structBody = null;
@@ -577,7 +577,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					structBody = (StructBodyGreen)this.Visit(structBodyContext);
 				}
-				GreenNode greenNode = this.factory.StructDeclaration(annotationList, kStruct, nameDef, tColon, qualifiedName, structBody, true);
+				GreenNode greenNode = this.factory.StructDeclaration(annotationList, kStruct, name, tColon, qualifier, structBody, true);
 				return greenNode;
 			}
 			
@@ -614,14 +614,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
 				}
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				GreenNode greenNode = this.factory.PropertyDeclaration(annotationList, typeReference, nameDef, tSemicolon, true);
+				GreenNode greenNode = this.factory.PropertyDeclaration(annotationList, typeReference, name, tSemicolon, true);
 				return greenNode;
 			}
 			
@@ -635,11 +635,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					annotationList = (AnnotationListGreen)this.Visit(annotationListContext);
 				}
 				InternalSyntaxToken kDatabase = (InternalSyntaxToken)this.VisitTerminal(context.KDatabase());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				SoalParser.DatabaseBodyContext databaseBodyContext = context.databaseBody();
 				DatabaseBodyGreen databaseBody = null;
@@ -647,7 +647,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					databaseBody = (DatabaseBodyGreen)this.Visit(databaseBodyContext);
 				}
-				GreenNode greenNode = this.factory.DatabaseDeclaration(annotationList, kDatabase, nameDef, databaseBody, true);
+				GreenNode greenNode = this.factory.DatabaseDeclaration(annotationList, kDatabase, name, databaseBody, true);
 				return greenNode;
 			}
 			
@@ -683,14 +683,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kEntity = (InternalSyntaxToken)this.VisitTerminal(context.KEntity());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				GreenNode greenNode = this.factory.EntityReference(kEntity, qualifiedName, tSemicolon, true);
+				GreenNode greenNode = this.factory.EntityReference(kEntity, qualifier, tSemicolon, true);
 				return greenNode;
 			}
 			
@@ -704,11 +704,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					annotationList = (AnnotationListGreen)this.Visit(annotationListContext);
 				}
 				InternalSyntaxToken kInterface = (InternalSyntaxToken)this.VisitTerminal(context.KInterface());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				SoalParser.InterfaceBodyContext interfaceBodyContext = context.interfaceBody();
 				InterfaceBodyGreen interfaceBody = null;
@@ -716,7 +716,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					interfaceBody = (InterfaceBodyGreen)this.Visit(interfaceBodyContext);
 				}
-				GreenNode greenNode = this.factory.InterfaceDeclaration(annotationList, kInterface, nameDef, interfaceBody, true);
+				GreenNode greenNode = this.factory.InterfaceDeclaration(annotationList, kInterface, name, interfaceBody, true);
 				return greenNode;
 			}
 			
@@ -767,11 +767,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					operationResult = (OperationResultGreen)this.Visit(operationResultContext);
 				}
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tOpenParen = (InternalSyntaxToken)this.VisitTerminal(context.TOpenParen());
 				SoalParser.ParameterListContext parameterListContext = context.parameterList();
@@ -782,13 +782,13 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				}
 				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen());
 				InternalSyntaxToken kThrows = (InternalSyntaxToken)this.VisitTerminal(context.KThrows());
-				SoalParser.QualifiedNameListContext qualifiedNameListContext = context.qualifiedNameList();
-				QualifiedNameListGreen qualifiedNameList = null;
-				if (qualifiedNameListContext != null)
+				SoalParser.QualifierListContext qualifierListContext = context.qualifierList();
+				QualifierListGreen qualifierList = null;
+				if (qualifierListContext != null)
 				{
-					qualifiedNameList = (QualifiedNameListGreen)this.Visit(qualifiedNameListContext);
+					qualifierList = (QualifierListGreen)this.Visit(qualifierListContext);
 				}
-				return this.factory.OperationHead(annotationList, operationResult, nameDef, tOpenParen, parameterList, tCloseParen, kThrows, qualifiedNameList, true);
+				return this.factory.OperationHead(annotationList, operationResult, name, tOpenParen, parameterList, tCloseParen, kThrows, qualifierList, true);
 			}
 			
 			public override GreenNode VisitParameterList(SoalParser.ParameterListContext context)
@@ -827,13 +827,13 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
 				}
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
-				GreenNode greenNode = this.factory.Parameter(annotationList, typeReference, nameDef, true);
+				GreenNode greenNode = this.factory.Parameter(annotationList, typeReference, name, true);
 				return greenNode;
 			}
 			
@@ -864,18 +864,18 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 				}
 				InternalSyntaxToken kComponent = (InternalSyntaxToken)this.VisitTerminal(context.KComponent());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				SoalParser.ComponentBodyContext componentBodyContext = context.componentBody();
 				ComponentBodyGreen componentBody = null;
@@ -883,7 +883,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					componentBody = (ComponentBodyGreen)this.Visit(componentBodyContext);
 				}
-				GreenNode greenNode = this.factory.ComponentDeclaration(kAbstract, kComponent, nameDef, tColon, qualifiedName, componentBody, true);
+				GreenNode greenNode = this.factory.ComponentDeclaration(kAbstract, kComponent, name, tColon, qualifier, componentBody, true);
 				return greenNode;
 			}
 			
@@ -957,17 +957,17 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kService = (InternalSyntaxToken)this.VisitTerminal(context.KService());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				SoalParser.ComponentServiceOrReferenceBodyContext componentServiceOrReferenceBodyContext = context.componentServiceOrReferenceBody();
 				ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody = null;
@@ -975,7 +975,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					componentServiceOrReferenceBody = (ComponentServiceOrReferenceBodyGreen)this.Visit(componentServiceOrReferenceBodyContext);
 				}
-				GreenNode greenNode = this.factory.ComponentService(kService, qualifiedName, nameDef, componentServiceOrReferenceBody, true);
+				GreenNode greenNode = this.factory.ComponentService(kService, qualifier, name, componentServiceOrReferenceBody, true);
 				return greenNode;
 			}
 			
@@ -983,17 +983,17 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kReference = (InternalSyntaxToken)this.VisitTerminal(context.KReference());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				SoalParser.ComponentServiceOrReferenceBodyContext componentServiceOrReferenceBodyContext = context.componentServiceOrReferenceBody();
 				ComponentServiceOrReferenceBodyGreen componentServiceOrReferenceBody = null;
@@ -1001,7 +1001,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					componentServiceOrReferenceBody = (ComponentServiceOrReferenceBodyGreen)this.Visit(componentServiceOrReferenceBodyContext);
 				}
-				GreenNode greenNode = this.factory.ComponentReference(kReference, qualifiedName, nameDef, componentServiceOrReferenceBody, true);
+				GreenNode greenNode = this.factory.ComponentReference(kReference, qualifier, name, componentServiceOrReferenceBody, true);
 				return greenNode;
 			}
 			
@@ -1034,14 +1034,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kBinding = (InternalSyntaxToken)this.VisitTerminal(context.KBinding());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				return this.factory.ComponentServiceOrReferenceElement(kBinding, qualifiedName, tSemicolon, true);
+				return this.factory.ComponentServiceOrReferenceElement(kBinding, qualifier, tSemicolon, true);
 			}
 			
 			public override GreenNode VisitComponentProperty(SoalParser.ComponentPropertyContext context)
@@ -1053,14 +1053,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					typeReference = (TypeReferenceGreen)this.Visit(typeReferenceContext);
 				}
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				GreenNode greenNode = this.factory.ComponentProperty(typeReference, nameDef, tSemicolon, true);
+				GreenNode greenNode = this.factory.ComponentProperty(typeReference, name, tSemicolon, true);
 				return greenNode;
 			}
 			
@@ -1068,14 +1068,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kImplementation = (InternalSyntaxToken)this.VisitTerminal(context.KImplementation());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				GreenNode greenNode = this.factory.ComponentImplementation(kImplementation, nameDef, tSemicolon, true);
+				GreenNode greenNode = this.factory.ComponentImplementation(kImplementation, name, tSemicolon, true);
 				return greenNode;
 			}
 			
@@ -1083,14 +1083,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kLanguage = (InternalSyntaxToken)this.VisitTerminal(context.KLanguage());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				GreenNode greenNode = this.factory.ComponentLanguage(kLanguage, nameDef, tSemicolon, true);
+				GreenNode greenNode = this.factory.ComponentLanguage(kLanguage, name, tSemicolon, true);
 				return greenNode;
 			}
 			
@@ -1098,18 +1098,18 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kComposite = (InternalSyntaxToken)this.VisitTerminal(context.KComposite());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				SoalParser.CompositeBodyContext compositeBodyContext = context.compositeBody();
 				CompositeBodyGreen compositeBody = null;
@@ -1117,7 +1117,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					compositeBody = (CompositeBodyGreen)this.Visit(compositeBodyContext);
 				}
-				GreenNode greenNode = this.factory.CompositeDeclaration(kComposite, nameDef, tColon, qualifiedName, compositeBody, true);
+				GreenNode greenNode = this.factory.CompositeDeclaration(kComposite, name, tColon, qualifier, compositeBody, true);
 				return greenNode;
 			}
 			
@@ -1139,18 +1139,18 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kAssembly = (InternalSyntaxToken)this.VisitTerminal(context.KAssembly());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				SoalParser.CompositeBodyContext compositeBodyContext = context.compositeBody();
 				CompositeBodyGreen compositeBody = null;
@@ -1158,7 +1158,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					compositeBody = (CompositeBodyGreen)this.Visit(compositeBodyContext);
 				}
-				GreenNode greenNode = this.factory.AssemblyDeclaration(kAssembly, nameDef, tColon, qualifiedName, compositeBody, true);
+				GreenNode greenNode = this.factory.AssemblyDeclaration(kAssembly, name, tColon, qualifier, compositeBody, true);
 				return greenNode;
 			}
 			
@@ -1230,14 +1230,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kComponent = (InternalSyntaxToken)this.VisitTerminal(context.KComponent());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				GreenNode greenNode = this.factory.CompositeComponent(kComponent, qualifiedName, tSemicolon, true);
+				GreenNode greenNode = this.factory.CompositeComponent(kComponent, qualifier, tSemicolon, true);
 				return greenNode;
 			}
 			
@@ -1266,36 +1266,36 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			public override GreenNode VisitWireSource(SoalParser.WireSourceContext context)
 			{
 				if (context == null) return null;
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
-				return this.factory.WireSource(qualifiedName, true);
+				return this.factory.WireSource(qualifier, true);
 			}
 			
 			public override GreenNode VisitWireTarget(SoalParser.WireTargetContext context)
 			{
 				if (context == null) return null;
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
-				return this.factory.WireTarget(qualifiedName, true);
+				return this.factory.WireTarget(qualifier, true);
 			}
 			
 			public override GreenNode VisitDeploymentDeclaration(SoalParser.DeploymentDeclarationContext context)
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kDeployment = (InternalSyntaxToken)this.VisitTerminal(context.KDeployment());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				SoalParser.DeploymentBodyContext deploymentBodyContext = context.deploymentBody();
 				DeploymentBodyGreen deploymentBody = null;
@@ -1303,7 +1303,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					deploymentBody = (DeploymentBodyGreen)this.Visit(deploymentBodyContext);
 				}
-				GreenNode greenNode = this.factory.DeploymentDeclaration(kDeployment, nameDef, deploymentBody, true);
+				GreenNode greenNode = this.factory.DeploymentDeclaration(kDeployment, name, deploymentBody, true);
 				return greenNode;
 			}
 			
@@ -1359,11 +1359,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kEnvironment = (InternalSyntaxToken)this.VisitTerminal(context.KEnvironment());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				SoalParser.EnvironmentBodyContext environmentBodyContext = context.environmentBody();
 				EnvironmentBodyGreen environmentBody = null;
@@ -1371,7 +1371,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					environmentBody = (EnvironmentBodyGreen)this.Visit(environmentBodyContext);
 				}
-				GreenNode greenNode = this.factory.EnvironmentDeclaration(kEnvironment, nameDef, environmentBody, true);
+				GreenNode greenNode = this.factory.EnvironmentDeclaration(kEnvironment, name, environmentBody, true);
 				return greenNode;
 			}
 			
@@ -1403,14 +1403,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kRuntime = (InternalSyntaxToken)this.VisitTerminal(context.KRuntime());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				GreenNode greenNode = this.factory.RuntimeDeclaration(kRuntime, nameDef, tSemicolon, true);
+				GreenNode greenNode = this.factory.RuntimeDeclaration(kRuntime, name, tSemicolon, true);
 				return greenNode;
 			}
 			
@@ -1436,14 +1436,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kAssembly = (InternalSyntaxToken)this.VisitTerminal(context.KAssembly());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				GreenNode greenNode = this.factory.AssemblyReference(kAssembly, qualifiedName, tSemicolon, true);
+				GreenNode greenNode = this.factory.AssemblyReference(kAssembly, qualifier, tSemicolon, true);
 				return greenNode;
 			}
 			
@@ -1451,14 +1451,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kDatabase = (InternalSyntaxToken)this.VisitTerminal(context.KDatabase());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				GreenNode greenNode = this.factory.DatabaseReference(kDatabase, qualifiedName, tSemicolon, true);
+				GreenNode greenNode = this.factory.DatabaseReference(kDatabase, qualifier, tSemicolon, true);
 				return greenNode;
 			}
 			
@@ -1466,11 +1466,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kBinding = (InternalSyntaxToken)this.VisitTerminal(context.KBinding());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				SoalParser.BindingBodyContext bindingBodyContext = context.bindingBody();
 				BindingBodyGreen bindingBody = null;
@@ -1478,7 +1478,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					bindingBody = (BindingBodyGreen)this.Visit(bindingBodyContext);
 				}
-				GreenNode greenNode = this.factory.BindingDeclaration(kBinding, nameDef, bindingBody, true);
+				GreenNode greenNode = this.factory.BindingDeclaration(kBinding, name, bindingBody, true);
 				return greenNode;
 			}
 			
@@ -1929,18 +1929,18 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kEndpoint = (InternalSyntaxToken)this.VisitTerminal(context.KEndpoint());
-				SoalParser.NameDefContext nameDefContext = context.nameDef();
-				NameDefGreen nameDef = null;
-				if (nameDefContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					nameDef = (NameDefGreen)this.Visit(nameDefContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				SoalParser.EndpointBodyContext endpointBodyContext = context.endpointBody();
 				EndpointBodyGreen endpointBody = null;
@@ -1948,7 +1948,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					endpointBody = (EndpointBodyGreen)this.Visit(endpointBodyContext);
 				}
-				GreenNode greenNode = this.factory.EndpointDeclaration(kEndpoint, nameDef, tColon, qualifiedName, endpointBody, true);
+				GreenNode greenNode = this.factory.EndpointDeclaration(kEndpoint, name, tColon, qualifier, endpointBody, true);
 				return greenNode;
 			}
 			
@@ -2004,14 +2004,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kBinding = (InternalSyntaxToken)this.VisitTerminal(context.KBinding());
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				QualifiedNameGreen qualifiedName = null;
-				if (qualifiedNameContext != null)
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					qualifiedName = (QualifiedNameGreen)this.Visit(qualifiedNameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
-				return this.factory.EndpointBindingProperty(kBinding, qualifiedName, tSemicolon, true);
+				return this.factory.EndpointBindingProperty(kBinding, qualifier, tSemicolon, true);
 			}
 			
 			public override GreenNode VisitEndpointAddressProperty(SoalParser.EndpointAddressPropertyContext context)
@@ -2091,11 +2091,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					GreenNode objectType = this.factory.SimpleType((ObjectTypeGreen)this.Visit(objectTypeContext), true);
 					return objectType;
 				}
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				if (qualifiedNameContext != null) 
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				if (qualifierContext != null) 
 				{
-					GreenNode qualifiedName = this.factory.SimpleType((QualifiedNameGreen)this.Visit(qualifiedNameContext), true);
-					return qualifiedName;
+					GreenNode qualifier = this.factory.SimpleType((QualifierGreen)this.Visit(qualifierContext), true);
+					return qualifier;
 				}
 				return null;
 			}
@@ -2127,11 +2127,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					GreenNode objectType = this.factory.ReferenceType((ObjectTypeGreen)this.Visit(objectTypeContext), true);
 					return objectType;
 				}
-				SoalParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
-				if (qualifiedNameContext != null) 
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				if (qualifierContext != null) 
 				{
-					GreenNode qualifiedName = this.factory.ReferenceType((QualifiedNameGreen)this.Visit(qualifiedNameContext), true);
-					return qualifiedName;
+					GreenNode qualifier = this.factory.ReferenceType((QualifierGreen)this.Visit(qualifierContext), true);
+					return qualifier;
 				}
 				return null;
 			}
@@ -2148,7 +2148,8 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					objectType = (InternalSyntaxToken)this.VisitTerminal(context.KString());
 				}
-				return this.factory.ObjectType(objectType, true);
+				GreenNode greenNode = this.factory.ObjectType(objectType, true);
+				return greenNode;
 			}
 			
 			public override GreenNode VisitValueType(SoalParser.ValueTypeContext context)
@@ -2195,21 +2196,24 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					valueType = (InternalSyntaxToken)this.VisitTerminal(context.ITimeSpan());
 				}
-				return this.factory.ValueType(valueType, true);
+				GreenNode greenNode = this.factory.ValueType(valueType, true);
+				return greenNode;
 			}
 			
 			public override GreenNode VisitVoidType(SoalParser.VoidTypeContext context)
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kVoid = (InternalSyntaxToken)this.VisitTerminal(context.KVoid());
-				return this.factory.VoidType(kVoid, true);
+				GreenNode greenNode = this.factory.VoidType(kVoid, true);
+				return greenNode;
 			}
 			
 			public override GreenNode VisitOnewayType(SoalParser.OnewayTypeContext context)
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kOneway = (InternalSyntaxToken)this.VisitTerminal(context.KOneway());
-				return this.factory.OnewayType(kOneway, true);
+				GreenNode greenNode = this.factory.OnewayType(kOneway, true);
+				return greenNode;
 			}
 			
 			public override GreenNode VisitOperationReturnType(SoalParser.OperationReturnTypeContext context)

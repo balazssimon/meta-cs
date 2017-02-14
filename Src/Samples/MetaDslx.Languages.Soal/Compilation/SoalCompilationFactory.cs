@@ -26,9 +26,9 @@ namespace MetaDslx.Languages.Soal
             return new SoalAnonymousTypeManager();
         }
 
-        public override RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
+        public override RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
-            return SoalDeclarationTreeBuilder.ForTree((SoalSyntaxTree)syntaxTree, scriptClassName, isSubmission);
+            return SoalDeclarationTreeBuilderVisitor.ForTree((SoalSyntaxTree)syntaxTree, scriptClassName, isSubmission);
         }
 
         public override SymbolTreeBuilderVisitor CreateSymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder)
@@ -66,9 +66,9 @@ namespace MetaDslx.Languages.Soal
             return result;
         }
 
-        public override ModelFactory CreateModelFactory(MutableModel modelBuilder)
+        public override ModelFactory CreateModelFactory(MutableModel modelBuilder, bool weak)
         {
-            return new SoalFactory(modelBuilder);
+            return new SoalFactory(modelBuilder, weak ? ModelFactoryFlags.CreateWeakSymbols : ModelFactoryFlags.CreateStrongSymbols);
         }
 
         public override ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType)

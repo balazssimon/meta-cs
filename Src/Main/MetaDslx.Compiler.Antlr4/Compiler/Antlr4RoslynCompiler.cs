@@ -45,8 +45,9 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public string GeneratedFeature { get; private set; }
 
         public string GeneratedDeclarationTreeBuilder { get; private set; }
-        public string GeneratedSymbolBuilderVisitor { get; private set; }
+        public string GeneratedSymbolTreeBuilderVisitor { get; private set; }
         public string GeneratedBinderFactoryVisitor { get; private set; }
+        public string GeneratedBindVisitor { get; private set; }
 
         public Antlr4RoslynCompiler(string source, string defaultNamespace, string outputDirectory, string fileName)
         {
@@ -104,8 +105,9 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.GeneratedParseOptions = generator.GenerateParseOptions();
             this.GeneratedFeature = generator.GenerateFeature();
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
-            this.GeneratedSymbolBuilderVisitor = generator.GenerateSymbolTreeBuilderVisitor();
+            this.GeneratedSymbolTreeBuilderVisitor = generator.GenerateSymbolTreeBuilderVisitor();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
+            this.GeneratedBindVisitor = generator.GenerateBindVisitor();
         }
 
         private void SimplifyElements()
@@ -175,32 +177,6 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             }
         }
 
-        private bool SimplifyElement(Antlr4ParserRuleElement elem)
-        {
-            /*if (!elem.IsList && !elem.IsBlock && !elem.IsToken)
-            {
-                var elemRule = this.Grammar.ParserRules.FirstOrDefault(r => r.Name == elem.Type);
-                if (elemRule != null)
-                {
-                    if (elemRule.Elements.Count == 1 && elemRule.Elements[0].IsList && elemRule.Elements[0].IsSeparated)
-                    {
-                        var listElem = elemRule.Elements[0];
-                        elem.IsList = listElem.IsList;
-                        elem.IsSeparated = listElem.IsSeparated;
-                        elem.IsOptional |= listElem.IsOptional;
-                        elem.EndToken = listElem.EndToken;
-                        elem.OriginalType = elem.Type;
-                        elem.Type = listElem.Type;
-                        elem.Separator = listElem.Separator;
-                        elem.IsSimplified = true;
-                        elem.Annotations = listElem.Annotations;
-                        return true;
-                    }
-                }
-            }*/
-            return false;
-        }
-
         private bool CollectHasAnnotationFlags(Antlr4ParserRule rule)
         {
             bool foundElemFlag = false;
@@ -225,6 +201,32 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 }
             }
             return foundElemFlag;
+        }
+
+        private bool SimplifyElement(Antlr4ParserRuleElement elem)
+        {
+            /*if (!elem.IsList && !elem.IsBlock && !elem.IsToken)
+            {
+                var elemRule = this.Grammar.ParserRules.FirstOrDefault(r => r.Name == elem.Type);
+                if (elemRule != null)
+                {
+                    if (elemRule.Elements.Count == 1 && elemRule.Elements[0].IsList && elemRule.Elements[0].IsSeparated)
+                    {
+                        var listElem = elemRule.Elements[0];
+                        elem.IsList = listElem.IsList;
+                        elem.IsSeparated = listElem.IsSeparated;
+                        elem.IsOptional |= listElem.IsOptional;
+                        elem.EndToken = listElem.EndToken;
+                        elem.OriginalType = elem.Type;
+                        elem.Type = listElem.Type;
+                        elem.Separator = listElem.Separator;
+                        elem.IsSimplified = true;
+                        elem.Annotations = listElem.Annotations;
+                        return true;
+                    }
+                }
+            }*/
+            return false;
         }
 
         public static string FixedTokenToCSharpString(string value)
@@ -1341,6 +1343,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.Annotations = MetaCompilerAnnotations.Empty;
         }
         public MetaCompilerAnnotations Annotations { get; internal set; }
+        public bool ContainsDeclarationTreeAnnotations { get; internal set; }
         public bool ContainsAnnotations { get; internal set; }
     }
     public class Antlr4Grammar : Antlr4AnnotatedObject

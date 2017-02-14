@@ -69,29 +69,36 @@ namespace MetaDslx.Compiler.Binding
                 Binder outerBinder = this.GetContainingBinder(parent); // a binder for the body of the symbol enclosing this symbol
                 var parentSymbol = this.GetContainingSymbol(outerBinder, parent);
                 var symbol = this.GetChildSymbol(name, parent.Span, parentSymbol, kind);
-                var parentBinder = outerBinder;
-                if (symbol.MParent != null && symbol.MParent != parentSymbol)
+                if (symbol == null)
                 {
-                    List<IMetaSymbol> ancestors = new List<IMetaSymbol>();
-                    ancestors.Add(symbol.MParent);
-                    int index = 0;
-                    while (index < ancestors.Count && ancestors[index] != parentSymbol)
-                    {
-                        var currentSymbol = ancestors[index];
-                        if (currentSymbol.MParent != null)
-                        {
-                            ancestors.Add(currentSymbol.MParent);
-                        }
-                        ++index;
-                    }
-                    for (int i = 1; i < ancestors.Count; i++)
-                    {
-                        var currentSymbol = ancestors[i];
-                        parentBinder = this.CreateContainerBinder(currentSymbol, parentBinder);
-                    }
+                    return outerBinder;
                 }
-                resultBinder = this.CreateContainerBinder(symbol, parentBinder);
-                _binderFactory.TryAddBinder(parent, usage, resultBinder);
+                else
+                {
+                    var parentBinder = outerBinder;
+                    if (symbol.MParent != null && symbol.MParent != parentSymbol)
+                    {
+                        List<IMetaSymbol> ancestors = new List<IMetaSymbol>();
+                        ancestors.Add(symbol.MParent);
+                        int index = 0;
+                        while (index < ancestors.Count && ancestors[index] != parentSymbol)
+                        {
+                            var currentSymbol = ancestors[index];
+                            if (currentSymbol.MParent != null)
+                            {
+                                ancestors.Add(currentSymbol.MParent);
+                            }
+                            ++index;
+                        }
+                        for (int i = 1; i < ancestors.Count; i++)
+                        {
+                            var currentSymbol = ancestors[i];
+                            parentBinder = this.CreateContainerBinder(currentSymbol, parentBinder);
+                        }
+                    }
+                    resultBinder = this.CreateContainerBinder(symbol, parentBinder);
+                    _binderFactory.TryAddBinder(parent, usage, resultBinder);
+                }
             }
             return resultBinder;
         }
@@ -143,8 +150,12 @@ namespace MetaDslx.Compiler.Binding
 
         protected virtual IMetaSymbol GetChildSymbol(string childName, TextSpan childSpan, IMetaSymbol container, Type kind)
         {
-            foreach (IMetaSymbol sym in container.GetChildren(childName))
+            foreach (IMetaSymbol sym in container.MChildren)
             {
+                if (childName != null && sym.MName != childName)
+                {
+                    continue;
+                }
                 if (kind != null && sym.IsOfKind(kind))
                 {
                     continue;

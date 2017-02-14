@@ -51,6 +51,7 @@
     <Compile Include="Binding\BindVisitor.cs" />
     <Compile Include="Binding\BuckStopsHereBinder.cs" />
     <Compile Include="Binding\Conversions.cs" />
+    <Compile Include="Binding\DeclarationTreeInfo.cs" />
     <Compile Include="Binding\Imports.cs" />
     <Compile Include="Binding\InContainerBinder.cs" />
     <Compile Include="Binding\LookupResult.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Binding\SpeculativeSyntaxTreeSemanticModel.cs" />
     <Compile Include="Binding\SymbolTreeBuilder.cs" />
     <Compile Include="Binding\SymbolTreeBuilderVisitor.cs" />
+    <Compile Include="Binding\SymbolTreeInfo.cs" />
     <Compile Include="Binding\SyntaxTreeSemanticModel.cs" />
     <Compile Include="Compilation\CandidateReason.cs" />
     <Compile Include="Compilation\Compilation.cs" />
@@ -100,7 +102,7 @@
     <Compile Include="Declarations\Declaration.cs" />
     <Compile Include="Declarations\DeclarationTable.Cache.cs" />
     <Compile Include="Declarations\DeclarationTable.cs" />
-    <Compile Include="Declarations\DeclarationTreeBuilder.cs" />
+    <Compile Include="Binding\DeclarationTreeBuilderVisitor.cs" />
     <Compile Include="References\MetadataReferenceResolver.cs" />
     <Compile Include="References\UnresolvedMetadataReference.cs" />
     <Compile Include="Binding\AnonymousTypeManager.cs" />

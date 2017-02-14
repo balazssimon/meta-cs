@@ -31,7 +31,7 @@ namespace MetaDslx.Languages.Soal.Test
                 Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
             }
             Soal.Symbols.SoalDescriptor.Initialize();
-            var rootDecl = SoalDeclarationTreeBuilder.ForTree(tree, string.Empty, false);
+            var rootDecl = SoalDeclarationTreeBuilderVisitor.ForTree(tree, string.Empty, false);
             Console.WriteLine(rootDecl);
             Console.WriteLine("----");
 
@@ -64,17 +64,17 @@ namespace MetaDslx.Languages.Soal.Test
             Console.WriteLine(sm);
 
             var root = (MainSyntax)tree.GetRoot();
-            var ns = root.NamespaceDeclaration[0].QualifiedNameDef;
+            var ns = root.NamespaceDeclaration[0].QualifiedName;
 
             var nsInfo = sm.GetSymbolInfo(ns);
             Console.WriteLine(nsInfo.Symbol);
 
-            var _struct = root.NamespaceDeclaration[0].NamespaceBody.Declaration[0].StructDeclaration.NameDef;
+            var _struct = root.NamespaceDeclaration[0].NamespaceBody.Declaration[0].StructDeclaration.Name;
 
             var _structInfo = sm.GetSymbolInfo(_struct);
             Console.WriteLine(_structInfo.Symbol);
 
-            var _structBody = root.NamespaceDeclaration[0].NamespaceBody.Declaration[0].StructDeclaration.StructBody.PropertyDeclaration[0].NameDef;
+            var _structBody = root.NamespaceDeclaration[0].NamespaceBody.Declaration[0].StructDeclaration.StructBody.PropertyDeclaration[0].Name;
 
             var _structBodyInfo = sm.GetSymbolInfo(_structBody);
             Console.WriteLine(_structBodyInfo.Symbol);
@@ -83,7 +83,7 @@ namespace MetaDslx.Languages.Soal.Test
             Console.WriteLine(symbolsInMathStruct);
 
             Console.WriteLine(comp.Model);
-            //Console.WriteLine(comp.Model);
+            Console.WriteLine(comp.Model);
 
             /*}
             catch(Exception ex)

@@ -19,8 +19,8 @@ namespace MetaDslx.Compiler
     {
         internal static readonly CompilationFactory Default = new DefaultCompilationFactory();
 
-        public abstract RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
-        public abstract ModelFactory CreateModelFactory(MutableModel modelBuilder);
+        public abstract RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
+        public abstract ModelFactory CreateModelFactory(MutableModel modelBuilder, bool weak);
 
         public abstract SymbolTreeBuilderVisitor CreateSymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder);
         public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
@@ -60,7 +60,7 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override RootSingleDeclaration CreateDeclarationTreeBuilder(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
+        public override RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             throw ExceptionUtilities.Unreachable;
         }
@@ -75,7 +75,7 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override ModelFactory CreateModelFactory(MutableModel modelBuilder)
+        public override ModelFactory CreateModelFactory(MutableModel modelBuilder, bool weak)
         {
             throw new NotImplementedException();
         }

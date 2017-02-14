@@ -214,7 +214,7 @@ namespace MetaDslx.Compiler.Declarations
             IDictionary<SyntaxTree, Lazy<RootSingleDeclaration>> declMapBuilder,
             ref DeclarationTable declTable)
         {
-            var lazyRoot = new Lazy<RootSingleDeclaration>(() => tree.Language.CompilationFactory.CreateDeclarationTreeBuilder(tree, scriptClassName, isSubmission));
+            var lazyRoot = new Lazy<RootSingleDeclaration>(() => tree.Language.CompilationFactory.CreateDeclarationTree(tree, scriptClassName, isSubmission));
             declMapBuilder.Add(tree, lazyRoot); // Callers are responsible for checking for existing entries.
             declTable = declTable.AddRootDeclaration(lazyRoot);
         }

@@ -10,17 +10,6 @@ namespace MetaDslx.Compiler.Symbols
 {
     public static class CompilerAttachedMethods
     {
-        public static IEnumerable<IMetaSymbol> GetChildren(this IMetaSymbol symbol, string name)
-        {
-            foreach (var child in symbol.MChildren)
-            {
-                if (name == null || child.MName == name)
-                {
-                    yield return child; 
-                }
-            }
-        }
-
         public static bool IsOfKind(this IMetaSymbol symbol, Type kind)
         {
             return kind.Equals(symbol.MId.SymbolInfo.ImmutableType);

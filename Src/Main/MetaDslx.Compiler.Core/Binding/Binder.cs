@@ -113,15 +113,15 @@ namespace MetaDslx.Compiler.Binding
             get { return true; }
         }
 
-        public virtual IMetaSymbol Bind(SyntaxNode node, DiagnosticBag diagnostics)
+        public virtual Optional<object> Bind(RedNode node, DiagnosticBag diagnostics)
         {
             BindVisitor visitor = _bindVisitorPool.Allocate();
             try
             {
-                visitor.Reset(diagnostics, false);
-                IMetaSymbol symbol = node.Accept(visitor);
+                visitor.Reset(diagnostics, node);
+                Optional<object> result = visitor.Bind();
                 visitor.Free();
-                return symbol;
+                return result;
             }
             finally
             {

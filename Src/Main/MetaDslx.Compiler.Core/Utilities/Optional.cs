@@ -8,6 +8,8 @@ namespace MetaDslx.Compiler.Utilities
     /// <typeparam name="T"></typeparam>
     public class Optional<T>
     {
+        public static Optional<T> Default = new Optional<T>(default(T));
+
         private readonly bool _hasValue;
         private readonly T _value;
 

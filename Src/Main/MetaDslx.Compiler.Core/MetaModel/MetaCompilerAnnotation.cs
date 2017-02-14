@@ -14,33 +14,37 @@ namespace MetaDslx.Compiler.MetaModel
         public const string Id = "MetaDslx.MetaAnnotations";
 
         public const string Identifier = "Identifier";
-        public const string Name = "Name";
         public const string Qualifier = "Qualifier";
-        public const string NameDef = "NameDef";
+        public const string Value = "Value";
+        public const string Constant = "Constant";
+
+        public const string Property = "Property";
+        public const string Name = "Name";
+        public const string Body = "Body";
+
+        public const string RootScope = "RootScope";
+        /*public const string NameDef = "NameDef";
         public const string TypeDef = "TypeDef";
         public const string NameCtr = "NameCtr";
         public const string TypeCtr = "TypeCtr";
         public const string NameUse = "NameUse";
-        public const string TypeUse = "TypeUse";
-        public const string RootScope = "RootScope";
-        public const string Scope = "Scope";
+        public const string TypeUse = "TypeUse";*/
         public const string Symbol = "Symbol";
+        public const string SymbolUse = "SymbolUse";
+        public const string SymbolCtr = "SymbolCtr";
         public const string SymbolType = "SymbolType";
-        public const string PreDefSymbol = "PreDefSymbol";
-        public const string Property = "Property";
-        public const string Value = "Value";
-        public const string Constant = "Constant";
-        public const string Body = "Body";
 
         public static readonly string[] SemanticAnnotations = 
             {
-                Name, Qualifier, NameDef, TypeDef, NameCtr, TypeCtr,
-                NameUse, TypeUse, Scope, Symbol, SymbolType, PreDefSymbol, Property
+                Name, Qualifier, Symbol, SymbolUse, SymbolCtr,
+                SymbolType, Property
             };
+        /*
         public static readonly string[] DeclarationTreeEntry = { NameDef, TypeDef };
-        public static readonly string[] ScopeBoundary = { NameDef, TypeDef, NameCtr, TypeCtr, Symbol, PreDefSymbol, Scope };
-        public static readonly string[] SymbolBoundary = { NameDef, TypeDef, NameCtr, TypeCtr, NameUse, TypeUse, Symbol, PreDefSymbol, Scope };
+        public static readonly string[] ScopeBoundary = { NameDef, TypeDef, NameCtr, TypeCtr, Symbol };
+        public static readonly string[] SymbolBoundary = { NameDef, TypeDef, NameCtr, TypeCtr, NameUse, TypeUse, Symbol };
         public static readonly string[] VisitBoundary = { Name, Qualifier };
+        */
 
         public static string GetDefaultProperty(string annotationType)
         {
@@ -65,15 +69,16 @@ namespace MetaDslx.Compiler.MetaModel
 
         static MetaCompilerAnnotationInfo()
         {
-            DefaultProperties.Add(NameDef, "symbolType");
+            /*DefaultProperties.Add(NameDef, "symbolType");
             DefaultProperties.Add(TypeDef, "symbolType");
             DefaultProperties.Add(NameCtr, "symbolType");
             DefaultProperties.Add(TypeCtr, "symbolType");
             DefaultProperties.Add(NameUse, "symbolTypes");
-            DefaultProperties.Add(TypeUse, "symbolTypes");
+            DefaultProperties.Add(TypeUse, "symbolTypes");*/
             DefaultProperties.Add(RootScope, "symbolType");
-            DefaultProperties.Add(Scope, "symbolType");
             DefaultProperties.Add(Symbol, "symbolType");
+            DefaultProperties.Add(SymbolUse, "symbolType");
+            DefaultProperties.Add(SymbolCtr, "symbolType");
             DefaultProperties.Add(SymbolType, "symbolType");
             DefaultProperties.Add(Property, "name");
         }

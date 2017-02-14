@@ -48,7 +48,7 @@ annotationPropertyValue
 	| typeofValue
 	;
 
-                                                                      
+                                                                     
 namespaceDeclaration : annotationList? KNamespace qualifiedName TAssign (                         identifier TColon)?                       stringLiteral namespaceBody;
 
       
@@ -59,60 +59,60 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 
 // Enums
 
-              
-enumDeclaration : annotationList? KEnum name (TColon                                               qualifier)? enumBody;
+             
+enumDeclaration : annotationList? KEnum name (TColon                                      qualifier)? enumBody;
 
      
 enumBody: TOpenBrace enumLiterals? TCloseBrace;
 enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 
                        
-                     
+                    
 enumLiteral : annotationList? name;
 
 // Structs and exceptions
 
-                
-structDeclaration : annotationList? KStruct name (TColon                                                 qualifier)? structBody;
+               
+structDeclaration : annotationList? KStruct name (TColon                                        qualifier)? structBody;
 
      
 structBody : TOpenBrace propertyDeclaration* TCloseBrace;
 
                      
-                  
+                 
 propertyDeclaration : annotationList?                 typeReference name TSemicolon;
 
 
 // Database
 
-                  
+                 
 databaseDeclaration : annotationList? KDatabase name databaseBody;
 
      
 databaseBody : TOpenBrace entityReference* operationDeclaration* TCloseBrace;
 
                    
-entityReference : KEntity                  qualifier TSemicolon;
+entityReference : KEntity                    qualifier TSemicolon;
 
 
 // Interface
 
-                   
+                  
 interfaceDeclaration : annotationList? KInterface name interfaceBody;
 
      
 interfaceBody : TOpenBrace operationDeclaration* TCloseBrace;
 
                      
-                   
+                  
 operationDeclaration : operationHead TSemicolon;
 
-operationHead : annotationList? operationResult name TOpenParen parameterList? TCloseParen (KThrows                                        qualifierList)?;
+operationHead : annotationList? operationResult name TOpenParen parameterList? TCloseParen (KThrows                                          qualifierList)?;
 
 parameterList : parameter (TComma parameter)*;
 
                      
-                        
+                       
 parameter : annotationList?                 typeReference name;
 
                  
@@ -121,8 +121,8 @@ operationResult : returnAnnotationList? operationReturnType;
 
 // Component
 
-                   
-componentDeclaration :                                       KAbstract? KComponent name (TColon                                                         qualifier)? componentBody;
+                  
+componentDeclaration :                                       KAbstract? KComponent name (TColon                                                qualifier)? componentBody;
 
      
 componentBody : TOpenBrace componentElements? TCloseBrace;
@@ -138,11 +138,11 @@ componentElement
 	;
 
                    
-                 
-componentService : KService                                          qualifier name? componentServiceOrReferenceBody;
+                
+componentService : KService                                            qualifier name? componentServiceOrReferenceBody;
                      
-                   
-componentReference : KReference                                          qualifier name? componentServiceOrReferenceBody;
+                  
+componentReference : KReference                                            qualifier name? componentServiceOrReferenceBody;
 
      
 componentServiceOrReferenceBody 
@@ -153,25 +153,25 @@ componentServiceOrReferenceElement
 	: KBinding                                      qualifier TSemicolon;
 
                      
-                  
+                 
 componentProperty : typeReference name TSemicolon;
 
                          
-                        
+                       
 componentImplementation : KImplementation name TSemicolon;
 
                    
-                  
+                 
 componentLanguage : KLanguage name TSemicolon;
 
-                   
-compositeDeclaration : KComposite name (TColon                                                                      qualifier)? compositeBody;
+                  
+compositeDeclaration : KComposite name (TColon                                                qualifier)? compositeBody;
 
      
 compositeBody : TOpenBrace compositeElements? TCloseBrace;
 
-                  
-assemblyDeclaration : KAssembly name (TColon                                                                      qualifier)? compositeBody;
+                 
+assemblyDeclaration : KAssembly name (TColon                                                qualifier)? compositeBody;
 
 compositeElements : compositeElement+;
 
@@ -195,7 +195,7 @@ compositeWire : KWire wireSource KTo wireTarget TSemicolon;
 wireSource :                                  qualifier;
 wireTarget :                                  qualifier;
 
-                    
+                   
 deploymentDeclaration : KDeployment name deploymentBody;
 
      
@@ -209,14 +209,14 @@ deploymentElement
 	;
 
                        
-                     
+                    
 environmentDeclaration : KEnvironment name environmentBody;
 
      
 environmentBody : TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
 
                   
-                 
+                
 runtimeDeclaration : KRuntime name TSemicolon;
 
 runtimeReference
@@ -225,14 +225,14 @@ runtimeReference
 	;
 
                      
-assemblyReference : KAssembly                    qualifier TSemicolon;
+assemblyReference : KAssembly                      qualifier TSemicolon;
 
                     
-databaseReference : KDatabase                    qualifier TSemicolon;
+databaseReference : KDatabase                      qualifier TSemicolon;
 
 // Binding
 
-                 
+                
 bindingDeclaration : KBinding name bindingBody;
 
      
@@ -339,8 +339,8 @@ protocolLayerKind :
 
 // Endpoint:
 
-                  
-endpointDeclaration : KEndpoint name TColon                                          qualifier endpointBody;
+                 
+endpointDeclaration : KEndpoint name TColon                                            qualifier endpointBody;
 
      
 endpointBody : TOpenBrace endpointProperties? TCloseBrace;
@@ -369,19 +369,19 @@ typeReference
 	| nulledType
 	;
 
-simpleType : valueType | objectType |          qualifier;
+simpleType : valueType | objectType |            qualifier;
 
 nulledType : nullableType | nonNullableType;
 
-referenceType : objectType |          qualifier;
+referenceType : objectType |            qualifier;
 
-        
+          
 objectType 
 	: KObject 
 	| KString
 	;
 
-        
+          
 valueType 
 	: KInt 
 	| KLong 
@@ -395,12 +395,12 @@ valueType
 	| ITimeSpan
 	;
 
-        
+          
 voidType 
 	: KVoid
 	;
 
-        
+          
 onewayType
 	: KOneway
 	;
@@ -410,13 +410,13 @@ operationReturnType
 	|                                                                                  onewayType
 	;
 
-                      
+                        
 nullableType :                      valueType TQuestion;
 
-                         
+                           
 nonNullableType :                      referenceType TExclamation;
 
-                         
+                           
 nonNullableArrayType :                      arrayType TExclamation;
 
 arrayType
@@ -424,10 +424,10 @@ arrayType
 	| nulledArrayType
 	;
 
-                   
+                     
 simpleArrayType :                      simpleType TOpenBracket TCloseBracket;
 
-                   
+                     
 nulledArrayType :                      nulledType TOpenBracket TCloseBracket;
 
 
