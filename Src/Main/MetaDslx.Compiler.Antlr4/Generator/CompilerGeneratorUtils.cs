@@ -279,18 +279,13 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         {
             if (annots.IsDeclaration()) return false;
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolUse) || annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr) ||
-                annots.HasAnnotation(MetaCompilerAnnotationInfo.Constant) || annots.HasAnnotation(MetaCompilerAnnotationInfo.Value);
+                annots.HasAnnotation(MetaCompilerAnnotationInfo.Value);
         }
 
         public static bool IsAnySymbol(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol) || annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr) ||
                 annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol);
-        }
-
-        public static bool IsSymbolType(this MetaCompilerAnnotations annots)
-        {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolType);
         }
 
         public static bool IsIdentifier(this MetaCompilerAnnotations annots)
@@ -321,11 +316,6 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public static bool IsSymbolCtr(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr);
-        }
-
-        public static bool IsConstant(this MetaCompilerAnnotations annots)
-        {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Constant);
         }
 
         public static bool IsValue(this MetaCompilerAnnotations annots)

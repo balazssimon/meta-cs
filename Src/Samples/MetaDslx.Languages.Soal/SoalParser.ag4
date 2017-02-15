@@ -32,7 +32,7 @@ $Property(Annotations)
 $Symbol(Annotation)
 returnAnnotation : TOpenBracket KReturn TColon annotationHead TCloseBracket;
 
-annotationHead : $Property(Name) $Value identifier annotationBody?;
+annotationHead : name annotationBody?;
 
 $Body
 annotationBody : TOpenParen annotationPropertyList? TCloseParen;
@@ -41,7 +41,7 @@ annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
 $Property(Properties)
 $Symbol(AnnotationProperty)
-annotationProperty : $Property(Name) $Value identifier TAssign $Property(Value) annotationPropertyValue;
+annotationProperty : name TAssign $Property(Value) annotationPropertyValue;
 
 annotationPropertyValue
 	: constantValue
@@ -330,12 +330,14 @@ $Property(Style)
 soapStyleProperty : IStyle TAssign $EnumValue(SoapEncodingStyle) identifier TSemicolon;
 
 $Property(Protocols)
-$Symbol
 protocolLayer : KProtocol protocolLayerKind TSemicolon;
 
-protocolLayerKind : 
-	$SymbolType(name='WsAddressing',symbolType=WsAddressingBindingElement) 
-	identifier;
+protocolLayerKind 
+	: wsAddressing
+	;
+
+$Symbol(WsAddressingBindingElement) 
+wsAddressing : IWsAddressing;
 
 // Endpoint:
 
@@ -460,23 +462,23 @@ literal
 	;
 
 // Null literal
-$Constant
+$Value
 nullLiteral : KNull;
 
 // Boolean literals
-$Constant
+$Value
 booleanLiteral : KTrue | KFalse;
 
 // Number literals
-$Constant
+$Value
 integerLiteral : LInteger;
-$Constant
+$Value
 decimalLiteral : LDecimal;
-$Constant
+$Value
 scientificLiteral : LScientific;
 
 // String literals
-$Constant
+$Value
 stringLiteral 
 	: LRegularString
 	| LSingleQuoteVerbatimString 

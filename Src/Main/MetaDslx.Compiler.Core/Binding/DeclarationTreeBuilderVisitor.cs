@@ -143,12 +143,6 @@ namespace MetaDslx.Compiler.Binding
             _currentDeclarationInfo.RegisterIdentifier(node);
         }
 
-        protected void RegisterDeclarationType(Type type)
-        {
-            if (_currentDeclarationInfo == null) return;
-            _currentDeclarationInfo.RegisterDeclarationType(type);
-        }
-
         protected void RegisterNestingProperty(string name)
         {
             if (_currentDeclarationInfo == null) return;

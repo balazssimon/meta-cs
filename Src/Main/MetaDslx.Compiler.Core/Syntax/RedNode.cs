@@ -366,8 +366,7 @@ namespace MetaDslx.Compiler.Syntax
 
             if (result == null)
             {
-                var green = this.Green.GetSlot(slot) as InternalSyntaxNode;
-                if (green == null) return result;
+                var green = this.Green.GetSlot(slot);
                 result = green.CreateRed(this.Parent, this.GetChildPosition(slot)); // <- passing list's parent
                 if (Interlocked.CompareExchange(ref element, result, null) != null)
                 {
@@ -392,7 +391,7 @@ namespace MetaDslx.Compiler.Syntax
         // handle a miss
         private RedNode CreateWeakItem(ref WeakReference<RedNode> slot, int index)
         {
-            var greenChild = this.Green.GetSlot(index) as InternalSyntaxNode;
+            var greenChild = this.Green.GetSlot(index);
             if (greenChild == null) return null;
             var newNode = greenChild.CreateRed(this.Parent, GetChildPosition(index));
             var newWeakReference = new WeakReference<RedNode>(newNode);

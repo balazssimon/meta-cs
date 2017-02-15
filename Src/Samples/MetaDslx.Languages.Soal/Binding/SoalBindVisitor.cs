@@ -14,7 +14,7 @@ using MetaDslx.Languages.Soal.Symbols;
 
 namespace MetaDslx.Languages.Soal.Binding
 {
-    public class SoalBindVisitor : BindVisitor, ISoalSyntaxVisitor<Optional<object>>
+    public class SoalBindVisitor : BindVisitor, ISoalSyntaxVisitor
     {
         public SoalBindVisitor(Binder binder)
 			: base(binder)
@@ -22,262 +22,405 @@ namespace MetaDslx.Languages.Soal.Binding
 
         }
 		
-		public Optional<object> VisitMain(MainSyntax node)
+		public void VisitMain(MainSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.VisitList(node.NamespaceDeclaration);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.NamespaceDeclaration);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.NamespaceDeclaration.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitName(NameSyntax node)
+		public void VisitName(NameSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Identifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Identifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Identifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitQualifiedName(QualifiedNameSyntax node)
+		public void VisitQualifiedName(QualifiedNameSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitQualifier(QualifierSyntax node)
+		public void VisitQualifier(QualifierSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
+			if (this.IsBinding)
+			{
+				this.BeginQualifier();
+				try
+				{
+					this.VisitList(node.Identifier);
+				}
+				finally
+				{
+					this.EndQualifier();
+				}
+			}
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
+			{
+				this.BeginQualifier();
+				try
+				{
+					if (this.CanVisitChild(node.Identifier.Node))
+					{
+						this.VisitRed(this.RootNode);
+					}
+				}
+				finally
+				{
+					this.EndQualifier();
+				}
+			}
+		}
+		
+		public void VisitIdentifierList(IdentifierListSyntax node)
+		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.Identifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.Identifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Identifier.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitIdentifierList(IdentifierListSyntax node)
+		public void VisitQualifierList(QualifierListSyntax node)
 		{
-			if (this.IsBinding)
-			{
-				this.VisitList(node.Identifier);
-				return this.BindResult(node);
-			}
-			else
-			{
-				this.VisitList(node.Identifier);
-			}
-			return null;
-		}
-		
-		public Optional<object> VisitQualifierList(QualifierListSyntax node)
-		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitAnnotationList(AnnotationListSyntax node)
+		public void VisitAnnotationList(AnnotationListSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.Annotation);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.Annotation);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Annotation.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitReturnAnnotationList(ReturnAnnotationListSyntax node)
+		public void VisitReturnAnnotationList(ReturnAnnotationListSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.ReturnAnnotation);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.ReturnAnnotation);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ReturnAnnotation.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitAnnotation(AnnotationSyntax node)
+		public void VisitAnnotation(AnnotationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationHead);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationHead);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationHead))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitReturnAnnotation(ReturnAnnotationSyntax node)
+		public void VisitReturnAnnotation(ReturnAnnotationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationHead);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationHead);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationHead))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitAnnotationHead(AnnotationHeadSyntax node)
+		public void VisitAnnotationHead(AnnotationHeadSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Identifier);
+				this.Visit(node.Name);
 				this.Visit(node.AnnotationBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Identifier);
-				this.Visit(node.AnnotationBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.AnnotationBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitAnnotationBody(AnnotationBodySyntax node)
+		public void VisitAnnotationBody(AnnotationBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.AnnotationPropertyList);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationPropertyList);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationPropertyList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitAnnotationPropertyList(AnnotationPropertyListSyntax node)
+		public void VisitAnnotationPropertyList(AnnotationPropertyListSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.AnnotationProperty);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.AnnotationProperty);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationProperty.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitAnnotationProperty(AnnotationPropertySyntax node)
+		public void VisitAnnotationProperty(AnnotationPropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Identifier);
-				this.Visit(node.AnnotationPropertyValue);
-				return this.BindResult(node);
+				if (!this.CanEnterDeclaration()) return;
+				this.Visit(node.Name);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Identifier);
-				this.Visit(node.AnnotationPropertyValue);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.AnnotationPropertyValue))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitAnnotationPropertyValue(AnnotationPropertyValueSyntax node)
+		public void VisitAnnotationPropertyValue(AnnotationPropertyValueSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.ConstantValue);
 				this.Visit(node.TypeofValue);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ConstantValue);
-				this.Visit(node.TypeofValue);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ConstantValue))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.TypeofValue))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
+		public void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationList);
 				this.Visit(node.QualifiedName);
-				this.Visit(node.Identifier);
-				this.Visit(node.StringLiteral);
 				this.Visit(node.NamespaceBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.QualifiedName);
-				this.Visit(node.Identifier);
-				this.Visit(node.StringLiteral);
-				this.Visit(node.NamespaceBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.QualifiedName))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Identifier))
+				{
+					if (node.Identifier != null) this.RegisterValue(node.Identifier);
+				}
+				if (this.CanVisitChild(node.StringLiteral))
+				{
+					if (node.StringLiteral != null) this.RegisterValue(node.StringLiteral);
+				}
+				if (this.CanVisitChild(node.NamespaceBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitNamespaceBody(NamespaceBodySyntax node)
+		public void VisitNamespaceBody(NamespaceBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.Declaration);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.Declaration);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Declaration.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitDeclaration(DeclarationSyntax node)
+		public void VisitDeclaration(DeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.EnumDeclaration);
 				this.Visit(node.StructDeclaration);
 				this.Visit(node.DatabaseDeclaration);
@@ -288,354 +431,589 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.Visit(node.BindingDeclaration);
 				this.Visit(node.EndpointDeclaration);
 				this.Visit(node.DeploymentDeclaration);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.EnumDeclaration);
-				this.Visit(node.StructDeclaration);
-				this.Visit(node.DatabaseDeclaration);
-				this.Visit(node.InterfaceDeclaration);
-				this.Visit(node.ComponentDeclaration);
-				this.Visit(node.CompositeDeclaration);
-				this.Visit(node.AssemblyDeclaration);
-				this.Visit(node.BindingDeclaration);
-				this.Visit(node.EndpointDeclaration);
-				this.Visit(node.DeploymentDeclaration);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.EnumDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.StructDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.DatabaseDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.InterfaceDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.CompositeDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.AssemblyDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.BindingDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.EndpointDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.DeploymentDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEnumDeclaration(EnumDeclarationSyntax node)
+		public void VisitEnumDeclaration(EnumDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationList);
 				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
 				this.Visit(node.EnumBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
-				this.Visit(node.EnumBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Enum));
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.EnumBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEnumBody(EnumBodySyntax node)
+		public void VisitEnumBody(EnumBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.EnumLiterals);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.EnumLiterals);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.EnumLiterals))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEnumLiterals(EnumLiteralsSyntax node)
+		public void VisitEnumLiterals(EnumLiteralsSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.EnumLiteral);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.EnumLiteral);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.EnumLiteral.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEnumLiteral(EnumLiteralSyntax node)
+		public void VisitEnumLiteral(EnumLiteralSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationList);
 				this.Visit(node.Name);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.Name);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitStructDeclaration(StructDeclarationSyntax node)
+		public void VisitStructDeclaration(StructDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationList);
 				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
 				this.Visit(node.StructBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
-				this.Visit(node.StructBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Struct));
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.StructBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitStructBody(StructBodySyntax node)
+		public void VisitStructBody(StructBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.PropertyDeclaration);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.PropertyDeclaration);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.PropertyDeclaration.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitPropertyDeclaration(PropertyDeclarationSyntax node)
+		public void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationList);
-				this.Visit(node.TypeReference);
 				this.Visit(node.Name);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.TypeReference);
-				this.Visit(node.Name);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.TypeReference))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitDatabaseDeclaration(DatabaseDeclarationSyntax node)
+		public void VisitDatabaseDeclaration(DatabaseDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationList);
 				this.Visit(node.Name);
 				this.Visit(node.DatabaseBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.Name);
-				this.Visit(node.DatabaseBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.DatabaseBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitDatabaseBody(DatabaseBodySyntax node)
+		public void VisitDatabaseBody(DatabaseBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.EntityReference);
 				this.VisitList(node.OperationDeclaration);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.EntityReference);
-				this.VisitList(node.OperationDeclaration);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.EntityReference.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.OperationDeclaration.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEntityReference(EntityReferenceSyntax node)
+		public void VisitEntityReference(EntityReferenceSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
+				if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Struct));
 				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Struct));
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
+		public void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationList);
 				this.Visit(node.Name);
 				this.Visit(node.InterfaceBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.Name);
-				this.Visit(node.InterfaceBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.InterfaceBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitInterfaceBody(InterfaceBodySyntax node)
+		public void VisitInterfaceBody(InterfaceBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.OperationDeclaration);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.OperationDeclaration);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.OperationDeclaration.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitOperationDeclaration(OperationDeclarationSyntax node)
+		public void VisitOperationDeclaration(OperationDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.OperationHead);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.OperationHead);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.OperationHead))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitOperationHead(OperationHeadSyntax node)
+		public void VisitOperationHead(OperationHeadSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.AnnotationList);
 				this.Visit(node.OperationResult);
 				this.Visit(node.Name);
 				this.Visit(node.ParameterList);
-				this.Visit(node.QualifierList);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.OperationResult);
-				this.Visit(node.Name);
-				this.Visit(node.ParameterList);
-				this.Visit(node.QualifierList);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.OperationResult))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ParameterList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.QualifierList))
+				{
+					if (node.QualifierList != null) this.RegisterSymbolType(typeof(Symbols.Struct));
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitParameterList(ParameterListSyntax node)
+		public void VisitParameterList(ParameterListSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.Parameter);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.Parameter);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Parameter.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitParameter(ParameterSyntax node)
+		public void VisitParameter(ParameterSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.AnnotationList);
-				this.Visit(node.TypeReference);
 				this.Visit(node.Name);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AnnotationList);
-				this.Visit(node.TypeReference);
-				this.Visit(node.Name);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.TypeReference))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitOperationResult(OperationResultSyntax node)
+		public void VisitOperationResult(OperationResultSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.ReturnAnnotationList);
 				this.Visit(node.OperationReturnType);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ReturnAnnotationList);
-				this.Visit(node.OperationReturnType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ReturnAnnotationList))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.OperationReturnType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentDeclaration(ComponentDeclarationSyntax node)
+		public void VisitComponentDeclaration(ComponentDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.VisitToken(node.KAbstract);
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
 				this.Visit(node.ComponentBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitToken(node.KAbstract);
-				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
-				this.Visit(node.ComponentBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.KAbstract))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Component));
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentBody(ComponentBodySyntax node)
+		public void VisitComponentBody(ComponentBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.ComponentElements);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ComponentElements);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ComponentElements))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentElements(ComponentElementsSyntax node)
+		public void VisitComponentElements(ComponentElementsSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.ComponentElement);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.ComponentElement);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ComponentElement.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentElement(ComponentElementSyntax node)
+		public void VisitComponentElement(ComponentElementSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.ComponentService);
@@ -643,205 +1021,325 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.Visit(node.ComponentProperty);
 				this.Visit(node.ComponentImplementation);
 				this.Visit(node.ComponentLanguage);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ComponentService);
-				this.Visit(node.ComponentReference);
-				this.Visit(node.ComponentProperty);
-				this.Visit(node.ComponentImplementation);
-				this.Visit(node.ComponentLanguage);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ComponentService))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentReference))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentProperty))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentImplementation))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentLanguage))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentService(ComponentServiceSyntax node)
+		public void VisitComponentService(ComponentServiceSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Qualifier);
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
 				this.Visit(node.ComponentServiceOrReferenceBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
-				this.Visit(node.Name);
-				this.Visit(node.ComponentServiceOrReferenceBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Interface));
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentServiceOrReferenceBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentReference(ComponentReferenceSyntax node)
+		public void VisitComponentReference(ComponentReferenceSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Qualifier);
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
 				this.Visit(node.ComponentServiceOrReferenceBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
-				this.Visit(node.Name);
-				this.Visit(node.ComponentServiceOrReferenceBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Interface));
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentServiceOrReferenceBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentServiceOrReferenceEmptyBody(ComponentServiceOrReferenceEmptyBodySyntax node)
+		public void VisitComponentServiceOrReferenceEmptyBody(ComponentServiceOrReferenceEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitComponentServiceOrReferenceNonEmptyBody(ComponentServiceOrReferenceNonEmptyBodySyntax node)
+		public void VisitComponentServiceOrReferenceNonEmptyBody(ComponentServiceOrReferenceNonEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.ComponentServiceOrReferenceElement);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.ComponentServiceOrReferenceElement);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ComponentServiceOrReferenceElement.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentServiceOrReferenceElement(ComponentServiceOrReferenceElementSyntax node)
+		public void VisitComponentServiceOrReferenceElement(ComponentServiceOrReferenceElementSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentProperty(ComponentPropertySyntax node)
+		public void VisitComponentProperty(ComponentPropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.TypeReference);
 				this.Visit(node.Name);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.TypeReference);
-				this.Visit(node.Name);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.TypeReference))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentImplementation(ComponentImplementationSyntax node)
+		public void VisitComponentImplementation(ComponentImplementationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Name);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitComponentLanguage(ComponentLanguageSyntax node)
+		public void VisitComponentLanguage(ComponentLanguageSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Name);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitCompositeDeclaration(CompositeDeclarationSyntax node)
+		public void VisitCompositeDeclaration(CompositeDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
 				this.Visit(node.CompositeBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
-				this.Visit(node.CompositeBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Component));
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.CompositeBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitCompositeBody(CompositeBodySyntax node)
+		public void VisitCompositeBody(CompositeBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.CompositeElements);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.CompositeElements);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.CompositeElements))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitAssemblyDeclaration(AssemblyDeclarationSyntax node)
+		public void VisitAssemblyDeclaration(AssemblyDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
 				this.Visit(node.CompositeBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
-				this.Visit(node.CompositeBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Component));
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.CompositeBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitCompositeElements(CompositeElementsSyntax node)
+		public void VisitCompositeElements(CompositeElementsSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.CompositeElement);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.CompositeElement);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.CompositeElement.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitCompositeElement(CompositeElementSyntax node)
+		public void VisitCompositeElement(CompositeElementSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.ComponentService);
@@ -851,1059 +1349,1608 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.Visit(node.ComponentLanguage);
 				this.Visit(node.CompositeComponent);
 				this.Visit(node.CompositeWire);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ComponentService);
-				this.Visit(node.ComponentReference);
-				this.Visit(node.ComponentProperty);
-				this.Visit(node.ComponentImplementation);
-				this.Visit(node.ComponentLanguage);
-				this.Visit(node.CompositeComponent);
-				this.Visit(node.CompositeWire);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ComponentService))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentReference))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentProperty))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentImplementation))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ComponentLanguage))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.CompositeComponent))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.CompositeWire))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitCompositeComponent(CompositeComponentSyntax node)
+		public void VisitCompositeComponent(CompositeComponentSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitCompositeWire(CompositeWireSyntax node)
+		public void VisitCompositeWire(CompositeWireSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.WireSource);
 				this.Visit(node.WireTarget);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.WireSource);
-				this.Visit(node.WireTarget);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.WireSource))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.WireTarget))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitWireSource(WireSourceSyntax node)
+		public void VisitWireSource(WireSourceSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitWireTarget(WireTargetSyntax node)
+		public void VisitWireTarget(WireTargetSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitDeploymentDeclaration(DeploymentDeclarationSyntax node)
+		public void VisitDeploymentDeclaration(DeploymentDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
 				this.Visit(node.DeploymentBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Name);
-				this.Visit(node.DeploymentBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.DeploymentBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitDeploymentBody(DeploymentBodySyntax node)
+		public void VisitDeploymentBody(DeploymentBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.DeploymentElements);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.DeploymentElements);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.DeploymentElements))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitDeploymentElements(DeploymentElementsSyntax node)
+		public void VisitDeploymentElements(DeploymentElementsSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.DeploymentElement);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.DeploymentElement);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.DeploymentElement.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitDeploymentElement(DeploymentElementSyntax node)
+		public void VisitDeploymentElement(DeploymentElementSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.EnvironmentDeclaration);
 				this.Visit(node.CompositeWire);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.EnvironmentDeclaration);
-				this.Visit(node.CompositeWire);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.EnvironmentDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.CompositeWire))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEnvironmentDeclaration(EnvironmentDeclarationSyntax node)
+		public void VisitEnvironmentDeclaration(EnvironmentDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
 				this.Visit(node.EnvironmentBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Name);
-				this.Visit(node.EnvironmentBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.EnvironmentBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEnvironmentBody(EnvironmentBodySyntax node)
+		public void VisitEnvironmentBody(EnvironmentBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.RuntimeDeclaration);
 				this.VisitList(node.RuntimeReference);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.RuntimeDeclaration);
-				this.VisitList(node.RuntimeReference);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.RuntimeDeclaration))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.RuntimeReference.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitRuntimeDeclaration(RuntimeDeclarationSyntax node)
+		public void VisitRuntimeDeclaration(RuntimeDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Name);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitRuntimeReference(RuntimeReferenceSyntax node)
+		public void VisitRuntimeReference(RuntimeReferenceSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.AssemblyReference);
 				this.Visit(node.DatabaseReference);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.AssemblyReference);
-				this.Visit(node.DatabaseReference);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.AssemblyReference))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.DatabaseReference))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitAssemblyReference(AssemblyReferenceSyntax node)
+		public void VisitAssemblyReference(AssemblyReferenceSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
+				if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Assembly));
 				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Assembly));
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitDatabaseReference(DatabaseReferenceSyntax node)
+		public void VisitDatabaseReference(DatabaseReferenceSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
+				if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Database));
 				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Database));
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitBindingDeclaration(BindingDeclarationSyntax node)
+		public void VisitBindingDeclaration(BindingDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Name);
 				this.Visit(node.BindingBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Name);
-				this.Visit(node.BindingBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.BindingBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitBindingBody(BindingBodySyntax node)
+		public void VisitBindingBody(BindingBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.BindingLayers);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.BindingLayers);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.BindingLayers))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitBindingLayers(BindingLayersSyntax node)
+		public void VisitBindingLayers(BindingLayersSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.TransportLayer);
 				this.VisitList(node.EncodingLayer);
 				this.VisitList(node.ProtocolLayer);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.TransportLayer);
-				this.VisitList(node.EncodingLayer);
-				this.VisitList(node.ProtocolLayer);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.TransportLayer))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.EncodingLayer.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ProtocolLayer.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitTransportLayer(TransportLayerSyntax node)
+		public void VisitTransportLayer(TransportLayerSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.HttpTransportLayer);
 				this.Visit(node.RestTransportLayer);
 				this.Visit(node.WebSocketTransportLayer);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.HttpTransportLayer);
-				this.Visit(node.RestTransportLayer);
-				this.Visit(node.WebSocketTransportLayer);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.HttpTransportLayer))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.RestTransportLayer))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.WebSocketTransportLayer))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitHttpTransportLayer(HttpTransportLayerSyntax node)
+		public void VisitHttpTransportLayer(HttpTransportLayerSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.HttpTransportLayerBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.HttpTransportLayerBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.HttpTransportLayerBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitHttpTransportLayerEmptyBody(HttpTransportLayerEmptyBodySyntax node)
+		public void VisitHttpTransportLayerEmptyBody(HttpTransportLayerEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitHttpTransportLayerNonEmptyBody(HttpTransportLayerNonEmptyBodySyntax node)
+		public void VisitHttpTransportLayerNonEmptyBody(HttpTransportLayerNonEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.HttpTransportLayerProperties);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.HttpTransportLayerProperties);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.HttpTransportLayerProperties.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitRestTransportLayer(RestTransportLayerSyntax node)
+		public void VisitRestTransportLayer(RestTransportLayerSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.RestTransportLayerBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.RestTransportLayerBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.RestTransportLayerBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitRestTransportLayerEmptyBody(RestTransportLayerEmptyBodySyntax node)
+		public void VisitRestTransportLayerEmptyBody(RestTransportLayerEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitRestTransportLayerNonEmptyBody(RestTransportLayerNonEmptyBodySyntax node)
+		public void VisitRestTransportLayerNonEmptyBody(RestTransportLayerNonEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitWebSocketTransportLayer(WebSocketTransportLayerSyntax node)
+		public void VisitWebSocketTransportLayer(WebSocketTransportLayerSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.WebSocketTransportLayerBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.WebSocketTransportLayerBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.WebSocketTransportLayerBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitWebSocketTransportLayerEmptyBody(WebSocketTransportLayerEmptyBodySyntax node)
+		public void VisitWebSocketTransportLayerEmptyBody(WebSocketTransportLayerEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitWebSocketTransportLayerNonEmptyBody(WebSocketTransportLayerNonEmptyBodySyntax node)
+		public void VisitWebSocketTransportLayerNonEmptyBody(WebSocketTransportLayerNonEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitHttpTransportLayerProperties(HttpTransportLayerPropertiesSyntax node)
+		public void VisitHttpTransportLayerProperties(HttpTransportLayerPropertiesSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.HttpSslProperty);
 				this.Visit(node.HttpClientAuthenticationProperty);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.HttpSslProperty);
-				this.Visit(node.HttpClientAuthenticationProperty);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.HttpSslProperty))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.HttpClientAuthenticationProperty))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitHttpSslProperty(HttpSslPropertySyntax node)
+		public void VisitHttpSslProperty(HttpSslPropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.BooleanLiteral);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.BooleanLiteral);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.BooleanLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitHttpClientAuthenticationProperty(HttpClientAuthenticationPropertySyntax node)
+		public void VisitHttpClientAuthenticationProperty(HttpClientAuthenticationPropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.BooleanLiteral);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.BooleanLiteral);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.BooleanLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEncodingLayer(EncodingLayerSyntax node)
+		public void VisitEncodingLayer(EncodingLayerSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.SoapEncodingLayer);
 				this.Visit(node.XmlEncodingLayer);
 				this.Visit(node.JsonEncodingLayer);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.SoapEncodingLayer);
-				this.Visit(node.XmlEncodingLayer);
-				this.Visit(node.JsonEncodingLayer);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.SoapEncodingLayer))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.XmlEncodingLayer))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.JsonEncodingLayer))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitSoapEncodingLayer(SoapEncodingLayerSyntax node)
+		public void VisitSoapEncodingLayer(SoapEncodingLayerSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.SoapEncodingLayerBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.SoapEncodingLayerBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.SoapEncodingLayerBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitSoapEncodingLayerEmptyBody(SoapEncodingLayerEmptyBodySyntax node)
+		public void VisitSoapEncodingLayerEmptyBody(SoapEncodingLayerEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitSoapEncodingLayerNonEmptyBody(SoapEncodingLayerNonEmptyBodySyntax node)
+		public void VisitSoapEncodingLayerNonEmptyBody(SoapEncodingLayerNonEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.SoapEncodingProperties);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.SoapEncodingProperties);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.SoapEncodingProperties.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitXmlEncodingLayer(XmlEncodingLayerSyntax node)
+		public void VisitXmlEncodingLayer(XmlEncodingLayerSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.XmlEncodingLayerBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.XmlEncodingLayerBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.XmlEncodingLayerBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitXmlEncodingLayerEmptyBody(XmlEncodingLayerEmptyBodySyntax node)
+		public void VisitXmlEncodingLayerEmptyBody(XmlEncodingLayerEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitXmlEncodingLayerNonEmptyBody(XmlEncodingLayerNonEmptyBodySyntax node)
+		public void VisitXmlEncodingLayerNonEmptyBody(XmlEncodingLayerNonEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitJsonEncodingLayer(JsonEncodingLayerSyntax node)
+		public void VisitJsonEncodingLayer(JsonEncodingLayerSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.JsonEncodingLayerBody);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.JsonEncodingLayerBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.JsonEncodingLayerBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitJsonEncodingLayerEmptyBody(JsonEncodingLayerEmptyBodySyntax node)
+		public void VisitJsonEncodingLayerEmptyBody(JsonEncodingLayerEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitJsonEncodingLayerNonEmptyBody(JsonEncodingLayerNonEmptyBodySyntax node)
+		public void VisitJsonEncodingLayerNonEmptyBody(JsonEncodingLayerNonEmptyBodySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitSoapEncodingProperties(SoapEncodingPropertiesSyntax node)
+		public void VisitSoapEncodingProperties(SoapEncodingPropertiesSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.SoapVersionProperty);
 				this.Visit(node.SoapMtomProperty);
 				this.Visit(node.SoapStyleProperty);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.SoapVersionProperty);
-				this.Visit(node.SoapMtomProperty);
-				this.Visit(node.SoapStyleProperty);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.SoapVersionProperty))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.SoapMtomProperty))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.SoapStyleProperty))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitSoapVersionProperty(SoapVersionPropertySyntax node)
+		public void VisitSoapVersionProperty(SoapVersionPropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Identifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Identifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Identifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitSoapMtomProperty(SoapMtomPropertySyntax node)
+		public void VisitSoapMtomProperty(SoapMtomPropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.BooleanLiteral);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.BooleanLiteral);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.BooleanLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitSoapStyleProperty(SoapStylePropertySyntax node)
+		public void VisitSoapStyleProperty(SoapStylePropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.Identifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Identifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Identifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitProtocolLayer(ProtocolLayerSyntax node)
+		public void VisitProtocolLayer(ProtocolLayerSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
 				this.Visit(node.ProtocolLayerKind);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ProtocolLayerKind);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ProtocolLayerKind))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitProtocolLayerKind(ProtocolLayerKindSyntax node)
+		public void VisitProtocolLayerKind(ProtocolLayerKindSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Identifier);
-				return this.BindResult(node);
+				this.Visit(node.WsAddressing);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Identifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.WsAddressing))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEndpointDeclaration(EndpointDeclarationSyntax node)
+		public void VisitWsAddressing(WsAddressingSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
-				this.Visit(node.EndpointBody);
-				return this.BindResult(node);
+				if (!this.CanEnterDeclaration()) return;
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Name);
-				this.Visit(node.Qualifier);
-				this.Visit(node.EndpointBody);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+			}
 		}
 		
-		public Optional<object> VisitEndpointBody(EndpointBodySyntax node)
+		public void VisitEndpointDeclaration(EndpointDeclarationSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
+			if (this.IsBinding)
+			{
+				if (!this.CanEnterDeclaration()) return;
+				this.Visit(node.Name);
+				this.Visit(node.EndpointBody);
+			}
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
+			{
+				if (this.CanVisitChild(node.Name))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Interface));
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.EndpointBody))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
+		}
+		
+		public void VisitEndpointBody(EndpointBodySyntax node)
+		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.EndpointProperties);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.EndpointProperties);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.EndpointProperties))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEndpointProperties(EndpointPropertiesSyntax node)
+		public void VisitEndpointProperties(EndpointPropertiesSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.VisitList(node.EndpointProperty);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.VisitList(node.EndpointProperty);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.EndpointProperty.Node))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEndpointProperty(EndpointPropertySyntax node)
+		public void VisitEndpointProperty(EndpointPropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.EndpointBindingProperty);
 				this.Visit(node.EndpointAddressProperty);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.EndpointBindingProperty);
-				this.Visit(node.EndpointAddressProperty);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.EndpointBindingProperty))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.EndpointAddressProperty))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEndpointBindingProperty(EndpointBindingPropertySyntax node)
+		public void VisitEndpointBindingProperty(EndpointBindingPropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitEndpointAddressProperty(EndpointAddressPropertySyntax node)
+		public void VisitEndpointAddressProperty(EndpointAddressPropertySyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.StringLiteral);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.StringLiteral);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.StringLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitReturnType(ReturnTypeSyntax node)
+		public void VisitReturnType(ReturnTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.TypeReference);
 				this.Visit(node.VoidType);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.TypeReference);
-				this.Visit(node.VoidType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.TypeReference))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.VoidType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitTypeReference(TypeReferenceSyntax node)
+		public void VisitTypeReference(TypeReferenceSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.NonNullableArrayType);
 				this.Visit(node.ArrayType);
 				this.Visit(node.SimpleType);
 				this.Visit(node.NulledType);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.NonNullableArrayType);
-				this.Visit(node.ArrayType);
-				this.Visit(node.SimpleType);
-				this.Visit(node.NulledType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.NonNullableArrayType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ArrayType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.SimpleType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.NulledType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitSimpleType(SimpleTypeSyntax node)
+		public void VisitSimpleType(SimpleTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.ValueType);
 				this.Visit(node.ObjectType);
+				if (node.Qualifier != null) this.RegisterSymbolType(null);
 				this.Visit(node.Qualifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ValueType);
-				this.Visit(node.ObjectType);
-				this.Visit(node.Qualifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ValueType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ObjectType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(null);
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitNulledType(NulledTypeSyntax node)
+		public void VisitNulledType(NulledTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.NullableType);
 				this.Visit(node.NonNullableType);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.NullableType);
-				this.Visit(node.NonNullableType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.NullableType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.NonNullableType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitReferenceType(ReferenceTypeSyntax node)
+		public void VisitReferenceType(ReferenceTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.ObjectType);
-				this.Visit(node.Qualifier);
-				return this.BindResult(node);
-			}
-			else
-			{
-				this.Visit(node.ObjectType);
+				if (node.Qualifier != null) this.RegisterSymbolType(null);
 				this.Visit(node.Qualifier);
 			}
-			return null;
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
+			{
+				if (this.CanVisitChild(node.ObjectType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Qualifier))
+				{
+					if (node.Qualifier != null) this.RegisterSymbolType(null);
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitObjectType(ObjectTypeSyntax node)
+		public void VisitObjectType(ObjectTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterSymbolType(null);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterSymbolType(null);
+			}
 		}
 		
-		public Optional<object> VisitValueType(ValueTypeSyntax node)
+		public void VisitValueType(ValueTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterSymbolType(null);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterSymbolType(null);
+			}
 		}
 		
-		public Optional<object> VisitVoidType(VoidTypeSyntax node)
+		public void VisitVoidType(VoidTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterSymbolType(null);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterSymbolType(null);
+			}
 		}
 		
-		public Optional<object> VisitOnewayType(OnewayTypeSyntax node)
+		public void VisitOnewayType(OnewayTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterSymbolType(null);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterSymbolType(null);
+			}
 		}
 		
-		public Optional<object> VisitOperationReturnType(OperationReturnTypeSyntax node)
+		public void VisitOperationReturnType(OperationReturnTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.ReturnType);
-				this.Visit(node.OnewayType);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ReturnType);
-				this.Visit(node.OnewayType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ReturnType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.OnewayType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitNullableType(NullableTypeSyntax node)
+		public void VisitNullableType(NullableTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.ValueType);
-				return this.BindResult(node);
+				if (!this.CanEnterDeclaration()) return;
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ValueType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ValueType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitNonNullableType(NonNullableTypeSyntax node)
+		public void VisitNonNullableType(NonNullableTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.ReferenceType);
-				return this.BindResult(node);
+				if (!this.CanEnterDeclaration()) return;
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ReferenceType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ReferenceType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitNonNullableArrayType(NonNullableArrayTypeSyntax node)
+		public void VisitNonNullableArrayType(NonNullableArrayTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.ArrayType);
-				return this.BindResult(node);
+				if (!this.CanEnterDeclaration()) return;
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ArrayType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ArrayType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitArrayType(ArrayTypeSyntax node)
+		public void VisitArrayType(ArrayTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.SimpleArrayType);
 				this.Visit(node.NulledArrayType);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.SimpleArrayType);
-				this.Visit(node.NulledArrayType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.SimpleArrayType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.NulledArrayType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitSimpleArrayType(SimpleArrayTypeSyntax node)
+		public void VisitSimpleArrayType(SimpleArrayTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.SimpleType);
-				return this.BindResult(node);
+				if (!this.CanEnterDeclaration()) return;
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.SimpleType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.SimpleType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitNulledArrayType(NulledArrayTypeSyntax node)
+		public void VisitNulledArrayType(NulledArrayTypeSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				this.Visit(node.NulledType);
-				return this.BindResult(node);
+				if (!this.CanEnterDeclaration()) return;
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.NulledType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.NulledType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitConstantValue(ConstantValueSyntax node)
+		public void VisitConstantValue(ConstantValueSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.Literal);
 				this.Visit(node.Identifier);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.Literal);
-				this.Visit(node.Identifier);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.Literal))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.Identifier))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitTypeofValue(TypeofValueSyntax node)
+		public void VisitTypeofValue(TypeofValueSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.ReturnType);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.ReturnType);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.ReturnType))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitIdentifier(IdentifierSyntax node)
+		public void VisitIdentifier(IdentifierSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterIdentifier(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterIdentifier(node);
+			}
 		}
 		
-		public Optional<object> VisitIdentifiers(IdentifiersSyntax node)
+		public void VisitIdentifiers(IdentifiersSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
 		
-		public Optional<object> VisitLiteral(LiteralSyntax node)
+		public void VisitLiteral(LiteralSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
 				this.Visit(node.NullLiteral);
@@ -1912,102 +2959,155 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.Visit(node.DecimalLiteral);
 				this.Visit(node.ScientificLiteral);
 				this.Visit(node.StringLiteral);
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
-				this.Visit(node.NullLiteral);
-				this.Visit(node.BooleanLiteral);
-				this.Visit(node.IntegerLiteral);
-				this.Visit(node.DecimalLiteral);
-				this.Visit(node.ScientificLiteral);
-				this.Visit(node.StringLiteral);
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (this.CanVisitChild(node.NullLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.BooleanLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.IntegerLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.DecimalLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.ScientificLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+				if (this.CanVisitChild(node.StringLiteral))
+				{
+					this.VisitRed(this.RootNode);
+				}
+			}
 		}
 		
-		public Optional<object> VisitNullLiteral(NullLiteralSyntax node)
+		public void VisitNullLiteral(NullLiteralSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterValue(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterValue(node);
+			}
 		}
 		
-		public Optional<object> VisitBooleanLiteral(BooleanLiteralSyntax node)
+		public void VisitBooleanLiteral(BooleanLiteralSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterValue(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterValue(node);
+			}
 		}
 		
-		public Optional<object> VisitIntegerLiteral(IntegerLiteralSyntax node)
+		public void VisitIntegerLiteral(IntegerLiteralSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterValue(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterValue(node);
+			}
 		}
 		
-		public Optional<object> VisitDecimalLiteral(DecimalLiteralSyntax node)
+		public void VisitDecimalLiteral(DecimalLiteralSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterValue(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterValue(node);
+			}
 		}
 		
-		public Optional<object> VisitScientificLiteral(ScientificLiteralSyntax node)
+		public void VisitScientificLiteral(ScientificLiteralSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterValue(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterValue(node);
+			}
 		}
 		
-		public Optional<object> VisitStringLiteral(StringLiteralSyntax node)
+		public void VisitStringLiteral(StringLiteralSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
+				if (node != null) this.RegisterValue(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
 			{
+				node.Parent.Accept(this);
 			}
-			return null;
+			else 
+			{
+				if (node != null) this.RegisterValue(node);
+			}
 		}
 		
-		public Optional<object> VisitContextualKeywords(ContextualKeywordsSyntax node)
+		public void VisitContextualKeywords(ContextualKeywordsSyntax node)
 		{
+			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				return this.BindResult(node);
 			}
-			else
+			else if (this.CanVisitParent(node.Parent))
+			{
+				node.Parent.Accept(this);
+			}
+			else 
 			{
 			}
-			return null;
 		}
     }
 }

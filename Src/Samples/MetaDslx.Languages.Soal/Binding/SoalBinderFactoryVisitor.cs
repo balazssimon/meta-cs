@@ -989,7 +989,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    {
 		        return this.Visit(node.Parent);
 		    }
-			return this.GetBinderForSymbol(node);
+			return this.Visit(node.Parent);
 		}
 		
 		public Binder VisitProtocolLayerKind(ProtocolLayerKindSyntax node)
@@ -1000,6 +1000,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return this.Visit(node.Parent);
 		    }
 			return this.Visit(node.Parent);
+		}
+		
+		public Binder VisitWsAddressing(WsAddressingSyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.Visit(node.Parent);
+		    }
+			return this.GetBinderForSymbol(node);
 		}
 		
 		public Binder VisitEndpointDeclaration(EndpointDeclarationSyntax node)

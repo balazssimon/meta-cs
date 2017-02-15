@@ -32,7 +32,7 @@ annotation : TOpenBracket annotationHead TCloseBracket;
                    
 returnAnnotation : TOpenBracket KReturn TColon annotationHead TCloseBracket;
 
-annotationHead :                        identifier annotationBody?;
+annotationHead : name annotationBody?;
 
      
 annotationBody : TOpenParen annotationPropertyList? TCloseParen;
@@ -41,7 +41,7 @@ annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
                      
                            
-annotationProperty :                        identifier TAssign                  annotationPropertyValue;
+annotationProperty : name TAssign                  annotationPropertyValue;
 
 annotationPropertyValue
 	: constantValue
@@ -330,12 +330,14 @@ soapMtomProperty : IMTOM TAssign booleanLiteral TSemicolon;
 soapStyleProperty : IStyle TAssign                               identifier TSemicolon;
 
                     
-       
 protocolLayer : KProtocol protocolLayerKind TSemicolon;
 
-protocolLayerKind : 
-	                                                                       
-	identifier;
+protocolLayerKind 
+	: wsAddressing
+	;
+
+                                    
+wsAddressing : IWsAddressing;
 
 // Endpoint:
 
@@ -460,23 +462,23 @@ literal
 	;
 
 // Null literal
-         
+      
 nullLiteral : KNull;
 
 // Boolean literals
-         
+      
 booleanLiteral : KTrue | KFalse;
 
 // Number literals
-         
+      
 integerLiteral : LInteger;
-         
+      
 decimalLiteral : LDecimal;
-         
+      
 scientificLiteral : LScientific;
 
 // String literals
-         
+      
 stringLiteral 
 	: LRegularString
 	| LSingleQuoteVerbatimString 

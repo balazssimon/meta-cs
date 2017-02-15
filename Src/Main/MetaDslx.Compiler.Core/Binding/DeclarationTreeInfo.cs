@@ -123,11 +123,6 @@ namespace MetaDslx.Compiler.Binding
             this.ReferenceDirectives.Add(directive);
         }
 
-        public void RegisterDeclarationType(Type type)
-        {
-            this.Type = type;
-        }
-
         public void RegisterNestingProperty(string name)
         {
             this.NestingProperty = name;

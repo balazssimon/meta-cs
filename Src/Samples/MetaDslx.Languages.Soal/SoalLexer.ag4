@@ -108,6 +108,7 @@ ISOAP : 'SOAP';
 IXML : 'XML';
 IJSON : 'JSON';
 IClientAuthentication : 'ClientAuthentication';
+IWsAddressing : 'WsAddressing';
 
 $Syntax(kind=SyntaxKind.Identifier)
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;

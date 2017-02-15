@@ -5,6 +5,7 @@ using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,7 +97,7 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        protected virtual Optional<object> Bind(RedNode node)
+        protected virtual ImmutableArray<object> Bind(RedNode node)
         {
             var currentDiagnostics = _diagnostics;
             return this.SymbolTreeBuilder.GetBinder(node).Bind(node, currentDiagnostics);
@@ -115,11 +116,11 @@ namespace MetaDslx.Compiler.Binding
             {
                 if (this._currentProperty.IsCollection)
                 {
-                    this._symbol.MAddLazy(this._currentProperty, () => this.Bind(node)?.Value);
+                    this._symbol.MAddLazy(this._currentProperty, () => this.Bind(node).FirstOrDefault());
                 }
                 else if (!this._symbol.MIsSet(this._currentProperty))
                 {
-                    this._symbol.MSetLazy(this._currentProperty, () => this.Bind(node)?.Value);
+                    this._symbol.MSetLazy(this._currentProperty, () => this.Bind(node).FirstOrDefault());
                 }
             }
         }

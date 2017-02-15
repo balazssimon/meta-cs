@@ -101,9 +101,8 @@ namespace MetaDslx.Compiler.Binding
                 var diagnostics = DiagnosticBag.GetInstance();
                 try
                 {
-                    var valueOpt = binder.Bind(node, diagnostics);
-                    if (valueOpt == null) return SymbolInfo.None;
-                    IMetaSymbol symbol = valueOpt.Value as IMetaSymbol;
+                    var values = binder.Bind(node, diagnostics);
+                    IMetaSymbol symbol = values.FirstOrDefault() as IMetaSymbol;
                     return (object)symbol != null ? GetSymbolInfoForSymbol(symbol, options) : SymbolInfo.None;
                 }
                 finally
@@ -122,7 +121,7 @@ namespace MetaDslx.Compiler.Binding
                 var diagnostics = DiagnosticBag.GetInstance();
                 try
                 {
-                    IMetaSymbol symbol = binder.Bind(node, diagnostics).Value as IMetaSymbol;
+                    IMetaSymbol symbol = binder.Bind(node, diagnostics).FirstOrDefault() as IMetaSymbol;
                     return (object)symbol != null ? GetTypeInfoForSymbol(symbol, options) : TypeInfo.None;
                 }
                 finally

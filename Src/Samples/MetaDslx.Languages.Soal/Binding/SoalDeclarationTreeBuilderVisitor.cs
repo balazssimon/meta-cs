@@ -141,6 +141,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitAnnotationHead(AnnotationHeadSyntax node)
 		{
+			this.Visit(node.Name);
 			this.Visit(node.AnnotationBody);
 		}
 		
@@ -162,6 +163,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginDeclaration(typeof(Symbols.AnnotationProperty), node);
 				try
 				{
+					this.Visit(node.Name);
 					this.BeginProperty("Value");
 					try
 					{
@@ -1129,15 +1131,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Protocols");
 			try
 			{
-				this.BeginDeclaration(null, node);
-				try
-				{
-					this.Visit(node.ProtocolLayerKind);
-				}
-				finally
-				{
-					this.EndDeclaration();
-				}
+				this.Visit(node.ProtocolLayerKind);
 			}
 			finally
 			{
@@ -1147,8 +1141,19 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitProtocolLayerKind(ProtocolLayerKindSyntax node)
 		{
-			if (node.Identifier != null) this.RegisterDeclarationType(typeof(Symbols.WsAddressingBindingElement));
-			this.Visit(node.Identifier);
+			this.Visit(node.WsAddressing);
+		}
+		
+		public virtual void VisitWsAddressing(WsAddressingSyntax node)
+		{
+			this.BeginDeclaration(typeof(Symbols.WsAddressingBindingElement), node);
+			try
+			{
+			}
+			finally
+			{
+				this.EndDeclaration();
+			}
 		}
 		
 		public virtual void VisitEndpointDeclaration(EndpointDeclarationSyntax node)

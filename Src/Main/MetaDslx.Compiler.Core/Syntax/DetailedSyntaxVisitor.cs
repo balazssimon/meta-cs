@@ -30,6 +30,28 @@ namespace MetaDslx.Compiler.Syntax
 
         private int _recursionDepth;
 
+        public virtual void VisitRed(RedNode node)
+        {
+            if (node.IsNode)
+            {
+                this.Visit((SyntaxNode)node);
+            }
+            else if (node.IsToken)
+            {
+                this.VisitToken((SyntaxToken)node);
+            }
+            else if (node.IsList)
+            {
+                SyntaxNodeListBase list = (SyntaxNodeListBase)node;
+                if (list.IsSeparated) this.VisitList((SeparatedSyntaxNodeList)node);
+                else this.VisitList((SyntaxNodeList)node);
+            }
+            else if (node.IsTrivia)
+            {
+                this.VisitTrivia((SyntaxTrivia)node);
+            }
+        }
+
         public override void Visit(SyntaxNode node)
         {
             if (node != null)
@@ -92,6 +114,16 @@ namespace MetaDslx.Compiler.Syntax
             }
         }
 
+        public virtual void VisitList(SyntaxNodeList list)
+        {
+            if (list == null) return;
+            for (int i = 0, n = list.SlotCount; i < n; i++)
+            {
+                var item = list.GetNodeSlot(i);
+                this.VisitListElement(item);
+            }
+        }
+
         public virtual void VisitList<TNode>(SyntaxNodeList<TNode> list) where TNode : SyntaxNode
         {
             if (list == null) return;
@@ -106,6 +138,29 @@ namespace MetaDslx.Compiler.Syntax
         {
             if (node == null) return;
             this.Visit(node);
+        }
+
+        public virtual void VisitList(SeparatedSyntaxNodeList list)
+        {
+            if (list == null) return;
+            var count = list.SlotCount;
+            var sepCount = list.SeparatorCount;
+
+            int i = 0;
+            for (; i < sepCount; i++)
+            {
+                var node = list.GetNodeSlot(i);
+                this.VisitListElement(node);
+
+                var separator = list.GetSeparator(i);
+                this.VisitListSeparator(separator);
+            }
+
+            if (i < count)
+            {
+                var node = list.GetNodeSlot(i);
+                this.VisitListElement(node);
+            }
         }
 
         public virtual void VisitList<TNode>(SeparatedSyntaxNodeList<TNode> list) where TNode : SyntaxNode
@@ -185,6 +240,29 @@ namespace MetaDslx.Compiler.Syntax
 
         private int _recursionDepth;
 
+        public virtual TResult VisitRed(RedNode node)
+        {
+            if (node.IsNode)
+            {
+                return this.Visit((SyntaxNode)node);
+            }
+            else if (node.IsToken)
+            {
+                return this.VisitToken((SyntaxToken)node);
+            }
+            else if (node.IsList)
+            {
+                SyntaxNodeListBase list = (SyntaxNodeListBase)node;
+                if (list.IsSeparated) return this.VisitList((SeparatedSyntaxNodeList)node);
+                else return this.VisitList((SyntaxNodeList)node); 
+            }
+            else if (node.IsTrivia)
+            {
+                return this.VisitTrivia((SyntaxTrivia)node);
+            }
+            return default(TResult);
+        }
+
         public override TResult Visit(SyntaxNode node)
         {
             TResult result = default(TResult);
@@ -253,6 +331,17 @@ namespace MetaDslx.Compiler.Syntax
             return default(TResult);
         }
 
+        public virtual TResult VisitList(SyntaxNodeList list)
+        {
+            if (list == null) return default(TResult);
+            for (int i = 0, n = list.SlotCount; i < n; i++)
+            {
+                var item = list.GetNodeSlot(i);
+                this.VisitListElement(item);
+            }
+            return default(TResult);
+        }
+
         public virtual TResult VisitList<TNode>(SyntaxNodeList<TNode> list) where TNode : SyntaxNode
         {
             if (list == null) return default(TResult);
@@ -268,6 +357,30 @@ namespace MetaDslx.Compiler.Syntax
         {
             if (node == null) return default(TResult);
             return this.Visit(node);
+        }
+
+        public virtual TResult VisitList(SeparatedSyntaxNodeList list)
+        {
+            if (list == null) return default(TResult);
+            var count = list.SlotCount;
+            var sepCount = list.SeparatorCount;
+
+            int i = 0;
+            for (; i < sepCount; i++)
+            {
+                var node = list.GetNodeSlot(i);
+                this.VisitListElement(node);
+
+                var separator = list.GetSeparator(i);
+                this.VisitListSeparator(separator);
+            }
+
+            if (i < count)
+            {
+                var node = list.GetNodeSlot(i);
+                this.VisitListElement(node);
+            }
+            return default(TResult);
         }
 
         public virtual TResult VisitList<TNode>(SeparatedSyntaxNodeList<TNode> list) where TNode : SyntaxNode

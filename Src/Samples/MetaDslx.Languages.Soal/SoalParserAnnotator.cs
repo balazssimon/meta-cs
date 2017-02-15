@@ -238,21 +238,6 @@ namespace MetaDslx.Languages.Soal
         
         public override object VisitAnnotationHead(SoalParser.AnnotationHeadContext context)
         {
-            List<object> elemAnnotList = null;
-            if (context.identifier() != null)
-            {
-                object elem = context.identifier();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                PropertyAnnotation __tmp10 = new PropertyAnnotation();
-                __tmp10.Name = "Name";
-                elemAnnotList.Add(__tmp10);
-                ValueAnnotation __tmp11 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp11);
-            }
             this.HandleSymbolType(context);
             return base.VisitAnnotationHead(context);
         }
@@ -265,8 +250,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp12 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp12);
+            BodyAnnotation __tmp10 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp10);
             this.HandleSymbolType(context);
             return base.VisitAnnotationBody(context);
         }
@@ -285,27 +270,13 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp13 = new PropertyAnnotation();
-            __tmp13.Name = "Properties";
-            treeAnnotList.Add(__tmp13);
-            SymbolAnnotation __tmp14 = new SymbolAnnotation();
-            __tmp14.SymbolType = typeof(AnnotationProperty);
-            treeAnnotList.Add(__tmp14);
+            PropertyAnnotation __tmp11 = new PropertyAnnotation();
+            __tmp11.Name = "Properties";
+            treeAnnotList.Add(__tmp11);
+            SymbolAnnotation __tmp12 = new SymbolAnnotation();
+            __tmp12.SymbolType = typeof(AnnotationProperty);
+            treeAnnotList.Add(__tmp12);
             List<object> elemAnnotList = null;
-            if (context.identifier() != null)
-            {
-                object elem = context.identifier();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                PropertyAnnotation __tmp15 = new PropertyAnnotation();
-                __tmp15.Name = "Name";
-                elemAnnotList.Add(__tmp15);
-                ValueAnnotation __tmp16 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp16);
-            }
             if (context.annotationPropertyValue() != null)
             {
                 object elem = context.annotationPropertyValue();
@@ -314,9 +285,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp17 = new PropertyAnnotation();
-                __tmp17.Name = "Value";
-                elemAnnotList.Add(__tmp17);
+                PropertyAnnotation __tmp13 = new PropertyAnnotation();
+                __tmp13.Name = "Value";
+                elemAnnotList.Add(__tmp13);
             }
             this.HandleSymbolType(context);
             return base.VisitAnnotationProperty(context);
@@ -336,11 +307,11 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp18 = new SymbolAnnotation();
-            __tmp18.SymbolType = typeof(Namespace);
-            __tmp18.NestingProperty = node;
-            __tmp18.Merge = true;
-            treeAnnotList.Add(__tmp18);
+            SymbolAnnotation __tmp14 = new SymbolAnnotation();
+            __tmp14.SymbolType = typeof(Namespace);
+            __tmp14.NestingProperty = node;
+            __tmp14.Merge = true;
+            treeAnnotList.Add(__tmp14);
             List<object> elemAnnotList = null;
             if (context.identifier() != null)
             {
@@ -350,11 +321,11 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp19 = new PropertyAnnotation();
-                __tmp19.Name = "Prefix";
-                elemAnnotList.Add(__tmp19);
-                ValueAnnotation __tmp20 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp20);
+                PropertyAnnotation __tmp15 = new PropertyAnnotation();
+                __tmp15.Name = "Prefix";
+                elemAnnotList.Add(__tmp15);
+                ValueAnnotation __tmp16 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp16);
             }
             if (context.stringLiteral() != null)
             {
@@ -364,11 +335,11 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp21 = new PropertyAnnotation();
-                __tmp21.Name = "Uri";
-                elemAnnotList.Add(__tmp21);
-                ValueAnnotation __tmp22 = new ValueAnnotation();
-                elemAnnotList.Add(__tmp22);
+                PropertyAnnotation __tmp17 = new PropertyAnnotation();
+                __tmp17.Name = "Uri";
+                elemAnnotList.Add(__tmp17);
+                ValueAnnotation __tmp18 = new ValueAnnotation();
+                elemAnnotList.Add(__tmp18);
             }
             this.HandleSymbolType(context);
             return base.VisitNamespaceDeclaration(context);
@@ -382,8 +353,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp23 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp23);
+            BodyAnnotation __tmp19 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp19);
             this.HandleSymbolType(context);
             return base.VisitNamespaceBody(context);
         }
@@ -396,9 +367,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp24 = new PropertyAnnotation();
-            __tmp24.Name = "Declarations";
-            treeAnnotList.Add(__tmp24);
+            PropertyAnnotation __tmp20 = new PropertyAnnotation();
+            __tmp20.Name = "Declarations";
+            treeAnnotList.Add(__tmp20);
             this.HandleSymbolType(context);
             return base.VisitDeclaration(context);
         }
@@ -411,9 +382,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp25 = new SymbolAnnotation();
-            __tmp25.SymbolType = typeof(Enum);
-            treeAnnotList.Add(__tmp25);
+            SymbolAnnotation __tmp21 = new SymbolAnnotation();
+            __tmp21.SymbolType = typeof(Enum);
+            treeAnnotList.Add(__tmp21);
             List<object> elemAnnotList = null;
             if (context.qualifier() != null)
             {
@@ -423,12 +394,12 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp26 = new PropertyAnnotation();
-                __tmp26.Name = "BaseType";
-                elemAnnotList.Add(__tmp26);
-                SymbolUseAnnotation __tmp27 = new SymbolUseAnnotation();
-                __tmp27.Value = node;
-                elemAnnotList.Add(__tmp27);
+                PropertyAnnotation __tmp22 = new PropertyAnnotation();
+                __tmp22.Name = "BaseType";
+                elemAnnotList.Add(__tmp22);
+                SymbolUseAnnotation __tmp23 = new SymbolUseAnnotation();
+                __tmp23.Value = node;
+                elemAnnotList.Add(__tmp23);
             }
             this.HandleSymbolType(context);
             return base.VisitEnumDeclaration(context);
@@ -442,8 +413,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp28 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp28);
+            BodyAnnotation __tmp24 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp24);
             this.HandleSymbolType(context);
             return base.VisitEnumBody(context);
         }
@@ -462,12 +433,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp29 = new PropertyAnnotation();
-            __tmp29.Name = "EnumLiterals";
-            treeAnnotList.Add(__tmp29);
-            SymbolAnnotation __tmp30 = new SymbolAnnotation();
-            __tmp30.SymbolType = typeof(EnumLiteral);
-            treeAnnotList.Add(__tmp30);
+            PropertyAnnotation __tmp25 = new PropertyAnnotation();
+            __tmp25.Name = "EnumLiterals";
+            treeAnnotList.Add(__tmp25);
+            SymbolAnnotation __tmp26 = new SymbolAnnotation();
+            __tmp26.SymbolType = typeof(EnumLiteral);
+            treeAnnotList.Add(__tmp26);
             this.HandleSymbolType(context);
             return base.VisitEnumLiteral(context);
         }
@@ -480,9 +451,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp31 = new SymbolAnnotation();
-            __tmp31.SymbolType = typeof(Struct);
-            treeAnnotList.Add(__tmp31);
+            SymbolAnnotation __tmp27 = new SymbolAnnotation();
+            __tmp27.SymbolType = typeof(Struct);
+            treeAnnotList.Add(__tmp27);
             List<object> elemAnnotList = null;
             if (context.qualifier() != null)
             {
@@ -492,12 +463,12 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp32 = new PropertyAnnotation();
-                __tmp32.Name = "BaseType";
-                elemAnnotList.Add(__tmp32);
-                SymbolUseAnnotation __tmp33 = new SymbolUseAnnotation();
-                __tmp33.Value = node;
-                elemAnnotList.Add(__tmp33);
+                PropertyAnnotation __tmp28 = new PropertyAnnotation();
+                __tmp28.Name = "BaseType";
+                elemAnnotList.Add(__tmp28);
+                SymbolUseAnnotation __tmp29 = new SymbolUseAnnotation();
+                __tmp29.Value = node;
+                elemAnnotList.Add(__tmp29);
             }
             this.HandleSymbolType(context);
             return base.VisitStructDeclaration(context);
@@ -511,8 +482,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp34 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp34);
+            BodyAnnotation __tmp30 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp30);
             this.HandleSymbolType(context);
             return base.VisitStructBody(context);
         }
@@ -525,12 +496,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp35 = new PropertyAnnotation();
-            __tmp35.Name = "Properties";
-            treeAnnotList.Add(__tmp35);
-            SymbolAnnotation __tmp36 = new SymbolAnnotation();
-            __tmp36.SymbolType = typeof(Property);
-            treeAnnotList.Add(__tmp36);
+            PropertyAnnotation __tmp31 = new PropertyAnnotation();
+            __tmp31.Name = "Properties";
+            treeAnnotList.Add(__tmp31);
+            SymbolAnnotation __tmp32 = new SymbolAnnotation();
+            __tmp32.SymbolType = typeof(Property);
+            treeAnnotList.Add(__tmp32);
             List<object> elemAnnotList = null;
             if (context.typeReference() != null)
             {
@@ -540,9 +511,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp37 = new PropertyAnnotation();
-                __tmp37.Name = "Type";
-                elemAnnotList.Add(__tmp37);
+                PropertyAnnotation __tmp33 = new PropertyAnnotation();
+                __tmp33.Name = "Type";
+                elemAnnotList.Add(__tmp33);
             }
             this.HandleSymbolType(context);
             return base.VisitPropertyDeclaration(context);
@@ -556,9 +527,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp38 = new SymbolAnnotation();
-            __tmp38.SymbolType = typeof(Database);
-            treeAnnotList.Add(__tmp38);
+            SymbolAnnotation __tmp34 = new SymbolAnnotation();
+            __tmp34.SymbolType = typeof(Database);
+            treeAnnotList.Add(__tmp34);
             this.HandleSymbolType(context);
             return base.VisitDatabaseDeclaration(context);
         }
@@ -571,8 +542,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp39 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp39);
+            BodyAnnotation __tmp35 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp35);
             this.HandleSymbolType(context);
             return base.VisitDatabaseBody(context);
         }
@@ -585,9 +556,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp40 = new PropertyAnnotation();
-            __tmp40.Name = "Entities";
-            treeAnnotList.Add(__tmp40);
+            PropertyAnnotation __tmp36 = new PropertyAnnotation();
+            __tmp36.Name = "Entities";
+            treeAnnotList.Add(__tmp36);
             List<object> elemAnnotList = null;
             if (context.qualifier() != null)
             {
@@ -597,9 +568,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                SymbolUseAnnotation __tmp41 = new SymbolUseAnnotation();
-                __tmp41.Value = node;
-                elemAnnotList.Add(__tmp41);
+                SymbolUseAnnotation __tmp37 = new SymbolUseAnnotation();
+                __tmp37.Value = node;
+                elemAnnotList.Add(__tmp37);
             }
             this.HandleSymbolType(context);
             return base.VisitEntityReference(context);
@@ -613,9 +584,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp42 = new SymbolAnnotation();
-            __tmp42.SymbolType = typeof(Interface);
-            treeAnnotList.Add(__tmp42);
+            SymbolAnnotation __tmp38 = new SymbolAnnotation();
+            __tmp38.SymbolType = typeof(Interface);
+            treeAnnotList.Add(__tmp38);
             this.HandleSymbolType(context);
             return base.VisitInterfaceDeclaration(context);
         }
@@ -628,8 +599,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp43 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp43);
+            BodyAnnotation __tmp39 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp39);
             this.HandleSymbolType(context);
             return base.VisitInterfaceBody(context);
         }
@@ -642,12 +613,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp44 = new PropertyAnnotation();
-            __tmp44.Name = "Operations";
-            treeAnnotList.Add(__tmp44);
-            SymbolAnnotation __tmp45 = new SymbolAnnotation();
-            __tmp45.SymbolType = typeof(Operation);
-            treeAnnotList.Add(__tmp45);
+            PropertyAnnotation __tmp40 = new PropertyAnnotation();
+            __tmp40.Name = "Operations";
+            treeAnnotList.Add(__tmp40);
+            SymbolAnnotation __tmp41 = new SymbolAnnotation();
+            __tmp41.SymbolType = typeof(Operation);
+            treeAnnotList.Add(__tmp41);
             this.HandleSymbolType(context);
             return base.VisitOperationDeclaration(context);
         }
@@ -663,12 +634,12 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp46 = new PropertyAnnotation();
-                __tmp46.Name = "Exceptions";
-                elemAnnotList.Add(__tmp46);
-                SymbolUseAnnotation __tmp47 = new SymbolUseAnnotation();
-                __tmp47.Value = node;
-                elemAnnotList.Add(__tmp47);
+                PropertyAnnotation __tmp42 = new PropertyAnnotation();
+                __tmp42.Name = "Exceptions";
+                elemAnnotList.Add(__tmp42);
+                SymbolUseAnnotation __tmp43 = new SymbolUseAnnotation();
+                __tmp43.Value = node;
+                elemAnnotList.Add(__tmp43);
             }
             this.HandleSymbolType(context);
             return base.VisitOperationHead(context);
@@ -688,12 +659,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp48 = new PropertyAnnotation();
-            __tmp48.Name = "Parameters";
-            treeAnnotList.Add(__tmp48);
-            SymbolAnnotation __tmp49 = new SymbolAnnotation();
-            __tmp49.SymbolType = typeof(InputParameter);
-            treeAnnotList.Add(__tmp49);
+            PropertyAnnotation __tmp44 = new PropertyAnnotation();
+            __tmp44.Name = "Parameters";
+            treeAnnotList.Add(__tmp44);
+            SymbolAnnotation __tmp45 = new SymbolAnnotation();
+            __tmp45.SymbolType = typeof(InputParameter);
+            treeAnnotList.Add(__tmp45);
             List<object> elemAnnotList = null;
             if (context.typeReference() != null)
             {
@@ -703,9 +674,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp50 = new PropertyAnnotation();
-                __tmp50.Name = "Type";
-                elemAnnotList.Add(__tmp50);
+                PropertyAnnotation __tmp46 = new PropertyAnnotation();
+                __tmp46.Name = "Type";
+                elemAnnotList.Add(__tmp46);
             }
             this.HandleSymbolType(context);
             return base.VisitParameter(context);
@@ -719,12 +690,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp51 = new PropertyAnnotation();
-            __tmp51.Name = "Result";
-            treeAnnotList.Add(__tmp51);
-            SymbolAnnotation __tmp52 = new SymbolAnnotation();
-            __tmp52.SymbolType = typeof(OutputParameter);
-            treeAnnotList.Add(__tmp52);
+            PropertyAnnotation __tmp47 = new PropertyAnnotation();
+            __tmp47.Name = "Result";
+            treeAnnotList.Add(__tmp47);
+            SymbolAnnotation __tmp48 = new SymbolAnnotation();
+            __tmp48.SymbolType = typeof(OutputParameter);
+            treeAnnotList.Add(__tmp48);
             this.HandleSymbolType(context);
             return base.VisitOperationResult(context);
         }
@@ -737,9 +708,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp53 = new SymbolAnnotation();
-            __tmp53.SymbolType = typeof(Component);
-            treeAnnotList.Add(__tmp53);
+            SymbolAnnotation __tmp49 = new SymbolAnnotation();
+            __tmp49.SymbolType = typeof(Component);
+            treeAnnotList.Add(__tmp49);
             List<object> elemAnnotList = null;
             if (context.KAbstract() != null)
             {
@@ -749,10 +720,10 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp54 = new PropertyAnnotation();
-                __tmp54.Name = "IsAbstract";
-                __tmp54.Value = true;
-                elemAnnotList.Add(__tmp54);
+                PropertyAnnotation __tmp50 = new PropertyAnnotation();
+                __tmp50.Name = "IsAbstract";
+                __tmp50.Value = true;
+                elemAnnotList.Add(__tmp50);
             }
             if (context.qualifier() != null)
             {
@@ -762,12 +733,12 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp55 = new PropertyAnnotation();
-                __tmp55.Name = "BaseComponent";
-                elemAnnotList.Add(__tmp55);
-                SymbolUseAnnotation __tmp56 = new SymbolUseAnnotation();
-                __tmp56.Value = node;
-                elemAnnotList.Add(__tmp56);
+                PropertyAnnotation __tmp51 = new PropertyAnnotation();
+                __tmp51.Name = "BaseComponent";
+                elemAnnotList.Add(__tmp51);
+                SymbolUseAnnotation __tmp52 = new SymbolUseAnnotation();
+                __tmp52.Value = node;
+                elemAnnotList.Add(__tmp52);
             }
             this.HandleSymbolType(context);
             return base.VisitComponentDeclaration(context);
@@ -781,8 +752,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp57 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp57);
+            BodyAnnotation __tmp53 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp53);
             this.HandleSymbolType(context);
             return base.VisitComponentBody(context);
         }
@@ -807,11 +778,45 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            PropertyAnnotation __tmp54 = new PropertyAnnotation();
+            __tmp54.Name = "Services";
+            treeAnnotList.Add(__tmp54);
+            SymbolAnnotation __tmp55 = new SymbolAnnotation();
+            __tmp55.SymbolType = typeof(Service);
+            treeAnnotList.Add(__tmp55);
+            List<object> elemAnnotList = null;
+            if (context.qualifier() != null)
+            {
+                object elem = context.qualifier();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp56 = new PropertyAnnotation();
+                __tmp56.Name = "Interface";
+                elemAnnotList.Add(__tmp56);
+                SymbolUseAnnotation __tmp57 = new SymbolUseAnnotation();
+                __tmp57.Value = node;
+                elemAnnotList.Add(__tmp57);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitComponentService(context);
+        }
+        
+        public override object VisitComponentReference(SoalParser.ComponentReferenceContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
             PropertyAnnotation __tmp58 = new PropertyAnnotation();
-            __tmp58.Name = "Services";
+            __tmp58.Name = "References";
             treeAnnotList.Add(__tmp58);
             SymbolAnnotation __tmp59 = new SymbolAnnotation();
-            __tmp59.SymbolType = typeof(Service);
+            __tmp59.SymbolType = typeof(Reference);
             treeAnnotList.Add(__tmp59);
             List<object> elemAnnotList = null;
             if (context.qualifier() != null)
@@ -830,40 +835,6 @@ namespace MetaDslx.Languages.Soal
                 elemAnnotList.Add(__tmp61);
             }
             this.HandleSymbolType(context);
-            return base.VisitComponentService(context);
-        }
-        
-        public override object VisitComponentReference(SoalParser.ComponentReferenceContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            PropertyAnnotation __tmp62 = new PropertyAnnotation();
-            __tmp62.Name = "References";
-            treeAnnotList.Add(__tmp62);
-            SymbolAnnotation __tmp63 = new SymbolAnnotation();
-            __tmp63.SymbolType = typeof(Reference);
-            treeAnnotList.Add(__tmp63);
-            List<object> elemAnnotList = null;
-            if (context.qualifier() != null)
-            {
-                object elem = context.qualifier();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                PropertyAnnotation __tmp64 = new PropertyAnnotation();
-                __tmp64.Name = "Interface";
-                elemAnnotList.Add(__tmp64);
-                SymbolUseAnnotation __tmp65 = new SymbolUseAnnotation();
-                __tmp65.Value = node;
-                elemAnnotList.Add(__tmp65);
-            }
-            this.HandleSymbolType(context);
             return base.VisitComponentReference(context);
         }
         
@@ -875,8 +846,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp66 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp66);
+            BodyAnnotation __tmp62 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp62);
             this.HandleSymbolType(context);
             return base.VisitComponentServiceOrReferenceEmptyBody(context);
         }
@@ -889,8 +860,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp67 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp67);
+            BodyAnnotation __tmp63 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp63);
             this.HandleSymbolType(context);
             return base.VisitComponentServiceOrReferenceNonEmptyBody(context);
         }
@@ -906,12 +877,12 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp68 = new PropertyAnnotation();
-                __tmp68.Name = "Binding";
-                elemAnnotList.Add(__tmp68);
-                NameUseAnnotation __tmp69 = new NameUseAnnotation();
-                __tmp69.SymbolTypes.Add(typeof(Binding));
-                elemAnnotList.Add(__tmp69);
+                PropertyAnnotation __tmp64 = new PropertyAnnotation();
+                __tmp64.Name = "Binding";
+                elemAnnotList.Add(__tmp64);
+                NameUseAnnotation __tmp65 = new NameUseAnnotation();
+                __tmp65.SymbolTypes.Add(typeof(Binding));
+                elemAnnotList.Add(__tmp65);
             }
             this.HandleSymbolType(context);
             return base.VisitComponentServiceOrReferenceElement(context);
@@ -925,12 +896,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp70 = new PropertyAnnotation();
-            __tmp70.Name = "Properties";
-            treeAnnotList.Add(__tmp70);
-            SymbolAnnotation __tmp71 = new SymbolAnnotation();
-            __tmp71.SymbolType = typeof(Property);
-            treeAnnotList.Add(__tmp71);
+            PropertyAnnotation __tmp66 = new PropertyAnnotation();
+            __tmp66.Name = "Properties";
+            treeAnnotList.Add(__tmp66);
+            SymbolAnnotation __tmp67 = new SymbolAnnotation();
+            __tmp67.SymbolType = typeof(Property);
+            treeAnnotList.Add(__tmp67);
             this.HandleSymbolType(context);
             return base.VisitComponentProperty(context);
         }
@@ -943,12 +914,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp72 = new PropertyAnnotation();
-            __tmp72.Name = "Implementation";
-            treeAnnotList.Add(__tmp72);
-            SymbolAnnotation __tmp73 = new SymbolAnnotation();
-            __tmp73.SymbolType = typeof(Implementation);
-            treeAnnotList.Add(__tmp73);
+            PropertyAnnotation __tmp68 = new PropertyAnnotation();
+            __tmp68.Name = "Implementation";
+            treeAnnotList.Add(__tmp68);
+            SymbolAnnotation __tmp69 = new SymbolAnnotation();
+            __tmp69.SymbolType = typeof(Implementation);
+            treeAnnotList.Add(__tmp69);
             this.HandleSymbolType(context);
             return base.VisitComponentImplementation(context);
         }
@@ -961,12 +932,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp74 = new PropertyAnnotation();
-            __tmp74.Name = "Language";
-            treeAnnotList.Add(__tmp74);
-            SymbolAnnotation __tmp75 = new SymbolAnnotation();
-            __tmp75.SymbolType = typeof(Language);
-            treeAnnotList.Add(__tmp75);
+            PropertyAnnotation __tmp70 = new PropertyAnnotation();
+            __tmp70.Name = "Language";
+            treeAnnotList.Add(__tmp70);
+            SymbolAnnotation __tmp71 = new SymbolAnnotation();
+            __tmp71.SymbolType = typeof(Language);
+            treeAnnotList.Add(__tmp71);
             this.HandleSymbolType(context);
             return base.VisitComponentLanguage(context);
         }
@@ -979,8 +950,53 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
+            SymbolAnnotation __tmp72 = new SymbolAnnotation();
+            __tmp72.SymbolType = typeof(Composite);
+            treeAnnotList.Add(__tmp72);
+            List<object> elemAnnotList = null;
+            if (context.qualifier() != null)
+            {
+                object elem = context.qualifier();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp73 = new PropertyAnnotation();
+                __tmp73.Name = "BaseComponent";
+                elemAnnotList.Add(__tmp73);
+                SymbolUseAnnotation __tmp74 = new SymbolUseAnnotation();
+                __tmp74.Value = node;
+                elemAnnotList.Add(__tmp74);
+            }
+            this.HandleSymbolType(context);
+            return base.VisitCompositeDeclaration(context);
+        }
+        
+        public override object VisitCompositeBody(SoalParser.CompositeBodyContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            BodyAnnotation __tmp75 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp75);
+            this.HandleSymbolType(context);
+            return base.VisitCompositeBody(context);
+        }
+        
+        public override object VisitAssemblyDeclaration(SoalParser.AssemblyDeclarationContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
             SymbolAnnotation __tmp76 = new SymbolAnnotation();
-            __tmp76.SymbolType = typeof(Composite);
+            __tmp76.SymbolType = typeof(Assembly);
             treeAnnotList.Add(__tmp76);
             List<object> elemAnnotList = null;
             if (context.qualifier() != null)
@@ -997,51 +1013,6 @@ namespace MetaDslx.Languages.Soal
                 SymbolUseAnnotation __tmp78 = new SymbolUseAnnotation();
                 __tmp78.Value = node;
                 elemAnnotList.Add(__tmp78);
-            }
-            this.HandleSymbolType(context);
-            return base.VisitCompositeDeclaration(context);
-        }
-        
-        public override object VisitCompositeBody(SoalParser.CompositeBodyContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            BodyAnnotation __tmp79 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp79);
-            this.HandleSymbolType(context);
-            return base.VisitCompositeBody(context);
-        }
-        
-        public override object VisitAssemblyDeclaration(SoalParser.AssemblyDeclarationContext context)
-        {
-            List<object> treeAnnotList = null;
-            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
-            {
-                treeAnnotList = new List<object>();
-                this.treeAnnotations.Add(context, treeAnnotList);
-            }
-            SymbolAnnotation __tmp80 = new SymbolAnnotation();
-            __tmp80.SymbolType = typeof(Assembly);
-            treeAnnotList.Add(__tmp80);
-            List<object> elemAnnotList = null;
-            if (context.qualifier() != null)
-            {
-                object elem = context.qualifier();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                PropertyAnnotation __tmp81 = new PropertyAnnotation();
-                __tmp81.Name = "BaseComponent";
-                elemAnnotList.Add(__tmp81);
-                SymbolUseAnnotation __tmp82 = new SymbolUseAnnotation();
-                __tmp82.Value = node;
-                elemAnnotList.Add(__tmp82);
             }
             this.HandleSymbolType(context);
             return base.VisitAssemblyDeclaration(context);
@@ -1067,9 +1038,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp83 = new PropertyAnnotation();
-            __tmp83.Name = "Components";
-            treeAnnotList.Add(__tmp83);
+            PropertyAnnotation __tmp79 = new PropertyAnnotation();
+            __tmp79.Name = "Components";
+            treeAnnotList.Add(__tmp79);
             List<object> elemAnnotList = null;
             if (context.qualifier() != null)
             {
@@ -1079,9 +1050,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                NameUseAnnotation __tmp84 = new NameUseAnnotation();
-                __tmp84.SymbolTypes.Add(typeof(Component));
-                elemAnnotList.Add(__tmp84);
+                NameUseAnnotation __tmp80 = new NameUseAnnotation();
+                __tmp80.SymbolTypes.Add(typeof(Component));
+                elemAnnotList.Add(__tmp80);
             }
             this.HandleSymbolType(context);
             return base.VisitCompositeComponent(context);
@@ -1095,12 +1066,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp85 = new PropertyAnnotation();
-            __tmp85.Name = "Wires";
-            treeAnnotList.Add(__tmp85);
-            SymbolAnnotation __tmp86 = new SymbolAnnotation();
-            __tmp86.SymbolType = typeof(Wire);
-            treeAnnotList.Add(__tmp86);
+            PropertyAnnotation __tmp81 = new PropertyAnnotation();
+            __tmp81.Name = "Wires";
+            treeAnnotList.Add(__tmp81);
+            SymbolAnnotation __tmp82 = new SymbolAnnotation();
+            __tmp82.SymbolType = typeof(Wire);
+            treeAnnotList.Add(__tmp82);
             this.HandleSymbolType(context);
             return base.VisitCompositeWire(context);
         }
@@ -1116,12 +1087,12 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp87 = new PropertyAnnotation();
-                __tmp87.Name = "Source";
-                elemAnnotList.Add(__tmp87);
-                NameUseAnnotation __tmp88 = new NameUseAnnotation();
-                __tmp88.SymbolTypes.Add(typeof(Port));
-                elemAnnotList.Add(__tmp88);
+                PropertyAnnotation __tmp83 = new PropertyAnnotation();
+                __tmp83.Name = "Source";
+                elemAnnotList.Add(__tmp83);
+                NameUseAnnotation __tmp84 = new NameUseAnnotation();
+                __tmp84.SymbolTypes.Add(typeof(Port));
+                elemAnnotList.Add(__tmp84);
             }
             this.HandleSymbolType(context);
             return base.VisitWireSource(context);
@@ -1138,12 +1109,12 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp89 = new PropertyAnnotation();
-                __tmp89.Name = "Target";
-                elemAnnotList.Add(__tmp89);
-                NameUseAnnotation __tmp90 = new NameUseAnnotation();
-                __tmp90.SymbolTypes.Add(typeof(Port));
-                elemAnnotList.Add(__tmp90);
+                PropertyAnnotation __tmp85 = new PropertyAnnotation();
+                __tmp85.Name = "Target";
+                elemAnnotList.Add(__tmp85);
+                NameUseAnnotation __tmp86 = new NameUseAnnotation();
+                __tmp86.SymbolTypes.Add(typeof(Port));
+                elemAnnotList.Add(__tmp86);
             }
             this.HandleSymbolType(context);
             return base.VisitWireTarget(context);
@@ -1157,9 +1128,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp91 = new SymbolAnnotation();
-            __tmp91.SymbolType = typeof(Deployment);
-            treeAnnotList.Add(__tmp91);
+            SymbolAnnotation __tmp87 = new SymbolAnnotation();
+            __tmp87.SymbolType = typeof(Deployment);
+            treeAnnotList.Add(__tmp87);
             this.HandleSymbolType(context);
             return base.VisitDeploymentDeclaration(context);
         }
@@ -1172,8 +1143,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp92 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp92);
+            BodyAnnotation __tmp88 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp88);
             this.HandleSymbolType(context);
             return base.VisitDeploymentBody(context);
         }
@@ -1198,12 +1169,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp93 = new PropertyAnnotation();
-            __tmp93.Name = "Environments";
-            treeAnnotList.Add(__tmp93);
-            SymbolAnnotation __tmp94 = new SymbolAnnotation();
-            __tmp94.SymbolType = typeof(Environment);
-            treeAnnotList.Add(__tmp94);
+            PropertyAnnotation __tmp89 = new PropertyAnnotation();
+            __tmp89.Name = "Environments";
+            treeAnnotList.Add(__tmp89);
+            SymbolAnnotation __tmp90 = new SymbolAnnotation();
+            __tmp90.SymbolType = typeof(Environment);
+            treeAnnotList.Add(__tmp90);
             this.HandleSymbolType(context);
             return base.VisitEnvironmentDeclaration(context);
         }
@@ -1216,8 +1187,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp95 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp95);
+            BodyAnnotation __tmp91 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp91);
             this.HandleSymbolType(context);
             return base.VisitEnvironmentBody(context);
         }
@@ -1230,12 +1201,12 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp96 = new PropertyAnnotation();
-            __tmp96.Name = "Runtime";
-            treeAnnotList.Add(__tmp96);
-            SymbolAnnotation __tmp97 = new SymbolAnnotation();
-            __tmp97.SymbolType = typeof(Runtime);
-            treeAnnotList.Add(__tmp97);
+            PropertyAnnotation __tmp92 = new PropertyAnnotation();
+            __tmp92.Name = "Runtime";
+            treeAnnotList.Add(__tmp92);
+            SymbolAnnotation __tmp93 = new SymbolAnnotation();
+            __tmp93.SymbolType = typeof(Runtime);
+            treeAnnotList.Add(__tmp93);
             this.HandleSymbolType(context);
             return base.VisitRuntimeDeclaration(context);
         }
@@ -1254,9 +1225,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp98 = new PropertyAnnotation();
-            __tmp98.Name = "Assemblies";
-            treeAnnotList.Add(__tmp98);
+            PropertyAnnotation __tmp94 = new PropertyAnnotation();
+            __tmp94.Name = "Assemblies";
+            treeAnnotList.Add(__tmp94);
             List<object> elemAnnotList = null;
             if (context.qualifier() != null)
             {
@@ -1266,9 +1237,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                SymbolUseAnnotation __tmp99 = new SymbolUseAnnotation();
-                __tmp99.Value = node;
-                elemAnnotList.Add(__tmp99);
+                SymbolUseAnnotation __tmp95 = new SymbolUseAnnotation();
+                __tmp95.Value = node;
+                elemAnnotList.Add(__tmp95);
             }
             this.HandleSymbolType(context);
             return base.VisitAssemblyReference(context);
@@ -1282,9 +1253,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp100 = new PropertyAnnotation();
-            __tmp100.Name = "Databases";
-            treeAnnotList.Add(__tmp100);
+            PropertyAnnotation __tmp96 = new PropertyAnnotation();
+            __tmp96.Name = "Databases";
+            treeAnnotList.Add(__tmp96);
             List<object> elemAnnotList = null;
             if (context.qualifier() != null)
             {
@@ -1294,9 +1265,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                SymbolUseAnnotation __tmp101 = new SymbolUseAnnotation();
-                __tmp101.Value = node;
-                elemAnnotList.Add(__tmp101);
+                SymbolUseAnnotation __tmp97 = new SymbolUseAnnotation();
+                __tmp97.Value = node;
+                elemAnnotList.Add(__tmp97);
             }
             this.HandleSymbolType(context);
             return base.VisitDatabaseReference(context);
@@ -1310,9 +1281,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp102 = new SymbolAnnotation();
-            __tmp102.SymbolType = typeof(Binding);
-            treeAnnotList.Add(__tmp102);
+            SymbolAnnotation __tmp98 = new SymbolAnnotation();
+            __tmp98.SymbolType = typeof(Binding);
+            treeAnnotList.Add(__tmp98);
             this.HandleSymbolType(context);
             return base.VisitBindingDeclaration(context);
         }
@@ -1325,8 +1296,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp103 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp103);
+            BodyAnnotation __tmp99 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp99);
             this.HandleSymbolType(context);
             return base.VisitBindingBody(context);
         }
@@ -1345,9 +1316,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp104 = new PropertyAnnotation();
-            __tmp104.Name = "Transport";
-            treeAnnotList.Add(__tmp104);
+            PropertyAnnotation __tmp100 = new PropertyAnnotation();
+            __tmp100.Name = "Transport";
+            treeAnnotList.Add(__tmp100);
             this.HandleSymbolType(context);
             return base.VisitTransportLayer(context);
         }
@@ -1360,9 +1331,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp105 = new SymbolAnnotation();
-            __tmp105.SymbolType = typeof(HttpTransportBindingElement);
-            treeAnnotList.Add(__tmp105);
+            SymbolAnnotation __tmp101 = new SymbolAnnotation();
+            __tmp101.SymbolType = typeof(HttpTransportBindingElement);
+            treeAnnotList.Add(__tmp101);
             this.HandleSymbolType(context);
             return base.VisitHttpTransportLayer(context);
         }
@@ -1375,8 +1346,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp106 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp106);
+            BodyAnnotation __tmp102 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp102);
             this.HandleSymbolType(context);
             return base.VisitHttpTransportLayerEmptyBody(context);
         }
@@ -1389,8 +1360,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp107 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp107);
+            BodyAnnotation __tmp103 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp103);
             this.HandleSymbolType(context);
             return base.VisitHttpTransportLayerNonEmptyBody(context);
         }
@@ -1403,9 +1374,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp108 = new SymbolAnnotation();
-            __tmp108.SymbolType = typeof(RestTransportBindingElement);
-            treeAnnotList.Add(__tmp108);
+            SymbolAnnotation __tmp104 = new SymbolAnnotation();
+            __tmp104.SymbolType = typeof(RestTransportBindingElement);
+            treeAnnotList.Add(__tmp104);
             this.HandleSymbolType(context);
             return base.VisitRestTransportLayer(context);
         }
@@ -1418,8 +1389,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp109 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp109);
+            BodyAnnotation __tmp105 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp105);
             this.HandleSymbolType(context);
             return base.VisitRestTransportLayerEmptyBody(context);
         }
@@ -1432,8 +1403,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp110 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp110);
+            BodyAnnotation __tmp106 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp106);
             this.HandleSymbolType(context);
             return base.VisitRestTransportLayerNonEmptyBody(context);
         }
@@ -1446,9 +1417,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp111 = new SymbolAnnotation();
-            __tmp111.SymbolType = typeof(WebSocketTransportBindingElement);
-            treeAnnotList.Add(__tmp111);
+            SymbolAnnotation __tmp107 = new SymbolAnnotation();
+            __tmp107.SymbolType = typeof(WebSocketTransportBindingElement);
+            treeAnnotList.Add(__tmp107);
             this.HandleSymbolType(context);
             return base.VisitWebSocketTransportLayer(context);
         }
@@ -1461,8 +1432,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp112 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp112);
+            BodyAnnotation __tmp108 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp108);
             this.HandleSymbolType(context);
             return base.VisitWebSocketTransportLayerEmptyBody(context);
         }
@@ -1475,8 +1446,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp113 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp113);
+            BodyAnnotation __tmp109 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp109);
             this.HandleSymbolType(context);
             return base.VisitWebSocketTransportLayerNonEmptyBody(context);
         }
@@ -1495,9 +1466,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp114 = new PropertyAnnotation();
-            __tmp114.Name = "Ssl";
-            treeAnnotList.Add(__tmp114);
+            PropertyAnnotation __tmp110 = new PropertyAnnotation();
+            __tmp110.Name = "Ssl";
+            treeAnnotList.Add(__tmp110);
             this.HandleSymbolType(context);
             return base.VisitHttpSslProperty(context);
         }
@@ -1510,9 +1481,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp115 = new PropertyAnnotation();
-            __tmp115.Name = "ClientAuthentication";
-            treeAnnotList.Add(__tmp115);
+            PropertyAnnotation __tmp111 = new PropertyAnnotation();
+            __tmp111.Name = "ClientAuthentication";
+            treeAnnotList.Add(__tmp111);
             this.HandleSymbolType(context);
             return base.VisitHttpClientAuthenticationProperty(context);
         }
@@ -1525,9 +1496,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp116 = new PropertyAnnotation();
-            __tmp116.Name = "Encodings";
-            treeAnnotList.Add(__tmp116);
+            PropertyAnnotation __tmp112 = new PropertyAnnotation();
+            __tmp112.Name = "Encodings";
+            treeAnnotList.Add(__tmp112);
             this.HandleSymbolType(context);
             return base.VisitEncodingLayer(context);
         }
@@ -1540,9 +1511,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp117 = new SymbolAnnotation();
-            __tmp117.SymbolType = typeof(SoapEncodingBindingElement);
-            treeAnnotList.Add(__tmp117);
+            SymbolAnnotation __tmp113 = new SymbolAnnotation();
+            __tmp113.SymbolType = typeof(SoapEncodingBindingElement);
+            treeAnnotList.Add(__tmp113);
             this.HandleSymbolType(context);
             return base.VisitSoapEncodingLayer(context);
         }
@@ -1555,8 +1526,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp118 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp118);
+            BodyAnnotation __tmp114 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp114);
             this.HandleSymbolType(context);
             return base.VisitSoapEncodingLayerEmptyBody(context);
         }
@@ -1569,8 +1540,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp119 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp119);
+            BodyAnnotation __tmp115 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp115);
             this.HandleSymbolType(context);
             return base.VisitSoapEncodingLayerNonEmptyBody(context);
         }
@@ -1583,9 +1554,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp120 = new SymbolAnnotation();
-            __tmp120.SymbolType = typeof(XmlEncodingBindingElement);
-            treeAnnotList.Add(__tmp120);
+            SymbolAnnotation __tmp116 = new SymbolAnnotation();
+            __tmp116.SymbolType = typeof(XmlEncodingBindingElement);
+            treeAnnotList.Add(__tmp116);
             this.HandleSymbolType(context);
             return base.VisitXmlEncodingLayer(context);
         }
@@ -1598,8 +1569,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp121 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp121);
+            BodyAnnotation __tmp117 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp117);
             this.HandleSymbolType(context);
             return base.VisitXmlEncodingLayerEmptyBody(context);
         }
@@ -1612,8 +1583,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp122 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp122);
+            BodyAnnotation __tmp118 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp118);
             this.HandleSymbolType(context);
             return base.VisitXmlEncodingLayerNonEmptyBody(context);
         }
@@ -1626,9 +1597,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp123 = new SymbolAnnotation();
-            __tmp123.SymbolType = typeof(JsonEncodingBindingElement);
-            treeAnnotList.Add(__tmp123);
+            SymbolAnnotation __tmp119 = new SymbolAnnotation();
+            __tmp119.SymbolType = typeof(JsonEncodingBindingElement);
+            treeAnnotList.Add(__tmp119);
             this.HandleSymbolType(context);
             return base.VisitJsonEncodingLayer(context);
         }
@@ -1641,8 +1612,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp124 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp124);
+            BodyAnnotation __tmp120 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp120);
             this.HandleSymbolType(context);
             return base.VisitJsonEncodingLayerEmptyBody(context);
         }
@@ -1655,8 +1626,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp125 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp125);
+            BodyAnnotation __tmp121 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp121);
             this.HandleSymbolType(context);
             return base.VisitJsonEncodingLayerNonEmptyBody(context);
         }
@@ -1675,9 +1646,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp126 = new PropertyAnnotation();
-            __tmp126.Name = "Version";
-            treeAnnotList.Add(__tmp126);
+            PropertyAnnotation __tmp122 = new PropertyAnnotation();
+            __tmp122.Name = "Version";
+            treeAnnotList.Add(__tmp122);
             List<object> elemAnnotList = null;
             if (context.identifier() != null)
             {
@@ -1687,9 +1658,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                EnumValueAnnotation __tmp127 = new EnumValueAnnotation();
-                __tmp127.EnumType = typeof(SoapVersion);
-                elemAnnotList.Add(__tmp127);
+                EnumValueAnnotation __tmp123 = new EnumValueAnnotation();
+                __tmp123.EnumType = typeof(SoapVersion);
+                elemAnnotList.Add(__tmp123);
             }
             this.HandleSymbolType(context);
             return base.VisitSoapVersionProperty(context);
@@ -1703,9 +1674,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp128 = new PropertyAnnotation();
-            __tmp128.Name = "Mtom";
-            treeAnnotList.Add(__tmp128);
+            PropertyAnnotation __tmp124 = new PropertyAnnotation();
+            __tmp124.Name = "Mtom";
+            treeAnnotList.Add(__tmp124);
             this.HandleSymbolType(context);
             return base.VisitSoapMtomProperty(context);
         }
@@ -1718,9 +1689,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp129 = new PropertyAnnotation();
-            __tmp129.Name = "Style";
-            treeAnnotList.Add(__tmp129);
+            PropertyAnnotation __tmp125 = new PropertyAnnotation();
+            __tmp125.Name = "Style";
+            treeAnnotList.Add(__tmp125);
             List<object> elemAnnotList = null;
             if (context.identifier() != null)
             {
@@ -1730,9 +1701,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                EnumValueAnnotation __tmp130 = new EnumValueAnnotation();
-                __tmp130.EnumType = typeof(SoapEncodingStyle);
-                elemAnnotList.Add(__tmp130);
+                EnumValueAnnotation __tmp126 = new EnumValueAnnotation();
+                __tmp126.EnumType = typeof(SoapEncodingStyle);
+                elemAnnotList.Add(__tmp126);
             }
             this.HandleSymbolType(context);
             return base.VisitSoapStyleProperty(context);
@@ -1746,33 +1717,32 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp131 = new PropertyAnnotation();
-            __tmp131.Name = "Protocols";
-            treeAnnotList.Add(__tmp131);
-            SymbolAnnotation __tmp132 = new SymbolAnnotation();
-            treeAnnotList.Add(__tmp132);
+            PropertyAnnotation __tmp127 = new PropertyAnnotation();
+            __tmp127.Name = "Protocols";
+            treeAnnotList.Add(__tmp127);
             this.HandleSymbolType(context);
             return base.VisitProtocolLayer(context);
         }
         
         public override object VisitProtocolLayerKind(SoalParser.ProtocolLayerKindContext context)
         {
-            List<object> elemAnnotList = null;
-            if (context.identifier() != null)
-            {
-                object elem = context.identifier();
-                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
-                {
-                    elemAnnotList = new List<object>();
-                    this.treeAnnotations.Add(elem, elemAnnotList);
-                }
-                SymbolTypeAnnotation __tmp133 = new SymbolTypeAnnotation();
-                __tmp133.Name = "WsAddressing";
-                __tmp133.SymbolType = typeof(WsAddressingBindingElement);
-                elemAnnotList.Add(__tmp133);
-            }
             this.HandleSymbolType(context);
             return base.VisitProtocolLayerKind(context);
+        }
+        
+        public override object VisitWsAddressing(SoalParser.WsAddressingContext context)
+        {
+            List<object> treeAnnotList = null;
+            if (!this.treeAnnotations.TryGetValue(context, out treeAnnotList))
+            {
+                treeAnnotList = new List<object>();
+                this.treeAnnotations.Add(context, treeAnnotList);
+            }
+            SymbolAnnotation __tmp128 = new SymbolAnnotation();
+            __tmp128.SymbolType = typeof(WsAddressingBindingElement);
+            treeAnnotList.Add(__tmp128);
+            this.HandleSymbolType(context);
+            return base.VisitWsAddressing(context);
         }
         
         public override object VisitEndpointDeclaration(SoalParser.EndpointDeclarationContext context)
@@ -1783,9 +1753,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolAnnotation __tmp134 = new SymbolAnnotation();
-            __tmp134.SymbolType = typeof(Endpoint);
-            treeAnnotList.Add(__tmp134);
+            SymbolAnnotation __tmp129 = new SymbolAnnotation();
+            __tmp129.SymbolType = typeof(Endpoint);
+            treeAnnotList.Add(__tmp129);
             List<object> elemAnnotList = null;
             if (context.qualifier() != null)
             {
@@ -1795,12 +1765,12 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp135 = new PropertyAnnotation();
-                __tmp135.Name = "Interface";
-                elemAnnotList.Add(__tmp135);
-                SymbolUseAnnotation __tmp136 = new SymbolUseAnnotation();
-                __tmp136.Value = node;
-                elemAnnotList.Add(__tmp136);
+                PropertyAnnotation __tmp130 = new PropertyAnnotation();
+                __tmp130.Name = "Interface";
+                elemAnnotList.Add(__tmp130);
+                SymbolUseAnnotation __tmp131 = new SymbolUseAnnotation();
+                __tmp131.Value = node;
+                elemAnnotList.Add(__tmp131);
             }
             this.HandleSymbolType(context);
             return base.VisitEndpointDeclaration(context);
@@ -1814,8 +1784,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            BodyAnnotation __tmp137 = new BodyAnnotation();
-            treeAnnotList.Add(__tmp137);
+            BodyAnnotation __tmp132 = new BodyAnnotation();
+            treeAnnotList.Add(__tmp132);
             this.HandleSymbolType(context);
             return base.VisitEndpointBody(context);
         }
@@ -1843,12 +1813,12 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp138 = new PropertyAnnotation();
-                __tmp138.Name = "Binding";
-                elemAnnotList.Add(__tmp138);
-                NameUseAnnotation __tmp139 = new NameUseAnnotation();
-                __tmp139.SymbolTypes.Add(typeof(Binding));
-                elemAnnotList.Add(__tmp139);
+                PropertyAnnotation __tmp133 = new PropertyAnnotation();
+                __tmp133.Name = "Binding";
+                elemAnnotList.Add(__tmp133);
+                NameUseAnnotation __tmp134 = new NameUseAnnotation();
+                __tmp134.SymbolTypes.Add(typeof(Binding));
+                elemAnnotList.Add(__tmp134);
             }
             this.HandleSymbolType(context);
             return base.VisitEndpointBindingProperty(context);
@@ -1865,9 +1835,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp140 = new PropertyAnnotation();
-                __tmp140.Name = "Address";
-                elemAnnotList.Add(__tmp140);
+                PropertyAnnotation __tmp135 = new PropertyAnnotation();
+                __tmp135.Name = "Address";
+                elemAnnotList.Add(__tmp135);
             }
             this.HandleSymbolType(context);
             return base.VisitEndpointAddressProperty(context);
@@ -1896,8 +1866,8 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                SymbolUseAnnotation __tmp141 = new SymbolUseAnnotation();
-                elemAnnotList.Add(__tmp141);
+                SymbolUseAnnotation __tmp136 = new SymbolUseAnnotation();
+                elemAnnotList.Add(__tmp136);
             }
             this.HandleSymbolType(context);
             return base.VisitSimpleType(context);
@@ -1920,8 +1890,8 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                SymbolUseAnnotation __tmp142 = new SymbolUseAnnotation();
-                elemAnnotList.Add(__tmp142);
+                SymbolUseAnnotation __tmp137 = new SymbolUseAnnotation();
+                elemAnnotList.Add(__tmp137);
             }
             this.HandleSymbolType(context);
             return base.VisitReferenceType(context);
@@ -1935,8 +1905,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolUseAnnotation __tmp143 = new SymbolUseAnnotation();
-            treeAnnotList.Add(__tmp143);
+            SymbolUseAnnotation __tmp138 = new SymbolUseAnnotation();
+            treeAnnotList.Add(__tmp138);
             this.HandleSymbolType(context);
             return base.VisitObjectType(context);
         }
@@ -1949,8 +1919,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolUseAnnotation __tmp144 = new SymbolUseAnnotation();
-            treeAnnotList.Add(__tmp144);
+            SymbolUseAnnotation __tmp139 = new SymbolUseAnnotation();
+            treeAnnotList.Add(__tmp139);
             this.HandleSymbolType(context);
             return base.VisitValueType(context);
         }
@@ -1963,8 +1933,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolUseAnnotation __tmp145 = new SymbolUseAnnotation();
-            treeAnnotList.Add(__tmp145);
+            SymbolUseAnnotation __tmp140 = new SymbolUseAnnotation();
+            treeAnnotList.Add(__tmp140);
             this.HandleSymbolType(context);
             return base.VisitVoidType(context);
         }
@@ -1977,8 +1947,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolUseAnnotation __tmp146 = new SymbolUseAnnotation();
-            treeAnnotList.Add(__tmp146);
+            SymbolUseAnnotation __tmp141 = new SymbolUseAnnotation();
+            treeAnnotList.Add(__tmp141);
             this.HandleSymbolType(context);
             return base.VisitOnewayType(context);
         }
@@ -1994,9 +1964,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp147 = new PropertyAnnotation();
-                __tmp147.Name = "Type";
-                elemAnnotList.Add(__tmp147);
+                PropertyAnnotation __tmp142 = new PropertyAnnotation();
+                __tmp142.Name = "Type";
+                elemAnnotList.Add(__tmp142);
             }
             if (context.onewayType() != null)
             {
@@ -2006,14 +1976,14 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp148 = new PropertyAnnotation();
-                __tmp148.Name = "Type";
-                __tmp148.Value = SoalInstance.Void;
-                elemAnnotList.Add(__tmp148);
-                PropertyAnnotation __tmp149 = new PropertyAnnotation();
-                __tmp149.Name = "IsOneway";
-                __tmp149.Value = true;
-                elemAnnotList.Add(__tmp149);
+                PropertyAnnotation __tmp143 = new PropertyAnnotation();
+                __tmp143.Name = "Type";
+                __tmp143.Value = SoalInstance.Void;
+                elemAnnotList.Add(__tmp143);
+                PropertyAnnotation __tmp144 = new PropertyAnnotation();
+                __tmp144.Name = "IsOneway";
+                __tmp144.Value = true;
+                elemAnnotList.Add(__tmp144);
             }
             this.HandleSymbolType(context);
             return base.VisitOperationReturnType(context);
@@ -2027,9 +1997,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolCtrAnnotation __tmp150 = new SymbolCtrAnnotation();
-            __tmp150.Value = node;
-            treeAnnotList.Add(__tmp150);
+            SymbolCtrAnnotation __tmp145 = new SymbolCtrAnnotation();
+            __tmp145.Value = node;
+            treeAnnotList.Add(__tmp145);
             List<object> elemAnnotList = null;
             if (context.valueType() != null)
             {
@@ -2039,9 +2009,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp151 = new PropertyAnnotation();
-                __tmp151.Name = "InnerType";
-                elemAnnotList.Add(__tmp151);
+                PropertyAnnotation __tmp146 = new PropertyAnnotation();
+                __tmp146.Name = "InnerType";
+                elemAnnotList.Add(__tmp146);
             }
             this.HandleSymbolType(context);
             return base.VisitNullableType(context);
@@ -2055,9 +2025,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolCtrAnnotation __tmp152 = new SymbolCtrAnnotation();
-            __tmp152.Value = node;
-            treeAnnotList.Add(__tmp152);
+            SymbolCtrAnnotation __tmp147 = new SymbolCtrAnnotation();
+            __tmp147.Value = node;
+            treeAnnotList.Add(__tmp147);
             List<object> elemAnnotList = null;
             if (context.referenceType() != null)
             {
@@ -2067,9 +2037,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp153 = new PropertyAnnotation();
-                __tmp153.Name = "InnerType";
-                elemAnnotList.Add(__tmp153);
+                PropertyAnnotation __tmp148 = new PropertyAnnotation();
+                __tmp148.Name = "InnerType";
+                elemAnnotList.Add(__tmp148);
             }
             this.HandleSymbolType(context);
             return base.VisitNonNullableType(context);
@@ -2083,9 +2053,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolCtrAnnotation __tmp154 = new SymbolCtrAnnotation();
-            __tmp154.Value = node;
-            treeAnnotList.Add(__tmp154);
+            SymbolCtrAnnotation __tmp149 = new SymbolCtrAnnotation();
+            __tmp149.Value = node;
+            treeAnnotList.Add(__tmp149);
             List<object> elemAnnotList = null;
             if (context.arrayType() != null)
             {
@@ -2095,9 +2065,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp155 = new PropertyAnnotation();
-                __tmp155.Name = "InnerType";
-                elemAnnotList.Add(__tmp155);
+                PropertyAnnotation __tmp150 = new PropertyAnnotation();
+                __tmp150.Name = "InnerType";
+                elemAnnotList.Add(__tmp150);
             }
             this.HandleSymbolType(context);
             return base.VisitNonNullableArrayType(context);
@@ -2117,9 +2087,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolCtrAnnotation __tmp156 = new SymbolCtrAnnotation();
-            __tmp156.Value = node;
-            treeAnnotList.Add(__tmp156);
+            SymbolCtrAnnotation __tmp151 = new SymbolCtrAnnotation();
+            __tmp151.Value = node;
+            treeAnnotList.Add(__tmp151);
             List<object> elemAnnotList = null;
             if (context.simpleType() != null)
             {
@@ -2129,9 +2099,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp157 = new PropertyAnnotation();
-                __tmp157.Name = "InnerType";
-                elemAnnotList.Add(__tmp157);
+                PropertyAnnotation __tmp152 = new PropertyAnnotation();
+                __tmp152.Name = "InnerType";
+                elemAnnotList.Add(__tmp152);
             }
             this.HandleSymbolType(context);
             return base.VisitSimpleArrayType(context);
@@ -2145,9 +2115,9 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            SymbolCtrAnnotation __tmp158 = new SymbolCtrAnnotation();
-            __tmp158.Value = node;
-            treeAnnotList.Add(__tmp158);
+            SymbolCtrAnnotation __tmp153 = new SymbolCtrAnnotation();
+            __tmp153.Value = node;
+            treeAnnotList.Add(__tmp153);
             List<object> elemAnnotList = null;
             if (context.nulledType() != null)
             {
@@ -2157,9 +2127,9 @@ namespace MetaDslx.Languages.Soal
                     elemAnnotList = new List<object>();
                     this.treeAnnotations.Add(elem, elemAnnotList);
                 }
-                PropertyAnnotation __tmp159 = new PropertyAnnotation();
-                __tmp159.Name = "InnerType";
-                elemAnnotList.Add(__tmp159);
+                PropertyAnnotation __tmp154 = new PropertyAnnotation();
+                __tmp154.Name = "InnerType";
+                elemAnnotList.Add(__tmp154);
             }
             this.HandleSymbolType(context);
             return base.VisitNulledArrayType(context);
@@ -2185,8 +2155,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            IdentifierAnnotation __tmp160 = new IdentifierAnnotation();
-            treeAnnotList.Add(__tmp160);
+            IdentifierAnnotation __tmp155 = new IdentifierAnnotation();
+            treeAnnotList.Add(__tmp155);
             this.HandleSymbolType(context);
             return base.VisitIdentifier(context);
         }
@@ -2211,8 +2181,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            ConstantAnnotation __tmp161 = new ConstantAnnotation();
-            treeAnnotList.Add(__tmp161);
+            ValueAnnotation __tmp156 = new ValueAnnotation();
+            treeAnnotList.Add(__tmp156);
             this.HandleSymbolType(context);
             return base.VisitNullLiteral(context);
         }
@@ -2225,8 +2195,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            ConstantAnnotation __tmp162 = new ConstantAnnotation();
-            treeAnnotList.Add(__tmp162);
+            ValueAnnotation __tmp157 = new ValueAnnotation();
+            treeAnnotList.Add(__tmp157);
             this.HandleSymbolType(context);
             return base.VisitBooleanLiteral(context);
         }
@@ -2239,8 +2209,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            ConstantAnnotation __tmp163 = new ConstantAnnotation();
-            treeAnnotList.Add(__tmp163);
+            ValueAnnotation __tmp158 = new ValueAnnotation();
+            treeAnnotList.Add(__tmp158);
             this.HandleSymbolType(context);
             return base.VisitIntegerLiteral(context);
         }
@@ -2253,8 +2223,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            ConstantAnnotation __tmp164 = new ConstantAnnotation();
-            treeAnnotList.Add(__tmp164);
+            ValueAnnotation __tmp159 = new ValueAnnotation();
+            treeAnnotList.Add(__tmp159);
             this.HandleSymbolType(context);
             return base.VisitDecimalLiteral(context);
         }
@@ -2267,8 +2237,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            ConstantAnnotation __tmp165 = new ConstantAnnotation();
-            treeAnnotList.Add(__tmp165);
+            ValueAnnotation __tmp160 = new ValueAnnotation();
+            treeAnnotList.Add(__tmp160);
             this.HandleSymbolType(context);
             return base.VisitScientificLiteral(context);
         }
@@ -2281,8 +2251,8 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            ConstantAnnotation __tmp166 = new ConstantAnnotation();
-            treeAnnotList.Add(__tmp166);
+            ValueAnnotation __tmp161 = new ValueAnnotation();
+            treeAnnotList.Add(__tmp161);
             this.HandleSymbolType(context);
             return base.VisitStringLiteral(context);
         }
@@ -2787,6 +2757,11 @@ namespace MetaDslx.Languages.Soal
         }
         
         public virtual object VisitProtocolLayerKind(SoalParser.ProtocolLayerKindContext context)
+        {
+            return this.VisitChildren(context);
+        }
+        
+        public virtual object VisitWsAddressing(SoalParser.WsAddressingContext context)
         {
             return this.VisitChildren(context);
         }

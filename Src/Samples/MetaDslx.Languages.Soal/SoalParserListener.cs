@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\d1h2d0pi.vr4\SoalParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\na5g1qw3.uyg\SoalParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -1039,6 +1039,16 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitProtocolLayerKind([NotNull] SoalParser.ProtocolLayerKindContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.wsAddressing"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWsAddressing([NotNull] SoalParser.WsAddressingContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.wsAddressing"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWsAddressing([NotNull] SoalParser.WsAddressingContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.endpointDeclaration"/>.
 	/// </summary>

@@ -249,11 +249,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			public override GreenNode VisitAnnotationHead(SoalParser.AnnotationHeadContext context)
 			{
 				if (context == null) return null;
-				SoalParser.IdentifierContext identifierContext = context.identifier();
-				IdentifierGreen identifier = null;
-				if (identifierContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				SoalParser.AnnotationBodyContext annotationBodyContext = context.annotationBody();
 				AnnotationBodyGreen annotationBody = null;
@@ -261,7 +261,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					annotationBody = (AnnotationBodyGreen)this.Visit(annotationBodyContext);
 				}
-				return this.factory.AnnotationHead(identifier, annotationBody, true);
+				return this.factory.AnnotationHead(name, annotationBody, true);
 			}
 			
 			public override GreenNode VisitAnnotationBody(SoalParser.AnnotationBodyContext context)
@@ -302,11 +302,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			public override GreenNode VisitAnnotationProperty(SoalParser.AnnotationPropertyContext context)
 			{
 				if (context == null) return null;
-				SoalParser.IdentifierContext identifierContext = context.identifier();
-				IdentifierGreen identifier = null;
-				if (identifierContext != null)
+				SoalParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
 				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
+					name = (NameGreen)this.Visit(nameContext);
 				}
 				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign());
 				SoalParser.AnnotationPropertyValueContext annotationPropertyValueContext = context.annotationPropertyValue();
@@ -315,7 +315,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					annotationPropertyValue = (AnnotationPropertyValueGreen)this.Visit(annotationPropertyValueContext);
 				}
-				GreenNode greenNode = this.factory.AnnotationProperty(identifier, tAssign, annotationPropertyValue, true);
+				GreenNode greenNode = this.factory.AnnotationProperty(name, tAssign, annotationPropertyValue, true);
 				return greenNode;
 			}
 			
@@ -1916,13 +1916,21 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			public override GreenNode VisitProtocolLayerKind(SoalParser.ProtocolLayerKindContext context)
 			{
 				if (context == null) return null;
-				SoalParser.IdentifierContext identifierContext = context.identifier();
-				IdentifierGreen identifier = null;
-				if (identifierContext != null)
+				SoalParser.WsAddressingContext wsAddressingContext = context.wsAddressing();
+				WsAddressingGreen wsAddressing = null;
+				if (wsAddressingContext != null)
 				{
-					identifier = (IdentifierGreen)this.Visit(identifierContext);
+					wsAddressing = (WsAddressingGreen)this.Visit(wsAddressingContext);
 				}
-				return this.factory.ProtocolLayerKind(identifier, true);
+				return this.factory.ProtocolLayerKind(wsAddressing, true);
+			}
+			
+			public override GreenNode VisitWsAddressing(SoalParser.WsAddressingContext context)
+			{
+				if (context == null) return null;
+				InternalSyntaxToken iWsAddressing = (InternalSyntaxToken)this.VisitTerminal(context.IWsAddressing());
+				GreenNode greenNode = this.factory.WsAddressing(iWsAddressing, true);
+				return greenNode;
 			}
 			
 			public override GreenNode VisitEndpointDeclaration(SoalParser.EndpointDeclarationContext context)

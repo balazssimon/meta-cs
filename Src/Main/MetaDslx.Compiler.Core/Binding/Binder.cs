@@ -113,13 +113,13 @@ namespace MetaDslx.Compiler.Binding
             get { return true; }
         }
 
-        public virtual Optional<object> Bind(RedNode node, DiagnosticBag diagnostics)
+        public virtual ImmutableArray<object> Bind(RedNode node, DiagnosticBag diagnostics)
         {
             BindVisitor visitor = _bindVisitorPool.Allocate();
             try
             {
                 visitor.Reset(diagnostics, node);
-                Optional<object> result = visitor.Bind();
+                ImmutableArray<object> result = visitor.Bind();
                 visitor.Free();
                 return result;
             }

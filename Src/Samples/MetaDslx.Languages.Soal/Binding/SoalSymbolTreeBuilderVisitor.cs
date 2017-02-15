@@ -44,7 +44,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitQualifier(QualifierSyntax node)
 		{
-			if (node != null) this.RegisterValue(node);
+			this.VisitList(node.Identifier);
 		}
 		
 		public void VisitIdentifierList(IdentifierListSyntax node)
@@ -97,15 +97,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitAnnotationHead(AnnotationHeadSyntax node)
 		{
-			this.BeginProperty("Name");
-			try
-			{
-				if (node.Identifier != null) this.RegisterValue(node.Identifier);
-			}
-			finally
-			{
-				this.EndProperty();
-			}
+			this.Visit(node.Name);
 			this.Visit(node.AnnotationBody);
 		}
 		
@@ -125,15 +117,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Properties");
 			try
 			{
-				this.BeginProperty("Name");
-				try
-				{
-					if (node.Identifier != null) this.RegisterValue(node.Identifier);
-				}
-				finally
-				{
-					this.EndProperty();
-				}
+				this.Visit(node.Name);
 				this.BeginProperty("Value");
 				try
 				{
@@ -981,7 +965,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitProtocolLayer(ProtocolLayerSyntax node)
 		{
-			if (!this.CanEnterDeclaration()) return;
 			this.BeginProperty("Protocols");
 			try
 			{
@@ -995,7 +978,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitProtocolLayerKind(ProtocolLayerKindSyntax node)
 		{
-			this.Visit(node.Identifier);
+			this.Visit(node.WsAddressing);
+		}
+		
+		public void VisitWsAddressing(WsAddressingSyntax node)
+		{
+			if (!this.CanEnterDeclaration()) return;
 		}
 		
 		public void VisitEndpointDeclaration(EndpointDeclarationSyntax node)
@@ -1175,7 +1163,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public void VisitIdentifier(IdentifierSyntax node)
 		{
-			if (node != null) this.RegisterValue(node);
 		}
 		
 		public void VisitIdentifiers(IdentifiersSyntax node)

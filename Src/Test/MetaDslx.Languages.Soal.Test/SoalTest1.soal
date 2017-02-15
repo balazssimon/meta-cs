@@ -1,4 +1,4 @@
-﻿namespace CalculatorNs = "calc"
+﻿namespace CalculatorNs = c:"calc"
 {
 	struct MathFault
 	{

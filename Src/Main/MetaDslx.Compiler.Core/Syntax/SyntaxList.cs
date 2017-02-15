@@ -743,6 +743,8 @@ namespace MetaDslx.Compiler.Syntax
             get { return this.GreenList.IsWeak; }
         }
 
+        public abstract bool IsSeparated { get; }
+
         public override SyntaxNode GetNodeSlot(int index)
         {
             return this.GetRedElement(ref _children[index], index) as SyntaxNode;
@@ -775,6 +777,11 @@ namespace MetaDslx.Compiler.Syntax
         {
             get { return (InternalSyntaxNodeList)this.Green; }
         }
+
+        public override bool IsSeparated
+        {
+            get { return false; }
+        }
     }
 
     public abstract class SeparatedSyntaxNodeList : SyntaxNodeListBase
@@ -792,10 +799,22 @@ namespace MetaDslx.Compiler.Syntax
             get { return (InternalSeparatedSyntaxNodeList)this.Green; }
         }
 
+        public override bool IsSeparated
+        {
+            get { return true; }
+        }
+
         internal int Index
         {
             get { return this.index; }
         }
+
+        public int SeparatorCount
+        {
+            get { return this.SlotCount >> 1; }
+        }
+
+        public abstract SyntaxToken GetSeparator(int index);
     }
 
     internal sealed class StrongSyntaxNodeList : SyntaxNodeList
@@ -850,6 +869,18 @@ namespace MetaDslx.Compiler.Syntax
             }
 
             return _children[index >> 1] as SyntaxNode;
+        }
+
+        public override SyntaxToken GetSeparator(int index)
+        {
+            if ((index & 1) == 0)
+            {
+                //node
+                return null;
+            }
+
+            return this.GetRedElement(ref _children[(index >> 1)|1], index) as SyntaxToken;
+
         }
     }
 
@@ -953,6 +984,18 @@ namespace MetaDslx.Compiler.Syntax
             RedNode value = null;
             _children[index >> 1]?.TryGetTarget(out value);
             return value as SyntaxNode;
+        }
+
+        public override SyntaxToken GetSeparator(int index)
+        {
+            if ((index & 1) == 0)
+            {
+                //node
+                return null;
+            }
+
+            return this.GetWeakRedElement(ref _children[(index >> 1) | 1], index) as SyntaxToken;
+
         }
     }
     

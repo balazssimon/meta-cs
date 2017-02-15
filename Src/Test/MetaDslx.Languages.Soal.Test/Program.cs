@@ -74,12 +74,12 @@ namespace MetaDslx.Languages.Soal.Test
             var _structInfo = sm.GetSymbolInfo(_struct);
             Console.WriteLine(_structInfo.Symbol);
 
-            var _structBody = root.NamespaceDeclaration[0].NamespaceBody.Declaration[0].StructDeclaration.StructBody.PropertyDeclaration[0].Name;
+            var _entity = root.NamespaceDeclaration[0].NamespaceBody.Declaration[4].DatabaseDeclaration.DatabaseBody.EntityReference[0].Qualifier;
 
-            var _structBodyInfo = sm.GetSymbolInfo(_structBody);
-            Console.WriteLine(_structBodyInfo.Symbol);
+            var _entityInfo = sm.GetSymbolInfo(_entity);
+            Console.WriteLine(_entityInfo.Symbol);
 
-            var symbolsInMathStruct = sm.LookupSymbols(_structBody.SpanStart);
+            var symbolsInMathStruct = sm.LookupSymbols(_entity.SpanStart);
             Console.WriteLine(symbolsInMathStruct);
 
             Console.WriteLine(comp.Model);

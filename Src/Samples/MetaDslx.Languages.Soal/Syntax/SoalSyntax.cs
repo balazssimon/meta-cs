@@ -120,6 +120,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 		IXML,
 		IJSON,
 		IClientAuthentication,
+		IWsAddressing,
 		IdentifierNormal,
 		IdentifierVerbatim,
 		LInteger,
@@ -241,6 +242,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 		SoapStyleProperty,
 		ProtocolLayer,
 		ProtocolLayerKind,
+		WsAddressing,
 		EndpointDeclaration,
 		EndpointBody,
 		EndpointProperties,
@@ -1198,7 +1200,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	
 	public sealed class AnnotationHeadSyntax : SoalSyntaxNode
 	{
-	    private IdentifierSyntax identifier;
+	    private NameSyntax name;
 	    private AnnotationBodySyntax annotationBody;
 	
 	    public AnnotationHeadSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
@@ -1211,9 +1213,9 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	    }
 	
-	    public IdentifierSyntax Identifier 
+	    public NameSyntax Name 
 		{ 
-			get { return this.GetRed(ref this.identifier, 0); } 
+			get { return this.GetRed(ref this.name, 0); } 
 		}
 	    public AnnotationBodySyntax AnnotationBody 
 		{ 
@@ -1224,7 +1226,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.identifier, 0);
+				case 0: return this.GetRed(ref this.name, 0);
 				case 1: return this.GetRed(ref this.annotationBody, 1);
 				default: return null;
 	        }
@@ -1234,28 +1236,28 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.identifier;
+				case 0: return this.name;
 				case 1: return this.annotationBody;
 				default: return null;
 	        }
 	    }
 	
-	    public AnnotationHeadSyntax WithIdentifier(IdentifierSyntax identifier)
+	    public AnnotationHeadSyntax WithName(NameSyntax name)
 		{
-			return this.Update(Identifier, this.AnnotationBody);
+			return this.Update(Name, this.AnnotationBody);
 		}
 	
 	    public AnnotationHeadSyntax WithAnnotationBody(AnnotationBodySyntax annotationBody)
 		{
-			return this.Update(this.Identifier, AnnotationBody);
+			return this.Update(this.Name, AnnotationBody);
 		}
 	
-	    public AnnotationHeadSyntax Update(IdentifierSyntax identifier, AnnotationBodySyntax annotationBody)
+	    public AnnotationHeadSyntax Update(NameSyntax name, AnnotationBodySyntax annotationBody)
 	    {
-	        if (this.Identifier != identifier ||
+	        if (this.Name != name ||
 				this.AnnotationBody != annotationBody)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.AnnotationHead(identifier, annotationBody);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.AnnotationHead(name, annotationBody);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1452,7 +1454,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	
 	public sealed class AnnotationPropertySyntax : SoalSyntaxNode
 	{
-	    private IdentifierSyntax identifier;
+	    private NameSyntax name;
 	    private AnnotationPropertyValueSyntax annotationPropertyValue;
 	
 	    public AnnotationPropertySyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
@@ -1465,9 +1467,9 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	    }
 	
-	    public IdentifierSyntax Identifier 
+	    public NameSyntax Name 
 		{ 
-			get { return this.GetRed(ref this.identifier, 0); } 
+			get { return this.GetRed(ref this.name, 0); } 
 		}
 	    public SyntaxToken TAssign 
 		{ 
@@ -1487,7 +1489,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.identifier, 0);
+				case 0: return this.GetRed(ref this.name, 0);
 				case 2: return this.GetRed(ref this.annotationPropertyValue, 2);
 				default: return null;
 	        }
@@ -1497,34 +1499,34 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.identifier;
+				case 0: return this.name;
 				case 2: return this.annotationPropertyValue;
 				default: return null;
 	        }
 	    }
 	
-	    public AnnotationPropertySyntax WithIdentifier(IdentifierSyntax identifier)
+	    public AnnotationPropertySyntax WithName(NameSyntax name)
 		{
-			return this.Update(Identifier, this.TAssign, this.AnnotationPropertyValue);
+			return this.Update(Name, this.TAssign, this.AnnotationPropertyValue);
 		}
 	
 	    public AnnotationPropertySyntax WithTAssign(SyntaxToken tAssign)
 		{
-			return this.Update(this.Identifier, TAssign, this.AnnotationPropertyValue);
+			return this.Update(this.Name, TAssign, this.AnnotationPropertyValue);
 		}
 	
 	    public AnnotationPropertySyntax WithAnnotationPropertyValue(AnnotationPropertyValueSyntax annotationPropertyValue)
 		{
-			return this.Update(this.Identifier, this.TAssign, AnnotationPropertyValue);
+			return this.Update(this.Name, this.TAssign, AnnotationPropertyValue);
 		}
 	
-	    public AnnotationPropertySyntax Update(IdentifierSyntax identifier, SyntaxToken tAssign, AnnotationPropertyValueSyntax annotationPropertyValue)
+	    public AnnotationPropertySyntax Update(NameSyntax name, SyntaxToken tAssign, AnnotationPropertyValueSyntax annotationPropertyValue)
 	    {
-	        if (this.Identifier != identifier ||
+	        if (this.Name != name ||
 				this.TAssign != tAssign ||
 				this.AnnotationPropertyValue != annotationPropertyValue)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.AnnotationProperty(identifier, tAssign, annotationPropertyValue);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.AnnotationProperty(name, tAssign, annotationPropertyValue);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -10204,7 +10206,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 	
 	public sealed class ProtocolLayerKindSyntax : SoalSyntaxNode
 	{
-	    private IdentifierSyntax identifier;
+	    private WsAddressingSyntax wsAddressing;
 	
 	    public ProtocolLayerKindSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -10216,16 +10218,16 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	    }
 	
-	    public IdentifierSyntax Identifier 
+	    public WsAddressingSyntax WsAddressing 
 		{ 
-			get { return this.GetRed(ref this.identifier, 0); } 
+			get { return this.GetRed(ref this.wsAddressing, 0); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.identifier, 0);
+				case 0: return this.GetRed(ref this.wsAddressing, 0);
 				default: return null;
 	        }
 	    }
@@ -10234,21 +10236,21 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.identifier;
+				case 0: return this.wsAddressing;
 				default: return null;
 	        }
 	    }
 	
-	    public ProtocolLayerKindSyntax WithIdentifier(IdentifierSyntax identifier)
+	    public ProtocolLayerKindSyntax WithWsAddressing(WsAddressingSyntax wsAddressing)
 		{
-			return this.Update(Identifier);
+			return this.Update(WsAddressing);
 		}
 	
-	    public ProtocolLayerKindSyntax Update(IdentifierSyntax identifier)
+	    public ProtocolLayerKindSyntax Update(WsAddressingSyntax wsAddressing)
 	    {
-	        if (this.Identifier != identifier)
+	        if (this.WsAddressing != wsAddressing)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ProtocolLayerKind(identifier);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ProtocolLayerKind(wsAddressing);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -10265,6 +10267,74 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    public override void Accept(ISoalSyntaxVisitor visitor)
 	    {
 	        visitor.VisitProtocolLayerKind(this);
+	    }
+	}
+	
+	public sealed class WsAddressingSyntax : SoalSyntaxNode
+	{
+	
+	    public WsAddressingSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public WsAddressingSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken IWsAddressing 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Soal.Syntax.InternalSyntax.WsAddressingGreen)this.Green;
+				var greenToken = green.IWsAddressing;
+				return greenToken == null ? null : new SoalSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public WsAddressingSyntax WithIWsAddressing(SyntaxToken iWsAddressing)
+		{
+			return this.Update(IWsAddressing);
+		}
+	
+	    public WsAddressingSyntax Update(SyntaxToken iWsAddressing)
+	    {
+	        if (this.IWsAddressing != iWsAddressing)
+	        {
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.WsAddressing(iWsAddressing);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (WsAddressingSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TResult>(ISoalSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitWsAddressing(this);
+	    }
+	
+	    public override void Accept(ISoalSyntaxVisitor visitor)
+	    {
+	        visitor.VisitWsAddressing(this);
 	    }
 	}
 	
@@ -13420,6 +13490,7 @@ namespace MetaDslx.Languages.Soal
 				case SoalSyntaxKind.IXML:
 				case SoalSyntaxKind.IJSON:
 				case SoalSyntaxKind.IClientAuthentication:
+				case SoalSyntaxKind.IWsAddressing:
 				case SoalSyntaxKind.IdentifierNormal:
 				case SoalSyntaxKind.IdentifierVerbatim:
 				case SoalSyntaxKind.LInteger:
@@ -13557,6 +13628,7 @@ namespace MetaDslx.Languages.Soal
 				case SoalSyntaxKind.IXML:
 				case SoalSyntaxKind.IJSON:
 				case SoalSyntaxKind.IClientAuthentication:
+				case SoalSyntaxKind.IWsAddressing:
 				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
 					return true;
@@ -13774,6 +13846,8 @@ namespace MetaDslx.Languages.Soal
 					return "JSON";
 				case SoalSyntaxKind.IClientAuthentication:
 					return "ClientAuthentication";
+				case SoalSyntaxKind.IWsAddressing:
+					return "WsAddressing";
 				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 					return "@\"";
 				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
@@ -13987,6 +14061,8 @@ namespace MetaDslx.Languages.Soal
 					return SoalSyntaxKind.IJSON;
 				case "ClientAuthentication":
 					return SoalSyntaxKind.IClientAuthentication;
+				case "WsAddressing":
+					return SoalSyntaxKind.IWsAddressing;
 				case "@\"":
 					return SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
 				case "@\'":
@@ -14216,6 +14292,8 @@ namespace MetaDslx.Languages.Soal
 		void VisitProtocolLayer(ProtocolLayerSyntax node);
 		
 		void VisitProtocolLayerKind(ProtocolLayerKindSyntax node);
+		
+		void VisitWsAddressing(WsAddressingSyntax node);
 		
 		void VisitEndpointDeclaration(EndpointDeclarationSyntax node);
 		
@@ -14779,6 +14857,11 @@ namespace MetaDslx.Languages.Soal
 		    this.DefaultVisit(node);
 		}
 		
+		public virtual void VisitWsAddressing(WsAddressingSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
 		public virtual void VisitEndpointDeclaration(EndpointDeclarationSyntax node)
 		{
 		    this.DefaultVisit(node);
@@ -15016,7 +15099,7 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual void VisitAnnotationHead(AnnotationHeadSyntax node)
 		{
-			this.Visit(node.Identifier);
+			this.Visit(node.Name);
 			this.Visit(node.AnnotationBody);
 		}
 		
@@ -15034,7 +15117,7 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual void VisitAnnotationProperty(AnnotationPropertySyntax node)
 		{
-			this.Visit(node.Identifier);
+			this.Visit(node.Name);
 			this.VisitToken(node.TAssign);
 			this.Visit(node.AnnotationPropertyValue);
 		}
@@ -15633,7 +15716,12 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual void VisitProtocolLayerKind(ProtocolLayerKindSyntax node)
 		{
-			this.Visit(node.Identifier);
+			this.Visit(node.WsAddressing);
+		}
+		
+		public virtual void VisitWsAddressing(WsAddressingSyntax node)
+		{
+			this.VisitToken(node.IWsAddressing);
 		}
 		
 		public virtual void VisitEndpointDeclaration(EndpointDeclarationSyntax node)
@@ -16043,6 +16131,8 @@ namespace MetaDslx.Languages.Soal
 		TResult VisitProtocolLayer(ProtocolLayerSyntax node);
 		
 		TResult VisitProtocolLayerKind(ProtocolLayerKindSyntax node);
+		
+		TResult VisitWsAddressing(WsAddressingSyntax node);
 		
 		TResult VisitEndpointDeclaration(EndpointDeclarationSyntax node);
 		
@@ -16606,6 +16696,11 @@ namespace MetaDslx.Languages.Soal
 		    return this.DefaultVisit(node);
 		}
 		
+		public virtual TResult VisitWsAddressing(WsAddressingSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
 		public virtual TResult VisitEndpointDeclaration(EndpointDeclarationSyntax node)
 		{
 		    return this.DefaultVisit(node);
@@ -16853,9 +16948,9 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual SyntaxNode VisitAnnotationHead(AnnotationHeadSyntax node)
 		{
-		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
+		    var name = (NameSyntax)this.Visit(node.Name);
 		    var annotationBody = (AnnotationBodySyntax)this.Visit(node.AnnotationBody);
-			return node.Update(identifier, annotationBody);
+			return node.Update(name, annotationBody);
 		}
 		
 		public virtual SyntaxNode VisitAnnotationBody(AnnotationBodySyntax node)
@@ -16874,10 +16969,10 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual SyntaxNode VisitAnnotationProperty(AnnotationPropertySyntax node)
 		{
-		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
+		    var name = (NameSyntax)this.Visit(node.Name);
 		    var tAssign = this.VisitToken(node.TAssign);
 		    var annotationPropertyValue = (AnnotationPropertyValueSyntax)this.Visit(node.AnnotationPropertyValue);
-			return node.Update(identifier, tAssign, annotationPropertyValue);
+			return node.Update(name, tAssign, annotationPropertyValue);
 		}
 		
 		public virtual SyntaxNode VisitAnnotationPropertyValue(AnnotationPropertyValueSyntax node)
@@ -17752,8 +17847,14 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual SyntaxNode VisitProtocolLayerKind(ProtocolLayerKindSyntax node)
 		{
-		    var identifier = (IdentifierSyntax)this.Visit(node.Identifier);
-			return node.Update(identifier);
+		    var wsAddressing = (WsAddressingSyntax)this.Visit(node.WsAddressing);
+			return node.Update(wsAddressing);
+		}
+		
+		public virtual SyntaxNode VisitWsAddressing(WsAddressingSyntax node)
+		{
+		    var iWsAddressing = this.VisitToken(node.IWsAddressing);
+			return node.Update(iWsAddressing);
 		}
 		
 		public virtual SyntaxNode VisitEndpointDeclaration(EndpointDeclarationSyntax node)
@@ -18597,15 +18698,15 @@ namespace MetaDslx.Languages.Soal
 			return this.ReturnAnnotation(this.Token(SoalSyntaxKind.TOpenBracket), this.Token(SoalSyntaxKind.KReturn), this.Token(SoalSyntaxKind.TColon), annotationHead, this.Token(SoalSyntaxKind.TCloseBracket));
 		}
 		
-		public AnnotationHeadSyntax AnnotationHead(IdentifierSyntax identifier, AnnotationBodySyntax annotationBody)
+		public AnnotationHeadSyntax AnnotationHead(NameSyntax name, AnnotationBodySyntax annotationBody)
 		{
-		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
-		    return (AnnotationHeadSyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationHead((Syntax.InternalSyntax.IdentifierGreen)identifier.Green, annotationBody == null ? null : (Syntax.InternalSyntax.AnnotationBodyGreen)annotationBody.Green).CreateRed();
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    return (AnnotationHeadSyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationHead((Syntax.InternalSyntax.NameGreen)name.Green, annotationBody == null ? null : (Syntax.InternalSyntax.AnnotationBodyGreen)annotationBody.Green).CreateRed();
 		}
 		
-		public AnnotationHeadSyntax AnnotationHead(IdentifierSyntax identifier)
+		public AnnotationHeadSyntax AnnotationHead(NameSyntax name)
 		{
-			return this.AnnotationHead(identifier, null);
+			return this.AnnotationHead(name, null);
 		}
 		
 		public AnnotationBodySyntax AnnotationBody(SyntaxToken tOpenParen, AnnotationPropertyListSyntax annotationPropertyList, SyntaxToken tCloseParen)
@@ -18628,18 +18729,18 @@ namespace MetaDslx.Languages.Soal
 		    return (AnnotationPropertyListSyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationPropertyList(annotationProperty.Green).CreateRed();
 		}
 		
-		public AnnotationPropertySyntax AnnotationProperty(IdentifierSyntax identifier, SyntaxToken tAssign, AnnotationPropertyValueSyntax annotationPropertyValue)
+		public AnnotationPropertySyntax AnnotationProperty(NameSyntax name, SyntaxToken tAssign, AnnotationPropertyValueSyntax annotationPropertyValue)
 		{
-		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tAssign == null) throw new ArgumentNullException(nameof(tAssign));
 		    if (tAssign.RawKind != (int)SoalSyntaxKind.TAssign) throw new ArgumentException(nameof(tAssign));
 		    if (annotationPropertyValue == null) throw new ArgumentNullException(nameof(annotationPropertyValue));
-		    return (AnnotationPropertySyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationProperty((Syntax.InternalSyntax.IdentifierGreen)identifier.Green, (InternalSyntaxToken)tAssign.Green, (Syntax.InternalSyntax.AnnotationPropertyValueGreen)annotationPropertyValue.Green).CreateRed();
+		    return (AnnotationPropertySyntax)SoalLanguage.Instance.InternalSyntaxFactory.AnnotationProperty((Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tAssign.Green, (Syntax.InternalSyntax.AnnotationPropertyValueGreen)annotationPropertyValue.Green).CreateRed();
 		}
 		
-		public AnnotationPropertySyntax AnnotationProperty(IdentifierSyntax identifier, AnnotationPropertyValueSyntax annotationPropertyValue)
+		public AnnotationPropertySyntax AnnotationProperty(NameSyntax name, AnnotationPropertyValueSyntax annotationPropertyValue)
 		{
-			return this.AnnotationProperty(identifier, this.Token(SoalSyntaxKind.TAssign), annotationPropertyValue);
+			return this.AnnotationProperty(name, this.Token(SoalSyntaxKind.TAssign), annotationPropertyValue);
 		}
 		
 		public AnnotationPropertyValueSyntax AnnotationPropertyValue(ConstantValueSyntax constantValue)
@@ -19879,10 +19980,22 @@ namespace MetaDslx.Languages.Soal
 			return this.ProtocolLayer(this.Token(SoalSyntaxKind.KProtocol), protocolLayerKind, this.Token(SoalSyntaxKind.TSemicolon));
 		}
 		
-		public ProtocolLayerKindSyntax ProtocolLayerKind(IdentifierSyntax identifier)
+		public ProtocolLayerKindSyntax ProtocolLayerKind(WsAddressingSyntax wsAddressing)
 		{
-		    if (identifier == null) throw new ArgumentNullException(nameof(identifier));
-		    return (ProtocolLayerKindSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ProtocolLayerKind((Syntax.InternalSyntax.IdentifierGreen)identifier.Green).CreateRed();
+		    if (wsAddressing == null) throw new ArgumentNullException(nameof(wsAddressing));
+		    return (ProtocolLayerKindSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ProtocolLayerKind((Syntax.InternalSyntax.WsAddressingGreen)wsAddressing.Green).CreateRed();
+		}
+		
+		public WsAddressingSyntax WsAddressing(SyntaxToken iWsAddressing)
+		{
+		    if (iWsAddressing == null) throw new ArgumentNullException(nameof(iWsAddressing));
+		    if (iWsAddressing.RawKind != (int)SoalSyntaxKind.IWsAddressing) throw new ArgumentException(nameof(iWsAddressing));
+		    return (WsAddressingSyntax)SoalLanguage.Instance.InternalSyntaxFactory.WsAddressing((InternalSyntaxToken)iWsAddressing.Green).CreateRed();
+		}
+		
+		public WsAddressingSyntax WsAddressing()
+		{
+			return this.WsAddressing(this.Token(SoalSyntaxKind.IWsAddressing));
 		}
 		
 		public EndpointDeclarationSyntax EndpointDeclaration(SyntaxToken kEndpoint, NameSyntax name, SyntaxToken tColon, QualifierSyntax qualifier, EndpointBodySyntax endpointBody)
@@ -20406,6 +20519,7 @@ namespace MetaDslx.Languages.Soal
 				typeof(SoapStylePropertySyntax),
 				typeof(ProtocolLayerSyntax),
 				typeof(ProtocolLayerKindSyntax),
+				typeof(WsAddressingSyntax),
 				typeof(EndpointDeclarationSyntax),
 				typeof(EndpointBodySyntax),
 				typeof(EndpointPropertiesSyntax),
