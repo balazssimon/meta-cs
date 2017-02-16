@@ -25,7 +25,7 @@ namespace MetaDslx.Compiler.References
             }
         }
 
-        internal override bool IsUnresolved
+        public override bool IsUnresolved
         {
             get { return true; }
         }

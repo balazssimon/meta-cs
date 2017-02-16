@@ -125,6 +125,23 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-
+        protected virtual void RegisterProperty(string name, object value)
+        {
+            if (this._symbol != null)
+            {
+                ModelProperty property = this._symbol.MGetProperty(name);
+                if (property != null)
+                {
+                    if (property.IsCollection)
+                    {
+                        this._symbol.MAdd(property, value);
+                    }
+                    else if (!this._symbol.MIsSet(property))
+                    {
+                        this._symbol.MSet(property, value);
+                    }
+                }
+            }
+        }
     }
 }

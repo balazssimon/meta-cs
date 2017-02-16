@@ -190,6 +190,10 @@ namespace MetaDslx.Compiler.Binding
                     var node = reference.GetSyntax();
                     node.Accept(visitor);
                 }
+                if (diagnostics.HasAnyErrors())
+                {
+                    Console.WriteLine("Errors at "+declaration.SyntaxReferences.FirstOrDefault());
+                }
             }
             finally
             {

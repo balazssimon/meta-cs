@@ -245,7 +245,36 @@ namespace MetaDslx.Compiler.Binding
             // overridden in other binders
         }
 
-        protected virtual void LookupMembersCore(LookupResult result, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        /// <summary>
+        /// Look for any symbols in scope with the given name.
+        /// </summary>
+        public void LookupMembers(LookupResult result, IMetaSymbol qualifierOpt, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            this.LookupMembersCore(result, qualifierOpt, name, basesBeingResolved, options, null, diagnose, ref useSiteDiagnostics);
+        }
+
+        /// <summary>
+        /// Look for any members in scope with the given name.
+        /// </summary>
+        /// <remarks>
+        /// Makes a second attempt if the results are not viable, in order to produce more detailed failure information (symbols and diagnostics).
+        /// </remarks>
+        public void LookupMembersWithFallback(LookupResult result, IMetaSymbol qualifierOpt, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            // don't create diagnosis instances unless lookup fails
+            this.LookupMembersCore(result, qualifierOpt, name, basesBeingResolved, options, null, diagnose: false, useSiteDiagnostics: ref useSiteDiagnostics);
+
+            if (result.Kind != LookupResultKind.Viable && result.Kind != LookupResultKind.Empty)
+            {
+                result.Clear();
+                // retry to get diagnosis
+                this.LookupMembersCore(result, qualifierOpt, name, basesBeingResolved, options, null, diagnose: true, useSiteDiagnostics: ref useSiteDiagnostics);
+            }
+
+            Debug.Assert(result.IsMultiViable || result.IsClear || result.Error != null);
+        }
+
+        protected virtual void LookupMembersCore(LookupResult result, IMetaSymbol qualifierOpt, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             // overridden in other binders
         }

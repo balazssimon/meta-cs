@@ -24,6 +24,76 @@ namespace MetaDslx.Core
         public abstract MutableSymbolBase CreateMutable(MutableModel model, bool creating);
     }
 
+    public sealed class ModelVersion
+    {
+        public static readonly ModelVersion None = new ModelVersion(0, 0, 0, 0);
+
+        private readonly int _major;
+        private readonly int _minor;
+        private readonly int _build;
+        private readonly int _revision;
+
+        public ModelVersion(int major, int minor, int build, int revision)
+        {
+            _major = major;
+            _minor = minor;
+            _build = build;
+            _revision = revision;
+        }
+
+        public int Major
+        {
+            get { return _major; }
+        }
+
+        public int Minor
+        {
+            get { return _minor; }
+        }
+
+        public int Build
+        {
+            get { return _build; }
+        }
+
+        public int Revision
+        {
+            get { return _revision; }
+        }
+
+        public int CompareTo(ModelVersion other)
+        {
+            int cmp = this._major.CompareTo(other._major);
+            if (cmp != 0) return cmp;
+            cmp = this._minor.CompareTo(other._minor);
+            if (cmp != 0) return cmp;
+            cmp = this._build.CompareTo(other._build);
+            if (cmp != 0) return cmp;
+            cmp = this._revision.CompareTo(other._revision);
+            return cmp;
+        }
+
+        public bool Equals(ModelVersion other)
+        {
+            return this.CompareTo(other) == 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ModelVersion && Equals((ModelVersion)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return ((_major & 0x000f) << 28) | ((_minor & 0x00ff) << 20) | ((_build & 0x00ff) << 12) | (_revision & 0x0fff);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}.{1}.{2}.{3}", _major, _minor, _build, _revision);
+        }
+    }
+
     public class ModelId
     {
         private readonly string guid;
@@ -328,16 +398,18 @@ namespace MetaDslx.Core
     {
         private readonly ModelId id;
         private readonly string name;
+        private readonly ModelVersion version;
         private readonly ImmutableList<SymbolId> strongSymbols;
         // TODO: replace with immutable weak dictionaries:
         private readonly ImmutableDictionary<SymbolId, GreenSymbol> symbols;
         private readonly ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties;
         private readonly ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> references;
 
-        internal GreenModel(ModelId id, string name)
+        internal GreenModel(ModelId id, string name, ModelVersion version)
         {
             this.id = id;
             this.name = name;
+            this.version = version ?? ModelVersion.None;
             this.symbols = ImmutableDictionary<SymbolId, GreenSymbol>.Empty;
             this.strongSymbols = ImmutableList<SymbolId>.Empty;
             this.lazyProperties = ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>.Empty;
@@ -346,6 +418,7 @@ namespace MetaDslx.Core
 
         private GreenModel(ModelId id,
             string name,
+            ModelVersion version,
             ImmutableDictionary<SymbolId, GreenSymbol> symbols,
             ImmutableList<SymbolId> strongSymbols,
             ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties,
@@ -353,6 +426,7 @@ namespace MetaDslx.Core
         {
             this.id = id;
             this.name = name;
+            this.version = version ?? ModelVersion.None;
             this.symbols = symbols;
             this.strongSymbols = strongSymbols;
             this.lazyProperties = lazyProperties;
@@ -361,21 +435,24 @@ namespace MetaDslx.Core
 
         internal GreenModel Update(
             string name,
+            ModelVersion version,
             ImmutableDictionary<SymbolId, GreenSymbol> symbols,
             ImmutableList<SymbolId> strongSymbols,
             ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties,
             ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> references)
         {
-            if (this.name != name || this.symbols != symbols || this.strongSymbols != strongSymbols || 
+            if (this.name != name || this.version != version || this.symbols != symbols || 
+                this.strongSymbols != strongSymbols || 
                 this.lazyProperties != lazyProperties || this.references != references)
             {
-                return new GreenModel(this.id, name, symbols, strongSymbols, lazyProperties, references);
+                return new GreenModel(this.id, name, version, symbols, strongSymbols, lazyProperties, references);
             }
             return this;
         }
 
         internal ModelId Id { get { return this.id; } }
         internal string Name { get { return this.name; } }
+        internal ModelVersion Version { get { return this.version; } }
         internal ImmutableDictionary<SymbolId, GreenSymbol> Symbols { get { return this.symbols; } }
         internal ImmutableList<SymbolId> StrongSymbols { get { return this.strongSymbols; } }
         internal ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> LazyProperties { get { return this.lazyProperties; } }
@@ -384,7 +461,7 @@ namespace MetaDslx.Core
         internal GreenModel AddSymbol(SymbolId id, bool weak)
         {
             Debug.Assert(!this.symbols.ContainsKey(id), "The green model already contains this symbol.");
-            return this.Update(this.name, this.symbols.Add(id, id.SymbolInfo.EmptyGreenSymbol), weak ? this.strongSymbols : this.strongSymbols.Add(id), this.lazyProperties, this.references);
+            return this.Update(this.name, this.version, this.symbols.Add(id, id.SymbolInfo.EmptyGreenSymbol), weak ? this.strongSymbols : this.strongSymbols.Add(id), this.lazyProperties, this.references);
         }
 
         internal GreenModel RemoveSymbol(SymbolId id)
@@ -430,6 +507,7 @@ namespace MetaDslx.Core
                 }
                 return this.Update(
                     this.name,
+                    this.version,
                     symbols.Remove(id),
                     this.strongSymbols.Remove(id),
                     this.lazyProperties.Remove(id),
@@ -497,6 +575,7 @@ namespace MetaDslx.Core
                 }
                 return this.Update(
                     this.name,
+                    this.version,
                     symbols.Remove(id),
                     this.strongSymbols.Remove(id), 
                     this.lazyProperties.Remove(id), 
@@ -504,63 +583,65 @@ namespace MetaDslx.Core
             }
             return this;
         }
+
+        public override string ToString()
+        {
+            return this.Name + " (" + this.Version + ")";
+        }
+
+        public string ToFullString()
+        {
+            return this.Name + " (" + this.Version + ": " + this.Id.Guid + ")";
+        }
     }
 
     internal class GreenModelGroup
     {
-        internal static readonly GreenModelGroup Empty = new GreenModelGroup(new ModelId(), string.Empty);
+        internal static readonly GreenModelGroup Empty = new GreenModelGroup();
 
-        private readonly ModelId id;
-        private readonly string name;
         private readonly ImmutableDictionary<ModelId, GreenModel> models;
         private readonly ImmutableDictionary<ModelId, GreenModel> references;
 
-        private GreenModelGroup(ModelId id, string name)
+        private GreenModelGroup()
         {
-            this.id = id;
-            this.name = name;
             this.models = ImmutableDictionary<ModelId, GreenModel>.Empty;
             this.references = ImmutableDictionary<ModelId, GreenModel>.Empty;
         }
 
-        private GreenModelGroup(ModelId id, string name, ImmutableDictionary<ModelId, GreenModel> models, ImmutableDictionary<ModelId, GreenModel> references)
+        private GreenModelGroup(ImmutableDictionary<ModelId, GreenModel> models, ImmutableDictionary<ModelId, GreenModel> references)
         {
-            this.id = id;
-            this.name = name;
             this.models = models;
             this.references = references;
         }
 
-        internal GreenModelGroup Update(string name, ImmutableDictionary<ModelId, GreenModel> models, ImmutableDictionary<ModelId, GreenModel> references)
+        internal GreenModelGroup Update(ImmutableDictionary<ModelId, GreenModel> models, ImmutableDictionary<ModelId, GreenModel> references)
         {
-            if (this.name != name || this.models != models || this.references != references)
+            if (this.models != models || this.references != references)
             {
-                return new GreenModelGroup(this.id, name, models, references);
+                return new GreenModelGroup(models, references);
             }
             return this;
         }
 
-        internal ModelId Id { get { return this.id; } }
-        internal string Name { get { return this.name; } }
         internal ImmutableDictionary<ModelId, GreenModel> Models { get { return this.models; } }
         internal ImmutableDictionary<ModelId, GreenModel> References { get { return this.references; } }
 
         internal GreenModelGroup AddModel(GreenModel model)
         {
             if (this.models.ContainsKey(model.Id) || this.references.ContainsKey(model.Id)) return this;
-            return this.Update(this.name, this.models.Add(model.Id, model), this.references);
+            return this.Update(this.models.Add(model.Id, model), this.references);
         }
 
         internal GreenModelGroup AddReference(GreenModel reference)
         {
             if (this.models.ContainsKey(reference.Id) || this.references.ContainsKey(reference.Id)) return this;
-            return this.Update(this.name, this.models, this.references.Add(reference.Id, reference));
+            return this.Update(this.models, this.references.Add(reference.Id, reference));
         }
 
         internal GreenModelGroup UpdateModel(GreenModel model)
         {
             if (!this.models.ContainsKey(model.Id)) return this;
-            return this.Update(this.name, this.models.SetItem(model.Id, model), this.references);
+            return this.Update(this.models.SetItem(model.Id, model), this.references);
         }
 
         internal bool SymbolExists(SymbolId sid)
@@ -613,6 +694,52 @@ namespace MetaDslx.Core
                 result = result.UpdateModel(model.ReplaceSymbol(sid, targetSid));
             }
             return result;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder();
+            result.Append("models: [");
+            bool first = true;
+            foreach (var model in this.models.Values)
+            {
+                if (!first) result.Append(", ");
+                result.Append(model.ToString());
+                first = false;
+            }
+            result.Append("], references: [");
+            first = true;
+            foreach (var reference in this.references.Values)
+            {
+                if (!first) result.Append(", ");
+                result.Append(reference.ToString());
+                first = false;
+            }
+            result.Append("]");
+            return result.ToString();
+        }
+
+        public string ToFullString()
+        {
+            StringBuilder result = new StringBuilder();
+            result.Append("models: [");
+            bool first = true;
+            foreach (var model in this.models.Values)
+            {
+                if (!first) result.Append(", ");
+                result.Append(model.ToFullString());
+                first = false;
+            }
+            result.Append("], references: [");
+            first = true;
+            foreach (var reference in this.references.Values)
+            {
+                if (!first) result.Append(", ");
+                result.Append(reference.ToFullString());
+                first = false;
+            }
+            result.Append("]");
+            return result.ToString();
         }
     }
 
@@ -694,11 +821,11 @@ namespace MetaDslx.Core
             }
         }
 
-        internal GreenModel CreateModel(ModelId mid, string name)
+        internal GreenModel CreateModel(ModelId mid, string name, ModelVersion version)
         {
             Debug.Assert(this.group != null);
             if (mid == null) return null;
-            GreenModel result = new GreenModel(mid, name);
+            GreenModel result = new GreenModel(mid, name, version);
             this.group = this.group.AddModel(result);
             return result;
         }
@@ -715,15 +842,31 @@ namespace MetaDslx.Core
             this.group = this.group.AddModel(model);
         }
 
-        internal void SetName(string name)
+        internal void SetName(ModelId mid, string name)
         {
             if (this.group != null)
             {
-                this.group = this.group.Update(name, this.group.Models, this.group.References);
+                GreenModel model = this.GetModel(mid);
+                this.UpdateModel(model.Update(name, model.Version, model.Symbols, model.StrongSymbols, model.LazyProperties, model.References));
             }
             else
             {
-                this.model = this.model.Update(name, this.model.Symbols, this.model.StrongSymbols, this.model.LazyProperties, this.model.References);
+                Debug.Assert(this.model.Id == mid);
+                this.model = this.model.Update(name, this.model.Version, this.model.Symbols, this.model.StrongSymbols, this.model.LazyProperties, this.model.References);
+            }
+        }
+
+        internal void SetVersion(ModelId mid, ModelVersion version)
+        {
+            if (this.group != null)
+            {
+                GreenModel model = this.GetModel(mid);
+                this.UpdateModel(model.Update(model.Name, version, model.Symbols, model.StrongSymbols, model.LazyProperties, model.References));
+            }
+            else
+            {
+                Debug.Assert(this.model.Id == mid);
+                this.model = this.model.Update(this.model.Name, version, this.model.Symbols, this.model.StrongSymbols, this.model.LazyProperties, this.model.References);
             }
         }
 
@@ -843,7 +986,7 @@ namespace MetaDslx.Core
         {
             if (this.group != null)
             {
-                this.group = this.group.Update(this.group.Name, this.group.Models.SetItem(model.Id, model), this.group.References);
+                this.group = this.group.Update(this.group.Models.SetItem(model.Id, model), this.group.References);
             }
             else
             {
@@ -855,10 +998,10 @@ namespace MetaDslx.Core
         {
             GreenModel model = this.GetModel(mid);
             Debug.Assert(model != null);
-            model = model.Update(model.Name, model.Symbols.SetItem(sid, symbol), model.StrongSymbols, model.LazyProperties, model.References);
+            model = model.Update(model.Name, model.Version, model.Symbols.SetItem(sid, symbol), model.StrongSymbols, model.LazyProperties, model.References);
             if (this.group != null)
             {
-                this.group = this.group.Update(this.group.Name, this.group.Models.SetItem(model.Id, model), this.group.References);
+                this.group = this.group.Update(this.group.Models.SetItem(model.Id, model), this.group.References);
             }
             else
             {
@@ -1255,6 +1398,7 @@ namespace MetaDslx.Core
                     GreenModel newModel =
                         oldModel.Update(
                             oldModel.Name,
+                            oldModel.Version,
                             oldModel.Symbols.SetItem(sid, newSymbol),
                             oldModel.StrongSymbols,
                             oldModel.LazyProperties.SetItem(sid, hasLazy ? oldLazyProperties.Remove(property) : oldLazyProperties),
@@ -1282,25 +1426,40 @@ namespace MetaDslx.Core
             Debug.Assert(symbolRef != null);
             GreenModel model = symbolRef.Model;
             ImmutableHashSet<ModelProperty> properties;
-            bool changed = false;
-            if (model.LazyProperties.TryGetValue(sid, out properties))
+            int counter = 0;
+            bool changed = true;
+            bool evaluatedAny = true;
+            while (evaluatedAny)
             {
-                changed = properties.Count > 0;
-                var propList = symbolRef.Id.SymbolInfo.Properties;
-                foreach (var prop in propList)
+                evaluatedAny = false;
+                if (model.LazyProperties.TryGetValue(sid, out properties))
                 {
-                    if (properties.Contains(prop))
+                    changed = properties.Count > 0;
+                    var propList = symbolRef.Id.SymbolInfo.Properties;
+                    foreach (var prop in propList)
                     {
-                        properties = properties.Remove(prop);
+                        if (properties.Contains(prop))
+                        {
+                            properties = properties.Remove(prop);
+                            this.GetValue(mid, sid, prop, true);
+                            evaluatedAny = true;
+                        }
+                    }
+                    foreach (var prop in properties)
+                    {
                         this.GetValue(mid, sid, prop, true);
                     }
+                    if (evaluatedAny)
+                    {
+                        changed = true;
+                    }
+                    symbolRef = this.ResolveSymbol(mid, sid, true);
+                    model = symbolRef.Model;
+                    ++counter;
+                    if (counter >= 100) break; // exit after 100 iterations to prevent infinite loop
                 }
-                foreach (var prop in properties)
-                {
-                    this.GetValue(mid, sid, prop, true);
-                }
-                Debug.Assert(!this.GetModel(mid).LazyProperties.ContainsKey(sid));
             }
+            Debug.Assert(!model.LazyProperties.ContainsKey(sid));
             return changed;
         }
 
@@ -1426,66 +1585,81 @@ namespace MetaDslx.Core
             return false;
         }
 
-        private void CheckOldValue(SymbolRef symbolRef, ModelProperty property, bool reassign, object oldValue)
+        private bool CheckOldValue(SymbolRef symbolRef, ModelProperty property, bool reassign, object oldValue)
         {
             if (!reassign)
             {
                 if (property.IsDerived && oldValue != GreenSymbol.Unassigned)
                 {
-                    throw new ModelException("Cannot reassign a derived property: " + this.PropertyRef(symbolRef.Id, property));
+                    return false;
+                    //throw new ModelException("Cannot reassign a derived property: " + this.PropertyRef(symbolRef.Id, property));
                 }
                 if (property.IsReadonly && oldValue != GreenSymbol.Unassigned)
                 {
-                    throw new ModelException("Cannot reassign a read-only property: " + this.PropertyRef(symbolRef.Id, property));
+                    return false;
+                    //throw new ModelException("Cannot reassign a read-only property: " + this.PropertyRef(symbolRef.Id, property));
                 }
                 if (oldValue is GreenLazyValue)
                 {
-                    throw new ModelException("Cannot reassign a lazy-valued property: " + this.PropertyRef(symbolRef.Id, property));
+                    return false;
+                    //throw new ModelException("Cannot reassign a lazy-valued property: " + this.PropertyRef(symbolRef.Id, property));
                 }
             }
+            return true;
         }
 
-        private void CheckNewValue(SymbolRef symbolRef, ModelProperty property, object value)
+        private bool CheckNewValue(SymbolRef symbolRef, ModelProperty property, ref object value)
         {
             if (value == null && property.IsNonNull)
             {
-                throw new ModelException("Null value cannot be assigned to property: " + this.PropertyRef(symbolRef.Id, property));
+                return false;
+                //throw new ModelException("Null value cannot be assigned to property: " + this.PropertyRef(symbolRef.Id, property));
             }
             if (!(value == null || value == GreenSymbol.Unassigned || (value is GreenLazyValue) || (value is GreenDerivedValue) ||
                 ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))) ||
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
-                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
+                value = null;
+                return false;
+                //throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
             }
+            return true;
         }
 
-        private void CheckOldItem(SymbolRef symbolRef, ModelProperty property, bool reassign)
+        private bool CheckOldItem(SymbolRef symbolRef, ModelProperty property, bool reassign)
         {
             if (!reassign)
             {
                 if (property.IsDerived)
                 {
-                    throw new ModelException("Cannot change a derived property: " + this.PropertyRef(symbolRef.Id, property));
+                    return false;
+                    //throw new ModelException("Cannot change a derived property: " + this.PropertyRef(symbolRef.Id, property));
                 }
                 if (property.IsReadonly)
                 {
-                    throw new ModelException("Cannot change a read-only property: " + this.PropertyRef(symbolRef.Id, property));
+                    return false;
+                    //throw new ModelException("Cannot change a read-only property: " + this.PropertyRef(symbolRef.Id, property));
                 }
             }
+            return true;
         }
 
-        private void CheckNewItem(SymbolRef symbolRef, ModelProperty property, object value)
+        private bool CheckNewItem(SymbolRef symbolRef, ModelProperty property, ref object value)
         {
             if (value == null && property.IsNonNull)
             {
-                throw new ModelException("Null value cannot be added to property: " + this.PropertyRef(symbolRef.Id, property));
+                return false;
+                //throw new ModelException("Null value cannot be added to property: " + this.PropertyRef(symbolRef.Id, property));
             }
             if (!(value == null || (value is GreenLazyValue) || 
                 ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))) ||
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
-                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
+                value = null;
+                return false;
+                //throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
             }
+            return true;
         }
 
         /// <summary>
@@ -1504,8 +1678,8 @@ namespace MetaDslx.Core
             object oldValue;
             if (!this.TryGetValueCore(symbolRef, property, true, true, out oldValue)) return false;
             if (value == oldValue) return false;
-            this.CheckOldValue(symbolRef, property, reassign, oldValue);
-            this.CheckNewValue(symbolRef, property, value);
+            if (!this.CheckOldValue(symbolRef, property, reassign, oldValue)) return false;
+            this.CheckNewValue(symbolRef, property, ref value);
             if (oldValue != null && oldValue != GreenSymbol.Unassigned)
             {
                 if (oldValue is SymbolId)
@@ -1547,8 +1721,8 @@ namespace MetaDslx.Core
         private bool AddItemCore(SymbolRef symbolRef, ModelProperty property, bool reassign, int index, object value)
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
-            this.CheckOldItem(symbolRef, property, reassign);
-            this.CheckNewItem(symbolRef, property, value);
+            if (!this.CheckOldItem(symbolRef, property, reassign)) return false;
+            this.CheckNewItem(symbolRef, property, ref value);
             GreenList list;
             object listValue;
             if (!this.TryGetValueCore(symbolRef, property, false, false, out listValue) || !(listValue is GreenList))
@@ -1602,7 +1776,7 @@ namespace MetaDslx.Core
         private bool RemoveItemCore(SymbolRef symbolRef, ModelProperty property, bool forceRemove, bool reassign, int index, bool removeAll, ref object value)
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
-            this.CheckOldItem(symbolRef, property, reassign);
+            if (!this.CheckOldItem(symbolRef, property, reassign)) return false;
             GreenList list;
             object listValue;
             if (this.TryGetValueCore(symbolRef, property, false, false, out listValue))
@@ -2026,7 +2200,7 @@ namespace MetaDslx.Core
                     }
                 }
                 references = references.SetItem(sid, properties.Add(property));
-                model = model.Update(model.Name, model.Symbols, model.StrongSymbols, model.LazyProperties, model.References.SetItem(valueSid, references));
+                model = model.Update(model.Name, model.Version, model.Symbols, model.StrongSymbols, model.LazyProperties, model.References.SetItem(valueSid, references));
                 symbolRef.Update(model, symbolRef.Symbol, false);
             }
         }
@@ -2089,7 +2263,7 @@ namespace MetaDslx.Core
                         }
                     }
                 }
-                model = model.Update(model.Name, modelSymbols, model.StrongSymbols, model.LazyProperties, modelReferences);
+                model = model.Update(model.Name, model.Version, modelSymbols, model.StrongSymbols, model.LazyProperties, modelReferences);
                 symbolRef.Update(model, symbol, false);
             }
         }
@@ -2113,7 +2287,7 @@ namespace MetaDslx.Core
             if (!lazyProperties.Contains(property))
             {
                 lazyProperties = lazyProperties.Add(property);
-                model = model.Update(model.Name, model.Symbols, model.StrongSymbols, model.LazyProperties.SetItem(sid, lazyProperties), model.References);
+                model = model.Update(model.Name, model.Version, model.Symbols, model.StrongSymbols, model.LazyProperties.SetItem(sid, lazyProperties), model.References);
                 symbolRef.Update(model, symbolRef.Symbol, false);
             }
         }
@@ -2133,8 +2307,8 @@ namespace MetaDslx.Core
             if (model.LazyProperties.TryGetValue(sid, out lazyProperties))
             {
                 lazyProperties = lazyProperties.Remove(property);
-                if (lazyProperties.Count == 0) model = model.Update(model.Name, model.Symbols, model.StrongSymbols, model.LazyProperties.Remove(sid), model.References);
-                else model = model.Update(model.Name, model.Symbols, model.StrongSymbols, model.LazyProperties.SetItem(sid, lazyProperties), model.References);
+                if (lazyProperties.Count == 0) model = model.Update(model.Name, model.Version, model.Symbols, model.StrongSymbols, model.LazyProperties.Remove(sid), model.References);
+                else model = model.Update(model.Name, model.Version, model.Symbols, model.StrongSymbols, model.LazyProperties.SetItem(sid, lazyProperties), model.References);
                 symbolRef.Update(model, symbolRef.Symbol, false);
             }
         }
@@ -2168,6 +2342,7 @@ namespace MetaDslx.Core
                         newModel =
                             oldModel.Update(
                                 oldModel.Name,
+                                oldModel.Version,
                                 oldModel.Symbols.SetItem(sid, newSymbol),
                                 oldModel.StrongSymbols,
                                 oldModel.LazyProperties.Remove(sid),
@@ -2178,6 +2353,7 @@ namespace MetaDslx.Core
                         newModel =
                             oldModel.Update(
                                 oldModel.Name,
+                                oldModel.Version,
                                 oldModel.Symbols.SetItem(sid, newSymbol),
                                 oldModel.StrongSymbols,
                                 oldModel.LazyProperties.SetItem(sid, newLazyProperties),
@@ -2296,14 +2472,14 @@ namespace MetaDslx.Core
 
             public void Update(GreenModel model, GreenSymbol symbol, bool addSymbolToModel)
             {
-                if (addSymbolToModel) this.model = model.Update(model.Name, model.Symbols.SetItem(this.id, symbol), model.StrongSymbols, model.LazyProperties, model.References);
+                if (addSymbolToModel) this.model = model.Update(model.Name, model.Version, model.Symbols.SetItem(this.id, symbol), model.StrongSymbols, model.LazyProperties, model.References);
                 else this.model = model;
                 this.symbol = symbol;
             }
 
             public void Update(GreenSymbol symbol)
             {
-                this.model = model.Update(model.Name, model.Symbols.SetItem(this.id, symbol), model.StrongSymbols, model.LazyProperties, model.References);
+                this.model = model.Update(model.Name, model.Version, model.Symbols.SetItem(this.id, symbol), model.StrongSymbols, model.LazyProperties, model.References);
                 this.symbol = symbol;
             }
         }

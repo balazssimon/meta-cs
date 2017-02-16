@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Diagnostics;
+﻿using MetaDslx.Compiler;
+using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Languages.Soal.Binding;
 using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Languages.Soal.Syntax;
@@ -23,19 +24,23 @@ namespace MetaDslx.Languages.Soal.Test
             {
                 source = reader.ReadToEnd();
             }
-            SoalSyntaxTree tree = SoalSyntaxTree.ParseText(source);
-            MainSyntax main = (MainSyntax)tree.GetRoot();
+
+            MetadataReference[] metadataReferences = new MetadataReference[]
+            {
+                MetadataReference.CreateFromModel(SoalInstance.Model)
+            };
+
+            SoalSyntaxTree syntaxTree = SoalSyntaxTree.ParseText(source);
+
+            MainSyntax main = (MainSyntax)syntaxTree.GetRoot();
             Console.WriteLine(main);
-            foreach (var diag in tree.GetDiagnostics())
+            foreach (var diag in syntaxTree.GetDiagnostics())
             {
                 Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
             }
-            Soal.Symbols.SoalDescriptor.Initialize();
-            var rootDecl = SoalDeclarationTreeBuilderVisitor.ForTree(tree, string.Empty, false);
-            Console.WriteLine(rootDecl);
-            Console.WriteLine("----");
 
-            SoalCompilation comp = SoalCompilation.Create("SoalTest1").AddSyntaxTrees(tree);
+            SoalCompilation comp = SoalCompilation.Create("SoalTest1", new[] { syntaxTree }, references: metadataReferences);
+
             Console.WriteLine(comp.Declarations.MergedRoot);
 
             Console.WriteLine("----");
@@ -60,10 +65,10 @@ namespace MetaDslx.Languages.Soal.Test
             }
 
             Console.WriteLine("----");
-            var sm = comp.GetSemanticModel(tree);
+            var sm = comp.GetSemanticModel(syntaxTree);
             Console.WriteLine(sm);
 
-            var root = (MainSyntax)tree.GetRoot();
+            var root = (MainSyntax)syntaxTree.GetRoot();
             var ns = root.NamespaceDeclaration[0].QualifiedName;
 
             var nsInfo = sm.GetSymbolInfo(ns);
@@ -81,9 +86,18 @@ namespace MetaDslx.Languages.Soal.Test
 
             var symbolsInMathStruct = sm.LookupSymbols(_entity.SpanStart);
             Console.WriteLine(symbolsInMathStruct);
+            
+            Console.WriteLine(comp.Model);
+            Console.WriteLine(comp.Model);
 
-            Console.WriteLine(comp.Model);
-            Console.WriteLine(comp.Model);
+            foreach (var symbol in comp.Model.Symbols)
+            {
+                Console.WriteLine(symbol);
+                foreach (var prop in symbol.MAllProperties)
+                {
+                    Console.WriteLine("  "+prop.Name+"="+symbol.MGet(prop));
+                }
+            }
 
             /*}
             catch(Exception ex)

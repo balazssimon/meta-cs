@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MetaDslx.Compiler.References;
+using MetaDslx.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,16 +23,41 @@ namespace MetaDslx.Compiler
         }
 
         /// <summary>
-        /// Path or name used in error messages to identity the reference.
+        /// Path or name used in error messages to identify the reference.
         /// </summary>
         public virtual string Display { get { return null; } }
 
         /// <summary>
         /// Returns true if this reference is an unresolved reference.
         /// </summary>
-        internal virtual bool IsUnresolved
+        public virtual bool IsUnresolved
         {
             get { return false; }
+        }
+
+        public override string ToString()
+        {
+            return this.Display;
+        }
+
+        public static MetadataReference CreateFromModel(ImmutableModel model)
+        {
+            return new ModelReference(model);
+        }
+
+        public static MetadataReference CreateFromModel(MutableModel model)
+        {
+            return new ModelReference(model.ToImmutable());
+        }
+
+        public static MetadataReference CreateFromModelGroup(ImmutableModelGroup modelGroup)
+        {
+            return new ModelGroupReference(modelGroup);
+        }
+
+        public static MetadataReference CreateFromModelGroup(MutableModelGroup modelGroup)
+        {
+            return new ModelGroupReference(modelGroup.ToImmutable());
         }
     }
 }

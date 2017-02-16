@@ -146,28 +146,34 @@ namespace MetaDslx.Compiler.Binding
         protected void EndQualifier()
         {
             --_qualifierStack;
-            if (_qualifierStack == 0)
+            if (_qualifierStack == 0 && _qualifier.Count > 0)
             {
                 LookupResult result = LookupResult.GetInstance();
-                HashSet<DiagnosticInfo> discardedDiagnostics = null;
+                HashSet<DiagnosticInfo> useSiteDiagnostics = null;
                 try
                 {
                     Binder binder = this._binder;
                     IMetaSymbol symbol = binder.ContainingSymbol;
                     int index = 0;
+
+                    string name = _qualifier[index].ToString();
+                    useSiteDiagnostics = null;
+                    result.Clear();
+                    binder = binder.LookupSymbolsWithFallback(result, name, null, BindingOptions.Default, ref useSiteDiagnostics);
+                    if (useSiteDiagnostics != null) _diagnostics.Add(_qualifier[index].SyntaxTree.GetLocation(_qualifier[index].Span), useSiteDiagnostics);
+                    if (result.IsSingleViable) symbol = result.SingleSymbolOrDefault;
+                    else return;
+                    ++index;
+
                     while (symbol != null && index < _qualifier.Count)
                     {
-                        string name = _qualifier[index].ToString();
-                        binder = binder.LookupSymbols(result, name, null, BindingOptions.Default, false, ref discardedDiagnostics);
-                        if (result.IsSingleViable)
-                        {
-                            symbol = result.SingleSymbolOrDefault;
-                        }
-                        else
-                        {
-                            symbol = null;
-                            break;
-                        }
+                        name = _qualifier[index].ToString();
+                        useSiteDiagnostics = null;
+                        result.Clear();
+                        binder.LookupMembersWithFallback(result, symbol, name, null, BindingOptions.Default, ref useSiteDiagnostics);
+                        if (useSiteDiagnostics != null) _diagnostics.Add(_qualifier[index].SyntaxTree.GetLocation(_qualifier[index].Span), useSiteDiagnostics);
+                        if (result.IsSingleViable) symbol = result.SingleSymbolOrDefault;
+                        else return;
                         ++index;
                     }
                     if (symbol != null)
@@ -208,6 +214,12 @@ namespace MetaDslx.Compiler.Binding
             if (node == null) return;
             string valueStr = node.ToString();
             object value = this.GetValue(valueStr);
+            _results.Add(value);
+        }
+
+        protected void RegisterValue(RedNode node, object value)
+        {
+            if (node == null) return;
             _results.Add(value);
         }
 

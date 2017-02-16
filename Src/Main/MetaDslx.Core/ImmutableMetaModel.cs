@@ -6784,7 +6784,7 @@ namespace MetaDslx.Core.Internal
 	
 		internal MetaBuilderInstance()
 		{
-			this.Model = new global::MetaDslx.Core.MutableModel();
+			this.Model = new global::MetaDslx.Core.MutableModel("MetaDslx.Core");
 		}
 	
 		internal void Create()

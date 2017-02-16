@@ -21,7 +21,7 @@ namespace MetaDslx.Compiler.References
         {
             get
             {
-                return ModelGroup.Name;
+                return ModelGroup.ToString();
             }
         }
 

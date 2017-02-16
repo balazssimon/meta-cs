@@ -150,11 +150,11 @@ componentServiceOrReferenceBody
 	| TOpenBrace componentServiceOrReferenceElement* TCloseBrace #componentServiceOrReferenceNonEmptyBody;
 
 componentServiceOrReferenceElement
-	: KBinding                                      qualifier TSemicolon;
+	: KBinding                                        qualifier TSemicolon;
 
                      
                  
-componentProperty : typeReference name TSemicolon;
+componentProperty :                 typeReference name TSemicolon;
 
                          
                        
@@ -186,14 +186,14 @@ compositeElement
 	;
 
                      
-compositeComponent : KComponent                     qualifier TSemicolon;
+compositeComponent : KComponent                       qualifier TSemicolon;
 
                 
              
 compositeWire : KWire wireSource KTo wireTarget TSemicolon;
 
-wireSource :                                  qualifier;
-wireTarget :                                  qualifier;
+wireSource :                                    qualifier;
+wireTarget :                                    qualifier;
 
                    
 deploymentDeclaration : KDeployment name deploymentBody;
@@ -354,16 +354,18 @@ endpointProperty
 	| endpointAddressProperty
 	;
 
-endpointBindingProperty : KBinding                                      qualifier TSemicolon;
+endpointBindingProperty : KBinding                                        qualifier TSemicolon;
 endpointAddressProperty : KAddress                    stringLiteral TSemicolon;
 
 // Types
 
+          
 returnType 
 	: typeReference
 	| voidType
 	;
 
+          
 typeReference 
 	: nonNullableArrayType
 	| arrayType
@@ -371,19 +373,24 @@ typeReference
 	| nulledType
 	;
 
-simpleType : valueType | objectType |            qualifier;
-
-nulledType : nullableType | nonNullableType;
-
-referenceType : objectType |            qualifier;
+          
+simpleType : valueType | objectType | qualifier;
 
           
+nulledType : nullableType | nonNullableType;
+
+          
+referenceType : objectType | qualifier;
+
+          
+           
 objectType 
 	: KObject 
 	| KString
 	;
 
           
+           
 valueType 
 	: KInt 
 	| KLong 
@@ -397,19 +404,20 @@ valueType
 	| ITimeSpan
 	;
 
-          
+                         
 voidType 
 	: KVoid
 	;
 
-          
+                         
 onewayType
 	: KOneway
 	;
 
+               
 operationReturnType
-	:                 returnType
-	|                                                                                  onewayType
+	: returnType
+	|                                     onewayType
 	;
 
                         
@@ -431,7 +439,6 @@ simpleArrayType :                      simpleType TOpenBracket TCloseBracket;
 
                      
 nulledArrayType :                      nulledType TOpenBracket TCloseBracket;
-
 
 constantValue
 	: literal

@@ -391,7 +391,8 @@ namespace MetaDslx.Compiler
                     throw new ArgumentNullException("references[" + i + "]");
                 }
 
-                if (!(reference is T))
+                bool referenceOK = reference is ModelReference || reference is ModelGroupReference;
+                if (!referenceOK && !(reference is T))
                 {
                     Debug.Assert(reference is UnresolvedMetadataReference || reference is CompilationReference);
                     throw new ArgumentException(String.Format("Reference of type '{0}' is not valid for this compilation.", reference.GetType()), "references[" + i + "]");

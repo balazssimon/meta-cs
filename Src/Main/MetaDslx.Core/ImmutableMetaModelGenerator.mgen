@@ -194,11 +194,11 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 	internal [model.CSharpName(ModelKind.BuilderInstance)]()
 	{
 		[if (coreModel)]
-		this.Model = new [Properties.CoreNs].MutableModel();
+		this.Model = new [Properties.CoreNs].MutableModel("MetaDslx.Core");
 		[else]
 		this.ModelGroup = new [Properties.CoreNs].MutableModelGroup();
 		this.ModelGroup.AddReference([Properties.CoreNs].MetaInstance.Model.ToMutable(true));
-		this.Model = this.ModelGroup.CreateModel();
+		this.Model = this.ModelGroup.CreateModel("[model.CSharpName()]");
 		[end if]
 	}
 ^

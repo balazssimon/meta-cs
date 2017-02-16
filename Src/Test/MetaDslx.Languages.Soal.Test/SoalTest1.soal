@@ -49,20 +49,20 @@
 
 	component CalcComp2
 	{
-		service ICalculator;
+		service ICalculator ICalculator;
 		reference ICalculator CalcR;
 	}
 
 	component CalcComp3
 	{
 		service ICalculator CalcS;
-		reference ICalculator;
+		reference ICalculator ICalculator;
 	}
 
 	component CalcComp4
 	{
-		service ICalculator;
-		reference ICalculator;
+		service ICalculator ICalculator;
+		reference ICalculator ICalculator;
 	}
 
 	composite Composite1 

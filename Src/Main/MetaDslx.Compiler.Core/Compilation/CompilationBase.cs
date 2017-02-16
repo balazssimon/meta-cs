@@ -172,7 +172,7 @@ namespace MetaDslx.Compiler
             }
             else
             {
-                _referenceManager = new ReferenceManager(this.CompilationName);
+                _referenceManager = new ReferenceManager(this.CompilationName, references);
             }
 
             _syntaxAndDeclarations = syntaxAndDeclarations;

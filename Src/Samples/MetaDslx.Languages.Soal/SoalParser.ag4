@@ -150,11 +150,11 @@ componentServiceOrReferenceBody
 	| TOpenBrace componentServiceOrReferenceElement* TCloseBrace #componentServiceOrReferenceNonEmptyBody;
 
 componentServiceOrReferenceElement
-	: KBinding $Property(Binding) $NameUse(Binding) qualifier TSemicolon;
+	: KBinding $Property(Binding) $SymbolUse(Binding) qualifier TSemicolon;
 
 $Property(Properties)
 $Symbol(Property)
-componentProperty : typeReference name TSemicolon;
+componentProperty : $Property(Type) typeReference name TSemicolon;
 
 $Property(Implementation)
 $Symbol(Implementation)
@@ -186,14 +186,14 @@ compositeElement
 	;
 
 $Property(Components)
-compositeComponent : KComponent $NameUse(Component) qualifier TSemicolon;
+compositeComponent : KComponent $SymbolUse(Component) qualifier TSemicolon;
 
 $Property(Wires)
 $Symbol(Wire)
 compositeWire : KWire wireSource KTo wireTarget TSemicolon;
 
-wireSource : $Property(Source) $NameUse(Port) qualifier;
-wireTarget : $Property(Target) $NameUse(Port) qualifier;
+wireSource : $Property(Source) $SymbolUse(Port) qualifier;
+wireTarget : $Property(Target) $SymbolUse(Port) qualifier;
 
 $Symbol(Deployment)
 deploymentDeclaration : KDeployment name deploymentBody;
@@ -354,16 +354,18 @@ endpointProperty
 	| endpointAddressProperty
 	;
 
-endpointBindingProperty : KBinding $Property(Binding) $NameUse(Binding) qualifier TSemicolon;
+endpointBindingProperty : KBinding $Property(Binding) $SymbolUse(Binding) qualifier TSemicolon;
 endpointAddressProperty : KAddress $Property(Address) stringLiteral TSemicolon;
 
 // Types
 
+$SymbolUse
 returnType 
 	: typeReference
 	| voidType
 	;
 
+$SymbolUse
 typeReference 
 	: nonNullableArrayType
 	| arrayType
@@ -371,19 +373,24 @@ typeReference
 	| nulledType
 	;
 
-simpleType : valueType | objectType | $SymbolUse qualifier;
-
-nulledType : nullableType | nonNullableType;
-
-referenceType : objectType | $SymbolUse qualifier;
+$SymbolUse
+simpleType : valueType | objectType | qualifier;
 
 $SymbolUse
+nulledType : nullableType | nonNullableType;
+
+$SymbolUse
+referenceType : objectType | qualifier;
+
+$SymbolUse
+$Identifier
 objectType 
 	: KObject 
 	| KString
 	;
 
 $SymbolUse
+$Identifier
 valueType 
 	: KInt 
 	| KLong 
@@ -397,19 +404,20 @@ valueType
 	| ITimeSpan
 	;
 
-$SymbolUse
+$Value(SoalInstance.Void)
 voidType 
 	: KVoid
 	;
 
-$SymbolUse
+$Value(SoalInstance.Void)
 onewayType
 	: KOneway
 	;
 
+$Property(Type)
 operationReturnType
-	: $Property(Type) returnType
-	| $Property(name=Type,value=SoalInstance.Void) $Property(name=IsOneway,value=true) onewayType
+	: returnType
+	| $Property(name=IsOneway,value=true) onewayType
 	;
 
 $SymbolCtr(NullableType)
@@ -431,7 +439,6 @@ simpleArrayType : $Property(InnerType) simpleType TOpenBracket TCloseBracket;
 
 $SymbolCtr(ArrayType)
 nulledArrayType : $Property(InnerType) nulledType TOpenBracket TCloseBracket;
-
 
 constantValue
 	: literal

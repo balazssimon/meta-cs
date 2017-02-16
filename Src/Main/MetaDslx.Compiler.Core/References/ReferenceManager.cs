@@ -56,13 +56,33 @@ namespace MetaDslx.Compiler.References
         /// </summary>
         internal static object SymbolCacheAndReferenceManagerStateGuard = new object();
 
-        public ReferenceManager(string compilationName)
+        private readonly string _compilationName;
+        private readonly ImmutableArray<ImmutableModel> _referencedModels;
+
+        internal ReferenceManager(string compilationName, ImmutableArray<MetadataReference> references)
         {
+            _compilationName = compilationName;
+            ArrayBuilder<ImmutableModel> models = ArrayBuilder<ImmutableModel>.GetInstance();
+            foreach (var reference in references)
+            {
+                ModelReference modelRef = reference as ModelReference;
+                if (modelRef != null)
+                {
+                    models.Add(modelRef.Model);
+                }
+                ModelGroupReference modelGroupRef = reference as ModelGroupReference;
+                if (modelGroupRef != null)
+                {
+                    models.AddRange(modelGroupRef.ModelGroup.Models);
+                    models.AddRange(modelGroupRef.ModelGroup.References);
+                }
+            }
+            _referencedModels = models.ToImmutableAndFree();
         }
 
         public ImmutableArray<ImmutableModel> ReferencedModels
         {
-            get { return ImmutableArray<ImmutableModel>.Empty; }
+            get { return _referencedModels; }
         }
 
         public ImmutableArray<ImmutableArray<string>> AliasesOfReferencedModels
@@ -89,6 +109,10 @@ namespace MetaDslx.Compiler.References
                         compilation._lazyModelBuilder = model;
                         compilation._lazyModelId = model.Id;
                         compilation._lazyGlobalNamespace = compilation.SymbolTreeBuilder.BuildDeclarationSymbol(null, compilation.Declarations.MergedRoot);
+                        foreach (var modelRef in _referencedModels)
+                        {
+                            modelGroup.AddReference(modelRef);
+                        }
                         //compilation._lazyGlobalNamespace 
                         Debug.Assert(ReferenceEquals(compilation._referenceManager, this));
                     }

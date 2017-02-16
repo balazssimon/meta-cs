@@ -115,7 +115,7 @@ namespace MetaDslx.Compiler.Binding
 
             if (IsSubmissionClass)
             {
-                this.LookupMembersCore(result, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                this.LookupMembersCore(result, null, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
                 return;
             }
 
@@ -124,7 +124,7 @@ namespace MetaDslx.Compiler.Binding
             // first lookup members of the namespace
             if (_container != null)
             {
-                this.LookupMembersCore(result, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                this.LookupMembersCore(result, null, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
 
                 if (result.IsMultiViable)
                 {
@@ -136,14 +136,27 @@ namespace MetaDslx.Compiler.Binding
             imports.LookupSymbol(originalBinder, result, name, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
         }
 
-        protected override void LookupMembersCore(LookupResult result, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        protected override void LookupMembersCore(LookupResult result, IMetaSymbol qualifierOpt, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            if (_container == null) return;
-            foreach (var child in _container.MChildren)
+            if (qualifierOpt == null)
             {
-                if (child.MName != null && child.MName == name)
+                if (_container == null) return;
+                foreach (var child in _container.MChildren)
                 {
-                    result.MergeEqual(this.CheckViability(child, options, null, diagnose, ref useSiteDiagnostics));
+                    if (child.MName != null && child.MName == name)
+                    {
+                        result.MergeEqual(this.CheckViability(child, options, null, diagnose, ref useSiteDiagnostics));
+                    }
+                }
+            }
+            else
+            {
+                foreach (var child in qualifierOpt.MChildren)
+                {
+                    if (child.MName != null && child.MName == name)
+                    {
+                        result.MergeEqual(this.CheckViability(child, options, null, diagnose, ref useSiteDiagnostics));
+                    }
                 }
             }
         }

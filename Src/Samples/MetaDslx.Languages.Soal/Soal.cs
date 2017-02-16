@@ -12960,7 +12960,7 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		{
 			this.ModelGroup = new global::MetaDslx.Core.MutableModelGroup();
 			this.ModelGroup.AddReference(global::MetaDslx.Core.MetaInstance.Model.ToMutable(true));
-			this.Model = this.ModelGroup.CreateModel();
+			this.Model = this.ModelGroup.CreateModel("Soal");
 		}
 	
 		internal void Create()

@@ -478,15 +478,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginDeclaration(typeof(Symbols.Component), node);
 			try
 			{
-				this.BeginProperty("IsAbstract");
-				try
-				{
-					this.VisitToken(node.KAbstract);
-				}
-				finally
-				{
-					this.EndProperty();
-				}
+				this.VisitToken(node.KAbstract);
 				this.Visit(node.Name);
 				this.Visit(node.ComponentBody);
 			}
@@ -570,15 +562,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitComponentServiceOrReferenceElement(ComponentServiceOrReferenceElementSyntax node)
 		{
-			this.BeginProperty("Binding");
-			try
-			{
-				this.Visit(node.Qualifier);
-			}
-			finally
-			{
-				this.EndProperty();
-			}
 		}
 		
 		public virtual void VisitComponentProperty(ComponentPropertySyntax node)
@@ -589,7 +572,15 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BeginDeclaration(typeof(Symbols.Property), node);
 				try
 				{
-					this.Visit(node.TypeReference);
+					this.BeginProperty("Type");
+					try
+					{
+						this.Visit(node.TypeReference);
+					}
+					finally
+					{
+						this.EndProperty();
+					}
 					this.Visit(node.Name);
 				}
 				finally
@@ -699,7 +690,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Components");
 			try
 			{
-				this.Visit(node.Qualifier);
 			}
 			finally
 			{
@@ -731,28 +721,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitWireSource(WireSourceSyntax node)
 		{
-			this.BeginProperty("Source");
-			try
-			{
-				this.Visit(node.Qualifier);
-			}
-			finally
-			{
-				this.EndProperty();
-			}
 		}
 		
 		public virtual void VisitWireTarget(WireTargetSyntax node)
 		{
-			this.BeginProperty("Target");
-			try
-			{
-				this.Visit(node.Qualifier);
-			}
-			finally
-			{
-				this.EndProperty();
-			}
 		}
 		
 		public virtual void VisitDeploymentDeclaration(DeploymentDeclarationSyntax node)
@@ -1188,15 +1160,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitEndpointBindingProperty(EndpointBindingPropertySyntax node)
 		{
-			this.BeginProperty("Binding");
-			try
-			{
-				this.Visit(node.Qualifier);
-			}
-			finally
-			{
-				this.EndProperty();
-			}
 		}
 		
 		public virtual void VisitEndpointAddressProperty(EndpointAddressPropertySyntax node)
@@ -1214,41 +1177,32 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitReturnType(ReturnTypeSyntax node)
 		{
-			this.Visit(node.TypeReference);
-			this.Visit(node.VoidType);
 		}
 		
 		public virtual void VisitTypeReference(TypeReferenceSyntax node)
 		{
-			this.Visit(node.NonNullableArrayType);
-			this.Visit(node.ArrayType);
-			this.Visit(node.SimpleType);
-			this.Visit(node.NulledType);
 		}
 		
 		public virtual void VisitSimpleType(SimpleTypeSyntax node)
 		{
-			this.Visit(node.ValueType);
-			this.Visit(node.ObjectType);
 		}
 		
 		public virtual void VisitNulledType(NulledTypeSyntax node)
 		{
-			this.Visit(node.NullableType);
-			this.Visit(node.NonNullableType);
 		}
 		
 		public virtual void VisitReferenceType(ReferenceTypeSyntax node)
 		{
-			this.Visit(node.ObjectType);
 		}
 		
 		public virtual void VisitObjectType(ObjectTypeSyntax node)
 		{
+			if (node != null) this.RegisterIdentifier(node);
 		}
 		
 		public virtual void VisitValueType(ValueTypeSyntax node)
 		{
+			if (node != null) this.RegisterIdentifier(node);
 		}
 		
 		public virtual void VisitVoidType(VoidTypeSyntax node)
@@ -1265,14 +1219,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.Visit(node.ReturnType);
-			}
-			finally
-			{
-				this.EndProperty();
-			}
-			this.BeginProperty("Type");
-			try
-			{
 				this.Visit(node.OnewayType);
 			}
 			finally

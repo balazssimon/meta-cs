@@ -60,6 +60,8 @@ namespace MetaDslx.Compiler.MetaModel
             DefaultProperties.Add(SymbolUse, "symbolType");
             DefaultProperties.Add(SymbolCtr, "symbolType");
             DefaultProperties.Add(Property, "name");
+            DefaultProperties.Add(Identifier, "name");
+            DefaultProperties.Add(Value, "value");
         }
     }
 
@@ -205,6 +207,11 @@ namespace MetaDslx.Compiler.MetaModel
 
         public string Name { get; }
         public IReadOnlyList<MetaAnnotationProperty> Properties { get; }
+
+        public bool HasProperty(string propertyName)
+        {
+            return this.Properties.Any(p => p.Name == propertyName);
+        }
 
         public string GetValue(string propertyName)
         {

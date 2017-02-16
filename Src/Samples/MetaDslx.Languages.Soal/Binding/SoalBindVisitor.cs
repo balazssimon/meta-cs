@@ -382,11 +382,19 @@ namespace MetaDslx.Languages.Soal.Binding
 				}
 				if (this.CanVisitChild(node.Identifier))
 				{
-					if (node.Identifier != null) this.RegisterValue(node.Identifier);
+					if (node.Identifier != null)
+					{
+						this.RegisterValue(node.Identifier);
+					}
+					this.VisitRed(this.RootNode);
 				}
 				if (this.CanVisitChild(node.StringLiteral))
 				{
-					if (node.StringLiteral != null) this.RegisterValue(node.StringLiteral);
+					if (node.StringLiteral != null)
+					{
+						this.RegisterValue(node.StringLiteral);
+					}
+					this.VisitRed(this.RootNode);
 				}
 				if (this.CanVisitChild(node.NamespaceBody))
 				{
@@ -942,6 +950,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (this.IsBinding)
 			{
 				if (!this.CanEnterDeclaration()) return;
+				this.VisitToken(node.KAbstract);
 				this.Visit(node.Name);
 				this.Visit(node.ComponentBody);
 			}
@@ -1162,6 +1171,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				if (this.CanVisitChild(node.Qualifier))
 				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Binding));
 					this.VisitRed(this.RootNode);
 				}
 			}
@@ -1173,7 +1183,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (this.IsBinding)
 			{
 				if (!this.CanEnterDeclaration()) return;
-				this.Visit(node.TypeReference);
 				this.Visit(node.Name);
 			}
 			else if (this.CanVisitParent(node.Parent))
@@ -1393,6 +1402,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (this.IsBinding)
 			{
 				if (!this.CanEnterDeclaration()) return;
+				if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Component));
 				this.Visit(node.Qualifier);
 			}
 			else if (this.CanVisitParent(node.Parent))
@@ -1403,6 +1413,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				if (this.CanVisitChild(node.Qualifier))
 				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Component));
 					this.VisitRed(this.RootNode);
 				}
 			}
@@ -1448,6 +1459,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				if (this.CanVisitChild(node.Qualifier))
 				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Port));
 					this.VisitRed(this.RootNode);
 				}
 			}
@@ -1467,6 +1479,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				if (this.CanVisitChild(node.Qualifier))
 				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Port));
 					this.VisitRed(this.RootNode);
 				}
 			}
@@ -2487,6 +2500,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				if (this.CanVisitChild(node.Qualifier))
 				{
+					if (node.Qualifier != null) this.RegisterSymbolType(typeof(Symbols.Binding));
 					this.VisitRed(this.RootNode);
 				}
 			}
@@ -2516,6 +2530,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				this.Visit(node.TypeReference);
 				this.Visit(node.VoidType);
 			}
@@ -2525,6 +2540,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				if (this.CanVisitChild(node.TypeReference))
 				{
 					this.VisitRed(this.RootNode);
@@ -2541,6 +2557,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				this.Visit(node.NonNullableArrayType);
 				this.Visit(node.ArrayType);
 				this.Visit(node.SimpleType);
@@ -2552,6 +2569,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				if (this.CanVisitChild(node.NonNullableArrayType))
 				{
 					this.VisitRed(this.RootNode);
@@ -2576,9 +2594,9 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				this.Visit(node.ValueType);
 				this.Visit(node.ObjectType);
-				if (node.Qualifier != null) this.RegisterSymbolType(null);
 				this.Visit(node.Qualifier);
 			}
 			else if (this.CanVisitParent(node.Parent))
@@ -2587,6 +2605,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				if (this.CanVisitChild(node.ValueType))
 				{
 					this.VisitRed(this.RootNode);
@@ -2597,7 +2616,6 @@ namespace MetaDslx.Languages.Soal.Binding
 				}
 				if (this.CanVisitChild(node.Qualifier))
 				{
-					if (node.Qualifier != null) this.RegisterSymbolType(null);
 					this.VisitRed(this.RootNode);
 				}
 			}
@@ -2608,6 +2626,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				this.Visit(node.NullableType);
 				this.Visit(node.NonNullableType);
 			}
@@ -2617,6 +2636,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				if (this.CanVisitChild(node.NullableType))
 				{
 					this.VisitRed(this.RootNode);
@@ -2633,8 +2653,8 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				this.Visit(node.ObjectType);
-				if (node.Qualifier != null) this.RegisterSymbolType(null);
 				this.Visit(node.Qualifier);
 			}
 			else if (this.CanVisitParent(node.Parent))
@@ -2643,13 +2663,13 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
+				if (node != null) this.RegisterSymbolType(null);
 				if (this.CanVisitChild(node.ObjectType))
 				{
 					this.VisitRed(this.RootNode);
 				}
 				if (this.CanVisitChild(node.Qualifier))
 				{
-					if (node.Qualifier != null) this.RegisterSymbolType(null);
 					this.VisitRed(this.RootNode);
 				}
 			}
@@ -2661,6 +2681,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (this.IsBinding)
 			{
 				if (node != null) this.RegisterSymbolType(null);
+				if (node != null) this.RegisterIdentifier(node);
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -2669,6 +2690,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			else 
 			{
 				if (node != null) this.RegisterSymbolType(null);
+				if (node != null) this.RegisterIdentifier(node);
 			}
 		}
 		
@@ -2678,6 +2700,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (this.IsBinding)
 			{
 				if (node != null) this.RegisterSymbolType(null);
+				if (node != null) this.RegisterIdentifier(node);
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -2686,6 +2709,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			else 
 			{
 				if (node != null) this.RegisterSymbolType(null);
+				if (node != null) this.RegisterIdentifier(node);
 			}
 		}
 		
@@ -2694,7 +2718,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				if (node != null) this.RegisterSymbolType(null);
+				if (node != null)
+				{
+					this.RegisterValue(node, SoalInstance.Void);
+				}
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -2702,7 +2729,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
-				if (node != null) this.RegisterSymbolType(null);
+				if (node != null)
+				{
+					this.RegisterValue(node, SoalInstance.Void);
+				}
 			}
 		}
 		
@@ -2711,7 +2741,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				if (node != null) this.RegisterSymbolType(null);
+				if (node != null)
+				{
+					this.RegisterValue(node, SoalInstance.Void);
+				}
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -2719,7 +2752,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
-				if (node != null) this.RegisterSymbolType(null);
+				if (node != null)
+				{
+					this.RegisterValue(node, SoalInstance.Void);
+				}
 			}
 		}
 		
@@ -2728,6 +2764,9 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
+				if (!this.CanEnterDeclaration()) return;
+				this.Visit(node.ReturnType);
+				this.Visit(node.OnewayType);
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -2998,7 +3037,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -3006,7 +3048,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 		}
 		
@@ -3015,7 +3060,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -3023,7 +3071,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 		}
 		
@@ -3032,7 +3083,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -3040,7 +3094,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 		}
 		
@@ -3049,7 +3106,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -3057,7 +3117,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 		}
 		
@@ -3066,7 +3129,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -3074,7 +3140,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 		}
 		
@@ -3083,7 +3152,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (node.Parent == null) this.StartBinding();
 			if (this.IsBinding)
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 			else if (this.CanVisitParent(node.Parent))
 			{
@@ -3091,7 +3163,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			}
 			else 
 			{
-				if (node != null) this.RegisterValue(node);
+				if (node != null)
+				{
+					this.RegisterValue(node);
+				}
 			}
 		}
 		

@@ -303,6 +303,36 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Property);
         }
 
+        public static bool IsValueWithNoValue(this MetaCompilerAnnotations annots)
+        {
+            return GetValueWithNoValue(annots) != null;
+        }
+
+        public static MetaCompilerAnnotation GetValueWithNoValue(this MetaCompilerAnnotations annots)
+        {
+            return annots.Annotations.Where(a => a.Name == MetaCompilerAnnotationInfo.Value && !a.HasProperty("value")).FirstOrDefault();
+        }
+
+        public static IEnumerable<MetaCompilerAnnotation> GetValuesWithValue(this MetaCompilerAnnotations annots)
+        {
+            return annots.Annotations.Where(a => a.Name == MetaCompilerAnnotationInfo.Value && a.HasProperty("value"));
+        }
+
+        public static bool IsPropertyWithNoValue(this MetaCompilerAnnotations annots)
+        {
+            return GetPropertyWithNoValue(annots) != null;
+        }
+
+        public static MetaCompilerAnnotation GetPropertyWithNoValue(this MetaCompilerAnnotations annots)
+        {
+            return annots.Annotations.Where(a => a.Name == MetaCompilerAnnotationInfo.Property && !a.HasProperty("value")).FirstOrDefault();
+        }
+
+        public static IEnumerable<MetaCompilerAnnotation> GetPropertiesWithValue(this MetaCompilerAnnotations annots)
+        {
+            return annots.Annotations.Where(a => a.Name == MetaCompilerAnnotationInfo.Property && a.HasProperty("value"));
+        }
+
         public static bool IsQualifier(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Qualifier);

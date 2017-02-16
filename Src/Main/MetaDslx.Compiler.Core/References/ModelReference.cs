@@ -21,7 +21,7 @@ namespace MetaDslx.Compiler.References
         {
             get
             {
-                return Model.Name;
+                return Model.ToString();
             }
         }
 
