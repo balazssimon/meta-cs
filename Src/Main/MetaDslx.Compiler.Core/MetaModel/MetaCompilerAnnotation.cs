@@ -21,7 +21,7 @@ namespace MetaDslx.Compiler.MetaModel
         public const string Name = "Name";
         public const string Body = "Body";
 
-        public const string RootScope = "RootScope";
+        public const string Root = "Root";
         public const string Symbol = "Symbol";
         public const string SymbolUse = "SymbolUse";
         public const string SymbolCtr = "SymbolCtr";
@@ -55,7 +55,7 @@ namespace MetaDslx.Compiler.MetaModel
 
         static MetaCompilerAnnotationInfo()
         {
-            DefaultProperties.Add(RootScope, "symbolType");
+            DefaultProperties.Add(Root, "symbolType");
             DefaultProperties.Add(Symbol, "symbolType");
             DefaultProperties.Add(SymbolUse, "symbolType");
             DefaultProperties.Add(SymbolCtr, "symbolType");

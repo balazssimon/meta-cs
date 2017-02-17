@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Binding;
+using MetaDslx.Compiler.Binding.Binders;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Syntax;

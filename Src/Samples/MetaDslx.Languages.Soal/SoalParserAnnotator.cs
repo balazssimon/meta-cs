@@ -114,7 +114,7 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            RootScopeAnnotation __tmp1 = new RootScopeAnnotation();
+            RootAnnotation __tmp1 = new RootAnnotation();
             __tmp1.Value = node;
             treeAnnotList.Add(__tmp1);
             List<object> elemAnnotList = null;

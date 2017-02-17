@@ -6,7 +6,7 @@ options {
 	generateCompilerBase=true;
 }
 
-$RootScope(Namespace)
+$Root(Namespace)
 main : $Property(Declarations) namespaceDeclaration* EOF;
 
 $Name

@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Binding;
+using MetaDslx.Compiler.Binding.Binders;
 using MetaDslx.Compiler.Declarations;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.References;
@@ -36,6 +37,7 @@ namespace MetaDslx.Compiler
         private readonly Lazy<Imports> _previousSubmissionImports;
         private readonly Lazy<IMetaSymbol> _globalNamespaceAlias;  // alias symbol used to resolve "global::".
         private readonly Lazy<IMetaSymbol> _scriptSymbol;
+        private readonly Lazy<IMetaSymbol> _errorSymbol;
 
         // All imports (using directives and extern aliases) in syntax trees in this compilation.
         // NOTE: We need to de-dup since the Imports objects that populate the list may be GC'd
@@ -89,7 +91,7 @@ namespace MetaDslx.Compiler
 
         internal MutableModel _lazyModelBuilder;
 
-        private SymbolTreeBuilder _lazySymbolTreeBuilder;
+        private SymbolBuilder _lazySymbolTreeBuilder;
 
         /// <summary>
         /// Holds onto data related to reference binding.
@@ -149,6 +151,7 @@ namespace MetaDslx.Compiler
         {
             _options = options;
 
+            _errorSymbol = new Lazy<IMetaSymbol>(CreateErrorSymbol);
             _scriptSymbol = new Lazy<IMetaSymbol>(BindScriptSymbol);
             _globalImports = new Lazy<Imports>(BindGlobalImports);
             _previousSubmissionImports = new Lazy<Imports>(ExpandPreviousSubmissionImports);
@@ -626,14 +629,14 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The SymbolTreeBuilder that creates properties for symbols not defined in the declaration tree.
         /// </summary>
-        internal protected override SymbolTreeBuilder SymbolTreeBuilder
+        internal protected override SymbolBuilder SymbolTreeBuilder
         {
             get
             {
                 GetBoundReferenceManager();
                 if (_lazySymbolTreeBuilder == null)
                 {
-                    Interlocked.CompareExchange(ref _lazySymbolTreeBuilder, new SymbolTreeBuilder(this), null);
+                    Interlocked.CompareExchange(ref _lazySymbolTreeBuilder, new SymbolBuilder(this), null);
                 }
                 return _lazySymbolTreeBuilder;
             }
@@ -760,6 +763,24 @@ namespace MetaDslx.Compiler
         }
 
         /// <summary>
+        /// A symbol representing the implicit Script class. This is null if the class is not
+        /// defined in the compilation.
+        /// </summary>
+        protected override IMetaSymbol CommonErrorSymbol
+        {
+            get { return _errorSymbol.Value; }
+        }
+
+        /// <summary>
+        /// Resolves a symbol that represents a bad symbol.
+        /// </summary>
+        /// <returns>The Error symbol.</returns>
+        protected virtual IMetaSymbol CreateErrorSymbol()
+        {
+            return this.Language.CompilationFactory.CreateErrorSymbol(this, this.ModelBuilder);
+        }
+
+        /// <summary>
         /// Global imports (including those from previous submissions, if there are any).
         /// </summary>
         internal Imports GlobalImports => _globalImports.Value;
@@ -835,10 +856,10 @@ namespace MetaDslx.Compiler
         }
 
         // When building symbols from the declaration table (lazily), or inside a type, or when
-        // compiling a method body, we may not have a BinderContext in hand for the enclosing
-        // scopes.  Therefore, we build them when needed (and cache them) using a ContextBuilder.
-        // Since a ContextBuilder is only a cache, and the identity of the ContextBuilders and
-        // BinderContexts have no semantic meaning, we can reuse them or rebuild them, whichever is
+        // compiling a method body, we may not have a Binder in hand for the enclosing
+        // scopes.  Therefore, we build them when needed (and cache them) using a BinderFactory.
+        // Since a BinderFactory is only a cache, and the identity of the BinderFactories and
+        // Binders have no semantic meaning, we can reuse them or rebuild them, whichever is
         // most convenient.  We store them using weak references so that GC pressure will cause them
         // to be recycled.
         private WeakReference<BinderFactory>[] _binderFactories;
@@ -909,7 +930,7 @@ namespace MetaDslx.Compiler
 
         private IMetaSymbol CreateGlobalNamespaceAlias()
         {
-            return this.Language.CompilationFactory.CreateGlobalNamespaceAlias(this.GlobalNamespace, new InContainerBinder(this.GlobalNamespace, new BuckStopsHereBinder(this)));
+            return this.Language.CompilationFactory.CreateGlobalNamespaceAlias(this.GlobalNamespace, new RootBinder(new BuckStopsHereBinder(this), null, this.GlobalNamespace));
         }
 
         private void CompleteTree(SyntaxTree tree)

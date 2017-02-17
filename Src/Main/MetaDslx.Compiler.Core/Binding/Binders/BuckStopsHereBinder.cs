@@ -7,7 +7,7 @@ using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 
-namespace MetaDslx.Compiler.Binding
+namespace MetaDslx.Compiler.Binding.Binders
 {
     /// <summary>
     /// A binder that knows no symbols and will not delegate further.

@@ -12,6 +12,7 @@ using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Diagnostics;
 using System.Collections.Immutable;
 using MetaDslx.Compiler.References;
+using MetaDslx.Compiler.Binding.Binders;
 
 namespace MetaDslx.Compiler
 {
@@ -22,15 +23,15 @@ namespace MetaDslx.Compiler
         public abstract RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
         public abstract ModelFactory CreateModelFactory(MutableModel modelBuilder, bool weak);
 
-        public abstract SymbolTreeBuilderVisitor CreateSymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder);
         public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
-        public abstract BindVisitor CreateBindVisitor(Binder binder);
 
         public abstract IMetaSymbol CreateGlobalNamespace(Compilation compilation, MutableModel modelBuilder, IEnumerable<IMetaSymbol> namespacesToMerge);
         public abstract bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree);
-        public abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder);
+        public abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, Binder rootBinder);
         public abstract AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilation);
         public abstract ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType);
+
+        public abstract IMetaSymbol GetWellKnownSymbol(string name);
 
         public virtual SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilation, SyntaxTree syntaxTree, bool ignoreAccessibility)
         {
@@ -46,6 +47,8 @@ namespace MetaDslx.Compiler
             }
             return null;
         }
+
+        public abstract IMetaSymbol CreateErrorSymbol(CompilationBase compilation, MutableModel modelBuilder);
     }
 
     internal sealed class DefaultCompilationFactory : CompilationFactory
@@ -65,7 +68,7 @@ namespace MetaDslx.Compiler
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder)
+        public override IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, Binder rootBinder)
         {
             throw new NotImplementedException();
         }
@@ -85,11 +88,6 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override SymbolTreeBuilderVisitor CreateSymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder)
-        {
-            throw new NotImplementedException();
-        }
-
         public override SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilationBase, SyntaxTree syntaxTree, bool ignoreAccessibility)
         {
             throw new NotImplementedException();
@@ -100,7 +98,12 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        public override BindVisitor CreateBindVisitor(Binder binder)
+        public override IMetaSymbol CreateErrorSymbol(CompilationBase compilation, MutableModel modelBuilder)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IMetaSymbol GetWellKnownSymbol(string name)
         {
             throw new NotImplementedException();
         }

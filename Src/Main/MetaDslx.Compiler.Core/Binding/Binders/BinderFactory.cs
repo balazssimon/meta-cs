@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Binding
+namespace MetaDslx.Compiler.Binding.Binders
 {
     public sealed class BinderFactory
     {
@@ -17,10 +17,10 @@ namespace MetaDslx.Compiler.Binding
         {
             private static object GeneralUsage = new object();
 
-            public readonly SyntaxNode syntaxNode;
+            public readonly RedNode syntaxNode;
             public readonly object usage;
 
-            public BinderCacheKey(SyntaxNode syntaxNode, object usage)
+            public BinderCacheKey(RedNode syntaxNode, object usage)
             {
                 this.syntaxNode = syntaxNode;
                 this.usage = usage ?? GeneralUsage;
@@ -126,10 +126,26 @@ namespace MetaDslx.Compiler.Binding
                 }
             }
 
-            return GetBinder(node.Parent, position);
+            return GetBinder(node, position);
         }
 
-        public Binder GetBinder(SyntaxNode node, int position)
+        public Binder GetBinder(RedNode node, int position)
+        {
+            if (node == null) return null;
+            Binder result = null;
+            if (this.TryGetBinder(node, null, out result))
+            {
+                return result;
+            }
+            else
+            {
+                result = this.CreateBinder(node, position);
+                if (result != null) this.TryAddBinder(node, null, result);
+            }
+            return result;
+        }
+
+        private Binder CreateBinder(RedNode node, int position)
         {
             Debug.Assert(node != null);
 
@@ -139,7 +155,7 @@ namespace MetaDslx.Compiler.Binding
             try
             {
                 visitor.Reset(position);
-                result = node.Accept(visitor);
+                result = visitor.VisitRed(node);
             }
             finally
             {
@@ -149,13 +165,13 @@ namespace MetaDslx.Compiler.Binding
             return result;
         }
 
-        public bool TryGetBinder(SyntaxNode node, object usage, out Binder binder)
+        public bool TryGetBinder(RedNode node, object usage, out Binder binder)
         {
             var key = new BinderCacheKey(node, usage);
             return _binderCache.TryGetValue(key, out binder);
         }
 
-        public void TryAddBinder(SyntaxNode node, object usage, Binder binder)
+        public void TryAddBinder(RedNode node, object usage, Binder binder)
         {
             var key = new BinderCacheKey(node, usage);
             _binderCache.TryAdd(key, binder);

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
+using MetaDslx.Compiler.Binding.Binders;
 
 namespace MetaDslx.Compiler.Binding
 {

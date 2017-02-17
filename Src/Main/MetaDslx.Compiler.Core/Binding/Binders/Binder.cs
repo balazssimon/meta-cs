@@ -8,10 +8,11 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Binding
+namespace MetaDslx.Compiler.Binding.Binders
 {
     /// <summary>
     /// A Binder converts names to symbols and syntax nodes into bound trees. It is context
@@ -19,8 +20,14 @@ namespace MetaDslx.Compiler.Binding
     /// </summary>
     public abstract class Binder
     {
+        protected static Func<Binder, bool> ReturnTrue = (Binder b) => true;
+        protected static Func<Binder, bool> ReturnFalse = (Binder b) => false;
+
         public CompilationBase Compilation { get; }
         private readonly Binder _next;
+        private readonly RedNode _node;
+        private Conversions _lazyConversions;
+        private OverloadResolution _lazyOverloadResolution;
 
         /// <summary>
         /// Used to create a root binder.
@@ -29,23 +36,15 @@ namespace MetaDslx.Compiler.Binding
         {
             Debug.Assert(compilation != null);
             this.Compilation = compilation;
-
-            _bindVisitorPool = new ObjectPool<BindVisitor>(() => compilation.Language.CompilationFactory.CreateBindVisitor(this), 64);
         }
 
-        public Binder(Binder next)
+        public Binder(Binder next, RedNode node)
         {
             Debug.Assert(next != null);
             _next = next;
+            _node = node;
             this.Compilation = next.Compilation;
-
-            _bindVisitorPool = new ObjectPool<BindVisitor>(() => this.Compilation.Language.CompilationFactory.CreateBindVisitor(this), 64);
         }
-
-        // In a typing scenario, Bind is regularly called with a non-zero position.
-        // This results in a lot of allocations of BindVisitors. Pooling them
-        // reduces this churn to almost nothing.
-        private readonly ObjectPool<BindVisitor> _bindVisitorPool;
 
         /// <summary>
         /// Get the next binder in which to look up a name, if not found by this binder.
@@ -58,7 +57,17 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        private Conversions _lazyConversions;
+        /// <summary>
+        /// Get the node to which this binder was attached to.
+        /// </summary>
+        public RedNode Node
+        {
+            get
+            {
+                return _node;
+            }
+        }
+
         public Conversions Conversions
         {
             get
@@ -72,7 +81,6 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        private OverloadResolution _lazyOverloadResolution;
         public OverloadResolution OverloadResolution
         {
             get
@@ -113,20 +121,194 @@ namespace MetaDslx.Compiler.Binding
             get { return true; }
         }
 
-        public virtual ImmutableArray<object> Bind(RedNode node, DiagnosticBag diagnostics)
+        protected Binder GetBinder(RedNode node)
         {
-            BindVisitor visitor = _bindVisitorPool.Allocate();
+            return this.Compilation.GetBinder(node);
+        }
+
+        public Binder GetAncestorBinder()
+        {
+            return  this._next;
+        }
+
+        public Binder GetAncestorBinder(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+        {
+            return this.GetAncestorBinder<Binder>(ReturnTrue, ReturnFalse);
+        }
+
+        public TBinder GetAncestorBinder<TBinder>()
+            where TBinder : class
+        {
+            return this.GetAncestorBinder<TBinder>(b => true, ReturnFalse);
+        }
+
+        public TBinder GetAncestorBinder<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+            where TBinder : class
+        {
+            Binder currentBinder = this._next;
+            while (currentBinder != null)
+            {
+                TBinder typedBinder = currentBinder as TBinder;
+                if (typedBinder != null && selectBinder(typedBinder))
+                {
+                    return typedBinder;
+                }
+                else if (stepIntoBinder(currentBinder))
+                {
+                    currentBinder = currentBinder._next;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        public ImmutableArray<Binder> GetDescendantBinders()
+        {
+            return this.GetDescendantBinders(ReturnTrue, ReturnFalse);
+        }
+
+        public ImmutableArray<Binder> GetDescendantBinders(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+        {
+            return this.GetDescendantBinders<Binder>(selectBinder, stepIntoBinder);
+        }
+
+        public ImmutableArray<TBinder> GetDescendantBinders<TBinder>()
+            where TBinder : class
+        {
+            return this.GetDescendantBinders<TBinder>((TBinder b) => true, ReturnFalse);
+        }
+
+        public ImmutableArray<TBinder> GetDescendantBinders<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+            where TBinder: class
+        {
+            ImmutableArray<TBinder> result = ImmutableArray<TBinder>.Empty;
+            ArrayBuilder<TBinder> resultBuilder = ArrayBuilder<TBinder>.GetInstance();
             try
             {
-                visitor.Reset(diagnostics, node);
-                ImmutableArray<object> result = visitor.Bind();
-                visitor.Free();
-                return result;
+                Stack<RedNode> nodeStack = new Stack<RedNode>();
+                SyntaxNode syntaxNode = _node as SyntaxNode;
+                if (syntaxNode != null)
+                {
+                    foreach (var child in syntaxNode.ChildNodesAndTokens().Reverse())
+                    {
+                        nodeStack.Push(child);
+                    }
+                }
+                //nodeStack.Push(_node);
+                while (nodeStack.Count > 0)
+                {
+                    RedNode currentNode = nodeStack.Pop();
+                    Binder childBinder = this.Compilation.GetBinder(currentNode);
+                    Binder scope = childBinder;
+                    while (scope != null && scope != this)
+                    {
+                        TBinder typedBinder = scope as TBinder;
+                        if (typedBinder != null && selectBinder(typedBinder))
+                        {
+                            resultBuilder.Add(typedBinder);
+                            break;
+                        }
+                        scope = scope.Next;
+                    }
+                    if (childBinder == null || stepIntoBinder(childBinder))
+                    {
+                        SyntaxNode currentSyntax = currentNode as SyntaxNode;
+                        if (currentSyntax != null)
+                        {
+                            foreach (var child in currentSyntax.ChildNodesAndTokens().Reverse())
+                            {
+                                nodeStack.Push(child);
+                            }
+                        }
+                    }
+                }
             }
             finally
             {
-                _bindVisitorPool.Free(visitor);
+                result = resultBuilder.ToImmutableAndFree();
             }
+            return result;
+        }
+
+        public ImmutableArray<Binder> GetDescendantAndSelfBinders()
+        {
+            return this.GetDescendantAndSelfBinders(ReturnTrue, ReturnFalse);
+        }
+
+        public ImmutableArray<Binder> GetDescendantAndSelfBinders(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+        {
+            return this.GetDescendantAndSelfBinders<Binder>(selectBinder, stepIntoBinder);
+        }
+
+        public ImmutableArray<TBinder> GetDescendantAndSelfBinders<TBinder>()
+            where TBinder : class
+        {
+            return this.GetDescendantAndSelfBinders<TBinder>((TBinder b) => true, ReturnFalse);
+        }
+
+        public ImmutableArray<TBinder> GetDescendantAndSelfBinders<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+            where TBinder : class
+        {
+            ImmutableArray<TBinder> result = ImmutableArray<TBinder>.Empty;
+            ArrayBuilder<TBinder> resultBuilder = ArrayBuilder<TBinder>.GetInstance();
+            try
+            {
+                Stack<RedNode> nodeStack = new Stack<RedNode>();
+                nodeStack.Push(_node);
+                while (nodeStack.Count > 0)
+                {
+                    RedNode currentNode = nodeStack.Pop();
+                    Binder childBinder = this.Compilation.GetBinder(currentNode);
+                    Binder scope = childBinder;
+                    while (scope != null && scope != this.Next)
+                    {
+                        TBinder typedBinder = scope as TBinder;
+                        if (typedBinder != null && selectBinder(typedBinder))
+                        {
+                            resultBuilder.Add(typedBinder);
+                            break;
+                        }
+                        scope = scope.Next;
+                    }
+                    if (childBinder == null || stepIntoBinder(childBinder))
+                    {
+                        SyntaxNode currentSyntax = currentNode as SyntaxNode;
+                        if (currentSyntax != null)
+                        {
+                            foreach (var child in currentSyntax.ChildNodesAndTokens().Reverse())
+                            {
+                                nodeStack.Push(child);
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                result = resultBuilder.ToImmutableAndFree();
+            }
+            return result;
+        }
+
+        public virtual ImmutableArray<object> Bind(SyntaxNode node, DiagnosticBag diagnostics)
+        {
+            var binder = this.GetBinder(node);
+            if (binder != null && binder is ISymbolDefBinder)
+            {
+                return ((ISymbolDefBinder)binder).DefinedSymbols.CastArray<object>();
+            }
+            if (binder != null && binder is INameBinder)
+            {
+                return ((INameBinder)binder).DefinedSymbols.CastArray<object>();
+            }
+            if (binder != null && binder is IValueBinder)
+            {
+                return ((IValueBinder)binder).GetValues();
+            }
+            return ImmutableArray<object>.Empty;
         }
 
         /*
@@ -277,6 +459,10 @@ namespace MetaDslx.Compiler.Binding
         protected virtual void LookupMembersCore(LookupResult result, IMetaSymbol qualifierOpt, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             // overridden in other binders
+            if (qualifierOpt != null)
+            {
+                this.Next.LookupMembersCore(result, qualifierOpt, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+            }
         }
 
         /// <summary>

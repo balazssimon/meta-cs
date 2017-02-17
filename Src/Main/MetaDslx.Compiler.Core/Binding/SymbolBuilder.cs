@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Declarations;
+﻿using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Compiler.Declarations;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Syntax;
@@ -15,16 +16,14 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public sealed class SymbolTreeBuilder
+    public class SymbolBuilder
     {
         private readonly CompilationBase _compilation;
         private ModelFactory _lazyFactory;
-        private readonly ObjectPool<SymbolTreeBuilderVisitor> _symbolBuilderVisitorPool;
 
-        public SymbolTreeBuilder(CompilationBase compilation)
+        public SymbolBuilder(CompilationBase compilation)
         {
             _compilation = compilation;
-            _symbolBuilderVisitorPool = new ObjectPool<SymbolTreeBuilderVisitor>(() => compilation.Language.CompilationFactory.CreateSymbolTreeBuilderVisitor(this), 64);
         }
 
         public CompilationBase Compilation
@@ -78,13 +77,26 @@ namespace MetaDslx.Compiler.Binding
             }
             symbol.MAttachProperty(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty);
             symbol.MSet(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty, node.GetReference());
-            this.BuildSymbolProperties(symbol, node);
+            this.BuildSymbolProperties(symbol, node, null);
             return symbol;
         }
 
-        public IMetaSymbol BuildDeclarationSymbol(IMetaSymbol container, MergedDeclaration declaration)
+        public IMetaSymbol BuildRootDeclarationSymbol(IMetaSymbol container, MergedDeclaration declaration)
         {
-            MutableSymbol symbol = this.Factory.Create(declaration.Kind.ImmutableType);
+            return this.BuildDeclarationSymbol(container, declaration, true);
+        }
+
+        public IMetaSymbol BuildDeclarationSymbol(IMetaSymbol container, MergedDeclaration declaration, bool isRoot = false)
+        {
+            MutableSymbol symbol = null;
+            if (isRoot)
+            {
+                symbol = (MutableSymbol)this.Compilation.Language.CompilationFactory.CreateGlobalNamespace(this.Compilation, this.ModelBuilder, ImmutableArray<IMetaSymbol>.Empty);
+            }
+            else
+            {
+                symbol = this.Factory.Create(declaration.Kind.ImmutableType);
+            }
             ModelProperty nameProperty = symbol.MId.SymbolInfo.NameProperty;
             if (nameProperty != null)
             {
@@ -114,7 +126,10 @@ namespace MetaDslx.Compiler.Binding
                 symbol.MSetLazy(CompilerAttachedProperties.PropertiesToMembersMapProperty, () => BuildDeclarationParentPropertyToMemberMap(symbol, container, declaration));
                 this.BuildDeclarationSymbolProperties(symbol, declaration);
             }
-            this.BuildSymbolProperties(symbol, declaration);
+            if (!isRoot)
+            {
+                this.BuildSymbolProperties(symbol, declaration);
+            }
             return symbol;
         }
 
@@ -146,22 +161,18 @@ namespace MetaDslx.Compiler.Binding
         {
             foreach (var kvp in declaration.ChildrenByParentProperties)
             {
-                ModelProperty parentProperty = symbol.MGetProperty(kvp.Key);
+                string propertyName = kvp.Key;
+                ModelProperty parentProperty = symbol.MGetProperty(propertyName);
                 if (parentProperty != null)
                 {
                     if (parentProperty.IsCollection)
                     {
-                        for (int i = 0; i < kvp.Value.Length; i++)
-                        {
-                            int index = i;
-                            symbol.MAddLazy(parentProperty,
-                                () =>
-                                {
-                                    var map = (Dictionary<string, ImmutableArray<IMetaSymbol>>)symbol.MGet(CompilerAttachedProperties.PropertiesToMembersMapProperty);
-                                    var members = map[kvp.Key];
-                                    return members[index];
-                                });
-                        }
+                        symbol.MAddRangeLazy(parentProperty,
+                            () =>
+                            {
+                                var map = (Dictionary<string, ImmutableArray<IMetaSymbol>>)symbol.MGet(CompilerAttachedProperties.PropertiesToMembersMapProperty);
+                                return map[propertyName];
+                            });
                     }
                     else
                     {
@@ -169,54 +180,65 @@ namespace MetaDslx.Compiler.Binding
                             () =>
                             {
                                 var map = (Dictionary<string, ImmutableArray<IMetaSymbol>>)symbol.MGet(CompilerAttachedProperties.PropertiesToMembersMapProperty);
-                                return map[kvp.Key].FirstOrDefault();
+                                return map[propertyName].FirstOrDefault();
                             });
                     }
                 }
             }
         }
 
-        private void BuildSymbolProperties(MutableSymbol symbol, MergedDeclaration declaration)
+        protected virtual void BuildSymbolProperties(MutableSymbol symbol, MergedDeclaration declaration)
         {
             Debug.Assert(symbol != null);
 
-            SymbolTreeBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
-            DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
-            try
+            foreach (var reference in declaration.SyntaxReferences)
             {
-                visitor.Reset(symbol, declaration, diagnostics);
-                foreach (var reference in declaration.SyntaxReferences)
-                {
-                    var node = reference.GetSyntax();
-                    node.Accept(visitor);
-                }
-                if (diagnostics.HasAnyErrors())
-                {
-                    Console.WriteLine("Errors at "+declaration.SyntaxReferences.FirstOrDefault());
-                }
-            }
-            finally
-            {
-                diagnostics.Free();
-                _symbolBuilderVisitorPool.Free(visitor);
+                var node = reference.GetSyntax();
+                this.BuildSymbolProperties(symbol, node, declaration);
             }
         }
 
-        private void BuildSymbolProperties(MutableSymbol symbol, SyntaxNode node)
+        private void BuildSymbolProperties(MutableSymbol symbol, SyntaxNode node, MergedDeclaration declaration)
         {
             Debug.Assert(symbol != null);
-
-            SymbolTreeBuilderVisitor visitor = _symbolBuilderVisitorPool.Allocate();
-            DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
-            try
+            var properties = new HashSet<string>(symbol.MProperties.Select(p => p.Name));
+            //properties.RemoveAll(declaration.ChildrenByParentProperties.Keys);
+            foreach (var propertyName in properties)
             {
-                visitor.Reset(symbol, null, diagnostics);
-                node.Accept(visitor);
-            }
-            finally
-            {
-                diagnostics.Free();
-                _symbolBuilderVisitorPool.Free(visitor);
+                string currentName = propertyName;
+                ModelProperty currentProperty = symbol.MGetProperty(currentName);
+                if (currentProperty.IsCollection)
+                {
+                    symbol.MAddRangeLazy(currentProperty, () =>
+                    {
+                        var binder = this.Compilation.GetBinder(node);
+                        if (binder == null) return null;
+                        var propertyBinders = binder.GetDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == currentName, b => b is IPropertyBinder);
+                        if (propertyBinders.Length == 0 && binder is IPropertyBinder)
+                        {
+                            propertyBinders = ImmutableArray.Create((IPropertyBinder)binder);
+                        }
+                        var valueBinders = propertyBinders.SelectMany(pb => ((Binder)pb).GetDescendantBinders<IValueBinder>()).ToImmutableArray();
+                        var values = valueBinders.SelectMany(vb => vb.GetValues()).Where(v => v != null).ToImmutableArray();
+                        return values;
+                    });
+                }
+                else if (!symbol.MIsSet(currentProperty))
+                {
+                    symbol.MSetLazy(currentProperty, () =>
+                    {
+                        var binder = this.Compilation.GetBinder(node);
+                        if (binder == null) return null;
+                        var propertyBinders = binder.GetDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == currentName, b => b is IPropertyBinder);
+                        if (propertyBinders.Length == 0 && binder is IPropertyBinder)
+                        {
+                            propertyBinders = ImmutableArray.Create((IPropertyBinder)binder);
+                        }
+                        var valueBinders = propertyBinders.SelectMany(pb => ((Binder)pb).GetDescendantBinders<IValueBinder>()).ToImmutableArray();
+                        var values = valueBinders.SelectMany(vb => vb.GetValues()).Where(v => v != null).ToImmutableArray();
+                        return values.FirstOrDefault();
+                    });
+                }
             }
         }
     }

@@ -44,16 +44,23 @@
     <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binding\Binder.cs" />
-    <Compile Include="Binding\BinderFactory.cs" />
+    <Compile Include="Binding\Binders\Binder.cs" />
+    <Compile Include="Binding\Binders\BinderFactory.cs" />
+    <Compile Include="Binding\Binders\IdentifierBinder.cs" />
+    <Compile Include="Binding\Binders\NameBinder.cs" />
+    <Compile Include="Binding\Binders\PropertyBinder.cs" />
+    <Compile Include="Binding\Binders\QualifierBinder.cs" />
+    <Compile Include="Binding\Binders\RootBinder.cs" />
+    <Compile Include="Binding\Binders\SymbolCtrBinder.cs" />
+    <Compile Include="Binding\Binders\SymbolUseBinder.cs" />
+    <Compile Include="Binding\Binders\ValueBinder.cs" />
     <Compile Include="Binding\BindingOptions.cs" />
-    <Compile Include="Binding\BinderFactoryVisitor.cs" />
-    <Compile Include="Binding\BindVisitor.cs" />
-    <Compile Include="Binding\BuckStopsHereBinder.cs" />
+    <Compile Include="Binding\Binders\BinderFactoryVisitor.cs" />
+    <Compile Include="Binding\Binders\BuckStopsHereBinder.cs" />
     <Compile Include="Binding\Conversions.cs" />
     <Compile Include="Binding\DeclarationTreeInfo.cs" />
     <Compile Include="Binding\Imports.cs" />
-    <Compile Include="Binding\InContainerBinder.cs" />
+    <Compile Include="Binding\Binders\BodyBinder.cs" />
     <Compile Include="Binding\LookupResult.cs" />
     <Compile Include="Binding\LookupResultKind.cs" />
     <Compile Include="Binding\NameQualifier.cs" />
@@ -61,9 +68,8 @@
     <Compile Include="Binding\OverloadResolution.cs" />
     <Compile Include="Binding\SingleLookupResult.cs" />
     <Compile Include="Binding\SpeculativeSyntaxTreeSemanticModel.cs" />
-    <Compile Include="Binding\SymbolTreeBuilder.cs" />
-    <Compile Include="Binding\SymbolTreeBuilderVisitor.cs" />
-    <Compile Include="Binding\SymbolTreeInfo.cs" />
+    <Compile Include="Binding\Binders\SymbolBinder.cs" />
+    <Compile Include="Binding\SymbolBuilder.cs" />
     <Compile Include="Binding\SyntaxTreeSemanticModel.cs" />
     <Compile Include="Compilation\CandidateReason.cs" />
     <Compile Include="Compilation\Compilation.cs" />

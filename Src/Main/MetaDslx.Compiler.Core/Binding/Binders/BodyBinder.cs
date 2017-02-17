@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
@@ -9,25 +10,30 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Binding
+namespace MetaDslx.Compiler.Binding.Binders
 {
+    public interface IBodyBinder
+    {
+
+    }
+
     /// <summary>
     /// A binder that places the members of a symbol in scope.  If there is a container declaration
     /// with using directives, those are merged when looking up names.
     /// </summary>
-    public class InContainerBinder : Binder
+    public class BodyBinder : Binder, IBodyBinder
     {
-        private readonly IMetaSymbol _container;
+        private IMetaSymbol _container;
         private readonly Func<ConsList<IMetaSymbol>, Imports> _computeImports;
         private Imports _lazyImports;
 
         /// <summary>
         /// Creates a binder with given imports.
         /// </summary>
-        public InContainerBinder(IMetaSymbol container, Binder next, Imports imports = null)
-            : base(next)
+        public BodyBinder(Binder next, RedNode node, IMetaSymbol container, Imports imports = null)
+            : base(next, node)
         {
-            Debug.Assert((object)container != null || imports != null);
+            //Debug.Assert((object)container != null || imports != null);
 
             _container = container;
             _lazyImports = imports ?? Imports.Empty;
@@ -36,8 +42,8 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Creates a binder with given import computation function.
         /// </summary>
-        public InContainerBinder(Binder next, Func<ConsList<IMetaSymbol>, Imports> computeImports)
-            : base(next)
+        public BodyBinder(Binder next, RedNode node, Func<ConsList<IMetaSymbol>, Imports> computeImports)
+            : base(next, node)
         {
             Debug.Assert(computeImports != null);
 
@@ -49,6 +55,14 @@ namespace MetaDslx.Compiler.Binding
         {
             get
             {
+                /*if (_container == null)
+                {
+                    var symbolBinder = this.GetAncestorBinder<ISymbolDefBinder>();
+                    if (symbolBinder != null)
+                    {
+                        Interlocked.CompareExchange(ref _container, symbolBinder.DefinedSymbols, null);
+                    }
+                }*/
                 return _container;
             }
         }
@@ -58,16 +72,11 @@ namespace MetaDslx.Compiler.Binding
             get { return false; }
         }
 
-        public virtual bool IsScriptClass
-        {
-            get { return false; }
-        }
-
         protected override void AddLookupSymbolsInfoInSingleBinder(ArrayBuilder<IMetaSymbol> result, BindingOptions options, Binder originalBinder)
         {
-            if (_container != null)
+            if (this.ContainingSymbol != null)
             {
-                this.AddMemberLookupSymbolsInfo(result, _container, options, originalBinder);
+                this.AddMemberLookupSymbolsInfo(result, this.ContainingSymbol, options, originalBinder);
             }
 
             // Submission imports are handled by AddMemberLookupSymbolsInfo (above).
@@ -122,7 +131,7 @@ namespace MetaDslx.Compiler.Binding
             var imports = GetImports(basesBeingResolved);
 
             // first lookup members of the namespace
-            if (_container != null)
+            if (this.ContainingSymbol != null)
             {
                 this.LookupMembersCore(result, null, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
 
@@ -140,8 +149,8 @@ namespace MetaDslx.Compiler.Binding
         {
             if (qualifierOpt == null)
             {
-                if (_container == null) return;
-                foreach (var child in _container.MChildren)
+                if (this.ContainingSymbol == null) return;
+                foreach (var child in this.ContainingSymbol.MChildren)
                 {
                     if (child.MName != null && child.MName == name)
                     {

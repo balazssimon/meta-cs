@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Syntax;
+﻿using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Compiler.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

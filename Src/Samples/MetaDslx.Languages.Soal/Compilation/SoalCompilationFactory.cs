@@ -14,6 +14,7 @@ using MetaDslx.Languages.Soal.Syntax;
 using MetaDslx.Languages.Soal.Symbols;
 using System.Collections.Immutable;
 using MetaDslx.Compiler.Utilities;
+using MetaDslx.Compiler.Binding.Binders;
 
 namespace MetaDslx.Languages.Soal
 {
@@ -31,22 +32,12 @@ namespace MetaDslx.Languages.Soal
             return SoalDeclarationTreeBuilderVisitor.ForTree((SoalSyntaxTree)syntaxTree, scriptClassName, isSubmission);
         }
 
-        public override SymbolTreeBuilderVisitor CreateSymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder)
-        {
-            return new SoalSymbolTreeBuilderVisitor(symbolBuilder);
-        }
-
         public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
             return new SoalBinderFactoryVisitor(binderFactory);
         }
 
-        public override BindVisitor CreateBindVisitor(Binder binder)
-        {
-            return new SoalBindVisitor(binder);
-        }
-
-        public override IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, InContainerBinder inContainerBinder)
+        public override IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, Binder rootBinder)
         {
             throw new NotImplementedException();
         }
@@ -64,6 +55,58 @@ namespace MetaDslx.Languages.Soal
                 result.MSet(CompilerAttachedProperties.ContainingCompilationProperty, compilation);
             }
             return result;
+
+            /*
+            var soalBuilder = modelBuilder.ModelGroup.GetReference(SoalInstance.Model.Id);
+            var metaBuilder = modelBuilder.ModelGroup.GetReference(MetaInstance.Model.Id);
+            MetaFactory metaFactory = new MetaFactory(modelBuilder);
+            var rootScope = metaFactory.RootScope();
+            rootScope.BuiltInEntries.Add(SoalInstance.Object.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.String.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.Int.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.Long.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.Float.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.Double.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.Byte.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.Bool.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.Void.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.Date.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.Time.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.DateTime.ToMutable(soalBuilder));
+            rootScope.BuiltInEntries.Add(SoalInstance.TimeSpan.ToMutable(soalBuilder));
+
+            var result = rootScope;
+            */
+        }
+
+        public override IMetaSymbol CreateErrorSymbol(CompilationBase compilation, MutableModel modelBuilder)
+        {
+            SoalFactory f = new SoalFactory(modelBuilder);
+            var result = f.PrimitiveType();
+            result.Name = "error";
+            if (compilation != null)
+            {
+                result.MAttachProperty(CompilerAttachedProperties.ContainingCompilationProperty);
+                result.MSet(CompilerAttachedProperties.ContainingCompilationProperty, compilation);
+            }
+            return result;
+        }
+
+        public override IMetaSymbol GetWellKnownSymbol(string name)
+        {
+            switch (name)
+            {
+                case "int":
+                    return SoalInstance.Int;
+                case "double":
+                    return SoalInstance.Double;
+                case "string":
+                    return SoalInstance.String;
+                case "void":
+                    return SoalInstance.Void;
+                default:
+                    return null;
+            }
         }
 
         public override ModelFactory CreateModelFactory(MutableModel modelBuilder, bool weak)

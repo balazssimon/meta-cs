@@ -664,7 +664,7 @@ namespace MetaDslx.Compiler
         }
         protected abstract MutableModel ModelBuilder { get; }
 
-        internal protected abstract SymbolTreeBuilder SymbolTreeBuilder { get; }
+        internal protected abstract SymbolBuilder SymbolTreeBuilder { get; }
 
         /// <summary>
         /// The root namespace that contains all namespaces and types defined in source code or in 
@@ -741,6 +741,12 @@ namespace MetaDslx.Compiler
         /// </summary>
         public IMetaSymbol ScriptSymbol { get { return CommonScriptSymbol; } }
         protected abstract IMetaSymbol CommonScriptSymbol { get; }
+
+        /// <summary>
+        /// A symbol representing a bad symbol.
+        /// </summary>
+        public IMetaSymbol ErrorSymbol { get { return CommonErrorSymbol; } }
+        protected abstract IMetaSymbol CommonErrorSymbol { get; }
 
         /// <summary>
         /// Gets the type within the compilation's assembly and all referenced assemblies (other than

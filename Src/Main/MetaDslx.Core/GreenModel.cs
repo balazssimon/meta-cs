@@ -155,6 +155,39 @@ namespace MetaDslx.Core
         }
     }
 
+    internal sealed class GreenLazyValues
+    {
+        private Func<IEnumerable<object>> lazy;
+
+        internal GreenLazyValues(Func<IEnumerable<object>> lazy)
+        {
+            this.lazy = lazy;
+        }
+
+        internal Func<IEnumerable<object>> Lazy
+        {
+            get { return this.lazy; }
+        }
+
+        internal IEnumerable<object> CreateGreenValues()
+        {
+            var values = lazy().ToArray();
+            for (int i = 0; i < values.Length; i++)
+            {
+                var value = values[i];
+                if (value is MutableSymbolBase)
+                {
+                    values[i] = ((MutableSymbolBase)value).MId;
+                }
+                else if (value is ImmutableSymbolBase)
+                {
+                    values[i] = ((ImmutableSymbolBase)value).MId;
+                }
+            }
+            return values;
+        }
+    }
+
     public sealed class LazyEvalEntry : IEquatable<LazyEvalEntry>
     {
         private SymbolId symbol;
@@ -184,23 +217,23 @@ namespace MetaDslx.Core
 
         private bool unique;
         private ImmutableList<object> items;
-        private ImmutableList<GreenLazyValue> lazyItems;
+        private ImmutableList<object> lazyItems;
 
         private GreenList(bool unique)
         {
             this.unique = unique;
             this.items = ImmutableList<object>.Empty;
-            this.lazyItems = ImmutableList<GreenLazyValue>.Empty;
+            this.lazyItems = ImmutableList<object>.Empty;
         }
 
-        private GreenList(bool unique, ImmutableList<object> items, ImmutableList<GreenLazyValue> lazyItems)
+        private GreenList(bool unique, ImmutableList<object> items, ImmutableList<object> lazyItems)
         {
             this.unique = unique;
             this.items = items;
             this.lazyItems = lazyItems;
         }
 
-        private GreenList Update(ImmutableList<object> items, ImmutableList<GreenLazyValue> lazyItems)
+        private GreenList Update(ImmutableList<object> items, ImmutableList<object> lazyItems)
         {
             if (this.items != items || this.lazyItems != lazyItems)
             {
@@ -224,7 +257,7 @@ namespace MetaDslx.Core
             get { return this.lazyItems.Count > 0; }
         }
 
-        internal ImmutableList<GreenLazyValue> LazyItems
+        internal ImmutableList<object> LazyItems
         {
             get { return this.lazyItems; }
         }
@@ -260,6 +293,12 @@ namespace MetaDslx.Core
         {
             if (value == null) return this;
             return this.Update(this.items, this.lazyItems.Add(value));
+        }
+
+        internal GreenList AddLazy(GreenLazyValues values)
+        {
+            if (values == null) return this;
+            return this.Update(this.items, this.lazyItems.Add(values));
         }
 
         internal GreenList AddRange(IEnumerable<object> items)
@@ -1181,14 +1220,15 @@ namespace MetaDslx.Core
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
             GreenModel model = symbolRef.Model;
+            /*
             ImmutableHashSet<ModelProperty> properties;
             if (model.LazyProperties.TryGetValue(sid, out properties))
             {
                 bool changed = false;
-                var propList = symbolRef.Id.SymbolInfo.Properties;
+                var propList = symbolRef.Symbol.Properties.Keys;
                 foreach (var prop in propList)
                 {
-                    if (prop.IsContainment && properties.Contains(prop))
+                    if (properties.Contains(prop))
                     {
                         properties = properties.Remove(prop);
                         this.GetValue(mid, sid, prop, true);
@@ -1199,7 +1239,7 @@ namespace MetaDslx.Core
                 {
                     symbolRef = this.ResolveSymbol(mid, sid, true);
                 }
-            }
+            }*/
             return symbolRef.Symbol.Children;
         }
 
@@ -1294,7 +1334,7 @@ namespace MetaDslx.Core
             object oldValue; 
             if (symbol.Properties.TryGetValue(property, out oldValue) && value != oldValue)
             {
-                if (!sid.SymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
+                if (!sid.SymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenLazyValues || value is GreenDerivedValue)
                 {
                     this.SetValueCore(symbolRef, property, reassign, value);
                     this.UpdateModel(symbolRef.Model);
@@ -1325,7 +1365,7 @@ namespace MetaDslx.Core
             bool changed = false;
             if (symbol.Properties.ContainsKey(property))
             {
-                if (!sid.SymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
+                if (!sid.SymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenLazyValues || value is GreenDerivedValue)
                 {
                     object oldValue = null;
                     if (replace && index >= 0) changed = this.RemoveItemCore(symbolRef, property, true, reassign, index, false, ref oldValue) || changed;
@@ -1351,7 +1391,7 @@ namespace MetaDslx.Core
             bool changed = false;
             if (symbol.Properties.ContainsKey(property))
             {
-                if (!sid.SymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenDerivedValue)
+                if (!sid.SymbolInfo.HasAffectedProperties(property) || value is GreenLazyValue || value is GreenLazyValues || value is GreenDerivedValue)
                 {
                     changed = this.RemoveItemCore(symbolRef, property, true, reassign, index, removeAll, ref value) || changed;
                     this.UpdateModel(symbolRef.Model);
@@ -1535,7 +1575,7 @@ namespace MetaDslx.Core
             {
                 if (value != GreenSymbol.Unassigned)
                 {
-                    if (!returnLazyValue && (value is GreenLazyValue))
+                    if (!returnLazyValue && (value is GreenLazyValue || value is GreenLazyValues))
                     {
                         value = null;
                         return false;
@@ -1567,7 +1607,7 @@ namespace MetaDslx.Core
             {
                 if (value != GreenSymbol.Unassigned)
                 {
-                    if (!returnLazyValue && (value is GreenLazyValue))
+                    if (!returnLazyValue && (value is GreenLazyValue || value is GreenLazyValues))
                     {
                         value = null;
                         return false;
@@ -1599,7 +1639,7 @@ namespace MetaDslx.Core
                     return false;
                     //throw new ModelException("Cannot reassign a read-only property: " + this.PropertyRef(symbolRef.Id, property));
                 }
-                if (oldValue is GreenLazyValue)
+                if (oldValue is GreenLazyValue || oldValue is GreenLazyValues)
                 {
                     return false;
                     //throw new ModelException("Cannot reassign a lazy-valued property: " + this.PropertyRef(symbolRef.Id, property));
@@ -1615,7 +1655,7 @@ namespace MetaDslx.Core
                 return false;
                 //throw new ModelException("Null value cannot be assigned to property: " + this.PropertyRef(symbolRef.Id, property));
             }
-            if (!(value == null || value == GreenSymbol.Unassigned || (value is GreenLazyValue) || (value is GreenDerivedValue) ||
+            if (!(value == null || value == GreenSymbol.Unassigned || (value is GreenLazyValue) || (value is GreenLazyValues) || (value is GreenDerivedValue) ||
                 ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))) ||
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
@@ -1651,7 +1691,7 @@ namespace MetaDslx.Core
                 return false;
                 //throw new ModelException("Null value cannot be added to property: " + this.PropertyRef(symbolRef.Id, property));
             }
-            if (!(value == null || (value is GreenLazyValue) || 
+            if (!(value == null || (value is GreenLazyValue) || (value is GreenLazyValues) || 
                 ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))) ||
                 (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
             {
@@ -1686,7 +1726,7 @@ namespace MetaDslx.Core
                 {
                     this.RemoveReferenceCore(symbolRef, property, (SymbolId)oldValue);
                 }
-                else if (oldValue is GreenLazyValue && !(value is GreenLazyValue))
+                else if ((oldValue is GreenLazyValue || oldValue is GreenLazyValues) && !(value is GreenLazyValue || value is GreenLazyValues))
                 {
                     this.RemoveLazyPropertyCore(symbolRef, property);
                 }
@@ -1697,7 +1737,7 @@ namespace MetaDslx.Core
                 {
                     this.AddReferenceCore(symbolRef, property, (SymbolId)value);
                 }
-                else if (value is GreenLazyValue && !(oldValue is GreenLazyValue))
+                else if ((value is GreenLazyValue || value is GreenLazyValues) && !(oldValue is GreenLazyValue || oldValue is GreenLazyValues))
                 {
                     this.AddLazyPropertyCore(symbolRef, property);
                 }
@@ -1737,6 +1777,11 @@ namespace MetaDslx.Core
             if (value is GreenLazyValue)
             {
                 list = list.AddLazy((GreenLazyValue)value);
+                this.AddLazyPropertyCore(symbolRef, property);
+            }
+            else if (value is GreenLazyValues)
+            {
+                list = list.AddLazy((GreenLazyValues)value);
                 this.AddLazyPropertyCore(symbolRef, property);
             }
             else
@@ -1927,7 +1972,7 @@ namespace MetaDslx.Core
                 }
                 else
                 {
-                    Type valueType = valueId.GetType();
+                    Type valueType = value.GetType();
                     foreach (var eqProp in propertyInfo.EquivalentProperties)
                     {
                         if (!eqProp.MutableTypeInfo.Type.IsAssignableFrom(valueType))
@@ -2392,6 +2437,14 @@ namespace MetaDslx.Core
                         object value = this.LazyEvalValue((GreenLazyValue)lazyValue);
                         this.SetValue(mid, sid, property, true, value);
                     }
+                    else if (lazyValue is GreenLazyValues)
+                    {
+                        IEnumerable<object> values = this.LazyEvalValues((GreenLazyValues)lazyValue);
+                        foreach (var value in values)
+                        {
+                            this.AddItem(mid, sid, property, true, false, -1, value);
+                        }
+                    }
                     else if (lazyValue is GreenList)
                     {
                         GreenList list = (GreenList)lazyValue;
@@ -2400,8 +2453,25 @@ namespace MetaDslx.Core
                             this.ClearLazyItems(mid, sid, property, true);
                             foreach (var lazyItem in list.LazyItems)
                             {
-                                object value = this.LazyEvalValue(lazyItem);
-                                this.AddItem(mid, sid, property, true, false, -1, value);
+                                if (lazyItem is GreenLazyValue)
+                                {
+                                    object value = this.LazyEvalValue((GreenLazyValue)lazyItem);
+                                    if (value != null)
+                                    {
+                                        this.AddItem(mid, sid, property, true, false, -1, value);
+                                    }
+                                }
+                                else if (lazyItem is GreenLazyValues)
+                                {
+                                    IEnumerable<object> values = this.LazyEvalValues((GreenLazyValues)lazyItem);
+                                    foreach (var value in values)
+                                    {
+                                        if (value != null)
+                                        {
+                                            this.AddItem(mid, sid, property, true, false, -1, value);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -2423,6 +2493,23 @@ namespace MetaDslx.Core
             try
             {
                 return lazyValue.CreateGreenValue();
+            }
+            catch (Exception ex)
+            {
+                throw new LazyEvalException("An exception was thrown by the lazy evaluator.", this.lazyEvalStack?.ToImmutableList(), ex);
+            }
+        }
+
+        /// <summary>
+        /// Evaluates the given lazy value.
+        /// </summary>
+        /// <param name="lazyValue"></param>
+        /// <returns></returns>
+        private IEnumerable<object> LazyEvalValues(GreenLazyValues lazyValues)
+        {
+            try
+            {
+                return lazyValues.CreateGreenValues();
             }
             catch (Exception ex)
             {

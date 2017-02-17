@@ -65,6 +65,11 @@ namespace MetaDslx.Core
         void MSetLazy(ModelProperty property, Func<object> value);
         void MAdd(ModelProperty property, object value);
         void MAddLazy(ModelProperty property, Func<object> value);
+        void MAddRange(ModelProperty property, IEnumerable<object> value);
+        void MAddRangeLazy(ModelProperty property, Func<IEnumerable<object>> value);
+        void MAddRangeLazy(ModelProperty property, IEnumerable<Func<object>> value);
+        void MSetOrAdd(ModelProperty property, object value);
+        void MSetOrAddLazy(ModelProperty property, Func<object> value);
         void MMakeCreated();
 
         ImmutableSymbol ToImmutable();
@@ -373,24 +378,29 @@ namespace MetaDslx.Core
         {
             return this.model.MGet(this, property);
         }
+
         public bool MHasConcreteValue(ModelProperty property)
         {
             return this.model.MHasConcreteValue(this.id, property);
         }
+
         public bool MIsSet(ModelProperty property)
         {
             return this.model.MIsSet(this.id, property);
         }
+
         public void MSet(ModelProperty property, object value)
         {
             if (property.IsCollection) throw new ModelException("Cannot assign to a collection property.");
             this.model.SetValue(this.id, property, value, this.creating);
         }
+
         public void MSetLazy(ModelProperty property, Func<object> value)
         {
             if (property.IsCollection) throw new ModelException("Cannot assign to a collection property.");
             this.model.SetLazyValue(this.id, property, value, this.creating);
         }
+
         public void MAdd(ModelProperty property, object value)
         {
             if (property.IsCollection)
@@ -402,7 +412,50 @@ namespace MetaDslx.Core
                 this.model.SetValue(this.id, property, value, this.creating);
             }
         }
+
         public void MAddLazy(ModelProperty property, Func<object> value)
+        {
+            if (property.IsCollection)
+            {
+                this.model.AddLazyItem(this.id, property, value, this.creating);
+            }
+            else
+            {
+                this.model.SetLazyValue(this.id, property, value, this.creating);
+            }
+        }
+
+        public void MAddRange(ModelProperty property, IEnumerable<object> values)
+        {
+            if (!property.IsCollection) throw new ModelException("Cannot add multiple values to a non-collection property.");
+            this.model.AddItems(this.id, property, values, this.creating);
+        }
+
+        public void MAddRangeLazy(ModelProperty property, Func<IEnumerable<object>> values)
+        {
+            if (!property.IsCollection) throw new ModelException("Cannot add multiple values to a non-collection property.");
+            this.model.AddLazyItems(this.id, property, values, this.creating);
+        }
+
+        public void MAddRangeLazy(ModelProperty property, IEnumerable<Func<object>> values)
+        {
+            if (!property.IsCollection) throw new ModelException("Cannot add multiple values to a non-collection property.");
+            this.model.AddLazyItems(this.id, property, values, this.creating);
+        }
+
+        public void MSetOrAdd(ModelProperty property, object value)
+        {
+            if (property.IsCollection)
+            {
+                this.model.AddItem(this.id, property, value, this.creating);
+            }
+            else
+            {
+                this.model.SetValue(this.id, property, value, this.creating);
+            }
+        }
+
+        public void MSetOrAddLazy(ModelProperty property, Func<object> value)
         {
             if (property.IsCollection)
             {
@@ -1446,6 +1499,48 @@ namespace MetaDslx.Core
             {
                 ctx = this.BeginUpdate();
                 changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValue(value));
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool AddItems(SymbolId sid, ModelProperty property, IEnumerable<object> values, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                foreach (var value in values)
+                {
+                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
+                }
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool AddLazyItems(SymbolId sid, ModelProperty property, IEnumerable<Func<object>> values, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                foreach (var value in values)
+                {
+                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValue(value));
+                }
+            } while (!this.EndUpdate(ctx));
+            return changed;
+        }
+
+        internal bool AddLazyItems(SymbolId sid, ModelProperty property, Func<IEnumerable<object>> values, bool creating)
+        {
+            bool changed = false;
+            ModelUpdateContext ctx;
+            do
+            {
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValues(values));
             } while (!this.EndUpdate(ctx));
             return changed;
         }

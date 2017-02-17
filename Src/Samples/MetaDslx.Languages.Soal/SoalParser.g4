@@ -6,7 +6,7 @@ options {
 	                          
 }
 
-                     
+                
 main :                         namespaceDeclaration* EOF;
 
      

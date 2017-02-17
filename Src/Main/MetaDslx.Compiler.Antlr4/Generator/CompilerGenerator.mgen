@@ -3199,7 +3199,7 @@ namespace [Properties.DefaultNamespace].Binding
             bool isSubmission)
         {
             var builder = new [Properties.LanguageName]DeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
-            return builder.CreateRoot(syntaxTree.GetRoot(), [Instances.MainRule().Annotations.GetSymbolType(MetaCompilerAnnotationInfo.RootScope)]);
+            return builder.CreateRoot(syntaxTree.GetRoot(), [Instances.MainRule().Annotations.GetSymbolType(MetaCompilerAnnotationInfo.Root)]);
         }
    		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]
@@ -3346,174 +3346,19 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 end function
 
 
-template GenerateSymbolTreeBuilderVisitor()
-using MetaDslx.Compiler.Binding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MetaDslx.Compiler.Declarations;
-using MetaDslx.Core;
-using [Properties.DefaultNamespace].Syntax;
-using [Properties.DefaultNamespace].Symbols;
-^
-namespace [Properties.DefaultNamespace].Binding
-{
-    public class [Properties.LanguageName]SymbolTreeBuilderVisitor : SymbolTreeBuilderVisitor, I[Properties.LanguageName]SyntaxVisitor
-    {
-        public [Properties.LanguageName]SymbolTreeBuilderVisitor(SymbolTreeBuilder symbolBuilder)
-			: base(symbolBuilder)
-        {
-^
-        }
-   		[loop(rule:Instances.ParserRules)]
-			[if (rule.Alternatives.Count > 0)]
-				[loop(alt:rule.Alternatives)]
-		[GenerateSymbolTreeBuilderVisit(alt)]
-				[end loop]
-			[else]
-		[GenerateSymbolTreeBuilderVisit(rule)]
-			[end if]
-		[end loop]
-    }
-}
-end template
-
-
-template GenerateSymbolTreeBuilderVisit(Antlr4ParserRule rule)
-^
-public void Visit[rule.PlainName()]([rule.RedName()] node)
-{
-	[if (rule.Annotations.IsDeclaration())]
-	if (!this.CanEnterDeclaration()) return;
-	[end if]
-	[GetSymbolTreeBuilderVisitBody(rule)]
-}
-end template
-
-template GenerateSymbolTreeBuilderVisitBody(Antlr4ParserRule rule)
-[if (rule.ContainsAnnotations)]
-[if (rule.IsSimpleAlt)]
-	[loop(elem:rule.Elements where elem.ContainsAnnotations)]
-[GetSymbolTreeBuilderVisitElement(rule, elem)]
-	[end loop] 
-[else]
-	[loop(elem:rule.AllElements where elem.ContainsAnnotations)]
-[GetSymbolTreeBuilderVisitElement(rule, elem)]
-	[end loop]    
-[end if]
-[end if]
-end template
-
-template GenerateSymbolTreeBuilderVisitElement(Antlr4ParserRuleElement elem)
-	[if (elem.IsList)]
-this.VisitList(node.[elem.RedName()]);
-	[else]
-		[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-this.VisitToken(node.[elem.RedName()]);
-		[else]
-this.Visit(node.[elem.RedName()]);
-		[end if]
-	[end if]
-end template
-
-template GenerateSymbolTreeBuilderValue(MetaCompilerAnnotations annots, string name, string body)
-if ([name] != null) this.RegisterValue([name]);
-end template
-
-template GenerateSymbolTreeBuilderSkip(MetaCompilerAnnotations annots, string name, string body)
-// skipping declaration: [name]
-end template
-
-template GenerateSymbolTreeBuilderDeclaration(MetaCompilerAnnotations annots, string name, string body)
-[body]
-end template
-
-template GenerateSymbolTreeBuilderPropertyWithNoValue(MetaCompilerAnnotations annots, string name, string body)
-this.BeginProperty("[annots.GetPropertyValue(MetaCompilerAnnotationInfo.Property, "name")]");
-try
-{
-	[body]
-}
-finally
-{
-	this.EndProperty();
-}
-end template
-
-template GenerateSymbolTreeBuilderPropertiesWithValue(MetaCompilerAnnotations annots, string name, string body)
-[loop (annot:annots.GetPropertiesWithValue())]
-this.RegisterProperty("[annot.GetValue("name")]", [annot.GetValue("value")]);
-[end loop]
-[body]
-end template
-
-template GenerateSymbolTreeBuilderPropertiesWithValueElem(MetaCompilerAnnotations annots, string name, string body)
-if ([name] != null)
-{
-	[loop (annot:annots.GetPropertiesWithValue())]
-	this.RegisterProperty("[annot.GetValue("name")]", [annot.GetValue("value")]);
-	[end loop]
-}
-[body]
-end template
-
-function string GetSymbolTreeBuilderVisitBody(Antlr4ParserRule rule)
-	string body = GenerateSymbolTreeBuilderVisitBody(rule);
-	if (rule.Annotations.IsValue())
-		body = GenerateSymbolTreeBuilderValue(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsDeclaration())
-		body = GenerateSymbolTreeBuilderDeclaration(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsSymbolUse())
-		body = GenerateSymbolTreeBuilderValue(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsSymbolCtr())
-		body = GenerateSymbolTreeBuilderValue(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsPropertyWithNoValue())
-		body = GenerateSymbolTreeBuilderPropertyWithNoValue(rule.Annotations, "node", body);
-	else
-		body = GenerateSymbolTreeBuilderPropertiesWithValue(rule.Annotations, "node", body);
-	end if
-	return body;
-end function
-
-function string GetSymbolTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	string body = GenerateSymbolTreeBuilderVisitElement(elem);
-	if (elem.Annotations.IsValue())
-		body = GenerateSymbolTreeBuilderValue(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsDeclaration())
-		body = GenerateSymbolTreeBuilderDeclaration(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsSymbolUse())
-		body = GenerateSymbolTreeBuilderValue(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsSymbolCtr())
-		body = GenerateSymbolTreeBuilderValue(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsPropertyWithNoValue())
-		body = GenerateSymbolTreeBuilderPropertyWithNoValue(elem.Annotations, "node."+elem.RedName(), body);
-	else
-		body = GenerateSymbolTreeBuilderPropertiesWithValueElem(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	return body;
-end function
-
-
 template GenerateBinderFactoryVisitor()
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Compiler.Binding;
+using MetaDslx.Compiler.Binding.Binders;
 using MetaDslx.Compiler.Declarations;
 using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
@@ -3522,6 +3367,10 @@ namespace [Properties.DefaultNamespace].Binding
 {
     public class [Properties.LanguageName]BinderFactoryVisitor : BinderFactoryVisitor, I[Properties.LanguageName]SyntaxVisitor<Binder>
     {
+		[loop (use:Instances.ParserRuleElemUses)]
+		public static object Use[use] = new object();
+		[end loop]
+^
         public [Properties.LanguageName]BinderFactoryVisitor(BinderFactory symbolBuilder)
 			: base(symbolBuilder)
         {
@@ -3550,23 +3399,47 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] node)
     {
         return this.Visit(node.Parent);
     }
-	[GetBinderFactoryVisitBody(rule)]
-	[if (rule.Annotations.IsBody())]
-	return this.GetBinderForSymbol(node, inBody: true);
-	[else]
-		[if (rule.Annotations.IsAnySymbol())]
-	return this.GetBinderForSymbol(node);
-		[else]
-			[if (rule == Instances.MainRule())]
-    if (node.Parent == null) return GetBinderForSymbol(node);
-	else return this.Visit(node.Parent);
-			[else]
-	return this.Visit(node.Parent);
-			[end if]
-		[end if]
-	[end if]
+	object use = null;
+	[GenerateBinderFactoryVisitElemUses(rule)]
+	Binder resultBinder = null;
+	if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
+	{
+		resultBinder = this.GetParentBinder(node);
+		[loop (annot:rule.Annotations.Annotations)]
+		resultBinder = this.Create[annot.Name]Binder(resultBinder, node[GetAnnotationParams(annot)]);
+		[end loop]
+		[GenerateBinderFactoryVisitBody(rule)]
+		this.BinderFactory.TryAddBinder(node, use, resultBinder);
+	}
+	return resultBinder;
 }
 end template
+
+function string GetAnnotationParams(MetaCompilerAnnotation annot)
+    string result = "";
+	if (annot.Name == MetaCompilerAnnotationInfo.Symbol || annot.Name == MetaCompilerAnnotationInfo.SymbolCtr)
+		if (annot.HasProperty("symbolType"))
+			result = ", typeof(Symbols." + annot.GetValue("symbolType") + ")";
+		else
+			result = ", null";
+		end if
+	end if
+	if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse)
+		if (annot.HasProperty("symbolType"))
+			result = ", ImmutableArray.Create(typeof(Symbols." + annot.GetValue("symbolType") + "))";
+		else
+			result = ", ImmutableArray<Type>.Empty";
+		end if
+	end if
+	if (annot.Name == MetaCompilerAnnotationInfo.Property)
+	    result = ", \"" + annot.GetValue("name") + "\", " + (annot.HasProperty("value") ? "new Optional<object>(" + annot.GetValue("value")+")" : "Optional<object>.Default");
+	end if
+	if (annot.Name == MetaCompilerAnnotationInfo.Value)
+	    result = ", "+(annot.HasProperty("value") ? "new Optional<object>(" + annot.GetValue("value")+")" : "Optional<object>.Default");
+	end if
+	return result;
+end function
+
 
 template GenerateBinderFactoryVisitBody(Antlr4ParserRule rule)
 [if (rule.ContainsAnnotations)]
@@ -3583,10 +3456,12 @@ template GenerateBinderFactoryVisitBody(Antlr4ParserRule rule)
 end template
 
 template GenerateBinderFactoryVisitElement(Antlr4ParserRuleElement elem)
-	[if (elem.Annotations.IsBody())]
-if (LookupPosition.IsInBlock(this.Position, node.[elem.RedName()]))
+	[if (elem.Annotations.Annotations.Count > 0)]
+if (use == Use[elem.RedName()])
 {
-    return this.GetBinderForSymbol(node, inBody: true);
+    [loop (annot:elem.Annotations.Annotations)]
+	resultBinder = this.Create[annot.Name]Binder(resultBinder, node[GetAnnotationParams(annot)]);
+	[end loop]
 }
 	[end if]
 end template
@@ -3603,240 +3478,16 @@ function string GetBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4Parser
 	return body;
 end function
 
-
-
-
-template GenerateBindVisitor()
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MetaDslx.Compiler.Binding;
-using MetaDslx.Compiler.Declarations;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Utilities;
-using MetaDslx.Core;
-using [Properties.DefaultNamespace].Syntax;
-using [Properties.DefaultNamespace].Symbols;
-^
-namespace [Properties.DefaultNamespace].Binding
-{
-    public class [Properties.LanguageName]BindVisitor : BindVisitor, I[Properties.LanguageName]SyntaxVisitor
-    {
-        public [Properties.LanguageName]BindVisitor(Binder binder)
-			: base(binder)
-        {
-^
-        }
-   		[loop(rule:Instances.ParserRules)]
-			[if (rule.Alternatives.Count > 0)]
-				[loop(alt:rule.Alternatives)]
-		[GenerateBindVisit(alt)]
-				[end loop]
-			[else]
-		[GenerateBindVisit(rule)]
-			[end if]
-		[end loop]
-    }
-}
-end template
-
-
-template GenerateBindVisit(Antlr4ParserRule rule)
-^
-public void Visit[rule.PlainName()]([rule.RedName()] node)
-{
-	if (node.Parent == null) this.StartBinding();
-	if (this.IsBinding)
-	{
-		[GetBindVisitBody(rule)]
-	}
-	else if (this.CanVisitParent(node.Parent))
-	{
-		node.Parent.Accept(this);
-	}
-	else 
-	{
-		[GetBindVisitStepIntoBody(rule)]
-	}
-}
-end template
-
-template GenerateBindVisitBody(Antlr4ParserRule rule)
+template GenerateBinderFactoryVisitElemUses(Antlr4ParserRule rule)
 [if (rule.ContainsAnnotations)]
 [if (rule.IsSimpleAlt)]
-	[loop(elem:rule.Elements where elem.ContainsAnnotations)]
-[GetBindVisitElement(rule, elem)]
+	[loop(elem:rule.Elements where elem.Annotations.Annotations.Count > 0)]
+if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()])) use = Use[elem.RedName()];
 	[end loop] 
 [else]
-	[loop(elem:rule.AllElements where elem.ContainsAnnotations)]
-[GetBindVisitElement(rule, elem)]
+	[loop(elem:rule.AllElements where elem.Annotations.Annotations.Count > 0)]
+if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()])) use = Use[elem.RedName()];
 	[end loop]    
 [end if]
 [end if]
 end template
-
-template GenerateBindVisitStepIntoBody(Antlr4ParserRule rule)
-[if (rule.ContainsAnnotations)]
-[if (rule.IsSimpleAlt)]
-	[loop(elem:rule.Elements where elem.ContainsAnnotations)]
-		[if (elem.IsList)]
-if (this.CanVisitChild(node.[elem.RedName()].Node))
-		[else]
-if (this.CanVisitChild(node.[elem.RedName()]))
-		[end if]
-{
-	[GetBindVisitStepIntoElement(rule, elem)]
-}
-	[end loop] 
-[else]
-	[loop(elem:rule.AllElements where elem.ContainsAnnotations)]
-		[if (elem.IsList)]
-if (this.CanVisitChild(node.[elem.RedName()].Node))
-		[else]
-if (this.CanVisitChild(node.[elem.RedName()]))
-		[end if]
-{
-	[GetBindVisitStepIntoElement(rule, elem)]
-}
-	[end loop]    
-[end if]
-[end if]
-end template
-
-template GenerateBindVisitElement(Antlr4ParserRuleElement elem)
-	[if (elem.IsList)]
-this.VisitList(node.[elem.RedName()]);
-	[else]
-		[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-this.VisitToken(node.[elem.RedName()]);
-		[else]
-this.Visit(node.[elem.RedName()]);
-		[end if]
-	[end if]
-end template
-
-template GenerateBindVisitStepIntoElement(Antlr4ParserRuleElement elem)
-this.VisitRed(this.RootNode);
-end template
-
-template GenerateBindVisitValue(MetaCompilerAnnotations annots, string name, string body)
-if ([name] != null)
-{
-[if (annots.IsValueWithNoValue())]
-	this.RegisterValue([name]);
-[else]
-	[loop (annot:annots.GetValuesWithValue())]
-	this.RegisterValue([name], [annot.GetValue("value")]);
-	[end loop]
-[end if]
-}
-[body]
-end template
-
-template GenerateBindVisitIdentifier(MetaCompilerAnnotations annots, string name, string body)
-if ([name] != null) this.RegisterIdentifier([name]);
-[body]
-end template
-
-template GenerateBindVisitQualifier(MetaCompilerAnnotations annots, string name, string body)
-this.BeginQualifier();
-try
-{
-	[body]
-}
-finally
-{
-	this.EndQualifier();
-}
-end template
-
-template GenerateBindVisitSymbolType(MetaCompilerAnnotations annots, string name, string body)
-if ([name] != null) this.RegisterSymbolType([annots.GetSymbolType()]);
-[body]
-end template
-
-template GenerateBindVisitSkip(MetaCompilerAnnotations annots, string name, string body)
-if (!this.CanEnterDeclaration()) return;
-[body]
-end template
-
-
-
-function string GetBindVisitBody(Antlr4ParserRule rule)
-	string body = GenerateBindVisitBody(rule);
-	if (rule.Annotations.IsValue())
-		body = GenerateBindVisitValue(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsIdentifier())
-		body = GenerateBindVisitIdentifier(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsQualifier())
-		body = GenerateBindVisitQualifier(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsSymbolUse())
-		body = GenerateBindVisitSymbolType(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsPropertyWithNoValue() || rule.Annotations.IsDeclaration() || rule.Annotations.IsSymbolCtr() || rule.Annotations.IsName())
-		body = GenerateBindVisitSkip(rule.Annotations, "node", body);
-	end if
-	return body;
-end function
-
-function string GetBindVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	string body = GenerateBindVisitElement(elem);
-	if (elem.Annotations.IsValue())
-		body = GenerateBindVisitValue(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsIdentifier())
-		body = GenerateBindVisitIdentifier(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsQualifier())
-		body = GenerateBindVisitQualifier(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsSymbolUse())
-		body = GenerateBindVisitSymbolType(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsPropertyWithNoValue() || elem.Annotations.IsDeclaration() || elem.Annotations.IsSymbolCtr() || elem.Annotations.IsName())
-		//body = GenerateBindVisitSkip(elem.Annotations, "node."+elem.RedName(), body);
-		body = "";
-	end if
-	return body;
-end function
-
-
-function string GetBindVisitStepIntoBody(Antlr4ParserRule rule)
-	string body = GenerateBindVisitStepIntoBody(rule);
-	if (rule.Annotations.IsValue())
-		body = GenerateBindVisitValue(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsIdentifier())
-		body = GenerateBindVisitIdentifier(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsQualifier())
-		body = GenerateBindVisitQualifier(rule.Annotations, "node", body);
-	end if
-	if (rule.Annotations.IsSymbolUse())
-		body = GenerateBindVisitSymbolType(rule.Annotations, "node", body);
-	end if
-	return body;
-end function
-
-function string GetBindVisitStepIntoElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	string body = GenerateBindVisitStepIntoElement(elem);
-	if (elem.Annotations.IsValue())
-		body = GenerateBindVisitValue(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsIdentifier())
-		body = GenerateBindVisitIdentifier(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsQualifier())
-		body = GenerateBindVisitQualifier(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	if (elem.Annotations.IsSymbolUse())
-		body = GenerateBindVisitSymbolType(elem.Annotations, "node."+elem.RedName(), body);
-	end if
-	return body;
-end function

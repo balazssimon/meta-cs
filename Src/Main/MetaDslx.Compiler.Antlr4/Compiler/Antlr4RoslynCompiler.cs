@@ -45,9 +45,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public string GeneratedFeature { get; private set; }
 
         public string GeneratedDeclarationTreeBuilder { get; private set; }
-        public string GeneratedSymbolTreeBuilderVisitor { get; private set; }
         public string GeneratedBinderFactoryVisitor { get; private set; }
-        public string GeneratedBindVisitor { get; private set; }
 
         public Antlr4RoslynCompiler(string source, string defaultNamespace, string outputDirectory, string fileName)
         {
@@ -105,9 +103,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.GeneratedParseOptions = generator.GenerateParseOptions();
             this.GeneratedFeature = generator.GenerateFeature();
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
-            this.GeneratedSymbolTreeBuilderVisitor = generator.GenerateSymbolTreeBuilderVisitor();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
-            this.GeneratedBindVisitor = generator.GenerateBindVisitor();
         }
 
         private void SimplifyElements()
@@ -186,6 +182,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 {
                     if (elem.Annotations.Annotations.Count > 0)
                     {
+                        this.Grammar.ParserRuleElemUses.Add(elem.RedName());
                         elem.ContainsAnnotations = true;
                         foundElemFlag = true;
                     }
@@ -1350,6 +1347,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
     {
         public Antlr4Grammar()
         {
+            this.ParserRuleElemUses = new HashSet<string>();
             this.ParserRules = new List<Antlr4ParserRule>();
             this.LexerRules = new List<Antlr4LexerRule>();
             this.Modes = new List<Antlr4Mode>();
@@ -1357,6 +1355,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.FixedTokens = new List<Antlr4LexerRule>();
         }
         public string Name { get; set; }
+        public HashSet<string> ParserRuleElemUses { get; private set; }
         public List<Antlr4ParserRule> ParserRules { get; private set; }
         public List<Antlr4LexerRule> LexerRules { get; private set; }
         public List<Antlr4Mode> Modes { get; private set; }

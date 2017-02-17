@@ -68,6 +68,7 @@ namespace MetaDslx.Languages.Soal.Test
             var sm = comp.GetSemanticModel(syntaxTree);
             Console.WriteLine(sm);
 
+            Console.WriteLine(comp.Model);
             var root = (MainSyntax)syntaxTree.GetRoot();
             var ns = root.NamespaceDeclaration[0].QualifiedName;
 
@@ -86,19 +87,19 @@ namespace MetaDslx.Languages.Soal.Test
 
             var symbolsInMathStruct = sm.LookupSymbols(_entity.SpanStart);
             Console.WriteLine(symbolsInMathStruct);
-            
-            Console.WriteLine(comp.Model);
-            Console.WriteLine(comp.Model);
 
+            Console.WriteLine(comp.Model);
+            
             foreach (var symbol in comp.Model.Symbols)
             {
                 Console.WriteLine(symbol);
                 foreach (var prop in symbol.MAllProperties)
                 {
+                    if (prop.Name != "Type" && prop.Name != "Source" && prop.Name != "Target") continue;
                     Console.WriteLine("  "+prop.Name+"="+symbol.MGet(prop));
                 }
             }
-
+            
             /*}
             catch(Exception ex)
             {
