@@ -110,10 +110,6 @@
       <Project>{d31d2069-6f71-4208-aa67-60ae8104cdc6}</Project>
       <Name>MetaDslx.Compiler.Antlr4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Main\MetaDslx.Compiler.Core\MetaDslx.Compiler.Core.csproj">
-      <Project>{a0690b8b-257b-49be-a05a-23bd4ae670fb}</Project>
-      <Name>MetaDslx.Compiler.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj">
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>

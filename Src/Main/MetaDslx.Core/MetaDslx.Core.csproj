@@ -7,7 +7,7 @@
     <ProjectGuid>{0C605C74-47DD-4316-AE55-AD65FCD34DDB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MetaDslx.Core</RootNamespace>
+    <RootNamespace>MetaDslx</RootNamespace>
     <AssemblyName>MetaDslx.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +35,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>MetaDslxKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>MetaDslxDevKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,38 +44,216 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImmutableMetaImplementation.cs" />
-    <Compile Include="ImmutableMetaModel.cs">
+    <Compile Include="Binding\Binders\Binder.cs" />
+    <Compile Include="Binding\Binders\BinderFactory.cs" />
+    <Compile Include="Binding\Binders\IdentifierBinder.cs" />
+    <Compile Include="Binding\Binders\NameBinder.cs" />
+    <Compile Include="Binding\Binders\PropertyBinder.cs" />
+    <Compile Include="Binding\Binders\QualifierBinder.cs" />
+    <Compile Include="Binding\Binders\RootBinder.cs" />
+    <Compile Include="Binding\Binders\SymbolCtrBinder.cs" />
+    <Compile Include="Binding\Binders\SymbolUseBinder.cs" />
+    <Compile Include="Binding\Binders\ValueBinder.cs" />
+    <Compile Include="Binding\BindingOptions.cs" />
+    <Compile Include="Binding\Binders\BinderFactoryVisitor.cs" />
+    <Compile Include="Binding\Binders\BuckStopsHereBinder.cs" />
+    <Compile Include="Binding\Conversions.cs" />
+    <Compile Include="Binding\DeclarationTreeInfo.cs" />
+    <Compile Include="Binding\Imports.cs" />
+    <Compile Include="Binding\Binders\BodyBinder.cs" />
+    <Compile Include="Binding\LookupResult.cs" />
+    <Compile Include="Binding\LookupResultKind.cs" />
+    <Compile Include="Binding\NameQualifier.cs" />
+    <Compile Include="Binding\NameResolution.cs" />
+    <Compile Include="Binding\OverloadResolution.cs" />
+    <Compile Include="Binding\SingleLookupResult.cs" />
+    <Compile Include="Binding\SpeculativeSyntaxTreeSemanticModel.cs" />
+    <Compile Include="Binding\Binders\SymbolBinder.cs" />
+    <Compile Include="Binding\SymbolBuilder.cs" />
+    <Compile Include="Binding\SyntaxTreeSemanticModel.cs" />
+    <Compile Include="Compilation\CandidateReason.cs" />
+    <Compile Include="Compilation\Compilation.cs" />
+    <Compile Include="Compilation\CompilationBase.cs" />
+    <Compile Include="Compilation\CompilationFactory.cs" />
+    <Compile Include="Compilation\CompilationOptions.cs" />
+    <Compile Include="Compilation\CompilationStage.cs" />
+    <Compile Include="Compilation\DocumentationMode.cs" />
+    <Compile Include="Compilation\Language.cs" />
+    <Compile Include="Compilation\ParseOptions.cs" />
+    <Compile Include="Compilation\ScriptCompilationInfo.cs" />
+    <Compile Include="Compilation\SemanticModel.cs" />
+    <Compile Include="Compilation\SemanticModelBase.cs" />
+    <Compile Include="Compilation\SourceCodeKind.cs" />
+    <Compile Include="Compilation\SymbolCompiler.cs" />
+    <Compile Include="Compilation\SymbolInfo.cs" />
+    <Compile Include="Compilation\TypeInfo.cs" />
+    <Compile Include="Declarations\SyntaxAndDeclarationManager.cs" />
+    <Compile Include="DiagnosticAnalyzer\AsyncQueue.cs" />
+    <Compile Include="DiagnosticAnalyzer\CompilationCompletedEvent.cs" />
+    <Compile Include="DiagnosticAnalyzer\CompilationEvent.cs" />
+    <Compile Include="DiagnosticAnalyzer\CompilationStartedEvent.cs" />
+    <Compile Include="DiagnosticAnalyzer\CompilationUnitCompletedEvent.cs" />
+    <Compile Include="DiagnosticAnalyzer\SymbolDeclaredCompilationEvent.cs" />
+    <Compile Include="Diagnostics\SymbolDiagnosticInfo.cs" />
+    <Compile Include="References\CompilationReference.cs" />
+    <Compile Include="References\MetadataReference.cs" />
+    <Compile Include="References\ModelGroupReference.cs" />
+    <Compile Include="References\ModelIdentity.cs" />
+    <Compile Include="References\ModelReference.cs" />
+    <Compile Include="References\ReferenceDirective.cs" />
+    <Compile Include="References\ReferenceManager.cs" />
+    <Compile Include="References\SourceFileResolver.cs" />
+    <Compile Include="References\SourceReferenceResolver.cs" />
+    <Compile Include="Compilation\SymbolFilter.cs" />
+    <Compile Include="Declarations\Declaration.cs" />
+    <Compile Include="Declarations\DeclarationTable.Cache.cs" />
+    <Compile Include="Declarations\DeclarationTable.cs" />
+    <Compile Include="Binding\DeclarationTreeBuilderVisitor.cs" />
+    <Compile Include="References\MetadataReferenceResolver.cs" />
+    <Compile Include="References\UnresolvedMetadataReference.cs" />
+    <Compile Include="Binding\AnonymousTypeManager.cs" />
+    <Compile Include="Symbols\CompilerAttachedMethods.cs" />
+    <Compile Include="Symbols\CompilerAttachedProperties.cs" />
+    <Compile Include="Core\GreenModel.cs" />
+    <Compile Include="Core\ImmutableMetaImplementation.cs" />
+    <Compile Include="Core\ImmutableMetaModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModel.mm</DependentUpon>
     </Compile>
-    <Compile Include="ImmutableMetaModelGenerator.cs">
+    <Compile Include="Core\ImmutableMetaModelGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
     </Compile>
-    <Compile Include="ImmutableMetaModelGeneratorExtensions.cs" />
-    <Compile Include="ImmutableUtils.cs" />
-    <Compile Include="GreenModel.cs" />
-    <Compile Include="ModelCollections.cs" />
-    <Compile Include="ModelException.cs" />
-    <Compile Include="ModelProperty.cs" />
-    <Compile Include="RedModel.cs" />
+    <Compile Include="Core\ImmutableMetaModelGeneratorExtensions.cs" />
+    <Compile Include="Core\ImmutableUtils.cs" />
+    <Compile Include="Core\ModelCollections.cs" />
+    <Compile Include="Core\ModelException.cs" />
+    <Compile Include="Core\ModelProperty.cs" />
+    <Compile Include="Core\RedModel.cs" />
+    <Compile Include="Symbols\WellKnownMemberNames.cs" />
+    <Compile Include="Syntax\DetailedSyntaxVisitor.cs" />
+    <Compile Include="Declarations\MergedDeclaration.cs" />
+    <Compile Include="Declarations\RootSingleDeclaration.cs" />
+    <Compile Include="Declarations\SingleDeclaration.cs" />
+    <Compile Include="Diagnostics\DiagnosticFormatter.cs" />
+    <Compile Include="Diagnostics\MessageProvider.cs" />
+    <Compile Include="Diagnostics\Diagnostic.cs" />
+    <Compile Include="Diagnostics\DiagnosticBag.cs" />
+    <Compile Include="Diagnostics\DiagnosticInfo.cs" />
+    <Compile Include="Diagnostics\DiagnosticSeverity.cs" />
+    <Compile Include="Diagnostics\ExternalFileLocation.cs" />
+    <Compile Include="Diagnostics\FileLinePositionSpan.cs" />
+    <Compile Include="Diagnostics\IMessageSerializable.cs" />
+    <Compile Include="Diagnostics\Location.cs" />
+    <Compile Include="Diagnostics\LocationKind.cs" />
+    <Compile Include="Diagnostics\NoLocation.cs" />
+    <Compile Include="Diagnostics\ReportDiagnostic.cs" />
+    <Compile Include="Diagnostics\SourceLocation.cs" />
+    <Compile Include="Diagnostics\SyntaxDiagnosticInfo.cs" />
+    <Compile Include="FileSystem\FileNameUtilities.cs" />
+    <Compile Include="FileSystem\FileUtilities.cs" />
+    <Compile Include="FileSystem\PathKind.cs" />
+    <Compile Include="FileSystem\PathUtilities.cs" />
+    <Compile Include="FileSystem\RelativePathResolver.cs" />
+    <Compile Include="MetaModel\MetaCompilerAnnotation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Syntax\ErrorCode.cs" />
+    <Compile Include="Syntax\InternalSyntax\DirectiveStack.cs" />
+    <Compile Include="Syntax\InternalSyntax\GreenNode.cs" />
+    <Compile Include="Syntax\InternalSyntax\InternalSyntaxFactory.cs" />
+    <Compile Include="Syntax\InternalSyntax\InternalSyntaxList.cs" />
+    <Compile Include="Syntax\InternalSyntax\InternalSyntaxListBuilder.cs" />
+    <Compile Include="Syntax\InternalSyntax\InternalSyntaxNode.cs" />
+    <Compile Include="Syntax\InternalSyntax\SyntaxDiagnosticInfoList.cs" />
+    <Compile Include="Syntax\InternalSyntax\SyntaxNodeCache.cs" />
+    <Compile Include="Syntax\InternalSyntax\InternalSyntaxToken.cs" />
+    <Compile Include="Syntax\InternalSyntax\InternalSyntaxTrivia.cs" />
+    <Compile Include="Syntax\InternalSyntax\SyntaxParser.cs" />
+    <Compile Include="Syntax\LineVisibility.cs" />
+    <Compile Include="Syntax\LookupPosition.cs" />
+    <Compile Include="Syntax\RedNode.cs" />
+    <Compile Include="Syntax\SimpleSyntaxReference.cs" />
+    <Compile Include="Syntax\SyntaxAnnotation.cs" />
+    <Compile Include="Syntax\SyntaxDiffer.cs" />
+    <Compile Include="Syntax\SyntaxFactory.cs" />
+    <Compile Include="Syntax\SyntaxFacts.cs" />
+    <Compile Include="Syntax\SyntaxKind.cs" />
+    <Compile Include="Syntax\SyntaxList.cs" />
+    <Compile Include="Syntax\SyntaxListBuilder.cs" />
+    <Compile Include="Syntax\SyntaxNavigator.cs" />
+    <Compile Include="Syntax\SyntaxNode.cs" />
+    <Compile Include="Syntax\SyntaxReference.cs" />
+    <Compile Include="Syntax\SyntaxRewriter.cs" />
+    <Compile Include="Syntax\SyntaxToken.cs" />
+    <Compile Include="Syntax\SyntaxTree.cs" />
+    <Compile Include="Syntax\SyntaxTreeDiagnosticEnumerator.cs" />
+    <Compile Include="Syntax\SyntaxTrivia.cs" />
+    <Compile Include="Syntax\SyntaxVisitor.cs" />
+    <Compile Include="Syntax\WellKnownSyntax.cs" />
+    <Compile Include="Text\ChangedText.cs" />
+    <Compile Include="Text\CompositeText.cs" />
+    <Compile Include="Text\EncodedStringText.cs" />
+    <Compile Include="Text\LargeText.cs" />
+    <Compile Include="Text\LargeTextWriter.cs" />
+    <Compile Include="Text\LinePosition.cs" />
+    <Compile Include="Text\LinePositionSpan.cs" />
+    <Compile Include="Text\SourceHashAlgorithm.cs" />
+    <Compile Include="Text\SourceText.cs" />
+    <Compile Include="Text\SourceTextComparer.cs" />
+    <Compile Include="Text\SourceTextContainer.cs" />
+    <Compile Include="Text\SourceTextStream.cs" />
+    <Compile Include="Text\SourceTextWriter.cs" />
+    <Compile Include="Text\StringBuilderText.cs" />
+    <Compile Include="Text\StringText.cs" />
+    <Compile Include="Text\StringTextWriter.cs" />
+    <Compile Include="Text\SubText.cs" />
+    <Compile Include="Text\TextChange.cs" />
+    <Compile Include="Text\TextChangeEventArgs.cs" />
+    <Compile Include="Text\TextChangeRange.cs" />
+    <Compile Include="Text\TextLine.cs" />
+    <Compile Include="Text\TextLineCollection.cs" />
+    <Compile Include="Text\TextSpan.cs" />
+    <Compile Include="Text\TextUtilities.cs" />
+    <Compile Include="Utilities\ArrayBuilder.cs" />
+    <Compile Include="Utilities\ArrayBuilder.Enumerator.cs" />
+    <Compile Include="Utilities\CachingFactory.cs" />
+    <Compile Include="Utilities\CollectionUtilities.cs" />
+    <Compile Include="Utilities\ConcurrentCache.cs" />
+    <Compile Include="Utilities\ConcurrentSet.cs" />
+    <Compile Include="Utilities\ConsList`1.cs" />
+    <Compile Include="Utilities\EmptyCollections.cs" />
+    <Compile Include="Utilities\EnumerableExtensions.cs" />
+    <Compile Include="Utilities\ExceptionUtilities.cs" />
+    <Compile Include="Utilities\Hash.cs" />
+    <Compile Include="Utilities\ArrayUtilities.cs" />
+    <Compile Include="Text\SourceHashProvider.cs" />
+    <Compile Include="Utilities\ImmutableArrayExtensions.cs" />
+    <Compile Include="Utilities\ImmutableSetWithInsertionOrder`1.cs" />
+    <Compile Include="Utilities\ISetExtensions.cs" />
+    <Compile Include="Utilities\ObjectPool`1.cs" />
+    <Compile Include="Utilities\Optional.cs" />
+    <Compile Include="Utilities\PooledDictionary.cs" />
+    <Compile Include="Utilities\PooledHashSet.cs" />
+    <Compile Include="Utilities\PooledStringBuilder.cs" />
+    <Compile Include="Utilities\SmallConcurrentSetOfInts.cs" />
+    <Compile Include="Utilities\SpecializedCollections.cs" />
+    <Compile Include="Utilities\StreamUtilities.cs" />
+    <Compile Include="Utilities\UnionCollection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ImmutableMetaModelGenerator.mgen">
-      <Generator>MetaGenerator</Generator>
-      <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
-    </None>
-    <None Include="MetaDslxKey.snk" />
-    <None Include="ImmutableMetaModel.mm">
+    <None Include="Core\ImmutableMetaModel.mm">
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>ImmutableMetaModel.cs</LastGenOutput>
+    </None>
+    <None Include="Core\ImmutableMetaModelGenerator.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

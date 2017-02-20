@@ -37,11 +37,9 @@
     <Reference Include="System.Collections.Immutable" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binding\Binders\Binder.cs" />
@@ -114,6 +112,24 @@
     <Compile Include="Binding\AnonymousTypeManager.cs" />
     <Compile Include="Symbols\CompilerAttachedMethods.cs" />
     <Compile Include="Symbols\CompilerAttachedProperties.cs" />
+    <Compile Include="Symbols\GreenModel.cs" />
+    <Compile Include="Symbols\ImmutableMetaImplementation.cs" />
+    <Compile Include="Symbols\ImmutableMetaModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImmutableMetaModel.mm</DependentUpon>
+    </Compile>
+    <Compile Include="Symbols\ImmutableMetaModelGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
+    </Compile>
+    <Compile Include="Symbols\ImmutableMetaModelGeneratorExtensions.cs" />
+    <Compile Include="Symbols\ImmutableUtils.cs" />
+    <Compile Include="Symbols\ModelCollections.cs" />
+    <Compile Include="Symbols\ModelException.cs" />
+    <Compile Include="Symbols\ModelProperty.cs" />
+    <Compile Include="Symbols\RedModel.cs" />
     <Compile Include="Symbols\WellKnownMemberNames.cs" />
     <Compile Include="Syntax\DetailedSyntaxVisitor.cs" />
     <Compile Include="Declarations\MergedDeclaration.cs" />
@@ -224,12 +240,15 @@
     <Compile Include="Utilities\StreamUtilities.cs" />
     <Compile Include="Utilities\UnionCollection.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">
-      <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
-      <Name>MetaDslx.Core</Name>
-    </ProjectReference>
+    <None Include="Symbols\ImmutableMetaModel.mm">
+      <Generator>MetaModelGenerator</Generator>
+      <LastGenOutput>ImmutableMetaModel.cs</LastGenOutput>
+    </None>
+    <None Include="Symbols\ImmutableMetaModelGenerator.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

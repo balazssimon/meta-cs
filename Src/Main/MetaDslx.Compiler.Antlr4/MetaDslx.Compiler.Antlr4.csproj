@@ -113,10 +113,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.Compiler.Core\MetaDslx.Compiler.Core.csproj">
-      <Project>{a0690b8b-257b-49be-a05a-23bd4ae670fb}</Project>
-      <Name>MetaDslx.Compiler.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>

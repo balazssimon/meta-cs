@@ -206,7 +206,7 @@ using MetaDslx.Core;
             __tmp8.Name = "MetaModel";
             treeAnnotList.Add(__tmp8);
             NameDefAnnotation __tmp9 = new NameDefAnnotation();
-            __tmp9.SymbolType = typeof(MetaModel);
+            __tmp9.SymbolType = typeof(MetaDslx.Core.MetaModel);
             treeAnnotList.Add(__tmp9);
             TriviaAnnotation __tmp10 = new TriviaAnnotation();
             __tmp10.Property = "Documentation";
