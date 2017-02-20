@@ -968,8 +968,7 @@ namespace MetaDslx.Compiler
                         TextSpan infoSpan = info.Span;
                         if (!this.IsImportDirectiveUsed(infoTree, infoSpan.Start))
                         {
-                            int code = ErrorCode.HDN_UnusedSymbol;
-                            diagnostics.Add(this.MessageProvider, infoTree.GetLocation(infoSpan), code);
+                            diagnostics.Add(infoTree.GetLocation(infoSpan), CompilerErrorCode.HDN_UnusedSymbol);
                         }
                     }
                 }
@@ -1040,11 +1039,6 @@ namespace MetaDslx.Compiler
         #endregion
 
         #region Diagnostics
-
-        internal override MessageProvider MessageProvider
-        {
-            get { return _syntaxAndDeclarations.MessageProvider; }
-        }
 
         /// <summary>
         /// The bag in which semantic analysis should deposit its diagnostics.

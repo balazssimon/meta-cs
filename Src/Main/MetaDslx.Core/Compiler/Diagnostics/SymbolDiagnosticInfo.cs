@@ -12,8 +12,8 @@ namespace MetaDslx.Compiler.Diagnostics
     {
         public ImmutableArray<IMetaSymbol> Symbols { get; }
 
-        public SymbolDiagnosticInfo(MessageProvider messageProvider, ImmutableArray<IMetaSymbol> symbols, int code, params object[] args)
-            : base(messageProvider, code, args)
+        public SymbolDiagnosticInfo(ImmutableArray<IMetaSymbol> symbols, ErrorCode code, params object[] args)
+            : base(code, args)
         {
             this.Symbols = symbols;
         }
@@ -26,7 +26,7 @@ namespace MetaDslx.Compiler.Diagnostics
 
         public virtual SymbolDiagnosticInfo WithSymbols(ImmutableArray<IMetaSymbol> symbols)
         {
-            return new SymbolDiagnosticInfo(this.MessageProvider, symbols, this.Code, this.Arguments);
+            return new SymbolDiagnosticInfo(symbols, this.Code, this.Arguments);
         }
 
         public override DiagnosticInfo WithSeverity(DiagnosticSeverity overriddenSeverity)

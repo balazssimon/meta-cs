@@ -383,7 +383,7 @@ public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFa
 				[end if]
 			[end loop]
 			default:
-				throw new [Properties.CoreNs].ModelException("Unknown type name: " + type);
+				throw new [Properties.CoreNs].GreenModelException([Properties.CoreNs].ModelErrorCode.ERR_UnknownTypeName, type);
 		}
 	}
 	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]

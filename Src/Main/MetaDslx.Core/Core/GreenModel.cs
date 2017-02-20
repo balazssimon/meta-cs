@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetaDslx.Compiler.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -188,12 +189,12 @@ namespace MetaDslx.Core
         }
     }
 
-    public sealed class LazyEvalEntry : IEquatable<LazyEvalEntry>
+    internal sealed class GreenLazyEvalEntry : IEquatable<GreenLazyEvalEntry>
     {
         private SymbolId symbol;
         private ModelProperty property;
 
-        public LazyEvalEntry(SymbolId symbol, ModelProperty property)
+        public GreenLazyEvalEntry(SymbolId symbol, ModelProperty property)
         {
             this.symbol = symbol;
             this.property = property;
@@ -202,10 +203,20 @@ namespace MetaDslx.Core
         public SymbolId Symbol { get { return this.symbol; } }
         public ModelProperty Property { get { return this.property; } }
 
-        public bool Equals(LazyEvalEntry other)
+        public bool Equals(GreenLazyEvalEntry other)
         {
             if (other == null) return false;
             return this.symbol == other.symbol && this.property == other.property;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as GreenLazyEvalEntry);
+        }
+
+        public override int GetHashCode()
+        {
+            return Hash.Combine(this.symbol.GetHashCode(), this.property.GetHashCode());
         }
     }
 
@@ -797,7 +808,7 @@ namespace MetaDslx.Core
     {
         private GreenModel model;
         private GreenModelGroup group;
-        private List<LazyEvalEntry> lazyEvalStack;
+        private List<GreenLazyEvalEntry> lazyEvalStack;
 
         internal GreenModelUpdater(GreenModel model)
         {
@@ -1107,14 +1118,14 @@ namespace MetaDslx.Core
         {
             if (this.ContainsSymbol(sid))
             {
-                if (this.group != null) throw new ModelException("The symbol is already contained by the model group.");
-                else throw new ModelException("The symbol is already contained by the model.");
+                if (this.group != null) throw new GreenModelException(ModelErrorCode.ERR_SymbolAlreadyContainedByModelGroup, sid);
+                else throw new GreenModelException(ModelErrorCode.ERR_SymbolAlreadyContainedByModel, sid);
             }
             GreenModel model = this.GetModel(mid);
             if (model == null)
             {
                 Debug.Assert(false);
-                throw new ModelException("Cannot resolve the model based on the id.");
+                throw new GreenModelException(ModelErrorCode.ERR_CannotResolveModel, mid);
             }
             if (this.group != null)
             {
@@ -1157,7 +1168,7 @@ namespace MetaDslx.Core
             if (targetSid == partSid) return;
             SymbolRef targetSymbolRef = this.ResolveSymbol(mid, targetSid, true);
             SymbolRef partSymbolRef = this.ResolveSymbol(mid, partSid, true);
-            if (targetSymbolRef == null || partSymbolRef == null) throw new ModelException("Error: the target and the part symbols must be contained by this model or model group.");
+            if (targetSymbolRef == null || partSymbolRef == null) throw new GreenModelException(ModelErrorCode.ERR_CannotMergeSymbolsResolve, partSid, targetSid);
             GreenSymbol partSymbol = partSymbolRef.Symbol;
             foreach (var property in partSymbol.Properties.Keys)
             {
@@ -1189,7 +1200,7 @@ namespace MetaDslx.Core
                         }
                         else if (targetValue != partValue)
                         {
-                            throw new ModelException("Error: cannot merge the target and the part symbols. They have a different value for the property " + property.Name + ". The target symbol has value: " + targetValue + ". The part symbol has value: " + partValue + ".");
+                            throw new GreenModelException(ModelErrorCode.ERR_CannotMergeSymbolsProperty, partSid, targetSid, property.Name, partValue, targetValue);
                         }
                         this.SetValue(mid, partSid, property, true, null);
                     }
@@ -1220,26 +1231,6 @@ namespace MetaDslx.Core
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
             GreenModel model = symbolRef.Model;
-            /*
-            ImmutableHashSet<ModelProperty> properties;
-            if (model.LazyProperties.TryGetValue(sid, out properties))
-            {
-                bool changed = false;
-                var propList = symbolRef.Symbol.Properties.Keys;
-                foreach (var prop in propList)
-                {
-                    if (properties.Contains(prop))
-                    {
-                        properties = properties.Remove(prop);
-                        this.GetValue(mid, sid, prop, true);
-                        changed = true;
-                    }
-                }
-                if (changed)
-                {
-                    symbolRef = this.ResolveSymbol(mid, sid, true);
-                }
-            }*/
             return symbolRef.Symbol.Children;
         }
 
@@ -1323,8 +1314,8 @@ namespace MetaDslx.Core
             {
                 if (!this.SymbolExists((SymbolId)value))
                 {
-                    if (this.group != null) throw new ModelException("Symbol '" + value + "' cannot be assigned to property " + this.PropertyRef(sid, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model group. Either add the symbol to the model first, or make sure to reference the model which contains the symbol from the model group.");
-                    else throw new ModelException("Symbol '" + value + "' cannot be assigned to property " + this.PropertyRef(sid, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model. Either add the symbol to the model first, or create a model group referencing the model which contains the symbol.");
+                    if (this.group != null) throw new GreenModelException(ModelErrorCode.ERR_SymbolCannotBeAssignedToPropertyModelGroup, value, property, sid);
+                    else throw new GreenModelException(ModelErrorCode.ERR_SymbolCannotBeAssignedToPropertyModel, value, property, sid);
                 }
             }
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
@@ -1354,8 +1345,8 @@ namespace MetaDslx.Core
             {
                 if (!this.SymbolExists((SymbolId)value))
                 {
-                    if (this.group != null) throw new ModelException("Symbol '" + value + "' cannot be added to property " + this.PropertyRef(sid, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model group. Either add the symbol to the model first, or make sure to reference the model which contains the symbol from the model group.");
-                    else throw new ModelException("Symbol '" + value + "' cannot be added to property " + this.PropertyRef(sid, property) + " of type '" + property.MutableTypeInfo.Type + "', since the symbol cannot be resolved within the model. Either add the symbol to the model first, or create a model group referencing the model which contains the symbol.");
+                    if (this.group != null) throw new GreenModelException(ModelErrorCode.ERR_SymbolCannotBeAddedToPropertyModelGroup, value, property, sid);
+                    else throw new GreenModelException(ModelErrorCode.ERR_SymbolCannotBeAddedToPropertyModel, value, property, sid);
                 }
             }
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
@@ -1631,37 +1622,37 @@ namespace MetaDslx.Core
             {
                 if (property.IsDerived && oldValue != GreenSymbol.Unassigned)
                 {
-                    return false;
-                    //throw new ModelException("Cannot reassign a derived property: " + this.PropertyRef(symbolRef.Id, property));
+                    throw new GreenModelException(ModelErrorCode.ERR_CannotReassignDerivedProperty, property, symbolRef.Id);
                 }
                 if (property.IsReadonly && oldValue != GreenSymbol.Unassigned)
                 {
-                    return false;
-                    //throw new ModelException("Cannot reassign a read-only property: " + this.PropertyRef(symbolRef.Id, property));
+                    throw new GreenModelException(ModelErrorCode.ERR_CannotReassignReadOnlyProperty, property, symbolRef.Id);
                 }
                 if (oldValue is GreenLazyValue || oldValue is GreenLazyValues)
                 {
-                    return false;
-                    //throw new ModelException("Cannot reassign a lazy-valued property: " + this.PropertyRef(symbolRef.Id, property));
+                    throw new GreenModelException(ModelErrorCode.ERR_CannotReassignLazyValuedProperty, property, symbolRef.Id);
                 }
             }
             return true;
         }
 
-        private bool CheckNewValue(SymbolRef symbolRef, ModelProperty property, ref object value)
+        private bool CheckNewValue(SymbolRef symbolRef, ModelProperty property, object value)
         {
             if (value == null && property.IsNonNull)
             {
-                return false;
-                //throw new ModelException("Null value cannot be assigned to property: " + this.PropertyRef(symbolRef.Id, property));
+                throw new GreenModelException(ModelErrorCode.ERR_CannotAssignNullToProperty, property, symbolRef.Id);
             }
-            if (!(value == null || value == GreenSymbol.Unassigned || (value is GreenLazyValue) || (value is GreenLazyValues) || (value is GreenDerivedValue) ||
-                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))) ||
-                (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
+            if (value == null || value == GreenSymbol.Unassigned || (value is GreenLazyValue) || (value is GreenLazyValues) || (value is GreenDerivedValue))
             {
-                value = null;
-                return false;
-                //throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
+                return true;
+            }
+            if ((value is SymbolId) && !property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))
+            {
+                throw new GreenModelException(ModelErrorCode.ERR_CannotAssignValueToProperty, value, ((SymbolId)value).SymbolInfo.MutableType, property, property.MutableTypeInfo.Type, symbolRef.Id);
+            }
+            if (!(value is SymbolId) && !property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))
+            {
+                throw new GreenModelException(ModelErrorCode.ERR_CannotAssignValueToProperty, value, value.GetType(), property, property.MutableTypeInfo.Type, symbolRef.Id);
             }
             return true;
         }
@@ -1672,32 +1663,33 @@ namespace MetaDslx.Core
             {
                 if (property.IsDerived)
                 {
-                    return false;
-                    //throw new ModelException("Cannot change a derived property: " + this.PropertyRef(symbolRef.Id, property));
+                    throw new GreenModelException(ModelErrorCode.ERR_CannotChangeDerivedProperty, property, symbolRef.Id);
                 }
                 if (property.IsReadonly)
                 {
-                    return false;
-                    //throw new ModelException("Cannot change a read-only property: " + this.PropertyRef(symbolRef.Id, property));
+                    throw new GreenModelException(ModelErrorCode.ERR_CannotChangeReadOnlyProperty, property, symbolRef.Id);
                 }
             }
             return true;
         }
 
-        private bool CheckNewItem(SymbolRef symbolRef, ModelProperty property, ref object value)
+        private bool CheckNewItem(SymbolRef symbolRef, ModelProperty property, object value)
         {
             if (value == null && property.IsNonNull)
             {
-                return false;
-                //throw new ModelException("Null value cannot be added to property: " + this.PropertyRef(symbolRef.Id, property));
+                throw new GreenModelException(ModelErrorCode.ERR_CannotAddNullToProperty, property, symbolRef.Id);
             }
-            if (!(value == null || (value is GreenLazyValue) || (value is GreenLazyValues) || 
-                ((value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))) ||
-                (!(value is SymbolId) && (property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType())))))
+            if (value == null || value == GreenSymbol.Unassigned || (value is GreenLazyValue) || (value is GreenLazyValues) || (value is GreenDerivedValue))
             {
-                value = null;
-                return false;
-                //throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(symbolRef.Id, property) + " of type '" + property.MutableTypeInfo.Type + "'.");
+                return true;
+            }
+            if ((value is SymbolId) && !property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))
+            {
+                throw new GreenModelException(ModelErrorCode.ERR_CannotAddValueToProperty, value, ((SymbolId)value).SymbolInfo.MutableType, property, property.MutableTypeInfo.Type, symbolRef.Id);
+            }
+            if (!(value is SymbolId) && !property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))
+            {
+                throw new GreenModelException(ModelErrorCode.ERR_CannotAddValueToProperty, value, value.GetType(), property, property.MutableTypeInfo.Type, symbolRef.Id);
             }
             return true;
         }
@@ -1719,7 +1711,7 @@ namespace MetaDslx.Core
             if (!this.TryGetValueCore(symbolRef, property, true, true, out oldValue)) return false;
             if (value == oldValue) return false;
             if (!this.CheckOldValue(symbolRef, property, reassign, oldValue)) return false;
-            this.CheckNewValue(symbolRef, property, ref value);
+            if (!this.CheckNewValue(symbolRef, property, value)) return false;
             if (oldValue != null && oldValue != GreenSymbol.Unassigned)
             {
                 if (oldValue is SymbolId)
@@ -1762,7 +1754,7 @@ namespace MetaDslx.Core
         {
             Debug.Assert(symbolRef.Symbol.Properties.ContainsKey(property));
             if (!this.CheckOldItem(symbolRef, property, reassign)) return false;
-            this.CheckNewItem(symbolRef, property, ref value);
+            if (!this.CheckNewItem(symbolRef, property, value)) return false;
             GreenList list;
             object listValue;
             if (!this.TryGetValueCore(symbolRef, property, false, false, out listValue) || !(listValue is GreenList))
@@ -1926,11 +1918,11 @@ namespace MetaDslx.Core
                 {
                     if (eqProp.IsDerived)
                     {
-                        throw new ModelException("Cannot reassign a derived property: " + this.PropertyRef(sid, eqProp));
+                        throw new GreenModelException(ModelErrorCode.ERR_CannotChangeDerivedProperty, eqProp, sid);
                     }
                     if (eqProp.IsReadonly)
                     {
-                        throw new ModelException("Cannot reassign a read-only property: " + this.PropertyRef(sid, eqProp));
+                        throw new GreenModelException(ModelErrorCode.ERR_CannotChangeReadOnlyProperty, eqProp, sid);
                     }
                 }
             }
@@ -1942,11 +1934,11 @@ namespace MetaDslx.Core
                     {
                         if (eqProp.IsCollection)
                         {
-                            throw new ModelException("Null value cannot be added to property: " + this.PropertyRef(sid, eqProp));
+                            throw new GreenModelException(ModelErrorCode.ERR_CannotAddNullToProperty, eqProp, sid);
                         }
                         else
                         {
-                            throw new ModelException("Null value cannot be assigned to property: " + this.PropertyRef(sid, eqProp));
+                            throw new GreenModelException(ModelErrorCode.ERR_CannotAssignNullToProperty, eqProp, sid);
                         }
                     }
                 }
@@ -1961,11 +1953,11 @@ namespace MetaDslx.Core
                         {
                             if (eqProp.IsCollection)
                             {
-                                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(sid, eqProp) + " of type '" + eqProp.MutableTypeInfo.Type + "'.");
+                                throw new GreenModelException(ModelErrorCode.ERR_CannotAddValueToProperty, value, valueId.SymbolInfo.MutableType, eqProp, eqProp.MutableTypeInfo.Type, sid);
                             }
                             else
                             {
-                                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(sid, eqProp) + " of type '" + eqProp.MutableTypeInfo.Type + "'.");
+                                throw new GreenModelException(ModelErrorCode.ERR_CannotAssignValueToProperty, value, valueId.SymbolInfo.MutableType, eqProp, eqProp.MutableTypeInfo.Type, sid);
                             }
                         }
                     }
@@ -1979,11 +1971,11 @@ namespace MetaDslx.Core
                         {
                             if (eqProp.IsCollection)
                             {
-                                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be added to property " + this.PropertyRef(sid, eqProp) + " of type '" + eqProp.MutableTypeInfo.Type + "'.");
+                                throw new GreenModelException(ModelErrorCode.ERR_CannotAddValueToProperty, value, valueType, eqProp, eqProp.MutableTypeInfo.Type, sid);
                             }
                             else
                             {
-                                throw new ModelException("Value '" + value + "' of type '" + value.GetType() + "' cannot be assigned to property " + this.PropertyRef(sid, eqProp) + " of type '" + eqProp.MutableTypeInfo.Type + "'.");
+                                throw new GreenModelException(ModelErrorCode.ERR_CannotAssignValueToProperty, value, valueType, eqProp, eqProp.MutableTypeInfo.Type, sid);
                             }
                         }
                     }
@@ -2084,11 +2076,11 @@ namespace MetaDslx.Core
                 {
                     if (eqProp.IsDerived)
                     {
-                        throw new ModelException("Cannot reassign a derived property: " + this.PropertyRef(sid, eqProp));
+                        throw new GreenModelException(ModelErrorCode.ERR_CannotChangeDerivedProperty, eqProp, sid);
                     }
                     if (eqProp.IsReadonly)
                     {
-                        throw new ModelException("Cannot reassign a read-only property: " + this.PropertyRef(sid, eqProp));
+                        throw new GreenModelException(ModelErrorCode.ERR_CannotChangeReadOnlyProperty, eqProp, sid);
                     }
                 }
             }
@@ -2192,18 +2184,18 @@ namespace MetaDslx.Core
                         {
                             if (valueRef.Symbol.Parent != sid)
                             {
-                                throw new ModelException("Invalid containment in " + this.PropertyRef(sid, property) + ": symbol '" + valueSid + "' is already contained by '" + valueRef.Symbol.Parent + "'.");
+                                throw new GreenModelException(ModelErrorCode.ERR_InvalidContainment, valueSid, property, sid, valueRef.Symbol.Parent);
                             }
                         }
                         else
                         {
                             if (valueSid == sid)
                             {
-                                throw new ModelException("Invalid containment in " + this.PropertyRef(sid, property) + ": a symbol cannot contain itself.");
+                                throw new GreenModelException(ModelErrorCode.ERR_InvalidSelfContainment, valueSid, property, sid);
                             }
                             if (valueRef.Model.Id != model.Id)
                             {
-                                throw new ModelException("Invalid containment in " + this.PropertyRef(sid, property) + ": the containing symbol and the contained symbol must be in the same model.");
+                                throw new GreenModelException(ModelErrorCode.ERR_InvalidModelContainment, valueSid, property, sid);
                             }
                             if (symbolRef.Symbol.Parent != null)
                             {
@@ -2215,7 +2207,7 @@ namespace MetaDslx.Core
                                 {
                                     if (ids.Contains(currentId))
                                     {
-                                        throw new CircularContainmentException("Invalid containment in " + this.PropertyRef(sid, property) + ": circular containment.", ids.ToImmutableList());
+                                        throw new GreenModelSymbolException(ids.ToImmutableArray(), ModelErrorCode.ERR_CircularContainment, valueSid, property, sid);
                                     }
                                     ids.Add(currentId);
                                     if (model.Symbols.TryGetValue(currentId, out currentSymbol))
@@ -2420,12 +2412,12 @@ namespace MetaDslx.Core
         private void LazyEvalCore(ModelId mid, SymbolId sid, ModelProperty property)
         {
             object lazyValue;
-            if (this.lazyEvalStack == null) this.lazyEvalStack = new List<LazyEvalEntry>();
-            LazyEvalEntry entry = new LazyEvalEntry(sid, property);
+            if (this.lazyEvalStack == null) this.lazyEvalStack = new List<GreenLazyEvalEntry>();
+            GreenLazyEvalEntry entry = new GreenLazyEvalEntry(sid, property);
             int entryIndex = this.lazyEvalStack.IndexOf(entry);
             if (entryIndex >= 0)
             {
-                throw new LazyEvalException("Circular dependency between lazy values.", this.lazyEvalStack.ToImmutableList());
+                throw new GreenLazyEvaluationException(this.lazyEvalStack.ToImmutableArray(), ModelErrorCode.ERR_CircularLazyEvaluation);
             }
             try
             {
@@ -2496,7 +2488,8 @@ namespace MetaDslx.Core
             }
             catch (Exception ex)
             {
-                throw new LazyEvalException("An exception was thrown by the lazy evaluator.", this.lazyEvalStack?.ToImmutableList(), ex);
+                if (ex is GreenLazyEvaluationException) throw ex;
+                else throw new GreenLazyEvaluationException(this.lazyEvalStack?.ToImmutableArray() ?? ImmutableArray<GreenLazyEvalEntry>.Empty, ModelErrorCode.ERR_LazyEvaluationError, ex);
             }
         }
 
@@ -2513,13 +2506,9 @@ namespace MetaDslx.Core
             }
             catch (Exception ex)
             {
-                throw new LazyEvalException("An exception was thrown by the lazy evaluator.", this.lazyEvalStack?.ToImmutableList(), ex);
+                if (ex is GreenLazyEvaluationException) throw ex;
+                else throw new GreenLazyEvaluationException(this.lazyEvalStack?.ToImmutableArray() ?? ImmutableArray<GreenLazyEvalEntry>.Empty, ModelErrorCode.ERR_LazyEvaluationError, ex);
             }
-        }
-
-        private string PropertyRef(SymbolId sid, ModelProperty property)
-        {
-            return sid + "." + property.Name;
         }
 
         private class ModelRef

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetaDslx.Compiler.Diagnostics;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -391,13 +392,13 @@ namespace MetaDslx.Core
 
         public void MSet(ModelProperty property, object value)
         {
-            if (property.IsCollection) throw new ModelException("Cannot assign to a collection property.");
+            if (property.IsCollection) throw new ModelException(new DiagnosticInfo(ModelErrorCode.ERR_CannotReassignCollectionProperty, property, this));
             this.model.SetValue(this.id, property, value, this.creating);
         }
 
         public void MSetLazy(ModelProperty property, Func<object> value)
         {
-            if (property.IsCollection) throw new ModelException("Cannot assign to a collection property.");
+            if (property.IsCollection) throw new ModelException(new DiagnosticInfo(ModelErrorCode.ERR_CannotReassignCollectionProperty, property, this));
             this.model.SetLazyValue(this.id, property, value, this.creating);
         }
 
@@ -427,19 +428,19 @@ namespace MetaDslx.Core
 
         public void MAddRange(ModelProperty property, IEnumerable<object> values)
         {
-            if (!property.IsCollection) throw new ModelException("Cannot add multiple values to a non-collection property.");
+            if (!property.IsCollection) throw new ModelException(new DiagnosticInfo(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty, property, this));
             this.model.AddItems(this.id, property, values, this.creating);
         }
 
         public void MAddRangeLazy(ModelProperty property, Func<IEnumerable<object>> values)
         {
-            if (!property.IsCollection) throw new ModelException("Cannot add multiple values to a non-collection property.");
+            if (!property.IsCollection) throw new ModelException(new DiagnosticInfo(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty, property, this));
             this.model.AddLazyItems(this.id, property, values, this.creating);
         }
 
         public void MAddRangeLazy(ModelProperty property, IEnumerable<Func<object>> values)
         {
-            if (!property.IsCollection) throw new ModelException("Cannot add multiple values to a non-collection property.");
+            if (!property.IsCollection) throw new ModelException(new DiagnosticInfo(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty, property, this));
             this.model.AddLazyItems(this.id, property, values, this.creating);
         }
 
@@ -992,12 +993,19 @@ namespace MetaDslx.Core
             }
             set
             {
-                ModelUpdateContext ctx;
-                do
+                try
                 {
-                    ctx = this.BeginUpdate();
-                    ctx.Updater.SetName(this.id, value);
-                } while (!this.EndUpdate(ctx));
+                    ModelUpdateContext ctx;
+                    do
+                    {
+                        ctx = this.BeginUpdate();
+                        ctx.Updater.SetName(this.id, value);
+                    } while (!this.EndUpdate(ctx));
+                }
+                catch (GreenModelException gme)
+                {
+                    throw gme.ToRed(this);
+                }
             }
         }
         public ModelVersion Version
@@ -1008,12 +1016,19 @@ namespace MetaDslx.Core
             }
             set
             {
-                ModelUpdateContext ctx;
-                do
+                try
                 {
-                    ctx = this.BeginUpdate();
-                    ctx.Updater.SetVersion(this.id, value);
-                } while (!this.EndUpdate(ctx));
+                    ModelUpdateContext ctx;
+                    do
+                    {
+                        ctx = this.BeginUpdate();
+                        ctx.Updater.SetVersion(this.id, value);
+                    } while (!this.EndUpdate(ctx));
+                }
+                catch (GreenModelException gme)
+                {
+                    throw gme.ToRed(this);
+                }
             }
         }
 
@@ -1090,7 +1105,7 @@ namespace MetaDslx.Core
             }
         }
 
-        internal MutableSymbol ResolveSymbol(SymbolId sid)
+        public MutableSymbol ResolveSymbol(SymbolId sid)
         {
             if (this.group != null)
             {
@@ -1151,41 +1166,62 @@ namespace MetaDslx.Core
         public bool RemoveSymbol(MutableSymbol symbol)
         {
             if (symbol == null) return false;
-            ModelUpdateContext ctx;
-            bool result;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                result = ctx.Updater.RemoveSymbol(this.id, ((MutableSymbolBase)symbol).MId);
-            } while (!this.EndUpdate(ctx));
-            return result;
+                ModelUpdateContext ctx;
+                bool result;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    result = ctx.Updater.RemoveSymbol(this.id, ((MutableSymbolBase)symbol).MId);
+                } while (!this.EndUpdate(ctx));
+                return result;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         public void MergeSymbols(MutableSymbol targetSymbol, MutableSymbol partSymbol)
         {
             if (targetSymbol == partSymbol) return;
-            if (targetSymbol.MMetaClass != partSymbol.MMetaClass) throw new ModelException("Error: the meta class of the two symbols do not match. The meta class of the target is " + targetSymbol.MMetaClass + ", while the meta class of the part is " + partSymbol.MMetaClass + ".");
-            ModelUpdateContext ctx;
-            do
+            if (targetSymbol.MMetaClass != partSymbol.MMetaClass) throw new ModelException(new DiagnosticInfo(ModelErrorCode.ERR_CannotMergeDifferentSymbols, partSymbol, targetSymbol, partSymbol.MId.SymbolInfo.MutableType, targetSymbol.MId.SymbolInfo.MutableType));
+            try
             {
-                ctx = this.BeginUpdate();
-                ctx.Updater.MergeSymbols(this.id, ((ImmutableSymbolBase)targetSymbol).MId, ((ImmutableSymbolBase)partSymbol).MId);
-            } while (!this.EndUpdate(ctx));
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.MergeSymbols(this.id, ((ImmutableSymbolBase)targetSymbol).MId, ((ImmutableSymbolBase)partSymbol).MId);
+                } while (!this.EndUpdate(ctx));
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal MutableSymbolBase CreateSymbol(SymbolId sid, bool weakReference)
         {
             Debug.Assert(sid != null);
             Debug.Assert(!this.ContainsSymbol(sid));
-            MutableSymbolBase result = sid.CreateMutable(this, true);
-            this.RegisterSymbol(sid, result);
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                ctx.Updater.AddSymbol(this.id, sid, weakReference);
-            } while (!this.EndUpdate(ctx));
-            return result;
+                MutableSymbolBase result = sid.CreateMutable(this, true);
+                this.RegisterSymbol(sid, result);
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.AddSymbol(this.id, sid, weakReference);
+                } while (!this.EndUpdate(ctx));
+                return result;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         public ImmutableModel ToImmutable()
@@ -1320,35 +1356,56 @@ namespace MetaDslx.Core
 
         public void EvaluateLazyValues()
         {
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                ctx.Updater.EvaluateLazyValues();
-            } while (!this.EndUpdate(ctx));
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.EvaluateLazyValues();
+                } while (!this.EndUpdate(ctx));
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         public void ExecuteTransaction(Action transaction)
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                transaction();
-            } while (!this.EndUpdate(ctx));
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    transaction();
+                } while (!this.EndUpdate(ctx));
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal object GetValue(SymbolId sid, ModelProperty property)
         {
-            object value;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                value = ctx.Updater.GetValue(this.id, sid, property, true);
-            } while (!this.EndUpdate(ctx));
-            return this.ToRedValue(value);
+                object value;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    value = ctx.Updater.GetValue(this.id, sid, property, true);
+                } while (!this.EndUpdate(ctx));
+                return this.ToRedValue(value);
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool MHasConcreteValue(SymbolId sid, ModelProperty property)
@@ -1399,72 +1456,107 @@ namespace MetaDslx.Core
 
         internal void SetValue<T>(SymbolId sid, ModelProperty property, T value, bool creating) 
         {
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                ctx.Updater.SetValue(this.id, sid, property, creating, this.ToGreenValue(value));
-            } while (!this.EndUpdate(ctx));
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.SetValue(this.id, sid, property, creating, this.ToGreenValue(value));
+                } while (!this.EndUpdate(ctx));
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal object GetLazyValue(SymbolId sid, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
-            GreenSymbol greenSymbol;
-            if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
+            try
             {
-                object greenValue;
-                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenLazyValue)
+                GreenSymbol greenSymbol;
+                if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
                 {
-                    return ((GreenLazyValue)greenValue).Lazy;
+                    object greenValue;
+                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
+                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
+                    if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenLazyValue)
+                    {
+                        return ((GreenLazyValue)greenValue).Lazy;
+                    }
                 }
+                return null;
             }
-            return null;
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal void SetLazyValue(SymbolId sid, ModelProperty property, Func<object> value, bool creating)
         {
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                ctx.Updater.SetValue(this.id, sid, property, creating, property.IsDerived ? (object)new GreenDerivedValue(value) : (object)new GreenLazyValue(value));
-            } while (!this.EndUpdate(ctx));
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.SetValue(this.id, sid, property, creating, property.IsDerived ? (object)new GreenDerivedValue(value) : (object)new GreenLazyValue(value));
+                } while (!this.EndUpdate(ctx));
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal GreenList GetGreenList(SymbolId sid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            GreenSymbol greenSymbol;
-            if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
+            try
             {
-                object greenValue;
-                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
+                GreenSymbol greenSymbol;
+                if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
                 {
-                    return (GreenList)greenValue;
+                    object greenValue;
+                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
+                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
+                    if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
+                    {
+                        return (GreenList)greenValue;
+                    }
                 }
+                return property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
             }
-            return property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal GreenList GetGreenList(SymbolId sid, ModelProperty property, bool lazyEval)
         {
             Debug.Assert(property.IsCollection);
-            if (!lazyEval) return this.GetGreenList(sid, property);
-            object value;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                value = ctx.Updater.GetValue(this.id, sid, property, true);
-            } while (!this.EndUpdate(ctx));
-            GreenList result = value as GreenList;
-            if (result == null) result = property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
-            return result;
+                if (!lazyEval) return this.GetGreenList(sid, property);
+                object value;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    value = ctx.Updater.GetValue(this.id, sid, property, true);
+                } while (!this.EndUpdate(ctx));
+                GreenList result = value as GreenList;
+                if (result == null) result = property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
+                return result;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal MutableModelSet<T> GetSet<T>(MutableSymbolBase symbol, ModelProperty property)
@@ -1481,152 +1573,236 @@ namespace MetaDslx.Core
 
         internal bool AddItem(SymbolId sid, ModelProperty property, object value, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool AddLazyItem(SymbolId sid, ModelProperty property, Func<object> value, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValue(value));
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValue(value));
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool AddItems(SymbolId sid, ModelProperty property, IEnumerable<object> values, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                foreach (var value in values)
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
                 {
-                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
-                }
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                    ctx = this.BeginUpdate();
+                    foreach (var value in values)
+                    {
+                        changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
+                    }
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool AddLazyItems(SymbolId sid, ModelProperty property, IEnumerable<Func<object>> values, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                foreach (var value in values)
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
                 {
-                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValue(value));
-                }
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                    ctx = this.BeginUpdate();
+                    foreach (var value in values)
+                    {
+                        changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValue(value));
+                    }
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool AddLazyItems(SymbolId sid, ModelProperty property, Func<IEnumerable<object>> values, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValues(values));
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, new GreenLazyValues(values));
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool RemoveItem(SymbolId sid, ModelProperty property, object value, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, false, this.ToGreenValue(value));
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, false, this.ToGreenValue(value));
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool RemoveAllItems(SymbolId sid, ModelProperty property, object value, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, true, this.ToGreenValue(value));
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, true, this.ToGreenValue(value));
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool InsertItem(SymbolId sid, ModelProperty property, int index, object value, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, index, this.ToGreenValue(value));
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, index, this.ToGreenValue(value));
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool ReplaceItem(SymbolId sid, ModelProperty property, int index, object value, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.AddItem(this.id, sid, property, creating, true, index, this.ToGreenValue(value));
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, true, index, this.ToGreenValue(value));
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool RemoveItemAt(SymbolId sid, ModelProperty property, int index, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, index, false, null);
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, index, false, null);
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool ClearItems(SymbolId sid, ModelProperty property, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.ClearItems(this.id, sid, property, creating);
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.ClearItems(this.id, sid, property, creating);
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal bool ClearLazyItems(SymbolId sid, ModelProperty property, bool creating)
         {
-            bool changed = false;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                changed = ctx.Updater.ClearLazyItems(this.id, sid, property, creating);
-            } while (!this.EndUpdate(ctx));
-            return changed;
+                bool changed = false;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    changed = ctx.Updater.ClearLazyItems(this.id, sid, property, creating);
+                } while (!this.EndUpdate(ctx));
+                return changed;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal MutableSymbol MParent(SymbolId sid)
@@ -1641,14 +1817,21 @@ namespace MetaDslx.Core
 
         internal ImmutableModelList<MutableSymbol> MChildren(SymbolId sid)
         {
-            ImmutableList<SymbolId> children;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                children = ctx.Updater.GetChildren(this.id, sid);
-            } while (!this.EndUpdate(ctx));
-            return ImmutableModelList<MutableSymbol>.FromSymbolIdList(children, this);
+                ImmutableList<SymbolId> children;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    children = ctx.Updater.GetChildren(this.id, sid);
+                } while (!this.EndUpdate(ctx));
+                return ImmutableModelList<MutableSymbol>.FromSymbolIdList(children, this);
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         internal ImmutableModelList<MutableSymbol> MGetImports(SymbolId id)
@@ -1702,12 +1885,19 @@ namespace MetaDslx.Core
         }
         internal void MAttachProperty(SymbolId sid, ModelProperty property)
         {
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                ctx.Updater.AttachProperty(this.id, sid, property);
-            } while (!this.EndUpdate(ctx));
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.AttachProperty(this.id, sid, property);
+                } while (!this.EndUpdate(ctx));
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         public override string ToString()
@@ -2068,51 +2258,72 @@ namespace MetaDslx.Core
 
         private void AddReference(GreenModel reference)
         {
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                ctx.Updater.AddModelReference(reference);
-            } while (!this.EndUpdate(ctx));
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.AddModelReference(reference);
+                } while (!this.EndUpdate(ctx));
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         public void AddReference(ImmutableModel reference)
         {
-            if (reference.ModelGroup != null)
+            try
             {
-                GreenModelGroup gmg = reference.ModelGroup.Green;
-                foreach (var greenReference in gmg.References)
+                if (reference.ModelGroup != null)
                 {
-                    this.AddReference(greenReference.Value);
+                    GreenModelGroup gmg = reference.ModelGroup.Green;
+                    foreach (var greenReference in gmg.References)
+                    {
+                        this.AddReference(greenReference.Value);
+                    }
+                    foreach (var greenModel in gmg.Models)
+                    {
+                        this.AddReference(greenModel.Value);
+                    }
                 }
-                foreach (var greenModel in gmg.Models)
+                else
                 {
-                    this.AddReference(greenModel.Value);
+                    this.AddReference(reference.Green);
                 }
             }
-            else
+            catch (GreenModelException gme)
             {
-                this.AddReference(reference.Green);
+                throw gme.ToRed(this);
             }
         }
 
         public void AddReference(MutableModel reference)
         {
-            if (reference.ModelGroup != null)
+            try
             {
-                GreenModelGroup gmg = reference.ModelGroup.Green;
-                foreach (var greenReference in gmg.References)
+                if (reference.ModelGroup != null)
                 {
-                    this.AddReference(greenReference.Value);
+                    GreenModelGroup gmg = reference.ModelGroup.Green;
+                    foreach (var greenReference in gmg.References)
+                    {
+                        this.AddReference(greenReference.Value);
+                    }
+                    foreach (var greenModel in gmg.Models)
+                    {
+                        this.AddReference(greenModel.Value);
+                    }
                 }
-                foreach (var greenModel in gmg.Models)
+                else
                 {
-                    this.AddReference(greenModel.Value);
+                    this.AddReference(reference.Green);
                 }
             }
-            else
+            catch (GreenModelException gme)
             {
-                this.AddReference(reference.Green);
+                throw gme.ToRed(this);
             }
         }
 
@@ -2130,28 +2341,42 @@ namespace MetaDslx.Core
 
         public MutableModel CreateModel(string name = null, ModelVersion version = null)
         {
-            ModelId mid = new ModelId();
-            MutableModel model = new MutableModel(mid, this, false, null);
-            this.models.Add(mid, model);
-            GreenModel greenModel;
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                greenModel = ctx.Updater.CreateModel(mid, name, version);
-            } while (!this.EndUpdate(ctx));
-            return model;
+                ModelId mid = new ModelId();
+                MutableModel model = new MutableModel(mid, this, false, null);
+                this.models.Add(mid, model);
+                GreenModel greenModel;
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    greenModel = ctx.Updater.CreateModel(mid, name, version);
+                } while (!this.EndUpdate(ctx));
+                return model;
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
 
         public void ExecuteTransaction(Action transaction)
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
-            ModelUpdateContext ctx;
-            do
+            try
             {
-                ctx = this.BeginUpdate();
-                transaction();
-            } while (!this.EndUpdate(ctx));
+                ModelUpdateContext ctx;
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    transaction();
+                } while (!this.EndUpdate(ctx));
+            }
+            catch (GreenModelException gme)
+            {
+                throw gme.ToRed(this);
+            }
         }
     }
 

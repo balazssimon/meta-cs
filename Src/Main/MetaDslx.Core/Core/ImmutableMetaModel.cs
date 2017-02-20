@@ -228,7 +228,7 @@ namespace MetaDslx.Core
 				case "MetaParameter": return this.MetaParameter();
 				case "MetaProperty": return this.MetaProperty();
 				default:
-					throw new global::MetaDslx.Core.ModelException("Unknown type name: " + type);
+					throw new global::MetaDslx.Core.GreenModelException(MetaDslx.Core.ModelErrorCode.ERR_UnknownTypeName, type);
 			}
 		}
 	

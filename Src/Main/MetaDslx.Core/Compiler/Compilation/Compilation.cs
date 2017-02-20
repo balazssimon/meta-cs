@@ -790,8 +790,6 @@ namespace MetaDslx.Compiler
         /// </summary>
         public abstract ImmutableArray<Diagnostic> GetDiagnostics(CancellationToken cancellationToken = default(CancellationToken));
 
-        internal abstract MessageProvider MessageProvider { get; }
-
         /// <param name="accumulator">Bag to which filtered diagnostics will be added.</param>
         /// <param name="incoming">Diagnostics to be filtered.</param>
         /// <returns>True if there were no errors or warnings-as-errors.</returns>

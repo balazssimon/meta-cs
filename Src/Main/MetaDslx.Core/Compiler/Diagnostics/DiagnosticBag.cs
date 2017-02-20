@@ -311,9 +311,9 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <param name="code"></param>
         /// <param name="location"></param>
         /// <returns></returns>
-        public DiagnosticInfo Add(MessageProvider messageProvider, Location location, int code)
+        public DiagnosticInfo Add(Location location, ErrorCode code)
         {
-            var diag = Diagnostic.Create(messageProvider, location, code);
+            var diag = Diagnostic.Create(location, code);
             this.Add(diag);
             return diag.Info;
         }
@@ -326,24 +326,24 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <param name="location"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public DiagnosticInfo Add(MessageProvider messageProvider, Location location, int code, params object[] args)
+        public DiagnosticInfo Add(Location location, ErrorCode code, params object[] args)
         {
-            var diag = Diagnostic.Create(messageProvider, location, code, args);
+            var diag = Diagnostic.Create(location, code, args);
             this.Add(diag);
             return diag.Info;
         }
 
-        public DiagnosticInfo Add(MessageProvider messageProvider, Location location, int code, ImmutableArray<IMetaSymbol> symbols, params object[] args)
+        public DiagnosticInfo Add(Location location, ErrorCode code, ImmutableArray<IMetaSymbol> symbols, params object[] args)
         {
-            var info = new SymbolDiagnosticInfo(messageProvider, symbols, code, args);
-            var diag = Diagnostic.Create(info, location);
+            var info = new SymbolDiagnosticInfo(symbols, code, args);
+            var diag = Diagnostic.Create(location, info);
             this.Add(diag);
             return info;
         }
 
-        public void Add(DiagnosticInfo info, Location location)
+        public void Add(Location location, DiagnosticInfo info)
         {
-            var diag = Diagnostic.Create(info, location);
+            var diag = Diagnostic.Create(location, info);
             this.Add(diag);
         }
 
@@ -371,7 +371,7 @@ namespace MetaDslx.Compiler.Diagnostics
                     haveErrors = true;
                 }
 
-                this.Add(Diagnostic.Create(info, location));
+                this.Add(Diagnostic.Create(location, info));
             }
 
             return haveErrors;

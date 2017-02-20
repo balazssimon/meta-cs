@@ -18,7 +18,6 @@ namespace MetaDslx.Compiler.Declarations
         public readonly ImmutableArray<SyntaxTree> ExternalSyntaxTrees;
         public readonly string ScriptClassName;
         public readonly SourceReferenceResolver Resolver;
-        public readonly MessageProvider MessageProvider;
         public readonly bool IsSubmission;
 
         private ImmutableDictionary<SyntaxTree, ImmutableArray<Diagnostic>> _syntaxTreeLoadDirectiveMap;
@@ -34,14 +33,12 @@ namespace MetaDslx.Compiler.Declarations
             ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            MessageProvider messageProvider,
             bool isSubmission,
             State state)
         {
             this.ExternalSyntaxTrees = externalSyntaxTrees;
             this.ScriptClassName = scriptClassName ?? string.Empty;
             this.Resolver = resolver;
-            this.MessageProvider = messageProvider;
             this.IsSubmission = isSubmission;
             _lazyState = state;
         }
@@ -50,17 +47,16 @@ namespace MetaDslx.Compiler.Declarations
             ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            MessageProvider messageProvider,
             bool isSubmission)
         {
-            return new SyntaxAndDeclarationManager(externalSyntaxTrees, scriptClassName, resolver, messageProvider, isSubmission, state: null);
+            return new SyntaxAndDeclarationManager(externalSyntaxTrees, scriptClassName, resolver, isSubmission, state: null);
         }
 
         internal State GetLazyState()
         {
             if (_lazyState == null)
             {
-                Interlocked.CompareExchange(ref _lazyState, CreateState(this.ExternalSyntaxTrees, this.ScriptClassName, this.Resolver, this.MessageProvider, this.IsSubmission), null);
+                Interlocked.CompareExchange(ref _lazyState, CreateState(this.ExternalSyntaxTrees, this.ScriptClassName, this.Resolver, this.IsSubmission), null);
             }
 
             return _lazyState;
@@ -70,7 +66,6 @@ namespace MetaDslx.Compiler.Declarations
             ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            MessageProvider messageProvider,
             bool isSubmission)
         {
             var treesBuilder = ArrayBuilder<SyntaxTree>.GetInstance();
@@ -87,7 +82,6 @@ namespace MetaDslx.Compiler.Declarations
                     tree,
                     scriptClassName,
                     resolver,
-                    messageProvider,
                     isSubmission,
                     ordinalMapBuilder,
                     loadDirectiveMapBuilder,
@@ -109,7 +103,6 @@ namespace MetaDslx.Compiler.Declarations
         {
             var scriptClassName = this.ScriptClassName;
             var resolver = this.Resolver;
-            var messageProvider = this.MessageProvider;
             var isSubmission = this.IsSubmission;
 
             var state = _lazyState;
@@ -135,7 +128,6 @@ namespace MetaDslx.Compiler.Declarations
                         tree,
                         scriptClassName,
                         resolver,
-                        messageProvider,
                         isSubmission,
                         ordinalMapBuilder,
                         loadDirectiveMapBuilder,
@@ -156,7 +148,6 @@ namespace MetaDslx.Compiler.Declarations
                 newExternalSyntaxTrees,
                 scriptClassName,
                 resolver,
-                messageProvider,
                 isSubmission,
                 state);
         }
@@ -169,7 +160,6 @@ namespace MetaDslx.Compiler.Declarations
             SyntaxTree tree,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            MessageProvider messageProvider,
             bool isSubmission,
             IDictionary<SyntaxTree, int> ordinalMapBuilder,
             IDictionary<SyntaxTree, ImmutableArray<SyntaxNode>> loadDirectiveMapBuilder,
@@ -180,7 +170,7 @@ namespace MetaDslx.Compiler.Declarations
             var sourceCodeKind = tree.Options.Kind;
             if (sourceCodeKind == SourceCodeKind.Script)
             {
-                AppendAllLoadedSyntaxTrees(treesBuilder, tree, scriptClassName, resolver, messageProvider, isSubmission, ordinalMapBuilder, loadDirectiveMapBuilder, loadedSyntaxTreeMapBuilder, declMapBuilder, ref declTable);
+                AppendAllLoadedSyntaxTrees(treesBuilder, tree, scriptClassName, resolver, isSubmission, ordinalMapBuilder, loadDirectiveMapBuilder, loadedSyntaxTreeMapBuilder, declMapBuilder, ref declTable);
             }
 
             AddSyntaxTreeToDeclarationMapAndTable(tree, scriptClassName, isSubmission, declMapBuilder, ref declTable);
@@ -195,7 +185,6 @@ namespace MetaDslx.Compiler.Declarations
             SyntaxTree tree,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            MessageProvider messageProvider,
             bool isSubmission,
             IDictionary<SyntaxTree, int> ordinalMapBuilder,
             IDictionary<SyntaxTree, ImmutableArray<SyntaxNode>> loadDirectiveMapBuilder,
@@ -284,7 +273,6 @@ namespace MetaDslx.Compiler.Declarations
                 newExternalSyntaxTrees,
                 this.ScriptClassName,
                 this.Resolver,
-                this.MessageProvider,
                 this.IsSubmission,
                 state);
         }
@@ -368,7 +356,7 @@ namespace MetaDslx.Compiler.Declarations
 
         internal SyntaxAndDeclarationManager WithExternalSyntaxTrees(ImmutableArray<SyntaxTree> trees)
         {
-            return new SyntaxAndDeclarationManager(trees, this.ScriptClassName, this.Resolver, this.MessageProvider, this.IsSubmission, state: null);
+            return new SyntaxAndDeclarationManager(trees, this.ScriptClassName, this.Resolver, this.IsSubmission, state: null);
         }
 
         internal static bool IsLoadedSyntaxTree(SyntaxTree tree, ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -9,65 +11,90 @@ namespace MetaDslx.Core
 {
     public class ModelException : Exception
     {
-        public ModelException()
+        private DiagnosticInfo diagnosticInfo;
+
+        public ModelException(DiagnosticInfo diagnosticInfo)
+            : this(diagnosticInfo, null)
+        {
+            this.diagnosticInfo = diagnosticInfo;
+        }
+
+        public ModelException(DiagnosticInfo diagnosticInfo, Exception innerException)
+            : base(string.Format(diagnosticInfo.GetMessage()), innerException)
         {
 
         }
 
-        public ModelException(string message)
-            : base(message)
+        public DiagnosticInfo DiagnosticInfo
         {
-
-        }
-
-        public ModelException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-
-        }
-    }
-
-    public class CircularContainmentException : ModelException
-    {
-        private ImmutableList<SymbolId> symbols;
-
-        internal CircularContainmentException(string message, ImmutableList<SymbolId> symbols)
-            : base(message)
-        {
-            this.symbols = symbols;
-        }
-
-        internal CircularContainmentException(string message, ImmutableList<SymbolId> symbols, Exception innerException)
-            : base(message, innerException)
-        {
-            this.symbols = symbols;
-        }
-
-        public ImmutableList<SymbolId> Symbols
-        {
-            get { return this.symbols; }
+            get { return this.diagnosticInfo; }
         }
     }
 
-    public sealed class LazyEvalException : ModelException
+    public class ModelSymbolException : ModelException
     {
-        private ImmutableList<LazyEvalEntry> evalStack;
-
-        internal LazyEvalException(string message, ImmutableList<LazyEvalEntry> evalStack)
-            : base(message)
+        internal ModelSymbolException(SymbolDiagnosticInfo diagnosticInfo)
+            : base(diagnosticInfo)
         {
-            this.evalStack = evalStack;
         }
 
-        internal LazyEvalException(string message, ImmutableList<LazyEvalEntry> evalStack, Exception innerException)
-            : base(message, innerException)
+        internal ModelSymbolException(SymbolDiagnosticInfo diagnosticInfo, Exception innerException)
+            : base(diagnosticInfo, innerException)
         {
-            this.evalStack = evalStack;
         }
 
-        public ImmutableList<LazyEvalEntry> EvalStack
+        public ImmutableArray<IMetaSymbol> Symbols
         {
-            get { return this.evalStack; }
+            get { return ((SymbolDiagnosticInfo)this.DiagnosticInfo).Symbols; }
+        }
+    }
+
+    public sealed class LazyEvalEntry : IEquatable<LazyEvalEntry>
+    {
+        private IMetaSymbol symbol;
+        private ModelProperty property;
+
+        public LazyEvalEntry(IMetaSymbol symbol, ModelProperty property)
+        {
+            this.symbol = symbol;
+            this.property = property;
+        }
+
+        public IMetaSymbol Symbol { get { return this.symbol; } }
+        public ModelProperty Property { get { return this.property; } }
+
+        public bool Equals(LazyEvalEntry other)
+        {
+            if (other == null) return false;
+            return this.symbol == other.symbol && this.property == other.property;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as LazyEvalEntry);
+        }
+
+        public override int GetHashCode()
+        {
+            return Hash.Combine(this.symbol.GetHashCode(), this.property.GetHashCode());
+        }
+    }
+
+    public sealed class LazyEvaluationException : ModelException
+    {
+        internal LazyEvaluationException(LazyEvaluationDiagnosticInfo diagnosticInfo)
+            : base(diagnosticInfo)
+        {
+        }
+
+        internal LazyEvaluationException(LazyEvaluationDiagnosticInfo diagnosticInfo, Exception innerException)
+            : base(diagnosticInfo, innerException)
+        {
+        }
+
+        public ImmutableArray<LazyEvalEntry> EvaluationStack
+        {
+            get { return ((LazyEvaluationDiagnosticInfo)this.DiagnosticInfo).EvaluationStack; }
         }
     }
 

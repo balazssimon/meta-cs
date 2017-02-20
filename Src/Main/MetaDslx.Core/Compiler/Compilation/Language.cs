@@ -14,8 +14,6 @@ namespace MetaDslx.Compiler
         internal static readonly Language Default = new DefaultLanguage();
 
         public abstract string Name { get; }
-        public MessageProvider MessageProvider { get { return this.MessageProviderCore; } }
-        protected abstract MessageProvider MessageProviderCore { get; }
         public SyntaxFacts SyntaxFacts { get { return this.SyntaxFactsCore; } }
         protected abstract SyntaxFacts SyntaxFactsCore { get; }
         public SyntaxFactory SyntaxFactory { get { return this.SyntaxFactoryCore; } }
@@ -57,14 +55,6 @@ namespace MetaDslx.Compiler
             get
             {
                 return InternalSyntaxFactory.Default;
-            }
-        }
-
-        protected override MessageProvider MessageProviderCore
-        {
-            get
-            {
-                return MessageProvider.Default;
             }
         }
 

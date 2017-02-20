@@ -98,6 +98,7 @@
     <Compile Include="Compiler\DiagnosticAnalyzer\CompilationStartedEvent.cs" />
     <Compile Include="Compiler\DiagnosticAnalyzer\CompilationUnitCompletedEvent.cs" />
     <Compile Include="Compiler\DiagnosticAnalyzer\SymbolDeclaredCompilationEvent.cs" />
+    <Compile Include="Compiler\Diagnostics\CompilerErrorCode.cs" />
     <Compile Include="Compiler\Diagnostics\SymbolDiagnosticInfo.cs" />
     <Compile Include="Compiler\References\CompilationReference.cs" />
     <Compile Include="Compiler\References\MetadataReference.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Compiler\Symbols\CompilerAttachedMethods.cs" />
     <Compile Include="Compiler\Symbols\CompilerAttachedProperties.cs" />
     <Compile Include="Core\GreenModel.cs" />
+    <Compile Include="Core\GreenModelException.cs" />
     <Compile Include="Core\ImmutableMetaImplementation.cs" />
     <Compile Include="Core\ImmutableMetaModel.cs">
       <AutoGen>True</AutoGen>
@@ -132,7 +134,9 @@
     </Compile>
     <Compile Include="Core\ImmutableMetaModelGeneratorExtensions.cs" />
     <Compile Include="Core\ImmutableUtils.cs" />
+    <Compile Include="Core\LazyEvaluationDiagnosticInfo.cs" />
     <Compile Include="Core\ModelCollections.cs" />
+    <Compile Include="Core\ModelErrorCode.cs" />
     <Compile Include="Core\ModelException.cs" />
     <Compile Include="Core\ModelProperty.cs" />
     <Compile Include="Core\RedModel.cs" />
@@ -142,7 +146,6 @@
     <Compile Include="Compiler\Declarations\RootSingleDeclaration.cs" />
     <Compile Include="Compiler\Declarations\SingleDeclaration.cs" />
     <Compile Include="Compiler\Diagnostics\DiagnosticFormatter.cs" />
-    <Compile Include="Compiler\Diagnostics\MessageProvider.cs" />
     <Compile Include="Compiler\Diagnostics\Diagnostic.cs" />
     <Compile Include="Compiler\Diagnostics\DiagnosticBag.cs" />
     <Compile Include="Compiler\Diagnostics\DiagnosticInfo.cs" />
@@ -163,7 +166,7 @@
     <Compile Include="Compiler\FileSystem\RelativePathResolver.cs" />
     <Compile Include="Compiler\MetaModel\MetaCompilerAnnotation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Compiler\Syntax\ErrorCode.cs" />
+    <Compile Include="Compiler\Diagnostics\ErrorCode.cs" />
     <Compile Include="Compiler\Syntax\InternalSyntax\DirectiveStack.cs" />
     <Compile Include="Compiler\Syntax\InternalSyntax\GreenNode.cs" />
     <Compile Include="Compiler\Syntax\InternalSyntax\InternalSyntaxFactory.cs" />

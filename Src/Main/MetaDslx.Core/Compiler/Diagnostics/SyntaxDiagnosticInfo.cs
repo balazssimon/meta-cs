@@ -12,26 +12,26 @@ namespace MetaDslx.Compiler.Diagnostics
         public int Offset { get; }
         public int Width { get; }
 
-        internal SyntaxDiagnosticInfo(MessageProvider messageProvider, int offset, int width, int code, params object[] args)
-            : base(messageProvider, code, args)
+        internal SyntaxDiagnosticInfo(int offset, int width, ErrorCode code, params object[] args)
+            : base(code, args)
         {
             Debug.Assert(width >= 0);
             this.Offset = offset;
             this.Width = width;
         }
 
-        internal SyntaxDiagnosticInfo(MessageProvider messageProvider, int offset, int width, int code)
-            : this(messageProvider, offset, width, code, EmptyCollections.ObjectArray)
+        internal SyntaxDiagnosticInfo(int offset, int width, ErrorCode code)
+            : this(offset, width, code, EmptyCollections.ObjectArray)
         {
         }
 
-        internal SyntaxDiagnosticInfo(MessageProvider messageProvider, int code, params object[] args)
-            : this(messageProvider, 0, 0, code, args)
+        internal SyntaxDiagnosticInfo(ErrorCode code, params object[] args)
+            : this(0, 0, code, args)
         {
         }
 
-        internal SyntaxDiagnosticInfo(MessageProvider messageProvider, int code)
-            : this(messageProvider, 0, 0, code)
+        internal SyntaxDiagnosticInfo(ErrorCode code)
+            : this(0, 0, code)
         {
         }
 
@@ -44,7 +44,7 @@ namespace MetaDslx.Compiler.Diagnostics
 
         public virtual SyntaxDiagnosticInfo WithOffset(int offset)
         {
-            return new SyntaxDiagnosticInfo(this.MessageProvider, offset, this.Width, this.Code, this.Arguments);
+            return new SyntaxDiagnosticInfo(offset, this.Width, this.Code, this.Arguments);
         }
 
         public override DiagnosticInfo WithSeverity(DiagnosticSeverity overriddenSeverity)

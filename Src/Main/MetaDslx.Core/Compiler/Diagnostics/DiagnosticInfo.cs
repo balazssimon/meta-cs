@@ -18,38 +18,30 @@ namespace MetaDslx.Compiler.Diagnostics
     /// provide access to additional information about the error, such as what symbols were involved in the ambiguity.
     /// </remarks>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    public abstract class DiagnosticInfo : IMessageSerializable
+    public class DiagnosticInfo : IMessageSerializable
     {
-        private readonly MessageProvider _messageProvider;
-        private readonly int _errorCode;
-        private readonly DiagnosticSeverity _defaultSeverity;
+        private readonly ErrorCode _errorCode;
         private readonly DiagnosticSeverity _effectiveSeverity;
         private readonly object[] _arguments;
 
-        protected DiagnosticInfo(MessageProvider messageProvider, int errorCode)
+        public DiagnosticInfo(ErrorCode errorCode)
         {
-            _messageProvider = messageProvider;
             _errorCode = errorCode;
-            _defaultSeverity = messageProvider.GetSeverity(errorCode);
-            _effectiveSeverity = _defaultSeverity;
+            _effectiveSeverity = _errorCode.DefaultSeverity;
         }
 
-        protected DiagnosticInfo(MessageProvider messageProvider, int errorCode, params object[] arguments)
+        public DiagnosticInfo(ErrorCode errorCode, params object[] arguments)
         {
             AssertMessageSerializable(arguments);
 
-            _messageProvider = messageProvider;
             _errorCode = errorCode;
-            _defaultSeverity = messageProvider.GetSeverity(errorCode);
-            _effectiveSeverity = _defaultSeverity;
+            _effectiveSeverity = _errorCode.DefaultSeverity;
             _arguments = arguments;
         }
 
         protected DiagnosticInfo(DiagnosticInfo original, DiagnosticSeverity overriddenSeverity)
         {
-            _messageProvider = original._messageProvider;
             _errorCode = original._errorCode;
-            _defaultSeverity = original._defaultSeverity;
             _arguments = original._arguments;
 
             _effectiveSeverity = overriddenSeverity;
@@ -82,10 +74,10 @@ namespace MetaDslx.Compiler.Diagnostics
         }
 
         // Only the compiler creates instances.
-        internal DiagnosticInfo(MessageProvider messageProvider, bool isWarningAsError, int errorCode, params object[] arguments)
-            : this(messageProvider, errorCode, arguments)
+        internal DiagnosticInfo(bool isWarningAsError, ErrorCode errorCode, params object[] arguments)
+            : this(errorCode, arguments)
         {
-            Debug.Assert(!isWarningAsError || _defaultSeverity == DiagnosticSeverity.Warning);
+            Debug.Assert(!isWarningAsError || _errorCode.DefaultSeverity == DiagnosticSeverity.Warning);
 
             if (isWarningAsError)
             {
@@ -94,12 +86,21 @@ namespace MetaDslx.Compiler.Diagnostics
         }
 
         // Create a copy of this instance with a explicit overridden severity
-        public abstract DiagnosticInfo WithSeverity(DiagnosticSeverity severity);
+        public virtual DiagnosticInfo WithSeverity(DiagnosticSeverity severity)
+        {
+            if (severity != this.Severity) return new DiagnosticInfo(this, severity);
+            else return this;
+        }
 
         /// <summary>
         /// The diagnostic code, as an integer.
         /// </summary>
-        public int Code { get { return _errorCode; } }
+        public int Id { get { return _errorCode.Id; } }
+
+        /// <summary>
+        /// The diagnostic code, as an integer.
+        /// </summary>
+        public ErrorCode Code { get { return _errorCode; } }
 
         /// <summary>
         /// Returns the effective severity of the diagnostic: whether this diagnostic is informational, warning, or error.
@@ -121,7 +122,7 @@ namespace MetaDslx.Compiler.Diagnostics
         {
             get
             {
-                return _defaultSeverity;
+                return _errorCode.DefaultSeverity;
             }
         }
 
@@ -133,12 +134,7 @@ namespace MetaDslx.Compiler.Diagnostics
         {
             get
             {
-                if (_effectiveSeverity != _defaultSeverity)
-                {
-                    return Diagnostic.GetDefaultWarningLevel(_effectiveSeverity);
-                }
-
-                return _messageProvider.GetWarningLevel(_errorCode);
+                return _errorCode.WarningLevel;
             }
         }
 
@@ -166,14 +162,14 @@ namespace MetaDslx.Compiler.Diagnostics
         {
             get
             {
-                return _messageProvider.GetCategory(_errorCode);
+                return _errorCode.Category;
             }
         }
 
         internal bool IsNotConfigurable()
         {
             // Only compiler errors are non-configurable.
-            return _defaultSeverity == DiagnosticSeverity.Error;
+            return _errorCode.DefaultSeverity == DiagnosticSeverity.Error;
         }
 
         /// <summary>
@@ -190,24 +186,12 @@ namespace MetaDslx.Compiler.Diagnostics
         }
 
         /// <summary>
-        /// Get the message id (for example "CS1001") for the message. This includes both the error number
-        /// and a prefix identifying the source.
-        /// </summary>
-        public string MessageIdentifier
-        {
-            get
-            {
-                return _messageProvider.GetIdForErrorCode(_errorCode);
-            }
-        }
-
-        /// <summary>
         /// Get the text of the message in the given language.
         /// </summary>
         public virtual string GetMessage(IFormatProvider formatProvider = null)
         {
             // Get the message and fill in arguments.
-            string message = _messageProvider.GetMessageFormat(_errorCode);
+            string message = _errorCode.DefaultMessage;
             if (string.IsNullOrEmpty(message))
             {
                 return string.Empty;
@@ -233,13 +217,6 @@ namespace MetaDslx.Compiler.Diagnostics
                     argumentsToUse[i] = embedded.GetMessage(formatProvider);
                     continue;
                 }
-
-                var symbol = _arguments[i] as IMetaSymbol;
-                if (symbol != null)
-                {
-                    argumentsToUse = InitializeArgumentListIfNeeded(argumentsToUse);
-                    argumentsToUse[i] = _messageProvider.ConvertSymbolToString(_errorCode, symbol);
-                }
             }
 
             if (argumentsToUse != null) return argumentsToUse;
@@ -261,19 +238,14 @@ namespace MetaDslx.Compiler.Diagnostics
             return newArguments;
         }
 
+        public string DefaultMessage
+        {
+            get { return _errorCode.DefaultMessage; }
+        }
+
         public object[] Arguments
         {
             get { return _arguments; }
-        }
-
-        internal MessageProvider MessageProvider
-        {
-            get { return _messageProvider; }
-        }
-
-        public string HelpLink
-        {
-            get { return _messageProvider.GetHelpLink(_errorCode); }
         }
 
         public override string ToString()
@@ -283,14 +255,12 @@ namespace MetaDslx.Compiler.Diagnostics
 
         public string ToString(Location location, IFormatProvider formatProvider)
         {
-            return String.Format(formatProvider, "{0}: {1}",
-                _messageProvider.GetMessagePrefix(this.MessageIdentifier, location, this.Severity, this.IsWarningAsError),
-                this.GetMessage(formatProvider));
+            return String.Format(formatProvider, "{0} at {1}: {2}", this.Severity, location, this.GetMessage(formatProvider));
         }
 
         public sealed override int GetHashCode()
         {
-            int hashCode = _errorCode;
+            int hashCode = _errorCode.GetHashCode();
             if (_arguments != null)
             {
                 for (int i = 0; i < _arguments.Length; i++)
@@ -309,7 +279,7 @@ namespace MetaDslx.Compiler.Diagnostics
             bool result = false;
 
             if (other != null &&
-                other._errorCode == _errorCode &&
+                other._errorCode.Equals(_errorCode) &&
                 this.GetType() == obj.GetType())
             {
                 if (_arguments == null && other._arguments == null)
@@ -336,32 +306,6 @@ namespace MetaDslx.Compiler.Diagnostics
         private string GetDebuggerDisplay()
         {
             return ToString();
-        }
-    }
-
-    internal sealed class DefaultDiagnosticInfo : DiagnosticInfo
-    {
-        // Only the compiler creates instances.
-        internal DefaultDiagnosticInfo(MessageProvider messageProvider, int errorCode)
-            : base(messageProvider, errorCode)
-        {
-        }
-
-        // Only the compiler creates instances.
-        internal DefaultDiagnosticInfo(MessageProvider messageProvider, int errorCode, params object[] arguments)
-            : base(messageProvider, errorCode, arguments)
-        {
-        }
-
-        private DefaultDiagnosticInfo(DefaultDiagnosticInfo original, DiagnosticSeverity overriddenSeverity)
-            : base(original, overriddenSeverity)
-        {
-        }
-
-        public override DiagnosticInfo WithSeverity(DiagnosticSeverity overriddenSeverity)
-        {
-            if (this.Severity != overriddenSeverity) return new DefaultDiagnosticInfo(this, overriddenSeverity);
-            else return this;
         }
     }
 }
