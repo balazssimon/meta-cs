@@ -58,11 +58,6 @@ namespace MetaDslx.Compiler.Syntax
             return (SyntaxNode)((InternalSyntaxNode)this.Green.WithAnnotations(annotations)).CreateRed();
         }
 
-        public Location GetLocation()
-        {
-            return this.SyntaxTree.GetLocation(this.Span);
-        }
-
         /// <summary>
         /// Gets a list of all the diagnostics in the sub tree that has this node as its root.
         /// This method does not filter diagnostics based on #pragmas and compiler options

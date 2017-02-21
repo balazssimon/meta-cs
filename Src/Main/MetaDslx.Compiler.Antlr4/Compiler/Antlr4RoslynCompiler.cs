@@ -361,11 +361,11 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             IToken token = e.OffendingToken;
             if (token != null)
             {
-                this.DiagnosticBag.Add(Antlr4RoslynMessageProvider.Instance.CreateDiagnostic(Antlr4RoslynErrors.ERR_SyntaxError, Location.Create(this.FileName, this.GetTextSpan(token), this.GetLinePositionSpan(token)), msg));
+                this.DiagnosticBag.Add(Location.Create(this.FileName, this.GetTextSpan(token), this.GetLinePositionSpan(token)), Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             }
             else
             {
-                this.DiagnosticBag.Add(Antlr4RoslynMessageProvider.Instance.CreateDiagnostic(Antlr4RoslynErrors.ERR_SyntaxError, Location.Create(this.FileName, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), msg));
+                this.DiagnosticBag.Add(Location.Create(this.FileName, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             }
         }
 
@@ -373,15 +373,15 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         {
             if (offendingSymbol != null)
             {
-                this.DiagnosticBag.Add(Antlr4RoslynMessageProvider.Instance.CreateDiagnostic(Antlr4RoslynErrors.ERR_SyntaxError, Location.Create(this.FileName, this.GetTextSpan(offendingSymbol), this.GetLinePositionSpan(offendingSymbol)), msg));
+                this.DiagnosticBag.Add(Location.Create(this.FileName, this.GetTextSpan(offendingSymbol), this.GetLinePositionSpan(offendingSymbol)), Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             }
             else
             {
-                this.DiagnosticBag.Add(Antlr4RoslynMessageProvider.Instance.CreateDiagnostic(Antlr4RoslynErrors.ERR_SyntaxError, Location.Create(this.FileName, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), msg));
+                this.DiagnosticBag.Add(Location.Create(this.FileName, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), Antlr4RoslynErrorCode.ERR_SyntaxError, msg);
             }
         }
 
-        internal void AddDiagnostic(object node, Antlr4RoslynErrors code, params object[] args)
+        internal void AddDiagnostic(object node, Antlr4RoslynErrorCode code, params object[] args)
         {
             if (node is ParserRuleContext)
             {
@@ -397,14 +397,14 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             }
         }
 
-        internal void AddDiagnostic(ITerminalNode token, Antlr4RoslynErrors code, params object[] args)
+        internal void AddDiagnostic(ITerminalNode token, Antlr4RoslynErrorCode code, params object[] args)
         {
-            this.DiagnosticBag.Add(Antlr4RoslynMessageProvider.Instance.CreateDiagnostic(code, Location.Create(this.FileName, this.GetTextSpan(token.Symbol), this.GetLinePositionSpan(token.Symbol)), args));
+            this.DiagnosticBag.Add(Location.Create(this.FileName, this.GetTextSpan(token.Symbol), this.GetLinePositionSpan(token.Symbol)), code, args);
         }
 
-        internal void AddDiagnostic(ParserRuleContext rule, Antlr4RoslynErrors code, params object[] args)
+        internal void AddDiagnostic(ParserRuleContext rule, Antlr4RoslynErrorCode code, params object[] args)
         {
-            this.DiagnosticBag.Add(Antlr4RoslynMessageProvider.Instance.CreateDiagnostic(code, Location.Create(this.FileName, this.GetTextSpan(rule), this.GetLinePositionSpan(rule)), args));
+            this.DiagnosticBag.Add(Location.Create(this.FileName, this.GetTextSpan(rule), this.GetLinePositionSpan(rule)), code, args);
         }
 
         internal static readonly string[] reservedNames =
@@ -852,12 +852,12 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                     {
                         handled = true;
                         reportedError = true;
-                        this.compiler.AddDiagnostic(ruleSpec.RULE_REF(), Antlr4RoslynErrors.ERR_RuleMapUnnamedAlt, ruleName);
+                        this.compiler.AddDiagnostic(ruleSpec.RULE_REF(), Antlr4RoslynErrorCode.ERR_RuleMapUnnamedAlt, ruleName);
                     }
                 }
                 if (!reportedError && !handled)
                 {
-                    this.compiler.AddDiagnostic(ruleSpec.RULE_REF(), Antlr4RoslynErrors.ERR_RuleMapTooComplex, ruleName);
+                    this.compiler.AddDiagnostic(ruleSpec.RULE_REF(), Antlr4RoslynErrorCode.ERR_RuleMapTooComplex, ruleName);
                 }
                 if (!reportedError && handled && rule != null)
                 {
@@ -868,7 +868,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             }
             else
             {
-                this.compiler.AddDiagnostic(context, Antlr4RoslynErrors.ERR_BlockUnhandled);
+                this.compiler.AddDiagnostic(context, Antlr4RoslynErrorCode.ERR_BlockUnhandled);
             }
             return base.VisitRuleBlock(context);
         }
@@ -894,7 +894,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 {
                     result = false;
                     reportedErrors = true;
-                    this.compiler.AddDiagnostic(elements[i].Node, Antlr4RoslynErrors.ERR_UnnamedElement, elements[i].Type);
+                    this.compiler.AddDiagnostic(elements[i].Node, Antlr4RoslynErrorCode.ERR_UnnamedElement, elements[i].Type);
                 }
             }
             return result;
@@ -983,7 +983,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                     }
                     return 1;
                 }
-                this.compiler.AddDiagnostic(elem.labeledElement().identifier(), Antlr4RoslynErrors.ERR_BlockMap);
+                this.compiler.AddDiagnostic(elem.labeledElement().identifier(), Antlr4RoslynErrorCode.ERR_BlockMap);
                 return 0;
             }
             else if (elem.ebnf() != null)
@@ -998,7 +998,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                             element.IsOptional = true;
                             return 1;
                         }
-                        this.compiler.AddDiagnostic(blockSuffix, Antlr4RoslynErrors.ERR_BlockMapSuffix);
+                        this.compiler.AddDiagnostic(blockSuffix, Antlr4RoslynErrorCode.ERR_BlockMapSuffix);
                         return 0;
                     }
                     else
@@ -1009,10 +1009,10 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 else if (this.IsRoslynBlockTokenAlts(elem.ebnf().block(), ref reportedErrors, out element))
                 {
                     reportedErrors = true;
-                    this.compiler.AddDiagnostic(elem.ebnf().block(), Antlr4RoslynErrors.ERR_UnnamedBlock);
+                    this.compiler.AddDiagnostic(elem.ebnf().block(), Antlr4RoslynErrorCode.ERR_UnnamedBlock);
                     return 0;
                 }
-                this.compiler.AddDiagnostic(elem.ebnf().block(), Antlr4RoslynErrors.ERR_BlockMap);
+                this.compiler.AddDiagnostic(elem.ebnf().block(), Antlr4RoslynErrorCode.ERR_BlockMap);
                 return 0;
             }
             return 0;
@@ -1126,7 +1126,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                     }
                     else
                     {
-                        this.compiler.AddDiagnostic(elems[i], Antlr4RoslynErrors.ERR_ElementMap);
+                        this.compiler.AddDiagnostic(elems[i], Antlr4RoslynErrorCode.ERR_ElementMap);
                         reportedErrors = true;
                         block = null;
                         return false;

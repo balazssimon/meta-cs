@@ -26,16 +26,6 @@ namespace MetaDslx.Languages.Soal
             get { return SoalLanguage.LanguageName; }
         }
 
-        protected override MessageProvider MessageProviderCore
-        {
-            get { return SoalMessageProvider.Instance; }
-        }
-
-        public new SoalMessageProvider MessageProvider
-        {
-            get { return (SoalMessageProvider)base.MessageProvider; }
-        }
-
         protected override SyntaxFacts SyntaxFactsCore
         {
             get { return SoalSyntaxFacts.Instance; }

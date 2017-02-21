@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Syntax.InternalSyntax;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using System;
 using System.Collections.Generic;
@@ -198,6 +199,11 @@ namespace MetaDslx.Compiler.Syntax
             {
                 return _parent;
             }
+        }
+
+        public Location GetLocation()
+        {
+            return this.SyntaxTree.GetLocation(this.Span);
         }
 
         /// <summary>

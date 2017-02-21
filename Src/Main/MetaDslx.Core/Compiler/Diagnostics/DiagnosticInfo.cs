@@ -69,7 +69,8 @@ namespace MetaDslx.Compiler.Diagnostics
                     continue;
                 }
 
-                throw new InvalidOperationException("Invalid diagnostic argument of type '" + type + "'. The argument is not serializable to string.");
+                // SB-TODO:
+                //throw new InvalidOperationException("Invalid diagnostic argument of type '" + type + "'. The argument is not serializable to string.");
             }
         }
 

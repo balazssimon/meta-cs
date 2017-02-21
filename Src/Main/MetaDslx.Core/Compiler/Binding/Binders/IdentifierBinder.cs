@@ -30,30 +30,34 @@ namespace MetaDslx.Compiler.Binding.Binders
         {
             get
             {
-                IMetaSymbol context = null;
-                var qualifierBinder = this.GetAncestorBinder<IQualifierBinder>();
-                if (qualifierBinder != null)
+                if (_lazySymbol == null)
                 {
-                    context = qualifierBinder.GetChildContextSymbol(this.Node);
-                }
-                LookupResult result = LookupResult.GetInstance();
-                HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                try
-                {
-                    if (context != null)
-                    { 
-                        this.LookupMembersWithFallback(result, context, _name, null, BindingOptions.Default, ref useSiteDiagnostics);
-                        Interlocked.CompareExchange(ref _lazySymbol, result.SingleSymbolOrDefault, null);
-                    }
-                    else
+                    IMetaSymbol context = null;
+                    var qualifierBinder = this.GetAncestorBinder<IQualifierBinder>();
+                    if (qualifierBinder != null)
                     {
-                        this.LookupSymbolsWithFallback(result, _name, null, BindingOptions.Default, ref useSiteDiagnostics);
-                        Interlocked.CompareExchange(ref _lazySymbol, result.SingleSymbolOrDefault, null);
+                        context = qualifierBinder.GetChildContextSymbol(this.Node);
                     }
-                }
-                finally
-                {
-                    result.Free();
+                    LookupResult result = LookupResult.GetInstance();
+                    HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+                    try
+                    {
+                        bool wasError = false;
+                        if (context != null)
+                        {
+                            this.LookupMembersWithFallback(result, context, _name, null, BindingOptions.Default, ref useSiteDiagnostics);
+                            Interlocked.CompareExchange(ref _lazySymbol, ResultSymbol(result, this.Node, context, _name, BindingOptions.Default, this.Compilation.DeclarationDiagnostics, false, out wasError), null);
+                        }
+                        else
+                        {
+                            this.LookupSymbolsWithFallback(result, _name, null, BindingOptions.Default, ref useSiteDiagnostics);
+                            Interlocked.CompareExchange(ref _lazySymbol, ResultSymbol(result, this.Node, null, _name, BindingOptions.Default, this.Compilation.DeclarationDiagnostics, false, out wasError), null);
+                        }
+                    }
+                    finally
+                    {
+                        result.Free();
+                    }
                 }
                 return _lazySymbol;
             }

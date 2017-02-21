@@ -241,7 +241,7 @@ namespace MetaDslx.Core
             this.immutableTypeInfo = immutableTypeInfo;
             this.mutableTypeInfo = mutableTypeInfo;
             FieldInfo info = declaringSymbol.SymbolDescriptorType.GetField(name + "Property", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-            if (info == null) throw new ModelException("Cannot find static field '" + name + "Property' in " + declaringSymbol.SymbolDescriptorType.FullName + ".");
+            if (info == null) throw new InvalidOperationException("Cannot find static field '" + name + "Property' in " + declaringSymbol.SymbolDescriptorType.FullName + ".");
             this.annotations = info.GetCustomAttributes().ToImmutableList();
             this.state = ModelPropertyInitState.None;
             this.subsettedProperties = ImmutableList<ModelProperty>.Empty;
@@ -467,17 +467,17 @@ namespace MetaDslx.Core
                         ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
                         if (prop == null)
                         {
-                            throw new ModelException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property cannot be found.");
+                            throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property cannot be found.");
                         }
                         if ((propSymbol == this.declaringSymbol || this.declaringSymbol.BaseSymbols.Contains(propSymbol)))
                         {
-                            if (!this.IsCollection || !this.IsUnique) throw new ModelException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetting property must be a collection of unique values.");
-                            if (!prop.IsCollection || !prop.IsUnique) throw new ModelException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must be a collection of unique values.");
+                            if (!this.IsCollection || !this.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetting property must be a collection of unique values.");
+                            if (!prop.IsCollection || !prop.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must be a collection of unique values.");
                             this.RegisterSubsettedProperty(prop);
                         }
                         else
                         {
-                            throw new ModelException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must come from the current type or from a base type.");
+                            throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must come from the current type or from a base type.");
                         }
                     }
                     else if (annot is RedefinesAttribute)
@@ -487,20 +487,20 @@ namespace MetaDslx.Core
                         ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
                         if (prop == null)
                         {
-                            throw new ModelException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefined property cannot be found.");
+                            throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefined property cannot be found.");
                         }
                         if ((propSymbol == this.declaringSymbol || this.declaringSymbol.BaseSymbols.Contains(propSymbol)))
                         {
-                            if (this.IsCollection ^ prop.IsCollection) throw new ModelException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must be of the same kind: either a single value or a collection.");
+                            if (this.IsCollection ^ prop.IsCollection) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must be of the same kind: either a single value or a collection.");
                             if (this.IsCollection && prop.IsCollection)
                             {
-                                if (this.IsUnique ^ prop.IsUnique) throw new ModelException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must have the same uniqueness.");
+                                if (this.IsUnique ^ prop.IsUnique) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must have the same uniqueness.");
                             }
                             this.RegisterRedefinedProperty(prop);
                         }
                         else
                         {
-                            throw new ModelException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefined property must come from the current type or from a base type.");
+                            throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefined property must come from the current type or from a base type.");
                         }
                     }
                     else if (annot is OppositeAttribute)
@@ -510,9 +510,9 @@ namespace MetaDslx.Core
                         ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
                         if (prop == null)
                         {
-                            throw new ModelException("Error in setting opposite property: " + this.FullDeclaredName + "->" + propAnnot.DeclaringType+"."+propAnnot.PropertyName + ". The opposite property cannot be found.");
+                            throw new InvalidOperationException("Error in setting opposite property: " + this.FullDeclaredName + "->" + propAnnot.DeclaringType+"."+propAnnot.PropertyName + ". The opposite property cannot be found.");
                         }
-                        if (!this.IsUnique) throw new ModelException("Error in setting opposite property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". A property which has an opposite must be either a single value or a unique collection.");
+                        if (!this.IsUnique) throw new InvalidOperationException("Error in setting opposite property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". A property which has an opposite must be either a single value or a unique collection.");
                         bool foundThisProperty = false;
                         foreach (var oppositeAnnot in prop.annotations)
                         {
@@ -533,12 +533,12 @@ namespace MetaDslx.Core
                         }
                         else
                         {
-                            throw new ModelException("Error in setting opposite property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". Opposite properties must be mutual.");
+                            throw new InvalidOperationException("Error in setting opposite property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". Opposite properties must be mutual.");
                         }
                     }
                     else if (annot is DerivedUnionAttribute)
                     {
-                        if (!this.IsCollection || !this.IsUnique) throw new ModelException("Error in property: " + this.FullDeclaredName + ". A derived union property must be a collection of unique values.");
+                        if (!this.IsCollection || !this.IsUnique) throw new InvalidOperationException("Error in property: " + this.FullDeclaredName + ". A derived union property must be a collection of unique values.");
                         this.flags |= ModelPropertyFlags.DerivedUnion | ModelPropertyFlags.Readonly;
                     }
                 }

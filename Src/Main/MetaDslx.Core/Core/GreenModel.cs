@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Utilities;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -127,7 +128,7 @@ namespace MetaDslx.Core
         }
     }
 
-    internal sealed class GreenLazyValue
+    internal class GreenLazyValue
     {
         private Func<object> lazy;
 
@@ -156,7 +157,23 @@ namespace MetaDslx.Core
         }
     }
 
-    internal sealed class GreenLazyValues
+    internal class GreenLazyValueWithLocation : GreenLazyValue
+    {
+        private Location location;
+
+        internal GreenLazyValueWithLocation(Location location, Func<object> lazy)
+            : base(lazy)
+        {
+            this.location = location;
+        }
+
+        internal Location Location
+        {
+            get { return this.location; }
+        }
+    }
+
+    internal class GreenLazyValues
     {
         private Func<IEnumerable<object>> lazy;
 
@@ -186,6 +203,22 @@ namespace MetaDslx.Core
                 }
             }
             return values;
+        }
+    }
+
+    internal class GreenLazyValuesWithLocation : GreenLazyValues
+    {
+        private Location location;
+
+        internal GreenLazyValuesWithLocation(Location location, Func<IEnumerable<object>> lazy)
+            : base(lazy)
+        {
+            this.location = location;
+        }
+
+        internal Location Location
+        {
+            get { return this.location; }
         }
     }
 

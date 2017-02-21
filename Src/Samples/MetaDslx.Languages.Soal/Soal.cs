@@ -9,9 +9,10 @@ using System.Diagnostics;
 
 namespace MetaDslx.Languages.Soal.Symbols
 {
-	using global::MetaDslx.Languages.Soal.Symbols.Internal;
+    using Compiler.Diagnostics;
+    using global::MetaDslx.Languages.Soal.Symbols.Internal;
 
-	public class SoalInstance
+    public class SoalInstance
 	{
 		private static bool initialized;
 	
@@ -396,7 +397,7 @@ namespace MetaDslx.Languages.Soal.Symbols
 				case "JsonEncodingBindingElement": return this.JsonEncodingBindingElement();
 				case "WsAddressingBindingElement": return this.WsAddressingBindingElement();
 				default:
-					throw new global::MetaDslx.Core.ModelException("Unknown type name: " + type);
+					throw new global::MetaDslx.Core.ModelException(new DiagnosticInfo(global::MetaDslx.Core.ModelErrorCode.ERR_UnknownTypeName, type));
 			}
 		}
 	

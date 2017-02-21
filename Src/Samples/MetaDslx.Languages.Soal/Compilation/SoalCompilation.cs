@@ -185,7 +185,6 @@ namespace MetaDslx.Languages.Soal
                     ImmutableArray<SyntaxTree>.Empty,
                     options.ScriptClassName,
                     options.SourceReferenceResolver,
-                    SoalMessageProvider.Instance,
                     isSubmission));
 
             if (syntaxTrees != null)
@@ -342,7 +341,6 @@ namespace MetaDslx.Languages.Soal
                         this.SyntaxAndDeclarations.ExternalSyntaxTrees,
                         options.ScriptClassName,
                         options.SourceReferenceResolver,
-                        this.SyntaxAndDeclarations.MessageProvider,
                         this.SyntaxAndDeclarations.IsSubmission));
         }
 

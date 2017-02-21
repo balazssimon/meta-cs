@@ -627,7 +627,7 @@ namespace MetaDslx.Compiler
         private ImmutableModelGroup _lazyModelGroup;
         private ImmutableModel _lazyModel;
 
-        protected abstract ModelId ModelId { get; }
+        internal protected abstract ModelId ModelId { get; }
 
         /// <summary>
         /// The <see cref="ImmutableModelGroup"/> that represents the model group being created 
@@ -645,7 +645,7 @@ namespace MetaDslx.Compiler
                 return _lazyModelGroup;
             }
         }
-        protected abstract MutableModelGroup ModelGroupBuilder { get; }
+        internal protected abstract MutableModelGroup ModelGroupBuilder { get; }
 
         /// <summary>
         /// Gets the <see cref="ImmutableModel"/> for the model being created by compiling all of
@@ -662,7 +662,7 @@ namespace MetaDslx.Compiler
                 return _lazyModel;
             }
         }
-        protected abstract MutableModel ModelBuilder { get; }
+        internal protected abstract MutableModel ModelBuilder { get; }
 
         internal protected abstract SymbolBuilder SymbolTreeBuilder { get; }
 

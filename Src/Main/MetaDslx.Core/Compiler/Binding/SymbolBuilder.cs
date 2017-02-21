@@ -209,37 +209,42 @@ namespace MetaDslx.Compiler.Binding
                 ModelProperty currentProperty = symbol.MGetProperty(currentName);
                 if (currentProperty.IsCollection)
                 {
-                    symbol.MAddRangeLazy(currentProperty, () =>
-                    {
-                        var binder = this.Compilation.GetBinder(node);
-                        if (binder == null) return null;
-                        var propertyBinders = binder.GetDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == currentName, b => b is IPropertyBinder);
-                        if (propertyBinders.Length == 0 && binder is IPropertyBinder)
-                        {
-                            propertyBinders = ImmutableArray.Create((IPropertyBinder)binder);
-                        }
-                        var valueBinders = propertyBinders.SelectMany(pb => ((Binder)pb).GetDescendantBinders<IValueBinder>()).ToImmutableArray();
-                        var values = valueBinders.SelectMany(vb => vb.GetValues()).Where(v => v != null).ToImmutableArray();
-                        return values;
-                    });
+                    symbol.MAddRangeLazy(currentProperty, () => BindMultipleValues(node, currentName));
                 }
                 else if (!symbol.MIsSet(currentProperty))
                 {
-                    symbol.MSetLazy(currentProperty, () =>
-                    {
-                        var binder = this.Compilation.GetBinder(node);
-                        if (binder == null) return null;
-                        var propertyBinders = binder.GetDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == currentName, b => b is IPropertyBinder);
-                        if (propertyBinders.Length == 0 && binder is IPropertyBinder)
-                        {
-                            propertyBinders = ImmutableArray.Create((IPropertyBinder)binder);
-                        }
-                        var valueBinders = propertyBinders.SelectMany(pb => ((Binder)pb).GetDescendantBinders<IValueBinder>()).ToImmutableArray();
-                        var values = valueBinders.SelectMany(vb => vb.GetValues()).Where(v => v != null).ToImmutableArray();
-                        return values.FirstOrDefault();
-                    });
+                    symbol.MSetLazy(currentProperty, () => BindSingleValue(node, currentName));
                 }
             }
+        }
+
+        private object BindSingleValue(SyntaxNode node, string propertyName)
+        {
+            var binder = this.Compilation.GetBinder(node);
+            if (binder == null) return null;
+            var propertyBinders = binder.GetDescendantAndSelfBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder);
+            /*if (binder is IPropertyBinder && ((IPropertyBinder)binder).PropertyName == propertyName)
+            {
+                propertyBinders = propertyBinders.Add((IPropertyBinder)binder);
+            }*/
+            var valueBinders = propertyBinders.SelectMany(pb => ((Binder)pb).GetDescendantBinders<IValueBinder>()).ToImmutableArray();
+            var values = valueBinders.SelectMany(vb => vb.GetValues()).Where(v => v != null).ToImmutableArray();
+            return values.FirstOrDefault();
+        }
+
+
+        private IEnumerable<object> BindMultipleValues(SyntaxNode node, string propertyName)
+        {
+            var binder = this.Compilation.GetBinder(node);
+            if (binder == null) return null;
+            var propertyBinders = binder.GetDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder);
+            if (binder is IPropertyBinder && ((IPropertyBinder)binder).PropertyName == propertyName)
+            {
+                propertyBinders = propertyBinders.Add((IPropertyBinder)binder);
+            }
+            var valueBinders = propertyBinders.SelectMany(pb => ((Binder)pb).GetDescendantBinders<IValueBinder>()).ToImmutableArray();
+            var values = valueBinders.SelectMany(vb => vb.GetValues()).Where(v => v != null).ToImmutableArray();
+            return values;
         }
     }
 }

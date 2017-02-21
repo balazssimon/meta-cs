@@ -36,45 +36,9 @@ namespace MetaDslx.Core
             return new ModelException(new DiagnosticInfo(this.errorCode, this.ArgsToSymbols(model)), this);
         }
 
-        public virtual ModelException ToRed(MutableModelGroup modelGroup)
+        protected object[] ArgsToSymbols(MutableModel model)
         {
-            return new ModelException(new DiagnosticInfo(this.errorCode, this.ArgsToSymbols(modelGroup)), this);
-        }
-
-        public virtual ModelException ToRed(ImmutableModel model)
-        {
-            return new ModelException(new DiagnosticInfo(this.errorCode, this.ArgsToSymbols(model)), this);
-        }
-
-        protected ImmutableArray<object> ArgsToSymbols(ImmutableModel model)
-        {
-            ImmutableArray<object> result;
-            ArrayBuilder<object> resultBuilder = ArrayBuilder<object>.GetInstance();
-            try
-            {
-                foreach (var arg in this.args)
-                {
-                    SymbolId sid = arg as SymbolId;
-                    if (sid != null)
-                    {
-                        resultBuilder.Add((object)model.ResolveSymbol(sid) ?? (object)sid);
-                    }
-                    else
-                    {
-                        resultBuilder.Add(arg);
-                    }
-                }
-            }
-            finally
-            {
-                result = resultBuilder.ToImmutableAndFree();
-            }
-            return result;
-        }
-
-        protected ImmutableArray<object> ArgsToSymbols(MutableModel model)
-        {
-            ImmutableArray<object> result;
+            object[] result;
             ArrayBuilder <object> resultBuilder = ArrayBuilder<object>.GetInstance();
             try
             {
@@ -85,7 +49,7 @@ namespace MetaDslx.Core
                     {
                         resultBuilder.Add((object)model.ResolveSymbol(sid) ?? (object)sid);
                     }
-                    else
+                    else 
                     {
                         resultBuilder.Add(arg);
                     }
@@ -93,33 +57,7 @@ namespace MetaDslx.Core
             }
             finally
             {
-                result = resultBuilder.ToImmutableAndFree();
-            }
-            return result;
-        }
-
-        protected ImmutableArray<object> ArgsToSymbols(MutableModelGroup modelGroup)
-        {
-            ImmutableArray<object> result;
-            ArrayBuilder<object> resultBuilder = ArrayBuilder<object>.GetInstance();
-            try
-            {
-                foreach (var arg in this.args)
-                {
-                    SymbolId sid = arg as SymbolId;
-                    if (sid != null)
-                    {
-                        resultBuilder.Add((object)modelGroup.ResolveSymbol(sid) ?? (object)sid);
-                    }
-                    else
-                    {
-                        resultBuilder.Add(arg);
-                    }
-                }
-            }
-            finally
-            {
-                result = resultBuilder.ToImmutableAndFree();
+                result = resultBuilder.ToArrayAndFree();
             }
             return result;
         }
@@ -145,34 +83,6 @@ namespace MetaDslx.Core
             return new ModelSymbolException(new SymbolDiagnosticInfo(this.SymbolIdsToSymbols(model), this.ErrorCode, this.ArgsToSymbols(model)), this);
         }
 
-        public override ModelException ToRed(MutableModelGroup modelGroup)
-        {
-            return new ModelSymbolException(new SymbolDiagnosticInfo(this.SymbolIdsToSymbols(modelGroup), this.ErrorCode, this.ArgsToSymbols(modelGroup)), this);
-        }
-
-        public override ModelException ToRed(ImmutableModel model)
-        {
-            return new ModelSymbolException(new SymbolDiagnosticInfo(this.SymbolIdsToSymbols(model), this.ErrorCode, this.ArgsToSymbols(model)), this);
-        }
-
-        protected ImmutableArray<IMetaSymbol> SymbolIdsToSymbols(ImmutableModel model)
-        {
-            ImmutableArray<IMetaSymbol> result;
-            ArrayBuilder<IMetaSymbol> resultBuilder = ArrayBuilder<IMetaSymbol>.GetInstance();
-            try
-            {
-                foreach (var sid in this.symbols)
-                {
-                    resultBuilder.Add(model.ResolveSymbol(sid));
-                }
-            }
-            finally
-            {
-                result = resultBuilder.ToImmutableAndFree();
-            }
-            return result;
-        }
-
         protected ImmutableArray<IMetaSymbol> SymbolIdsToSymbols(MutableModel model)
         {
             ImmutableArray<IMetaSymbol> result;
@@ -182,24 +92,6 @@ namespace MetaDslx.Core
                 foreach (var sid in this.symbols)
                 {
                     resultBuilder.Add(model.ResolveSymbol(sid));
-                }
-            }
-            finally
-            {
-                result = resultBuilder.ToImmutableAndFree();
-            }
-            return result;
-        }
-
-        protected ImmutableArray<IMetaSymbol> SymbolIdsToSymbols(MutableModelGroup modelGroup)
-        {
-            ImmutableArray<IMetaSymbol> result;
-            ArrayBuilder<IMetaSymbol> resultBuilder = ArrayBuilder<IMetaSymbol>.GetInstance();
-            try
-            {
-                foreach (var sid in this.symbols)
-                {
-                    resultBuilder.Add(modelGroup.ResolveSymbol(sid));
                 }
             }
             finally
@@ -231,36 +123,6 @@ namespace MetaDslx.Core
             return new LazyEvaluationException(new LazyEvaluationDiagnosticInfo(this.EvaluationStackToSymbols(model), innerInfo, this.ErrorCode, this.ArgsToSymbols(model)), this);
         }
 
-        public override ModelException ToRed(MutableModelGroup modelGroup)
-        {
-            DiagnosticInfo innerInfo = this.InnerException is GreenModelException ? ((GreenModelException)this.InnerException).ToRed(modelGroup).DiagnosticInfo : null;
-            return new LazyEvaluationException(new LazyEvaluationDiagnosticInfo(this.EvaluationStackToSymbols(modelGroup), innerInfo, this.ErrorCode, this.ArgsToSymbols(modelGroup)), this);
-        }
-
-        public override ModelException ToRed(ImmutableModel model)
-        {
-            DiagnosticInfo innerInfo = this.InnerException is GreenModelException ? ((GreenModelException)this.InnerException).ToRed(model).DiagnosticInfo : null;
-            return new LazyEvaluationException(new LazyEvaluationDiagnosticInfo(this.EvaluationStackToSymbols(model), innerInfo, this.ErrorCode, this.ArgsToSymbols(model)), this);
-        }
-
-        protected ImmutableArray<LazyEvalEntry> EvaluationStackToSymbols(ImmutableModel model)
-        {
-            ImmutableArray<LazyEvalEntry> result;
-            ArrayBuilder<LazyEvalEntry> resultBuilder = ArrayBuilder<LazyEvalEntry>.GetInstance();
-            try
-            {
-                foreach (var entry in this.evaluationStack)
-                {
-                    resultBuilder.Add(new LazyEvalEntry(model.ResolveSymbol(entry.Symbol), entry.Property));
-                }
-            }
-            finally
-            {
-                result = resultBuilder.ToImmutableAndFree();
-            }
-            return result;
-        }
-
         protected ImmutableArray<LazyEvalEntry> EvaluationStackToSymbols(MutableModel model)
         {
             ImmutableArray<LazyEvalEntry> result;
@@ -270,24 +132,6 @@ namespace MetaDslx.Core
                 foreach (var entry in this.evaluationStack)
                 {
                     resultBuilder.Add(new LazyEvalEntry(model.ResolveSymbol(entry.Symbol), entry.Property));
-                }
-            }
-            finally
-            {
-                result = resultBuilder.ToImmutableAndFree();
-            }
-            return result;
-        }
-
-        protected ImmutableArray<LazyEvalEntry> EvaluationStackToSymbols(MutableModelGroup modelGroup)
-        {
-            ImmutableArray<LazyEvalEntry> result;
-            ArrayBuilder<LazyEvalEntry> resultBuilder = ArrayBuilder<LazyEvalEntry>.GetInstance();
-            try
-            {
-                foreach (var entry in this.evaluationStack)
-                {
-                    resultBuilder.Add(new LazyEvalEntry(modelGroup.ResolveSymbol(entry.Symbol), entry.Property));
                 }
             }
             finally

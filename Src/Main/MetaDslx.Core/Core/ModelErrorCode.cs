@@ -38,6 +38,7 @@ namespace MetaDslx.Core
         public static readonly ModelErrorCode ERR_CannotReassignCollectionProperty = new ModelErrorCode(26, DiagnosticSeverity.Error, 0, "Cannot reassign collection property '{0}' of symbol '{1}'.");
         public static readonly ModelErrorCode ERR_CannotAddMultipleValuesToNonCollectionProperty = new ModelErrorCode(27, DiagnosticSeverity.Error, 0, "Cannot add multiple values to non-collection property '{0}' of symbol '{1}'.");
         public static readonly ModelErrorCode ERR_CannotMergeDifferentSymbols = new ModelErrorCode(28, DiagnosticSeverity.Error, 0, "Cannot merge part symbol '{0}' into target symbol '{1}'. The target and the part symbols must be of the same type (part symbol is of type '{2}', target symbol is of type '{3}').");
+        public static readonly ModelErrorCode ERR_Exception = new ModelErrorCode(29, DiagnosticSeverity.Error, 0, "Unexpected exception: {0}");
 
         internal ModelErrorCode(int id, DiagnosticSeverity defaultSeverity, int warningLevel, string defaultMessage) 
             : base(ModelCategory, id, defaultSeverity, warningLevel, defaultMessage)

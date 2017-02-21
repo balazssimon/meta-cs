@@ -51,7 +51,6 @@
     <Compile Include="Compilation\SoalFeature.cs" />
     <Compile Include="Compilation\SoalLanguage.cs" />
     <Compile Include="Compilation\SoalLanguageVersion.cs" />
-    <Compile Include="Compilation\SoalMessageProvider.cs" />
     <Compile Include="Compilation\SoalParseOptions.cs" />
     <Compile Include="Compilation\SoalScriptCompilationInfo.cs" />
     <Compile Include="Errors\SoalErrorCode.cs" />

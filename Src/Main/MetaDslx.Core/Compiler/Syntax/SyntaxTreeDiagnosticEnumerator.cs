@@ -64,7 +64,7 @@ namespace MetaDslx.Compiler.Syntax
                     var spanStart = Math.Min(_position - leadingWidthAlreadyCounted + sdi.Offset, length);
                     var spanWidth = Math.Min(spanStart + sdi.Width, length) - spanStart;
 
-                    _current = Diagnostic.Create(sdi, new SourceLocation(_syntaxTree, new TextSpan(spanStart, spanWidth)));
+                    _current = Diagnostic.Create(new SourceLocation(_syntaxTree, new TextSpan(spanStart, spanWidth)), sdi);
 
                     _stack.UpdateDiagnosticIndexForStackTop(diagIndex);
                     return true;

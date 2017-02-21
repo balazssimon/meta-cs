@@ -141,7 +141,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             string errorMessage;
             if (this.Antlr4Errors.TryGetValue(tokenIndex, out errorMessage))
             {
-                SyntaxDiagnosticInfo diagnosticInfo = this.MakeError(token.GetLeadingTriviaWidth(), token.Width, ErrorCode.ERR_SyntaxError, errorMessage);
+                SyntaxDiagnosticInfo diagnosticInfo = this.MakeError(token.GetLeadingTriviaWidth(), token.Width, Antlr4RoslynErrorCode.ERR_SyntaxError, errorMessage);
                 return token.WithDiagnostics(new DiagnosticInfo[] { diagnosticInfo });
             }
             return token;

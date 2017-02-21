@@ -593,7 +593,7 @@ namespace MetaDslx.Compiler
 
         #region Symbols
 
-        protected override ModelId ModelId
+        internal protected override ModelId ModelId
         {
             get
             {
@@ -605,7 +605,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The ModelGroupBuilder that represents the compilation.
         /// </summary>
-        protected override MutableModelGroup ModelGroupBuilder
+        internal protected override MutableModelGroup ModelGroupBuilder
         {
             get
             {
@@ -617,7 +617,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The ModelBuilder that represents the compilation.
         /// </summary>
-        protected override MutableModel ModelBuilder
+        internal protected override MutableModel ModelBuilder
         {
             get
             {

@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace MetaDslx.Core.Immutable.Test
 {
+    using Compiler.Diagnostics;
     using System.Collections.Immutable;
     using System.Threading;
     public static class TestModelDescriptor
@@ -256,7 +257,7 @@ namespace MetaDslx.Core.Immutable.Test
                 case "User": return (MutableSymbolBase)this.User();
                 case "Role": return (MutableSymbolBase)this.Role();
                 default:
-                    throw new ModelException("Unknown type name: " + type);
+                    throw new ModelException(new DiagnosticInfo(ModelErrorCode.ERR_UnknownTypeName, type));
             }
         }
 

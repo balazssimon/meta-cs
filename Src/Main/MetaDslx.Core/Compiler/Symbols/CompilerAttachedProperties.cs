@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Compiler.Binding;
 using MetaDslx.Compiler.Declarations;
+using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Core;
 using System;
@@ -38,6 +39,11 @@ namespace MetaDslx.Compiler.Symbols
             ModelProperty.Register(typeof(CompilerAttachedProperties), "IsScriptClass",
                 new ModelPropertyTypeInfo(typeof(bool), null),
                 new ModelPropertyTypeInfo(typeof(bool), null));
+
+        public static readonly ModelProperty UseSiteDiagnosticProperty =
+            ModelProperty.Register(typeof(CompilerAttachedProperties), "UseSiteDiagnostic",
+                new ModelPropertyTypeInfo(typeof(DiagnosticInfo), null),
+                new ModelPropertyTypeInfo(typeof(DiagnosticInfo), null));
 
     }
 }

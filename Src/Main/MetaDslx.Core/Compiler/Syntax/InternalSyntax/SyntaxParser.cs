@@ -55,24 +55,24 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public abstract DirectiveStack Directives { get; }
 
-        protected SyntaxDiagnosticInfo MakeError(int offset, int width, int code)
+        protected SyntaxDiagnosticInfo MakeError(int offset, int width, ErrorCode code)
         {
-            return new SyntaxDiagnosticInfo(this.language.MessageProvider, offset, width, code);
+            return new SyntaxDiagnosticInfo(offset, width, code);
         }
 
-        protected SyntaxDiagnosticInfo MakeError(int offset, int width, int code, params object[] args)
+        protected SyntaxDiagnosticInfo MakeError(int offset, int width, ErrorCode code, params object[] args)
         {
-            return new SyntaxDiagnosticInfo(this.language.MessageProvider, offset, width, code, args);
+            return new SyntaxDiagnosticInfo(offset, width, code, args);
         }
 
-        protected SyntaxDiagnosticInfo MakeError(InternalSyntaxNode node, int code, params object[] args)
+        protected SyntaxDiagnosticInfo MakeError(InternalSyntaxNode node, ErrorCode code, params object[] args)
         {
-            return new SyntaxDiagnosticInfo(this.language.MessageProvider, node.GetLeadingTriviaWidth(), node.Width, code, args);
+            return new SyntaxDiagnosticInfo(node.GetLeadingTriviaWidth(), node.Width, code, args);
         }
 
-        protected SyntaxDiagnosticInfo MakeError(int code, params object[] args)
+        protected SyntaxDiagnosticInfo MakeError(ErrorCode code, params object[] args)
         {
-            return new SyntaxDiagnosticInfo(this.language.MessageProvider, code, args);
+            return new SyntaxDiagnosticInfo(code, args);
         }
     }
 }

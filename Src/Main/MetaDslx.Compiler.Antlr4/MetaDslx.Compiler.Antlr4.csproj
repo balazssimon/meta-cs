@@ -44,11 +44,10 @@
   <ItemGroup>
     <Compile Include="Antlr4SyntaxParser.cs" />
     <Compile Include="Compiler\Antlr4RoslynCompiler.cs" />
-    <Compile Include="Compiler\Antlr4RoslynErrors.cs" />
+    <Compile Include="Compiler\Antlr4RoslynErrorCode.cs" />
     <Compile Include="Compiler\Antlr4RoslynLexer.cs">
       <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Compiler\Antlr4RoslynMessageProvider.cs" />
     <Compile Include="Compiler\Antlr4RoslynParser.cs">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </Compile>
