@@ -9,9 +9,10 @@ using System.Diagnostics;
 
 namespace MetaDslx.Core
 {
-	using global::MetaDslx.Core.Internal;
+    using Compiler.Diagnostics;
+    using global::MetaDslx.Core.Internal;
 
-	public class MetaInstance
+    public class MetaInstance
 	{
 		private static bool initialized;
 	
@@ -228,7 +229,7 @@ namespace MetaDslx.Core
 				case "MetaParameter": return this.MetaParameter();
 				case "MetaProperty": return this.MetaProperty();
 				default:
-					throw new global::MetaDslx.Core.GreenModelException(MetaDslx.Core.ModelErrorCode.ERR_UnknownTypeName, type);
+					throw new global::MetaDslx.Core.ModelException(Location.None, new DiagnosticInfo(MetaDslx.Core.ModelErrorCode.ERR_UnknownTypeName, type));
 			}
 		}
 	

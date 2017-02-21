@@ -11,41 +11,29 @@ namespace MetaDslx.Core
 {
     public class ModelException : Exception
     {
+        private Location location;
         private DiagnosticInfo diagnosticInfo;
 
-        public ModelException(DiagnosticInfo diagnosticInfo)
-            : this(diagnosticInfo, null)
+        public ModelException(Location location, DiagnosticInfo diagnosticInfo)
+            : this(location, diagnosticInfo, null)
         {
+        }
+
+        public ModelException(Location location, DiagnosticInfo diagnosticInfo, Exception innerException)
+            : base(string.Format(diagnosticInfo.GetMessage()), innerException)
+        {
+            this.location = location;
             this.diagnosticInfo = diagnosticInfo;
         }
 
-        public ModelException(DiagnosticInfo diagnosticInfo, Exception innerException)
-            : base(string.Format(diagnosticInfo.GetMessage()), innerException)
+        public Location Location
         {
-
+            get { return this.location; }
         }
 
         public DiagnosticInfo DiagnosticInfo
         {
             get { return this.diagnosticInfo; }
-        }
-    }
-
-    public class ModelSymbolException : ModelException
-    {
-        internal ModelSymbolException(SymbolDiagnosticInfo diagnosticInfo)
-            : base(diagnosticInfo)
-        {
-        }
-
-        internal ModelSymbolException(SymbolDiagnosticInfo diagnosticInfo, Exception innerException)
-            : base(diagnosticInfo, innerException)
-        {
-        }
-
-        public ImmutableArray<IMetaSymbol> Symbols
-        {
-            get { return ((SymbolDiagnosticInfo)this.DiagnosticInfo).Symbols; }
         }
     }
 
@@ -82,13 +70,13 @@ namespace MetaDslx.Core
 
     public sealed class LazyEvaluationException : ModelException
     {
-        internal LazyEvaluationException(LazyEvaluationDiagnosticInfo diagnosticInfo)
-            : base(diagnosticInfo)
+        internal LazyEvaluationException(Location location, LazyEvaluationDiagnosticInfo diagnosticInfo)
+            : base(location, diagnosticInfo)
         {
         }
 
-        internal LazyEvaluationException(LazyEvaluationDiagnosticInfo diagnosticInfo, Exception innerException)
-            : base(diagnosticInfo, innerException)
+        internal LazyEvaluationException(Location location, LazyEvaluationDiagnosticInfo diagnosticInfo, Exception innerException)
+            : base(location, diagnosticInfo, innerException)
         {
         }
 

@@ -257,7 +257,7 @@ namespace MetaDslx.Core.Immutable.Test
                 case "User": return (MutableSymbolBase)this.User();
                 case "Role": return (MutableSymbolBase)this.Role();
                 default:
-                    throw new ModelException(new DiagnosticInfo(ModelErrorCode.ERR_UnknownTypeName, type));
+                    throw new ModelException(Location.None, new DiagnosticInfo(ModelErrorCode.ERR_UnknownTypeName, type));
             }
         }
 

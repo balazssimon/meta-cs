@@ -8,8 +8,8 @@ using System.Collections.Immutable; //4:1
 
 namespace MetaDslx.Core //1:1
 {
-    using __Hidden_ImmutableMetaModelGenerator_277428941;
-    namespace __Hidden_ImmutableMetaModelGenerator_277428941
+    using __Hidden_ImmutableMetaModelGenerator_1183897806;
+    namespace __Hidden_ImmutableMetaModelGenerator_1183897806
     {
         internal static class __Extensions
         {
@@ -5431,7 +5431,7 @@ namespace MetaDslx.Core //1:1
                     if (!__tmp39_last) __out.AppendLine(true);
                 }
             }
-            string __tmp40_line = ".GreenModelException("; //386:34
+            string __tmp40_line = ".ModelException(Location.None, new DiagnosticInfo("; //386:34
             if (!string.IsNullOrEmpty(__tmp40_line))
             {
                 __out.Append(__tmp40_line);
@@ -5454,7 +5454,7 @@ namespace MetaDslx.Core //1:1
                     if (!__tmp41_last) __out.AppendLine(true);
                 }
             }
-            string __tmp42_line = ".ModelErrorCode.ERR_UnknownTypeName, type);"; //386:74
+            string __tmp42_line = ".ModelErrorCode.ERR_UnknownTypeName, type));"; //386:103
             if (!string.IsNullOrEmpty(__tmp42_line))
             {
                 __out.Append(__tmp42_line);
@@ -5463,7 +5463,7 @@ namespace MetaDslx.Core //1:1
             if (__tmp37_outputWritten) __out.AppendLine(true);
             if (__tmp37_outputWritten)
             {
-                __out.AppendLine(false); //386:117
+                __out.AppendLine(false); //386:147
             }
             __out.Append("		}"); //387:1
             __out.AppendLine(false); //387:4

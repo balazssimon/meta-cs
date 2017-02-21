@@ -68,6 +68,8 @@ namespace MetaDslx.Languages.Soal.Test
             var sm = comp.GetSemanticModel(syntaxTree);
             Console.WriteLine(sm);
 
+
+            Console.WriteLine("----");
             Console.WriteLine(comp.Model);
             var root = (MainSyntax)syntaxTree.GetRoot();
             var ns = root.NamespaceDeclaration[0].QualifiedName;
@@ -99,7 +101,15 @@ namespace MetaDslx.Languages.Soal.Test
                     Console.WriteLine("  "+prop.Name+"="+symbol.MGet(prop));
                 }
             }
-            
+
+            Console.WriteLine("----");
+
+            foreach (var diag in comp.SymbolDiagnostics)
+            {
+                Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
+            }
+
+            Console.WriteLine("----");
             /*}
             catch(Exception ex)
             {

@@ -120,7 +120,6 @@
     <Compile Include="Compiler\Symbols\CompilerAttachedMethods.cs" />
     <Compile Include="Compiler\Symbols\CompilerAttachedProperties.cs" />
     <Compile Include="Core\GreenModel.cs" />
-    <Compile Include="Core\GreenModelException.cs" />
     <Compile Include="Core\ImmutableMetaImplementation.cs" />
     <Compile Include="Core\ImmutableMetaModel.cs">
       <AutoGen>True</AutoGen>

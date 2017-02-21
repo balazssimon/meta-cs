@@ -45,5 +45,9 @@ namespace MetaDslx.Compiler.Symbols
                 new ModelPropertyTypeInfo(typeof(DiagnosticInfo), null),
                 new ModelPropertyTypeInfo(typeof(DiagnosticInfo), null));
 
+        public static readonly ModelProperty DiagnosticBagProperty =
+            ModelProperty.Register(typeof(CompilerAttachedProperties), "DiagnosticBag",
+                new ModelPropertyTypeInfo(typeof(DiagnosticBag), null),
+                new ModelPropertyTypeInfo(typeof(DiagnosticBag), null));
     }
 }

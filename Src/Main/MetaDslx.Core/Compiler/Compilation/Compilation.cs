@@ -624,6 +624,18 @@ namespace MetaDslx.Compiler
 
         #region Symbols
 
+        private DiagnosticBag _symbolDiagnosticBag;
+        private ImmutableArray<Diagnostic> _symbolDiagnostics;
+
+        public ImmutableArray<Diagnostic> SymbolDiagnostics
+        {
+            get
+            {
+                this.ForceCompleteModel();
+                return _symbolDiagnostics;
+            }
+        }
+
         private ImmutableModelGroup _lazyModelGroup;
         private ImmutableModel _lazyModel;
 
@@ -637,11 +649,7 @@ namespace MetaDslx.Compiler
         {
             get
             {
-                if (_lazyModelGroup == null)
-                {
-                    this.ModelGroupBuilder.GetModel(this.ModelId)?.EvaluateLazyValues();
-                    Interlocked.CompareExchange(ref _lazyModelGroup, this.ModelGroupBuilder.ToImmutable(), null);
-                }
+                this.ForceCompleteModel();
                 return _lazyModelGroup;
             }
         }
@@ -665,6 +673,40 @@ namespace MetaDslx.Compiler
         internal protected abstract MutableModel ModelBuilder { get; }
 
         internal protected abstract SymbolBuilder SymbolTreeBuilder { get; }
+
+        protected void CompleteModel(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            this.ModelGroupBuilder.GetModel(this.ModelId)?.EvaluateLazyValues(cancellationToken);
+            foreach (var symbol in this.ModelBuilder.Symbols)
+            {
+                DiagnosticBag symbolDiagnostics = (DiagnosticBag)symbol.MGet(CompilerAttachedProperties.DiagnosticBagProperty);
+                if (symbolDiagnostics != null)
+                {
+                    diagnostics.AddRange(symbolDiagnostics);
+                }
+            }
+        }
+
+        protected void ForceCompleteModel()
+        {
+            if (_lazyModelGroup == null)
+            {
+                //this.ModelGroupBuilder.GetModel(this.ModelId)?.EvaluateLazyValues();
+                if (Interlocked.CompareExchange(ref _lazyModelGroup, this.ModelGroupBuilder.ToImmutable(), null) == null)
+                {
+                    DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
+                    try
+                    {
+                        this.CompleteModel(diagnostics, CancellationToken.None);
+                    }
+                    finally
+                    {
+                        ImmutableInterlocked.InterlockedExchange(ref _symbolDiagnostics, diagnostics.ToReadOnlyAndFree());
+                    }
+                    Interlocked.Exchange(ref _lazyModelGroup, this.ModelGroupBuilder.ToImmutable());
+                }
+            }
+        }
 
         /// <summary>
         /// The root namespace that contains all namespaces and types defined in source code or in 

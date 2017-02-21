@@ -397,7 +397,7 @@ namespace MetaDslx.Languages.Soal.Symbols
 				case "JsonEncodingBindingElement": return this.JsonEncodingBindingElement();
 				case "WsAddressingBindingElement": return this.WsAddressingBindingElement();
 				default:
-					throw new global::MetaDslx.Core.ModelException(new DiagnosticInfo(global::MetaDslx.Core.ModelErrorCode.ERR_UnknownTypeName, type));
+					throw new global::MetaDslx.Core.ModelException(Location.None, new DiagnosticInfo(global::MetaDslx.Core.ModelErrorCode.ERR_UnknownTypeName, type));
 			}
 		}
 	

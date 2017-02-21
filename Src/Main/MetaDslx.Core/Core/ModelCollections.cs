@@ -1076,7 +1076,7 @@ namespace MetaDslx.Core
 
         public override void AddLazy(Func<T> item)
         {
-            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, (Func<object>)(object)item, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, LazyValue.CreateSingle((Func<object>)(object)item), this.symbol.MIsBeingCreated);
         }
 
         public override void AddRangeLazy(IEnumerable<Func<T>> items)
@@ -1499,7 +1499,7 @@ namespace MetaDslx.Core
 
         public override void AddLazy(Func<T> item)
         {
-            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, (Func<object>)(object)item, this.symbol.MIsBeingCreated);
+            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, LazyValue.CreateSingle((Func<object>)(object)item), this.symbol.MIsBeingCreated);
         }
 
         public override void AddRangeLazy(IEnumerable<Func<T>> items)
