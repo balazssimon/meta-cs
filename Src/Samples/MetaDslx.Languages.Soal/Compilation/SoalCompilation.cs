@@ -413,16 +413,6 @@ namespace MetaDslx.Languages.Soal
             return this.WithScriptCompilationInfo(info);
         }
 
-        protected override void ForceCompleteModel(SourceLocation location, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void ForceCompleteSymbol(IMetaSymbol symbol, SourceLocation location, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool HasCodeToEmit()
         {
             if (this.IsSubmission) return false;

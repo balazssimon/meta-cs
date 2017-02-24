@@ -43,11 +43,11 @@ namespace MetaDslx.Languages.Soal.Test
 
             Console.WriteLine(comp.Declarations.MergedRoot);
 
-            Console.WriteLine("----");
+            /*Console.WriteLine("----");
             foreach (var diag in comp.GetSyntaxDiagnostics())
             {
                 Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
-            }
+            }*/
 
             Console.WriteLine("----");
             Console.WriteLine(comp.GlobalNamespace);
@@ -103,8 +103,15 @@ namespace MetaDslx.Languages.Soal.Test
             }
 
             Console.WriteLine("----");
-
-            foreach (var diag in comp.SymbolDiagnostics)
+            foreach (var diag in comp.GetSyntaxDiagnostics())
+            {
+                Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
+            }
+            foreach (var diag in comp.GetDeclarationDiagnostics())
+            {
+                Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
+            }
+            foreach (var diag in comp.GetSemanticDiagnostics())
             {
                 Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
             }

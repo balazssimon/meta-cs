@@ -1213,14 +1213,15 @@ namespace MetaDslx.Compiler
         // IL or emit an assembly.
         private void GetDiagnosticsForAllSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            SymbolCompiler.CompileSymbols(
-                compilation: this,
-                moduleBeingBuiltOpt: null,
-                hasDeclarationErrors: false,
-                diagnostics: diagnostics,
-                filterOpt: null,
-                cancellationToken: cancellationToken);
-
+            this.CompleteModel(cancellationToken);
+            foreach (var symbol in this.ModelBuilder.Symbols)
+            {
+                DiagnosticBag symbolDiagnostics = (DiagnosticBag)symbol.MGet(CompilerAttachedProperties.DiagnosticBagProperty);
+                if (symbolDiagnostics != null)
+                {
+                    diagnostics.AddRange(symbolDiagnostics);
+                }
+            }
             this.ReportUnusedImports(diagnostics, cancellationToken);
         }
 
@@ -1339,10 +1340,6 @@ namespace MetaDslx.Compiler
 
             return result.ToImmutableArray();
         }
-
-        protected abstract void ForceCompleteModel(SourceLocation location, CancellationToken cancellationToken = default(CancellationToken));
-
-        protected abstract void ForceCompleteSymbol(IMetaSymbol symbol, SourceLocation location, CancellationToken cancellationToken = default(CancellationToken));
 
         private static IEnumerable<Diagnostic> FilterDiagnosticsByLocation(IEnumerable<Diagnostic> diagnostics, SyntaxTree tree, TextSpan? filterSpanWithinTree)
         {
