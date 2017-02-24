@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;

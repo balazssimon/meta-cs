@@ -6,12 +6,23 @@ namespace MetaDslx.Compiler.Utilities
     /// Represents a value type that can be assigned null.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Optional<T>
+    public sealed class Optional<T>
     {
+        public static Optional<T> None = new Optional<T>();
         public static Optional<T> Default = new Optional<T>(default(T));
 
         private readonly bool _hasValue;
         private readonly T _value;
+
+        /// <summary>
+        /// Initializes a new instance to the specified value.
+        /// </summary>
+        /// <param name="value"></param>
+        private Optional()
+        {
+            _hasValue = false;
+            _value = default(T);
+        }
 
         /// <summary>
         /// Initializes a new instance to the specified value.

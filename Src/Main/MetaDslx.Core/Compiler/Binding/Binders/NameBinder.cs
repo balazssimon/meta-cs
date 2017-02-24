@@ -32,7 +32,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             {
                 if (_lazyDefinedSymbols.IsDefault)
                 {
-                    var qualifierBinders = this.GetDescendantBinders<IQualifierBinder>();
+                    var qualifierBinders = this.FindDescendantBinders<IQualifierBinder>();
                     ArrayBuilder<IMetaSymbol> builder = ArrayBuilder<IMetaSymbol>.GetInstance();
                     try
                     {

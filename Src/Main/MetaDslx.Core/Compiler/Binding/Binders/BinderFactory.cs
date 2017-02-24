@@ -9,43 +9,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding.Binders
 {
-    public sealed class BinderFactory
+    public abstract class BinderFactory
     {
-        // key in the binder cache.
-        // PERF: we are not using ValueTuple because its Equals is relatively slow.
-        internal struct BinderCacheKey : IEquatable<BinderCacheKey>
-        {
-            private static object GeneralUsage = new object();
-
-            public readonly RedNode syntaxNode;
-            public readonly object usage;
-
-            public BinderCacheKey(RedNode syntaxNode, object usage)
-            {
-                this.syntaxNode = syntaxNode;
-                this.usage = usage ?? GeneralUsage;
-            }
-
-            bool IEquatable<BinderCacheKey>.Equals(BinderCacheKey other)
-            {
-                return syntaxNode == other.syntaxNode && this.usage == other.usage;
-            }
-
-            public override int GetHashCode()
-            {
-                return Hash.Combine(syntaxNode.GetHashCode(), usage.GetHashCode());
-            }
-
-            public override bool Equals(object obj)
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-
-        // This dictionary stores contexts so we don't have to recreate them, which can be
-        // expensive. 
-        private readonly ConcurrentCache<BinderCacheKey, Binder> _binderCache;
         private readonly Compilation _compilation;
         private readonly SyntaxTree _syntaxTree;
         private readonly BuckStopsHereBinder _buckStopsHereBinder;
@@ -61,15 +26,6 @@ namespace MetaDslx.Compiler.Binding.Binders
             _syntaxTree = syntaxTree;
 
             _binderFactoryVisitorPool = new ObjectPool<BinderFactoryVisitor>(() => compilation.Language.CompilationFactory.CreateBinderFactoryVisitor(this), 64);
-
-            // 50 is more or less a guess, but it seems to work fine for scenarios that I tried.
-            // we need something big enough to keep binders for most classes and some methods 
-            // in a typical syntax tree.
-            // On the other side, note that the whole factory is weakly referenced and therefore short lived, 
-            // making this cache big is not very useful.
-            // I noticed that while compiling Roslyn C# compiler most caches never see 
-            // more than 50 items added before getting collected.
-            _binderCache = new ConcurrentCache<BinderCacheKey, Binder>(50);
 
             _buckStopsHereBinder = new BuckStopsHereBinder(compilation);
         }
@@ -108,73 +64,57 @@ namespace MetaDslx.Compiler.Binding.Binders
         /// </summary>
         public Binder GetBinder(RedNode node)
         {
+            if (node == null) return null;
             int position = node.SpanStart;
-
-            // Special case: In interactive code, we may be trying to retrieve a binder for global statements
-            // at the *very* top-level (i.e. in a completely empty file). In this case, we use the compilation unit
-            // directly since it's parent would be null.
-            if (InScript && node.Parent == null)
+            if (node is SyntaxNode)
             {
-                SyntaxNode rootNode = node as SyntaxNode;
-                if (rootNode != null)
-                {
-                    return GetBinder(rootNode, position);
-                }
-                else
-                {
-                    return null;
-                }
+                return GetBinder((SyntaxNode)node, position, false);
             }
-
-            return GetBinder(node, position);
+            else
+            {
+                return GetBinder(node.Parent, position, true);
+            }
         }
 
         public Binder GetBinder(RedNode node, int position)
         {
             if (node == null) return null;
-            Binder result = null;
-            if (this.TryGetBinder(node, null, out result))
+            if (node is SyntaxNode)
             {
-                return result;
+                return this.GetBinder((SyntaxNode)node, position, true);
             }
             else
             {
-                result = this.CreateBinder(node, position);
-                if (result != null) this.TryAddBinder(node, null, result);
+                return this.GetBinder(node.Parent, position, true);
             }
-            return result;
         }
 
-        private Binder CreateBinder(RedNode node, int position)
+        private Binder GetBinder(SyntaxNode node, int position, bool forChild)
         {
             Debug.Assert(node != null);
-
             Binder result = null;
-
             BinderFactoryVisitor visitor = _binderFactoryVisitorPool.Allocate();
             try
             {
-                visitor.Reset(position);
-                result = visitor.VisitRed(node);
+                visitor.Reset(position, forChild);
+                result = node.Accept(visitor);
             }
             finally
             {
                 _binderFactoryVisitorPool.Free(visitor);
             }
-
             return result;
         }
 
-        public bool TryGetBinder(RedNode node, object usage, out Binder binder)
+        public virtual bool TryGetBinder(RedNode node, object usage, out Binder binder)
         {
-            var key = new BinderCacheKey(node, usage);
-            return _binderCache.TryGetValue(key, out binder);
+            binder = null;
+            return false;
         }
 
-        public void TryAddBinder(RedNode node, object usage, Binder binder)
+        public virtual bool TryAddBinder(RedNode node, object usage, ref Binder binder)
         {
-            var key = new BinderCacheKey(node, usage);
-            _binderCache.TryAdd(key, binder);
+            return false;
         }
     }
 }

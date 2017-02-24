@@ -1044,7 +1044,7 @@ namespace MetaDslx.Compiler
                 ModelProperty prop = mo.MGetProperty(propertyAnnotation.Name);
                 if (prop != null)
                 {
-                    mo.MAddLazy(prop, value);
+                    mo.MAddLazy(prop, LazyValue.CreateSingle(value));
                     return true;
                 }
             }
@@ -1911,11 +1911,11 @@ namespace MetaDslx.Compiler
                 {
                     if (prop.IsCollection)
                     {
-                        mo.MAddLazy(prop, value);
+                        mo.MAddLazy(prop, LazyValue.CreateSingle(value));
                     }
                     else
                     {
-                        mo.MSetLazy(prop, value);
+                        mo.MSetLazy(prop, LazyValue.CreateSingle(value));
                     }
                 }
             }

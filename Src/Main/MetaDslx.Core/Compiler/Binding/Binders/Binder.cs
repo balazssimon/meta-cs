@@ -27,6 +27,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         public CompilationBase Compilation { get; }
         private readonly Binder _next;
         private readonly RedNode _node;
+        private ImmutableArray<Binder> _lazyPreviousBinders;
         private Conversions _lazyConversions;
         private OverloadResolution _lazyOverloadResolution;
 
@@ -56,6 +57,58 @@ namespace MetaDslx.Compiler.Binding.Binders
             {
                 return _next;
             }
+        }
+
+        /// <summary>
+        /// Get the next binder in which to look up a name, if not found by this binder.
+        /// </summary>
+        public ImmutableArray<Binder> Previous
+        {
+            get
+            {
+                if (_lazyPreviousBinders == null)
+                {
+                    ImmutableInterlocked.InterlockedExchange(ref _lazyPreviousBinders, this.CollectPreviousBinders());
+                }
+                return _lazyPreviousBinders;
+            }
+        }
+
+        private ImmutableArray<Binder> CollectPreviousBinders()
+        {
+            ImmutableArray<Binder> result = ImmutableArray<Binder>.Empty;
+            ArrayBuilder<Binder> resultBuilder = ArrayBuilder<Binder>.GetInstance();
+            try
+            {
+                Stack<RedNode> nodeStack = new Stack<RedNode>();
+                nodeStack.Push(_node);
+                while (nodeStack.Count > 0)
+                {
+                    RedNode currentNode = nodeStack.Pop();
+                    Binder currentBinder = this.Compilation.GetBinder(currentNode);
+                    if (currentBinder != this)
+                    {
+                        while (currentBinder.Next != this) currentBinder = currentBinder.Next;
+                        resultBuilder.Add(currentBinder);
+                    }
+                    else
+                    {
+                        SyntaxNode currentSyntax = currentNode as SyntaxNode;
+                        if (currentSyntax != null)
+                        {
+                            foreach (var child in currentSyntax.ChildNodesAndTokens().Reverse())
+                            {
+                                nodeStack.Push(child);
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                result = resultBuilder.ToImmutableAndFree();
+            }
+            return result;
         }
 
         /// <summary>
@@ -127,26 +180,44 @@ namespace MetaDslx.Compiler.Binding.Binders
             return this.Compilation.GetBinder(node);
         }
 
-        public Binder GetAncestorBinder()
-        {
-            return  this._next;
-        }
-
-        public Binder GetAncestorBinder(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
-        {
-            return this.GetAncestorBinder<Binder>(ReturnTrue, ReturnFalse);
-        }
-
-        public TBinder GetAncestorBinder<TBinder>()
+        public TBinder FindAncestorBinder<TBinder>()
             where TBinder : class
         {
-            return this.GetAncestorBinder<TBinder>(b => true, ReturnFalse);
+            return this.FindAncestorBinder<TBinder>(false, b => true, ReturnFalse);
         }
 
-        public TBinder GetAncestorBinder<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+        public Binder FindAncestorBinder(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+        {
+            return this.FindAncestorBinder<Binder>(false, selectBinder, stepIntoBinder);
+        }
+
+        public TBinder FindAncestorBinder<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
             where TBinder : class
         {
-            Binder currentBinder = this._next;
+            return this.FindAncestorBinder<TBinder>(false, selectBinder, stepIntoBinder);
+        }
+
+        public TBinder FindAncestorAndSelfBinder<TBinder>()
+            where TBinder : class
+        {
+            return this.FindAncestorBinder<TBinder>(true, b => true, ReturnFalse);
+        }
+
+        public Binder FindAncestorAndSelfBinder(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+        {
+            return this.FindAncestorBinder<Binder>(true, selectBinder, stepIntoBinder);
+        }
+
+        public TBinder FindAncestorAndSelfBinder<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+            where TBinder : class
+        {
+            return this.FindAncestorBinder<TBinder>(true, selectBinder, stepIntoBinder);
+        }
+
+        private TBinder FindAncestorBinder<TBinder>(bool includeSelf, Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+            where TBinder : class
+        {
+            Binder currentBinder = includeSelf ? this : this._next;
             while (currentBinder != null)
             {
                 TBinder typedBinder = currentBinder as TBinder;
@@ -154,7 +225,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                 {
                     return typedBinder;
                 }
-                else if (stepIntoBinder(currentBinder))
+                if (stepIntoBinder(currentBinder))
                 {
                     currentBinder = currentBinder._next;
                 }
@@ -166,123 +237,76 @@ namespace MetaDslx.Compiler.Binding.Binders
             return null;
         }
 
-        public ImmutableArray<Binder> GetDescendantBinders()
+        public ImmutableArray<Binder> FindDescendantBinders()
         {
-            return this.GetDescendantBinders(ReturnTrue, ReturnFalse);
+            return this.FindDescendantBinders(false, ReturnTrue, ReturnFalse);
         }
 
-        public ImmutableArray<Binder> GetDescendantBinders(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
-        {
-            return this.GetDescendantBinders<Binder>(selectBinder, stepIntoBinder);
-        }
-
-        public ImmutableArray<TBinder> GetDescendantBinders<TBinder>()
+        public ImmutableArray<TBinder> FindDescendantBinders<TBinder>()
             where TBinder : class
         {
-            return this.GetDescendantBinders<TBinder>((TBinder b) => true, ReturnFalse);
+            return this.FindDescendantBinders<TBinder>(false, (TBinder b) => true, ReturnFalse);
         }
 
-        public ImmutableArray<TBinder> GetDescendantBinders<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
-            where TBinder: class
+        public ImmutableArray<Binder> FindDescendantBinders(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
         {
-            ImmutableArray<TBinder> result = ImmutableArray<TBinder>.Empty;
-            ArrayBuilder<TBinder> resultBuilder = ArrayBuilder<TBinder>.GetInstance();
-            try
-            {
-                Stack<RedNode> nodeStack = new Stack<RedNode>();
-                SyntaxNode syntaxNode = _node as SyntaxNode;
-                if (syntaxNode != null)
-                {
-                    foreach (var child in syntaxNode.ChildNodesAndTokens().Reverse())
-                    {
-                        nodeStack.Push(child);
-                    }
-                }
-                //nodeStack.Push(_node);
-                while (nodeStack.Count > 0)
-                {
-                    RedNode currentNode = nodeStack.Pop();
-                    Binder childBinder = this.Compilation.GetBinder(currentNode);
-                    Binder scope = childBinder;
-                    while (scope != null && scope != this)
-                    {
-                        TBinder typedBinder = scope as TBinder;
-                        if (typedBinder != null && selectBinder(typedBinder))
-                        {
-                            resultBuilder.Add(typedBinder);
-                            break;
-                        }
-                        scope = scope.Next;
-                    }
-                    if (childBinder == null || stepIntoBinder(childBinder))
-                    {
-                        SyntaxNode currentSyntax = currentNode as SyntaxNode;
-                        if (currentSyntax != null)
-                        {
-                            foreach (var child in currentSyntax.ChildNodesAndTokens().Reverse())
-                            {
-                                nodeStack.Push(child);
-                            }
-                        }
-                    }
-                }
-            }
-            finally
-            {
-                result = resultBuilder.ToImmutableAndFree();
-            }
-            return result;
+            return this.FindDescendantBinders<Binder>(false, selectBinder, stepIntoBinder);
         }
 
-        public ImmutableArray<Binder> GetDescendantAndSelfBinders()
-        {
-            return this.GetDescendantAndSelfBinders(ReturnTrue, ReturnFalse);
-        }
-
-        public ImmutableArray<Binder> GetDescendantAndSelfBinders(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
-        {
-            return this.GetDescendantAndSelfBinders<Binder>(selectBinder, stepIntoBinder);
-        }
-
-        public ImmutableArray<TBinder> GetDescendantAndSelfBinders<TBinder>()
+        public ImmutableArray<TBinder> FindDescendantBinders<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
             where TBinder : class
         {
-            return this.GetDescendantAndSelfBinders<TBinder>((TBinder b) => true, ReturnFalse);
+            return this.FindDescendantBinders<TBinder>(false, selectBinder, stepIntoBinder);
         }
 
-        public ImmutableArray<TBinder> GetDescendantAndSelfBinders<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+        public ImmutableArray<Binder> FindDescendantAndSelfBinders()
+        {
+            return this.FindDescendantBinders(true, ReturnTrue, ReturnFalse);
+        }
+
+        public ImmutableArray<TBinder> FindDescendantAndSelfBinders<TBinder>()
+            where TBinder : class
+        {
+            return this.FindDescendantBinders<TBinder>(true, (TBinder b) => true, ReturnFalse);
+        }
+
+        public ImmutableArray<Binder> FindDescendantAndSelfBinders(Func<Binder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+        {
+            return this.FindDescendantBinders<Binder>(true, selectBinder, stepIntoBinder);
+        }
+
+        public ImmutableArray<TBinder> FindDescendantAndSelfBinders<TBinder>(Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
+            where TBinder : class
+        {
+            return this.FindDescendantBinders<TBinder>(true, selectBinder, stepIntoBinder);
+        }
+
+        private ImmutableArray<TBinder> FindDescendantBinders<TBinder>(bool includeSelf, Func<TBinder, bool> selectBinder, Func<Binder, bool> stepIntoBinder)
             where TBinder : class
         {
             ImmutableArray<TBinder> result = ImmutableArray<TBinder>.Empty;
             ArrayBuilder<TBinder> resultBuilder = ArrayBuilder<TBinder>.GetInstance();
             try
             {
-                Stack<RedNode> nodeStack = new Stack<RedNode>();
-                nodeStack.Push(_node);
-                while (nodeStack.Count > 0)
+                Stack<Binder> binderStack = new Stack<Binder>();
+                binderStack.Push(this);
+                while (binderStack.Count > 0)
                 {
-                    RedNode currentNode = nodeStack.Pop();
-                    Binder childBinder = this.Compilation.GetBinder(currentNode);
-                    Binder scope = childBinder;
-                    while (scope != null && scope != this.Next)
+                    Binder currentBinder = binderStack.Pop();
+                    if (includeSelf || currentBinder != this)
                     {
-                        TBinder typedBinder = scope as TBinder;
+                        TBinder typedBinder = currentBinder as TBinder;
                         if (typedBinder != null && selectBinder(typedBinder))
                         {
                             resultBuilder.Add(typedBinder);
-                            break;
                         }
-                        scope = scope.Next;
                     }
-                    if (childBinder == null || stepIntoBinder(childBinder))
+                    if ((!includeSelf && currentBinder == this) || ((includeSelf || currentBinder != this) && stepIntoBinder(currentBinder)))
                     {
-                        SyntaxNode currentSyntax = currentNode as SyntaxNode;
-                        if (currentSyntax != null)
+                        var childBinders = currentBinder.Previous;
+                        for (int i = childBinders.Length - 1; i >= 0; --i)
                         {
-                            foreach (var child in currentSyntax.ChildNodesAndTokens().Reverse())
-                            {
-                                nodeStack.Push(child);
-                            }
+                            binderStack.Push(childBinders[i]);
                         }
                     }
                 }
@@ -609,6 +633,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             {
                 if (result.Length > 0) result = "." + result;
                 result = current.MName + result;
+                current = current.MParent;
             }
             return result;
         }

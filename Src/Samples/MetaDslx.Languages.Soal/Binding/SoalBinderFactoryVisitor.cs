@@ -26,7 +26,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		public static object UseTypeReference = new object();
 		public static object UseQualifierList = new object();
 		public static object UseKAbstract = new object();
-		public static object UseOnewayType = new object();
 		public static object UseValueType = new object();
 		public static object UseReferenceType = new object();
 		public static object UseArrayType = new object();
@@ -44,20 +43,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.NamespaceDeclaration.Node)) use = UseNamespaceDeclaration;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.NamespaceDeclaration.Node)) use = UseNamespaceDeclaration;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateRootBinder(resultBinder, node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseNamespaceDeclaration)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Declarations", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.NamespaceDeclaration.Node, "Declarations");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -67,7 +70,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -75,7 +78,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateNameBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -85,7 +88,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -93,7 +96,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateNameBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -103,7 +106,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -111,7 +114,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateQualifierBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -121,14 +124,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -138,14 +141,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -155,14 +158,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -172,14 +175,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -189,16 +192,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Annotations", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Annotations");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Annotation));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -208,16 +211,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Annotations", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Annotations");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Annotation));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -227,14 +230,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -244,7 +247,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -252,7 +255,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -262,14 +265,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -279,21 +282,25 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.AnnotationPropertyValue)) use = UseAnnotationPropertyValue;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.AnnotationPropertyValue)) use = UseAnnotationPropertyValue;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Properties", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Properties");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.AnnotationProperty));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseAnnotationPropertyValue)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Value", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.AnnotationPropertyValue, "Value");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -303,14 +310,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -320,27 +327,32 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Identifier)) use = UseIdentifier;
-			if (LookupPosition.IsInNode(this.Position, node.StringLiteral)) use = UseStringLiteral;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Identifier)) use = UseIdentifier;
+				if (LookupPosition.IsInNode(this.Position, node.StringLiteral)) use = UseStringLiteral;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Namespace));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseIdentifier)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Prefix", Optional<object>.Default);
-					resultBinder = this.CreateValueBinder(resultBinder, node, Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Identifier, "Prefix");
+					resultBinder = this.CreateValueBinder(resultBinder, node.Identifier);
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
 				if (use == UseStringLiteral)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Uri", Optional<object>.Default);
-					resultBinder = this.CreateValueBinder(resultBinder, node, Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.StringLiteral, "Uri");
+					resultBinder = this.CreateValueBinder(resultBinder, node.StringLiteral);
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -350,7 +362,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -358,7 +370,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -368,15 +380,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Declarations", Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Declarations");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -386,21 +398,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Enum));
-				if (use == UseQualifier)
-				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "BaseType", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Enum)));
-				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -410,7 +416,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -418,7 +424,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -428,14 +434,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -445,16 +451,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "EnumLiterals", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "EnumLiterals");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.EnumLiteral));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -464,21 +470,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Struct));
-				if (use == UseQualifier)
-				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "BaseType", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Struct)));
-				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -488,7 +488,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -496,7 +496,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -506,21 +506,25 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.TypeReference)) use = UseTypeReference;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.TypeReference)) use = UseTypeReference;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Properties", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Properties");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Property));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseTypeReference)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Type", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.TypeReference, "Type");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -530,7 +534,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -538,7 +542,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Database));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -548,7 +552,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -556,7 +560,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -566,20 +570,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Entities", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Entities");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Struct)));
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Struct)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -589,7 +597,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -597,7 +605,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Interface));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -607,7 +615,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -615,7 +623,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -625,16 +633,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Operations", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Operations");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Operation));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -644,20 +652,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.QualifierList)) use = UseQualifierList;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				if (use == UseQualifierList)
-				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Exceptions", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Struct)));
-				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -667,14 +669,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -684,21 +686,25 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.TypeReference)) use = UseTypeReference;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.TypeReference)) use = UseTypeReference;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Parameters", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Parameters");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.InputParameter));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseTypeReference)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Type", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.TypeReference, "Type");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -708,16 +714,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Result", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Result");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.OutputParameter));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -727,26 +733,31 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.KAbstract)) use = UseKAbstract;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.KAbstract)) use = UseKAbstract;
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Component));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseKAbstract)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "IsAbstract", new Optional<object>(true));
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.KAbstract, "IsAbstract", true);
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "BaseComponent", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Component)));
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "BaseComponent");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Component)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -756,7 +767,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -764,7 +775,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -774,14 +785,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -791,14 +802,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -808,22 +819,26 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Services", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Services");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Service));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Interface", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Interface)));
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "Interface");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Interface)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -833,22 +848,26 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "References", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "References");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Reference));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Interface", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Interface)));
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "Interface");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Interface)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -858,14 +877,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -875,14 +894,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -892,20 +911,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Binding", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Binding)));
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "Binding");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Binding)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -915,21 +938,25 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.TypeReference)) use = UseTypeReference;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.TypeReference)) use = UseTypeReference;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Properties", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Properties");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Property));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseTypeReference)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Type", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.TypeReference, "Type");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -939,16 +966,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Implementation", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Implementation");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Implementation));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -958,16 +985,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Language", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Language");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Language));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -977,21 +1004,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Composite));
-				if (use == UseQualifier)
-				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "BaseComponent", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Component)));
-				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1001,7 +1022,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1009,7 +1030,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1019,21 +1040,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Assembly));
-				if (use == UseQualifier)
-				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "BaseComponent", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Component)));
-				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1043,14 +1058,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1060,14 +1075,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1077,20 +1092,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Components", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Components");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Component)));
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Component)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1100,16 +1119,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Wires", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Wires");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Wire));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1119,20 +1138,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Source", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Port)));
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "Source");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Port)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1142,20 +1165,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Target", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Port)));
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "Target");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Port)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1165,7 +1192,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1173,7 +1200,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Deployment));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1183,7 +1210,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1191,7 +1218,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1201,14 +1228,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1218,14 +1245,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1235,16 +1262,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Environments", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Environments");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Environment));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1254,7 +1281,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1262,7 +1289,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1272,16 +1299,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Runtime", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Runtime");
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Runtime));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1291,14 +1318,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1308,20 +1335,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Assemblies", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Assemblies");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Assembly)));
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Assembly)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1331,20 +1362,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Databases", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Databases");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Database)));
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Database)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1354,7 +1389,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1362,7 +1397,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Binding));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1372,7 +1407,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1380,7 +1415,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1390,14 +1425,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1407,15 +1442,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Transport", Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Transport");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1425,7 +1460,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1433,7 +1468,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.HttpTransportBindingElement));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1443,14 +1478,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1460,14 +1495,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1477,7 +1512,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1485,7 +1520,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.RestTransportBindingElement));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1495,14 +1530,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1512,14 +1547,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1529,7 +1564,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1537,7 +1572,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.WebSocketTransportBindingElement));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1547,14 +1582,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1564,14 +1599,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1581,14 +1616,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1598,15 +1633,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Ssl", Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Ssl");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1616,15 +1651,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "ClientAuthentication", Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "ClientAuthentication");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1634,15 +1669,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Encodings", Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Encodings");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1652,7 +1687,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1660,7 +1695,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.SoapEncodingBindingElement));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1670,14 +1705,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1687,14 +1722,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1704,7 +1739,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1712,7 +1747,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.XmlEncodingBindingElement));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1722,14 +1757,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1739,14 +1774,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1756,7 +1791,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1764,7 +1799,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.JsonEncodingBindingElement));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1774,14 +1809,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1791,14 +1826,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1808,14 +1843,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1825,20 +1860,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Identifier)) use = UseIdentifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Identifier)) use = UseIdentifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Version", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Version");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseIdentifier)
 				{
-					//resultBinder = this.CreateEnumValueBinder(resultBinder, node);
+					resultBinder = this.CreateEnumValueBinder(resultBinder, node.Identifier, typeof(Symbols.SoapVersion));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1848,15 +1887,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Mtom", Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Mtom");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1866,20 +1905,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Identifier)) use = UseIdentifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Identifier)) use = UseIdentifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Style", Optional<object>.Default);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Style");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseIdentifier)
 				{
-					//resultBinder = this.CreateEnumValueBinder(resultBinder, node);
+					resultBinder = this.CreateEnumValueBinder(resultBinder, node.Identifier, typeof(Symbols.SoapEncodingStyle));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1889,15 +1932,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Protocols", Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Protocols");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1907,14 +1950,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1924,7 +1967,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1932,7 +1975,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.WsAddressingBindingElement));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1942,21 +1985,25 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Endpoint));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Interface", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Interface)));
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "Interface");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Interface)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1966,7 +2013,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -1974,7 +2021,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateBodyBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -1984,14 +2031,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2001,14 +2048,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2018,20 +2065,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Binding", Optional<object>.Default);
-					resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.Binding)));
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "Binding");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, node.Qualifier, ImmutableArray.Create(typeof(Symbols.Binding)));
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2041,19 +2092,23 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.StringLiteral)) use = UseStringLiteral;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.StringLiteral)) use = UseStringLiteral;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseStringLiteral)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "Address", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.StringLiteral, "Address");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2063,7 +2118,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -2071,7 +2126,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2081,7 +2136,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -2089,7 +2144,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2099,7 +2154,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -2107,7 +2162,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2117,7 +2172,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -2125,7 +2180,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2135,7 +2190,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -2143,7 +2198,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2153,7 +2208,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -2162,7 +2217,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
 				resultBinder = this.CreateIdentifierBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2172,7 +2227,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -2181,7 +2236,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
 				resultBinder = this.CreateIdentifierBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2191,15 +2246,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateValueBinder(resultBinder, node, new Optional<object>(SoalInstance.Void));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreateValueBinder(resultBinder, node, SoalInstance.Void);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2209,15 +2264,16 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateValueBinder(resultBinder, node, new Optional<object>(SoalInstance.Void));
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreateValueBinder(resultBinder, node, SoalInstance.Void);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "IsOneway", true);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2227,20 +2283,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.OnewayType)) use = UseOnewayType;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Type", Optional<object>.Default);
-				if (use == UseOnewayType)
-				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "IsOneway", new Optional<object>(true));
-				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Type");
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2250,20 +2301,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.ValueType)) use = UseValueType;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.ValueType)) use = UseValueType;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolCtrBinder(resultBinder, node, typeof(Symbols.NullableType));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseValueType)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "InnerType", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.ValueType, "InnerType");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2273,20 +2328,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.ReferenceType)) use = UseReferenceType;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.ReferenceType)) use = UseReferenceType;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolCtrBinder(resultBinder, node, typeof(Symbols.NonNullableType));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseReferenceType)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "InnerType", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.ReferenceType, "InnerType");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2296,20 +2355,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.ArrayType)) use = UseArrayType;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.ArrayType)) use = UseArrayType;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolCtrBinder(resultBinder, node, typeof(Symbols.NonNullableType));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseArrayType)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "InnerType", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.ArrayType, "InnerType");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2319,14 +2382,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2336,20 +2399,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.SimpleType)) use = UseSimpleType;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.SimpleType)) use = UseSimpleType;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolCtrBinder(resultBinder, node, typeof(Symbols.ArrayType));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseSimpleType)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "InnerType", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.SimpleType, "InnerType");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2359,20 +2426,24 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, node.NulledType)) use = UseNulledType;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.NulledType)) use = UseNulledType;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolCtrBinder(resultBinder, node, typeof(Symbols.ArrayType));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseNulledType)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node, "InnerType", Optional<object>.Default);
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.NulledType, "InnerType");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2382,14 +2453,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2399,14 +2470,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2416,7 +2487,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
@@ -2424,7 +2495,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateIdentifierBinder(resultBinder, node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2434,14 +2505,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2451,14 +2522,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2468,15 +2539,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateValueBinder(resultBinder, node, Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreateValueBinder(resultBinder, node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2486,15 +2557,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateValueBinder(resultBinder, node, Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreateValueBinder(resultBinder, node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2504,15 +2575,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateValueBinder(resultBinder, node, Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreateValueBinder(resultBinder, node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2522,15 +2593,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateValueBinder(resultBinder, node, Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreateValueBinder(resultBinder, node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2540,15 +2611,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateValueBinder(resultBinder, node, Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreateValueBinder(resultBinder, node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2558,15 +2629,15 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateValueBinder(resultBinder, node, Optional<object>.Default);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				resultBinder = this.CreateValueBinder(resultBinder, node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
@@ -2576,14 +2647,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
 		    if (!node.FullSpan.Contains(this.Position))
 		    {
-		        return this.Visit(node.Parent);
+		        return this.GetParentBinder(node);
 		    }
 			object use = null;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				this.BinderFactory.TryAddBinder(node, use, resultBinder);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
 		}

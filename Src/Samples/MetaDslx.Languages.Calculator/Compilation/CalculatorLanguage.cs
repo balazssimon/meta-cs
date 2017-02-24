@@ -26,16 +26,6 @@ namespace MetaDslx.Languages.Calculator
             get { return CalculatorLanguage.LanguageName; }
         }
 
-        protected override MessageProvider MessageProviderCore
-        {
-            get { return CalculatorMessageProvider.Instance; }
-        }
-
-        public new CalculatorMessageProvider MessageProvider
-        {
-            get { return (CalculatorMessageProvider)base.MessageProvider; }
-        }
-
         protected override SyntaxFacts SyntaxFactsCore
         {
             get { return CalculatorSyntaxFacts.Instance; }

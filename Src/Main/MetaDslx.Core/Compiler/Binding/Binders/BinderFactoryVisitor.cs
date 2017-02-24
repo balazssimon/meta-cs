@@ -19,6 +19,7 @@ namespace MetaDslx.Compiler.Binding.Binders
     {
         private readonly BinderFactory _binderFactory;
         private int _position;
+        private bool _forChild;
 
         public BinderFactoryVisitor(BinderFactory binderFactory)
             : base(false, false)
@@ -46,9 +47,15 @@ namespace MetaDslx.Compiler.Binding.Binders
             get { return _position; }
         }
 
-        public virtual void Reset(int position)
+        public bool ForChild
+        {
+            get { return _forChild; }
+        }
+
+        public virtual void Reset(int position, bool forChild)
         {
             _position = position;
+            _forChild = forChild;
         }
 
         protected virtual Binder CreateRootBinder(Binder parentBinder, RedNode node)
@@ -106,9 +113,14 @@ namespace MetaDslx.Compiler.Binding.Binders
             return new SymbolUseBinder(parentBinder, node, symbolTypes);
         }
 
-        protected virtual Binder CreatePropertyBinder(Binder parentBinder, RedNode node, string name, Optional<object> valueOpt)
+        protected virtual Binder CreatePropertyBinder(Binder parentBinder, RedNode node, string name)
         {
-            return this.CreatePropertyBinderCore(parentBinder, node, name, valueOpt);
+            return this.CreatePropertyBinderCore(parentBinder, node, name, Optional<object>.None);
+        }
+
+        protected virtual Binder CreatePropertyBinder(Binder parentBinder, RedNode node, string name, object value)
+        {
+            return this.CreatePropertyBinderCore(parentBinder, node, name, new Optional<object>(value));
         }
 
         protected virtual Binder CreatePropertyBinderCore(Binder parentBinder, RedNode node, string name, Optional<object> valueOpt)
@@ -146,14 +158,29 @@ namespace MetaDslx.Compiler.Binding.Binders
             return new NameBinder(parentBinder, node);
         }
 
-        protected virtual Binder CreateValueBinder(Binder parentBinder, RedNode node, Optional<object> valueOpt)
+        protected virtual Binder CreateValueBinder(Binder parentBinder, RedNode node)
         {
-            return this.CreateValueBinderCore(parentBinder, node, valueOpt.HasValue ? valueOpt.Value : this.GetValue(node));
+            return this.CreateValueBinderCore(parentBinder, node, this.GetValue(node));
+        }
+
+        protected virtual Binder CreateValueBinder(Binder parentBinder, RedNode node, object value)
+        {
+            return this.CreateValueBinderCore(parentBinder, node, value);
         }
 
         protected virtual Binder CreateValueBinderCore(Binder parentBinder, RedNode node, object value)
         {
             return new ValueBinder(parentBinder, node, value);
+        }
+
+        protected virtual Binder CreateEnumValueBinder(Binder parentBinder, RedNode node, Type enumType)
+        {
+            return this.CreateEnumValueBinderCore(parentBinder, node, enumType, this.GetEnumLiteral(node, enumType));
+        }
+
+        protected virtual Binder CreateEnumValueBinderCore(Binder parentBinder, RedNode node, Type enumType, object value)
+        {
+            return new EnumValueBinder(parentBinder, node, enumType, value);
         }
 
         public virtual string GetName(RedNode node)
@@ -215,6 +242,17 @@ namespace MetaDslx.Compiler.Binding.Binders
             return value;
         }
 
+        public virtual object GetEnumLiteral(RedNode node, Type enumType)
+        {
+            string enumLiteralName = this.GetName(node);
+            long enumLiteral;
+            if (Enum.TryParse(enumLiteralName, out enumLiteral))
+            {
+                return enumLiteral;
+            }
+            return null;
+        }
+
         protected virtual Binder GetParentBinder(RedNode node)
         {
             return this.BinderFactory.GetBinder(node.Parent, node.SpanStart);
@@ -257,7 +295,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         protected virtual IMetaSymbol GetChildSymbol(string childName, TextSpan childSpan, IMetaSymbol container, Type kind)
         {
             if (container == null) return null;
-            container.MGet(CompilerAttachedProperties.PropertiesToMembersMapProperty);
+            //container.MGet(CompilerAttachedProperties.PropertiesToMembersMapProperty);
             foreach (IMetaSymbol sym in container.MChildren)
             {
                 if (childName != null && sym.MName != childName)
@@ -279,6 +317,11 @@ namespace MetaDslx.Compiler.Binding.Binders
                 }
             }
             return null;
+        }
+
+        public override Binder VisitToken(SyntaxToken token)
+        {
+            return this.GetParentBinder(token);
         }
     }
 }

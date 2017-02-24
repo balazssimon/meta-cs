@@ -50,11 +50,14 @@
   <ItemGroup>
     <Compile Include="Compiler\Binding\Binders\Binder.cs" />
     <Compile Include="Compiler\Binding\Binders\BinderFactory.cs" />
+    <Compile Include="Compiler\Binding\Binders\CachingBinderFactory.cs" />
+    <Compile Include="Compiler\Binding\Binders\EnumValueBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\IdentifierBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\NameBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\PropertyBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\QualifierBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\RootBinder.cs" />
+    <Compile Include="Compiler\Binding\Binders\MappingBinderFactory.cs" />
     <Compile Include="Compiler\Binding\Binders\SymbolCtrBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\SymbolUseBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\ValueBinder.cs" />

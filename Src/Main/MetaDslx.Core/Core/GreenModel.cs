@@ -788,24 +788,21 @@ namespace MetaDslx.Core
         {
             for (int i = 0; i < args.Length; i++)
             {
+                SymbolId sid = args[i] as SymbolId;
+                if (sid != null)
+                {
+                    IMetaSymbol symbol = null;
+                    if (redModelGroup != null) symbol = this.redModelGroup.ResolveSymbol(sid);
+                    else symbol = this.redModel.ResolveSymbol(sid);
+                    if (symbol != null)
+                    {
+                        args[i] = symbol;
+                    }
+                }
                 IMessageSerializable ms = args[i] as IMessageSerializable;
                 if (ms == null)
                 {
                     args[i] = args[i].ToString();
-                }
-                else
-                {
-                    SymbolId sid = ms as SymbolId;
-                    if (sid != null)
-                    {
-                        IMetaSymbol symbol = null;
-                        if (redModelGroup != null) this.redModelGroup.ResolveSymbol(sid);
-                        else this.redModel.ResolveSymbol(sid);
-                        if (symbol != null)
-                        {
-                            args[i] = symbol;
-                        }
-                    }
                 }
             }
         }
@@ -1224,7 +1221,23 @@ namespace MetaDslx.Core
         {
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
             Debug.Assert(symbolRef != null);
-            GreenModel model = symbolRef.Model;
+            if (symbolRef != null)
+            {
+                GreenSymbol symbol = symbolRef.Symbol;
+                GreenModel model = symbolRef.Model;
+                ImmutableHashSet<ModelProperty> lazyProperties;
+                if (model.LazyProperties.TryGetValue(sid, out lazyProperties) && lazyProperties.Count > 0)
+                {
+                    foreach (var property in lazyProperties)
+                    {
+                        if (property.IsContainment)
+                        {
+                            this.GetValue(mid, sid, property);
+                        }
+                    }
+                    symbolRef = this.ResolveSymbol(mid, sid, true);
+                }
+            }
             return symbolRef.Symbol.Children;
         }
 

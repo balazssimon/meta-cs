@@ -35,8 +35,8 @@ namespace MetaDslx.Compiler.Binding.Binders
             {
                 if (_lazyIdentifierNodes.IsDefault)
                 {
-                    var parentQualifierBinder = this.GetAncestorBinder<IQualifierBinder>();
-                    var qualifierBinders = this.GetDescendantBinders<IQualifierBinder>();
+                    var parentQualifierBinder = this.FindAncestorBinder<IQualifierBinder>();
+                    var qualifierBinders = this.FindDescendantBinders<IQualifierBinder>();
                     ImmutableInterlocked.InterlockedExchange(ref _lazyIdentifierNodes, qualifierBinders.Select(qb => ((Binder)qb).Node).ToImmutableArray());
                     Interlocked.CompareExchange(ref _lazySymbols, new IMetaSymbol[_lazyIdentifierNodes.Length], null);
                     if (_lazySymbols.Length > 0 && parentQualifierBinder != null)

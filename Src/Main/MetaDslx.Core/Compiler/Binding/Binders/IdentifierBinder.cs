@@ -33,7 +33,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                 if (_lazySymbol == null)
                 {
                     IMetaSymbol context = null;
-                    var qualifierBinder = this.GetAncestorBinder<IQualifierBinder>();
+                    var qualifierBinder = this.FindAncestorBinder<IQualifierBinder>();
                     if (qualifierBinder != null)
                     {
                         context = qualifierBinder.GetChildContextSymbol(this.Node);

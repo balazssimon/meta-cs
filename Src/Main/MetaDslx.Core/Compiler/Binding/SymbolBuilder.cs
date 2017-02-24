@@ -124,8 +124,8 @@ namespace MetaDslx.Compiler.Binding
             symbol.MSet(CompilerAttachedProperties.DiagnosticBagProperty, new DiagnosticBag());
             if (declaration.Children.Length > 0)
             {
-                symbol.MAttachProperty(CompilerAttachedProperties.PropertiesToMembersMapProperty);
-                symbol.MSetLazy(CompilerAttachedProperties.PropertiesToMembersMapProperty, LazyValue.CreateSingle(() => BuildDeclarationParentPropertyToMemberMap(symbol, container, declaration)));
+                //symbol.MAttachProperty(CompilerAttachedProperties.PropertiesToMembersMapProperty);
+                //symbol.MSetLazy(CompilerAttachedProperties.PropertiesToMembersMapProperty, LazyValue.CreateSingle(() => BuildDeclarationParentPropertyToMemberMap(symbol, container, declaration)));
                 this.BuildDeclarationSymbolProperties(symbol, declaration);
             }
             if (!isRoot)
@@ -159,7 +159,7 @@ namespace MetaDslx.Compiler.Binding
             return map;
         }
 
-        private void BuildDeclarationSymbolProperties(MutableSymbol symbol, MergedDeclaration declaration)
+        /*private void BuildDeclarationSymbolProperties(MutableSymbol symbol, MergedDeclaration declaration)
         {
             foreach (var kvp in declaration.ChildrenByParentProperties)
             {
@@ -184,6 +184,23 @@ namespace MetaDslx.Compiler.Binding
                                 var map = (Dictionary<string, ImmutableArray<IMetaSymbol>>)symbol.MGet(CompilerAttachedProperties.PropertiesToMembersMapProperty);
                                 return map[propertyName].FirstOrDefault();
                             }));
+                    }
+                }
+            }
+        }*/
+
+        private void BuildDeclarationSymbolProperties(MutableSymbol symbol, MergedDeclaration declaration)
+        {
+            foreach (var kvp in declaration.ChildrenByParentProperties)
+            {
+                string propertyName = kvp.Key;
+                ModelProperty parentProperty = symbol.MGetProperty(propertyName);
+                if (parentProperty != null)
+                {
+                    foreach (var item in kvp.Value)
+                    {
+                        var currentItem = item;
+                        symbol.MSetOrAddLazy(parentProperty, LazyValue.CreateSingle(() => BuildDeclarationSymbol(symbol, currentItem)));
                     }
                 }
             }
@@ -226,13 +243,8 @@ namespace MetaDslx.Compiler.Binding
         {
             var binder = this.Compilation.GetBinder(node);
             if (binder == null) return null;
-            var propertyBinders = binder.GetDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder);
-            if (binder is IPropertyBinder && ((IPropertyBinder)binder).PropertyName == propertyName)
-            {
-                propertyBinders = propertyBinders.Add((IPropertyBinder)binder);
-            }
-            var valueBinders = propertyBinders.SelectMany(pb => ((Binder)pb).GetDescendantBinders<IValueBinder>()).ToImmutableArray();
-            var values = valueBinders.SelectMany(vb => vb.GetValues()).Where(v => v != null).ToImmutableArray();
+            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName && ((IPropertyBinder)b).PropertyValueOpt.HasValue);
+            var values = propertyBinders.SelectMany(pb => pb.GetValues()).ToImmutableArray();
             return values.FirstOrDefault();
         }
 
@@ -241,13 +253,8 @@ namespace MetaDslx.Compiler.Binding
         {
             var binder = this.Compilation.GetBinder(node);
             if (binder == null) return null;
-            var propertyBinders = binder.GetDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder);
-            if (binder is IPropertyBinder && ((IPropertyBinder)binder).PropertyName == propertyName)
-            {
-                propertyBinders = propertyBinders.Add((IPropertyBinder)binder);
-            }
-            var valueBinders = propertyBinders.SelectMany(pb => ((Binder)pb).GetDescendantBinders<IValueBinder>()).ToImmutableArray();
-            var values = valueBinders.SelectMany(vb => vb.GetValues()).Where(v => v != null).ToImmutableArray();
+            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName && ((IPropertyBinder)b).PropertyValueOpt.HasValue);
+            var values = propertyBinders.SelectMany(pb => pb.GetValues()).ToImmutableArray();
             return values;
         }
     }

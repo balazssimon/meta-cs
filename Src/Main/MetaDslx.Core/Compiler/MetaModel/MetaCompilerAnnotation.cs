@@ -16,6 +16,7 @@ namespace MetaDslx.Compiler.MetaModel
         public const string Identifier = "Identifier";
         public const string Qualifier = "Qualifier";
         public const string Value = "Value";
+        public const string EnumValue = "EnumValue";
 
         public const string Property = "Property";
         public const string Name = "Name";
@@ -62,6 +63,7 @@ namespace MetaDslx.Compiler.MetaModel
             DefaultProperties.Add(Property, "name");
             DefaultProperties.Add(Identifier, "name");
             DefaultProperties.Add(Value, "value");
+            DefaultProperties.Add(EnumValue, "enumType");
         }
     }
 

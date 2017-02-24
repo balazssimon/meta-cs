@@ -120,7 +120,7 @@ namespace MetaDslx.Compiler.Diagnostics
         {
             string result = this.GetType().Name;
             var pos = GetLineSpan();
-            if (pos.Path != null)
+            if (pos != null && pos.Path != null)
             {
                 // user-visible line and column counts are 1-based, but internally are 0-based.
                 result += "(" + pos.Path + "@" + (pos.StartLinePosition.Line + 1) + ":" + (pos.StartLinePosition.Character + 1) + ")";

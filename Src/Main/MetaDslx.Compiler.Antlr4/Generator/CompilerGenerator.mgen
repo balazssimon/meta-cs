@@ -38,16 +38,6 @@ namespace [Properties.DefaultNamespace]
             get { return [Properties.LanguageName]Language.LanguageName; }
         }
 ^
-        protected override MessageProvider MessageProviderCore
-        {
-            get { return [Properties.LanguageName]MessageProvider.Instance; }
-        }
-^
-        public new [Properties.LanguageName]MessageProvider MessageProvider
-        {
-            get { return ([Properties.LanguageName]MessageProvider)base.MessageProvider; }
-        }
-^
         protected override SyntaxFacts SyntaxFactsCore
         {
             get { return [Properties.LanguageName]SyntaxFacts.Instance; }
@@ -3397,7 +3387,7 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] node)
     Debug.Assert(node.SyntaxTree == this.SyntaxTree);
     if (!node.FullSpan.Contains(this.Position))
     {
-        return this.Visit(node.Parent);
+        return this.GetParentBinder(node);
     }
 	object use = null;
 	[GenerateBinderFactoryVisitElemUses(rule)]
@@ -3408,8 +3398,8 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] node)
 		[loop (annot:rule.Annotations.Annotations)]
 		resultBinder = this.Create[annot.Name]Binder(resultBinder, node[GetAnnotationParams(annot)]);
 		[end loop]
+		this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 		[GenerateBinderFactoryVisitBody(rule)]
-		this.BinderFactory.TryAddBinder(node, use, resultBinder);
 	}
 	return resultBinder;
 }
@@ -3432,17 +3422,27 @@ function string GetAnnotationParams(MetaCompilerAnnotation annot)
 		end if
 	end if
 	if (annot.Name == MetaCompilerAnnotationInfo.Property)
-	    result = ", \"" + annot.GetValue("name") + "\", " + (annot.HasProperty("value") ? "new Optional<object>(" + annot.GetValue("value")+")" : "Optional<object>.Default");
+	    result = ", \"" + annot.GetValue("name") + "\"";
+		if (annot.HasProperty("value"))
+		    result = result + ", " + annot.GetValue("value");
+		end if
 	end if
-	if (annot.Name == MetaCompilerAnnotationInfo.Value)
-	    result = ", "+(annot.HasProperty("value") ? "new Optional<object>(" + annot.GetValue("value")+")" : "Optional<object>.Default");
+	if (annot.Name == MetaCompilerAnnotationInfo.Value && annot.HasProperty("value"))
+	    result = ", "+annot.GetValue("value");
+	end if
+	if (annot.Name == MetaCompilerAnnotationInfo.EnumValue)
+		if (annot.HasProperty("enumType"))
+			result = ", typeof(Symbols." + annot.GetValue("enumType") + ")";
+		else
+			result = ", null";
+		end if
 	end if
 	return result;
 end function
 
 
 template GenerateBinderFactoryVisitBody(Antlr4ParserRule rule)
-[if (rule.ContainsAnnotations)]
+[if (rule.ContainsAnnotations && hasloop(elem:rule.Elements where elem.Annotations.Annotations.Count > 0))]
 [if (rule.IsSimpleAlt)]
 	[loop(elem:rule.Elements where elem.ContainsAnnotations)]
 [GetBinderFactoryVisitElement(rule, elem)]
@@ -3460,8 +3460,13 @@ template GenerateBinderFactoryVisitElement(Antlr4ParserRuleElement elem)
 if (use == Use[elem.RedName()])
 {
     [loop (annot:elem.Annotations.Annotations)]
-	resultBinder = this.Create[annot.Name]Binder(resultBinder, node[GetAnnotationParams(annot)]);
+		[if (elem.IsList)]
+	resultBinder = this.Create[annot.Name]Binder(resultBinder, node.[elem.RedName()].Node[GetAnnotationParams(annot)]);
+		[else]
+	resultBinder = this.Create[annot.Name]Binder(resultBinder, node.[elem.RedName()][GetAnnotationParams(annot)]);
+		[end if]
 	[end loop]
+	this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 }
 	[end if]
 end template
@@ -3479,15 +3484,26 @@ function string GetBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4Parser
 end function
 
 template GenerateBinderFactoryVisitElemUses(Antlr4ParserRule rule)
-[if (rule.ContainsAnnotations)]
+[if (rule.ContainsAnnotations && hasloop(elem:rule.Elements where elem.Annotations.Annotations.Count > 0))]
+if (this.ForChild)
+{
 [if (rule.IsSimpleAlt)]
 	[loop(elem:rule.Elements where elem.Annotations.Annotations.Count > 0)]
-if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()])) use = Use[elem.RedName()];
+		[if (elem.IsList)]
+	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node)) use = Use[elem.RedName()];
+		[else]
+	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()])) use = Use[elem.RedName()];
+		[end if]
 	[end loop] 
 [else]
 	[loop(elem:rule.AllElements where elem.Annotations.Annotations.Count > 0)]
-if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()])) use = Use[elem.RedName()];
+		[if (elem.IsList)]
+	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node)) use = Use[elem.RedName()];
+		[else]
+	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()])) use = Use[elem.RedName()];
+		[end if]
 	[end loop]    
 [end if]
+}
 [end if]
 end template

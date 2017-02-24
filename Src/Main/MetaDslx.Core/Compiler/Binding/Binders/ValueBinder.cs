@@ -18,7 +18,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         ImmutableArray<IMetaSymbol> GetSymbols();
     }
 
-    public sealed class ValueBinder : Binder, IValueBinder
+    public class ValueBinder : Binder, IValueBinder
     {
         private readonly object _value;
 

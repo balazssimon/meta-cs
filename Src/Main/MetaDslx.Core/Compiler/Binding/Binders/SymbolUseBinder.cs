@@ -37,7 +37,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             {
                 if (_lazyUsedSymbols.IsDefault)
                 {
-                    var valueBinders = this.GetDescendantBinders<IValueBinder>();
+                    var valueBinders = this.FindDescendantBinders<IValueBinder>();
                     var values = valueBinders.SelectMany(v => v.GetSymbols());
                     ImmutableInterlocked.InterlockedExchange(ref _lazyUsedSymbols, values.ToImmutableArray());
                 }

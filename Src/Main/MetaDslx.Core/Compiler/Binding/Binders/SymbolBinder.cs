@@ -65,7 +65,7 @@ namespace MetaDslx.Compiler.Binding.Binders
 
         public ImmutableArray<INameBinder> GetNameBinders()
         {
-            return this.GetDescendantBinders<INameBinder>(b => true, b => b is IPropertyBinder);
+            return this.FindDescendantBinders<INameBinder>(b => true, b => b is IPropertyBinder);
         }
 
         public ImmutableArray<object> GetValues()

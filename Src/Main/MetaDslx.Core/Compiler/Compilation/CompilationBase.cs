@@ -886,7 +886,7 @@ namespace MetaDslx.Compiler
 
         private BinderFactory AddNewFactory(SyntaxTree syntaxTree, ref WeakReference<BinderFactory> slot)
         {
-            var newFactory = new BinderFactory(this, syntaxTree);
+            var newFactory = new MappingBinderFactory(this, syntaxTree);
             var newWeakReference = new WeakReference<BinderFactory>(newFactory);
 
             while (true)

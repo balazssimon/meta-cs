@@ -69,7 +69,6 @@
     <Compile Include="Compilation\CalculatorFeature.cs" />
     <Compile Include="Compilation\CalculatorLanguage.cs" />
     <Compile Include="Compilation\CalculatorLanguageVersion.cs" />
-    <Compile Include="Compilation\CalculatorMessageProvider.cs" />
     <Compile Include="Compilation\CalculatorParseOptions.cs" />
     <Compile Include="Errors\CalculatorErrorCode.cs" />
     <Compile Include="Parser\CalculatorSyntaxParser.cs" />
