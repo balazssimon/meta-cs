@@ -40,14 +40,14 @@ namespace MetaDslx.Compiler.Binding
 
     public class BindingOptions
     {
-        public static readonly BindingOptions None = new BindingOptions(LookupFlags.None, BindingFlags.None, null);
-        public static readonly BindingOptions Default = new BindingOptions(LookupFlags.NamespacesOrTypesOrMembers, BindingFlags.None, null);
+        public static readonly BindingOptions None = new BindingOptions(LookupFlags.None, BindingFlags.None, ImmutableArray<Type>.Empty);
+        public static readonly BindingOptions Default = new BindingOptions(LookupFlags.NamespacesOrTypesOrMembers, BindingFlags.None, ImmutableArray<Type>.Empty);
 
         private LookupFlags lookupFlags;
         private BindingFlags bindingFlags;
-        private Type[] symbolTypes;
+        private ImmutableArray<Type> symbolTypes;
 
-        protected BindingOptions(LookupFlags lookupFlags, BindingFlags bindingFlags, Type[] symbolTypes)
+        protected BindingOptions(LookupFlags lookupFlags, BindingFlags bindingFlags, ImmutableArray<Type> symbolTypes)
         {
             this.lookupFlags = lookupFlags;
             this.bindingFlags = bindingFlags;
@@ -69,7 +69,7 @@ namespace MetaDslx.Compiler.Binding
             get { return this.bindingFlags; }
         }
 
-        public Type[] SymbolTypes
+        public ImmutableArray<Type> SymbolTypes
         {
             get { return this.symbolTypes; }
         }
@@ -104,7 +104,7 @@ namespace MetaDslx.Compiler.Binding
             get { return (this.bindingFlags & BindingFlags.SemanticModel) != 0; }
         }
 
-        protected virtual BindingOptions Update(LookupFlags lookupFlags, BindingFlags bindingFlags, Type[] symbolTypes)
+        protected virtual BindingOptions Update(LookupFlags lookupFlags, BindingFlags bindingFlags, ImmutableArray<Type> symbolTypes)
         {
             if (this.lookupFlags != lookupFlags || this.bindingFlags != bindingFlags || this.symbolTypes != symbolTypes)
             {
@@ -173,7 +173,7 @@ namespace MetaDslx.Compiler.Binding
             return this.Update(this.lookupFlags, this.bindingFlags & ~flags, this.symbolTypes);
         }
 
-        public BindingOptions WithSymbolTypes(Type[] symbolTypes)
+        public BindingOptions WithSymbolTypes(ImmutableArray<Type> symbolTypes)
         {
             return this.Update(this.lookupFlags, this.bindingFlags, symbolTypes);
         }

@@ -410,7 +410,6 @@ voidType
 	;
 
 $Value(SoalInstance.Void)
-$Property(name=IsOneway,value=true)
 onewayType
 	: KOneway
 	;
@@ -418,7 +417,7 @@ onewayType
 $Property(Type)
 operationReturnType
 	: returnType
-	| onewayType
+	| $Property(name=IsOneway,value=true) onewayType
 	;
 
 $SymbolCtr(NullableType)

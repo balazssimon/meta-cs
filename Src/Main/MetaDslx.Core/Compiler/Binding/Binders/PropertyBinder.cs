@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Syntax;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
@@ -16,6 +17,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         Optional<object> PropertyValueOpt { get; }
         object Value { get; }
         ImmutableArray<object> GetValues();
+        ImmutableArray<Diagnostic> GetErrors();
     }
 
     public sealed class PropertyBinder : Binder, IPropertyBinder
@@ -32,6 +34,10 @@ namespace MetaDslx.Compiler.Binding.Binders
             if (_propertyValueOpt.HasValue)
             {
                 _lazyValues = ImmutableArray.Create(_propertyValueOpt.Value);
+            }
+            else
+            {
+                _lazyValues = default(ImmutableArray<object>);
             }
         }
 
@@ -57,11 +63,18 @@ namespace MetaDslx.Compiler.Binding.Binders
         {
             if (_lazyValues.IsDefault)
             {
-                var valueBinders = this.FindDescendantBinders<IValueBinder>();
+                var valueBinders = this.FindDescendantBinders<IValueBinder>(vb => true, b => b is IPropertyBinder);
                 var values = valueBinders.SelectMany(v => v.GetValues()).ToImmutableArray();
                 ImmutableInterlocked.InterlockedExchange(ref _lazyValues, values);
             }
             return _lazyValues;
+        }
+
+        public ImmutableArray<Diagnostic> GetErrors()
+        {
+            var valueBinders = this.FindDescendantBinders<IValueBinder>(vb => true, b => b is IPropertyBinder);
+            var errors = valueBinders.SelectMany(v => v.GetErrors()).ToImmutableArray();
+            return errors;
         }
     }
 }

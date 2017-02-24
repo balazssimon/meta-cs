@@ -1984,10 +1984,6 @@ namespace MetaDslx.Languages.Soal
             ValueAnnotation __tmp147 = new ValueAnnotation();
             __tmp147.Value = SoalInstance.Void;
             treeAnnotList.Add(__tmp147);
-            PropertyAnnotation __tmp148 = new PropertyAnnotation();
-            __tmp148.Name = "IsOneway";
-            __tmp148.Value = true;
-            treeAnnotList.Add(__tmp148);
             this.HandleSymbolType(context);
             return base.VisitOnewayType(context);
         }
@@ -2000,9 +1996,23 @@ namespace MetaDslx.Languages.Soal
                 treeAnnotList = new List<object>();
                 this.treeAnnotations.Add(context, treeAnnotList);
             }
-            PropertyAnnotation __tmp149 = new PropertyAnnotation();
-            __tmp149.Name = "Type";
-            treeAnnotList.Add(__tmp149);
+            PropertyAnnotation __tmp148 = new PropertyAnnotation();
+            __tmp148.Name = "Type";
+            treeAnnotList.Add(__tmp148);
+            List<object> elemAnnotList = null;
+            if (context.onewayType() != null)
+            {
+                object elem = context.onewayType();
+                if (!this.treeAnnotations.TryGetValue(elem, out elemAnnotList))
+                {
+                    elemAnnotList = new List<object>();
+                    this.treeAnnotations.Add(elem, elemAnnotList);
+                }
+                PropertyAnnotation __tmp149 = new PropertyAnnotation();
+                __tmp149.Name = "IsOneway";
+                __tmp149.Value = true;
+                elemAnnotList.Add(__tmp149);
+            }
             this.HandleSymbolType(context);
             return base.VisitOperationReturnType(context);
         }

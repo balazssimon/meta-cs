@@ -2219,8 +2219,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			{
 				if (context == null) return null;
 				InternalSyntaxToken kOneway = (InternalSyntaxToken)this.VisitTerminal(context.KOneway());
-				GreenNode greenNode = this.factory.OnewayType(kOneway, true);
-				return greenNode;
+				return this.factory.OnewayType(kOneway, true);
 			}
 			
 			public override GreenNode VisitOperationReturnType(SoalParser.OperationReturnTypeContext context)

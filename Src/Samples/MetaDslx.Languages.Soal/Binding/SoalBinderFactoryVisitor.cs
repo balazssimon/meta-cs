@@ -26,6 +26,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		public static object UseTypeReference = new object();
 		public static object UseQualifierList = new object();
 		public static object UseKAbstract = new object();
+		public static object UseOnewayType = new object();
 		public static object UseValueType = new object();
 		public static object UseReferenceType = new object();
 		public static object UseArrayType = new object();
@@ -2272,7 +2273,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateValueBinder(resultBinder, node, SoalInstance.Void);
-				resultBinder = this.CreatePropertyBinder(resultBinder, node, "IsOneway", true);
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -2286,12 +2286,21 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return this.GetParentBinder(node);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.OnewayType)) use = UseOnewayType;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Type");
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
+				if (use == UseOnewayType)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.OnewayType, "IsOneway", true);
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

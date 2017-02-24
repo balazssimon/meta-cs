@@ -771,16 +771,23 @@ namespace MetaDslx.Core
             throw new ModelException(location, new SymbolDiagnosticInfo(symbols.Select(sid => (IMetaSymbol)this.redModel.ResolveSymbol(sid)).ToImmutableArray(), errorCode, args));
         }
 
-        private void MakeLazyEvalException(List<GreenLazyEvalEntry> evaluationStack, Exception innerException, DiagnosticBag diagnostics, Location location, ErrorCode errorCode, params object[] args)
+        private void MakeLazyEvalException(List<GreenLazyEvalEntry> evaluationStack, Exception innerException, LazyValue lazy, ErrorCode errorCode, params object[] args)
         {
             this.ArgsToRedMessageSerializable(args);
-            if (diagnostics != null)
+            if (lazy != null)
             {
-                diagnostics.Add(location, new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), errorCode, args));
+                if (lazy.Diagnostics != null)
+                {
+                    lazy.Diagnostics.Add(lazy.Location, new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), errorCode, args));
+                }
+                else if (!lazy.IsSilent)
+                {
+                    throw new LazyEvaluationException(lazy.Location, new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), errorCode, args), innerException);
+                }
             }
             else
             {
-                throw new LazyEvaluationException(location, new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), errorCode, args), innerException);
+                throw new LazyEvaluationException(Location.None, new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), errorCode, args), innerException);
             }
         }
 
@@ -2438,7 +2445,7 @@ namespace MetaDslx.Core
             int entryIndex = this.lazyEvalStack.IndexOf(entry);
             if (entryIndex >= 0)
             {
-                this.MakeLazyEvalException(this.lazyEvalStack, null, null, Location.None, ModelErrorCode.ERR_CircularLazyEvaluation);
+                this.MakeLazyEvalException(this.lazyEvalStack, null, null, ModelErrorCode.ERR_CircularLazyEvaluation);
             }
             try
             {
@@ -2454,7 +2461,7 @@ namespace MetaDslx.Core
                         }
                         catch (Exception ex)
                         {
-                            this.MakeLazyEvalException(this.lazyEvalStack, ex, ((LazyValue)lazyValue).Diagnostics, ((LazyValue)lazyValue).Location, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
+                            this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                             this.SetValue(mid, sid, property, true, null);
                         }
                     }
@@ -2470,7 +2477,7 @@ namespace MetaDslx.Core
                         }
                         catch (Exception ex)
                         {
-                            this.MakeLazyEvalException(this.lazyEvalStack, ex, ((LazyValue)lazyValue).Diagnostics, ((LazyValue)lazyValue).Location, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
+                            this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                         }
                     }
                     else if (lazyValue is GreenList)
@@ -2493,7 +2500,7 @@ namespace MetaDslx.Core
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, ((LazyValue)lazyValue).Diagnostics, ((LazyValue)lazyValue).Location, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
+                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                                     }
                                 }
                                 else if (lazyItem is MultipleLazyValues)
@@ -2511,7 +2518,7 @@ namespace MetaDslx.Core
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, ((LazyValue)lazyValue).Diagnostics, ((LazyValue)lazyValue).Location, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
+                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                                     }
                                 }
                             }
@@ -2542,7 +2549,7 @@ namespace MetaDslx.Core
             }
             catch (Exception ex)
             {
-                this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyValue.Diagnostics, lazyValue.Location, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
+                this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
             }
             return null;
         }
@@ -2564,7 +2571,7 @@ namespace MetaDslx.Core
             }
             catch (Exception ex)
             {
-                this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyValues.Diagnostics, lazyValues.Location, ModelErrorCode.ERR_LazyEvaluationError, ex.ToString());
+                this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyValues, ModelErrorCode.ERR_LazyEvaluationError, ex.ToString());
             }
             return EmptyCollections.Enumerable<object>();
         }

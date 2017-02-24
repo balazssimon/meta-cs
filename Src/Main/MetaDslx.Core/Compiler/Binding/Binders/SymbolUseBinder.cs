@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Syntax;
+﻿using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
@@ -19,16 +20,33 @@ namespace MetaDslx.Compiler.Binding.Binders
     {
         private readonly ImmutableArray<Type> _symbolTypes;
         private ImmutableArray<IMetaSymbol> _lazyUsedSymbols;
+        private readonly BindingOptions _bindingOptions;
 
         public SymbolUseBinder(Binder next, RedNode node, ImmutableArray<Type> symbolTypes) 
             : base(next, node)
         {
             _symbolTypes = symbolTypes;
+            if (_symbolTypes.Length > 0)
+            {
+                _bindingOptions = next.BindingOptions.WithSymbolTypes(symbolTypes);
+            }
+            else
+            {
+                _bindingOptions = next.BindingOptions;
+            }
         }
 
         public ImmutableArray<Type> SymbolTypes
         {
             get { return _symbolTypes; }
+        }
+
+        public override BindingOptions BindingOptions
+        {
+            get
+            {
+                return _bindingOptions;
+            }
         }
 
         public ImmutableArray<IMetaSymbol> UsedSymbols
@@ -59,6 +77,13 @@ namespace MetaDslx.Compiler.Binding.Binders
             {
                 return this.UsedSymbols.FirstOrDefault();
             }
+        }
+
+        public ImmutableArray<Diagnostic> GetErrors()
+        {
+            var valueBinders = this.FindDescendantBinders<IValueBinder>();
+            var errors = valueBinders.SelectMany(v => v.GetErrors()).ToImmutableArray();
+            return errors;
         }
 
         public ImmutableArray<object> GetValues()

@@ -165,6 +165,14 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
+        public virtual BindingOptions BindingOptions
+        {
+            get
+            {
+                return Next.BindingOptions;
+            }
+        }
+
         public virtual bool IsSemanticModelBinder
         {
             get { return true; }
@@ -570,7 +578,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         {
             error = null;
             bool isViableType = true;
-            if (options.SymbolTypes != null)
+            if (options.SymbolTypes != null && options.SymbolTypes.Length > 0)
             {
                 isViableType = false;
                 foreach (var symbolType in options.SymbolTypes)

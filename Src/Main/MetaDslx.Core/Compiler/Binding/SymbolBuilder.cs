@@ -230,31 +230,43 @@ namespace MetaDslx.Compiler.Binding
                 ModelProperty currentProperty = symbol.MGetProperty(currentName);
                 if (currentProperty.IsCollection)
                 {
-                    symbol.MAddRangeLazy(currentProperty, LazyValue.CreateMultiple(() => BindMultipleValues(node, currentName), location, diagnostics));
+                    symbol.MAddRangeLazy(currentProperty, LazyValue.CreateMultiple(() => BindMultipleValues(symbol, node, currentName), true));
                 }
                 else if (!symbol.MIsSet(currentProperty))
                 {
-                    symbol.MSetLazy(currentProperty, LazyValue.CreateSingle(() => BindSingleValue(node, currentName), location, diagnostics));
+                    symbol.MSetLazy(currentProperty, LazyValue.CreateSingle(() => BindSingleValue(symbol, node, currentName), true));
                 }
             }
         }
 
-        private object BindSingleValue(SyntaxNode node, string propertyName)
+        private object BindSingleValue(MutableSymbol symbol, SyntaxNode node, string propertyName)
         {
             var binder = this.Compilation.GetBinder(node);
             if (binder == null) return null;
-            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName && ((IPropertyBinder)b).PropertyValueOpt.HasValue);
+            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName);
             var values = propertyBinders.SelectMany(pb => pb.GetValues()).ToImmutableArray();
+            var errors = propertyBinders.SelectMany(pb => pb.GetErrors()).ToImmutableArray();
+            if (errors.Length > 0)
+            {
+                DiagnosticBag diagnostics = (DiagnosticBag)symbol.MGet(CompilerAttachedProperties.DiagnosticBagProperty);
+                diagnostics.AddRange(errors);
+            }
             return values.FirstOrDefault();
         }
 
 
-        private IEnumerable<object> BindMultipleValues(SyntaxNode node, string propertyName)
+        private IEnumerable<object> BindMultipleValues(MutableSymbol symbol, SyntaxNode node, string propertyName)
         {
             var binder = this.Compilation.GetBinder(node);
             if (binder == null) return null;
-            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName && ((IPropertyBinder)b).PropertyValueOpt.HasValue);
+            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName);
             var values = propertyBinders.SelectMany(pb => pb.GetValues()).ToImmutableArray();
+            var errors = propertyBinders.SelectMany(pb => pb.GetErrors()).ToImmutableArray();
+            if (errors.Length > 0)
+            {
+                DiagnosticBag diagnostics = (DiagnosticBag)symbol.MGet(CompilerAttachedProperties.DiagnosticBagProperty);
+                diagnostics.AddRange(errors);
+            }
             return values;
         }
     }

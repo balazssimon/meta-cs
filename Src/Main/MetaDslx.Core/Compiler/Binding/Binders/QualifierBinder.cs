@@ -15,6 +15,7 @@ namespace MetaDslx.Compiler.Binding.Binders
     public interface IQualifierBinder : IValueBinder
     {
         ImmutableArray<RedNode> IdentifierNodes { get; }
+        bool IsLastChild(RedNode node);
         IMetaSymbol GetChildContextSymbol(RedNode node);
     }
 
@@ -23,6 +24,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         private ImmutableArray<RedNode> _lazyIdentifierNodes;
         private IMetaSymbol[] _lazySymbols;
         private IMetaSymbol _lazySymbol;
+        private IQualifierBinder _lazyParentQualifierBinder;
 
         public QualifierBinder(Binder next, RedNode node) 
             : base(next, node)
@@ -35,17 +37,23 @@ namespace MetaDslx.Compiler.Binding.Binders
             {
                 if (_lazyIdentifierNodes.IsDefault)
                 {
-                    var parentQualifierBinder = this.FindAncestorBinder<IQualifierBinder>();
+                    Interlocked.CompareExchange(ref _lazyParentQualifierBinder, this.FindAncestorBinder<IQualifierBinder>(), null);
                     var qualifierBinders = this.FindDescendantBinders<IQualifierBinder>();
                     ImmutableInterlocked.InterlockedExchange(ref _lazyIdentifierNodes, qualifierBinders.Select(qb => ((Binder)qb).Node).ToImmutableArray());
                     Interlocked.CompareExchange(ref _lazySymbols, new IMetaSymbol[_lazyIdentifierNodes.Length], null);
-                    if (_lazySymbols.Length > 0 && parentQualifierBinder != null)
+                    if (_lazySymbols.Length > 0 && _lazyParentQualifierBinder != null)
                     {
-                        Interlocked.CompareExchange(ref _lazySymbols[0], parentQualifierBinder.GetChildContextSymbol(this.Node), null);
+                        Interlocked.CompareExchange(ref _lazySymbols[0], _lazyParentQualifierBinder.GetChildContextSymbol(this.Node), null);
                     }
                 }
                 return _lazyIdentifierNodes;
             }
+        }
+
+        public bool IsLastChild(RedNode node)
+        {
+            int index = this.IdentifierNodes.IndexOf(node);
+            return index >= 0 && index == _lazySymbols.Length-1 && (_lazyParentQualifierBinder == null || _lazyParentQualifierBinder.IsLastChild(this.Node));
         }
 
         public IMetaSymbol GetChildContextSymbol(RedNode node)
@@ -100,6 +108,18 @@ namespace MetaDslx.Compiler.Binding.Binders
                 }
                 return _lazySymbol;
             }
+        }
+        
+        public virtual ImmutableArray<Diagnostic> GetErrors()
+        {
+            var nodes = this.IdentifierNodes;
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                var identifierBinder = this.GetBinder(nodes[i]) as IValueBinder;
+                var errors = identifierBinder.GetErrors();
+                if (errors.Length > 0) return errors;
+            }
+            return ImmutableArray<Diagnostic>.Empty;
         }
 
         public ImmutableArray<object> GetValues()

@@ -98,6 +98,11 @@ namespace MetaDslx.Core
             get { return true; }
         }
 
+        internal virtual bool IsSilent
+        {
+            get { return false; }
+        }
+
         internal virtual DiagnosticBag Diagnostics
         {
             get { return null; }
@@ -150,9 +155,10 @@ namespace MetaDslx.Core
             return values;
         }
 
-        public static LazyValue CreateSingle(Func<object> lazy)
+        public static LazyValue CreateSingle(Func<object> lazy, bool silent = false)
         {
-            return new SingleLazyValue(lazy);
+            if (silent) return new SilentSingleLazyValue(lazy);
+            else return new SingleLazyValue(lazy);
         }
 
         public static LazyValue CreateSingle(Func<object> lazy, Location location, DiagnosticBag diagnostics)
@@ -160,9 +166,10 @@ namespace MetaDslx.Core
             return new SingleLazyValueWithLocation(lazy, location, diagnostics);
         }
 
-        public static LazyValue CreateMultiple(Func<IEnumerable<object>> lazy)
+        public static LazyValue CreateMultiple(Func<IEnumerable<object>> lazy, bool silent = false)
         {
-            return new MultipleLazyValues(lazy);
+            if (silent) return new SilentMultipleLazyValues(lazy);
+            else return new MultipleLazyValues(lazy);
         }
 
         public static LazyValue CreateMultiple(Func<IEnumerable<object>> lazy, Location location, DiagnosticBag diagnostics)
@@ -199,6 +206,32 @@ namespace MetaDslx.Core
         {
             return lazy();
         }
+
+    }
+
+    internal class SilentSingleLazyValue : LazyValue
+    {
+        private Func<object> lazy;
+
+        internal SilentSingleLazyValue(Func<object> lazy)
+        {
+            this.lazy = lazy;
+        }
+
+        internal override bool IsSilent
+        {
+            get { return true; }
+        }
+
+        internal Func<object> Lazy
+        {
+            get { return this.lazy; }
+        }
+
+        internal protected override object CreateRedValue()
+        {
+            return lazy();
+        }
     }
 
     internal class SingleLazyValueWithLocation : SingleLazyValue
@@ -211,6 +244,11 @@ namespace MetaDslx.Core
         {
             this.diagnostics = diagnostics;
             this.location = location;
+        }
+
+        internal override bool IsSilent
+        {
+            get { return true; }
         }
 
         internal override DiagnosticBag Diagnostics
@@ -249,6 +287,36 @@ namespace MetaDslx.Core
         }
     }
 
+    internal class SilentMultipleLazyValues : LazyValue
+    {
+        private Func<IEnumerable<object>> lazy;
+
+        internal SilentMultipleLazyValues(Func<IEnumerable<object>> lazy)
+        {
+            this.lazy = lazy;
+        }
+
+        internal override bool IsSilent
+        {
+            get { return true; }
+        }
+
+        internal override bool IsSingleValue
+        {
+            get { return false; }
+        }
+
+        internal Func<IEnumerable<object>> Lazy
+        {
+            get { return this.lazy; }
+        }
+
+        internal protected override object[] CreateRedValues()
+        {
+            return lazy().ToArray();
+        }
+    }
+
     internal class MultipleLazyValuesWithLocation : MultipleLazyValues
     {
         private DiagnosticBag diagnostics;
@@ -259,6 +327,11 @@ namespace MetaDslx.Core
         {
             this.diagnostics = diagnostics;
             this.location = location;
+        }
+
+        internal override bool IsSilent
+        {
+            get { return true; }
         }
 
         internal override DiagnosticBag Diagnostics

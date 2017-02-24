@@ -410,7 +410,6 @@ voidType
 	;
 
                          
-                                   
 onewayType
 	: KOneway
 	;
@@ -418,7 +417,7 @@ onewayType
                
 operationReturnType
 	: returnType
-	| onewayType
+	|                                     onewayType
 	;
 
                         

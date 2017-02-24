@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
 using MetaDslx.Core;
+using MetaDslx.Compiler.Diagnostics;
 
 namespace MetaDslx.Compiler.Binding.Binders
 {
@@ -14,6 +15,7 @@ namespace MetaDslx.Compiler.Binding.Binders
     {
         object Value { get; }
         IMetaSymbol Symbol { get; }
+        ImmutableArray<Diagnostic> GetErrors();
         ImmutableArray<object> GetValues();
         ImmutableArray<IMetaSymbol> GetSymbols();
     }
@@ -47,6 +49,11 @@ namespace MetaDslx.Compiler.Binding.Binders
         {
             if (_value is IMetaSymbol) return ImmutableArray.Create((IMetaSymbol)_value);
             else return ImmutableArray<IMetaSymbol>.Empty;
+        }
+
+        public ImmutableArray<Diagnostic> GetErrors()
+        {
+            return ImmutableArray<Diagnostic>.Empty;
         }
     }
 }

@@ -27,6 +27,14 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
+        public override BindingOptions BindingOptions
+        {
+            get
+            {
+                return BindingOptions.Default;
+            }
+        }
+
         protected override bool IsAccessibleHelper(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved)
         {
             failedThroughTypeCheck = false;
