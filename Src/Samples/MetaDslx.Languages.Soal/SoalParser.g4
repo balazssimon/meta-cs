@@ -392,8 +392,8 @@ objectType
           
            
 valueType 
-	: KInt 
-	| KLong 
+	:                          KInt 
+	|                           KLong 
 	| KFloat 
 	| KDouble 
 	| KByte 

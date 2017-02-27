@@ -247,12 +247,12 @@ namespace MetaDslx.Compiler.Binding
 
         public IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, RootBinder rootBinder)
         {
-            var result = this.CreateGlobalNamespaceAliasCore(globalNamespace, rootBinder);
+            var result = this.CreateGlobalNamespaceAliasCore(globalNamespace);
             result.MAttachProperty(CompilerAttachedProperties.ContainingCompilationProperty);
             result.MSet(CompilerAttachedProperties.ContainingCompilationProperty, this.Compilation);
             return result;
         }
 
-        protected abstract MutableSymbol CreateGlobalNamespaceAliasCore(IMetaSymbol globalNamespace, RootBinder rootBinder);
+        protected abstract MutableSymbol CreateGlobalNamespaceAliasCore(IMetaSymbol globalNamespace);
     }
 }

@@ -11,8 +11,8 @@ namespace MetaDslx.Languages.Soal.Binding
 {
 	public class SoalDeclarationTreeBuilderVisitor : DeclarationTreeBuilderVisitor, ISoalSyntaxVisitor
 	{
-        protected SoalDeclarationTreeBuilderVisitor(SoalSyntaxTree syntaxTree, string scriptClassName, bool isSubmission, bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
-            : base(syntaxTree, scriptClassName, isSubmission, visitIntoStructuredToken, visitIntoStructuredTrivia)
+        protected SoalDeclarationTreeBuilderVisitor(SoalSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
+            : base(syntaxTree, scriptClassName, isSubmission)
         {
         }
 
@@ -30,7 +30,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Declarations");
 			try
 			{
-				this.VisitList(node.NamespaceDeclaration);
+				foreach (var child in node.NamespaceDeclaration)
+				{
+					this.Visit(child);
+				}
 			}
 			finally
 			{
@@ -69,7 +72,10 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginQualifier();
 			try
 			{
-				this.VisitList(node.Identifier);
+				foreach (var child in node.Identifier)
+				{
+					this.Visit(child);
+				}
 			}
 			finally
 			{
@@ -79,22 +85,34 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitIdentifierList(IdentifierListSyntax node)
 		{
-			this.VisitList(node.Identifier);
+			foreach (var child in node.Identifier)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitQualifierList(QualifierListSyntax node)
 		{
-			this.VisitList(node.Qualifier);
+			foreach (var child in node.Qualifier)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitAnnotationList(AnnotationListSyntax node)
 		{
-			this.VisitList(node.Annotation);
+			foreach (var child in node.Annotation)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitReturnAnnotationList(ReturnAnnotationListSyntax node)
 		{
-			this.VisitList(node.ReturnAnnotation);
+			foreach (var child in node.ReturnAnnotation)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitAnnotation(AnnotationSyntax node)
@@ -152,7 +170,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitAnnotationPropertyList(AnnotationPropertyListSyntax node)
 		{
-			this.VisitList(node.AnnotationProperty);
+			foreach (var child in node.AnnotationProperty)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitAnnotationProperty(AnnotationPropertySyntax node)
@@ -210,7 +231,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitNamespaceBody(NamespaceBodySyntax node)
 		{
-			this.VisitList(node.Declaration);
+			foreach (var child in node.Declaration)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitDeclaration(DeclarationSyntax node)
@@ -257,7 +281,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitEnumLiterals(EnumLiteralsSyntax node)
 		{
-			this.VisitList(node.EnumLiteral);
+			foreach (var child in node.EnumLiteral)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitEnumLiteral(EnumLiteralSyntax node)
@@ -299,7 +326,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitStructBody(StructBodySyntax node)
 		{
-			this.VisitList(node.PropertyDeclaration);
+			foreach (var child in node.PropertyDeclaration)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
@@ -350,8 +380,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitDatabaseBody(DatabaseBodySyntax node)
 		{
-			this.VisitList(node.EntityReference);
-			this.VisitList(node.OperationDeclaration);
+			foreach (var child in node.EntityReference)
+			{
+				this.Visit(child);
+			}
+			foreach (var child in node.OperationDeclaration)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitEntityReference(EntityReferenceSyntax node)
@@ -383,7 +419,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitInterfaceBody(InterfaceBodySyntax node)
 		{
-			this.VisitList(node.OperationDeclaration);
+			foreach (var child in node.OperationDeclaration)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitOperationDeclaration(OperationDeclarationSyntax node)
@@ -417,7 +456,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitParameterList(ParameterListSyntax node)
 		{
-			this.VisitList(node.Parameter);
+			foreach (var child in node.Parameter)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitParameter(ParameterSyntax node)
@@ -478,7 +520,14 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginDeclaration(typeof(Symbols.Component), node);
 			try
 			{
-				this.VisitToken(node.KAbstract);
+				if (node.KAbstract != null)
+				{
+					switch (((SoalSyntaxToken)node.KAbstract).Kind)
+					{
+						default:
+							break;
+					}
+				}
 				this.Visit(node.Name);
 				this.Visit(node.ComponentBody);
 			}
@@ -495,7 +544,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitComponentElements(ComponentElementsSyntax node)
 		{
-			this.VisitList(node.ComponentElement);
+			foreach (var child in node.ComponentElement)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitComponentElement(ComponentElementSyntax node)
@@ -557,7 +609,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitComponentServiceOrReferenceNonEmptyBody(ComponentServiceOrReferenceNonEmptyBodySyntax node)
 		{
-			this.VisitList(node.ComponentServiceOrReferenceElement);
+			foreach (var child in node.ComponentServiceOrReferenceElement)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitComponentServiceOrReferenceElement(ComponentServiceOrReferenceElementSyntax node)
@@ -671,7 +726,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitCompositeElements(CompositeElementsSyntax node)
 		{
-			this.VisitList(node.CompositeElement);
+			foreach (var child in node.CompositeElement)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitCompositeElement(CompositeElementSyntax node)
@@ -748,7 +806,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitDeploymentElements(DeploymentElementsSyntax node)
 		{
-			this.VisitList(node.DeploymentElement);
+			foreach (var child in node.DeploymentElement)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitDeploymentElement(DeploymentElementSyntax node)
@@ -782,7 +843,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		public virtual void VisitEnvironmentBody(EnvironmentBodySyntax node)
 		{
 			this.Visit(node.RuntimeDeclaration);
-			this.VisitList(node.RuntimeReference);
+			foreach (var child in node.RuntimeReference)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitRuntimeDeclaration(RuntimeDeclarationSyntax node)
@@ -858,8 +922,14 @@ namespace MetaDslx.Languages.Soal.Binding
 		public virtual void VisitBindingLayers(BindingLayersSyntax node)
 		{
 			this.Visit(node.TransportLayer);
-			this.VisitList(node.EncodingLayer);
-			this.VisitList(node.ProtocolLayer);
+			foreach (var child in node.EncodingLayer)
+			{
+				this.Visit(child);
+			}
+			foreach (var child in node.ProtocolLayer)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitTransportLayer(TransportLayerSyntax node)
@@ -896,7 +966,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitHttpTransportLayerNonEmptyBody(HttpTransportLayerNonEmptyBodySyntax node)
 		{
-			this.VisitList(node.HttpTransportLayerProperties);
+			foreach (var child in node.HttpTransportLayerProperties)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitRestTransportLayer(RestTransportLayerSyntax node)
@@ -1007,7 +1080,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitSoapEncodingLayerNonEmptyBody(SoapEncodingLayerNonEmptyBodySyntax node)
 		{
-			this.VisitList(node.SoapEncodingProperties);
+			foreach (var child in node.SoapEncodingProperties)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitXmlEncodingLayer(XmlEncodingLayerSyntax node)
@@ -1149,7 +1225,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitEndpointProperties(EndpointPropertiesSyntax node)
 		{
-			this.VisitList(node.EndpointProperty);
+			foreach (var child in node.EndpointProperty)
+			{
+				this.Visit(child);
+			}
 		}
 		
 		public virtual void VisitEndpointProperty(EndpointPropertySyntax node)

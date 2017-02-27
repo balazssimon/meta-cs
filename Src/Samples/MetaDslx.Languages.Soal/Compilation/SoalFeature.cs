@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 namespace MetaDslx.Languages.Soal
 {
     public enum SoalFeature
     {
         None
     }
+
     public static partial class SoalFeatureExtensions
     {
         internal static string RequiredFeature(this SoalFeature feature)
@@ -19,6 +21,7 @@ namespace MetaDslx.Languages.Soal
                     return null;
             }
         }
+
         internal static LanguageVersion RequiredVersion(this SoalFeature feature)
         {
             switch (feature)
@@ -30,5 +33,6 @@ namespace MetaDslx.Languages.Soal
             }
         }
     }
+
 }
 

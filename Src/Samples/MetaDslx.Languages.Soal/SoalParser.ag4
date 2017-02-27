@@ -392,8 +392,8 @@ objectType
 $SymbolUse
 $Identifier
 valueType 
-	: KInt 
-	| KLong 
+	: $Value(SoalInstance.Int) KInt 
+	| $Value(SoalInstance.Long) KLong 
 	| KFloat 
 	| KDouble 
 	| KByte 

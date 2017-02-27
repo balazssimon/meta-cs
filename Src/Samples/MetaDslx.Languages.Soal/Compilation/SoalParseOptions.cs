@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
+
 namespace MetaDslx.Languages.Soal
 {
     /// <summary>
@@ -18,11 +19,14 @@ namespace MetaDslx.Languages.Soal
         /// The default parse options.
         /// </summary>
         public static SoalParseOptions Default { get; } = new SoalParseOptions();
+
         private ImmutableDictionary<string, string> _features;
+
         /// <summary>
         /// Gets the language version.
         /// </summary>
         public LanguageVersion LanguageVersion { get; private set; }
+
         public SoalParseOptions(
             LanguageVersion languageVersion = LanguageVersion.Soal1,
             DocumentationMode documentationMode = DocumentationMode.Parse,
@@ -40,6 +44,7 @@ namespace MetaDslx.Languages.Soal
             this.LanguageVersion = languageVersion;
             _features = ImmutableDictionary<string, string>.Empty;
         }
+
         internal SoalParseOptions(
             LanguageVersion languageVersion,
             DocumentationMode documentationMode,
@@ -53,60 +58,74 @@ namespace MetaDslx.Languages.Soal
             }
             _features = features;
         }
+
         private SoalParseOptions(SoalParseOptions other) : this(
             languageVersion: other.LanguageVersion,
             documentationMode: other.DocumentationMode,
             kind: other.Kind)
         {
         }
+
         public new SoalParseOptions WithKind(SourceCodeKind kind)
         {
             if (kind == this.Kind)
             {
                 return this;
             }
+
             if (!kind.IsValid())
             {
                 throw new ArgumentOutOfRangeException(nameof(kind));
             }
+
             return new SoalParseOptions(this) { Kind = kind };
         }
+
         public SoalParseOptions WithLanguageVersion(LanguageVersion version)
         {
             if (version == this.LanguageVersion)
             {
                 return this;
             }
+
             if (!version.IsValid())
             {
                 throw new ArgumentOutOfRangeException(nameof(version));
             }
+
             return new SoalParseOptions(this) { LanguageVersion = version };
         }
+
         public new SoalParseOptions WithDocumentationMode(DocumentationMode documentationMode)
         {
             if (documentationMode == this.DocumentationMode)
             {
                 return this;
             }
+
             if (!documentationMode.IsValid())
             {
                 throw new ArgumentOutOfRangeException(nameof(documentationMode));
             }
+
             return new SoalParseOptions(this) { DocumentationMode = documentationMode };
         }
+
         public override ParseOptions CommonWithKind(SourceCodeKind kind)
         {
             return WithKind(kind);
         }
+
         protected override ParseOptions CommonWithDocumentationMode(DocumentationMode documentationMode)
         {
             return WithDocumentationMode(documentationMode);
         }
+
         protected override ParseOptions CommonWithFeatures(IEnumerable<KeyValuePair<string, string>> features)
         {
             return WithFeatures(features);
         }
+
         /// <summary>
         /// Enable some experimental language features for testing.
         /// </summary>
@@ -116,6 +135,7 @@ namespace MetaDslx.Languages.Soal
             {
                 throw new ArgumentNullException(nameof(features));
             }
+
             return new SoalParseOptions(this) { _features = features.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase) };
         }
         public override IReadOnlyDictionary<string, string> Features
@@ -140,6 +160,7 @@ namespace MetaDslx.Languages.Soal
         {
             return this.Equals(obj as SoalParseOptions);
         }
+
         public bool Equals(SoalParseOptions other)
         {
             if (object.ReferenceEquals(this, other))
@@ -152,6 +173,7 @@ namespace MetaDslx.Languages.Soal
             }
             return this.LanguageVersion == other.LanguageVersion;
         }
+
         public override int GetHashCode()
         {
             return

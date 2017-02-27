@@ -91,7 +91,7 @@ using System.Threading.Tasks;
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
-
+^
 namespace [Properties.DefaultNamespace]
 {
     /// <summary>
@@ -103,14 +103,14 @@ namespace [Properties.DefaultNamespace]
         /// The default parse options.
         /// </summary>
         public static [Properties.LanguageName]ParseOptions Default { get; } = new [Properties.LanguageName]ParseOptions();
-
+^
         private ImmutableDictionary<string, string> _features;
-
+^
         /// <summary>
         /// Gets the language version.
         /// </summary>
         public LanguageVersion LanguageVersion { get; private set; }
-
+^
         public [Properties.LanguageName]ParseOptions(
             LanguageVersion languageVersion = LanguageVersion.[Properties.LanguageName]1,
             DocumentationMode documentationMode = DocumentationMode.Parse,
@@ -128,7 +128,7 @@ namespace [Properties.DefaultNamespace]
             this.LanguageVersion = languageVersion;
             _features = ImmutableDictionary<string, string>.Empty;
         }
-
+^
         internal [Properties.LanguageName]ParseOptions(
             LanguageVersion languageVersion,
             DocumentationMode documentationMode,
@@ -142,74 +142,74 @@ namespace [Properties.DefaultNamespace]
             }
             _features = features;
         }
-
+^
         private [Properties.LanguageName]ParseOptions([Properties.LanguageName]ParseOptions other) : this(
             languageVersion: other.LanguageVersion,
             documentationMode: other.DocumentationMode,
             kind: other.Kind)
         {
         }
-
+^
         public new [Properties.LanguageName]ParseOptions WithKind(SourceCodeKind kind)
         {
             if (kind == this.Kind)
             {
                 return this;
             }
-
+^
             if (!kind.IsValid())
             {
                 throw new ArgumentOutOfRangeException(nameof(kind));
             }
-
+^
             return new [Properties.LanguageName]ParseOptions(this) { Kind = kind };
         }
-
+^
         public [Properties.LanguageName]ParseOptions WithLanguageVersion(LanguageVersion version)
         {
             if (version == this.LanguageVersion)
             {
                 return this;
             }
-
+^
             if (!version.IsValid())
             {
                 throw new ArgumentOutOfRangeException(nameof(version));
             }
-
+^
             return new [Properties.LanguageName]ParseOptions(this) { LanguageVersion = version };
         }
-
+^
         public new [Properties.LanguageName]ParseOptions WithDocumentationMode(DocumentationMode documentationMode)
         {
             if (documentationMode == this.DocumentationMode)
             {
                 return this;
             }
-
+^
             if (!documentationMode.IsValid())
             {
                 throw new ArgumentOutOfRangeException(nameof(documentationMode));
             }
-
+^
             return new [Properties.LanguageName]ParseOptions(this) { DocumentationMode = documentationMode };
         }
-
+^
         public override ParseOptions CommonWithKind(SourceCodeKind kind)
         {
             return WithKind(kind);
         }
-
+^
         protected override ParseOptions CommonWithDocumentationMode(DocumentationMode documentationMode)
         {
             return WithDocumentationMode(documentationMode);
         }
-
+^
         protected override ParseOptions CommonWithFeatures(IEnumerable<KeyValuePair<string, string>> features)
         {
             return WithFeatures(features);
         }
-
+^
         /// <summary>
         /// Enable some experimental language features for testing.
         /// </summary>
@@ -219,7 +219,7 @@ namespace [Properties.DefaultNamespace]
             {
                 throw new ArgumentNullException(nameof(features));
             }
-
+^
             return new [Properties.LanguageName]ParseOptions(this) { _features = features.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase) };
         }
 
@@ -247,7 +247,7 @@ namespace [Properties.DefaultNamespace]
         {
             return this.Equals(obj as [Properties.LanguageName]ParseOptions);
         }
-
+^
         public bool Equals([Properties.LanguageName]ParseOptions other)
         {
             if (object.ReferenceEquals(this, other))
@@ -262,7 +262,7 @@ namespace [Properties.DefaultNamespace]
 
             return this.LanguageVersion == other.LanguageVersion;
         }
-
+^
         public override int GetHashCode()
         {
             return
@@ -279,14 +279,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+^
 namespace [Properties.DefaultNamespace]
 {
     public enum [Properties.LanguageName]Feature
     {
         None
     }
-
+^
     public static partial class [Properties.LanguageName]FeatureExtensions
     {
         internal static string RequiredFeature(this [Properties.LanguageName]Feature feature)
@@ -297,7 +297,7 @@ namespace [Properties.DefaultNamespace]
                     return null;
             }
         }
-
+^
         internal static LanguageVersion RequiredVersion(this [Properties.LanguageName]Feature feature)
         {
             switch (feature)
@@ -310,7 +310,7 @@ namespace [Properties.DefaultNamespace]
             }
         }
     }
-
+^
 }
 end template
 
@@ -3178,8 +3178,8 @@ namespace [Properties.DefaultNamespace].Binding
 {
 	public class [Properties.LanguageName]DeclarationTreeBuilderVisitor : DeclarationTreeBuilderVisitor, I[Properties.LanguageName]SyntaxVisitor
 	{
-        protected [Properties.LanguageName]DeclarationTreeBuilderVisitor([Properties.LanguageName]SyntaxTree syntaxTree, string scriptClassName, bool isSubmission, bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
-            : base(syntaxTree, scriptClassName, isSubmission, visitIntoStructuredToken, visitIntoStructuredTrivia)
+        protected [Properties.LanguageName]DeclarationTreeBuilderVisitor([Properties.LanguageName]SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
+            : base(syntaxTree, scriptClassName, isSubmission)
         {
         }
 ^
@@ -3217,22 +3217,24 @@ template GenerateDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 [if (rule.ContainsAnnotations && !rule.Annotations.IsDeclarationBoundary())]
 [if (rule.IsSimpleAlt)]
 	[loop(elem:rule.Elements where elem.ContainsAnnotations && !elem.Annotations.IsDeclarationBoundary())]
-[GetDeclarationTreeBuilderVisitElement(rule, elem)]
+[GenerateDeclarationTreeBuilderVisitElement(rule, elem)]
 	[end loop] 
 [else]
 	[loop(elem:rule.AllElements where elem.ContainsAnnotations && !elem.Annotations.IsDeclarationBoundary())]
-[GetDeclarationTreeBuilderVisitElement(rule, elem)]
+[GenerateDeclarationTreeBuilderVisitElement(rule, elem)]
 	[end loop]    
 [end if]
 [end if]
 end template
 
-template GenerateDeclarationTreeBuilderVisitElement(Antlr4ParserRuleElement elem)
+template GenerateDeclarationTreeBuilderVisitElementBody(Antlr4ParserRuleElement elem)
 	[if (elem.IsList)]
-this.VisitList(node.[elem.RedName()]);
+foreach (var child in node.[elem.RedName()])
+{
+	this.Visit(child);
+}
 	[else]
 		[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-this.VisitToken(node.[elem.RedName()]);
 		[else]
 this.Visit(node.[elem.RedName()]);
 		[end if]
@@ -3319,7 +3321,7 @@ function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 end function
 
 function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	string body = GenerateDeclarationTreeBuilderVisitElement(elem);
+	string body = GenerateDeclarationTreeBuilderVisitElementBody(elem);
 	if (elem.Annotations.IsIdentifier())
 		body = GenerateDeclarationTreeBuilderIdentifier(elem.Annotations, "node."+elem.RedName(), body);
 	end if
@@ -3335,6 +3337,25 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 	return body;
 end function
 
+template GenerateDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
+	[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
+if (node.[elem.RedName()] != null)
+{
+	switch ((([Properties.LanguageName]SyntaxToken)node.[elem.RedName()]).Kind)
+	{
+		[loop (alt:elem.BlockItems)]
+		case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
+			[GetDeclarationTreeBuilderVisitElement(rule, alt)]
+			break;
+		[end loop]
+		default:
+			break;
+	}
+}
+	[else]
+[GetDeclarationTreeBuilderVisitElement(rule, elem)]
+	[end if]
+end template
 
 template GenerateBinderFactoryVisitor()
 using System;
@@ -3385,6 +3406,7 @@ template GenerateBinderFactoryVisit(Antlr4ParserRule rule)
 public Binder Visit[rule.PlainName()]([rule.RedName()] node)
 {
     Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+	[if (rule.HasAnnotations || hasloop(elem:rule.Elements where elem.HasAnnotations))]
     if (!node.FullSpan.Contains(this.Position))
     {
         return this.GetParentBinder(node);
@@ -3402,6 +3424,9 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] node)
 		[GenerateBinderFactoryVisitBody(rule)]
 	}
 	return resultBinder;
+	[else]
+    return this.GetParentBinder(node);
+	[end if]
 }
 end template
 
@@ -3442,21 +3467,21 @@ end function
 
 
 template GenerateBinderFactoryVisitBody(Antlr4ParserRule rule)
-[if (rule.ContainsAnnotations && hasloop(elem:rule.Elements where elem.Annotations.Annotations.Count > 0))]
+[if (rule.ContainsAnnotations && hasloop(elem:rule.Elements where elem.HasAnnotations))]
 [if (rule.IsSimpleAlt)]
 	[loop(elem:rule.Elements where elem.ContainsAnnotations)]
-[GetBinderFactoryVisitElement(rule, elem)]
+[GenerateBinderFactoryVisitElement(rule, elem)]
 	[end loop] 
 [else]
 	[loop(elem:rule.AllElements where elem.ContainsAnnotations)]
-[GetBinderFactoryVisitElement(rule, elem)]
+[GenerateBinderFactoryVisitElement(rule, elem)]
 	[end loop]    
 [end if]
 [end if]
 end template
 
-template GenerateBinderFactoryVisitElement(Antlr4ParserRuleElement elem)
-	[if (elem.Annotations.Annotations.Count > 0)]
+template GenerateBinderFactoryVisitElementBody(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
+	[if (elem.HasAnnotations)]
 if (use == Use[elem.RedName()])
 {
     [loop (annot:elem.Annotations.Annotations)]
@@ -3471,24 +3496,33 @@ if (use == Use[elem.RedName()])
 	[end if]
 end template
 
-
-
-function string GetBinderFactoryVisitBody(Antlr4ParserRule rule)
-	string body = GenerateBinderFactoryVisitBody(rule);
-	return body;
-end function
-
-function string GetBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	string body = GenerateBinderFactoryVisitElement(elem);
-	return body;
-end function
+template GenerateBinderFactoryVisitTokenAltBody(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
+	[if (elem.HasAnnotations)]
+if (use == Use[elem.RedName()])
+{
+	switch ((([Properties.LanguageName]SyntaxToken)node.[elem.RedName()]).Kind)
+	{
+			[loop (alt:elem.BlockItems)]
+		case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
+				[loop (annot:alt.Annotations.Annotations)]
+			resultBinder = this.Create[annot.Name]Binder(resultBinder, node.[elem.RedName()][GetAnnotationParams(annot)]);
+				[end loop]
+			break;
+			[end loop]
+		default:
+			break;
+	}
+	this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
+}
+	[end if]
+end template
 
 template GenerateBinderFactoryVisitElemUses(Antlr4ParserRule rule)
-[if (rule.ContainsAnnotations && hasloop(elem:rule.Elements where elem.Annotations.Annotations.Count > 0))]
+[if (rule.ContainsAnnotations && hasloop(elem:rule.Elements where elem.HasAnnotations))]
 if (this.ForChild)
 {
 [if (rule.IsSimpleAlt)]
-	[loop(elem:rule.Elements where elem.Annotations.Annotations.Count > 0)]
+	[loop(elem:rule.Elements where elem.HasAnnotations)]
 		[if (elem.IsList)]
 	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node)) use = Use[elem.RedName()];
 		[else]
@@ -3496,7 +3530,7 @@ if (this.ForChild)
 		[end if]
 	[end loop] 
 [else]
-	[loop(elem:rule.AllElements where elem.Annotations.Annotations.Count > 0)]
+	[loop(elem:rule.AllElements where elem.HasAnnotations)]
 		[if (elem.IsList)]
 	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node)) use = Use[elem.RedName()];
 		[else]
@@ -3506,4 +3540,12 @@ if (this.ForChild)
 [end if]
 }
 [end if]
+end template
+
+template GenerateBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
+	[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
+[GenerateBinderFactoryVisitTokenAltBody(rule, elem)]
+	[else]
+[GenerateBinderFactoryVisitElementBody(rule, elem)]
+	[end if]
 end template

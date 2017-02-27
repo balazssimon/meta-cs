@@ -14,7 +14,7 @@ using MetaDslx.Compiler.Declarations;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public class DeclarationTreeBuilderVisitor : DetailedSyntaxVisitor
+    public class DeclarationTreeBuilderVisitor : SyntaxVisitor
     {
         private readonly SyntaxTree _syntaxTree;
         private readonly string _scriptClassName;
@@ -22,8 +22,7 @@ namespace MetaDslx.Compiler.Binding
         private DeclarationTreeInfo _rootDeclarationInfo;
         private DeclarationTreeInfo _currentDeclarationInfo;
 
-        protected DeclarationTreeBuilderVisitor(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission, bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
-            : base(visitIntoStructuredToken, visitIntoStructuredTrivia)
+        protected DeclarationTreeBuilderVisitor(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             _syntaxTree = syntaxTree;
             _scriptClassName = scriptClassName;

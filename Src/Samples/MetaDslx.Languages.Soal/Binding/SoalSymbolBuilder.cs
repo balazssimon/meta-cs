@@ -55,7 +55,7 @@ namespace MetaDslx.Languages.Soal.Binding
             return result;
         }
 
-        protected override MutableSymbol CreateGlobalNamespaceAliasCore(IMetaSymbol globalNamespace, RootBinder rootBinder)
+        protected override MutableSymbol CreateGlobalNamespaceAliasCore(IMetaSymbol globalNamespace)
         {
             throw new NotImplementedException();
         }

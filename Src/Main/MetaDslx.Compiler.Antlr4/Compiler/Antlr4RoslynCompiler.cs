@@ -146,9 +146,10 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 foreach (var rule in this.Grammar.ParserRules)
                 {
                     bool foundRuleFlag = this.CollectHasAnnotationFlags(rule);
-                    if (!foundRuleFlag && !rule.ContainsAnnotations && rule.Annotations.Annotations.Count > 0)
+                    if (rule.Annotations.Annotations.Count > 0)
                     {
-                        foundRuleFlag = true;
+                        if (!rule.ContainsAnnotations) foundRuleFlag = true;
+                        rule.HasAnnotations = true;
                     }
                     if (foundRuleFlag)
                     {
@@ -158,9 +159,10 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                     foreach (var alt in rule.Alternatives)
                     {
                         foundRuleFlag = this.CollectHasAnnotationFlags(alt);
-                        if (!foundRuleFlag && !alt.ContainsAnnotations && alt.Annotations.Annotations.Count > 0)
+                        if (alt.Annotations.Annotations.Count > 0)
                         {
-                            foundRuleFlag = true;
+                            if (!alt.ContainsAnnotations) foundRuleFlag = true;
+                            alt.HasAnnotations = true;
                         }
                         if (foundRuleFlag)
                         {
@@ -184,7 +186,21 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                     {
                         this.Grammar.ParserRuleElemUses.Add(elem.RedName());
                         elem.ContainsAnnotations = true;
+                        elem.HasAnnotations = true;
                         foundElemFlag = true;
+                    }
+                    if (elem.BlockItems.Count > 0)
+                    {
+                        foreach (var item in elem.BlockItems)
+                        {
+                            if (item.Annotations.Annotations.Count > 0)
+                            {
+                                item.HasAnnotations = true;
+                                elem.HasAnnotations = true;
+                                elem.ContainsAnnotations = true;
+                                foundElemFlag = true;
+                            }
+                        }
                     }
                 }
                 if (!elem.ContainsAnnotations)
@@ -1342,6 +1358,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public MetaCompilerAnnotations Annotations { get; internal set; }
         public bool ContainsDeclarationTreeAnnotations { get; internal set; }
         public bool ContainsAnnotations { get; internal set; }
+        public bool HasAnnotations { get; internal set; }
     }
     public class Antlr4Grammar : Antlr4AnnotatedObject
     {

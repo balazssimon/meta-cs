@@ -15,14 +15,13 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding.Binders
 {
-    public abstract class BinderFactoryVisitor : DetailedSyntaxVisitor<Binder> 
+    public abstract class BinderFactoryVisitor : SyntaxVisitor<Binder> 
     {
         private readonly BinderFactory _binderFactory;
         private int _position;
         private bool _forChild;
 
         public BinderFactoryVisitor(BinderFactory binderFactory)
-            : base(false, false)
         {
             _binderFactory = binderFactory;
         }
@@ -248,9 +247,5 @@ namespace MetaDslx.Compiler.Binding.Binders
             return null;
         }
 
-        public override Binder VisitToken(SyntaxToken token)
-        {
-            return this.GetParentBinder(token);
-        }
     }
 }
