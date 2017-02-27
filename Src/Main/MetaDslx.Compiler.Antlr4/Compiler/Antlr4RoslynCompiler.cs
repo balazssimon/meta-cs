@@ -44,6 +44,11 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public string GeneratedParseOptions { get; private set; }
         public string GeneratedFeature { get; private set; }
 
+        public string GeneratedCompilation { get; private set; }
+        public string GeneratedCompilationFactory { get; private set; }
+        public string GeneratedCompilationOptions { get; private set; }
+        public string GeneratedScriptCompilationInfo { get; private set; }
+
         public string GeneratedDeclarationTreeBuilder { get; private set; }
         public string GeneratedBinderFactoryVisitor { get; private set; }
 
@@ -102,6 +107,12 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.GeneratedLanguageVersion = generator.GenerateLanguageVersion();
             this.GeneratedParseOptions = generator.GenerateParseOptions();
             this.GeneratedFeature = generator.GenerateFeature();
+
+            this.GeneratedCompilation = generator.GenerateCompilation();
+            this.GeneratedCompilationFactory = generator.GenerateCompilationFactory();
+            this.GeneratedCompilationOptions = generator.GenerateCompilationOptions();
+            this.GeneratedScriptCompilationInfo = generator.GenerateScriptCompilationInfo();
+
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
         }
@@ -195,6 +206,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                         {
                             if (item.Annotations.Annotations.Count > 0)
                             {
+                                this.Grammar.ParserRuleElemUses.Add(elem.RedName());
                                 item.HasAnnotations = true;
                                 elem.HasAnnotations = true;
                                 elem.ContainsAnnotations = true;

@@ -383,25 +383,23 @@ $SymbolUse
 referenceType : objectType | qualifier;
 
 $SymbolUse
-$Identifier
 objectType 
-	: KObject 
-	| KString
+	: $Value(SoalInstance.Object) KObject 
+	| $Value(SoalInstance.String) KString
 	;
 
 $SymbolUse
-$Identifier
 valueType 
 	: $Value(SoalInstance.Int) KInt 
 	| $Value(SoalInstance.Long) KLong 
-	| KFloat 
-	| KDouble 
-	| KByte 
-	| KBool
-	| IDate
-	| ITime
-	| IDateTime
-	| ITimeSpan
+	| $Value(SoalInstance.Float) KFloat 
+	| $Value(SoalInstance.Double) KDouble 
+	| $Value(SoalInstance.Byte) KByte 
+	| $Value(SoalInstance.Bool) KBool
+	| $Value(SoalInstance.Date) IDate
+	| $Value(SoalInstance.Time) ITime
+	| $Value(SoalInstance.DateTime) IDateTime
+	| $Value(SoalInstance.TimeSpan) ITimeSpan
 	;
 
 $Value(SoalInstance.Void)

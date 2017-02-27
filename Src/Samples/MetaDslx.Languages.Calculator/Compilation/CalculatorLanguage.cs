@@ -41,9 +41,9 @@ namespace MetaDslx.Languages.Calculator
             get { return CalculatorGreenFactory.Instance; }
         }
 
-        internal new CalculatorGreenFactory InternalSyntaxFactory
+        internal CalculatorGreenFactory InternalSyntaxFactory
         {
-            get { return (CalculatorGreenFactory)base.InternalSyntaxFactory; }
+            get { return (CalculatorGreenFactory)this.InternalSyntaxFactoryCore; }
         }
 
         protected override SyntaxFactory SyntaxFactoryCore

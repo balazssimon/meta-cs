@@ -18,9 +18,9 @@ namespace MetaDslx.Compiler
         protected abstract SyntaxFacts SyntaxFactsCore { get; }
         public SyntaxFactory SyntaxFactory { get { return this.SyntaxFactoryCore; } }
         protected abstract SyntaxFactory SyntaxFactoryCore { get; }
-        public InternalSyntaxFactory InternalSyntaxFactory { get { return this.InternalSyntaxFactoryCore; } }
+        internal InternalSyntaxFactory InternalSyntaxFactory { get { return this.InternalSyntaxFactoryCore; } }
         protected abstract InternalSyntaxFactory InternalSyntaxFactoryCore { get; }
-        public CompilationFactory CompilationFactory { get { return this.CompilationFactoryCore; } }
+        internal CompilationFactory CompilationFactory { get { return this.CompilationFactoryCore; } }
         protected abstract CompilationFactory CompilationFactoryCore { get; }
     }
 

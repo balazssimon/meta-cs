@@ -1,3 +1,6 @@
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -1276,12 +1279,10 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitObjectType(ObjectTypeSyntax node)
 		{
-			if (node != null) this.RegisterIdentifier(node);
 		}
 		
 		public virtual void VisitValueType(ValueTypeSyntax node)
 		{
-			if (node != null) this.RegisterIdentifier(node);
 		}
 		
 		public virtual void VisitVoidType(VoidTypeSyntax node)

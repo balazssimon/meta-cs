@@ -1,13 +1,16 @@
-﻿using MetaDslx.Compiler;
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.Compiler;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.References;
 using MetaDslx.Compiler.Utilities;
-using System.Collections.Immutable;
 
 namespace MetaDslx.Languages.Soal
 {
@@ -228,3 +231,4 @@ namespace MetaDslx.Languages.Soal
         }
     }
 }
+

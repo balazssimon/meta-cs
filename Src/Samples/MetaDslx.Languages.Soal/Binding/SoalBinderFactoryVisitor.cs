@@ -1,3 +1,6 @@
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -26,8 +29,9 @@ namespace MetaDslx.Languages.Soal.Binding
 		public static object UseTypeReference = new object();
 		public static object UseQualifierList = new object();
 		public static object UseKAbstract = new object();
-		public static object UseOnewayType = new object();
+		public static object UseObjectType = new object();
 		public static object UseValueType = new object();
+		public static object UseOnewayType = new object();
 		public static object UseReferenceType = new object();
 		public static object UseArrayType = new object();
 		public static object UseSimpleType = new object();
@@ -1809,13 +1813,31 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return this.GetParentBinder(node);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.ObjectType)) use = UseObjectType;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
-				resultBinder = this.CreateIdentifierBinder(resultBinder, node);
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
+				if (use == UseObjectType)
+				{
+					switch (((SoalSyntaxToken)node.ObjectType).Kind)
+					{
+						case SoalSyntaxKind.KObject:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ObjectType, SoalInstance.Object);
+							break;
+						case SoalSyntaxKind.KString:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ObjectType, SoalInstance.String);
+							break;
+						default:
+							break;
+					}
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -1837,7 +1859,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
-				resultBinder = this.CreateIdentifierBinder(resultBinder, node);
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseValueType)
 				{
@@ -1850,20 +1871,28 @@ namespace MetaDslx.Languages.Soal.Binding
 							resultBinder = this.CreateValueBinder(resultBinder, node.ValueType, SoalInstance.Long);
 							break;
 						case SoalSyntaxKind.KFloat:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ValueType, SoalInstance.Float);
 							break;
 						case SoalSyntaxKind.KDouble:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ValueType, SoalInstance.Double);
 							break;
 						case SoalSyntaxKind.KByte:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ValueType, SoalInstance.Byte);
 							break;
 						case SoalSyntaxKind.KBool:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ValueType, SoalInstance.Bool);
 							break;
 						case SoalSyntaxKind.IDate:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ValueType, SoalInstance.Date);
 							break;
 						case SoalSyntaxKind.ITime:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ValueType, SoalInstance.Time);
 							break;
 						case SoalSyntaxKind.IDateTime:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ValueType, SoalInstance.DateTime);
 							break;
 						case SoalSyntaxKind.ITimeSpan:
+							resultBinder = this.CreateValueBinder(resultBinder, node.ValueType, SoalInstance.TimeSpan);
 							break;
 						default:
 							break;

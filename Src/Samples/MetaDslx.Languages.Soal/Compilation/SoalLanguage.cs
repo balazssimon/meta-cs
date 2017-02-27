@@ -11,13 +11,13 @@ using MetaDslx.Languages.Soal.Syntax.InternalSyntax;
 
 namespace MetaDslx.Languages.Soal
 {
-    public class SoalLanguage : Language
+    public sealed class SoalLanguage : Language
     {
-        public const string LanguageName = "Soal";
+        internal const string LanguageName = "Soal";
 
-        public static readonly SoalLanguage Instance = new SoalLanguage();
+        internal static readonly SoalLanguage Instance = new SoalLanguage();
 
-        private SoalLanguage()
+        internal SoalLanguage()
         {
         }
 
@@ -41,9 +41,9 @@ namespace MetaDslx.Languages.Soal
             get { return SoalGreenFactory.Instance; }
         }
 
-        internal new SoalGreenFactory InternalSyntaxFactory
+        internal SoalGreenFactory InternalSyntaxFactory
         {
-            get { return (SoalGreenFactory)base.InternalSyntaxFactory; }
+            get { return (SoalGreenFactory)this.InternalSyntaxFactoryCore; }
         }
 
         protected override SyntaxFactory SyntaxFactoryCore
@@ -61,9 +61,9 @@ namespace MetaDslx.Languages.Soal
             get { return SoalCompilationFactory.Instance; }
         }
 
-        public new SoalCompilationFactory CompilationFactory
+        internal SoalCompilationFactory CompilationFactory
         {
-            get { return (SoalCompilationFactory)base.CompilationFactory; }
+            get { return (SoalCompilationFactory)this.CompilationFactoryCore; }
         }
     }
 }

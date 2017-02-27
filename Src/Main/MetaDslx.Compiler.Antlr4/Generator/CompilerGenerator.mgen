@@ -23,11 +23,11 @@ using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 ^
 namespace [Properties.DefaultNamespace]
 {
-    public class [Properties.LanguageName]Language : Language
+    public sealed class [Properties.LanguageName]Language : Language
     {
-        public const string LanguageName = "[Properties.LanguageName]";
+        internal const string LanguageName = "[Properties.LanguageName]";
 ^
-        public static readonly [Properties.LanguageName]Language Instance = new [Properties.LanguageName]Language();
+        internal static readonly [Properties.LanguageName]Language Instance = new [Properties.LanguageName]Language();
 ^
         private [Properties.LanguageName]Language()
         {
@@ -53,9 +53,9 @@ namespace [Properties.DefaultNamespace]
             get { return [Properties.LanguageName]GreenFactory.Instance; }
         }
 ^
-        internal new [Properties.LanguageName]GreenFactory InternalSyntaxFactory
+        internal [Properties.LanguageName]GreenFactory InternalSyntaxFactory
         {
-            get { return ([Properties.LanguageName]GreenFactory)base.InternalSyntaxFactory; }
+            get { return ([Properties.LanguageName]GreenFactory)this.InternalSyntaxFactoryCore; }
         }
 ^
         protected override SyntaxFactory SyntaxFactoryCore
@@ -73,15 +73,18 @@ namespace [Properties.DefaultNamespace]
             get { return [Properties.LanguageName]CompilationFactory.Instance; }
         }
 ^
-        public new [Properties.LanguageName]CompilationFactory CompilationFactory
+        internal [Properties.LanguageName]CompilationFactory CompilationFactory
         {
-            get { return ([Properties.LanguageName]CompilationFactory)base.CompilationFactory; }
+            get { return ([Properties.LanguageName]CompilationFactory)this.CompilationFactoryCore; }
         }
     }
 }
 end template
 
 template GenerateParseOptions()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -274,6 +277,9 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateFeature()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -315,6 +321,9 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateLanguageVersion()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 ^
 namespace [Properties.DefaultNamespace]
@@ -357,7 +366,818 @@ namespace [Properties.DefaultNamespace]
 
 end template
 
+template GenerateCompilation()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Immutable;
+using System.Threading;
+using System.Diagnostics;
+using MetaDslx.Core;
+using MetaDslx.Compiler;
+using MetaDslx.Compiler.Declarations;
+using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.References;
+using MetaDslx.Compiler.Utilities;
+using [Properties.DefaultNamespace].Syntax;
+^
+namespace [Properties.DefaultNamespace]
+{
+    public class [Properties.LanguageName]Compilation : CompilationBase
+    {
+        protected [Properties.LanguageName]Compilation(
+            string name,
+            CompilationOptions options,
+            ImmutableArray<MetadataReference> references,
+            Compilation previousSubmission,
+            Type submissionReturnType,
+            Type hostObjectType,
+            bool isSubmission,
+            ReferenceManager referenceManager,
+            bool reuseReferenceManager,
+            SyntaxAndDeclarationManager syntaxAndDeclarations,
+            AsyncQueue<CompilationEvent> eventQueue = null) 
+            : base(name, options, references, previousSubmission, submissionReturnType, hostObjectType,
+                  isSubmission, referenceManager, reuseReferenceManager, syntaxAndDeclarations, eventQueue)
+        {
+        }
+^
+        public override bool IsCaseSensitive
+        {
+            get { return true; }
+        }
+^
+        public override Language Language
+        {
+            get { return [Properties.LanguageName]Language.Instance; }
+        }
+^
+        public new [Properties.LanguageName]CompilationOptions Options
+        {
+            get { return ([Properties.LanguageName]CompilationOptions)base.Options; }
+        }
+^
+        internal MutableModelGroup ModelGroupBuilder
+        {
+            get { return this.ModelGroupBuilderCore; }
+        }
+^
+        internal MutableModel ModelBuilder
+        {
+            get { return this.ModelBuilderCore; }
+        }
+^
+        internal ModelId ModelId
+        {
+            get { return this.ModelIdCore; }
+        }
+^
+        protected override IMetaSymbol CommonDynamicType
+        {
+            get { return null; }
+        }
+^
+        protected override IMetaSymbol CommonObjectType
+        {
+            get { return null; }
+        }
+^
+        protected override CompilationBase Update(
+            ReferenceManager referenceManager,
+            bool reuseReferenceManager,
+            SyntaxAndDeclarationManager syntaxAndDeclarations)
+        {
+            return new [Properties.LanguageName]Compilation(
+                this.CompilationName,
+                this.Options,
+                this.ExternalReferences,
+                this.PreviousSubmission,
+                this.SubmissionReturnType,
+                this.HostObjectType,
+                this.IsSubmission,
+                referenceManager,
+                reuseReferenceManager,
+                syntaxAndDeclarations);
+        }
+^
+        /// <summary>
+        /// Create a duplicate of this compilation with different symbol instances.
+        /// </summary>
+        public new [Properties.LanguageName]Compilation Clone()
+        {
+            return new [Properties.LanguageName]Compilation(
+                this.CompilationName,
+                this.Options,
+                this.ExternalReferences,
+                this.PreviousSubmission,
+                this.SubmissionReturnType,
+                this.HostObjectType,
+                this.IsSubmission,
+                this.GetUnboundReferenceManager(),
+                reuseReferenceManager: true,
+                syntaxAndDeclarations: this.SyntaxAndDeclarations);
+        }
+^
+        protected override Compilation CommonClone()
+        {
+            return this.Clone();
+        }
+^
+        private static readonly [Properties.LanguageName]CompilationOptions s_defaultOptions = new [Properties.LanguageName]CompilationOptions();
+        private static readonly [Properties.LanguageName]CompilationOptions s_defaultSubmissionOptions = new [Properties.LanguageName]CompilationOptions().WithReferencesSupersedeLowerVersions(true);
+^
+        /// <summary>
+        /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
+        /// on the returned object will allow to continue building up the Compilation incrementally.
+        /// </summary>
+        /// <param name="name">Simple compilation name.</param>
+        /// <param name="syntaxTrees">The syntax trees with the source code for the new compilation.</param>
+        /// <param name="references">The references for the new compilation.</param>
+        /// <param name="options">The compiler options to use.</param>
+        /// <returns>A new compilation.</returns>
+        public static [Properties.LanguageName]Compilation Create(
+            string name,
+            IEnumerable<[Properties.LanguageName]SyntaxTree> syntaxTrees = null,
+            IEnumerable<MetadataReference> references = null,
+            [Properties.LanguageName]CompilationOptions options = null)
+        {
+            return Create(
+                name,
+                options ?? s_defaultOptions,
+                syntaxTrees,
+                references,
+                previousSubmission: null,
+                returnType: null,
+                hostObjectType: null,
+                isSubmission: false);
+        }
+^
+        /// <summary>
+        /// Creates a new compilation that can be used in scripting.
+        /// </summary>
+        public static [Properties.LanguageName]Compilation CreateScriptCompilation(
+            string name,
+            [Properties.LanguageName]SyntaxTree syntaxTree = null,
+            IEnumerable<MetadataReference> references = null,
+            [Properties.LanguageName]CompilationOptions options = null,
+            [Properties.LanguageName]Compilation previousScriptCompilation = null,
+            Type returnType = null,
+            Type globalsType = null)
+        {
+            ValidateScriptCompilationParameters(previousScriptCompilation, returnType, ref globalsType);
+^
+            return Create(
+                name,
+                options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
+                (syntaxTree != null) ? new["[]"] { syntaxTree } : EmptyCollections.Enumerable<[Properties.LanguageName]SyntaxTree>(),
+                references,
+                previousScriptCompilation,
+                returnType,
+                globalsType,
+                isSubmission: true);
+        }
+^
+        private static [Properties.LanguageName]Compilation Create(
+            string name,
+            [Properties.LanguageName]CompilationOptions options,
+            IEnumerable<[Properties.LanguageName]SyntaxTree> syntaxTrees,
+            IEnumerable<MetadataReference> references,
+            [Properties.LanguageName]Compilation previousSubmission,
+            Type returnType,
+            Type hostObjectType,
+            bool isSubmission)
+        {
+            Debug.Assert(options != null);
+            Debug.Assert(!isSubmission || options.ReferencesSupersedeLowerVersions);
+^
+            var validatedReferences = ValidateReferences<CompilationReference>(references);
+^
+            var compilation = new [Properties.LanguageName]Compilation(
+                name,
+                options,
+                validatedReferences,
+                previousSubmission,
+                returnType,
+                hostObjectType,
+                isSubmission,
+                referenceManager: null,
+                reuseReferenceManager: false,
+                syntaxAndDeclarations: SyntaxAndDeclarationManager.Create(
+                    ImmutableArray<SyntaxTree>.Empty,
+                    options.ScriptClassName,
+                    options.SourceReferenceResolver,
+                    isSubmission));
+^
+            if (syntaxTrees != null)
+            {
+                compilation = compilation.AddSyntaxTrees(syntaxTrees);
+            }
+^
+            return compilation;
+        }
+^
+        public new [Properties.LanguageName]Compilation AddReferences(params MetadataReference["[]"] references)
+        { 
+            return ([Properties.LanguageName]Compilation)base.AddReferences(references);
+        }
+^
+        public new [Properties.LanguageName]Compilation AddReferences(IEnumerable<MetadataReference> references)
+        {
+            return ([Properties.LanguageName]Compilation)base.AddReferences(references);
+        }
+^
+        public new [Properties.LanguageName]Compilation RemoveReferences(params MetadataReference["[]"] references)
+        {
+            return ([Properties.LanguageName]Compilation)base.RemoveReferences(references);
+        }
+^
+        public new [Properties.LanguageName]Compilation RemoveReferences(IEnumerable<MetadataReference> references)
+        {
+            return ([Properties.LanguageName]Compilation)base.RemoveReferences(references);
+        }
+^
+        public new [Properties.LanguageName]Compilation RemoveAllReferences()
+        {
+            return ([Properties.LanguageName]Compilation)base.RemoveAllReferences();
+        }
+^
+        public new [Properties.LanguageName]Compilation AddSyntaxTrees(params SyntaxTree["[]"] trees)
+        {
+            return ([Properties.LanguageName]Compilation)base.AddSyntaxTrees(trees);
+        }
+^
+        public new [Properties.LanguageName]Compilation AddSyntaxTrees(IEnumerable<SyntaxTree> trees)
+        {
+            return ([Properties.LanguageName]Compilation)base.AddSyntaxTrees(trees);
+        }
+^
+        public new [Properties.LanguageName]Compilation RemoveSyntaxTrees(params SyntaxTree["[]"] trees)
+        {
+            return ([Properties.LanguageName]Compilation)base.RemoveSyntaxTrees(trees);
+        }
+^
+        public new [Properties.LanguageName]Compilation RemoveSyntaxTrees(IEnumerable<SyntaxTree> trees)
+        {
+            return ([Properties.LanguageName]Compilation)base.RemoveSyntaxTrees(trees);
+        }
+^
+        public new [Properties.LanguageName]Compilation RemoveAllSyntaxTrees()
+        {
+            return ([Properties.LanguageName]Compilation)base.RemoveAllSyntaxTrees();
+        }
+^
+        public new [Properties.LanguageName]Compilation ReplaceSyntaxTree(SyntaxTree oldTree, SyntaxTree newTree)
+        {
+            return ([Properties.LanguageName]Compilation)base.ReplaceSyntaxTree(oldTree, newTree);
+        }
+^
+        protected override IMetaSymbol CommonGetEntryPoint(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+^
+        protected override IMetaSymbol CommonGetSpecialType(Type specialType)
+        {
+            throw new NotImplementedException();
+        }
+^
+        protected override IMetaSymbol CommonGetTypeByMetadataName(string metadataName)
+        {
+            throw new NotImplementedException();
+        }
+^
+        /// <summary>
+        /// Creates a new compilation with the specified name.
+        /// </summary>
+        public new [Properties.LanguageName]Compilation WithCompilationName(string compilationName)
+        {
+            // Can't reuse references since the source assembly name changed and the referenced symbols might 
+            // have internals-visible-to relationship with this compilation or they might had a circular reference 
+            // to this compilation.
+            return new [Properties.LanguageName]Compilation(
+                compilationName,
+                this.Options,
+                this.ExternalReferences,
+                this.PreviousSubmission,
+                this.SubmissionReturnType,
+                this.HostObjectType,
+                this.IsSubmission,
+                this.GetUnboundReferenceManager(),
+                reuseReferenceManager: this.CompilationName == compilationName,
+                syntaxAndDeclarations: this.SyntaxAndDeclarations);
+        }
+^
+        protected override Compilation CommonWithCompilationName(string compilationName)
+        {
+            return this.WithCompilationName(compilationName);
+        }
+^
+        /// <summary>
+        /// Returns a new compilation with a given event queue.
+        /// </summary>
+        public new [Properties.LanguageName]Compilation WithEventQueue(AsyncQueue<CompilationEvent> eventQueue)
+        {
+            return new [Properties.LanguageName]Compilation(
+                this.CompilationName,
+                this.Options,
+                this.ExternalReferences,
+                this.PreviousSubmission,
+                this.SubmissionReturnType,
+                this.HostObjectType,
+                this.IsSubmission,
+                this.GetUnboundReferenceManager(),
+                reuseReferenceManager: true,
+                syntaxAndDeclarations: this.SyntaxAndDeclarations,
+                eventQueue: eventQueue);
+        }
+^
+        protected override Compilation CommonWithEventQueue(AsyncQueue<CompilationEvent> eventQueue)
+        {
+            return this.WithEventQueue(eventQueue);
+        }
+^
+        /// <summary>
+        /// Creates a new compilation with the specified compilation options.
+        /// </summary>
+        public [Properties.LanguageName]Compilation WithOptions([Properties.LanguageName]CompilationOptions options)
+        {
+            var oldOptions = this.Options;
+            bool reuseReferenceManager = oldOptions.CanReuseCompilationReferenceManager(options);
+            bool reuseSyntaxAndDeclarationManager = oldOptions.ScriptClassName == options.ScriptClassName &&
+                oldOptions.SourceReferenceResolver == options.SourceReferenceResolver;
+^
+            return new [Properties.LanguageName]Compilation(
+                this.CompilationName,
+                options,
+                this.ExternalReferences,
+                this.PreviousSubmission,
+                this.SubmissionReturnType,
+                this.HostObjectType,
+                this.IsSubmission,
+                this.GetUnboundReferenceManager(),
+                reuseReferenceManager,
+                reuseSyntaxAndDeclarationManager ?
+                    this.SyntaxAndDeclarations :
+                    SyntaxAndDeclarationManager.Create(
+                        this.SyntaxAndDeclarations.ExternalSyntaxTrees,
+                        options.ScriptClassName,
+                        options.SourceReferenceResolver,
+                        this.SyntaxAndDeclarations.IsSubmission));
+        }
+^
+        protected override Compilation CommonWithOptions(CompilationOptions options)
+        {
+            return this.WithOptions(options);
+        }
+^
+        /// <summary>
+        /// Creates a new compilation with the specified references.
+        /// </summary>
+        /// <remarks>
+        /// The new <see cref="[Properties.LanguageName]Compilation"/> will query the given <see cref="MetadataReference"/> for the underlying 
+        /// metadata as soon as the are needed. 
+        /// 
+        /// The new compilation uses whatever metadata is currently being provided by the <see cref="MetadataReference"/>.
+        /// E.g. if the current compilation references a metadata file that has changed since the creation of the compilation
+        /// the new compilation is going to use the updated version, while the current compilation will be using the previous (it doesn't change).
+        /// </remarks>
+        public new [Properties.LanguageName]Compilation WithReferences(IEnumerable<MetadataReference> references)
+        {
+            // References might have changed, don't reuse reference manager.
+            // Don't even reuse observed metadata - let the manager query for the metadata again.
+^
+            return new [Properties.LanguageName]Compilation(
+                this.CompilationName,
+                this.Options,
+                ValidateReferences<CompilationReference>(references),
+                this.PreviousSubmission,
+                this.SubmissionReturnType,
+                this.HostObjectType,
+                this.IsSubmission,
+                referenceManager: null,
+                reuseReferenceManager: false,
+                syntaxAndDeclarations: this.SyntaxAndDeclarations);
+        }
+^
+        protected override Compilation CommonWithReferences(IEnumerable<MetadataReference> newReferences)
+        {
+            return this.WithReferences(newReferences);
+        }
+^
+        /// <summary>
+        /// Returns a new compilation with the given compilation set as the previous submission.
+        /// </summary>
+        public [Properties.LanguageName]Compilation WithScriptCompilationInfo([Properties.LanguageName]ScriptCompilationInfo info)
+        {
+            if (info == ScriptCompilationInfo)
+            {
+                return this;
+            }
+^
+            // Reference binding doesn't depend on previous submission so we can reuse it.
+^
+            return new [Properties.LanguageName]Compilation(
+                this.CompilationName,
+                this.Options,
+                this.ExternalReferences,
+                info?.PreviousScriptCompilation,
+                info?.ReturnType,
+                info?.GlobalsType,
+                info != null,
+                this.GetUnboundReferenceManager(),
+                reuseReferenceManager: true,
+                syntaxAndDeclarations: this.SyntaxAndDeclarations);
+        }
+^
+        protected override Compilation CommonWithScriptCompilationInfo(ScriptCompilationInfo info)
+        {
+            return this.WithScriptCompilationInfo(info);
+        }
+^
+        public override bool HasCodeToEmit()
+        {
+            if (this.IsSubmission) return false;
+^
+            foreach (var syntaxTree in this.SyntaxTrees)
+            {
+                var root = syntaxTree.GetRoot();
+                if (root.HasErrors)
+                {
+                    return false;
+                }
+            }
+^
+            return true;
+        }
+^
+        public override bool HasSubmissionResult()
+        {
+            if (!this.IsSubmission) return false;
+^
+            // A submission may be empty or comprised of a single script file.
+            var tree = this.SyntaxAndDeclarations.ExternalSyntaxTrees.SingleOrDefault();
+            if (tree == null)
+            {
+                return false;
+            }
+^
+            var root = tree.GetRoot();
+            if (root.HasErrors)
+            {
+                return false;
+            }
+^
+            return true;
+        }
+^
+        public override bool IsAttributeType(IMetaSymbol type)
+        {
+            throw new NotImplementedException();
+        }
+^
+        public override bool IsSystemTypeReference(IMetaSymbol type)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+end template
+
+template GenerateCompilationFactory()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Immutable;
+using MetaDslx.Compiler;
+using MetaDslx.Compiler.Binding;
+using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Compiler.Declarations;
+using MetaDslx.Compiler.Syntax;
+using [Properties.DefaultNamespace].Syntax;
+using [Properties.DefaultNamespace].Binding;
+^
+namespace [Properties.DefaultNamespace]
+{
+    internal class [Properties.LanguageName]CompilationFactory : CompilationFactory
+    {
+        internal static readonly [Properties.LanguageName]CompilationFactory Instance = new [Properties.LanguageName]CompilationFactory();
+^
+        private [Properties.LanguageName]CompilationFactory()
+        {
+        }
+^
+        public override RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
+        {
+            return [Properties.LanguageName]DeclarationTreeBuilderVisitor.ForTree(([Properties.LanguageName]SyntaxTree)syntaxTree, scriptClassName, isSubmission);
+        }
+^
+        public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
+        {
+            return new [Properties.LanguageName]BinderFactoryVisitor(binderFactory);
+        }
+^
+        public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)
+        {
+            return new [Properties.LanguageName]ScriptCompilationInfo(([Properties.LanguageName]Compilation)previousSubmission, submissionReturnType, hostObjectType);
+        }
+^
+        public override SymbolBuilder CreateSymbolBuilder(CompilationBase compilation)
+        {
+            return new [Properties.LanguageName]SymbolBuilder(([Properties.LanguageName]Compilation)compilation);
+        }
+    }
+}
+end template
+
+template GenerateCompilationOptions()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MetaDslx.Compiler;
+using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.References;
+using MetaDslx.Compiler.Utilities;
+^
+namespace [Properties.DefaultNamespace]
+{
+    public class [Properties.LanguageName]CompilationOptions : CompilationOptions, IEquatable<[Properties.LanguageName]CompilationOptions>
+    {
+        // Defaults correspond to the compiler's defaults or indicate that the user did not specify when that is significant.
+        // That's significant when one option depends on another's setting.
+        public [Properties.LanguageName]CompilationOptions(
+            bool reportSuppressedDiagnostics = false,
+            string scriptClassName = null,
+            ReportDiagnostic generalDiagnosticOption = ReportDiagnostic.Default,
+            int warningLevel = 4,
+            IEnumerable<KeyValuePair<string, ReportDiagnostic>> specificDiagnosticOptions = null,
+            bool concurrentBuild = true,
+            bool deterministic = false,
+            SourceReferenceResolver sourceReferenceResolver = null,
+            MetadataReferenceResolver metadataReferenceResolver = null)
+            : this(reportSuppressedDiagnostics, scriptClassName,
+                   generalDiagnosticOption, warningLevel,
+                   specificDiagnosticOptions != null ? specificDiagnosticOptions.ToImmutableDictionary() : ImmutableDictionary<string, ReportDiagnostic>.Empty, 
+                   concurrentBuild, deterministic,
+                   sourceReferenceResolver: sourceReferenceResolver,
+                   metadataReferenceResolver: metadataReferenceResolver,
+                   referencesSupersedeLowerVersions: false)
+        {
+        }
+^
+        // Expects correct arguments.
+        public [Properties.LanguageName]CompilationOptions(
+            bool reportSuppressedDiagnostics,
+            string scriptClassName,
+            ReportDiagnostic generalDiagnosticOption,
+            int warningLevel,
+            ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions,
+            bool concurrentBuild,
+            bool deterministic,
+            SourceReferenceResolver sourceReferenceResolver,
+            MetadataReferenceResolver metadataReferenceResolver,
+            bool referencesSupersedeLowerVersions)
+            : base(reportSuppressedDiagnostics, 
+                  scriptClassName,
+                  generalDiagnosticOption,
+                  warningLevel,
+                  specificDiagnosticOptions,
+                  concurrentBuild,
+                  deterministic,
+                  sourceReferenceResolver,
+                  metadataReferenceResolver, 
+                  referencesSupersedeLowerVersions)
+        {
+        }
+^
+        private [Properties.LanguageName]CompilationOptions([Properties.LanguageName]CompilationOptions other) : this(
+            scriptClassName: other.ScriptClassName,
+            generalDiagnosticOption: other.GeneralDiagnosticOption,
+            warningLevel: other.WarningLevel,
+            specificDiagnosticOptions: other.SpecificDiagnosticOptions,
+            concurrentBuild: other.ConcurrentBuild,
+            deterministic: other.Deterministic,
+            sourceReferenceResolver: other.SourceReferenceResolver,
+            metadataReferenceResolver: other.MetadataReferenceResolver,
+            reportSuppressedDiagnostics: other.ReportSuppressedDiagnostics,
+            referencesSupersedeLowerVersions: other.ReferencesSupersedeLowerVersions)
+        {
+        }
+^
+        public new [Properties.LanguageName]CompilationOptions WithDeterministic(bool deterministic)
+        {
+            if (this.Deterministic == deterministic)
+            {
+                return this;
+            }
+            return new [Properties.LanguageName]CompilationOptions(this) { Deterministic = deterministic };
+        }
+^
+        public new [Properties.LanguageName]CompilationOptions WithReferencesSupersedeLowerVersions(bool value)
+        {
+            if (this.ReferencesSupersedeLowerVersions == value)
+            {
+                return this;
+            }
+            return new [Properties.LanguageName]CompilationOptions(this) { ReferencesSupersedeLowerVersions = value };
+        }
+^
+        public new [Properties.LanguageName]CompilationOptions WithGeneralDiagnosticOption(ReportDiagnostic generalDiagnosticOption)
+        {
+            if (this.GeneralDiagnosticOption == generalDiagnosticOption)
+            {
+                return this;
+            }
+            return new [Properties.LanguageName]CompilationOptions(this) { GeneralDiagnosticOption = generalDiagnosticOption };
+        }
+^
+        public new [Properties.LanguageName]CompilationOptions WithMetadataReferenceResolver(MetadataReferenceResolver resolver)
+        {
+            if (this.MetadataReferenceResolver == resolver)
+            {
+                return this;
+            }
+            return new [Properties.LanguageName]CompilationOptions(this) { MetadataReferenceResolver = resolver };
+        }
+^
+        public new [Properties.LanguageName]CompilationOptions WithReportSuppressedDiagnostics(bool reportSuppressedDiagnostics)
+        {
+            if (this.ReportSuppressedDiagnostics == reportSuppressedDiagnostics)
+            {
+                return this;
+            }
+            return new [Properties.LanguageName]CompilationOptions(this) { ReportSuppressedDiagnostics = reportSuppressedDiagnostics };
+        }
+^
+        public new [Properties.LanguageName]CompilationOptions WithSourceReferenceResolver(SourceReferenceResolver resolver)
+        {
+            if (this.SourceReferenceResolver == resolver)
+            {
+                return this;
+            }
+            return new [Properties.LanguageName]CompilationOptions(this) { SourceReferenceResolver = resolver };
+        }
+^
+        public new [Properties.LanguageName]CompilationOptions WithSpecificDiagnosticOptions(IEnumerable<KeyValuePair<string, ReportDiagnostic>> specificDiagnosticOptions)
+        {
+            return new [Properties.LanguageName]CompilationOptions(this) { SpecificDiagnosticOptions = specificDiagnosticOptions != null ? specificDiagnosticOptions.ToImmutableDictionary() : ImmutableDictionary<string, ReportDiagnostic>.Empty };
+        }
+^
+        public new [Properties.LanguageName]CompilationOptions WithSpecificDiagnosticOptions(ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions)
+        {
+            if (specificDiagnosticOptions == null)
+            {
+                specificDiagnosticOptions = ImmutableDictionary<string, ReportDiagnostic>.Empty;
+            }
+^
+            if (this.SpecificDiagnosticOptions == specificDiagnosticOptions)
+            {
+                return this;
+            }
+^
+            return new [Properties.LanguageName]CompilationOptions(this) { SpecificDiagnosticOptions = specificDiagnosticOptions };
+        }
+^
+        protected override CompilationOptions CommonWithDeterministic(bool deterministic)
+        {
+            return this.WithDeterministic(deterministic);
+        }
+^
+        protected override CompilationOptions CommonWithReferencesSupersedeLowerVersions(bool value)
+        {
+            return this.CommonWithDeterministic(value);
+        }
+^
+        protected override CompilationOptions CommonWithGeneralDiagnosticOption(ReportDiagnostic generalDiagnosticOption)
+        {
+            return this.WithGeneralDiagnosticOption(generalDiagnosticOption);
+        }
+^
+        protected override CompilationOptions CommonWithMetadataReferenceResolver(MetadataReferenceResolver resolver)
+        {
+            return this.WithMetadataReferenceResolver(resolver);
+        }
+^
+        protected override CompilationOptions CommonWithReportSuppressedDiagnostics(bool reportSuppressedDiagnostics)
+        {
+            return this.WithReportSuppressedDiagnostics(reportSuppressedDiagnostics);
+        }
+^
+        protected override CompilationOptions CommonWithSourceReferenceResolver(SourceReferenceResolver resolver)
+        {
+            return this.WithSourceReferenceResolver(resolver);
+        }
+^
+        protected override CompilationOptions CommonWithSpecificDiagnosticOptions(IEnumerable<KeyValuePair<string, ReportDiagnostic>> specificDiagnosticOptions)
+        {
+            return this.WithSpecificDiagnosticOptions(specificDiagnosticOptions);
+        }
+^
+        protected override CompilationOptions CommonWithSpecificDiagnosticOptions(ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions)
+        {
+            return this.WithSpecificDiagnosticOptions(specificDiagnosticOptions);
+        }
+^
+        public override Diagnostic FilterDiagnostic(Diagnostic diagnostic)
+        {
+            return diagnostic;
+        }
+^
+        protected override ImmutableArray<string> GetImports()
+        {
+            return ImmutableArray<string>.Empty;
+        }
+^
+        protected override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
+        {
+        }
+^
+        public bool Equals([Properties.LanguageName]CompilationOptions other)
+        {
+            if (object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+^
+            if (!base.EqualsHelper(other))
+            {
+                return false;
+            }
+^
+            return true;
+        }
+^
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as [Properties.LanguageName]CompilationOptions);
+        }
+^
+        public override int GetHashCode()
+        {
+            return base.GetHashCodeHelper();
+        }
+    }
+}
+end template
+
+template GenerateScriptCompilationInfo()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MetaDslx.Compiler;
+^
+namespace [Properties.DefaultNamespace]
+{
+    public class [Properties.LanguageName]ScriptCompilationInfo : ScriptCompilationInfo
+    {
+        public new [Properties.LanguageName]Compilation PreviousScriptCompilation { get; }
+^
+        internal [Properties.LanguageName]ScriptCompilationInfo([Properties.LanguageName]Compilation previousCompilationOpt, Type returnType, Type globalsType)
+            : base(returnType, globalsType)
+        {
+            Debug.Assert(previousCompilationOpt == null || previousCompilationOpt.HostObjectType == globalsType);
+^
+            PreviousScriptCompilation = previousCompilationOpt;
+        }
+^
+        protected override Compilation CommonPreviousScriptCompilation => PreviousScriptCompilation;
+^
+        public [Properties.LanguageName]ScriptCompilationInfo WithPreviousScriptCompilation([Properties.LanguageName]Compilation compilation) =>
+            (compilation == PreviousScriptCompilation) ? this : new [Properties.LanguageName]ScriptCompilationInfo(compilation, ReturnType, GlobalsType);
+^
+        protected override ScriptCompilationInfo CommonWithPreviousScriptCompilation(Compilation compilation) =>
+            WithPreviousScriptCompilation(([Properties.LanguageName]Compilation)compilation);
+    }
+}
+end template
+
+
 template GenerateErrorCode()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -374,6 +1194,9 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateSyntaxParser()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -611,17 +1434,11 @@ end template
 template GenerateAnnotationsCore(MetaCompilerAnnotations mannots, string greenNode)
 end template
 
-/*
-template GenerateAnnotationsCore(MetaCompilerAnnotations mannots, string greenNode)
-// [mannots]
-[greenNode] = [greenNode].WithAdditionalAnnotationsGreen(new["[]"] { new SyntaxAnnotation(MetaCompilerAnnotationInfo.Id, "[mannots.Serialize()]") });
-end template
-*/
-
-template GenerateCompilation()
-end template
 
 template GenerateSyntaxTree()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
@@ -1035,6 +1852,9 @@ namespace [Properties.DefaultNamespace].Syntax
 end template
 
 template GenerateInternalSyntax()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -1699,6 +2519,9 @@ template GenerateInternalSyntaxFactoryCreate(Antlr4ParserRule rule)
 end template
 
 template GenerateSyntax()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -3165,6 +3988,9 @@ end template
 
 
 template GenerateDeclarationTreeBuilder()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -3358,6 +4184,9 @@ if (node.[elem.RedName()] != null)
 end template
 
 template GenerateBinderFactoryVisitor()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;

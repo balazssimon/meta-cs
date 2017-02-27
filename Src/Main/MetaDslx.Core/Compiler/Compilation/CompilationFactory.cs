@@ -25,7 +25,11 @@ namespace MetaDslx.Compiler
         public abstract RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
         public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
         public abstract SymbolBuilder CreateSymbolBuilder(CompilationBase compilation);
-        public abstract SymbolResolution CreateSymbolResolution(CompilationBase compilation);
+
+        public virtual SymbolResolution CreateSymbolResolution(CompilationBase compilation)
+        {
+            return new SymbolResolution(compilation);
+        }
 
         public virtual AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilation)
         {

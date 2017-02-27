@@ -17,6 +17,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         protected readonly Language language;
         protected readonly ParseOptions options;
         protected readonly CancellationToken cancellationToken;
+        protected readonly InternalSyntaxFactory factory;
 
         protected SyntaxParser(
             SourceText text,
@@ -28,6 +29,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         {
             this.text = text;
             this.language = language;
+            this.factory = this.language.InternalSyntaxFactory;
             this.options = options;
             this.cancellationToken = cancellationToken;
         }

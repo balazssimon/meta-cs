@@ -383,25 +383,23 @@ nulledType : nullableType | nonNullableType;
 referenceType : objectType | qualifier;
 
           
-           
 objectType 
-	: KObject 
-	| KString
+	:                             KObject 
+	|                             KString
 	;
 
           
-           
 valueType 
 	:                          KInt 
 	|                           KLong 
-	| KFloat 
-	| KDouble 
-	| KByte 
-	| KBool
-	| IDate
-	| ITime
-	| IDateTime
-	| ITimeSpan
+	|                            KFloat 
+	|                             KDouble 
+	|                           KByte 
+	|                           KBool
+	|                           IDate
+	|                           ITime
+	|                               IDateTime
+	|                               ITimeSpan
 	;
 
                          

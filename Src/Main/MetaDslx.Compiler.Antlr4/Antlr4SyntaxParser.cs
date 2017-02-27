@@ -20,7 +20,6 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         where TLexer : Lexer
         where TParser : Parser
     {
-        private InternalSyntaxFactory factory;
         private IList<IToken> tokens;
 
         public Antlr4SyntaxParser(SourceText text, Language language, ParseOptions options, SyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default(CancellationToken))
@@ -35,7 +34,6 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.Parser.RemoveErrorListeners();
             this.Lexer.AddErrorListener(this);
             this.Parser.AddErrorListener(this);
-            this.factory = language.InternalSyntaxFactory;
             this.tokens = this.CommonTokenStream.GetTokens();
         }
 

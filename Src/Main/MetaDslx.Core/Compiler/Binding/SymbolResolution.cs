@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public abstract class SymbolResolution
+    public class SymbolResolution
     {
         private readonly ConcurrentDictionary<Declaration, IMetaSymbol> _cache;
         private readonly CompilationBase _compilation;

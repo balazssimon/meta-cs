@@ -381,9 +381,32 @@ namespace MetaDslx.TempConsole
                 writer.WriteLine(a4c.GeneratedSyntaxParser);
             }
             outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"Language.cs");
+            if (!File.Exists(outputFileName))
+            {
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(a4c.GeneratedLanguage);
+                }
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"Compilation.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
-                writer.WriteLine(a4c.GeneratedLanguage);
+                writer.WriteLine(a4c.GeneratedCompilation);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"CompilationFactory.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedCompilationFactory);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"CompilationOptions.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedCompilationOptions);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"ScriptCompilationInfo.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(a4c.GeneratedScriptCompilationInfo);
             }
             outputFileName = Path.Combine(directory, @"Compilation\" + a4c.LanguageName + @"LanguageVersion.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))

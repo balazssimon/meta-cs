@@ -1,26 +1,29 @@
-﻿using MetaDslx.Compiler;
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler.Binding;
-using MetaDslx.Compiler.Declarations;
-using MetaDslx.Compiler.Symbols;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Core;
-using MetaDslx.Languages.Soal.Binding;
-using MetaDslx.Languages.Soal.Syntax;
-using MetaDslx.Languages.Soal.Symbols;
 using System.Collections.Immutable;
-using MetaDslx.Compiler.Utilities;
+using MetaDslx.Compiler;
+using MetaDslx.Compiler.Binding;
 using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Compiler.Declarations;
+using MetaDslx.Compiler.Syntax;
+using MetaDslx.Languages.Soal.Syntax;
+using MetaDslx.Languages.Soal.Binding;
 
 namespace MetaDslx.Languages.Soal
 {
-    public class SoalCompilationFactory : CompilationFactory
+    internal class SoalCompilationFactory : CompilationFactory
     {
-        public static readonly SoalCompilationFactory Instance = new SoalCompilationFactory();
+        internal static readonly SoalCompilationFactory Instance = new SoalCompilationFactory();
+
+        private SoalCompilationFactory()
+        {
+        }
 
         public override RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
@@ -41,10 +44,6 @@ namespace MetaDslx.Languages.Soal
         {
             return new SoalSymbolBuilder((SoalCompilation)compilation);
         }
-
-        public override SymbolResolution CreateSymbolResolution(CompilationBase compilation)
-        {
-            return new SoalSymbolResolution((SoalCompilation)compilation);
-        }
     }
 }
+

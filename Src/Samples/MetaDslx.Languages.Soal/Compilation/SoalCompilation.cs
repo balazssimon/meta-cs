@@ -1,18 +1,21 @@
-﻿using MetaDslx.Compiler;
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Core;
 using System.Collections.Immutable;
-using MetaDslx.Compiler.Syntax;
 using System.Threading;
-using MetaDslx.Compiler.References;
-using MetaDslx.Compiler.Declarations;
-using MetaDslx.Compiler.Utilities;
 using System.Diagnostics;
+using MetaDslx.Core;
+using MetaDslx.Compiler;
+using MetaDslx.Compiler.Declarations;
+using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.References;
+using MetaDslx.Compiler.Utilities;
 using MetaDslx.Languages.Soal.Syntax;
 
 namespace MetaDslx.Languages.Soal
@@ -159,7 +162,7 @@ namespace MetaDslx.Languages.Soal
             Type globalsType = null)
         {
             ValidateScriptCompilationParameters(previousScriptCompilation, returnType, ref globalsType);
-            
+
             return Create(
                 name,
                 options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
@@ -475,3 +478,4 @@ namespace MetaDslx.Languages.Soal
         }
     }
 }
+
