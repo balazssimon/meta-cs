@@ -51,6 +51,21 @@ namespace MetaDslx.Languages.Soal
             get { return (SoalCompilationOptions)base.Options; }
         }
 
+        internal MutableModelGroup ModelGroupBuilder
+        {
+            get { return this.ModelGroupBuilderCore; }
+        }
+
+        internal MutableModel ModelBuilder
+        {
+            get { return this.ModelBuilderCore; }
+        }
+
+        internal ModelId ModelId
+        {
+            get { return this.ModelIdCore; }
+        }
+
         protected override IMetaSymbol CommonDynamicType
         {
             get { return null; }

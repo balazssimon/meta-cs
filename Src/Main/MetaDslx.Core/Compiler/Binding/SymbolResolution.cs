@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Compiler.Declarations;
 using MetaDslx.Compiler.Symbols;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using System;
@@ -7,17 +8,18 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public class NameResolution
+    public abstract class SymbolResolution
     {
         private readonly ConcurrentDictionary<Declaration, IMetaSymbol> _cache;
         private readonly CompilationBase _compilation;
 
-        public NameResolution(CompilationBase compilation)
+        public SymbolResolution(CompilationBase compilation)
         {
             _cache = new ConcurrentDictionary<Declaration, IMetaSymbol>();
             _compilation = compilation;
@@ -26,6 +28,82 @@ namespace MetaDslx.Compiler.Binding
         private Compilation Compilation
         {
             get { return _compilation; }
+        }
+
+
+        public virtual string GetName(RedNode node)
+        {
+            string valueStr = node.ToString();
+            return valueStr;
+        }
+
+        public virtual object GetValue(RedNode node)
+        {
+            string valueStr = node.ToString();
+            return this.GetValue(valueStr);
+        }
+
+        public virtual object GetValue(string value)
+        {
+            if (value == "null") return null;
+            if (value.Length >= 3 && value.StartsWith("@\'") && value.EndsWith("\'"))
+            {
+                return value.Substring(2, value.Length - 3).Replace("\'\'", "\'");
+            }
+            else if (value.Length >= 2 && value.StartsWith("\'") && value.EndsWith("\'"))
+            {
+                return Regex.Unescape(value.Substring(1, value.Length - 2));
+            }
+            else if (value.Length >= 3 && value.StartsWith("@\"") && value.EndsWith("\""))
+            {
+                return value.Substring(2, value.Length - 3).Replace("\"\"", "\"");
+            }
+            else if (value.Length >= 2 && value.StartsWith("\"") && value.EndsWith("\""))
+            {
+                return Regex.Unescape(value.Substring(1, value.Length - 2));
+            }
+            bool boolValue;
+            if (bool.TryParse(value, out boolValue))
+            {
+                return boolValue;
+            }
+            int intValue;
+            if (int.TryParse(value, out intValue))
+            {
+                return intValue;
+            }
+            long longValue;
+            if (long.TryParse(value, out longValue))
+            {
+                return longValue;
+            }
+            float floatValue;
+            if (float.TryParse(value, out floatValue))
+            {
+                return floatValue;
+            }
+            double doubleValue;
+            if (double.TryParse(value, out doubleValue))
+            {
+                return doubleValue;
+            }
+            return value;
+        }
+
+        public virtual object GetEnumLiteral(RedNode node, Type enumType)
+        {
+            string enumLiteralName = this.GetName(node);
+            long enumLiteral;
+            if (Enum.TryParse(enumLiteralName, out enumLiteral))
+            {
+                return enumLiteral;
+            }
+            return null;
+        }
+
+        public virtual IMetaSymbol GetWellKnownSymbol(string name)
+        {
+            return null;
         }
 
         public IEnumerable<IMetaSymbol> GetSymbolByQualifiedName(IMetaSymbol container, string qualifiedName, char separator = '.')
@@ -220,5 +298,14 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
+        public virtual IMetaSymbol GetNestedSymbol(IMetaSymbol symbol)
+        {
+            if (symbol == null) return null;
+            foreach (var nested in symbol.MChildren)
+            {
+                if (nested.MName == symbol.MName) return nested;
+            }
+            return null;
+        }
     }
 }

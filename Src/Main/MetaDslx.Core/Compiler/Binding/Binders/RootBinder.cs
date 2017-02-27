@@ -27,7 +27,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             base.LookupSymbolsInSingleBinder(result, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
             if (result.IsClear)
             {
-                IMetaSymbol symbol = this.Compilation.Language.CompilationFactory.GetWellKnownSymbol(name);
+                IMetaSymbol symbol = this.Compilation.SymbolResolution.GetWellKnownSymbol(name);
                 if (symbol != null)
                 {
                     result.MergeEqual(new SingleLookupResult(LookupResultKind.Viable, symbol, null));

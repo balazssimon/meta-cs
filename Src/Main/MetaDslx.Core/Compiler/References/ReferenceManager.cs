@@ -112,7 +112,7 @@ namespace MetaDslx.Compiler.References
                         compilation._lazyModelGroupBuilder = modelGroup;
                         compilation._lazyModelBuilder = model;
                         compilation._lazyModelId = model.Id;
-                        compilation._lazyGlobalNamespace = compilation.SymbolTreeBuilder.BuildRootDeclarationSymbol(null, compilation.Declarations.MergedRoot);
+                        compilation._lazyGlobalNamespace = compilation.SymbolBuilder.BuildRootDeclarationSymbol(null, compilation.Declarations.MergedRoot);
                         //compilation._lazyGlobalNamespace 
                         Debug.Assert(ReferenceEquals(compilation._referenceManager, this));
                     }

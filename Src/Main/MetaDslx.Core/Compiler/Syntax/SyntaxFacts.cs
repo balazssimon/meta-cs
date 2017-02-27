@@ -16,6 +16,11 @@ namespace MetaDslx.Compiler.Syntax
         public abstract bool IsToken(int rawKind);
         public abstract bool IsFixedToken(int rawKind);
         public abstract bool IsTriviaWithEndOfLine(int rawKind);
+
+        public virtual bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree)
+        {
+            return false;
+        }
     }
 
     internal class DefaultSyntaxFacts : SyntaxFacts

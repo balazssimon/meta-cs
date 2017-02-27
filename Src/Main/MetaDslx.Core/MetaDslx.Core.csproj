@@ -71,7 +71,7 @@
     <Compile Include="Compiler\Binding\LookupResult.cs" />
     <Compile Include="Compiler\Binding\LookupResultKind.cs" />
     <Compile Include="Compiler\Binding\NameQualifier.cs" />
-    <Compile Include="Compiler\Binding\NameResolution.cs" />
+    <Compile Include="Compiler\Binding\SymbolResolution.cs" />
     <Compile Include="Compiler\Binding\OverloadResolution.cs" />
     <Compile Include="Compiler\Binding\SingleLookupResult.cs" />
     <Compile Include="Compiler\Binding\SpeculativeSyntaxTreeSemanticModel.cs" />

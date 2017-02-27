@@ -42,9 +42,10 @@
     <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binding\SoalAnonymousTypeManager.cs" />
     <Compile Include="Binding\SoalBinderFactoryVisitor.cs" />
     <Compile Include="Binding\SoalDeclarationTreeBuilderVisitor.cs" />
+    <Compile Include="Binding\SoalSymbolBuilder.cs" />
+    <Compile Include="Binding\SoalSymbolResolution.cs" />
     <Compile Include="Compilation\SoalCompilation.cs" />
     <Compile Include="Compilation\SoalCompilationFactory.cs" />
     <Compile Include="Compilation\SoalCompilationOptions.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="SoalParserVisitor.cs">
       <DependentUpon>SoalParser.ag4</DependentUpon>
     </Compile>
+    <Compile Include="SoalSymbolFacts.cs" />
     <Compile Include="Syntax\InternalSyntax\SoalInternalSyntax.cs" />
     <Compile Include="Syntax\SoalSyntax.cs" />
     <Compile Include="Syntax\SoalSyntaxTree.cs" />

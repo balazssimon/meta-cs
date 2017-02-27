@@ -627,7 +627,12 @@ namespace MetaDslx.Compiler
         private ImmutableModelGroup _lazyModelGroup;
         private ImmutableModel _lazyModel;
 
-        internal protected abstract ModelId ModelId { get; }
+        internal ModelId ModelId
+        {
+            get { return this.ModelIdCore; }
+        }
+
+        protected abstract ModelId ModelIdCore { get; }
 
         /// <summary>
         /// The <see cref="ImmutableModelGroup"/> that represents the model group being created 
@@ -641,7 +646,13 @@ namespace MetaDslx.Compiler
                 return _lazyModelGroup;
             }
         }
-        internal protected abstract MutableModelGroup ModelGroupBuilder { get; }
+
+        internal MutableModelGroup ModelGroupBuilder
+        {
+            get { return this.ModelGroupBuilderCore; }
+        }
+
+        protected abstract MutableModelGroup ModelGroupBuilderCore { get; }
 
         /// <summary>
         /// Gets the <see cref="ImmutableModel"/> for the model being created by compiling all of
@@ -658,9 +669,20 @@ namespace MetaDslx.Compiler
                 return _lazyModel;
             }
         }
-        internal protected abstract MutableModel ModelBuilder { get; }
 
-        internal protected abstract SymbolBuilder SymbolTreeBuilder { get; }
+        internal MutableModel ModelBuilder
+        {
+            get { return this.ModelBuilderCore; }
+        }
+
+        protected abstract MutableModel ModelBuilderCore { get; }
+
+        internal SymbolBuilder SymbolBuilder
+        {
+            get { return this.SymbolBuilderCore; }
+        }
+
+        protected abstract SymbolBuilder SymbolBuilderCore { get; }
 
         protected void CompleteModel(CancellationToken cancellationToken)
         {

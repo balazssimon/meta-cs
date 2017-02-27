@@ -135,7 +135,7 @@ namespace MetaDslx.Compiler.Binding.Binders
 
         protected virtual Binder CreateIdentifierBinderCore(Binder parentBinder, RedNode node)
         {
-            return new IdentifierBinder(parentBinder, node, this.GetName(node));
+            return new IdentifierBinder(parentBinder, node, this.Compilation.SymbolResolution.GetName(node));
         }
 
         protected virtual Binder CreateQualifierBinder(Binder parentBinder, RedNode node)
@@ -160,7 +160,7 @@ namespace MetaDslx.Compiler.Binding.Binders
 
         protected virtual Binder CreateValueBinder(Binder parentBinder, RedNode node)
         {
-            return this.CreateValueBinderCore(parentBinder, node, this.GetValue(node));
+            return this.CreateValueBinderCore(parentBinder, node, this.Compilation.SymbolResolution.GetValue(node));
         }
 
         protected virtual Binder CreateValueBinder(Binder parentBinder, RedNode node, object value)
@@ -175,82 +175,12 @@ namespace MetaDslx.Compiler.Binding.Binders
 
         protected virtual Binder CreateEnumValueBinder(Binder parentBinder, RedNode node, Type enumType)
         {
-            return this.CreateEnumValueBinderCore(parentBinder, node, enumType, this.GetEnumLiteral(node, enumType));
+            return this.CreateEnumValueBinderCore(parentBinder, node, enumType, this.Compilation.SymbolResolution.GetEnumLiteral(node, enumType));
         }
 
         protected virtual Binder CreateEnumValueBinderCore(Binder parentBinder, RedNode node, Type enumType, object value)
         {
             return new EnumValueBinder(parentBinder, node, enumType, value);
-        }
-
-        public virtual string GetName(RedNode node)
-        {
-            string valueStr = node.ToString();
-            return valueStr;
-        }
-
-        public virtual object GetValue(RedNode node)
-        {
-            string valueStr = node.ToString();
-            return this.GetValue(valueStr);
-        }
-
-        public virtual object GetValue(string value)
-        {
-            if (value == "null") return null;
-            if (value.Length >= 3 && value.StartsWith("@\'") && value.EndsWith("\'"))
-            {
-                return value.Substring(2, value.Length - 3).Replace("\'\'", "\'");
-            }
-            else if (value.Length >= 2 && value.StartsWith("\'") && value.EndsWith("\'"))
-            {
-                return Regex.Unescape(value.Substring(1, value.Length - 2));
-            }
-            else if (value.Length >= 3 && value.StartsWith("@\"") && value.EndsWith("\""))
-            {
-                return value.Substring(2, value.Length - 3).Replace("\"\"", "\"");
-            }
-            else if (value.Length >= 2 && value.StartsWith("\"") && value.EndsWith("\""))
-            {
-                return Regex.Unescape(value.Substring(1, value.Length - 2));
-            }
-            bool boolValue;
-            if (bool.TryParse(value, out boolValue))
-            {
-                return boolValue;
-            }
-            int intValue;
-            if (int.TryParse(value, out intValue))
-            {
-                return intValue;
-            }
-            long longValue;
-            if (long.TryParse(value, out longValue))
-            {
-                return longValue;
-            }
-            float floatValue;
-            if (float.TryParse(value, out floatValue))
-            {
-                return floatValue;
-            }
-            double doubleValue;
-            if (double.TryParse(value, out doubleValue))
-            {
-                return doubleValue;
-            }
-            return value;
-        }
-
-        public virtual object GetEnumLiteral(RedNode node, Type enumType)
-        {
-            string enumLiteralName = this.GetName(node);
-            long enumLiteral;
-            if (Enum.TryParse(enumLiteralName, out enumLiteral))
-            {
-                return enumLiteral;
-            }
-            return null;
         }
 
         protected virtual Binder GetParentBinder(RedNode node)
@@ -295,7 +225,6 @@ namespace MetaDslx.Compiler.Binding.Binders
         protected virtual IMetaSymbol GetChildSymbol(string childName, TextSpan childSpan, IMetaSymbol container, Type kind)
         {
             if (container == null) return null;
-            //container.MGet(CompilerAttachedProperties.PropertiesToMembersMapProperty);
             foreach (IMetaSymbol sym in container.MChildren)
             {
                 if (childName != null && sym.MName != childName)

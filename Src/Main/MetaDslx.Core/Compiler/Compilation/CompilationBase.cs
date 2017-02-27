@@ -58,17 +58,17 @@ namespace MetaDslx.Compiler
             }
         }
 
-        private NameResolution _nameResolution;
-        internal NameResolution NameResolution
+        private SymbolResolution _symbolResolution;
+        internal SymbolResolution SymbolResolution
         {
             get
             {
-                if (_nameResolution == null)
+                if (_symbolResolution == null)
                 {
-                    Interlocked.CompareExchange(ref _nameResolution, new NameResolution(this), null);
+                    Interlocked.CompareExchange(ref _symbolResolution, this.Language.CompilationFactory.CreateSymbolResolution(this), null);
                 }
 
-                return _nameResolution;
+                return _symbolResolution;
             }
         }
 
@@ -91,7 +91,7 @@ namespace MetaDslx.Compiler
 
         internal MutableModel _lazyModelBuilder;
 
-        private SymbolBuilder _lazySymbolTreeBuilder;
+        private SymbolBuilder _lazySymbolBuilder;
 
         /// <summary>
         /// Holds onto data related to reference binding.
@@ -161,7 +161,7 @@ namespace MetaDslx.Compiler
             if (isSubmission)
             {
                 Debug.Assert(previousSubmission == null || previousSubmission.HostObjectType == hostObjectType);
-                _scriptCompilationInfo = this.Language.CompilationFactory.CreateScriptCompilationInfo(previousSubmission, submissionReturnType, hostObjectType);
+                _scriptCompilationInfo = this.Language.CompilationFactory.CreateScriptCompilationInfo((CompilationBase)previousSubmission, submissionReturnType, hostObjectType);
             }
             else
             {
@@ -279,7 +279,7 @@ namespace MetaDslx.Compiler
                 }
 
                 externalSyntaxTrees.Add(tree);
-                reuseReferenceManager &= !this.Language.CompilationFactory.HasReferenceOrLoadDirectives(tree);
+                reuseReferenceManager &= !this.Language.SyntaxFacts.HasReferenceOrLoadDirectives(tree);
 
                 i++;
             }
@@ -345,7 +345,7 @@ namespace MetaDslx.Compiler
                 }
 
                 removeSet.Add(tree);
-                reuseReferenceManager &= !this.Language.CompilationFactory.HasReferenceOrLoadDirectives(tree);
+                reuseReferenceManager &= !this.Language.SyntaxFacts.HasReferenceOrLoadDirectives(tree);
 
                 i++;
             }
@@ -416,7 +416,7 @@ namespace MetaDslx.Compiler
             // TODO(tomat): Consider comparing #r's of the old and the new tree. If they are exactly the same we could still reuse.
             // This could be a perf win when editing a script file in the IDE. The services create a new compilation every keystroke 
             // that replaces the tree with a new one.
-            var reuseReferenceManager = !this.Language.CompilationFactory.HasReferenceOrLoadDirectives(oldTree) && !this.Language.CompilationFactory.HasReferenceOrLoadDirectives(newTree);
+            var reuseReferenceManager = !this.Language.SyntaxFacts.HasReferenceOrLoadDirectives(oldTree) && !this.Language.SyntaxFacts.HasReferenceOrLoadDirectives(newTree);
             syntaxAndDeclarations = syntaxAndDeclarations.ReplaceSyntaxTree(oldTree, newTree);
 
             return Update(_referenceManager, reuseReferenceManager, syntaxAndDeclarations);
@@ -593,7 +593,7 @@ namespace MetaDslx.Compiler
 
         #region Symbols
 
-        internal protected override ModelId ModelId
+        protected override ModelId ModelIdCore
         {
             get
             {
@@ -605,7 +605,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The ModelGroupBuilder that represents the compilation.
         /// </summary>
-        internal protected override MutableModelGroup ModelGroupBuilder
+        protected override MutableModelGroup ModelGroupBuilderCore
         {
             get
             {
@@ -617,7 +617,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The ModelBuilder that represents the compilation.
         /// </summary>
-        internal protected override MutableModel ModelBuilder
+        protected override MutableModel ModelBuilderCore
         {
             get
             {
@@ -629,16 +629,16 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The SymbolTreeBuilder that creates properties for symbols not defined in the declaration tree.
         /// </summary>
-        internal protected override SymbolBuilder SymbolTreeBuilder
+        protected override SymbolBuilder SymbolBuilderCore
         {
             get
             {
                 GetBoundReferenceManager();
-                if (_lazySymbolTreeBuilder == null)
+                if (_lazySymbolBuilder == null)
                 {
-                    Interlocked.CompareExchange(ref _lazySymbolTreeBuilder, new SymbolBuilder(this), null);
+                    Interlocked.CompareExchange(ref _lazySymbolBuilder, this.Language.CompilationFactory.CreateSymbolBuilder(this), null);
                 }
-                return _lazySymbolTreeBuilder;
+                return _lazySymbolBuilder;
             }
         }
 
@@ -692,7 +692,7 @@ namespace MetaDslx.Compiler
             var current = GetCompilationNamespace(containingNamespace);
             if ((object)current != null)
             {
-                return this.Language.CompilationFactory.GetNestedNamespace(namespaceSymbol);
+                return this.SymbolResolution.GetNestedSymbol(namespaceSymbol);
             }
 
             return null;
@@ -723,8 +723,8 @@ namespace MetaDslx.Compiler
             // We want to cache failures as well as successes so that subsequent incorrect extern aliases with the
             // same alias will have the same target.
             @namespace = foundNamespace
-                ? this.Language.CompilationFactory.CreateGlobalNamespace(this, this.ModelBuilder, namespacesToMerge: builder.ToImmutableAndFree())
-                : this.Language.CompilationFactory.CreateGlobalNamespace(this, this.ModelBuilder, namespacesToMerge: null);
+                ? this.SymbolBuilder.CreateGlobalNamespace(namespacesToMerge: builder.ToImmutableAndFree())
+                : this.SymbolBuilder.CreateGlobalNamespace(namespacesToMerge: null);
 
             // Use GetOrAdd in case another thread beat us to the punch (i.e. should return the same object for the same alias, every time).
             @namespace = _externAliasTargets.GetOrAdd(aliasName, @namespace);
@@ -752,7 +752,7 @@ namespace MetaDslx.Compiler
             {
                 return null;
             }
-            return this.NameResolution.GetSymbolByQualifiedName(null, _options.ScriptClassName, '.').FirstOrDefault();
+            return this.SymbolResolution.GetSymbolByQualifiedName(null, _options.ScriptClassName, '.').FirstOrDefault();
         }
 
         internal bool IsSubmissionSyntaxTree(SyntaxTree tree)
@@ -777,7 +777,7 @@ namespace MetaDslx.Compiler
         /// <returns>The Error symbol.</returns>
         protected virtual IMetaSymbol CreateErrorSymbol()
         {
-            return this.Language.CompilationFactory.CreateErrorSymbol(this, this.ModelBuilder);
+            return this.SymbolBuilder.CreateErrorSymbol();
         }
 
         /// <summary>
@@ -930,7 +930,7 @@ namespace MetaDslx.Compiler
 
         private IMetaSymbol CreateGlobalNamespaceAlias()
         {
-            return this.Language.CompilationFactory.CreateGlobalNamespaceAlias(this.GlobalNamespace, new RootBinder(new BuckStopsHereBinder(this), null, this.GlobalNamespace));
+            return this.SymbolBuilder.CreateGlobalNamespaceAlias(this.GlobalNamespace, new RootBinder(new BuckStopsHereBinder(this), null, this.GlobalNamespace));
         }
 
         private void CompleteTree(SyntaxTree tree)
@@ -1495,7 +1495,7 @@ namespace MetaDslx.Compiler
                 throw new ArgumentException("SearchCriteria is expected.", nameof(filter));
             }
 
-            return this.NameResolution.GetSymbolsWithName(predicate, filter, cancellationToken);
+            return this.SymbolResolution.GetSymbolsWithName(predicate, filter, cancellationToken);
         }
 
         #endregion

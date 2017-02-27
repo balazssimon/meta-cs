@@ -20,47 +20,34 @@ namespace MetaDslx.Compiler
     {
         internal static readonly CompilationFactory Default = new DefaultCompilationFactory();
 
+        public abstract ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType);
+
         public abstract RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
-        public abstract ModelFactory CreateModelFactory(MutableModel modelBuilder, bool weak);
-
         public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
+        public abstract SymbolBuilder CreateSymbolBuilder(CompilationBase compilation);
+        public abstract SymbolResolution CreateSymbolResolution(CompilationBase compilation);
 
-        public abstract IMetaSymbol CreateGlobalNamespace(Compilation compilation, MutableModel modelBuilder, IEnumerable<IMetaSymbol> namespacesToMerge);
-        public abstract bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree);
-        public abstract IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, Binder rootBinder);
-        public abstract AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilation);
-        public abstract ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType);
-
-        public abstract IMetaSymbol GetWellKnownSymbol(string name);
+        public virtual AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilation)
+        {
+            return new AnonymousTypeManager(compilation);
+        }
 
         public virtual SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilation, SyntaxTree syntaxTree, bool ignoreAccessibility)
         {
             return new SyntaxTreeSemanticModel(compilation, syntaxTree, ignoreAccessibility);
         }
-
-        public virtual IMetaSymbol GetNestedNamespace(IMetaSymbol namespaceSymbol)
-        {
-            if (namespaceSymbol == null) return null;
-            foreach (var nested in namespaceSymbol.MChildren)
-            {
-                if (nested.MName == namespaceSymbol.MName) return nested;
-            }
-            return null;
-        }
-
-        public abstract IMetaSymbol CreateErrorSymbol(CompilationBase compilation, MutableModel modelBuilder);
     }
 
     internal sealed class DefaultCompilationFactory : CompilationFactory
     {
         public override AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilationBase)
         {
-            throw new NotImplementedException();
+            throw ExceptionUtilities.Unreachable;
         }
 
         public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
-            throw new NotImplementedException();
+            throw ExceptionUtilities.Unreachable;
         }
 
         public override RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
@@ -68,44 +55,24 @@ namespace MetaDslx.Compiler
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, Binder rootBinder)
+        public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)
         {
-            throw new NotImplementedException();
+            throw ExceptionUtilities.Unreachable;
         }
 
-        public override IMetaSymbol CreateGlobalNamespace(Compilation compilation, MutableModel modelBuilder, IEnumerable<IMetaSymbol> namespacesToMerge)
+        public override SymbolBuilder CreateSymbolBuilder(CompilationBase compilation)
         {
-            throw new NotImplementedException();
+            throw ExceptionUtilities.Unreachable;
         }
 
-        public override ModelFactory CreateModelFactory(MutableModel modelBuilder, bool weak)
+        public override SymbolResolution CreateSymbolResolution(CompilationBase compilation)
         {
-            throw new NotImplementedException();
-        }
-
-        public override ScriptCompilationInfo CreateScriptCompilationInfo(Compilation previousSubmission, Type submissionReturnType, Type hostObjectType)
-        {
-            throw new NotImplementedException();
+            throw ExceptionUtilities.Unreachable;
         }
 
         public override SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilationBase, SyntaxTree syntaxTree, bool ignoreAccessibility)
         {
-            throw new NotImplementedException();
-        }
-
-        public override bool HasReferenceOrLoadDirectives(SyntaxTree syntaxTree)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IMetaSymbol CreateErrorSymbol(CompilationBase compilation, MutableModel modelBuilder)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IMetaSymbol GetWellKnownSymbol(string name)
-        {
-            throw new NotImplementedException();
+            throw ExceptionUtilities.Unreachable;
         }
     }
 }

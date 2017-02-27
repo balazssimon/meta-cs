@@ -10,7 +10,18 @@ namespace MetaDslx.Compiler.Binding
     /// Manages anonymous types created in owning compilation. All requests for 
     /// anonymous type symbols go via the instance of this class.
     /// </summary>
-    public abstract class AnonymousTypeManager
+    public class AnonymousTypeManager
     {
+        private CompilationBase _compilation;
+
+        public AnonymousTypeManager(CompilationBase compilation)
+        {
+            _compilation = compilation;
+        }
+
+        public CompilationBase Compilation
+        {
+            get { return _compilation; }
+        }
     }
 }
