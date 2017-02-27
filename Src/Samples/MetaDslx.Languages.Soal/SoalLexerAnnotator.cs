@@ -30,155 +30,147 @@ namespace MetaDslx.Languages.Soal
             
             annotList = new List<object>();
             this.modeAnnotations.Add(SoalLexer.LMultilineComment, annotList);
-            SyntaxAnnotation __tmp1 = new SyntaxAnnotation();
-            __tmp1.Kind = SyntaxKind.Comment;
-            __tmp1.First = SoalLexer.LMultilineComment;
-            __tmp1.Last = SoalLexer.LMultilineComment;
+            TokenAnnotation __tmp1 = new TokenAnnotation();
+            __tmp1.Kind = SoalLexer.Comment;
             annotList.Add(__tmp1);
             
             annotList = new List<object>();
             this.modeAnnotations.Add(SoalLexer.DOUBLEQUOTE_VERBATIM_STRING, annotList);
-            SyntaxAnnotation __tmp2 = new SyntaxAnnotation();
-            __tmp2.Kind = SyntaxKind.String;
-            __tmp2.First = SoalLexer.DOUBLEQUOTE_VERBATIM_STRING;
-            __tmp2.Last = SoalLexer.DOUBLEQUOTE_VERBATIM_STRING;
+            TokenAnnotation __tmp2 = new TokenAnnotation();
+            __tmp2.Kind = SoalLexer.String;
             annotList.Add(__tmp2);
             
             annotList = new List<object>();
             this.modeAnnotations.Add(SoalLexer.SINGLEQUOTE_VERBATIM_STRING, annotList);
-            SyntaxAnnotation __tmp3 = new SyntaxAnnotation();
-            __tmp3.Kind = SyntaxKind.String;
-            __tmp3.First = SoalLexer.SINGLEQUOTE_VERBATIM_STRING;
-            __tmp3.Last = SoalLexer.SINGLEQUOTE_VERBATIM_STRING;
+            TokenAnnotation __tmp3 = new TokenAnnotation();
+            __tmp3.Kind = SoalLexer.String;
             annotList.Add(__tmp3);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.KNamespace, annotList);
-            SyntaxAnnotation __tmp4 = new SyntaxAnnotation();
-            __tmp4.Kind = SyntaxKind.Keyword;
+            TokenAnnotation __tmp4 = new TokenAnnotation();
+            __tmp4.Kind = SoalLexer.Keyword;
             __tmp4.First = SoalLexer.KNamespace;
             __tmp4.Last = SoalLexer.KVoid;
             annotList.Add(__tmp4);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.IdentifierNormal, annotList);
-            SyntaxAnnotation __tmp5 = new SyntaxAnnotation();
-            __tmp5.Kind = SyntaxKind.Identifier;
-            __tmp5.First = SoalLexer.IdentifierNormal;
-            __tmp5.Last = SoalLexer.IdentifierNormal;
+            TokenAnnotation __tmp5 = new TokenAnnotation();
+            __tmp5.Kind = SoalLexer.Identifier;
             annotList.Add(__tmp5);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.IdentifierVerbatim, annotList);
-            SyntaxAnnotation __tmp6 = new SyntaxAnnotation();
-            __tmp6.Kind = SyntaxKind.Identifier;
-            __tmp6.First = SoalLexer.IdentifierVerbatim;
-            __tmp6.Last = SoalLexer.IdentifierVerbatim;
+            TokenAnnotation __tmp6 = new TokenAnnotation();
+            __tmp6.Kind = SoalLexer.Identifier;
             annotList.Add(__tmp6);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.LInteger, annotList);
-            SyntaxAnnotation __tmp7 = new SyntaxAnnotation();
-            __tmp7.Kind = SyntaxKind.Number;
-            __tmp7.First = SoalLexer.LInteger;
-            __tmp7.Last = SoalLexer.LInteger;
+            TokenAnnotation __tmp7 = new TokenAnnotation();
+            __tmp7.Kind = SoalLexer.Number;
             annotList.Add(__tmp7);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.LDecimal, annotList);
-            SyntaxAnnotation __tmp8 = new SyntaxAnnotation();
-            __tmp8.Kind = SyntaxKind.Number;
-            __tmp8.First = SoalLexer.LDecimal;
-            __tmp8.Last = SoalLexer.LDecimal;
+            TokenAnnotation __tmp8 = new TokenAnnotation();
+            __tmp8.Kind = SoalLexer.Number;
             annotList.Add(__tmp8);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.LScientific, annotList);
-            SyntaxAnnotation __tmp9 = new SyntaxAnnotation();
-            __tmp9.Kind = SyntaxKind.Number;
-            __tmp9.First = SoalLexer.LScientific;
-            __tmp9.Last = SoalLexer.LScientific;
+            TokenAnnotation __tmp9 = new TokenAnnotation();
+            __tmp9.Kind = SoalLexer.Number;
             annotList.Add(__tmp9);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.LDateTimeOffset, annotList);
-            SyntaxAnnotation __tmp10 = new SyntaxAnnotation();
-            __tmp10.Kind = SyntaxKind.Number;
-            __tmp10.First = SoalLexer.LDateTimeOffset;
-            __tmp10.Last = SoalLexer.LDateTimeOffset;
+            TokenAnnotation __tmp10 = new TokenAnnotation();
+            __tmp10.Kind = SoalLexer.Number;
             annotList.Add(__tmp10);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.LDateTime, annotList);
-            SyntaxAnnotation __tmp11 = new SyntaxAnnotation();
-            __tmp11.Kind = SyntaxKind.Number;
-            __tmp11.First = SoalLexer.LDateTime;
-            __tmp11.Last = SoalLexer.LDateTime;
+            TokenAnnotation __tmp11 = new TokenAnnotation();
+            __tmp11.Kind = SoalLexer.Number;
             annotList.Add(__tmp11);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.LDate, annotList);
-            SyntaxAnnotation __tmp12 = new SyntaxAnnotation();
-            __tmp12.Kind = SyntaxKind.Number;
-            __tmp12.First = SoalLexer.LDate;
-            __tmp12.Last = SoalLexer.LDate;
+            TokenAnnotation __tmp12 = new TokenAnnotation();
+            __tmp12.Kind = SoalLexer.Number;
             annotList.Add(__tmp12);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.LTime, annotList);
-            SyntaxAnnotation __tmp13 = new SyntaxAnnotation();
-            __tmp13.Kind = SyntaxKind.Number;
-            __tmp13.First = SoalLexer.LTime;
-            __tmp13.Last = SoalLexer.LTime;
+            TokenAnnotation __tmp13 = new TokenAnnotation();
+            __tmp13.Kind = SoalLexer.Number;
             annotList.Add(__tmp13);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.LRegularString, annotList);
-            SyntaxAnnotation __tmp14 = new SyntaxAnnotation();
-            __tmp14.Kind = SyntaxKind.String;
-            __tmp14.First = SoalLexer.LRegularString;
-            __tmp14.Last = SoalLexer.LRegularString;
+            TokenAnnotation __tmp14 = new TokenAnnotation();
+            __tmp14.Kind = SoalLexer.String;
             annotList.Add(__tmp14);
             
             annotList = new List<object>();
             this.tokenAnnotations.Add(SoalLexer.LGuid, annotList);
-            SyntaxAnnotation __tmp15 = new SyntaxAnnotation();
-            __tmp15.Kind = SyntaxKind.String;
-            __tmp15.First = SoalLexer.LGuid;
-            __tmp15.Last = SoalLexer.LGuid;
+            TokenAnnotation __tmp15 = new TokenAnnotation();
+            __tmp15.Kind = SoalLexer.String;
             annotList.Add(__tmp15);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(SoalLexer.LSingleLineComment, annotList);
-            SyntaxAnnotation __tmp16 = new SyntaxAnnotation();
-            __tmp16.Kind = SyntaxKind.Comment;
-            __tmp16.First = SoalLexer.LSingleLineComment;
-            __tmp16.Last = SoalLexer.LSingleLineComment;
+            this.tokenAnnotations.Add(SoalLexer.LUtf8Bom, annotList);
+            TokenAnnotation __tmp16 = new TokenAnnotation();
+            __tmp16.Kind = SoalLexer.Whitespace;
             annotList.Add(__tmp16);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(SoalLexer.COMMENT, annotList);
-            SyntaxAnnotation __tmp17 = new SyntaxAnnotation();
-            __tmp17.Kind = SyntaxKind.Comment;
-            __tmp17.First = SoalLexer.COMMENT;
-            __tmp17.Last = SoalLexer.COMMENT;
+            this.tokenAnnotations.Add(SoalLexer.LWhiteSpace, annotList);
+            TokenAnnotation __tmp17 = new TokenAnnotation();
+            __tmp17.Kind = SoalLexer.Whitespace;
+            __tmp17.DefaultWhitespace = true;
             annotList.Add(__tmp17);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(SoalLexer.LDoubleQuoteVerbatimString, annotList);
-            SyntaxAnnotation __tmp18 = new SyntaxAnnotation();
-            __tmp18.Kind = SyntaxKind.String;
-            __tmp18.First = SoalLexer.LDoubleQuoteVerbatimString;
-            __tmp18.Last = SoalLexer.LDoubleQuoteVerbatimString;
+            this.tokenAnnotations.Add(SoalLexer.LCrLf, annotList);
+            TokenAnnotation __tmp18 = new TokenAnnotation();
+            __tmp18.Kind = SoalLexer.Whitespace;
+            __tmp18.EndOfLine = true;
+            __tmp18.DefaultEndOfLine = true;
             annotList.Add(__tmp18);
             
             annotList = new List<object>();
-            this.tokenAnnotations.Add(SoalLexer.LSingleQuoteVerbatimString, annotList);
-            SyntaxAnnotation __tmp19 = new SyntaxAnnotation();
-            __tmp19.Kind = SyntaxKind.String;
-            __tmp19.First = SoalLexer.LSingleQuoteVerbatimString;
-            __tmp19.Last = SoalLexer.LSingleQuoteVerbatimString;
+            this.tokenAnnotations.Add(SoalLexer.LLineEnd, annotList);
+            TokenAnnotation __tmp19 = new TokenAnnotation();
+            __tmp19.Kind = SoalLexer.Whitespace;
+            __tmp19.EndOfLine = true;
             annotList.Add(__tmp19);
+            
+            annotList = new List<object>();
+            this.tokenAnnotations.Add(SoalLexer.LSingleLineComment, annotList);
+            TokenAnnotation __tmp20 = new TokenAnnotation();
+            __tmp20.Kind = SoalLexer.Comment;
+            annotList.Add(__tmp20);
+            
+            annotList = new List<object>();
+            this.tokenAnnotations.Add(SoalLexer.COMMENT, annotList);
+            TokenAnnotation __tmp21 = new TokenAnnotation();
+            __tmp21.Kind = SoalLexer.Comment;
+            annotList.Add(__tmp21);
+            
+            annotList = new List<object>();
+            this.tokenAnnotations.Add(SoalLexer.LDoubleQuoteVerbatimString, annotList);
+            TokenAnnotation __tmp22 = new TokenAnnotation();
+            __tmp22.Kind = SoalLexer.String;
+            annotList.Add(__tmp22);
+            
+            annotList = new List<object>();
+            this.tokenAnnotations.Add(SoalLexer.LSingleQuoteVerbatimString, annotList);
+            TokenAnnotation __tmp23 = new TokenAnnotation();
+            __tmp23.Kind = SoalLexer.String;
+            annotList.Add(__tmp23);
         }
         
         public object VisitTerminal(ITerminalNode node, Dictionary<object, List<object>> treeAnnotations)

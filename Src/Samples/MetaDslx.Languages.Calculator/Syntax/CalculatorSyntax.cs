@@ -1418,8 +1418,24 @@ namespace MetaDslx.Languages.Calculator
 		{
 			return this.IsToken((CalculatorSyntaxKind)rawKind);
 		}
-	
-		public bool IsToken(CalculatorSyntaxKind kind)
+
+        protected override int DefaultEndOfLineSyntaxKindCore
+        {
+            get
+            {
+                return (int)CalculatorSyntaxKind.ENDL;
+            }
+        }
+
+        protected override int DefaultWhitespaceSyntaxKindCore
+        {
+            get
+            {
+                return (int)CalculatorSyntaxKind.WHITESPACE;
+            }
+        }
+
+        public bool IsToken(CalculatorSyntaxKind kind)
 	    {
 			switch (kind)
 	        {
@@ -2036,8 +2052,15 @@ namespace MetaDslx.Languages.Calculator
 			this.ElasticTab = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticTab.CreateRed();
 			this.ElasticZeroSpace = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticZeroSpace.CreateRed();
 		}
-	
-	    public CalculatorSyntaxTrivia CarriageReturnLineFeed { get; }
+
+        protected override Language LanguageCore
+        {
+            get
+            {
+                return CalculatorLanguage.Instance;
+            }
+        }
+        public CalculatorSyntaxTrivia CarriageReturnLineFeed { get; }
 	    public CalculatorSyntaxTrivia LineFeed { get; }
 	    public CalculatorSyntaxTrivia CarriageReturn { get; }
 	    public CalculatorSyntaxTrivia Space { get; }

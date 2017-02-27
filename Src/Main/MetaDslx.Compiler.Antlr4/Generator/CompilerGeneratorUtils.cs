@@ -56,6 +56,22 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             return grammar.LexerRules.Where(rule => rule.FixedToken != null).LastOrDefault();
         }
 
+        public static List<Antlr4LexerRule> LexerRulesBetween(this Antlr4Grammar grammar, string first, string last)
+        {
+            List<Antlr4LexerRule> result = new List<Antlr4LexerRule>();
+            bool collect = false;
+            foreach (var rule in grammar.LexerRules)
+            {
+                if (rule.Name == first) collect = true;
+                if (collect)
+                {
+                    result.Add(rule);
+                }
+                if (rule.Name == last) break;
+            }
+            return result;
+        }
+
         public static bool HasEof(this Antlr4ParserRule rule)
         {
             return rule.Alternatives.Count == 0 && rule.Elements.Any(e => e.Type == "EOF");
@@ -272,7 +288,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
         public static bool IsDeclaration(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol);
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolDef);
         }
 
         public static bool IsDeclarationBoundary(this MetaCompilerAnnotations annots)
@@ -284,8 +300,8 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
         public static bool IsAnySymbol(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol) || annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr) ||
-                annots.HasAnnotation(MetaCompilerAnnotationInfo.Symbol);
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolDef) || annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr) ||
+                annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolDef);
         }
 
         public static bool IsIdentifier(this MetaCompilerAnnotations annots)

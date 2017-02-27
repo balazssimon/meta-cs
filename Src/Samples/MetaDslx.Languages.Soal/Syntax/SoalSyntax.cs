@@ -63,8 +63,8 @@ namespace MetaDslx.Languages.Soal.Syntax
 		KByte,
 		KBool,
 		KAny,
-		KVoid,
 		KTypeof,
+		KVoid,
 		TSemicolon,
 		TColon,
 		TDot,
@@ -10923,8 +10923,8 @@ namespace MetaDslx.Languages.Soal.Syntax
 	
 	public sealed class ReturnTypeSyntax : SoalSyntaxNode
 	{
-	    private TypeReferenceSyntax typeReference;
 	    private VoidTypeSyntax voidType;
+	    private TypeReferenceSyntax typeReference;
 	
 	    public ReturnTypeSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -10936,21 +10936,21 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	    }
 	
-	    public TypeReferenceSyntax TypeReference 
-		{ 
-			get { return this.GetRed(ref this.typeReference, 0); } 
-		}
 	    public VoidTypeSyntax VoidType 
 		{ 
-			get { return this.GetRed(ref this.voidType, 1); } 
+			get { return this.GetRed(ref this.voidType, 0); } 
+		}
+	    public TypeReferenceSyntax TypeReference 
+		{ 
+			get { return this.GetRed(ref this.typeReference, 1); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.typeReference, 0);
-				case 1: return this.GetRed(ref this.voidType, 1);
+				case 0: return this.GetRed(ref this.voidType, 0);
+				case 1: return this.GetRed(ref this.typeReference, 1);
 				default: return null;
 	        }
 	    }
@@ -10959,27 +10959,27 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.typeReference;
-				case 1: return this.voidType;
+				case 0: return this.voidType;
+				case 1: return this.typeReference;
 				default: return null;
 	        }
 	    }
-	
-	    public ReturnTypeSyntax WithTypeReference(TypeReferenceSyntax typeReference)
-		{
-			return this.Update(typeReference);
-		}
 	
 	    public ReturnTypeSyntax WithVoidType(VoidTypeSyntax voidType)
 		{
 			return this.Update(voidType);
 		}
 	
-	    public ReturnTypeSyntax Update(TypeReferenceSyntax typeReference)
+	    public ReturnTypeSyntax WithTypeReference(TypeReferenceSyntax typeReference)
+		{
+			return this.Update(typeReference);
+		}
+	
+	    public ReturnTypeSyntax Update(VoidTypeSyntax voidType)
 	    {
-	        if (this.TypeReference != typeReference)
+	        if (this.VoidType != voidType)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ReturnType(typeReference);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ReturnType(voidType);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -10988,11 +10988,11 @@ namespace MetaDslx.Languages.Soal.Syntax
 	        return this;
 	    }
 	
-	    public ReturnTypeSyntax Update(VoidTypeSyntax voidType)
+	    public ReturnTypeSyntax Update(TypeReferenceSyntax typeReference)
 	    {
-	        if (this.VoidType != voidType)
+	        if (this.TypeReference != typeReference)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ReturnType(voidType);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.ReturnType(typeReference);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -11725,8 +11725,9 @@ namespace MetaDslx.Languages.Soal.Syntax
 	
 	public sealed class OperationReturnTypeSyntax : SoalSyntaxNode
 	{
-	    private ReturnTypeSyntax returnType;
 	    private OnewayTypeSyntax onewayType;
+	    private VoidTypeSyntax voidType;
+	    private TypeReferenceSyntax typeReference;
 	
 	    public OperationReturnTypeSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -11738,21 +11739,26 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	    }
 	
-	    public ReturnTypeSyntax ReturnType 
-		{ 
-			get { return this.GetRed(ref this.returnType, 0); } 
-		}
 	    public OnewayTypeSyntax OnewayType 
 		{ 
-			get { return this.GetRed(ref this.onewayType, 1); } 
+			get { return this.GetRed(ref this.onewayType, 0); } 
+		}
+	    public VoidTypeSyntax VoidType 
+		{ 
+			get { return this.GetRed(ref this.voidType, 1); } 
+		}
+	    public TypeReferenceSyntax TypeReference 
+		{ 
+			get { return this.GetRed(ref this.typeReference, 2); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.returnType, 0);
-				case 1: return this.GetRed(ref this.onewayType, 1);
+				case 0: return this.GetRed(ref this.onewayType, 0);
+				case 1: return this.GetRed(ref this.voidType, 1);
+				case 2: return this.GetRed(ref this.typeReference, 2);
 				default: return null;
 	        }
 	    }
@@ -11761,27 +11767,33 @@ namespace MetaDslx.Languages.Soal.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.returnType;
-				case 1: return this.onewayType;
+				case 0: return this.onewayType;
+				case 1: return this.voidType;
+				case 2: return this.typeReference;
 				default: return null;
 	        }
 	    }
-	
-	    public OperationReturnTypeSyntax WithReturnType(ReturnTypeSyntax returnType)
-		{
-			return this.Update(returnType);
-		}
 	
 	    public OperationReturnTypeSyntax WithOnewayType(OnewayTypeSyntax onewayType)
 		{
 			return this.Update(onewayType);
 		}
 	
-	    public OperationReturnTypeSyntax Update(ReturnTypeSyntax returnType)
+	    public OperationReturnTypeSyntax WithVoidType(VoidTypeSyntax voidType)
+		{
+			return this.Update(voidType);
+		}
+	
+	    public OperationReturnTypeSyntax WithTypeReference(TypeReferenceSyntax typeReference)
+		{
+			return this.Update(typeReference);
+		}
+	
+	    public OperationReturnTypeSyntax Update(OnewayTypeSyntax onewayType)
 	    {
-	        if (this.ReturnType != returnType)
+	        if (this.OnewayType != onewayType)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.OperationReturnType(returnType);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.OperationReturnType(onewayType);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -11790,11 +11802,24 @@ namespace MetaDslx.Languages.Soal.Syntax
 	        return this;
 	    }
 	
-	    public OperationReturnTypeSyntax Update(OnewayTypeSyntax onewayType)
+	    public OperationReturnTypeSyntax Update(VoidTypeSyntax voidType)
 	    {
-	        if (this.OnewayType != onewayType)
+	        if (this.VoidType != voidType)
 	        {
-	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.OperationReturnType(onewayType);
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.OperationReturnType(voidType);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationReturnTypeSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public OperationReturnTypeSyntax Update(TypeReferenceSyntax typeReference)
+	    {
+	        if (this.TypeReference != typeReference)
+	        {
+	            SyntaxNode newNode = SoalLanguage.Instance.SyntaxFactory.OperationReturnType(typeReference);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -13376,726 +13401,6 @@ namespace MetaDslx.Languages.Soal
     using MetaDslx.Compiler.Text;
 	using MetaDslx.Languages.Soal.Syntax;
     using MetaDslx.Languages.Soal.Syntax.InternalSyntax;
-
-	
-	public class SoalSyntaxFacts : SyntaxFacts
-	{
-		internal static readonly SoalSyntaxFacts Instance = new SoalSyntaxFacts();
-	
-		public override bool IsToken(int rawKind)
-		{
-			return this.IsToken((SoalSyntaxKind)rawKind);
-		}
-	
-		public bool IsToken(SoalSyntaxKind kind)
-	    {
-			switch (kind)
-	        {
-				case SoalSyntaxKind.Eof:
-				case SoalSyntaxKind.KNamespace:
-				case SoalSyntaxKind.KEnum:
-				case SoalSyntaxKind.KException:
-				case SoalSyntaxKind.KStruct:
-				case SoalSyntaxKind.KInterface:
-				case SoalSyntaxKind.KThrows:
-				case SoalSyntaxKind.KOneway:
-				case SoalSyntaxKind.KReturn:
-				case SoalSyntaxKind.KBinding:
-				case SoalSyntaxKind.KTransport:
-				case SoalSyntaxKind.KEncoding:
-				case SoalSyntaxKind.KProtocol:
-				case SoalSyntaxKind.KEndpoint:
-				case SoalSyntaxKind.KAddress:
-				case SoalSyntaxKind.KDatabase:
-				case SoalSyntaxKind.KEntity:
-				case SoalSyntaxKind.KAbstract:
-				case SoalSyntaxKind.KComponent:
-				case SoalSyntaxKind.KComposite:
-				case SoalSyntaxKind.KReference:
-				case SoalSyntaxKind.KService:
-				case SoalSyntaxKind.KWire:
-				case SoalSyntaxKind.KTo:
-				case SoalSyntaxKind.KImplementation:
-				case SoalSyntaxKind.KLanguage:
-				case SoalSyntaxKind.KAssembly:
-				case SoalSyntaxKind.KDeployment:
-				case SoalSyntaxKind.KEnvironment:
-				case SoalSyntaxKind.KRuntime:
-				case SoalSyntaxKind.KNull:
-				case SoalSyntaxKind.KTrue:
-				case SoalSyntaxKind.KFalse:
-				case SoalSyntaxKind.KObject:
-				case SoalSyntaxKind.KString:
-				case SoalSyntaxKind.KInt:
-				case SoalSyntaxKind.KLong:
-				case SoalSyntaxKind.KFloat:
-				case SoalSyntaxKind.KDouble:
-				case SoalSyntaxKind.KByte:
-				case SoalSyntaxKind.KBool:
-				case SoalSyntaxKind.KAny:
-				case SoalSyntaxKind.KVoid:
-				case SoalSyntaxKind.KTypeof:
-				case SoalSyntaxKind.TSemicolon:
-				case SoalSyntaxKind.TColon:
-				case SoalSyntaxKind.TDot:
-				case SoalSyntaxKind.TComma:
-				case SoalSyntaxKind.TAssign:
-				case SoalSyntaxKind.TOpenParen:
-				case SoalSyntaxKind.TCloseParen:
-				case SoalSyntaxKind.TOpenBracket:
-				case SoalSyntaxKind.TCloseBracket:
-				case SoalSyntaxKind.TOpenBrace:
-				case SoalSyntaxKind.TCloseBrace:
-				case SoalSyntaxKind.TLessThan:
-				case SoalSyntaxKind.TGreaterThan:
-				case SoalSyntaxKind.TQuestion:
-				case SoalSyntaxKind.TQuestionQuestion:
-				case SoalSyntaxKind.TAmpersand:
-				case SoalSyntaxKind.THat:
-				case SoalSyntaxKind.TBar:
-				case SoalSyntaxKind.TAndAlso:
-				case SoalSyntaxKind.TOrElse:
-				case SoalSyntaxKind.TPlusPlus:
-				case SoalSyntaxKind.TMinusMinus:
-				case SoalSyntaxKind.TPlus:
-				case SoalSyntaxKind.TMinus:
-				case SoalSyntaxKind.TTilde:
-				case SoalSyntaxKind.TExclamation:
-				case SoalSyntaxKind.TSlash:
-				case SoalSyntaxKind.TAsterisk:
-				case SoalSyntaxKind.TPercent:
-				case SoalSyntaxKind.TLessThanOrEqual:
-				case SoalSyntaxKind.TGreaterThanOrEqual:
-				case SoalSyntaxKind.TEqual:
-				case SoalSyntaxKind.TNotEqual:
-				case SoalSyntaxKind.TAsteriskAssign:
-				case SoalSyntaxKind.TSlashAssign:
-				case SoalSyntaxKind.TPercentAssign:
-				case SoalSyntaxKind.TPlusAssign:
-				case SoalSyntaxKind.TMinusAssign:
-				case SoalSyntaxKind.TLeftShiftAssign:
-				case SoalSyntaxKind.TRightShiftAssign:
-				case SoalSyntaxKind.TAmpersandAssign:
-				case SoalSyntaxKind.THatAssign:
-				case SoalSyntaxKind.TBarAssign:
-				case SoalSyntaxKind.IDate:
-				case SoalSyntaxKind.ITime:
-				case SoalSyntaxKind.IDateTime:
-				case SoalSyntaxKind.ITimeSpan:
-				case SoalSyntaxKind.IVersion:
-				case SoalSyntaxKind.IStyle:
-				case SoalSyntaxKind.IMTOM:
-				case SoalSyntaxKind.ISSL:
-				case SoalSyntaxKind.IHTTP:
-				case SoalSyntaxKind.IREST:
-				case SoalSyntaxKind.IWebSocket:
-				case SoalSyntaxKind.ISOAP:
-				case SoalSyntaxKind.IXML:
-				case SoalSyntaxKind.IJSON:
-				case SoalSyntaxKind.IClientAuthentication:
-				case SoalSyntaxKind.IWsAddressing:
-				case SoalSyntaxKind.IdentifierNormal:
-				case SoalSyntaxKind.IdentifierVerbatim:
-				case SoalSyntaxKind.LInteger:
-				case SoalSyntaxKind.LDecimal:
-				case SoalSyntaxKind.LScientific:
-				case SoalSyntaxKind.LDateTimeOffset:
-				case SoalSyntaxKind.LDateTime:
-				case SoalSyntaxKind.LDate:
-				case SoalSyntaxKind.LTime:
-				case SoalSyntaxKind.LRegularString:
-				case SoalSyntaxKind.LGuid:
-				case SoalSyntaxKind.LUtf8Bom:
-				case SoalSyntaxKind.LWhiteSpace:
-				case SoalSyntaxKind.LCrLf:
-				case SoalSyntaxKind.LLineEnd:
-				case SoalSyntaxKind.LSingleLineComment:
-				case SoalSyntaxKind.COMMENT:
-				case SoalSyntaxKind.LDoubleQuoteVerbatimString:
-				case SoalSyntaxKind.LSingleQuoteVerbatimString:
-				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
-				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
-					return true;
-				default:
-					return false;
-			}
-		}
-	
-		public override bool IsFixedToken(int rawKind)
-		{
-			return this.IsFixedToken((SoalSyntaxKind)rawKind);
-		}
-	
-		public bool IsFixedToken(SoalSyntaxKind kind)
-	    {
-			switch (kind)
-	        {
-				case SoalSyntaxKind.Eof:
-				case SoalSyntaxKind.KNamespace:
-				case SoalSyntaxKind.KEnum:
-				case SoalSyntaxKind.KException:
-				case SoalSyntaxKind.KStruct:
-				case SoalSyntaxKind.KInterface:
-				case SoalSyntaxKind.KThrows:
-				case SoalSyntaxKind.KOneway:
-				case SoalSyntaxKind.KReturn:
-				case SoalSyntaxKind.KBinding:
-				case SoalSyntaxKind.KTransport:
-				case SoalSyntaxKind.KEncoding:
-				case SoalSyntaxKind.KProtocol:
-				case SoalSyntaxKind.KEndpoint:
-				case SoalSyntaxKind.KAddress:
-				case SoalSyntaxKind.KDatabase:
-				case SoalSyntaxKind.KEntity:
-				case SoalSyntaxKind.KAbstract:
-				case SoalSyntaxKind.KComponent:
-				case SoalSyntaxKind.KComposite:
-				case SoalSyntaxKind.KReference:
-				case SoalSyntaxKind.KService:
-				case SoalSyntaxKind.KWire:
-				case SoalSyntaxKind.KTo:
-				case SoalSyntaxKind.KImplementation:
-				case SoalSyntaxKind.KLanguage:
-				case SoalSyntaxKind.KAssembly:
-				case SoalSyntaxKind.KDeployment:
-				case SoalSyntaxKind.KEnvironment:
-				case SoalSyntaxKind.KRuntime:
-				case SoalSyntaxKind.KNull:
-				case SoalSyntaxKind.KTrue:
-				case SoalSyntaxKind.KFalse:
-				case SoalSyntaxKind.KObject:
-				case SoalSyntaxKind.KString:
-				case SoalSyntaxKind.KInt:
-				case SoalSyntaxKind.KLong:
-				case SoalSyntaxKind.KFloat:
-				case SoalSyntaxKind.KDouble:
-				case SoalSyntaxKind.KByte:
-				case SoalSyntaxKind.KBool:
-				case SoalSyntaxKind.KAny:
-				case SoalSyntaxKind.KVoid:
-				case SoalSyntaxKind.KTypeof:
-				case SoalSyntaxKind.TSemicolon:
-				case SoalSyntaxKind.TColon:
-				case SoalSyntaxKind.TDot:
-				case SoalSyntaxKind.TComma:
-				case SoalSyntaxKind.TAssign:
-				case SoalSyntaxKind.TOpenParen:
-				case SoalSyntaxKind.TCloseParen:
-				case SoalSyntaxKind.TOpenBracket:
-				case SoalSyntaxKind.TCloseBracket:
-				case SoalSyntaxKind.TOpenBrace:
-				case SoalSyntaxKind.TCloseBrace:
-				case SoalSyntaxKind.TLessThan:
-				case SoalSyntaxKind.TGreaterThan:
-				case SoalSyntaxKind.TQuestion:
-				case SoalSyntaxKind.TQuestionQuestion:
-				case SoalSyntaxKind.TAmpersand:
-				case SoalSyntaxKind.THat:
-				case SoalSyntaxKind.TBar:
-				case SoalSyntaxKind.TAndAlso:
-				case SoalSyntaxKind.TOrElse:
-				case SoalSyntaxKind.TPlusPlus:
-				case SoalSyntaxKind.TMinusMinus:
-				case SoalSyntaxKind.TPlus:
-				case SoalSyntaxKind.TMinus:
-				case SoalSyntaxKind.TTilde:
-				case SoalSyntaxKind.TExclamation:
-				case SoalSyntaxKind.TSlash:
-				case SoalSyntaxKind.TPercent:
-				case SoalSyntaxKind.TLessThanOrEqual:
-				case SoalSyntaxKind.TGreaterThanOrEqual:
-				case SoalSyntaxKind.TEqual:
-				case SoalSyntaxKind.TNotEqual:
-				case SoalSyntaxKind.TAsteriskAssign:
-				case SoalSyntaxKind.TSlashAssign:
-				case SoalSyntaxKind.TPercentAssign:
-				case SoalSyntaxKind.TPlusAssign:
-				case SoalSyntaxKind.TMinusAssign:
-				case SoalSyntaxKind.TLeftShiftAssign:
-				case SoalSyntaxKind.TRightShiftAssign:
-				case SoalSyntaxKind.TAmpersandAssign:
-				case SoalSyntaxKind.THatAssign:
-				case SoalSyntaxKind.TBarAssign:
-				case SoalSyntaxKind.IDate:
-				case SoalSyntaxKind.ITime:
-				case SoalSyntaxKind.IDateTime:
-				case SoalSyntaxKind.ITimeSpan:
-				case SoalSyntaxKind.IVersion:
-				case SoalSyntaxKind.IStyle:
-				case SoalSyntaxKind.IMTOM:
-				case SoalSyntaxKind.ISSL:
-				case SoalSyntaxKind.IHTTP:
-				case SoalSyntaxKind.IREST:
-				case SoalSyntaxKind.IWebSocket:
-				case SoalSyntaxKind.ISOAP:
-				case SoalSyntaxKind.IXML:
-				case SoalSyntaxKind.IJSON:
-				case SoalSyntaxKind.IClientAuthentication:
-				case SoalSyntaxKind.IWsAddressing:
-				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
-				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
-					return true;
-				default:
-					return false;
-			}
-		}
-	
-		public override string GetText(int rawKind)
-		{
-			return this.GetText((SoalSyntaxKind)rawKind);
-		}
-	
-		public string GetText(SoalSyntaxKind kind)
-	    {
-			switch (kind)
-	        {
-				case SoalSyntaxKind.KNamespace:
-					return "namespace";
-				case SoalSyntaxKind.KEnum:
-					return "enum";
-				case SoalSyntaxKind.KException:
-					return "exception";
-				case SoalSyntaxKind.KStruct:
-					return "struct";
-				case SoalSyntaxKind.KInterface:
-					return "interface";
-				case SoalSyntaxKind.KThrows:
-					return "throws";
-				case SoalSyntaxKind.KOneway:
-					return "oneway";
-				case SoalSyntaxKind.KReturn:
-					return "return";
-				case SoalSyntaxKind.KBinding:
-					return "binding";
-				case SoalSyntaxKind.KTransport:
-					return "transport";
-				case SoalSyntaxKind.KEncoding:
-					return "encoding";
-				case SoalSyntaxKind.KProtocol:
-					return "protocol";
-				case SoalSyntaxKind.KEndpoint:
-					return "endpoint";
-				case SoalSyntaxKind.KAddress:
-					return "address";
-				case SoalSyntaxKind.KDatabase:
-					return "database";
-				case SoalSyntaxKind.KEntity:
-					return "entity";
-				case SoalSyntaxKind.KAbstract:
-					return "abstract";
-				case SoalSyntaxKind.KComponent:
-					return "component";
-				case SoalSyntaxKind.KComposite:
-					return "composite";
-				case SoalSyntaxKind.KReference:
-					return "reference";
-				case SoalSyntaxKind.KService:
-					return "service";
-				case SoalSyntaxKind.KWire:
-					return "wire";
-				case SoalSyntaxKind.KTo:
-					return "to";
-				case SoalSyntaxKind.KImplementation:
-					return "implementation";
-				case SoalSyntaxKind.KLanguage:
-					return "language";
-				case SoalSyntaxKind.KAssembly:
-					return "assembly";
-				case SoalSyntaxKind.KDeployment:
-					return "deployment";
-				case SoalSyntaxKind.KEnvironment:
-					return "environment";
-				case SoalSyntaxKind.KRuntime:
-					return "runtime";
-				case SoalSyntaxKind.KNull:
-					return "null";
-				case SoalSyntaxKind.KTrue:
-					return "true";
-				case SoalSyntaxKind.KFalse:
-					return "false";
-				case SoalSyntaxKind.KObject:
-					return "object";
-				case SoalSyntaxKind.KString:
-					return "string";
-				case SoalSyntaxKind.KInt:
-					return "int";
-				case SoalSyntaxKind.KLong:
-					return "long";
-				case SoalSyntaxKind.KFloat:
-					return "float";
-				case SoalSyntaxKind.KDouble:
-					return "double";
-				case SoalSyntaxKind.KByte:
-					return "byte";
-				case SoalSyntaxKind.KBool:
-					return "bool";
-				case SoalSyntaxKind.KAny:
-					return "any";
-				case SoalSyntaxKind.KVoid:
-					return "void";
-				case SoalSyntaxKind.KTypeof:
-					return "typeof";
-				case SoalSyntaxKind.TSemicolon:
-					return ";";
-				case SoalSyntaxKind.TColon:
-					return ":";
-				case SoalSyntaxKind.TDot:
-					return ".";
-				case SoalSyntaxKind.TComma:
-					return ",";
-				case SoalSyntaxKind.TAssign:
-					return "=";
-				case SoalSyntaxKind.TOpenParen:
-					return "(";
-				case SoalSyntaxKind.TCloseParen:
-					return ")";
-				case SoalSyntaxKind.TOpenBracket:
-					return "[";
-				case SoalSyntaxKind.TCloseBracket:
-					return "]";
-				case SoalSyntaxKind.TOpenBrace:
-					return "{";
-				case SoalSyntaxKind.TCloseBrace:
-					return "}";
-				case SoalSyntaxKind.TLessThan:
-					return "<";
-				case SoalSyntaxKind.TGreaterThan:
-					return ">";
-				case SoalSyntaxKind.TQuestion:
-					return "?";
-				case SoalSyntaxKind.TQuestionQuestion:
-					return "??";
-				case SoalSyntaxKind.TAmpersand:
-					return "&";
-				case SoalSyntaxKind.THat:
-					return "^";
-				case SoalSyntaxKind.TBar:
-					return "|";
-				case SoalSyntaxKind.TAndAlso:
-					return "&&";
-				case SoalSyntaxKind.TOrElse:
-					return "||";
-				case SoalSyntaxKind.TPlusPlus:
-					return "++";
-				case SoalSyntaxKind.TMinusMinus:
-					return "--";
-				case SoalSyntaxKind.TPlus:
-					return "+";
-				case SoalSyntaxKind.TMinus:
-					return "-";
-				case SoalSyntaxKind.TTilde:
-					return "~";
-				case SoalSyntaxKind.TExclamation:
-					return "!";
-				case SoalSyntaxKind.TSlash:
-					return "/";
-				case SoalSyntaxKind.TPercent:
-					return "%";
-				case SoalSyntaxKind.TLessThanOrEqual:
-					return "<=";
-				case SoalSyntaxKind.TGreaterThanOrEqual:
-					return ">=";
-				case SoalSyntaxKind.TEqual:
-					return "==";
-				case SoalSyntaxKind.TNotEqual:
-					return "!=";
-				case SoalSyntaxKind.TAsteriskAssign:
-					return "*=";
-				case SoalSyntaxKind.TSlashAssign:
-					return "/=";
-				case SoalSyntaxKind.TPercentAssign:
-					return "%=";
-				case SoalSyntaxKind.TPlusAssign:
-					return "+=";
-				case SoalSyntaxKind.TMinusAssign:
-					return "-=";
-				case SoalSyntaxKind.TLeftShiftAssign:
-					return "<<=";
-				case SoalSyntaxKind.TRightShiftAssign:
-					return ">>=";
-				case SoalSyntaxKind.TAmpersandAssign:
-					return "&=";
-				case SoalSyntaxKind.THatAssign:
-					return "^=";
-				case SoalSyntaxKind.TBarAssign:
-					return "|=";
-				case SoalSyntaxKind.IDate:
-					return "Date";
-				case SoalSyntaxKind.ITime:
-					return "Time";
-				case SoalSyntaxKind.IDateTime:
-					return "DateTime";
-				case SoalSyntaxKind.ITimeSpan:
-					return "TimeSpan";
-				case SoalSyntaxKind.IVersion:
-					return "Version";
-				case SoalSyntaxKind.IStyle:
-					return "Style";
-				case SoalSyntaxKind.IMTOM:
-					return "MTOM";
-				case SoalSyntaxKind.ISSL:
-					return "SSL";
-				case SoalSyntaxKind.IHTTP:
-					return "HTTP";
-				case SoalSyntaxKind.IREST:
-					return "REST";
-				case SoalSyntaxKind.IWebSocket:
-					return "WebSocket";
-				case SoalSyntaxKind.ISOAP:
-					return "SOAP";
-				case SoalSyntaxKind.IXML:
-					return "XML";
-				case SoalSyntaxKind.IJSON:
-					return "JSON";
-				case SoalSyntaxKind.IClientAuthentication:
-					return "ClientAuthentication";
-				case SoalSyntaxKind.IWsAddressing:
-					return "WsAddressing";
-				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
-					return "@\"";
-				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
-					return "@\'";
-				default:
-					return string.Empty;
-			}
-		}
-	
-		public SoalSyntaxKind GetKind(string text)
-	    {
-			switch (text)
-	        {
-				case "namespace":
-					return SoalSyntaxKind.KNamespace;
-				case "enum":
-					return SoalSyntaxKind.KEnum;
-				case "exception":
-					return SoalSyntaxKind.KException;
-				case "struct":
-					return SoalSyntaxKind.KStruct;
-				case "interface":
-					return SoalSyntaxKind.KInterface;
-				case "throws":
-					return SoalSyntaxKind.KThrows;
-				case "oneway":
-					return SoalSyntaxKind.KOneway;
-				case "return":
-					return SoalSyntaxKind.KReturn;
-				case "binding":
-					return SoalSyntaxKind.KBinding;
-				case "transport":
-					return SoalSyntaxKind.KTransport;
-				case "encoding":
-					return SoalSyntaxKind.KEncoding;
-				case "protocol":
-					return SoalSyntaxKind.KProtocol;
-				case "endpoint":
-					return SoalSyntaxKind.KEndpoint;
-				case "address":
-					return SoalSyntaxKind.KAddress;
-				case "database":
-					return SoalSyntaxKind.KDatabase;
-				case "entity":
-					return SoalSyntaxKind.KEntity;
-				case "abstract":
-					return SoalSyntaxKind.KAbstract;
-				case "component":
-					return SoalSyntaxKind.KComponent;
-				case "composite":
-					return SoalSyntaxKind.KComposite;
-				case "reference":
-					return SoalSyntaxKind.KReference;
-				case "service":
-					return SoalSyntaxKind.KService;
-				case "wire":
-					return SoalSyntaxKind.KWire;
-				case "to":
-					return SoalSyntaxKind.KTo;
-				case "implementation":
-					return SoalSyntaxKind.KImplementation;
-				case "language":
-					return SoalSyntaxKind.KLanguage;
-				case "assembly":
-					return SoalSyntaxKind.KAssembly;
-				case "deployment":
-					return SoalSyntaxKind.KDeployment;
-				case "environment":
-					return SoalSyntaxKind.KEnvironment;
-				case "runtime":
-					return SoalSyntaxKind.KRuntime;
-				case "null":
-					return SoalSyntaxKind.KNull;
-				case "true":
-					return SoalSyntaxKind.KTrue;
-				case "false":
-					return SoalSyntaxKind.KFalse;
-				case "object":
-					return SoalSyntaxKind.KObject;
-				case "string":
-					return SoalSyntaxKind.KString;
-				case "int":
-					return SoalSyntaxKind.KInt;
-				case "long":
-					return SoalSyntaxKind.KLong;
-				case "float":
-					return SoalSyntaxKind.KFloat;
-				case "double":
-					return SoalSyntaxKind.KDouble;
-				case "byte":
-					return SoalSyntaxKind.KByte;
-				case "bool":
-					return SoalSyntaxKind.KBool;
-				case "any":
-					return SoalSyntaxKind.KAny;
-				case "void":
-					return SoalSyntaxKind.KVoid;
-				case "typeof":
-					return SoalSyntaxKind.KTypeof;
-				case ";":
-					return SoalSyntaxKind.TSemicolon;
-				case ":":
-					return SoalSyntaxKind.TColon;
-				case ".":
-					return SoalSyntaxKind.TDot;
-				case ",":
-					return SoalSyntaxKind.TComma;
-				case "=":
-					return SoalSyntaxKind.TAssign;
-				case "(":
-					return SoalSyntaxKind.TOpenParen;
-				case ")":
-					return SoalSyntaxKind.TCloseParen;
-				case "[":
-					return SoalSyntaxKind.TOpenBracket;
-				case "]":
-					return SoalSyntaxKind.TCloseBracket;
-				case "{":
-					return SoalSyntaxKind.TOpenBrace;
-				case "}":
-					return SoalSyntaxKind.TCloseBrace;
-				case "<":
-					return SoalSyntaxKind.TLessThan;
-				case ">":
-					return SoalSyntaxKind.TGreaterThan;
-				case "?":
-					return SoalSyntaxKind.TQuestion;
-				case "??":
-					return SoalSyntaxKind.TQuestionQuestion;
-				case "&":
-					return SoalSyntaxKind.TAmpersand;
-				case "^":
-					return SoalSyntaxKind.THat;
-				case "|":
-					return SoalSyntaxKind.TBar;
-				case "&&":
-					return SoalSyntaxKind.TAndAlso;
-				case "||":
-					return SoalSyntaxKind.TOrElse;
-				case "++":
-					return SoalSyntaxKind.TPlusPlus;
-				case "--":
-					return SoalSyntaxKind.TMinusMinus;
-				case "+":
-					return SoalSyntaxKind.TPlus;
-				case "-":
-					return SoalSyntaxKind.TMinus;
-				case "~":
-					return SoalSyntaxKind.TTilde;
-				case "!":
-					return SoalSyntaxKind.TExclamation;
-				case "/":
-					return SoalSyntaxKind.TSlash;
-				case "%":
-					return SoalSyntaxKind.TPercent;
-				case "<=":
-					return SoalSyntaxKind.TLessThanOrEqual;
-				case ">=":
-					return SoalSyntaxKind.TGreaterThanOrEqual;
-				case "==":
-					return SoalSyntaxKind.TEqual;
-				case "!=":
-					return SoalSyntaxKind.TNotEqual;
-				case "*=":
-					return SoalSyntaxKind.TAsteriskAssign;
-				case "/=":
-					return SoalSyntaxKind.TSlashAssign;
-				case "%=":
-					return SoalSyntaxKind.TPercentAssign;
-				case "+=":
-					return SoalSyntaxKind.TPlusAssign;
-				case "-=":
-					return SoalSyntaxKind.TMinusAssign;
-				case "<<=":
-					return SoalSyntaxKind.TLeftShiftAssign;
-				case ">>=":
-					return SoalSyntaxKind.TRightShiftAssign;
-				case "&=":
-					return SoalSyntaxKind.TAmpersandAssign;
-				case "^=":
-					return SoalSyntaxKind.THatAssign;
-				case "|=":
-					return SoalSyntaxKind.TBarAssign;
-				case "Date":
-					return SoalSyntaxKind.IDate;
-				case "Time":
-					return SoalSyntaxKind.ITime;
-				case "DateTime":
-					return SoalSyntaxKind.IDateTime;
-				case "TimeSpan":
-					return SoalSyntaxKind.ITimeSpan;
-				case "Version":
-					return SoalSyntaxKind.IVersion;
-				case "Style":
-					return SoalSyntaxKind.IStyle;
-				case "MTOM":
-					return SoalSyntaxKind.IMTOM;
-				case "SSL":
-					return SoalSyntaxKind.ISSL;
-				case "HTTP":
-					return SoalSyntaxKind.IHTTP;
-				case "REST":
-					return SoalSyntaxKind.IREST;
-				case "WebSocket":
-					return SoalSyntaxKind.IWebSocket;
-				case "SOAP":
-					return SoalSyntaxKind.ISOAP;
-				case "XML":
-					return SoalSyntaxKind.IXML;
-				case "JSON":
-					return SoalSyntaxKind.IJSON;
-				case "ClientAuthentication":
-					return SoalSyntaxKind.IClientAuthentication;
-				case "WsAddressing":
-					return SoalSyntaxKind.IWsAddressing;
-				case "@\"":
-					return SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
-				case "@\'":
-					return SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart;
-				default:
-					return SoalSyntaxKind.None;
-			}
-		}
-	
-	    public override string GetKindText(int rawKind)
-	    {
-	        return this.GetKindText((SoalSyntaxKind)rawKind);
-	    }
-	
-	    public string GetKindText(SoalSyntaxKind kind)
-	    {
-	        return kind.ToString();
-	    }
-	
-	    public override bool IsTriviaWithEndOfLine(int rawKind)
-		{
-			return this.IsTriviaWithEndOfLine((SoalSyntaxKind)rawKind);
-		}
-	
-	    public bool IsTriviaWithEndOfLine(SoalSyntaxKind kind)
-		{
-			// TODO:
-			return false;
-		}
-	}
 
 	public interface ISoalSyntaxVisitor
 	{
@@ -15770,8 +15075,8 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual void VisitReturnType(ReturnTypeSyntax node)
 		{
-			this.Visit(node.TypeReference);
 			this.Visit(node.VoidType);
+			this.Visit(node.TypeReference);
 		}
 		
 		public virtual void VisitTypeReference(TypeReferenceSyntax node)
@@ -15823,8 +15128,9 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual void VisitOperationReturnType(OperationReturnTypeSyntax node)
 		{
-			this.Visit(node.ReturnType);
 			this.Visit(node.OnewayType);
+			this.Visit(node.VoidType);
+			this.Visit(node.TypeReference);
 		}
 		
 		public virtual void VisitNullableType(NullableTypeSyntax node)
@@ -17919,17 +17225,17 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual SyntaxNode VisitReturnType(ReturnTypeSyntax node)
 		{
-			var oldTypeReference = node.TypeReference;
-			if (oldTypeReference != null)
-			{
-			    var newTypeReference = (TypeReferenceSyntax)this.Visit(oldTypeReference);
-				return node.Update(newTypeReference);
-			}
 			var oldVoidType = node.VoidType;
 			if (oldVoidType != null)
 			{
 			    var newVoidType = (VoidTypeSyntax)this.Visit(oldVoidType);
 				return node.Update(newVoidType);
+			}
+			var oldTypeReference = node.TypeReference;
+			if (oldTypeReference != null)
+			{
+			    var newTypeReference = (TypeReferenceSyntax)this.Visit(oldTypeReference);
+				return node.Update(newTypeReference);
 			}
 			return node;   
 		}
@@ -18046,17 +17352,23 @@ namespace MetaDslx.Languages.Soal
 		
 		public virtual SyntaxNode VisitOperationReturnType(OperationReturnTypeSyntax node)
 		{
-			var oldReturnType = node.ReturnType;
-			if (oldReturnType != null)
-			{
-			    var newReturnType = (ReturnTypeSyntax)this.Visit(oldReturnType);
-				return node.Update(newReturnType);
-			}
 			var oldOnewayType = node.OnewayType;
 			if (oldOnewayType != null)
 			{
 			    var newOnewayType = (OnewayTypeSyntax)this.Visit(oldOnewayType);
 				return node.Update(newOnewayType);
+			}
+			var oldVoidType = node.VoidType;
+			if (oldVoidType != null)
+			{
+			    var newVoidType = (VoidTypeSyntax)this.Visit(oldVoidType);
+				return node.Update(newVoidType);
+			}
+			var oldTypeReference = node.TypeReference;
+			if (oldTypeReference != null)
+			{
+			    var newTypeReference = (TypeReferenceSyntax)this.Visit(oldTypeReference);
+				return node.Update(newTypeReference);
 			}
 			return node;   
 		}
@@ -18265,6 +17577,16 @@ namespace MetaDslx.Languages.Soal
 			this.ElasticSpace = (SoalSyntaxTrivia)SoalGreenFactory.Instance.ElasticSpace.CreateRed();
 			this.ElasticTab = (SoalSyntaxTrivia)SoalGreenFactory.Instance.ElasticTab.CreateRed();
 			this.ElasticZeroSpace = (SoalSyntaxTrivia)SoalGreenFactory.Instance.ElasticZeroSpace.CreateRed();
+		}
+	
+		public new SoalLanguage Language
+		{
+			get { return SoalLanguage.Instance; }
+		}
+	
+		protected override Language LanguageCore
+		{
+			get { return this.Language; }
 		}
 	
 	    public SoalSyntaxTrivia CarriageReturnLineFeed { get; }
@@ -18591,26 +17913,6 @@ namespace MetaDslx.Languages.Soal
 	    public SyntaxToken COMMENT(string text, object value)
 	    {
 	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.COMMENT(text, value).CreateRed();
-	    }
-	
-	    public SyntaxToken LDoubleQuoteVerbatimString(string text)
-	    {
-	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.LDoubleQuoteVerbatimString(text).CreateRed();
-	    }
-	
-	    public SyntaxToken LDoubleQuoteVerbatimString(string text, object value)
-	    {
-	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.LDoubleQuoteVerbatimString(text, value).CreateRed();
-	    }
-	
-	    public SyntaxToken LSingleQuoteVerbatimString(string text)
-	    {
-	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.LSingleQuoteVerbatimString(text).CreateRed();
-	    }
-	
-	    public SyntaxToken LSingleQuoteVerbatimString(string text, object value)
-	    {
-	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.LSingleQuoteVerbatimString(text, value).CreateRed();
 	    }
 		
 		public MainSyntax Main(SyntaxNodeList<NamespaceDeclarationSyntax> namespaceDeclaration, SyntaxToken eof)
@@ -20080,16 +19382,16 @@ namespace MetaDslx.Languages.Soal
 			return this.EndpointAddressProperty(this.Token(SoalSyntaxKind.KAddress), stringLiteral, this.Token(SoalSyntaxKind.TSemicolon));
 		}
 		
-		public ReturnTypeSyntax ReturnType(TypeReferenceSyntax typeReference)
-		{
-		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
-		    return (ReturnTypeSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ReturnType((Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green).CreateRed();
-		}
-		
 		public ReturnTypeSyntax ReturnType(VoidTypeSyntax voidType)
 		{
 		    if (voidType == null) throw new ArgumentNullException(nameof(voidType));
 		    return (ReturnTypeSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ReturnType((Syntax.InternalSyntax.VoidTypeGreen)voidType.Green).CreateRed();
+		}
+		
+		public ReturnTypeSyntax ReturnType(TypeReferenceSyntax typeReference)
+		{
+		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
+		    return (ReturnTypeSyntax)SoalLanguage.Instance.InternalSyntaxFactory.ReturnType((Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green).CreateRed();
 		}
 		
 		public TypeReferenceSyntax TypeReference(NonNullableArrayTypeSyntax nonNullableArrayType)
@@ -20194,16 +19496,22 @@ namespace MetaDslx.Languages.Soal
 			return this.OnewayType(this.Token(SoalSyntaxKind.KOneway));
 		}
 		
-		public OperationReturnTypeSyntax OperationReturnType(ReturnTypeSyntax returnType)
-		{
-		    if (returnType == null) throw new ArgumentNullException(nameof(returnType));
-		    return (OperationReturnTypeSyntax)SoalLanguage.Instance.InternalSyntaxFactory.OperationReturnType((Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green).CreateRed();
-		}
-		
 		public OperationReturnTypeSyntax OperationReturnType(OnewayTypeSyntax onewayType)
 		{
 		    if (onewayType == null) throw new ArgumentNullException(nameof(onewayType));
 		    return (OperationReturnTypeSyntax)SoalLanguage.Instance.InternalSyntaxFactory.OperationReturnType((Syntax.InternalSyntax.OnewayTypeGreen)onewayType.Green).CreateRed();
+		}
+		
+		public OperationReturnTypeSyntax OperationReturnType(VoidTypeSyntax voidType)
+		{
+		    if (voidType == null) throw new ArgumentNullException(nameof(voidType));
+		    return (OperationReturnTypeSyntax)SoalLanguage.Instance.InternalSyntaxFactory.OperationReturnType((Syntax.InternalSyntax.VoidTypeGreen)voidType.Green).CreateRed();
+		}
+		
+		public OperationReturnTypeSyntax OperationReturnType(TypeReferenceSyntax typeReference)
+		{
+		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
+		    return (OperationReturnTypeSyntax)SoalLanguage.Instance.InternalSyntaxFactory.OperationReturnType((Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green).CreateRed();
 		}
 		
 		public NullableTypeSyntax NullableType(ValueTypeSyntax valueType, SyntaxToken tQuestion)

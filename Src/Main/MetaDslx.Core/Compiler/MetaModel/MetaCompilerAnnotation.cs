@@ -23,13 +23,13 @@ namespace MetaDslx.Compiler.MetaModel
         public const string Body = "Body";
 
         public const string Root = "Root";
-        public const string Symbol = "Symbol";
+        public const string SymbolDef = "SymbolDef";
         public const string SymbolUse = "SymbolUse";
         public const string SymbolCtr = "SymbolCtr";
 
         public static readonly string[] SemanticAnnotations = 
             {
-                Name, Qualifier, Symbol, SymbolUse, SymbolCtr,
+                Name, Qualifier, SymbolDef, SymbolUse, SymbolCtr,
                 Property
             };
 
@@ -57,7 +57,7 @@ namespace MetaDslx.Compiler.MetaModel
         static MetaCompilerAnnotationInfo()
         {
             DefaultProperties.Add(Root, "symbolType");
-            DefaultProperties.Add(Symbol, "symbolType");
+            DefaultProperties.Add(SymbolDef, "symbolType");
             DefaultProperties.Add(SymbolUse, "symbolType");
             DefaultProperties.Add(SymbolCtr, "symbolType");
             DefaultProperties.Add(Property, "name");

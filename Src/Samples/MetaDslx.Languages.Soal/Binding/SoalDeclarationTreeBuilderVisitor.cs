@@ -1298,8 +1298,9 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Type");
 			try
 			{
-				this.Visit(node.ReturnType);
 				this.Visit(node.OnewayType);
+				this.Visit(node.VoidType);
+				this.Visit(node.TypeReference);
 			}
 			finally
 			{

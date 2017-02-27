@@ -62,13 +62,10 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                     lastTriviaTokenBeforeNewLine = lastTriviaToken;
                     lastNewLine = i;
                 }
-                else
-                {
-                    lastTriviaToken = i;
-                }
+                lastTriviaToken = i;
                 --i;
             }
-            if (i < startIndex || lastNewLine < 0) return lastTriviaToken;
+            if (lastNewLine < 0) return lastTriviaToken;
             else return lastTriviaTokenBeforeNewLine;
         }
 

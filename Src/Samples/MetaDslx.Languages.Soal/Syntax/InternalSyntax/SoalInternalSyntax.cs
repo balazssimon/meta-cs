@@ -11233,43 +11233,43 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	internal class ReturnTypeGreen : SoalGreenNode
 	{
-	    private TypeReferenceGreen typeReference;
 	    private VoidTypeGreen voidType;
+	    private TypeReferenceGreen typeReference;
 	
-	    public ReturnTypeGreen(SoalSyntaxKind kind, TypeReferenceGreen typeReference, VoidTypeGreen voidType)
+	    public ReturnTypeGreen(SoalSyntaxKind kind, VoidTypeGreen voidType, TypeReferenceGreen typeReference)
 	        : base(kind, null, null)
 	    {
-			if (typeReference != null)
-			{
-				this.AdjustFlagsAndWidth(typeReference);
-				this.typeReference = typeReference;
-			}
 			if (voidType != null)
 			{
 				this.AdjustFlagsAndWidth(voidType);
 				this.voidType = voidType;
+			}
+			if (typeReference != null)
+			{
+				this.AdjustFlagsAndWidth(typeReference);
+				this.typeReference = typeReference;
 			}
 	    }
 	
-	    public ReturnTypeGreen(SoalSyntaxKind kind, TypeReferenceGreen typeReference, VoidTypeGreen voidType, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public ReturnTypeGreen(SoalSyntaxKind kind, VoidTypeGreen voidType, TypeReferenceGreen typeReference, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			if (typeReference != null)
-			{
-				this.AdjustFlagsAndWidth(typeReference);
-				this.typeReference = typeReference;
-			}
 			if (voidType != null)
 			{
 				this.AdjustFlagsAndWidth(voidType);
 				this.voidType = voidType;
+			}
+			if (typeReference != null)
+			{
+				this.AdjustFlagsAndWidth(typeReference);
+				this.typeReference = typeReference;
 			}
 	    }
 	
 		public override int SlotCount { get { return 2; } }
 	
-	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
 	    public VoidTypeGreen VoidType { get { return this.voidType; } }
+	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -11280,27 +11280,27 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.typeReference;
-	            case 1: return this.voidType;
+	            case 0: return this.voidType;
+	            case 1: return this.typeReference;
 	            default: return null;
 	        }
 	    }
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new ReturnTypeGreen(this.Kind, this.typeReference, this.voidType, diagnostics, this.GetAnnotations());
+	        return new ReturnTypeGreen(this.Kind, this.voidType, this.typeReference, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new ReturnTypeGreen(this.Kind, this.typeReference, this.voidType, this.GetDiagnostics(), annotations);
+	        return new ReturnTypeGreen(this.Kind, this.voidType, this.typeReference, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ReturnTypeGreen Update(TypeReferenceGreen typeReference)
+	    public ReturnTypeGreen Update(VoidTypeGreen voidType)
 	    {
-	        if (this.typeReference != typeReference)
+	        if (this.voidType != voidType)
 	        {
-	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ReturnType(typeReference);
+	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ReturnType(voidType);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -11312,11 +11312,11 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public ReturnTypeGreen Update(VoidTypeGreen voidType)
+	    public ReturnTypeGreen Update(TypeReferenceGreen typeReference)
 	    {
-	        if (this.voidType != voidType)
+	        if (this.typeReference != typeReference)
 	        {
-	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ReturnType(voidType);
+	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ReturnType(typeReference);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -12086,43 +12086,55 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	internal class OperationReturnTypeGreen : SoalGreenNode
 	{
-	    private ReturnTypeGreen returnType;
 	    private OnewayTypeGreen onewayType;
+	    private VoidTypeGreen voidType;
+	    private TypeReferenceGreen typeReference;
 	
-	    public OperationReturnTypeGreen(SoalSyntaxKind kind, ReturnTypeGreen returnType, OnewayTypeGreen onewayType)
+	    public OperationReturnTypeGreen(SoalSyntaxKind kind, OnewayTypeGreen onewayType, VoidTypeGreen voidType, TypeReferenceGreen typeReference)
 	        : base(kind, null, null)
 	    {
-			if (returnType != null)
-			{
-				this.AdjustFlagsAndWidth(returnType);
-				this.returnType = returnType;
-			}
 			if (onewayType != null)
 			{
 				this.AdjustFlagsAndWidth(onewayType);
 				this.onewayType = onewayType;
 			}
+			if (voidType != null)
+			{
+				this.AdjustFlagsAndWidth(voidType);
+				this.voidType = voidType;
+			}
+			if (typeReference != null)
+			{
+				this.AdjustFlagsAndWidth(typeReference);
+				this.typeReference = typeReference;
+			}
 	    }
 	
-	    public OperationReturnTypeGreen(SoalSyntaxKind kind, ReturnTypeGreen returnType, OnewayTypeGreen onewayType, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public OperationReturnTypeGreen(SoalSyntaxKind kind, OnewayTypeGreen onewayType, VoidTypeGreen voidType, TypeReferenceGreen typeReference, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			if (returnType != null)
-			{
-				this.AdjustFlagsAndWidth(returnType);
-				this.returnType = returnType;
-			}
 			if (onewayType != null)
 			{
 				this.AdjustFlagsAndWidth(onewayType);
 				this.onewayType = onewayType;
 			}
+			if (voidType != null)
+			{
+				this.AdjustFlagsAndWidth(voidType);
+				this.voidType = voidType;
+			}
+			if (typeReference != null)
+			{
+				this.AdjustFlagsAndWidth(typeReference);
+				this.typeReference = typeReference;
+			}
 	    }
 	
-		public override int SlotCount { get { return 2; } }
+		public override int SlotCount { get { return 3; } }
 	
-	    public ReturnTypeGreen ReturnType { get { return this.returnType; } }
 	    public OnewayTypeGreen OnewayType { get { return this.onewayType; } }
+	    public VoidTypeGreen VoidType { get { return this.voidType; } }
+	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -12133,27 +12145,28 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.returnType;
-	            case 1: return this.onewayType;
+	            case 0: return this.onewayType;
+	            case 1: return this.voidType;
+	            case 2: return this.typeReference;
 	            default: return null;
 	        }
 	    }
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new OperationReturnTypeGreen(this.Kind, this.returnType, this.onewayType, diagnostics, this.GetAnnotations());
+	        return new OperationReturnTypeGreen(this.Kind, this.onewayType, this.voidType, this.typeReference, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new OperationReturnTypeGreen(this.Kind, this.returnType, this.onewayType, this.GetDiagnostics(), annotations);
+	        return new OperationReturnTypeGreen(this.Kind, this.onewayType, this.voidType, this.typeReference, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public OperationReturnTypeGreen Update(ReturnTypeGreen returnType)
+	    public OperationReturnTypeGreen Update(OnewayTypeGreen onewayType)
 	    {
-	        if (this.returnType != returnType)
+	        if (this.onewayType != onewayType)
 	        {
-	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.OperationReturnType(returnType);
+	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.OperationReturnType(onewayType);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -12165,11 +12178,27 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public OperationReturnTypeGreen Update(OnewayTypeGreen onewayType)
+	    public OperationReturnTypeGreen Update(VoidTypeGreen voidType)
 	    {
-	        if (this.onewayType != onewayType)
+	        if (this.voidType != voidType)
 	        {
-	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.OperationReturnType(onewayType);
+	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.OperationReturnType(voidType);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationReturnTypeGreen)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public OperationReturnTypeGreen Update(TypeReferenceGreen typeReference)
+	    {
+	        if (this.typeReference != typeReference)
+	        {
+	            GreenNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.OperationReturnType(typeReference);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -13800,6 +13829,16 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	{
 	    internal static readonly SoalGreenFactory Instance = new SoalGreenFactory();
 	
+		public new SoalLanguage Language
+		{
+			get { return SoalLanguage.Instance; }
+		}
+	
+		protected override Language LanguageCore
+		{
+			get { return this.Language; }
+		}
+	
 		public SoalGreenTrivia Trivia(SoalSyntaxKind kind, string text)
 		{
 		    return new SoalGreenTrivia(kind, text, null, null);
@@ -14076,26 +14115,6 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    internal SoalGreenToken COMMENT(string text, object value)
 	    {
 	        return Token(null, SoalSyntaxKind.COMMENT, text, value, null);
-	    }
-	
-	    internal SoalGreenToken LDoubleQuoteVerbatimString(string text)
-	    {
-	        return Token(null, SoalSyntaxKind.LDoubleQuoteVerbatimString, text, null);
-	    }
-	
-	    internal SoalGreenToken LDoubleQuoteVerbatimString(string text, object value)
-	    {
-	        return Token(null, SoalSyntaxKind.LDoubleQuoteVerbatimString, text, value, null);
-	    }
-	
-	    internal SoalGreenToken LSingleQuoteVerbatimString(string text)
-	    {
-	        return Token(null, SoalSyntaxKind.LSingleQuoteVerbatimString, text, null);
-	    }
-	
-	    internal SoalGreenToken LSingleQuoteVerbatimString(string text, object value)
-	    {
-	        return Token(null, SoalSyntaxKind.LSingleQuoteVerbatimString, text, value, null);
 	    }
 	
 		public MainGreen Main(InternalSyntaxNodeList namespaceDeclaration, InternalSyntaxToken eof, bool errorNode = false)
@@ -16570,25 +16589,6 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ReturnTypeGreen ReturnType(TypeReferenceGreen typeReference, bool errorNode = false)
-	    {
-	#if DEBUG
-			if (!errorNode)
-			{
-		        if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
-			}
-	#endif
-			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)SoalSyntaxKind.ReturnType, typeReference, out hash);
-			if (cached != null) return (ReturnTypeGreen)cached;
-			var result = new ReturnTypeGreen(SoalSyntaxKind.ReturnType, typeReference, null);
-			if (hash >= 0)
-			{
-				SyntaxNodeCache.AddNode(result, hash);
-			}
-			return result;
-	    }
-	
 		public ReturnTypeGreen ReturnType(VoidTypeGreen voidType, bool errorNode = false)
 	    {
 	#if DEBUG
@@ -16600,7 +16600,26 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			int hash;
 			var cached = SyntaxNodeCache.TryGetNode((int)SoalSyntaxKind.ReturnType, voidType, out hash);
 			if (cached != null) return (ReturnTypeGreen)cached;
-			var result = new ReturnTypeGreen(SoalSyntaxKind.ReturnType, null, voidType);
+			var result = new ReturnTypeGreen(SoalSyntaxKind.ReturnType, voidType, null);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public ReturnTypeGreen ReturnType(TypeReferenceGreen typeReference, bool errorNode = false)
+	    {
+	#if DEBUG
+			if (!errorNode)
+			{
+		        if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
+			}
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)SoalSyntaxKind.ReturnType, typeReference, out hash);
+			if (cached != null) return (ReturnTypeGreen)cached;
+			var result = new ReturnTypeGreen(SoalSyntaxKind.ReturnType, null, typeReference);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -16863,25 +16882,6 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public OperationReturnTypeGreen OperationReturnType(ReturnTypeGreen returnType, bool errorNode = false)
-	    {
-	#if DEBUG
-			if (!errorNode)
-			{
-		        if (returnType == null) throw new ArgumentNullException(nameof(returnType));
-			}
-	#endif
-			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)SoalSyntaxKind.OperationReturnType, returnType, out hash);
-			if (cached != null) return (OperationReturnTypeGreen)cached;
-			var result = new OperationReturnTypeGreen(SoalSyntaxKind.OperationReturnType, returnType, null);
-			if (hash >= 0)
-			{
-				SyntaxNodeCache.AddNode(result, hash);
-			}
-			return result;
-	    }
-	
 		public OperationReturnTypeGreen OperationReturnType(OnewayTypeGreen onewayType, bool errorNode = false)
 	    {
 	#if DEBUG
@@ -16893,7 +16893,45 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			int hash;
 			var cached = SyntaxNodeCache.TryGetNode((int)SoalSyntaxKind.OperationReturnType, onewayType, out hash);
 			if (cached != null) return (OperationReturnTypeGreen)cached;
-			var result = new OperationReturnTypeGreen(SoalSyntaxKind.OperationReturnType, null, onewayType);
+			var result = new OperationReturnTypeGreen(SoalSyntaxKind.OperationReturnType, onewayType, null, null);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public OperationReturnTypeGreen OperationReturnType(VoidTypeGreen voidType, bool errorNode = false)
+	    {
+	#if DEBUG
+			if (!errorNode)
+			{
+		        if (voidType == null) throw new ArgumentNullException(nameof(voidType));
+			}
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)SoalSyntaxKind.OperationReturnType, voidType, out hash);
+			if (cached != null) return (OperationReturnTypeGreen)cached;
+			var result = new OperationReturnTypeGreen(SoalSyntaxKind.OperationReturnType, null, voidType, null);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public OperationReturnTypeGreen OperationReturnType(TypeReferenceGreen typeReference, bool errorNode = false)
+	    {
+	#if DEBUG
+			if (!errorNode)
+			{
+		        if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
+			}
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)SoalSyntaxKind.OperationReturnType, typeReference, out hash);
+			if (cached != null) return (OperationReturnTypeGreen)cached;
+			var result = new OperationReturnTypeGreen(SoalSyntaxKind.OperationReturnType, null, null, typeReference);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);

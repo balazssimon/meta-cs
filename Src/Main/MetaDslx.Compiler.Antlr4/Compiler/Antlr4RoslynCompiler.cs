@@ -35,6 +35,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
         public string GeneratedFixedTokensSource { get; private set; }
         public string GeneratedInternalSyntax { get; private set; }
+        public string GeneratedSyntaxFacts { get; private set; }
         public string GeneratedSyntax { get; private set; }
         public string GeneratedSyntaxTree { get; private set; }
         public string GeneratedLanguage { get; private set; }
@@ -84,13 +85,38 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.IsParser = ruleCollector.IsParser;
             this.Grammar = ruleCollector.Grammar;
 
-            this.SimplifyElements();
-            if (this.GenerateOutput) this.Generate();
+            if (this.GenerateOutput)
+            {
+                this.GenerateLexer();
+                this.GenerateParser();
+            }
 
             this.Diagnostics = this.DiagnosticBag.ToReadOnly();
         }
 
-        public void Generate()
+        public void GenerateLexer()
+        {
+            if (!this.IsLexer) return;
+            if (this.DiagnosticBag.HasAnyErrors()) return;
+            this.CollectLexerTokenKinds();
+            CompilerGenerator generator = new CompilerGenerator(this.Grammar);
+            generator.Properties.DefaultNamespace = this.DefaultNamespace;
+            generator.Properties.LanguageName = this.LanguageName;
+            this.GeneratedSyntaxFacts = generator.GenerateSyntaxFacts();
+
+            if (this.OutputDirectory != null)
+            {
+                string directory = this.OutputDirectory;
+                Directory.CreateDirectory(Path.Combine(directory, @"Syntax"));
+                string outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "SyntaxFacts.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedSyntaxFacts);
+                }
+            }
+        }
+
+        public void GenerateParser()
         {
             if (!this.IsParser) return;
             if (this.DiagnosticBag.HasAnyErrors()) return;
@@ -115,33 +141,122 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
 
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
+
+            if (this.OutputDirectory != null)
+            {
+                string directory = this.OutputDirectory;
+                Directory.CreateDirectory(Path.Combine(directory, @"Syntax\InternalSyntax"));
+                Directory.CreateDirectory(Path.Combine(directory, @"Errors"));
+                Directory.CreateDirectory(Path.Combine(directory, @"Parser"));
+                Directory.CreateDirectory(Path.Combine(directory, @"Compilation"));
+                Directory.CreateDirectory(Path.Combine(directory, @"Binding"));
+                string outputFileName = Path.Combine(directory, @"Syntax\InternalSyntax\" + this.LanguageName + "InternalSyntax.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedInternalSyntax);
+                }
+                outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "Syntax.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedSyntax);
+                }
+                outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "SyntaxTree.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedSyntaxTree);
+                }
+                outputFileName = Path.Combine(directory, @"Errors\" + this.LanguageName + @"ErrorCode.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedErrorCode);
+                }
+                outputFileName = Path.Combine(directory, @"Parser\" + this.LanguageName + @"SyntaxParser.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedSyntaxParser);
+                }
+                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Language.cs");
+                if (!File.Exists(outputFileName))
+                {
+                    using (StreamWriter writer = new StreamWriter(outputFileName))
+                    {
+                        writer.WriteLine(this.GeneratedLanguage);
+                    }
+                }
+                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Compilation.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedCompilation);
+                }
+                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedCompilationFactory);
+                }
+                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"CompilationOptions.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedCompilationOptions);
+                }
+                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedScriptCompilationInfo);
+                }
+                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedLanguageVersion);
+                }
+                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"ParseOptions.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedParseOptions);
+                }
+                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Feature.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedFeature);
+                }
+                outputFileName = Path.Combine(directory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedDeclarationTreeBuilder);
+                }
+                outputFileName = Path.Combine(directory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedBinderFactoryVisitor);
+                }
+            }
         }
 
-        private void SimplifyElements()
+        private void CollectLexerTokenKinds()
         {
             if (this.DiagnosticBag.HasAnyErrors()) return;
-            bool simplified = true;
-            while(simplified)
+            foreach (var rule in this.Grammar.LexerRules)
             {
-                simplified = false;
-                foreach (var rule in this.Grammar.ParserRules)
+                var tokenAnnot = rule.Annotations.GetAnnotation("Token");
+                if (tokenAnnot != null)
                 {
-                    foreach (var elem in rule.AllElements)
+                    string kind = tokenAnnot.GetValue("kind");
+                    if (kind != null)
                     {
-                        if (this.SimplifyElement(elem))
+                        List<Antlr4LexerRule> rules = null;
+                        if (!this.Grammar.LexerTokenKinds.TryGetValue(kind, out rules))
                         {
-                            simplified = true;
+                            rules = new List<Antlr4LexerRule>();
+                            this.Grammar.LexerTokenKinds.Add(kind, rules);
                         }
+                        rules.Add(rule);
                     }
-                    foreach (var alt in rule.Alternatives)
+                    if (tokenAnnot.GetValue("defaultWhitespace") == "true")
                     {
-                        foreach (var elem in alt.AllElements)
-                        {
-                            if (this.SimplifyElement(elem))
-                            {
-                                simplified = true;
-                            }
-                        }
+                        this.Grammar.DefaultWhitespace = rule;
+                    }
+                    if (tokenAnnot.GetValue("defaultEndOfLine") == "true")
+                    {
+                        this.Grammar.DefaultEndOfLine = rule;
                     }
                 }
             }
@@ -226,32 +341,6 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 }
             }
             return foundElemFlag;
-        }
-
-        private bool SimplifyElement(Antlr4ParserRuleElement elem)
-        {
-            /*if (!elem.IsList && !elem.IsBlock && !elem.IsToken)
-            {
-                var elemRule = this.Grammar.ParserRules.FirstOrDefault(r => r.Name == elem.Type);
-                if (elemRule != null)
-                {
-                    if (elemRule.Elements.Count == 1 && elemRule.Elements[0].IsList && elemRule.Elements[0].IsSeparated)
-                    {
-                        var listElem = elemRule.Elements[0];
-                        elem.IsList = listElem.IsList;
-                        elem.IsSeparated = listElem.IsSeparated;
-                        elem.IsOptional |= listElem.IsOptional;
-                        elem.EndToken = listElem.EndToken;
-                        elem.OriginalType = elem.Type;
-                        elem.Type = listElem.Type;
-                        elem.Separator = listElem.Separator;
-                        elem.IsSimplified = true;
-                        elem.Annotations = listElem.Annotations;
-                        return true;
-                    }
-                }
-            }*/
-            return false;
         }
 
         public static string FixedTokenToCSharpString(string value)
@@ -808,7 +897,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                                 {
                                     lexerAtom = lexerElement.lexerAtom();
                                 }
-                                if (lexerAtom != null && lexerAtom.terminal() != null)
+                                if (lexerAtom != null && lexerAtom.terminal() != null && !this.HasModeCommand(lexerAlt))
                                 {
                                     if (lexerAtom.terminal().TOKEN_REF() != null)
                                     {
@@ -832,6 +921,21 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 }
             }
             return null;
+        }
+
+        private bool HasModeCommand(Antlr4RoslynParser.LexerAltContext lexerAlt)
+        {
+            if (lexerAlt.lexerCommands() != null)
+            {
+                foreach (var lexCmd in lexerAlt.lexerCommands().lexerCommand())
+                {
+                    if (lexCmd.lexerCommandName().GetText() == "mode")
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public override object VisitLexerCommand(Antlr4RoslynParser.LexerCommandContext context)
@@ -1379,14 +1483,18 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.ParserRuleElemUses = new HashSet<string>();
             this.ParserRules = new List<Antlr4ParserRule>();
             this.LexerRules = new List<Antlr4LexerRule>();
+            this.LexerTokenKinds = new Dictionary<string, List<Antlr4LexerRule>>();
             this.Modes = new List<Antlr4Mode>();
             this.FixedTokenCandidates = new List<Antlr4LexerRule>();
             this.FixedTokens = new List<Antlr4LexerRule>();
         }
         public string Name { get; set; }
         public HashSet<string> ParserRuleElemUses { get; private set; }
+        public Dictionary<string, List<Antlr4LexerRule>> LexerTokenKinds { get; private set; }
         public List<Antlr4ParserRule> ParserRules { get; private set; }
         public List<Antlr4LexerRule> LexerRules { get; private set; }
+        public Antlr4LexerRule DefaultWhitespace { get; set; }
+        public Antlr4LexerRule DefaultEndOfLine { get; set; }
         public List<Antlr4Mode> Modes { get; private set; }
         internal List<Antlr4LexerRule> FixedTokenCandidates { get; private set; }
         public List<Antlr4LexerRule> FixedTokens { get; private set; }

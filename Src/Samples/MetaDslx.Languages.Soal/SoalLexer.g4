@@ -1,6 +1,6 @@
 ﻿lexer grammar SoalLexer;
 
-                                                              
+                                                  
 KNamespace : 'namespace';
 KEnum : 'enum';
 KException : 'exception';
@@ -44,8 +44,8 @@ KDouble : 'double';
 KByte : 'byte';
 KBool : 'bool';
 KAny : 'any';
-KVoid : 'void';
 KTypeof : 'typeof';
+KVoid : 'void';
 
 
 TSemicolon : ';';
@@ -110,9 +110,9 @@ IJSON : 'JSON';
 IClientAuthentication : 'ClientAuthentication';
 IWsAddressing : 'WsAddressing';
 
-                                   
+                       
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;
-                                   
+                       
 IdentifierVerbatim : '@' IdentifierBegin IdentifierCharacter*;
 fragment IdentifierBegin : [a-zA-Z_];
 fragment IdentifierCharacter : [a-zA-Z0-9_];
@@ -121,11 +121,11 @@ fragment IdentifierVerbatimEscape : '\\\\' | '\\]';
 fragment IdentifierGeneralBegin : [a-zA-Z_];
 fragment IdentifierGeneralCharacter : [a-zA-Z0-9_];
 
-                               
+                   
 LInteger : DecimalDigits | Hexadecimal;
-                               
+                   
 LDecimal : DecimalDigit+ '.' DecimalDigit+;
-                               
+                   
 LScientific : LDecimal [eE] Sign? DecimalDigit+;
 fragment DecimalDigits : DecimalDigit+;
 fragment DecimalDigit : [0-9];
@@ -133,13 +133,13 @@ fragment Sign : '+' | '-';
 fragment Hexadecimal : ('0x'|'0X') HexDigit*;
 fragment HexDigit : [0-9a-fA-F];
 
-                               
+                   
 LDateTimeOffset : LDate 'T' LTime TimeZone;
-                               
+                   
 LDateTime : LDate 'T' LTime;
-                               
+                   
 LDate : Sign? DateYear '-' DateMonth '-' DateDay;
-                               
+                   
 LTime : TimeHourMinute ':' TimeSecond;
 
 fragment DateDay
@@ -167,7 +167,7 @@ fragment TimeMinute: ['0'-'5'] DecimalDigit;
 fragment TimeSecond: ['0'-'5'] DecimalDigit TimeSecondDecimalPart?;
 fragment TimeSecondDecimalPart: '.' DecimalDigits;
 
-                               
+                   
 LRegularString
     : '"' DoubleQuoteTextCharacter* '"'
     | '\'' SingleQuoteTextCharacter* '\'';
@@ -197,7 +197,7 @@ fragment CharacterEscapeUnicode
     : '\\u' HexDigit HexDigit HexDigit HexDigit
     | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit;
 
-                               
+                   
 LGuid : '#[' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
                    HexDigit '-' HexDigit HexDigit HexDigit HexDigit '-'
                    HexDigit HexDigit HexDigit HexDigit '-'
@@ -206,35 +206,39 @@ LGuid : '#[' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
                    HexDigit HexDigit HexDigit HexDigit HexDigit ']';
 
 // Whitespace and comments
+                       
 LUtf8Bom : [\u00EF][\u00BB][\u00BF] -> channel(LWhiteSpace);
+                                               
 LWhiteSpace : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(LWhiteSpace);
+                                                              
 LCrLf : '\r'? '\n' -> channel(LWhiteSpace);
+                                       
 LLineEnd : [\u0085\u2028\u2029] -> channel(LWhiteSpace);
 
-                                
+                    
 LSingleLineComment : '//' ~[\r\n]* -> channel(COMMENT);
 LCommentStart : '/*' -> more, mode(LMultilineComment), channel(COMMENT);
 
-                                
+                    
 mode LMultilineComment;
 
 COMMENT_CRLF : '\r'? '\n' -> more, channel(COMMENT);
 COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(COMMENT);
 COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(COMMENT);
-                                
+                    
 COMMENT : '*/' -> mode(DEFAULT_MODE), channel(COMMENT);
 COMMENT_STAR : '*' -> more, channel(COMMENT);
 
-                               
+                   
 mode DOUBLEQUOTE_VERBATIM_STRING;
 
 DoubleQuoteVerbatimStringText : DoubleQuoteTextVerbatimCharacter -> more;
-                               
+                   
 LDoubleQuoteVerbatimString : '"' -> mode(DEFAULT_MODE);
 
-                               
+                   
 mode SINGLEQUOTE_VERBATIM_STRING;
 
 SingleQuoteVerbatimStringText : SingleQuoteTextVerbatimCharacter -> more;
-                               
-LSingleQuoteVerbatimString : '"' -> mode(DEFAULT_MODE);
+                   
+LSingleQuoteVerbatimString : '\'' -> mode(DEFAULT_MODE);

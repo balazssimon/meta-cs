@@ -19,13 +19,13 @@ namespace MetaDslx.Compiler.Binding.Binders
         ImmutableArray<IMetaSymbol> DefinedSymbols { get; }
     }
 
-    public sealed class SymbolBinder : Binder, ISymbolDefBinder
+    public sealed class SymbolDefBinder : Binder, ISymbolDefBinder
     {
         private readonly Type _symbolType;
         private readonly BindingOptions _bindingOptions;
         private ImmutableArray<IMetaSymbol> _lazyDefinedSymbols;
 
-        public SymbolBinder(Binder next, RedNode node, Type symbolType)
+        public SymbolDefBinder(Binder next, RedNode node, Type symbolType)
             : base(next, node)
         {
             _symbolType = symbolType;

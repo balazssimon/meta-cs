@@ -90,6 +90,7 @@
     <Compile Include="SoalSymbolFacts.cs" />
     <Compile Include="Syntax\InternalSyntax\SoalInternalSyntax.cs" />
     <Compile Include="Syntax\SoalSyntax.cs" />
+    <Compile Include="Syntax\SoalSyntaxFacts.cs" />
     <Compile Include="Syntax\SoalSyntaxTree.cs" />
   </ItemGroup>
   <ItemGroup>

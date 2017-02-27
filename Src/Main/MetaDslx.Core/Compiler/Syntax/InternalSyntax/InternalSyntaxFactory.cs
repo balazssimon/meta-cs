@@ -35,6 +35,13 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         }
 
+        public Language Language
+        {
+            get { return this.LanguageCore; }
+        }
+
+        protected abstract Language LanguageCore { get; }
+
         public InternalSyntaxTrivia CarriageReturnLineFeed { get; }
         public InternalSyntaxTrivia LineFeed { get; }
         public InternalSyntaxTrivia CarriageReturn { get; }
@@ -90,7 +97,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
                 return trivia;
             }
 
-            trivia = this.Trivia(SyntaxKind.EndOfLineTrivia, text);
+            trivia = this.Trivia(this.Language.SyntaxFacts.DefaultEndOfLineSyntaxKind, text);
             if (!elastic)
             {
                 return trivia;
@@ -101,7 +108,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         private InternalSyntaxTrivia Whitespace(string text, bool elastic = false)
         {
-            var trivia = this.Trivia(SyntaxKind.WhitespaceTrivia, text);
+            var trivia = this.Trivia(this.Language.SyntaxFacts.DefaultWhitespaceSyntaxKind, text);
             if (!elastic)
             {
                 return trivia;
@@ -126,6 +133,14 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         public DefaultInternalSyntaxFactory() : base(true)
         {
 
+        }
+
+        protected override Language LanguageCore
+        {
+            get
+            {
+                return Language.Default;
+            }
         }
 
         public override InternalSyntaxToken MissingToken(int kind)

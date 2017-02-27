@@ -2042,17 +2042,17 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			public override GreenNode VisitReturnType(SoalParser.ReturnTypeContext context)
 			{
 				if (context == null) return null;
-				SoalParser.TypeReferenceContext typeReferenceContext = context.typeReference();
-				if (typeReferenceContext != null) 
-				{
-					GreenNode typeReference = this.factory.ReturnType((TypeReferenceGreen)this.Visit(typeReferenceContext), true);
-					return typeReference;
-				}
 				SoalParser.VoidTypeContext voidTypeContext = context.voidType();
 				if (voidTypeContext != null) 
 				{
 					GreenNode voidType = this.factory.ReturnType((VoidTypeGreen)this.Visit(voidTypeContext), true);
 					return voidType;
+				}
+				SoalParser.TypeReferenceContext typeReferenceContext = context.typeReference();
+				if (typeReferenceContext != null) 
+				{
+					GreenNode typeReference = this.factory.ReturnType((TypeReferenceGreen)this.Visit(typeReferenceContext), true);
+					return typeReference;
 				}
 				return null;
 			}
@@ -2228,17 +2228,23 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			public override GreenNode VisitOperationReturnType(SoalParser.OperationReturnTypeContext context)
 			{
 				if (context == null) return null;
-				SoalParser.ReturnTypeContext returnTypeContext = context.returnType();
-				if (returnTypeContext != null) 
-				{
-					GreenNode returnType = this.factory.OperationReturnType((ReturnTypeGreen)this.Visit(returnTypeContext), true);
-					return returnType;
-				}
 				SoalParser.OnewayTypeContext onewayTypeContext = context.onewayType();
 				if (onewayTypeContext != null) 
 				{
 					GreenNode onewayType = this.factory.OperationReturnType((OnewayTypeGreen)this.Visit(onewayTypeContext), true);
 					return onewayType;
+				}
+				SoalParser.VoidTypeContext voidTypeContext = context.voidType();
+				if (voidTypeContext != null) 
+				{
+					GreenNode voidType = this.factory.OperationReturnType((VoidTypeGreen)this.Visit(voidTypeContext), true);
+					return voidType;
+				}
+				SoalParser.TypeReferenceContext typeReferenceContext = context.typeReference();
+				if (typeReferenceContext != null) 
+				{
+					GreenNode typeReference = this.factory.OperationReturnType((TypeReferenceGreen)this.Visit(typeReferenceContext), true);
+					return typeReference;
 				}
 				return null;
 			}

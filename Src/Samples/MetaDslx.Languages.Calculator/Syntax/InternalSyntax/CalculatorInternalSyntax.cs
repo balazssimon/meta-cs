@@ -1958,8 +1958,16 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	internal class CalculatorGreenFactory : InternalSyntaxFactory
 	{
 	    internal static readonly CalculatorGreenFactory Instance = new CalculatorGreenFactory();
-	
-		public CalculatorGreenTrivia Trivia(CalculatorSyntaxKind kind, string text)
+
+        protected override Language LanguageCore
+        {
+            get
+            {
+                return CalculatorLanguage.Instance;
+            }
+        }
+
+        public CalculatorGreenTrivia Trivia(CalculatorSyntaxKind kind, string text)
 		{
 		    return new CalculatorGreenTrivia(kind, text, null, null);
 		}

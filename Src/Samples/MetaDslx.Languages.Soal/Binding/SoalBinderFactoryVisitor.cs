@@ -161,7 +161,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Annotations");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Annotation));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Annotation));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -180,7 +180,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Annotations");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Annotation));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Annotation));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -233,7 +233,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Properties");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.AnnotationProperty));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.AnnotationProperty));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseAnnotationPropertyValue)
 				{
@@ -267,7 +267,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Namespace));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Namespace));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseIdentifier)
 				{
@@ -333,7 +333,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Enum));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Enum));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -376,7 +376,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "EnumLiterals");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.EnumLiteral));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.EnumLiteral));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -394,7 +394,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Struct));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Struct));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -435,7 +435,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Properties");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Property));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Property));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseTypeReference)
 				{
@@ -458,7 +458,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Database));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Database));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -521,7 +521,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Interface));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Interface));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -558,7 +558,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Operations");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Operation));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Operation));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -593,7 +593,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Parameters");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.InputParameter));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.InputParameter));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseTypeReference)
 				{
@@ -617,7 +617,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Result");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.OutputParameter));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.OutputParameter));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -640,7 +640,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Component));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Component));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseKAbstract)
 				{
@@ -708,7 +708,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Services");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Service));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Service));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
@@ -737,7 +737,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "References");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Reference));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Reference));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
@@ -805,7 +805,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Properties");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Property));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Property));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseTypeReference)
 				{
@@ -829,7 +829,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Implementation");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Implementation));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Implementation));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -848,7 +848,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Language");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Language));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Language));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -866,7 +866,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Composite));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Composite));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -902,7 +902,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Assembly));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Assembly));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -960,7 +960,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Wires");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Wire));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Wire));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1032,7 +1032,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Deployment));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Deployment));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1081,7 +1081,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Environments");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Environment));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Environment));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1118,7 +1118,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = this.GetParentBinder(node);
 				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Runtime");
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Runtime));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Runtime));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1196,7 +1196,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Binding));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Binding));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1256,7 +1256,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.HttpTransportBindingElement));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.HttpTransportBindingElement));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1286,7 +1286,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.RestTransportBindingElement));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.RestTransportBindingElement));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1316,7 +1316,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.WebSocketTransportBindingElement));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.WebSocketTransportBindingElement));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1406,7 +1406,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.SoapEncodingBindingElement));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.SoapEncodingBindingElement));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1436,7 +1436,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.XmlEncodingBindingElement));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.XmlEncodingBindingElement));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1466,7 +1466,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.JsonEncodingBindingElement));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.JsonEncodingBindingElement));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1598,7 +1598,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.WsAddressingBindingElement));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.WsAddressingBindingElement));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -1620,7 +1620,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolBinder(resultBinder, node, typeof(Symbols.Endpoint));
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.Endpoint));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseQualifier)
 				{

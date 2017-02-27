@@ -82,14 +82,14 @@ namespace MetaDslx.Compiler.Binding.Binders
             return new BodyBinder(parentBinder, node, container);
         }
 
-        protected virtual Binder CreateSymbolBinder(Binder parentBinder, RedNode node, Type symbolType)
+        protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, RedNode node, Type symbolType)
         {
-            return this.CreateSymbolBinderCore(parentBinder, node, symbolType);
+            return this.CreateSymbolDefBinderCore(parentBinder, node, symbolType);
         }
 
-        protected virtual Binder CreateSymbolBinderCore(Binder parentBinder, RedNode node, Type symbolType)
+        protected virtual Binder CreateSymbolDefBinderCore(Binder parentBinder, RedNode node, Type symbolType)
         {
-            return new SymbolBinder(parentBinder, node, symbolType);
+            return new SymbolDefBinder(parentBinder, node, symbolType);
         }
 
         protected virtual Binder CreateSymbolCtrBinder(Binder parentBinder, RedNode node, Type symbolType)

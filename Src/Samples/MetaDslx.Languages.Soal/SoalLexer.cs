@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\zas0rsqj.in2\SoalLexer.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\jwmgodxg.z5s\SoalLexer.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -37,7 +37,7 @@ public partial class SoalLexer : Lexer {
 		KComposite=19, KReference=20, KService=21, KWire=22, KTo=23, KImplementation=24, 
 		KLanguage=25, KAssembly=26, KDeployment=27, KEnvironment=28, KRuntime=29, 
 		KNull=30, KTrue=31, KFalse=32, KObject=33, KString=34, KInt=35, KLong=36, 
-		KFloat=37, KDouble=38, KByte=39, KBool=40, KAny=41, KVoid=42, KTypeof=43, 
+		KFloat=37, KDouble=38, KByte=39, KBool=40, KAny=41, KTypeof=42, KVoid=43, 
 		TSemicolon=44, TColon=45, TDot=46, TComma=47, TAssign=48, TOpenParen=49, 
 		TCloseParen=50, TOpenBracket=51, TCloseBracket=52, TOpenBrace=53, TCloseBrace=54, 
 		TLessThan=55, TGreaterThan=56, TQuestion=57, TQuestionQuestion=58, TAmpersand=59, 
@@ -69,7 +69,7 @@ public partial class SoalLexer : Lexer {
 		"KComposite", "KReference", "KService", "KWire", "KTo", "KImplementation", 
 		"KLanguage", "KAssembly", "KDeployment", "KEnvironment", "KRuntime", "KNull", 
 		"KTrue", "KFalse", "KObject", "KString", "KInt", "KLong", "KFloat", "KDouble", 
-		"KByte", "KBool", "KAny", "KVoid", "KTypeof", "TSemicolon", "TColon", 
+		"KByte", "KBool", "KAny", "KTypeof", "KVoid", "TSemicolon", "TColon", 
 		"TDot", "TComma", "TAssign", "TOpenParen", "TCloseParen", "TOpenBracket", 
 		"TCloseBracket", "TOpenBrace", "TCloseBrace", "TLessThan", "TGreaterThan", 
 		"TQuestion", "TQuestionQuestion", "TAmpersand", "THat", "TBar", "TAndAlso", 
@@ -113,8 +113,8 @@ public partial class SoalLexer : Lexer {
 		"'component'", "'composite'", "'reference'", "'service'", "'wire'", "'to'", 
 		"'implementation'", "'language'", "'assembly'", "'deployment'", "'environment'", 
 		"'runtime'", "'null'", "'true'", "'false'", "'object'", "'string'", "'int'", 
-		"'long'", "'float'", "'double'", "'byte'", "'bool'", "'any'", "'void'", 
-		"'typeof'", "';'", "':'", "'.'", "','", "'='", "'('", "')'", "'['", "']'", 
+		"'long'", "'float'", "'double'", "'byte'", "'bool'", "'any'", "'typeof'", 
+		"'void'", "';'", "':'", "'.'", "','", "'='", "'('", "')'", "'['", "']'", 
 		"'{'", "'}'", "'<'", "'>'", "'?'", "'??'", "'&'", "'^'", "'|'", "'&&'", 
 		"'||'", "'++'", "'--'", "'+'", "'-'", "'~'", "'!'", "'/'", null, "'%'", 
 		"'<='", "'>='", "'=='", "'!='", "'*='", "'/='", "'%='", "'+='", "'-='", 
@@ -122,7 +122,8 @@ public partial class SoalLexer : Lexer {
 		"'TimeSpan'", "'Version'", "'Style'", "'MTOM'", "'SSL'", "'HTTP'", "'REST'", 
 		"'WebSocket'", "'SOAP'", "'XML'", "'JSON'", "'ClientAuthentication'", 
 		"'WsAddressing'", null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, "'@\"'", "'@''"
+		null, null, null, null, null, null, null, null, "'\"'", "'''", "'@\"'", 
+		"'@''"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "KNamespace", "KEnum", "KException", "KStruct", "KInterface", "KThrows", 
@@ -131,7 +132,7 @@ public partial class SoalLexer : Lexer {
 		"KComposite", "KReference", "KService", "KWire", "KTo", "KImplementation", 
 		"KLanguage", "KAssembly", "KDeployment", "KEnvironment", "KRuntime", "KNull", 
 		"KTrue", "KFalse", "KObject", "KString", "KInt", "KLong", "KFloat", "KDouble", 
-		"KByte", "KBool", "KAny", "KVoid", "KTypeof", "TSemicolon", "TColon", 
+		"KByte", "KBool", "KAny", "KTypeof", "KVoid", "TSemicolon", "TColon", 
 		"TDot", "TComma", "TAssign", "TOpenParen", "TCloseParen", "TOpenBracket", 
 		"TCloseBracket", "TOpenBrace", "TCloseBrace", "TLessThan", "TGreaterThan", 
 		"TQuestion", "TQuestionQuestion", "TAmpersand", "THat", "TBar", "TAndAlso", 
@@ -231,8 +232,8 @@ public partial class SoalLexer : Lexer {
 		sb.Append("\"\x3\"\x3\"\x3\"\x3\"\x3\"\x3\"\x3#\x3#\x3#\x3#\x3#\x3#\x3");
 		sb.Append("#\x3$\x3$\x3$\x3$\x3%\x3%\x3%\x3%\x3%\x3&\x3&\x3&\x3&\x3&\x3");
 		sb.Append("&\x3\'\x3\'\x3\'\x3\'\x3\'\x3\'\x3\'\x3(\x3(\x3(\x3(\x3(\x3");
-		sb.Append(")\x3)\x3)\x3)\x3)\x3*\x3*\x3*\x3*\x3+\x3+\x3+\x3+\x3+\x3,\x3");
-		sb.Append(",\x3,\x3,\x3,\x3,\x3,\x3-\x3-\x3.\x3.\x3/\x3/\x3\x30\x3\x30");
+		sb.Append(")\x3)\x3)\x3)\x3)\x3*\x3*\x3*\x3*\x3+\x3+\x3+\x3+\x3+\x3+\x3");
+		sb.Append("+\x3,\x3,\x3,\x3,\x3,\x3-\x3-\x3.\x3.\x3/\x3/\x3\x30\x3\x30");
 		sb.Append("\x3\x31\x3\x31\x3\x32\x3\x32\x3\x33\x3\x33\x3\x34\x3\x34\x3");
 		sb.Append("\x35\x3\x35\x3\x36\x3\x36\x3\x37\x3\x37\x3\x38\x3\x38\x3\x39");
 		sb.Append("\x3\x39\x3:\x3:\x3;\x3;\x3;\x3<\x3<\x3=\x3=\x3>\x3>\x3?\x3?");
@@ -383,7 +384,7 @@ public partial class SoalLexer : Lexer {
 		sb.Append("\x2\x2\x44\x255\x3\x2\x2\x2\x46\x25B\x3\x2\x2\x2H\x262\x3\x2");
 		sb.Append("\x2\x2J\x269\x3\x2\x2\x2L\x26D\x3\x2\x2\x2N\x272\x3\x2\x2\x2");
 		sb.Append("P\x278\x3\x2\x2\x2R\x27F\x3\x2\x2\x2T\x284\x3\x2\x2\x2V\x289");
-		sb.Append("\x3\x2\x2\x2X\x28D\x3\x2\x2\x2Z\x292\x3\x2\x2\x2\\\x299\x3\x2");
+		sb.Append("\x3\x2\x2\x2X\x28D\x3\x2\x2\x2Z\x294\x3\x2\x2\x2\\\x299\x3\x2");
 		sb.Append("\x2\x2^\x29B\x3\x2\x2\x2`\x29D\x3\x2\x2\x2\x62\x29F\x3\x2\x2");
 		sb.Append("\x2\x64\x2A1\x3\x2\x2\x2\x66\x2A3\x3\x2\x2\x2h\x2A5\x3\x2\x2");
 		sb.Append("\x2j\x2A7\x3\x2\x2\x2l\x2A9\x3\x2\x2\x2n\x2AB\x3\x2\x2\x2p\x2AD");
@@ -528,10 +529,10 @@ public partial class SoalLexer : Lexer {
 		sb.Append("\x2\x283S\x3\x2\x2\x2\x284\x285\a\x64\x2\x2\x285\x286\aq\x2");
 		sb.Append("\x2\x286\x287\aq\x2\x2\x287\x288\an\x2\x2\x288U\x3\x2\x2\x2");
 		sb.Append("\x289\x28A\a\x63\x2\x2\x28A\x28B\ap\x2\x2\x28B\x28C\a{\x2\x2");
-		sb.Append("\x28CW\x3\x2\x2\x2\x28D\x28E\ax\x2\x2\x28E\x28F\aq\x2\x2\x28F");
-		sb.Append("\x290\ak\x2\x2\x290\x291\a\x66\x2\x2\x291Y\x3\x2\x2\x2\x292");
-		sb.Append("\x293\av\x2\x2\x293\x294\a{\x2\x2\x294\x295\ar\x2\x2\x295\x296");
-		sb.Append("\ag\x2\x2\x296\x297\aq\x2\x2\x297\x298\ah\x2\x2\x298[\x3\x2");
+		sb.Append("\x28CW\x3\x2\x2\x2\x28D\x28E\av\x2\x2\x28E\x28F\a{\x2\x2\x28F");
+		sb.Append("\x290\ar\x2\x2\x290\x291\ag\x2\x2\x291\x292\aq\x2\x2\x292\x293");
+		sb.Append("\ah\x2\x2\x293Y\x3\x2\x2\x2\x294\x295\ax\x2\x2\x295\x296\aq");
+		sb.Append("\x2\x2\x296\x297\ak\x2\x2\x297\x298\a\x66\x2\x2\x298[\x3\x2");
 		sb.Append("\x2\x2\x299\x29A\a=\x2\x2\x29A]\x3\x2\x2\x2\x29B\x29C\a<\x2");
 		sb.Append("\x2\x29C_\x3\x2\x2\x2\x29D\x29E\a\x30\x2\x2\x29E\x61\x3\x2\x2");
 		sb.Append("\x2\x29F\x2A0\a.\x2\x2\x2A0\x63\x3\x2\x2\x2\x2A1\x2A2\a?\x2");
@@ -834,7 +835,7 @@ public partial class SoalLexer : Lexer {
 		sb.Append("\x2\x2\x582\x583\a$\x2\x2\x583\x584\x3\x2\x2\x2\x584\x585\b");
 		sb.Append("\xA4\b\x2\x585\x14B\x3\x2\x2\x2\x586\x587\x5\x11A\x8C\x2\x587");
 		sb.Append("\x588\x3\x2\x2\x2\x588\x589\b\xA5\x2\x2\x589\x14D\x3\x2\x2\x2");
-		sb.Append("\x58A\x58B\a$\x2\x2\x58B\x58C\x3\x2\x2\x2\x58C\x58D\b\xA6\b");
+		sb.Append("\x58A\x58B\a)\x2\x2\x58B\x58C\x3\x2\x2\x2\x58C\x58D\b\xA6\b");
 		sb.Append("\x2\x58D\x14F\x3\x2\x2\x2(\x2\x3\x4\x5\x37F\x387\x390\x396\x39E");
 		sb.Append("\x3A3\x3A9\x3AE\x3B3\x3B8\x3C2\x3C7\x3D6\x420\x43A\x445\x465");
 		sb.Append("\x49B\x4A7\x4B0\x4B8\x4BC\x4CD\x4D3\x4DB\x4E0\x4E6\x4EE\x509");

@@ -2297,6 +2297,16 @@ internal class [Properties.LanguageName]GreenFactory : InternalSyntaxFactory
 {
     internal static readonly [Properties.LanguageName]GreenFactory Instance = new [Properties.LanguageName]GreenFactory();
 ^
+	public new SoalLanguage Language
+	{
+		get { return [Properties.LanguageName]Language.Instance; }
+	}
+^
+	protected override Language LanguageCore
+	{
+		get { return this.Language; }
+	}
+^
 	public [Properties.LanguageName]GreenTrivia Trivia([Properties.LanguageName]SyntaxKind kind, string text)
 	{
 	    return new [Properties.LanguageName]GreenTrivia(kind, text, null, null);
@@ -2652,8 +2662,6 @@ namespace [Properties.DefaultNamespace]
 	using [Properties.DefaultNamespace].Syntax;
     using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 ^
-	[GenerateSyntaxFacts()]
-^
 	[GenerateSyntaxVisitor()]
 ^
 	[GenerateDetailedSyntaxVisitor()]
@@ -2840,99 +2848,197 @@ public sealed class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCo
 end template
 
 template GenerateSyntaxFacts()
+using System.Threading;
+using MetaDslx.Compiler;
+using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Text;
+using [Properties.DefaultNamespace].Syntax;
+using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 ^
-public class [Properties.LanguageName]SyntaxFacts : SyntaxFacts
+namespace [Properties.DefaultNamespace]
 {
-	internal static readonly [Properties.LanguageName]SyntaxFacts Instance = new [Properties.LanguageName]SyntaxFacts();
-^
-	public override bool IsToken(int rawKind)
+	public enum [Properties.LanguageName]TokenKind
 	{
-		return this.IsToken(([Properties.LanguageName]SyntaxKind)rawKind);
+		None,
+		[loop (kind:Instances.LexerTokenKinds; separator sep=",")]
+		[kind.Key][sep]
+		[end loop]
 	}
 ^
-	public bool IsToken([Properties.LanguageName]SyntaxKind kind)
-    {
-		switch (kind)
-        {
-			case [Properties.LanguageName]SyntaxKind.Eof:
-			[loop(literal:Instances.LexerRules)]
-			case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
-			[end loop]
-				return true;
-			default:
-				return false;
+	public class [Properties.LanguageName]SyntaxFacts : SyntaxFacts
+	{
+		internal static readonly [Properties.LanguageName]SyntaxFacts Instance = new [Properties.LanguageName]SyntaxFacts();
+^
+		protected override int DefaultEndOfLineSyntaxKindCore
+		{
+			get { return (int)[Properties.LanguageName]SyntaxKind.[Instances.DefaultEndOfLine.PlainName()]; }
 		}
-	}
 ^
-	public override bool IsFixedToken(int rawKind)
-	{
-		return this.IsFixedToken(([Properties.LanguageName]SyntaxKind)rawKind);
-	}
-^
-	public bool IsFixedToken([Properties.LanguageName]SyntaxKind kind)
-    {
-		switch (kind)
-        {
-			case [Properties.LanguageName]SyntaxKind.Eof:
-			[loop(literal:Instances.FixedTokens)]
-			case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
-			[end loop]
-				return true;
-			default:
-				return false;
+		protected override int DefaultWhitespaceSyntaxKindCore
+		{
+			get { return (int)[Properties.LanguageName]SyntaxKind.[Instances.DefaultWhitespace.PlainName()]; }
 		}
-	}
 ^
-	public override string GetText(int rawKind)
-	{
-		return this.GetText(([Properties.LanguageName]SyntaxKind)rawKind);
-	}
-^
-	public string GetText([Properties.LanguageName]SyntaxKind kind)
-    {
-		switch (kind)
-        {
-			[loop(literal:Instances.FixedTokens)]
-			case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
-				return [literal.FixedToken.FixedTokenToCSharpString()];
-			[end loop]
-			default:
-				return string.Empty;
+		public override bool IsToken(int rawKind)
+		{
+			return this.IsToken(([Properties.LanguageName]SyntaxKind)rawKind);
 		}
-	}
 ^
-	public [Properties.LanguageName]SyntaxKind GetKind(string text)
-    {
-		switch (text)
-        {
-			[loop(literal:Instances.FixedTokens)]
-			case [literal.FixedToken.FixedTokenToCSharpString()]:
-				return [Properties.LanguageName]SyntaxKind.[literal.PlainName()];
-			[end loop]
-			default:
-				return [Properties.LanguageName]SyntaxKind.None;
+		public bool IsToken([Properties.LanguageName]SyntaxKind kind)
+		{
+			switch (kind)
+			{
+				case [Properties.LanguageName]SyntaxKind.Eof:
+				[loop(literal:Instances.LexerRules)]
+				case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
+				[end loop]
+					return true;
+				default:
+					return false;
+			}
 		}
-	}
 ^
-    public override string GetKindText(int rawKind)
-    {
-        return this.GetKindText(([Properties.LanguageName]SyntaxKind)rawKind);
-    }
+		public override bool IsFixedToken(int rawKind)
+		{
+			return this.IsFixedToken(([Properties.LanguageName]SyntaxKind)rawKind);
+		}
 ^
-    public string GetKindText([Properties.LanguageName]SyntaxKind kind)
-    {
-        return kind.ToString();
-    }
+		public bool IsFixedToken([Properties.LanguageName]SyntaxKind kind)
+		{
+			switch (kind)
+			{
+				case [Properties.LanguageName]SyntaxKind.Eof:
+				[loop(literal:Instances.FixedTokens)]
+				case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
+				[end loop]
+					return true;
+				default:
+					return false;
+			}
+		}
 ^
-    public override bool IsTriviaWithEndOfLine(int rawKind)
-	{
-		return this.IsTriviaWithEndOfLine(([Properties.LanguageName]SyntaxKind)rawKind);
-	}
+		public override string GetText(int rawKind)
+		{
+			return this.GetText(([Properties.LanguageName]SyntaxKind)rawKind);
+		}
 ^
-    public bool IsTriviaWithEndOfLine([Properties.LanguageName]SyntaxKind kind)
-	{
-		// TODO:
-		return false;
+		public string GetText([Properties.LanguageName]SyntaxKind kind)
+		{
+			switch (kind)
+			{
+				[loop(literal:Instances.FixedTokens)]
+				case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
+					return [literal.FixedToken.FixedTokenToCSharpString()];
+				[end loop]
+				default:
+					return string.Empty;
+			}
+		}
+^
+		public [Properties.LanguageName]SyntaxKind GetKind(string text)
+		{
+			switch (text)
+			{
+				[loop(literal:Instances.FixedTokens)]
+				case [literal.FixedToken.FixedTokenToCSharpString()]:
+					return [Properties.LanguageName]SyntaxKind.[literal.PlainName()];
+				[end loop]
+				default:
+					return [Properties.LanguageName]SyntaxKind.None;
+			}
+		}
+^
+		public override string GetKindText(int rawKind)
+		{
+			return this.GetKindText(([Properties.LanguageName]SyntaxKind)rawKind);
+		}
+^
+		public string GetKindText([Properties.LanguageName]SyntaxKind kind)
+		{
+			return kind.ToString();
+		}
+^
+		public override bool IsTriviaWithEndOfLine(int rawKind)
+		{
+			return this.IsTriviaWithEndOfLine(([Properties.LanguageName]SyntaxKind)rawKind);
+		}
+^
+		public bool IsTriviaWithEndOfLine([Properties.LanguageName]SyntaxKind kind)
+		{
+			switch(kind)
+			{
+			[loop (rule:Instances.LexerRules where rule.Annotations.HasAnnotation("Token"))]
+				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
+				[if (annot.HasProperty("endOfLine") && annot.GetValue("endOfLine") == "true")]
+					[if (annot.HasProperty("first") && annot.HasProperty("last"))]
+						[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")))]
+				case [Properties.LanguageName]SyntaxKind.[child.PlainName()]:
+						[end loop]
+					return true;
+					[else]
+				case [Properties.LanguageName]SyntaxKind.[rule.PlainName()]:
+					return true;
+					[end if]
+				[end if]
+			[end loop]
+				default:
+					return false;
+			}
+		}
+^
+	[loop (kind:Instances.LexerTokenKinds)]
+		public bool Is[kind.Key](int rawKind)
+		{
+			return this.Is[kind.Key](([Properties.LanguageName]SyntaxKind)rawKind);
+		}
+^
+		public bool Is[kind.Key]([Properties.LanguageName]SyntaxKind kind)
+		{
+			switch(kind)
+			{
+			[loop (rule:kind.Value)]
+				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
+				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
+					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")))]
+				case [Properties.LanguageName]SyntaxKind.[child.PlainName()]:
+					[end loop]
+					return true;
+				[else]
+				case [Properties.LanguageName]SyntaxKind.[rule.PlainName()]:
+					return true;
+				[end if]
+			[end loop]
+				default:
+					return false;
+			}
+		}
+	[end loop]
+^
+		public [Properties.LanguageName]TokenKind GetTokenKind(int rawKind)
+		{
+			return this.GetTokenKind(([Properties.LanguageName]SyntaxKind)rawKind);
+		}
+^
+		public [Properties.LanguageName]TokenKind GetTokenKind([Properties.LanguageName]SyntaxKind kind)
+		{
+			switch(kind)
+			{
+			[loop (rule:Instances.LexerRules where rule.Annotations.HasAnnotation("Token"))]
+				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
+				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
+					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")))]
+				case [Properties.LanguageName]SyntaxKind.[child.PlainName()]:
+					[end loop]
+					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
+				[else]
+				case [Properties.LanguageName]SyntaxKind.[rule.PlainName()]:
+					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
+				[end if]
+			[end loop]
+				default:
+					return [Properties.LanguageName]TokenKind.None;
+			}
+		}
 	}
 }
 end template
@@ -3144,6 +3250,16 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 		this.ElasticSpace = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticSpace.CreateRed();
 		this.ElasticTab = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticTab.CreateRed();
 		this.ElasticZeroSpace = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticZeroSpace.CreateRed();
+	}
+^
+	public new SoalLanguage Language
+	{
+		get { return [Properties.LanguageName]Language.Instance; }
+	}
+^
+	protected override Language LanguageCore
+	{
+		get { return this.Language; }
 	}
 ^
     public [Properties.LanguageName]SyntaxTrivia CarriageReturnLineFeed { get; }
@@ -4261,7 +4377,7 @@ end template
 
 function string GetAnnotationParams(MetaCompilerAnnotation annot)
     string result = "";
-	if (annot.Name == MetaCompilerAnnotationInfo.Symbol || annot.Name == MetaCompilerAnnotationInfo.SymbolCtr)
+	if (annot.Name == MetaCompilerAnnotationInfo.SymbolDef || annot.Name == MetaCompilerAnnotationInfo.SymbolCtr)
 		if (annot.HasProperty("symbolType"))
 			result = ", typeof(Symbols." + annot.GetValue("symbolType") + ")";
 		else

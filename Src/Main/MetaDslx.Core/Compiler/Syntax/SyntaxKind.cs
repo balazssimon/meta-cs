@@ -12,7 +12,5 @@ namespace MetaDslx.Compiler.Syntax
         public const int List = -1;
         public const int BadToken = -2;
         public const int Eof = -3;
-        public const int WhitespaceTrivia = -4;
-        public const int EndOfLineTrivia = -5;
     }
 }

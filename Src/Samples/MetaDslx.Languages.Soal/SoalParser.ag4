@@ -25,11 +25,11 @@ annotationList : annotation+;
 returnAnnotationList : returnAnnotation+;
 
 $Property(Annotations)
-$Symbol(Annotation)
+$SymbolDef(Annotation)
 annotation : TOpenBracket annotationHead TCloseBracket;
 
 $Property(Annotations)
-$Symbol(Annotation)
+$SymbolDef(Annotation)
 returnAnnotation : TOpenBracket KReturn TColon annotationHead TCloseBracket;
 
 annotationHead : name annotationBody?;
@@ -40,7 +40,7 @@ annotationBody : TOpenParen annotationPropertyList? TCloseParen;
 annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
 $Property(Properties)
-$Symbol(AnnotationProperty)
+$SymbolDef(AnnotationProperty)
 annotationProperty : name TAssign $Property(Value) annotationPropertyValue;
 
 annotationPropertyValue
@@ -48,7 +48,7 @@ annotationPropertyValue
 	| typeofValue
 	;
 
-$Symbol(symbolType=Namespace,nestingProperty=Declarations,merge=true)
+$SymbolDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration : annotationList? KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral namespaceBody;
 
 $Body 
@@ -59,7 +59,7 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 
 // Enums
 
-$Symbol(Enum)
+$SymbolDef(Enum)
 enumDeclaration : annotationList? KEnum name (TColon $Property(BaseType) $SymbolUse(Enum) qualifier)? enumBody;
 
 $Body
@@ -67,25 +67,25 @@ enumBody: TOpenBrace enumLiterals? TCloseBrace;
 enumLiterals : enumLiteral (TComma enumLiteral)* TComma?;
 
 $Property(EnumLiterals)
-$Symbol(EnumLiteral)
+$SymbolDef(EnumLiteral)
 enumLiteral : annotationList? name;
 
 // Structs and exceptions
 
-$Symbol(Struct)
+$SymbolDef(Struct)
 structDeclaration : annotationList? KStruct name (TColon $Property(BaseType) $SymbolUse(Struct) qualifier)? structBody;
 
 $Body
 structBody : TOpenBrace propertyDeclaration* TCloseBrace;
 
 $Property(Properties)
-$Symbol(Property)
+$SymbolDef(Property)
 propertyDeclaration : annotationList? $Property(Type) typeReference name TSemicolon;
 
 
 // Database
 
-$Symbol(Database)
+$SymbolDef(Database)
 databaseDeclaration : annotationList? KDatabase name databaseBody;
 
 $Body
@@ -97,14 +97,14 @@ entityReference : KEntity $SymbolUse(Struct) qualifier TSemicolon;
 
 // Interface
 
-$Symbol(Interface)
+$SymbolDef(Interface)
 interfaceDeclaration : annotationList? KInterface name interfaceBody;
 
 $Body
 interfaceBody : TOpenBrace operationDeclaration* TCloseBrace;
 
 $Property(Operations)
-$Symbol(Operation)
+$SymbolDef(Operation)
 operationDeclaration : operationHead TSemicolon;
 
 operationHead : annotationList? operationResult name TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $SymbolUse(Struct) qualifierList)?;
@@ -112,16 +112,16 @@ operationHead : annotationList? operationResult name TOpenParen parameterList? T
 parameterList : parameter (TComma parameter)*;
 
 $Property(Parameters)
-$Symbol(InputParameter)
+$SymbolDef(InputParameter)
 parameter : annotationList? $Property(Type) typeReference name;
 
 $Property(Result)
-$Symbol(OutputParameter)
+$SymbolDef(OutputParameter)
 operationResult : returnAnnotationList? operationReturnType;
 
 // Component
 
-$Symbol(Component)
+$SymbolDef(Component)
 componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent name (TColon $Property(BaseComponent) $SymbolUse(Component) qualifier)? componentBody;
 
 $Body
@@ -138,10 +138,10 @@ componentElement
 	;
 
 $Property(Services)
-$Symbol(Service)
+$SymbolDef(Service)
 componentService : KService $Property(Interface) $SymbolUse(Interface) qualifier name? componentServiceOrReferenceBody;
 $Property(References)
-$Symbol(Reference)
+$SymbolDef(Reference)
 componentReference : KReference $Property(Interface) $SymbolUse(Interface) qualifier name? componentServiceOrReferenceBody;
 
 $Body
@@ -153,24 +153,24 @@ componentServiceOrReferenceElement
 	: KBinding $Property(Binding) $SymbolUse(Binding) qualifier TSemicolon;
 
 $Property(Properties)
-$Symbol(Property)
+$SymbolDef(Property)
 componentProperty : $Property(Type) typeReference name TSemicolon;
 
 $Property(Implementation)
-$Symbol(Implementation)
+$SymbolDef(Implementation)
 componentImplementation : KImplementation name TSemicolon;
 
 $Property(Language)
-$Symbol(Language)
+$SymbolDef(Language)
 componentLanguage : KLanguage name TSemicolon;
 
-$Symbol(Composite)
+$SymbolDef(Composite)
 compositeDeclaration : KComposite name (TColon $Property(BaseComponent) $SymbolUse(Component) qualifier)? compositeBody;
 
 $Body
 compositeBody : TOpenBrace compositeElements? TCloseBrace;
 
-$Symbol(Assembly)
+$SymbolDef(Assembly)
 assemblyDeclaration : KAssembly name (TColon $Property(BaseComponent) $SymbolUse(Component) qualifier)? compositeBody;
 
 compositeElements : compositeElement+;
@@ -189,13 +189,13 @@ $Property(Components)
 compositeComponent : KComponent $SymbolUse(Component) qualifier TSemicolon;
 
 $Property(Wires)
-$Symbol(Wire)
+$SymbolDef(Wire)
 compositeWire : KWire wireSource KTo wireTarget TSemicolon;
 
 wireSource : $Property(Source) $SymbolUse(Port) qualifier;
 wireTarget : $Property(Target) $SymbolUse(Port) qualifier;
 
-$Symbol(Deployment)
+$SymbolDef(Deployment)
 deploymentDeclaration : KDeployment name deploymentBody;
 
 $Body
@@ -209,14 +209,14 @@ deploymentElement
 	;
 
 $Property(Environments)
-$Symbol(Environment)
+$SymbolDef(Environment)
 environmentDeclaration : KEnvironment name environmentBody;
 
 $Body
 environmentBody : TOpenBrace runtimeDeclaration runtimeReference* TCloseBrace;
 
 $Property(Runtime)
-$Symbol(Runtime)
+$SymbolDef(Runtime)
 runtimeDeclaration : KRuntime name TSemicolon;
 
 runtimeReference
@@ -232,7 +232,7 @@ databaseReference : KDatabase $SymbolUse(Database) qualifier TSemicolon;
 
 // Binding
 
-$Symbol(Binding)
+$SymbolDef(Binding)
 bindingDeclaration : KBinding name bindingBody;
 
 $Body
@@ -248,7 +248,7 @@ transportLayer
 	| webSocketTransportLayer
 	;
 
-$Symbol(HttpTransportBindingElement) 
+$SymbolDef(HttpTransportBindingElement) 
 httpTransportLayer : KTransport IHTTP httpTransportLayerBody;
 
 $Body
@@ -256,7 +256,7 @@ httpTransportLayerBody
 	: TSemicolon #httpTransportLayerEmptyBody
 	| TOpenBrace httpTransportLayerProperties* TCloseBrace #httpTransportLayerNonEmptyBody;
 
-$Symbol(RestTransportBindingElement) 
+$SymbolDef(RestTransportBindingElement) 
 restTransportLayer : KTransport IREST restTransportLayerBody;
 
 $Body
@@ -264,7 +264,7 @@ restTransportLayerBody
 	: TSemicolon #restTransportLayerEmptyBody
 	| TOpenBrace TCloseBrace #restTransportLayerNonEmptyBody;
 
-$Symbol(WebSocketTransportBindingElement) 
+$SymbolDef(WebSocketTransportBindingElement) 
 webSocketTransportLayer : KTransport IWebSocket webSocketTransportLayerBody;
 
 $Body
@@ -290,7 +290,7 @@ encodingLayer
 	| jsonEncodingLayer
 	;
 
-$Symbol(SoapEncodingBindingElement) 
+$SymbolDef(SoapEncodingBindingElement) 
 soapEncodingLayer : KEncoding ISOAP soapEncodingLayerBody;
 
 $Body
@@ -298,7 +298,7 @@ soapEncodingLayerBody
 	: TSemicolon #soapEncodingLayerEmptyBody
 	| TOpenBrace soapEncodingProperties* TCloseBrace #soapEncodingLayerNonEmptyBody;
 
-$Symbol(XmlEncodingBindingElement) 
+$SymbolDef(XmlEncodingBindingElement) 
 xmlEncodingLayer : KEncoding IXML xmlEncodingLayerBody;
 
 $Body
@@ -306,7 +306,7 @@ xmlEncodingLayerBody
 	: TSemicolon #xmlEncodingLayerEmptyBody
 	| TOpenBrace TCloseBrace #xmlEncodingLayerNonEmptyBody;
 
-$Symbol(JsonEncodingBindingElement) 
+$SymbolDef(JsonEncodingBindingElement) 
 jsonEncodingLayer : KEncoding IJSON jsonEncodingLayerBody;
 
 $Body
@@ -336,12 +336,12 @@ protocolLayerKind
 	: wsAddressing
 	;
 
-$Symbol(WsAddressingBindingElement) 
+$SymbolDef(WsAddressingBindingElement) 
 wsAddressing : IWsAddressing;
 
 // Endpoint:
 
-$Symbol(Endpoint)
+$SymbolDef(Endpoint)
 endpointDeclaration : KEndpoint name TColon $Property(Interface) $SymbolUse(Interface) qualifier endpointBody;
 
 $Body
@@ -361,8 +361,8 @@ endpointAddressProperty : KAddress $Property(Address) stringLiteral TSemicolon;
 
 $SymbolUse
 returnType 
-	: typeReference
-	| voidType
+	: voidType
+	| typeReference
 	;
 
 $SymbolUse
@@ -414,8 +414,9 @@ onewayType
 
 $Property(Type)
 operationReturnType
-	: returnType
-	| $Property(name=IsOneway,value=true) onewayType
+	: $Property(name=IsOneway,value=true) onewayType
+	| voidType
+	| typeReference
 	;
 
 $SymbolCtr(NullableType)

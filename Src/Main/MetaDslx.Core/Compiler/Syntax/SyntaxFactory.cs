@@ -14,6 +14,13 @@ namespace MetaDslx.Compiler.Syntax
     {
         internal static SyntaxFactory Default = new DefaultSyntaxFactory();
 
+        public Language Language
+        {
+            get { return this.LanguageCore; }
+        }
+
+        protected abstract Language LanguageCore { get; }
+
         internal protected abstract SyntaxToken DefaultToken { get; }
         internal protected abstract SyntaxTrivia DefaultTrivia { get; }
         internal protected abstract SyntaxToken DefaultSeparator { get; }
@@ -46,6 +53,14 @@ namespace MetaDslx.Compiler.Syntax
         internal protected override SyntaxToken DefaultSeparator
         {
             get { throw ExceptionUtilities.Unreachable; }
+        }
+
+        protected override Language LanguageCore
+        {
+            get
+            {
+                throw ExceptionUtilities.Unreachable;
+            }
         }
 
         internal protected override SyntaxNode StructuredToken(SyntaxToken token)
