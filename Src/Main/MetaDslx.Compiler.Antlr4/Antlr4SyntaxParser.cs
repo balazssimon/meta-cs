@@ -1,11 +1,10 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Compiler;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
-using MetaDslx.Compiler.Utilities;
+using MetaDslx.Languages.Antlr4Roslyn.Compiler;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

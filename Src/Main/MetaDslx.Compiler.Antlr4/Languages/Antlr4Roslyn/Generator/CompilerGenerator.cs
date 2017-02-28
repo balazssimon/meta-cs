@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using MetaDslx.Compiler; //4:1
 using MetaDslx.Compiler.MetaModel; //5:1
 
-namespace MetaDslx.Compiler.Antlr4Roslyn //1:1
+namespace MetaDslx.Languages.Antlr4Roslyn.Compiler //1:1
 {
-    using __Hidden_CompilerGenerator_1193903514;
-    namespace __Hidden_CompilerGenerator_1193903514
+    using __Hidden_CompilerGenerator_634736321;
+    namespace __Hidden_CompilerGenerator_634736321
     {
         internal static class __Extensions
         {

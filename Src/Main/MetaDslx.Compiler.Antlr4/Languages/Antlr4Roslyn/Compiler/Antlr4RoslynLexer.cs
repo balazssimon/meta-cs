@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\wmkisbwo.tzo\Antlr4RoslynLexer.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\bmppn3p5.ouy\Antlr4RoslynLexer.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.Compiler.Antlr4Roslyn {
+namespace MetaDslx.Languages.Antlr4Roslyn.Compiler {
 using System;
 using System.Text;
 using Antlr4.Runtime;
@@ -788,4 +788,4 @@ public partial class Antlr4RoslynLexer : LexerAdaptor {
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }
-} // namespace MetaDslx.Compiler.Antlr4Roslyn
+} // namespace MetaDslx.Languages.Antlr4Roslyn.Compiler

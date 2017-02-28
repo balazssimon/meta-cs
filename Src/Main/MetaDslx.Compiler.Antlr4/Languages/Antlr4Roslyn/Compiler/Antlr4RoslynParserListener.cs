@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\oig2lb0k.bch\Antlr4RoslynParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\l505bhqd.rid\Antlr4RoslynParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.Compiler.Antlr4Roslyn {
+namespace MetaDslx.Languages.Antlr4Roslyn.Compiler {
 using Antlr4.Runtime.Misc;
 using IParseTreeListener = Antlr4.Runtime.Tree.IParseTreeListener;
 using IToken = Antlr4.Runtime.IToken;
@@ -361,16 +361,6 @@ public interface IAntlr4RoslynParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitLabeledAlt([NotNull] Antlr4RoslynParser.LabeledAltContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="Antlr4RoslynParser.propertiesBlock"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterPropertiesBlock([NotNull] Antlr4RoslynParser.PropertiesBlockContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="Antlr4RoslynParser.propertiesBlock"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitPropertiesBlock([NotNull] Antlr4RoslynParser.PropertiesBlockContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="Antlr4RoslynParser.lexerRuleSpec"/>.
 	/// </summary>
@@ -792,4 +782,4 @@ public interface IAntlr4RoslynParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitNullLiteral([NotNull] Antlr4RoslynParser.NullLiteralContext context);
 }
-} // namespace MetaDslx.Compiler.Antlr4Roslyn
+} // namespace MetaDslx.Languages.Antlr4Roslyn.Compiler

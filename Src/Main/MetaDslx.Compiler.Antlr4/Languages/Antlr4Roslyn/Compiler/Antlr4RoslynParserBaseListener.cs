@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\oig2lb0k.bch\Antlr4RoslynParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\l505bhqd.rid\Antlr4RoslynParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.Compiler.Antlr4Roslyn {
+namespace MetaDslx.Languages.Antlr4Roslyn.Compiler {
 
 using Antlr4.Runtime.Misc;
 using IErrorNode = Antlr4.Runtime.Tree.IErrorNode;
@@ -431,18 +431,6 @@ public partial class Antlr4RoslynParserBaseListener : IAntlr4RoslynParserListene
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLabeledAlt([NotNull] Antlr4RoslynParser.LabeledAltContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="Antlr4RoslynParser.propertiesBlock"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPropertiesBlock([NotNull] Antlr4RoslynParser.PropertiesBlockContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="Antlr4RoslynParser.propertiesBlock"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPropertiesBlock([NotNull] Antlr4RoslynParser.PropertiesBlockContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="Antlr4RoslynParser.lexerRuleSpec"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -961,4 +949,4 @@ public partial class Antlr4RoslynParserBaseListener : IAntlr4RoslynParserListene
 	/// <remarks>The default implementation does nothing.</remarks>
 	public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 }
-} // namespace MetaDslx.Compiler.Antlr4Roslyn
+} // namespace MetaDslx.Languages.Antlr4Roslyn.Compiler

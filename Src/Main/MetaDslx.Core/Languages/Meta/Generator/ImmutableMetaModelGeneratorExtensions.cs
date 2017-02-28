@@ -1,6 +1,6 @@
 ﻿using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
-using MetaDslx.Languages.Meta.Symbols.Internal;
+using MetaDslx.Languages.Meta.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Languages.Meta.Symbols
+namespace MetaDslx.Languages.Meta.Generator
 {
     internal enum ModelKind
     {
@@ -521,7 +521,7 @@ namespace MetaDslx.Languages.Meta.Symbols
         public string EscapeText(string text)
         {
             if (text == null) return null;
-            return StringEscapeUtilities.EscapeStringLiteralValue(text);
+            return StringUtilities.EscapeStringLiteralValue(text);
         }
 
         public string GetFieldName(MetaProperty mproperty, MetaClass mclass)

@@ -52,7 +52,7 @@ namespace MetaDslx.Compiler.Binding
             }
             else if (value.Length >= 2 && value.StartsWith("\'") && value.EndsWith("\'"))
             {
-                return StringEscapeUtilities.UnescapeCharLiteralValue(value.Substring(1, value.Length - 2));
+                return StringUtilities.UnescapeCharLiteralValue(value.Substring(1, value.Length - 2));
             }
             else if (value.Length >= 3 && value.StartsWith("@\"") && value.EndsWith("\""))
             {
@@ -60,7 +60,7 @@ namespace MetaDslx.Compiler.Binding
             }
             else if (value.Length >= 2 && value.StartsWith("\"") && value.EndsWith("\""))
             {
-                return StringEscapeUtilities.UnescapeStringLiteralValue(value.Substring(1, value.Length - 2));
+                return StringUtilities.UnescapeStringLiteralValue(value.Substring(1, value.Length - 2));
             }
             bool boolValue;
             if (bool.TryParse(value, out boolValue))

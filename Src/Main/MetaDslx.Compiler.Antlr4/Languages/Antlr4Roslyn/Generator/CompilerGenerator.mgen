@@ -1,4 +1,4 @@
-﻿namespace MetaDslx.Compiler.Antlr4Roslyn;
+﻿namespace MetaDslx.Languages.Antlr4Roslyn.Compiler;
 generator CompilerGenerator for Antlr4Grammar;
 
 using MetaDslx.Compiler;

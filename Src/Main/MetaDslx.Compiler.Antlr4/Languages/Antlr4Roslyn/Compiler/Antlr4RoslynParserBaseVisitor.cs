@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\oig2lb0k.bch\Antlr4RoslynParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\l505bhqd.rid\Antlr4RoslynParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.Compiler.Antlr4Roslyn {
+namespace MetaDslx.Languages.Antlr4Roslyn.Compiler {
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
@@ -364,16 +364,6 @@ public partial class Antlr4RoslynParserBaseVisitor<Result> : AbstractParseTreeVi
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitLabeledAlt([NotNull] Antlr4RoslynParser.LabeledAltContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="Antlr4RoslynParser.propertiesBlock"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitPropertiesBlock([NotNull] Antlr4RoslynParser.PropertiesBlockContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="Antlr4RoslynParser.lexerRuleSpec"/>.
 	/// <para>
@@ -795,4 +785,4 @@ public partial class Antlr4RoslynParserBaseVisitor<Result> : AbstractParseTreeVi
 	/// <return>The visitor result.</return>
 	public virtual Result VisitNullLiteral([NotNull] Antlr4RoslynParser.NullLiteralContext context) { return VisitChildren(context); }
 }
-} // namespace MetaDslx.Compiler.Antlr4Roslyn
+} // namespace MetaDslx.Languages.Antlr4Roslyn.Compiler

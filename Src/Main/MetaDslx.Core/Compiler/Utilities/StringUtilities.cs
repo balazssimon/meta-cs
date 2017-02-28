@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Utilities
 {
-    public class StringEscapeUtilities
+    public static class StringUtilities
     {
         private static readonly IDictionary<string, string> escapeChars = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> unescapeChars = new Dictionary<string, string>();
@@ -57,7 +57,7 @@ namespace MetaDslx.Compiler.Utilities
             throw new NotSupportedException();
         }
 
-        static StringEscapeUtilities()
+        static StringUtilities()
         {
             escapeChars.Add("\a", @"\a");
             escapeChars.Add("\b", @"\b");
@@ -82,6 +82,18 @@ namespace MetaDslx.Compiler.Utilities
             unescapeChars.Add(@"\0", "\0");
             unescapeChars.Add("\\\"", "\"");
             unescapeChars.Add("\\\'", "\'");
+        }
+
+        public static string ToPascalCase(this string name)
+        {
+            if (string.IsNullOrEmpty(name)) return name;
+            else return name[0].ToString().ToUpper() + name.Substring(1);
+        }
+
+        public static string ToCamelCase(this string name)
+        {
+            if (string.IsNullOrEmpty(name)) return name;
+            else return name[0].ToString().ToLower() + name.Substring(1);
         }
     }
 }

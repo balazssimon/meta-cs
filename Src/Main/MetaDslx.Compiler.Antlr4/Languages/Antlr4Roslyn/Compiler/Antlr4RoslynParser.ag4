@@ -208,11 +208,10 @@ ruleAltList
    ;
 
 labeledAlt
-   : alternative (POUND identifier annotation*)? propertiesBlock?
+   : alternative (POUND identifier annotation*)? 
    ;
 
-propertiesBlock : RARROW actionBlock;
-  
+ 
 // --------------------
 // Lexer rules
 lexerRuleSpec

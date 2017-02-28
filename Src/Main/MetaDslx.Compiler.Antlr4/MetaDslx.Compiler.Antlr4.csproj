@@ -43,33 +43,58 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Antlr4SyntaxParser.cs" />
-    <Compile Include="Compiler\Antlr4RoslynCompiler.cs" />
-    <Compile Include="Compiler\Antlr4RoslynErrorCode.cs" />
-    <Compile Include="Compiler\Antlr4RoslynLexer.cs">
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\Antlr4Compiler.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynCompiler.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynErrorCode.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynLexer.cs">
       <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Compiler\Antlr4RoslynParser.cs">
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynParser.cs">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Compiler\Antlr4RoslynParserBaseListener.cs">
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynParserBaseListener.cs">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Compiler\Antlr4RoslynParserBaseVisitor.cs">
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynParserBaseVisitor.cs">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Compiler\Antlr4RoslynParserListener.cs">
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynParserListener.cs">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Compiler\Antlr4RoslynParserVisitor.cs">
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynParserVisitor.cs">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Compiler\LexerAdaptor.cs" />
-    <Compile Include="Generator\CompilerGenerator.cs">
+    <Compile Include="Languages\Antlr4Roslyn\Compiler\LexerAdaptor.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Generator\CompilerGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CompilerGenerator.mgen</DependentUpon>
     </Compile>
-    <Compile Include="Generator\CompilerGeneratorUtils.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Generator\CompilerGeneratorUtils.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Generator\LanguageServiceGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LanguageServiceGenerator.mgen</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\MetaGenerator\Generator\MetaGeneratorCompiler.cs" />
+    <Compile Include="Languages\MetaGenerator\Generator\MetaGeneratorLexer.cs">
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\MetaGenerator\Generator\MetaGeneratorParser.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\MetaGenerator\Generator\MetaGeneratorParserBaseListener.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\MetaGenerator\Generator\MetaGeneratorParserBaseVisitor.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\MetaGenerator\Generator\MetaGeneratorParserListener.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\MetaGenerator\Generator\MetaGeneratorParserVisitor.cs">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </Compile>
     <Compile Include="Languages\Meta\Binding\MetaModelBinderFactoryVisitor.cs" />
     <Compile Include="Languages\Meta\Binding\MetaModelDeclarationTreeBuilderVisitor.cs" />
     <Compile Include="Languages\Meta\Binding\MetaModelSymbolBuilder.cs" />
@@ -95,44 +120,81 @@
     <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxFacts.cs" />
     <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Compiler\Antlr4RoslynLexer.ag4">
+    <None Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynLexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>Antlr4RoslynLexer.g4</LastGenOutput>
-      <CustomToolNamespace>MetaDslx.Compiler.Antlr4Roslyn</CustomToolNamespace>
     </None>
-    <None Include="Compiler\Antlr4RoslynLexer.g4">
+    <None Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynLexer.g4">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
     </None>
-    <None Include="Compiler\Antlr4RoslynLexer.literals">
+    <None Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynLexer.literals">
       <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
     </None>
-    <None Include="Compiler\Antlr4RoslynLexer.tokens">
+    <None Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynLexer.tokens">
       <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
     </None>
-    <None Include="Compiler\Antlr4RoslynParser.ag4">
+    <None Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynParser.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>Antlr4RoslynParser.g4</LastGenOutput>
-      <CustomToolNamespace>MetaDslx.Compiler.Antlr4Roslyn</CustomToolNamespace>
     </None>
-    <None Include="Compiler\Antlr4RoslynParser.g4">
+    <None Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynParser.g4">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </None>
-    <None Include="Compiler\Antlr4RoslynParser.literals">
+    <None Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynParser.literals">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </None>
-    <None Include="Compiler\Antlr4RoslynParser.tokens">
+    <None Include="Languages\Antlr4Roslyn\Compiler\Antlr4RoslynParser.tokens">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </None>
-    <None Include="Compiler\LexBasic.g4" />
-    <None Include="Generator\CompilerGenerator.mgen">
+    <None Include="Languages\Antlr4Roslyn\Compiler\LexBasic.g4" />
+    <None Include="Languages\Antlr4Roslyn\Generator\CompilerGenerator.mgen">
       <Generator>MetaGenerator</Generator>
       <LastGenOutput>CompilerGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Languages\Antlr4Roslyn\Generator\LanguageServiceGenerator.mgen">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>LanguageServiceGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Languages\MetaGenerator\Generator\MetaGeneratorLexer.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>MetaGeneratorLexer.g4</LastGenOutput>
+    </None>
+    <None Include="Languages\MetaGenerator\Generator\MetaGeneratorLexer.g4">
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+    <None Include="Languages\MetaGenerator\Generator\MetaGeneratorLexer.literals">
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+    </None>
+    <None Include="Languages\MetaGenerator\Generator\MetaGeneratorLexer.tokens">
+      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
+    </None>
+    <None Include="Languages\MetaGenerator\Generator\MetaGeneratorParser.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>MetaGeneratorParser.g4</LastGenOutput>
+    </None>
+    <None Include="Languages\MetaGenerator\Generator\MetaGeneratorParser.g4">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+    <None Include="Languages\MetaGenerator\Generator\MetaGeneratorParser.literals">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </None>
+    <None Include="Languages\MetaGenerator\Generator\MetaGeneratorParser.tokens">
+      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
     </None>
     <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelLexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
@@ -162,6 +224,18 @@
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Languages\Antlr4Roslyn\Annotations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\antlr-4.5.3-complete.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

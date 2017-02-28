@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Core.Test", "Test\MetaDslx.Core.Test\MetaDslx.Core.Test.csproj", "{31F5D0D7-2A21-4BC7-93C6-4B411698FCE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Compiler", "Main\MetaDslx.Compiler\MetaDslx.Compiler.csproj", "{5C030A11-FE5C-4454-A324-DEB0128FDC97}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Core", "Main\MetaDslx.Core\MetaDslx.Core.csproj", "{0C605C74-47DD-4316-AE55-AD65FCD34DDB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.TempConsole", "Test\MetaDslx.TempConsole\MetaDslx.TempConsole.csproj", "{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}"
@@ -18,8 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio.MetaGeneratorTemplate", "Main\MetaDslx.VisualStudio.MetaGeneratorTemplate\MetaDslx.VisualStudio.MetaGeneratorTemplate.csproj", "{53753507-98E0-4265-B111-1628F00C01D3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio.AnnotatedAntlr4Template", "Main\MetaDslx.VisualStudio.AnnotatedAntlr4Template\MetaDslx.VisualStudio.AnnotatedAntlr4Template.csproj", "{09DE6D64-0132-48F3-A46B-4A0E659C84EC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Soal", "Samples\MetaDslx.Soal\MetaDslx.Soal.csproj", "{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Languages.Calculator", "Samples\MetaDslx.Languages.Calculator\MetaDslx.Languages.Calculator.csproj", "{C7BD8655-44D1-46A5-9FD9-7487C41538DB}"
 EndProject
@@ -39,10 +35,6 @@ Global
 		{31F5D0D7-2A21-4BC7-93C6-4B411698FCE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31F5D0D7-2A21-4BC7-93C6-4B411698FCE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31F5D0D7-2A21-4BC7-93C6-4B411698FCE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C030A11-FE5C-4454-A324-DEB0128FDC97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C030A11-FE5C-4454-A324-DEB0128FDC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C030A11-FE5C-4454-A324-DEB0128FDC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C030A11-FE5C-4454-A324-DEB0128FDC97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C605C74-47DD-4316-AE55-AD65FCD34DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0C605C74-47DD-4316-AE55-AD65FCD34DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C605C74-47DD-4316-AE55-AD65FCD34DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -67,10 +59,6 @@ Global
 		{09DE6D64-0132-48F3-A46B-4A0E659C84EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09DE6D64-0132-48F3-A46B-4A0E659C84EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09DE6D64-0132-48F3-A46B-4A0E659C84EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAACE3CC-F257-49D1-9832-E07DB36DF2BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7BD8655-44D1-46A5-9FD9-7487C41538DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7BD8655-44D1-46A5-9FD9-7487C41538DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7BD8655-44D1-46A5-9FD9-7487C41538DB}.Release|Any CPU.ActiveCfg = Release|Any CPU

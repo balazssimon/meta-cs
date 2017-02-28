@@ -130,13 +130,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModel.mm</DependentUpon>
     </Compile>
-    <Compile Include="Languages\Meta\Symbols\ImmutableMetaModelGenerator.cs">
+    <Compile Include="Languages\Meta\Generator\ImmutableMetaModelGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
     </Compile>
-    <Compile Include="Languages\Meta\Symbols\ImmutableMetaModelGeneratorExtensions.cs" />
-    <Compile Include="Compiler\Utilities\StringEscapeUtilities.cs" />
+    <Compile Include="Languages\Meta\Generator\ImmutableMetaModelGeneratorExtensions.cs" />
+    <Compile Include="Compiler\Utilities\StringUtilities.cs" />
     <Compile Include="Core\LazyEvaluationDiagnosticInfo.cs" />
     <Compile Include="Core\ModelCollections.cs" />
     <Compile Include="Core\ModelErrorCode.cs" />
@@ -257,7 +257,7 @@
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>ImmutableMetaModel.cs</LastGenOutput>
     </None>
-    <None Include="Languages\Meta\Symbols\ImmutableMetaModelGenerator.mgen">
+    <None Include="Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen">
       <Generator>MetaGenerator</Generator>
       <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
     </None>

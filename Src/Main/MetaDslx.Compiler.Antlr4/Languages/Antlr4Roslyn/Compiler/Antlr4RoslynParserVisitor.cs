@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\oig2lb0k.bch\Antlr4RoslynParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\l505bhqd.rid\Antlr4RoslynParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.Compiler.Antlr4Roslyn {
+namespace MetaDslx.Languages.Antlr4Roslyn.Compiler {
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
@@ -230,12 +230,6 @@ public interface IAntlr4RoslynParserVisitor<Result> : IParseTreeVisitor<Result> 
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitLabeledAlt([NotNull] Antlr4RoslynParser.LabeledAltContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="Antlr4RoslynParser.propertiesBlock"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitPropertiesBlock([NotNull] Antlr4RoslynParser.PropertiesBlockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="Antlr4RoslynParser.lexerRuleSpec"/>.
 	/// </summary>
@@ -489,4 +483,4 @@ public interface IAntlr4RoslynParserVisitor<Result> : IParseTreeVisitor<Result> 
 	/// <return>The visitor result.</return>
 	Result VisitNullLiteral([NotNull] Antlr4RoslynParser.NullLiteralContext context);
 }
-} // namespace MetaDslx.Compiler.Antlr4Roslyn
+} // namespace MetaDslx.Languages.Antlr4Roslyn.Compiler

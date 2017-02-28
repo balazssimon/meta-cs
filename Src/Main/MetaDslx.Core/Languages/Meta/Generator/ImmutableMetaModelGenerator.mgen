@@ -1,7 +1,8 @@
-﻿namespace MetaDslx.Languages.Meta.Symbols;
+﻿namespace MetaDslx.Languages.Meta.Generator;
 generator ImmutableMetaModelGenerator for IEnumerable<ImmutableSymbol>;
 
 using MetaDslx.Core;
+using MetaDslx.Languages.Meta.Symbols;
 using System.Collections.Immutable;
 
 properties Properties

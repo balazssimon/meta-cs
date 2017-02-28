@@ -6,6 +6,7 @@ using System.Linq;
 namespace MetaDslx.Core.Immutable.Test
 {
     using Compiler.Diagnostics;
+    using Languages.Meta.Symbols;
     using System.Collections.Immutable;
     using System.Threading;
     public static class TestModelDescriptor

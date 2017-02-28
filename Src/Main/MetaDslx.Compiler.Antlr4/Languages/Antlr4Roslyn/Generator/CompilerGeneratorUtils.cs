@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Antlr4Roslyn
+namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
 {
     public enum TypeKind
     {

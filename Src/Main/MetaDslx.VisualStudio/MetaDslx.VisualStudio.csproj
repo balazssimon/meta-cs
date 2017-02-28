@@ -198,10 +198,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.Compiler\MetaDslx.Compiler.csproj">
-      <Project>{5c030a11-fe5c-4454-a324-deb0128fdc97}</Project>
-      <Name>MetaDslx.Compiler</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>
