@@ -333,7 +333,7 @@ namespace MetaDslx.Compiler.Diagnostics
             return diag.Info;
         }
 
-        public DiagnosticInfo Add(Location location, ErrorCode code, ImmutableArray<IMetaSymbol> symbols, params object[] args)
+        public DiagnosticInfo Add(Location location, ErrorCode code, ImmutableArray<ISymbol> symbols, params object[] args)
         {
             var info = new SymbolDiagnosticInfo(symbols, code, args);
             var diag = Diagnostic.Create(location, info);

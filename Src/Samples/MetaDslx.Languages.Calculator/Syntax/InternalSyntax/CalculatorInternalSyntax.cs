@@ -1,3 +1,6 @@
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -1958,16 +1961,18 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	internal class CalculatorGreenFactory : InternalSyntaxFactory
 	{
 	    internal static readonly CalculatorGreenFactory Instance = new CalculatorGreenFactory();
-
-        protected override Language LanguageCore
-        {
-            get
-            {
-                return CalculatorLanguage.Instance;
-            }
-        }
-
-        public CalculatorGreenTrivia Trivia(CalculatorSyntaxKind kind, string text)
+	
+		public new CalculatorLanguage Language
+		{
+			get { return CalculatorLanguage.Instance; }
+		}
+	
+		protected override Language LanguageCore
+		{
+			get { return this.Language; }
+		}
+	
+		public CalculatorGreenTrivia Trivia(CalculatorSyntaxKind kind, string text)
 		{
 		    return new CalculatorGreenTrivia(kind, text, null, null);
 		}

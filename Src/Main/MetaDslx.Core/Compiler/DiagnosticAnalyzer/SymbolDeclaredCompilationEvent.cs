@@ -17,13 +17,13 @@ namespace MetaDslx.Compiler.Diagnostics
     {
         private readonly Lazy<ImmutableArray<SyntaxReference>> _lazyCachedDeclaringReferences;
 
-        public SymbolDeclaredCompilationEvent(Compilation compilation, IMetaSymbol symbol) : base(compilation)
+        public SymbolDeclaredCompilationEvent(Compilation compilation, ISymbol symbol) : base(compilation)
         {
             this.Symbol = symbol;
             this._lazyCachedDeclaringReferences = new Lazy<ImmutableArray<SyntaxReference>>(() => { object value = symbol.MGet(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty); return value != null ? (ImmutableArray<SyntaxReference>)value : ImmutableArray<SyntaxReference>.Empty; });
         }
 
-        public SymbolDeclaredCompilationEvent(Compilation compilation, IMetaSymbol symbol, Lazy<SemanticModel> lazySemanticModel) : this(compilation, symbol)
+        public SymbolDeclaredCompilationEvent(Compilation compilation, ISymbol symbol, Lazy<SemanticModel> lazySemanticModel) : this(compilation, symbol)
         {
             _lazySemanticModel = lazySemanticModel;
         }
@@ -33,7 +33,7 @@ namespace MetaDslx.Compiler.Diagnostics
             _semanticModel = newSemanticModel;
         }
 
-        public IMetaSymbol Symbol { get; }
+        public ISymbol Symbol { get; }
 
         // PERF: We avoid allocations in re-computing syntax references for declared symbol during event processing by caching them directly on this member.
         public ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _lazyCachedDeclaringReferences.Value;

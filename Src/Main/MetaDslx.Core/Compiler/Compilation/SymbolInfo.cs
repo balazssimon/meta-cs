@@ -11,9 +11,9 @@ namespace MetaDslx.Compiler
 {
     public sealed class SymbolInfo : IEquatable<SymbolInfo>
     {
-        public static readonly SymbolInfo None = new SymbolInfo(null, ImmutableArray<IMetaSymbol>.Empty, CandidateReason.None);
+        public static readonly SymbolInfo None = new SymbolInfo(null, ImmutableArray<ISymbol>.Empty, CandidateReason.None);
 
-        private ImmutableArray<IMetaSymbol> _candidateSymbols;
+        private ImmutableArray<ISymbol> _candidateSymbols;
 
         /// <summary>
         /// The symbol that was referred to by the syntax node, if any. Returns null if the given
@@ -21,7 +21,7 @@ namespace MetaDslx.Compiler
         /// still be that case that we have one or more "best guesses" as to what symbol was
         /// intended. These best guesses are available via the CandidateSymbols property.
         /// </summary>
-        public IMetaSymbol Symbol { get; }
+        public ISymbol Symbol { get; }
 
         /// <summary>
         /// If the expression did not successfully resolve to a symbol, but there were one or more
@@ -30,7 +30,7 @@ namespace MetaDslx.Compiler
         /// available in the CandidateReason property. For example, if the symbol was inaccessible,
         /// ambiguous, or used in the wrong context.
         /// </summary>
-        public ImmutableArray<IMetaSymbol> CandidateSymbols
+        public ImmutableArray<ISymbol> CandidateSymbols
         {
             get
             {
@@ -38,11 +38,11 @@ namespace MetaDslx.Compiler
             }
         }
 
-        public ImmutableArray<IMetaSymbol> GetAllSymbols()
+        public ImmutableArray<ISymbol> GetAllSymbols()
         {
             if (this.Symbol != null)
             {
-                return ImmutableArray.Create<IMetaSymbol>(this.Symbol);
+                return ImmutableArray.Create<ISymbol>(this.Symbol);
             }
             else
             {
@@ -57,25 +57,25 @@ namespace MetaDslx.Compiler
         /// </summary>
         public CandidateReason CandidateReason { get; }
 
-        public SymbolInfo(IMetaSymbol symbol)
-            : this(symbol, ImmutableArray<IMetaSymbol>.Empty, CandidateReason.None)
+        public SymbolInfo(ISymbol symbol)
+            : this(symbol, ImmutableArray<ISymbol>.Empty, CandidateReason.None)
         {
         }
 
-        public SymbolInfo(IMetaSymbol symbol, CandidateReason reason)
-            : this(symbol, ImmutableArray<IMetaSymbol>.Empty, reason)
+        public SymbolInfo(ISymbol symbol, CandidateReason reason)
+            : this(symbol, ImmutableArray<ISymbol>.Empty, reason)
         {
         }
 
-        public SymbolInfo(ImmutableArray<IMetaSymbol> candidateSymbols, CandidateReason candidateReason)
+        public SymbolInfo(ImmutableArray<ISymbol> candidateSymbols, CandidateReason candidateReason)
             : this(null, candidateSymbols, candidateReason)
         {
         }
 
-        public SymbolInfo(IMetaSymbol symbol, ImmutableArray<IMetaSymbol> candidateSymbols, CandidateReason candidateReason)
+        public SymbolInfo(ISymbol symbol, ImmutableArray<ISymbol> candidateSymbols, CandidateReason candidateReason)
         {
             this.Symbol = symbol;
-            _candidateSymbols = candidateSymbols.IsDefault ? ImmutableArray.Create<IMetaSymbol>() : candidateSymbols;
+            _candidateSymbols = candidateSymbols.IsDefault ? ImmutableArray.Create<ISymbol>() : candidateSymbols;
             this.CandidateReason = candidateReason;
         }
 

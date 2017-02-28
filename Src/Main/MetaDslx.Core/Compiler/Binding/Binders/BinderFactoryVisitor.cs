@@ -64,22 +64,19 @@ namespace MetaDslx.Compiler.Binding.Binders
             return this.CreateRootBinderCore(outerBinder, node, parentSymbol);
         }
 
-        protected virtual Binder CreateRootBinderCore(Binder parentBinder, RedNode node, IMetaSymbol container)
+        protected virtual Binder CreateRootBinderCore(Binder parentBinder, RedNode node, ISymbol container)
         {
             return new RootBinder(parentBinder, node, container);
         }
 
         protected virtual Binder CreateBodyBinder(Binder parentBinder, RedNode node)
         {
-            IMetaSymbol parentSymbol = parentBinder.ContainingSymbol;
-            IMetaSymbol symbol = this.GetChildSymbol(null, node.Span, parentSymbol, null);
-            if (symbol == null) return parentBinder;
-            return this.CreateBodyBinderCore(parentBinder, node, symbol);
+            return this.CreateBodyBinderCore(parentBinder, node);
         }
 
-        protected virtual Binder CreateBodyBinderCore(Binder parentBinder, RedNode node, IMetaSymbol container)
+        protected virtual Binder CreateBodyBinderCore(Binder parentBinder, RedNode node)
         {
-            return new BodyBinder(parentBinder, node, container);
+            return new BodyBinder(parentBinder, node);
         }
 
         protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, RedNode node, Type symbolType)
@@ -201,7 +198,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             return resultBinder;
         }
 
-        protected virtual IMetaSymbol GetContainingSymbol(Binder binder, RedNode node)
+        protected virtual ISymbol GetContainingSymbol(Binder binder, RedNode node)
         {
             var container = binder.ContainingSymbol;
             if ((object)container == null)
@@ -221,10 +218,10 @@ namespace MetaDslx.Compiler.Binding.Binders
             return container;
         }
 
-        protected virtual IMetaSymbol GetChildSymbol(string childName, TextSpan childSpan, IMetaSymbol container, Type kind)
+        protected virtual ISymbol GetChildSymbol(string childName, TextSpan childSpan, ISymbol container, Type kind)
         {
             if (container == null) return null;
-            foreach (IMetaSymbol sym in container.MChildren)
+            foreach (ISymbol sym in container.MChildren)
             {
                 if (childName != null && sym.MName != childName)
                 {

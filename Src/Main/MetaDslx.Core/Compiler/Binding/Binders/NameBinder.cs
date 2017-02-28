@@ -14,26 +14,26 @@ namespace MetaDslx.Compiler.Binding.Binders
 {
     public interface INameBinder //: IValueBinder
     {
-        ImmutableArray<IMetaSymbol> DefinedSymbols { get; }
+        ImmutableArray<ISymbol> DefinedSymbols { get; }
     }
 
     public sealed class NameBinder : Binder, INameBinder
     {
-        private ImmutableArray<IMetaSymbol> _lazyDefinedSymbols;
+        private ImmutableArray<ISymbol> _lazyDefinedSymbols;
 
         public NameBinder(Binder next, RedNode node) 
             : base(next, node)
         {
         }
 
-        public ImmutableArray<IMetaSymbol> DefinedSymbols
+        public ImmutableArray<ISymbol> DefinedSymbols
         {
             get
             {
                 if (_lazyDefinedSymbols.IsDefault)
                 {
                     var qualifierBinders = this.FindDescendantBinders<IQualifierBinder>();
-                    ArrayBuilder<IMetaSymbol> builder = ArrayBuilder<IMetaSymbol>.GetInstance();
+                    ArrayBuilder<ISymbol> builder = ArrayBuilder<ISymbol>.GetInstance();
                     try
                     {
                         foreach (var qualifierBinder in qualifierBinders)
@@ -54,7 +54,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public IMetaSymbol Symbol
+        public ISymbol Symbol
         {
             get
             {
@@ -70,7 +70,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public ImmutableArray<IMetaSymbol> GetSymbols()
+        public ImmutableArray<ISymbol> GetSymbols()
         {
             return this.DefinedSymbols;
         }

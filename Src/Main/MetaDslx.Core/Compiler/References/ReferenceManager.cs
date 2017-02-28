@@ -120,9 +120,9 @@ namespace MetaDslx.Compiler.References
             }
         }
 
-        public ImmutableArray<IMetaSymbol> GetRootNamespaces(int i)
+        public ImmutableArray<ISymbol> GetRootNamespaces(int i)
         {
-            return ImmutableArray<IMetaSymbol>.Empty;
+            return ImmutableArray<ISymbol>.Empty;
         }
 
         public ImmutableArray<Diagnostic> Diagnostics

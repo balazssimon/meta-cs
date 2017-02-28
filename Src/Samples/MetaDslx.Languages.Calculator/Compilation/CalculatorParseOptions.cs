@@ -1,3 +1,6 @@
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,6 +10,7 @@ using System.Threading.Tasks;
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
+
 namespace MetaDslx.Languages.Calculator
 {
     /// <summary>
@@ -18,11 +22,14 @@ namespace MetaDslx.Languages.Calculator
         /// The default parse options.
         /// </summary>
         public static CalculatorParseOptions Default { get; } = new CalculatorParseOptions();
+
         private ImmutableDictionary<string, string> _features;
+
         /// <summary>
         /// Gets the language version.
         /// </summary>
         public LanguageVersion LanguageVersion { get; private set; }
+
         public CalculatorParseOptions(
             LanguageVersion languageVersion = LanguageVersion.Calculator1,
             DocumentationMode documentationMode = DocumentationMode.Parse,
@@ -40,6 +47,7 @@ namespace MetaDslx.Languages.Calculator
             this.LanguageVersion = languageVersion;
             _features = ImmutableDictionary<string, string>.Empty;
         }
+
         internal CalculatorParseOptions(
             LanguageVersion languageVersion,
             DocumentationMode documentationMode,
@@ -53,60 +61,74 @@ namespace MetaDslx.Languages.Calculator
             }
             _features = features;
         }
+
         private CalculatorParseOptions(CalculatorParseOptions other) : this(
             languageVersion: other.LanguageVersion,
             documentationMode: other.DocumentationMode,
             kind: other.Kind)
         {
         }
+
         public new CalculatorParseOptions WithKind(SourceCodeKind kind)
         {
             if (kind == this.Kind)
             {
                 return this;
             }
+
             if (!kind.IsValid())
             {
                 throw new ArgumentOutOfRangeException(nameof(kind));
             }
+
             return new CalculatorParseOptions(this) { Kind = kind };
         }
+
         public CalculatorParseOptions WithLanguageVersion(LanguageVersion version)
         {
             if (version == this.LanguageVersion)
             {
                 return this;
             }
+
             if (!version.IsValid())
             {
                 throw new ArgumentOutOfRangeException(nameof(version));
             }
+
             return new CalculatorParseOptions(this) { LanguageVersion = version };
         }
+
         public new CalculatorParseOptions WithDocumentationMode(DocumentationMode documentationMode)
         {
             if (documentationMode == this.DocumentationMode)
             {
                 return this;
             }
+
             if (!documentationMode.IsValid())
             {
                 throw new ArgumentOutOfRangeException(nameof(documentationMode));
             }
+
             return new CalculatorParseOptions(this) { DocumentationMode = documentationMode };
         }
+
         public override ParseOptions CommonWithKind(SourceCodeKind kind)
         {
             return WithKind(kind);
         }
+
         protected override ParseOptions CommonWithDocumentationMode(DocumentationMode documentationMode)
         {
             return WithDocumentationMode(documentationMode);
         }
+
         protected override ParseOptions CommonWithFeatures(IEnumerable<KeyValuePair<string, string>> features)
         {
             return WithFeatures(features);
         }
+
         /// <summary>
         /// Enable some experimental language features for testing.
         /// </summary>
@@ -116,6 +138,7 @@ namespace MetaDslx.Languages.Calculator
             {
                 throw new ArgumentNullException(nameof(features));
             }
+
             return new CalculatorParseOptions(this) { _features = features.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase) };
         }
         public override IReadOnlyDictionary<string, string> Features
@@ -140,6 +163,7 @@ namespace MetaDslx.Languages.Calculator
         {
             return this.Equals(obj as CalculatorParseOptions);
         }
+
         public bool Equals(CalculatorParseOptions other)
         {
             if (object.ReferenceEquals(this, other))
@@ -152,6 +176,7 @@ namespace MetaDslx.Languages.Calculator
             }
             return this.LanguageVersion == other.LanguageVersion;
         }
+
         public override int GetHashCode()
         {
             return

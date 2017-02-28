@@ -201,6 +201,17 @@ namespace MetaDslx.Compiler.Syntax
             }
         }
 
+
+        /// <summary>
+        /// Gets a <see cref="SyntaxReference"/> for this syntax node. CommonSyntaxReferences can be used to
+        /// regain access to a syntax node without keeping the entire tree and source text in
+        /// memory.
+        /// </summary>
+        public SyntaxReference GetReference()
+        {
+            return this.SyntaxTree.GetReference(this);
+        }
+
         public Location GetLocation()
         {
             return this.SyntaxTree.GetLocation(this.Span);

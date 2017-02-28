@@ -11,9 +11,9 @@ namespace MetaDslx.Compiler.Syntax
     /// </summary>
     public class SimpleSyntaxReference : SyntaxReference
     {
-        private readonly SyntaxNode _node;
+        private readonly RedNode _node;
 
-        public SimpleSyntaxReference(SyntaxNode node)
+        public SimpleSyntaxReference(RedNode node)
         {
             _node = node;
         }
@@ -34,7 +34,7 @@ namespace MetaDslx.Compiler.Syntax
             }
         }
 
-        public override SyntaxNode GetSyntax(CancellationToken cancellationToken)
+        public override RedNode GetSyntax(CancellationToken cancellationToken)
         {
             return _node;
         }

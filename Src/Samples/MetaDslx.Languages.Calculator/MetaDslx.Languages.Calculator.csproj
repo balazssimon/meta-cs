@@ -42,65 +42,73 @@
     <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalculatorLexer.cs">
+    <Compile Include="Binding\CalculatorBinderFactoryVisitor.cs" />
+    <Compile Include="Binding\CalculatorDeclarationTreeBuilderVisitor.cs" />
+    <Compile Include="Binding\CalculatorSymbolBuilder.cs" />
+    <Compile Include="Syntax\InternalSyntax\CalculatorLexer.cs">
       <DependentUpon>CalculatorLexer.ag4</DependentUpon>
     </Compile>
-    <Compile Include="CalculatorLexerAnnotator.cs">
+    <Compile Include="Syntax\InternalSyntax\CalculatorLexerAnnotator.cs">
       <DependentUpon>CalculatorLexer.ag4</DependentUpon>
     </Compile>
-    <Compile Include="CalculatorParser.cs">
+    <Compile Include="Syntax\InternalSyntax\CalculatorParser.cs">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="CalculatorParserAnnotator.cs">
+    <Compile Include="Syntax\InternalSyntax\CalculatorParserAnnotator.cs">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="CalculatorParserBaseListener.cs">
+    <Compile Include="Syntax\InternalSyntax\CalculatorParserBaseListener.cs">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="CalculatorParserBaseVisitor.cs">
+    <Compile Include="Syntax\InternalSyntax\CalculatorParserBaseVisitor.cs">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="CalculatorParserListener.cs">
+    <Compile Include="Syntax\InternalSyntax\CalculatorParserListener.cs">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </Compile>
-    <Compile Include="CalculatorParserVisitor.cs">
+    <Compile Include="Syntax\InternalSyntax\CalculatorParserVisitor.cs">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </Compile>
+    <Compile Include="Compilation\CalculatorCompilation.cs" />
+    <Compile Include="Compilation\CalculatorCompilationFactory.cs" />
+    <Compile Include="Compilation\CalculatorCompilationOptions.cs" />
     <Compile Include="Compilation\CalculatorFeature.cs" />
     <Compile Include="Compilation\CalculatorLanguage.cs" />
     <Compile Include="Compilation\CalculatorLanguageVersion.cs" />
     <Compile Include="Compilation\CalculatorParseOptions.cs" />
+    <Compile Include="Compilation\CalculatorScriptCompilationInfo.cs" />
     <Compile Include="Errors\CalculatorErrorCode.cs" />
     <Compile Include="Parser\CalculatorSyntaxParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Symbols\Temp.cs" />
     <Compile Include="Syntax\CalculatorSyntax.cs" />
+    <Compile Include="Syntax\CalculatorSyntaxFacts.cs" />
     <Compile Include="Syntax\CalculatorSyntaxTree.cs" />
     <Compile Include="Syntax\InternalSyntax\CalculatorInternalSyntax.cs" />
-    <Compile Include="TempAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CalculatorLexer.ag4">
+    <None Include="Syntax\InternalSyntax\CalculatorLexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>CalculatorLexer.g4</LastGenOutput>
     </None>
-    <None Include="CalculatorLexer.g4">
+    <None Include="Syntax\InternalSyntax\CalculatorLexer.g4">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CalculatorLexer.ag4</DependentUpon>
     </None>
-    <None Include="CalculatorLexer.tokens">
+    <None Include="Syntax\InternalSyntax\CalculatorLexer.tokens">
       <DependentUpon>CalculatorLexer.ag4</DependentUpon>
     </None>
-    <None Include="CalculatorParser.ag4">
+    <None Include="Syntax\InternalSyntax\CalculatorParser.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>CalculatorParser.g4</LastGenOutput>
     </None>
-    <None Include="CalculatorParser.g4">
+    <None Include="Syntax\InternalSyntax\CalculatorParser.g4">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </None>
-    <None Include="CalculatorParser.tokens">
+    <None Include="Syntax\InternalSyntax\CalculatorParser.tokens">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </None>
   </ItemGroup>

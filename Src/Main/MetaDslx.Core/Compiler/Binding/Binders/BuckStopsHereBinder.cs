@@ -19,7 +19,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         {
         }
 
-        public override IMetaSymbol ContainingSymbol
+        public override ISymbol ContainingSymbol
         {
             get
             {
@@ -35,7 +35,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        protected override bool IsAccessibleHelper(IMetaSymbol symbol, IMetaSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<IMetaSymbol> basesBeingResolved)
+        protected override bool IsAccessibleHelper(ISymbol symbol, ISymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<ISymbol> basesBeingResolved)
         {
             failedThroughTypeCheck = false;
             return true;

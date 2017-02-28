@@ -16,14 +16,14 @@ namespace MetaDslx.Compiler.Binding.Binders
     {
         ImmutableArray<RedNode> IdentifierNodes { get; }
         bool IsLastChild(RedNode node);
-        IMetaSymbol GetChildContextSymbol(RedNode node);
+        ISymbol GetChildContextSymbol(RedNode node);
     }
 
     public class QualifierBinder : Binder, IQualifierBinder
     {
         private ImmutableArray<RedNode> _lazyIdentifierNodes;
-        private IMetaSymbol[] _lazySymbols;
-        private IMetaSymbol _lazySymbol;
+        private ISymbol[] _lazySymbols;
+        private ISymbol _lazySymbol;
         private IQualifierBinder _lazyParentQualifierBinder;
 
         public QualifierBinder(Binder next, RedNode node) 
@@ -40,7 +40,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                     Interlocked.CompareExchange(ref _lazyParentQualifierBinder, this.FindAncestorBinder<IQualifierBinder>(), null);
                     var qualifierBinders = this.FindDescendantBinders<IQualifierBinder>();
                     ImmutableInterlocked.InterlockedExchange(ref _lazyIdentifierNodes, qualifierBinders.Select(qb => ((Binder)qb).Node).ToImmutableArray());
-                    Interlocked.CompareExchange(ref _lazySymbols, new IMetaSymbol[_lazyIdentifierNodes.Length], null);
+                    Interlocked.CompareExchange(ref _lazySymbols, new ISymbol[_lazyIdentifierNodes.Length], null);
                     if (_lazySymbols.Length > 0 && _lazyParentQualifierBinder != null)
                     {
                         Interlocked.CompareExchange(ref _lazySymbols[0], _lazyParentQualifierBinder.GetChildContextSymbol(this.Node), null);
@@ -56,7 +56,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             return index >= 0 && index == _lazySymbols.Length-1 && (_lazyParentQualifierBinder == null || _lazyParentQualifierBinder.IsLastChild(this.Node));
         }
 
-        public IMetaSymbol GetChildContextSymbol(RedNode node)
+        public ISymbol GetChildContextSymbol(RedNode node)
         {
             int index = this.IdentifierNodes.IndexOf(node);
             if (index > 0)
@@ -81,7 +81,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             get { return this.Symbol; }
         }
 
-        public virtual IMetaSymbol Symbol
+        public virtual ISymbol Symbol
         {
             get
             {
@@ -129,11 +129,11 @@ namespace MetaDslx.Compiler.Binding.Binders
             else return ImmutableArray<object>.Empty;
         }
 
-        public ImmutableArray<IMetaSymbol> GetSymbols()
+        public ImmutableArray<ISymbol> GetSymbols()
         {
             var symbol = this.Symbol;
             if (symbol != null) return ImmutableArray.Create(this.Symbol);
-            else return ImmutableArray<IMetaSymbol>.Empty;
+            else return ImmutableArray<ISymbol>.Empty;
         }
 
     }

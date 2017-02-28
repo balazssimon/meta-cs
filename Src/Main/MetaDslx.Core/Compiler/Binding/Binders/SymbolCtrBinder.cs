@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Core;
 using System.Collections.Immutable;
+using System.Threading;
+using MetaDslx.Compiler.Diagnostics;
 
 namespace MetaDslx.Compiler.Binding.Binders
 {
-    public interface ISymbolCtrBinder : ISymbolDefBinder
+    public interface ISymbolCtrBinder : ISymbolDefBinder, IValueBinder
     {
 
     }
@@ -17,6 +19,7 @@ namespace MetaDslx.Compiler.Binding.Binders
     public sealed class SymbolCtrBinder : Binder, ISymbolCtrBinder
     {
         private readonly Type _symbolType;
+        private ISymbol _symbol;
 
         public SymbolCtrBinder(Binder next, RedNode node, Type symbolType)
             : base(next, node)
@@ -29,11 +32,16 @@ namespace MetaDslx.Compiler.Binding.Binders
             get { return _symbolType; }
         }
 
-        public IMetaSymbol Symbol
+        public ISymbol Symbol
         {
             get
             {
-                return null;
+                if (_symbol == null)
+                {
+                    var symbol = this.Compilation.SymbolBuilder.BuildSymbol(null, this.Node, null, _symbolType);
+                    Interlocked.CompareExchange(ref _symbol, symbol, null);
+                }
+                return _symbol;
             }
         }
 
@@ -45,22 +53,28 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public ImmutableArray<IMetaSymbol> DefinedSymbols
+        public ImmutableArray<ISymbol> DefinedSymbols
         {
             get
             {
-                return ImmutableArray<IMetaSymbol>.Empty;
+                if (this.Symbol != null) return ImmutableArray.Create(_symbol);
+                else return ImmutableArray<ISymbol>.Empty;
             }
         }
 
-        public ImmutableArray<IMetaSymbol> GetSymbols()
+        public ImmutableArray<ISymbol> GetSymbols()
         {
-            return ImmutableArray<IMetaSymbol>.Empty;
+            return this.DefinedSymbols;
         }
 
         public ImmutableArray<object> GetValues()
         {
-            return ImmutableArray<object>.Empty;
+            return this.DefinedSymbols.CastArray<object>();
+        }
+
+        public ImmutableArray<Diagnostic> GetErrors()
+        {
+            return ImmutableArray<Diagnostic>.Empty;
         }
     }
 }

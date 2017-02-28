@@ -11,7 +11,7 @@ namespace MetaDslx.Compiler
 {
     public class SymbolCompiler
     {
-        internal static void CompileSymbols(CompilationBase compilation, object moduleBeingBuiltOpt, bool hasDeclarationErrors, DiagnosticBag diagnostics, Func<IMetaSymbol, bool> filterOpt, CancellationToken cancellationToken)
+        internal static void CompileSymbols(CompilationBase compilation, object moduleBeingBuiltOpt, bool hasDeclarationErrors, DiagnosticBag diagnostics, Func<ISymbol, bool> filterOpt, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

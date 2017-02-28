@@ -36,11 +36,11 @@ namespace MetaDslx.Compiler.Binding
             get { return _compilation._lazyModelBuilder; }
         }
 
-        public IMetaSymbol BuildSymbol(IMetaSymbol container, SyntaxNode node, string parentPropertyToAddTo, Type symbolType)
+        public ISymbol BuildSymbol(ISymbol container, RedNode node, string parentPropertyToAddTo, Type symbolType)
         {
             MutableSymbol symbol = this.CreateSymbol(symbolType);
             MutableSymbol parent = container as MutableSymbol;
-            if (parent != null)
+            if (parent != null && parentPropertyToAddTo != null)
             {
                 ModelProperty parentProperty = symbol.MGetProperty(parentPropertyToAddTo);
                 if (parentProperty != null)
@@ -54,22 +54,22 @@ namespace MetaDslx.Compiler.Binding
                 symbol.MSet(CompilerAttachedProperties.ContainingCompilationProperty, _compilation);
             }
             symbol.MAttachProperty(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty);
-            symbol.MSet(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty, node.GetReference());
+            symbol.MSet(CompilerAttachedProperties.DeclaringSyntaxReferencesProperty, ImmutableArray.Create(node.GetReference()));
             this.BuildSymbolProperties(symbol, node, null);
             return symbol;
         }
 
-        public IMetaSymbol BuildRootDeclarationSymbol(IMetaSymbol container, MergedDeclaration declaration)
+        public ISymbol BuildRootDeclarationSymbol(ISymbol container, MergedDeclaration declaration)
         {
             return this.BuildDeclarationSymbol(container, declaration, true);
         }
 
-        public IMetaSymbol BuildDeclarationSymbol(IMetaSymbol container, MergedDeclaration declaration, bool isRoot = false)
+        public ISymbol BuildDeclarationSymbol(ISymbol container, MergedDeclaration declaration, bool isRoot = false)
         {
             MutableSymbol symbol = null;
             if (isRoot)
             {
-                symbol = this.CreateGlobalNamespace(ImmutableArray<IMetaSymbol>.Empty);
+                symbol = this.CreateGlobalNamespace(ImmutableArray<ISymbol>.Empty);
             }
             else
             {
@@ -113,13 +113,13 @@ namespace MetaDslx.Compiler.Binding
             return symbol;
         }
 
-        private Dictionary<string, ImmutableArray<IMetaSymbol>> BuildDeclarationParentPropertyToMemberMap(MutableSymbol symbol, IMetaSymbol container, MergedDeclaration declaration)
+        private Dictionary<string, ImmutableArray<ISymbol>> BuildDeclarationParentPropertyToMemberMap(MutableSymbol symbol, ISymbol container, MergedDeclaration declaration)
         {
-            var map = new Dictionary<string, ImmutableArray<IMetaSymbol>>();
+            var map = new Dictionary<string, ImmutableArray<ISymbol>>();
             var cbp = declaration.ChildrenByParentProperties;
             foreach (var kvp in cbp)
             {
-                ArrayBuilder<IMetaSymbol> membersBuilder = ArrayBuilder<IMetaSymbol>.GetInstance();
+                ArrayBuilder<ISymbol> membersBuilder = ArrayBuilder<ISymbol>.GetInstance();
                 try
                 {
                     foreach (var item in kvp.Value)
@@ -165,7 +165,7 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        private void BuildSymbolProperties(MutableSymbol symbol, SyntaxNode node, MergedDeclaration declaration)
+        private void BuildSymbolProperties(MutableSymbol symbol, RedNode node, MergedDeclaration declaration)
         {
             Debug.Assert(symbol != null);
             Location location = node.GetLocation();
@@ -178,16 +178,19 @@ namespace MetaDslx.Compiler.Binding
                 ModelProperty currentProperty = symbol.MGetProperty(currentName);
                 if (currentProperty.IsCollection)
                 {
-                    symbol.MAddRangeLazy(currentProperty, LazyValue.CreateMultiple(() => BindMultipleValues(symbol, node, currentName), true));
+                    symbol.MAddRangeLazy(currentProperty, LazyValue.CreateMultiple(() => BindMultipleValues(symbol, node, currentName), node.GetLocation(), diagnostics));
+                    //symbol.MAddRangeLazy(currentProperty, LazyValue.CreateMultiple(() => BindMultipleValues(symbol, node, currentName), true));
                 }
                 else if (!symbol.MIsSet(currentProperty))
                 {
-                    symbol.MSetLazy(currentProperty, LazyValue.CreateSingle(() => BindSingleValue(symbol, node, currentName), true));
+                    symbol.MSetLazy(currentProperty, LazyValue.CreateSingle(() => BindSingleValue(symbol, node, currentName), node.GetLocation(), diagnostics));
+                    //symbol.MSetLazy(currentProperty, LazyValue.CreateSingle(() => BindSingleValue(symbol, node, currentName), true));
                 }
             }
+            this.ExecuteCustomBinders(symbol, node);
         }
 
-        private object BindSingleValue(MutableSymbol symbol, SyntaxNode node, string propertyName)
+        private object BindSingleValue(MutableSymbol symbol, RedNode node, string propertyName)
         {
             var binder = this.Compilation.GetBinder(node);
             if (binder == null) return null;
@@ -203,7 +206,7 @@ namespace MetaDslx.Compiler.Binding
         }
 
 
-        private IEnumerable<object> BindMultipleValues(MutableSymbol symbol, SyntaxNode node, string propertyName)
+        private IEnumerable<object> BindMultipleValues(MutableSymbol symbol, RedNode node, string propertyName)
         {
             var binder = this.Compilation.GetBinder(node);
             if (binder == null) return null;
@@ -216,6 +219,17 @@ namespace MetaDslx.Compiler.Binding
                 diagnostics.AddRange(errors);
             }
             return values;
+        }
+
+        private void ExecuteCustomBinders(MutableSymbol symbol, RedNode node)
+        {
+            /*var binder = this.Compilation.GetBinder(node);
+            if (binder == null) return;
+            var customBinders = binder.FindDescendantBinders<ICustomBinder>(cb => true, b => !(b is ISymbolDefBinder));
+            foreach (var customBinder in customBinders)
+            {
+                customBinder.CustomBind();
+            }*/
         }
 
         public MutableSymbol CreateSymbol(Type symbolType)
@@ -235,7 +249,7 @@ namespace MetaDslx.Compiler.Binding
 
         protected abstract MutableSymbol CreateErrorSymbolCore();
 
-        public MutableSymbol CreateGlobalNamespace(IEnumerable<IMetaSymbol> namespacesToMerge)
+        public MutableSymbol CreateGlobalNamespace(IEnumerable<ISymbol> namespacesToMerge)
         {
             var result = this.CreateGlobalNamespaceCore(namespacesToMerge);
             result.MAttachProperty(CompilerAttachedProperties.ContainingCompilationProperty);
@@ -243,9 +257,9 @@ namespace MetaDslx.Compiler.Binding
             return result;
         }
 
-        protected abstract MutableSymbol CreateGlobalNamespaceCore(IEnumerable<IMetaSymbol> namespacesToMerge);
+        protected abstract MutableSymbol CreateGlobalNamespaceCore(IEnumerable<ISymbol> namespacesToMerge);
 
-        public IMetaSymbol CreateGlobalNamespaceAlias(IMetaSymbol globalNamespace, RootBinder rootBinder)
+        public ISymbol CreateGlobalNamespaceAlias(ISymbol globalNamespace, RootBinder rootBinder)
         {
             var result = this.CreateGlobalNamespaceAliasCore(globalNamespace);
             result.MAttachProperty(CompilerAttachedProperties.ContainingCompilationProperty);
@@ -253,6 +267,6 @@ namespace MetaDslx.Compiler.Binding
             return result;
         }
 
-        protected abstract MutableSymbol CreateGlobalNamespaceAliasCore(IMetaSymbol globalNamespace);
+        protected abstract MutableSymbol CreateGlobalNamespaceAliasCore(ISymbol globalNamespace);
     }
 }

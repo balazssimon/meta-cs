@@ -705,18 +705,18 @@ namespace MetaDslx.Compiler
         /// The root namespace that contains all namespaces and types defined in source code or in 
         /// referenced metadata, merged into a single namespace hierarchy.
         /// </summary>
-        public IMetaSymbol GlobalNamespace { get { return CommonGlobalNamespace; } }
-        protected abstract IMetaSymbol CommonGlobalNamespace { get; }
+        public ISymbol GlobalNamespace { get { return CommonGlobalNamespace; } }
+        protected abstract ISymbol CommonGlobalNamespace { get; }
 
         /// <summary>
         /// Gets the corresponding compilation namespace for the specified module or assembly namespace.
         /// </summary>
-        public IMetaSymbol GetCompilationNamespace(IMetaSymbol namespaceSymbol)
+        public ISymbol GetCompilationNamespace(ISymbol namespaceSymbol)
         {
             return CommonGetCompilationNamespace(namespaceSymbol);
         }
 
-        protected abstract IMetaSymbol CommonGetCompilationNamespace(IMetaSymbol namespaceSymbol);
+        protected abstract ISymbol CommonGetCompilationNamespace(ISymbol namespaceSymbol);
 
         public AnonymousTypeManager AnonymousTypeManager
         {
@@ -729,59 +729,59 @@ namespace MetaDslx.Compiler
         /// Returns the Main method that will serves as the entry point of the assembly, if it is
         /// executable (and not a script).
         /// </summary>
-        public IMetaSymbol GetEntryPoint(CancellationToken cancellationToken)
+        public ISymbol GetEntryPoint(CancellationToken cancellationToken)
         {
             return CommonGetEntryPoint(cancellationToken);
         }
 
-        protected abstract IMetaSymbol CommonGetEntryPoint(CancellationToken cancellationToken);
+        protected abstract ISymbol CommonGetEntryPoint(CancellationToken cancellationToken);
 
         /// <summary>
         /// Get the symbol for the predefined type referenced by this
         /// compilation.
         /// </summary>
-        public IMetaSymbol GetSpecialType(Type specialType)
+        public ISymbol GetSpecialType(Type specialType)
         {
             return CommonGetSpecialType(specialType);
         }
 
-        protected abstract IMetaSymbol CommonGetSpecialType(Type specialType);
+        protected abstract ISymbol CommonGetSpecialType(Type specialType);
 
         /// <summary>
         /// Returns true if the type is System.Type.
         /// </summary>
-        public abstract bool IsSystemTypeReference(IMetaSymbol type);
+        public abstract bool IsSystemTypeReference(ISymbol type);
 
         /// <summary>
         /// Returns true if the specified type is equal to or derives from System.Attribute well-known type.
         /// </summary>
-        public abstract bool IsAttributeType(IMetaSymbol type);
+        public abstract bool IsAttributeType(ISymbol type);
 
         /// <summary>
         /// The IMetaSymbol for the .NET System.Object type, which could have a TypeKind of
         /// Error if there was no COR Library in this Compilation.
         /// </summary>
-        public IMetaSymbol ObjectType { get { return CommonObjectType; } }
-        protected abstract IMetaSymbol CommonObjectType { get; }
+        public ISymbol ObjectType { get { return CommonObjectType; } }
+        protected abstract ISymbol CommonObjectType { get; }
 
         /// <summary>
         /// The TypeSymbol for the type 'dynamic' in this Compilation.
         /// </summary>
-        public IMetaSymbol DynamicType { get { return CommonDynamicType; } }
-        protected abstract IMetaSymbol CommonDynamicType { get; }
+        public ISymbol DynamicType { get { return CommonDynamicType; } }
+        protected abstract ISymbol CommonDynamicType { get; }
 
         /// <summary>
         /// A symbol representing the implicit Script class. This is null if the class is not
         /// defined in the compilation.
         /// </summary>
-        public IMetaSymbol ScriptSymbol { get { return CommonScriptSymbol; } }
-        protected abstract IMetaSymbol CommonScriptSymbol { get; }
+        public ISymbol ScriptSymbol { get { return CommonScriptSymbol; } }
+        protected abstract ISymbol CommonScriptSymbol { get; }
 
         /// <summary>
         /// A symbol representing a bad symbol.
         /// </summary>
-        public IMetaSymbol ErrorSymbol { get { return CommonErrorSymbol; } }
-        protected abstract IMetaSymbol CommonErrorSymbol { get; }
+        public ISymbol ErrorSymbol { get { return CommonErrorSymbol; } }
+        protected abstract ISymbol CommonErrorSymbol { get; }
 
         /// <summary>
         /// Gets the type within the compilation's assembly and all referenced assemblies (other than
@@ -791,12 +791,12 @@ namespace MetaDslx.Compiler
         /// <remarks>
         /// Since VB does not have the concept of extern aliases, it considers all referenced assemblies.
         /// </remarks>
-        public IMetaSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
+        public ISymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
         {
             return CommonGetTypeByMetadataName(fullyQualifiedMetadataName);
         }
 
-        protected abstract IMetaSymbol CommonGetTypeByMetadataName(string metadataName);
+        protected abstract ISymbol CommonGetTypeByMetadataName(string metadataName);
 
         #endregion
 
@@ -965,7 +965,7 @@ namespace MetaDslx.Compiler
             return string.Format("{0} ({1})", this.CompilationName, stage.ToString());
         }
 
-        internal string GetMessage(IMetaSymbol source, IMetaSymbol destination)
+        internal string GetMessage(ISymbol source, ISymbol destination)
         {
             if (source == null || destination == null) return this.CompilationName;
             return string.Format("{0}: {1} {2} -> {3} {4}", this.CompilationName, source.MMetaClass?.MName ?? source.MId.SymbolInfo.ImmutableType.Name, source.MName, destination.MMetaClass?.MName ?? destination.MId.SymbolInfo.ImmutableType.Name, destination.MName);
@@ -983,7 +983,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Return source declaration symbols whose name meets given predicate.
         /// </summary>
-        public abstract IEnumerable<IMetaSymbol> GetSymbolsWithName(Func<string, bool> predicate, SymbolFilter filter = SymbolFilter.TypeAndMember, CancellationToken cancellationToken = default(CancellationToken));
+        public abstract IEnumerable<ISymbol> GetSymbolsWithName(Func<string, bool> predicate, SymbolFilter filter = SymbolFilter.TypeAndMember, CancellationToken cancellationToken = default(CancellationToken));
 
         #endregion
     }

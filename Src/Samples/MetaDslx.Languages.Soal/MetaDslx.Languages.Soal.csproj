@@ -63,32 +63,32 @@
       <DependentUpon>Soal.mm</DependentUpon>
     </Compile>
     <Compile Include="SoalImplementation.cs" />
-    <Compile Include="SoalLexer.cs">
-      <DependentUpon>SoalLexer.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="SoalLexerAnnotator.cs">
-      <DependentUpon>SoalLexer.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="SoalParser.cs">
-      <DependentUpon>SoalParser.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="SoalParserAnnotator.cs">
-      <DependentUpon>SoalParser.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="SoalParserBaseListener.cs">
-      <DependentUpon>SoalParser.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="SoalParserBaseVisitor.cs">
-      <DependentUpon>SoalParser.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="SoalParserListener.cs">
-      <DependentUpon>SoalParser.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="SoalParserVisitor.cs">
-      <DependentUpon>SoalParser.ag4</DependentUpon>
-    </Compile>
     <Compile Include="SoalSymbolFacts.cs" />
     <Compile Include="Syntax\InternalSyntax\SoalInternalSyntax.cs" />
+    <Compile Include="Syntax\InternalSyntax\SoalLexer.cs">
+      <DependentUpon>SoalLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\SoalLexerAnnotator.cs">
+      <DependentUpon>SoalLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\SoalParser.cs">
+      <DependentUpon>SoalParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\SoalParserAnnotator.cs">
+      <DependentUpon>SoalParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\SoalParserBaseListener.cs">
+      <DependentUpon>SoalParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\SoalParserBaseVisitor.cs">
+      <DependentUpon>SoalParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\SoalParserListener.cs">
+      <DependentUpon>SoalParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\SoalParserVisitor.cs">
+      <DependentUpon>SoalParser.ag4</DependentUpon>
+    </Compile>
     <Compile Include="Syntax\SoalSyntax.cs" />
     <Compile Include="Syntax\SoalSyntaxFacts.cs" />
     <Compile Include="Syntax\SoalSyntaxTree.cs" />
@@ -98,28 +98,28 @@
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>Soal.cs</LastGenOutput>
     </None>
-    <None Include="SoalLexer.ag4">
+    <None Include="Syntax\InternalSyntax\SoalLexer.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>SoalLexer.g4</LastGenOutput>
     </None>
-    <None Include="SoalLexer.g4">
+    <None Include="Syntax\InternalSyntax\SoalLexer.g4">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SoalLexer.ag4</DependentUpon>
     </None>
-    <None Include="SoalLexer.tokens">
+    <None Include="Syntax\InternalSyntax\SoalLexer.tokens">
       <DependentUpon>SoalLexer.ag4</DependentUpon>
     </None>
-    <None Include="SoalParser.ag4">
+    <None Include="Syntax\InternalSyntax\SoalParser.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>SoalParser.g4</LastGenOutput>
     </None>
-    <None Include="SoalParser.g4">
+    <None Include="Syntax\InternalSyntax\SoalParser.g4">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SoalParser.ag4</DependentUpon>
     </None>
-    <None Include="SoalParser.tokens">
+    <None Include="Syntax\InternalSyntax\SoalParser.tokens">
       <DependentUpon>SoalParser.ag4</DependentUpon>
     </None>
   </ItemGroup>

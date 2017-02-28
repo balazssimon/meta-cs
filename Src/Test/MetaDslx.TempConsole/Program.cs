@@ -4,6 +4,8 @@ using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Core;
 using MetaDslx.Languages.Calculator;
 using MetaDslx.Languages.Calculator.Syntax;
+using MetaDslx.Languages.Meta;
+using MetaDslx.Languages.Meta.Symbols;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,7 +52,7 @@ namespace MetaDslx.TempConsole
     {
         static void Main(string[] args)
         {
-            try
+            //try
             {
                 /*
                 CompileAG4(@"..\..\..\..\Samples\MetaDslx.Soal", @"SoalLexer");
@@ -164,16 +166,6 @@ namespace MetaDslx.TempConsole
                     }
                 }
                 //*/
-                /*
-                using (ModelContextScope scope = new ModelContextScope(MetaInstance.Model))
-                {
-                    ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(ModelContext.Current.Instances);
-                    using (StreamWriter writer = new StreamWriter(@"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.cs"))
-                    {
-                        writer.WriteLine(generator.Generate());
-                    }
-                }
-                //*/
                 //PrintScope("", (MutableSymbol)MetaDescriptor.MetaModel.GetMetaClass().Namespace.Parent);
                 /*
                 Console.WriteLine("----");
@@ -248,24 +240,13 @@ namespace MetaDslx.TempConsole
                 /*
                 Console.WriteLine("----");
                 CompileMeta(
-                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel.mm",
-                    @"..\..\..\..\Main\MetaDslx.Core\ImmutableMetaModel1.cs"
+                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm",
+                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel1.cs"
                     );
                 //*/
                 /*
                 Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
                 Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
-                //*/
-                /*
-                Console.WriteLine("----");
-                CompileMeta(
-                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.mm",
-                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.cs"
-                    );
-                //*/
-                //*
-                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Soal", "SoalLexer.ag4", "MetaDslx.Languages.Soal");
-                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Soal", "SoalParser.ag4", "MetaDslx.Languages.Soal");
                 //*/
                 /*
                 var factory = CalculatorLanguage.Instance.SyntaxFactory;
@@ -281,6 +262,49 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine(node0);
                 //*/
                 /*
+                CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"MetaModelLexer");
+                CompileAG4(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"MetaModelParser");
+                Console.WriteLine("----");
+                Program.Antlr4ToRoslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelLexer.ag4", "MetaDslx.Languages.Meta");
+                Program.Antlr4ToRoslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelParser.ag4", "MetaDslx.Languages.Meta");
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileMetaR(
+                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.mm",
+                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal1.cs"
+                    );
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileMetaR(
+                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm",
+                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel2.cs"
+                    );
+                //*/
+                /*
+                ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(MetaInstance.Model.Symbols);
+                using (StreamWriter writer = new StreamWriter(@"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel3.cs"))
+                {
+                    writer.WriteLine(generator.Generate());
+                }
+                //*/
+                /*
+                Console.WriteLine("----");
+                CompileMeta(
+                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.mm",
+                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.cs"
+                    );
+                //*/
+                /*
+                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Soal/Syntax/InternalSyntax", "../../../../Samples/MetaDslx.Languages.Soal", "SoalLexer.ag4", "MetaDslx.Languages.Soal");
+                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Soal/Syntax/InternalSyntax", "../../../../Samples/MetaDslx.Languages.Soal", "SoalParser.ag4", "MetaDslx.Languages.Soal");
+                //*/
+                /*
+                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
+                Program.Antlr4ToRoslyn("../../../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
+                //*/
+                //*
                 string fileName = "../../Calc1.txt";
                 string source = null;
                 using (StreamReader reader = new StreamReader(fileName))
@@ -296,23 +320,24 @@ namespace MetaDslx.TempConsole
                 }
                 //*/
             }
-            catch (System.Exception ex)
+            /*catch (System.Exception ex)
             {
                 Console.WriteLine(ex);
-            }
+            }*/
         }
 
-        private static void CompileAG4(string outputDirectory, string antlr4FileName)
+        private static void CompileAG4(string inputDirectory, string outputDirectory, string antlr4FileName)
         {
             string source;
-            string fileName = Path.Combine(outputDirectory, antlr4FileName + ".ag4");
+            string fileName = Path.Combine(inputDirectory, antlr4FileName + ".ag4");
             using (StreamReader reader = new StreamReader(fileName))
             {
                 source = reader.ReadToEnd();
             }
             AnnotatedAntlr4Compiler compiler = new AnnotatedAntlr4Compiler(source, outputDirectory, fileName);
-            compiler.DefaultNamespace = "MetaDslx.Compiler";
+            //compiler.DefaultNamespace = "MetaDslx.Compiler";
             //compiler.DefaultNamespace = "MetaDslx.Soal";
+            compiler.DefaultNamespace = "MetaDslx.Languages.Meta.Syntax.InternalSyntax";
             compiler.Compile();
             string outputFileName = Path.Combine(outputDirectory, antlr4FileName + "Annotator.cs");
             using (StreamWriter writer = new StreamWriter(outputFileName))
@@ -334,15 +359,15 @@ namespace MetaDslx.TempConsole
             }
         }
 
-        private static void Antlr4ToRoslyn(string directory, string fileName, string defaultNamespace)
+        private static void Antlr4ToRoslyn(string inputDirectory, string outputDirectory, string fileName, string defaultNamespace)
         {
-            string fullPath = Path.Combine(directory, fileName);
+            string fullPath = Path.Combine(inputDirectory, fileName);
             string source;
-            using (StreamReader reader = new StreamReader(Path.Combine(directory, fileName)))
+            using (StreamReader reader = new StreamReader(Path.Combine(inputDirectory, fileName)))
             {
                 source = reader.ReadToEnd();
             }
-            Antlr4RoslynCompiler a4c = new Antlr4RoslynCompiler(source, defaultNamespace, directory, fileName);
+            Antlr4RoslynCompiler a4c = new Antlr4RoslynCompiler(source, defaultNamespace, inputDirectory, outputDirectory, fileName);
             a4c.Compile();
             foreach (var msg in a4c.Diagnostics)
             {
@@ -369,6 +394,125 @@ namespace MetaDslx.TempConsole
                 writer.WriteLine(source);
             }
         }
+
+        private static void CompileMetaR(string fileName, string outputFileName)
+        {
+            string source;
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                source = reader.ReadToEnd();
+            }
+            var metaModelReference = MetadataReference.CreateFromModel(MetaInstance.Model);
+            var tree = Languages.Meta.Syntax.MetaModelSyntaxTree.ParseText(source);
+            var compilation = MetaModelCompilation.Create("Meta").AddReferences(metaModelReference).AddSyntaxTrees(tree);
+            ImmutableModel immutableModel = compilation.Model;
+            if (compilation.GetDiagnostics().Length == 0)
+            {
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(immutableModel.Symbols);
+                    writer.WriteLine(generator.Generate());
+                }
+            }
+            //PrintScope("", compiler.GlobalScope);
+            Console.WriteLine("=");
+
+            using (StreamWriter writer = new StreamWriter("symbols.txt"))
+            {
+                foreach (var symbol in immutableModel.Symbols)
+                {
+                    ImmutableSymbol mo = symbol;
+                    if (mo != null)
+                    {
+                        writer.WriteLine(mo);
+                        Console.WriteLine(mo);
+                        /*string leading = compiler.TriviaProvider.GetLeadingTrivia(mo);
+                        string trailing = compiler.TriviaProvider.GetTrailingTrivia(mo);
+                        if (!string.IsNullOrWhiteSpace(leading))
+                        {
+                            writer.WriteLine("  Leading trivia: "+leading);
+                            Console.WriteLine("  Leading trivia: "+ leading);
+                        }
+                        if (!string.IsNullOrWhiteSpace(trailing))
+                        {
+                            writer.WriteLine("  Trailing trivia: "+ trailing);
+                            Console.WriteLine("  Trailing trivia: "+trailing);
+                        }*/
+                        writer.WriteLine("  Parent=" + mo.MParent);
+                        Console.WriteLine("  Parent=" + mo.MParent);
+                        ModelProperty mp;
+                        mp = mo.MGetProperty("Documentation");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  Documentation=" + mo.MGet(mp));
+                            Console.WriteLine("  Documentation=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("Name");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  Name=" + mo.MGet(mp));
+                            Console.WriteLine("  Name=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("Uri");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  Uri=" + mo.MGet(mp));
+                            Console.WriteLine("  Uri=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("IsAbstract");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  IsAbstract=" + mo.MGet(mp));
+                            Console.WriteLine("  IsAbstract=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("Type");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  Type=" + mo.MGet(mp));
+                            Console.WriteLine("  Type=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("InnerType");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  InnerType=" + mo.MGet(mp));
+                            Console.WriteLine("  InnerType=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("ReturnType");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  ReturnType=" + mo.MGet(mp));
+                            Console.WriteLine("  ReturnType=" + mo.MGet(mp));
+                        }
+                        mp = mo.MGetProperty("EnumLiterals");
+                        if (mp != null)
+                        {
+                            writer.WriteLine("  EnumLiterals:");
+                            Console.WriteLine("  EnumLiterals:");
+                            foreach (var elo in (IEnumerable<object>)mo.MGet(mp))
+                            {
+                                MetaEnumLiteral el = elo as MetaEnumLiteral;
+                                if (el != null)
+                                {
+                                    writer.WriteLine("    " + el);
+                                    Console.WriteLine("    " + el);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            using (StreamWriter writer = new StreamWriter("messages_meta.txt"))
+            {
+                foreach (var diag in compilation.GetDiagnostics())
+                {
+                    string msg = DiagnosticFormatter.Instance.Format(diag);
+                    writer.WriteLine(msg);
+                    Console.WriteLine(msg);
+                }
+            }
+        }
+
 
         private static void CompileMeta(string fileName, string outputFileName)
         {
@@ -406,13 +550,13 @@ namespace MetaDslx.TempConsole
                         string trailing = compiler.TriviaProvider.GetTrailingTrivia(mo);
                         if (!string.IsNullOrWhiteSpace(leading))
                         {
-                            writer.WriteLine("  Leading trivia: "+leading);
-                            Console.WriteLine("  Leading trivia: "+ leading);
+                            writer.WriteLine("  Leading trivia: " + leading);
+                            Console.WriteLine("  Leading trivia: " + leading);
                         }
                         if (!string.IsNullOrWhiteSpace(trailing))
                         {
-                            writer.WriteLine("  Trailing trivia: "+ trailing);
-                            Console.WriteLine("  Trailing trivia: "+trailing);
+                            writer.WriteLine("  Trailing trivia: " + trailing);
+                            Console.WriteLine("  Trailing trivia: " + trailing);
                         }
                         writer.WriteLine("  Parent=" + mo.MParent);
                         Console.WriteLine("  Parent=" + mo.MParent);
@@ -488,7 +632,6 @@ namespace MetaDslx.TempConsole
             }
         }
 
-
         private static void CompileGenerator(string fileName, string outputFileName)
         {
             string source;
@@ -533,8 +676,8 @@ namespace MetaDslx.TempConsole
 
         private static void GenerateImmutableMeta(string outputFileName)
         {
-            MetaDslx.Core.ImmutableModel model = MetaDslx.Core.MetaInstance.Model;
-            MetaDslx.Core.ImmutableMetaModelGenerator generator = new MetaDslx.Core.ImmutableMetaModelGenerator(model.Symbols);
+            ImmutableModel model = MetaInstance.Model;
+            ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(model.Symbols);
             using (StreamWriter writer = new StreamWriter(outputFileName))
             {
                 writer.WriteLine(generator.Generate());

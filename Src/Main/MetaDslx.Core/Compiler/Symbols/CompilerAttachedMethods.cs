@@ -10,12 +10,12 @@ namespace MetaDslx.Compiler.Symbols
 {
     public static class CompilerAttachedMethods
     {
-        public static bool IsOfKind(this IMetaSymbol symbol, Type kind)
+        public static bool IsOfKind(this ISymbol symbol, Type kind)
         {
             return kind.Equals(symbol.MId.SymbolInfo.ImmutableType);
         }
 
-        public static bool IsOfType(this IMetaSymbol symbol, Type type)
+        public static bool IsOfType(this ISymbol symbol, Type type)
         {
             return type.IsAssignableFrom(symbol.MId.SymbolInfo.ImmutableType);
         }

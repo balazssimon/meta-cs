@@ -7,7 +7,7 @@
     <ProjectGuid>{D31D2069-6F71-4208-AA67-60AE8104CDC6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MetaDslx.Compiler.Antlr4Roslyn</RootNamespace>
+    <RootNamespace>MetaDslx</RootNamespace>
     <AssemblyName>MetaDslx.Compiler.Antlr4</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -70,6 +70,30 @@
       <DependentUpon>CompilerGenerator.mgen</DependentUpon>
     </Compile>
     <Compile Include="Generator\CompilerGeneratorUtils.cs" />
+    <Compile Include="Languages\Meta\Binding\MetaModelBinderFactoryVisitor.cs" />
+    <Compile Include="Languages\Meta\Binding\MetaModelDeclarationTreeBuilderVisitor.cs" />
+    <Compile Include="Languages\Meta\Binding\MetaModelSymbolBuilder.cs" />
+    <Compile Include="Languages\Meta\Binding\OppositeBinder.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaModelCompilation.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaModelCompilationFactory.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaModelCompilationOptions.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaModelFeature.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaModelLanguage.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaModelLanguageVersion.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaModelParseOptions.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaModelScriptCompilationInfo.cs" />
+    <Compile Include="Languages\Meta\Errors\MetaModelErrorCode.cs" />
+    <Compile Include="Languages\Meta\Parser\MetaModelSyntaxParser.cs" />
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelInternalSyntax.cs" />
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelLexer.cs" />
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParser.cs" />
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParserBaseListener.cs" />
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParserBaseVisitor.cs" />
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParserListener.cs" />
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParserVisitor.cs" />
+    <Compile Include="Languages\Meta\Syntax\MetaModelSyntax.cs" />
+    <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxFacts.cs" />
+    <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +134,28 @@
       <Generator>MetaGenerator</Generator>
       <LastGenOutput>CompilerGenerator.cs</LastGenOutput>
     </None>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelLexer.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>MetaModelLexer.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Languages.Meta.Syntax.InternalSyntax</CustomToolNamespace>
+    </None>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelLexer.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelLexer.ag4</DependentUpon>
+    </None>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelLexer.tokens" />
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParser.ag4">
+      <Generator>AnnotatedAntlr4Generator</Generator>
+      <LastGenOutput>MetaModelParser.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Languages.Meta.Syntax.InternalSyntax</CustomToolNamespace>
+    </None>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaModelParser.ag4</DependentUpon>
+    </None>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParser.tokens" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">

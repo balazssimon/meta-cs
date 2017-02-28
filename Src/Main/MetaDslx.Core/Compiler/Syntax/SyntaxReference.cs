@@ -27,14 +27,14 @@ namespace MetaDslx.Compiler.Syntax
         /// This action may cause a parse to happen to recover the syntax node.
         /// </summary>
         /// <returns>The original referenced syntax node.</returns>
-        public abstract SyntaxNode GetSyntax(CancellationToken cancellationToken = default(CancellationToken));
+        public abstract RedNode GetSyntax(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Retrieves the original referenced syntax node.  
         /// This action may cause a parse to happen to recover the syntax node.
         /// </summary>
         /// <returns>The original referenced syntax node.</returns>
-        public virtual Task<SyntaxNode> GetSyntaxAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<RedNode> GetSyntaxAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.FromResult(this.GetSyntax(cancellationToken));
         }

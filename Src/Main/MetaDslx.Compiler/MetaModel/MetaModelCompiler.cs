@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using MetaDslx.Core;
+using MetaDslx.Languages.Meta.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace MetaDslx.Compiler
             this.ModelGroup.AddReference(metaInstance);
             foreach (var type in MetaConstants.Types)
             {
-                this.GlobalScope.BuiltInEntries.Add(type.ToMutable(metaInstance));
+                this.GlobalScope.Declarations.Add(type.ToMutable(metaInstance));
             }
         }
 

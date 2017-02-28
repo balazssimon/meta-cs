@@ -20,7 +20,7 @@ namespace MetaDslx.Languages.Soal.Binding
 
 
 
-        public override IMetaSymbol GetWellKnownSymbol(string name)
+        public override ISymbol GetWellKnownSymbol(string name)
         {
             foreach (var symbol in SoalSymbolFacts.WellKnownTypes)
             {

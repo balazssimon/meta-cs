@@ -1,3 +1,6 @@
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;

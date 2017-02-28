@@ -40,12 +40,12 @@ namespace MetaDslx.Compiler.Binding
             
         }
 
-        internal void AddLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, BindingOptions options, Binder originalBinder)
+        internal void AddLookupSymbolsInfo(ArrayBuilder<ISymbol> result, BindingOptions options, Binder originalBinder)
         {
             
         }
 
-        internal void LookupSymbol(Binder originalBinder, LookupResult result, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        internal void LookupSymbol(Binder originalBinder, LookupResult result, string name, ConsList<ISymbol> basesBeingResolved, BindingOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             
         }

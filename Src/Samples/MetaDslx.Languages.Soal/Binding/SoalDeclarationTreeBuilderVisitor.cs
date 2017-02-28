@@ -33,9 +33,12 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginProperty("Declarations");
 			try
 			{
-				foreach (var child in node.NamespaceDeclaration)
+				if (node.NamespaceDeclaration != null)
 				{
-					this.Visit(child);
+					foreach (var child in node.NamespaceDeclaration)
+					{
+						this.Visit(child);
+					}
 				}
 			}
 			finally
@@ -75,9 +78,12 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginQualifier();
 			try
 			{
-				foreach (var child in node.Identifier)
+				if (node.Identifier != null)
 				{
-					this.Visit(child);
+					foreach (var child in node.Identifier)
+					{
+						this.Visit(child);
+					}
 				}
 			}
 			finally
@@ -88,33 +94,45 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitIdentifierList(IdentifierListSyntax node)
 		{
-			foreach (var child in node.Identifier)
+			if (node.Identifier != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.Identifier)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
 		public virtual void VisitQualifierList(QualifierListSyntax node)
 		{
-			foreach (var child in node.Qualifier)
+			if (node.Qualifier != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.Qualifier)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
 		public virtual void VisitAnnotationList(AnnotationListSyntax node)
 		{
-			foreach (var child in node.Annotation)
+			if (node.Annotation != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.Annotation)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
 		public virtual void VisitReturnAnnotationList(ReturnAnnotationListSyntax node)
 		{
-			foreach (var child in node.ReturnAnnotation)
+			if (node.ReturnAnnotation != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.ReturnAnnotation)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -173,9 +191,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitAnnotationPropertyList(AnnotationPropertyListSyntax node)
 		{
-			foreach (var child in node.AnnotationProperty)
+			if (node.AnnotationProperty != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.AnnotationProperty)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -234,9 +255,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitNamespaceBody(NamespaceBodySyntax node)
 		{
-			foreach (var child in node.Declaration)
+			if (node.Declaration != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.Declaration)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -284,9 +308,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitEnumLiterals(EnumLiteralsSyntax node)
 		{
-			foreach (var child in node.EnumLiteral)
+			if (node.EnumLiteral != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.EnumLiteral)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -329,9 +356,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitStructBody(StructBodySyntax node)
 		{
-			foreach (var child in node.PropertyDeclaration)
+			if (node.PropertyDeclaration != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.PropertyDeclaration)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -383,13 +413,19 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitDatabaseBody(DatabaseBodySyntax node)
 		{
-			foreach (var child in node.EntityReference)
+			if (node.EntityReference != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.EntityReference)
+				{
+					this.Visit(child);
+				}
 			}
-			foreach (var child in node.OperationDeclaration)
+			if (node.OperationDeclaration != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.OperationDeclaration)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -422,9 +458,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitInterfaceBody(InterfaceBodySyntax node)
 		{
-			foreach (var child in node.OperationDeclaration)
+			if (node.OperationDeclaration != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.OperationDeclaration)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -459,9 +498,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitParameterList(ParameterListSyntax node)
 		{
-			foreach (var child in node.Parameter)
+			if (node.Parameter != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.Parameter)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -547,9 +589,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitComponentElements(ComponentElementsSyntax node)
 		{
-			foreach (var child in node.ComponentElement)
+			if (node.ComponentElement != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.ComponentElement)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -612,9 +657,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitComponentServiceOrReferenceNonEmptyBody(ComponentServiceOrReferenceNonEmptyBodySyntax node)
 		{
-			foreach (var child in node.ComponentServiceOrReferenceElement)
+			if (node.ComponentServiceOrReferenceElement != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.ComponentServiceOrReferenceElement)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -729,9 +777,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitCompositeElements(CompositeElementsSyntax node)
 		{
-			foreach (var child in node.CompositeElement)
+			if (node.CompositeElement != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.CompositeElement)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -809,9 +860,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitDeploymentElements(DeploymentElementsSyntax node)
 		{
-			foreach (var child in node.DeploymentElement)
+			if (node.DeploymentElement != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.DeploymentElement)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -846,9 +900,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		public virtual void VisitEnvironmentBody(EnvironmentBodySyntax node)
 		{
 			this.Visit(node.RuntimeDeclaration);
-			foreach (var child in node.RuntimeReference)
+			if (node.RuntimeReference != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.RuntimeReference)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -925,13 +982,19 @@ namespace MetaDslx.Languages.Soal.Binding
 		public virtual void VisitBindingLayers(BindingLayersSyntax node)
 		{
 			this.Visit(node.TransportLayer);
-			foreach (var child in node.EncodingLayer)
+			if (node.EncodingLayer != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.EncodingLayer)
+				{
+					this.Visit(child);
+				}
 			}
-			foreach (var child in node.ProtocolLayer)
+			if (node.ProtocolLayer != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.ProtocolLayer)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -969,9 +1032,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitHttpTransportLayerNonEmptyBody(HttpTransportLayerNonEmptyBodySyntax node)
 		{
-			foreach (var child in node.HttpTransportLayerProperties)
+			if (node.HttpTransportLayerProperties != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.HttpTransportLayerProperties)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -1083,9 +1149,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitSoapEncodingLayerNonEmptyBody(SoapEncodingLayerNonEmptyBodySyntax node)
 		{
-			foreach (var child in node.SoapEncodingProperties)
+			if (node.SoapEncodingProperties != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.SoapEncodingProperties)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		
@@ -1228,9 +1297,12 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitEndpointProperties(EndpointPropertiesSyntax node)
 		{
-			foreach (var child in node.EndpointProperty)
+			if (node.EndpointProperty != null)
 			{
-				this.Visit(child);
+				foreach (var child in node.EndpointProperty)
+				{
+					this.Visit(child);
+				}
 			}
 		}
 		

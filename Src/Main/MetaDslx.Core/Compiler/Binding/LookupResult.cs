@@ -14,7 +14,7 @@ namespace MetaDslx.Compiler.Binding
     /// <summary>
     /// represents one-to-one symbol -> SingleLookupResult filter.
     /// </summary>
-    internal delegate SingleLookupResult LookupFilter(IMetaSymbol sym);
+    internal delegate SingleLookupResult LookupFilter(ISymbol sym);
 
     /// <summary>
     /// A LookupResult summarizes the result of a name lookup within a scope It also allows
@@ -65,7 +65,7 @@ namespace MetaDslx.Compiler.Binding
         private LookupResultKind _kind;
 
         // If there is more than one symbol, they are stored in this list.
-        private readonly ArrayBuilder<IMetaSymbol> _symbolList;
+        private readonly ArrayBuilder<ISymbol> _symbolList;
 
         // the error of the result, if it is NonViable or Inaccessible
         private DiagnosticInfo _error;
@@ -75,7 +75,7 @@ namespace MetaDslx.Compiler.Binding
         {
             _pool = pool;
             _kind = LookupResultKind.Empty;
-            _symbolList = new ArrayBuilder<IMetaSymbol>();
+            _symbolList = new ArrayBuilder<ISymbol>();
             _error = null;
         }
 
@@ -105,7 +105,7 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Return the single symbol if there is exactly one, otherwise null.
         /// </summary>
-        public IMetaSymbol SingleSymbolOrDefault
+        public ISymbol SingleSymbolOrDefault
         {
             get
             {
@@ -113,7 +113,7 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        internal ArrayBuilder<IMetaSymbol> Symbols
+        internal ArrayBuilder<ISymbol> Symbols
         {
             get
             {
@@ -121,7 +121,7 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        public ImmutableArray<IMetaSymbol> GetSymbols()
+        public ImmutableArray<ISymbol> GetSymbols()
         {
             return _symbolList.ToImmutable();
         }
@@ -156,17 +156,17 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        public static SingleLookupResult Good(IMetaSymbol symbol)
+        public static SingleLookupResult Good(ISymbol symbol)
         {
             return new SingleLookupResult(LookupResultKind.Viable, symbol, null);
         }
 
-        public static SingleLookupResult Wrong(IMetaSymbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult Wrong(ISymbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.NonViable, symbol, error);
         }
 
-        public static SingleLookupResult Inaccessible(IMetaSymbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult Inaccessible(ISymbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.Inaccessible, symbol, error);
         }

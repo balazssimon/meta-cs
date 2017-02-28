@@ -15,15 +15,15 @@ namespace MetaDslx.Compiler
         /// have a type, null is returned. If the type could not be determined due to an error, then
         /// an IErrorTypeSymbol is returned.
         /// </summary>
-        public IMetaSymbol Type { get; }
+        public ISymbol Type { get; }
 
         /// <summary>
         /// The type of the expression after it has undergone an implicit conversion. If the type
         /// did not undergo an implicit conversion, returns the same as Type.
         /// </summary>
-        public IMetaSymbol ConvertedType { get; }
+        public ISymbol ConvertedType { get; }
 
-        public TypeInfo(IMetaSymbol type, IMetaSymbol convertedType)
+        public TypeInfo(ISymbol type, ISymbol convertedType)
         {
             this.Type = type;
             this.ConvertedType = convertedType;

@@ -7,6 +7,7 @@ using MetaDslx.Core;
 using MetaDslx.Compiler;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using MetaDslx.Languages.Meta.Symbols;
 
 // The variable '...' is assigned but its value is never used
 #pragma warning disable 0219
@@ -206,7 +207,7 @@ using MetaDslx.Core;
             __tmp8.Name = "MetaModel";
             treeAnnotList.Add(__tmp8);
             NameDefAnnotation __tmp9 = new NameDefAnnotation();
-            __tmp9.SymbolType = typeof(MetaDslx.Core.MetaModel);
+            __tmp9.SymbolType = typeof(MetaDslx.Languages.Meta.Symbols.MetaModel);
             treeAnnotList.Add(__tmp9);
             TriviaAnnotation __tmp10 = new TriviaAnnotation();
             __tmp10.Property = "Documentation";

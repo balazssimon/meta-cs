@@ -45,7 +45,7 @@ namespace MetaDslx.Languages.Soal.Binding
             return result;
         }
 
-        protected override MutableSymbol CreateGlobalNamespaceCore(IEnumerable<IMetaSymbol> namespacesToMerge)
+        protected override MutableSymbol CreateGlobalNamespaceCore(IEnumerable<ISymbol> namespacesToMerge)
         {
             var f = this.Factory;
             var nsList = namespacesToMerge.ToList();
@@ -55,7 +55,7 @@ namespace MetaDslx.Languages.Soal.Binding
             return result;
         }
 
-        protected override MutableSymbol CreateGlobalNamespaceAliasCore(IMetaSymbol globalNamespace)
+        protected override MutableSymbol CreateGlobalNamespaceAliasCore(ISymbol globalNamespace)
         {
             throw new NotImplementedException();
         }

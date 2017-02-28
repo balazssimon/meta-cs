@@ -167,23 +167,23 @@ namespace MetaDslx.Core
 
         private bool unique;
         private ImmutableList<object> items;
-        private ImmutableList<object> lazyItems;
+        private ImmutableList<LazyValue> lazyItems;
 
         private GreenList(bool unique)
         {
             this.unique = unique;
             this.items = ImmutableList<object>.Empty;
-            this.lazyItems = ImmutableList<object>.Empty;
+            this.lazyItems = ImmutableList<LazyValue>.Empty;
         }
 
-        private GreenList(bool unique, ImmutableList<object> items, ImmutableList<object> lazyItems)
+        private GreenList(bool unique, ImmutableList<object> items, ImmutableList<LazyValue> lazyItems)
         {
             this.unique = unique;
             this.items = items;
             this.lazyItems = lazyItems;
         }
 
-        private GreenList Update(ImmutableList<object> items, ImmutableList<object> lazyItems)
+        private GreenList Update(ImmutableList<object> items, ImmutableList<LazyValue> lazyItems)
         {
             if (this.items != items || this.lazyItems != lazyItems)
             {
@@ -207,7 +207,7 @@ namespace MetaDslx.Core
             get { return this.lazyItems.Count > 0; }
         }
 
-        internal ImmutableList<object> LazyItems
+        internal ImmutableList<LazyValue> LazyItems
         {
             get { return this.lazyItems; }
         }
@@ -768,7 +768,7 @@ namespace MetaDslx.Core
         private void MakeSymbolException(ImmutableArray<SymbolId> symbols, Location location, ErrorCode errorCode, params object[] args)
         {
             this.ArgsToRedMessageSerializable(args);
-            throw new ModelException(location, new SymbolDiagnosticInfo(symbols.Select(sid => (IMetaSymbol)this.redModel.ResolveSymbol(sid)).ToImmutableArray(), errorCode, args));
+            throw new ModelException(location, new SymbolDiagnosticInfo(symbols.Select(sid => (ISymbol)this.redModel.ResolveSymbol(sid)).ToImmutableArray(), errorCode, args));
         }
 
         private void MakeLazyEvalException(List<GreenLazyEvalEntry> evaluationStack, Exception innerException, LazyValue lazy, ErrorCode errorCode, params object[] args)
@@ -798,7 +798,7 @@ namespace MetaDslx.Core
                 SymbolId sid = args[i] as SymbolId;
                 if (sid != null)
                 {
-                    IMetaSymbol symbol = null;
+                    ISymbol symbol = null;
                     if (redModelGroup != null) symbol = this.redModelGroup.ResolveSymbol(sid);
                     else symbol = this.redModel.ResolveSymbol(sid);
                     if (symbol != null)
@@ -1239,7 +1239,7 @@ namespace MetaDslx.Core
                     {
                         if (property.IsContainment)
                         {
-                            this.GetValue(mid, sid, property);
+                            this.GetValue(mid, sid, property, true);
                         }
                     }
                     symbolRef = this.ResolveSymbol(mid, sid, true);
@@ -2488,11 +2488,11 @@ namespace MetaDslx.Core
                             this.ClearLazyItems(mid, sid, property, true);
                             foreach (var lazyItem in list.LazyItems)
                             {
-                                if (lazyItem is LazyValue)
+                                if (lazyItem.IsSingleValue)
                                 {
                                     try
                                     {
-                                        object value = this.LazyEvalValue((LazyValue)lazyItem);
+                                        object value = this.LazyEvalValue(lazyItem);
                                         if (value != null)
                                         {
                                             this.AddItem(mid, sid, property, true, false, -1, value);
@@ -2503,7 +2503,7 @@ namespace MetaDslx.Core
                                         this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                                     }
                                 }
-                                else if (lazyItem is MultipleLazyValues)
+                                else 
                                 {
                                     try
                                     {

@@ -13,13 +13,13 @@ namespace MetaDslx.Compiler.Binding.Binders
 {
     public interface ISymbolUseBinder : IValueBinder
     {
-        ImmutableArray<IMetaSymbol> UsedSymbols { get; }
+        ImmutableArray<ISymbol> UsedSymbols { get; }
     }
 
     public sealed class SymbolUseBinder : Binder, ISymbolUseBinder
     {
         private readonly ImmutableArray<Type> _symbolTypes;
-        private ImmutableArray<IMetaSymbol> _lazyUsedSymbols;
+        private ImmutableArray<ISymbol> _lazyUsedSymbols;
         private readonly BindingOptions _bindingOptions;
 
         public SymbolUseBinder(Binder next, RedNode node, ImmutableArray<Type> symbolTypes) 
@@ -49,7 +49,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public ImmutableArray<IMetaSymbol> UsedSymbols
+        public ImmutableArray<ISymbol> UsedSymbols
         {
             get
             {
@@ -71,7 +71,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public IMetaSymbol Symbol
+        public ISymbol Symbol
         {
             get
             {
@@ -91,7 +91,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             return this.UsedSymbols.CastArray<object>();
         }
 
-        public ImmutableArray<IMetaSymbol> GetSymbols()
+        public ImmutableArray<ISymbol> GetSymbols()
         {
             return this.UsedSymbols;
         }

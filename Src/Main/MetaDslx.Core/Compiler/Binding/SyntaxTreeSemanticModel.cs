@@ -103,7 +103,7 @@ namespace MetaDslx.Compiler.Binding
                 try
                 {
                     var values = binder.Bind(node, diagnostics);
-                    IMetaSymbol symbol = values.FirstOrDefault() as IMetaSymbol;
+                    ISymbol symbol = values.FirstOrDefault() as ISymbol;
                     return (object)symbol != null ? GetSymbolInfoForSymbol(symbol, options) : SymbolInfo.None;
                 }
                 finally
@@ -122,7 +122,7 @@ namespace MetaDslx.Compiler.Binding
                 var diagnostics = DiagnosticBag.GetInstance();
                 try
                 {
-                    IMetaSymbol symbol = binder.Bind(node, diagnostics).FirstOrDefault() as IMetaSymbol;
+                    ISymbol symbol = binder.Bind(node, diagnostics).FirstOrDefault() as ISymbol;
                     return (object)symbol != null ? GetTypeInfoForSymbol(symbol, options) : TypeInfo.None;
                 }
                 finally
@@ -133,7 +133,7 @@ namespace MetaDslx.Compiler.Binding
             return null;
         }
 
-        protected override ImmutableArray<IMetaSymbol> GetMembersWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override ImmutableArray<ISymbol> GetMembersWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }
@@ -143,13 +143,13 @@ namespace MetaDslx.Compiler.Binding
             throw new NotImplementedException();
         }
 
-        protected override IMetaSymbol GetDeclaredSymbolWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override ISymbol GetDeclaredSymbolWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var container = GetDeclaredContainer(declaration);
             return GetDeclaredMember(container, declaration.Span, null);
         }
 
-        private IMetaSymbol GetDeclaredContainer(SyntaxNode declaration)
+        private ISymbol GetDeclaredContainer(SyntaxNode declaration)
         {
             if (declaration.Parent == null)
             {
@@ -160,7 +160,7 @@ namespace MetaDslx.Compiler.Binding
             return container;
         }
 
-        protected override ImmutableArray<IMetaSymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override ImmutableArray<ISymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }
@@ -168,7 +168,7 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Finds the member in the containing symbol which is inside the given declaration span.
         /// </summary>
-        private IMetaSymbol GetDeclaredMember(IMetaSymbol container, TextSpan declarationSpan, string name = null)
+        private ISymbol GetDeclaredMember(ISymbol container, TextSpan declarationSpan, string name = null)
         {
             return null;
             /*

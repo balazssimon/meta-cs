@@ -10,9 +10,9 @@ namespace MetaDslx.Compiler.Diagnostics
 {
     public class SymbolDiagnosticInfo : DiagnosticInfo
     {
-        public ImmutableArray<IMetaSymbol> Symbols { get; }
+        public ImmutableArray<ISymbol> Symbols { get; }
 
-        public SymbolDiagnosticInfo(ImmutableArray<IMetaSymbol> symbols, ErrorCode code, params object[] args)
+        public SymbolDiagnosticInfo(ImmutableArray<ISymbol> symbols, ErrorCode code, params object[] args)
             : base(code, args)
         {
             this.Symbols = symbols;
@@ -24,7 +24,7 @@ namespace MetaDslx.Compiler.Diagnostics
             this.Symbols = original.Symbols;
         }
 
-        public virtual SymbolDiagnosticInfo WithSymbols(ImmutableArray<IMetaSymbol> symbols)
+        public virtual SymbolDiagnosticInfo WithSymbols(ImmutableArray<ISymbol> symbols)
         {
             return new SymbolDiagnosticInfo(symbols, this.Code, this.Arguments);
         }

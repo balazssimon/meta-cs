@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using MetaDslx.Core;
+using MetaDslx.Languages.Meta.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -274,7 +275,7 @@ namespace MetaDslx.Compiler
         public string FileName { get; private set; }
         public string Source { get; private set; }
         public string DefaultNamespace { get; set; }
-        public RootScopeBuilder GlobalScope { get; protected set; }
+        public MetaNamespaceBuilder GlobalScope { get; protected set; }
         public MutableModelGroup ModelGroup { get; protected set; }
         public MutableModel Model { get; protected set; }
         public ModelFactory Factory { get; protected set; }
@@ -290,7 +291,7 @@ namespace MetaDslx.Compiler
             this.Model = this.ModelGroup.CreateModel();
             MetaFactory metaFactory = new MetaFactory(this.Model);
             this.Factory = metaFactory;
-            this.GlobalScope = metaFactory.RootScope();
+            this.GlobalScope = metaFactory.MetaNamespace();
             this.Diagnostics = new ModelCompilerDiagnostics(this);
             this.Source = source;
             this.FileName = fileName;
@@ -1421,7 +1422,7 @@ namespace MetaDslx.Compiler
                     if (parentSymbol == null)
                     {
                         parentSymbol = this.Compiler.GlobalScope;
-                        propertyName = MetaDescriptor.RootScope.EntriesProperty.Name;
+                        propertyName = MetaDescriptor.MetaNamespace.DeclarationsProperty.Name;
                     }
                     List<IParseTree> names = this.GetNames(node);
                     for (int i = 0; i < names.Count; ++i)
@@ -1496,6 +1497,10 @@ namespace MetaDslx.Compiler
                             }
                         }
                     }
+                }
+                if (symbol is MetaNamespaceBuilder)
+                {
+                    prop = parent.MGetProperty("Namespaces");
                 }
                 parent.MAdd(prop, symbol);
             }
@@ -1624,7 +1629,7 @@ namespace MetaDslx.Compiler
                     }
                     else
                     {
-                        this.Compiler.GlobalScope.Entries.Add(symbol);
+                        this.Compiler.GlobalScope.Declarations.Add((MetaDeclarationBuilder)symbol);
                     }
                 }
             }

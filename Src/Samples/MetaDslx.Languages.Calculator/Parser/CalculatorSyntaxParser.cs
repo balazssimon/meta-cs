@@ -1,3 +1,6 @@
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,9 +88,6 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			        statementLineBuilder.Add((StatementLineGreen)this.Visit(statementLineContext[i]));
 			    }
 				InternalSyntaxNodeList statementLine = InternalSyntaxNodeList.Create(statementLineBuilder.ToArrayAndFree());
-				if (statementLine != null)
-				{
-				}
 				InternalSyntaxToken eof = (InternalSyntaxToken)this.VisitTerminal(context.Eof());
 				return this.factory.Main(statementLine, eof, true);
 			}
@@ -111,14 +111,12 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 				CalculatorParser.AssignmentContext assignmentContext = context.assignment();
 				if (assignmentContext != null) 
 				{
-					GreenNode assignment = this.factory.Statement((AssignmentGreen)this.Visit(assignmentContext), true);
-					return assignment;
+					return this.factory.Statement((AssignmentGreen)this.Visit(assignmentContext), true);
 				}
 				CalculatorParser.ExpressionContext expressionContext = context.expression();
 				if (expressionContext != null) 
 				{
-					GreenNode expression = this.factory.Statement((ExpressionGreen)this.Visit(expressionContext), true);
-					return expression;
+					return this.factory.Statement((ExpressionGreen)this.Visit(expressionContext), true);
 				}
 				return null;
 			}
@@ -250,9 +248,6 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			        }
 			    }
 				InternalSeparatedSyntaxNodeList arg = InternalSeparatedSyntaxNodeList.Create(argBuilder.ToArrayAndFree());
-				if (arg != null)
-				{
-				}
 				return this.factory.Args(arg, true);
 			}
 			
@@ -262,20 +257,17 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 				CalculatorParser.IdentifierContext identifierContext = context.identifier();
 				if (identifierContext != null) 
 				{
-					GreenNode identifier = this.factory.Value((IdentifierGreen)this.Visit(identifierContext), true);
-					return identifier;
+					return this.factory.Value((IdentifierGreen)this.Visit(identifierContext), true);
 				}
 				CalculatorParser.StringContext _stringContext = context.@string();
 				if (_stringContext != null) 
 				{
-					GreenNode _string = this.factory.Value((StringGreen)this.Visit(_stringContext), true);
-					return _string;
+					return this.factory.Value((StringGreen)this.Visit(_stringContext), true);
 				}
 				CalculatorParser.IntegerContext integerContext = context.integer();
 				if (integerContext != null) 
 				{
-					GreenNode integer = this.factory.Value((IntegerGreen)this.Visit(integerContext), true);
-					return integer;
+					return this.factory.Value((IntegerGreen)this.Visit(integerContext), true);
 				}
 				return null;
 			}

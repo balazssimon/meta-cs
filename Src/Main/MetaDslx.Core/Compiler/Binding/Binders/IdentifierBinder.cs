@@ -18,7 +18,7 @@ namespace MetaDslx.Compiler.Binding.Binders
     public class IdentifierBinder : QualifierBinder, IIdentifierBinder
     {
         private readonly string _name;
-        private IMetaSymbol _lazySymbol;
+        private ISymbol _lazySymbol;
         private ImmutableArray<Diagnostic> _lazyErrors;
 
         public IdentifierBinder(Binder next, RedNode node, string name) 
@@ -27,7 +27,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             _name = name;
         }
 
-        public override IMetaSymbol Symbol
+        public override ISymbol Symbol
         {
             get
             {
@@ -35,11 +35,11 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        private IMetaSymbol BindSymbol()
+        private ISymbol BindSymbol()
         {
             if (_lazySymbol == null)
             {
-                IMetaSymbol context = null;
+                ISymbol context = null;
                 bool last = true;
                 var qualifierBinder = this.FindAncestorBinder<IQualifierBinder>();
                 if (qualifierBinder != null)

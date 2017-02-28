@@ -1,3 +1,6 @@
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -1409,171 +1412,6 @@ namespace MetaDslx.Languages.Calculator
 	using MetaDslx.Languages.Calculator.Syntax;
     using MetaDslx.Languages.Calculator.Syntax.InternalSyntax;
 
-	
-	public class CalculatorSyntaxFacts : SyntaxFacts
-	{
-		internal static readonly CalculatorSyntaxFacts Instance = new CalculatorSyntaxFacts();
-	
-		public override bool IsToken(int rawKind)
-		{
-			return this.IsToken((CalculatorSyntaxKind)rawKind);
-		}
-
-        protected override int DefaultEndOfLineSyntaxKindCore
-        {
-            get
-            {
-                return (int)CalculatorSyntaxKind.ENDL;
-            }
-        }
-
-        protected override int DefaultWhitespaceSyntaxKindCore
-        {
-            get
-            {
-                return (int)CalculatorSyntaxKind.WHITESPACE;
-            }
-        }
-
-        public bool IsToken(CalculatorSyntaxKind kind)
-	    {
-			switch (kind)
-	        {
-				case CalculatorSyntaxKind.Eof:
-				case CalculatorSyntaxKind.TSemicolon:
-				case CalculatorSyntaxKind.TOpenParen:
-				case CalculatorSyntaxKind.TCloseParen:
-				case CalculatorSyntaxKind.TComma:
-				case CalculatorSyntaxKind.TAssign:
-				case CalculatorSyntaxKind.TAdd:
-				case CalculatorSyntaxKind.TSub:
-				case CalculatorSyntaxKind.TMul:
-				case CalculatorSyntaxKind.TDiv:
-				case CalculatorSyntaxKind.KPrint:
-				case CalculatorSyntaxKind.STRING:
-				case CalculatorSyntaxKind.ID:
-				case CalculatorSyntaxKind.INT:
-				case CalculatorSyntaxKind.UTF8BOM:
-				case CalculatorSyntaxKind.WHITESPACE:
-				case CalculatorSyntaxKind.ENDL:
-				case CalculatorSyntaxKind.COMMENT:
-					return true;
-				default:
-					return false;
-			}
-		}
-	
-		public override bool IsFixedToken(int rawKind)
-		{
-			return this.IsFixedToken((CalculatorSyntaxKind)rawKind);
-		}
-	
-		public bool IsFixedToken(CalculatorSyntaxKind kind)
-	    {
-			switch (kind)
-	        {
-				case CalculatorSyntaxKind.Eof:
-				case CalculatorSyntaxKind.TSemicolon:
-				case CalculatorSyntaxKind.TOpenParen:
-				case CalculatorSyntaxKind.TCloseParen:
-				case CalculatorSyntaxKind.TComma:
-				case CalculatorSyntaxKind.TAssign:
-				case CalculatorSyntaxKind.TAdd:
-				case CalculatorSyntaxKind.TSub:
-				case CalculatorSyntaxKind.TMul:
-				case CalculatorSyntaxKind.TDiv:
-				case CalculatorSyntaxKind.KPrint:
-					return true;
-				default:
-					return false;
-			}
-		}
-	
-		public override string GetText(int rawKind)
-		{
-			return this.GetText((CalculatorSyntaxKind)rawKind);
-		}
-	
-		public string GetText(CalculatorSyntaxKind kind)
-	    {
-			switch (kind)
-	        {
-				case CalculatorSyntaxKind.TSemicolon:
-					return ";";
-				case CalculatorSyntaxKind.TOpenParen:
-					return "(";
-				case CalculatorSyntaxKind.TCloseParen:
-					return ")";
-				case CalculatorSyntaxKind.TComma:
-					return ",";
-				case CalculatorSyntaxKind.TAssign:
-					return "=";
-				case CalculatorSyntaxKind.TAdd:
-					return "+";
-				case CalculatorSyntaxKind.TSub:
-					return "-";
-				case CalculatorSyntaxKind.TMul:
-					return "*";
-				case CalculatorSyntaxKind.TDiv:
-					return "/";
-				case CalculatorSyntaxKind.KPrint:
-					return "print";
-				default:
-					return string.Empty;
-			}
-		}
-	
-		public CalculatorSyntaxKind GetKind(string text)
-	    {
-			switch (text)
-	        {
-				case ";":
-					return CalculatorSyntaxKind.TSemicolon;
-				case "(":
-					return CalculatorSyntaxKind.TOpenParen;
-				case ")":
-					return CalculatorSyntaxKind.TCloseParen;
-				case ",":
-					return CalculatorSyntaxKind.TComma;
-				case "=":
-					return CalculatorSyntaxKind.TAssign;
-				case "+":
-					return CalculatorSyntaxKind.TAdd;
-				case "-":
-					return CalculatorSyntaxKind.TSub;
-				case "*":
-					return CalculatorSyntaxKind.TMul;
-				case "/":
-					return CalculatorSyntaxKind.TDiv;
-				case "print":
-					return CalculatorSyntaxKind.KPrint;
-				default:
-					return CalculatorSyntaxKind.None;
-			}
-		}
-	
-	    public override string GetKindText(int rawKind)
-	    {
-	        return this.GetKindText((CalculatorSyntaxKind)rawKind);
-	    }
-	
-	    public string GetKindText(CalculatorSyntaxKind kind)
-	    {
-	        return kind.ToString();
-	    }
-	
-	    public override bool IsTriviaWithEndOfLine(int rawKind)
-		{
-			return this.IsTriviaWithEndOfLine((CalculatorSyntaxKind)rawKind);
-		}
-	
-	    public bool IsTriviaWithEndOfLine(CalculatorSyntaxKind kind)
-		{
-			// TODO:
-			return false;
-		}
-	}
-
 	public interface ICalculatorSyntaxVisitor
 	{
 		
@@ -2052,15 +1890,18 @@ namespace MetaDslx.Languages.Calculator
 			this.ElasticTab = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticTab.CreateRed();
 			this.ElasticZeroSpace = (CalculatorSyntaxTrivia)CalculatorGreenFactory.Instance.ElasticZeroSpace.CreateRed();
 		}
-
-        protected override Language LanguageCore
-        {
-            get
-            {
-                return CalculatorLanguage.Instance;
-            }
-        }
-        public CalculatorSyntaxTrivia CarriageReturnLineFeed { get; }
+	
+		public new CalculatorLanguage Language
+		{
+			get { return CalculatorLanguage.Instance; }
+		}
+	
+		protected override Language LanguageCore
+		{
+			get { return this.Language; }
+		}
+	
+	    public CalculatorSyntaxTrivia CarriageReturnLineFeed { get; }
 	    public CalculatorSyntaxTrivia LineFeed { get; }
 	    public CalculatorSyntaxTrivia CarriageReturn { get; }
 	    public CalculatorSyntaxTrivia Space { get; }

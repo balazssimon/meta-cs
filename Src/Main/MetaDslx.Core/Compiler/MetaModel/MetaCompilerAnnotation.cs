@@ -27,10 +27,23 @@ namespace MetaDslx.Compiler.MetaModel
         public const string SymbolUse = "SymbolUse";
         public const string SymbolCtr = "SymbolCtr";
 
-        public static readonly string[] SemanticAnnotations = 
+        public const string Token = "Token";
+
+
+        public static readonly string[] SemanticAnnotations =
             {
-                Name, Qualifier, SymbolDef, SymbolUse, SymbolCtr,
-                Property
+                Identifier, Qualifier, Value, EnumValue,
+                Property, Name, Body,
+                Root, SymbolDef, SymbolUse, SymbolCtr,
+                Token
+            };
+
+        public static readonly string[] WellKnownAnnotations = 
+            {
+                Identifier, Qualifier, Value, EnumValue, 
+                Property, Name, Body,
+                Root, SymbolDef, SymbolUse, SymbolCtr,
+                Token
             };
 
         public static string GetDefaultProperty(string annotationType)
@@ -78,6 +91,11 @@ namespace MetaDslx.Compiler.MetaModel
         }
 
         public IReadOnlyList<MetaCompilerAnnotation> Annotations { get; }
+
+        public ImmutableArray<MetaCompilerAnnotation> GetCustomAnnotations()
+        {
+            return this.Annotations.Where(a => !MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name)).ToImmutableArray();
+        }
 
         public bool HasAnnotation(string name)
         {

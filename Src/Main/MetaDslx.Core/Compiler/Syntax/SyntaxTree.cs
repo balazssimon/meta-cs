@@ -431,7 +431,7 @@ namespace MetaDslx.Compiler.Syntax
         /// regain access to a syntax node without keeping the entire tree and source text in
         /// memory.
         /// </summary>
-        public SyntaxReference GetReference(SyntaxNode node)
+        public SyntaxReference GetReference(RedNode node)
         {
             return new SimpleSyntaxReference(node);
         }

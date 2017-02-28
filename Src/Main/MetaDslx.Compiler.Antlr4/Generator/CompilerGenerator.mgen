@@ -438,12 +438,12 @@ namespace [Properties.DefaultNamespace]
             get { return this.ModelIdCore; }
         }
 ^
-        protected override IMetaSymbol CommonDynamicType
+        protected override ISymbol CommonDynamicType
         {
             get { return null; }
         }
 ^
-        protected override IMetaSymbol CommonObjectType
+        protected override ISymbol CommonObjectType
         {
             get { return null; }
         }
@@ -637,17 +637,17 @@ namespace [Properties.DefaultNamespace]
             return ([Properties.LanguageName]Compilation)base.ReplaceSyntaxTree(oldTree, newTree);
         }
 ^
-        protected override IMetaSymbol CommonGetEntryPoint(CancellationToken cancellationToken)
+        protected override ISymbol CommonGetEntryPoint(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 ^
-        protected override IMetaSymbol CommonGetSpecialType(Type specialType)
+        protected override ISymbol CommonGetSpecialType(Type specialType)
         {
             throw new NotImplementedException();
         }
 ^
-        protected override IMetaSymbol CommonGetTypeByMetadataName(string metadataName)
+        protected override ISymbol CommonGetTypeByMetadataName(string metadataName)
         {
             throw new NotImplementedException();
         }
@@ -836,12 +836,12 @@ namespace [Properties.DefaultNamespace]
             return true;
         }
 ^
-        public override bool IsAttributeType(IMetaSymbol type)
+        public override bool IsAttributeType(ISymbol type)
         {
             throw new NotImplementedException();
         }
 ^
-        public override bool IsSystemTypeReference(IMetaSymbol type)
+        public override bool IsSystemTypeReference(ISymbol type)
         {
             throw new NotImplementedException();
         }
@@ -1307,16 +1307,12 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 			[if (elem.IsSimplified && elem.IsList && elem.IsSeparated)]
 	if ([elem.FieldName()]Context != null) 
 	{
-		GreenNode [elem.FieldName()] = this.factory.[rule.PlainName()]((([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context))?.[elem.Grammar.FindParserRule(elem.OriginalType).Elements[0].GreenName()], true);
-		[GenerateSemanticAnnotations(elem.Annotations.Merge(rule.Annotations), elem.FieldName(), false)]
-		return [elem.FieldName()];
+		return this.factory.[rule.PlainName()]((([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context))?.[elem.Grammar.FindParserRule(elem.OriginalType).Elements[0].GreenName()], true);
 	}
 			[else]
 	if ([elem.FieldName()]Context != null) 
 	{
-		GreenNode [elem.FieldName()] = this.factory.[rule.PlainName()](([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context), true);
-		[GenerateSemanticAnnotations(elem.Annotations.Merge(rule.Annotations), elem.FieldName(), false)]
-		return [elem.FieldName()];
+		return this.factory.[rule.PlainName()](([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context), true);
 	}
 			[end if]
 		[end loop]
@@ -1329,7 +1325,6 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 	if ([elem.FieldName()]Context != null)
 	{
 		[elem.FieldName()] = ([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context);
-		[GenerateSemanticAnnotations(elem.Annotations, elem.FieldName(), false)]
 	}
 		[else]
 		[if(elem.IsBlock)]
@@ -1339,7 +1334,6 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 	if (context.[item.GetAccessorName()] != null)
 	{
 		[elem.FieldName()] = (InternalSyntaxToken)this.VisitTerminal(context.[item.GetAccessorName()]);
-		[GenerateSemanticAnnotations(elem.Annotations, elem.FieldName())]
 	}
 	[delim]\
 				[end loop]
@@ -1361,10 +1355,6 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
         }
     }
 	[elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.GreenType(TypeKind.Public)].Create([elem.FieldName()]Builder.ToArrayAndFree());
-	if ([elem.FieldName()] != null)
-	{
-		[GenerateSemanticAnnotations(elem.Annotations, elem.FieldName(), false)]
-	}
 				[else]
 					[if(elem.IsToken)]
     ITerminalNode["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
@@ -1382,56 +1372,27 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
         [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.Visit([elem.FieldName()]Context["[i]"]));
     }
 	[elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.GreenType(TypeKind.Public)].Create([elem.FieldName()]Builder.ToArrayAndFree());
-	if ([elem.FieldName()] != null)
-	{
-		[GenerateSemanticAnnotations(elem.Annotations, elem.FieldName(), false)]
-	}
 					[end if]
 				[end if]
 			[else]
 				[if(elem.IsToken)]
 	InternalSyntaxToken [elem.FieldName()] = (InternalSyntaxToken)this.VisitTerminal(context.[elem.Antlr4Name()]);
-	[GenerateSemanticAnnotations(elem.Annotations, elem.FieldName())]
 				[else]
 	[Properties.LanguageName]Parser.[elem.PlainType()]Context [elem.FieldName()]Context = context.[elem.GetAccessorName()];
 	[elem.GreenType(TypeKind.Field)] [elem.FieldName()] = null;
 	if ([elem.FieldName()]Context != null)
 	{
 		[elem.FieldName()] = ([elem.GreenType(TypeKind.Field)])this.Visit([elem.FieldName()]Context);
-		[GenerateSemanticAnnotations(elem.Annotations, elem.FieldName(), false)]
 	}
 				[end if]
 			[end if]
 		[end if]
 		[end if]
 	[end loop]
-		[if (rule.Annotations.Filter(MetaCompilerAnnotationInfo.SemanticAnnotations).Annotations.Count > 0)]
-	GreenNode greenNode = this.factory.[rule.PlainName()]([GetRoslynVisitorElemParamList(rule, false, false)], true);
-	[GenerateSemanticAnnotations(rule.Annotations, "greenNode", false)]
-	return greenNode;
-		[else]
 	return this.factory.[rule.PlainName()]([GetRoslynVisitorElemParamList(rule, false, false)], true);
-		[end if]
 	[end if]
 }
 [end if]
-end template
-
-template GenerateSemanticAnnotations(MetaCompilerAnnotations mannots, string greenNode, bool checkNull = true)
-[MetaCompilerAnnotations semanticAnnots = mannots.Filter(MetaCompilerAnnotationInfo.SemanticAnnotations)]
-[if(semanticAnnots.Annotations.Count > 0)]
-	[if (checkNull)]
-if ([greenNode] != null)
-{
-	[GenerateAnnotationsCore(semanticAnnots, greenNode)]
-}
-	[else]
-[GenerateAnnotationsCore(semanticAnnots, greenNode)]
-	[end if]
-[end if]
-end template
-
-template GenerateAnnotationsCore(MetaCompilerAnnotations mannots, string greenNode)
 end template
 
 
@@ -2297,7 +2258,7 @@ internal class [Properties.LanguageName]GreenFactory : InternalSyntaxFactory
 {
     internal static readonly [Properties.LanguageName]GreenFactory Instance = new [Properties.LanguageName]GreenFactory();
 ^
-	public new SoalLanguage Language
+	public new [Properties.LanguageName]Language Language
 	{
 		get { return [Properties.LanguageName]Language.Instance; }
 	}
@@ -2871,12 +2832,12 @@ namespace [Properties.DefaultNamespace]
 ^
 		protected override int DefaultEndOfLineSyntaxKindCore
 		{
-			get { return (int)[Properties.LanguageName]SyntaxKind.[Instances.DefaultEndOfLine.PlainName()]; }
+			get { return (int)[Properties.LanguageName]SyntaxKind.[Instances.DefaultEndOfLine != null ? Instances.DefaultEndOfLine.PlainName() : "None"]; }
 		}
 ^
 		protected override int DefaultWhitespaceSyntaxKindCore
 		{
-			get { return (int)[Properties.LanguageName]SyntaxKind.[Instances.DefaultWhitespace.PlainName()]; }
+			get { return (int)[Properties.LanguageName]SyntaxKind.[Instances.DefaultWhitespace != null ? Instances.DefaultWhitespace.PlainName() : "None"]; }
 		}
 ^
 		public override bool IsToken(int rawKind)
@@ -3252,7 +3213,7 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 		this.ElasticZeroSpace = ([Properties.LanguageName]SyntaxTrivia)[Properties.LanguageName]GreenFactory.Instance.ElasticZeroSpace.CreateRed();
 	}
 ^
-	public new SoalLanguage Language
+	public new [Properties.LanguageName]Language Language
 	{
 		get { return [Properties.LanguageName]Language.Instance; }
 	}
@@ -4171,9 +4132,12 @@ end template
 
 template GenerateDeclarationTreeBuilderVisitElementBody(Antlr4ParserRuleElement elem)
 	[if (elem.IsList)]
-foreach (var child in node.[elem.RedName()])
+if (node.[elem.RedName()] != null)
 {
-	this.Visit(child);
+	foreach (var child in node.[elem.RedName()])
+	{
+		this.Visit(child);
+	}
 }
 	[else]
 		[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
@@ -4332,6 +4296,18 @@ namespace [Properties.DefaultNamespace].Binding
         {
 ^
         }
+		[loop(annot:Instances.CustomAnnotations)]
+^
+        protected virtual Binder Create[annot.Name]Binder(Binder parentBinder, RedNode node)
+        {
+            return this.Create[annot.Name]BinderCore(parentBinder, node);
+        }
+^
+        protected virtual Binder Create[annot.Name]BinderCore(Binder parentBinder, RedNode node)
+        {
+            return new [annot.Name]Binder(parentBinder, node);
+        }
+		[end loop]
    		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]
 				[loop(alt:rule.Alternatives)]
@@ -4351,7 +4327,6 @@ template GenerateBinderFactoryVisit(Antlr4ParserRule rule)
 public Binder Visit[rule.PlainName()]([rule.RedName()] node)
 {
     Debug.Assert(node.SyntaxTree == this.SyntaxTree);
-	[if (rule.HasAnnotations || hasloop(elem:rule.Elements where elem.HasAnnotations))]
     if (!node.FullSpan.Contains(this.Position))
     {
         return this.GetParentBinder(node);
@@ -4369,9 +4344,6 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] node)
 		[GenerateBinderFactoryVisitBody(rule)]
 	}
 	return resultBinder;
-	[else]
-    return this.GetParentBinder(node);
-	[end if]
 }
 end template
 
@@ -4488,7 +4460,7 @@ if (this.ForChild)
 end template
 
 template GenerateBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
-	[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
+	[if (elem.IsFixedTokenAltBlock)]
 [GenerateBinderFactoryVisitTokenAltBody(rule, elem)]
 	[else]
 [GenerateBinderFactoryVisitElementBody(rule, elem)]

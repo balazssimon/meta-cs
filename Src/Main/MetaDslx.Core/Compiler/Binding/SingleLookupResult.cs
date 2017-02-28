@@ -20,12 +20,12 @@ namespace MetaDslx.Compiler.Binding
         public readonly LookupResultKind Kind;
 
         // the symbol or null.
-        public readonly IMetaSymbol Symbol;
+        public readonly ISymbol Symbol;
 
         // the error of the result, if it is NonViable or Inaccessible
         public readonly DiagnosticInfo Error;
 
-        public SingleLookupResult(LookupResultKind kind, IMetaSymbol symbol, DiagnosticInfo error)
+        public SingleLookupResult(LookupResultKind kind, ISymbol symbol, DiagnosticInfo error)
         {
             this.Kind = kind;
             this.Symbol = symbol;

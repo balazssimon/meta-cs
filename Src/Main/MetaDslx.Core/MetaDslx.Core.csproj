@@ -51,6 +51,7 @@
     <Compile Include="Compiler\Binding\Binders\Binder.cs" />
     <Compile Include="Compiler\Binding\Binders\BinderFactory.cs" />
     <Compile Include="Compiler\Binding\Binders\CachingBinderFactory.cs" />
+    <Compile Include="Compiler\Binding\Binders\CustomBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\EnumValueBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\IdentifierBinder.cs" />
     <Compile Include="Compiler\Binding\Binders\NameBinder.cs" />
@@ -75,7 +76,7 @@
     <Compile Include="Compiler\Binding\OverloadResolution.cs" />
     <Compile Include="Compiler\Binding\SingleLookupResult.cs" />
     <Compile Include="Compiler\Binding\SpeculativeSyntaxTreeSemanticModel.cs" />
-    <Compile Include="Compiler\Binding\Binders\SymbolBinder.cs" />
+    <Compile Include="Compiler\Binding\Binders\SymbolDefBinder.cs" />
     <Compile Include="Compiler\Binding\SymbolBuilder.cs" />
     <Compile Include="Compiler\Binding\SyntaxTreeSemanticModel.cs" />
     <Compile Include="Compiler\Compilation\CandidateReason.cs" />
@@ -123,19 +124,19 @@
     <Compile Include="Compiler\Symbols\CompilerAttachedMethods.cs" />
     <Compile Include="Compiler\Symbols\CompilerAttachedProperties.cs" />
     <Compile Include="Core\GreenModel.cs" />
-    <Compile Include="Core\ImmutableMetaImplementation.cs" />
-    <Compile Include="Core\ImmutableMetaModel.cs">
+    <Compile Include="Languages\Meta\Symbols\ImmutableMetaImplementation.cs" />
+    <Compile Include="Languages\Meta\Symbols\ImmutableMetaModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModel.mm</DependentUpon>
     </Compile>
-    <Compile Include="Core\ImmutableMetaModelGenerator.cs">
+    <Compile Include="Languages\Meta\Symbols\ImmutableMetaModelGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
     </Compile>
-    <Compile Include="Core\ImmutableMetaModelGeneratorExtensions.cs" />
-    <Compile Include="Core\ImmutableUtils.cs" />
+    <Compile Include="Languages\Meta\Symbols\ImmutableMetaModelGeneratorExtensions.cs" />
+    <Compile Include="Compiler\Utilities\StringEscapeUtilities.cs" />
     <Compile Include="Core\LazyEvaluationDiagnosticInfo.cs" />
     <Compile Include="Core\ModelCollections.cs" />
     <Compile Include="Core\ModelErrorCode.cs" />
@@ -252,11 +253,11 @@
     <Compile Include="Compiler\Utilities\UnionCollection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Core\ImmutableMetaModel.mm">
+    <None Include="Languages\Meta\Symbols\ImmutableMetaModel.mm">
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>ImmutableMetaModel.cs</LastGenOutput>
     </None>
-    <None Include="Core\ImmutableMetaModelGenerator.mgen">
+    <None Include="Languages\Meta\Symbols\ImmutableMetaModelGenerator.mgen">
       <Generator>MetaGenerator</Generator>
       <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
     </None>

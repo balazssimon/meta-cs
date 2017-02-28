@@ -317,7 +317,7 @@ namespace MetaDslx.Compiler
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbol declared by the node or null if the node is not a declaration.</returns>
-        public IMetaSymbol GetDeclaredSymbolForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        public ISymbol GetDeclaredSymbolForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDeclaredSymbolCore(declaration, cancellationToken);
         }
@@ -331,7 +331,7 @@ namespace MetaDslx.Compiler
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbol declared by the node or null if the node is not a declaration.</returns>
-        protected abstract IMetaSymbol GetDeclaredSymbolCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ISymbol GetDeclaredSymbolCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the symbol associated with a declaration syntax node. Unlike <see cref="GetDeclaredSymbolForNode(SyntaxNode, CancellationToken)"/>,
@@ -344,7 +344,7 @@ namespace MetaDslx.Compiler
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbols declared by the node.</returns>
-        public ImmutableArray<IMetaSymbol> GetDeclaredSymbolsForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        public ImmutableArray<ISymbol> GetDeclaredSymbolsForNode(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDeclaredSymbolsCore(declaration, cancellationToken);
         }
@@ -360,7 +360,7 @@ namespace MetaDslx.Compiler
         /// UsingDirectiveSyntax</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The symbols declared by the node.</returns>
-        protected abstract ImmutableArray<IMetaSymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<ISymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the available named symbols in the context of the specified location and optional container. Only
@@ -378,9 +378,9 @@ namespace MetaDslx.Compiler
         /// specified, the "position" location is significant for determining which members of "containing" are
         /// accessible. 
         /// </remarks>
-        public ImmutableArray<IMetaSymbol> LookupSymbols(
+        public ImmutableArray<ISymbol> LookupSymbols(
             int position,
-            IMetaSymbol container = null,
+            ISymbol container = null,
             string name = null)
         {
             return LookupSymbolsCore(position, container, name);
@@ -389,9 +389,9 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Backing implementation of <see cref="LookupSymbols"/>.
         /// </summary>
-        protected abstract ImmutableArray<IMetaSymbol> LookupSymbolsCore(
+        protected abstract ImmutableArray<ISymbol> LookupSymbolsCore(
             int position,
-            IMetaSymbol container,
+            ISymbol container,
             string name);
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace MetaDslx.Compiler
         /// 
         /// Non-reduced extension methods are considered, but reduced extension methods are not.
         /// </remarks>
-        public ImmutableArray<IMetaSymbol> LookupBaseMembers(
+        public ImmutableArray<ISymbol> LookupBaseMembers(
             int position,
             string name = null)
         {
@@ -439,7 +439,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Backing implementation of <see cref="LookupBaseMembers"/>.
         /// </summary>
-        protected abstract ImmutableArray<IMetaSymbol> LookupBaseMembersCore(
+        protected abstract ImmutableArray<ISymbol> LookupBaseMembersCore(
             int position,
             string name);
 
@@ -463,9 +463,9 @@ namespace MetaDslx.Compiler
         /// 
         /// Essentially the same as filtering instance members out of the results of an analogous <see cref="LookupSymbols"/> call.
         /// </remarks>
-        public ImmutableArray<IMetaSymbol> LookupStaticMembers(
+        public ImmutableArray<ISymbol> LookupStaticMembers(
             int position,
-            IMetaSymbol container = null,
+            ISymbol container = null,
             string name = null)
         {
             return LookupStaticMembersCore(position, container, name);
@@ -474,9 +474,9 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Backing implementation of <see cref="LookupStaticMembers"/>.
         /// </summary>
-        protected abstract ImmutableArray<IMetaSymbol> LookupStaticMembersCore(
+        protected abstract ImmutableArray<ISymbol> LookupStaticMembersCore(
             int position,
-            IMetaSymbol container,
+            ISymbol container,
             string name);
 
         /// <summary>
@@ -497,9 +497,9 @@ namespace MetaDslx.Compiler
         /// 
         /// Does not return INamespaceOrTypeSymbol, because there could be aliases.
         /// </remarks>
-        public ImmutableArray<IMetaSymbol> LookupNamespacesAndTypes(
+        public ImmutableArray<ISymbol> LookupNamespacesAndTypes(
             int position,
-            IMetaSymbol container = null,
+            ISymbol container = null,
             string name = null)
         {
             return LookupNamespacesAndTypesCore(position, container, name);
@@ -508,9 +508,9 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Backing implementation of <see cref="LookupNamespacesAndTypes"/>.
         /// </summary>
-        protected abstract ImmutableArray<IMetaSymbol> LookupNamespacesAndTypesCore(
+        protected abstract ImmutableArray<ISymbol> LookupNamespacesAndTypesCore(
             int position,
-            IMetaSymbol container,
+            ISymbol container,
             string name);
 
         /// <summary>
@@ -535,7 +535,7 @@ namespace MetaDslx.Compiler
         /// from which a method is then chosen; the chosen method or property is present in Symbol;
         /// all methods in the group that was consulted are placed in this property.
         /// </summary>
-        public ImmutableArray<IMetaSymbol> GetMembers(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        public ImmutableArray<ISymbol> GetMembers(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetMembersCore(node, cancellationToken);
         }
@@ -545,13 +545,13 @@ namespace MetaDslx.Compiler
         /// from which a method is then chosen; the chosen method or property is present in Symbol;
         /// all methods in the group that was consulted are placed in this property.
         /// </summary>
-        protected abstract ImmutableArray<IMetaSymbol> GetMembersCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<ISymbol> GetMembersCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Given a position in the SyntaxTree for this SemanticModel returns the innermost Symbol
         /// that the position is considered inside of.
         /// </summary>
-        public IMetaSymbol GetEnclosingSymbol(int position, CancellationToken cancellationToken = default(CancellationToken))
+        public ISymbol GetEnclosingSymbol(int position, CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetEnclosingSymbolCore(position, cancellationToken);
         }
@@ -560,7 +560,7 @@ namespace MetaDslx.Compiler
         /// Given a position in the SyntaxTree for this SemanticModel returns the innermost Symbol
         /// that the position is considered inside of.
         /// </summary>
-        protected abstract IMetaSymbol GetEnclosingSymbolCore(int position, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ISymbol GetEnclosingSymbolCore(int position, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Determines if the symbol is accessible from the specified location. 
@@ -577,7 +577,7 @@ namespace MetaDslx.Compiler
         /// modifiers on symbol and its containing types. Even if true is returned, the given symbol
         /// may not be able to be referenced for other reasons, such as name hiding.
         /// </remarks>
-        public bool IsAccessible(int position, IMetaSymbol symbol)
+        public bool IsAccessible(int position, ISymbol symbol)
         {
             return IsAccessibleCore(position, symbol);
         }
@@ -597,12 +597,12 @@ namespace MetaDslx.Compiler
         /// modifiers on symbol and its containing types. Even if true is returned, the given symbol
         /// may not be able to be referenced for other reasons, such as name hiding.
         /// </remarks>
-        protected abstract bool IsAccessibleCore(int position, IMetaSymbol symbol);
+        protected abstract bool IsAccessibleCore(int position, ISymbol symbol);
 
         /// <summary>
         /// Takes a Symbol and syntax for one of its declaring syntax reference and returns the topmost syntax node to be used by syntax analyzer.
         /// </summary>
-        protected internal virtual SyntaxNode GetTopmostNodeForDiagnosticAnalysis(IMetaSymbol symbol, SyntaxNode declaringSyntax)
+        protected internal virtual SyntaxNode GetTopmostNodeForDiagnosticAnalysis(ISymbol symbol, SyntaxNode declaringSyntax)
         {
             return declaringSyntax;
         }

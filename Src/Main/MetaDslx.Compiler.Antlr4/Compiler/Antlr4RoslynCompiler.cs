@@ -24,6 +24,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public string Source { get; private set; }
         public string DefaultNamespace { get; private set; }
         public string FileName { get; private set; }
+        public string InputDirectory { get; private set; }
         public string OutputDirectory { get; private set; }
         public bool GenerateOutput { get; set; }
         private DiagnosticBag DiagnosticBag { get; set; }
@@ -53,10 +54,11 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         public string GeneratedDeclarationTreeBuilder { get; private set; }
         public string GeneratedBinderFactoryVisitor { get; private set; }
 
-        public Antlr4RoslynCompiler(string source, string defaultNamespace, string outputDirectory, string fileName)
+        public Antlr4RoslynCompiler(string source, string defaultNamespace, string inputDirectory, string outputDirectory, string fileName)
         {
             this.Source = source;
             this.DefaultNamespace = defaultNamespace;
+            this.InputDirectory = inputDirectory;
             this.OutputDirectory = outputDirectory;
             this.FileName = fileName;
             this.GenerateOutput = true;
@@ -120,6 +122,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
         {
             if (!this.IsParser) return;
             if (this.DiagnosticBag.HasAnyErrors()) return;
+            this.CollectCustomAnnotations();
             this.CollectHasAnnotationFlags();
             CompilerGenerator generator = new CompilerGenerator(this.Grammar);
             generator.Properties.DefaultNamespace = this.DefaultNamespace;
@@ -227,6 +230,45 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedBinderFactoryVisitor);
+                }
+            }
+        }
+
+        private void CollectCustomAnnotations()
+        {
+            this.DefineCustomAnnotations();
+            //this.ReferenceCustomAnnotations();
+        }
+
+        private void DefineCustomAnnotations()
+        {
+            foreach (var rule in this.Grammar.ParserRules)
+            {
+                this.DefineCustomAnnotations(rule.Annotations.GetCustomAnnotations());
+                foreach (var elem in rule.AllElements)
+                {
+                    this.DefineCustomAnnotations(elem.Annotations.GetCustomAnnotations());
+                }
+                foreach (var alt in rule.Alternatives)
+                {
+                    this.DefineCustomAnnotations(alt.Annotations.GetCustomAnnotations());
+                    foreach (var elem in alt.AllElements)
+                    {
+                        this.DefineCustomAnnotations(elem.Annotations.GetCustomAnnotations());
+                    }
+                }
+            }
+        }
+
+        private void DefineCustomAnnotations(ImmutableArray<MetaCompilerAnnotation> annots)
+        {
+            foreach (var annot in annots)
+            {
+                MetaCompilerAnnotation existing = this.Grammar.CustomAnnotations.FirstOrDefault(a => a.Name == annot.Name);
+                if (existing == null)
+                {
+                    existing = new MetaCompilerAnnotation(annot.Name, new MetaAnnotationProperty[0]);
+                    this.Grammar.CustomAnnotations.Add(existing);
                 }
             }
         }
@@ -783,7 +825,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             if (context.identifier().GetText() == "tokenVocab")
             {
                 string tokenVocabName = context.optionValue().GetText();
-                string tokenVocabFileName = Path.Combine(this.compiler.OutputDirectory, tokenVocabName + ".tokens");
+                string tokenVocabFileName = Path.Combine(this.compiler.InputDirectory, tokenVocabName + ".tokens");
                 if (File.Exists(tokenVocabFileName))
                 {
                     Dictionary<string, int> fixedTokens = new Dictionary<string, int>();
@@ -1480,6 +1522,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
     {
         public Antlr4Grammar()
         {
+            this.CustomAnnotations = new List<MetaCompilerAnnotation>();
             this.ParserRuleElemUses = new HashSet<string>();
             this.ParserRules = new List<Antlr4ParserRule>();
             this.LexerRules = new List<Antlr4LexerRule>();
@@ -1489,6 +1532,7 @@ namespace MetaDslx.Compiler.Antlr4Roslyn
             this.FixedTokens = new List<Antlr4LexerRule>();
         }
         public string Name { get; set; }
+        public List<MetaCompilerAnnotation> CustomAnnotations { get; private set; }
         public HashSet<string> ParserRuleElemUses { get; private set; }
         public Dictionary<string, List<Antlr4LexerRule>> LexerTokenKinds { get; private set; }
         public List<Antlr4ParserRule> ParserRules { get; private set; }

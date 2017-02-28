@@ -35,9 +35,9 @@ namespace MetaDslx.Compiler
         private readonly CompilationOptions _options;
         private readonly Lazy<Imports> _globalImports;
         private readonly Lazy<Imports> _previousSubmissionImports;
-        private readonly Lazy<IMetaSymbol> _globalNamespaceAlias;  // alias symbol used to resolve "global::".
-        private readonly Lazy<IMetaSymbol> _scriptSymbol;
-        private readonly Lazy<IMetaSymbol> _errorSymbol;
+        private readonly Lazy<ISymbol> _globalNamespaceAlias;  // alias symbol used to resolve "global::".
+        private readonly Lazy<ISymbol> _scriptSymbol;
+        private readonly Lazy<ISymbol> _errorSymbol;
 
         // All imports (using directives and extern aliases) in syntax trees in this compilation.
         // NOTE: We need to de-dup since the Imports objects that populate the list may be GC'd
@@ -77,7 +77,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         private readonly AnonymousTypeManager _anonymousTypeManager;
 
-        internal IMetaSymbol _lazyGlobalNamespace;
+        internal ISymbol _lazyGlobalNamespace;
 
         internal ModelId _lazyModelId;
 
@@ -151,11 +151,11 @@ namespace MetaDslx.Compiler
         {
             _options = options;
 
-            _errorSymbol = new Lazy<IMetaSymbol>(CreateErrorSymbol);
-            _scriptSymbol = new Lazy<IMetaSymbol>(BindScriptSymbol);
+            _errorSymbol = new Lazy<ISymbol>(CreateErrorSymbol);
+            _scriptSymbol = new Lazy<ISymbol>(BindScriptSymbol);
             _globalImports = new Lazy<Imports>(BindGlobalImports);
             _previousSubmissionImports = new Lazy<Imports>(ExpandPreviousSubmissionImports);
-            _globalNamespaceAlias = new Lazy<IMetaSymbol>(CreateGlobalNamespaceAlias);
+            _globalNamespaceAlias = new Lazy<ISymbol>(CreateGlobalNamespaceAlias);
             _anonymousTypeManager = this.Language.CompilationFactory.CreateAnonymousTypeManager(this);
 
             if (isSubmission)
@@ -576,7 +576,7 @@ namespace MetaDslx.Compiler
         /// the use of an extern alias directive. So exclude them from this list which is used to construct
         /// the global namespace.
         /// </summary>
-        private void GetAllUnaliasedModels(ArrayBuilder<IMetaSymbol> rootNamespaces)
+        private void GetAllUnaliasedModels(ArrayBuilder<ISymbol> rootNamespaces)
         {
             var referenceManager = GetBoundReferenceManager();
 
@@ -646,7 +646,7 @@ namespace MetaDslx.Compiler
         /// Gets the root namespace that contains all namespaces and types defined in source code or in 
         /// referenced metadata, merged into a single namespace hierarchy.
         /// </summary>
-        protected override IMetaSymbol CommonGlobalNamespace
+        protected override ISymbol CommonGlobalNamespace
         {
             get
             {
@@ -675,7 +675,7 @@ namespace MetaDslx.Compiler
         /// with contributions for the namespaceSymbol).  Can return null if no corresponding
         /// namespace can be bound in this compilation with the same name.
         /// </summary>
-        protected override IMetaSymbol CommonGetCompilationNamespace(IMetaSymbol namespaceSymbol)
+        protected override ISymbol CommonGetCompilationNamespace(ISymbol namespaceSymbol)
         {
             if (namespaceSymbol.MIsScope && namespaceSymbol.MName == null &&
                 namespaceSymbol.MGet(CompilerAttachedProperties.ContainingCompilationProperty) == this)
@@ -698,22 +698,22 @@ namespace MetaDslx.Compiler
             return null;
         }
 
-        private ConcurrentDictionary<string, IMetaSymbol> _externAliasTargets;
+        private ConcurrentDictionary<string, ISymbol> _externAliasTargets;
 
-        internal bool GetExternAliasTarget(string aliasName, out IMetaSymbol @namespace)
+        internal bool GetExternAliasTarget(string aliasName, out ISymbol @namespace)
         {
             if (_externAliasTargets == null)
             {
-                Interlocked.CompareExchange(ref _externAliasTargets, new ConcurrentDictionary<string, IMetaSymbol>(), null);
+                Interlocked.CompareExchange(ref _externAliasTargets, new ConcurrentDictionary<string, ISymbol>(), null);
             }
 
-            ArrayBuilder<IMetaSymbol> builder = null;
+            ArrayBuilder<ISymbol> builder = null;
             var referenceManager = GetBoundReferenceManager();
             for (int i = 0; i < referenceManager.ReferencedModels.Length; i++)
             {
                 if (referenceManager.AliasesOfReferencedModels[i].Contains(aliasName))
                 {
-                    builder = builder ?? ArrayBuilder<IMetaSymbol>.GetInstance();
+                    builder = builder ?? ArrayBuilder<ISymbol>.GetInstance();
                     builder.AddRange(referenceManager.GetRootNamespaces(i));
                 }
             }
@@ -736,7 +736,7 @@ namespace MetaDslx.Compiler
         /// A symbol representing the implicit Script class. This is null if the class is not
         /// defined in the compilation.
         /// </summary>
-        protected override IMetaSymbol CommonScriptSymbol
+        protected override ISymbol CommonScriptSymbol
         {
             get { return _scriptSymbol.Value; }
         }
@@ -746,7 +746,7 @@ namespace MetaDslx.Compiler
         /// full name of the container class stored in <see cref="CompilationOptions.ScriptClassName"/> to find the symbol.
         /// </summary>
         /// <returns>The Script class symbol or null if it is not defined.</returns>
-        protected virtual IMetaSymbol BindScriptSymbol()
+        protected virtual ISymbol BindScriptSymbol()
         {
             if (_options.ScriptClassName == null)
             {
@@ -766,7 +766,7 @@ namespace MetaDslx.Compiler
         /// A symbol representing the implicit Script class. This is null if the class is not
         /// defined in the compilation.
         /// </summary>
-        protected override IMetaSymbol CommonErrorSymbol
+        protected override ISymbol CommonErrorSymbol
         {
             get { return _errorSymbol.Value; }
         }
@@ -775,7 +775,7 @@ namespace MetaDslx.Compiler
         /// Resolves a symbol that represents a bad symbol.
         /// </summary>
         /// <returns>The Error symbol.</returns>
-        protected virtual IMetaSymbol CreateErrorSymbol()
+        protected virtual ISymbol CreateErrorSymbol()
         {
             return this.SymbolBuilder.CreateErrorSymbol();
         }
@@ -825,7 +825,7 @@ namespace MetaDslx.Compiler
                 Imports.ExpandPreviousSubmissionImports(previous.GetSubmissionImports(), this));
         }
 
-        internal IMetaSymbol GlobalNamespaceAlias
+        internal ISymbol GlobalNamespaceAlias
         {
             get
             {
@@ -928,7 +928,7 @@ namespace MetaDslx.Compiler
             return GetBinderFactory(declaration.SyntaxReference.SyntaxTree).GetBinder(declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
         }
 
-        private IMetaSymbol CreateGlobalNamespaceAlias()
+        private ISymbol CreateGlobalNamespaceAlias()
         {
             return this.SymbolBuilder.CreateGlobalNamespaceAlias(this.GlobalNamespace, new RootBinder(new BuckStopsHereBinder(this), null, this.GlobalNamespace));
         }
@@ -1225,7 +1225,7 @@ namespace MetaDslx.Compiler
             this.ReportUnusedImports(diagnostics, cancellationToken);
         }
 
-        protected bool IsSymbolDefinedInSourceTree(IMetaSymbol symbol, SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
+        protected bool IsSymbolDefinedInSourceTree(ISymbol symbol, SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (symbol == null) return false;
             if (tree == null) return false;
@@ -1483,7 +1483,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Return source declaration symbols whose name meets given predicate.
         /// </summary>
-        public override IEnumerable<IMetaSymbol> GetSymbolsWithName(Func<string, bool> predicate, SymbolFilter filter = SymbolFilter.TypeAndMember, CancellationToken cancellationToken = default(CancellationToken))
+        public override IEnumerable<ISymbol> GetSymbolsWithName(Func<string, bool> predicate, SymbolFilter filter = SymbolFilter.TypeAndMember, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (predicate == null)
             {
@@ -1500,7 +1500,7 @@ namespace MetaDslx.Compiler
 
         #endregion
 
-        internal void SymbolDeclaredEvent(IMetaSymbol symbol)
+        internal void SymbolDeclaredEvent(ISymbol symbol)
         {
             EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
         }

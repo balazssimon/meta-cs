@@ -59,7 +59,7 @@ namespace MetaDslx.Compiler
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="options"></param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected abstract ImmutableArray<IMetaSymbol> GetMembersWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<ISymbol> GetMembersWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the constant value for a syntax node. This is overridden by various specializations of SemanticModel.
@@ -70,9 +70,9 @@ namespace MetaDslx.Compiler
         /// <param name="cancellationToken">The cancellation token.</param>
         protected abstract Optional<object> GetConstantValueWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
-        protected abstract IMetaSymbol GetDeclaredSymbolWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ISymbol GetDeclaredSymbolWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
-        protected abstract ImmutableArray<IMetaSymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<ISymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         #endregion Abstract worker methods
 
@@ -218,13 +218,13 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="expression">The syntax node to get semantic information for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected sealed override ImmutableArray<IMetaSymbol> GetMembersCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        protected sealed override ImmutableArray<ISymbol> GetMembersCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
                 ? this.GetMembersWorker(node, BindingOptions.Default, cancellationToken)
-                : ImmutableArray<IMetaSymbol>.Empty;
+                : ImmutableArray<ISymbol>.Empty;
         }
 
         protected sealed override Optional<object> GetConstantValueCore(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
@@ -246,18 +246,18 @@ namespace MetaDslx.Compiler
             throw new NotImplementedException();
         }
 
-        protected sealed override IMetaSymbol GetDeclaredSymbolCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        protected sealed override ISymbol GetDeclaredSymbolCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             return this.GetDeclaredSymbolWorker(declaration, BindingOptions.Default, cancellationToken);
         }
 
-        protected sealed override ImmutableArray<IMetaSymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
+        protected sealed override ImmutableArray<ISymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            ImmutableArray<IMetaSymbol> result = this.GetDeclaredSymbolsWorker(declaration, BindingOptions.Default, cancellationToken);
+            ImmutableArray<ISymbol> result = this.GetDeclaredSymbolsWorker(declaration, BindingOptions.Default, cancellationToken);
 
             if (result.IsDefault)
             {
@@ -268,14 +268,14 @@ namespace MetaDslx.Compiler
                 }
             }
 
-            return ImmutableArray.Create<IMetaSymbol>();
+            return ImmutableArray.Create<ISymbol>();
         }
 
         /// <summary>
         /// Given a position in the SyntaxTree for this SemanticModel returns the innermost
         /// NamedType that the position is considered inside of.
         /// </summary>
-        protected sealed override IMetaSymbol GetEnclosingSymbolCore(
+        protected sealed override ISymbol GetEnclosingSymbolCore(
             int position,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -317,9 +317,9 @@ namespace MetaDslx.Compiler
         /// 
         /// Non-reduced extension methods are considered regardless of the value of <paramref name="includeReducedExtensionMethods"/>.
         /// </remarks>
-        protected override ImmutableArray<IMetaSymbol> LookupSymbolsCore(
+        protected override ImmutableArray<ISymbol> LookupSymbolsCore(
             int position,
-            IMetaSymbol container = null,
+            ISymbol container = null,
             string name = null)
         {
             return LookupSymbolsInternal(position, container, name, BindingOptions.Default);
@@ -360,7 +360,7 @@ namespace MetaDslx.Compiler
         /// 
         /// Non-reduced extension methods are considered, but reduced extension methods are not.
         /// </remarks>
-        protected override ImmutableArray<IMetaSymbol> LookupBaseMembersCore(
+        protected override ImmutableArray<ISymbol> LookupBaseMembersCore(
             int position,
             string name = null)
         {
@@ -385,9 +385,9 @@ namespace MetaDslx.Compiler
         /// specified, the "position" location is significant for determining which members of "containing" are
         /// accessible. 
         /// </remarks>
-        protected override ImmutableArray<IMetaSymbol> LookupStaticMembersCore(
+        protected override ImmutableArray<ISymbol> LookupStaticMembersCore(
             int position,
-            IMetaSymbol container = null,
+            ISymbol container = null,
             string name = null)
         {
             return LookupSymbolsInternal(position, container, name, BindingOptions.None.SetLookupFlags(LookupFlags.StaticMembers));
@@ -411,9 +411,9 @@ namespace MetaDslx.Compiler
         /// 
         /// Does not return INamespaceOrTypeSymbol, because there could be aliases.
         /// </remarks>
-        protected override ImmutableArray<IMetaSymbol> LookupNamespacesAndTypesCore(
+        protected override ImmutableArray<ISymbol> LookupNamespacesAndTypesCore(
             int position,
-            IMetaSymbol container = null,
+            ISymbol container = null,
             string name = null)
         {
             return LookupSymbolsInternal(position, container, name, BindingOptions.None.SetLookupFlags(LookupFlags.NamespacesOrTypes));
@@ -439,9 +439,9 @@ namespace MetaDslx.Compiler
         /// members of "containing" are accessible. 
         /// </remarks>
         /// <exception cref="ArgumentException">Throws an argument exception if the passed lookup options are invalid.</exception>
-        protected ImmutableArray<IMetaSymbol> LookupSymbolsInternal(
+        protected ImmutableArray<ISymbol> LookupSymbolsInternal(
             int position,
-            IMetaSymbol container,
+            ISymbol container,
             string name,
             BindingOptions options)
         {
@@ -451,11 +451,11 @@ namespace MetaDslx.Compiler
             var binder = GetEnclosingBinder(position);
             if (binder == null)
             {
-                return ImmutableArray<IMetaSymbol>.Empty;
+                return ImmutableArray<ISymbol>.Empty;
             }
 
-            var results = ArrayBuilder<IMetaSymbol>.GetInstance();
-            ImmutableArray<IMetaSymbol> sealedResults = ImmutableArray<IMetaSymbol>.Empty;
+            var results = ArrayBuilder<ISymbol>.GetInstance();
+            ImmutableArray<ISymbol> sealedResults = ImmutableArray<ISymbol>.Empty;
             try
             {
                 if ((object)container == null)
@@ -477,9 +477,9 @@ namespace MetaDslx.Compiler
                 : sealedResults;
         }
 
-        private static ImmutableArray<IMetaSymbol> FilterNotReferencable(ImmutableArray<IMetaSymbol> sealedResults)
+        private static ImmutableArray<ISymbol> FilterNotReferencable(ImmutableArray<ISymbol> sealedResults)
         {
-            ArrayBuilder<IMetaSymbol> builder = null;
+            ArrayBuilder<ISymbol> builder = null;
             int pos = 0;
             foreach (var result in sealedResults)
             {
@@ -492,7 +492,7 @@ namespace MetaDslx.Compiler
                 }
                 else if (builder == null)
                 {
-                    builder = ArrayBuilder<IMetaSymbol>.GetInstance();
+                    builder = ArrayBuilder<ISymbol>.GetInstance();
                     builder.AddRange(sealedResults, pos);
                 }
                 pos++;
@@ -517,7 +517,7 @@ namespace MetaDslx.Compiler
         /// modifiers on symbol and its containing types. Even if true is returned, the given symbol
         /// may not be able to be referenced for other reasons, such as name hiding.
         /// </remarks>
-        protected override bool IsAccessibleCore(int position, IMetaSymbol symbol)
+        protected override bool IsAccessibleCore(int position, ISymbol symbol)
         {
             position = CheckAndAdjustPosition(position);
 
@@ -574,14 +574,14 @@ namespace MetaDslx.Compiler
 
         // Gets symbol info for a type or namespace or alias reference. It is assumed that any error cases will come in
         // as a type whose OriginalDefinition is an error symbol from which the ResultKind can be retrieved.
-        protected static SymbolInfo GetSymbolInfoForSymbol(IMetaSymbol symbol, BindingOptions options)
+        protected static SymbolInfo GetSymbolInfoForSymbol(ISymbol symbol, BindingOptions options)
         {
             Debug.Assert((object)symbol != null);
-            return new SymbolInfo(symbol, ImmutableArray<IMetaSymbol>.Empty, CandidateReason.None);
+            return new SymbolInfo(symbol, ImmutableArray<ISymbol>.Empty, CandidateReason.None);
         }
 
         // Gets TypeInfo for a type or namespace or alias reference.
-        protected static TypeInfo GetTypeInfoForSymbol(IMetaSymbol symbol, BindingOptions options)
+        protected static TypeInfo GetTypeInfoForSymbol(ISymbol symbol, BindingOptions options)
         {
             Debug.Assert((object)symbol != null);
             return new TypeInfo(symbol, symbol);

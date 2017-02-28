@@ -69,12 +69,12 @@ namespace MetaDslx.Languages.Soal
             get { return this.ModelIdCore; }
         }
 
-        protected override IMetaSymbol CommonDynamicType
+        protected override ISymbol CommonDynamicType
         {
             get { return null; }
         }
 
-        protected override IMetaSymbol CommonObjectType
+        protected override ISymbol CommonObjectType
         {
             get { return null; }
         }
@@ -268,17 +268,17 @@ namespace MetaDslx.Languages.Soal
             return (SoalCompilation)base.ReplaceSyntaxTree(oldTree, newTree);
         }
 
-        protected override IMetaSymbol CommonGetEntryPoint(CancellationToken cancellationToken)
+        protected override ISymbol CommonGetEntryPoint(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        protected override IMetaSymbol CommonGetSpecialType(Type specialType)
+        protected override ISymbol CommonGetSpecialType(Type specialType)
         {
             throw new NotImplementedException();
         }
 
-        protected override IMetaSymbol CommonGetTypeByMetadataName(string metadataName)
+        protected override ISymbol CommonGetTypeByMetadataName(string metadataName)
         {
             throw new NotImplementedException();
         }
@@ -467,12 +467,12 @@ namespace MetaDslx.Languages.Soal
             return true;
         }
 
-        public override bool IsAttributeType(IMetaSymbol type)
+        public override bool IsAttributeType(ISymbol type)
         {
             throw new NotImplementedException();
         }
 
-        public override bool IsSystemTypeReference(IMetaSymbol type)
+        public override bool IsSystemTypeReference(ISymbol type)
         {
             throw new NotImplementedException();
         }

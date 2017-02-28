@@ -14,10 +14,10 @@ namespace MetaDslx.Compiler.Binding.Binders
     public interface IValueBinder
     {
         object Value { get; }
-        IMetaSymbol Symbol { get; }
+        ISymbol Symbol { get; }
         ImmutableArray<Diagnostic> GetErrors();
         ImmutableArray<object> GetValues();
-        ImmutableArray<IMetaSymbol> GetSymbols();
+        ImmutableArray<ISymbol> GetSymbols();
     }
 
     public class ValueBinder : Binder, IValueBinder
@@ -35,9 +35,9 @@ namespace MetaDslx.Compiler.Binding.Binders
             get { return _value; }
         }
 
-        public IMetaSymbol Symbol
+        public ISymbol Symbol
         {
-            get { return _value as IMetaSymbol; }
+            get { return _value as ISymbol; }
         }
 
         public ImmutableArray<object> GetValues()
@@ -45,10 +45,10 @@ namespace MetaDslx.Compiler.Binding.Binders
             return ImmutableArray.Create(_value);
         }
 
-        public ImmutableArray<IMetaSymbol> GetSymbols()
+        public ImmutableArray<ISymbol> GetSymbols()
         {
-            if (_value is IMetaSymbol) return ImmutableArray.Create((IMetaSymbol)_value);
-            else return ImmutableArray<IMetaSymbol>.Empty;
+            if (_value is ISymbol) return ImmutableArray.Create((ISymbol)_value);
+            else return ImmutableArray<ISymbol>.Empty;
         }
 
         public ImmutableArray<Diagnostic> GetErrors()

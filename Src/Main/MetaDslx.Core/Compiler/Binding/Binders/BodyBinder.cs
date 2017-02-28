@@ -24,14 +24,14 @@ namespace MetaDslx.Compiler.Binding.Binders
     /// </summary>
     public class BodyBinder : Binder, IBodyBinder
     {
-        private IMetaSymbol _container;
-        private readonly Func<ConsList<IMetaSymbol>, Imports> _computeImports;
+        private ISymbol _container;
+        private readonly Func<ConsList<ISymbol>, Imports> _computeImports;
         private Imports _lazyImports;
 
         /// <summary>
         /// Creates a binder with given imports.
         /// </summary>
-        public BodyBinder(Binder next, RedNode node, IMetaSymbol container, Imports imports = null)
+        public BodyBinder(Binder next, RedNode node, ISymbol container = null, Imports imports = null)
             : base(next, node)
         {
             //Debug.Assert((object)container != null || imports != null);
@@ -43,7 +43,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         /// <summary>
         /// Creates a binder with given import computation function.
         /// </summary>
-        public BodyBinder(Binder next, RedNode node, Func<ConsList<IMetaSymbol>, Imports> computeImports)
+        public BodyBinder(Binder next, RedNode node, Func<ConsList<ISymbol>, Imports> computeImports)
             : base(next, node)
         {
             Debug.Assert(computeImports != null);
@@ -52,18 +52,18 @@ namespace MetaDslx.Compiler.Binding.Binders
             _computeImports = computeImports;
         }
 
-        public override IMetaSymbol ContainingSymbol
+        public override ISymbol ContainingSymbol
         {
             get
             {
-                /*if (_container == null)
+                if (_container == null)
                 {
-                    var symbolBinder = this.GetAncestorBinder<ISymbolDefBinder>();
+                    var symbolBinder = this.FindAncestorBinder<ISymbolDefBinder>();
                     if (symbolBinder != null)
                     {
-                        Interlocked.CompareExchange(ref _container, symbolBinder.DefinedSymbols, null);
+                        Interlocked.CompareExchange(ref _container, symbolBinder.DefinedSymbols.FirstOrDefault(), null);
                     }
-                }*/
+                }
                 return _container;
             }
         }
@@ -73,7 +73,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             get { return false; }
         }
 
-        protected override void AddLookupSymbolsInfoInSingleBinder(ArrayBuilder<IMetaSymbol> result, BindingOptions options, Binder originalBinder)
+        protected override void AddLookupSymbolsInfoInSingleBinder(ArrayBuilder<ISymbol> result, BindingOptions options, Binder originalBinder)
         {
             if (this.ContainingSymbol != null)
             {
@@ -88,12 +88,12 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public override void AddMemberLookupSymbolsInfo(ArrayBuilder<IMetaSymbol> result, IMetaSymbol container, BindingOptions options, Binder originalBinder)
+        public override void AddMemberLookupSymbolsInfo(ArrayBuilder<ISymbol> result, ISymbol container, BindingOptions options, Binder originalBinder)
         {
             this.AddMemberLookupSymbolsInfoInType(result, container, options, originalBinder, null);
         }
 
-        private void AddMemberLookupSymbolsInfoInType(ArrayBuilder<IMetaSymbol> result, IMetaSymbol type, BindingOptions options, Binder originalBinder, IMetaSymbol accessThroughType)
+        private void AddMemberLookupSymbolsInfoInType(ArrayBuilder<ISymbol> result, ISymbol type, BindingOptions options, Binder originalBinder, ISymbol accessThroughType)
         {
             AddMemberLookupSymbolsInfoWithoutInheritance(result, type, options, originalBinder, accessThroughType);
 
@@ -106,7 +106,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             //this.AddMemberLookupSymbolsInfoInClass(result, Compilation.GetSpecialType(SpecialType.System_Object), options, originalBinder, accessThroughType);
         }
 
-        private static void AddMemberLookupSymbolsInfoWithoutInheritance(ArrayBuilder<IMetaSymbol> result, IMetaSymbol symbol, BindingOptions options, Binder originalBinder, IMetaSymbol accessThroughType)
+        private static void AddMemberLookupSymbolsInfoWithoutInheritance(ArrayBuilder<ISymbol> result, ISymbol symbol, BindingOptions options, Binder originalBinder, ISymbol accessThroughType)
         {
             HashSet<DiagnosticInfo> discardedDiagnostics = null;
             foreach (var member in symbol.MChildren)
@@ -119,7 +119,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        protected override void LookupSymbolsInSingleBinder(LookupResult result, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        protected override void LookupSymbolsInSingleBinder(LookupResult result, string name, ConsList<ISymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             Debug.Assert(result.IsClear);
 
@@ -146,7 +146,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             imports.LookupSymbol(originalBinder, result, name, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
         }
 
-        protected override void LookupMembersCore(LookupResult result, IMetaSymbol qualifierOpt, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        protected override void LookupMembersCore(LookupResult result, ISymbol qualifierOpt, string name, ConsList<ISymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             if (qualifierOpt == null)
             {
@@ -171,7 +171,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public override Imports GetImports(ConsList<IMetaSymbol> basesBeingResolved)
+        public override Imports GetImports(ConsList<ISymbol> basesBeingResolved)
         {
             Debug.Assert(_lazyImports != null || _computeImports != null, "Have neither imports nor a way to compute them.");
 

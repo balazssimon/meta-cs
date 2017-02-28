@@ -17,17 +17,17 @@ namespace MetaDslx.Compiler.Binding.Binders
 
     public class RootBinder : BodyBinder, IRootBinder
     {
-        public RootBinder(Binder next, RedNode node, IMetaSymbol container) 
+        public RootBinder(Binder next, RedNode node, ISymbol container) 
             : base(next, node, container)
         {
         }
 
-        protected override void LookupSymbolsInSingleBinder(LookupResult result, string name, ConsList<IMetaSymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        protected override void LookupSymbolsInSingleBinder(LookupResult result, string name, ConsList<ISymbol> basesBeingResolved, BindingOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             base.LookupSymbolsInSingleBinder(result, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
             if (result.IsClear)
             {
-                IMetaSymbol symbol = this.Compilation.SymbolResolution.GetWellKnownSymbol(name);
+                ISymbol symbol = this.Compilation.SymbolResolution.GetWellKnownSymbol(name);
                 if (symbol != null)
                 {
                     result.MergeEqual(new SingleLookupResult(LookupResultKind.Viable, symbol, null));

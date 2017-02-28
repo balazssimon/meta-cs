@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Core;
-using MetaDslx.Core.Internal;
+using MetaDslx.Languages.Meta.Symbols.Internal;
+using MetaDslx.Languages.Meta.Symbols;
 
 namespace MetaDslx.Compiler
 {
@@ -172,7 +173,7 @@ namespace MetaDslx.Compiler
         ModelCompilerDiagnostics Diagnostics { get; }
         string FileName { get; }
         string Source { get; }
-        RootScopeBuilder GlobalScope { get; }
+        MetaNamespaceBuilder GlobalScope { get; }
         MutableModelGroup ModelGroup { get; }
         MutableModel Model { get; }
         ITriviaProvider TriviaProvider { get; }
@@ -709,6 +710,25 @@ namespace MetaDslx.Compiler
                 last = i == resolutionInfo.QualifiedNameNodes.Count - 1;
                 currentResult = this.Resolve(currentResult, last ? resolutionInfo.Kind : ResolveKind.NameOrType, name, first ? resolutionInfo.Position : -1, first ? resolutionInfo.Location : ResolutionLocation.Scope, last ? resolutionInfo.SymbolTypes : null);
             }
+            if (currentResult.Count == 0 && resolutionInfo.QualifiedNameNodes.Count == 1)
+            {
+                node = resolutionInfo.QualifiedNameNodes[0];
+                if (node is string)
+                {
+                    name = (string)node;
+                }
+                else
+                {
+                    name = this.Compiler.NameProvider.GetName(node);
+                }
+                foreach (var primitiveType in MetaConstants.Types)
+                {
+                    if (primitiveType.Name == name)
+                    {
+                        currentResult.Add((MutableSymbol)primitiveType.ToMutable());
+                    }
+                }
+            }
             if (currentResult.Count == 0)
             {
                 string nameKind = null;
@@ -956,7 +976,7 @@ namespace MetaDslx.Compiler
             this.ModelGroup = new MutableModelGroup();
             this.Model = this.ModelGroup.CreateModel();
             MetaFactory factory = new MetaFactory(this.Model);
-            this.GlobalScope = factory.RootScope();
+            this.GlobalScope = factory.MetaNamespace();
             this.Diagnostics = new ModelCompilerDiagnostics(this);
             this.TriviaProvider = new DefaultTriviaProvider(this);
             this.NameProvider = new DefaultNameProvider(this);
@@ -968,7 +988,7 @@ namespace MetaDslx.Compiler
         public virtual ModelCompilerDiagnostics Diagnostics { get; protected set; }
         public virtual string FileName { get; protected set; }
         public virtual string Source { get; protected set; }
-        public virtual RootScopeBuilder GlobalScope { get; protected set; }
+        public virtual MetaNamespaceBuilder GlobalScope { get; protected set; }
         public virtual MutableModelGroup ModelGroup { get; protected set; }
         public virtual MutableModel Model { get; protected set; }
         public virtual ITriviaProvider TriviaProvider { get; protected set; }

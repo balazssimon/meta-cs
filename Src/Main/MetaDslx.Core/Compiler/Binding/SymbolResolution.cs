@@ -16,12 +16,12 @@ namespace MetaDslx.Compiler.Binding
 {
     public class SymbolResolution
     {
-        private readonly ConcurrentDictionary<Declaration, IMetaSymbol> _cache;
+        private readonly ConcurrentDictionary<Declaration, ISymbol> _cache;
         private readonly CompilationBase _compilation;
 
         public SymbolResolution(CompilationBase compilation)
         {
-            _cache = new ConcurrentDictionary<Declaration, IMetaSymbol>();
+            _cache = new ConcurrentDictionary<Declaration, ISymbol>();
             _compilation = compilation;
         }
 
@@ -52,7 +52,7 @@ namespace MetaDslx.Compiler.Binding
             }
             else if (value.Length >= 2 && value.StartsWith("\'") && value.EndsWith("\'"))
             {
-                return Regex.Unescape(value.Substring(1, value.Length - 2));
+                return StringEscapeUtilities.UnescapeCharLiteralValue(value.Substring(1, value.Length - 2));
             }
             else if (value.Length >= 3 && value.StartsWith("@\"") && value.EndsWith("\""))
             {
@@ -60,7 +60,7 @@ namespace MetaDslx.Compiler.Binding
             }
             else if (value.Length >= 2 && value.StartsWith("\"") && value.EndsWith("\""))
             {
-                return Regex.Unescape(value.Substring(1, value.Length - 2));
+                return StringEscapeUtilities.UnescapeStringLiteralValue(value.Substring(1, value.Length - 2));
             }
             bool boolValue;
             if (bool.TryParse(value, out boolValue))
@@ -101,12 +101,12 @@ namespace MetaDslx.Compiler.Binding
             return null;
         }
 
-        public virtual IMetaSymbol GetWellKnownSymbol(string name)
+        public virtual ISymbol GetWellKnownSymbol(string name)
         {
             return null;
         }
 
-        public IEnumerable<IMetaSymbol> GetSymbolByQualifiedName(IMetaSymbol container, string qualifiedName, char separator = '.')
+        public IEnumerable<ISymbol> GetSymbolByQualifiedName(ISymbol container, string qualifiedName, char separator = '.')
         {
             if (qualifiedName == null) return null;
             return this.GetSymbolByQualifiedName(container, qualifiedName.Split(separator));
@@ -123,11 +123,11 @@ namespace MetaDslx.Compiler.Binding
         /// <remarks>
         /// "C.D" matches C.D, C{T}.D, C{S,T}.D{U}, etc.
         /// </remarks>
-        public virtual IEnumerable<IMetaSymbol> GetSymbolByQualifiedName(IMetaSymbol container, IEnumerable<string> qualifiedName)
+        public virtual IEnumerable<ISymbol> GetSymbolByQualifiedName(ISymbol container, IEnumerable<string> qualifiedName)
         {
             if (qualifiedName == null) return null;
-            IMetaSymbol namespaceOrType = container ?? _compilation.GlobalNamespace;
-            IEnumerable<IMetaSymbol> symbols = null;
+            ISymbol namespaceOrType = container ?? _compilation.GlobalNamespace;
+            IEnumerable<ISymbol> symbols = null;
             foreach (string name in qualifiedName)
             {
                 if (symbols != null)
@@ -136,7 +136,7 @@ namespace MetaDslx.Compiler.Binding
                     namespaceOrType = this.SelectSingleSymbolForName(symbols);
                     if ((object)namespaceOrType == null)
                     {
-                        return EmptyCollections.Enumerable<IMetaSymbol>();
+                        return EmptyCollections.Enumerable<ISymbol>();
                     }
                 }
 
@@ -146,12 +146,12 @@ namespace MetaDslx.Compiler.Binding
 
         }
 
-        protected virtual IMetaSymbol SelectSingleSymbolForName(IEnumerable<IMetaSymbol> symbols)
+        protected virtual ISymbol SelectSingleSymbolForName(IEnumerable<ISymbol> symbols)
         {
             return symbols.FirstOrDefault();
         }
 
-        public IMetaSymbol GetSymbol(IMetaSymbol container, MergedDeclaration declaration)
+        public ISymbol GetSymbol(ISymbol container, MergedDeclaration declaration)
         {
             if (container == null)
             {
@@ -163,9 +163,9 @@ namespace MetaDslx.Compiler.Binding
             return GetCachedSymbol(declaration);
         }
 
-        public IEnumerable<IMetaSymbol> GetSymbolsWithName(Func<string, bool> predicate, SymbolFilter filter, CancellationToken cancellationToken)
+        public IEnumerable<ISymbol> GetSymbolsWithName(Func<string, bool> predicate, SymbolFilter filter, CancellationToken cancellationToken)
         {
-            var result = new HashSet<IMetaSymbol>();
+            var result = new HashSet<ISymbol>();
             var spine = new List<MergedDeclaration>();
 
             AppendSymbolsWithName(spine, _compilation.Declarations.MergedRoot, predicate, filter, result, cancellationToken);
@@ -175,7 +175,7 @@ namespace MetaDslx.Compiler.Binding
 
         private void AppendSymbolsWithName(
             List<MergedDeclaration> spine, MergedDeclaration current,
-            Func<string, bool> predicate, SymbolFilter filter, HashSet<IMetaSymbol> set, CancellationToken cancellationToken)
+            Func<string, bool> predicate, SymbolFilter filter, HashSet<ISymbol> set, CancellationToken cancellationToken)
         {
             var includeNamespace = (filter & SymbolFilter.Namespace) == SymbolFilter.Namespace;
             var includeType = (filter & SymbolFilter.Type) == SymbolFilter.Type;
@@ -233,7 +233,7 @@ namespace MetaDslx.Compiler.Binding
 
         private void AppendMemberSymbolsWithName(
             List<MergedDeclaration> spine, MergedDeclaration current,
-            Func<string, bool> predicate, HashSet<IMetaSymbol> set, CancellationToken cancellationToken)
+            Func<string, bool> predicate, HashSet<ISymbol> set, CancellationToken cancellationToken)
         {
             spine.Add(current);
 
@@ -252,7 +252,7 @@ namespace MetaDslx.Compiler.Binding
             spine.RemoveAt(spine.Count - 1);
         }
 
-        private IMetaSymbol GetSpineSymbol(List<MergedDeclaration> spine)
+        private ISymbol GetSpineSymbol(List<MergedDeclaration> spine)
         {
             if (spine.Count == 0)
             {
@@ -265,7 +265,7 @@ namespace MetaDslx.Compiler.Binding
                 return symbol;
             }
 
-            var current = _compilation.GlobalNamespace as IMetaSymbol;
+            var current = _compilation.GlobalNamespace as ISymbol;
             for (var i = 1; i < spine.Count; i++)
             {
                 current = GetSymbol(current, spine[i]);
@@ -274,9 +274,9 @@ namespace MetaDslx.Compiler.Binding
             return current;
         }
 
-        private IMetaSymbol GetCachedSymbol(MergedDeclaration declaration)
+        private ISymbol GetCachedSymbol(MergedDeclaration declaration)
         {
-            IMetaSymbol symbol;
+            ISymbol symbol;
             if (_cache.TryGetValue(declaration, out symbol))
             {
                 return symbol;
@@ -285,7 +285,7 @@ namespace MetaDslx.Compiler.Binding
             return null;
         }
 
-        private void AddCache(IEnumerable<IMetaSymbol> symbols)
+        private void AddCache(IEnumerable<ISymbol> symbols)
         {
             foreach (var symbol in symbols)
             {
@@ -298,7 +298,7 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        public virtual IMetaSymbol GetNestedSymbol(IMetaSymbol symbol)
+        public virtual ISymbol GetNestedSymbol(ISymbol symbol)
         {
             if (symbol == null) return null;
             foreach (var nested in symbol.MChildren)
