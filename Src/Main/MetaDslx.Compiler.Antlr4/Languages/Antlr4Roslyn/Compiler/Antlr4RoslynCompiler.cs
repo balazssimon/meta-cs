@@ -27,6 +27,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
 
         public bool IsLexer { get; private set; }
         public bool IsParser { get; private set; }
+        public bool GenerateCompiler { get; private set; }
 
         public string Antlr4Source { get; private set; }
         public bool HasAntlr4Errors { get; private set; }
@@ -80,7 +81,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
             ruleCollector.Visit(this.ParseTree);
             this.IsLexer = ruleCollector.IsLexer;
             this.IsParser = ruleCollector.IsParser;
+            this.GenerateCompiler = ruleCollector.GenerateCompiler;
             this.Grammar = ruleCollector.Grammar;
+
+            if (this.IsLexer)
+            {
+                this.CollectLexerTokenKinds();
+            }
+            if (this.IsParser)
+            {
+                this.CollectCustomAnnotations();
+                this.CollectHasAnnotationFlags();
+            }
 
             this.remover = new Antlr4AnnotationRemover(this.CommonTokenStream);
             this.remover.Visit(this.ParseTree);
@@ -278,7 +290,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
         {
             if (!this.IsLexer) return;
             if (this.DiagnosticBag.HasAnyErrors()) return;
-            this.CollectLexerTokenKinds();
             CompilerGenerator generator = new CompilerGenerator(this.Grammar);
             generator.Properties.DefaultNamespace = this.DefaultNamespace;
             generator.Properties.LanguageName = this.LanguageName;
@@ -299,9 +310,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
         private void GenerateParser()
         {
             if (!this.IsParser) return;
+            if (!this.GenerateCompiler) return;
             if (this.DiagnosticBag.HasAnyErrors()) return;
-            this.CollectCustomAnnotations();
-            this.CollectHasAnnotationFlags();
             CompilerGenerator generator = new CompilerGenerator(this.Grammar);
             generator.Properties.DefaultNamespace = this.DefaultNamespace;
             generator.Properties.LanguageName = this.LanguageName;
@@ -323,92 +333,103 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
 
-            if (this.OutputDirectory != null)
+            if (this.OutputDirectory == null) return;
+
+            string directory = this.OutputDirectory;
+
+            DirectoryInfo info = new DirectoryInfo(directory);
+            if (info.Name == "InternalSyntax")
             {
-                string directory = this.OutputDirectory;
-                Directory.CreateDirectory(Path.Combine(directory, @"Syntax\InternalSyntax"));
-                Directory.CreateDirectory(Path.Combine(directory, @"Errors"));
-                Directory.CreateDirectory(Path.Combine(directory, @"Parser"));
-                Directory.CreateDirectory(Path.Combine(directory, @"Compilation"));
-                Directory.CreateDirectory(Path.Combine(directory, @"Binding"));
-                string outputFileName = Path.Combine(directory, @"Syntax\InternalSyntax\" + this.LanguageName + "InternalSyntax.cs");
+                info = info.Parent;
+            }
+            if (info.Name == "Syntax")
+            {
+                info = info.Parent;
+            }
+            directory = info.FullName;
+
+            Directory.CreateDirectory(Path.Combine(directory, @"Syntax\InternalSyntax"));
+            Directory.CreateDirectory(Path.Combine(directory, @"Errors"));
+            Directory.CreateDirectory(Path.Combine(directory, @"Parser"));
+            Directory.CreateDirectory(Path.Combine(directory, @"Compilation"));
+            Directory.CreateDirectory(Path.Combine(directory, @"Binding"));
+            string outputFileName = Path.Combine(directory, @"Syntax\InternalSyntax\" + this.LanguageName + "InternalSyntax.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedInternalSyntax);
+            }
+            outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "Syntax.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedSyntax);
+            }
+            outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "SyntaxTree.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedSyntaxTree);
+            }
+            outputFileName = Path.Combine(directory, @"Errors\" + this.LanguageName + @"ErrorCode.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedErrorCode);
+            }
+            outputFileName = Path.Combine(directory, @"Parser\" + this.LanguageName + @"SyntaxParser.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedSyntaxParser);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Language.cs");
+            if (!File.Exists(outputFileName))
+            {
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
-                    writer.WriteLine(this.GeneratedInternalSyntax);
+                    writer.WriteLine(this.GeneratedLanguage);
                 }
-                outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "Syntax.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedSyntax);
-                }
-                outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "SyntaxTree.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedSyntaxTree);
-                }
-                outputFileName = Path.Combine(directory, @"Errors\" + this.LanguageName + @"ErrorCode.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedErrorCode);
-                }
-                outputFileName = Path.Combine(directory, @"Parser\" + this.LanguageName + @"SyntaxParser.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedSyntaxParser);
-                }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Language.cs");
-                if (!File.Exists(outputFileName))
-                {
-                    using (StreamWriter writer = new StreamWriter(outputFileName))
-                    {
-                        writer.WriteLine(this.GeneratedLanguage);
-                    }
-                }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Compilation.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedCompilation);
-                }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedCompilationFactory);
-                }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"CompilationOptions.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedCompilationOptions);
-                }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedScriptCompilationInfo);
-                }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedLanguageVersion);
-                }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"ParseOptions.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedParseOptions);
-                }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Feature.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedFeature);
-                }
-                outputFileName = Path.Combine(directory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedDeclarationTreeBuilder);
-                }
-                outputFileName = Path.Combine(directory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs");
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedBinderFactoryVisitor);
-                }
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Compilation.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedCompilation);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedCompilationFactory);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"CompilationOptions.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedCompilationOptions);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedScriptCompilationInfo);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedLanguageVersion);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"ParseOptions.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedParseOptions);
+            }
+            outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Feature.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedFeature);
+            }
+            outputFileName = Path.Combine(directory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedDeclarationTreeBuilder);
+            }
+            outputFileName = Path.Combine(directory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs");
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                writer.WriteLine(this.GeneratedBinderFactoryVisitor);
             }
         }
 
@@ -730,6 +751,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
         public Antlr4Grammar Grammar { get { return this.currentGrammar; } }
         public bool IsParser { get; private set; }
         public bool IsLexer { get; private set; }
+        public bool GenerateCompiler { get; private set; }
 
         public RoslynRuleCollector(Antlr4RoslynCompiler compiler)
         {
@@ -884,13 +906,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
 
         public override object VisitOption(Antlr4RoslynParser.OptionContext context)
         {
-            if (context.identifier().GetText() == "tokenVocab")
+            string optionName = context.identifier().GetText();
+            string optionValue = context.optionValue().GetText();
+            if (optionName == "generateCompiler")
             {
-                this.lexerName = context.optionValue().GetText();
+                this.GenerateCompiler = optionValue == "true";
             }
-            if (context.identifier().GetText() == "tokenVocab")
+            if (optionName == "tokenVocab")
             {
-                string tokenVocabName = context.optionValue().GetText();
+                this.lexerName = optionValue;
+                string tokenVocabName = optionValue;
                 string tokenVocabFileName = Path.Combine(this.compiler.InputDirectory, tokenVocabName + ".tokens");
                 if (File.Exists(tokenVocabFileName))
                 {
@@ -1788,6 +1813,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
             //rewriter.Delete(context.Start, context.Stop);
             string newText = sb.ToString();
             rewriter.Replace(context.Start, context.Stop, newText);
+        }
+
+        public override object VisitOption(Antlr4RoslynParser.OptionContext context)
+        {
+            if (context.identifier().GetText() == "generateCompiler")
+            {
+                this.RemoveText(context);
+            }
+            else if (context.identifier().GetText() == "generateCompilerBase")
+            {
+                this.RemoveText(context);
+            }
+            return null;
         }
 
         public override object VisitAnnotation(Antlr4RoslynParser.AnnotationContext context)
