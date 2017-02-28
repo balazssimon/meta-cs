@@ -53,16 +53,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnnotatedAntlr4Generator.cs" />
-    <Compile Include="AnnotatedAntlr4LanguageConfig.cs" />
-    <Compile Include="AnnotatedAntlr4LanguageService.cs" />
+    <Compile Include="Antlr4Roslyn\Antlr4RoslynGenerator.cs" />
+    <Compile Include="Antlr4Roslyn\Antlr4RoslynLanguageConfig.cs" />
+    <Compile Include="Antlr4Roslyn\Antlr4RoslynLanguageService.cs" />
     <Compile Include="MetaDslxLanguagePackage.cs" />
-    <Compile Include="MetaGeneratorGenerator.cs" />
-    <Compile Include="MetaGeneratorLanguageConfig.cs" />
-    <Compile Include="MetaGeneratorLanguageService.cs" />
-    <Compile Include="MetaModelGenerator.cs" />
-    <Compile Include="MetaModelLanguageConfig.cs" />
-    <Compile Include="MetaModelLanguageService.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorGenerator.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorLanguageConfig.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorLanguageService.cs" />
+    <Compile Include="MetaModel\MetaModelGenerator.cs" />
+    <Compile Include="MetaModel\MetaModelLanguageConfig.cs" />
+    <Compile Include="MetaModel\MetaModelLanguageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VsHelper.cs" />
     <Compile Include="VsMultipleFileGenerator.cs" />
@@ -198,6 +198,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MetaDslx.Compiler.Antlr4\MetaDslx.Compiler.Antlr4.csproj">
+      <Project>{d31d2069-6f71-4208-aa67-60ae8104cdc6}</Project>
+      <Name>MetaDslx.Compiler.Antlr4</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj">
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>

@@ -31,7 +31,7 @@
         <Assembly>MetaDslx.Core</Assembly>
       </Reference>
       <Reference>
-        <Assembly>MetaDslx.Compiler</Assembly>
+        <Assembly>MetaDslx.Compiler.Antlr4</Assembly>
       </Reference>
     </References>
     <ProjectItem ReplaceParameters="true" TargetFileName="$fileinputname$Lexer.ag4">Lexer.ag4</ProjectItem>

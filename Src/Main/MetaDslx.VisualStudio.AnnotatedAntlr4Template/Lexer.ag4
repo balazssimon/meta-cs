@@ -1,1 +1,5 @@
 ﻿lexer grammar $safeitemrootname$;
+
+options {
+	generateCompiler=false;
+}

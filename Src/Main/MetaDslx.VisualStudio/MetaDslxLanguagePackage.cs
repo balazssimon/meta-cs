@@ -45,11 +45,11 @@ namespace MetaDslx.VisualStudio
     [ProvideLanguageExtension(typeof(MetaModelLanguageService), MetaModelLanguageConfig.FileExtension)]
     [ProvideLanguageServiceAttribute(typeof(MetaModelLanguageService), MetaModelLanguageConfig.LanguageName, 1,
         RequestStockColors = false, EnableCommenting = true)]
-    [ProvideServiceAttribute(typeof(AnnotatedAntlr4LanguageService), ServiceName = AnnotatedAntlr4LanguageConfig.LanguageServiceName)]
-    [ProvideLanguageExtension(typeof(AnnotatedAntlr4LanguageService), AnnotatedAntlr4LanguageConfig.FileExtension)]
-    [ProvideLanguageServiceAttribute(typeof(AnnotatedAntlr4LanguageService), AnnotatedAntlr4LanguageConfig.LanguageName, 1,
+    [ProvideServiceAttribute(typeof(Antlr4RoslynLanguageService), ServiceName = Antlr4RoslynLanguageConfig.LanguageServiceName)]
+    [ProvideLanguageExtension(typeof(Antlr4RoslynLanguageService), Antlr4RoslynLanguageConfig.FileExtension)]
+    [ProvideLanguageServiceAttribute(typeof(Antlr4RoslynLanguageService), Antlr4RoslynLanguageConfig.LanguageName, 1,
         RequestStockColors = false, EnableCommenting = true)]
-    [ProvideObject(typeof(AnnotatedAntlr4GeneratorService))]
+    [ProvideObject(typeof(Antlr4RoslynGeneratorService))]
     [ProvideObject(typeof(MetaGeneratorGeneratorService))]
     [ProvideObject(typeof(MetaModelGeneratorService))]
     [PackageRegistration(UseManagedResourcesOnly = true)]
@@ -77,7 +77,7 @@ namespace MetaDslx.VisualStudio
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
             this.RegisterLanguageService(typeof(MetaGeneratorLanguageService));
             this.RegisterLanguageService(typeof(MetaModelLanguageService));
-            this.RegisterLanguageService(typeof(AnnotatedAntlr4LanguageService));
+            this.RegisterLanguageService(typeof(Antlr4RoslynLanguageService));
         }
 
         protected override void Initialize()

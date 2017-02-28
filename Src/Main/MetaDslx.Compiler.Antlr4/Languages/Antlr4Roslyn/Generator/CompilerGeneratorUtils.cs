@@ -1,11 +1,12 @@
 ﻿using MetaDslx.Compiler.MetaModel;
+using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Languages.Antlr4Roslyn.Compiler
+namespace MetaDslx.Languages.Antlr4Roslyn.Generator
 {
     public enum TypeKind
     {

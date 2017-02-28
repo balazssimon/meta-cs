@@ -1,16 +1,3 @@
-﻿namespace MetaDslx.Languages.Antlr4Roslyn.Generator;
-generator LanguageServiceGenerator for object;
-
-properties
-	string LanguageServiceNamespace = null;
-	string LanguageClassName = null;
-	string LanguageNamespace = null;
-	string LanguageName = null;
-	bool RoslynCompiler = false;
-	bool GenerateMultipleFiles = false;
-end properties
-
-template Generate()
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,12 +15,12 @@ using Antlr4.Runtime;
 using System.Drawing;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
-^
+
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
-^
-namespace [Properties.LanguageServiceNamespace]
+
+namespace MetaDslx.VisualStudio
 {
-    public class [Properties.LanguageClassName]LanguageAuthoringScope : AuthoringScope
+    public class Antlr4RoslynLanguageAuthoringScope : AuthoringScope
     {
         public override string GetDataTipText(int line, int col, out TextSpan span)
         {
@@ -54,21 +41,21 @@ namespace [Properties.LanguageServiceNamespace]
             return null;
         }
     }
-	public class [Properties.LanguageClassName]LanguageColorizer : Colorizer
+	public class Antlr4RoslynLanguageColorizer : Colorizer
     {
-        public [Properties.LanguageClassName]LanguageColorizer(LanguageService svc, IVsTextLines buffer, IScanner scanner)
+        public Antlr4RoslynLanguageColorizer(LanguageService svc, IVsTextLines buffer, IScanner scanner)
             : base(svc, buffer, scanner)
         {
         }
         #region IVsColorizer Members
-        public override int ColorizeLine(int line, int length, IntPtr ptr, int state, uint["[]"] attrs)
+        public override int ColorizeLine(int line, int length, IntPtr ptr, int state, uint[] attrs)
         {
             if (attrs == null) return state;
             int linepos = 0;
             // Must initialize the colors in all cases, otherwise you get 
             // random color junk on the screen.
             for (linepos = 0; linepos < attrs.Length; linepos++)
-                attrs["[linepos]"] = (uint)TokenColor.Text;
+                attrs[linepos] = (uint)TokenColor.Text;
             if (this.Scanner != null)
             {
                 try
@@ -83,7 +70,7 @@ namespace [Properties.LanguageServiceNamespace]
                         {
                             if (linepos >= 0 && linepos < attrs.Length)
                             {
-                                attrs["[linepos]"] = (uint)tokenInfo.Color;
+                                attrs[linepos] = (uint)tokenInfo.Color;
                             }
                         }
                     }
@@ -106,7 +93,7 @@ namespace [Properties.LanguageServiceNamespace]
             if (text != null)
             {
                 this.Scanner.SetSource(text, 0);
-                (([Properties.LanguageClassName]LanguageScanner)this.Scanner).ScanLine(ref iState);
+                ((Antlr4RoslynLanguageScanner)this.Scanner).ScanLine(ref iState);
             }
             return iState;
         }
@@ -117,24 +104,24 @@ namespace [Properties.LanguageServiceNamespace]
         }
         #endregion
     }
-    public abstract class [Properties.LanguageClassName]LanguageConfigBase
+    public abstract class Antlr4RoslynLanguageConfigBase
     {
-        private static [Properties.LanguageClassName]LanguageConfig instance = null;
-        public static [Properties.LanguageClassName]LanguageConfig Instance
+        private static Antlr4RoslynLanguageConfig instance = null;
+        public static Antlr4RoslynLanguageConfig Instance
         {
             get 
             {
                 if (instance == null)
                 {
-					// If there is a compile error in the following line, create a class [Properties.LanguageClassName]LanguageConfig
-					// which is a subclass of [Properties.LanguageClassName]LanguageConfigBase
-                    instance = new [Properties.LanguageClassName]LanguageConfig();
+					// If there is a compile error in the following line, create a class Antlr4RoslynLanguageConfig
+					// which is a subclass of Antlr4RoslynLanguageConfigBase
+                    instance = new Antlr4RoslynLanguageConfig();
                 }
                 return instance;
             }
         }
-        private List<[Properties.LanguageClassName]LanguageColorableItem> colorableItems = new List<[Properties.LanguageClassName]LanguageColorableItem>();
-        public IList<[Properties.LanguageClassName]LanguageColorableItem> ColorableItems
+        private List<Antlr4RoslynLanguageColorableItem> colorableItems = new List<Antlr4RoslynLanguageColorableItem>();
+        public IList<Antlr4RoslynLanguageColorableItem> ColorableItems
         {
             get { return colorableItems; }
         }
@@ -148,21 +135,21 @@ namespace [Properties.LanguageServiceNamespace]
         }
         protected TokenColor CreateColor(string name, TokenType type, Color foregroundColor, bool bold, bool strikethrough)
         {
-            colorableItems.Add(new [Properties.LanguageClassName]LanguageColorableItem(name, type, (COLORINDEX)(-1), COLORINDEX.CI_USERTEXT_BK, foregroundColor, Color.White, bold, strikethrough));
+            colorableItems.Add(new Antlr4RoslynLanguageColorableItem(name, type, (COLORINDEX)(-1), COLORINDEX.CI_USERTEXT_BK, foregroundColor, Color.White, bold, strikethrough));
             return (TokenColor)colorableItems.Count;
         }
         protected TokenColor CreateColor(string name, TokenType type, COLORINDEX foregroundIndex, bool bold, bool strikethrough)
         {
-            colorableItems.Add(new [Properties.LanguageClassName]LanguageColorableItem(name, type, foregroundIndex, COLORINDEX.CI_USERTEXT_BK, Color.Black, Color.White, bold, strikethrough));
+            colorableItems.Add(new Antlr4RoslynLanguageColorableItem(name, type, foregroundIndex, COLORINDEX.CI_USERTEXT_BK, Color.Black, Color.White, bold, strikethrough));
             return (TokenColor)colorableItems.Count;
         }
         protected TokenColor CreateColor(string name, TokenType type, COLORINDEX foregroundIndex, COLORINDEX backgroundIndex, Color foregroundColor, Color backgroundColor, bool bold, bool strikethrough)
         {
-            colorableItems.Add(new [Properties.LanguageClassName]LanguageColorableItem(name, type, foregroundIndex, backgroundIndex, foregroundColor, backgroundColor, bold, strikethrough));
+            colorableItems.Add(new Antlr4RoslynLanguageColorableItem(name, type, foregroundIndex, backgroundIndex, foregroundColor, backgroundColor, bold, strikethrough));
             return (TokenColor)colorableItems.Count;
         }
     }
-    public class [Properties.LanguageClassName]LanguageColorableItem : IVsColorableItem, IVsHiColorItem
+    public class Antlr4RoslynLanguageColorableItem : IVsColorableItem, IVsHiColorItem
     {
         // Indicates that the returned RGB value is really an index
         // into a predefined list of colors.
@@ -174,7 +161,7 @@ namespace [Properties.LanguageServiceNamespace]
         public uint BackgroundColor { get; private set; }
         public uint ForegroundColor { get; private set; }
         public uint FontFlags { get; private set; }
-        public [Properties.LanguageClassName]LanguageColorableItem(string displayName, TokenType tokenType, COLORINDEX foregroundIndex, COLORINDEX backgroundIndex, Color foregroundColor, Color backgroundColor, bool bold, bool strikethrough)
+        public Antlr4RoslynLanguageColorableItem(string displayName, TokenType tokenType, COLORINDEX foregroundIndex, COLORINDEX backgroundIndex, Color foregroundColor, Color backgroundColor, bool bold, bool strikethrough)
         {
             this.DisplayName = displayName;
             this.TokenType = tokenType;
@@ -189,7 +176,7 @@ namespace [Properties.LanguageServiceNamespace]
                 this.FontFlags = this.FontFlags | (uint)FONTFLAGS.FF_STRIKETHROUGH;
         }
         #region IVsColorableItem Members
-        public int GetDefaultColors(COLORINDEX["[]"] piForeground, COLORINDEX["[]"] piBackground)
+        public int GetDefaultColors(COLORINDEX[] piForeground, COLORINDEX[] piBackground)
         {
             if (null == piForeground)
             {
@@ -199,7 +186,7 @@ namespace [Properties.LanguageServiceNamespace]
             {
                 throw new ArgumentOutOfRangeException("piForeground");
             }
-            piForeground["[0]"] = this.ForegroundIndex;
+            piForeground[0] = this.ForegroundIndex;
             if (null == piBackground)
             {
                 throw new ArgumentNullException("piBackground");
@@ -208,7 +195,7 @@ namespace [Properties.LanguageServiceNamespace]
             {
                 throw new ArgumentOutOfRangeException("piBackground");
             }
-            piBackground["[0]"] = this.BackgroundIndex;
+            piBackground[0] = this.BackgroundIndex;
             return Microsoft.VisualStudio.VSConstants.S_OK;
         }
         public int GetDefaultFontFlags(out uint pdwFontFlags)
@@ -248,65 +235,48 @@ namespace [Properties.LanguageServiceNamespace]
         }
         #endregion
     }
-    ["[ComVisible(true)]"]
-    ["[Guid("+Properties.LanguageClassName+"LanguageConfig."+Properties.LanguageClassName+"GeneratorServiceGuid)]"]
-    ["[ProvideObject(typeof("+Properties.LanguageClassName+"GeneratorService), RegisterUsing = RegistrationMethod.CodeBase)]"]
-    ["[CodeGeneratorRegistration(typeof("+Properties.LanguageClassName+"GeneratorService), "+Properties.LanguageClassName+"LanguageConfig.GeneratorName, \"{fae04ec1-301f-11d3-bf4b-00c04f79efbc}\", GeneratorRegKeyName = "+Properties.LanguageClassName+"LanguageConfig.FileExtension)]"]
-    ["[CodeGeneratorRegistration(typeof("+Properties.LanguageClassName+"GeneratorService), "+Properties.LanguageClassName+"LanguageConfig.GeneratorServiceName, \"{fae04ec1-301f-11d3-bf4b-00c04f79efbc}\", GeneratorRegKeyName = "+Properties.LanguageClassName+"LanguageConfig.GeneratorName, GeneratesDesignTimeSource = true)]"]
-	[if (Properties.GenerateMultipleFiles)]
-    public class [Properties.LanguageClassName]GeneratorService : VsMultipleFileGenerator<object>
+    [ComVisible(true)]
+    [Guid(Antlr4RoslynLanguageConfig.Antlr4RoslynGeneratorServiceGuid)]
+    [ProvideObject(typeof(Antlr4RoslynGeneratorService), RegisterUsing = RegistrationMethod.CodeBase)]
+    [CodeGeneratorRegistration(typeof(Antlr4RoslynGeneratorService), Antlr4RoslynLanguageConfig.GeneratorName, "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}", GeneratorRegKeyName = Antlr4RoslynLanguageConfig.FileExtension)]
+    [CodeGeneratorRegistration(typeof(Antlr4RoslynGeneratorService), Antlr4RoslynLanguageConfig.GeneratorServiceName, "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}", GeneratorRegKeyName = Antlr4RoslynLanguageConfig.GeneratorName, GeneratesDesignTimeSource = true)]
+    public class Antlr4RoslynGeneratorService : VsMultipleFileGenerator<object>
     {
         protected override MultipleFileGenerator<object> CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
 		{
-			// If there is a compile error in the following line, create a class [Properties.LanguageClassName]Generator
+			// If there is a compile error in the following line, create a class Antlr4RoslynGenerator
 			// which is a subclass of MultipleFileGenerator<object>
-			return new [Properties.LanguageClassName]Generator(inputFilePath, inputFileContents, defaultNamespace);
+			return new Antlr4RoslynGenerator(inputFilePath, inputFileContents, defaultNamespace);
 		}
-^
+
         public override string GetDefaultFileExtension()
         {
-            return [Properties.LanguageClassName]Generator.DefaultExtension;
+            return Antlr4RoslynGenerator.DefaultExtension;
         }
     }
-	[else]
-    public class [Properties.LanguageClassName]GeneratorService : VsSingleFileGenerator
-    {
-        protected override SingleFileGenerator CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
-		{
-			// If there is a compile error in the following line, create a class [Properties.LanguageClassName]Generator
-			// which is a subclass of SingleFileGenerator
-			return new [Properties.LanguageClassName]Generator(inputFilePath, inputFileContents, defaultNamespace);
-		}
-^
-        public override string GetDefaultFileExtension()
-        {
-            return [Properties.LanguageClassName]Generator.DefaultExtension;
-        }
-    }
-	[end if]
-    public class [Properties.LanguageClassName]LanguageScanner : IScanner
+    public class Antlr4RoslynLanguageScanner : IScanner
     {
         private int currentOffset;
         private string currentLine;
-        private [Properties.LanguageNamespace].Syntax.InternalSyntax.[Properties.LanguageClassName]Lexer lexer;
-        private [Properties.LanguageNamespace].Syntax.[Properties.LanguageClassName]SyntaxFacts syntaxFacts;
+        private MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4RoslynLexer lexer;
+        private MetaDslx.Languages.Antlr4Roslyn.Syntax.Antlr4RoslynSyntaxFacts syntaxFacts;
         private Dictionary<LanguageScannerState, int> inverseStates;
         private Dictionary<int, LanguageScannerState> states;
         private int lastState;
-        public [Properties.LanguageClassName]LanguageScanner()
+        public Antlr4RoslynLanguageScanner()
         {
             this.inverseStates = new Dictionary<LanguageScannerState, int>();
             this.states = new Dictionary<int, LanguageScannerState>();
             this.lastState = 0;
-            this.syntaxFacts = [Properties.LanguageNamespace].Syntax.[Properties.LanguageClassName]SyntaxFacts.Instance;
+            this.syntaxFacts = MetaDslx.Languages.Antlr4Roslyn.Syntax.Antlr4RoslynSyntaxFacts.Instance;
         }
-        private void LoadState(int state, [Properties.LanguageNamespace].Syntax.InternalSyntax.[Properties.LanguageClassName]Lexer lexer)
+        private void LoadState(int state, MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4RoslynLexer lexer)
         {
             LanguageScannerState value = default(LanguageScannerState);
             this.states.TryGetValue(state, out value);
             value.Restore(lexer);
         }
-        private int SaveState([Properties.LanguageNamespace].Syntax.InternalSyntax.[Properties.LanguageClassName]Lexer lexer)
+        private int SaveState(MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4RoslynLexer lexer)
         {
             int result = 0;
             LanguageScannerState state = new LanguageScannerState(lexer);
@@ -324,14 +294,14 @@ namespace [Properties.LanguageServiceNamespace]
             {
                 if (this.lexer == null)
                 {
-                    this.lexer = new [Properties.LanguageNamespace].Syntax.InternalSyntax.[Properties.LanguageClassName]Lexer(new AntlrInputStream(this.currentLine + "\r\n"));
+                    this.lexer = new MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4RoslynLexer(new AntlrInputStream(this.currentLine + "\r\n"));
                 }
                 this.LoadState(state, this.lexer);
                 IToken token = this.lexer.NextToken();
                 int tokenType = (int)this.syntaxFacts.GetTokenKind(token.Type);
-                if (tokenType >= 0 && tokenType < [Properties.LanguageClassName]LanguageConfig.Instance.ColorableItems.Count)
+                if (tokenType >= 0 && tokenType < Antlr4RoslynLanguageConfig.Instance.ColorableItems.Count)
                 {
-                    [Properties.LanguageClassName]LanguageColorableItem colorItem = [Properties.LanguageClassName]LanguageConfig.Instance.ColorableItems["[tokenType]"];
+                    Antlr4RoslynLanguageColorableItem colorItem = Antlr4RoslynLanguageConfig.Instance.ColorableItems[tokenType];
                     tokenInfo.Token = token.Type;
                     tokenInfo.Type = colorItem.TokenType;
                     tokenInfo.Color = (TokenColor)tokenType;
@@ -374,7 +344,7 @@ namespace [Properties.LanguageServiceNamespace]
         }
         internal struct LanguageScannerState
         {
-            public LanguageScannerState([Properties.LanguageNamespace].Syntax.InternalSyntax.[Properties.LanguageClassName]Lexer lexer)
+            public LanguageScannerState(MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4RoslynLexer lexer)
             {
                 this._mode = lexer.CurrentMode;
                 this._modeStack = lexer.ModeStack.Count > 0 ? new List<int>(lexer.ModeStack) : null;
@@ -387,7 +357,7 @@ namespace [Properties.LanguageServiceNamespace]
             internal List<int> _modeStack;
             internal int _type;
             internal int _channel;
-            public void Restore([Properties.LanguageNamespace].Syntax.InternalSyntax.[Properties.LanguageClassName]Lexer lexer)
+            public void Restore(MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4RoslynLexer lexer)
             {
                 lexer.CurrentMode = this._mode;
                 lexer.ModeStack.Clear();
@@ -416,7 +386,7 @@ namespace [Properties.LanguageServiceNamespace]
                     if (rhs._modeStack.Count != this._modeStack.Count) return false;
                     for (int i = 0; i < rhs._modeStack.Count; ++i)
                     {
-                        if (rhs._modeStack["[i]"] != this._modeStack["[i]"]) return false;
+                        if (rhs._modeStack[i] != this._modeStack[i]) return false;
                     }
                 }
                 return true;
@@ -436,26 +406,26 @@ namespace [Properties.LanguageServiceNamespace]
             }
         }
     }
-    ["[ComVisible(true)]"]
-    ["[Guid("+Properties.LanguageClassName+"LanguageConfig."+Properties.LanguageClassName+"LanguageServiceGuid)]"]
-    public class [Properties.LanguageClassName]LanguageService : LanguageService
+    [ComVisible(true)]
+    [Guid(Antlr4RoslynLanguageConfig.Antlr4RoslynLanguageServiceGuid)]
+    public class Antlr4RoslynLanguageService : LanguageService
     {
         private LanguagePreferences preferences;
-        private [Properties.LanguageClassName]LanguageScanner scanner;
-        public [Properties.LanguageClassName]LanguageService()
+        private Antlr4RoslynLanguageScanner scanner;
+        public Antlr4RoslynLanguageService()
         {
 			// Creating the config instance
-			[Properties.LanguageClassName]LanguageConfigBase.Instance.ToString();
+			Antlr4RoslynLanguageConfigBase.Instance.ToString();
         }
         public override string GetFormatFilterList()
         {
-            return [Properties.LanguageClassName]LanguageConfig.FilterList;
+            return Antlr4RoslynLanguageConfig.FilterList;
         }
         public override LanguagePreferences GetLanguagePreferences()
         {
             if (preferences == null)
             {
-                preferences = new LanguagePreferences(this.Site, typeof([Properties.LanguageClassName]LanguageService).GUID, this.Name);
+                preferences = new LanguagePreferences(this.Site, typeof(Antlr4RoslynLanguageService).GUID, this.Name);
                 preferences.Init();
             }
             return preferences;
@@ -464,31 +434,31 @@ namespace [Properties.LanguageServiceNamespace]
         {
             if (scanner == null)
             {
-                scanner = new [Properties.LanguageClassName]LanguageScanner();
+                scanner = new Antlr4RoslynLanguageScanner();
             }
             return scanner;
         }
         public override Microsoft.VisualStudio.Package.Source CreateSource(IVsTextLines buffer)
         {
-            return new [Properties.LanguageClassName]LanguageSource(this, buffer, this.GetColorizer(buffer));
+            return new Antlr4RoslynLanguageSource(this, buffer, this.GetColorizer(buffer));
         }
         #region Custom Colors
         public override int GetColorableItem(int index, out IVsColorableItem item)
         {
-            if (index >= 0 && index < [Properties.LanguageClassName]LanguageConfig.Instance.ColorableItems.Count)
+            if (index >= 0 && index < Antlr4RoslynLanguageConfig.Instance.ColorableItems.Count)
             {
-                item = [Properties.LanguageClassName]LanguageConfig.Instance.ColorableItems["[index]"];
+                item = Antlr4RoslynLanguageConfig.Instance.ColorableItems[index];
                 return Microsoft.VisualStudio.VSConstants.S_OK;
             }
             else
             {
-                item = [Properties.LanguageClassName]LanguageConfig.Instance.ColorableItems["[0]"];
+                item = Antlr4RoslynLanguageConfig.Instance.ColorableItems[0];
                 return Microsoft.VisualStudio.VSConstants.S_OK;
             }
         }
         public override int GetItemCount(out int count)
         {
-            count = [Properties.LanguageClassName]LanguageConfig.Instance.ColorableItems.Count;
+            count = Antlr4RoslynLanguageConfig.Instance.ColorableItems.Count;
             return Microsoft.VisualStudio.VSConstants.S_OK;
         }
         #endregion
@@ -496,7 +466,7 @@ namespace [Properties.LanguageServiceNamespace]
         {
             // from IronPythonLanguage sample
             // this appears to be necessary to get a parse request with ParseReason = Check?
-            [Properties.LanguageClassName]LanguageSource src = ([Properties.LanguageClassName]LanguageSource)GetSource(this.LastActiveTextView);
+            Antlr4RoslynLanguageSource src = (Antlr4RoslynLanguageSource)GetSource(this.LastActiveTextView);
             if (src != null && src.LastParseTime >= Int32.MaxValue >> 12)
             {
                 src.LastParseTime = 0;
@@ -505,21 +475,21 @@ namespace [Properties.LanguageServiceNamespace]
         }
         public override string Name
         {
-            get { return [Properties.LanguageClassName]LanguageConfig.LanguageName; }
+            get { return Antlr4RoslynLanguageConfig.LanguageName; }
         }
         public override ViewFilter CreateViewFilter(CodeWindowManager mgr, IVsTextView newView)
         {
-            return new [Properties.LanguageClassName]LanguageViewFilter(mgr, newView);
+            return new Antlr4RoslynLanguageViewFilter(mgr, newView);
         }
         public override Colorizer GetColorizer(IVsTextLines buffer)
         {
-            return new [Properties.LanguageClassName]LanguageColorizer(this, buffer, this.GetScanner(buffer));
+            return new Antlr4RoslynLanguageColorizer(this, buffer, this.GetScanner(buffer));
         }
         public override AuthoringScope ParseSource(ParseRequest req)
         {
 			try
 			{
-				[Properties.LanguageClassName]LanguageSource source = ([Properties.LanguageClassName]LanguageSource)this.GetSource(req.FileName);
+				Antlr4RoslynLanguageSource source = (Antlr4RoslynLanguageSource)this.GetSource(req.FileName);
 				switch (req.Reason)
 				{
 					case ParseReason.Check:
@@ -528,14 +498,7 @@ namespace [Properties.LanguageServiceNamespace]
 						// Store results in the AuthoringScope object.
 						string fileName = Path.GetFileName(req.FileName);
 						string outputDir = Path.GetDirectoryName(req.FileName);
-						[if (Properties.RoslynCompiler)]
-                        var metaModelReference = MetaDslx.Compiler.MetadataReference.CreateFromModel([Properties.LanguageNamespace].Symbols.[Properties.LanguageName]Instance.Model);
-                        var tree = [Properties.LanguageNamespace].Syntax.[Properties.LanguageClassName]SyntaxTree.ParseText(req.Text);
-                        var compilation = [Properties.LanguageNamespace].[Properties.LanguageClassName]Compilation.Create("[Properties.LanguageClassName]").AddReferences(metaModelReference).AddSyntaxTrees(tree);
-                        var immutableModel = compilation.Model;
-						[else]
-						var compilation = new [Properties.LanguageNamespace].Compilation.[Properties.LanguageClassName]Compiler(req.Text, "", null, null, req.FileName);
-						[end if]
+						var compilation = new MetaDslx.Languages.Antlr4Roslyn.Compilation.Antlr4RoslynCompiler(req.Text, "", null, null, req.FileName);
 						foreach (var diagnostic in compilation.GetDiagnostics())
 						{
                             var diagSpan = diagnostic.Location.GetMappedLineSpan();
@@ -567,19 +530,19 @@ namespace [Properties.LanguageServiceNamespace]
 			{
 				req.Sink.AddError(req.FileName, "Error while parsing source: "+ex.ToString(), new TextSpan(), Severity.Error);
 			}
-            return new [Properties.LanguageClassName]LanguageAuthoringScope();
+            return new Antlr4RoslynLanguageAuthoringScope();
         }
     }
-	public class [Properties.LanguageClassName]LanguageSource : Microsoft.VisualStudio.Package.Source
+	public class Antlr4RoslynLanguageSource : Microsoft.VisualStudio.Package.Source
     {
-        public [Properties.LanguageClassName]LanguageSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)
+        public Antlr4RoslynLanguageSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)
             : base(service, textLines, colorizer)
         {
         }
     }
-    public class [Properties.LanguageClassName]LanguageViewFilter : ViewFilter
+    public class Antlr4RoslynLanguageViewFilter : ViewFilter
     {
-        public [Properties.LanguageClassName]LanguageViewFilter(CodeWindowManager mgr, IVsTextView view)
+        public Antlr4RoslynLanguageViewFilter(CodeWindowManager mgr, IVsTextView view)
             : base(mgr, view)
         {
         }
@@ -604,4 +567,4 @@ namespace [Properties.LanguageServiceNamespace]
         }
     }
 }
-end template
+

@@ -1,8 +1,9 @@
-﻿namespace MetaDslx.Languages.Antlr4Roslyn.Compiler;
+﻿namespace MetaDslx.Languages.Antlr4Roslyn.Generator;
 generator CompilerGenerator for Antlr4Grammar;
 
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.MetaModel;
+using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 
 properties Properties
 	string DefaultNamespace;
@@ -19,6 +20,7 @@ using MetaDslx.Compiler;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
+using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 ^
 namespace [Properties.DefaultNamespace]
@@ -27,7 +29,7 @@ namespace [Properties.DefaultNamespace]
     {
         internal const string LanguageName = "[Properties.LanguageName]";
 ^
-        internal static readonly [Properties.LanguageName]Language Instance = new [Properties.LanguageName]Language();
+        public static readonly [Properties.LanguageName]Language Instance = new [Properties.LanguageName]Language();
 ^
         private [Properties.LanguageName]Language()
         {
@@ -1205,12 +1207,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Compiler.Antlr4Roslyn;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.MetaModel;
 using MetaDslx.Compiler.Utilities;
+using MetaDslx.Languages.Antlr4Roslyn.Parser;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
@@ -2489,7 +2491,7 @@ template GenerateInternalSyntaxFactoryCreate(Antlr4ParserRule rule)
 [end if]
 end template
 
-template GenerateSyntax()
+template GenerateSyntaxKind()
 // !!!!!!!
 // WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
 // !!!!!!!
@@ -2533,7 +2535,26 @@ namespace [Properties.DefaultNamespace].Syntax
 		[end if]
 		[end loop]
 	}
+}
+end template
+
+template GenerateSyntax()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Syntax.InternalSyntax;
 ^
+namespace [Properties.DefaultNamespace].Syntax
+{
     public abstract class [Properties.LanguageName]SyntaxNode : SyntaxNode
     {
         protected [Properties.LanguageName]SyntaxNode(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
@@ -2813,22 +2834,20 @@ using System.Threading;
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Text;
-using [Properties.DefaultNamespace].Syntax;
-using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 ^
-namespace [Properties.DefaultNamespace]
+namespace [Properties.DefaultNamespace].Syntax
 {
-	public enum [Properties.LanguageName]TokenKind
+	public enum [Properties.LanguageName]TokenKind : int
 	{
-		None,
-		[loop (kind:Instances.LexerTokenKinds; separator sep=",")]
-		[kind.Key][sep]
+		None = 0,
+		[loop (kind:Instances.LexerTokenKinds.Keys.OrderBy(k => k); separator sep=",")]
+		[kind][sep]
 		[end loop]
 	}
 ^
 	public class [Properties.LanguageName]SyntaxFacts : SyntaxFacts
 	{
-		internal static readonly [Properties.LanguageName]SyntaxFacts Instance = new [Properties.LanguageName]SyntaxFacts();
+		public static readonly [Properties.LanguageName]SyntaxFacts Instance = new [Properties.LanguageName]SyntaxFacts();
 ^
 		protected override int DefaultEndOfLineSyntaxKindCore
 		{

@@ -2,25 +2,23 @@ using System.Threading;
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Text;
-using MetaDslx.Languages.Meta.Syntax;
-using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 
-namespace MetaDslx.Languages.Meta
+namespace MetaDslx.Languages.Meta.Syntax
 {
-	public enum MetaModelTokenKind
+	public enum MetaModelTokenKind : int
 	{
-		None,
-		Keyword,
+		None = 0,
+		Comment,
 		Identifier,
+		Keyword,
 		Number,
 		String,
-		Whitespace,
-		Comment
+		Whitespace
 	}
 
 	public class MetaModelSyntaxFacts : SyntaxFacts
 	{
-		internal static readonly MetaModelSyntaxFacts Instance = new MetaModelSyntaxFacts();
+		public static readonly MetaModelSyntaxFacts Instance = new MetaModelSyntaxFacts();
 
 		protected override int DefaultEndOfLineSyntaxKindCore
 		{

@@ -7,6 +7,7 @@ using MetaDslx.Compiler;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
+using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 
 namespace MetaDslx.Languages.Meta
@@ -15,7 +16,7 @@ namespace MetaDslx.Languages.Meta
     {
         internal const string LanguageName = "MetaModel";
 
-        internal static readonly MetaModelLanguage Instance = new MetaModelLanguage();
+        public static readonly MetaModelLanguage Instance = new MetaModelLanguage();
 
         private MetaModelLanguage()
         {
