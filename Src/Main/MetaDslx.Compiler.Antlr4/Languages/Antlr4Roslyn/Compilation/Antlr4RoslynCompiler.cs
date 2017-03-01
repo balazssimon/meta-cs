@@ -152,19 +152,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return false;
         }
 
-        private bool CopyParserToOutput(string tmpDir, string fileName)
-        {
-            if (this.OutputDirectory == null) return false;
-            string tmpFile = Path.Combine(tmpDir, fileName);
-            string outputFile = Path.Combine(this.OutputDirectory, fileName);
-            if (File.Exists(tmpFile))
-            {
-                File.Copy(tmpFile, outputFile, true);
-                return true;
-            }
-            return false;
-        }
-
         private void ProcessAntlr4ErrorLine(string line)
         {
             if (string.IsNullOrWhiteSpace(line)) return;
@@ -225,14 +212,23 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         private void GenerateAntlr4()
         {
-            if (this.OutputDirectory == null) return;
             try
             {
+                this.PrepareAntlr4();
                 string bareFileName = Path.GetFileNameWithoutExtension(this.FileName);
                 string grammarFileName = bareFileName + ".g4";
                 string tmpDir = this.GetTemporaryDirectory();
                 try
                 {
+                    foreach (var import in this.Grammar.ImportedGrammars)
+                    {
+                        string importFile = Path.Combine(this.InputDirectory, import + ".g4");
+                        string tmpImportFile = Path.Combine(tmpDir, import + ".g4");
+                        if (File.Exists(importFile))
+                        {
+                            File.Copy(importFile, tmpImportFile, true);
+                        }
+                    }
                     string antlr4File = Path.Combine(tmpDir, grammarFileName);
                     File.WriteAllText(antlr4File, this.Antlr4Source);
                     Process proc = new Process();
@@ -256,7 +252,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     if (!terminated)
                     {
                         this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_Antlr4TimeoutError, this.FileName);
-                        proc.Kill();
+                        try
+                        {
+                            proc.Kill();
+                        }
+                        catch(Exception)
+                        {
+                            // nop
+                        }
+                        while (!proc.StandardError.EndOfStream)
+                        {
+                            string line = proc.StandardError.ReadLine();
+                            this.ProcessAntlr4ErrorLine(line);
+                        }
                     }
                     if (terminated)
                     {
@@ -266,16 +274,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                             this.ProcessAntlr4ErrorLine(line);
                         }
                         this.HasAntlr4Errors = this.DiagnosticBag.HasAnyErrors();
-                        if (this.GenerateOutput && !this.HasAntlr4Errors)
+                        if (!this.HasAntlr4Errors)
                         {
-                            this.CopyParserToOutput(tmpDir, bareFileName + ".cs");
-                            this.CopyToOutput(tmpDir, bareFileName + ".tokens");
-                            if (this.IsParser)
+                            this.ReadTokens(Path.Combine(tmpDir, bareFileName + ".tokens"));
+                            if (this.GenerateOutput)
                             {
-                                this.CopyToOutput(tmpDir, bareFileName + "BaseVisitor.cs");
-                                this.CopyToOutput(tmpDir, bareFileName + "BaseListener.cs");
-                                this.CopyToOutput(tmpDir, bareFileName + "Visitor.cs");
-                                this.CopyToOutput(tmpDir, bareFileName + "Listener.cs");
+                                this.CopyToOutput(tmpDir, bareFileName + ".cs");
+                                this.CopyToOutput(tmpDir, bareFileName + ".tokens");
+                                if (this.IsParser)
+                                {
+                                    this.CopyToOutput(tmpDir, bareFileName + "BaseVisitor.cs");
+                                    this.CopyToOutput(tmpDir, bareFileName + "BaseListener.cs");
+                                    this.CopyToOutput(tmpDir, bareFileName + "Visitor.cs");
+                                    this.CopyToOutput(tmpDir, bareFileName + "Listener.cs");
+                                }
                             }
                         }
                     }
@@ -290,6 +302,89 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_Antlr4CallError, ex.Message, this.FileName);
             }
         }
+
+        private void ReadTokens(string tokensFileName)
+        {
+            int maxTokenKind = 0;
+            if (File.Exists(tokensFileName))
+            {
+                Dictionary<string, int> fixedTokens = new Dictionary<string, int>();
+                using (StreamReader reader = new StreamReader(tokensFileName))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        string line = reader.ReadLine();
+                        string tokenName;
+                        int tokenKind;
+                        bool fixedToken;
+                        if (!string.IsNullOrEmpty(line) && this.TryGetToken(line, out tokenName, out tokenKind, out fixedToken))
+                        {
+                            if (tokenKind > maxTokenKind) maxTokenKind = tokenKind;
+                            if (fixedToken)
+                            {
+                                fixedTokens.Add(tokenName, tokenKind);
+                            }
+                            else
+                            {
+                                Antlr4LexerRule rule = this.Grammar.LexerRules.FirstOrDefault(r => r.Name == tokenName);
+                                if (rule == null)
+                                {
+                                    rule = new Antlr4LexerRule(this.Grammar.Modes.FirstOrDefault());
+                                    rule.Name = tokenName;
+                                    rule.Artificial = true;
+                                    this.Grammar.LexerRules.Add(rule);
+                                }
+                                rule.Kind = tokenKind;
+                            }
+                        }
+                    }
+                }
+                foreach (var fixedToken in fixedTokens)
+                {
+                    Antlr4LexerRule rule = this.Grammar.LexerRules.FirstOrDefault(r => r.Kind == fixedToken.Value);
+                    if (rule != null)
+                    {
+                        rule.FixedToken = fixedToken.Key;
+                        this.Grammar.FixedTokens.Add(rule);
+                    }
+                }
+                //this.Grammar.LexerRules.RemoveAll(r => r.Kind == 0);
+                this.Grammar.FirstRuleKind = maxTokenKind + 1;
+            }
+        }
+
+        private bool TryGetToken(string tokenLine, out string tokenName, out int tokenKind, out bool fixedToken)
+        {
+            tokenName = null;
+            tokenKind = 0;
+            fixedToken = false;
+            int index = 0;
+            tokenLine = tokenLine.Trim();
+            if (tokenLine.StartsWith("'"))
+            {
+                ++index;
+                while (index < tokenLine.Length)
+                {
+                    if (tokenLine[index] == '\'')
+                    {
+                        ++index;
+                        tokenName = tokenLine.Substring(0, index);
+                        fixedToken = true;
+                        break;
+                    }
+                    if (tokenLine[index] == '\\') ++index;
+                    ++index;
+                }
+                while (index < tokenLine.Length && tokenLine[index] != '=') ++index;
+            }
+            else
+            {
+                index = tokenLine.IndexOf('=');
+                tokenName = tokenLine.Substring(0, index).Trim();
+            }
+            return tokenName != null && int.TryParse(tokenLine.Substring(index + 1).Trim(), out tokenKind) && tokenKind > 0;
+        }
+
 
         private void GenerateLexer()
         {
@@ -892,10 +987,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 {
                     this.currentLexerRule = new Antlr4LexerRule(this.currentMode);
                     this.currentLexerRule.Name = id.identifier().GetText();
-                    this.currentLexerRule.FixedToken = id.identifier().GetText();
+                    //this.currentLexerRule.FixedToken = id.identifier().GetText();
                     if (this.currentLexerRule != null)
                     {
-                        this.currentGrammar.FixedTokens.Add(this.currentLexerRule);
+                        //this.currentGrammar.FixedTokens.Add(this.currentLexerRule);
                         this.currentGrammar.LexerRules.Add(this.currentLexerRule);
                         this.currentMode.LexerRules.Add(this.currentLexerRule);
                         this.CollectAnnotations(this.currentLexerRule, id.annotation());
@@ -904,38 +999,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 }
             }
             return null;
-        }
-
-        private bool TryGetToken(string tokenLine, out string tokenName, out int tokenKind, out bool fixedToken)
-        {
-            tokenName = null;
-            tokenKind = 0;
-            fixedToken = false;
-            int index = 0;
-            tokenLine = tokenLine.Trim();
-            if (tokenLine.StartsWith("'"))
-            {
-                ++index;
-                while (index < tokenLine.Length)
-                {
-                    if (tokenLine[index] == '\'')
-                    {
-                        ++index;
-                        tokenName = tokenLine.Substring(0, index);
-                        fixedToken = true;
-                        break;
-                    }
-                    if (tokenLine[index] == '\\') ++index;
-                    ++index;
-                }
-                while (index < tokenLine.Length && tokenLine[index] != '=') ++index;
-            }
-            else
-            {
-                index = tokenLine.IndexOf('=');
-                tokenName = tokenLine.Substring(0, index).Trim();
-            }
-            return tokenName != null && int.TryParse(tokenLine.Substring(index + 1).Trim(), out tokenKind) && tokenKind > 0;
         }
 
         public override object VisitOption(Antlr4RoslynParser.OptionContext context)
@@ -953,48 +1016,24 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (optionName == "tokenVocab")
             {
                 this.lexerName = optionValue;
-                string tokenVocabName = optionValue;
-                string tokenVocabFileName = Path.Combine(this.compiler.InputDirectory, tokenVocabName + ".tokens");
-                if (File.Exists(tokenVocabFileName))
-                {
-                    Dictionary<string, int> fixedTokens = new Dictionary<string, int>();
-                    using (StreamReader reader = new StreamReader(tokenVocabFileName))
-                    {
-                        while (!reader.EndOfStream)
-                        {
-                            string line = reader.ReadLine();
-                            string tokenName;
-                            int tokenKind;
-                            bool fixedToken;
-                            if (!string.IsNullOrEmpty(line) && this.TryGetToken(line, out tokenName, out tokenKind, out fixedToken))
-                            {
-                                if (fixedToken)
-                                {
-                                    fixedTokens.Add(tokenName, tokenKind);
-                                }
-                                else
-                                {
-                                    Antlr4LexerRule rule = new Antlr4LexerRule(this.currentMode);
-                                    rule.Name = tokenName;
-                                    rule.Kind = tokenKind;
-                                    rule.Artificial = true;
-                                    this.currentGrammar.LexerRules.Add(rule);
-                                }
-                            }
-                        }
-                    }
-                    foreach (var fixedToken in fixedTokens)
-                    {
-                        Antlr4LexerRule rule = this.currentGrammar.LexerRules.FirstOrDefault(r => r.Kind == fixedToken.Value);
-                        if (rule != null)
-                        {
-                            rule.FixedToken = fixedToken.Key;
-                            this.currentGrammar.FixedTokens.Add(rule);
-                        }
-                    }
-                }
             }
             return base.VisitOption(context);
+        }
+
+        public override object VisitDelegateGrammar([NotNull] Antlr4RoslynParser.DelegateGrammarContext context)
+        {
+            var identifiers = context.identifier();
+            if (identifiers.Length >= 2)
+            {
+                string import = identifiers[1].GetText();
+                this.Grammar.ImportedGrammars.Add(import);
+            }
+            else if (identifiers.Length >= 1)
+            {
+                string import = identifiers[0].GetText();
+                this.Grammar.ImportedGrammars.Add(import);
+            }
+            return base.VisitDelegateGrammar(context);
         }
 
         public override object VisitAction(Antlr4RoslynParser.ActionContext context)
@@ -1068,7 +1107,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                                 {
                                     lexerAtom = lexerElement.lexerAtom();
                                 }
-                                if (lexerAtom != null && lexerAtom.terminal() != null && !this.HasModeCommand(lexerAlt))
+                                /*if (lexerAtom != null && lexerAtom.terminal() != null && !this.HasModeCommand(lexerAlt))
                                 {
                                     if (lexerAtom.terminal().TOKEN_REF() != null)
                                     {
@@ -1081,7 +1120,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                                         this.currentLexerRule.FixedToken = literal;
                                         this.currentGrammar.FixedTokens.Add(this.currentLexerRule);
                                     }
-                                }
+                                }*/
                             }
                         }
                     }
@@ -1652,6 +1691,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public Antlr4Grammar()
         {
             this.CustomAnnotations = new List<MetaCompilerAnnotation>();
+            this.ImportedGrammars = new HashSet<string>();
             this.ParserRuleElemUses = new HashSet<string>();
             this.ParserRules = new List<Antlr4ParserRule>();
             this.LexerRules = new List<Antlr4LexerRule>();
@@ -1659,11 +1699,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.Modes = new List<Antlr4Mode>();
             this.FixedTokenCandidates = new List<Antlr4LexerRule>();
             this.FixedTokens = new List<Antlr4LexerRule>();
+            this.FirstRuleKind = 1;
         }
         public string Name { get; set; }
         public List<MetaCompilerAnnotation> CustomAnnotations { get; private set; }
+        public HashSet<string> ImportedGrammars { get; private set; }
         public HashSet<string> ParserRuleElemUses { get; private set; }
         public Dictionary<string, List<Antlr4LexerRule>> LexerTokenKinds { get; private set; }
+        public int FirstRuleKind { get; set; }
         public List<Antlr4ParserRule> ParserRules { get; private set; }
         public List<Antlr4LexerRule> LexerRules { get; private set; }
         public Antlr4LexerRule DefaultWhitespace { get; set; }

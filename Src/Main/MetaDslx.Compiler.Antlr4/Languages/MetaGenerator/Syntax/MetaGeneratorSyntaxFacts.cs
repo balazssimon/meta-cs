@@ -150,211 +150,18 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteral:
 				case MetaGeneratorSyntaxKind.TH_CRLF:
 				case MetaGeneratorSyntaxKind.TH_LINEBREAK:
-				case MetaGeneratorSyntaxKind.TH_WHITESPACE:
-				case MetaGeneratorSyntaxKind.TH_KEnd:
-				case MetaGeneratorSyntaxKind.TH_KFor:
-				case MetaGeneratorSyntaxKind.TH_KForEach:
-				case MetaGeneratorSyntaxKind.TH_KIn:
-				case MetaGeneratorSyntaxKind.TH_KIf:
-				case MetaGeneratorSyntaxKind.TH_KElse:
-				case MetaGeneratorSyntaxKind.TH_KLoop:
-				case MetaGeneratorSyntaxKind.TH_KHasLoop:
-				case MetaGeneratorSyntaxKind.TH_KWhere:
-				case MetaGeneratorSyntaxKind.TH_KOrderBy:
-				case MetaGeneratorSyntaxKind.TH_KDescending:
-				case MetaGeneratorSyntaxKind.TH_KSeparator:
-				case MetaGeneratorSyntaxKind.TH_KNull:
-				case MetaGeneratorSyntaxKind.TH_KTrue:
-				case MetaGeneratorSyntaxKind.TH_KFalse:
-				case MetaGeneratorSyntaxKind.TH_KBool:
-				case MetaGeneratorSyntaxKind.TH_KByte:
-				case MetaGeneratorSyntaxKind.TH_KChar:
-				case MetaGeneratorSyntaxKind.TH_KDecimal:
-				case MetaGeneratorSyntaxKind.TH_KDouble:
-				case MetaGeneratorSyntaxKind.TH_KFloat:
-				case MetaGeneratorSyntaxKind.TH_KInt:
-				case MetaGeneratorSyntaxKind.TH_KLong:
-				case MetaGeneratorSyntaxKind.TH_KObject:
-				case MetaGeneratorSyntaxKind.TH_KSByte:
-				case MetaGeneratorSyntaxKind.TH_KShort:
-				case MetaGeneratorSyntaxKind.TH_KString:
-				case MetaGeneratorSyntaxKind.TH_KUInt:
-				case MetaGeneratorSyntaxKind.TH_KULong:
-				case MetaGeneratorSyntaxKind.TH_KUShort:
-				case MetaGeneratorSyntaxKind.TH_KThis:
-				case MetaGeneratorSyntaxKind.TH_KNew:
-				case MetaGeneratorSyntaxKind.TH_KIs:
-				case MetaGeneratorSyntaxKind.TH_KAs:
-				case MetaGeneratorSyntaxKind.TH_KTypeof:
-				case MetaGeneratorSyntaxKind.TH_KDefault:
-				case MetaGeneratorSyntaxKind.TH_TSemicolon:
-				case MetaGeneratorSyntaxKind.TH_TColon:
-				case MetaGeneratorSyntaxKind.TH_TDot:
-				case MetaGeneratorSyntaxKind.TH_TComma:
-				case MetaGeneratorSyntaxKind.TH_TAssign:
-				case MetaGeneratorSyntaxKind.TH_TAssignPlus:
-				case MetaGeneratorSyntaxKind.TH_TAssignMinus:
-				case MetaGeneratorSyntaxKind.TH_TAssignAsterisk:
-				case MetaGeneratorSyntaxKind.TH_TAssignSlash:
-				case MetaGeneratorSyntaxKind.TH_TAssignPercent:
-				case MetaGeneratorSyntaxKind.TH_TAssignAmp:
-				case MetaGeneratorSyntaxKind.TH_TAssignPipe:
-				case MetaGeneratorSyntaxKind.TH_TAssignHat:
-				case MetaGeneratorSyntaxKind.TH_TAssignLeftShift:
-				case MetaGeneratorSyntaxKind.TH_TAssignRightShift:
 				case MetaGeneratorSyntaxKind.TH_TOpenParenthesis:
 				case MetaGeneratorSyntaxKind.TH_TCloseParenthesis:
-				case MetaGeneratorSyntaxKind.TH_TOpenBracket:
-				case MetaGeneratorSyntaxKind.TH_TCloseBracket:
-				case MetaGeneratorSyntaxKind.TH_TOpenBrace:
-				case MetaGeneratorSyntaxKind.TH_TCloseBrace:
-				case MetaGeneratorSyntaxKind.TH_TEquals:
-				case MetaGeneratorSyntaxKind.TH_TNotEquals:
-				case MetaGeneratorSyntaxKind.TH_TArrow:
-				case MetaGeneratorSyntaxKind.TH_TSingleArrow:
-				case MetaGeneratorSyntaxKind.TH_TLessThan:
-				case MetaGeneratorSyntaxKind.TH_TGreaterThan:
-				case MetaGeneratorSyntaxKind.TH_TLessThanOrEquals:
-				case MetaGeneratorSyntaxKind.TH_TGreaterThanOrEquals:
-				case MetaGeneratorSyntaxKind.TH_TQuestion:
-				case MetaGeneratorSyntaxKind.TH_TPlus:
-				case MetaGeneratorSyntaxKind.TH_TMinus:
-				case MetaGeneratorSyntaxKind.TH_TExclamation:
-				case MetaGeneratorSyntaxKind.TH_TTilde:
-				case MetaGeneratorSyntaxKind.TH_TAsterisk:
-				case MetaGeneratorSyntaxKind.TH_TSlash:
-				case MetaGeneratorSyntaxKind.TH_TPercent:
-				case MetaGeneratorSyntaxKind.TH_TPlusPlus:
-				case MetaGeneratorSyntaxKind.TH_TMinusMinus:
-				case MetaGeneratorSyntaxKind.TH_TColonColon:
-				case MetaGeneratorSyntaxKind.TH_TAmp:
-				case MetaGeneratorSyntaxKind.TH_THat:
-				case MetaGeneratorSyntaxKind.TH_TPipe:
-				case MetaGeneratorSyntaxKind.TH_TAnd:
-				case MetaGeneratorSyntaxKind.TH_TXor:
-				case MetaGeneratorSyntaxKind.TH_TOr:
-				case MetaGeneratorSyntaxKind.TH_TQuestionQuestion:
-				case MetaGeneratorSyntaxKind.TH_IdentifierNormal:
-				case MetaGeneratorSyntaxKind.TH_IntegerLiteral:
-				case MetaGeneratorSyntaxKind.TH_DecimalLiteral:
-				case MetaGeneratorSyntaxKind.TH_ScientificLiteral:
-				case MetaGeneratorSyntaxKind.TH_DateTimeOffsetLiteral:
-				case MetaGeneratorSyntaxKind.TH_DateTimeLiteral:
-				case MetaGeneratorSyntaxKind.TH_DateLiteral:
-				case MetaGeneratorSyntaxKind.TH_TimeLiteral:
-				case MetaGeneratorSyntaxKind.TH_CharLiteral:
-				case MetaGeneratorSyntaxKind.TH_RegularStringLiteral:
-				case MetaGeneratorSyntaxKind.TH_GuidLiteral:
 				case MetaGeneratorSyntaxKind.KEndTemplate:
 				case MetaGeneratorSyntaxKind.TemplateLineControl:
 				case MetaGeneratorSyntaxKind.TemplateOutput:
 				case MetaGeneratorSyntaxKind.TemplateCrLf:
 				case MetaGeneratorSyntaxKind.TemplateLineBreak:
 				case MetaGeneratorSyntaxKind.TemplateStatementStart:
-				case MetaGeneratorSyntaxKind.TemplateStatementCrLf:
-				case MetaGeneratorSyntaxKind.TemplateStatementLineBreak:
 				case MetaGeneratorSyntaxKind.TemplateStatementEnd:
-				case MetaGeneratorSyntaxKind.TemplateStatement_WHITESPACE:
-				case MetaGeneratorSyntaxKind.TS_KSwitch:
-				case MetaGeneratorSyntaxKind.TS_KCase:
-				case MetaGeneratorSyntaxKind.TS_KType:
-				case MetaGeneratorSyntaxKind.TS_KEnd:
-				case MetaGeneratorSyntaxKind.TS_KFor:
-				case MetaGeneratorSyntaxKind.TS_KForEach:
-				case MetaGeneratorSyntaxKind.TS_KIn:
-				case MetaGeneratorSyntaxKind.TS_KIf:
-				case MetaGeneratorSyntaxKind.TS_KElse:
-				case MetaGeneratorSyntaxKind.TS_KLoop:
-				case MetaGeneratorSyntaxKind.TS_KHasLoop:
-				case MetaGeneratorSyntaxKind.TS_KWhere:
-				case MetaGeneratorSyntaxKind.TS_KOrderBy:
-				case MetaGeneratorSyntaxKind.TS_KDescending:
-				case MetaGeneratorSyntaxKind.TS_KSeparator:
-				case MetaGeneratorSyntaxKind.TS_KNull:
-				case MetaGeneratorSyntaxKind.TS_KTrue:
-				case MetaGeneratorSyntaxKind.TS_KFalse:
-				case MetaGeneratorSyntaxKind.TS_KBool:
-				case MetaGeneratorSyntaxKind.TS_KByte:
-				case MetaGeneratorSyntaxKind.TS_KChar:
-				case MetaGeneratorSyntaxKind.TS_KDecimal:
-				case MetaGeneratorSyntaxKind.TS_KDouble:
-				case MetaGeneratorSyntaxKind.TS_KFloat:
-				case MetaGeneratorSyntaxKind.TS_KInt:
-				case MetaGeneratorSyntaxKind.TS_KLong:
-				case MetaGeneratorSyntaxKind.TS_KObject:
-				case MetaGeneratorSyntaxKind.TS_KSByte:
-				case MetaGeneratorSyntaxKind.TS_KShort:
-				case MetaGeneratorSyntaxKind.TS_KString:
-				case MetaGeneratorSyntaxKind.TS_KUInt:
-				case MetaGeneratorSyntaxKind.TS_KULong:
-				case MetaGeneratorSyntaxKind.TS_KUShort:
-				case MetaGeneratorSyntaxKind.TS_KThis:
-				case MetaGeneratorSyntaxKind.TS_KNew:
-				case MetaGeneratorSyntaxKind.TS_KIs:
-				case MetaGeneratorSyntaxKind.TS_KAs:
-				case MetaGeneratorSyntaxKind.TS_KTypeof:
-				case MetaGeneratorSyntaxKind.TS_KDefault:
-				case MetaGeneratorSyntaxKind.TS_TSemicolon:
-				case MetaGeneratorSyntaxKind.TS_TColon:
-				case MetaGeneratorSyntaxKind.TS_TDot:
-				case MetaGeneratorSyntaxKind.TS_TComma:
-				case MetaGeneratorSyntaxKind.TS_TAssign:
-				case MetaGeneratorSyntaxKind.TS_TAssignPlus:
-				case MetaGeneratorSyntaxKind.TS_TAssignMinus:
-				case MetaGeneratorSyntaxKind.TS_TAssignAsterisk:
-				case MetaGeneratorSyntaxKind.TS_TAssignSlash:
-				case MetaGeneratorSyntaxKind.TS_TAssignPercent:
-				case MetaGeneratorSyntaxKind.TS_TAssignAmp:
-				case MetaGeneratorSyntaxKind.TS_TAssignPipe:
-				case MetaGeneratorSyntaxKind.TS_TAssignHat:
-				case MetaGeneratorSyntaxKind.TS_TAssignLeftShift:
-				case MetaGeneratorSyntaxKind.TS_TAssignRightShift:
-				case MetaGeneratorSyntaxKind.TS_TOpenParenthesis:
-				case MetaGeneratorSyntaxKind.TS_TCloseParenthesis:
 				case MetaGeneratorSyntaxKind.TS_TOpenBracket:
 				case MetaGeneratorSyntaxKind.TS_TCloseBracket:
-				case MetaGeneratorSyntaxKind.TS_TOpenBrace:
-				case MetaGeneratorSyntaxKind.TS_TCloseBrace:
-				case MetaGeneratorSyntaxKind.TS_TEquals:
-				case MetaGeneratorSyntaxKind.TS_TNotEquals:
-				case MetaGeneratorSyntaxKind.TS_TArrow:
-				case MetaGeneratorSyntaxKind.TS_TSingleArrow:
-				case MetaGeneratorSyntaxKind.TS_TLessThan:
-				case MetaGeneratorSyntaxKind.TS_TGreaterThan:
-				case MetaGeneratorSyntaxKind.TS_TLessThanOrEquals:
-				case MetaGeneratorSyntaxKind.TS_TGreaterThanOrEquals:
-				case MetaGeneratorSyntaxKind.TS_TQuestion:
-				case MetaGeneratorSyntaxKind.TS_TPlus:
-				case MetaGeneratorSyntaxKind.TS_TMinus:
-				case MetaGeneratorSyntaxKind.TS_TExclamation:
-				case MetaGeneratorSyntaxKind.TS_TTilde:
-				case MetaGeneratorSyntaxKind.TS_TAsterisk:
-				case MetaGeneratorSyntaxKind.TS_TSlash:
-				case MetaGeneratorSyntaxKind.TS_TPercent:
-				case MetaGeneratorSyntaxKind.TS_TPlusPlus:
-				case MetaGeneratorSyntaxKind.TS_TMinusMinus:
-				case MetaGeneratorSyntaxKind.TS_TColonColon:
-				case MetaGeneratorSyntaxKind.TS_TAmp:
-				case MetaGeneratorSyntaxKind.TS_THat:
-				case MetaGeneratorSyntaxKind.TS_TPipe:
-				case MetaGeneratorSyntaxKind.TS_TAnd:
-				case MetaGeneratorSyntaxKind.TS_TXor:
-				case MetaGeneratorSyntaxKind.TS_TOr:
-				case MetaGeneratorSyntaxKind.TS_TQuestionQuestion:
-				case MetaGeneratorSyntaxKind.TS_IdentifierNormal:
-				case MetaGeneratorSyntaxKind.TS_IntegerLiteral:
-				case MetaGeneratorSyntaxKind.TS_DecimalLiteral:
-				case MetaGeneratorSyntaxKind.TS_ScientificLiteral:
-				case MetaGeneratorSyntaxKind.TS_DateTimeOffsetLiteral:
-				case MetaGeneratorSyntaxKind.TS_DateTimeLiteral:
-				case MetaGeneratorSyntaxKind.TS_DateLiteral:
-				case MetaGeneratorSyntaxKind.TS_TimeLiteral:
-				case MetaGeneratorSyntaxKind.TS_CharLiteral:
-				case MetaGeneratorSyntaxKind.TS_RegularStringLiteral:
-				case MetaGeneratorSyntaxKind.TS_GuidLiteral:
-				case MetaGeneratorSyntaxKind.TemplateStatement_COMMENT_CRLF:
-				case MetaGeneratorSyntaxKind.TemplateStatement_COMMENT_LINEBREAK:
-				case MetaGeneratorSyntaxKind.TemplateStatement_COMMENT:
+				case MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 					return true;
 				default:
 					return false;
@@ -376,6 +183,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.KUsing:
 				case MetaGeneratorSyntaxKind.KConfiguration:
 				case MetaGeneratorSyntaxKind.KProperties:
+				case MetaGeneratorSyntaxKind.KTemplate:
 				case MetaGeneratorSyntaxKind.KFunction:
 				case MetaGeneratorSyntaxKind.KExtern:
 				case MetaGeneratorSyntaxKind.KReturn:
@@ -435,7 +243,6 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.TAssignRightShift:
 				case MetaGeneratorSyntaxKind.TOpenParenthesis:
 				case MetaGeneratorSyntaxKind.TCloseParenthesis:
-				case MetaGeneratorSyntaxKind.TOpenBracket:
 				case MetaGeneratorSyntaxKind.TCloseBracket:
 				case MetaGeneratorSyntaxKind.TOpenBrace:
 				case MetaGeneratorSyntaxKind.TCloseBrace:
@@ -452,7 +259,6 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.TMinus:
 				case MetaGeneratorSyntaxKind.TExclamation:
 				case MetaGeneratorSyntaxKind.TTilde:
-				case MetaGeneratorSyntaxKind.TAsterisk:
 				case MetaGeneratorSyntaxKind.TSlash:
 				case MetaGeneratorSyntaxKind.TPercent:
 				case MetaGeneratorSyntaxKind.TPlusPlus:
@@ -465,6 +271,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.TXor:
 				case MetaGeneratorSyntaxKind.TOr:
 				case MetaGeneratorSyntaxKind.TQuestionQuestion:
+				case MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
+				case MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteral:
 					return true;
 				default:
 					return false;
@@ -490,6 +298,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return "configuration";
 				case MetaGeneratorSyntaxKind.KProperties:
 					return "properties";
+				case MetaGeneratorSyntaxKind.KTemplate:
+					return "template";
 				case MetaGeneratorSyntaxKind.KFunction:
 					return "function";
 				case MetaGeneratorSyntaxKind.KExtern:
@@ -608,8 +418,6 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return "(";
 				case MetaGeneratorSyntaxKind.TCloseParenthesis:
 					return ")";
-				case MetaGeneratorSyntaxKind.TOpenBracket:
-					return "[";
 				case MetaGeneratorSyntaxKind.TCloseBracket:
 					return "]";
 				case MetaGeneratorSyntaxKind.TOpenBrace:
@@ -642,8 +450,6 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return "!";
 				case MetaGeneratorSyntaxKind.TTilde:
 					return "~";
-				case MetaGeneratorSyntaxKind.TAsterisk:
-					return "*";
 				case MetaGeneratorSyntaxKind.TSlash:
 					return "/";
 				case MetaGeneratorSyntaxKind.TPercent:
@@ -668,6 +474,10 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return "||";
 				case MetaGeneratorSyntaxKind.TQuestionQuestion:
 					return "??";
+				case MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
+					return "@\"";
+				case MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteral:
+					return "\"";
 				default:
 					return string.Empty;
 			}
@@ -687,6 +497,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorSyntaxKind.KConfiguration;
 				case "properties":
 					return MetaGeneratorSyntaxKind.KProperties;
+				case "template":
+					return MetaGeneratorSyntaxKind.KTemplate;
 				case "function":
 					return MetaGeneratorSyntaxKind.KFunction;
 				case "extern":
@@ -805,8 +617,6 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorSyntaxKind.TOpenParenthesis;
 				case ")":
 					return MetaGeneratorSyntaxKind.TCloseParenthesis;
-				case "[":
-					return MetaGeneratorSyntaxKind.TOpenBracket;
 				case "]":
 					return MetaGeneratorSyntaxKind.TCloseBracket;
 				case "{":
@@ -839,8 +649,6 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorSyntaxKind.TExclamation;
 				case "~":
 					return MetaGeneratorSyntaxKind.TTilde;
-				case "*":
-					return MetaGeneratorSyntaxKind.TAsterisk;
 				case "/":
 					return MetaGeneratorSyntaxKind.TSlash;
 				case "%":
@@ -865,6 +673,10 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorSyntaxKind.TOr;
 				case "??":
 					return MetaGeneratorSyntaxKind.TQuestionQuestion;
+				case "@\"":
+					return MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
+				case "\"":
+					return MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteral;
 				default:
 					return MetaGeneratorSyntaxKind.None;
 			}

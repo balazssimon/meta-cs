@@ -98,8 +98,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 				case Antlr4RoslynSyntaxKind.UNTERMINATED_CHAR_SET:
 				case Antlr4RoslynSyntaxKind.DOC_COMMENT:
 				case Antlr4RoslynSyntaxKind.BLOCK_COMMENT:
-                case Antlr4RoslynSyntaxKind.DOC_COMMENT_STAR:
-                    return true;
+				case Antlr4RoslynSyntaxKind.DOC_COMMENT_STAR:
+					return true;
 				default:
 					return false;
 			}

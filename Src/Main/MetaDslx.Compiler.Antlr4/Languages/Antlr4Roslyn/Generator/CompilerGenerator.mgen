@@ -2516,19 +2516,15 @@ namespace [Properties.DefaultNamespace].Syntax
         Eof                           = SyntaxKind.Eof,
 ^
 		// Tokens:
-		[loop(rule:Instances.LexerRules)]
-			[if (Instances.LexerRules[0] == rule)]
+		[loop(rule:Instances.LexerRules where rule.Kind > 0)]
 		[rule.PlainName()] = [rule.Kind],
-			[else]
-		[rule.PlainName()],
-			[end if]
 		[end loop]
 ^
 		// Rules:
 		[loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
-		[alt.PlainName()],
+		[alt.PlainName()] = [Instances.FirstRuleKind],
 			[end loop]
 		[else]
 		[rule.PlainName()],
@@ -2869,7 +2865,7 @@ namespace [Properties.DefaultNamespace].Syntax
 			switch (kind)
 			{
 				case [Properties.LanguageName]SyntaxKind.Eof:
-				[loop(literal:Instances.LexerRules)]
+				[loop(literal:Instances.LexerRules where literal.Kind > 0)]
 				case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
 				[end loop]
 					return true;
@@ -2888,7 +2884,7 @@ namespace [Properties.DefaultNamespace].Syntax
 			switch (kind)
 			{
 				case [Properties.LanguageName]SyntaxKind.Eof:
-				[loop(literal:Instances.FixedTokens)]
+				[loop(literal:Instances.FixedTokens where literal.Kind > 0)]
 				case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
 				[end loop]
 					return true;
@@ -2906,7 +2902,7 @@ namespace [Properties.DefaultNamespace].Syntax
 		{
 			switch (kind)
 			{
-				[loop(literal:Instances.FixedTokens)]
+				[loop(literal:Instances.FixedTokens where literal.Kind > 0)]
 				case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
 					return [literal.FixedToken.FixedTokenToCSharpString()];
 				[end loop]
@@ -2919,7 +2915,7 @@ namespace [Properties.DefaultNamespace].Syntax
 		{
 			switch (text)
 			{
-				[loop(literal:Instances.FixedTokens)]
+				[loop(literal:Instances.FixedTokens where literal.Kind > 0)]
 				case [literal.FixedToken.FixedTokenToCSharpString()]:
 					return [Properties.LanguageName]SyntaxKind.[literal.PlainName()];
 				[end loop]
@@ -2947,11 +2943,11 @@ namespace [Properties.DefaultNamespace].Syntax
 		{
 			switch(kind)
 			{
-			[loop (rule:Instances.LexerRules where rule.Annotations.HasAnnotation("Token"))]
+			[loop (rule:Instances.LexerRules where rule.Kind > 0 && rule.Annotations.HasAnnotation("Token"))]
 				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
 				[if (annot.HasProperty("endOfLine") && annot.GetValue("endOfLine") == "true")]
 					[if (annot.HasProperty("first") && annot.HasProperty("last"))]
-						[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")))]
+						[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
 				case [Properties.LanguageName]SyntaxKind.[child.PlainName()]:
 						[end loop]
 					return true;
@@ -2976,10 +2972,10 @@ namespace [Properties.DefaultNamespace].Syntax
 		{
 			switch(kind)
 			{
-			[loop (rule:kind.Value)]
+			[loop (rule:kind.Value where rule.Kind > 0)]
 				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
 				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
-					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")))]
+					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
 				case [Properties.LanguageName]SyntaxKind.[child.PlainName()]:
 					[end loop]
 					return true;
@@ -3003,10 +2999,10 @@ namespace [Properties.DefaultNamespace].Syntax
 		{
 			switch(kind)
 			{
-			[loop (rule:Instances.LexerRules where rule.Annotations.HasAnnotation("Token"))]
+			[loop (rule:Instances.LexerRules where rule.Kind > 0 && rule.Annotations.HasAnnotation("Token"))]
 				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
 				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
-					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")))]
+					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
 				case [Properties.LanguageName]SyntaxKind.[child.PlainName()]:
 					[end loop]
 					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
