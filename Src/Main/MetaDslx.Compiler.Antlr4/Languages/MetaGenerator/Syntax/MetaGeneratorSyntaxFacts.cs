@@ -8,6 +8,14 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 	public enum MetaGeneratorTokenKind : int
 	{
 		None = 0,
+		Comment,
+		Identifier,
+		Keyword,
+		MetaGeneratorTemplateControl,
+		MetaGeneratorTemplateOutput,
+		Number,
+		Operator,
+		String
 	}
 
 	public class MetaGeneratorSyntaxFacts : SyntaxFacts
@@ -706,6 +714,250 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			}
 		}
 
+		public bool IsKeyword(int rawKind)
+		{
+			return this.IsKeyword((MetaGeneratorSyntaxKind)rawKind);
+		}
+
+		public bool IsKeyword(MetaGeneratorSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case MetaGeneratorSyntaxKind.KNamespace:
+				case MetaGeneratorSyntaxKind.KGenerator:
+				case MetaGeneratorSyntaxKind.KUsing:
+				case MetaGeneratorSyntaxKind.KConfiguration:
+				case MetaGeneratorSyntaxKind.KProperties:
+				case MetaGeneratorSyntaxKind.KTemplate:
+				case MetaGeneratorSyntaxKind.KFunction:
+				case MetaGeneratorSyntaxKind.KExtern:
+				case MetaGeneratorSyntaxKind.KReturn:
+				case MetaGeneratorSyntaxKind.KSwitch:
+				case MetaGeneratorSyntaxKind.KCase:
+				case MetaGeneratorSyntaxKind.KType:
+				case MetaGeneratorSyntaxKind.KVoid:
+				case MetaGeneratorSyntaxKind.KEnd:
+				case MetaGeneratorSyntaxKind.KFor:
+				case MetaGeneratorSyntaxKind.KForEach:
+				case MetaGeneratorSyntaxKind.KIn:
+				case MetaGeneratorSyntaxKind.KIf:
+				case MetaGeneratorSyntaxKind.KElse:
+				case MetaGeneratorSyntaxKind.KLoop:
+				case MetaGeneratorSyntaxKind.KHasLoop:
+				case MetaGeneratorSyntaxKind.KWhere:
+				case MetaGeneratorSyntaxKind.KOrderBy:
+				case MetaGeneratorSyntaxKind.KDescending:
+				case MetaGeneratorSyntaxKind.KSeparator:
+				case MetaGeneratorSyntaxKind.KNull:
+				case MetaGeneratorSyntaxKind.KTrue:
+				case MetaGeneratorSyntaxKind.KFalse:
+				case MetaGeneratorSyntaxKind.KBool:
+				case MetaGeneratorSyntaxKind.KByte:
+				case MetaGeneratorSyntaxKind.KChar:
+				case MetaGeneratorSyntaxKind.KDecimal:
+				case MetaGeneratorSyntaxKind.KDouble:
+				case MetaGeneratorSyntaxKind.KFloat:
+				case MetaGeneratorSyntaxKind.KInt:
+				case MetaGeneratorSyntaxKind.KLong:
+				case MetaGeneratorSyntaxKind.KObject:
+				case MetaGeneratorSyntaxKind.KSByte:
+				case MetaGeneratorSyntaxKind.KShort:
+				case MetaGeneratorSyntaxKind.KString:
+				case MetaGeneratorSyntaxKind.KUInt:
+				case MetaGeneratorSyntaxKind.KULong:
+				case MetaGeneratorSyntaxKind.KUShort:
+				case MetaGeneratorSyntaxKind.KThis:
+				case MetaGeneratorSyntaxKind.KNew:
+				case MetaGeneratorSyntaxKind.KIs:
+				case MetaGeneratorSyntaxKind.KAs:
+				case MetaGeneratorSyntaxKind.KTypeof:
+				case MetaGeneratorSyntaxKind.KDefault:
+					return true;
+				case MetaGeneratorSyntaxKind.KEndTemplate:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsOperator(int rawKind)
+		{
+			return this.IsOperator((MetaGeneratorSyntaxKind)rawKind);
+		}
+
+		public bool IsOperator(MetaGeneratorSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case MetaGeneratorSyntaxKind.TSemicolon:
+				case MetaGeneratorSyntaxKind.TColon:
+				case MetaGeneratorSyntaxKind.TDot:
+				case MetaGeneratorSyntaxKind.TComma:
+				case MetaGeneratorSyntaxKind.TAssign:
+				case MetaGeneratorSyntaxKind.TAssignPlus:
+				case MetaGeneratorSyntaxKind.TAssignMinus:
+				case MetaGeneratorSyntaxKind.TAssignAsterisk:
+				case MetaGeneratorSyntaxKind.TAssignSlash:
+				case MetaGeneratorSyntaxKind.TAssignPercent:
+				case MetaGeneratorSyntaxKind.TAssignAmp:
+				case MetaGeneratorSyntaxKind.TAssignPipe:
+				case MetaGeneratorSyntaxKind.TAssignHat:
+				case MetaGeneratorSyntaxKind.TAssignLeftShift:
+				case MetaGeneratorSyntaxKind.TAssignRightShift:
+				case MetaGeneratorSyntaxKind.TOpenParenthesis:
+				case MetaGeneratorSyntaxKind.TCloseParenthesis:
+				case MetaGeneratorSyntaxKind.TOpenBracket:
+				case MetaGeneratorSyntaxKind.TCloseBracket:
+				case MetaGeneratorSyntaxKind.TOpenBrace:
+				case MetaGeneratorSyntaxKind.TCloseBrace:
+				case MetaGeneratorSyntaxKind.TEquals:
+				case MetaGeneratorSyntaxKind.TNotEquals:
+				case MetaGeneratorSyntaxKind.TArrow:
+				case MetaGeneratorSyntaxKind.TSingleArrow:
+				case MetaGeneratorSyntaxKind.TLessThan:
+				case MetaGeneratorSyntaxKind.TGreaterThan:
+				case MetaGeneratorSyntaxKind.TLessThanOrEquals:
+				case MetaGeneratorSyntaxKind.TGreaterThanOrEquals:
+				case MetaGeneratorSyntaxKind.TQuestion:
+				case MetaGeneratorSyntaxKind.TPlus:
+				case MetaGeneratorSyntaxKind.TMinus:
+				case MetaGeneratorSyntaxKind.TExclamation:
+				case MetaGeneratorSyntaxKind.TTilde:
+				case MetaGeneratorSyntaxKind.TAsterisk:
+				case MetaGeneratorSyntaxKind.TSlash:
+				case MetaGeneratorSyntaxKind.TPercent:
+				case MetaGeneratorSyntaxKind.TPlusPlus:
+				case MetaGeneratorSyntaxKind.TMinusMinus:
+				case MetaGeneratorSyntaxKind.TColonColon:
+				case MetaGeneratorSyntaxKind.TAmp:
+				case MetaGeneratorSyntaxKind.THat:
+				case MetaGeneratorSyntaxKind.TPipe:
+				case MetaGeneratorSyntaxKind.TAnd:
+				case MetaGeneratorSyntaxKind.TXor:
+				case MetaGeneratorSyntaxKind.TOr:
+				case MetaGeneratorSyntaxKind.TQuestionQuestion:
+					return true;
+				case MetaGeneratorSyntaxKind.TH_TCloseParenthesis:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsIdentifier(int rawKind)
+		{
+			return this.IsIdentifier((MetaGeneratorSyntaxKind)rawKind);
+		}
+
+		public bool IsIdentifier(MetaGeneratorSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case MetaGeneratorSyntaxKind.IdentifierNormal:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsNumber(int rawKind)
+		{
+			return this.IsNumber((MetaGeneratorSyntaxKind)rawKind);
+		}
+
+		public bool IsNumber(MetaGeneratorSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case MetaGeneratorSyntaxKind.IntegerLiteral:
+					return true;
+				case MetaGeneratorSyntaxKind.DecimalLiteral:
+					return true;
+				case MetaGeneratorSyntaxKind.ScientificLiteral:
+					return true;
+				case MetaGeneratorSyntaxKind.DateTimeOffsetLiteral:
+					return true;
+				case MetaGeneratorSyntaxKind.DateTimeLiteral:
+					return true;
+				case MetaGeneratorSyntaxKind.DateLiteral:
+					return true;
+				case MetaGeneratorSyntaxKind.TimeLiteral:
+					return true;
+				case MetaGeneratorSyntaxKind.GuidLiteral:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsString(int rawKind)
+		{
+			return this.IsString((MetaGeneratorSyntaxKind)rawKind);
+		}
+
+		public bool IsString(MetaGeneratorSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case MetaGeneratorSyntaxKind.CharLiteral:
+					return true;
+				case MetaGeneratorSyntaxKind.RegularStringLiteral:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsComment(int rawKind)
+		{
+			return this.IsComment((MetaGeneratorSyntaxKind)rawKind);
+		}
+
+		public bool IsComment(MetaGeneratorSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case MetaGeneratorSyntaxKind.LINE_COMMENT:
+					return true;
+				case MetaGeneratorSyntaxKind.COMMENT:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsMetaGeneratorTemplateControl(int rawKind)
+		{
+			return this.IsMetaGeneratorTemplateControl((MetaGeneratorSyntaxKind)rawKind);
+		}
+
+		public bool IsMetaGeneratorTemplateControl(MetaGeneratorSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case MetaGeneratorSyntaxKind.TemplateLineControl:
+					return true;
+				case MetaGeneratorSyntaxKind.TemplateStatementStart:
+					return true;
+				case MetaGeneratorSyntaxKind.TemplateStatementEnd:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsMetaGeneratorTemplateOutput(int rawKind)
+		{
+			return this.IsMetaGeneratorTemplateOutput((MetaGeneratorSyntaxKind)rawKind);
+		}
+
+		public bool IsMetaGeneratorTemplateOutput(MetaGeneratorSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case MetaGeneratorSyntaxKind.TemplateOutput:
+					return true;
+				case MetaGeneratorSyntaxKind.TemplateCrLf:
+					return true;
+				case MetaGeneratorSyntaxKind.TemplateLineBreak:
+					return true;
+				default:
+					return false;
+			}
+		}
 
 		public MetaGeneratorTokenKind GetTokenKind(int rawKind)
 		{
@@ -716,6 +968,146 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 		{
 			switch(kind)
 			{
+				case MetaGeneratorSyntaxKind.KNamespace:
+				case MetaGeneratorSyntaxKind.KGenerator:
+				case MetaGeneratorSyntaxKind.KUsing:
+				case MetaGeneratorSyntaxKind.KConfiguration:
+				case MetaGeneratorSyntaxKind.KProperties:
+				case MetaGeneratorSyntaxKind.KTemplate:
+				case MetaGeneratorSyntaxKind.KFunction:
+				case MetaGeneratorSyntaxKind.KExtern:
+				case MetaGeneratorSyntaxKind.KReturn:
+				case MetaGeneratorSyntaxKind.KSwitch:
+				case MetaGeneratorSyntaxKind.KCase:
+				case MetaGeneratorSyntaxKind.KType:
+				case MetaGeneratorSyntaxKind.KVoid:
+				case MetaGeneratorSyntaxKind.KEnd:
+				case MetaGeneratorSyntaxKind.KFor:
+				case MetaGeneratorSyntaxKind.KForEach:
+				case MetaGeneratorSyntaxKind.KIn:
+				case MetaGeneratorSyntaxKind.KIf:
+				case MetaGeneratorSyntaxKind.KElse:
+				case MetaGeneratorSyntaxKind.KLoop:
+				case MetaGeneratorSyntaxKind.KHasLoop:
+				case MetaGeneratorSyntaxKind.KWhere:
+				case MetaGeneratorSyntaxKind.KOrderBy:
+				case MetaGeneratorSyntaxKind.KDescending:
+				case MetaGeneratorSyntaxKind.KSeparator:
+				case MetaGeneratorSyntaxKind.KNull:
+				case MetaGeneratorSyntaxKind.KTrue:
+				case MetaGeneratorSyntaxKind.KFalse:
+				case MetaGeneratorSyntaxKind.KBool:
+				case MetaGeneratorSyntaxKind.KByte:
+				case MetaGeneratorSyntaxKind.KChar:
+				case MetaGeneratorSyntaxKind.KDecimal:
+				case MetaGeneratorSyntaxKind.KDouble:
+				case MetaGeneratorSyntaxKind.KFloat:
+				case MetaGeneratorSyntaxKind.KInt:
+				case MetaGeneratorSyntaxKind.KLong:
+				case MetaGeneratorSyntaxKind.KObject:
+				case MetaGeneratorSyntaxKind.KSByte:
+				case MetaGeneratorSyntaxKind.KShort:
+				case MetaGeneratorSyntaxKind.KString:
+				case MetaGeneratorSyntaxKind.KUInt:
+				case MetaGeneratorSyntaxKind.KULong:
+				case MetaGeneratorSyntaxKind.KUShort:
+				case MetaGeneratorSyntaxKind.KThis:
+				case MetaGeneratorSyntaxKind.KNew:
+				case MetaGeneratorSyntaxKind.KIs:
+				case MetaGeneratorSyntaxKind.KAs:
+				case MetaGeneratorSyntaxKind.KTypeof:
+				case MetaGeneratorSyntaxKind.KDefault:
+					return MetaGeneratorTokenKind.Keyword;
+				case MetaGeneratorSyntaxKind.TSemicolon:
+				case MetaGeneratorSyntaxKind.TColon:
+				case MetaGeneratorSyntaxKind.TDot:
+				case MetaGeneratorSyntaxKind.TComma:
+				case MetaGeneratorSyntaxKind.TAssign:
+				case MetaGeneratorSyntaxKind.TAssignPlus:
+				case MetaGeneratorSyntaxKind.TAssignMinus:
+				case MetaGeneratorSyntaxKind.TAssignAsterisk:
+				case MetaGeneratorSyntaxKind.TAssignSlash:
+				case MetaGeneratorSyntaxKind.TAssignPercent:
+				case MetaGeneratorSyntaxKind.TAssignAmp:
+				case MetaGeneratorSyntaxKind.TAssignPipe:
+				case MetaGeneratorSyntaxKind.TAssignHat:
+				case MetaGeneratorSyntaxKind.TAssignLeftShift:
+				case MetaGeneratorSyntaxKind.TAssignRightShift:
+				case MetaGeneratorSyntaxKind.TOpenParenthesis:
+				case MetaGeneratorSyntaxKind.TCloseParenthesis:
+				case MetaGeneratorSyntaxKind.TOpenBracket:
+				case MetaGeneratorSyntaxKind.TCloseBracket:
+				case MetaGeneratorSyntaxKind.TOpenBrace:
+				case MetaGeneratorSyntaxKind.TCloseBrace:
+				case MetaGeneratorSyntaxKind.TEquals:
+				case MetaGeneratorSyntaxKind.TNotEquals:
+				case MetaGeneratorSyntaxKind.TArrow:
+				case MetaGeneratorSyntaxKind.TSingleArrow:
+				case MetaGeneratorSyntaxKind.TLessThan:
+				case MetaGeneratorSyntaxKind.TGreaterThan:
+				case MetaGeneratorSyntaxKind.TLessThanOrEquals:
+				case MetaGeneratorSyntaxKind.TGreaterThanOrEquals:
+				case MetaGeneratorSyntaxKind.TQuestion:
+				case MetaGeneratorSyntaxKind.TPlus:
+				case MetaGeneratorSyntaxKind.TMinus:
+				case MetaGeneratorSyntaxKind.TExclamation:
+				case MetaGeneratorSyntaxKind.TTilde:
+				case MetaGeneratorSyntaxKind.TAsterisk:
+				case MetaGeneratorSyntaxKind.TSlash:
+				case MetaGeneratorSyntaxKind.TPercent:
+				case MetaGeneratorSyntaxKind.TPlusPlus:
+				case MetaGeneratorSyntaxKind.TMinusMinus:
+				case MetaGeneratorSyntaxKind.TColonColon:
+				case MetaGeneratorSyntaxKind.TAmp:
+				case MetaGeneratorSyntaxKind.THat:
+				case MetaGeneratorSyntaxKind.TPipe:
+				case MetaGeneratorSyntaxKind.TAnd:
+				case MetaGeneratorSyntaxKind.TXor:
+				case MetaGeneratorSyntaxKind.TOr:
+				case MetaGeneratorSyntaxKind.TQuestionQuestion:
+					return MetaGeneratorTokenKind.Operator;
+				case MetaGeneratorSyntaxKind.IdentifierNormal:
+					return MetaGeneratorTokenKind.Identifier;
+				case MetaGeneratorSyntaxKind.IntegerLiteral:
+					return MetaGeneratorTokenKind.Number;
+				case MetaGeneratorSyntaxKind.DecimalLiteral:
+					return MetaGeneratorTokenKind.Number;
+				case MetaGeneratorSyntaxKind.ScientificLiteral:
+					return MetaGeneratorTokenKind.Number;
+				case MetaGeneratorSyntaxKind.DateTimeOffsetLiteral:
+					return MetaGeneratorTokenKind.Number;
+				case MetaGeneratorSyntaxKind.DateTimeLiteral:
+					return MetaGeneratorTokenKind.Number;
+				case MetaGeneratorSyntaxKind.DateLiteral:
+					return MetaGeneratorTokenKind.Number;
+				case MetaGeneratorSyntaxKind.TimeLiteral:
+					return MetaGeneratorTokenKind.Number;
+				case MetaGeneratorSyntaxKind.CharLiteral:
+					return MetaGeneratorTokenKind.String;
+				case MetaGeneratorSyntaxKind.RegularStringLiteral:
+					return MetaGeneratorTokenKind.String;
+				case MetaGeneratorSyntaxKind.GuidLiteral:
+					return MetaGeneratorTokenKind.Number;
+				case MetaGeneratorSyntaxKind.LINE_COMMENT:
+					return MetaGeneratorTokenKind.Comment;
+				case MetaGeneratorSyntaxKind.COMMENT:
+					return MetaGeneratorTokenKind.Comment;
+				case MetaGeneratorSyntaxKind.TH_TCloseParenthesis:
+					return MetaGeneratorTokenKind.Operator;
+				case MetaGeneratorSyntaxKind.KEndTemplate:
+					return MetaGeneratorTokenKind.Keyword;
+				case MetaGeneratorSyntaxKind.TemplateLineControl:
+					return MetaGeneratorTokenKind.MetaGeneratorTemplateControl;
+				case MetaGeneratorSyntaxKind.TemplateOutput:
+					return MetaGeneratorTokenKind.MetaGeneratorTemplateOutput;
+				case MetaGeneratorSyntaxKind.TemplateCrLf:
+					return MetaGeneratorTokenKind.MetaGeneratorTemplateOutput;
+				case MetaGeneratorSyntaxKind.TemplateLineBreak:
+					return MetaGeneratorTokenKind.MetaGeneratorTemplateOutput;
+				case MetaGeneratorSyntaxKind.TemplateStatementStart:
+					return MetaGeneratorTokenKind.MetaGeneratorTemplateControl;
+				case MetaGeneratorSyntaxKind.TemplateStatementEnd:
+					return MetaGeneratorTokenKind.MetaGeneratorTemplateControl;
 				default:
 					return MetaGeneratorTokenKind.None;
 			}

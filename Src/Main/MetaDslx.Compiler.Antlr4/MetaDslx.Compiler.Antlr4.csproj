@@ -156,9 +156,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </None>
-    <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.literals">
-      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
-    </None>
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.tokens">
       <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
     </None>
@@ -186,9 +183,6 @@
       <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-    </None>
-    <None Include="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorLexer.literals">
-      <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
     </None>
     <None Include="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorLexer.tokens">
       <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>

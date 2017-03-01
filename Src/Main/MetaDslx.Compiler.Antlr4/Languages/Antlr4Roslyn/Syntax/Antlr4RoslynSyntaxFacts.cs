@@ -8,6 +8,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 	public enum Antlr4RoslynTokenKind : int
 	{
 		None = 0,
+		Action,
+		Antlr4Rule,
+		Antlr4Token,
+		Comment,
+		Identifier,
+		Keyword,
+		Number,
+		Operator,
+		Options,
+		String
 	}
 
 	public class Antlr4RoslynSyntaxFacts : SyntaxFacts
@@ -268,6 +278,182 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 			}
 		}
 
+		public bool IsAntlr4Token(int rawKind)
+		{
+			return this.IsAntlr4Token((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsAntlr4Token(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.TOKEN_REF:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsAntlr4Rule(int rawKind)
+		{
+			return this.IsAntlr4Rule((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsAntlr4Rule(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.RULE_REF:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsOperator(int rawKind)
+		{
+			return this.IsOperator((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsOperator(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.LEXER_CHAR_SET:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsComment(int rawKind)
+		{
+			return this.IsComment((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsComment(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.LINE_COMMENT:
+					return true;
+				case Antlr4RoslynSyntaxKind.DOC_COMMENT:
+					return true;
+				case Antlr4RoslynSyntaxKind.BLOCK_COMMENT:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsNumber(int rawKind)
+		{
+			return this.IsNumber((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsNumber(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.INT:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsString(int rawKind)
+		{
+			return this.IsString((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsString(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.STRING_LITERAL:
+					return true;
+				case Antlr4RoslynSyntaxKind.UNTERMINATED_STRING_LITERAL:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsAction(int rawKind)
+		{
+			return this.IsAction((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsAction(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.BEGIN_ACTION:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsOptions(int rawKind)
+		{
+			return this.IsOptions((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsOptions(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.OPTIONS:
+					return true;
+				case Antlr4RoslynSyntaxKind.TOKENS:
+					return true;
+				case Antlr4RoslynSyntaxKind.CHANNELS:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsKeyword(int rawKind)
+		{
+			return this.IsKeyword((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsKeyword(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.IMPORT:
+				case Antlr4RoslynSyntaxKind.FRAGMENT:
+				case Antlr4RoslynSyntaxKind.LEXER:
+				case Antlr4RoslynSyntaxKind.PARSER:
+				case Antlr4RoslynSyntaxKind.GRAMMAR:
+				case Antlr4RoslynSyntaxKind.PROTECTED:
+				case Antlr4RoslynSyntaxKind.PUBLIC:
+				case Antlr4RoslynSyntaxKind.PRIVATE:
+				case Antlr4RoslynSyntaxKind.RETURNS:
+				case Antlr4RoslynSyntaxKind.LOCALS:
+				case Antlr4RoslynSyntaxKind.THROWS:
+				case Antlr4RoslynSyntaxKind.CATCH:
+				case Antlr4RoslynSyntaxKind.FINALLY:
+				case Antlr4RoslynSyntaxKind.MODE:
+				case Antlr4RoslynSyntaxKind.TRUE:
+				case Antlr4RoslynSyntaxKind.FALSE:
+				case Antlr4RoslynSyntaxKind.NULL:
+					return true;
+				default:
+					return false;
+			}
+		}
+		public bool IsIdentifier(int rawKind)
+		{
+			return this.IsIdentifier((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsIdentifier(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynSyntaxKind.ID:
+					return true;
+				default:
+					return false;
+			}
+		}
 
 		public Antlr4RoslynTokenKind GetTokenKind(int rawKind)
 		{
@@ -278,6 +464,52 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 		{
 			switch(kind)
 			{
+				case Antlr4RoslynSyntaxKind.TOKEN_REF:
+					return Antlr4RoslynTokenKind.Antlr4Token;
+				case Antlr4RoslynSyntaxKind.RULE_REF:
+					return Antlr4RoslynTokenKind.Antlr4Rule;
+				case Antlr4RoslynSyntaxKind.LEXER_CHAR_SET:
+					return Antlr4RoslynTokenKind.Operator;
+				case Antlr4RoslynSyntaxKind.LINE_COMMENT:
+					return Antlr4RoslynTokenKind.Comment;
+				case Antlr4RoslynSyntaxKind.INT:
+					return Antlr4RoslynTokenKind.Number;
+				case Antlr4RoslynSyntaxKind.STRING_LITERAL:
+					return Antlr4RoslynTokenKind.String;
+				case Antlr4RoslynSyntaxKind.UNTERMINATED_STRING_LITERAL:
+					return Antlr4RoslynTokenKind.String;
+				case Antlr4RoslynSyntaxKind.BEGIN_ACTION:
+					return Antlr4RoslynTokenKind.Action;
+				case Antlr4RoslynSyntaxKind.OPTIONS:
+					return Antlr4RoslynTokenKind.Options;
+				case Antlr4RoslynSyntaxKind.TOKENS:
+					return Antlr4RoslynTokenKind.Options;
+				case Antlr4RoslynSyntaxKind.CHANNELS:
+					return Antlr4RoslynTokenKind.Options;
+				case Antlr4RoslynSyntaxKind.IMPORT:
+				case Antlr4RoslynSyntaxKind.FRAGMENT:
+				case Antlr4RoslynSyntaxKind.LEXER:
+				case Antlr4RoslynSyntaxKind.PARSER:
+				case Antlr4RoslynSyntaxKind.GRAMMAR:
+				case Antlr4RoslynSyntaxKind.PROTECTED:
+				case Antlr4RoslynSyntaxKind.PUBLIC:
+				case Antlr4RoslynSyntaxKind.PRIVATE:
+				case Antlr4RoslynSyntaxKind.RETURNS:
+				case Antlr4RoslynSyntaxKind.LOCALS:
+				case Antlr4RoslynSyntaxKind.THROWS:
+				case Antlr4RoslynSyntaxKind.CATCH:
+				case Antlr4RoslynSyntaxKind.FINALLY:
+				case Antlr4RoslynSyntaxKind.MODE:
+				case Antlr4RoslynSyntaxKind.TRUE:
+				case Antlr4RoslynSyntaxKind.FALSE:
+				case Antlr4RoslynSyntaxKind.NULL:
+					return Antlr4RoslynTokenKind.Keyword;
+				case Antlr4RoslynSyntaxKind.ID:
+					return Antlr4RoslynTokenKind.Identifier;
+				case Antlr4RoslynSyntaxKind.DOC_COMMENT:
+					return Antlr4RoslynTokenKind.Comment;
+				case Antlr4RoslynSyntaxKind.BLOCK_COMMENT:
+					return Antlr4RoslynTokenKind.Comment;
 				default:
 					return Antlr4RoslynTokenKind.None;
 			}

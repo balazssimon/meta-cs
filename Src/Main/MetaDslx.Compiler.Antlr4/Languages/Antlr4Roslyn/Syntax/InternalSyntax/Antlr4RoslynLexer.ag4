@@ -46,11 +46,11 @@ import LexBasic;
 
 // Standard set of fragments
 tokens { 
-	$Syntax(kind=Antlr4SyntaxKind.Token)
+	$Token(kind=Antlr4Token)
 	TOKEN_REF,
-	$Syntax(kind=Antlr4SyntaxKind.Rule)	
+	$Token(kind=Antlr4Rule)	
 	RULE_REF, 
-	$Syntax(kind=SyntaxKind.Operator)
+	$Token(kind=Operator)
 	LEXER_CHAR_SET 
 }
 
@@ -63,19 +63,19 @@ channels
 // -------------------------
 // Comments
 
-$Syntax(kind=SyntaxKind.DocComment)
+$Token(kind=DocComment)
 DOC_COMMENT_START
 	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
 	;
 
 
-$Syntax(kind=SyntaxKind.Comment)
+$Token(kind=Comment)
 COMMENT_START 
    : '/*' -> more, pushMode(BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
    ;
 
 
-$Syntax(kind=SyntaxKind.Comment)
+$Token(kind=Comment)
 LINE_COMMENT
    : LineComment -> channel (OFF_CHANNEL)
    ;
@@ -85,7 +85,7 @@ LINE_COMMENT
 // Integer
 //
 
-$Syntax(kind=SyntaxKind.Number)
+$Token(kind=Number)
 INT
    : DecimalNumeral
    ;
@@ -98,13 +98,13 @@ INT
 // may contain unicode escape sequences of the form \uxxxx, where x
 // is a valid hexadecimal number (per Unicode standard).
 
-$Syntax(kind=SyntaxKind.String)
+$Token(kind=String)
 STRING_LITERAL
    : SQuoteLiteral
    ;
 
 
-$Syntax(kind=SyntaxKind.String)
+$Token(kind=String)
 UNTERMINATED_STRING_LITERAL
    : USQuoteLiteral
    ;
@@ -122,7 +122,7 @@ BEGIN_ARGUMENT
 // -------------------------
 // Actions
 
-$Syntax(kind=Antlr4SyntaxKind.Action)
+$Token(kind=Action)
 BEGIN_ACTION
    : LBrace -> pushMode (ActionMode)
    ;
@@ -134,25 +134,25 @@ BEGIN_ACTION
 // they would be ambiguous with the keyword vs some other identifier.  OPTIONS,
 // TOKENS, & CHANNELS blocks are handled idiomatically in dedicated lexical modes.
 
-$Syntax(kind=Antlr4SyntaxKind.Options)
+$Token(kind=Options)
 OPTIONS
    : 'options' -> pushMode (Options)
    ;
 
 
-$Syntax(kind=Antlr4SyntaxKind.Options)
+$Token(kind=Options)
 TOKENS
    : 'tokens' -> pushMode (Tokens)
    ;
 
 
-$Syntax(kind=Antlr4SyntaxKind.Options)
+$Token(kind=Options)
 CHANNELS
    : 'channels' -> pushMode (Channels)
    ;
 
    
-$Syntax(first=IMPORT, last=NULL, kind=SyntaxKind.Keyword)
+$Token(first=IMPORT, last=NULL, kind=Keyword)
 IMPORT
    : 'import'
    ;
@@ -354,7 +354,7 @@ NOT
 // -------------------------
 // Identifiers - allows unicode rule/token names
 
-$Syntax(kind=SyntaxKind.Identifier)
+$Token(kind=Identifier)
 ID
    : Id
    ;
@@ -426,7 +426,7 @@ ARGUMENT_CONTENT
 // literal string representation in the target language. We assume
 // that they are delimited by ' or " and so consume these
 // in their own alts so as not to inadvertantly match {}.
-$Syntax(kind=Antlr4SyntaxKind.Action)
+$Token(kind=Action)
 mode ActionMode;
 NESTED_ACTION
    : LBrace -> type (ACTION_CONTENT) , pushMode (ActionMode)
@@ -468,7 +468,7 @@ ACTION_CONTENT
    ;
 
 // -------------------------
-$Syntax(kind=Antlr4SyntaxKind.Options)
+$Token(kind=Options)
 mode Options;
 OPT_DOC_COMMENT
 	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
@@ -530,7 +530,7 @@ OPT_WS
    ;
 
 // -------------------------
-$Syntax(kind=Antlr4SyntaxKind.Options)
+$Token(kind=Options)
 mode Tokens;
 TOK_DOC_COMMENT
 	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
@@ -577,7 +577,7 @@ TOK_WS
    ;
 
 // -------------------------
-$Syntax(kind=Antlr4SyntaxKind.Options)
+$Token(kind=Options)
 mode Channels;
 // currently same as Tokens mode; distinguished by keyword
 CHN_DOC_COMMENT
@@ -647,13 +647,13 @@ fragment Id
 // ------------------------------------------------------------------------------
 // Documentation comment:
    
-$Syntax(kind=SyntaxKind.DocComment)
+$Token(kind=DocComment)
 mode DOC_COMMENT_MODE;
 
 DOC_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
 DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
 DOC_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
-$Syntax(kind=SyntaxKind.Comment)
+$Token(kind=Comment)
 DOC_COMMENT : '*/' -> popMode, channel(OFF_CHANNEL);
 DOC_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
 
@@ -661,20 +661,20 @@ DOC_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
 // ------------------------------------------------------------------------------
 // Block comment:
    
-$Syntax(kind=SyntaxKind.Comment)
+$Token(kind=Comment)
 mode BLOCK_COMMENT_MODE;
 
 BLOCK_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
 BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
 BLOCK_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
-$Syntax(kind=SyntaxKind.Comment)
+$Token(kind=Comment)
 BLOCK_COMMENT : '*/' -> popMode, channel(OFF_CHANNEL);
 BLOCK_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
 
 // ------------------------------------------------------------------------------
 // Documentation comment in actions:
    
-$Syntax(kind=SyntaxKind.DocComment)
+$Token(kind=DocComment)
 mode ACTION_DOC_COMMENT_MODE;
 
 ACTION_DOC_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
@@ -687,7 +687,7 @@ ACTION_DOC_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
 // ------------------------------------------------------------------------------
 // Block comment in actions:
    
-$Syntax(kind=SyntaxKind.Comment)
+$Token(kind=Comment)
 mode ACTION_BLOCK_COMMENT_MODE;
 
 ACTION_BLOCK_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
