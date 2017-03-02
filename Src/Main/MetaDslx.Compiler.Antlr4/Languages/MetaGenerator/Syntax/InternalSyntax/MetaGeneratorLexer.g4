@@ -354,28 +354,28 @@ TH_CharLiteral : CharLiteral -> type(CharLiteral);
 TH_RegularStringLiteral : RegularStringLiteral -> type(RegularStringLiteral);
 TH_GuidLiteral : GuidLiteral -> type(GuidLiteral);
 
-                                        
+                           
 mode TEMPLATE_OUTPUT;
 
                     
 KEndTemplate : 'end template' ('\r'? '\n' | [\u0085\u2028\u2029]) -> mode(DEFAULT_MODE);
 
-                                         
+                            
 TemplateLineControl : ('\\' | '^') [\u0020\u0009\u000B\u000C\u00A0\u001A]* (TemplateCrLf | TemplateLineBreak);
-                                        
+                           
 TemplateOutput : (~[\\\^\[\r\n\u0085\u2028\u2029]+ | '\\' | '^');
-                                        
+                           
 TemplateCrLf : '\r'? '\n';
-                                        
+                           
 TemplateLineBreak : [\u0085\u2028\u2029];
-                                         
+                            
 TemplateStatementStart : '[' {Mode(TEMPLATE_STATEMENT); _templateBrackets=0;};
 
 mode TEMPLATE_STATEMENT;
 
 TemplateStatementCrLf : '\r'? '\n' -> type(CRLF), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
 TemplateStatementLineBreak : [\u0085\u2028\u2029] -> type(LINEBREAK), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
-                                         
+                            
 TemplateStatementEnd : {_templateBrackets == 0}? ']' -> mode(TEMPLATE_OUTPUT);
 TemplateStatement_COMMENT_START : '/*' -> more, mode(TEMPLATE_STATEMENT_COMMENT), channel(COMMENT);
 TemplateStatement_WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> type(WHITESPACE), channel(WHITESPACE);

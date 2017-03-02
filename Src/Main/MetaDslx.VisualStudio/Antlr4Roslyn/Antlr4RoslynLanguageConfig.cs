@@ -22,24 +22,18 @@ namespace MetaDslx.VisualStudio
 
         public Antlr4RoslynLanguageConfig()
         {
-            //CreateColor("Unknown", TokenType.Text, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("Text", TokenType.Text, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("Keyword", TokenType.Keyword, COLORINDEX.CI_BLUE);
-            CreateColor("Identifier", TokenType.Identifier, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("String", TokenType.String, COLORINDEX.CI_MAROON);
-            CreateColor("Literal", TokenType.Literal, COLORINDEX.CI_MAGENTA);
-            CreateColor("Operator", TokenType.Operator, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("Delimiter", TokenType.Delimiter, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("WhiteSpace", TokenType.WhiteSpace, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("LineComment", TokenType.LineComment, COLORINDEX.CI_DARKGREEN);
-            CreateColor("Comment", TokenType.Comment, COLORINDEX.CI_DARKGREEN);
-            CreateColor("DocComment", TokenType.Comment, COLORINDEX.CI_DARKGREEN);
-            CreateColor("Number", TokenType.Literal, COLORINDEX.CI_MAGENTA);
+            CreateColor("None", TokenType.Text, COLORINDEX.CI_SYSPLAINTEXT_FG);
             CreateColor("Annotated ANTLR4 action", TokenType.Text, COLORINDEX.CI_DARKGRAY);
             CreateColor("Annotated ANTLR4 options", TokenType.Text, COLORINDEX.CI_DARKGRAY);
-            CreateColor("Annotated ANTLR4 token", TokenType.Text, Color.FromArgb(0, 0, 127));
             CreateColor("Annotated ANTLR4 rule", TokenType.Text, Color.FromArgb(64, 64, 255));
-            CreateColor("Annotated ANTLR4 annotation", TokenType.Text, COLORINDEX.CI_DARKGRAY);
+            CreateColor("Annotated ANTLR4 token", TokenType.Text, Color.FromArgb(0, 0, 127));
+            CreateColor("Comment", TokenType.Comment, COLORINDEX.CI_DARKGREEN);
+            CreateColor("DocComment", TokenType.Comment, COLORINDEX.CI_DARKGREEN);
+            CreateColor("Identifier", TokenType.Identifier, COLORINDEX.CI_SYSPLAINTEXT_FG);
+            CreateColor("Keyword", TokenType.Keyword, COLORINDEX.CI_BLUE);
+            CreateColor("Number", TokenType.Literal, COLORINDEX.CI_MAGENTA);
+            CreateColor("Operator", TokenType.Operator, COLORINDEX.CI_SYSPLAINTEXT_FG);
+            CreateColor("String", TokenType.String, COLORINDEX.CI_MAROON);
         }
     }
 }

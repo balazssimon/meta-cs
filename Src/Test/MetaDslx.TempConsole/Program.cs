@@ -76,6 +76,7 @@ namespace MetaDslx.TempConsole
                     "MetaGeneratorLanguageService.cs",
                     false,
                     false);
+                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelLexer.ag4", "MetaDslx.Languages.Meta");
                 GenerateLanguageService(
                     "Meta",
                     "MetaModel",

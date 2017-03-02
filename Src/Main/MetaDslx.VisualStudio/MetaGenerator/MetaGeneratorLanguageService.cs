@@ -501,8 +501,9 @@ namespace MetaDslx.VisualStudio
 						// Parse entire source as given in req.Text.
 						// Store results in the AuthoringScope object.
 						string fileName = Path.GetFileName(req.FileName);
-						string outputDir = Path.GetDirectoryName(req.FileName);
-						var compilation = new MetaDslx.Languages.MetaGenerator.Compilation.MetaGeneratorCompiler(req.Text, "", null, null, req.FileName);
+						string inputDir = Path.GetDirectoryName(req.FileName);
+						var compilation = new MetaDslx.Languages.MetaGenerator.Compilation.MetaGeneratorCompiler(req.Text, "", inputDir, null, req.FileName);
+                        compilation.Compile();
 						foreach (var diagnostic in compilation.GetDiagnostics())
 						{
                             var diagSpan = diagnostic.Location.GetMappedLineSpan();

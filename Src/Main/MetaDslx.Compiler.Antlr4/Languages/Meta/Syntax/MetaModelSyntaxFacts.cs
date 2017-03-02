@@ -16,12 +16,16 @@ namespace MetaDslx.Languages.Meta.Syntax
 		Whitespace
 	}
 
-    public enum MetaModelLexerMode : int
-    {
-        None = 0,
-    }
+	public enum MetaModelLexerMode : int
+	{
+		None = 0,
+		DEFAULT_MODE = 0,
+		LMultilineComment = 1,
+		DOUBLEQUOTE_VERBATIM_STRING = 2,
+		SINGLEQUOTE_VERBATIM_STRING = 3
+	}
 
-    public class MetaModelSyntaxFacts : SyntaxFacts
+	public class MetaModelSyntaxFacts : SyntaxFacts
 	{
 		public static readonly MetaModelSyntaxFacts Instance = new MetaModelSyntaxFacts();
 
@@ -154,6 +158,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaModelSyntaxKind.LComment:
 				case MetaModelSyntaxKind.LDoubleQuoteVerbatimString:
 				case MetaModelSyntaxKind.LSingleQuoteVerbatimString:
+				case MetaModelSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
+				case MetaModelSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
 					return true;
 				default:
 					return false;
@@ -243,7 +249,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaModelSyntaxKind.TTilde:
 				case MetaModelSyntaxKind.TExclamation:
 				case MetaModelSyntaxKind.TSlash:
-				case MetaModelSyntaxKind.TAsterisk:
 				case MetaModelSyntaxKind.TPercent:
 				case MetaModelSyntaxKind.TLessThanOrEqual:
 				case MetaModelSyntaxKind.TGreaterThanOrEqual:
@@ -260,6 +265,10 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaModelSyntaxKind.THatAssign:
 				case MetaModelSyntaxKind.TBarAssign:
 				case MetaModelSyntaxKind.IUri:
+				case MetaModelSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
+				case MetaModelSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
+				case MetaModelSyntaxKind.LDoubleQuoteVerbatimString:
+				case MetaModelSyntaxKind.LSingleQuoteVerbatimString:
 					return true;
 				default:
 					return false;
@@ -421,8 +430,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return "!";
 				case MetaModelSyntaxKind.TSlash:
 					return "/";
-				case MetaModelSyntaxKind.TAsterisk:
-					return "*";
 				case MetaModelSyntaxKind.TPercent:
 					return "%";
 				case MetaModelSyntaxKind.TLessThanOrEqual:
@@ -455,6 +462,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return "|=";
 				case MetaModelSyntaxKind.IUri:
 					return "Uri";
+				case MetaModelSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
+					return "@\"";
+				case MetaModelSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
+					return "@\'";
+				case MetaModelSyntaxKind.LDoubleQuoteVerbatimString:
+					return "\"";
+				case MetaModelSyntaxKind.LSingleQuoteVerbatimString:
+					return "\'";
 				default:
 					return string.Empty;
 			}
@@ -610,8 +625,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaModelSyntaxKind.TExclamation;
 				case "/":
 					return MetaModelSyntaxKind.TSlash;
-				case "*":
-					return MetaModelSyntaxKind.TAsterisk;
 				case "%":
 					return MetaModelSyntaxKind.TPercent;
 				case "<=":
@@ -644,6 +657,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaModelSyntaxKind.TBarAssign;
 				case "Uri":
 					return MetaModelSyntaxKind.IUri;
+				case "@\"":
+					return MetaModelSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
+				case "@\'":
+					return MetaModelSyntaxKind.SingleQuoteVerbatimStringLiteralStart;
+				case "\"":
+					return MetaModelSyntaxKind.LDoubleQuoteVerbatimString;
+				case "\'":
+					return MetaModelSyntaxKind.LSingleQuoteVerbatimString;
 				default:
 					return MetaModelSyntaxKind.None;
 			}
@@ -936,19 +957,25 @@ namespace MetaDslx.Languages.Meta.Syntax
 			}
 		}
 
-        public MetaModelTokenKind GetModeTokenKind(int rawKind)
-        {
-            return this.GetModeTokenKind((MetaModelTokenKind)rawKind);
-        }
+		public MetaModelTokenKind GetModeTokenKind(int rawKind)
+		{
+			return this.GetModeTokenKind((MetaModelLexerMode)rawKind);
+		}
 
-        public MetaModelTokenKind GetModeTokenKind(MetaModelTokenKind kind)
-        {
-            switch (kind)
-            {
-                default:
-                    return MetaModelTokenKind.None;
-            }
-        }
-    }
+		public MetaModelTokenKind GetModeTokenKind(MetaModelLexerMode kind)
+		{
+			switch(kind)
+			{
+				case MetaModelLexerMode.LMultilineComment:
+					return MetaModelTokenKind.Comment;
+				case MetaModelLexerMode.DOUBLEQUOTE_VERBATIM_STRING:
+					return MetaModelTokenKind.String;
+				case MetaModelLexerMode.SINGLEQUOTE_VERBATIM_STRING:
+					return MetaModelTokenKind.String;
+				default:
+					return MetaModelTokenKind.None;
+			}
+		}
+	}
 }
 

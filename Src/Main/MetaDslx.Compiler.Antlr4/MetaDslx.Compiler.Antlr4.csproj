@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>MetaDslxDevKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr4.Runtime" />
     <Reference Include="System" />
@@ -59,7 +65,9 @@
     <Compile Include="Languages\Antlr4Roslyn\Parser\Antlr4SyntaxParser.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Syntax\Antlr4RoslynSyntaxFacts.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Syntax\Antlr4RoslynSyntaxKind.cs" />
-    <Compile Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.cs">
+      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
+    </Compile>
     <Compile Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.cs">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </Compile>
@@ -154,7 +162,9 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </None>
-    <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.tokens" />
+    <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.tokens">
+      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
+    </None>
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>Antlr4RoslynParser.g4</LastGenOutput>
@@ -217,6 +227,7 @@
       <AutoGen>True</AutoGen>
     </None>
     <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParser.tokens" />
+    <None Include="MetaDslxDevKey.snk" />
     <None Include="Resources\antlr-4.5.3-complete.jar" />
   </ItemGroup>
   <ItemGroup>

@@ -122,7 +122,7 @@ BEGIN_ARGUMENT
 // -------------------------
 // Actions
 
-                   
+                         
 BEGIN_ACTION
    : LBrace -> pushMode (ActionMode)
    ;
@@ -134,19 +134,19 @@ BEGIN_ACTION
 // they would be ambiguous with the keyword vs some other identifier.  OPTIONS,
 // TOKENS, & CHANNELS blocks are handled idiomatically in dedicated lexical modes.
 
-                    
+                          
 OPTIONS
    : 'options' -> pushMode (Options)
    ;
 
 
-                    
+                          
 TOKENS
    : 'tokens' -> pushMode (Tokens)
    ;
 
 
-                    
+                          
 CHANNELS
    : 'channels' -> pushMode (Channels)
    ;
@@ -426,7 +426,7 @@ ARGUMENT_CONTENT
 // literal string representation in the target language. We assume
 // that they are delimited by ' or " and so consume these
 // in their own alts so as not to inadvertantly match {}.
-                   
+                         
 mode ActionMode;
 NESTED_ACTION
    : LBrace -> type (ACTION_CONTENT) , pushMode (ActionMode)
@@ -468,7 +468,7 @@ ACTION_CONTENT
    ;
 
 // -------------------------
-                    
+                          
 mode Options;
 OPT_DOC_COMMENT
 	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
@@ -530,7 +530,7 @@ OPT_WS
    ;
 
 // -------------------------
-                    
+                          
 mode Tokens;
 TOK_DOC_COMMENT
 	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
@@ -577,7 +577,7 @@ TOK_WS
    ;
 
 // -------------------------
-                    
+                          
 mode Channels;
 // currently same as Tokens mode; distinguished by keyword
 CHN_DOC_COMMENT

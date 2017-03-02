@@ -501,7 +501,7 @@ namespace MetaDslx.VisualStudio
 						// Parse entire source as given in req.Text.
 						// Store results in the AuthoringScope object.
 						string fileName = Path.GetFileName(req.FileName);
-						string outputDir = Path.GetDirectoryName(req.FileName);
+						string inputDir = Path.GetDirectoryName(req.FileName);
                         var metaModelReference = MetaDslx.Compiler.MetadataReference.CreateFromModel(MetaDslx.Languages.Meta.Symbols.MetaInstance.Model);
                         var tree = MetaDslx.Languages.Meta.Syntax.MetaModelSyntaxTree.ParseText(req.Text);
                         var compilation = MetaDslx.Languages.Meta.MetaModelCompilation.Create("MetaModel").AddReferences(metaModelReference).AddSyntaxTrees(tree);

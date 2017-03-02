@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
 {
-    using __Hidden_LanguageServiceGenerator_641285699;
-    namespace __Hidden_LanguageServiceGenerator_641285699
+    using __Hidden_LanguageServiceGenerator_1432171573;
+    namespace __Hidden_LanguageServiceGenerator_1432171573
     {
         internal static class __Extensions
         {
@@ -3765,8 +3765,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.AppendLine(false); //532:53
             __out.Append("						string fileName = Path.GetFileName(req.FileName);"); //533:1
             __out.AppendLine(false); //533:56
-            __out.Append("						string outputDir = Path.GetDirectoryName(req.FileName);"); //534:1
-            __out.AppendLine(false); //534:62
+            __out.Append("						string inputDir = Path.GetDirectoryName(req.FileName);"); //534:1
+            __out.AppendLine(false); //534:61
             if (Properties.RoslynCompiler) //535:8
             {
                 bool __tmp366_outputWritten = false;
@@ -4018,7 +4018,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp393_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp394_line = "Compiler(req.Text, \"\", null, null, req.FileName);"; //541:102
+                string __tmp394_line = "Compiler(req.Text, \"\", inputDir, null, req.FileName);"; //541:102
                 if (!string.IsNullOrEmpty(__tmp394_line))
                 {
                     __out.Append(__tmp394_line);
@@ -4027,73 +4027,75 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp389_outputWritten) __out.AppendLine(true);
                 if (__tmp389_outputWritten)
                 {
-                    __out.AppendLine(false); //541:151
+                    __out.AppendLine(false); //541:155
                 }
+                __out.Append("                        compilation.Compile();"); //542:1
+                __out.AppendLine(false); //542:47
             }
-            __out.Append("						foreach (var diagnostic in compilation.GetDiagnostics())"); //543:1
-            __out.AppendLine(false); //543:63
-            __out.Append("						{"); //544:1
-            __out.AppendLine(false); //544:8
-            __out.Append("                            var diagSpan = diagnostic.Location.GetMappedLineSpan();"); //545:1
-            __out.AppendLine(false); //545:84
-            __out.Append("                            TextSpan span = new TextSpan();"); //546:1
-            __out.AppendLine(false); //546:60
-            __out.Append("							span.iStartLine = diagSpan.StartLinePosition.Line;"); //547:1
-            __out.AppendLine(false); //547:58
-            __out.Append("							span.iEndLine = diagSpan.EndLinePosition.Line;"); //548:1
-            __out.AppendLine(false); //548:54
-            __out.Append("							span.iStartIndex = diagSpan.StartLinePosition.Character;"); //549:1
-            __out.AppendLine(false); //549:64
-            __out.Append("							span.iEndIndex = diagSpan.EndLinePosition.Character;"); //550:1
-            __out.AppendLine(false); //550:60
-            __out.Append("							Severity severity = Severity.Error;"); //551:1
-            __out.AppendLine(false); //551:43
-            __out.Append("							switch (diagnostic.Severity)"); //552:1
-            __out.AppendLine(false); //552:36
-            __out.Append("							{"); //553:1
-            __out.AppendLine(false); //553:9
-            __out.Append("								case MetaDslx.Compiler.Diagnostics.DiagnosticSeverity.Error:"); //554:1
-            __out.AppendLine(false); //554:69
-            __out.Append("									severity = Severity.Error;"); //555:1
-            __out.AppendLine(false); //555:36
-            __out.Append("									break;"); //556:1
-            __out.AppendLine(false); //556:16
-            __out.Append("								case MetaDslx.Compiler.Diagnostics.DiagnosticSeverity.Warning:"); //557:1
-            __out.AppendLine(false); //557:71
-            __out.Append("									severity = Severity.Warning;"); //558:1
-            __out.AppendLine(false); //558:38
-            __out.Append("									break;"); //559:1
-            __out.AppendLine(false); //559:16
-            __out.Append("								case MetaDslx.Compiler.Diagnostics.DiagnosticSeverity.Info:"); //560:1
-            __out.AppendLine(false); //560:68
-            __out.Append("									severity = Severity.Hint;"); //561:1
-            __out.AppendLine(false); //561:35
-            __out.Append("									break;"); //562:1
-            __out.AppendLine(false); //562:16
-            __out.Append("							}"); //563:1
-            __out.AppendLine(false); //563:9
-            __out.Append("                            string msg = Compiler.Diagnostics.DiagnosticFormatter.Instance.Format(diagnostic);"); //564:1
-            __out.AppendLine(false); //564:111
-            __out.Append("							req.Sink.AddError(req.FileName, msg, span, severity);"); //565:1
-            __out.AppendLine(false); //565:61
-            __out.Append("						}"); //566:1
-            __out.AppendLine(false); //566:8
-            __out.Append("						break;"); //567:1
-            __out.AppendLine(false); //567:13
-            __out.Append("				}"); //568:1
-            __out.AppendLine(false); //568:6
-            __out.Append("			}"); //569:1
-            __out.AppendLine(false); //569:5
-            __out.Append("			catch(Exception ex)"); //570:1
-            __out.AppendLine(false); //570:23
-            __out.Append("			{"); //571:1
-            __out.AppendLine(false); //571:5
-            __out.Append("				req.Sink.AddError(req.FileName, \"Error while parsing source: \"+ex.ToString(), new TextSpan(), Severity.Error);"); //572:1
-            __out.AppendLine(false); //572:115
-            __out.Append("			}"); //573:1
-            __out.AppendLine(false); //573:5
+            __out.Append("						foreach (var diagnostic in compilation.GetDiagnostics())"); //544:1
+            __out.AppendLine(false); //544:63
+            __out.Append("						{"); //545:1
+            __out.AppendLine(false); //545:8
+            __out.Append("                            var diagSpan = diagnostic.Location.GetMappedLineSpan();"); //546:1
+            __out.AppendLine(false); //546:84
+            __out.Append("                            TextSpan span = new TextSpan();"); //547:1
+            __out.AppendLine(false); //547:60
+            __out.Append("							span.iStartLine = diagSpan.StartLinePosition.Line;"); //548:1
+            __out.AppendLine(false); //548:58
+            __out.Append("							span.iEndLine = diagSpan.EndLinePosition.Line;"); //549:1
+            __out.AppendLine(false); //549:54
+            __out.Append("							span.iStartIndex = diagSpan.StartLinePosition.Character;"); //550:1
+            __out.AppendLine(false); //550:64
+            __out.Append("							span.iEndIndex = diagSpan.EndLinePosition.Character;"); //551:1
+            __out.AppendLine(false); //551:60
+            __out.Append("							Severity severity = Severity.Error;"); //552:1
+            __out.AppendLine(false); //552:43
+            __out.Append("							switch (diagnostic.Severity)"); //553:1
+            __out.AppendLine(false); //553:36
+            __out.Append("							{"); //554:1
+            __out.AppendLine(false); //554:9
+            __out.Append("								case MetaDslx.Compiler.Diagnostics.DiagnosticSeverity.Error:"); //555:1
+            __out.AppendLine(false); //555:69
+            __out.Append("									severity = Severity.Error;"); //556:1
+            __out.AppendLine(false); //556:36
+            __out.Append("									break;"); //557:1
+            __out.AppendLine(false); //557:16
+            __out.Append("								case MetaDslx.Compiler.Diagnostics.DiagnosticSeverity.Warning:"); //558:1
+            __out.AppendLine(false); //558:71
+            __out.Append("									severity = Severity.Warning;"); //559:1
+            __out.AppendLine(false); //559:38
+            __out.Append("									break;"); //560:1
+            __out.AppendLine(false); //560:16
+            __out.Append("								case MetaDslx.Compiler.Diagnostics.DiagnosticSeverity.Info:"); //561:1
+            __out.AppendLine(false); //561:68
+            __out.Append("									severity = Severity.Hint;"); //562:1
+            __out.AppendLine(false); //562:35
+            __out.Append("									break;"); //563:1
+            __out.AppendLine(false); //563:16
+            __out.Append("							}"); //564:1
+            __out.AppendLine(false); //564:9
+            __out.Append("                            string msg = Compiler.Diagnostics.DiagnosticFormatter.Instance.Format(diagnostic);"); //565:1
+            __out.AppendLine(false); //565:111
+            __out.Append("							req.Sink.AddError(req.FileName, msg, span, severity);"); //566:1
+            __out.AppendLine(false); //566:61
+            __out.Append("						}"); //567:1
+            __out.AppendLine(false); //567:8
+            __out.Append("						break;"); //568:1
+            __out.AppendLine(false); //568:13
+            __out.Append("				}"); //569:1
+            __out.AppendLine(false); //569:6
+            __out.Append("			}"); //570:1
+            __out.AppendLine(false); //570:5
+            __out.Append("			catch(Exception ex)"); //571:1
+            __out.AppendLine(false); //571:23
+            __out.Append("			{"); //572:1
+            __out.AppendLine(false); //572:5
+            __out.Append("				req.Sink.AddError(req.FileName, \"Error while parsing source: \"+ex.ToString(), new TextSpan(), Severity.Error);"); //573:1
+            __out.AppendLine(false); //573:115
+            __out.Append("			}"); //574:1
+            __out.AppendLine(false); //574:5
             bool __tmp396_outputWritten = false;
-            string __tmp397_line = "            return new "; //574:1
+            string __tmp397_line = "            return new "; //575:1
             if (!string.IsNullOrEmpty(__tmp397_line))
             {
                 __out.Append(__tmp397_line);
@@ -4116,7 +4118,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp398_last) __out.AppendLine(true);
                 }
             }
-            string __tmp399_line = "LanguageAuthoringScope();"; //574:54
+            string __tmp399_line = "LanguageAuthoringScope();"; //575:54
             if (!string.IsNullOrEmpty(__tmp399_line))
             {
                 __out.Append(__tmp399_line);
@@ -4125,14 +4127,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp396_outputWritten) __out.AppendLine(true);
             if (__tmp396_outputWritten)
             {
-                __out.AppendLine(false); //574:79
+                __out.AppendLine(false); //575:79
             }
-            __out.Append("        }"); //575:1
-            __out.AppendLine(false); //575:10
-            __out.Append("    }"); //576:1
-            __out.AppendLine(false); //576:6
+            __out.Append("        }"); //576:1
+            __out.AppendLine(false); //576:10
+            __out.Append("    }"); //577:1
+            __out.AppendLine(false); //577:6
             bool __tmp401_outputWritten = false;
-            string __tmp402_line = "	public class "; //577:1
+            string __tmp402_line = "	public class "; //578:1
             if (!string.IsNullOrEmpty(__tmp402_line))
             {
                 __out.Append(__tmp402_line);
@@ -4155,7 +4157,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp403_last) __out.AppendLine(true);
                 }
             }
-            string __tmp404_line = "LanguageSource : Microsoft.VisualStudio.Package.Source"; //577:45
+            string __tmp404_line = "LanguageSource : Microsoft.VisualStudio.Package.Source"; //578:45
             if (!string.IsNullOrEmpty(__tmp404_line))
             {
                 __out.Append(__tmp404_line);
@@ -4164,12 +4166,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp401_outputWritten) __out.AppendLine(true);
             if (__tmp401_outputWritten)
             {
-                __out.AppendLine(false); //577:99
+                __out.AppendLine(false); //578:99
             }
-            __out.Append("    {"); //578:1
-            __out.AppendLine(false); //578:6
+            __out.Append("    {"); //579:1
+            __out.AppendLine(false); //579:6
             bool __tmp406_outputWritten = false;
-            string __tmp407_line = "        public "; //579:1
+            string __tmp407_line = "        public "; //580:1
             if (!string.IsNullOrEmpty(__tmp407_line))
             {
                 __out.Append(__tmp407_line);
@@ -4192,7 +4194,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp408_last) __out.AppendLine(true);
                 }
             }
-            string __tmp409_line = "LanguageSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)"; //579:46
+            string __tmp409_line = "LanguageSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer)"; //580:46
             if (!string.IsNullOrEmpty(__tmp409_line))
             {
                 __out.Append(__tmp409_line);
@@ -4201,18 +4203,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp406_outputWritten) __out.AppendLine(true);
             if (__tmp406_outputWritten)
             {
-                __out.AppendLine(false); //579:130
+                __out.AppendLine(false); //580:130
             }
-            __out.Append("            : base(service, textLines, colorizer)"); //580:1
-            __out.AppendLine(false); //580:50
-            __out.Append("        {"); //581:1
-            __out.AppendLine(false); //581:10
-            __out.Append("        }"); //582:1
+            __out.Append("            : base(service, textLines, colorizer)"); //581:1
+            __out.AppendLine(false); //581:50
+            __out.Append("        {"); //582:1
             __out.AppendLine(false); //582:10
-            __out.Append("    }"); //583:1
-            __out.AppendLine(false); //583:6
+            __out.Append("        }"); //583:1
+            __out.AppendLine(false); //583:10
+            __out.Append("    }"); //584:1
+            __out.AppendLine(false); //584:6
             bool __tmp411_outputWritten = false;
-            string __tmp412_line = "    public class "; //584:1
+            string __tmp412_line = "    public class "; //585:1
             if (!string.IsNullOrEmpty(__tmp412_line))
             {
                 __out.Append(__tmp412_line);
@@ -4235,7 +4237,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp413_last) __out.AppendLine(true);
                 }
             }
-            string __tmp414_line = "LanguageViewFilter : ViewFilter"; //584:48
+            string __tmp414_line = "LanguageViewFilter : ViewFilter"; //585:48
             if (!string.IsNullOrEmpty(__tmp414_line))
             {
                 __out.Append(__tmp414_line);
@@ -4244,12 +4246,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp411_outputWritten) __out.AppendLine(true);
             if (__tmp411_outputWritten)
             {
-                __out.AppendLine(false); //584:79
+                __out.AppendLine(false); //585:79
             }
-            __out.Append("    {"); //585:1
-            __out.AppendLine(false); //585:6
+            __out.Append("    {"); //586:1
+            __out.AppendLine(false); //586:6
             bool __tmp416_outputWritten = false;
-            string __tmp417_line = "        public "; //586:1
+            string __tmp417_line = "        public "; //587:1
             if (!string.IsNullOrEmpty(__tmp417_line))
             {
                 __out.Append(__tmp417_line);
@@ -4272,7 +4274,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp418_last) __out.AppendLine(true);
                 }
             }
-            string __tmp419_line = "LanguageViewFilter(CodeWindowManager mgr, IVsTextView view)"; //586:46
+            string __tmp419_line = "LanguageViewFilter(CodeWindowManager mgr, IVsTextView view)"; //587:46
             if (!string.IsNullOrEmpty(__tmp419_line))
             {
                 __out.Append(__tmp419_line);
@@ -4281,58 +4283,58 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp416_outputWritten) __out.AppendLine(true);
             if (__tmp416_outputWritten)
             {
-                __out.AppendLine(false); //586:105
+                __out.AppendLine(false); //587:105
             }
-            __out.Append("            : base(mgr, view)"); //587:1
-            __out.AppendLine(false); //587:30
-            __out.Append("        {"); //588:1
-            __out.AppendLine(false); //588:10
-            __out.Append("        }"); //589:1
+            __out.Append("            : base(mgr, view)"); //588:1
+            __out.AppendLine(false); //588:30
+            __out.Append("        {"); //589:1
             __out.AppendLine(false); //589:10
-            __out.Append("        public override void HandlePostExec(ref Guid guidCmdGroup, uint nCmdId, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut, bool bufferWasChanged)"); //590:1
-            __out.AppendLine(false); //590:150
-            __out.Append("        {"); //591:1
-            __out.AppendLine(false); //591:10
-            __out.Append("            if (guidCmdGroup == typeof(VsCommands2K).GUID)"); //592:1
-            __out.AppendLine(false); //592:59
-            __out.Append("            {"); //593:1
-            __out.AppendLine(false); //593:14
-            __out.Append("                VsCommands2K cmd = (VsCommands2K)nCmdId;"); //594:1
-            __out.AppendLine(false); //594:57
-            __out.Append("                switch (cmd)"); //595:1
-            __out.AppendLine(false); //595:29
-            __out.Append("                {"); //596:1
-            __out.AppendLine(false); //596:18
-            __out.Append("                    case VsCommands2K.UP:"); //597:1
-            __out.AppendLine(false); //597:42
-            __out.Append("                    case VsCommands2K.UP_EXT:"); //598:1
-            __out.AppendLine(false); //598:46
-            __out.Append("                    case VsCommands2K.UP_EXT_COL:"); //599:1
-            __out.AppendLine(false); //599:50
-            __out.Append("                    case VsCommands2K.DOWN:"); //600:1
-            __out.AppendLine(false); //600:44
-            __out.Append("                    case VsCommands2K.DOWN_EXT:"); //601:1
-            __out.AppendLine(false); //601:48
-            __out.Append("                    case VsCommands2K.DOWN_EXT_COL:"); //602:1
-            __out.AppendLine(false); //602:52
-            __out.Append("                        Source.OnCommand(TextView, cmd, '"); //603:1
-            __out.Append("\\"); //603:58
-            __out.Append("0');"); //603:59
-            __out.AppendLine(false); //603:63
-            __out.Append("                        return;"); //604:1
-            __out.AppendLine(false); //604:32
-            __out.Append("                }"); //605:1
-            __out.AppendLine(false); //605:18
-            __out.Append("            }"); //606:1
-            __out.AppendLine(false); //606:14
-            __out.Append("            base.HandlePostExec(ref guidCmdGroup, nCmdId, nCmdexecopt, pvaIn, pvaOut, bufferWasChanged);"); //607:1
-            __out.AppendLine(false); //607:105
-            __out.Append("        }"); //608:1
-            __out.AppendLine(false); //608:10
-            __out.Append("    }"); //609:1
-            __out.AppendLine(false); //609:6
-            __out.Append("}"); //610:1
-            __out.AppendLine(false); //610:2
+            __out.Append("        }"); //590:1
+            __out.AppendLine(false); //590:10
+            __out.Append("        public override void HandlePostExec(ref Guid guidCmdGroup, uint nCmdId, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut, bool bufferWasChanged)"); //591:1
+            __out.AppendLine(false); //591:150
+            __out.Append("        {"); //592:1
+            __out.AppendLine(false); //592:10
+            __out.Append("            if (guidCmdGroup == typeof(VsCommands2K).GUID)"); //593:1
+            __out.AppendLine(false); //593:59
+            __out.Append("            {"); //594:1
+            __out.AppendLine(false); //594:14
+            __out.Append("                VsCommands2K cmd = (VsCommands2K)nCmdId;"); //595:1
+            __out.AppendLine(false); //595:57
+            __out.Append("                switch (cmd)"); //596:1
+            __out.AppendLine(false); //596:29
+            __out.Append("                {"); //597:1
+            __out.AppendLine(false); //597:18
+            __out.Append("                    case VsCommands2K.UP:"); //598:1
+            __out.AppendLine(false); //598:42
+            __out.Append("                    case VsCommands2K.UP_EXT:"); //599:1
+            __out.AppendLine(false); //599:46
+            __out.Append("                    case VsCommands2K.UP_EXT_COL:"); //600:1
+            __out.AppendLine(false); //600:50
+            __out.Append("                    case VsCommands2K.DOWN:"); //601:1
+            __out.AppendLine(false); //601:44
+            __out.Append("                    case VsCommands2K.DOWN_EXT:"); //602:1
+            __out.AppendLine(false); //602:48
+            __out.Append("                    case VsCommands2K.DOWN_EXT_COL:"); //603:1
+            __out.AppendLine(false); //603:52
+            __out.Append("                        Source.OnCommand(TextView, cmd, '"); //604:1
+            __out.Append("\\"); //604:58
+            __out.Append("0');"); //604:59
+            __out.AppendLine(false); //604:63
+            __out.Append("                        return;"); //605:1
+            __out.AppendLine(false); //605:32
+            __out.Append("                }"); //606:1
+            __out.AppendLine(false); //606:18
+            __out.Append("            }"); //607:1
+            __out.AppendLine(false); //607:14
+            __out.Append("            base.HandlePostExec(ref guidCmdGroup, nCmdId, nCmdexecopt, pvaIn, pvaOut, bufferWasChanged);"); //608:1
+            __out.AppendLine(false); //608:105
+            __out.Append("        }"); //609:1
+            __out.AppendLine(false); //609:10
+            __out.Append("    }"); //610:1
+            __out.AppendLine(false); //610:6
+            __out.Append("}"); //611:1
+            __out.AppendLine(false); //611:2
             return __out.ToString();
         }
 

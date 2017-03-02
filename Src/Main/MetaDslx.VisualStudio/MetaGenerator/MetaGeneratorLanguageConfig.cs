@@ -21,21 +21,15 @@ namespace MetaDslx.VisualStudio
 
         public MetaGeneratorLanguageConfig()
         {
-            //CreateColor("Unknown", TokenType.Text, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("Text", TokenType.Text, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("Keyword", TokenType.Keyword, COLORINDEX.CI_BLUE);
-            CreateColor("Identifier", TokenType.Identifier, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("String", TokenType.String, COLORINDEX.CI_MAROON);
-            CreateColor("Literal", TokenType.Literal, COLORINDEX.CI_MAGENTA);
-            CreateColor("Operator", TokenType.Operator, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("Delimiter", TokenType.Delimiter, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("WhiteSpace", TokenType.WhiteSpace, COLORINDEX.CI_SYSPLAINTEXT_FG);
-            CreateColor("LineComment", TokenType.LineComment, COLORINDEX.CI_DARKGREEN);
+            CreateColor("None", TokenType.Text, COLORINDEX.CI_SYSPLAINTEXT_FG);
             CreateColor("Comment", TokenType.Comment, COLORINDEX.CI_DARKGREEN);
-            CreateColor("DocComment", TokenType.Comment, COLORINDEX.CI_DARKGREEN);
+            CreateColor("Identifier", TokenType.Identifier, COLORINDEX.CI_SYSPLAINTEXT_FG);
+            CreateColor("Keyword", TokenType.Keyword, COLORINDEX.CI_BLUE);
             CreateColor("Number", TokenType.Literal, COLORINDEX.CI_MAGENTA);
-            CreateColor("MetaGenerator template output", TokenType.Text, COLORINDEX.CI_DARKGRAY);
+            CreateColor("Operator", TokenType.Operator, COLORINDEX.CI_SYSPLAINTEXT_FG);
+            CreateColor("String", TokenType.String, COLORINDEX.CI_MAROON);
             CreateColor("MetaGenerator template control", TokenType.Text, COLORINDEX.CI_DARKGREEN);
+            CreateColor("MetaGenerator template output", TokenType.Text, COLORINDEX.CI_DARKGRAY);
         }
     }
 

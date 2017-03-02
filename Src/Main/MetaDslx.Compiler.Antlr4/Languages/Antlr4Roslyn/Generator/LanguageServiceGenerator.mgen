@@ -531,14 +531,15 @@ namespace [Properties.LanguageServiceNamespace]
 						// Parse entire source as given in req.Text.
 						// Store results in the AuthoringScope object.
 						string fileName = Path.GetFileName(req.FileName);
-						string outputDir = Path.GetDirectoryName(req.FileName);
+						string inputDir = Path.GetDirectoryName(req.FileName);
 						[if (Properties.RoslynCompiler)]
                         var metaModelReference = MetaDslx.Compiler.MetadataReference.CreateFromModel([Properties.LanguageNamespace].Symbols.[Properties.LanguageName]Instance.Model);
                         var tree = [Properties.LanguageNamespace].Syntax.[Properties.LanguageClassName]SyntaxTree.ParseText(req.Text);
                         var compilation = [Properties.LanguageNamespace].[Properties.LanguageClassName]Compilation.Create("[Properties.LanguageClassName]").AddReferences(metaModelReference).AddSyntaxTrees(tree);
                         var immutableModel = compilation.Model;
 						[else]
-						var compilation = new [Properties.LanguageNamespace].Compilation.[Properties.LanguageClassName]Compiler(req.Text, "", null, null, req.FileName);
+						var compilation = new [Properties.LanguageNamespace].Compilation.[Properties.LanguageClassName]Compiler(req.Text, "", inputDir, null, req.FileName);
+                        compilation.Compile();
 						[end if]
 						foreach (var diagnostic in compilation.GetDiagnostics())
 						{

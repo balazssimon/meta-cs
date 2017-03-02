@@ -262,6 +262,7 @@
       <Generator>MetaGenerator</Generator>
       <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
     </None>
+    <None Include="MetaDslxDevKey.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

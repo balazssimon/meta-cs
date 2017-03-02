@@ -11,11 +11,11 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 		Comment,
 		Identifier,
 		Keyword,
-		MetaGeneratorTemplateControl,
-		MetaGeneratorTemplateOutput,
 		Number,
 		Operator,
-		String
+		String,
+		TemplateControl,
+		TemplateOutput
 	}
 
 	public enum MetaGeneratorLexerMode : int
@@ -932,12 +932,12 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
-		public bool IsMetaGeneratorTemplateControl(int rawKind)
+		public bool IsTemplateControl(int rawKind)
 		{
-			return this.IsMetaGeneratorTemplateControl((MetaGeneratorSyntaxKind)rawKind);
+			return this.IsTemplateControl((MetaGeneratorSyntaxKind)rawKind);
 		}
 
-		public bool IsMetaGeneratorTemplateControl(MetaGeneratorSyntaxKind kind)
+		public bool IsTemplateControl(MetaGeneratorSyntaxKind kind)
 		{
 			switch(kind)
 			{
@@ -951,12 +951,12 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
-		public bool IsMetaGeneratorTemplateOutput(int rawKind)
+		public bool IsTemplateOutput(int rawKind)
 		{
-			return this.IsMetaGeneratorTemplateOutput((MetaGeneratorSyntaxKind)rawKind);
+			return this.IsTemplateOutput((MetaGeneratorSyntaxKind)rawKind);
 		}
 
-		public bool IsMetaGeneratorTemplateOutput(MetaGeneratorSyntaxKind kind)
+		public bool IsTemplateOutput(MetaGeneratorSyntaxKind kind)
 		{
 			switch(kind)
 			{
@@ -1109,17 +1109,17 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.KEndTemplate:
 					return MetaGeneratorTokenKind.Keyword;
 				case MetaGeneratorSyntaxKind.TemplateLineControl:
-					return MetaGeneratorTokenKind.MetaGeneratorTemplateControl;
+					return MetaGeneratorTokenKind.TemplateControl;
 				case MetaGeneratorSyntaxKind.TemplateOutput:
-					return MetaGeneratorTokenKind.MetaGeneratorTemplateOutput;
+					return MetaGeneratorTokenKind.TemplateOutput;
 				case MetaGeneratorSyntaxKind.TemplateCrLf:
-					return MetaGeneratorTokenKind.MetaGeneratorTemplateOutput;
+					return MetaGeneratorTokenKind.TemplateOutput;
 				case MetaGeneratorSyntaxKind.TemplateLineBreak:
-					return MetaGeneratorTokenKind.MetaGeneratorTemplateOutput;
+					return MetaGeneratorTokenKind.TemplateOutput;
 				case MetaGeneratorSyntaxKind.TemplateStatementStart:
-					return MetaGeneratorTokenKind.MetaGeneratorTemplateControl;
+					return MetaGeneratorTokenKind.TemplateControl;
 				case MetaGeneratorSyntaxKind.TemplateStatementEnd:
-					return MetaGeneratorTokenKind.MetaGeneratorTemplateControl;
+					return MetaGeneratorTokenKind.TemplateControl;
 				default:
 					return MetaGeneratorTokenKind.None;
 			}
@@ -1139,7 +1139,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorLexerMode.DOUBLEQUOTE_VERBATIM_STRING:
 					return MetaGeneratorTokenKind.String;
 				case MetaGeneratorLexerMode.TEMPLATE_OUTPUT:
-					return MetaGeneratorTokenKind.MetaGeneratorTemplateOutput;
+					return MetaGeneratorTokenKind.TemplateOutput;
 				case MetaGeneratorLexerMode.TEMPLATE_STATEMENT_COMMENT:
 					return MetaGeneratorTokenKind.Comment;
 				default:

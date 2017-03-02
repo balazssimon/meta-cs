@@ -124,11 +124,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.remover = new Antlr4AnnotationRemover(this.CommonTokenStream);
             this.remover.Visit(this.ParseTree);
             this.Antlr4Source = remover.GetText();
+            this.GenerateAntlr4();
         }
 
         protected override void DoGenerate()
         {
-            this.GenerateAntlr4();
             this.GenerateLexer();
             this.GenerateParser();
         }
@@ -225,7 +225,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                             {
                                 span = new LinePositionSpan(new LinePosition(lineIndex, colIndex + 1), new LinePosition(lineIndex, colIndex + 1));
                             }
-                            this.AddDiagnostic(errorCode, line);
+                            this.AddDiagnostic(span, errorCode, line);
                         }
                     }
                 }
@@ -242,10 +242,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 string tmpDir = this.GetTemporaryDirectory();
                 try
                 {
-                    foreach (var import in this.Grammar.ImportedGrammars)
+                    foreach (var import in this.Grammar.Imports)
                     {
-                        string importFile = Path.Combine(this.InputDirectory, import + ".g4");
-                        string tmpImportFile = Path.Combine(tmpDir, import + ".g4");
+                        string importFile = Path.Combine(this.InputDirectory, import);
+                        string tmpImportFile = Path.Combine(tmpDir, import);
                         if (File.Exists(importFile))
                         {
                             File.Copy(importFile, tmpImportFile, true);
@@ -282,34 +282,26 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         {
                             // nop
                         }
-                        while (!proc.StandardError.EndOfStream)
-                        {
-                            string line = proc.StandardError.ReadLine();
-                            this.ProcessAntlr4ErrorLine(line);
-                        }
                     }
-                    if (terminated)
+                    while (!proc.StandardError.EndOfStream)
                     {
-                        while (!proc.StandardError.EndOfStream)
+                        string line = proc.StandardError.ReadLine();
+                        this.ProcessAntlr4ErrorLine(line);
+                    }
+                    this.HasAntlr4Errors = this.DiagnosticBag.HasAnyErrors();
+                    if (terminated && this.GenerateOutput && !this.HasAntlr4Errors)
+                    {
+                        this.ReadTokens(Path.Combine(tmpDir, bareFileName + ".tokens"));
+                        if (this.GenerateOutput)
                         {
-                            string line = proc.StandardError.ReadLine();
-                            this.ProcessAntlr4ErrorLine(line);
-                        }
-                        this.HasAntlr4Errors = this.DiagnosticBag.HasAnyErrors();
-                        if (!this.HasAntlr4Errors)
-                        {
-                            this.ReadTokens(Path.Combine(tmpDir, bareFileName + ".tokens"));
-                            if (this.GenerateOutput)
+                            this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + ".cs");
+                            this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + ".tokens");
+                            if (this.IsParser)
                             {
-                                this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + ".cs");
-                                this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + ".tokens");
-                                if (this.IsParser)
-                                {
-                                    this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "BaseVisitor.cs");
-                                    this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "BaseListener.cs");
-                                    this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "Visitor.cs");
-                                    this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "Listener.cs");
-                                }
+                                this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "BaseVisitor.cs");
+                                this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "BaseListener.cs");
+                                this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "Visitor.cs");
+                                this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "Listener.cs");
                             }
                         }
                     }
@@ -420,14 +412,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             if (this.OutputDirectory == null) return;
 
-            if (this.GenerateLanguageService)
+            if (this.GenerateLanguageService || this.GenerateOutput)
             {
                 string outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxFacts);
                 }
-                outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs");
+            }
+            if (this.GenerateLanguageService)
+            {
+                string outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxKind);
@@ -1033,6 +1028,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (optionName == "tokenVocab")
             {
                 this.lexerName = optionValue;
+                string import = optionValue;
+                this.Grammar.Imports.Add(import + ".tokens");
             }
             return base.VisitOption(context);
         }
@@ -1043,12 +1040,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (identifiers.Length >= 2)
             {
                 string import = identifiers[1].GetText();
-                this.Grammar.ImportedGrammars.Add(import);
+                this.Grammar.Imports.Add(import + ".g4");
             }
             else if (identifiers.Length >= 1)
             {
                 string import = identifiers[0].GetText();
-                this.Grammar.ImportedGrammars.Add(import);
+                this.Grammar.Imports.Add(import + ".g4");
             }
             return base.VisitDelegateGrammar(context);
         }
@@ -1710,7 +1707,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public Antlr4Grammar()
         {
             this.CustomAnnotations = new List<MetaCompilerAnnotation>();
-            this.ImportedGrammars = new HashSet<string>();
+            this.Imports = new HashSet<string>();
             this.ParserRuleElemUses = new HashSet<string>();
             this.ParserRules = new List<Antlr4ParserRule>();
             this.LexerRules = new List<Antlr4LexerRule>();
@@ -1722,7 +1719,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         }
         public string Name { get; set; }
         public List<MetaCompilerAnnotation> CustomAnnotations { get; private set; }
-        public HashSet<string> ImportedGrammars { get; private set; }
+        public HashSet<string> Imports { get; private set; }
         public HashSet<string> ParserRuleElemUses { get; private set; }
         public Dictionary<string, List<Antlr4LexerRule>> LexerTokenKinds { get; private set; }
         public int FirstRuleKind { get; set; }
@@ -1891,7 +1888,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             foreach (var token in tokens.GetTokens())
             {
-                if (token.Line == line && token.Column == column) return new LinePositionSpan(new LinePosition(token.Line, token.Column), new LinePosition(token.Line, token.Column+token.StopIndex-token.StartIndex));
+                if (token.Line == line && token.Column == column) return new LinePositionSpan(new LinePosition(token.Line-1, token.Column), new LinePosition(token.Line-1, token.Column+token.StopIndex-token.StartIndex+1));
             }
             return LinePositionSpan.Zero;
         }

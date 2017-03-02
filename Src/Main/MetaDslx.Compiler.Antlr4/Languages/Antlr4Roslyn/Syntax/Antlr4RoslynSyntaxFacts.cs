@@ -8,7 +8,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 	public enum Antlr4RoslynTokenKind : int
 	{
 		None = 0,
-		Action,
+		Antlr4Action,
+		Antlr4Options,
 		Antlr4Rule,
 		Antlr4Token,
 		Comment,
@@ -17,7 +18,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 		Keyword,
 		Number,
 		Operator,
-		Options,
 		String
 	}
 
@@ -391,12 +391,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsAction(int rawKind)
+		public bool IsAntlr4Action(int rawKind)
 		{
-			return this.IsAction((Antlr4RoslynSyntaxKind)rawKind);
+			return this.IsAntlr4Action((Antlr4RoslynSyntaxKind)rawKind);
 		}
 
-		public bool IsAction(Antlr4RoslynSyntaxKind kind)
+		public bool IsAntlr4Action(Antlr4RoslynSyntaxKind kind)
 		{
 			switch(kind)
 			{
@@ -406,12 +406,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsOptions(int rawKind)
+		public bool IsAntlr4Options(int rawKind)
 		{
-			return this.IsOptions((Antlr4RoslynSyntaxKind)rawKind);
+			return this.IsAntlr4Options((Antlr4RoslynSyntaxKind)rawKind);
 		}
 
-		public bool IsOptions(Antlr4RoslynSyntaxKind kind)
+		public bool IsAntlr4Options(Antlr4RoslynSyntaxKind kind)
 		{
 			switch(kind)
 			{
@@ -509,13 +509,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 				case Antlr4RoslynSyntaxKind.UNTERMINATED_STRING_LITERAL:
 					return Antlr4RoslynTokenKind.String;
 				case Antlr4RoslynSyntaxKind.BEGIN_ACTION:
-					return Antlr4RoslynTokenKind.Action;
+					return Antlr4RoslynTokenKind.Antlr4Action;
 				case Antlr4RoslynSyntaxKind.OPTIONS:
-					return Antlr4RoslynTokenKind.Options;
+					return Antlr4RoslynTokenKind.Antlr4Options;
 				case Antlr4RoslynSyntaxKind.TOKENS:
-					return Antlr4RoslynTokenKind.Options;
+					return Antlr4RoslynTokenKind.Antlr4Options;
 				case Antlr4RoslynSyntaxKind.CHANNELS:
-					return Antlr4RoslynTokenKind.Options;
+					return Antlr4RoslynTokenKind.Antlr4Options;
 				case Antlr4RoslynSyntaxKind.IMPORT:
 				case Antlr4RoslynSyntaxKind.FRAGMENT:
 				case Antlr4RoslynSyntaxKind.LEXER:
@@ -555,13 +555,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 			switch(kind)
 			{
 				case Antlr4RoslynLexerMode.ActionMode:
-					return Antlr4RoslynTokenKind.Action;
+					return Antlr4RoslynTokenKind.Antlr4Action;
 				case Antlr4RoslynLexerMode.Options:
-					return Antlr4RoslynTokenKind.Options;
+					return Antlr4RoslynTokenKind.Antlr4Options;
 				case Antlr4RoslynLexerMode.Tokens:
-					return Antlr4RoslynTokenKind.Options;
+					return Antlr4RoslynTokenKind.Antlr4Options;
 				case Antlr4RoslynLexerMode.Channels:
-					return Antlr4RoslynTokenKind.Options;
+					return Antlr4RoslynTokenKind.Antlr4Options;
 				case Antlr4RoslynLexerMode.DOC_COMMENT_MODE:
 					return Antlr4RoslynTokenKind.DocComment;
 				case Antlr4RoslynLexerMode.BLOCK_COMMENT_MODE:
