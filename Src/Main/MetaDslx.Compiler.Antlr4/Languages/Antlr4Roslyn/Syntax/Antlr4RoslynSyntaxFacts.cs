@@ -12,12 +12,29 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 		Antlr4Rule,
 		Antlr4Token,
 		Comment,
+		DocComment,
 		Identifier,
 		Keyword,
 		Number,
 		Operator,
 		Options,
 		String
+	}
+
+	public enum Antlr4RoslynLexerMode : int
+	{
+		None = 0,
+		DEFAULT_MODE = 0,
+		Argument = 1,
+		ActionMode = 2,
+		Options = 3,
+		Tokens = 4,
+		Channels = 5,
+		LexerCharSet = 6,
+		DOC_COMMENT_MODE = 7,
+		BLOCK_COMMENT_MODE = 8,
+		ACTION_DOC_COMMENT_MODE = 9,
+		ACTION_BLOCK_COMMENT_MODE = 10
 	}
 
 	public class Antlr4RoslynSyntaxFacts : SyntaxFacts
@@ -454,6 +471,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
+		public bool IsDocComment(int rawKind)
+		{
+			return this.IsDocComment((Antlr4RoslynSyntaxKind)rawKind);
+		}
+
+		public bool IsDocComment(Antlr4RoslynSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				default:
+					return false;
+			}
+		}
 
 		public Antlr4RoslynTokenKind GetTokenKind(int rawKind)
 		{
@@ -509,6 +539,36 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 				case Antlr4RoslynSyntaxKind.DOC_COMMENT:
 					return Antlr4RoslynTokenKind.Comment;
 				case Antlr4RoslynSyntaxKind.BLOCK_COMMENT:
+					return Antlr4RoslynTokenKind.Comment;
+				default:
+					return Antlr4RoslynTokenKind.None;
+			}
+		}
+
+		public Antlr4RoslynTokenKind GetModeTokenKind(int rawKind)
+		{
+			return this.GetModeTokenKind((Antlr4RoslynLexerMode)rawKind);
+		}
+
+		public Antlr4RoslynTokenKind GetModeTokenKind(Antlr4RoslynLexerMode kind)
+		{
+			switch(kind)
+			{
+				case Antlr4RoslynLexerMode.ActionMode:
+					return Antlr4RoslynTokenKind.Action;
+				case Antlr4RoslynLexerMode.Options:
+					return Antlr4RoslynTokenKind.Options;
+				case Antlr4RoslynLexerMode.Tokens:
+					return Antlr4RoslynTokenKind.Options;
+				case Antlr4RoslynLexerMode.Channels:
+					return Antlr4RoslynTokenKind.Options;
+				case Antlr4RoslynLexerMode.DOC_COMMENT_MODE:
+					return Antlr4RoslynTokenKind.DocComment;
+				case Antlr4RoslynLexerMode.BLOCK_COMMENT_MODE:
+					return Antlr4RoslynTokenKind.Comment;
+				case Antlr4RoslynLexerMode.ACTION_DOC_COMMENT_MODE:
+					return Antlr4RoslynTokenKind.DocComment;
+				case Antlr4RoslynLexerMode.ACTION_BLOCK_COMMENT_MODE:
 					return Antlr4RoslynTokenKind.Comment;
 				default:
 					return Antlr4RoslynTokenKind.None;

@@ -98,6 +98,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             return rule.Name.ToPascalCase();
         }
 
+        public static string PlainName(this Antlr4LexerMode mode)
+        {
+            return mode.Name.ToPascalCase();
+        }
+
         public static bool HasOptionalElements(this Antlr4ParserRule rule)
         {
             return rule.Elements.Any(e => e.IsOptional || (e.IsToken && e.IsFixedToken && !e.IsList));

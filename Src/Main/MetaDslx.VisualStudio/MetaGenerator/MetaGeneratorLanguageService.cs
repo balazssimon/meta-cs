@@ -299,6 +299,10 @@ namespace MetaDslx.VisualStudio
                 this.LoadState(state, this.lexer);
                 IToken token = this.lexer.NextToken();
                 int tokenType = (int)this.syntaxFacts.GetTokenKind(token.Type);
+                if (tokenType == 0)
+                {
+                    tokenType = (int)this.syntaxFacts.GetModeTokenKind(this.lexer.CurrentMode);
+                }
                 if (tokenType >= 0 && tokenType < MetaGeneratorLanguageConfig.Instance.ColorableItems.Count)
                 {
                     MetaGeneratorLanguageColorableItem colorItem = MetaGeneratorLanguageConfig.Instance.ColorableItems[tokenType];

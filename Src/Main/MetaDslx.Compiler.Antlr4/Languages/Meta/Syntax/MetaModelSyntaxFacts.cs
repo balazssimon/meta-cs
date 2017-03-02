@@ -16,7 +16,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 		Whitespace
 	}
 
-	public class MetaModelSyntaxFacts : SyntaxFacts
+    public enum MetaModelLexerMode : int
+    {
+        None = 0,
+    }
+
+    public class MetaModelSyntaxFacts : SyntaxFacts
 	{
 		public static readonly MetaModelSyntaxFacts Instance = new MetaModelSyntaxFacts();
 
@@ -930,6 +935,20 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaModelTokenKind.None;
 			}
 		}
-	}
+
+        public MetaModelTokenKind GetModeTokenKind(int rawKind)
+        {
+            return this.GetModeTokenKind((MetaModelTokenKind)rawKind);
+        }
+
+        public MetaModelTokenKind GetModeTokenKind(MetaModelTokenKind kind)
+        {
+            switch (kind)
+            {
+                default:
+                    return MetaModelTokenKind.None;
+            }
+        }
+    }
 }
 

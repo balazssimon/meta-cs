@@ -27,6 +27,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public Antlr4Grammar Grammar { get; private set; }
         public string LanguageName { get; private set; }
 
+        public string SyntaxDirectory { get; private set; }
+        public string InternalSyntaxDirectory { get; private set; }
+
         public bool IsLexer { get; private set; }
         public bool IsParser { get; private set; }
         public bool GenerateCompiler { get; private set; }
@@ -62,6 +65,25 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (languageName.EndsWith("Parser")) languageName = languageName.Substring(0, languageName.Length - 6);
             else if (languageName.EndsWith("Lexer")) languageName = languageName.Substring(0, languageName.Length - 5);
             this.LanguageName = languageName;
+
+            if (this.OutputDirectory != null)
+            {
+                string directory = this.OutputDirectory;
+                DirectoryInfo info = new DirectoryInfo(directory);
+                if (info.Name == "InternalSyntax")
+                {
+                    info = info.Parent;
+                }
+                if (info.Name == "Syntax")
+                {
+                    info = info.Parent;
+                }
+                directory = info.FullName;
+
+                this.SyntaxDirectory = Path.Combine(directory, "Syntax");
+                this.InternalSyntaxDirectory = Path.Combine(this.SyntaxDirectory, "InternalSyntax");
+                Directory.CreateDirectory(Path.Combine(directory, this.InternalSyntaxDirectory));
+            }
         }
 
         protected override Antlr4RoslynLexer CreateLexer(AntlrInputStream stream)
@@ -139,11 +161,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return tempDirectory;
         }
 
-        private bool CopyToOutput(string tmpDir, string fileName)
+        private bool CopyToOutput(string sourceDir, string targetDir, string fileName)
         {
             if (this.OutputDirectory == null) return false;
-            string tmpFile = Path.Combine(tmpDir, fileName);
-            string outputFile = Path.Combine(this.OutputDirectory, fileName);
+            string tmpFile = Path.Combine(sourceDir, fileName);
+            string outputFile = Path.Combine(targetDir, fileName);
             if (File.Exists(tmpFile))
             {
                 File.Copy(tmpFile, outputFile, true);
@@ -236,11 +258,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     proc.StartInfo.RedirectStandardOutput = true;
                     proc.StartInfo.RedirectStandardError = true;
                     proc.StartInfo.CreateNoWindow = true;
-                    proc.StartInfo.WorkingDirectory = this.OutputDirectory;
+                    proc.StartInfo.WorkingDirectory = this.InputDirectory;
                     proc.StartInfo.FileName = "java";
                     if (this.DefaultNamespace != null)
                     {
-                        proc.StartInfo.Arguments = "-jar \"" + this.Antlr4Jar + "\" -Dlanguage=CSharp \"" + antlr4File + "\" -lib . -listener -visitor -package " + this.DefaultNamespace + " -o \"" + tmpDir + "\"";
+                        proc.StartInfo.Arguments = "-jar \"" + this.Antlr4Jar + "\" -Dlanguage=CSharp \"" + antlr4File + "\" -lib . -listener -visitor -package " + this.DefaultNamespace + ".Syntax.InternalSyntax -o \"" + tmpDir + "\"";
                     }
                     else
                     {
@@ -279,14 +301,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                             this.ReadTokens(Path.Combine(tmpDir, bareFileName + ".tokens"));
                             if (this.GenerateOutput)
                             {
-                                this.CopyToOutput(tmpDir, bareFileName + ".cs");
-                                this.CopyToOutput(tmpDir, bareFileName + ".tokens");
+                                this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + ".cs");
+                                this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + ".tokens");
                                 if (this.IsParser)
                                 {
-                                    this.CopyToOutput(tmpDir, bareFileName + "BaseVisitor.cs");
-                                    this.CopyToOutput(tmpDir, bareFileName + "BaseListener.cs");
-                                    this.CopyToOutput(tmpDir, bareFileName + "Visitor.cs");
-                                    this.CopyToOutput(tmpDir, bareFileName + "Listener.cs");
+                                    this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "BaseVisitor.cs");
+                                    this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "BaseListener.cs");
+                                    this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "Visitor.cs");
+                                    this.CopyToOutput(tmpDir, this.InputDirectory, bareFileName + "Listener.cs");
                                 }
                             }
                         }
@@ -329,7 +351,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                                 Antlr4LexerRule rule = this.Grammar.LexerRules.FirstOrDefault(r => r.Name == tokenName);
                                 if (rule == null)
                                 {
-                                    rule = new Antlr4LexerRule(this.Grammar.Modes.FirstOrDefault());
+                                    rule = new Antlr4LexerRule(this.Grammar.LexerModes.FirstOrDefault());
                                     rule.Name = tokenName;
                                     rule.Artificial = true;
                                     this.Grammar.LexerRules.Add(rule);
@@ -398,27 +420,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             if (this.OutputDirectory == null) return;
 
-            string directory = this.OutputDirectory;
-            DirectoryInfo info = new DirectoryInfo(directory);
-            if (info.Name == "InternalSyntax")
-            {
-                info = info.Parent;
-            }
-            if (info.Name == "Syntax")
-            {
-                info = info.Parent;
-            }
-            directory = info.FullName;
-
             if (this.GenerateLanguageService)
             {
-                Directory.CreateDirectory(Path.Combine(directory, @"Syntax"));
-                string outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "SyntaxFacts.cs");
+                string outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxFacts);
                 }
-                outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "SyntaxKind.cs");
+                outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxKind);
@@ -456,56 +465,43 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             if (this.OutputDirectory == null) return;
 
-            string directory = this.OutputDirectory;
-            DirectoryInfo info = new DirectoryInfo(directory);
-            if (info.Name == "InternalSyntax")
-            {
-                info = info.Parent;
-            }
-            if (info.Name == "Syntax")
-            {
-                info = info.Parent;
-            }
-            directory = info.FullName;
-
             if (this.GenerateCompiler)
             {
-                Directory.CreateDirectory(Path.Combine(directory, @"Syntax\InternalSyntax"));
-                Directory.CreateDirectory(Path.Combine(directory, @"Errors"));
-                Directory.CreateDirectory(Path.Combine(directory, @"Parser"));
-                Directory.CreateDirectory(Path.Combine(directory, @"Compilation"));
-                Directory.CreateDirectory(Path.Combine(directory, @"Binding"));
-                string outputFileName = Path.Combine(directory, @"Syntax\InternalSyntax\" + this.LanguageName + "InternalSyntax.cs");
+                Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Errors"));
+                Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Parser"));
+                Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Compilation"));
+                Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Binding"));
+                string outputFileName = Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "InternalSyntax.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedInternalSyntax);
                 }
-                outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "SyntaxKind.cs");
+                outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxKind);
                 }
-                outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "Syntax.cs");
+                outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "Syntax.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntax);
                 }
-                outputFileName = Path.Combine(directory, @"Syntax\" + this.LanguageName + "SyntaxTree.cs");
+                outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxTree.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxTree);
                 }
-                outputFileName = Path.Combine(directory, @"Errors\" + this.LanguageName + @"ErrorCode.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Errors\" + this.LanguageName + @"ErrorCode.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedErrorCode);
                 }
-                outputFileName = Path.Combine(directory, @"Parser\" + this.LanguageName + @"SyntaxParser.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Parser\" + this.LanguageName + @"SyntaxParser.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxParser);
                 }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Language.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Language.cs");
                 if (!File.Exists(outputFileName))
                 {
                     using (StreamWriter writer = new StreamWriter(outputFileName))
@@ -513,47 +509,47 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         writer.WriteLine(this.GeneratedLanguage);
                     }
                 }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Compilation.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Compilation.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedCompilation);
                 }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedCompilationFactory);
                 }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"CompilationOptions.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationOptions.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedCompilationOptions);
                 }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedScriptCompilationInfo);
                 }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedLanguageVersion);
                 }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"ParseOptions.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"ParseOptions.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedParseOptions);
                 }
-                outputFileName = Path.Combine(directory, @"Compilation\" + this.LanguageName + @"Feature.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedFeature);
                 }
-                outputFileName = Path.Combine(directory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedDeclarationTreeBuilder);
                 }
-                outputFileName = Path.Combine(directory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs");
+                outputFileName = Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs");
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedBinderFactoryVisitor);
@@ -626,6 +622,23 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     if (tokenAnnot.GetValue("defaultEndOfLine") == "true")
                     {
                         this.Grammar.DefaultEndOfLine = rule;
+                    }
+                }
+            }
+            foreach (var mode in this.Grammar.LexerModes)
+            {
+                var tokenAnnot = mode.Annotations.GetAnnotation("Token");
+                if (tokenAnnot != null)
+                {
+                    string kind = tokenAnnot.GetValue("kind");
+                    if (kind != null)
+                    {
+                        List<Antlr4LexerRule> rules = null;
+                        if (!this.Grammar.LexerTokenKinds.TryGetValue(kind, out rules))
+                        {
+                            rules = new List<Antlr4LexerRule>();
+                            this.Grammar.LexerTokenKinds.Add(kind, rules);
+                        }
                     }
                 }
             }
@@ -873,8 +886,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         private string lexerHeader;
 
         private Antlr4Grammar currentGrammar;
-        private Antlr4Mode currentMode;
+        private Antlr4LexerMode currentMode;
         private Antlr4LexerRule currentLexerRule;
+
+        private int modeCounter;
 
         public Antlr4Grammar Grammar { get { return this.currentGrammar; } }
         public bool IsParser { get; private set; }
@@ -972,9 +987,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
             currentGrammar = new Antlr4Grammar();
             currentGrammar.Name = context.identifier().GetText();
-            currentMode = new Antlr4Mode(this.currentGrammar);
+            currentMode = new Antlr4LexerMode(this.currentGrammar);
             currentMode.Name = "DEFAULT_MODE";
-            currentGrammar.Modes.Add(currentMode);
+            this.modeCounter = 0;
+            currentMode.Kind = this.modeCounter;
+            currentGrammar.LexerModes.Add(currentMode);
             this.CollectAnnotations(currentGrammar, context.annotation());
             return base.VisitGrammarSpec(context);
         }
@@ -1067,12 +1084,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public override object VisitModeSpec(Antlr4RoslynParser.ModeSpecContext context)
         {
-            currentMode = new Antlr4Mode(this.currentGrammar);
+            currentMode = new Antlr4LexerMode(this.currentGrammar);
             if (context.identifier() != null)
             {
                 currentMode.Name = context.identifier().GetText();
             }
-            currentGrammar.Modes.Add(currentMode);
+            ++this.modeCounter;
+            currentMode.Kind = this.modeCounter;
+            currentGrammar.LexerModes.Add(currentMode);
             this.CollectAnnotations(currentMode, context.annotation());
             return base.VisitModeSpec(context);
         }
@@ -1696,7 +1715,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.ParserRules = new List<Antlr4ParserRule>();
             this.LexerRules = new List<Antlr4LexerRule>();
             this.LexerTokenKinds = new Dictionary<string, List<Antlr4LexerRule>>();
-            this.Modes = new List<Antlr4Mode>();
+            this.LexerModes = new List<Antlr4LexerMode>();
             this.FixedTokenCandidates = new List<Antlr4LexerRule>();
             this.FixedTokens = new List<Antlr4LexerRule>();
             this.FirstRuleKind = 1;
@@ -1711,7 +1730,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public List<Antlr4LexerRule> LexerRules { get; private set; }
         public Antlr4LexerRule DefaultWhitespace { get; set; }
         public Antlr4LexerRule DefaultEndOfLine { get; set; }
-        public List<Antlr4Mode> Modes { get; private set; }
+        public List<Antlr4LexerMode> LexerModes { get; private set; }
         internal List<Antlr4LexerRule> FixedTokenCandidates { get; private set; }
         public List<Antlr4LexerRule> FixedTokens { get; private set; }
         public Antlr4ParserRule FindParserRule(string type)
@@ -1826,25 +1845,26 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return result;
         }
     }
-    public class Antlr4Mode : Antlr4AnnotatedObject
+    public class Antlr4LexerMode : Antlr4AnnotatedObject
     {
-        public Antlr4Mode(Antlr4Grammar grammar)
+        public Antlr4LexerMode(Antlr4Grammar grammar)
         {
             this.Grammar = grammar;
             this.LexerRules = new List<Antlr4LexerRule>();
         }
         public Antlr4Grammar Grammar { get; private set; }
         public string Name { get; set; }
+        public int Kind { get; set; }
         public List<Antlr4LexerRule> LexerRules { get; private set; }
     }
     public class Antlr4LexerRule : Antlr4AnnotatedObject
     {
-        public Antlr4LexerRule(Antlr4Mode mode)
+        public Antlr4LexerRule(Antlr4LexerMode mode)
         {
             this.Mode = mode;
         }
         public Antlr4Grammar Grammar { get { return this.Mode.Grammar; } }
-        public Antlr4Mode Mode { get; private set; }
+        public Antlr4LexerMode Mode { get; private set; }
         public string Name { get; set; }
         public string FixedToken { get; set; }
         public int Kind { get; set; }

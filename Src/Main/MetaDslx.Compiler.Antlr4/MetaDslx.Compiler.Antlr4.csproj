@@ -59,9 +59,7 @@
     <Compile Include="Languages\Antlr4Roslyn\Parser\Antlr4SyntaxParser.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Syntax\Antlr4RoslynSyntaxFacts.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Syntax\Antlr4RoslynSyntaxKind.cs" />
-    <Compile Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.cs">
-      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
-    </Compile>
+    <Compile Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.cs">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </Compile>
@@ -156,9 +154,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </None>
-    <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.tokens">
-      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
-    </None>
+    <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.tokens" />
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.ag4">
       <Generator>AnnotatedAntlr4Generator</Generator>
       <LastGenOutput>Antlr4RoslynParser.g4</LastGenOutput>
@@ -167,9 +163,6 @@
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-    </None>
-    <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.literals">
-      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </None>
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.tokens">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>

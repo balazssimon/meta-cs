@@ -329,6 +329,10 @@ namespace [Properties.LanguageServiceNamespace]
                 this.LoadState(state, this.lexer);
                 IToken token = this.lexer.NextToken();
                 int tokenType = (int)this.syntaxFacts.GetTokenKind(token.Type);
+                if (tokenType == 0)
+                {
+                    tokenType = (int)this.syntaxFacts.GetModeTokenKind(this.lexer.CurrentMode);
+                }
                 if (tokenType >= 0 && tokenType < [Properties.LanguageClassName]LanguageConfig.Instance.ColorableItems.Count)
                 {
                     [Properties.LanguageClassName]LanguageColorableItem colorItem = [Properties.LanguageClassName]LanguageConfig.Instance.ColorableItems["[tokenType]"];

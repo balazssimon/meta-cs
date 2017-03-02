@@ -2841,6 +2841,14 @@ namespace [Properties.DefaultNamespace].Syntax
 		[end loop]
 	}
 ^
+	public enum [Properties.LanguageName]LexerMode : int
+	{
+		None = 0,
+		[loop (mode:Instances.LexerModes; separator sep=",")]
+		[mode.PlainName()] = [mode.Kind][sep]
+		[end loop]
+	}
+^
 	public class [Properties.LanguageName]SyntaxFacts : SyntaxFacts
 	{
 		public static readonly [Properties.LanguageName]SyntaxFacts Instance = new [Properties.LanguageName]SyntaxFacts();
@@ -3010,6 +3018,25 @@ namespace [Properties.DefaultNamespace].Syntax
 				case [Properties.LanguageName]SyntaxKind.[rule.PlainName()]:
 					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
 				[end if]
+			[end loop]
+				default:
+					return [Properties.LanguageName]TokenKind.None;
+			}
+		}
+^
+		public [Properties.LanguageName]TokenKind GetModeTokenKind(int rawKind)
+		{
+			return this.GetModeTokenKind(([Properties.LanguageName]LexerMode)rawKind);
+		}
+^
+		public [Properties.LanguageName]TokenKind GetModeTokenKind([Properties.LanguageName]LexerMode kind)
+		{
+			switch(kind)
+			{
+			[loop (mode:Instances.LexerModes where mode.Annotations.HasAnnotation("Token"))]
+				[MetaCompilerAnnotation annot = mode.Annotations.GetAnnotation("Token")]
+				case [Properties.LanguageName]LexerMode.[mode.PlainName()]:
+					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
 			[end loop]
 				default:
 					return [Properties.LanguageName]TokenKind.None;

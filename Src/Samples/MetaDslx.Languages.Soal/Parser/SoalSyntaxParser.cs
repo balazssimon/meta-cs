@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Compiler.Antlr4Roslyn;
+using MetaDslx.Languages.Antlr4Roslyn.Parser;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;

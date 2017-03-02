@@ -18,6 +18,18 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 		String
 	}
 
+	public enum MetaGeneratorLexerMode : int
+	{
+		None = 0,
+		DEFAULT_MODE = 0,
+		MULTILINE_COMMENT = 1,
+		DOUBLEQUOTE_VERBATIM_STRING = 2,
+		TEMPLATE_HEADER = 3,
+		TEMPLATE_OUTPUT = 4,
+		TEMPLATE_STATEMENT = 5,
+		TEMPLATE_STATEMENT_COMMENT = 6
+	}
+
 	public class MetaGeneratorSyntaxFacts : SyntaxFacts
 	{
 		public static readonly MetaGeneratorSyntaxFacts Instance = new MetaGeneratorSyntaxFacts();
@@ -1108,6 +1120,28 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorTokenKind.MetaGeneratorTemplateControl;
 				case MetaGeneratorSyntaxKind.TemplateStatementEnd:
 					return MetaGeneratorTokenKind.MetaGeneratorTemplateControl;
+				default:
+					return MetaGeneratorTokenKind.None;
+			}
+		}
+
+		public MetaGeneratorTokenKind GetModeTokenKind(int rawKind)
+		{
+			return this.GetModeTokenKind((MetaGeneratorLexerMode)rawKind);
+		}
+
+		public MetaGeneratorTokenKind GetModeTokenKind(MetaGeneratorLexerMode kind)
+		{
+			switch(kind)
+			{
+				case MetaGeneratorLexerMode.MULTILINE_COMMENT:
+					return MetaGeneratorTokenKind.Comment;
+				case MetaGeneratorLexerMode.DOUBLEQUOTE_VERBATIM_STRING:
+					return MetaGeneratorTokenKind.String;
+				case MetaGeneratorLexerMode.TEMPLATE_OUTPUT:
+					return MetaGeneratorTokenKind.MetaGeneratorTemplateOutput;
+				case MetaGeneratorLexerMode.TEMPLATE_STATEMENT_COMMENT:
+					return MetaGeneratorTokenKind.Comment;
 				default:
 					return MetaGeneratorTokenKind.None;
 			}
