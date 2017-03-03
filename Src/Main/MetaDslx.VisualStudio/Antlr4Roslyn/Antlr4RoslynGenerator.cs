@@ -31,7 +31,7 @@ namespace MetaDslx.VisualStudio
             if (this.InputFileContents != null)
             {
                 compiler = new Antlr4RoslynCompiler(this.InputFileContents, defaultNamespace, this.InputDirectory, this.InputDirectory, this.InputFileName);
-                compiler.Compile();
+                compiler.Generate();
             }
         }
 
@@ -45,6 +45,10 @@ namespace MetaDslx.VisualStudio
             List<MultipleFileItem<object>> result = new List<MultipleFileItem<object>>();
             if (compiler == null) return result;
             if (compiler.HasErrors) return result;
+            if (compiler.GenerateCompiler)
+            {
+                compiler.Generate();
+            }
             string bareFileName = Path.GetFileNameWithoutExtension(this.InputFileName);
             MultipleFileItem<object> antlr4Grammar =
                 new MultipleFileItem<object>()

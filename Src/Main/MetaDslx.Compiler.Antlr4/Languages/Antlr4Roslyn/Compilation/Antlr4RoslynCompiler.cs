@@ -57,6 +57,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public string GeneratedDeclarationTreeBuilder { get; private set; }
         public string GeneratedBinderFactoryVisitor { get; private set; }
+        public string GeneratedSymbolBuilder { get; private set; }
 
         public Antlr4RoslynCompiler(string source, string defaultNamespace, string inputDirectory, string outputDirectory, string fileName)
             : base(source, defaultNamespace, inputDirectory, outputDirectory, fileName)
@@ -65,6 +66,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (languageName.EndsWith("Parser")) languageName = languageName.Substring(0, languageName.Length - 6);
             else if (languageName.EndsWith("Lexer")) languageName = languageName.Substring(0, languageName.Length - 5);
             this.LanguageName = languageName;
+
+            if (defaultNamespace.EndsWith(".InternalSyntax"))
+            {
+                defaultNamespace = defaultNamespace.Substring(0, defaultNamespace.Length - 15);
+            }
+            if (defaultNamespace.EndsWith(".Syntax"))
+            {
+                defaultNamespace = defaultNamespace.Substring(0, defaultNamespace.Length - 7);
+            }
+            this.DefaultNamespace = defaultNamespace;
 
             if (this.OutputDirectory != null)
             {
@@ -83,6 +94,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.SyntaxDirectory = Path.Combine(directory, "Syntax");
                 this.InternalSyntaxDirectory = Path.Combine(this.SyntaxDirectory, "InternalSyntax");
                 Directory.CreateDirectory(Path.Combine(directory, this.InternalSyntaxDirectory));
+
+                this.OutputDirectory = directory;
             }
         }
 
@@ -446,6 +459,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.GeneratedSyntaxTree = generator.GenerateSyntaxTree();
             this.GeneratedErrorCode = generator.GenerateErrorCode();
             this.GeneratedSyntaxParser = generator.GenerateSyntaxParser();
+            this.GeneratedLanguage = generator.GenerateLanguage();
             this.GeneratedLanguageVersion = generator.GenerateLanguageVersion();
             this.GeneratedParseOptions = generator.GenerateParseOptions();
             this.GeneratedFeature = generator.GenerateFeature();
@@ -457,6 +471,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
+            this.GeneratedSymbolBuilder = generator.GenerateSymbolBuilder();
 
             if (this.OutputDirectory == null) return;
 
@@ -548,6 +563,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedBinderFactoryVisitor);
+                }
+                outputFileName = Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"SymbolBuilder.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedSymbolBuilder);
                 }
             }
         }

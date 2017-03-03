@@ -4509,3 +4509,49 @@ template GenerateBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4ParserRu
 [GenerateBinderFactoryVisitElementBody(rule, elem)]
 	[end if]
 end template
+
+
+template GenerateSymbolBuilder()
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using MetaDslx.Core;
+using MetaDslx.Compiler;
+using MetaDslx.Compiler.Binding;
+using [Properties.DefaultNamespace].Symbols;
+^
+namespace [Properties.DefaultNamespace].Binding
+{
+    public class [Properties.LanguageName]SymbolBuilder : SymbolBuilder
+    {
+        public [Properties.LanguageName]SymbolBuilder(CompilationBase compilation) : base(compilation)
+        {
+        }
+^
+        private [Properties.LanguageName]Factory _factory;
+^
+        private [Properties.LanguageName]Factory Factory
+        {
+            get
+            {
+                if (_factory == null)
+                {
+                    Interlocked.CompareExchange(ref _factory, new [Properties.LanguageName]Factory(this.ModelBuilder), null);
+                }
+                return _factory;
+            }
+        }
+^
+        protected override MutableSymbol CreateSymbolCore(Type symbolType)
+        {
+            return this.Factory.Create(symbolType);
+        }
+    }
+}
+end template

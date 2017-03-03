@@ -56,11 +56,10 @@ namespace MetaDslx.TempConsole
         {
             //try
             {
-                /*
+                //*
                 Console.WriteLine("----");
                 Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
                 GenerateLanguageService(
-                    "Antlr4Roslyn",
                     "Antlr4Roslyn",
                     "MetaDslx.Languages.Antlr4Roslyn",
                     @"..\..\..\..\Main\MetaDslx.VisualStudio\Antlr4Roslyn",
@@ -70,19 +69,17 @@ namespace MetaDslx.TempConsole
                 Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator", "MetaGeneratorLexer.ag4", "MetaDslx.Languages.MetaGenerator");
                 GenerateLanguageService(
                     "MetaGenerator",
-                    "MetaGenerator",
                     "MetaDslx.Languages.MetaGenerator",
                     @"..\..\..\..\Main\MetaDslx.VisualStudio\MetaGenerator",
                     "MetaGeneratorLanguageService.cs",
                     false,
                     false);
-                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelLexer.ag4", "MetaDslx.Languages.Meta");
+                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
                 GenerateLanguageService(
                     "Meta",
-                    "MetaModel",
                     "MetaDslx.Languages.Meta",
-                    @"..\..\..\..\Main\MetaDslx.VisualStudio\MetaModel",
-                    "MetaModelLanguageService.cs",
+                    @"..\..\..\..\Main\MetaDslx.VisualStudio\Meta",
+                    "MetaLanguageService.cs",
                     true,
                     false);
                 //*/
@@ -210,8 +207,8 @@ namespace MetaDslx.TempConsole
                 source = reader.ReadToEnd();
             }
             var metaModelReference = MetadataReference.CreateFromModel(MetaInstance.Model);
-            var tree = MetaModelSyntaxTree.ParseText(source);
-            var compilation = MetaModelCompilation.Create("Meta").AddReferences(metaModelReference).AddSyntaxTrees(tree);
+            var tree = MetaSyntaxTree.ParseText(source);
+            var compilation = MetaCompilation.Create("Meta").AddReferences(metaModelReference).AddSyntaxTrees(tree);
             ImmutableModel immutableModel = compilation.Model;
             if (compilation.GetDiagnostics().Length == 0)
             {
@@ -352,11 +349,11 @@ namespace MetaDslx.TempConsole
             }
         }
 
-        private static void GenerateLanguageService(string language, string languageClass, string languageNamespace, string outputDirectory, string outputFileName, bool roslynCompiler, bool generateMultipleFiles)
+        private static void GenerateLanguageService(string language, string languageNamespace, string outputDirectory, string outputFileName, bool roslynCompiler, bool generateMultipleFiles)
         {
             LanguageServiceGenerator generator = new LanguageServiceGenerator(null);
             generator.Properties.LanguageServiceNamespace = "MetaDslx.VisualStudio";
-            generator.Properties.LanguageClassName = languageClass;
+            generator.Properties.LanguageClassName = language;
             generator.Properties.LanguageNamespace = languageNamespace;
             generator.Properties.LanguageName = language;
             generator.Properties.RoslynCompiler = roslynCompiler;

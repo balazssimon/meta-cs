@@ -75,37 +75,42 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
 
         public static bool HasEof(this Antlr4ParserRule rule)
         {
-            return rule.Alternatives.Count == 0 && rule.Elements.Any(e => e.Type == "EOF");
+            return rule != null && rule.Alternatives.Count == 0 && rule.Elements.Any(e => e.Type == "EOF");
         }
 
         public static string GreenName(this Antlr4ParserRule rule)
         {
+            if (rule == null) return null;
             return rule.Name.ToPascalCase() + "Green";
         }
 
         public static string RedName(this Antlr4ParserRule rule)
         {
+            if (rule == null) return null;
             return rule.Name.ToPascalCase() + "Syntax";
         }
 
         public static string PlainName(this Antlr4ParserRule rule)
         {
+            if (rule == null) return null;
             return rule.Name.ToPascalCase();
         }
 
         public static string PlainName(this Antlr4LexerRule rule)
         {
+            if (rule == null) return null;
             return rule.Name.ToPascalCase();
         }
 
         public static string PlainName(this Antlr4LexerMode mode)
         {
+            if (mode == null) return null;
             return mode.Name.ToPascalCase();
         }
 
         public static bool HasOptionalElements(this Antlr4ParserRule rule)
         {
-            return rule.Elements.Any(e => e.IsOptional || (e.IsToken && e.IsFixedToken && !e.IsList));
+            return rule != null && rule.Elements.Any(e => e.IsOptional || (e.IsToken && e.IsFixedToken && !e.IsList));
         }
 
         public static string GreenName(this Antlr4ParserRuleElement elem)

@@ -26,10 +26,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         protected CommonTokenStream CommonTokenStream { get; private set; }
         protected ParserRuleContext ParseTree { get; private set; }
         public string Source { get; private set; }
-        public string DefaultNamespace { get; private set; }
+        public string DefaultNamespace { get; protected set; }
         public string FileName { get; private set; }
         public string InputDirectory { get; private set; }
-        public string OutputDirectory { get; private set; }
+        public string OutputDirectory { get; protected set; }
         public bool GenerateOutput { get; set; }
         protected DiagnosticBag DiagnosticBag { get; private set; }
 

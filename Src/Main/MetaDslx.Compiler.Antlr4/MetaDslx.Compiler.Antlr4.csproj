@@ -106,31 +106,43 @@
     </Compile>
     <Compile Include="Languages\MetaGenerator\Syntax\MetaGeneratorSyntaxFacts.cs" />
     <Compile Include="Languages\MetaGenerator\Syntax\MetaGeneratorSyntaxKind.cs" />
-    <Compile Include="Languages\Meta\Binding\MetaModelBinderFactoryVisitor.cs" />
-    <Compile Include="Languages\Meta\Binding\MetaModelDeclarationTreeBuilderVisitor.cs" />
-    <Compile Include="Languages\Meta\Binding\MetaModelSymbolBuilder.cs" />
+    <Compile Include="Languages\Meta\Binding\MetaBinderFactoryVisitor.cs" />
+    <Compile Include="Languages\Meta\Binding\MetaDeclarationTreeBuilderVisitor.cs" />
+    <Compile Include="Languages\Meta\Binding\MetaSymbolBuilder.cs" />
     <Compile Include="Languages\Meta\Binding\OppositeBinder.cs" />
-    <Compile Include="Languages\Meta\Compilation\MetaModelCompilation.cs" />
-    <Compile Include="Languages\Meta\Compilation\MetaModelCompilationFactory.cs" />
-    <Compile Include="Languages\Meta\Compilation\MetaModelCompilationOptions.cs" />
-    <Compile Include="Languages\Meta\Compilation\MetaModelFeature.cs" />
-    <Compile Include="Languages\Meta\Compilation\MetaModelLanguage.cs" />
-    <Compile Include="Languages\Meta\Compilation\MetaModelLanguageVersion.cs" />
-    <Compile Include="Languages\Meta\Compilation\MetaModelParseOptions.cs" />
-    <Compile Include="Languages\Meta\Compilation\MetaModelScriptCompilationInfo.cs" />
-    <Compile Include="Languages\Meta\Errors\MetaModelErrorCode.cs" />
-    <Compile Include="Languages\Meta\Parser\MetaModelSyntaxParser.cs" />
-    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelInternalSyntax.cs" />
-    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelLexer.cs" />
-    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParser.cs" />
-    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParserBaseListener.cs" />
-    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParserBaseVisitor.cs" />
-    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParserListener.cs" />
-    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParserVisitor.cs" />
-    <Compile Include="Languages\Meta\Syntax\MetaModelSyntax.cs" />
-    <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxFacts.cs" />
-    <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxKind.cs" />
-    <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxTree.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaCompilation.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaCompilationFactory.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaCompilationOptions.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaFeature.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaLanguage.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaLanguageVersion.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaParseOptions.cs" />
+    <Compile Include="Languages\Meta\Compilation\MetaScriptCompilationInfo.cs" />
+    <Compile Include="Languages\Meta\Errors\MetaErrorCode.cs" />
+    <Compile Include="Languages\Meta\Parser\MetaSyntaxParser.cs" />
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaInternalSyntax.cs" />
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaLexer.cs">
+      <DependentUpon>MetaLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaParser.cs">
+      <DependentUpon>MetaParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaParserBaseListener.cs">
+      <DependentUpon>MetaParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaParserBaseVisitor.cs">
+      <DependentUpon>MetaParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaParserListener.cs">
+      <DependentUpon>MetaParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaParserVisitor.cs">
+      <DependentUpon>MetaParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Meta\Syntax\MetaSyntax.cs" />
+    <Compile Include="Languages\Meta\Syntax\MetaSyntaxFacts.cs" />
+    <Compile Include="Languages\Meta\Syntax\MetaSyntaxKind.cs" />
+    <Compile Include="Languages\Meta\Syntax\MetaSyntaxTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -206,28 +218,32 @@
     <None Include="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorParser.tokens">
       <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
     </None>
-    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelLexer.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
-      <LastGenOutput>MetaModelLexer.g4</LastGenOutput>
-      <CustomToolNamespace>MetaDslx.Languages.Meta.Syntax.InternalSyntax</CustomToolNamespace>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaLexer.ag4">
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>MetaLexer.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Languages.Meta</CustomToolNamespace>
     </None>
-    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelLexer.g4">
-      <DependentUpon>MetaModelLexer.ag4</DependentUpon>
-      <DesignTime>True</DesignTime>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaLexer.g4">
       <AutoGen>True</AutoGen>
-    </None>
-    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelLexer.tokens" />
-    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParser.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
-      <LastGenOutput>MetaModelParser.g4</LastGenOutput>
-      <CustomToolNamespace>MetaDslx.Languages.Meta.Syntax.InternalSyntax</CustomToolNamespace>
-    </None>
-    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParser.g4">
-      <DependentUpon>MetaModelParser.ag4</DependentUpon>
       <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
+      <DependentUpon>MetaLexer.ag4</DependentUpon>
     </None>
-    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParser.tokens" />
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaLexer.tokens">
+      <DependentUpon>MetaLexer.ag4</DependentUpon>
+    </None>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaParser.ag4">
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>MetaParser.g4</LastGenOutput>
+      <CustomToolNamespace>MetaDslx.Languages.Meta</CustomToolNamespace>
+    </None>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaParser.g4">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MetaParser.ag4</DependentUpon>
+    </None>
+    <None Include="Languages\Meta\Syntax\InternalSyntax\MetaParser.tokens">
+      <DependentUpon>MetaParser.ag4</DependentUpon>
+    </None>
     <None Include="MetaDslxDevKey.snk" />
     <None Include="Resources\antlr-4.5.3-complete.jar" />
   </ItemGroup>

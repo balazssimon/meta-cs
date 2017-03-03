@@ -60,9 +60,9 @@
     <Compile Include="MetaGenerator\MetaGeneratorGenerator.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorLanguageConfig.cs" />
     <Compile Include="MetaGenerator\MetaGeneratorLanguageService.cs" />
-    <Compile Include="MetaModel\MetaModelGenerator.cs" />
-    <Compile Include="MetaModel\MetaModelLanguageConfig.cs" />
-    <Compile Include="MetaModel\MetaModelLanguageService.cs" />
+    <Compile Include="Meta\MetaGenerator.cs" />
+    <Compile Include="Meta\MetaLanguageConfig.cs" />
+    <Compile Include="Meta\MetaLanguageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VsHelper.cs" />
     <Compile Include="VsMultipleFileGenerator.cs" />
