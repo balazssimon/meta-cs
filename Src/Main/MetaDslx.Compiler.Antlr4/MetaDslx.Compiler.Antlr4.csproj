@@ -129,6 +129,7 @@
     <Compile Include="Languages\Meta\Syntax\InternalSyntax\MetaModelParserVisitor.cs" />
     <Compile Include="Languages\Meta\Syntax\MetaModelSyntax.cs" />
     <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxFacts.cs" />
+    <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxKind.cs" />
     <Compile Include="Languages\Meta\Syntax\MetaModelSyntaxTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

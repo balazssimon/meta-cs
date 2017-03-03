@@ -69,7 +69,7 @@
     <Compile Include="Compiler\Binding\Conversions.cs" />
     <Compile Include="Compiler\Binding\DeclarationTreeInfo.cs" />
     <Compile Include="Compiler\Binding\Imports.cs" />
-    <Compile Include="Compiler\Binding\Binders\BodyBinder.cs" />
+    <Compile Include="Compiler\Binding\Binders\ScopeBinder.cs" />
     <Compile Include="Compiler\Binding\LookupResult.cs" />
     <Compile Include="Compiler\Binding\LookupResultKind.cs" />
     <Compile Include="Compiler\Binding\NameQualifier.cs" />
@@ -126,11 +126,6 @@
     <Compile Include="Compiler\Symbols\CompilerAttachedProperties.cs" />
     <Compile Include="Core\GreenModel.cs" />
     <Compile Include="Languages\Meta\Symbols\ImmutableMetaImplementation.cs" />
-    <Compile Include="Languages\Meta\Symbols\ImmutableMetaModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ImmutableMetaModel.mm</DependentUpon>
-    </Compile>
     <Compile Include="Languages\Meta\Generator\ImmutableMetaModelGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -169,6 +164,7 @@
     <Compile Include="Compiler\FileSystem\PathUtilities.cs" />
     <Compile Include="Compiler\FileSystem\RelativePathResolver.cs" />
     <Compile Include="Compiler\MetaModel\MetaCompilerAnnotation.cs" />
+    <Compile Include="Languages\Meta\Symbols\ImmutableMetaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Compiler\Diagnostics\ErrorCode.cs" />
     <Compile Include="Compiler\Syntax\InternalSyntax\DirectiveStack.cs" />
@@ -256,7 +252,7 @@
   <ItemGroup>
     <None Include="Languages\Meta\Symbols\ImmutableMetaModel.mm">
       <Generator>MetaModelGenerator</Generator>
-      <LastGenOutput>ImmutableMetaModel.cs</LastGenOutput>
+      <LastGenOutput>ImmutableMetaModel2.cs</LastGenOutput>
     </None>
     <None Include="Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen">
       <Generator>MetaGenerator</Generator>

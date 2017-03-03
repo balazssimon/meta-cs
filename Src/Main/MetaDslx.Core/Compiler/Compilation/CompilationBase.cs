@@ -677,7 +677,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         protected override ISymbol CommonGetCompilationNamespace(ISymbol namespaceSymbol)
         {
-            if (namespaceSymbol.MIsScope && namespaceSymbol.MName == null &&
+            if (namespaceSymbol.MIsNamespace && namespaceSymbol.MName == null &&
                 namespaceSymbol.MGet(CompilerAttachedProperties.ContainingCompilationProperty) == this)
             {
                 return namespaceSymbol;

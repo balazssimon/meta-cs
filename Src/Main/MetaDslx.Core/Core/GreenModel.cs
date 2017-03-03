@@ -259,6 +259,20 @@ namespace MetaDslx.Core
             return result;
         }
 
+        internal GreenList AddRange(GreenList items)
+        {
+            GreenList result = this;
+            foreach (var item in items)
+            {
+                if (item == null) continue;
+                if (!this.unique || !this.items.Contains(item))
+                {
+                    result = result.Update(this.items.Add(item), this.lazyItems);
+                }
+            }
+            return result;
+        }
+
         internal GreenList Insert(int index, object element)
         {
             if (element == null) return this;
@@ -2500,7 +2514,7 @@ namespace MetaDslx.Core
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
+                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyItem, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                                     }
                                 }
                                 else 
@@ -2518,7 +2532,7 @@ namespace MetaDslx.Core
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
+                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyItem, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                                     }
                                 }
                             }

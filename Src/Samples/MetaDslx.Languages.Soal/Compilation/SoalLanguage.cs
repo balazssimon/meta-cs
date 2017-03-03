@@ -8,6 +8,7 @@ using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Languages.Soal.Syntax.InternalSyntax;
+using MetaDslx.Languages.Soal.Syntax;
 
 namespace MetaDslx.Languages.Soal
 {

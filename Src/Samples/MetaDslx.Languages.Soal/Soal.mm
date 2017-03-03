@@ -69,7 +69,6 @@
 		string Uri;
 		string Prefix;
 		derived string FullName;
-		[ScopeEntry]
 		containment list<Declaration> Declarations;
 	}
 
@@ -103,9 +102,8 @@
 	[Scope]
 	class Enum : SoalType, Declaration
 	{
-		[InheritedScope]
+		[BaseScope]
 		Enum BaseType;
-		[ScopeEntry]
 		containment list<EnumLiteral> EnumLiterals;
 	}
 
@@ -123,22 +121,19 @@
 	[Scope]
 	class Struct : SoalType, Declaration
 	{
-		[InheritedScope]
+		[BaseScope]
 		Struct BaseType;
-		[ScopeEntry]
 		containment list<Property> Properties;
 	}
 
 	[Scope]
 	class Interface : SoalType, Declaration
 	{
-		[ScopeEntry]
 		containment list<Operation> Operations;
 	}
 
 	class Database : Interface
 	{
-		[ScopeEntry]
 		list<Struct> Entities;
 	}
 
@@ -162,14 +157,12 @@
 	[Scope]
 	class Component : Declaration
 	{
-		[InheritedScope]
+		[BaseScope]
 		Component BaseComponent;
 		bool IsAbstract;
-		[ScopeEntry]
 		containment list<Port> Ports;
 		containment list<Service> Services subsets Ports;
 		containment list<Reference> References subsets Ports;
-		[ScopeEntry]
 		containment list<Property> Properties;
 		containment Implementation Implementation;
 		containment Language Language;
@@ -177,7 +170,6 @@
 
 	class Composite : Component
 	{
-		[ScopeEntry]
 		list<Component> Components;
 		containment list<Wire> Wires;
 	}

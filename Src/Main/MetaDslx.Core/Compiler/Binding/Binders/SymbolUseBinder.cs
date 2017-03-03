@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding.Binders
@@ -19,21 +20,15 @@ namespace MetaDslx.Compiler.Binding.Binders
     public sealed class SymbolUseBinder : Binder, ISymbolUseBinder
     {
         private readonly ImmutableArray<Type> _symbolTypes;
+        private readonly ImmutableArray<Type> _nestingSymbolTypes;
         private ImmutableArray<ISymbol> _lazyUsedSymbols;
-        private readonly BindingOptions _bindingOptions;
+        private BindingOptions _lazyBindingOptions;
 
-        public SymbolUseBinder(Binder next, RedNode node, ImmutableArray<Type> symbolTypes) 
+        public SymbolUseBinder(Binder next, RedNode node, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes) 
             : base(next, node)
         {
             _symbolTypes = symbolTypes;
-            if (_symbolTypes.Length > 0)
-            {
-                _bindingOptions = next.BindingOptions.WithSymbolTypes(symbolTypes);
-            }
-            else
-            {
-                _bindingOptions = next.BindingOptions;
-            }
+            _nestingSymbolTypes = nestingSymbolTypes;
         }
 
         public ImmutableArray<Type> SymbolTypes
@@ -41,11 +36,46 @@ namespace MetaDslx.Compiler.Binding.Binders
             get { return _symbolTypes; }
         }
 
+        public ImmutableArray<Type> NestingSymbolTypes
+        {
+            get { return _nestingSymbolTypes; }
+        }
+
         public override BindingOptions BindingOptions
         {
             get
             {
-                return _bindingOptions;
+                if (_lazyBindingOptions == null)
+                {
+                    var options = BindingOptions.Default;
+                    var parentSymbolUseBinder = this.FindAncestorBinder<ISymbolUseBinder>();
+                    if (parentSymbolUseBinder != null) options = this.Next.BindingOptions;
+                    if (_symbolTypes.Length > 0)
+                    {
+                        options = options.WithSymbolTypes(_symbolTypes);
+                    }
+                    Interlocked.CompareExchange(ref _lazyBindingOptions, options, null);
+                }
+                return _lazyBindingOptions;
+            }
+        }
+
+        public override BindingOptions NestingBindingOptions
+        {
+            get
+            {
+                if (_lazyBindingOptions == null)
+                {
+                    var options = BindingOptions.Default;
+                    var parentSymbolUseBinder = this.FindAncestorBinder<ISymbolUseBinder>();
+                    if (parentSymbolUseBinder != null) options = this.Next.NestingBindingOptions;
+                    if (_nestingSymbolTypes.Length > 0)
+                    {
+                        options = options.WithSymbolTypes(_nestingSymbolTypes);
+                    }
+                    Interlocked.CompareExchange(ref _lazyBindingOptions, options, null);
+                }
+                return _lazyBindingOptions;
             }
         }
 

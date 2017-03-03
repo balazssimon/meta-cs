@@ -3,15 +3,15 @@
 options
 {
     tokenVocab = MetaModelLexer; 
-	generateCompilerBase=true;
+	generateCompiler=false;
 }
 
 @header {
 using MetaDslx.Core;
 }
 
-$Root(MetaNamespace)
-main: $Property(Namespaces) namespaceDeclaration;
+$Root(RootNamespace)
+main: $Property(Symbols) namespaceDeclaration;
 
 $Name
 name : identifier;
@@ -35,10 +35,10 @@ $SymbolDef(MetaAnnotationProperty)
 annotationParam : $Property(Name) name;
 */
 
-$SymbolDef(symbolType=MetaNamespace,nestingProperty=Namespaces,merge=true)
+$SymbolDef(symbolType=MetaNamespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: annotation* KNamespace qualifiedName namespaceBody;
 
-$Body
+$Scope
 namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
 $Property(MetaModel)
@@ -57,7 +57,7 @@ declaration : enumDeclaration | classDeclaration | associationDeclaration | cons
 $Property(Declarations) 
 $SymbolDef(MetaEnum)
 enumDeclaration : annotation* KEnum name enumBody;
-$Body
+$Scope
 enumBody : TOpenBrace $Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
 $SymbolDef(MetaEnumLiteral)
@@ -67,7 +67,7 @@ enumMemberDeclaration : $Property(Operations) operationDeclaration;
 $Property(Declarations) 
 $SymbolDef(MetaClass)
 classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
-$Body
+$Scope
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor : $SymbolUse(symbolType=MetaClass,location=ResolutionLocation.Parent) qualifier;
@@ -108,7 +108,7 @@ classType : qualifier;
 
 objectType 
 	: $Value(MetaInstance.Object) KObject 
-	| $Value(MetaInstance.MetaClass) KSymbol
+	| $Value(MetaInstance.Symbol) KSymbol
 	| $Value(MetaInstance.String) KString
 	;
 

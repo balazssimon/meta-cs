@@ -363,7 +363,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     }
                 }
                 //this.Grammar.LexerRules.RemoveAll(r => r.Kind == 0);
-                this.Grammar.FirstRuleKind = maxTokenKind + 1;
+                this.Grammar.LastTokenSyntaxKind = maxTokenKind;
             }
         }
 
@@ -1715,14 +1715,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.LexerModes = new List<Antlr4LexerMode>();
             this.FixedTokenCandidates = new List<Antlr4LexerRule>();
             this.FixedTokens = new List<Antlr4LexerRule>();
-            this.FirstRuleKind = 1;
+            this.LastTokenSyntaxKind = 0;
         }
         public string Name { get; set; }
         public List<MetaCompilerAnnotation> CustomAnnotations { get; private set; }
         public HashSet<string> Imports { get; private set; }
         public HashSet<string> ParserRuleElemUses { get; private set; }
         public Dictionary<string, List<Antlr4LexerRule>> LexerTokenKinds { get; private set; }
-        public int FirstRuleKind { get; set; }
+        public int LastTokenSyntaxKind { get; set; }
         public List<Antlr4ParserRule> ParserRules { get; private set; }
         public List<Antlr4LexerRule> LexerRules { get; private set; }
         public Antlr4LexerRule DefaultWhitespace { get; set; }

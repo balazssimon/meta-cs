@@ -2519,12 +2519,13 @@ namespace [Properties.DefaultNamespace].Syntax
 		[loop(rule:Instances.LexerRules where rule.Kind > 0)]
 		[rule.PlainName()] = [rule.Kind],
 		[end loop]
+		LastTokenSyntaxKind = [Instances.LastTokenSyntaxKind],
 ^
 		// Rules:
 		[loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
-		[alt.PlainName()] = [Instances.FirstRuleKind],
+		[alt.PlainName()],
 			[end loop]
 		[else]
 		[rule.PlainName()],

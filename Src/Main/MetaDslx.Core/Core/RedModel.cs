@@ -22,8 +22,11 @@ namespace MetaDslx.Core
 
         string MName { get; }
         ISymbol MType { get; }
-        bool MIsScope { get; }
+        bool MIsNamespace { get; }
         bool MIsType { get; }
+        bool MIsNamedType { get; }
+        bool MIsScope { get; }
+        bool MIsLocalScope { get; }
 
         ISymbol MParent { get; }
         IReadOnlyList<ISymbol> MChildren { get; }
@@ -37,8 +40,9 @@ namespace MetaDslx.Core
         bool MHasConcreteValue(ModelProperty property);
         bool MIsSet(ModelProperty property);
         IReadOnlyList<ISymbol> MGetImports();
-        IReadOnlyList<ISymbol> MGetBaseTypes();
-        IReadOnlyList<ISymbol> MGetAllBaseTypes();
+        IReadOnlyList<ISymbol> MGetBases();
+        IReadOnlyList<ISymbol> MGetAllBases();
+        IReadOnlyList<ISymbol> MGetMembers();
     }
 
     public interface IModel
@@ -385,8 +389,9 @@ namespace MetaDslx.Core
         IReadOnlyList<ISymbol> ISymbol.MChildren { get { return this.model.MChildren(this.id); } }
 
         public IReadOnlyList<ISymbol> MGetImports() { return this.model.MGetImports(this.id); }
-        public IReadOnlyList<ISymbol> MGetBaseTypes() { return this.model.MGetBaseTypes(this.id); }
-        public IReadOnlyList<ISymbol> MGetAllBaseTypes() { return this.model.MGetAllBaseTypes(this.id); }
+        public IReadOnlyList<ISymbol> MGetBases() { return this.model.MGetBases(this.id); }
+        public IReadOnlyList<ISymbol> MGetAllBases() { return this.model.MGetAllBases(this.id); }
+        public IReadOnlyList<ISymbol> MGetMembers() { return this.model.MGetMembers(this.id); }
 
         public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -432,8 +437,12 @@ namespace MetaDslx.Core
                 return null;
             }
         }
-        public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
+        public bool MIsNamespace { get { return this.id.SymbolInfo.IsNamespace; } }
         public bool MIsType { get { return this.id.SymbolInfo.IsType; } }
+        public bool MIsNamedType { get { return this.id.SymbolInfo.IsNamedType; } }
+
+        public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
+        public bool MIsLocalScope { get { return this.id.SymbolInfo.IsLocalScope; } }
 
         ISymbol ISymbol.MType
         {
@@ -553,9 +562,10 @@ namespace MetaDslx.Core
         ISymbol ISymbol.MParent { get { return this.model.MParent(this.id); } }
         IReadOnlyList<ISymbol> ISymbol.MChildren { get { return this.model.MChildren(this.id); } }
 
-        public IReadOnlyList<ISymbol> MGetImports() { return this.model.MGetImports(this.id); }
-        public IReadOnlyList<ISymbol> MGetBaseTypes() { return this.model.MGetBaseTypes(this.id); }
-        public IReadOnlyList<ISymbol> MGetAllBaseTypes() { return this.model.MGetAllBaseTypes(this.id); }
+        public IReadOnlyList<ISymbol> MGetImports() { return this.model.MGetImports(this); }
+        public IReadOnlyList<ISymbol> MGetBases() { return this.model.MGetBases(this); }
+        public IReadOnlyList<ISymbol> MGetAllBases() { return this.model.MGetAllBases(this); }
+        public IReadOnlyList<ISymbol> MGetMembers() { return this.model.MGetMembers(this); }
 
         public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -621,8 +631,12 @@ namespace MetaDslx.Core
                 }
             }
         }
-        public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
+        public bool MIsNamespace { get { return this.id.SymbolInfo.IsNamespace; } }
         public bool MIsType { get { return this.id.SymbolInfo.IsType; } }
+        public bool MIsNamedType { get { return this.id.SymbolInfo.IsNamedType; } }
+
+        public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
+        public bool MIsLocalScope { get { return this.id.SymbolInfo.IsLocalScope; } }
 
         ISymbol ISymbol.MType
         {
@@ -1015,9 +1029,9 @@ namespace MetaDslx.Core
             }
         }
 
-        internal object GetValue(SymbolId sid, ModelProperty property)
+
+        private object GetGreenValue(SymbolId sid, ModelProperty property)
         {
-            Debug.Assert(!property.IsCollection);
             GreenSymbol greenSymbol;
             if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
@@ -1026,25 +1040,26 @@ namespace MetaDslx.Core
                 if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (greenSymbol.Properties.TryGetValue(property, out greenValue))
                 {
-                    return this.ToRedValue(greenValue);
+                    return greenValue;
                 }
             }
-            return null;
+            return GreenSymbol.Unassigned;
+        }
+
+        internal object GetValue(SymbolId sid, ModelProperty property)
+        {
+            Debug.Assert(!property.IsCollection);
+            var greenValue = this.GetGreenValue(sid, property);
+            return this.ToRedValue(greenValue);
         }
 
         internal ImmutableModelSet<T> GetSet<T>(SymbolId sid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            var greenValue = this.GetGreenValue(sid, property);
+            if (greenValue is GreenList)
             {
-                object greenValue;
-                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
-                {
-                    return ImmutableModelSet<T>.FromGreenList((GreenList)greenValue, this);
-                }
+                return ImmutableModelSet<T>.FromGreenList((GreenList)greenValue, this);
             }
             return ImmutableModelSet<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
         }
@@ -1052,16 +1067,10 @@ namespace MetaDslx.Core
         internal ImmutableModelList<T> GetList<T>(SymbolId sid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            var greenValue = this.GetGreenValue(sid, property);
+            if (greenValue is GreenList)
             {
-                object greenValue;
-                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
-                {
-                    return ImmutableModelList<T>.FromGreenList((GreenList)greenValue, this);
-                }
+                return ImmutableModelList<T>.FromGreenList((GreenList)greenValue, this);
             }
             return ImmutableModelList<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
         }
@@ -1086,22 +1095,107 @@ namespace MetaDslx.Core
             return ImmutableModelList<ImmutableSymbol>.Empty;
         }
 
-        internal ImmutableModelList<ImmutableSymbol> MGetImports(SymbolId id)
+        internal ImmutableModelList<ImmutableSymbol> MGetImports(SymbolId sid)
         {
-            // TODO:
-            return ImmutableModelList<ImmutableSymbol>.Empty;
+            GreenList result = GreenList.EmptyUnique;
+            foreach (var prop in this.MProperties(sid))
+            {
+                if (prop.IsImport)
+                {
+                    if (prop.IsCollection)
+                    {
+                        var items = this.GetGreenValue(sid, prop) as GreenList;
+                        if (items != null)
+                        {
+                            result = result.AddRange(items);
+                        }
+                    }
+                    else
+                    {
+                        var item = this.GetGreenValue(sid, prop);
+                        result = result.Add(item);
+                    }
+                }
+            }
+            return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
         }
 
-        internal ImmutableModelList<ImmutableSymbol> MGetBaseTypes(SymbolId id)
+        internal ImmutableModelList<ImmutableSymbol> MGetBases(SymbolId sid)
         {
-            // TODO:
-            return ImmutableModelList<ImmutableSymbol>.Empty;
+            GreenList result = this.CollectBases(sid);
+            return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
         }
 
-        internal ImmutableModelList<ImmutableSymbol> MGetAllBaseTypes(SymbolId id)
+        internal ImmutableModelList<ImmutableSymbol> MGetAllBases(SymbolId sid)
         {
-            // TODO:
-            return ImmutableModelList<ImmutableSymbol>.Empty;
+            GreenList result = GreenList.EmptyUnique;
+            this.CollectAllBases(sid, ref result);
+            return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
+        }
+
+        private GreenList CollectBases(SymbolId sid)
+        {
+            GreenList result = GreenList.EmptyUnique;
+            foreach (var prop in this.MProperties(sid))
+            {
+                if (prop.IsBaseScope)
+                {
+                    if (prop.IsCollection)
+                    {
+                        var items = this.GetGreenValue(sid, prop) as GreenList;
+                        if (items != null)
+                        {
+                            result = result.AddRange(items);
+                        }
+                    }
+                    else
+                    {
+                        var item = this.GetGreenValue(sid, prop);
+                        result = result.Add(item);
+                    }
+                }
+            }
+            return result;
+        }
+
+        private void CollectAllBases(SymbolId sid, ref GreenList result)
+        {
+            if (sid == null) return;
+
+            var oldResult = result;
+            result = result.Add(sid);
+            if (result == oldResult) return;
+
+            var bases = this.CollectBases(sid);
+            foreach (var item in bases)
+            {
+                this.CollectAllBases(sid, ref result);
+            }
+        }
+
+        internal ImmutableModelList<ImmutableSymbol> MGetMembers(SymbolId sid)
+        {
+            GreenList result = GreenList.EmptyUnique;
+            foreach (var prop in this.MProperties(sid))
+            {
+                if (prop.CanResolve)
+                {
+                    if (prop.IsCollection)
+                    {
+                        var items = this.GetGreenValue(sid, prop) as GreenList;
+                        if (items != null)
+                        {
+                            result = result.AddRange(items);
+                        }
+                    }
+                    else
+                    {
+                        var item = this.GetGreenValue(sid, prop);
+                        result = result.Add(item);
+                    }
+                }
+            }
+            return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
         }
 
         internal ImmutableList<ModelProperty> MProperties(SymbolId sid)
@@ -1144,18 +1238,8 @@ namespace MetaDslx.Core
             }
             else
             {
-                GreenSymbol greenSymbol;
-                if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
-                {
-                    object greenValue;
-                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                    if (greenSymbol.Properties.TryGetValue(property, out greenValue))
-                    {
-                        return greenValue != GreenSymbol.Unassigned && !(greenValue is LazyValue) && !(greenValue is GreenDerivedValue);
-                    }
-                }
-                return false;
+                var greenValue = this.GetGreenValue(sid, property);
+                return greenValue != GreenSymbol.Unassigned && !(greenValue is LazyValue) && !(greenValue is GreenDerivedValue);
             }
         }
 
@@ -1167,18 +1251,8 @@ namespace MetaDslx.Core
             }
             else
             {
-                GreenSymbol greenSymbol;
-                if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
-                {
-                    object greenValue;
-                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                    if (greenSymbol.Properties.TryGetValue(property, out greenValue))
-                    {
-                        return greenValue != GreenSymbol.Unassigned;
-                    }
-                }
-                return false;
+                var greenValue = this.GetGreenValue(sid, property);
+                return greenValue != GreenSymbol.Unassigned;
             }
         }
 
@@ -1263,11 +1337,6 @@ namespace MetaDslx.Core
             get { return this.Green.Id; }
         }
         
-        private void HandleException(Exception ex)
-        {
-            throw ex;
-        }
-        
         public string Name
         {
             get
@@ -1276,19 +1345,12 @@ namespace MetaDslx.Core
             }
             set
             {
-                try
+                ModelUpdateContext ctx;
+                do
                 {
-                    ModelUpdateContext ctx;
-                    do
-                    {
-                        ctx = this.BeginUpdate();
-                        ctx.Updater.SetName(this.id, value);
-                    } while (!this.EndUpdate(ctx));
-                }
-                catch (Exception ex)
-                {
-                    this.HandleException(ex);
-                }
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.SetName(this.id, value);
+                } while (!this.EndUpdate(ctx));
             }
         }
 
@@ -1300,19 +1362,12 @@ namespace MetaDslx.Core
             }
             set
             {
-                try
+                ModelUpdateContext ctx;
+                do
                 {
-                    ModelUpdateContext ctx;
-                    do
-                    {
-                        ctx = this.BeginUpdate();
-                        ctx.Updater.SetVersion(this.id, value);
-                    } while (!this.EndUpdate(ctx));
-                }
-                catch (Exception ex)
-                {
-                    this.HandleException(ex);
-                }
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.SetVersion(this.id, value);
+                } while (!this.EndUpdate(ctx));
             }
         }
 
@@ -1451,19 +1506,12 @@ namespace MetaDslx.Core
         {
             if (symbol == null) return false;
             bool result = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    result = ctx.Updater.RemoveSymbol(this.id, ((MutableSymbolBase)symbol).MId);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                result = ctx.Updater.RemoveSymbol(this.id, ((MutableSymbolBase)symbol).MId);
+            } while (!this.EndUpdate(ctx));
             return result;
         }
 
@@ -1471,19 +1519,12 @@ namespace MetaDslx.Core
         {
             if (targetSymbol == partSymbol) return;
             if (targetSymbol.MMetaClass != partSymbol.MMetaClass) throw new ModelException(Location.None, new DiagnosticInfo(ModelErrorCode.ERR_CannotMergeDifferentSymbols, partSymbol, targetSymbol, partSymbol.MId.SymbolInfo.MutableType, targetSymbol.MId.SymbolInfo.MutableType));
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    ctx.Updater.MergeSymbols(this.id, ((ImmutableSymbolBase)targetSymbol).MId, ((ImmutableSymbolBase)partSymbol).MId);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                ctx.Updater.MergeSymbols(this.id, ((ImmutableSymbolBase)targetSymbol).MId, ((ImmutableSymbolBase)partSymbol).MId);
+            } while (!this.EndUpdate(ctx));
         }
 
         internal MutableSymbolBase CreateSymbol(SymbolId sid, bool weakReference)
@@ -1491,21 +1532,14 @@ namespace MetaDslx.Core
             Debug.Assert(sid != null);
             Debug.Assert(!this.ContainsSymbol(sid));
             MutableSymbolBase result = null;
-            try
+            result = sid.CreateMutable(this, true);
+            ModelUpdateContext ctx;
+            do
             {
-                result = sid.CreateMutable(this, true);
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    ctx.Updater.AddSymbol(this.id, sid, weakReference);
-                } while (!this.EndUpdate(ctx));
-                this.RegisterSymbol(sid, result);
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                ctx.Updater.AddSymbol(this.id, sid, weakReference);
+            } while (!this.EndUpdate(ctx));
+            this.RegisterSymbol(sid, result);
             return result;
         }
 
@@ -1641,57 +1675,52 @@ namespace MetaDslx.Core
 
         public void EvaluateLazyValues(CancellationToken cancellationToken = default(CancellationToken))
         {
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    ctx.Updater.EvaluateLazyValues(cancellationToken);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                ctx.Updater.EvaluateLazyValues(cancellationToken);
+            } while (!this.EndUpdate(ctx));
         }
 
         public void ExecuteTransaction(Action transaction)
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    transaction();
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                transaction();
+            } while (!this.EndUpdate(ctx));
         }
 
         internal object GetValue(SymbolId sid, ModelProperty property)
         {
             object value = null;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    value = ctx.Updater.GetValue(this.id, sid, property, true);
-                } while (!this.EndUpdate(ctx));
-                value = this.ToRedValue(value);
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                value = ctx.Updater.GetValue(this.id, sid, property, true);
+            } while (!this.EndUpdate(ctx));
+            value = this.ToRedValue(value);
             return value;
+        }
+
+        private object GetGreenValue(SymbolId sid, ModelProperty property)
+        {
+            GreenSymbol greenSymbol;
+            if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
+            {
+                object greenValue;
+                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
+                if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
+                if (greenSymbol.Properties.TryGetValue(property, out greenValue))
+                {
+                    return greenValue;
+                }
+            }
+            return GreenSymbol.Unassigned;
         }
 
         internal bool MHasConcreteValue(SymbolId sid, ModelProperty property)
@@ -1702,18 +1731,8 @@ namespace MetaDslx.Core
             }
             else
             {
-                GreenSymbol greenSymbol;
-                if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
-                {
-                    object greenValue;
-                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                    if (greenSymbol.Properties.TryGetValue(property, out greenValue))
-                    {
-                        return greenValue != GreenSymbol.Unassigned && !(greenValue is LazyValue) && !(greenValue is GreenDerivedValue);
-                    }
-                }
-                return false;
+                var greenValue = this.GetGreenValue(sid, property);
+                return greenValue != GreenSymbol.Unassigned && !(greenValue is LazyValue) && !(greenValue is GreenDerivedValue);
             }
         }
 
@@ -1725,100 +1744,53 @@ namespace MetaDslx.Core
             }
             else
             {
-                GreenSymbol greenSymbol;
-                if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
-                {
-                    object greenValue;
-                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                    if (greenSymbol.Properties.TryGetValue(property, out greenValue))
-                    {
-                        return greenValue != GreenSymbol.Unassigned;
-                    }
-                }
-                return false;
+                var greenValue = this.GetGreenValue(sid, property);
+                return greenValue != GreenSymbol.Unassigned;
             }
         }
 
         internal void SetValue<T>(SymbolId sid, ModelProperty property, T value, bool creating) 
         {
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    ctx.Updater.SetValue(this.id, sid, property, creating, this.ToGreenValue(value));
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                ctx.Updater.SetValue(this.id, sid, property, creating, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
         }
 
         internal object GetLazyValue(SymbolId sid, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
-            try
+            var greenValue = this.GetGreenValue(sid, property);
+            if (greenValue is SingleLazyValue)
             {
-                GreenSymbol greenSymbol;
-                if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
-                {
-                    object greenValue;
-                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                    if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is SingleLazyValue)
-                    {
-                        return ((SingleLazyValue)greenValue).Lazy;
-                    }
-                }
-                return null;
+                return ((SingleLazyValue)greenValue).Lazy;
             }
-            catch (Exception ex)
+            else if (greenValue is MultipleLazyValues)
             {
-                this.HandleException(ex);
+                return ((MultipleLazyValues)greenValue).Lazy;
             }
             return null;
         }
 
         internal void SetLazyValue(SymbolId sid, ModelProperty property, LazyValue value, bool creating)
         {
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    ctx.Updater.SetValue(this.id, sid, property, creating, property.IsDerived ? (object)new GreenDerivedValue(value) : value);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                ctx.Updater.SetValue(this.id, sid, property, creating, property.IsDerived ? (object)new GreenDerivedValue(value) : value);
+            } while (!this.EndUpdate(ctx));
         }
 
         internal GreenList GetGreenList(SymbolId sid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            try
+            var greenValue = this.GetGreenValue(sid, property);
+            if (greenValue is GreenList)
             {
-                GreenSymbol greenSymbol;
-                if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
-                {
-                    object greenValue;
-                    ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
-                    if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                    if (greenSymbol.Properties.TryGetValue(property, out greenValue) && greenValue is GreenList)
-                    {
-                        return (GreenList)greenValue;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
+                return (GreenList)greenValue;
             }
             return property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
         }
@@ -1827,20 +1799,13 @@ namespace MetaDslx.Core
         {
             Debug.Assert(property.IsCollection);
             object value = null;
-            try
+            if (!lazyEval) return this.GetGreenList(sid, property);
+            ModelUpdateContext ctx;
+            do
             {
-                if (!lazyEval) return this.GetGreenList(sid, property);
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    value = ctx.Updater.GetValue(this.id, sid, property, true);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                value = ctx.Updater.GetValue(this.id, sid, property, true);
+            } while (!this.EndUpdate(ctx));
             GreenList result = value as GreenList;
             if (result == null) result = property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique;
             return result;
@@ -1861,234 +1826,150 @@ namespace MetaDslx.Core
         internal bool AddItem(SymbolId sid, ModelProperty property, object value, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool AddLazyItem(SymbolId sid, ModelProperty property, LazyValue value, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, value);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, value);
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool AddItems(SymbolId sid, ModelProperty property, IEnumerable<object> values, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
+                ctx = this.BeginUpdate();
+                foreach (var value in values)
                 {
-                    ctx = this.BeginUpdate();
-                    foreach (var value in values)
-                    {
-                        changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
-                    }
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, this.ToGreenValue(value));
+                }
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool AddLazyItems(SymbolId sid, ModelProperty property, IEnumerable<LazyValue> values, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
+                ctx = this.BeginUpdate();
+                foreach (var value in values)
                 {
-                    ctx = this.BeginUpdate();
-                    foreach (var value in values)
-                    {
-                        changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, value);
-                    }
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, value);
+                }
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool AddLazyItems(SymbolId sid, ModelProperty property, LazyValue values, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, values);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, -1, values);
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool RemoveItem(SymbolId sid, ModelProperty property, object value, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, false, this.ToGreenValue(value));
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, false, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool RemoveAllItems(SymbolId sid, ModelProperty property, object value, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, true, this.ToGreenValue(value));
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, -1, true, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool InsertItem(SymbolId sid, ModelProperty property, int index, object value, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, index, this.ToGreenValue(value));
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, false, index, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool ReplaceItem(SymbolId sid, ModelProperty property, int index, object value, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.AddItem(this.id, sid, property, creating, true, index, this.ToGreenValue(value));
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.AddItem(this.id, sid, property, creating, true, index, this.ToGreenValue(value));
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool RemoveItemAt(SymbolId sid, ModelProperty property, int index, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, index, false, null);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.RemoveItem(this.id, sid, property, creating, index, false, null);
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool ClearItems(SymbolId sid, ModelProperty property, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.ClearItems(this.id, sid, property, creating);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.ClearItems(this.id, sid, property, creating);
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
         internal bool ClearLazyItems(SymbolId sid, ModelProperty property, bool creating)
         {
             bool changed = false;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    changed = ctx.Updater.ClearLazyItems(this.id, sid, property, creating);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                changed = ctx.Updater.ClearLazyItems(this.id, sid, property, creating);
+            } while (!this.EndUpdate(ctx));
             return changed;
         }
 
@@ -2105,38 +1986,142 @@ namespace MetaDslx.Core
         internal ImmutableModelList<MutableSymbol> MChildren(SymbolId sid)
         {
             ImmutableList<SymbolId> children = ImmutableList<SymbolId>.Empty;
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    children = ctx.Updater.GetChildren(this.id, sid);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                children = ctx.Updater.GetChildren(this.id, sid);
+            } while (!this.EndUpdate(ctx));
             return ImmutableModelList<MutableSymbol>.FromSymbolIdList(children, this);
         }
 
-        internal ImmutableModelList<MutableSymbol> MGetImports(SymbolId id)
+        internal IReadOnlyList<MutableSymbol> MGetImports(MutableSymbolBase symbol)
         {
-            // TODO:
-            return ImmutableModelList<MutableSymbol>.Empty;
+            List<MutableSymbol> result = new List<MutableSymbol>();
+            foreach (var prop in symbol.MProperties)
+            {
+                if (prop.IsImport)
+                {
+                    if (prop.IsCollection)
+                    {
+                        var items = this.GetList<MutableSymbol>(symbol, prop);
+                        if (items != null)
+                        {
+                            foreach (var item in items)
+                            {
+                                if (item != null && !result.Contains(item))
+                                {
+                                    result.Add(item);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var item = this.GetValue(symbol.MId, prop) as MutableSymbol;
+                        if (item != null && !result.Contains(item))
+                        {
+                            result.Add(item);
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
-        internal ImmutableModelList<MutableSymbol> MGetBaseTypes(SymbolId id)
+        internal IReadOnlyList<MutableSymbol> MGetBases(MutableSymbolBase symbol)
         {
-            // TODO:
-            return ImmutableModelList<MutableSymbol>.Empty;
+            List<MutableSymbol> result = new List<MutableSymbol>();
+            this.CollectBases(symbol, result);
+            return result;
         }
 
-        internal ImmutableModelList<MutableSymbol> MGetAllBaseTypes(SymbolId id)
+        internal IReadOnlyList<MutableSymbol> MGetAllBases(MutableSymbolBase symbol)
         {
-            // TODO:
-            return ImmutableModelList<MutableSymbol>.Empty;
+            List<MutableSymbol> result = new List<MutableSymbol>();
+            this.CollectAllBases(symbol, result);
+            return result;
+        }
+
+        private void CollectBases(MutableSymbolBase symbol, List<MutableSymbol> result)
+        {
+            foreach (var prop in symbol.MProperties)
+            {
+                if (prop.IsImport)
+                {
+                    if (prop.IsCollection)
+                    {
+                        var items = this.GetList<MutableSymbol>(symbol, prop);
+                        if (items != null)
+                        {
+                            foreach (var item in items)
+                            {
+                                if (item != null && !result.Contains(item))
+                                {
+                                    result.Add(item);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var item = this.GetValue(symbol.MId, prop) as MutableSymbol;
+                        if (item != null && !result.Contains(item))
+                        {
+                            result.Add(item);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CollectAllBases(MutableSymbolBase symbol, List<MutableSymbol> result)
+        {
+            if (symbol == null) return;
+
+            if (!result.Contains(symbol))
+            {
+                result.Add(symbol);
+                var bases = symbol.MGetBases();
+                foreach (var item in bases)
+                {
+                    this.CollectAllBases(item as MutableSymbolBase, result);
+                }
+            }
+        }
+
+        internal IReadOnlyList<MutableSymbol> MGetMembers(MutableSymbolBase symbol)
+        {
+            List<MutableSymbol> result = new List<MutableSymbol>();
+            foreach (var prop in symbol.MProperties)
+            {
+                if (prop.CanResolve)
+                {
+                    if (prop.IsCollection)
+                    {
+                        var items = this.GetList<MutableSymbol>(symbol, prop);
+                        if (items != null)
+                        {
+                            foreach (var item in items)
+                            {
+                                if (item != null && !result.Contains(item))
+                                {
+                                    result.Add(item);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var item = this.GetValue(symbol.MId, prop) as MutableSymbol;
+                        if (item != null && !result.Contains(item))
+                        {
+                            result.Add(item);
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         internal ImmutableList<ModelProperty> MProperties(SymbolId sid)
@@ -2172,19 +2157,12 @@ namespace MetaDslx.Core
         }
         internal void MAttachProperty(SymbolId sid, ModelProperty property)
         {
-            try
+            ModelUpdateContext ctx;
+            do
             {
-                ModelUpdateContext ctx;
-                do
-                {
-                    ctx = this.BeginUpdate();
-                    ctx.Updater.AttachProperty(this.id, sid, property);
-                } while (!this.EndUpdate(ctx));
-            }
-            catch (Exception ex)
-            {
-                this.HandleException(ex);
-            }
+                ctx = this.BeginUpdate();
+                ctx.Updater.AttachProperty(this.id, sid, property);
+            } while (!this.EndUpdate(ctx));
         }
 
         public override string ToString()

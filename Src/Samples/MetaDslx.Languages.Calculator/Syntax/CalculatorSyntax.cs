@@ -14,50 +14,6 @@ using MetaDslx.Compiler.Syntax.InternalSyntax;
 
 namespace MetaDslx.Languages.Calculator.Syntax
 {
-	public enum CalculatorSyntaxKind : int
-	{
-        None                          = SyntaxKind.None,
-        List                          = SyntaxKind.List,
-        BadToken                      = SyntaxKind.BadToken,
-        Eof                           = SyntaxKind.Eof,
-
-		// Tokens:
-		TSemicolon = 1,
-		TOpenParen,
-		TCloseParen,
-		TComma,
-		TAssign,
-		TAdd,
-		TSub,
-		TMul,
-		TDiv,
-		KPrint,
-		STRING,
-		ID,
-		INT,
-		UTF8BOM,
-		WHITESPACE,
-		ENDL,
-		COMMENT,
-
-		// Rules:
-		Main,
-		StatementLine,
-		Statement,
-		Assignment,
-		ParenExpression,
-		MulOrDivExpression,
-		AddOrSubExpression,
-		PrintExpression,
-		ValueExpression,
-		Args,
-		Value,
-		Identifier,
-		String,
-		Integer,
-		Arg,
-	}
-
     public abstract class CalculatorSyntaxNode : SyntaxNode
     {
         protected CalculatorSyntaxNode(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)

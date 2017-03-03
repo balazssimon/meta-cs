@@ -136,7 +136,12 @@ namespace MetaDslx.Core
     }
 
     [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public sealed class ScopeEntryAttribute : Attribute
+    public sealed class MemberAttribute : Attribute
+    {
+    }
+
+    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class NonMemberAttribute : Attribute
     {
     }
 
@@ -145,18 +150,18 @@ namespace MetaDslx.Core
     {
     }
 
-    [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public sealed class ImportedScopeAttribute : Attribute
+    [System.AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+    public sealed class LocalScopeAttribute : Attribute
     {
     }
 
     [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public sealed class ImportedScopeEntryAttribute : Attribute
+    public sealed class ImportAttribute : Attribute
     {
     }
 
     [System.AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public sealed class InheritedScopeAttribute : Attribute
+    public sealed class BaseScopeAttribute : Attribute
     {
     }
 
@@ -181,10 +186,10 @@ namespace MetaDslx.Core
         None = 0x0000,
         Name = 0x0001,
         Type = 0x0002,
-        ScopeEntry = 0x0004,
-        ImportedScope = 0x0008,
-        ImportedScopeEntry = 0x0010,
-        InheritedScope = 0x0020
+        Member = 0x0004,
+        NonMember = 0x0008,
+        Import = 0x0010,
+        BaseScope = 0x0020
     }
 
     [Flags]
@@ -192,7 +197,8 @@ namespace MetaDslx.Core
     {
         None = 0x0000,
         Scope = 0x0001,
-        Type = 0x0002
+        LocalScope = 0x0002,
+        Type = 0x0003
     }
 
     internal enum ModelPropertyInitState
@@ -329,36 +335,43 @@ namespace MetaDslx.Core
                 return this.metaFlags.HasFlag(MetaModelPropertyFlags.Type);
             }
         }
-        public bool IsScopeEntry
+        public bool CanResolve
         {
             get
             {
-                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.ScopeEntry);
+                return (this.IsContainment && !this.IsNonMember) || this.IsMember;
             }
         }
-        public bool IsImportedScope
+        public bool IsMember
         {
             get
             {
                 if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.ImportedScope);
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Member);
             }
         }
-        public bool IsImportedScopeEntry
+        public bool IsNonMember
         {
             get
             {
                 if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.ImportedScopeEntry);
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.NonMember);
             }
         }
-        public bool IsInheritedScope
+        public bool IsImport
         {
             get
             {
                 if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
-                return this.metaFlags.HasFlag(MetaModelPropertyFlags.InheritedScope);
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.Import);
+            }
+        }
+        public bool IsBaseScope
+        {
+            get
+            {
+                if (this.state == ModelPropertyInitState.None) this.InitializeFlags();
+                return this.metaFlags.HasFlag(MetaModelPropertyFlags.BaseScope);
             }
         }
 
@@ -431,21 +444,21 @@ namespace MetaDslx.Core
                     {
                         this.metaFlags |= MetaModelPropertyFlags.Type;
                     }
-                    else if (annot is ScopeEntryAttribute)
+                    else if (annot is MemberAttribute)
                     {
-                        this.metaFlags |= MetaModelPropertyFlags.ScopeEntry;
+                        this.metaFlags |= MetaModelPropertyFlags.Member;
                     }
-                    else if (annot is ImportedScopeAttribute)
+                    else if (annot is NonMemberAttribute)
                     {
-                        this.metaFlags |= MetaModelPropertyFlags.ImportedScope;
+                        this.metaFlags |= MetaModelPropertyFlags.NonMember;
                     }
-                    else if (annot is ImportedScopeAttribute)
+                    else if (annot is ImportAttribute)
                     {
-                        this.metaFlags |= MetaModelPropertyFlags.ImportedScopeEntry;
+                        this.metaFlags |= MetaModelPropertyFlags.Import;
                     }
-                    else if (annot is InheritedScopeAttribute)
+                    else if (annot is BaseScopeAttribute)
                     {
-                        this.metaFlags |= MetaModelPropertyFlags.InheritedScope;
+                        this.metaFlags |= MetaModelPropertyFlags.BaseScope;
                     }
                 }
                 this.state = ModelPropertyInitState.FlagsSet;
@@ -470,7 +483,7 @@ namespace MetaDslx.Core
                         {
                             throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property cannot be found.");
                         }
-                        if ((propSymbol == this.declaringSymbol || this.declaringSymbol.BaseSymbols.Contains(propSymbol)))
+                        if ((propSymbol == this.declaringSymbol || this.declaringSymbol.AllBaseSymbols.Contains(propSymbol)))
                         {
                             if (!this.IsCollection || !this.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetting property must be a collection of unique values.");
                             if (!prop.IsCollection || !prop.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must be a collection of unique values.");
@@ -490,7 +503,7 @@ namespace MetaDslx.Core
                         {
                             throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefined property cannot be found.");
                         }
-                        if ((propSymbol == this.declaringSymbol || this.declaringSymbol.BaseSymbols.Contains(propSymbol)))
+                        if ((propSymbol == this.declaringSymbol || this.declaringSymbol.AllBaseSymbols.Contains(propSymbol)))
                         {
                             if (this.IsCollection ^ prop.IsCollection) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must be of the same kind: either a single value or a collection.");
                             if (this.IsCollection && prop.IsCollection)
@@ -817,6 +830,8 @@ namespace MetaDslx.Core
         private Type mutableType;
         private ModelProperty nameProperty;
         private ModelProperty typeProperty;
+        private ImmutableList<ModelProperty> baseProperties;
+        private ImmutableList<ModelProperty> importProperties;
         private ImmutableList<Attribute> annotations;
         private ImmutableList<ModelSymbolInfo> baseSymbols;
         private ImmutableList<ModelProperty> declaredProperties;
@@ -842,6 +857,10 @@ namespace MetaDslx.Core
                 {
                     this.metaFlags |= MetaModelSymbolFlags.Scope;
                 }
+                else if (annot is LocalScopeAttribute)
+                {
+                    this.metaFlags |= MetaModelSymbolFlags.LocalScope;
+                }
                 else if (annot is TypeAttribute)
                 {
                     this.metaFlags |= MetaModelSymbolFlags.Type;
@@ -849,6 +868,8 @@ namespace MetaDslx.Core
             }
             this.nameProperty = null;
             this.typeProperty = null;
+            this.baseProperties = ImmutableList<ModelProperty>.Empty;
+            this.importProperties = ImmutableList<ModelProperty>.Empty;
             this.emptyGreenSymbol = GreenSymbol.Empty;
             this.baseSymbols = ImmutableList<ModelSymbolInfo>.Empty;
             this.declaredProperties = ImmutableList<ModelProperty>.Empty;
@@ -1002,9 +1023,51 @@ namespace MetaDslx.Core
                 return this.baseSymbols;
             }
         }
+
+        private ImmutableList<ModelSymbolInfo> lazyAllBaseSymbols;
+        public ImmutableList<ModelSymbolInfo> AllBaseSymbols
+        {
+            get
+            {
+                if (lazyAllBaseSymbols == null)
+                {
+                    var builder = ImmutableList.CreateBuilder<ModelSymbolInfo>();
+                    this.CollectAllBaseSymbols(builder);
+                    Interlocked.CompareExchange(ref lazyAllBaseSymbols, builder.ToImmutable(), null);
+                }
+                return lazyAllBaseSymbols;
+            }
+        }
+
+        private void CollectAllBaseSymbols(ImmutableList<ModelSymbolInfo>.Builder baseSymbols)
+        {
+            foreach (var item in this.BaseSymbols)
+            {
+                if (!baseSymbols.Contains(item))
+                {
+                    foreach (var baseItem in item.AllBaseSymbols)
+                    {
+                        if (!baseSymbols.Contains(baseItem))
+                        {
+                            baseSymbols.Add(baseItem);
+                        }
+                    }
+                    baseSymbols.Add(item);
+                }
+            }
+        }
+
         public ImmutableList<ModelProperty> DeclaredProperties { get { return this.declaredProperties; } }
 
         public bool IsScope
+        {
+            get
+            {
+                if (!this.initialized) this.Initialize();
+                return this.metaFlags.HasFlag(MetaModelSymbolFlags.Scope);
+            }
+        }
+        public bool IsLocalScope
         {
             get
             {
@@ -1020,6 +1083,15 @@ namespace MetaDslx.Core
                 return this.metaFlags.HasFlag(MetaModelSymbolFlags.Type);
             }
         }
+        public bool IsNamespace
+        {
+            get { return this.NameProperty != null && this.IsScope && !this.IsType; }
+        }
+        public bool IsNamedType
+        {
+            get { return this.NameProperty != null && this.IsType; }
+        }
+
         public ModelProperty NameProperty
         {
             get

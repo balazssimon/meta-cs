@@ -15,7 +15,7 @@ namespace MetaDslx.Compiler.Binding.Binders
 
     }
 
-    public class RootBinder : BodyBinder, IRootBinder
+    public class RootBinder : ScopeBinder, IRootBinder
     {
         public RootBinder(Binder next, RedNode node, ISymbol container) 
             : base(next, node, container)

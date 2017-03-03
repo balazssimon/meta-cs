@@ -9,12 +9,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Languages.Antlr4Roslyn.Parser;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.MetaModel;
 using MetaDslx.Compiler.Utilities;
+using MetaDslx.Languages.Antlr4Roslyn.Parser;
 namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 {
     public class SoalSyntaxParser : Antlr4SyntaxParser<SoalLexer, SoalParser>

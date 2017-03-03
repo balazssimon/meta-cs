@@ -45,7 +45,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                 if (qualifierBinder != null)
                 {
                     context = qualifierBinder.GetChildContextSymbol(this.Node);
-                    last = qualifierBinder.IsLastChild(this.Node);
+                    last = qualifierBinder.IsLastIdentifier(this.Node);
                 }
                 LookupResult result = LookupResult.GetInstance();
                 DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
@@ -53,7 +53,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                 try
                 {
                     bool wasError = false;
-                    var options = last ? this.BindingOptions : BindingOptions.Default;
+                    var options = last ? this.BindingOptions : this.NestingBindingOptions;
                     if (context != null)
                     {
                         this.LookupMembersWithFallback(result, context, _name, null, options, ref useSiteDiagnostics);

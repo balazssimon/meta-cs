@@ -185,6 +185,14 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
+        public virtual BindingOptions NestingBindingOptions
+        {
+            get
+            {
+                return Next.NestingBindingOptions;
+            }
+        }
+
         public virtual bool IsSemanticModelBinder
         {
             get { return true; }
@@ -569,9 +577,9 @@ namespace MetaDslx.Compiler.Binding.Binders
         protected virtual bool IsViableKind(ISymbol symbol, BindingOptions options, bool diagnose, out DiagnosticInfo error)
         {
             error = null;
+            bool isNamespace = symbol.MIsNamespace;
             bool isType = symbol.MIsType;
-            bool isMember = !symbol.MIsScope && !symbol.MIsType;
-            bool isNamespace = symbol.MIsScope && !symbol.MIsType;
+            bool isMember = !symbol.MIsNamespace && !symbol.MIsType;
             bool isViableKind = (isNamespace && options.LookupNamespaces) || (isType && options.LookupTypes) || (isMember && (options.LookupInstanceMembers || options.LookupStaticMembers));
             if (diagnose && !isViableKind)
             {
@@ -658,16 +666,6 @@ namespace MetaDslx.Compiler.Binding.Binders
             return result;
         }
 
-        protected virtual bool IsNamespace(ISymbol symbol)
-        {
-            return !symbol.MIsType && symbol.MIsScope && !string.IsNullOrEmpty(symbol.MName);
-        }
-
-        protected virtual bool IsNamedType(ISymbol symbol)
-        {
-            return symbol.MIsType && !string.IsNullOrEmpty(symbol.MName);
-        }
-
         protected virtual bool GetOriginalDefinition(ISymbol symbol)
         {
             return symbol.MIsType && !string.IsNullOrEmpty(symbol.MName);
@@ -731,7 +729,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                         //if names match, arities match, and containing symbols match (recursively), ...
                         if (this.ToDisplayString(srcSymbol) == this.ToDisplayString(mdSymbol))
                         {
-                            if (this.IsNamespace(srcSymbol) && this.IsNamedType(mdSymbol))
+                            if (srcSymbol.MIsNamespace && mdSymbol.MIsNamedType)
                             {
                                 // ErrorCode.WRN_SameFullNameThisNsAgg: The namespace '{1}' in '{0}' conflicts with the imported type '{3}' in '{2}'. Using the namespace defined in '{0}'.
                                 diagnostics.Add(where.GetLocation(), CompilerErrorCode.WRN_SameFullNameThisNsAgg, originalSymbols,
@@ -742,7 +740,7 @@ namespace MetaDslx.Compiler.Binding.Binders
 
                                 return originalSymbols[best.Index];
                             }
-                            else if (this.IsNamedType(srcSymbol) && this.IsNamespace(mdSymbol))
+                            else if (srcSymbol.MIsNamedType && mdSymbol.MIsNamespace)
                             {
                                 // ErrorCode.WRN_SameFullNameThisAggNs: The type '{1}' in '{0}' conflicts with the imported namespace '{3}' in '{2}'. Using the type defined in '{0}'.
                                 diagnostics.Add(where.GetLocation(), CompilerErrorCode.WRN_SameFullNameThisAggNs, originalSymbols,
@@ -753,7 +751,7 @@ namespace MetaDslx.Compiler.Binding.Binders
 
                                 return originalSymbols[best.Index];
                             }
-                            else if (this.IsNamedType(srcSymbol) && this.IsNamedType(mdSymbol))
+                            else if (srcSymbol.MIsNamedType && mdSymbol.MIsNamedType)
                             {
                                 // WRN_SameFullNameThisAggAgg: The type '{1}' in '{0}' conflicts with the imported type '{3}' in '{2}'. Using the type defined in '{0}'.
                                 diagnostics.Add(where.GetLocation(), CompilerErrorCode.WRN_SameFullNameThisAggAgg, originalSymbols,
@@ -767,7 +765,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                             else
                             {
                                 // namespace would be merged with the source namespace:
-                                Debug.Assert(!(this.IsNamespace(srcSymbol) && this.IsNamespace(mdSymbol)));
+                                Debug.Assert(!(srcSymbol.MIsNamespace && mdSymbol.MIsNamespace));
                             }
                         }
                     }
@@ -791,7 +789,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                         // since an error has already been reported from the declaration
                         reportError = !(best.IsFromSourceModule && secondBest.IsFromSourceModule);
 
-                        if (this.IsNamedType(first) && this.IsNamedType(second))
+                        if (first.MIsNamedType && second.MIsNamedType)
                         {
                             // ErrorCode.ERR_SameFullNameAggAgg: The type '{1}' exists in both '{0}' and '{2}'
                             info = new DiagnosticInfo(CompilerErrorCode.ERR_SameFullNameAggAgg, originalSymbols,
@@ -807,7 +805,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                                 reportError = false;
                             }
                         }
-                        else if (this.IsNamespace(first) && this.IsNamedType(second))
+                        else if (first.MIsNamespace && second.MIsNamedType)
                         {
                             // ErrorCode.ERR_SameFullNameNsAgg: The namespace '{1}' in '{0}' conflicts with the type '{3}' in '{2}'
                             info = new DiagnosticInfo(CompilerErrorCode.ERR_SameFullNameNsAgg, originalSymbols,
@@ -820,7 +818,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                                 reportError = false;
                             }
                         }
-                        else if (this.IsNamedType(first) && this.IsNamespace(second))
+                        else if (first.MIsNamedType && second.MIsNamespace)
                         {
                             if (!secondBest.IsFromCompilation || secondBest.IsFromSourceModule)
                             {
@@ -993,7 +991,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                 diagnostics.Add(where.GetLocation(), result.Error);
             }
 
-            if ((symbols.Count > 1) || (this.IsNamespace(symbols[0]) || this.IsNamedType(symbols[0])))
+            if ((symbols.Count > 1) || (symbols[0].MIsNamespace || symbols[0].MIsNamedType))
             {
                 // Bad type or namespace (or things expected as types/namespaces) are packaged up as error types, preserving the symbols and the result kind.
                 // We do this if there are multiple symbols too, because just returning one would be losing important information, and they might

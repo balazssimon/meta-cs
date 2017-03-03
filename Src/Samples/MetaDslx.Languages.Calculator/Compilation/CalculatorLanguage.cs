@@ -8,6 +8,7 @@ using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Languages.Calculator.Syntax.InternalSyntax;
+using MetaDslx.Languages.Calculator.Syntax;
 
 namespace MetaDslx.Languages.Calculator
 {

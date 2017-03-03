@@ -73,7 +73,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
             base.MetaDeclaration(_this);
             _this.MetaModelLazy = () => _this.Namespace?.MetaModel;
         }
-
+        /*
         public override void MetaFunction(MetaFunctionBuilder _this)
         {
             base.MetaFunction(_this);
@@ -89,7 +89,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
                     return ft;
                 };
         }
-
+        */
         public override ImmutableModelList<string> MetaDocumentedElement_GetDocumentationLines(MetaDocumentedElement _this)
         {
             if (_this.Documentation == null) return ImmutableModelList<string>.Empty;

@@ -25,12 +25,12 @@ namespace MetaDslx.Languages.Meta.Binding
             bool isSubmission)
         {
             var builder = new MetaModelDeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
-            return builder.CreateRoot(syntaxTree.GetRoot(), typeof(Symbols.MetaNamespace));
+            return builder.CreateRoot(syntaxTree.GetRoot(), typeof(Symbols.MetaRootNamespace));
         }
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
-			this.BeginProperty("Namespaces");
+			this.BeginProperty("Symbols");
 			try
 			{
 				this.Visit(node.NamespaceDeclaration);
@@ -120,7 +120,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginDeclaration(typeof(Symbols.MetaNamespace), node);
 			try
 			{
-				this.RegisterNestingProperty("Namespaces");
+				this.RegisterNestingProperty("Declarations");
 				this.RegisterCanMerge(true);
 				if (node.Annotation != null)
 				{

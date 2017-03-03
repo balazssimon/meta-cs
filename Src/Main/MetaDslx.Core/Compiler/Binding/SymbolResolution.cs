@@ -140,7 +140,7 @@ namespace MetaDslx.Compiler.Binding
                     }
                 }
 
-                symbols = namespaceOrType.MChildren.Where(c => c.MName == name);
+                symbols = namespaceOrType.MGetMembers().Where(c => c.MName == name);
             }
             return symbols;
 
@@ -158,7 +158,7 @@ namespace MetaDslx.Compiler.Binding
                 return _compilation.GlobalNamespace;
             }
 
-            AddCache(container.MChildren.Where(child => child.MName == declaration.Name));
+            AddCache(container.MGetMembers().Where(child => child.MName == declaration.Name));
 
             return GetCachedSymbol(declaration);
         }
@@ -240,7 +240,7 @@ namespace MetaDslx.Compiler.Binding
             var container = GetSpineSymbol(spine);
             if (container != null)
             {
-                foreach (var member in container.MChildren)
+                foreach (var member in container.MGetMembers())
                 {
                     if (member.MName != null && predicate(member.MName))
                     {
@@ -301,7 +301,7 @@ namespace MetaDslx.Compiler.Binding
         public virtual ISymbol GetNestedSymbol(ISymbol symbol)
         {
             if (symbol == null) return null;
-            foreach (var nested in symbol.MChildren)
+            foreach (var nested in symbol.MGetMembers())
             {
                 if (nested.MName == symbol.MName) return nested;
             }

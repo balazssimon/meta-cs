@@ -15,7 +15,7 @@ namespace MetaDslx.Compiler.Binding.Binders
     public interface IQualifierBinder : IValueBinder
     {
         ImmutableArray<RedNode> IdentifierNodes { get; }
-        bool IsLastChild(RedNode node);
+        bool IsLastIdentifier(RedNode node);
         ISymbol GetChildContextSymbol(RedNode node);
     }
 
@@ -31,29 +31,34 @@ namespace MetaDslx.Compiler.Binding.Binders
         {
         }
 
+        private void CollectChildNodes()
+        {
+            if (_lazyIdentifierNodes.IsDefault)
+            {
+                Interlocked.CompareExchange(ref _lazyParentQualifierBinder, this.FindAncestorBinder<IQualifierBinder>(), null);
+                var qualifierBinders = this.FindDescendantBinders<IQualifierBinder>();
+                ImmutableInterlocked.InterlockedExchange(ref _lazyIdentifierNodes, qualifierBinders.Select(qb => ((Binder)qb).Node).ToImmutableArray());
+                Interlocked.CompareExchange(ref _lazySymbols, new ISymbol[_lazyIdentifierNodes.Length], null);
+                if (_lazySymbols.Length > 0 && _lazyParentQualifierBinder != null)
+                {
+                    Interlocked.CompareExchange(ref _lazySymbols[0], _lazyParentQualifierBinder.GetChildContextSymbol(this.Node), null);
+                }
+            }
+        }
+
         public ImmutableArray<RedNode> IdentifierNodes
         {
             get
             {
-                if (_lazyIdentifierNodes.IsDefault)
-                {
-                    Interlocked.CompareExchange(ref _lazyParentQualifierBinder, this.FindAncestorBinder<IQualifierBinder>(), null);
-                    var qualifierBinders = this.FindDescendantBinders<IQualifierBinder>();
-                    ImmutableInterlocked.InterlockedExchange(ref _lazyIdentifierNodes, qualifierBinders.Select(qb => ((Binder)qb).Node).ToImmutableArray());
-                    Interlocked.CompareExchange(ref _lazySymbols, new ISymbol[_lazyIdentifierNodes.Length], null);
-                    if (_lazySymbols.Length > 0 && _lazyParentQualifierBinder != null)
-                    {
-                        Interlocked.CompareExchange(ref _lazySymbols[0], _lazyParentQualifierBinder.GetChildContextSymbol(this.Node), null);
-                    }
-                }
+                this.CollectChildNodes();
                 return _lazyIdentifierNodes;
             }
         }
 
-        public bool IsLastChild(RedNode node)
+        public bool IsLastIdentifier(RedNode node)
         {
             int index = this.IdentifierNodes.IndexOf(node);
-            return index >= 0 && index == _lazySymbols.Length-1 && (_lazyParentQualifierBinder == null || _lazyParentQualifierBinder.IsLastChild(this.Node));
+            return index >= 0 && index == _lazySymbols.Length-1 && (_lazyParentQualifierBinder == null || _lazyParentQualifierBinder.IsLastIdentifier(this.Node));
         }
 
         public ISymbol GetChildContextSymbol(RedNode node)

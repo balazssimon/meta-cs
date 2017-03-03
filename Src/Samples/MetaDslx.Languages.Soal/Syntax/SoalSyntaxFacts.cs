@@ -2,25 +2,32 @@ using System.Threading;
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Text;
-using MetaDslx.Languages.Soal.Syntax;
-using MetaDslx.Languages.Soal.Syntax.InternalSyntax;
 
-namespace MetaDslx.Languages.Soal
+namespace MetaDslx.Languages.Soal.Syntax
 {
-	public enum SoalTokenKind
+	public enum SoalTokenKind : int
 	{
-		None,
-		Keyword,
+		None = 0,
+		Comment,
 		Identifier,
+		Keyword,
 		Number,
 		String,
-		Whitespace,
-		Comment
+		Whitespace
+	}
+
+	public enum SoalLexerMode : int
+	{
+		None = 0,
+		DEFAULT_MODE = 0,
+		LMultilineComment = 1,
+		DOUBLEQUOTE_VERBATIM_STRING = 2,
+		SINGLEQUOTE_VERBATIM_STRING = 3
 	}
 
 	public class SoalSyntaxFacts : SyntaxFacts
 	{
-		internal static readonly SoalSyntaxFacts Instance = new SoalSyntaxFacts();
+		public static readonly SoalSyntaxFacts Instance = new SoalSyntaxFacts();
 
 		protected override int DefaultEndOfLineSyntaxKindCore
 		{
@@ -163,6 +170,8 @@ namespace MetaDslx.Languages.Soal
 				case SoalSyntaxKind.COMMENT:
 				case SoalSyntaxKind.LDoubleQuoteVerbatimString:
 				case SoalSyntaxKind.LSingleQuoteVerbatimString:
+				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
+				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
 					return true;
 				default:
 					return false;
@@ -249,7 +258,6 @@ namespace MetaDslx.Languages.Soal
 				case SoalSyntaxKind.TTilde:
 				case SoalSyntaxKind.TExclamation:
 				case SoalSyntaxKind.TSlash:
-				case SoalSyntaxKind.TAsterisk:
 				case SoalSyntaxKind.TPercent:
 				case SoalSyntaxKind.TLessThanOrEqual:
 				case SoalSyntaxKind.TGreaterThanOrEqual:
@@ -281,6 +289,10 @@ namespace MetaDslx.Languages.Soal
 				case SoalSyntaxKind.IJSON:
 				case SoalSyntaxKind.IClientAuthentication:
 				case SoalSyntaxKind.IWsAddressing:
+				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
+				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
+				case SoalSyntaxKind.LDoubleQuoteVerbatimString:
+				case SoalSyntaxKind.LSingleQuoteVerbatimString:
 					return true;
 				default:
 					return false;
@@ -436,8 +448,6 @@ namespace MetaDslx.Languages.Soal
 					return "!";
 				case SoalSyntaxKind.TSlash:
 					return "/";
-				case SoalSyntaxKind.TAsterisk:
-					return "*";
 				case SoalSyntaxKind.TPercent:
 					return "%";
 				case SoalSyntaxKind.TLessThanOrEqual:
@@ -500,6 +510,14 @@ namespace MetaDslx.Languages.Soal
 					return "ClientAuthentication";
 				case SoalSyntaxKind.IWsAddressing:
 					return "WsAddressing";
+				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
+					return "@\"";
+				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
+					return "@\'";
+				case SoalSyntaxKind.LDoubleQuoteVerbatimString:
+					return "\"";
+				case SoalSyntaxKind.LSingleQuoteVerbatimString:
+					return "\'";
 				default:
 					return string.Empty;
 			}
@@ -649,8 +667,6 @@ namespace MetaDslx.Languages.Soal
 					return SoalSyntaxKind.TExclamation;
 				case "/":
 					return SoalSyntaxKind.TSlash;
-				case "*":
-					return SoalSyntaxKind.TAsterisk;
 				case "%":
 					return SoalSyntaxKind.TPercent;
 				case "<=":
@@ -713,6 +729,14 @@ namespace MetaDslx.Languages.Soal
 					return SoalSyntaxKind.IClientAuthentication;
 				case "WsAddressing":
 					return SoalSyntaxKind.IWsAddressing;
+				case "@\"":
+					return SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
+				case "@\'":
+					return SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart;
+				case "\"":
+					return SoalSyntaxKind.LDoubleQuoteVerbatimString;
+				case "\'":
+					return SoalSyntaxKind.LSingleQuoteVerbatimString;
 				default:
 					return SoalSyntaxKind.None;
 			}
@@ -997,6 +1021,26 @@ namespace MetaDslx.Languages.Soal
 				case SoalSyntaxKind.LDoubleQuoteVerbatimString:
 					return SoalTokenKind.String;
 				case SoalSyntaxKind.LSingleQuoteVerbatimString:
+					return SoalTokenKind.String;
+				default:
+					return SoalTokenKind.None;
+			}
+		}
+
+		public SoalTokenKind GetModeTokenKind(int rawKind)
+		{
+			return this.GetModeTokenKind((SoalLexerMode)rawKind);
+		}
+
+		public SoalTokenKind GetModeTokenKind(SoalLexerMode kind)
+		{
+			switch(kind)
+			{
+				case SoalLexerMode.LMultilineComment:
+					return SoalTokenKind.Comment;
+				case SoalLexerMode.DOUBLEQUOTE_VERBATIM_STRING:
+					return SoalTokenKind.String;
+				case SoalLexerMode.SINGLEQUOTE_VERBATIM_STRING:
 					return SoalTokenKind.String;
 				default:
 					return SoalTokenKind.None;

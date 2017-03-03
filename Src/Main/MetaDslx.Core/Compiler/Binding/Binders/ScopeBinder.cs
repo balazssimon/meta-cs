@@ -22,7 +22,7 @@ namespace MetaDslx.Compiler.Binding.Binders
     /// A binder that places the members of a symbol in scope.  If there is a container declaration
     /// with using directives, those are merged when looking up names.
     /// </summary>
-    public class BodyBinder : Binder, IBodyBinder
+    public class ScopeBinder : Binder, IBodyBinder
     {
         private ISymbol _container;
         private readonly Func<ConsList<ISymbol>, Imports> _computeImports;
@@ -31,7 +31,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         /// <summary>
         /// Creates a binder with given imports.
         /// </summary>
-        public BodyBinder(Binder next, RedNode node, ISymbol container = null, Imports imports = null)
+        public ScopeBinder(Binder next, RedNode node, ISymbol container = null, Imports imports = null)
             : base(next, node)
         {
             //Debug.Assert((object)container != null || imports != null);
@@ -43,7 +43,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         /// <summary>
         /// Creates a binder with given import computation function.
         /// </summary>
-        public BodyBinder(Binder next, RedNode node, Func<ConsList<ISymbol>, Imports> computeImports)
+        public ScopeBinder(Binder next, RedNode node, Func<ConsList<ISymbol>, Imports> computeImports)
             : base(next, node)
         {
             Debug.Assert(computeImports != null);
@@ -97,7 +97,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         {
             AddMemberLookupSymbolsInfoWithoutInheritance(result, type, options, originalBinder, accessThroughType);
 
-            foreach (var baseType in type.MGetAllBaseTypes())
+            foreach (var baseType in type.MGetAllBases())
             {
                 AddMemberLookupSymbolsInfoWithoutInheritance(result, baseType, options, originalBinder, accessThroughType);
             }
@@ -109,7 +109,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         private static void AddMemberLookupSymbolsInfoWithoutInheritance(ArrayBuilder<ISymbol> result, ISymbol symbol, BindingOptions options, Binder originalBinder, ISymbol accessThroughType)
         {
             HashSet<DiagnosticInfo> discardedDiagnostics = null;
-            foreach (var member in symbol.MChildren)
+            foreach (var member in symbol.MGetMembers())
             {
                 SingleLookupResult lookupResult = originalBinder.CheckViability(member, options, accessThroughType, false, ref discardedDiagnostics);
                 if (lookupResult.Kind == LookupResultKind.Viable)
@@ -151,7 +151,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             if (qualifierOpt == null)
             {
                 if (this.ContainingSymbol == null) return;
-                foreach (var child in this.ContainingSymbol.MChildren)
+                foreach (var child in this.ContainingSymbol.MGetMembers())
                 {
                     if (child.MName != null && child.MName == name)
                     {
@@ -161,7 +161,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
             else
             {
-                foreach (var child in qualifierOpt.MChildren)
+                foreach (var child in qualifierOpt.MGetMembers())
                 {
                     if (child.MName != null && child.MName == name)
                     {

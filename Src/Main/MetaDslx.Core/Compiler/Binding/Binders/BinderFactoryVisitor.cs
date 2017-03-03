@@ -76,7 +76,7 @@ namespace MetaDslx.Compiler.Binding.Binders
 
         protected virtual Binder CreateBodyBinderCore(Binder parentBinder, RedNode node)
         {
-            return new BodyBinder(parentBinder, node);
+            return new ScopeBinder(parentBinder, node);
         }
 
         protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, RedNode node, Type symbolType)
@@ -86,7 +86,7 @@ namespace MetaDslx.Compiler.Binding.Binders
 
         protected virtual Binder CreateSymbolDefBinderCore(Binder parentBinder, RedNode node, Type symbolType)
         {
-            return new SymbolDefBinder(parentBinder, node, symbolType);
+            return new SymbolDefBinder(parentBinder, node, symbolType, symbolType);
         }
 
         protected virtual Binder CreateSymbolCtrBinder(Binder parentBinder, RedNode node, Type symbolType)
@@ -101,12 +101,12 @@ namespace MetaDslx.Compiler.Binding.Binders
 
         protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, RedNode node, ImmutableArray<Type> symbolTypes)
         {
-            return this.CreateSymbolUseBinderCore(parentBinder, node, symbolTypes);
+            return this.CreateSymbolUseBinderCore(parentBinder, node, symbolTypes, ImmutableArray<Type>.Empty);
         }
 
-        protected virtual Binder CreateSymbolUseBinderCore(Binder parentBinder, RedNode node, ImmutableArray<Type> symbolTypes)
+        protected virtual Binder CreateSymbolUseBinderCore(Binder parentBinder, RedNode node, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes)
         {
-            return new SymbolUseBinder(parentBinder, node, symbolTypes);
+            return new SymbolUseBinder(parentBinder, node, symbolTypes, nestingSymbolTypes);
         }
 
         protected virtual Binder CreatePropertyBinder(Binder parentBinder, RedNode node, string name)
@@ -221,7 +221,7 @@ namespace MetaDslx.Compiler.Binding.Binders
         protected virtual ISymbol GetChildSymbol(string childName, TextSpan childSpan, ISymbol container, Type kind)
         {
             if (container == null) return null;
-            foreach (ISymbol sym in container.MChildren)
+            foreach (ISymbol sym in container.MGetMembers())
             {
                 if (childName != null && sym.MName != childName)
                 {

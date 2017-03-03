@@ -177,11 +177,13 @@ namespace MetaDslx.Compiler.Binding
                 int count = name.Count;
                 if (count > 0)
                 {
+                    string nestingProperty = count == 1 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
                     var nameTexts = name.Select(n => this.GetNameFromNode(n)).ToArray();
-                    var decl = new SingleDeclaration(nameTexts[count - 1], declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(name[count - 1]), declaration.CanMerge, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable());
+                    var decl = new SingleDeclaration(nameTexts[count - 1], declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(name[count - 1]), declaration.CanMerge, nestingProperty, declaration.Members.ToImmutable());
                     for (int i = count - 2; i >= 0; i--)
                     {
-                        decl = new SingleDeclaration(nameTexts[i], declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(name[i]), declaration.CanMerge, declaration.ParentPropertyToAddTo, ImmutableArray.Create(decl));
+                        string parentProperty = i == 0 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
+                        decl = new SingleDeclaration(nameTexts[i], declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(name[i]), declaration.CanMerge, parentProperty, ImmutableArray.Create(decl));
                     }
                     parent.Members.Add(decl);
                 }

@@ -15,7 +15,6 @@ using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.MetaModel;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Languages.Antlr4Roslyn.Parser;
-
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 {
     public class MetaModelSyntaxParser : Antlr4SyntaxParser<MetaModelLexer, MetaModelParser>

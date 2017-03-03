@@ -5,6 +5,7 @@ using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
+using MetaDslx.Languages.Meta.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -19,7 +20,7 @@ namespace MetaDslx.Compiler.Binding
     public abstract class SymbolBuilder
     {
         private readonly CompilationBase _compilation;
-        private ModelFactory _lazyFactory;
+        private MetaFactory _lazyMetaFactory;
 
         public SymbolBuilder(CompilationBase compilation)
         {
@@ -34,6 +35,18 @@ namespace MetaDslx.Compiler.Binding
         protected MutableModel ModelBuilder
         {
             get { return _compilation._lazyModelBuilder; }
+        }
+
+        protected MetaFactory MetaFactory
+        {
+            get
+            {
+                if (_lazyMetaFactory == null)
+                {
+                    Interlocked.CompareExchange(ref _lazyMetaFactory, new MetaFactory(this.ModelBuilder), null);
+                }
+                return _lazyMetaFactory;
+            }
         }
 
         public ISymbol BuildSymbol(ISymbol container, RedNode node, string parentPropertyToAddTo, Type symbolType)
@@ -187,7 +200,6 @@ namespace MetaDslx.Compiler.Binding
                     //symbol.MSetLazy(currentProperty, LazyValue.CreateSingle(() => BindSingleValue(symbol, node, currentName), true));
                 }
             }
-            this.ExecuteCustomBinders(symbol, node);
         }
 
         private object BindSingleValue(MutableSymbol symbol, RedNode node, string propertyName)
@@ -221,17 +233,6 @@ namespace MetaDslx.Compiler.Binding
             return values;
         }
 
-        private void ExecuteCustomBinders(MutableSymbol symbol, RedNode node)
-        {
-            /*var binder = this.Compilation.GetBinder(node);
-            if (binder == null) return;
-            var customBinders = binder.FindDescendantBinders<ICustomBinder>(cb => true, b => !(b is ISymbolDefBinder));
-            foreach (var customBinder in customBinders)
-            {
-                customBinder.CustomBind();
-            }*/
-        }
-
         public MutableSymbol CreateSymbol(Type symbolType)
         {
             return this.CreateSymbolCore(symbolType);
@@ -247,7 +248,11 @@ namespace MetaDslx.Compiler.Binding
             return errorSymbol;
         }
 
-        protected abstract MutableSymbol CreateErrorSymbolCore();
+        protected virtual MutableSymbol CreateErrorSymbolCore()
+        {
+            var f = this.MetaFactory;
+            return f.MetaPrimitiveType();
+        }
 
         public MutableSymbol CreateGlobalNamespace(IEnumerable<ISymbol> namespacesToMerge)
         {
@@ -257,7 +262,11 @@ namespace MetaDslx.Compiler.Binding
             return result;
         }
 
-        protected abstract MutableSymbol CreateGlobalNamespaceCore(IEnumerable<ISymbol> namespacesToMerge);
+        protected virtual MutableSymbol CreateGlobalNamespaceCore(IEnumerable<ISymbol> namespacesToMerge)
+        {
+            var f = this.MetaFactory;
+            return f.MetaRootNamespace();
+        }
 
         public ISymbol CreateGlobalNamespaceAlias(ISymbol globalNamespace, RootBinder rootBinder)
         {
@@ -267,6 +276,9 @@ namespace MetaDslx.Compiler.Binding
             return result;
         }
 
-        protected abstract MutableSymbol CreateGlobalNamespaceAliasCore(ISymbol globalNamespace);
+        protected virtual MutableSymbol CreateGlobalNamespaceAliasCore(ISymbol globalNamespace)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

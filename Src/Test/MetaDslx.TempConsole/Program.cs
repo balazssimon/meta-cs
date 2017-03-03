@@ -56,7 +56,7 @@ namespace MetaDslx.TempConsole
         {
             //try
             {
-                //*
+                /*
                 Console.WriteLine("----");
                 Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
                 GenerateLanguageService(
@@ -116,14 +116,14 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine("----");
                 CompileMeta(
                     @"../../../../Samples/MetaDslx.Languages.Soal\Soal.mm",
-                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal1.cs"
+                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.cs"
                     );
                 //*/
                 /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm",
-                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel2.cs"
+                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel1.cs"
                     );
                 //*/
                 /*

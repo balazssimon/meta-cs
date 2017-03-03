@@ -91,6 +91,7 @@
     </Compile>
     <Compile Include="Syntax\SoalSyntax.cs" />
     <Compile Include="Syntax\SoalSyntaxFacts.cs" />
+    <Compile Include="Syntax\SoalSyntaxKind.cs" />
     <Compile Include="Syntax\SoalSyntaxTree.cs" />
   </ItemGroup>
   <ItemGroup>

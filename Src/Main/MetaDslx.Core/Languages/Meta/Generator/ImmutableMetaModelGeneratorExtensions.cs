@@ -72,9 +72,8 @@ namespace MetaDslx.Languages.Meta.Generator
                     if (!string.IsNullOrEmpty(result)) result = "." + result;
                     result = currentNs.Name + result;
                 }
-                currentNs = currentNs.Parent;
+                currentNs = currentNs.Namespace;
             }
-            //result = result + ".Immutable";
             switch (kind)
             {
                 case NamespaceKind.Internal:
@@ -139,20 +138,39 @@ namespace MetaDslx.Languages.Meta.Generator
         private string CSharpName(MetaPrimitiveType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
         {
             string result;
-            switch (kind)
+            if (mtype.Name == "symbol")
             {
-                case ClassKind.ImmutableInstance:
-                    result = this.ToPascalCase(mtype.Name);
-                    break;
-                case ClassKind.BuilderInstance:
-                    result = this.ToPascalCase(mtype.Name);
-                    break;
-                case ClassKind.FactoryMethod:
-                    result = this.ToPascalCase(mtype.Name);
-                    break;
-                default:
-                    result = mtype.Name;
-                    break;
+                switch (kind)
+                {
+                    case ClassKind.Immutable:
+                        return "global::MetaDslx.Core.ImmutableSymbol";
+                    case ClassKind.Builder:
+                        return "global::MetaDslx.Core.MutableSymbol";
+                    case ClassKind.ImmutableInstance:
+                        return "Symbol";
+                    case ClassKind.BuilderInstance:
+                        return "Symbol";
+                    default:
+                        return "symbol";
+                }
+            }
+            else
+            {
+                switch (kind)
+                {
+                    case ClassKind.ImmutableInstance:
+                        result = this.ToPascalCase(mtype.Name);
+                        break;
+                    case ClassKind.BuilderInstance:
+                        result = this.ToPascalCase(mtype.Name);
+                        break;
+                    case ClassKind.FactoryMethod:
+                        result = this.ToPascalCase(mtype.Name);
+                        break;
+                    default:
+                        result = mtype.Name;
+                        break;
+                }
             }
             if (fullName)
             {
@@ -195,7 +213,7 @@ namespace MetaDslx.Languages.Meta.Generator
             if (mtype.InnerType is MetaPrimitiveType)
             {
                 MetaPrimitiveType mpt = (MetaPrimitiveType)mtype.InnerType;
-                if (mpt.Name != "object" || mpt.Name != "string")
+                if (mpt.Name != "object" || mpt.Name != "string" || mpt.Name != "symbol")
                 {
                     result = result + "?";
                 }
@@ -478,13 +496,43 @@ namespace MetaDslx.Languages.Meta.Generator
             return mmodel.Namespace.Declarations.Contains(mdecl);
         }
 
+        public ImmutableList<ImmutableSymbol> GetSymbolInstances(MetaModel mmodel)
+        {
+            ImmutableList<ImmutableSymbol>.Builder result = ImmutableList.CreateBuilder<ImmutableSymbol>();
+            var rootSymbols = mmodel.MModel.Symbols.Where(s => s.MParent == null);
+            foreach (var item in rootSymbols)
+            {
+                this.CollectSymbolInstances(item, result);
+            }
+            foreach (var item in mmodel.MModel.Symbols)
+            {
+                if (!result.Contains(item) && !(item is MetaRootNamespace) && (!(item is MetaType) || !MetaConstants.Types.Contains((MetaType)item)))
+                {
+                    result.Add(item);
+                }
+            }
+            return result.ToImmutable();
+        }
+
+        private void CollectSymbolInstances(ImmutableSymbol symbol, ImmutableList<ImmutableSymbol>.Builder result)
+        {
+            if (!(symbol is MetaRootNamespace))
+            {
+                result.Add(symbol);
+            }
+            foreach (var child in symbol.MChildren)
+            {
+                this.CollectSymbolInstances(child, result);
+            }
+        }
+
         public ImmutableDictionary<ImmutableSymbol, string> GetSymbolInstanceNames(MetaModel mmodel)
         {
             ImmutableDictionary<ImmutableSymbol, string>.Builder result = ImmutableDictionary.CreateBuilder<ImmutableSymbol, string>();
             int tmpCounter = 0;
             foreach (var item in mmodel.MModel.Symbols)
             {
-                //if (!(item is RootScope))
+                if (!(item is MetaRootNamespace))
                 {
                     string name = null;
                     MetaProperty prop = item as MetaProperty;
@@ -494,11 +542,11 @@ namespace MetaDslx.Languages.Meta.Generator
                     {
                         name = this.CSharpName(prop, mmodel, PropertyKind.BuilderInstance);
                     }
-                    else if (decl != null && !(decl is MetaConstant))
+                    else if (decl != null && !(decl is MetaConstant) && !(decl is MetaNamespace))
                     {
                         name = this.CSharpName(decl, mmodel, ClassKind.BuilderInstance);
                     }
-                    if ((decl == null || decl.Namespace == mmodel.Namespace) && (type == null || !MetaConstants.Types.Contains(type)))
+                    if (/*(decl == null || decl.Namespace == mmodel.Namespace) &&*/ (type == null || !MetaConstants.Types.Contains(type)))
                     {
                         if (name == null)
                         {
@@ -548,7 +596,7 @@ namespace MetaDslx.Languages.Meta.Generator
             MetaPrimitiveType primitive = mtype as MetaPrimitiveType;
             if (primitive != null)
             {
-                return primitive.Name == "string" || primitive.Name == "object";
+                return primitive.Name == "string" || primitive.Name == "object" || primitive.Name == "symbol";
             }
             if (mtype is MetaClass) return true;
             return false;

@@ -79,7 +79,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseNamespaceDeclaration)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node.NamespaceDeclaration, "Namespaces");
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.NamespaceDeclaration, "Symbols");
 					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
 			}
@@ -839,7 +839,7 @@ namespace MetaDslx.Languages.Meta.Binding
 							resultBinder = this.CreateValueBinder(resultBinder, node.ObjectType, MetaInstance.Object);
 							break;
 						case MetaModelSyntaxKind.KSymbol:
-							resultBinder = this.CreateValueBinder(resultBinder, node.ObjectType, MetaInstance.MetaClass);
+							resultBinder = this.CreateValueBinder(resultBinder, node.ObjectType, MetaInstance.Symbol);
 							break;
 						case MetaModelSyntaxKind.KString:
 							resultBinder = this.CreateValueBinder(resultBinder, node.ObjectType, MetaInstance.String);

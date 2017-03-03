@@ -87,6 +87,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 		DOC_COMMENT = 63,
 		BLOCK_COMMENT = 64,
 		DOC_COMMENT_STAR = 65,
+		LastTokenSyntaxKind = 65,
 
 		// Rules:
 	}

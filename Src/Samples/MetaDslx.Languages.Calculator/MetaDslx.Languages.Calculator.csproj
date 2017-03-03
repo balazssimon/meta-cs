@@ -45,6 +45,7 @@
     <Compile Include="Binding\CalculatorBinderFactoryVisitor.cs" />
     <Compile Include="Binding\CalculatorDeclarationTreeBuilderVisitor.cs" />
     <Compile Include="Binding\CalculatorSymbolBuilder.cs" />
+    <Compile Include="Syntax\CalculatorSyntaxKind.cs" />
     <Compile Include="Syntax\InternalSyntax\CalculatorLexer.cs">
       <DependentUpon>CalculatorLexer.ag4</DependentUpon>
     </Compile>

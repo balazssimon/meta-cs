@@ -2,19 +2,23 @@ using System.Threading;
 using MetaDslx.Compiler;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Text;
-using MetaDslx.Languages.Calculator.Syntax;
-using MetaDslx.Languages.Calculator.Syntax.InternalSyntax;
 
-namespace MetaDslx.Languages.Calculator
+namespace MetaDslx.Languages.Calculator.Syntax
 {
-	public enum CalculatorTokenKind
+	public enum CalculatorTokenKind : int
 	{
-		None,
+		None = 0,
+	}
+
+	public enum CalculatorLexerMode : int
+	{
+		None = 0,
+		DEFAULT_MODE = 0
 	}
 
 	public class CalculatorSyntaxFacts : SyntaxFacts
 	{
-		internal static readonly CalculatorSyntaxFacts Instance = new CalculatorSyntaxFacts();
+		public static readonly CalculatorSyntaxFacts Instance = new CalculatorSyntaxFacts();
 
 		protected override int DefaultEndOfLineSyntaxKindCore
 		{
@@ -179,6 +183,20 @@ namespace MetaDslx.Languages.Calculator
 		}
 
 		public CalculatorTokenKind GetTokenKind(CalculatorSyntaxKind kind)
+		{
+			switch(kind)
+			{
+				default:
+					return CalculatorTokenKind.None;
+			}
+		}
+
+		public CalculatorTokenKind GetModeTokenKind(int rawKind)
+		{
+			return this.GetModeTokenKind((CalculatorLexerMode)rawKind);
+		}
+
+		public CalculatorTokenKind GetModeTokenKind(CalculatorLexerMode kind)
 		{
 			switch(kind)
 			{

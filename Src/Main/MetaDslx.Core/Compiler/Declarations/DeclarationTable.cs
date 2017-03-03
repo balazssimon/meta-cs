@@ -286,7 +286,7 @@ namespace MetaDslx.Compiler.Declarations
                 {
                     foreach (var child in current.Children)
                     {
-                        if (child.IsMember && predicate(child.Name))
+                        if (predicate(child.Name))
                         {
                             return true;
                         }

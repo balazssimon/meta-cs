@@ -150,6 +150,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 		TS_TOpenBracket = 126,
 		TS_TCloseBracket = 127,
 		DoubleQuoteVerbatimStringLiteralStart = 128,
+		LastTokenSyntaxKind = 128,
 
 		// Rules:
 	}
