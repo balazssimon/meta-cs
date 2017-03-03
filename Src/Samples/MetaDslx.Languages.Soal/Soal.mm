@@ -1,7 +1,7 @@
 ﻿namespace MetaDslx.Languages.Soal.Symbols
 {
 	metamodel Soal(Uri="http://MetaDslx.Languages.Soal/1.0");
-
+	
 	const PrimitiveType Object;// = new PrimitiveType() { Name = "object", Nullable = true };
 	const PrimitiveType String;// = new PrimitiveType() { Name = "string", Nullable = true };
 	const PrimitiveType Int;// = new PrimitiveType() { Name = "int" };

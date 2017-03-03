@@ -870,14 +870,11 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public override object VisitExpressionList(MetaGeneratorParser.ExpressionListContext context)
         {
             string comma = "";
-            foreach (var expr in context.children)
+            foreach (var expr in context.expression())
             {
-                if (expr is MetaGeneratorParser.ExpressionContext)
-                {
-                    Write(comma);
-                    Visit(expr);
-                    comma = ", ";
-                }
+                Write(comma);
+                Visit(expr);
+                comma = ", ";
             }
             return null;
         }
@@ -1205,14 +1202,11 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         {
             Write("(");
             string comma = "";
-            foreach (var param in context.children)
+            foreach (var param in context.implicitParameter())
             {
-                if (param is MetaGeneratorParser.ImplicitParameterContext)
-                {
-                    Write(comma);
-                    Visit(param);
-                    comma = ", ";
-                }
+                Write(comma);
+                Visit(param);
+                comma = ", ";
             }
             Write(")");
             return null;
@@ -1222,14 +1216,11 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         {
             Write("(");
             string comma = "";
-            foreach (var param in context.children)
+            foreach (var param in context.explicitParameter())
             {
-                if (param is MetaGeneratorParser.ExplicitParameterContext)
-                {
-                    Write(comma);
-                    Visit(param);
-                    comma = ", ";
-                }
+                Write(comma);
+                Visit(param);
+                comma = ", ";
             }
             Write(")");
             return null;
@@ -1280,26 +1271,26 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         {
             bool forceNewLine = this.ForceNewLine(context);
             bool noNewLine = this.NoNewLine(context);
-            int lastIndex = context.ChildCount - 2;
+            int lastIndex = context.templateContent().Length - 1;
             int outputCount = 0;
             int nonWhitespaceOutputCount = 0;
             int outputExpressionCount = 0;
             int statementCount = 0;
             for (int i = 0; i <= lastIndex; ++i)
             {
-                var child = context.children[i];
-                if (child is MetaGeneratorParser.TemplateOutputContext)
+                var child = context.templateContent()[i];
+                if (child.templateOutput() != null)
                 {
                     ++outputCount;
-                    MetaGeneratorParser.TemplateOutputContext toc = child as MetaGeneratorParser.TemplateOutputContext;
+                    MetaGeneratorParser.TemplateOutputContext toc = child.templateOutput();
                     if (!string.IsNullOrWhiteSpace(toc.GetText()))
                     {
                         ++nonWhitespaceOutputCount;
                     }
                 }
-                if (child is MetaGeneratorParser.TemplateStatementStartEndContext)
+                if (child.templateStatementStartEnd() != null)
                 {
-                    MetaGeneratorParser.TemplateStatementStartEndContext tse = child as MetaGeneratorParser.TemplateStatementStartEndContext;
+                    MetaGeneratorParser.TemplateStatementStartEndContext tse = child.templateStatementStartEnd();
                     if (tse.templateStatement() != null)
                     {
                         if (IsTemplateOutputExpression(tse))
@@ -1319,7 +1310,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 {
                     for (int i = 0; i <= lastIndex; ++i)
                     {
-                        var child = context.children[i];
+                        var child = context.templateContent()[i];
                         Visit(child);
                     }
                     if (forceNewLine || !noNewLine)
@@ -1339,8 +1330,8 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             {
                 for (int i = 0; i <= lastIndex; ++i)
                 {
-                    var child = context.children[i];
-                    if (child is MetaGeneratorParser.TemplateStatementStartEndContext)
+                    var child = context.templateContent()[i];
+                    if (child.templateStatementStartEnd() != null)
                     {
                         Visit(child);
                     }
@@ -1364,7 +1355,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 if (lastIndex >= 1)
                 {
                     MetaGeneratorParser.TemplateOutputContext output;
-                    output = context.children[0] as MetaGeneratorParser.TemplateOutputContext;
+                    output = context.templateContent()[0].templateOutput();
                     if (output != null)
                     {
                         prefixText = output.GetText();
@@ -1377,19 +1368,19 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 }
                 for (int i = startIndex; i <= endIndex; ++i)
                 {
-                    var child = context.children[i];
+                    var child = context.templateContent()[i];
                     string tmp = NewTmp();
                     bool hasOutput = false;
                     bool closeBraces = false;
-                    if (child is MetaGeneratorParser.TemplateOutputContext)
+                    if (child.templateOutput() != null)
                     {
-                        MetaGeneratorParser.TemplateOutputContext output = child as MetaGeneratorParser.TemplateOutputContext;
+                        MetaGeneratorParser.TemplateOutputContext output = child.templateOutput();
                         WriteLine("string {0}_line = \"{1}\"; {2}", tmp, EscapeText(output.GetText()), output.ToComment());
                         hasOutput = true;
                     }
-                    else if (child is MetaGeneratorParser.TemplateStatementStartEndContext)
+                    else if (child.templateStatementStartEnd() != null)
                     {
-                        MetaGeneratorParser.TemplateStatementStartEndContext statement = child as MetaGeneratorParser.TemplateStatementStartEndContext;
+                        MetaGeneratorParser.TemplateStatementStartEndContext statement = child.templateStatementStartEnd();
                         if (statement.templateStatement() != null)
                         {
                             if (IsTemplateOutputExpression(statement))

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\hnnegzvh.djj\MetaGeneratorParser.g4 by ANTLR 4.5.3
+// Generated from MetaGeneratorParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162

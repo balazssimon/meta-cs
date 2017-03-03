@@ -10,6 +10,7 @@ using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Text;
+using System.Threading;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
@@ -57,7 +58,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public void Compile()
         {
             if (this.compiled) return;
-            this.compiled = true;
+            else this.compiled = true;
             AntlrInputStream inputStream = new AntlrInputStream(this.Source);
             this.Lexer = this.CreateLexer(inputStream);
             this.CommonTokenStream = new CommonTokenStream(this.Lexer);
@@ -70,6 +71,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             this.ParseTree = this.CreateTree();
 
+            if (this.HasErrors)
+            {
+                this.diagnostics = this.DiagnosticBag.ToReadOnly();
+                return;
+            }
+
             this.DoCompile();
 
             if (this.GenerateOutput) this.Generate();
@@ -79,12 +86,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public void Generate()
         {
-            if (this.generated) return;
-            this.generated = true;
             if (!this.compiled)
             {
                 this.Compile();
             }
+            if (!this.GenerateOutput) return;
+            if (this.generated) return;
+            else this.generated = true;
             if (this.HasErrors) return;
             this.DoGenerate();
         }

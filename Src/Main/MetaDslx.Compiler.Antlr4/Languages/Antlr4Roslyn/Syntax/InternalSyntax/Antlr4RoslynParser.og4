@@ -42,8 +42,7 @@ parser grammar Antlr4RoslynParser;
 options {
 	tokenVocab = Antlr4RoslynLexer; 
 	                       
-	                             
-	ignoreRoslynRules=true;
+	                       
 }
 
 // The main entry point for parsing a v4 grammar.

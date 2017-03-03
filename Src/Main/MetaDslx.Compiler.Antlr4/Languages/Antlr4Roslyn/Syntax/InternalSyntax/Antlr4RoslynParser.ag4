@@ -42,7 +42,6 @@ parser grammar Antlr4RoslynParser;
 options {
 	tokenVocab = Antlr4RoslynLexer; 
 	generateCompiler=false;
-	generateLanguageService=true;
 	ignoreRoslynRules=true;
 }
 

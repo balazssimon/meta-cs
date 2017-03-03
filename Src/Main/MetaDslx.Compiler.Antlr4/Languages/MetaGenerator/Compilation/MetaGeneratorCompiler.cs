@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+using System.IO;
 
 namespace MetaDslx.Languages.MetaGenerator.Compilation
 {
@@ -49,6 +50,15 @@ namespace MetaDslx.Languages.MetaGenerator.Compilation
         protected override void DoGenerate()
         {
             this.GeneratedSource = this.generator.GeneratedSource;
+
+            if (this.GenerateOutput && this.OutputDirectory != null)
+            {
+                string fileName = Path.Combine(this.OutputDirectory, Path.ChangeExtension(this.FileName, ".cs"));
+                using (StreamWriter writer = new StreamWriter(fileName))
+                {
+                    writer.WriteLine(this.GeneratedSource);
+                }
+            }
         }
     }
 

@@ -40,7 +40,7 @@ lexer grammar Antlr4RoslynLexer;
 options
 {
 	superClass = LexerAdaptor; 
-	generateLanguageService = true;
+	                               
 }
 import LexBasic;
 

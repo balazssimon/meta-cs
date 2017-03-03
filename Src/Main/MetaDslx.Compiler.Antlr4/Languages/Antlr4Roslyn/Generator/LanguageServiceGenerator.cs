@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
 {
-    using __Hidden_LanguageServiceGenerator_1432171573;
-    namespace __Hidden_LanguageServiceGenerator_1432171573
+    using __Hidden_LanguageServiceGenerator_993369021;
+    namespace __Hidden_LanguageServiceGenerator_993369021
     {
         internal static class __Extensions
         {

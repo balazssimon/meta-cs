@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Package;
+using MetaDslx.VisualStudio.Soal.VisualStudio;
 
 namespace MetaDslx.VisualStudio
 {
@@ -49,6 +50,15 @@ namespace MetaDslx.VisualStudio
     [ProvideLanguageExtension(typeof(Antlr4RoslynLanguageService), Antlr4RoslynLanguageConfig.FileExtension)]
     [ProvideLanguageServiceAttribute(typeof(Antlr4RoslynLanguageService), Antlr4RoslynLanguageConfig.LanguageName, 1,
         RequestStockColors = false, EnableCommenting = true)]
+    [ProvideServiceAttribute(typeof(Antlr4LanguageService), ServiceName = Antlr4LanguageConfig.LanguageServiceName)]
+    [ProvideLanguageExtension(typeof(Antlr4LanguageService), Antlr4LanguageConfig.FileExtension)]
+    [ProvideLanguageServiceAttribute(typeof(Antlr4LanguageService), Antlr4LanguageConfig.LanguageName, 1,
+        RequestStockColors = false, EnableCommenting = true)]
+    [ProvideServiceAttribute(typeof(SoalLanguageService), ServiceName = SoalLanguageConfig.LanguageServiceName)]
+    [ProvideLanguageExtension(typeof(SoalLanguageService), SoalLanguageConfig.FileExtension)]
+    [ProvideLanguageServiceAttribute(typeof(SoalLanguageService), SoalLanguageConfig.LanguageName, 1,
+        RequestStockColors = false, EnableCommenting = true)]
+    [ProvideObject(typeof(Antlr4GeneratorService))]
     [ProvideObject(typeof(Antlr4RoslynGeneratorService))]
     [ProvideObject(typeof(MetaGeneratorGeneratorService))]
     [ProvideObject(typeof(MetaGeneratorService))]
@@ -78,6 +88,8 @@ namespace MetaDslx.VisualStudio
             this.RegisterLanguageService(typeof(MetaGeneratorLanguageService));
             this.RegisterLanguageService(typeof(MetaLanguageService));
             this.RegisterLanguageService(typeof(Antlr4RoslynLanguageService));
+            this.RegisterLanguageService(typeof(Antlr4LanguageService));
+            this.RegisterLanguageService(typeof(SoalLanguageService));
         }
 
         protected override void Initialize()

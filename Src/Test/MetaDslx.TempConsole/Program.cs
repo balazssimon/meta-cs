@@ -58,6 +58,13 @@ namespace MetaDslx.TempConsole
             {
                 //*
                 Console.WriteLine("----");
+                CompileGenerator(
+                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen",
+                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Generator\ImmutableMetaModelGenerator.cs"
+                    );
+                //*/
+                /*
+                Console.WriteLine("----");
                 Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
                 GenerateLanguageService(
                     "Antlr4Roslyn",
@@ -74,6 +81,24 @@ namespace MetaDslx.TempConsole
                     "MetaGeneratorLanguageService.cs",
                     false,
                     false);
+                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
+                GenerateLanguageService(
+                    "Meta",
+                    "MetaDslx.Languages.Meta",
+                    @"..\..\..\..\Main\MetaDslx.VisualStudio\Meta",
+                    "MetaLanguageService.cs",
+                    true,
+                    false);
+                //*/
+                /*
+                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4", "Antlr4Lexer.ag4", "MetaDslx.Languages.Antlr4");
+                GenerateLanguageService(
+                    "Antlr4",
+                    "MetaDslx.Languages.Antlr4",
+                    @"..\..\..\..\Main\MetaDslx.VisualStudio\Antlr4Roslyn",
+                    "Antlr4RoslynLanguageService.cs",
+                    false,
+                    true);
                 Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
                 GenerateLanguageService(
                     "Meta",
@@ -215,7 +240,8 @@ namespace MetaDslx.TempConsole
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(immutableModel.Symbols);
-                    writer.WriteLine(generator.Generate());
+                    string code = generator.Generate();
+                    writer.WriteLine(code);
                 }
             }
             //PrintScope("", compiler.GlobalScope);
@@ -333,7 +359,7 @@ namespace MetaDslx.TempConsole
         private static void CompileGenerator(string inputDirectory, string outputDirectory, string fileName)
         {
             string source;
-            using (StreamReader reader = new StreamReader(fileName))
+            using (StreamReader reader = new StreamReader(Path.Combine(inputDirectory, fileName)))
             {
                 source = reader.ReadToEnd();
             }

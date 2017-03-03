@@ -9,10 +9,43 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio
 {
+    /*
+    internal class Antlr4RoslynGenerator : SingleFileGenerator
+    {
+        public const string DefaultExtension = ".g4";
+        private Antlr4RoslynCompiler compiler;
+
+        public Antlr4RoslynGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
+            : base(inputFilePath, inputFileContents, defaultNamespace)
+        {
+            if (this.InputFileContents != null)
+            {
+                compiler = new Antlr4RoslynCompiler(this.InputFileContents, defaultNamespace, this.InputDirectory, this.InputDirectory, this.InputFileName);
+                compiler.GenerateAntlr4 = false;
+                compiler.Compile();
+            }
+        }
+
+        public override string GenerateStringContent()
+        {
+            if (compiler == null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                compiler.Generate();
+                return compiler.Antlr4Source;
+            }
+        }
+    }
+    */
+    
     internal enum Antlr4RoslynGeneratorItemKind
     {
         External,
         Antlr4,
+        Antlr4CSharp
     }
 
     internal class Antlr4RoslynGeneratorItem
@@ -37,7 +70,7 @@ namespace MetaDslx.VisualStudio
 
         public static string DefaultExtension
         {
-            get { return ".g4"; }
+            get { return ".cs"; }
         }
 
         public override IEnumerable<MultipleFileItem<object>> GetFileItems()
@@ -50,22 +83,17 @@ namespace MetaDslx.VisualStudio
                 compiler.Generate();
             }
             string bareFileName = Path.GetFileNameWithoutExtension(this.InputFileName);
-            MultipleFileItem<object> antlr4Grammar =
+            result.Add(
                 new MultipleFileItem<object>()
                 {
-                    Info = new Antlr4RoslynGeneratorItem() { Kind = Antlr4RoslynGeneratorItemKind.Antlr4, FileName = bareFileName + ".g4" },
-                };
-            antlr4Grammar.Properties.Add("Visitor", "True");
-            antlr4Grammar.Properties.Add("Listener", "True");
-            antlr4Grammar.Properties.Add("TargetLanguage", "CSharp");
-            result.Add(antlr4Grammar);
-            if (compiler.HasAntlr4Errors) return result;
+                    Info = new Antlr4RoslynGeneratorItem() { Kind = Antlr4RoslynGeneratorItemKind.Antlr4, FileName = bareFileName + ".og4" },
+                });
             result.Add(
                 new MultipleFileItem<object>()
                 {
                     Info = new Antlr4RoslynGeneratorItem() { Kind = Antlr4RoslynGeneratorItemKind.External, FileName = bareFileName + ".cs" },
-                    GeneratedExternally = true
                 });
+            if (compiler.HasAntlr4Errors) return result;
             if (compiler.IsParser)
             {
                 result.Add(
@@ -130,6 +158,11 @@ namespace MetaDslx.VisualStudio
                 {
                     if (compiler == null) return string.Empty;
                     else return this.compiler.Antlr4Source;
+                }
+                else if (item.Kind == Antlr4RoslynGeneratorItemKind.Antlr4CSharp)
+                {
+                    if (compiler == null) return string.Empty;
+                    else return this.compiler.Antlr4CSharpSource;
                 }
             }
             return base.GenerateStringContent(element);

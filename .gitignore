@@ -235,3 +235,5 @@ FakesAssemblies/
 /Src/Prototypes/Antlr4RedGreenTree3.zip
 /Src/Prototypes/Antlr4RedGreenTree2.zip
 /Install/v08/MetaDslx.VisualStudio.vsix
+/Install/MetaDslx.Compiler.Antlr4.dll
+/Install/Antlr4.Runtime.Standard.dll
