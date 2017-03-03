@@ -34,6 +34,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public bool IsParser { get; private set; }
         public bool GenerateCompiler { get; private set; }
         public bool GenerateLanguageService { get; private set; }
+        public bool IgnoreRoslynRules { get; private set; }
 
         public string Antlr4Source { get; private set; }
         public bool HasAntlr4Errors { get; private set; }
@@ -58,6 +59,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string GeneratedDeclarationTreeBuilder { get; private set; }
         public string GeneratedBinderFactoryVisitor { get; private set; }
         public string GeneratedSymbolBuilder { get; private set; }
+
+        public string GeneratedLanguageService { get; private set; }
 
         public Antlr4RoslynCompiler(string source, string defaultNamespace, string inputDirectory, string outputDirectory, string fileName)
             : base(source, defaultNamespace, inputDirectory, outputDirectory, fileName)
@@ -122,7 +125,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.IsParser = ruleCollector.IsParser;
             this.GenerateCompiler = ruleCollector.GenerateCompiler;
             this.GenerateLanguageService = ruleCollector.GenerateLanguageService;
+            this.IgnoreRoslynRules = ruleCollector.IgnoreRoslynRules;
             this.Grammar = ruleCollector.Grammar;
+
+            if (this.IgnoreRoslynRules)
+            {
+                this.DiagnosticBag = new DiagnosticBag();
+            }
 
             if (this.IsLexer)
             {
@@ -422,6 +431,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             generator.Properties.LanguageName = this.LanguageName;
             this.GeneratedSyntaxFacts = generator.GenerateSyntaxFacts();
             this.GeneratedSyntaxKind = generator.GenerateSyntaxKind();
+            this.GeneratedLanguageService = this.GetLanguageService();
 
             if (this.OutputDirectory == null) return;
 
@@ -440,7 +450,24 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 {
                     writer.WriteLine(this.GeneratedSyntaxKind);
                 }
+                outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "LanguageService.cs");
+                using (StreamWriter writer = new StreamWriter(outputFileName))
+                {
+                    writer.WriteLine(this.GeneratedLanguageService);
+                }
             }
+        }
+
+        private string GetLanguageService()
+        {
+            LanguageServiceGenerator generator = new LanguageServiceGenerator(null);
+            generator.Properties.LanguageServiceNamespace = this.DefaultNamespace+".VisualStudio";
+            generator.Properties.LanguageClassName = this.LanguageName;
+            generator.Properties.LanguageNamespace = this.DefaultNamespace;
+            generator.Properties.LanguageName = this.LanguageName;
+            generator.Properties.RoslynCompiler = this.GenerateCompiler && !this.IgnoreRoslynRules;
+            generator.Properties.GenerateMultipleFiles = false;
+            return generator.Generate();
         }
 
         private void GenerateParser()
@@ -911,6 +938,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public bool IsLexer { get; private set; }
         public bool GenerateCompiler { get; private set; }
         public bool GenerateLanguageService { get; private set; }
+        public bool IgnoreRoslynRules { get; private set; }
 
         public RoslynRuleCollector(Antlr4RoslynCompiler compiler)
         {
@@ -1044,6 +1072,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (optionName == "generateLanguageService")
             {
                 this.GenerateLanguageService = optionValue == "true";
+            }
+            if (optionName == "ignoreRoslynRules")
+            {
+                this.IgnoreRoslynRules = optionValue == "true";
             }
             if (optionName == "tokenVocab")
             {
@@ -1940,6 +1972,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.RemoveText(context);
             }
             else if (context.identifier().GetText() == "generateCompilerBase")
+            {
+                this.RemoveText(context);
+            }
+            else if (context.identifier().GetText() == "ignoreRoslynRules")
             {
                 this.RemoveText(context);
             }

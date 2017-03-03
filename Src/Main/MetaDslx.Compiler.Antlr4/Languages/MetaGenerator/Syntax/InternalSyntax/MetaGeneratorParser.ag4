@@ -18,10 +18,10 @@ usingDeclaration
     | KUsing KGenerator qualifiedName identifier? TSemicolon		#usingGeneratorDeclaration
 	;
 
-configDeclaration : KProperties identifier? configProperty* KEnd KProperties;
+configDeclaration : startProperties=KProperties identifier? configProperty* KEnd endProperties=KProperties;
 configProperty
     : typeReference identifier (TAssign expression)? TSemicolon #configPropertyDeclaration
-    | KProperties identifier configProperty* KEnd KProperties  #configPropertyGroupDeclaration;
+    | startProperties=KProperties identifier configProperty* KEnd endProperties=KProperties  #configPropertyGroupDeclaration;
 
 methodDeclaration : functionDeclaration | templateDeclaration | externFunctionDeclaration;
 
@@ -33,17 +33,26 @@ parameter : typeReference identifier (TAssign expression)?;
 
 body : statement*;
 statement 
-    : variableDeclarationStatement TSemicolon
-    | returnStatement TSemicolon
-    | expressionStatement TSemicolon
+    : singleStatementSemicolon
     | ifStatement
     | loopStatement
 	| switchStatement;
 
+singleStatement 
+	: variableDeclarationStatement
+    | returnStatement
+    | expressionStatement
+	;
+
+singleStatementSemicolon : singleStatement TSemicolon;
+
 variableDeclarationStatement : typeReference identifier (TAssign expression)?;
 returnStatement : KReturn expression;
 expressionStatement : expression;
-ifStatement : ifStatementBegin body (elseIfStatement body)* (ifStatementElse body)? ifStatementEnd;
+ifStatement : ifStatementBegin body elseIfStatementBody* ifStatementElseBody? ifStatementEnd;
+elseIfStatementBody : elseIfStatement body;
+ifStatementElseBody : ifStatementElse body;
+
 ifStatementBegin : KIf TOpenParenthesis expression TCloseParenthesis;
 elseIfStatement : KElse KIf TOpenParenthesis expression TCloseParenthesis;
 ifStatementElse : KElse;
@@ -80,7 +89,8 @@ switchDefaultHeadStatement : KDefault TColon;
 templateDeclaration : templateSignature templateBody KEndTemplate;
 templateSignature : KTemplate identifier TOpenParenthesis paramList? TCloseParenthesis;
 templateBody : templateContentLine*;
-templateContentLine : (templateOutput | templateStatementStartEnd)* templateLineEnd;
+templateContentLine : templateContent* templateLineEnd;
+templateContent : templateOutput | templateStatementStartEnd;
 templateOutput : TemplateOutput;
 templateLineEnd : TemplateCrLf | TemplateLineBreak | TemplateLineControl;
 templateStatementStartEnd : TemplateStatementStart templateStatement? TemplateStatementEnd;
@@ -109,8 +119,10 @@ predefinedType
 
 typeReferenceList : typeReference (TComma typeReference)*;
 typeReference : arrayType | nullableType | genericType | simpleType;
-arrayType : (nullableType | genericType | simpleType) rankSpecifiers;
-nullableType : (genericType | simpleType) TQuestion;
+arrayType : arrayItemType rankSpecifiers;
+arrayItemType : nullableType | genericType | simpleType;
+nullableType : nullableItemType TQuestion;
+nullableItemType : genericType | simpleType;
 genericType : qualifiedName typeArgumentList;
 simpleType : qualifiedName | predefinedType;
 voidType : KVoid;
@@ -121,38 +133,9 @@ expressionList : expression (TComma expression)*;
 variableReference : expression;
 rankSpecifiers : rankSpecifier+;
 rankSpecifier : TOpenBracket TComma* TCloseBracket;
-/*
-arrayInitializer 
-    : TOpenBrace variableInitializerList? TCloseBrace
-    | TOpenBrace variableInitializerList TComma TCloseBrace;
-variableInitializerList 
-    : variableInitializer (TComma variableInitializer)*;
-variableInitializer 
-    : expression
-    | arrayInitializer;*/
 
-/*
-objectOrCollectionInitializer
-    : objectInitializer
-    | collectionInitializer;
-objectInitializer
-    : TOpenBrace memberInitializerList? TCloseBrace
-    | TOpenBrace memberInitializerList TComma TCloseBrace;
-memberInitializerList : memberInitializer (TComma memberInitializer)*;
-memberInitializer : identifier TAssign initializerValue;
-initializerValue : expression | objectOrCollectionInitializer;
-collectionInitializer 
-    : TOpenBrace elementInitializerList? TCloseBrace
-    | TOpenBrace elementInitializerList TComma TCloseBrace;
-elementInitializerList : elementInitializer (TComma elementInitializer)*;
-elementInitializer 
-    : expression 
-    | TOpenBrace expressionList TCloseBrace;
-arrayCreationExpression
-    : KNew typeReference TOpenBracket expressionList TCloseBracket rankSpecifiers? arrayInitializer?
-    | KNew typeReference arrayInitializer;
-*/
-unboundTypeName : identifier genericDimensionSpecifier? (TDot identifier genericDimensionSpecifier?)*;
+unboundTypeName : genericDimensionItem (TDot genericDimensionItem)*;
+genericDimensionItem : identifier genericDimensionSpecifier?;
 genericDimensionSpecifier : TLessThan TComma* TGreaterThan;
 
 anonymousFunctionSignature
@@ -179,21 +162,21 @@ expression
     | predefinedType TDot identifier typeArgumentList? #predefinedTypeMemberAccessExpression
     | expression TDot identifier typeArgumentList? #memberAccessExpression
     | TOpenParenthesis typeReference TCloseParenthesis expression #typecastExpression
-    | (TPlus | TMinus | TExclamation | TTilde | TPlusPlus | TMinusMinus) expression #unaryExpression
-    | expression (TPlusPlus | TMinusMinus) #postExpression
-    | expression (TAsterisk | TSlash | TPercent) expression #multiplicationExpression
-    | expression (TPlus | TMinus) expression #additionExpression
-    | expression (TLessThan | TGreaterThan | TLessThanOrEquals | TGreaterThanOrEquals) expression #relationalExpression
-    | expression (KIs | KAs) typeReference #typecheckExpression
-    | expression (TEquals | TNotEquals) expression #equalityExpression
-    | expression TAmp expression #bitwiseAndExpression
-    | expression THat expression #bitwiseXorExpression
-    | expression TPipe expression #bitwiseOrExpression
-    | expression TAnd expression #logicalAndExpression
-    | expression TXor expression #logicalXorExpression
-    | expression TOr expression #logicalOrExpression
-    | expression TQuestion expression TColon expression #conditionalExpression
-    | expression (TAssign | TAssignPlus | TAssignMinus | TAssignAsterisk | 
+    | operator=(TPlus | TMinus | TExclamation | TTilde | TPlusPlus | TMinusMinus) expression #unaryExpression
+    | expression operator=(TPlusPlus | TMinusMinus) #postExpression
+    | left=expression operator=(TAsterisk | TSlash | TPercent) right=expression #multiplicationExpression
+    | left=expression operator=(TPlus | TMinus) right=expression #additionExpression
+    | left=expression operator=(TLessThan | TGreaterThan | TLessThanOrEquals | TGreaterThanOrEquals) right=expression #relationalExpression
+    | left=expression operator=(KIs | KAs) typeReference #typecheckExpression
+    | left=expression operator=(TEquals | TNotEquals) right=expression #equalityExpression
+    | left=expression TAmp right=expression #bitwiseAndExpression
+    | left=expression THat right=expression #bitwiseXorExpression
+    | left=expression TPipe right=expression #bitwiseOrExpression
+    | left=expression TAnd right=expression #logicalAndExpression
+    | left=expression TXor right=expression #logicalXorExpression
+    | left=expression TOr right=expression #logicalOrExpression
+    | condition=expression TQuestion thenBranch=expression TColon elseBranch=expression #conditionalExpression
+    | left=expression operator=(TAssign | TAssignPlus | TAssignMinus | TAssignAsterisk | 
                   TAssignSlash | TAssignPercent | TAssignAmp | TAssignPipe |
                   TAssignHat | TAssignLeftShift | TAssignRightShift) expression #assignmentExpression
     | anonymousFunctionSignature TArrow expression #lambdaExpression;

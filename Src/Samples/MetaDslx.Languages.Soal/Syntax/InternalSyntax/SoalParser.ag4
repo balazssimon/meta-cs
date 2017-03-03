@@ -3,7 +3,6 @@
 options {
 	tokenVocab=SoalLexer;
 	generateCompiler=true;
-	generateCompilerBase=true;
 }
 
 $Root(Namespace)

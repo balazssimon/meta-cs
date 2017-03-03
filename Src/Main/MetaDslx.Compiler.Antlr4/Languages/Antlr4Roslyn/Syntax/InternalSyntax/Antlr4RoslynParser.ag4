@@ -43,6 +43,7 @@ options {
 	tokenVocab = Antlr4RoslynLexer; 
 	generateCompiler=false;
 	generateLanguageService=true;
+	ignoreRoslynRules=true;
 }
 
 // The main entry point for parsing a v4 grammar.

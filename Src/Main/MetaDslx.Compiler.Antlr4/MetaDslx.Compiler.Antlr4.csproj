@@ -167,7 +167,7 @@
       <LastGenOutput>LanguageServiceGenerator.cs</LastGenOutput>
     </None>
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>Antlr4RoslynLexer.g4</LastGenOutput>
     </None>
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.g4">
@@ -179,20 +179,20 @@
       <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
     </None>
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>Antlr4RoslynParser.g4</LastGenOutput>
     </None>
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.g4">
-      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </None>
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.tokens">
       <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </None>
     <None Include="Languages\Antlr4Roslyn\Syntax\InternalSyntax\LexBasic.g4" />
     <None Include="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorLexer.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>MetaGeneratorLexer.g4</LastGenOutput>
     </None>
     <None Include="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorLexer.g4">
@@ -204,7 +204,7 @@
       <DependentUpon>MetaGeneratorLexer.ag4</DependentUpon>
     </None>
     <None Include="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorParser.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>MetaGeneratorParser.g4</LastGenOutput>
     </None>
     <None Include="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorParser.g4">
@@ -212,16 +212,12 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </None>
-    <None Include="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorParser.literals">
-      <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
-    </None>
     <None Include="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorParser.tokens">
       <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
     </None>
     <None Include="Languages\Meta\Syntax\InternalSyntax\MetaLexer.ag4">
       <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>MetaLexer.g4</LastGenOutput>
-      <CustomToolNamespace>MetaDslx.Languages.Meta</CustomToolNamespace>
     </None>
     <None Include="Languages\Meta\Syntax\InternalSyntax\MetaLexer.g4">
       <AutoGen>True</AutoGen>
@@ -234,7 +230,6 @@
     <None Include="Languages\Meta\Syntax\InternalSyntax\MetaParser.ag4">
       <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>MetaParser.g4</LastGenOutput>
-      <CustomToolNamespace>MetaDslx.Languages.Meta</CustomToolNamespace>
     </None>
     <None Include="Languages\Meta\Syntax\InternalSyntax\MetaParser.g4">
       <AutoGen>True</AutoGen>

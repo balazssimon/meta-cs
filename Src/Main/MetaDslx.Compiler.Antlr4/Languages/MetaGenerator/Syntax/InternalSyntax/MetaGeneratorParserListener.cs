@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\fuorzock.43r\MetaGeneratorParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\hnnegzvh.djj\MetaGeneratorParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -200,6 +200,26 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] MetaGeneratorParser.StatementContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.singleStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSingleStatement([NotNull] MetaGeneratorParser.SingleStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.singleStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSingleStatement([NotNull] MetaGeneratorParser.SingleStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.singleStatementSemicolon"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSingleStatementSemicolon([NotNull] MetaGeneratorParser.SingleStatementSemicolonContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.singleStatementSemicolon"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSingleStatementSemicolon([NotNull] MetaGeneratorParser.SingleStatementSemicolonContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -239,6 +259,26 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitIfStatement([NotNull] MetaGeneratorParser.IfStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.elseIfStatementBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterElseIfStatementBody([NotNull] MetaGeneratorParser.ElseIfStatementBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.elseIfStatementBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitElseIfStatementBody([NotNull] MetaGeneratorParser.ElseIfStatementBodyContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.ifStatementElseBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIfStatementElseBody([NotNull] MetaGeneratorParser.IfStatementElseBodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.ifStatementElseBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIfStatementElseBody([NotNull] MetaGeneratorParser.IfStatementElseBodyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.ifStatementBegin"/>.
 	/// </summary>
@@ -558,6 +598,16 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitTemplateContentLine([NotNull] MetaGeneratorParser.TemplateContentLineContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.templateContent"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTemplateContent([NotNull] MetaGeneratorParser.TemplateContentContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.templateContent"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTemplateContent([NotNull] MetaGeneratorParser.TemplateContentContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.templateOutput"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -648,6 +698,16 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitArrayType([NotNull] MetaGeneratorParser.ArrayTypeContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.arrayItemType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterArrayItemType([NotNull] MetaGeneratorParser.ArrayItemTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.arrayItemType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitArrayItemType([NotNull] MetaGeneratorParser.ArrayItemTypeContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.nullableType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -657,6 +717,16 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitNullableType([NotNull] MetaGeneratorParser.NullableTypeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.nullableItemType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNullableItemType([NotNull] MetaGeneratorParser.NullableItemTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.nullableItemType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNullableItemType([NotNull] MetaGeneratorParser.NullableItemTypeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.genericType"/>.
 	/// </summary>
@@ -747,6 +817,16 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitUnboundTypeName([NotNull] MetaGeneratorParser.UnboundTypeNameContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.genericDimensionItem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGenericDimensionItem([NotNull] MetaGeneratorParser.GenericDimensionItemContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.genericDimensionItem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGenericDimensionItem([NotNull] MetaGeneratorParser.GenericDimensionItemContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.genericDimensionSpecifier"/>.
 	/// </summary>

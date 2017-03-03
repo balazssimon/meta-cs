@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\fuorzock.43r\MetaGeneratorParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\hnnegzvh.djj\MetaGeneratorParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -133,6 +133,18 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] MetaGeneratorParser.StatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.singleStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSingleStatement([NotNull] MetaGeneratorParser.SingleStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.singleStatementSemicolon"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSingleStatementSemicolon([NotNull] MetaGeneratorParser.SingleStatementSemicolonContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -156,6 +168,18 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIfStatement([NotNull] MetaGeneratorParser.IfStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.elseIfStatementBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitElseIfStatementBody([NotNull] MetaGeneratorParser.ElseIfStatementBodyContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.ifStatementElseBody"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfStatementElseBody([NotNull] MetaGeneratorParser.IfStatementElseBodyContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.ifStatementBegin"/>.
 	/// </summary>
@@ -347,6 +371,12 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <return>The visitor result.</return>
 	Result VisitTemplateContentLine([NotNull] MetaGeneratorParser.TemplateContentLineContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.templateContent"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTemplateContent([NotNull] MetaGeneratorParser.TemplateContentContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.templateOutput"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -401,11 +431,23 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <return>The visitor result.</return>
 	Result VisitArrayType([NotNull] MetaGeneratorParser.ArrayTypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.arrayItemType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArrayItemType([NotNull] MetaGeneratorParser.ArrayItemTypeContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.nullableType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitNullableType([NotNull] MetaGeneratorParser.NullableTypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.nullableItemType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNullableItemType([NotNull] MetaGeneratorParser.NullableItemTypeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.genericType"/>.
 	/// </summary>
@@ -460,6 +502,12 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitUnboundTypeName([NotNull] MetaGeneratorParser.UnboundTypeNameContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.genericDimensionItem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGenericDimensionItem([NotNull] MetaGeneratorParser.GenericDimensionItemContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.genericDimensionSpecifier"/>.
 	/// </summary>

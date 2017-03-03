@@ -2,7 +2,7 @@
 
 options 
 {
-	generateLanguageService = true;
+	                               
 }
 
 @lexer::members {

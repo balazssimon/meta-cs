@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\balaz\AppData\Local\Temp\fuorzock.43r\MetaGeneratorParser.g4 by ANTLR 4.5.3
+// Generated from C:\Users\balaz\AppData\Local\Temp\hnnegzvh.djj\MetaGeneratorParser.g4 by ANTLR 4.5.3
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -236,6 +236,30 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] MetaGeneratorParser.StatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.singleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSingleStatement([NotNull] MetaGeneratorParser.SingleStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.singleStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSingleStatement([NotNull] MetaGeneratorParser.SingleStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.singleStatementSemicolon"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSingleStatementSemicolon([NotNull] MetaGeneratorParser.SingleStatementSemicolonContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.singleStatementSemicolon"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSingleStatementSemicolon([NotNull] MetaGeneratorParser.SingleStatementSemicolonContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -283,6 +307,30 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIfStatement([NotNull] MetaGeneratorParser.IfStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.elseIfStatementBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterElseIfStatementBody([NotNull] MetaGeneratorParser.ElseIfStatementBodyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.elseIfStatementBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitElseIfStatementBody([NotNull] MetaGeneratorParser.ElseIfStatementBodyContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.ifStatementElseBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfStatementElseBody([NotNull] MetaGeneratorParser.IfStatementElseBodyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.ifStatementElseBody"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfStatementElseBody([NotNull] MetaGeneratorParser.IfStatementElseBodyContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.ifStatementBegin"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -664,6 +712,18 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTemplateContentLine([NotNull] MetaGeneratorParser.TemplateContentLineContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.templateContent"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTemplateContent([NotNull] MetaGeneratorParser.TemplateContentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.templateContent"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTemplateContent([NotNull] MetaGeneratorParser.TemplateContentContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.templateOutput"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -772,6 +832,18 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitArrayType([NotNull] MetaGeneratorParser.ArrayTypeContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.arrayItemType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArrayItemType([NotNull] MetaGeneratorParser.ArrayItemTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.arrayItemType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArrayItemType([NotNull] MetaGeneratorParser.ArrayItemTypeContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.nullableType"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -783,6 +855,18 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitNullableType([NotNull] MetaGeneratorParser.NullableTypeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.nullableItemType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNullableItemType([NotNull] MetaGeneratorParser.NullableItemTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.nullableItemType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNullableItemType([NotNull] MetaGeneratorParser.NullableItemTypeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.genericType"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -891,6 +975,18 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitUnboundTypeName([NotNull] MetaGeneratorParser.UnboundTypeNameContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.genericDimensionItem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGenericDimensionItem([NotNull] MetaGeneratorParser.GenericDimensionItemContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.genericDimensionItem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGenericDimensionItem([NotNull] MetaGeneratorParser.GenericDimensionItemContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.genericDimensionSpecifier"/>.
 	/// <para>The default implementation does nothing.</para>

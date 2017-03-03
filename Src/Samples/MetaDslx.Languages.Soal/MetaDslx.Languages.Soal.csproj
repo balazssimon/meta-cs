@@ -68,13 +68,7 @@
     <Compile Include="Syntax\InternalSyntax\SoalLexer.cs">
       <DependentUpon>SoalLexer.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Syntax\InternalSyntax\SoalLexerAnnotator.cs">
-      <DependentUpon>SoalLexer.ag4</DependentUpon>
-    </Compile>
     <Compile Include="Syntax\InternalSyntax\SoalParser.cs">
-      <DependentUpon>SoalParser.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="Syntax\InternalSyntax\SoalParserAnnotator.cs">
       <DependentUpon>SoalParser.ag4</DependentUpon>
     </Compile>
     <Compile Include="Syntax\InternalSyntax\SoalParserBaseListener.cs">
@@ -100,7 +94,7 @@
       <LastGenOutput>Soal.cs</LastGenOutput>
     </None>
     <None Include="Syntax\InternalSyntax\SoalLexer.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>SoalLexer.g4</LastGenOutput>
     </None>
     <None Include="Syntax\InternalSyntax\SoalLexer.g4">
@@ -112,7 +106,7 @@
       <DependentUpon>SoalLexer.ag4</DependentUpon>
     </None>
     <None Include="Syntax\InternalSyntax\SoalParser.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>SoalParser.g4</LastGenOutput>
     </None>
     <None Include="Syntax\InternalSyntax\SoalParser.g4">

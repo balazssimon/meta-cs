@@ -45,17 +45,17 @@
     <Compile Include="Binding\CalculatorBinderFactoryVisitor.cs" />
     <Compile Include="Binding\CalculatorDeclarationTreeBuilderVisitor.cs" />
     <Compile Include="Binding\CalculatorSymbolBuilder.cs" />
+    <Compile Include="Calculator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calculator.mm</DependentUpon>
+    </Compile>
+    <Compile Include="CalculatorImplementation.cs" />
     <Compile Include="Syntax\CalculatorSyntaxKind.cs" />
     <Compile Include="Syntax\InternalSyntax\CalculatorLexer.cs">
       <DependentUpon>CalculatorLexer.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Syntax\InternalSyntax\CalculatorLexerAnnotator.cs">
-      <DependentUpon>CalculatorLexer.ag4</DependentUpon>
-    </Compile>
     <Compile Include="Syntax\InternalSyntax\CalculatorParser.cs">
-      <DependentUpon>CalculatorParser.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="Syntax\InternalSyntax\CalculatorParserAnnotator.cs">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </Compile>
     <Compile Include="Syntax\InternalSyntax\CalculatorParserBaseListener.cs">
@@ -88,8 +88,12 @@
     <Compile Include="Syntax\InternalSyntax\CalculatorInternalSyntax.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Calculator.mm">
+      <Generator>MetaModelGenerator</Generator>
+      <LastGenOutput>Calculator.cs</LastGenOutput>
+    </None>
     <None Include="Syntax\InternalSyntax\CalculatorLexer.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>CalculatorLexer.g4</LastGenOutput>
     </None>
     <None Include="Syntax\InternalSyntax\CalculatorLexer.g4">
@@ -101,7 +105,7 @@
       <DependentUpon>CalculatorLexer.ag4</DependentUpon>
     </None>
     <None Include="Syntax\InternalSyntax\CalculatorParser.ag4">
-      <Generator>AnnotatedAntlr4Generator</Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
       <LastGenOutput>CalculatorParser.g4</LastGenOutput>
     </None>
     <None Include="Syntax\InternalSyntax\CalculatorParser.g4">

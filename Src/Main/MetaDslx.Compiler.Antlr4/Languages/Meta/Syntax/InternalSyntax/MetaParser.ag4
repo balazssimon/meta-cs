@@ -3,7 +3,7 @@
 options
 {
     tokenVocab = MetaLexer; 
-	generateCompiler=false;
+	generateCompiler=true;
 }
 
 @header {

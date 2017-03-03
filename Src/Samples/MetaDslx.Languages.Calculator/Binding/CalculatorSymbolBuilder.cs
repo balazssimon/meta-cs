@@ -1,11 +1,16 @@
-﻿using MetaDslx.Compiler.Binding;
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler;
+using System.Threading;
 using MetaDslx.Core;
+using MetaDslx.Compiler;
+using MetaDslx.Compiler.Binding;
+using MetaDslx.Languages.Calculator.Symbols;
 
 namespace MetaDslx.Languages.Calculator.Binding
 {
@@ -15,24 +20,24 @@ namespace MetaDslx.Languages.Calculator.Binding
         {
         }
 
-        protected override MutableSymbol CreateErrorSymbolCore()
-        {
-            throw new NotImplementedException();
-        }
+        private CalculatorFactory _factory;
 
-        protected override MutableSymbol CreateGlobalNamespaceAliasCore(ISymbol globalNamespace)
+        private CalculatorFactory Factory
         {
-            throw new NotImplementedException();
-        }
-
-        protected override MutableSymbol CreateGlobalNamespaceCore(IEnumerable<ISymbol> namespacesToMerge)
-        {
-            throw new NotImplementedException();
+            get
+            {
+                if (_factory == null)
+                {
+                    Interlocked.CompareExchange(ref _factory, new CalculatorFactory(this.ModelBuilder), null);
+                }
+                return _factory;
+            }
         }
 
         protected override MutableSymbol CreateSymbolCore(Type symbolType)
         {
-            throw new NotImplementedException();
+            return this.Factory.Create(symbolType);
         }
     }
 }
+

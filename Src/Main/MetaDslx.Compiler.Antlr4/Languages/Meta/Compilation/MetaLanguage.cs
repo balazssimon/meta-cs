@@ -14,7 +14,7 @@ namespace MetaDslx.Languages.Meta
 {
     public sealed class MetaLanguage : Language
     {
-        internal const string LanguageName = "MetaModel";
+        internal const string LanguageName = "Meta";
 
         public static readonly MetaLanguage Instance = new MetaLanguage();
 

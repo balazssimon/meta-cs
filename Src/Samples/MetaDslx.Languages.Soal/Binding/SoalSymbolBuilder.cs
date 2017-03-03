@@ -1,20 +1,22 @@
-﻿using MetaDslx.Compiler.Binding;
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler;
-using MetaDslx.Core;
-using MetaDslx.Languages.Soal.Symbols;
 using System.Threading;
-using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Core;
+using MetaDslx.Compiler;
+using MetaDslx.Compiler.Binding;
+using MetaDslx.Languages.Soal.Symbols;
 
 namespace MetaDslx.Languages.Soal.Binding
 {
     public class SoalSymbolBuilder : SymbolBuilder
     {
-        public SoalSymbolBuilder(SoalCompilation compilation) : base(compilation)
+        public SoalSymbolBuilder(CompilationBase compilation) : base(compilation)
         {
         }
 
@@ -36,28 +38,6 @@ namespace MetaDslx.Languages.Soal.Binding
         {
             return this.Factory.Create(symbolType);
         }
-
-        protected override MutableSymbol CreateErrorSymbolCore()
-        {
-            var f = this.Factory;
-            var result = f.PrimitiveType();
-            result.Name = "error";
-            return result;
-        }
-
-        protected override MutableSymbol CreateGlobalNamespaceCore(IEnumerable<ISymbol> namespacesToMerge)
-        {
-            var f = this.Factory;
-            var nsList = namespacesToMerge.ToList();
-            string name = nsList.Count > 0 ? nsList[0].MName : string.Empty;
-            var result = f.Namespace();
-            result.Name = name;
-            return result;
-        }
-
-        protected override MutableSymbol CreateGlobalNamespaceAliasCore(ISymbol globalNamespace)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
+

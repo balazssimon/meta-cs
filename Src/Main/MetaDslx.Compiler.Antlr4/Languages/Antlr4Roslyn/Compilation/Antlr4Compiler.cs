@@ -31,7 +31,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string InputDirectory { get; private set; }
         public string OutputDirectory { get; protected set; }
         public bool GenerateOutput { get; set; }
-        protected DiagnosticBag DiagnosticBag { get; private set; }
+        protected DiagnosticBag DiagnosticBag { get; set; }
 
         public bool HasErrors
         {

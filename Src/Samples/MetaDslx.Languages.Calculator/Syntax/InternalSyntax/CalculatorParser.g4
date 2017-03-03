@@ -3,7 +3,6 @@
 options {
 	tokenVocab=CalculatorLexer;
 	                      
-	                           
 }
 
 
