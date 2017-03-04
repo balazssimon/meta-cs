@@ -66,13 +66,13 @@
     <Compile Include="ImmutableMetaModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="MetaDslxKey.snk" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj">
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="MetaDslxKey.snk" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

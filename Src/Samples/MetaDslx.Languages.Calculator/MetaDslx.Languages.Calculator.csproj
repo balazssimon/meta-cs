@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C7BD8655-44D1-46A5-9FD9-7487C41538DB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MetaDslx.Languages.Calculator</RootNamespace>
+    <AssemblyName>MetaDslx.Languages.Calculator</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr4.Runtime.Standard, Version=4.6.0.0, Culture=neutral, PublicKeyToken=e78b2c5abd1fcb3f, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Collections.Immutable" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Binding\CalculatorBinderFactoryVisitor.cs" />
+    <Compile Include="Binding\CalculatorDeclarationTreeBuilderVisitor.cs" />
+    <Compile Include="Binding\CalculatorSymbolBuilder.cs" />
+    <Compile Include="Calculator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calculator.mm</DependentUpon>
+    </Compile>
+    <Compile Include="CalculatorImplementation.cs" />
+    <Compile Include="Syntax\CalculatorSyntaxKind.cs" />
+    <Compile Include="Syntax\InternalSyntax\CalculatorLexer1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CalculatorLexer.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\CalculatorParser1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CalculatorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\CalculatorParserBaseListener.cs">
+      <DependentUpon>CalculatorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\CalculatorParserBaseVisitor.cs">
+      <DependentUpon>CalculatorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\CalculatorParserListener.cs">
+      <DependentUpon>CalculatorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Syntax\InternalSyntax\CalculatorParserVisitor.cs">
+      <DependentUpon>CalculatorParser.ag4</DependentUpon>
+    </Compile>
+    <Compile Include="Compilation\CalculatorCompilation.cs" />
+    <Compile Include="Compilation\CalculatorCompilationFactory.cs" />
+    <Compile Include="Compilation\CalculatorCompilationOptions.cs" />
+    <Compile Include="Compilation\CalculatorFeature.cs" />
+    <Compile Include="Compilation\CalculatorLanguage.cs" />
+    <Compile Include="Compilation\CalculatorLanguageVersion.cs" />
+    <Compile Include="Compilation\CalculatorParseOptions.cs" />
+    <Compile Include="Compilation\CalculatorScriptCompilationInfo.cs" />
+    <Compile Include="Errors\CalculatorErrorCode.cs" />
+    <Compile Include="Parser\CalculatorSyntaxParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Symbols\Temp.cs" />
+    <Compile Include="Syntax\CalculatorSyntax.cs" />
+    <Compile Include="Syntax\CalculatorSyntaxFacts.cs" />
+    <Compile Include="Syntax\CalculatorSyntaxTree.cs" />
+    <Compile Include="Syntax\InternalSyntax\CalculatorInternalSyntax.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Calculator.mm">
+      <Generator>MetaModelGenerator</Generator>
+      <LastGenOutput>Calculator.cs</LastGenOutput>
+    </None>
+    <None Include="Syntax\InternalSyntax\CalculatorLexer.ag4">
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>CalculatorLexer1.cs</LastGenOutput>
+    </None>
+    <None Include="Syntax\InternalSyntax\CalculatorLexer.og4">
+      <DependentUpon>CalculatorLexer.ag4</DependentUpon>
+    </None>
+    <None Include="Syntax\InternalSyntax\CalculatorLexer.tokens">
+      <DependentUpon>CalculatorLexer.ag4</DependentUpon>
+    </None>
+    <None Include="Syntax\InternalSyntax\CalculatorParser.ag4">
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>CalculatorParser1.cs</LastGenOutput>
+    </None>
+    <None Include="Syntax\InternalSyntax\CalculatorParser.og4">
+      <DependentUpon>CalculatorParser.ag4</DependentUpon>
+    </None>
+    <None Include="Syntax\InternalSyntax\CalculatorParser.tokens">
+      <DependentUpon>CalculatorParser.ag4</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Main\MetaDslx.Compiler.Antlr4\MetaDslx.Compiler.Antlr4.csproj">
+      <Project>{d31d2069-6f71-4208-aa67-60ae8104cdc6}</Project>
+      <Name>MetaDslx.Compiler.Antlr4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj">
+      <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
+      <Name>MetaDslx.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

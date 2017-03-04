@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Package;
+using MetaDslx.VisualStudio.Soal.VisualStudio;
 
 namespace MetaDslx.VisualStudio
 {
@@ -41,17 +42,26 @@ namespace MetaDslx.VisualStudio
     [ProvideLanguageExtension(typeof(MetaGeneratorLanguageService), MetaGeneratorLanguageConfig.FileExtension)]
     [ProvideLanguageServiceAttribute(typeof(MetaGeneratorLanguageService), MetaGeneratorLanguageConfig.LanguageName, 0,
         RequestStockColors = false, EnableCommenting = true)]
-    [ProvideServiceAttribute(typeof(MetaModelLanguageService), ServiceName = MetaModelLanguageConfig.LanguageServiceName)]
-    [ProvideLanguageExtension(typeof(MetaModelLanguageService), MetaModelLanguageConfig.FileExtension)]
-    [ProvideLanguageServiceAttribute(typeof(MetaModelLanguageService), MetaModelLanguageConfig.LanguageName, 1,
+    [ProvideServiceAttribute(typeof(MetaLanguageService), ServiceName = MetaLanguageConfig.LanguageServiceName)]
+    [ProvideLanguageExtension(typeof(MetaLanguageService), MetaLanguageConfig.FileExtension)]
+    [ProvideLanguageServiceAttribute(typeof(MetaLanguageService), MetaLanguageConfig.LanguageName, 1,
         RequestStockColors = false, EnableCommenting = true)]
-    [ProvideServiceAttribute(typeof(AnnotatedAntlr4LanguageService), ServiceName = AnnotatedAntlr4LanguageConfig.LanguageServiceName)]
-    [ProvideLanguageExtension(typeof(AnnotatedAntlr4LanguageService), AnnotatedAntlr4LanguageConfig.FileExtension)]
-    [ProvideLanguageServiceAttribute(typeof(AnnotatedAntlr4LanguageService), AnnotatedAntlr4LanguageConfig.LanguageName, 1,
+    [ProvideServiceAttribute(typeof(Antlr4RoslynLanguageService), ServiceName = Antlr4RoslynLanguageConfig.LanguageServiceName)]
+    [ProvideLanguageExtension(typeof(Antlr4RoslynLanguageService), Antlr4RoslynLanguageConfig.FileExtension)]
+    [ProvideLanguageServiceAttribute(typeof(Antlr4RoslynLanguageService), Antlr4RoslynLanguageConfig.LanguageName, 1,
         RequestStockColors = false, EnableCommenting = true)]
-    [ProvideObject(typeof(AnnotatedAntlr4GeneratorService))]
+    [ProvideServiceAttribute(typeof(Antlr4LanguageService), ServiceName = Antlr4LanguageConfig.LanguageServiceName)]
+    [ProvideLanguageExtension(typeof(Antlr4LanguageService), Antlr4LanguageConfig.FileExtension)]
+    [ProvideLanguageServiceAttribute(typeof(Antlr4LanguageService), Antlr4LanguageConfig.LanguageName, 1,
+        RequestStockColors = false, EnableCommenting = true)]
+    [ProvideServiceAttribute(typeof(SoalLanguageService), ServiceName = SoalLanguageConfig.LanguageServiceName)]
+    [ProvideLanguageExtension(typeof(SoalLanguageService), SoalLanguageConfig.FileExtension)]
+    [ProvideLanguageServiceAttribute(typeof(SoalLanguageService), SoalLanguageConfig.LanguageName, 1,
+        RequestStockColors = false, EnableCommenting = true)]
+    [ProvideObject(typeof(Antlr4GeneratorService))]
+    [ProvideObject(typeof(Antlr4RoslynGeneratorService))]
     [ProvideObject(typeof(MetaGeneratorGeneratorService))]
-    [ProvideObject(typeof(MetaModelGeneratorService))]
+    [ProvideObject(typeof(MetaGeneratorService))]
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(MetaDslxLanguagePackage.PackageGuidString)]
@@ -76,8 +86,10 @@ namespace MetaDslx.VisualStudio
         {
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
             this.RegisterLanguageService(typeof(MetaGeneratorLanguageService));
-            this.RegisterLanguageService(typeof(MetaModelLanguageService));
-            this.RegisterLanguageService(typeof(AnnotatedAntlr4LanguageService));
+            this.RegisterLanguageService(typeof(MetaLanguageService));
+            this.RegisterLanguageService(typeof(Antlr4RoslynLanguageService));
+            this.RegisterLanguageService(typeof(Antlr4LanguageService));
+            this.RegisterLanguageService(typeof(SoalLanguageService));
         }
 
         protected override void Initialize()

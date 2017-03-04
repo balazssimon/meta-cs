@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr4.Runtime.Standard, Version=4.6.0.0, Culture=neutral, PublicKeyToken=e78b2c5abd1fcb3f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Programs\Antlr4\Antlr4.Runtime.Standard.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Collections.Immutable" />
@@ -41,7 +45,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -53,17 +56,17 @@
     <None Include="SoalTest1.soal" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Main\MetaDslx.Compiler\MetaDslx.Compiler.csproj">
-      <Project>{5c030a11-fe5c-4454-a324-deb0128fdc97}</Project>
-      <Name>MetaDslx.Compiler</Name>
+    <ProjectReference Include="..\..\Main\MetaDslx.Compiler.Antlr4\MetaDslx.Compiler.Antlr4.csproj">
+      <Project>{d31d2069-6f71-4208-aa67-60ae8104cdc6}</Project>
+      <Name>MetaDslx.Compiler.Antlr4</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj">
       <Project>{0c605c74-47dd-4316-ae55-ad65fcd34ddb}</Project>
       <Name>MetaDslx.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Samples\MetaDslx.Soal\MetaDslx.Soal.csproj">
-      <Project>{baace3cc-f257-49d1-9832-e07db36df2be}</Project>
-      <Name>MetaDslx.Soal</Name>
+    <ProjectReference Include="..\..\Samples\MetaDslx.Languages.Calculator\MetaDslx.Languages.Calculator.csproj">
+      <Project>{c7bd8655-44d1-46a5-9fd9-7487c41538db}</Project>
+      <Name>MetaDslx.Languages.Calculator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

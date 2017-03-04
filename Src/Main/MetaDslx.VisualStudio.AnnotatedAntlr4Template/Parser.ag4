@@ -2,7 +2,8 @@
 
 options {
 	tokenVocab=$fileinputname$Lexer;
-	generateCompiler=true;
-	generateCompilerBase=false;
+	generateCompiler=false;
+	ignoreRoslynRules=false;
+	generateLanguageService=false;
 }
 

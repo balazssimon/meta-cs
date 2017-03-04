@@ -5,6 +5,8 @@ using System.Linq;
 
 namespace MetaDslx.Core.Immutable.Test
 {
+    using Compiler.Diagnostics;
+    using Languages.Meta.Symbols;
     using System.Collections.Immutable;
     using System.Threading;
     public static class TestModelDescriptor
@@ -40,12 +42,12 @@ namespace MetaDslx.Core.Immutable.Test
         {
         }
 
-        [ModelSymbolDescriptor]
+        [ModelSymbolDescriptor(null, typeof(Test.Husband))]
         public static class Husband
         {
             static Husband()
             {
-                Husband.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(Husband));
+                Husband.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(Husband));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -60,12 +62,12 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableWife), null),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Wife), null));
         }
-        [ModelSymbolDescriptor]
+        [ModelSymbolDescriptor(null, typeof(Test.Wife))]
         public static class Wife
         {
             static Wife()
             {
-                Wife.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(Wife));
+                Wife.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(Wife));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -80,12 +82,12 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableHusband), null),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Husband), null));
         }
-        [ModelSymbolDescriptor]
+        [ModelSymbolDescriptor(null, typeof(Test.ListChild))]
         public static class ListChild
         {
             static ListChild()
             {
-                ListChild.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(ListChild));
+                ListChild.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(ListChild));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -100,12 +102,12 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableListParent), null),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ListParent), null));
         }
-        [ModelSymbolDescriptor]
+        [ModelSymbolDescriptor(null, typeof(Test.ListParent))]
         public static class ListParent
         {
             static ListParent()
             {
-                ListParent.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(ListParent));
+                ListParent.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(ListParent));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -121,12 +123,12 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableListChild), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutableListChild>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ListChild), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.ListChild>)));
         }
-        [ModelSymbolDescriptor]
+        [ModelSymbolDescriptor(null, typeof(Test.User))]
         public static class User
         {
             static User()
             {
-                User.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(User));
+                User.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(User));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -141,12 +143,12 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableRole), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutableRole>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Role), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.Role>)));
         }
-        [ModelSymbolDescriptor]
+        [ModelSymbolDescriptor(null, typeof(Test.Role))]
         public static class Role
         {
             static Role()
             {
-                Role.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(Role));
+                Role.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(Role));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -161,12 +163,12 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableUser), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutableUser>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.User), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.User>)));
         }
-        [ModelSymbolDescriptor]
+        [ModelSymbolDescriptor(null, typeof(Test.Person))]
         public static class Person
         {
             static Person()
             {
-                Person.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(Person));
+                Person.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(Person));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -181,12 +183,12 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutablePet), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutablePet>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Pet), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.Pet>)));
         }
-        [ModelSymbolDescriptor(typeof(Person))]
+        [ModelSymbolDescriptor(null, typeof(Test.Student), BaseSymbolDescriptors = new Type[] { typeof(Person) })]
         public static class Student
         {
             static Student()
             {
-                Student.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(Student));
+                Student.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(Student));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -198,12 +200,12 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutableDog), typeof(ImmutableModelList<MetaDslx.Core.Immutable.Test.ImmutableDog>)),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Dog), typeof(MutableModelList<MetaDslx.Core.Immutable.Test.Dog>)));
         }
-        [ModelSymbolDescriptor]
+        [ModelSymbolDescriptor(null, typeof(Test.Pet))]
         public static class Pet
         {
             static Pet()
             {
-                Pet.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(Pet));
+                Pet.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(Pet));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -218,12 +220,12 @@ namespace MetaDslx.Core.Immutable.Test
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.ImmutablePerson), null),
                     new ModelPropertyTypeInfo(typeof(MetaDslx.Core.Immutable.Test.Person), null));
         }
-        [ModelSymbolDescriptor(typeof(Pet))]
+        [ModelSymbolDescriptor(null, typeof(Test.Dog), BaseSymbolDescriptors = new Type[] { typeof(Pet) })]
         public static class Dog
         {
             static Dog()
             {
-                Dog.ModelSymbolInfo = ModelSymbolInfo.GetSymbolInfo(typeof(Dog));
+                Dog.ModelSymbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(typeof(Dog));
             }
 
             public static ModelSymbolInfo ModelSymbolInfo { get; }
@@ -256,7 +258,7 @@ namespace MetaDslx.Core.Immutable.Test
                 case "User": return (MutableSymbolBase)this.User();
                 case "Role": return (MutableSymbolBase)this.Role();
                 default:
-                    throw new ModelException("Unknown type name: " + type);
+                    throw new ModelException(Location.None, new DiagnosticInfo(ModelErrorCode.ERR_UnknownTypeName, type));
             }
         }
 
@@ -323,9 +325,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenHusband : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.Husband.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutableHusband); } }
-        public override Type MutableType { get { return typeof(Husband); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.Husband.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {
@@ -340,9 +340,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenWife : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.Wife.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutableWife); } }
-        public override Type MutableType { get { return typeof(Wife); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.Wife.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {
@@ -357,9 +355,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenListChild : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.ListChild.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutableListChild); } }
-        public override Type MutableType { get { return typeof(ListChild); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.ListChild.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {
@@ -374,9 +370,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenListParent : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.ListParent.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutableListParent); } }
-        public override Type MutableType { get { return typeof(ListParent); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.ListParent.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {
@@ -391,9 +385,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenUser : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.User.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutableUser); } }
-        public override Type MutableType { get { return typeof(User); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.User.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {
@@ -408,9 +400,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenRole : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.Role.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutableRole); } }
-        public override Type MutableType { get { return typeof(Role); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.Role.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {
@@ -425,9 +415,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenPerson : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.Person.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutablePerson); } }
-        public override Type MutableType { get { return typeof(Person); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.Person.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {
@@ -442,9 +430,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenStudent : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.Student.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutableStudent); } }
-        public override Type MutableType { get { return typeof(Student); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.Student.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {
@@ -459,9 +445,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenPet : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.Pet.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutablePet); } }
-        public override Type MutableType { get { return typeof(Pet); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.Pet.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {
@@ -476,9 +460,7 @@ namespace MetaDslx.Core.Immutable.Test
 
     internal class GreenDog : SymbolId
     {
-        public override ModelSymbolInfo ModelSymbolInfo { get { return TestModelDescriptor.Dog.ModelSymbolInfo; } }
-        public override Type ImmutableType { get { return typeof(ImmutableDog); } }
-        public override Type MutableType { get { return typeof(Dog); } }
+        public override ModelSymbolInfo SymbolInfo { get { return TestModelDescriptor.Dog.ModelSymbolInfo; } }
 
         public override ImmutableSymbolBase CreateImmutable(ImmutableModel model)
         {

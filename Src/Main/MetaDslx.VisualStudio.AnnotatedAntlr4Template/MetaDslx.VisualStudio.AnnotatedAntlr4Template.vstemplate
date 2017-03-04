@@ -25,13 +25,13 @@
         <Assembly>System.Collections.Immutable</Assembly>
       </Reference>
       <Reference>
-        <Assembly>Antlr4.Runtime</Assembly>
+        <Assembly>Antlr4.Runtime.Standard</Assembly>
       </Reference>
       <Reference>
         <Assembly>MetaDslx.Core</Assembly>
       </Reference>
       <Reference>
-        <Assembly>MetaDslx.Compiler</Assembly>
+        <Assembly>MetaDslx.Compiler.Antlr4</Assembly>
       </Reference>
     </References>
     <ProjectItem ReplaceParameters="true" TargetFileName="$fileinputname$Lexer.ag4">Lexer.ag4</ProjectItem>
