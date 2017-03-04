@@ -50,13 +50,13 @@ namespace MetaDslx.Languages.Calculator.Syntax
 				case CalculatorSyntaxKind.TMul:
 				case CalculatorSyntaxKind.TDiv:
 				case CalculatorSyntaxKind.KPrint:
-				case CalculatorSyntaxKind.STRING:
-				case CalculatorSyntaxKind.ID:
-				case CalculatorSyntaxKind.INT:
-				case CalculatorSyntaxKind.UTF8BOM:
-				case CalculatorSyntaxKind.WHITESPACE:
-				case CalculatorSyntaxKind.ENDL:
-				case CalculatorSyntaxKind.COMMENT:
+				case CalculatorSyntaxKind.LString:
+				case CalculatorSyntaxKind.LId:
+				case CalculatorSyntaxKind.LInt:
+				case CalculatorSyntaxKind.LUtf8Bom:
+				case CalculatorSyntaxKind.LWhitespace:
+				case CalculatorSyntaxKind.LEndl:
+				case CalculatorSyntaxKind.LComment:
 					return true;
 				default:
 					return false;

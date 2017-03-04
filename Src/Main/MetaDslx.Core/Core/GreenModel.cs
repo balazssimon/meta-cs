@@ -251,9 +251,9 @@ namespace MetaDslx.Core
             foreach (var item in items)
             {
                 if (item == null) continue;
-                if (!this.unique || !this.items.Contains(item))
+                if (!this.unique || !result.Contains(item))
                 {
-                    result = result.Update(this.items.Add(item), this.lazyItems);
+                    result = result.Update(result.items.Add(item), this.lazyItems);
                 }
             }
             return result;
@@ -265,9 +265,9 @@ namespace MetaDslx.Core
             foreach (var item in items)
             {
                 if (item == null) continue;
-                if (!this.unique || !this.items.Contains(item))
+                if (!this.unique || !result.Contains(item))
                 {
-                    result = result.Update(this.items.Add(item), this.lazyItems);
+                    result = result.Update(result.items.Add(item), this.lazyItems);
                 }
             }
             return result;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -496,7 +496,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		new MetaType ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface MetaNamedType : MetaType
+	public interface MetaNamedType : MetaType, MetaNamedElement
 	{
 	
 	
@@ -504,7 +504,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		new MetaNamedTypeBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface MetaNamedTypeBuilder : MetaTypeBuilder
+	public interface MetaNamedTypeBuilder : MetaTypeBuilder, MetaNamedElementBuilder
 	{
 	
 		new MetaNamedType ToImmutable();
@@ -663,7 +663,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		new MetaEnum ToImmutable(global::MetaDslx.Core.ImmutableModel model);
 	}
 	
-	public interface MetaEnumLiteral : MetaNamedElement, MetaTypedElement
+	public interface MetaEnumLiteral : MetaNamedElement, MetaTypedElement, MetaAnnotatedElement
 	{
 		MetaEnum Enum { get; }
 	
@@ -672,7 +672,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		new MetaEnumLiteralBuilder ToMutable(global::MetaDslx.Core.MutableModel model);
 	}
 	
-	public interface MetaEnumLiteralBuilder : MetaNamedElementBuilder, MetaTypedElementBuilder
+	public interface MetaEnumLiteralBuilder : MetaNamedElementBuilder, MetaTypedElementBuilder, MetaAnnotatedElementBuilder
 	{
 		MetaEnumBuilder Enum { get; set; }
 		Func<MetaEnumBuilder> EnumLazy { get; set; }
@@ -1080,7 +1080,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 			}
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaNamedType
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -1391,7 +1391,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaEnum_Operations);
 		}
 	
-		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteral), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
+		[global::MetaDslx.Core.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteral), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaEnumLiteral
 		{
 			private static global::MetaDslx.Core.ModelSymbolInfo modelSymbolInfo;
@@ -1773,9 +1773,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaErrorSymbolImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaErrorSymbol
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
 	
 		internal MetaErrorSymbolImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -1802,16 +1802,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaErrorSymbolBuilder)base.ToMutable(model);
 		}
 	
-		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -1822,16 +1812,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		
-		public string Documentation
+		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			return this.ToMutable();
+		}
+	
+		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
 		}
 	
 		
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public string Documentation
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
@@ -1874,16 +1874,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaErrorSymbol)base.ToImmutable(model);
 		}
 	
-		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -1894,17 +1884,14 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		
-		public string Documentation
+		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			return this.ToImmutable();
 		}
-		
-		public Func<string> DocumentationLazy
+	
+		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			return this.ToImmutable(model);
 		}
 	
 		
@@ -1918,6 +1905,19 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		{
 			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
 			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 	}
 	
@@ -2137,9 +2137,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaNamedElementImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaNamedElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
 	
 		internal MetaNamedElementImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -2177,15 +2177,15 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		public string Documentation
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
-		}
-	
-		
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public string Documentation
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
@@ -2239,19 +2239,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		public string Documentation
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-		
-		public Func<string> DocumentationLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
 		public string Name
 		{
 			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
@@ -2262,6 +2249,19 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		{
 			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
 			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 	}
 	
@@ -2459,6 +2459,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaNamedTypeImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaNamedType
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
 	
 		internal MetaNamedTypeImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -2493,6 +2497,44 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public string Documentation
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<string> MetaDocumentedElement.GetDocumentationLines()
+		{
+		    return global::MetaDslx.Languages.Meta.Symbols.Internal.MetaImplementationProvider.Implementation.MetaDocumentedElement_GetDocumentationLines(this);
 		}
 	}
 	
@@ -2538,6 +2580,52 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		{
 			return this.ToImmutable(model);
 		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
 	}
 	
 	internal class MetaAnnotationId : global::MetaDslx.Core.SymbolId
@@ -2558,9 +2646,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaAnnotationImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaAnnotation
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
 	
 		internal MetaAnnotationImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -2587,16 +2675,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaAnnotationBuilder)base.ToMutable(model);
 		}
 	
-		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaNamedElementBuilder MetaNamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -2607,16 +2685,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		
-		public string Documentation
+		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+			return this.ToMutable();
+		}
+	
+		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
 		}
 	
 		
 		public string Name
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public string Documentation
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
 		}
 	
 		
@@ -2659,16 +2747,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaAnnotation)base.ToImmutable(model);
 		}
 	
-		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -2679,17 +2757,14 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		
-		public string Documentation
+		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			return this.ToImmutable();
 		}
-		
-		public Func<string> DocumentationLazy
+	
+		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			return this.ToImmutable(model);
 		}
 	
 		
@@ -2703,6 +2778,19 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		{
 			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
 			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 	}
 	
@@ -2724,15 +2812,15 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaDeclarationImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaDeclaration
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaDeclarationImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -2759,6 +2847,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaDeclarationBuilder)base.ToMutable(model);
 		}
 	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -2779,14 +2877,22 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		
+		public MetaNamespace Namespace
 		{
-			return this.ToMutable();
+		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		
+		public MetaModel MetaModel
 		{
-			return this.ToMutable(model);
+		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -2799,24 +2905,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
 		{
 		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public MetaNamespace Namespace
-		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
-		}
-	
-		
-		public MetaModel MetaModel
-		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
 	
 		
@@ -2860,6 +2948,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaDeclaration)base.ToImmutable(model);
 		}
 	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -2878,48 +2976,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-		
-		public Func<string> DocumentationLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
-		{
-			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 	
 		
@@ -2946,6 +3002,38 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			get { return this.GetLazyReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, value); }
 		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
+		{
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
 	}
 	
 	internal class MetaNamespaceId : global::MetaDslx.Core.SymbolId
@@ -2966,21 +3054,21 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaNamespaceImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaNamespace
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaNamespace namespace0;
+		private global::MetaDslx.Core.ImmutableModelList<MetaNamespace> usings0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaNamespace> usings0;
+		private global::MetaDslx.Core.ImmutableModelList<MetaDeclaration> declarations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel1;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaDeclaration> declarations0;
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaNamespaceImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -3007,6 +3095,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaNamespaceBuilder)base.ToMutable(model);
 		}
 	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -3027,24 +3135,41 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		
+		public global::MetaDslx.Core.ImmutableModelList<MetaNamespace> Usings
 		{
-			return this.ToMutable();
+		    get { return this.GetList<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.UsingsProperty, ref usings0); }
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		MetaModel MetaNamespace.MetaModel
 		{
-			return this.ToMutable(model);
+		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.MetaModelProperty, ref metaModel0); }
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		
+		public global::MetaDslx.Core.ImmutableModelList<MetaDeclaration> Declarations
 		{
-			return this.ToMutable();
+		    get { return this.GetList<MetaDeclaration>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.DeclarationsProperty, ref declarations0); }
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		
+		public MetaNamespace Namespace
 		{
-			return this.ToMutable(model);
+		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public MetaModel MetaModel
+		{
+		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel1); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -3060,43 +3185,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public MetaNamespace Namespace
-		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
-		}
-	
-		
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		MetaModel MetaDeclaration.MetaModel
-		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<MetaNamespace> Usings
-		{
-		    get { return this.GetList<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.UsingsProperty, ref usings0); }
-		}
-	
-		
-		public MetaModel MetaModel
-		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.MetaModelProperty, ref metaModel1); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<MetaDeclaration> Declarations
-		{
-		    get { return this.GetList<MetaDeclaration>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.DeclarationsProperty, ref declarations0); }
-		}
-	
-		
 		global::MetaDslx.Core.ImmutableModelList<string> MetaDocumentedElement.GetDocumentationLines()
 		{
 		    return global::MetaDslx.Languages.Meta.Symbols.Internal.MetaImplementationProvider.Implementation.MetaDocumentedElement_GetDocumentationLines(this);
@@ -3105,9 +3193,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaNamespaceBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, MetaNamespaceBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<MetaNamespaceBuilder> usings0;
 		private global::MetaDslx.Core.MutableModelList<MetaDeclarationBuilder> declarations0;
+		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 	
 		internal MetaNamespaceBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -3139,6 +3227,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaNamespace)base.ToImmutable(model);
 		}
 	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -3159,24 +3267,69 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		
+		public global::MetaDslx.Core.MutableModelList<MetaNamespaceBuilder> Usings
 		{
-			return this.ToImmutable();
+			get { return this.GetList<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.UsingsProperty, ref usings0); }
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		MetaModelBuilder MetaNamespaceBuilder.MetaModel
 		{
-			return this.ToImmutable(model);
+			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.MetaModelProperty); }
+			set { this.SetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.MetaModelProperty, value); }
+		}
+		
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		Func<MetaModelBuilder> MetaNamespaceBuilder.MetaModelLazy
+		{
+			get { return this.GetLazyReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.MetaModelProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamespace.MetaModelProperty, value); }
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		
+		public global::MetaDslx.Core.MutableModelList<MetaDeclarationBuilder> Declarations
 		{
-			return this.ToImmutable();
+			get { return this.GetList<MetaDeclarationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.DeclarationsProperty, ref declarations0); }
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		
+		public MetaNamespaceBuilder Namespace
 		{
-			return this.ToImmutable(model);
+			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
+			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+		}
+		
+		public Func<MetaNamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+		}
+	
+		
+		public MetaModelBuilder MetaModel
+		{
+			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
+		}
+		
+		public Func<MetaModelBuilder> MetaModelLazy
+		{
+			get { return this.GetLazyReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 	
 		
@@ -3196,71 +3349,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
 		{
 			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-	
-		
-		public MetaNamespaceBuilder Namespace
-		{
-			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
-			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
-		}
-		
-		public Func<MetaNamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
-		}
-	
-		
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		MetaModelBuilder MetaDeclarationBuilder.MetaModel
-		{
-			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
-		}
-		
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		Func<MetaModelBuilder> MetaDeclarationBuilder.MetaModelLazy
-		{
-			get { return this.GetLazyReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaNamespaceBuilder> Usings
-		{
-			get { return this.GetList<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.UsingsProperty, ref usings0); }
-		}
-	
-		
-		public MetaModelBuilder MetaModel
-		{
-			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.MetaModelProperty); }
-			set { this.SetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.MetaModelProperty, value); }
-		}
-		
-		public Func<MetaModelBuilder> MetaModelLazy
-		{
-			get { return this.GetLazyReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.MetaModelProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamespace.MetaModelProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaDeclarationBuilder> Declarations
-		{
-			get { return this.GetList<MetaDeclarationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.DeclarationsProperty, ref declarations0); }
 		}
 	}
 	
@@ -3282,15 +3370,15 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaModelImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaModel
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string uri0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaModelImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -3317,6 +3405,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaModelBuilder)base.ToMutable(model);
 		}
 	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -3337,14 +3435,22 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		
+		public string Uri
 		{
-			return this.ToMutable();
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaModel.UriProperty, ref uri0); }
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		
+		public MetaNamespace Namespace
 		{
-			return this.ToMutable(model);
+		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaModel.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -3357,24 +3463,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
 		{
 		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public string Uri
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaModel.UriProperty, ref uri0); }
-		}
-	
-		
-		public MetaNamespace Namespace
-		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaModel.NamespaceProperty, ref namespace0); }
 		}
 	
 		
@@ -3418,6 +3506,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaModel)base.ToImmutable(model);
 		}
 	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -3436,48 +3534,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-		
-		public Func<string> DocumentationLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
-		{
-			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 	
 		
@@ -3504,6 +3560,38 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		{
 			get { return this.GetLazyReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaModel.NamespaceProperty); }
 			set { this.SetLazyReference(MetaDescriptor.MetaModel.NamespaceProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
+		{
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -3784,15 +3872,15 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaPrimitiveTypeImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaPrimitiveType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaPrimitiveTypeImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -3819,6 +3907,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaPrimitiveTypeBuilder)base.ToMutable(model);
 		}
 	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -3839,16 +3947,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
@@ -3857,34 +3955,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
-		{
-		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -3897,6 +3967,24 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		public MetaModel MetaModel
 		{
 		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public string Documentation
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
+		{
+		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -3940,6 +4028,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaPrimitiveType)base.ToImmutable(model);
 		}
 	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -3960,16 +4068,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -3978,48 +4076,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-		
-		public Func<string> DocumentationLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
-		{
-			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 	
 		
@@ -4046,6 +4102,38 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			get { return this.GetLazyReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, value); }
 		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
+		{
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
 	}
 	
 	internal class MetaEnumId : global::MetaDslx.Core.SymbolId
@@ -4066,19 +4154,19 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaEnumImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaEnum
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
+		private global::MetaDslx.Core.ImmutableModelList<MetaEnumLiteral> enumLiterals0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private global::MetaDslx.Core.ImmutableModelList<MetaOperation> operations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaNamespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaModel metaModel0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaEnumLiteral> enumLiterals0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaOperation> operations0;
+		private string documentation0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaEnumImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -4105,6 +4193,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaEnumBuilder)base.ToMutable(model);
 		}
 	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4125,16 +4233,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
@@ -4143,46 +4241,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
-		{
-		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public MetaNamespace Namespace
-		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
-		}
-	
-		
-		public MetaModel MetaModel
-		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
 	
 		
@@ -4198,6 +4256,36 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
+		public MetaNamespace Namespace
+		{
+		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public MetaModel MetaModel
+		{
+		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public string Documentation
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
+		{
+		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		global::MetaDslx.Core.ImmutableModelList<string> MetaDocumentedElement.GetDocumentationLines()
 		{
 		    return global::MetaDslx.Languages.Meta.Symbols.Internal.MetaImplementationProvider.Implementation.MetaDocumentedElement_GetDocumentationLines(this);
@@ -4206,9 +4294,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaEnumBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, MetaEnumBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<MetaEnumLiteralBuilder> enumLiterals0;
 		private global::MetaDslx.Core.MutableModelList<MetaOperationBuilder> operations0;
+		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 	
 		internal MetaEnumBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -4240,6 +4328,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaEnum)base.ToImmutable(model);
 		}
 	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4260,16 +4368,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4280,46 +4378,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		
+		public global::MetaDslx.Core.MutableModelList<MetaEnumLiteralBuilder> EnumLiterals
 		{
-			return this.ToImmutable();
-		}
-	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
+			get { return this.GetList<MetaEnumLiteralBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnum.EnumLiteralsProperty, ref enumLiterals0); }
 		}
 	
 		
-		public string Documentation
+		public global::MetaDslx.Core.MutableModelList<MetaOperationBuilder> Operations
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-		
-		public Func<string> DocumentationLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
-		{
-			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+			get { return this.GetList<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnum.OperationsProperty, ref operations0); }
 		}
 	
 		
@@ -4348,15 +4416,35 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<MetaEnumLiteralBuilder> EnumLiterals
+		public string Name
 		{
-			get { return this.GetList<MetaEnumLiteralBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnum.EnumLiteralsProperty, ref enumLiterals0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<MetaOperationBuilder> Operations
+		public string Documentation
 		{
-			get { return this.GetList<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnum.OperationsProperty, ref operations0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
+		{
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -4378,13 +4466,15 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaEnumLiteralImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaEnumLiteral
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaEnum enum0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaEnum enum0;
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaEnumLiteralImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -4411,6 +4501,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaEnumLiteralBuilder)base.ToMutable(model);
 		}
 	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4431,14 +4531,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
+		}
+	
+		
+		public MetaEnum Enum
+		{
+		    get { return this.GetReference<MetaEnum>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.EnumProperty, ref enum0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -4454,15 +4566,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public MetaEnum Enum
-		{
-		    get { return this.GetReference<MetaEnum>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.EnumProperty, ref enum0); }
+		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -4474,6 +4580,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaEnumLiteralBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, MetaEnumLiteralBuilder
 	{
+		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 	
 		internal MetaEnumLiteralBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -4505,6 +4612,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaEnumLiteral)base.ToImmutable(model);
 		}
 	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4525,14 +4642,40 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
+		}
+	
+		
+		public MetaEnumBuilder Enum
+		{
+			get { return this.GetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.EnumProperty); }
+			set { this.SetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.EnumProperty, value); }
+		}
+		
+		public Func<MetaEnumBuilder> EnumLazy
+		{
+			get { return this.GetLazyReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.EnumProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaEnumLiteral.EnumProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 	
 		
@@ -4562,29 +4705,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-	
-		
-		public MetaEnumBuilder Enum
-		{
-			get { return this.GetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.EnumProperty); }
-			set { this.SetReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.EnumProperty, value); }
-		}
-		
-		public Func<MetaEnumBuilder> EnumLazy
-		{
-			get { return this.GetLazyReference<MetaEnumBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.EnumProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaEnumLiteral.EnumProperty, value); }
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -4606,17 +4729,17 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaConstantImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaConstant
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaNamespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaModel metaModel0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string documentation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType type0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaNamespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaModel metaModel0;
 	
 		internal MetaConstantImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -4643,6 +4766,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaConstantBuilder)base.ToMutable(model);
 		}
 	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4663,16 +4806,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaTypedElementBuilder MetaTypedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4683,14 +4816,22 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		
+		public MetaNamespace Namespace
 		{
-			return this.ToMutable();
+		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
 		}
 	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		
+		public MetaModel MetaModel
 		{
-			return this.ToMutable(model);
+		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -4706,27 +4847,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
-		}
-	
-		
 		public MetaType Type
 		{
 		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
-		}
-	
-		
-		public MetaNamespace Namespace
-		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
-		}
-	
-		
-		public MetaModel MetaModel
-		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
 	
 		
@@ -4770,6 +4893,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaConstant)base.ToImmutable(model);
 		}
 	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4790,16 +4933,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4808,61 +4941,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaTypedElement MetaTypedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-		
-		public Func<string> DocumentationLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
-		{
-			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-	
-		
-		public MetaTypeBuilder Type
-		{
-			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
-			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
-		}
-		
-		public Func<MetaTypeBuilder> TypeLazy
-		{
-			get { return this.GetLazyReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, value); }
 		}
 	
 		
@@ -4889,6 +4967,51 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			get { return this.GetLazyReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
 			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, value); }
 		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
+		{
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
+		public MetaTypeBuilder Type
+		{
+			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
+			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+		}
+		
+		public Func<MetaTypeBuilder> TypeLazy
+		{
+			get { return this.GetLazyReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+		}
 	}
 	
 	internal class MetaClassId : global::MetaDslx.Core.SymbolId
@@ -4909,16 +5032,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaClassImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaClass
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaNamespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaModel metaModel0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<MetaClass> superClasses0;
@@ -4926,6 +5039,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		private global::MetaDslx.Core.ImmutableModelList<MetaProperty> properties0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<MetaOperation> operations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaNamespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaModel metaModel0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaClassImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -4952,6 +5075,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaClassBuilder)base.ToMutable(model);
 		}
 	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4972,16 +5115,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		MetaTypeBuilder MetaType.ToMutable()
 		{
 			return this.ToMutable();
@@ -4990,46 +5123,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaTypeBuilder MetaType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaDeclarationBuilder MetaDeclaration.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
-		{
-		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public MetaNamespace Namespace
-		{
-		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
-		}
-	
-		
-		public MetaModel MetaModel
-		{
-		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
 		}
 	
 		
@@ -5057,9 +5150,33 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		global::MetaDslx.Core.ImmutableModelList<string> MetaDocumentedElement.GetDocumentationLines()
+		public MetaNamespace Namespace
 		{
-		    return global::MetaDslx.Languages.Meta.Symbols.Internal.MetaImplementationProvider.Implementation.MetaDocumentedElement_GetDocumentationLines(this);
+		    get { return this.GetReference<MetaNamespace>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public MetaModel MetaModel
+		{
+		    get { return this.GetReference<MetaModel>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty, ref metaModel0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public string Documentation
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
+		{
+		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -5103,14 +5220,20 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		{
 		    return global::MetaDslx.Languages.Meta.Symbols.Internal.MetaImplementationProvider.Implementation.MetaClass_GetAllFinalOperations(this);
 		}
+	
+		
+		global::MetaDslx.Core.ImmutableModelList<string> MetaDocumentedElement.GetDocumentationLines()
+		{
+		    return global::MetaDslx.Languages.Meta.Symbols.Internal.MetaImplementationProvider.Implementation.MetaDocumentedElement_GetDocumentationLines(this);
+		}
 	}
 	
 	internal class MetaClassBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, MetaClassBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<MetaClassBuilder> superClasses0;
 		private global::MetaDslx.Core.MutableModelList<MetaPropertyBuilder> properties0;
 		private global::MetaDslx.Core.MutableModelList<MetaOperationBuilder> operations0;
+		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 	
 		internal MetaClassBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -5142,6 +5265,26 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaClass)base.ToImmutable(model);
 		}
 	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -5162,16 +5305,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		MetaType MetaTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -5180,73 +5313,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaType MetaTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaDeclaration MetaDeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-		
-		public Func<string> DocumentationLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
-		{
-			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-	
-		
-		public MetaNamespaceBuilder Namespace
-		{
-			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
-			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
-		}
-		
-		public Func<MetaNamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
-		}
-	
-		
-		public MetaModelBuilder MetaModel
-		{
-			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
-		}
-		
-		public Func<MetaModelBuilder> MetaModelLazy
-		{
-			get { return this.GetLazyReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, value); }
 		}
 	
 		
@@ -5279,6 +5345,63 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		{
 			get { return this.GetList<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaClass.OperationsProperty, ref operations0); }
 		}
+	
+		
+		public MetaNamespaceBuilder Namespace
+		{
+			get { return this.GetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
+			set { this.SetReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+		}
+		
+		public Func<MetaNamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<MetaNamespaceBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.NamespaceProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.NamespaceProperty, value); }
+		}
+	
+		
+		public MetaModelBuilder MetaModel
+		{
+			get { return this.GetReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
+		}
+		
+		public Func<MetaModelBuilder> MetaModelLazy
+		{
+			get { return this.GetLazyReference<MetaModelBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MetaModelProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDeclaration.MetaModelProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
+		{
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
 	}
 	
 	internal class MetaOperationId : global::MetaDslx.Core.SymbolId
@@ -5299,17 +5422,17 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaOperationImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaOperation
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType parent0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<MetaParameter> parameters0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaType returnType0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaOperationImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -5336,6 +5459,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaOperationBuilder)base.ToMutable(model);
 		}
 	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -5354,34 +5487,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
-		{
-		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -5403,6 +5508,24 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public string Documentation
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
+		{
+		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		global::MetaDslx.Core.ImmutableModelList<string> MetaDocumentedElement.GetDocumentationLines()
 		{
 		    return global::MetaDslx.Languages.Meta.Symbols.Internal.MetaImplementationProvider.Implementation.MetaDocumentedElement_GetDocumentationLines(this);
@@ -5411,8 +5534,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaOperationBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, MetaOperationBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<MetaParameterBuilder> parameters0;
+		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 	
 		internal MetaOperationBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -5444,6 +5567,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaOperation)base.ToImmutable(model);
 		}
 	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -5462,48 +5595,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-		
-		public Func<string> DocumentationLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
-		{
-			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 	
 		
@@ -5537,6 +5628,38 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			get { return this.GetLazyReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaOperation.ReturnTypeProperty); }
 			set { this.SetLazyReference(MetaDescriptor.MetaOperation.ReturnTypeProperty, value); }
 		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
+		{
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
 	}
 	
 	internal class MetaParameterId : global::MetaDslx.Core.SymbolId
@@ -5557,15 +5680,15 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaParameterImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaParameter
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaType type0;
+		private MetaOperation operation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaOperation operation0;
+		private string documentation0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaParameterImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -5592,22 +5715,22 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaParameterBuilder)base.ToMutable(model);
 		}
 	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5622,32 +5745,20 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
-		public string Documentation
+		public MetaOperation Operation
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
-		{
-		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public MetaType Type
-		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
+		    get { return this.GetReference<MetaOperation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.OperationProperty, ref operation0); }
 		}
 	
 		
@@ -5657,9 +5768,21 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		public MetaOperation Operation
+		public string Documentation
 		{
-		    get { return this.GetReference<MetaOperation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.OperationProperty, ref operation0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		}
+	
+		
+		public MetaType Type
+		{
+		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
+		{
+		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -5703,22 +5826,22 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaParameter)base.ToImmutable(model);
 		}
 	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5733,46 +5856,27 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public string Documentation
+		public MetaOperationBuilder Operation
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+			get { return this.GetReference<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.OperationProperty); }
+			set { this.SetReference<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.OperationProperty, value); }
 		}
 		
-		public Func<string> DocumentationLazy
+		public Func<MetaOperationBuilder> OperationLazy
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
-		{
-			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public MetaTypeBuilder Type
-		{
-			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
-			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
-		}
-		
-		public Func<MetaTypeBuilder> TypeLazy
-		{
-			get { return this.GetLazyReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+			get { return this.GetLazyReference<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.OperationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaParameter.OperationProperty, value); }
 		}
 	
 		
@@ -5789,16 +5893,35 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
-		public MetaOperationBuilder Operation
+		public string Documentation
 		{
-			get { return this.GetReference<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.OperationProperty); }
-			set { this.SetReference<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.OperationProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
 		}
 		
-		public Func<MetaOperationBuilder> OperationLazy
+		public Func<string> DocumentationLazy
 		{
-			get { return this.GetLazyReference<MetaOperationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.OperationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaParameter.OperationProperty, value); }
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+	
+		
+		public MetaTypeBuilder Type
+		{
+			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
+			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+		}
+		
+		public Func<MetaTypeBuilder> TypeLazy
+		{
+			get { return this.GetLazyReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
+		{
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -5820,14 +5943,6 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	internal class MetaPropertyImpl : global::MetaDslx.Core.ImmutableSymbolBase, MetaProperty
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string documentation0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private MetaType type0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaPropertyKind kind0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private MetaClass class0;
@@ -5841,6 +5956,14 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		private global::MetaDslx.Core.ImmutableModelList<MetaProperty> redefinedProperties0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<MetaProperty> redefiningProperties0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string documentation0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private MetaType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> annotations0;
 	
 		internal MetaPropertyImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -5867,22 +5990,22 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaPropertyBuilder)base.ToMutable(model);
 		}
 	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
 		MetaDocumentedElementBuilder MetaDocumentedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5897,38 +6020,14 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable()
+		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		MetaNamedElementBuilder MetaNamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		MetaAnnotatedElementBuilder MetaAnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
-		{
-		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public MetaType Type
-		{
-		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -5974,6 +6073,30 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	
 		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public string Documentation
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, ref documentation0); }
+		}
+	
+		
+		public MetaType Type
+		{
+		    get { return this.GetReference<MetaType>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, ref type0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<MetaAnnotation> Annotations
+		{
+		    get { return this.GetList<MetaAnnotation>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
+	
+		
 		global::MetaDslx.Core.ImmutableModelList<string> MetaDocumentedElement.GetDocumentationLines()
 		{
 		    return global::MetaDslx.Languages.Meta.Symbols.Internal.MetaImplementationProvider.Implementation.MetaDocumentedElement_GetDocumentationLines(this);
@@ -5982,12 +6105,12 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaPropertyBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, MetaPropertyBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<MetaPropertyBuilder> oppositeProperties0;
 		private global::MetaDslx.Core.MutableModelList<MetaPropertyBuilder> subsettedProperties0;
 		private global::MetaDslx.Core.MutableModelList<MetaPropertyBuilder> subsettingProperties0;
 		private global::MetaDslx.Core.MutableModelList<MetaPropertyBuilder> redefinedProperties0;
 		private global::MetaDslx.Core.MutableModelList<MetaPropertyBuilder> redefiningProperties0;
+		private global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> annotations0;
 	
 		internal MetaPropertyBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -6019,22 +6142,22 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return (MetaProperty)base.ToImmutable(model);
 		}
 	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
 		MetaDocumentedElement MetaDocumentedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6049,59 +6172,14 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable()
+		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		MetaNamedElement MetaNamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		MetaAnnotatedElement MetaAnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public string Documentation
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-		
-		public Func<string> DocumentationLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
-		{
-			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public MetaTypeBuilder Type
-		{
-			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
-			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
-		}
-		
-		public Func<MetaTypeBuilder> TypeLazy
-		{
-			get { return this.GetLazyReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, value); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
-			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
 		}
 	
 		
@@ -6159,6 +6237,51 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		{
 			get { return this.GetList<MetaPropertyBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaProperty.RedefiningPropertiesProperty, ref redefiningProperties0); }
 		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.NameProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaNamedElement.NameProperty, value); }
+		}
+	
+		
+		public string Documentation
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+		
+		public Func<string> DocumentationLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.DocumentationProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaDocumentedElement.DocumentationProperty, value); }
+		}
+	
+		
+		public MetaTypeBuilder Type
+		{
+			get { return this.GetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
+			set { this.SetReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+		}
+		
+		public Func<MetaTypeBuilder> TypeLazy
+		{
+			get { return this.GetLazyReference<MetaTypeBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.TypeProperty); }
+			set { this.SetLazyReference(MetaDescriptor.MetaTypedElement.TypeProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<MetaAnnotationBuilder> Annotations
+		{
+			get { return this.GetList<MetaAnnotationBuilder>(global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
 	}
 
 	internal class MetaBuilderInstance
@@ -6207,10 +6330,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		private MetaOperationBuilder __tmp27;
 		internal MetaClassBuilder MetaNamedElement;
 		internal MetaPropertyBuilder MetaNamedElement_Name;
-		private MetaAnnotationBuilder __tmp66;
+		private MetaAnnotationBuilder __tmp68;
 		internal MetaClassBuilder MetaTypedElement;
 		internal MetaPropertyBuilder MetaTypedElement_Type;
-		private MetaAnnotationBuilder __tmp68;
+		private MetaAnnotationBuilder __tmp69;
 		internal MetaClassBuilder MetaType;
 		private MetaAnnotationBuilder __tmp39;
 		internal MetaClassBuilder MetaNamedType;
@@ -6305,8 +6428,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		private MetaCollectionTypeBuilder __tmp63;
 		private MetaCollectionTypeBuilder __tmp64;
 		private MetaCollectionTypeBuilder __tmp65;
+		private MetaCollectionTypeBuilder __tmp66;
 		private MetaCollectionTypeBuilder __tmp67;
-		private MetaCollectionTypeBuilder __tmp69;
 	
 		internal MetaBuilderInstance()
 		{
@@ -6365,10 +6488,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			__tmp27 = factory.MetaOperation();
 			MetaNamedElement = factory.MetaClass();
 			MetaNamedElement_Name = factory.MetaProperty();
-			__tmp66 = factory.MetaAnnotation();
+			__tmp68 = factory.MetaAnnotation();
 			MetaTypedElement = factory.MetaClass();
 			MetaTypedElement_Type = factory.MetaProperty();
-			__tmp68 = factory.MetaAnnotation();
+			__tmp69 = factory.MetaAnnotation();
 			MetaType = factory.MetaClass();
 			__tmp39 = factory.MetaAnnotation();
 			MetaNamedType = factory.MetaClass();
@@ -6463,8 +6586,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			__tmp63 = factory.MetaCollectionType();
 			__tmp64 = factory.MetaCollectionType();
 			__tmp65 = factory.MetaCollectionType();
+			__tmp66 = factory.MetaCollectionType();
 			__tmp67 = factory.MetaCollectionType();
-			__tmp69 = factory.MetaCollectionType();
 	
 			// __tmp1.MetaModel = null;
 			// __tmp1.Namespace = null;
@@ -6603,7 +6726,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaAnnotatedElement.Name = "MetaAnnotatedElement";
 			MetaAnnotatedElement.IsAbstract = true;
 			MetaAnnotatedElement.Properties.AddLazy(() => MetaAnnotatedElement_Annotations);
-			MetaAnnotatedElement_Annotations.TypeLazy = () => __tmp69;
+			MetaAnnotatedElement_Annotations.TypeLazy = () => __tmp65;
 			MetaAnnotatedElement_Annotations.Name = "Annotations";
 			MetaAnnotatedElement_Annotations.Documentation = null;
 			MetaAnnotatedElement_Annotations.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -6623,7 +6746,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			__tmp27.Name = "GetDocumentationLines";
 			__tmp27.Documentation = null;
 			__tmp27.ParentLazy = () => MetaDocumentedElement;
-			__tmp27.ReturnTypeLazy = () => __tmp65;
+			__tmp27.ReturnTypeLazy = () => __tmp66;
 			MetaNamedElement.MetaModelLazy = () => __tmp5;
 			MetaNamedElement.NamespaceLazy = () => __tmp4;
 			MetaNamedElement.Documentation = null;
@@ -6631,29 +6754,29 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaNamedElement.IsAbstract = true;
 			MetaNamedElement.SuperClasses.AddLazy(() => MetaDocumentedElement);
 			MetaNamedElement.Properties.AddLazy(() => MetaNamedElement_Name);
-			MetaNamedElement_Name.Annotations.AddLazy(() => __tmp66);
+			MetaNamedElement_Name.Annotations.AddLazy(() => __tmp68);
 			MetaNamedElement_Name.TypeLazy = () => String;
 			MetaNamedElement_Name.Name = "Name";
 			MetaNamedElement_Name.Documentation = null;
 			// MetaNamedElement_Name.Kind = null;
 			MetaNamedElement_Name.ClassLazy = () => MetaNamedElement;
-			__tmp66.Name = "Name";
-			__tmp66.Documentation = null;
+			__tmp68.Name = "Name";
+			__tmp68.Documentation = null;
 			MetaTypedElement.MetaModelLazy = () => __tmp5;
 			MetaTypedElement.NamespaceLazy = () => __tmp4;
 			MetaTypedElement.Documentation = null;
 			MetaTypedElement.Name = "MetaTypedElement";
 			MetaTypedElement.IsAbstract = true;
 			MetaTypedElement.Properties.AddLazy(() => MetaTypedElement_Type);
-			MetaTypedElement_Type.Annotations.AddLazy(() => __tmp68);
+			MetaTypedElement_Type.Annotations.AddLazy(() => __tmp69);
 			MetaTypedElement_Type.TypeLazy = () => MetaType;
 			MetaTypedElement_Type.Name = "Type";
 			MetaTypedElement_Type.Documentation = null;
 			// MetaTypedElement_Type.Kind = null;
 			MetaTypedElement_Type.ClassLazy = () => MetaTypedElement;
 			MetaTypedElement_Type.RedefiningProperties.AddLazy(() => MetaEnumLiteral_Enum);
-			__tmp68.Name = "Type";
-			__tmp68.Documentation = null;
+			__tmp69.Name = "Type";
+			__tmp69.Documentation = null;
 			MetaType.MetaModelLazy = () => __tmp5;
 			MetaType.NamespaceLazy = () => __tmp4;
 			MetaType.Documentation = null;
@@ -6668,6 +6791,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaNamedType.Name = "MetaNamedType";
 			// MetaNamedType.IsAbstract = null;
 			MetaNamedType.SuperClasses.AddLazy(() => MetaType);
+			MetaNamedType.SuperClasses.AddLazy(() => MetaNamedElement);
 			MetaAnnotation.MetaModelLazy = () => __tmp5;
 			MetaAnnotation.NamespaceLazy = () => __tmp4;
 			MetaAnnotation.Documentation = null;
@@ -6838,6 +6962,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			// MetaEnumLiteral.IsAbstract = null;
 			MetaEnumLiteral.SuperClasses.AddLazy(() => MetaNamedElement);
 			MetaEnumLiteral.SuperClasses.AddLazy(() => MetaTypedElement);
+			MetaEnumLiteral.SuperClasses.AddLazy(() => MetaAnnotatedElement);
 			MetaEnumLiteral.Properties.AddLazy(() => MetaEnumLiteral_Enum);
 			MetaEnumLiteral_Enum.TypeLazy = () => MetaEnum;
 			MetaEnumLiteral_Enum.Name = "Enum";
@@ -7119,11 +7244,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			__tmp64.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
 			__tmp64.InnerTypeLazy = () => MetaProperty;
 			__tmp65.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp65.InnerTypeLazy = () => String;
+			__tmp65.InnerTypeLazy = () => MetaAnnotation;
+			__tmp66.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
+			__tmp66.InnerTypeLazy = () => String;
 			__tmp67.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
 			__tmp67.InnerTypeLazy = () => Symbol;
-			__tmp69.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp69.InnerTypeLazy = () => MetaAnnotation;
 	
 			foreach (global::MetaDslx.Core.MutableSymbol symbol in this.Model.Symbols)
 			{
@@ -7171,8 +7296,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaDocumentedElement</li>
 		/// </ul>
 		public virtual void MetaErrorSymbol(MetaErrorSymbolBuilder _this)
 		{
@@ -7184,8 +7309,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaErrorSymbolSuperConstructors(MetaErrorSymbolBuilder _this)
 		{
-			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaDocumentedElement(_this);
 		}
 	
 	
@@ -7292,10 +7417,13 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// Direct superclasses: 
 		/// <ul>
 		///     <li>MetaType</li>
+		///     <li>MetaNamedElement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
 		///     <li>MetaType</li>
+		///     <li>MetaNamedElement</li>
+		///     <li>MetaDocumentedElement</li>
 		/// </ul>
 		public virtual void MetaNamedType(MetaNamedTypeBuilder _this)
 		{
@@ -7308,6 +7436,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		protected virtual void CallMetaNamedTypeSuperConstructors(MetaNamedTypeBuilder _this)
 		{
 			this.MetaType(_this);
+			this.MetaNamedElement(_this);
+			this.MetaDocumentedElement(_this);
 		}
 	
 	
@@ -7320,8 +7450,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaDocumentedElement</li>
 		/// </ul>
 		public virtual void MetaAnnotation(MetaAnnotationBuilder _this)
 		{
@@ -7333,8 +7463,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaAnnotationSuperConstructors(MetaAnnotationBuilder _this)
 		{
-			this.MetaDocumentedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaDocumentedElement(_this);
 		}
 	
 	
@@ -7348,9 +7478,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaNamedElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaNamedElement</li>
 		/// </ul>
 		/// Initializes the following derived properties:
 		/// <ul>
@@ -7366,9 +7496,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaDeclarationSuperConstructors(MetaDeclarationBuilder _this)
 		{
+			this.MetaNamedElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaAnnotatedElement(_this);
-			this.MetaNamedElement(_this);
 		}
 	
 	
@@ -7381,10 +7511,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaDeclaration</li>
+		///     <li>MetaNamedElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaNamedElement</li>
-		///     <li>MetaDeclaration</li>
 		/// </ul>
 		public virtual void MetaNamespace(MetaNamespaceBuilder _this)
 		{
@@ -7396,10 +7526,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaNamespaceSuperConstructors(MetaNamespaceBuilder _this)
 		{
+			this.MetaDeclaration(_this);
+			this.MetaNamedElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaAnnotatedElement(_this);
-			this.MetaNamedElement(_this);
-			this.MetaDeclaration(_this);
 		}
 	
 	
@@ -7413,9 +7543,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaNamedElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaNamedElement</li>
 		/// </ul>
 		public virtual void MetaModel(MetaModelBuilder _this)
 		{
@@ -7427,9 +7557,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaModelSuperConstructors(MetaModelBuilder _this)
 		{
+			this.MetaNamedElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaAnnotatedElement(_this);
-			this.MetaNamedElement(_this);
 		}
 	
 	
@@ -7493,11 +7623,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaDeclaration</li>
+		///     <li>MetaNamedElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaNamedElement</li>
 		///     <li>MetaType</li>
-		///     <li>MetaDeclaration</li>
 		/// </ul>
 		public virtual void MetaPrimitiveType(MetaPrimitiveTypeBuilder _this)
 		{
@@ -7509,11 +7639,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaPrimitiveTypeSuperConstructors(MetaPrimitiveTypeBuilder _this)
 		{
+			this.MetaDeclaration(_this);
+			this.MetaNamedElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaAnnotatedElement(_this);
-			this.MetaNamedElement(_this);
 			this.MetaType(_this);
-			this.MetaDeclaration(_this);
 		}
 	
 	
@@ -7527,11 +7657,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaDeclaration</li>
+		///     <li>MetaNamedElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaNamedElement</li>
 		///     <li>MetaType</li>
-		///     <li>MetaDeclaration</li>
 		/// </ul>
 		public virtual void MetaEnum(MetaEnumBuilder _this)
 		{
@@ -7543,11 +7673,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaEnumSuperConstructors(MetaEnumBuilder _this)
 		{
+			this.MetaDeclaration(_this);
+			this.MetaNamedElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaAnnotatedElement(_this);
-			this.MetaNamedElement(_this);
 			this.MetaType(_this);
-			this.MetaDeclaration(_this);
 		}
 	
 	
@@ -7558,12 +7688,14 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// <ul>
 		///     <li>MetaNamedElement</li>
 		///     <li>MetaTypedElement</li>
+		///     <li>MetaAnnotatedElement</li>
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaNamedElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaTypedElement</li>
-		///     <li>MetaNamedElement</li>
+		///     <li>MetaAnnotatedElement</li>
 		/// </ul>
 		public virtual void MetaEnumLiteral(MetaEnumLiteralBuilder _this)
 		{
@@ -7575,9 +7707,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaEnumLiteralSuperConstructors(MetaEnumLiteralBuilder _this)
 		{
+			this.MetaNamedElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaTypedElement(_this);
-			this.MetaNamedElement(_this);
+			this.MetaAnnotatedElement(_this);
 		}
 	
 	
@@ -7591,11 +7724,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaDeclaration</li>
+		///     <li>MetaNamedElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaNamedElement</li>
 		///     <li>MetaTypedElement</li>
-		///     <li>MetaDeclaration</li>
 		/// </ul>
 		public virtual void MetaConstant(MetaConstantBuilder _this)
 		{
@@ -7607,11 +7740,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaConstantSuperConstructors(MetaConstantBuilder _this)
 		{
+			this.MetaDeclaration(_this);
+			this.MetaNamedElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaAnnotatedElement(_this);
-			this.MetaNamedElement(_this);
 			this.MetaTypedElement(_this);
-			this.MetaDeclaration(_this);
 		}
 	
 	
@@ -7625,11 +7758,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaDeclaration</li>
+		///     <li>MetaNamedElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaNamedElement</li>
 		///     <li>MetaType</li>
-		///     <li>MetaDeclaration</li>
 		/// </ul>
 		public virtual void MetaClass(MetaClassBuilder _this)
 		{
@@ -7641,11 +7774,11 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaClassSuperConstructors(MetaClassBuilder _this)
 		{
+			this.MetaDeclaration(_this);
+			this.MetaNamedElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaAnnotatedElement(_this);
-			this.MetaNamedElement(_this);
 			this.MetaType(_this);
-			this.MetaDeclaration(_this);
 		}
 	
 		/// <summary>
@@ -7715,9 +7848,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
+		///     <li>MetaNamedElement</li>
 		///     <li>MetaDocumentedElement</li>
 		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaNamedElement</li>
 		/// </ul>
 		public virtual void MetaOperation(MetaOperationBuilder _this)
 		{
@@ -7729,9 +7862,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaOperationSuperConstructors(MetaOperationBuilder _this)
 		{
+			this.MetaNamedElement(_this);
 			this.MetaDocumentedElement(_this);
 			this.MetaAnnotatedElement(_this);
-			this.MetaNamedElement(_this);
 		}
 	
 	
@@ -7746,10 +7879,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>MetaDocumentedElement</li>
-		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaTypedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaDocumentedElement</li>
+		///     <li>MetaTypedElement</li>
+		///     <li>MetaAnnotatedElement</li>
 		/// </ul>
 		public virtual void MetaParameter(MetaParameterBuilder _this)
 		{
@@ -7761,10 +7894,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaParameterSuperConstructors(MetaParameterBuilder _this)
 		{
-			this.MetaDocumentedElement(_this);
-			this.MetaAnnotatedElement(_this);
-			this.MetaTypedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaDocumentedElement(_this);
+			this.MetaTypedElement(_this);
+			this.MetaAnnotatedElement(_this);
 		}
 	
 	
@@ -7779,10 +7912,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>MetaDocumentedElement</li>
-		///     <li>MetaAnnotatedElement</li>
-		///     <li>MetaTypedElement</li>
 		///     <li>MetaNamedElement</li>
+		///     <li>MetaDocumentedElement</li>
+		///     <li>MetaTypedElement</li>
+		///     <li>MetaAnnotatedElement</li>
 		/// </ul>
 		public virtual void MetaProperty(MetaPropertyBuilder _this)
 		{
@@ -7794,10 +7927,10 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		/// </summary>
 		protected virtual void CallMetaPropertySuperConstructors(MetaPropertyBuilder _this)
 		{
-			this.MetaDocumentedElement(_this);
-			this.MetaAnnotatedElement(_this);
-			this.MetaTypedElement(_this);
 			this.MetaNamedElement(_this);
+			this.MetaDocumentedElement(_this);
+			this.MetaTypedElement(_this);
+			this.MetaAnnotatedElement(_this);
 		}
 	
 	
@@ -7816,3 +7949,4 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		}
 	}
 }
+

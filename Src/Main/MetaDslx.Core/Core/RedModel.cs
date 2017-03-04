@@ -1123,6 +1123,7 @@ namespace MetaDslx.Core
         internal ImmutableModelList<ImmutableSymbol> MGetBases(SymbolId sid)
         {
             GreenList result = this.CollectBases(sid);
+            result = result.Remove(sid);
             return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
         }
 
@@ -1130,6 +1131,7 @@ namespace MetaDslx.Core
         {
             GreenList result = GreenList.EmptyUnique;
             this.CollectAllBases(sid, ref result);
+            result = result.Remove(sid);
             return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
         }
 
@@ -1169,7 +1171,7 @@ namespace MetaDslx.Core
             var bases = this.CollectBases(sid);
             foreach (var item in bases)
             {
-                this.CollectAllBases(sid, ref result);
+                this.CollectAllBases(item as SymbolId, ref result);
             }
         }
 
@@ -2033,6 +2035,7 @@ namespace MetaDslx.Core
         {
             List<MutableSymbol> result = new List<MutableSymbol>();
             this.CollectBases(symbol, result);
+            result.Remove(symbol);
             return result;
         }
 
@@ -2040,6 +2043,7 @@ namespace MetaDslx.Core
         {
             List<MutableSymbol> result = new List<MutableSymbol>();
             this.CollectAllBases(symbol, result);
+            result.Remove(symbol);
             return result;
         }
 

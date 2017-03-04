@@ -117,7 +117,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
         public override ImmutableModelList<MetaClass> MetaClass_GetAllSuperClasses(MetaClass _this, bool includeSelf)
         {
             List<MetaClass> result = new List<MetaClass>();
-            result.Add(_this);
+            /*result.Add(_this);
             int i = 0;
             while(i < result.Count)
             {
@@ -132,7 +132,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
                 ++i;
             }
             if (!includeSelf) result.RemoveAt(0);
-            result.Reverse();
+            result.Reverse();*/
+            if (includeSelf) result.Add(_this);
+            result.AddRange(_this.MGetAllBases().Cast<MetaClass>());
             return ImmutableModelList<MetaClass>.CreateUnique(result);
         }
 

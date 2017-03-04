@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr4.Runtime.Standard, Version=4.6.0.0, Culture=neutral, PublicKeyToken=e78b2c5abd1fcb3f, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Collections.Immutable" />
@@ -52,10 +53,14 @@
     </Compile>
     <Compile Include="CalculatorImplementation.cs" />
     <Compile Include="Syntax\CalculatorSyntaxKind.cs" />
-    <Compile Include="Syntax\InternalSyntax\CalculatorLexer.cs">
+    <Compile Include="Syntax\InternalSyntax\CalculatorLexer1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>CalculatorLexer.ag4</DependentUpon>
     </Compile>
-    <Compile Include="Syntax\InternalSyntax\CalculatorParser.cs">
+    <Compile Include="Syntax\InternalSyntax\CalculatorParser1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </Compile>
     <Compile Include="Syntax\InternalSyntax\CalculatorParserBaseListener.cs">
@@ -94,11 +99,9 @@
     </None>
     <None Include="Syntax\InternalSyntax\CalculatorLexer.ag4">
       <Generator>Antlr4RoslynGenerator</Generator>
-      <LastGenOutput>CalculatorLexer.g4</LastGenOutput>
+      <LastGenOutput>CalculatorLexer1.cs</LastGenOutput>
     </None>
-    <None Include="Syntax\InternalSyntax\CalculatorLexer.g4">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <None Include="Syntax\InternalSyntax\CalculatorLexer.og4">
       <DependentUpon>CalculatorLexer.ag4</DependentUpon>
     </None>
     <None Include="Syntax\InternalSyntax\CalculatorLexer.tokens">
@@ -106,11 +109,9 @@
     </None>
     <None Include="Syntax\InternalSyntax\CalculatorParser.ag4">
       <Generator>Antlr4RoslynGenerator</Generator>
-      <LastGenOutput>CalculatorParser.g4</LastGenOutput>
+      <LastGenOutput>CalculatorParser1.cs</LastGenOutput>
     </None>
-    <None Include="Syntax\InternalSyntax\CalculatorParser.g4">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <None Include="Syntax\InternalSyntax\CalculatorParser.og4">
       <DependentUpon>CalculatorParser.ag4</DependentUpon>
     </None>
     <None Include="Syntax\InternalSyntax\CalculatorParser.tokens">

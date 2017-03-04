@@ -1102,12 +1102,12 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken ID 
+	    public SyntaxToken LId 
 		{ 
 			get 
 			{ 
 				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.IdentifierGreen)this.Green;
-				var greenToken = green.ID;
+				var greenToken = green.LId;
 				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
 			}
 		}
@@ -1128,16 +1128,16 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        }
 	    }
 	
-	    public IdentifierSyntax WithID(SyntaxToken id)
+	    public IdentifierSyntax WithLId(SyntaxToken lId)
 		{
-			return this.Update(ID);
+			return this.Update(LId);
 		}
 	
-	    public IdentifierSyntax Update(SyntaxToken id)
+	    public IdentifierSyntax Update(SyntaxToken lId)
 	    {
-	        if (this.ID != id)
+	        if (this.LId != lId)
 	        {
-	            SyntaxNode newNode = CalculatorLanguage.Instance.SyntaxFactory.Identifier(id);
+	            SyntaxNode newNode = CalculatorLanguage.Instance.SyntaxFactory.Identifier(lId);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1170,12 +1170,12 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken STRING 
+	    public SyntaxToken LString 
 		{ 
 			get 
 			{ 
 				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.StringGreen)this.Green;
-				var greenToken = green.STRING;
+				var greenToken = green.LString;
 				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
 			}
 		}
@@ -1196,16 +1196,16 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        }
 	    }
 	
-	    public StringSyntax WithSTRING(SyntaxToken _string)
+	    public StringSyntax WithLString(SyntaxToken lString)
 		{
-			return this.Update(STRING);
+			return this.Update(LString);
 		}
 	
-	    public StringSyntax Update(SyntaxToken _string)
+	    public StringSyntax Update(SyntaxToken lString)
 	    {
-	        if (this.STRING != _string)
+	        if (this.LString != lString)
 	        {
-	            SyntaxNode newNode = CalculatorLanguage.Instance.SyntaxFactory.String(_string);
+	            SyntaxNode newNode = CalculatorLanguage.Instance.SyntaxFactory.String(lString);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1238,12 +1238,12 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken INT 
+	    public SyntaxToken LInt 
 		{ 
 			get 
 			{ 
 				var green = (global::MetaDslx.Languages.Calculator.Syntax.InternalSyntax.IntegerGreen)this.Green;
-				var greenToken = green.INT;
+				var greenToken = green.LInt;
 				return greenToken == null ? null : new CalculatorSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
 			}
 		}
@@ -1264,16 +1264,16 @@ namespace MetaDslx.Languages.Calculator.Syntax
 	        }
 	    }
 	
-	    public IntegerSyntax WithINT(SyntaxToken _int)
+	    public IntegerSyntax WithLInt(SyntaxToken lInt)
 		{
-			return this.Update(INT);
+			return this.Update(LInt);
 		}
 	
-	    public IntegerSyntax Update(SyntaxToken _int)
+	    public IntegerSyntax Update(SyntaxToken lInt)
 	    {
-	        if (this.INT != _int)
+	        if (this.LInt != lInt)
 	        {
-	            SyntaxNode newNode = CalculatorLanguage.Instance.SyntaxFactory.Integer(_int);
+	            SyntaxNode newNode = CalculatorLanguage.Instance.SyntaxFactory.Integer(lInt);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1559,17 +1559,17 @@ namespace MetaDslx.Languages.Calculator
 		
 		public virtual void VisitIdentifier(IdentifierSyntax node)
 		{
-			this.VisitToken(node.ID);
+			this.VisitToken(node.LId);
 		}
 		
 		public virtual void VisitString(StringSyntax node)
 		{
-			this.VisitToken(node.STRING);
+			this.VisitToken(node.LString);
 		}
 		
 		public virtual void VisitInteger(IntegerSyntax node)
 		{
-			this.VisitToken(node.INT);
+			this.VisitToken(node.LInt);
 		}
 		
 		public virtual void VisitArg(ArgSyntax node)
@@ -1805,20 +1805,20 @@ namespace MetaDslx.Languages.Calculator
 		
 		public virtual SyntaxNode VisitIdentifier(IdentifierSyntax node)
 		{
-		    var id = this.VisitToken(node.ID);
-			return node.Update(id);
+		    var lId = this.VisitToken(node.LId);
+			return node.Update(lId);
 		}
 		
 		public virtual SyntaxNode VisitString(StringSyntax node)
 		{
-		    var _string = this.VisitToken(node.STRING);
-			return node.Update(_string);
+		    var lString = this.VisitToken(node.LString);
+			return node.Update(lString);
 		}
 		
 		public virtual SyntaxNode VisitInteger(IntegerSyntax node)
 		{
-		    var _int = this.VisitToken(node.INT);
-			return node.Update(_int);
+		    var lInt = this.VisitToken(node.LInt);
+			return node.Update(lInt);
 		}
 		
 		public virtual SyntaxNode VisitArg(ArgSyntax node)
@@ -2003,74 +2003,74 @@ namespace MetaDslx.Languages.Calculator
 		    return new CalculatorSyntaxParser(SourceText.From(text, Encoding.UTF8), CalculatorParseOptions.Default, null, null);
 		}
 	
-	    public SyntaxToken STRING(string text)
+	    public SyntaxToken LString(string text)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.STRING(text).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LString(text).CreateRed();
 	    }
 	
-	    public SyntaxToken STRING(string text, object value)
+	    public SyntaxToken LString(string text, object value)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.STRING(text, value).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LString(text, value).CreateRed();
 	    }
 	
-	    public SyntaxToken ID(string text)
+	    public SyntaxToken LId(string text)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.ID(text).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LId(text).CreateRed();
 	    }
 	
-	    public SyntaxToken ID(string text, object value)
+	    public SyntaxToken LId(string text, object value)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.ID(text, value).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LId(text, value).CreateRed();
 	    }
 	
-	    public SyntaxToken INT(string text)
+	    public SyntaxToken LInt(string text)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.INT(text).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LInt(text).CreateRed();
 	    }
 	
-	    public SyntaxToken INT(string text, object value)
+	    public SyntaxToken LInt(string text, object value)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.INT(text, value).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LInt(text, value).CreateRed();
 	    }
 	
-	    public SyntaxToken UTF8BOM(string text)
+	    public SyntaxToken LUtf8Bom(string text)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.UTF8BOM(text).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LUtf8Bom(text).CreateRed();
 	    }
 	
-	    public SyntaxToken UTF8BOM(string text, object value)
+	    public SyntaxToken LUtf8Bom(string text, object value)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.UTF8BOM(text, value).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LUtf8Bom(text, value).CreateRed();
 	    }
 	
-	    public SyntaxToken WHITESPACE(string text)
+	    public SyntaxToken LWhitespace(string text)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.WHITESPACE(text).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LWhitespace(text).CreateRed();
 	    }
 	
-	    public SyntaxToken WHITESPACE(string text, object value)
+	    public SyntaxToken LWhitespace(string text, object value)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.WHITESPACE(text, value).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LWhitespace(text, value).CreateRed();
 	    }
 	
-	    public SyntaxToken ENDL(string text)
+	    public SyntaxToken LEndl(string text)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.ENDL(text).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LEndl(text).CreateRed();
 	    }
 	
-	    public SyntaxToken ENDL(string text, object value)
+	    public SyntaxToken LEndl(string text, object value)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.ENDL(text, value).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LEndl(text, value).CreateRed();
 	    }
 	
-	    public SyntaxToken COMMENT(string text)
+	    public SyntaxToken LComment(string text)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.COMMENT(text).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LComment(text).CreateRed();
 	    }
 	
-	    public SyntaxToken COMMENT(string text, object value)
+	    public SyntaxToken LComment(string text, object value)
 	    {
-	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.COMMENT(text, value).CreateRed();
+	        return (SyntaxToken)CalculatorLanguage.Instance.InternalSyntaxFactory.LComment(text, value).CreateRed();
 	    }
 		
 		public MainSyntax Main(SyntaxNodeList<StatementLineSyntax> statementLine, SyntaxToken eof)
@@ -2194,25 +2194,25 @@ namespace MetaDslx.Languages.Calculator
 		    return (ValueSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.Value((Syntax.InternalSyntax.IntegerGreen)integer.Green).CreateRed();
 		}
 		
-		public IdentifierSyntax Identifier(SyntaxToken id)
+		public IdentifierSyntax Identifier(SyntaxToken lId)
 		{
-		    if (id == null) throw new ArgumentNullException(nameof(id));
-		    if (id.RawKind != (int)CalculatorSyntaxKind.ID) throw new ArgumentException(nameof(id));
-		    return (IdentifierSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.Identifier((InternalSyntaxToken)id.Green).CreateRed();
+		    if (lId == null) throw new ArgumentNullException(nameof(lId));
+		    if (lId.RawKind != (int)CalculatorSyntaxKind.LId) throw new ArgumentException(nameof(lId));
+		    return (IdentifierSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.Identifier((InternalSyntaxToken)lId.Green).CreateRed();
 		}
 		
-		public StringSyntax String(SyntaxToken _string)
+		public StringSyntax String(SyntaxToken lString)
 		{
-		    if (_string == null) throw new ArgumentNullException(nameof(_string));
-		    if (_string.RawKind != (int)CalculatorSyntaxKind.STRING) throw new ArgumentException(nameof(_string));
-		    return (StringSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.String((InternalSyntaxToken)_string.Green).CreateRed();
+		    if (lString == null) throw new ArgumentNullException(nameof(lString));
+		    if (lString.RawKind != (int)CalculatorSyntaxKind.LString) throw new ArgumentException(nameof(lString));
+		    return (StringSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.String((InternalSyntaxToken)lString.Green).CreateRed();
 		}
 		
-		public IntegerSyntax Integer(SyntaxToken _int)
+		public IntegerSyntax Integer(SyntaxToken lInt)
 		{
-		    if (_int == null) throw new ArgumentNullException(nameof(_int));
-		    if (_int.RawKind != (int)CalculatorSyntaxKind.INT) throw new ArgumentException(nameof(_int));
-		    return (IntegerSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.Integer((InternalSyntaxToken)_int.Green).CreateRed();
+		    if (lInt == null) throw new ArgumentNullException(nameof(lInt));
+		    if (lInt.RawKind != (int)CalculatorSyntaxKind.LInt) throw new ArgumentException(nameof(lInt));
+		    return (IntegerSyntax)CalculatorLanguage.Instance.InternalSyntaxFactory.Integer((InternalSyntaxToken)lInt.Green).CreateRed();
 		}
 		
 		public ArgSyntax Arg(ValueSyntax value)

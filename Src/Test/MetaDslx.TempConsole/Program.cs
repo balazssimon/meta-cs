@@ -56,7 +56,7 @@ namespace MetaDslx.TempConsole
         {
             //try
             {
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileGenerator(
                     @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen",
@@ -141,7 +141,7 @@ namespace MetaDslx.TempConsole
                     @"../../../../Samples/MetaDslx.Languages.Soal\Soal.cs"
                     );
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm",

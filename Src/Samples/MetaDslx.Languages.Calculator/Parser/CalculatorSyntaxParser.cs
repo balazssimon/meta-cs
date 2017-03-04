@@ -275,22 +275,22 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			public override GreenNode VisitIdentifier(CalculatorParser.IdentifierContext context)
 			{
 				if (context == null) return null;
-				InternalSyntaxToken id = (InternalSyntaxToken)this.VisitTerminal(context.ID());
-				return this.factory.Identifier(id, true);
+				InternalSyntaxToken lId = (InternalSyntaxToken)this.VisitTerminal(context.LId());
+				return this.factory.Identifier(lId, true);
 			}
 			
 			public override GreenNode VisitString(CalculatorParser.StringContext context)
 			{
 				if (context == null) return null;
-				InternalSyntaxToken _string = (InternalSyntaxToken)this.VisitTerminal(context.STRING());
-				return this.factory.String(_string, true);
+				InternalSyntaxToken lString = (InternalSyntaxToken)this.VisitTerminal(context.LString());
+				return this.factory.String(lString, true);
 			}
 			
 			public override GreenNode VisitInteger(CalculatorParser.IntegerContext context)
 			{
 				if (context == null) return null;
-				InternalSyntaxToken _int = (InternalSyntaxToken)this.VisitTerminal(context.INT());
-				return this.factory.Integer(_int, true);
+				InternalSyntaxToken lInt = (InternalSyntaxToken)this.VisitTerminal(context.LInt());
+				return this.factory.Integer(lInt, true);
 			}
 			
 			public override GreenNode VisitArg(CalculatorParser.ArgContext context)

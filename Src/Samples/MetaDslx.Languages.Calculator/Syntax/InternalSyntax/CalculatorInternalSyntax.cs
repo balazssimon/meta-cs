@@ -1684,31 +1684,31 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	
 	internal class IdentifierGreen : CalculatorGreenNode
 	{
-	    private InternalSyntaxToken id;
+	    private InternalSyntaxToken lId;
 	
-	    public IdentifierGreen(CalculatorSyntaxKind kind, InternalSyntaxToken id)
+	    public IdentifierGreen(CalculatorSyntaxKind kind, InternalSyntaxToken lId)
 	        : base(kind, null, null)
 	    {
-			if (id != null)
+			if (lId != null)
 			{
-				this.AdjustFlagsAndWidth(id);
-				this.id = id;
+				this.AdjustFlagsAndWidth(lId);
+				this.lId = lId;
 			}
 	    }
 	
-	    public IdentifierGreen(CalculatorSyntaxKind kind, InternalSyntaxToken id, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public IdentifierGreen(CalculatorSyntaxKind kind, InternalSyntaxToken lId, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			if (id != null)
+			if (lId != null)
 			{
-				this.AdjustFlagsAndWidth(id);
-				this.id = id;
+				this.AdjustFlagsAndWidth(lId);
+				this.lId = lId;
 			}
 	    }
 	
 		public override int SlotCount { get { return 1; } }
 	
-	    public InternalSyntaxToken ID { get { return this.id; } }
+	    public InternalSyntaxToken LId { get { return this.lId; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -1719,26 +1719,26 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.id;
+	            case 0: return this.lId;
 	            default: return null;
 	        }
 	    }
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new IdentifierGreen(this.Kind, this.id, diagnostics, this.GetAnnotations());
+	        return new IdentifierGreen(this.Kind, this.lId, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new IdentifierGreen(this.Kind, this.id, this.GetDiagnostics(), annotations);
+	        return new IdentifierGreen(this.Kind, this.lId, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public IdentifierGreen Update(InternalSyntaxToken id)
+	    public IdentifierGreen Update(InternalSyntaxToken lId)
 	    {
-	        if (this.id != id)
+	        if (this.lId != lId)
 	        {
-	            GreenNode newNode = CalculatorLanguage.Instance.InternalSyntaxFactory.Identifier(id);
+	            GreenNode newNode = CalculatorLanguage.Instance.InternalSyntaxFactory.Identifier(lId);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -1753,31 +1753,31 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	
 	internal class StringGreen : CalculatorGreenNode
 	{
-	    private InternalSyntaxToken _string;
+	    private InternalSyntaxToken lString;
 	
-	    public StringGreen(CalculatorSyntaxKind kind, InternalSyntaxToken _string)
+	    public StringGreen(CalculatorSyntaxKind kind, InternalSyntaxToken lString)
 	        : base(kind, null, null)
 	    {
-			if (_string != null)
+			if (lString != null)
 			{
-				this.AdjustFlagsAndWidth(_string);
-				this._string = _string;
+				this.AdjustFlagsAndWidth(lString);
+				this.lString = lString;
 			}
 	    }
 	
-	    public StringGreen(CalculatorSyntaxKind kind, InternalSyntaxToken _string, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public StringGreen(CalculatorSyntaxKind kind, InternalSyntaxToken lString, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			if (_string != null)
+			if (lString != null)
 			{
-				this.AdjustFlagsAndWidth(_string);
-				this._string = _string;
+				this.AdjustFlagsAndWidth(lString);
+				this.lString = lString;
 			}
 	    }
 	
 		public override int SlotCount { get { return 1; } }
 	
-	    public InternalSyntaxToken STRING { get { return this._string; } }
+	    public InternalSyntaxToken LString { get { return this.lString; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -1788,26 +1788,26 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this._string;
+	            case 0: return this.lString;
 	            default: return null;
 	        }
 	    }
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new StringGreen(this.Kind, this._string, diagnostics, this.GetAnnotations());
+	        return new StringGreen(this.Kind, this.lString, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new StringGreen(this.Kind, this._string, this.GetDiagnostics(), annotations);
+	        return new StringGreen(this.Kind, this.lString, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public StringGreen Update(InternalSyntaxToken _string)
+	    public StringGreen Update(InternalSyntaxToken lString)
 	    {
-	        if (this._string != _string)
+	        if (this.lString != lString)
 	        {
-	            GreenNode newNode = CalculatorLanguage.Instance.InternalSyntaxFactory.String(_string);
+	            GreenNode newNode = CalculatorLanguage.Instance.InternalSyntaxFactory.String(lString);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -1822,31 +1822,31 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	
 	internal class IntegerGreen : CalculatorGreenNode
 	{
-	    private InternalSyntaxToken _int;
+	    private InternalSyntaxToken lInt;
 	
-	    public IntegerGreen(CalculatorSyntaxKind kind, InternalSyntaxToken _int)
+	    public IntegerGreen(CalculatorSyntaxKind kind, InternalSyntaxToken lInt)
 	        : base(kind, null, null)
 	    {
-			if (_int != null)
+			if (lInt != null)
 			{
-				this.AdjustFlagsAndWidth(_int);
-				this._int = _int;
+				this.AdjustFlagsAndWidth(lInt);
+				this.lInt = lInt;
 			}
 	    }
 	
-	    public IntegerGreen(CalculatorSyntaxKind kind, InternalSyntaxToken _int, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public IntegerGreen(CalculatorSyntaxKind kind, InternalSyntaxToken lInt, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			if (_int != null)
+			if (lInt != null)
 			{
-				this.AdjustFlagsAndWidth(_int);
-				this._int = _int;
+				this.AdjustFlagsAndWidth(lInt);
+				this.lInt = lInt;
 			}
 	    }
 	
 		public override int SlotCount { get { return 1; } }
 	
-	    public InternalSyntaxToken INT { get { return this._int; } }
+	    public InternalSyntaxToken LInt { get { return this.lInt; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -1857,26 +1857,26 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this._int;
+	            case 0: return this.lInt;
 	            default: return null;
 	        }
 	    }
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new IntegerGreen(this.Kind, this._int, diagnostics, this.GetAnnotations());
+	        return new IntegerGreen(this.Kind, this.lInt, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new IntegerGreen(this.Kind, this._int, this.GetDiagnostics(), annotations);
+	        return new IntegerGreen(this.Kind, this.lInt, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public IntegerGreen Update(InternalSyntaxToken _int)
+	    public IntegerGreen Update(InternalSyntaxToken lInt)
 	    {
-	        if (this._int != _int)
+	        if (this.lInt != lInt)
 	        {
-	            GreenNode newNode = CalculatorLanguage.Instance.InternalSyntaxFactory.Integer(_int);
+	            GreenNode newNode = CalculatorLanguage.Instance.InternalSyntaxFactory.Integer(lInt);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -2070,74 +2070,74 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 		}
 	
 	
-	    internal CalculatorGreenToken STRING(string text)
+	    internal CalculatorGreenToken LString(string text)
 	    {
-	        return Token(null, CalculatorSyntaxKind.STRING, text, null);
+	        return Token(null, CalculatorSyntaxKind.LString, text, null);
 	    }
 	
-	    internal CalculatorGreenToken STRING(string text, object value)
+	    internal CalculatorGreenToken LString(string text, object value)
 	    {
-	        return Token(null, CalculatorSyntaxKind.STRING, text, value, null);
+	        return Token(null, CalculatorSyntaxKind.LString, text, value, null);
 	    }
 	
-	    internal CalculatorGreenToken ID(string text)
+	    internal CalculatorGreenToken LId(string text)
 	    {
-	        return Token(null, CalculatorSyntaxKind.ID, text, null);
+	        return Token(null, CalculatorSyntaxKind.LId, text, null);
 	    }
 	
-	    internal CalculatorGreenToken ID(string text, object value)
+	    internal CalculatorGreenToken LId(string text, object value)
 	    {
-	        return Token(null, CalculatorSyntaxKind.ID, text, value, null);
+	        return Token(null, CalculatorSyntaxKind.LId, text, value, null);
 	    }
 	
-	    internal CalculatorGreenToken INT(string text)
+	    internal CalculatorGreenToken LInt(string text)
 	    {
-	        return Token(null, CalculatorSyntaxKind.INT, text, null);
+	        return Token(null, CalculatorSyntaxKind.LInt, text, null);
 	    }
 	
-	    internal CalculatorGreenToken INT(string text, object value)
+	    internal CalculatorGreenToken LInt(string text, object value)
 	    {
-	        return Token(null, CalculatorSyntaxKind.INT, text, value, null);
+	        return Token(null, CalculatorSyntaxKind.LInt, text, value, null);
 	    }
 	
-	    internal CalculatorGreenToken UTF8BOM(string text)
+	    internal CalculatorGreenToken LUtf8Bom(string text)
 	    {
-	        return Token(null, CalculatorSyntaxKind.UTF8BOM, text, null);
+	        return Token(null, CalculatorSyntaxKind.LUtf8Bom, text, null);
 	    }
 	
-	    internal CalculatorGreenToken UTF8BOM(string text, object value)
+	    internal CalculatorGreenToken LUtf8Bom(string text, object value)
 	    {
-	        return Token(null, CalculatorSyntaxKind.UTF8BOM, text, value, null);
+	        return Token(null, CalculatorSyntaxKind.LUtf8Bom, text, value, null);
 	    }
 	
-	    internal CalculatorGreenToken WHITESPACE(string text)
+	    internal CalculatorGreenToken LWhitespace(string text)
 	    {
-	        return Token(null, CalculatorSyntaxKind.WHITESPACE, text, null);
+	        return Token(null, CalculatorSyntaxKind.LWhitespace, text, null);
 	    }
 	
-	    internal CalculatorGreenToken WHITESPACE(string text, object value)
+	    internal CalculatorGreenToken LWhitespace(string text, object value)
 	    {
-	        return Token(null, CalculatorSyntaxKind.WHITESPACE, text, value, null);
+	        return Token(null, CalculatorSyntaxKind.LWhitespace, text, value, null);
 	    }
 	
-	    internal CalculatorGreenToken ENDL(string text)
+	    internal CalculatorGreenToken LEndl(string text)
 	    {
-	        return Token(null, CalculatorSyntaxKind.ENDL, text, null);
+	        return Token(null, CalculatorSyntaxKind.LEndl, text, null);
 	    }
 	
-	    internal CalculatorGreenToken ENDL(string text, object value)
+	    internal CalculatorGreenToken LEndl(string text, object value)
 	    {
-	        return Token(null, CalculatorSyntaxKind.ENDL, text, value, null);
+	        return Token(null, CalculatorSyntaxKind.LEndl, text, value, null);
 	    }
 	
-	    internal CalculatorGreenToken COMMENT(string text)
+	    internal CalculatorGreenToken LComment(string text)
 	    {
-	        return Token(null, CalculatorSyntaxKind.COMMENT, text, null);
+	        return Token(null, CalculatorSyntaxKind.LComment, text, null);
 	    }
 	
-	    internal CalculatorGreenToken COMMENT(string text, object value)
+	    internal CalculatorGreenToken LComment(string text, object value)
 	    {
-	        return Token(null, CalculatorSyntaxKind.COMMENT, text, value, null);
+	        return Token(null, CalculatorSyntaxKind.LComment, text, value, null);
 	    }
 	
 		public MainGreen Main(InternalSyntaxNodeList statementLine, InternalSyntaxToken eof, bool errorNode = false)
@@ -2421,19 +2421,19 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public IdentifierGreen Identifier(InternalSyntaxToken id, bool errorNode = false)
+		public IdentifierGreen Identifier(InternalSyntaxToken lId, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
 			{
-				if (id == null) throw new ArgumentNullException(nameof(id));
-				if (id.RawKind != (int)CalculatorSyntaxKind.ID) throw new ArgumentException(nameof(id));
+				if (lId == null) throw new ArgumentNullException(nameof(lId));
+				if (lId.RawKind != (int)CalculatorSyntaxKind.LId) throw new ArgumentException(nameof(lId));
 			}
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)CalculatorSyntaxKind.Identifier, id, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)CalculatorSyntaxKind.Identifier, lId, out hash);
 			if (cached != null) return (IdentifierGreen)cached;
-			var result = new IdentifierGreen(CalculatorSyntaxKind.Identifier, id);
+			var result = new IdentifierGreen(CalculatorSyntaxKind.Identifier, lId);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -2441,19 +2441,19 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public StringGreen String(InternalSyntaxToken _string, bool errorNode = false)
+		public StringGreen String(InternalSyntaxToken lString, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
 			{
-				if (_string == null) throw new ArgumentNullException(nameof(_string));
-				if (_string.RawKind != (int)CalculatorSyntaxKind.STRING) throw new ArgumentException(nameof(_string));
+				if (lString == null) throw new ArgumentNullException(nameof(lString));
+				if (lString.RawKind != (int)CalculatorSyntaxKind.LString) throw new ArgumentException(nameof(lString));
 			}
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)CalculatorSyntaxKind.String, _string, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)CalculatorSyntaxKind.String, lString, out hash);
 			if (cached != null) return (StringGreen)cached;
-			var result = new StringGreen(CalculatorSyntaxKind.String, _string);
+			var result = new StringGreen(CalculatorSyntaxKind.String, lString);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -2461,19 +2461,19 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public IntegerGreen Integer(InternalSyntaxToken _int, bool errorNode = false)
+		public IntegerGreen Integer(InternalSyntaxToken lInt, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
 			{
-				if (_int == null) throw new ArgumentNullException(nameof(_int));
-				if (_int.RawKind != (int)CalculatorSyntaxKind.INT) throw new ArgumentException(nameof(_int));
+				if (lInt == null) throw new ArgumentNullException(nameof(lInt));
+				if (lInt.RawKind != (int)CalculatorSyntaxKind.LInt) throw new ArgumentException(nameof(lInt));
 			}
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)CalculatorSyntaxKind.Integer, _int, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)CalculatorSyntaxKind.Integer, lInt, out hash);
 			if (cached != null) return (IntegerGreen)cached;
-			var result = new IntegerGreen(CalculatorSyntaxKind.Integer, _int);
+			var result = new IntegerGreen(CalculatorSyntaxKind.Integer, lInt);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
