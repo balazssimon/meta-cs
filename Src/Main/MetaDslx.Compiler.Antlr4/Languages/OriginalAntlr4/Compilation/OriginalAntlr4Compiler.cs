@@ -223,7 +223,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                                 unprocessedLines.AppendLine(line);
                             }
                         }
-                        this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_Antlr4CallError, unprocessedLines.ToString(), this.FileName);
+                        string unprocessed = unprocessedLines.ToString();
+                        if (!string.IsNullOrWhiteSpace(unprocessed))
+                        {
+                            this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_Antlr4CallError, unprocessed, this.FileName);
+                        }
                     }
                     if (terminated && !this.DiagnosticBag.HasAnyErrors())
                     {

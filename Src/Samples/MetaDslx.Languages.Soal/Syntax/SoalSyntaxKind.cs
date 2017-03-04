@@ -140,12 +140,13 @@ namespace MetaDslx.Languages.Soal.Syntax
 		LCrLf = 116,
 		LLineEnd = 117,
 		LSingleLineComment = 118,
-		COMMENT = 119,
+		LMultiLineComment = 119,
 		LDoubleQuoteVerbatimString = 120,
 		LSingleQuoteVerbatimString = 121,
 		DoubleQuoteVerbatimStringLiteralStart = 122,
 		SingleQuoteVerbatimStringLiteralStart = 123,
-		LastTokenSyntaxKind = 123,
+		LCommentStart = 124,
+		LastTokenSyntaxKind = 124,
 
 		// Rules:
 		Main,

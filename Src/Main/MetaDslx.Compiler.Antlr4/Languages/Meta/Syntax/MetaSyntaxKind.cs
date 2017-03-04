@@ -133,7 +133,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 		LSingleQuoteVerbatimString = 109,
 		DoubleQuoteVerbatimStringLiteralStart = 110,
 		SingleQuoteVerbatimStringLiteralStart = 111,
-		LastTokenSyntaxKind = 111,
+		LCommentStart = 112,
+		LastTokenSyntaxKind = 112,
 
 		// Rules:
 		Main,

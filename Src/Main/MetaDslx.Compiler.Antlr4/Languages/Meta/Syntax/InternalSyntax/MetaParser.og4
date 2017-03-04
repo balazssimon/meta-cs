@@ -186,4 +186,4 @@ scientificLiteral : LScientific;
 
 // String literals
       
-stringLiteral : LRegularString | LDoubleQuoteVerbatimString | LSingleQuoteVerbatimString;
+stringLiteral : LRegularString;

@@ -1027,20 +1027,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			public override GreenNode VisitStringLiteral(MetaParser.StringLiteralContext context)
 			{
 				if (context == null) return null;
-				InternalSyntaxToken stringLiteral = null;
-				if (context.LRegularString() != null)
-				{
-					stringLiteral = (InternalSyntaxToken)this.VisitTerminal(context.LRegularString());
-				}
-				/*else 	if (context.LDoubleQuoteVerbatimString() != null)
-				{
-					stringLiteral = (InternalSyntaxToken)this.VisitTerminal(context.LDoubleQuoteVerbatimString());
-				}
-				else 	if (context.LSingleQuoteVerbatimString() != null)
-				{
-					stringLiteral = (InternalSyntaxToken)this.VisitTerminal(context.LSingleQuoteVerbatimString());
-				}*/
-				return this.factory.StringLiteral(stringLiteral, true);
+				InternalSyntaxToken lRegularString = (InternalSyntaxToken)this.VisitTerminal(context.LRegularString());
+				return this.factory.StringLiteral(lRegularString, true);
 			}
         }
     }

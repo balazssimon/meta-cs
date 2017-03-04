@@ -86,8 +86,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 		UNTERMINATED_CHAR_SET = 62,
 		DOC_COMMENT = 63,
 		BLOCK_COMMENT = 64,
-		DOC_COMMENT_STAR = 65,
-		LastTokenSyntaxKind = 65,
+		DOC_COMMENT_START = 65,
+		COMMENT_START = 66,
+		DOC_COMMENT_STAR = 67,
+		LastTokenSyntaxKind = 67,
 
 		// Rules:
 	}

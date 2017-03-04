@@ -186,7 +186,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    }
 	
 	    internal static readonly MetaSyntaxKind FirstTokenWithWellKnownText = MetaSyntaxKind.KNamespace;
-	    internal static readonly MetaSyntaxKind LastTokenWithWellKnownText = MetaSyntaxKind.SingleQuoteVerbatimStringLiteralStart;
+	    internal static readonly MetaSyntaxKind LastTokenWithWellKnownText = MetaSyntaxKind.LCommentStart;
 	
 	    // TODO: eliminate the blank space before the first interesting element?
 	    private static readonly MetaGreenToken[] s_tokensWithNoTrivia = new MetaGreenToken[(int)LastTokenWithWellKnownText - (int)FirstTokenWithWellKnownText + 1];
@@ -5469,31 +5469,31 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class StringLiteralGreen : MetaGreenNode
 	{
-	    private InternalSyntaxToken stringLiteral;
+	    private InternalSyntaxToken lRegularString;
 	
-	    public StringLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken stringLiteral)
+	    public StringLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken lRegularString)
 	        : base(kind, null, null)
 	    {
-			if (stringLiteral != null)
+			if (lRegularString != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteral);
-				this.stringLiteral = stringLiteral;
+				this.AdjustFlagsAndWidth(lRegularString);
+				this.lRegularString = lRegularString;
 			}
 	    }
 	
-	    public StringLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken stringLiteral, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public StringLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken lRegularString, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			if (stringLiteral != null)
+			if (lRegularString != null)
 			{
-				this.AdjustFlagsAndWidth(stringLiteral);
-				this.stringLiteral = stringLiteral;
+				this.AdjustFlagsAndWidth(lRegularString);
+				this.lRegularString = lRegularString;
 			}
 	    }
 	
 		public override int SlotCount { get { return 1; } }
 	
-	    public InternalSyntaxToken StringLiteral { get { return this.stringLiteral; } }
+	    public InternalSyntaxToken LRegularString { get { return this.lRegularString; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -5504,26 +5504,26 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.stringLiteral;
+	            case 0: return this.lRegularString;
 	            default: return null;
 	        }
 	    }
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new StringLiteralGreen(this.Kind, this.stringLiteral, diagnostics, this.GetAnnotations());
+	        return new StringLiteralGreen(this.Kind, this.lRegularString, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new StringLiteralGreen(this.Kind, this.stringLiteral, this.GetDiagnostics(), annotations);
+	        return new StringLiteralGreen(this.Kind, this.lRegularString, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public StringLiteralGreen Update(InternalSyntaxToken stringLiteral)
+	    public StringLiteralGreen Update(InternalSyntaxToken lRegularString)
 	    {
-	        if (this.stringLiteral != stringLiteral)
+	        if (this.lRegularString != lRegularString)
 	        {
-	            GreenNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.StringLiteral(stringLiteral);
+	            GreenNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.StringLiteral(lRegularString);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -6956,18 +6956,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public StringLiteralGreen StringLiteral(InternalSyntaxToken stringLiteral, bool errorNode = false)
+		public StringLiteralGreen StringLiteral(InternalSyntaxToken lRegularString, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
 			{
-				if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
+				if (lRegularString == null) throw new ArgumentNullException(nameof(lRegularString));
+				if (lRegularString.RawKind != (int)MetaSyntaxKind.LRegularString) throw new ArgumentException(nameof(lRegularString));
 			}
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)MetaSyntaxKind.StringLiteral, stringLiteral, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)MetaSyntaxKind.StringLiteral, lRegularString, out hash);
 			if (cached != null) return (StringLiteralGreen)cached;
-			var result = new StringLiteralGreen(MetaSyntaxKind.StringLiteral, stringLiteral);
+			var result = new StringLiteralGreen(MetaSyntaxKind.StringLiteral, lRegularString);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);

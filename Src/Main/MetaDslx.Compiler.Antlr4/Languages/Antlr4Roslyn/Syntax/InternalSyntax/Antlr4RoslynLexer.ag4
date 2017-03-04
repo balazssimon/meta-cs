@@ -38,11 +38,22 @@
 lexer grammar Antlr4RoslynLexer;
 
 options
-   { superClass = LexerAdaptor; }
+{
+	superClass = LexerAdaptor; 
+	generateLanguageService = true;
+}
+
 import LexBasic;
+
 // Standard set of fragments
-tokens
-   { TOKEN_REF , RULE_REF , LEXER_CHAR_SET }
+tokens { 
+	$Token(kind=Antlr4Token)
+	TOKEN_REF,
+	$Token(kind=Antlr4Rule)	
+	RULE_REF, 
+	$Token(kind=Operator)
+	LEXER_CHAR_SET 
+}
 
 channels
    { OFF_CHANNEL }
@@ -53,24 +64,29 @@ channels
 // -------------------------
 // Comments
 
-DOC_COMMENT
-   : DocComment
+$Token(kind=DocComment)
+DOC_COMMENT_START
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE)
+	;
+
+
+$Token(kind=Comment)
+COMMENT_START 
+   : '/*' -> more, pushMode(BLOCK_COMMENT_MODE)
    ;
 
 
-BLOCK_COMMENT
-   : BlockComment -> channel (OFF_CHANNEL)
-   ;
-
-
+$Token(kind=Comment)
 LINE_COMMENT
    : LineComment -> channel (OFF_CHANNEL)
    ;
+
 
 // -------------------------
 // Integer
 //
 
+$Token(kind=Number)
 INT
    : DecimalNumeral
    ;
@@ -83,11 +99,13 @@ INT
 // may contain unicode escape sequences of the form \uxxxx, where x
 // is a valid hexadecimal number (per Unicode standard).
 
+$Token(kind=String)
 STRING_LITERAL
    : SQuoteLiteral
    ;
 
 
+$Token(kind=String)
 UNTERMINATED_STRING_LITERAL
    : USQuoteLiteral
    ;
@@ -105,6 +123,7 @@ BEGIN_ARGUMENT
 // -------------------------
 // Actions
 
+$Token(kind=Antlr4Action)
 BEGIN_ACTION
    : LBrace -> pushMode (ActionMode)
    ;
@@ -116,21 +135,25 @@ BEGIN_ACTION
 // they would be ambiguous with the keyword vs some other identifier.  OPTIONS,
 // TOKENS, & CHANNELS blocks are handled idiomatically in dedicated lexical modes.
 
+$Token(kind=Antlr4Options)
 OPTIONS
    : 'options' -> pushMode (Options)
    ;
 
 
+$Token(kind=Antlr4Options)
 TOKENS
    : 'tokens' -> pushMode (Tokens)
    ;
 
 
+$Token(kind=Antlr4Options)
 CHANNELS
    : 'channels' -> pushMode (Channels)
    ;
 
-
+   
+$Token(first=IMPORT, last=NULL, kind=Keyword)
 IMPORT
    : 'import'
    ;
@@ -211,6 +234,7 @@ FALSE : 'false';
 // Null
 
 NULL : 'null';
+   
 // -------------------------
 // Punctuation
 
@@ -331,6 +355,7 @@ NOT
 // -------------------------
 // Identifiers - allows unicode rule/token names
 
+$Token(kind=Identifier)
 ID
    : Id
    ;
@@ -402,6 +427,7 @@ ARGUMENT_CONTENT
 // literal string representation in the target language. We assume
 // that they are delimited by ' or " and so consume these
 // in their own alts so as not to inadvertantly match {}.
+$Token(kind=Antlr4Action)
 mode ActionMode;
 NESTED_ACTION
    : LBrace -> type (ACTION_CONTENT) , pushMode (ActionMode)
@@ -419,12 +445,12 @@ ACTION_CHAR_LITERAL
    : SQuoteLiteral -> type (ACTION_CONTENT)
    ;
 
-ACTION_DOC_COMMENT
-   : DocComment -> type (ACTION_CONTENT)
+ACTION_DOC_COMMENT_BEGIN
+	:	'/**' -> more, pushMode(ACTION_DOC_COMMENT_MODE)
    ;
 
-ACTION_BLOCK_COMMENT
-   : BlockComment -> type (ACTION_CONTENT)
+ACTION_BLOCK_COMMENT_BEGIN
+	:	'/*' -> more, pushMode(ACTION_BLOCK_COMMENT_MODE)
    ;
 
 ACTION_LINE_COMMENT
@@ -443,13 +469,14 @@ ACTION_CONTENT
    ;
 
 // -------------------------
+$Token(kind=Antlr4Options)
 mode Options;
 OPT_DOC_COMMENT
-   : DocComment -> type (DOC_COMMENT) , channel (OFF_CHANNEL)
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE)
    ;
 
 OPT_BLOCK_COMMENT
-   : BlockComment -> type (BLOCK_COMMENT) , channel (OFF_CHANNEL)
+	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE)
    ;
 
 OPT_LINE_COMMENT
@@ -470,6 +497,7 @@ OPT_NULL : NULL -> type(NULL);
 OPT_DOLLAR : Dollar -> type(DOLLAR);
 OPT_LPAREN : LParen -> type(LPAREN);
 OPT_RPAREN : RParen -> type(RPAREN);
+
 OPT_ID
    : Id -> type (ID)
    ;
@@ -503,13 +531,14 @@ OPT_WS
    ;
 
 // -------------------------
+$Token(kind=Antlr4Options)
 mode Tokens;
 TOK_DOC_COMMENT
-   : DocComment -> type (DOC_COMMENT) , channel (OFF_CHANNEL)
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE)
    ;
 
 TOK_BLOCK_COMMENT
-   : BlockComment -> type (BLOCK_COMMENT) , channel (OFF_CHANNEL)
+	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE)
    ;
 
 TOK_LINE_COMMENT
@@ -531,6 +560,7 @@ TOK_DOLLAR : Dollar -> type(DOLLAR);
 TOK_LPAREN : LParen -> type(LPAREN);
 TOK_RPAREN : RParen -> type(RPAREN);
 TOK_ASSIGN : Equal -> type(ASSIGN);
+   
 TOK_ID
    : Id -> type (ID)
    ;
@@ -548,14 +578,15 @@ TOK_WS
    ;
 
 // -------------------------
+$Token(kind=Antlr4Options)
 mode Channels;
 // currently same as Tokens mode; distinguished by keyword
 CHN_DOC_COMMENT
-   : DocComment -> type (DOC_COMMENT) , channel (OFF_CHANNEL)
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE)
    ;
 
 CHN_BLOCK_COMMENT
-   : BlockComment -> type (BLOCK_COMMENT) , channel (OFF_CHANNEL)
+	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE)
    ;
 
 CHN_LINE_COMMENT
@@ -577,6 +608,7 @@ CHN_DOLLAR : Dollar -> type(DOLLAR);
 CHN_LPAREN : LParen -> type(LPAREN);
 CHN_RPAREN : RParen -> type(RPAREN);
 CHN_ASSIGN : Equal -> type(ASSIGN);
+   
 CHN_ID
    : Id -> type (ID)
    ;
@@ -612,3 +644,55 @@ UNTERMINATED_CHAR_SET
 fragment Id
    : NameStartChar NameChar*
    ;
+
+// ------------------------------------------------------------------------------
+// Documentation comment:
+   
+$Token(kind=DocComment)
+mode DOC_COMMENT_MODE;
+
+DOC_COMMENT_CRLF : '\r'? '\n' -> more;
+DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+DOC_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
+$Token(kind=Comment)
+DOC_COMMENT : '*/' -> popMode, channel(OFF_CHANNEL);
+DOC_COMMENT_STAR : '*' -> more;
+
+	
+// ------------------------------------------------------------------------------
+// Block comment:
+   
+$Token(kind=Comment)
+mode BLOCK_COMMENT_MODE;
+
+BLOCK_COMMENT_CRLF : '\r'? '\n' -> more;
+BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+BLOCK_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
+$Token(kind=Comment)
+BLOCK_COMMENT : '*/' -> popMode, channel(OFF_CHANNEL);
+BLOCK_COMMENT_STAR : '*' -> more;
+
+// ------------------------------------------------------------------------------
+// Documentation comment in actions:
+   
+$Token(kind=DocComment)
+mode ACTION_DOC_COMMENT_MODE;
+
+ACTION_DOC_COMMENT_CRLF : '\r'? '\n' -> more;
+ACTION_DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+ACTION_DOC_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
+ACTION_DOC_COMMENT : '*/' -> popMode, type(ACTION_CONTENT), channel(OFF_CHANNEL);
+ACTION_DOC_COMMENT_STAR : '*' -> more;
+
+	
+// ------------------------------------------------------------------------------
+// Block comment in actions:
+   
+$Token(kind=Comment)
+mode ACTION_BLOCK_COMMENT_MODE;
+
+ACTION_BLOCK_COMMENT_CRLF : '\r'? '\n' -> more;
+ACTION_BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+ACTION_BLOCK_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
+ACTION_BLOCK_COMMENT : '*/' -> popMode, type(ACTION_CONTENT), channel(OFF_CHANNEL);
+ACTION_BLOCK_COMMENT_STAR : '*' -> more;

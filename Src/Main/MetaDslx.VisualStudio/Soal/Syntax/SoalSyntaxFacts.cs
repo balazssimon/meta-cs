@@ -20,7 +20,7 @@ namespace MetaDslx.VisualStudio.Soal.Syntax
 	{
 		None = 0,
 		DEFAULT_MODE = 0,
-		LMultilineComment = 1,
+		MULTILINE_COMMENT = 1,
 		DOUBLEQUOTE_VERBATIM_STRING = 2,
 		SINGLEQUOTE_VERBATIM_STRING = 3
 	}
@@ -167,11 +167,12 @@ namespace MetaDslx.VisualStudio.Soal.Syntax
 				case SoalSyntaxKind.LCrLf:
 				case SoalSyntaxKind.LLineEnd:
 				case SoalSyntaxKind.LSingleLineComment:
-				case SoalSyntaxKind.COMMENT:
+				case SoalSyntaxKind.LMultiLineComment:
 				case SoalSyntaxKind.LDoubleQuoteVerbatimString:
 				case SoalSyntaxKind.LSingleQuoteVerbatimString:
 				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
+				case SoalSyntaxKind.LCommentStart:
 					return true;
 				default:
 					return false;
@@ -291,6 +292,7 @@ namespace MetaDslx.VisualStudio.Soal.Syntax
 				case SoalSyntaxKind.IWsAddressing:
 				case SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
+				case SoalSyntaxKind.LCommentStart:
 				case SoalSyntaxKind.LDoubleQuoteVerbatimString:
 				case SoalSyntaxKind.LSingleQuoteVerbatimString:
 					return true;
@@ -514,6 +516,8 @@ namespace MetaDslx.VisualStudio.Soal.Syntax
 					return "@\"";
 				case SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
 					return "@\'";
+				case SoalSyntaxKind.LCommentStart:
+					return "/*";
 				case SoalSyntaxKind.LDoubleQuoteVerbatimString:
 					return "\"";
 				case SoalSyntaxKind.LSingleQuoteVerbatimString:
@@ -733,6 +737,8 @@ namespace MetaDslx.VisualStudio.Soal.Syntax
 					return SoalSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
 				case "@\'":
 					return SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart;
+				case "/*":
+					return SoalSyntaxKind.LCommentStart;
 				case "\"":
 					return SoalSyntaxKind.LDoubleQuoteVerbatimString;
 				case "\'":
@@ -924,7 +930,7 @@ namespace MetaDslx.VisualStudio.Soal.Syntax
 			{
 				case SoalSyntaxKind.LSingleLineComment:
 					return true;
-				case SoalSyntaxKind.COMMENT:
+				case SoalSyntaxKind.LMultiLineComment:
 					return true;
 				default:
 					return false;
@@ -1016,7 +1022,7 @@ namespace MetaDslx.VisualStudio.Soal.Syntax
 					return SoalTokenKind.Whitespace;
 				case SoalSyntaxKind.LSingleLineComment:
 					return SoalTokenKind.Comment;
-				case SoalSyntaxKind.COMMENT:
+				case SoalSyntaxKind.LMultiLineComment:
 					return SoalTokenKind.Comment;
 				case SoalSyntaxKind.LDoubleQuoteVerbatimString:
 					return SoalTokenKind.String;
@@ -1036,7 +1042,7 @@ namespace MetaDslx.VisualStudio.Soal.Syntax
 		{
 			switch(kind)
 			{
-				case SoalLexerMode.LMultilineComment:
+				case SoalLexerMode.MULTILINE_COMMENT:
 					return SoalTokenKind.Comment;
 				case SoalLexerMode.DOUBLEQUOTE_VERBATIM_STRING:
 					return SoalTokenKind.String;

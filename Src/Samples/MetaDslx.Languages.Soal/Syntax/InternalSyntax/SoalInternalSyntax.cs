@@ -186,7 +186,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    }
 	
 	    internal static readonly SoalSyntaxKind FirstTokenWithWellKnownText = SoalSyntaxKind.KNamespace;
-	    internal static readonly SoalSyntaxKind LastTokenWithWellKnownText = SoalSyntaxKind.SingleQuoteVerbatimStringLiteralStart;
+	    internal static readonly SoalSyntaxKind LastTokenWithWellKnownText = SoalSyntaxKind.LCommentStart;
 	
 	    // TODO: eliminate the blank space before the first interesting element?
 	    private static readonly SoalGreenToken[] s_tokensWithNoTrivia = new SoalGreenToken[(int)LastTokenWithWellKnownText - (int)FirstTokenWithWellKnownText + 1];
@@ -14107,14 +14107,14 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	        return Token(null, SoalSyntaxKind.LSingleLineComment, text, value, null);
 	    }
 	
-	    internal SoalGreenToken COMMENT(string text)
+	    internal SoalGreenToken LMultiLineComment(string text)
 	    {
-	        return Token(null, SoalSyntaxKind.COMMENT, text, null);
+	        return Token(null, SoalSyntaxKind.LMultiLineComment, text, null);
 	    }
 	
-	    internal SoalGreenToken COMMENT(string text, object value)
+	    internal SoalGreenToken LMultiLineComment(string text, object value)
 	    {
-	        return Token(null, SoalSyntaxKind.COMMENT, text, value, null);
+	        return Token(null, SoalSyntaxKind.LMultiLineComment, text, value, null);
 	    }
 	
 		public MainGreen Main(InternalSyntaxNodeList namespaceDeclaration, InternalSyntaxToken eof, bool errorNode = false)

@@ -17637,14 +17637,14 @@ namespace MetaDslx.Languages.Soal
 	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.LSingleLineComment(text, value).CreateRed();
 	    }
 	
-	    public SyntaxToken COMMENT(string text)
+	    public SyntaxToken LMultiLineComment(string text)
 	    {
-	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.COMMENT(text).CreateRed();
+	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.LMultiLineComment(text).CreateRed();
 	    }
 	
-	    public SyntaxToken COMMENT(string text, object value)
+	    public SyntaxToken LMultiLineComment(string text, object value)
 	    {
-	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.COMMENT(text, value).CreateRed();
+	        return (SyntaxToken)SoalLanguage.Instance.InternalSyntaxFactory.LMultiLineComment(text, value).CreateRed();
 	    }
 		
 		public MainSyntax Main(SyntaxNodeList<NamespaceDeclarationSyntax> namespaceDeclaration, SyntaxToken eof)

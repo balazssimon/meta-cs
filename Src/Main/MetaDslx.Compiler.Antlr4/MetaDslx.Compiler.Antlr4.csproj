@@ -243,7 +243,6 @@
       <DependentUpon>MetaParser.ag4</DependentUpon>
     </None>
     <None Include="MetaDslxDevKey.snk" />
-    <None Include="Resources\antlr-4.5.3-complete.jar" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

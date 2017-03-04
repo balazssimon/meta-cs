@@ -161,15 +161,13 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.CharLiteral:
 				case MetaGeneratorSyntaxKind.RegularStringLiteral:
 				case MetaGeneratorSyntaxKind.GuidLiteral:
-				case MetaGeneratorSyntaxKind.UTF8BOM:
-				case MetaGeneratorSyntaxKind.WHITESPACE:
-				case MetaGeneratorSyntaxKind.CRLF:
-				case MetaGeneratorSyntaxKind.LINEBREAK:
-				case MetaGeneratorSyntaxKind.LINE_COMMENT:
-				case MetaGeneratorSyntaxKind.COMMENT:
+				case MetaGeneratorSyntaxKind.LUtf8Bom:
+				case MetaGeneratorSyntaxKind.LWhitespace:
+				case MetaGeneratorSyntaxKind.LCrLf:
+				case MetaGeneratorSyntaxKind.LLineBreak:
+				case MetaGeneratorSyntaxKind.LLineComment:
+				case MetaGeneratorSyntaxKind.LMultiLineComment:
 				case MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteral:
-				case MetaGeneratorSyntaxKind.TH_CRLF:
-				case MetaGeneratorSyntaxKind.TH_LINEBREAK:
 				case MetaGeneratorSyntaxKind.TH_TOpenParenthesis:
 				case MetaGeneratorSyntaxKind.TH_TCloseParenthesis:
 				case MetaGeneratorSyntaxKind.KEndTemplate:
@@ -182,6 +180,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.TS_TOpenBracket:
 				case MetaGeneratorSyntaxKind.TS_TCloseBracket:
 				case MetaGeneratorSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
+				case MetaGeneratorSyntaxKind.COMMENT_START:
 					return true;
 				default:
 					return false;
@@ -924,9 +923,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 		{
 			switch(kind)
 			{
-				case MetaGeneratorSyntaxKind.LINE_COMMENT:
+				case MetaGeneratorSyntaxKind.LLineComment:
 					return true;
-				case MetaGeneratorSyntaxKind.COMMENT:
+				case MetaGeneratorSyntaxKind.LMultiLineComment:
 					return true;
 				default:
 					return false;
@@ -1100,9 +1099,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorTokenKind.String;
 				case MetaGeneratorSyntaxKind.GuidLiteral:
 					return MetaGeneratorTokenKind.Number;
-				case MetaGeneratorSyntaxKind.LINE_COMMENT:
+				case MetaGeneratorSyntaxKind.LLineComment:
 					return MetaGeneratorTokenKind.Comment;
-				case MetaGeneratorSyntaxKind.COMMENT:
+				case MetaGeneratorSyntaxKind.LMultiLineComment:
 					return MetaGeneratorTokenKind.Comment;
 				case MetaGeneratorSyntaxKind.TH_TCloseParenthesis:
 					return MetaGeneratorTokenKind.Operator;

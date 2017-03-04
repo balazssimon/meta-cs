@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace MetaDslx.VisualStudio.Soal.Syntax.InternalSyntax {
+namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax {
 using System;
 using System.Text;
 using Antlr4.Runtime;
@@ -857,4 +857,4 @@ public partial class SoalLexer : Lexer {
 
 
 }
-} // namespace MetaDslx.VisualStudio.Soal.Syntax.InternalSyntax
+} // namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax

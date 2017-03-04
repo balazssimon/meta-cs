@@ -4950,12 +4950,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxToken StringLiteral 
+	    public SyntaxToken LRegularString 
 		{ 
 			get 
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.StringLiteralGreen)this.Green;
-				var greenToken = green.StringLiteral;
+				var greenToken = green.LRegularString;
 				return greenToken == null ? null : new MetaSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
 			}
 		}
@@ -4976,16 +4976,16 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public StringLiteralSyntax WithStringLiteral(SyntaxToken stringLiteral)
+	    public StringLiteralSyntax WithLRegularString(SyntaxToken lRegularString)
 		{
-			return this.Update(StringLiteral);
+			return this.Update(LRegularString);
 		}
 	
-	    public StringLiteralSyntax Update(SyntaxToken stringLiteral)
+	    public StringLiteralSyntax Update(SyntaxToken lRegularString)
 	    {
-	        if (this.StringLiteral != stringLiteral)
+	        if (this.LRegularString != lRegularString)
 	        {
-	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.StringLiteral(stringLiteral);
+	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.StringLiteral(lRegularString);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -5725,7 +5725,7 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual void VisitStringLiteral(StringLiteralSyntax node)
 		{
-			this.VisitToken(node.StringLiteral);
+			this.VisitToken(node.LRegularString);
 		}
 	}
 
@@ -6601,8 +6601,8 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual SyntaxNode VisitStringLiteral(StringLiteralSyntax node)
 		{
-		    var stringLiteral = this.VisitToken(node.StringLiteral);
-			return node.Update(stringLiteral);
+		    var lRegularString = this.VisitToken(node.LRegularString);
+			return node.Update(lRegularString);
 		}
 	}
 
@@ -7542,10 +7542,11 @@ namespace MetaDslx.Languages.Meta
 		    return (ScientificLiteralSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ScientificLiteral((InternalSyntaxToken)lScientific.Green).CreateRed();
 		}
 		
-		public StringLiteralSyntax StringLiteral(SyntaxToken stringLiteral)
+		public StringLiteralSyntax StringLiteral(SyntaxToken lRegularString)
 		{
-		    if (stringLiteral == null) throw new ArgumentNullException(nameof(stringLiteral));
-		    return (StringLiteralSyntax)MetaLanguage.Instance.InternalSyntaxFactory.StringLiteral((InternalSyntaxToken)stringLiteral.Green).CreateRed();
+		    if (lRegularString == null) throw new ArgumentNullException(nameof(lRegularString));
+		    if (lRegularString.RawKind != (int)MetaSyntaxKind.LRegularString) throw new ArgumentException(nameof(lRegularString));
+		    return (StringLiteralSyntax)MetaLanguage.Instance.InternalSyntaxFactory.StringLiteral((InternalSyntaxToken)lRegularString.Green).CreateRed();
 		}
 	
 	    internal static IEnumerable<Type> GetNodeTypes()

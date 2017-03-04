@@ -100,11 +100,16 @@ LTime=99
 LRegularString=100
 LGuid=101
 LUtf8Bom=102
-LWhitespace=103
+LWhiteSpace=103
 LCrLf=104
-LLineBreak=105
-LLineComment=106
-LMultiLineComment=107
+LLineEnd=105
+LSingleLineComment=106
+LComment=107
+LDoubleQuoteVerbatimString=108
+LSingleQuoteVerbatimString=109
+DoubleQuoteVerbatimStringLiteralStart=110
+SingleQuoteVerbatimStringLiteralStart=111
+LCommentStart=112
 'namespace'=1
 'using'=2
 'metamodel'=3
@@ -178,7 +183,6 @@ LMultiLineComment=107
 '~'=71
 '!'=72
 '/'=73
-'*'=74
 '%'=75
 '<='=76
 '>='=77
@@ -195,3 +199,8 @@ LMultiLineComment=107
 '^='=88
 '|='=89
 'Uri'=90
+'@"'=110
+'@\''=111
+'/*'=112
+'"'=108
+'\''=109

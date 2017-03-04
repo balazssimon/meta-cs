@@ -5,6 +5,12 @@ options
 	generateLanguageService = true;
 }
 
+channels
+{
+	COMMENT,
+	WHITESPACE
+}
+
 @lexer::members {
     public int _templateParenthesis = 0;
     public int _templateBrackets = 0;
@@ -212,24 +218,24 @@ GuidLiteral : '#[' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigi
                    HexDigit HexDigit HexDigit HexDigit HexDigit ']';
 
 // Whitespace and comments
-UTF8BOM : [\u00EF][\u00BB][\u00BF] -> channel(WHITESPACE);
-WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(WHITESPACE);
-CRLF : '\r'? '\n' -> channel(WHITESPACE);
-LINEBREAK : [\u0085\u2028\u2029] -> channel(WHITESPACE);
+LUtf8Bom : [\u00EF][\u00BB][\u00BF] -> channel(WHITESPACE);
+LWhitespace : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(WHITESPACE);
+LCrLf : '\r'? '\n' -> channel(WHITESPACE);
+LLineBreak : [\u0085\u2028\u2029] -> channel(WHITESPACE);
 $Token(kind=Comment)
-LINE_COMMENT : '//' ~[\r\n]* -> channel(COMMENT);
+LLineComment : '//' ~[\r\n]* -> channel(COMMENT);
 $Token(kind=Comment)
-COMMENT_START : '/*' -> more, mode(MULTILINE_COMMENT), channel(COMMENT);
+COMMENT_START : '/*' -> more, mode(MULTILINE_COMMENT);
 
 $Token(kind=Comment)
 mode MULTILINE_COMMENT;
 
-COMMENT_CRLF : '\r'? '\n' -> more, channel(COMMENT);
-COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(COMMENT);
-COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(COMMENT);
+COMMENT_CRLF : '\r'? '\n' -> more;
+COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
 $Token(kind=Comment)
-COMMENT : '*/' -> mode(DEFAULT_MODE), channel(COMMENT);
-COMMENT_STAR : '*' -> more, channel(COMMENT);
+LMultiLineComment : '*/' -> mode(DEFAULT_MODE), channel(COMMENT);
+COMMENT_STAR : '*' -> more;
 
 $Token(kind=String)
 mode DOUBLEQUOTE_VERBATIM_STRING;
@@ -252,9 +258,9 @@ IdentifierVerbatim : ']' -> mode(DEFAULT_MODE);
 
 mode TEMPLATE_HEADER;
 
-TH_CRLF : '\r'? '\n' {Type=CRLF; Channel=WHITESPACE; };
-TH_LINEBREAK : [\u0085\u2028\u2029] {Type=LINEBREAK; Channel=WHITESPACE; };
-TH_WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> type(WHITESPACE), channel(WHITESPACE);
+TH_CRLF : '\r'? '\n' -> type(LCrLf), channel(WHITESPACE);
+TH_LINEBREAK : [\u0085\u2028\u2029] -> type(LLineBreak), channel(WHITESPACE);
+TH_WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> type(LWhitespace), channel(WHITESPACE);
 
 TH_KEnd : KEnd -> type(KEnd);
 TH_KFor : KFor -> type(KFor);
@@ -363,7 +369,7 @@ KEndTemplate : 'end template' ('\r'? '\n' | [\u0085\u2028\u2029]) -> mode(DEFAUL
 $Token(kind=TemplateControl)
 TemplateLineControl : ('\\' | '^') [\u0020\u0009\u000B\u000C\u00A0\u001A]* (TemplateCrLf | TemplateLineBreak);
 $Token(kind=TemplateOutput)
-TemplateOutput : (~[\\\^\[\r\n\u0085\u2028\u2029]+ | '\\' | '^');
+TemplateOutput : (~[\u005C\u005E\u005B\r\n\u0085\u2028\u2029]+ | '\\' | '^');
 $Token(kind=TemplateOutput)
 TemplateCrLf : '\r'? '\n';
 $Token(kind=TemplateOutput)
@@ -373,12 +379,12 @@ TemplateStatementStart : '[' {Mode(TEMPLATE_STATEMENT); _templateBrackets=0;};
 
 mode TEMPLATE_STATEMENT;
 
-TemplateStatementCrLf : '\r'? '\n' -> type(CRLF), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
-TemplateStatementLineBreak : [\u0085\u2028\u2029] -> type(LINEBREAK), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
+TemplateStatementCrLf : '\r'? '\n' -> type(LCrLf), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
+TemplateStatementLineBreak : [\u0085\u2028\u2029] -> type(LLineBreak), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
 $Token(kind=TemplateControl)
 TemplateStatementEnd : {_templateBrackets == 0}? ']' -> mode(TEMPLATE_OUTPUT);
-TemplateStatement_COMMENT_START : '/*' -> more, mode(TEMPLATE_STATEMENT_COMMENT), channel(COMMENT);
-TemplateStatement_WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> type(WHITESPACE), channel(WHITESPACE);
+TemplateStatement_COMMENT_START : '/*' -> more, mode(TEMPLATE_STATEMENT_COMMENT);
+TemplateStatement_WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> type(LWhitespace), channel(WHITESPACE);
 
 TS_KSwitch : KSwitch -> type(KSwitch);
 TS_KCase : KCase -> type(KCase);
@@ -483,9 +489,9 @@ TS_GuidLiteral : GuidLiteral -> type(GuidLiteral);
 $Token(kind=Comment)
 mode TEMPLATE_STATEMENT_COMMENT;
 
-TemplateStatement_COMMENT_CRLF : '\r'? '\n' -> mode(TEMPLATE_OUTPUT), channel(COMMENT), type(COMMENT);
-TemplateStatement_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> mode(TEMPLATE_OUTPUT), channel(COMMENT), type(COMMENT);
-TemplateStatement_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(COMMENT);
+TemplateStatement_COMMENT_CRLF : '\r'? '\n' -> mode(TEMPLATE_OUTPUT), channel(COMMENT), type(LMultiLineComment);
+TemplateStatement_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> mode(TEMPLATE_OUTPUT), channel(COMMENT), type(LMultiLineComment);
+TemplateStatement_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
 
-TemplateStatement_COMMENT : '*/' -> mode(TEMPLATE_STATEMENT), channel(COMMENT), type(COMMENT);
-TemplateStatement_COMMENT_STAR : '*' -> more, channel(COMMENT);
+TemplateStatement_COMMENT : '*/' -> mode(TEMPLATE_STATEMENT), channel(COMMENT), type(LMultiLineComment);
+TemplateStatement_COMMENT_STAR : '*' -> more;

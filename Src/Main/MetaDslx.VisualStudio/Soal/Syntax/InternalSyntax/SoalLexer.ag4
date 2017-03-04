@@ -4,6 +4,11 @@ options {
 	generateLanguageService=true;
 }
 
+channels {
+	COMMENT,
+	WHITESPACE
+}
+
 $Token(kind=Keyword, first=KNamespace, last=KVoid)
 KNamespace : 'namespace';
 KEnum : 'enum';
@@ -211,27 +216,27 @@ LGuid : '#[' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
 
 // Whitespace and comments
 $Token(kind=Whitespace)
-LUtf8Bom : [\u00EF][\u00BB][\u00BF] -> channel(LWhiteSpace);
+LUtf8Bom : [\u00EF][\u00BB][\u00BF] -> channel(WHITESPACE);
 $Token(kind=Whitespace, defaultWhitespace=true)
-LWhiteSpace : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(LWhiteSpace);
+LWhiteSpace : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(WHITESPACE);
 $Token(kind=Whitespace, endOfLine=true, defaultEndOfLine=true)
-LCrLf : '\r'? '\n' -> channel(LWhiteSpace);
+LCrLf : '\r'? '\n' -> channel(WHITESPACE);
 $Token(kind=Whitespace, endOfLine=true)
-LLineEnd : [\u0085\u2028\u2029] -> channel(LWhiteSpace);
+LLineEnd : [\u0085\u2028\u2029] -> channel(WHITESPACE);
 
 $Token(kind=Comment)
 LSingleLineComment : '//' ~[\r\n]* -> channel(COMMENT);
-LCommentStart : '/*' -> more, mode(LMultilineComment), channel(COMMENT);
+LCommentStart : '/*' -> more, mode(MULTILINE_COMMENT);
 
 $Token(kind=Comment)
-mode LMultilineComment;
+mode MULTILINE_COMMENT;
 
-COMMENT_CRLF : '\r'? '\n' -> more, channel(COMMENT);
-COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(COMMENT);
-COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(COMMENT);
+COMMENT_CRLF : '\r'? '\n' -> more;
+COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
 $Token(kind=Comment)
-COMMENT : '*/' -> mode(DEFAULT_MODE), channel(COMMENT);
-COMMENT_STAR : '*' -> more, channel(COMMENT);
+LMultiLineComment : '*/' -> mode(DEFAULT_MODE), channel(COMMENT);
+COMMENT_STAR : '*' -> more;
 
 $Token(kind=String)
 mode DOUBLEQUOTE_VERBATIM_STRING;

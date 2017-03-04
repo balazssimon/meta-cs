@@ -42,6 +42,7 @@ options
 	superClass = LexerAdaptor; 
 	                               
 }
+
 import LexBasic;
 
 // Standard set of fragments
@@ -65,13 +66,13 @@ channels
 
                        
 DOC_COMMENT_START
-	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE)
 	;
 
 
                     
 COMMENT_START 
-   : '/*' -> more, pushMode(BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+   : '/*' -> more, pushMode(BLOCK_COMMENT_MODE)
    ;
 
 
@@ -445,11 +446,11 @@ ACTION_CHAR_LITERAL
    ;
 
 ACTION_DOC_COMMENT_BEGIN
-	:	'/**' -> more, pushMode(ACTION_DOC_COMMENT_MODE), channel(OFF_CHANNEL)
+	:	'/**' -> more, pushMode(ACTION_DOC_COMMENT_MODE)
    ;
 
 ACTION_BLOCK_COMMENT_BEGIN
-	:	'/*' -> more, pushMode(ACTION_BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+	:	'/*' -> more, pushMode(ACTION_BLOCK_COMMENT_MODE)
    ;
 
 ACTION_LINE_COMMENT
@@ -471,11 +472,11 @@ ACTION_CONTENT
                           
 mode Options;
 OPT_DOC_COMMENT
-	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE)
    ;
 
 OPT_BLOCK_COMMENT
-	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE)
    ;
 
 OPT_LINE_COMMENT
@@ -533,11 +534,11 @@ OPT_WS
                           
 mode Tokens;
 TOK_DOC_COMMENT
-	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE)
    ;
 
 TOK_BLOCK_COMMENT
-	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE)
    ;
 
 TOK_LINE_COMMENT
@@ -581,11 +582,11 @@ TOK_WS
 mode Channels;
 // currently same as Tokens mode; distinguished by keyword
 CHN_DOC_COMMENT
-	:	'/**' -> more, pushMode(DOC_COMMENT_MODE), channel(OFF_CHANNEL)
+	:	'/**' -> more, pushMode(DOC_COMMENT_MODE)
    ;
 
 CHN_BLOCK_COMMENT
-	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE), channel(OFF_CHANNEL)
+	:	'/*' -> more, pushMode(BLOCK_COMMENT_MODE)
    ;
 
 CHN_LINE_COMMENT
@@ -650,12 +651,12 @@ fragment Id
                        
 mode DOC_COMMENT_MODE;
 
-DOC_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
-DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
-DOC_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
+DOC_COMMENT_CRLF : '\r'? '\n' -> more;
+DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+DOC_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
                     
 DOC_COMMENT : '*/' -> popMode, channel(OFF_CHANNEL);
-DOC_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
+DOC_COMMENT_STAR : '*' -> more;
 
 	
 // ------------------------------------------------------------------------------
@@ -664,12 +665,12 @@ DOC_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
                     
 mode BLOCK_COMMENT_MODE;
 
-BLOCK_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
-BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
-BLOCK_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
+BLOCK_COMMENT_CRLF : '\r'? '\n' -> more;
+BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+BLOCK_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
                     
 BLOCK_COMMENT : '*/' -> popMode, channel(OFF_CHANNEL);
-BLOCK_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
+BLOCK_COMMENT_STAR : '*' -> more;
 
 // ------------------------------------------------------------------------------
 // Documentation comment in actions:
@@ -677,11 +678,11 @@ BLOCK_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
                        
 mode ACTION_DOC_COMMENT_MODE;
 
-ACTION_DOC_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
-ACTION_DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
-ACTION_DOC_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
+ACTION_DOC_COMMENT_CRLF : '\r'? '\n' -> more;
+ACTION_DOC_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+ACTION_DOC_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
 ACTION_DOC_COMMENT : '*/' -> popMode, type(ACTION_CONTENT), channel(OFF_CHANNEL);
-ACTION_DOC_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
+ACTION_DOC_COMMENT_STAR : '*' -> more;
 
 	
 // ------------------------------------------------------------------------------
@@ -690,8 +691,8 @@ ACTION_DOC_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
                     
 mode ACTION_BLOCK_COMMENT_MODE;
 
-ACTION_BLOCK_COMMENT_CRLF : '\r'? '\n' -> more, channel(OFF_CHANNEL);
-ACTION_BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more, channel(OFF_CHANNEL);
-ACTION_BLOCK_COMMENT_TEXT : ~[\*\r\n\u0085\u2028\u2029]+ -> more, channel(OFF_CHANNEL);
+ACTION_BLOCK_COMMENT_CRLF : '\r'? '\n' -> more;
+ACTION_BLOCK_COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
+ACTION_BLOCK_COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
 ACTION_BLOCK_COMMENT : '*/' -> popMode, type(ACTION_CONTENT), channel(OFF_CHANNEL);
-ACTION_BLOCK_COMMENT_STAR : '*' -> more, channel(OFF_CHANNEL);
+ACTION_BLOCK_COMMENT_STAR : '*' -> more;
