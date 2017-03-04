@@ -1032,14 +1032,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					stringLiteral = (InternalSyntaxToken)this.VisitTerminal(context.LRegularString());
 				}
-				else 	if (context.LDoubleQuoteVerbatimString() != null)
+				/*else 	if (context.LDoubleQuoteVerbatimString() != null)
 				{
 					stringLiteral = (InternalSyntaxToken)this.VisitTerminal(context.LDoubleQuoteVerbatimString());
 				}
 				else 	if (context.LSingleQuoteVerbatimString() != null)
 				{
 					stringLiteral = (InternalSyntaxToken)this.VisitTerminal(context.LSingleQuoteVerbatimString());
-				}
+				}*/
 				return this.factory.StringLiteral(stringLiteral, true);
 			}
         }

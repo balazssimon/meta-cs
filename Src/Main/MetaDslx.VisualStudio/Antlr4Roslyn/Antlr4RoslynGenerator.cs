@@ -91,7 +91,7 @@ namespace MetaDslx.VisualStudio
             result.Add(
                 new MultipleFileItem<object>()
                 {
-                    Info = new Antlr4RoslynGeneratorItem() { Kind = Antlr4RoslynGeneratorItemKind.External, FileName = bareFileName + ".cs" },
+                    Info = new Antlr4RoslynGeneratorItem() { Kind = Antlr4RoslynGeneratorItemKind.Antlr4CSharp, FileName = bareFileName + ".cs" },
                 });
             if (compiler.HasAntlr4Errors) return result;
             if (compiler.IsParser)

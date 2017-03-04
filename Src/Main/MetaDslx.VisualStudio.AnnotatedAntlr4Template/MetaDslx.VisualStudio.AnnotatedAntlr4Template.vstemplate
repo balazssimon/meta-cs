@@ -25,7 +25,7 @@
         <Assembly>System.Collections.Immutable</Assembly>
       </Reference>
       <Reference>
-        <Assembly>Antlr4.Runtime</Assembly>
+        <Assembly>Antlr4.Runtime.Standard</Assembly>
       </Reference>
       <Reference>
         <Assembly>MetaDslx.Core</Assembly>

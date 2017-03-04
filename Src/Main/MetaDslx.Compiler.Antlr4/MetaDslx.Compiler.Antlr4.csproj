@@ -36,7 +36,7 @@
     <AssemblyOriginatorKeyFile>MetaDslxDevKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr4.Runtime" />
+    <Reference Include="Antlr4.Runtime.Standard" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Collections.Immutable" />
@@ -169,7 +169,9 @@
       <Name>MetaDslx.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\antlr-4.6-complete.jar" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Languages\Antlr4Roslyn\Generator\CompilerGenerator.mgen">
       <Generator>MetaGenerator</Generator>

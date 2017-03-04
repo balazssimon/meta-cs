@@ -237,3 +237,4 @@ FakesAssemblies/
 /Install/v08/MetaDslx.VisualStudio.vsix
 /Install/MetaDslx.Compiler.Antlr4.dll
 /Install/Antlr4.Runtime.Standard.dll
+/Src/Main/MetaDslx.Compiler.Antlr4/Languages/Antlr4Roslyn/Syntax/InternalSyntax/Antlr4RoslynLexer0.ag4

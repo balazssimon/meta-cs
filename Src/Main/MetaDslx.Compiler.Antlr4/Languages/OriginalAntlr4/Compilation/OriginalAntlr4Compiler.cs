@@ -78,9 +78,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 Antlr4Jar = Path.Combine(metaDslxDir, Resources.Antlr4JarName);
                 if (!File.Exists(Antlr4Jar))
                 {
-                    File.WriteAllBytes(Antlr4Jar, Resources.antlr_4_5_3_complete);
+                    File.WriteAllBytes(Antlr4Jar, Resources.antlr_4_6_complete);
                 }
-                return new FileInfo(Antlr4Jar).Length == Resources.antlr_4_5_3_complete.Length;
+                return new FileInfo(Antlr4Jar).Length == Resources.antlr_4_6_complete.Length;
             }
             catch (Exception ex)
             {
