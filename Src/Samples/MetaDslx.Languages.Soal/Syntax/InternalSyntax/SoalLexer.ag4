@@ -1,5 +1,9 @@
 ﻿lexer grammar SoalLexer;
 
+options {
+	generateLanguageService=true;
+}
+
 channels {
 	COMMENT,
 	WHITESPACE

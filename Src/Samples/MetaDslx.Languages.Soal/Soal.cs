@@ -3414,11 +3414,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class AnnotationImpl : global::MetaDslx.Core.ImmutableSymbolBase, Annotation
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private AnnotatedElement annotatedElement0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<AnnotationProperty> properties0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
 	
 		internal AnnotationImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -3456,12 +3456,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
 		public AnnotatedElement AnnotatedElement
 		{
 		    get { return this.GetReference<AnnotatedElement>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Annotation.AnnotatedElementProperty, ref annotatedElement0); }
@@ -3471,6 +3465,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<AnnotationProperty> Properties
 		{
 		    get { return this.GetList<AnnotationProperty>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Annotation.PropertiesProperty, ref properties0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -3537,19 +3537,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
 		public AnnotatedElementBuilder AnnotatedElement
 		{
 			get { return this.GetReference<AnnotatedElementBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Annotation.AnnotatedElementProperty); }
@@ -3566,6 +3553,19 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.MutableModelList<AnnotationPropertyBuilder> Properties
 		{
 			get { return this.GetList<AnnotationPropertyBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Annotation.PropertiesProperty, ref properties0); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	}
 	
@@ -3587,9 +3587,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class AnnotationPropertyImpl : global::MetaDslx.Core.ImmutableSymbolBase, AnnotationProperty
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private object value0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
 	
 		internal AnnotationPropertyImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -3627,15 +3627,15 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
 		public object Value
 		{
 		    get { return this.GetReference<object>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotationProperty.ValueProperty, ref value0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	}
 	
@@ -3683,19 +3683,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
 		public object Value
 		{
 			get { return this.GetReference<object>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotationProperty.ValueProperty); }
@@ -3706,6 +3693,19 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		{
 			get { return this.GetLazyReference<object>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotationProperty.ValueProperty); }
 			set { this.SetLazyReference(SoalDescriptor.AnnotationProperty.ValueProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	}
 	
@@ -4003,12 +4003,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class NamespaceImpl : global::MetaDslx.Core.ImmutableSymbolBase, Namespace
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string uri0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string prefix0;
@@ -4016,6 +4010,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		private string fullName0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Declaration> declarations0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal NamespaceImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -4042,12 +4042,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (NamespaceBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		DeclarationBuilder Declaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -4062,32 +4062,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		DeclarationBuilder Declaration.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
-		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
 		}
 	
 		
@@ -4112,6 +4094,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<Declaration> Declarations
 		{
 		    get { return this.GetList<Declaration>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Namespace.DeclarationsProperty, ref declarations0); }
+		}
+	
+		
+		public Namespace Namespace
+		{
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -4147,8 +4147,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class NamespaceBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, NamespaceBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<DeclarationBuilder> declarations0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal NamespaceBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -4180,12 +4180,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Namespace)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		Declaration DeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -4200,46 +4200,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
-		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
 		}
 	
 		
@@ -4285,6 +4253,38 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		{
 			get { return this.GetList<DeclarationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Namespace.DeclarationsProperty, ref declarations0); }
 		}
+	
+		
+		public NamespaceBuilder Namespace
+		{
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
 	}
 	
 	internal class DeclarationId : global::MetaDslx.Core.SymbolId
@@ -4305,11 +4305,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class DeclarationImpl : global::MetaDslx.Core.ImmutableSymbolBase, Declaration
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal DeclarationImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -4336,16 +4336,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (DeclarationBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -4356,10 +4346,20 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public Namespace Namespace
+		{
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
 		}
 	
 		
@@ -4369,9 +4369,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public Namespace Namespace
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
 		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -4439,16 +4439,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Declaration)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -4459,10 +4449,27 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public NamespaceBuilder Namespace
+		{
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
 		}
 	
 		
@@ -4479,16 +4486,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public NamespaceBuilder Namespace
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
 		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -4867,13 +4867,13 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class PrimitiveTypeImpl : global::MetaDslx.Core.ImmutableSymbolBase, PrimitiveType
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private bool nullable0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private bool nullable0;
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal PrimitiveTypeImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -4900,22 +4900,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (PrimitiveTypeBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		SoalTypeBuilder SoalType.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -4930,26 +4920,30 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		public bool Nullable
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.PrimitiveType.NullableProperty, ref nullable0); }
 		}
 	
 		
@@ -4959,9 +4953,15 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public bool Nullable
+		public string Name
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.PrimitiveType.NullableProperty, ref nullable0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -5029,22 +5029,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (PrimitiveType)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		SoalType SoalTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5059,33 +5049,37 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		public bool Nullable
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.PrimitiveType.NullableProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.PrimitiveType.NullableProperty, value); }
 		}
 		
-		public Func<string> NameLazy
+		public Func<bool> NullableLazy
 		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+			get { return this.GetLazyValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.PrimitiveType.NullableProperty); }
+			set { this.SetLazyValue(SoalDescriptor.PrimitiveType.NullableProperty, value); }
 		}
 	
 		
@@ -5102,16 +5096,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public bool Nullable
+		public string Name
 		{
-			get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.PrimitiveType.NullableProperty); }
-			set { this.SetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.PrimitiveType.NullableProperty, value); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 		
-		public Func<bool> NullableLazy
+		public Func<string> NameLazy
 		{
-			get { return this.GetLazyValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.PrimitiveType.NullableProperty); }
-			set { this.SetLazyValue(SoalDescriptor.PrimitiveType.NullableProperty, value); }
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -5133,15 +5133,15 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class EnumImpl : global::MetaDslx.Core.ImmutableSymbolBase, Enum
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Enum baseType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<EnumLiteral> enumLiterals0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal EnumImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -5168,22 +5168,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (EnumBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		SoalTypeBuilder SoalType.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5198,32 +5188,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToMutable();
 		}
 	
-		
-		public string Name
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+			return this.ToMutable(model);
 		}
 	
 		
@@ -5236,6 +5218,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<EnumLiteral> EnumLiterals
 		{
 		    get { return this.GetList<EnumLiteral>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Enum.EnumLiteralsProperty, ref enumLiterals0); }
+		}
+	
+		
+		public Namespace Namespace
+		{
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -5271,8 +5271,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class EnumBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, EnumBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<EnumLiteralBuilder> enumLiterals0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal EnumBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -5304,22 +5304,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Enum)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		SoalType SoalTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5334,46 +5324,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToImmutable();
 		}
 	
-		
-		public string Name
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+			return this.ToImmutable(model);
 		}
 	
 		
@@ -5393,6 +5361,38 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.MutableModelList<EnumLiteralBuilder> EnumLiterals
 		{
 			get { return this.GetList<EnumLiteralBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Enum.EnumLiteralsProperty, ref enumLiterals0); }
+		}
+	
+		
+		public NamespaceBuilder Namespace
+		{
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -5414,13 +5414,13 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class EnumLiteralImpl : global::MetaDslx.Core.ImmutableSymbolBase, EnumLiteral
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private SoalType type0;
+		private Enum enum0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Enum enum0;
+		private SoalType type0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal EnumLiteralImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -5447,12 +5447,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (EnumLiteralBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5467,26 +5467,20 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		public Enum Enum
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public SoalType Type
-		{
-		    get { return this.GetReference<SoalType>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.TypedElement.TypeProperty, ref type0); }
+		    get { return this.GetReference<Enum>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.EnumLiteral.EnumProperty, ref enum0); }
 		}
 	
 		
@@ -5496,9 +5490,15 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public Enum Enum
+		public SoalType Type
 		{
-		    get { return this.GetReference<Enum>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.EnumLiteral.EnumProperty, ref enum0); }
+		    get { return this.GetReference<SoalType>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.TypedElement.TypeProperty, ref type0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -5566,12 +5566,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (EnumLiteral)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5586,33 +5586,27 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		public EnumBuilder Enum
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public SoalTypeBuilder Type
-		{
-			get { return this.GetReference<SoalTypeBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.TypedElement.TypeProperty); }
-			set { this.SetReference<SoalTypeBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.TypedElement.TypeProperty, value); }
+			get { return this.GetReference<EnumBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.EnumLiteral.EnumProperty); }
+			set { this.SetReference<EnumBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.EnumLiteral.EnumProperty, value); }
 		}
 		
-		public Func<SoalTypeBuilder> TypeLazy
+		public Func<EnumBuilder> EnumLazy
 		{
-			get { return this.GetLazyReference<SoalTypeBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.TypedElement.TypeProperty); }
-			set { this.SetLazyReference(SoalDescriptor.TypedElement.TypeProperty, value); }
+			get { return this.GetLazyReference<EnumBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.EnumLiteral.EnumProperty); }
+			set { this.SetLazyReference(SoalDescriptor.EnumLiteral.EnumProperty, value); }
 		}
 	
 		
@@ -5629,16 +5623,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public EnumBuilder Enum
+		public SoalTypeBuilder Type
 		{
-			get { return this.GetReference<EnumBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.EnumLiteral.EnumProperty); }
-			set { this.SetReference<EnumBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.EnumLiteral.EnumProperty, value); }
+			get { return this.GetReference<SoalTypeBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.TypedElement.TypeProperty); }
+			set { this.SetReference<SoalTypeBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.TypedElement.TypeProperty, value); }
 		}
 		
-		public Func<EnumBuilder> EnumLazy
+		public Func<SoalTypeBuilder> TypeLazy
 		{
-			get { return this.GetLazyReference<EnumBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.EnumLiteral.EnumProperty); }
-			set { this.SetLazyReference(SoalDescriptor.EnumLiteral.EnumProperty, value); }
+			get { return this.GetLazyReference<SoalTypeBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.TypedElement.TypeProperty); }
+			set { this.SetLazyReference(SoalDescriptor.TypedElement.TypeProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -5660,11 +5660,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class PropertyImpl : global::MetaDslx.Core.ImmutableSymbolBase, Property
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoalType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal PropertyImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -5691,12 +5691,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (PropertyBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5711,20 +5711,20 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		public string Name
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -5734,9 +5734,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -5804,12 +5804,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Property)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -5824,20 +5824,27 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		public string Name
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	
 		
@@ -5854,16 +5861,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -5885,15 +5885,15 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class StructImpl : global::MetaDslx.Core.ImmutableSymbolBase, Struct
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Struct baseType0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Property> properties0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal StructImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -5920,22 +5920,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (StructBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		SoalTypeBuilder SoalType.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -5950,32 +5940,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToMutable();
 		}
 	
-		
-		public string Name
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+			return this.ToMutable(model);
 		}
 	
 		
@@ -5988,6 +5970,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<Property> Properties
 		{
 		    get { return this.GetList<Property>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Struct.PropertiesProperty, ref properties0); }
+		}
+	
+		
+		public Namespace Namespace
+		{
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -6023,8 +6023,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class StructBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, StructBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal StructBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -6056,22 +6056,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Struct)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		SoalType SoalTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6086,46 +6076,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToImmutable();
 		}
 	
-		
-		public string Name
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+			return this.ToImmutable(model);
 		}
 	
 		
@@ -6145,6 +6113,38 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.MutableModelList<PropertyBuilder> Properties
 		{
 			get { return this.GetList<PropertyBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Struct.PropertiesProperty, ref properties0); }
+		}
+	
+		
+		public NamespaceBuilder Namespace
+		{
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -6166,13 +6166,13 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class InterfaceImpl : global::MetaDslx.Core.ImmutableSymbolBase, Interface
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private global::MetaDslx.Core.ImmutableModelList<Operation> operations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Operation> operations0;
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal InterfaceImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -6199,22 +6199,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (InterfaceBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		SoalTypeBuilder SoalType.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -6229,26 +6219,30 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		SoalTypeBuilder SoalType.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		public global::MetaDslx.Core.ImmutableModelList<Operation> Operations
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		    get { return this.GetList<Operation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Interface.OperationsProperty, ref operations0); }
 		}
 	
 		
@@ -6258,9 +6252,15 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Operation> Operations
+		public string Name
 		{
-		    get { return this.GetList<Operation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Interface.OperationsProperty, ref operations0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -6296,8 +6296,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class InterfaceBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, InterfaceBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<OperationBuilder> operations0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal InterfaceBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -6329,22 +6329,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Interface)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		SoalType SoalTypeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6359,33 +6349,30 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		SoalType SoalTypeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		public global::MetaDslx.Core.MutableModelList<OperationBuilder> Operations
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+			get { return this.GetList<OperationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Interface.OperationsProperty, ref operations0); }
 		}
 	
 		
@@ -6402,9 +6389,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<OperationBuilder> Operations
+		public string Name
 		{
-			get { return this.GetList<OperationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Interface.OperationsProperty, ref operations0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -6426,15 +6426,15 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class DatabaseImpl : global::MetaDslx.Core.ImmutableSymbolBase, Database
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
+		private global::MetaDslx.Core.ImmutableModelList<Struct> entities0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Operation> operations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Struct> entities0;
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal DatabaseImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -6461,32 +6461,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (DatabaseBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		InterfaceBuilder Interface.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		DeclarationBuilder Declaration.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		InterfaceBuilder Interface.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -6501,32 +6481,40 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		InterfaceBuilder Interface.ToMutable()
+		DeclarationBuilder Declaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		InterfaceBuilder Interface.ToMutable(global::MetaDslx.Core.MutableModel model)
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		public global::MetaDslx.Core.ImmutableModelList<Struct> Entities
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		    get { return this.GetList<Struct>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Database.EntitiesProperty, ref entities0); }
 		}
 	
 		
@@ -6536,9 +6524,21 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Struct> Entities
+		public Namespace Namespace
 		{
-		    get { return this.GetList<Struct>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Database.EntitiesProperty, ref entities0); }
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -6574,9 +6574,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class DatabaseBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, DatabaseBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
-		private global::MetaDslx.Core.MutableModelList<OperationBuilder> operations0;
 		private global::MetaDslx.Core.MutableModelList<StructBuilder> entities0;
+		private global::MetaDslx.Core.MutableModelList<OperationBuilder> operations0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal DatabaseBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -6608,32 +6608,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Database)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		Interface InterfaceBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Interface InterfaceBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -6648,33 +6628,46 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		Interface InterfaceBuilder.ToImmutable()
+		Declaration DeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		Interface InterfaceBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		public global::MetaDslx.Core.MutableModelList<StructBuilder> Entities
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			get { return this.GetList<StructBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Database.EntitiesProperty, ref entities0); }
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.MutableModelList<OperationBuilder> Operations
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+			get { return this.GetList<OperationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Interface.OperationsProperty, ref operations0); }
 		}
 	
 		
@@ -6691,15 +6684,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<OperationBuilder> Operations
+		public string Name
 		{
-			get { return this.GetList<OperationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Interface.OperationsProperty, ref operations0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<StructBuilder> Entities
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
 		{
-			get { return this.GetList<StructBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Database.EntitiesProperty, ref entities0); }
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -6721,10 +6721,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class OperationImpl : global::MetaDslx.Core.ImmutableSymbolBase, Operation
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string action0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<InputParameter> parameters0;
@@ -6732,6 +6728,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		private OutputParameter result0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Struct> exceptions0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal OperationImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -6758,16 +6758,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (OperationBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -6778,16 +6768,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToMutable();
 		}
 	
-		
-		public string Name
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+			return this.ToMutable(model);
 		}
 	
 		
@@ -6812,6 +6800,18 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<Struct> Exceptions
 		{
 		    get { return this.GetList<Struct>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Operation.ExceptionsProperty, ref exceptions0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -6847,9 +6847,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class OperationBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, OperationBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<InputParameterBuilder> parameters0;
 		private global::MetaDslx.Core.MutableModelList<StructBuilder> exceptions0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal OperationBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -6881,16 +6881,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Operation)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -6901,23 +6891,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToImmutable();
 		}
 	
-		
-		public string Name
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+			return this.ToImmutable(model);
 		}
 	
 		
@@ -6956,6 +6937,25 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		{
 			get { return this.GetList<StructBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Operation.ExceptionsProperty, ref exceptions0); }
 		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
 	}
 	
 	internal class InputParameterId : global::MetaDslx.Core.SymbolId
@@ -6976,11 +6976,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class InputParameterImpl : global::MetaDslx.Core.ImmutableSymbolBase, InputParameter
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		private string name0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoalType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal InputParameterImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -7007,12 +7007,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (InputParameterBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -7027,20 +7027,20 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		public string Name
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -7050,9 +7050,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -7120,12 +7120,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (InputParameter)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -7140,20 +7140,27 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		public string Name
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	
 		
@@ -7170,16 +7177,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -7201,11 +7201,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class OutputParameterImpl : global::MetaDslx.Core.ImmutableSymbolBase, OutputParameter
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		private bool isOneway0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoalType type0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private bool isOneway0;
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal OutputParameterImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -7232,16 +7232,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (OutputParameterBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		TypedElementBuilder TypedElement.ToMutable()
 		{
 			return this.ToMutable();
@@ -7252,10 +7242,20 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		
+		public bool IsOneway
+		{
+		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.OutputParameter.IsOnewayProperty, ref isOneway0); }
 		}
 	
 		
@@ -7265,9 +7265,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public bool IsOneway
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
 		{
-		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.OutputParameter.IsOnewayProperty, ref isOneway0); }
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -7335,16 +7335,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (OutputParameter)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		TypedElement TypedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
@@ -7355,10 +7345,27 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		
+		public bool IsOneway
+		{
+			get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.OutputParameter.IsOnewayProperty); }
+			set { this.SetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.OutputParameter.IsOnewayProperty, value); }
+		}
+		
+		public Func<bool> IsOnewayLazy
+		{
+			get { return this.GetLazyValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.OutputParameter.IsOnewayProperty); }
+			set { this.SetLazyValue(SoalDescriptor.OutputParameter.IsOnewayProperty, value); }
 		}
 	
 		
@@ -7375,16 +7382,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public bool IsOneway
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
 		{
-			get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.OutputParameter.IsOnewayProperty); }
-			set { this.SetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.OutputParameter.IsOnewayProperty, value); }
-		}
-		
-		public Func<bool> IsOnewayLazy
-		{
-			get { return this.GetLazyValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.OutputParameter.IsOnewayProperty); }
-			set { this.SetLazyValue(SoalDescriptor.OutputParameter.IsOnewayProperty, value); }
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -7406,12 +7406,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class ComponentImpl : global::MetaDslx.Core.ImmutableSymbolBase, Component
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Component baseComponent0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool isAbstract0;
@@ -7427,6 +7421,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		private Implementation implementation0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Language language0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal ComponentImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -7453,12 +7453,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (ComponentBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		DeclarationBuilder Declaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -7473,32 +7473,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		DeclarationBuilder Declaration.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
-		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
 		}
 	
 		
@@ -7547,6 +7529,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public Language Language
 		{
 		    get { return this.GetReference<Language>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Component.LanguageProperty, ref language0); }
+		}
+	
+		
+		public Namespace Namespace
+		{
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -7582,11 +7582,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class ComponentBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, ComponentBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<PortBuilder> ports0;
 		private global::MetaDslx.Core.MutableModelList<ServiceBuilder> services0;
 		private global::MetaDslx.Core.MutableModelList<ReferenceBuilder> references0;
 		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal ComponentBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -7618,12 +7618,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Component)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		Declaration DeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -7638,46 +7638,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
-		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
 		}
 	
 		
@@ -7755,6 +7723,38 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			get { return this.GetLazyReference<LanguageBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Component.LanguageProperty); }
 			set { this.SetLazyReference(SoalDescriptor.Component.LanguageProperty, value); }
 		}
+	
+		
+		public NamespaceBuilder Namespace
+		{
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
 	}
 	
 	internal class CompositeId : global::MetaDslx.Core.SymbolId
@@ -7775,11 +7775,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class CompositeImpl : global::MetaDslx.Core.ImmutableSymbolBase, Composite
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		private global::MetaDslx.Core.ImmutableModelList<Component> components0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
+		private global::MetaDslx.Core.ImmutableModelList<Wire> wires0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Component baseComponent0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7797,9 +7795,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Language language0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Component> components0;
+		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Wire> wires0;
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal CompositeImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -7826,22 +7826,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (CompositeBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		ComponentBuilder Component.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		ComponentBuilder Component.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -7856,32 +7846,36 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		ComponentBuilder Component.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		ComponentBuilder Component.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		public global::MetaDslx.Core.ImmutableModelList<Component> Components
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		    get { return this.GetList<Component>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.ComponentsProperty, ref components0); }
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.ImmutableModelList<Wire> Wires
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		    get { return this.GetList<Wire>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.WiresProperty, ref wires0); }
 		}
 	
 		
@@ -7933,15 +7927,21 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Component> Components
+		public Namespace Namespace
 		{
-		    get { return this.GetList<Component>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.ComponentsProperty, ref components0); }
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Wire> Wires
+		public string Name
 		{
-		    get { return this.GetList<Wire>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.WiresProperty, ref wires0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -7977,13 +7977,13 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class CompositeBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, CompositeBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
+		private global::MetaDslx.Core.MutableModelList<ComponentBuilder> components0;
+		private global::MetaDslx.Core.MutableModelList<WireBuilder> wires0;
 		private global::MetaDslx.Core.MutableModelList<PortBuilder> ports0;
 		private global::MetaDslx.Core.MutableModelList<ServiceBuilder> services0;
 		private global::MetaDslx.Core.MutableModelList<ReferenceBuilder> references0;
 		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
-		private global::MetaDslx.Core.MutableModelList<ComponentBuilder> components0;
-		private global::MetaDslx.Core.MutableModelList<WireBuilder> wires0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal CompositeBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -8015,22 +8015,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Composite)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		Component ComponentBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Component ComponentBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -8045,46 +8035,36 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		Component ComponentBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		Component ComponentBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		public global::MetaDslx.Core.MutableModelList<ComponentBuilder> Components
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			get { return this.GetList<ComponentBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.ComponentsProperty, ref components0); }
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.MutableModelList<WireBuilder> Wires
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+			get { return this.GetList<WireBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.WiresProperty, ref wires0); }
 		}
 	
 		
@@ -8164,15 +8144,35 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<ComponentBuilder> Components
+		public NamespaceBuilder Namespace
 		{
-			get { return this.GetList<ComponentBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.ComponentsProperty, ref components0); }
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<WireBuilder> Wires
+		public string Name
 		{
-			get { return this.GetList<WireBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.WiresProperty, ref wires0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -8194,11 +8194,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class AssemblyImpl : global::MetaDslx.Core.ImmutableSymbolBase, Assembly
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
+		private global::MetaDslx.Core.ImmutableModelList<Component> components0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
+		private global::MetaDslx.Core.ImmutableModelList<Wire> wires0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Component baseComponent0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -8216,9 +8214,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Language language0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Component> components0;
+		private Namespace namespace0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Wire> wires0;
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal AssemblyImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -8245,32 +8245,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (AssemblyBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		CompositeBuilder Composite.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		DeclarationBuilder Declaration.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		CompositeBuilder Composite.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -8285,32 +8265,46 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		CompositeBuilder Composite.ToMutable()
+		DeclarationBuilder Declaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		CompositeBuilder Composite.ToMutable(global::MetaDslx.Core.MutableModel model)
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		public global::MetaDslx.Core.ImmutableModelList<Component> Components
 		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		    get { return this.GetList<Component>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.ComponentsProperty, ref components0); }
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.ImmutableModelList<Wire> Wires
 		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		    get { return this.GetList<Wire>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.WiresProperty, ref wires0); }
 		}
 	
 		
@@ -8362,15 +8356,21 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Component> Components
+		public Namespace Namespace
 		{
-		    get { return this.GetList<Component>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.ComponentsProperty, ref components0); }
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
 		}
 	
 		
-		public global::MetaDslx.Core.ImmutableModelList<Wire> Wires
+		public string Name
 		{
-		    get { return this.GetList<Wire>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.WiresProperty, ref wires0); }
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -8406,13 +8406,13 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class AssemblyBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, AssemblyBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
+		private global::MetaDslx.Core.MutableModelList<ComponentBuilder> components0;
+		private global::MetaDslx.Core.MutableModelList<WireBuilder> wires0;
 		private global::MetaDslx.Core.MutableModelList<PortBuilder> ports0;
 		private global::MetaDslx.Core.MutableModelList<ServiceBuilder> services0;
 		private global::MetaDslx.Core.MutableModelList<ReferenceBuilder> references0;
 		private global::MetaDslx.Core.MutableModelList<PropertyBuilder> properties0;
-		private global::MetaDslx.Core.MutableModelList<ComponentBuilder> components0;
-		private global::MetaDslx.Core.MutableModelList<WireBuilder> wires0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal AssemblyBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -8444,32 +8444,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Assembly)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		Composite CompositeBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Composite CompositeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -8484,46 +8464,46 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		Composite CompositeBuilder.ToImmutable()
+		Declaration DeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		Composite CompositeBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		public global::MetaDslx.Core.MutableModelList<ComponentBuilder> Components
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			get { return this.GetList<ComponentBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.ComponentsProperty, ref components0); }
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.MutableModelList<WireBuilder> Wires
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+			get { return this.GetList<WireBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.WiresProperty, ref wires0); }
 		}
 	
 		
@@ -8603,15 +8583,35 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<ComponentBuilder> Components
+		public NamespaceBuilder Namespace
 		{
-			get { return this.GetList<ComponentBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.ComponentsProperty, ref components0); }
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<WireBuilder> Wires
+		public string Name
 		{
-			get { return this.GetList<WireBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Composite.WiresProperty, ref wires0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -9577,15 +9577,15 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class DeploymentImpl : global::MetaDslx.Core.ImmutableSymbolBase, Deployment
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Environment> environments0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Wire> wires0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal DeploymentImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -9612,12 +9612,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (DeploymentBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		DeclarationBuilder Declaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -9632,32 +9632,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		DeclarationBuilder Declaration.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
-		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
 		}
 	
 		
@@ -9670,6 +9652,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<Wire> Wires
 		{
 		    get { return this.GetList<Wire>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Deployment.WiresProperty, ref wires0); }
+		}
+	
+		
+		public Namespace Namespace
+		{
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -9705,9 +9705,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class DeploymentBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, DeploymentBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<EnvironmentBuilder> environments0;
 		private global::MetaDslx.Core.MutableModelList<WireBuilder> wires0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal DeploymentBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -9739,12 +9739,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Deployment)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		Declaration DeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -9759,33 +9759,26 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		public global::MetaDslx.Core.MutableModelList<EnvironmentBuilder> Environments
 		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+			get { return this.GetList<EnvironmentBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Deployment.EnvironmentsProperty, ref environments0); }
 		}
 	
 		
-		public string Name
+		public global::MetaDslx.Core.MutableModelList<WireBuilder> Wires
 		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+			get { return this.GetList<WireBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Deployment.WiresProperty, ref wires0); }
 		}
 	
 		
@@ -9802,15 +9795,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<EnvironmentBuilder> Environments
+		public string Name
 		{
-			get { return this.GetList<EnvironmentBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Deployment.EnvironmentsProperty, ref environments0); }
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	
 		
-		public global::MetaDslx.Core.MutableModelList<WireBuilder> Wires
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
 		{
-			get { return this.GetList<WireBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Deployment.WiresProperty, ref wires0); }
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -9832,13 +9832,13 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class EnvironmentImpl : global::MetaDslx.Core.ImmutableSymbolBase, Environment
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Runtime runtime0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Database> databases0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<Assembly> assemblies0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
 	
 		internal EnvironmentImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -9876,12 +9876,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
 		public Runtime Runtime
 		{
 		    get { return this.GetReference<Runtime>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Environment.RuntimeProperty, ref runtime0); }
@@ -9897,6 +9891,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<Assembly> Assemblies
 		{
 		    get { return this.GetList<Assembly>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Environment.AssembliesProperty, ref assemblies0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	}
 	
@@ -9946,19 +9946,6 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		}
 	
 		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
 		public RuntimeBuilder Runtime
 		{
 			get { return this.GetReference<RuntimeBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Environment.RuntimeProperty); }
@@ -9981,6 +9968,19 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.MutableModelList<AssemblyBuilder> Assemblies
 		{
 			get { return this.GetList<AssemblyBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Environment.AssembliesProperty, ref assemblies0); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	}
 	
@@ -10121,17 +10121,17 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class BindingImpl : global::MetaDslx.Core.ImmutableSymbolBase, Binding
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private TransportBindingElement transport0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<EncodingBindingElement> encodings0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Core.ImmutableModelList<ProtocolBindingElement> protocols0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal BindingImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -10158,12 +10158,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (BindingBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		DeclarationBuilder Declaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -10178,32 +10178,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		DeclarationBuilder Declaration.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
-		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
 		}
 	
 		
@@ -10222,6 +10204,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public global::MetaDslx.Core.ImmutableModelList<ProtocolBindingElement> Protocols
 		{
 		    get { return this.GetList<ProtocolBindingElement>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Binding.ProtocolsProperty, ref protocols0); }
+		}
+	
+		
+		public Namespace Namespace
+		{
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -10257,9 +10257,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	
 	internal class BindingBuilderImpl : global::MetaDslx.Core.MutableSymbolBase, BindingBuilder
 	{
-		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 		private global::MetaDslx.Core.MutableModelList<EncodingBindingElementBuilder> encodings0;
 		private global::MetaDslx.Core.MutableModelList<ProtocolBindingElementBuilder> protocols0;
+		private global::MetaDslx.Core.MutableModelList<AnnotationBuilder> annotations0;
 	
 		internal BindingBuilderImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -10291,12 +10291,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Binding)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		Declaration DeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -10311,46 +10311,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
-		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
 		}
 	
 		
@@ -10377,6 +10345,38 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		{
 			get { return this.GetList<ProtocolBindingElementBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Binding.ProtocolsProperty, ref protocols0); }
 		}
+	
+		
+		public NamespaceBuilder Namespace
+		{
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
+		}
 	}
 	
 	internal class EndpointId : global::MetaDslx.Core.SymbolId
@@ -10397,17 +10397,17 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class EndpointImpl : global::MetaDslx.Core.ImmutableSymbolBase, Endpoint
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Namespace namespace0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Interface interface0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private Binding binding0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string address0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private Namespace namespace0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private global::MetaDslx.Core.ImmutableModelList<Annotation> annotations0;
 	
 		internal EndpointImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -10434,12 +10434,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (EndpointBuilder)base.ToMutable(model);
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable()
+		DeclarationBuilder Declaration.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -10454,32 +10454,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		DeclarationBuilder Declaration.ToMutable()
+		AnnotatedElementBuilder AnnotatedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		DeclarationBuilder Declaration.ToMutable(global::MetaDslx.Core.MutableModel model)
+		AnnotatedElementBuilder AnnotatedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		
-		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
-		{
-		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
-		}
-	
-		
-		public Namespace Namespace
-		{
-		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
 		}
 	
 		
@@ -10498,6 +10480,24 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public string Address
 		{
 		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Endpoint.AddressProperty, ref address0); }
+		}
+	
+		
+		public Namespace Namespace
+		{
+		    get { return this.GetReference<Namespace>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, ref namespace0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
+		}
+	
+		
+		public global::MetaDslx.Core.ImmutableModelList<Annotation> Annotations
+		{
+		    get { return this.GetList<Annotation>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	
 		
@@ -10565,12 +10565,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (Endpoint)base.ToImmutable(model);
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
+		Declaration DeclarationBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -10585,46 +10585,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable()
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		Declaration DeclarationBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		AnnotatedElement AnnotatedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
-		{
-			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-	
-		
-		public NamespaceBuilder Namespace
-		{
-			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
-		}
-		
-		public Func<NamespaceBuilder> NamespaceLazy
-		{
-			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
-			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
 		}
 	
 		
@@ -10664,6 +10632,38 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		{
 			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Endpoint.AddressProperty); }
 			set { this.SetLazyReference(SoalDescriptor.Endpoint.AddressProperty, value); }
+		}
+	
+		
+		public NamespaceBuilder Namespace
+		{
+			get { return this.GetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+		
+		public Func<NamespaceBuilder> NamespaceLazy
+		{
+			get { return this.GetLazyReference<NamespaceBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.Declaration.NamespaceProperty); }
+			set { this.SetLazyReference(SoalDescriptor.Declaration.NamespaceProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+	
+		
+		public global::MetaDslx.Core.MutableModelList<AnnotationBuilder> Annotations
+		{
+			get { return this.GetList<AnnotationBuilder>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.AnnotatedElement.AnnotationsProperty, ref annotations0); }
 		}
 	}
 	
@@ -10831,22 +10831,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (TransportBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		BindingElementBuilder BindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
 		BindingElementBuilder BindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -10891,22 +10891,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (TransportBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		BindingElement BindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
 		BindingElement BindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -10970,22 +10970,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (EncodingBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		BindingElementBuilder BindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
 		BindingElementBuilder BindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -11030,22 +11030,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (EncodingBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		BindingElement BindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
 		BindingElement BindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -11109,22 +11109,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (ProtocolBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
 		BindingElementBuilder BindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
 		BindingElementBuilder BindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -11169,22 +11169,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (ProtocolBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
 		BindingElement BindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
 		BindingElement BindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -11221,11 +11221,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class HttpTransportBindingElementImpl : global::MetaDslx.Core.ImmutableSymbolBase, HttpTransportBindingElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool ssl0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool clientAuthentication0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
 	
 		internal HttpTransportBindingElementImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -11252,12 +11252,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (HttpTransportBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		TransportBindingElementBuilder TransportBindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		TransportBindingElementBuilder TransportBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -11272,20 +11272,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		TransportBindingElementBuilder TransportBindingElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		TransportBindingElementBuilder TransportBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -11298,6 +11292,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public bool ClientAuthentication
 		{
 		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty, ref clientAuthentication0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	}
 	
@@ -11334,12 +11334,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (HttpTransportBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		TransportBindingElement TransportBindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		TransportBindingElement TransportBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -11354,27 +11354,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		TransportBindingElement TransportBindingElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		TransportBindingElement TransportBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	
 		
@@ -11401,6 +11388,19 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		{
 			get { return this.GetLazyValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty); }
 			set { this.SetLazyValue(SoalDescriptor.HttpTransportBindingElement.ClientAuthenticationProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	}
 	
@@ -11449,12 +11449,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (RestTransportBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		TransportBindingElementBuilder TransportBindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		TransportBindingElementBuilder TransportBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -11469,12 +11469,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		TransportBindingElementBuilder TransportBindingElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		TransportBindingElementBuilder TransportBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -11519,12 +11519,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (RestTransportBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		TransportBindingElement TransportBindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		TransportBindingElement TransportBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -11539,12 +11539,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		TransportBindingElement TransportBindingElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		TransportBindingElement TransportBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -11608,12 +11608,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (WebSocketTransportBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		TransportBindingElementBuilder TransportBindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		TransportBindingElementBuilder TransportBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -11628,12 +11628,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		TransportBindingElementBuilder TransportBindingElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		TransportBindingElementBuilder TransportBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -11678,12 +11678,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (WebSocketTransportBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		TransportBindingElement TransportBindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		TransportBindingElement TransportBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -11698,12 +11698,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		TransportBindingElement TransportBindingElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		TransportBindingElement TransportBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -11740,13 +11740,13 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 	internal class SoapEncodingBindingElementImpl : global::MetaDslx.Core.ImmutableSymbolBase, SoapEncodingBindingElement
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string name0;
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoapEncodingStyle style0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private SoapVersion version0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private bool mtom0;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string name0;
 	
 		internal SoapEncodingBindingElementImpl(global::MetaDslx.Core.SymbolId id, global::MetaDslx.Core.ImmutableModel model)
 			: base(id, model)
@@ -11773,12 +11773,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (SoapEncodingBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		EncodingBindingElementBuilder EncodingBindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		EncodingBindingElementBuilder EncodingBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -11793,20 +11793,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		EncodingBindingElementBuilder EncodingBindingElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		EncodingBindingElementBuilder EncodingBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
-		}
-	
-		
-		public string Name
-		{
-		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	
 		
@@ -11825,6 +11819,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		public bool Mtom
 		{
 		    get { return this.GetValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.SoapEncodingBindingElement.MtomProperty, ref mtom0); }
+		}
+	
+		
+		public string Name
+		{
+		    get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, ref name0); }
 		}
 	}
 	
@@ -11861,12 +11861,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (SoapEncodingBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -11881,27 +11881,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
-		}
-	
-		
-		public string Name
-		{
-			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
-		}
-		
-		public Func<string> NameLazy
-		{
-			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
-			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	
 		
@@ -11941,6 +11928,19 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		{
 			get { return this.GetLazyValue<bool>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.SoapEncodingBindingElement.MtomProperty); }
 			set { this.SetLazyValue(SoalDescriptor.SoapEncodingBindingElement.MtomProperty, value); }
+		}
+	
+		
+		public string Name
+		{
+			get { return this.GetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty, value); }
+		}
+		
+		public Func<string> NameLazy
+		{
+			get { return this.GetLazyReference<string>(global::MetaDslx.Languages.Soal.Symbols.SoalDescriptor.NamedElement.NameProperty); }
+			set { this.SetLazyReference(SoalDescriptor.NamedElement.NameProperty, value); }
 		}
 	}
 	
@@ -11989,12 +11989,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (XmlEncodingBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		EncodingBindingElementBuilder EncodingBindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		EncodingBindingElementBuilder EncodingBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -12009,12 +12009,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		EncodingBindingElementBuilder EncodingBindingElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		EncodingBindingElementBuilder EncodingBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -12059,12 +12059,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (XmlEncodingBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -12079,12 +12079,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -12148,12 +12148,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (JsonEncodingBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		EncodingBindingElementBuilder EncodingBindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		EncodingBindingElementBuilder EncodingBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -12168,12 +12168,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		EncodingBindingElementBuilder EncodingBindingElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		EncodingBindingElementBuilder EncodingBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -12218,12 +12218,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (JsonEncodingBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -12238,12 +12238,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		EncodingBindingElement EncodingBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -12307,12 +12307,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (WsProtocolBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		ProtocolBindingElementBuilder ProtocolBindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		ProtocolBindingElementBuilder ProtocolBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -12327,12 +12327,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		ProtocolBindingElementBuilder ProtocolBindingElement.ToMutable()
+		NamedElementBuilder NamedElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		ProtocolBindingElementBuilder ProtocolBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -12377,12 +12377,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (WsProtocolBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		ProtocolBindingElement ProtocolBindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		ProtocolBindingElement ProtocolBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -12397,12 +12397,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		ProtocolBindingElement ProtocolBindingElementBuilder.ToImmutable()
+		NamedElement NamedElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		ProtocolBindingElement ProtocolBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -12466,22 +12466,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (WsAddressingBindingElementBuilder)base.ToMutable(model);
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable()
+		WsProtocolBindingElementBuilder WsProtocolBindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
-		{
-			return this.ToMutable(model);
-		}
-	
-		BindingElementBuilder BindingElement.ToMutable()
-		{
-			return this.ToMutable();
-		}
-	
-		BindingElementBuilder BindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		WsProtocolBindingElementBuilder WsProtocolBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -12496,12 +12486,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToMutable(model);
 		}
 	
-		WsProtocolBindingElementBuilder WsProtocolBindingElement.ToMutable()
+		BindingElementBuilder BindingElement.ToMutable()
 		{
 			return this.ToMutable();
 		}
 	
-		WsProtocolBindingElementBuilder WsProtocolBindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		BindingElementBuilder BindingElement.ToMutable(global::MetaDslx.Core.MutableModel model)
+		{
+			return this.ToMutable(model);
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable()
+		{
+			return this.ToMutable();
+		}
+	
+		NamedElementBuilder NamedElement.ToMutable(global::MetaDslx.Core.MutableModel model)
 		{
 			return this.ToMutable(model);
 		}
@@ -12546,22 +12546,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return (WsAddressingBindingElement)base.ToImmutable(model);
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable()
+		WsProtocolBindingElement WsProtocolBindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
-		{
-			return this.ToImmutable(model);
-		}
-	
-		BindingElement BindingElementBuilder.ToImmutable()
-		{
-			return this.ToImmutable();
-		}
-	
-		BindingElement BindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		WsProtocolBindingElement WsProtocolBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -12576,12 +12566,22 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			return this.ToImmutable(model);
 		}
 	
-		WsProtocolBindingElement WsProtocolBindingElementBuilder.ToImmutable()
+		BindingElement BindingElementBuilder.ToImmutable()
 		{
 			return this.ToImmutable();
 		}
 	
-		WsProtocolBindingElement WsProtocolBindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		BindingElement BindingElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
+		{
+			return this.ToImmutable(model);
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable()
+		{
+			return this.ToImmutable();
+		}
+	
+		NamedElement NamedElementBuilder.ToImmutable(global::MetaDslx.Core.ImmutableModel model)
 		{
 			return this.ToImmutable(model);
 		}
@@ -12669,12 +12669,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder AnnotationProperty_Value;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder NamedElement;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder NamedElement_Name;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp69;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp61;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder TypedElement;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder TypedElement_Type;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp61;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp74;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder SoalType;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp33;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp36;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder Namespace;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp27;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Namespace_Uri;
@@ -12700,12 +12700,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder EnumLiteral_Enum;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder Property;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder Struct;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp32;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp30;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Struct_BaseType;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp63;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Struct_Properties;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder Interface;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp38;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder __tmp31;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Interface_Operations;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder Database;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Database_Entities;
@@ -12772,13 +12772,13 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder RestTransportBindingElement;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder WebSocketTransportBindingElement;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaEnumBuilder SoapVersion;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp30;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp31;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp37;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp38;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaEnumBuilder SoapEncodingStyle;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp32;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp33;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp34;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp35;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp36;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp37;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder SoapEncodingBindingElement;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder SoapEncodingBindingElement_Style;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder SoapEncodingBindingElement_Version;
@@ -12802,11 +12802,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp66;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp67;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp68;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp69;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp70;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp71;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp72;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp73;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp74;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp75;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp76;
 	
@@ -12888,12 +12888,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			AnnotationProperty_Value = factory.MetaProperty();
 			NamedElement = factory.MetaClass();
 			NamedElement_Name = factory.MetaProperty();
-			__tmp69 = factory.MetaAnnotation();
+			__tmp61 = factory.MetaAnnotation();
 			TypedElement = factory.MetaClass();
 			TypedElement_Type = factory.MetaProperty();
-			__tmp61 = factory.MetaAnnotation();
+			__tmp74 = factory.MetaAnnotation();
 			SoalType = factory.MetaClass();
-			__tmp33 = factory.MetaAnnotation();
+			__tmp36 = factory.MetaAnnotation();
 			Namespace = factory.MetaClass();
 			__tmp27 = factory.MetaAnnotation();
 			Namespace_Uri = factory.MetaProperty();
@@ -12919,12 +12919,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			EnumLiteral_Enum = factory.MetaProperty();
 			Property = factory.MetaClass();
 			Struct = factory.MetaClass();
-			__tmp32 = factory.MetaAnnotation();
+			__tmp30 = factory.MetaAnnotation();
 			Struct_BaseType = factory.MetaProperty();
 			__tmp63 = factory.MetaAnnotation();
 			Struct_Properties = factory.MetaProperty();
 			Interface = factory.MetaClass();
-			__tmp38 = factory.MetaAnnotation();
+			__tmp31 = factory.MetaAnnotation();
 			Interface_Operations = factory.MetaProperty();
 			Database = factory.MetaClass();
 			Database_Entities = factory.MetaProperty();
@@ -12991,13 +12991,13 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			RestTransportBindingElement = factory.MetaClass();
 			WebSocketTransportBindingElement = factory.MetaClass();
 			SoapVersion = factory.MetaEnum();
-			__tmp30 = factory.MetaEnumLiteral();
-			__tmp31 = factory.MetaEnumLiteral();
+			__tmp37 = factory.MetaEnumLiteral();
+			__tmp38 = factory.MetaEnumLiteral();
 			SoapEncodingStyle = factory.MetaEnum();
+			__tmp32 = factory.MetaEnumLiteral();
+			__tmp33 = factory.MetaEnumLiteral();
 			__tmp34 = factory.MetaEnumLiteral();
 			__tmp35 = factory.MetaEnumLiteral();
-			__tmp36 = factory.MetaEnumLiteral();
-			__tmp37 = factory.MetaEnumLiteral();
 			SoapEncodingBindingElement = factory.MetaClass();
 			SoapEncodingBindingElement_Style = factory.MetaProperty();
 			SoapEncodingBindingElement_Version = factory.MetaProperty();
@@ -13021,11 +13021,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			__tmp66 = factory.MetaCollectionType();
 			__tmp67 = factory.MetaCollectionType();
 			__tmp68 = factory.MetaCollectionType();
+			__tmp69 = factory.MetaCollectionType();
 			__tmp70 = factory.MetaCollectionType();
 			__tmp71 = factory.MetaCollectionType();
 			__tmp72 = factory.MetaCollectionType();
 			__tmp73 = factory.MetaCollectionType();
-			__tmp74 = factory.MetaCollectionType();
 			__tmp75 = factory.MetaCollectionType();
 			__tmp76 = factory.MetaCollectionType();
 	
@@ -13322,37 +13322,37 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			NamedElement.Name = "NamedElement";
 			NamedElement.IsAbstract = true;
 			NamedElement.Properties.AddLazy(() => NamedElement_Name);
-			NamedElement_Name.Annotations.AddLazy(() => __tmp69);
+			NamedElement_Name.Annotations.AddLazy(() => __tmp61);
 			NamedElement_Name.TypeLazy = () => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.String.ToMutable();
 			NamedElement_Name.Name = "Name";
 			NamedElement_Name.Documentation = null;
 			// NamedElement_Name.Kind = null;
 			NamedElement_Name.ClassLazy = () => NamedElement;
-			__tmp69.Name = "Name";
-			__tmp69.Documentation = null;
+			__tmp61.Name = "Name";
+			__tmp61.Documentation = null;
 			TypedElement.MetaModelLazy = () => __tmp5;
 			TypedElement.NamespaceLazy = () => __tmp4;
 			TypedElement.Documentation = null;
 			TypedElement.Name = "TypedElement";
 			TypedElement.IsAbstract = true;
 			TypedElement.Properties.AddLazy(() => TypedElement_Type);
-			TypedElement_Type.Annotations.AddLazy(() => __tmp61);
+			TypedElement_Type.Annotations.AddLazy(() => __tmp74);
 			TypedElement_Type.TypeLazy = () => SoalType;
 			TypedElement_Type.Name = "Type";
 			TypedElement_Type.Documentation = null;
 			// TypedElement_Type.Kind = null;
 			TypedElement_Type.ClassLazy = () => TypedElement;
 			TypedElement_Type.RedefiningProperties.AddLazy(() => EnumLiteral_Enum);
-			__tmp61.Name = "Type";
-			__tmp61.Documentation = null;
+			__tmp74.Name = "Type";
+			__tmp74.Documentation = null;
 			SoalType.MetaModelLazy = () => __tmp5;
 			SoalType.NamespaceLazy = () => __tmp4;
 			SoalType.Documentation = null;
 			SoalType.Name = "SoalType";
-			SoalType.Annotations.AddLazy(() => __tmp33);
+			SoalType.Annotations.AddLazy(() => __tmp36);
 			SoalType.IsAbstract = true;
-			__tmp33.Name = "Type";
-			__tmp33.Documentation = null;
+			__tmp36.Name = "Type";
+			__tmp36.Documentation = null;
 			Namespace.MetaModelLazy = () => __tmp5;
 			Namespace.NamespaceLazy = () => __tmp4;
 			Namespace.Documentation = null;
@@ -13504,14 +13504,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			Struct.NamespaceLazy = () => __tmp4;
 			Struct.Documentation = null;
 			Struct.Name = "Struct";
-			Struct.Annotations.AddLazy(() => __tmp32);
+			Struct.Annotations.AddLazy(() => __tmp30);
 			// Struct.IsAbstract = null;
 			Struct.SuperClasses.AddLazy(() => SoalType);
 			Struct.SuperClasses.AddLazy(() => Declaration);
 			Struct.Properties.AddLazy(() => Struct_BaseType);
 			Struct.Properties.AddLazy(() => Struct_Properties);
-			__tmp32.Name = "Scope";
-			__tmp32.Documentation = null;
+			__tmp30.Name = "Scope";
+			__tmp30.Documentation = null;
 			Struct_BaseType.Annotations.AddLazy(() => __tmp63);
 			Struct_BaseType.TypeLazy = () => Struct;
 			Struct_BaseType.Name = "BaseType";
@@ -13529,14 +13529,14 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			Interface.NamespaceLazy = () => __tmp4;
 			Interface.Documentation = null;
 			Interface.Name = "Interface";
-			Interface.Annotations.AddLazy(() => __tmp38);
+			Interface.Annotations.AddLazy(() => __tmp31);
 			// Interface.IsAbstract = null;
 			Interface.SuperClasses.AddLazy(() => SoalType);
 			Interface.SuperClasses.AddLazy(() => Declaration);
 			Interface.Properties.AddLazy(() => Interface_Operations);
-			__tmp38.Name = "Scope";
-			__tmp38.Documentation = null;
-			Interface_Operations.TypeLazy = () => __tmp70;
+			__tmp31.Name = "Scope";
+			__tmp31.Documentation = null;
+			Interface_Operations.TypeLazy = () => __tmp67;
 			Interface_Operations.Name = "Operations";
 			Interface_Operations.Documentation = null;
 			Interface_Operations.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -13569,7 +13569,7 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			Operation_Action.Documentation = null;
 			// Operation_Action.Kind = null;
 			Operation_Action.ClassLazy = () => Operation;
-			Operation_Parameters.TypeLazy = () => __tmp75;
+			Operation_Parameters.TypeLazy = () => __tmp72;
 			Operation_Parameters.Name = "Parameters";
 			Operation_Parameters.Documentation = null;
 			Operation_Parameters.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -13579,7 +13579,7 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			Operation_Result.Documentation = null;
 			Operation_Result.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Readonly;
 			Operation_Result.ClassLazy = () => Operation;
-			Operation_Exceptions.TypeLazy = () => __tmp76;
+			Operation_Exceptions.TypeLazy = () => __tmp73;
 			Operation_Exceptions.Name = "Exceptions";
 			Operation_Exceptions.Documentation = null;
 			// Operation_Exceptions.Kind = null;
@@ -13678,12 +13678,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			Composite.SuperClasses.AddLazy(() => Component);
 			Composite.Properties.AddLazy(() => Composite_Components);
 			Composite.Properties.AddLazy(() => Composite_Wires);
-			Composite_Components.TypeLazy = () => __tmp73;
+			Composite_Components.TypeLazy = () => __tmp65;
 			Composite_Components.Name = "Components";
 			Composite_Components.Documentation = null;
 			// Composite_Components.Kind = null;
 			Composite_Components.ClassLazy = () => Composite;
-			Composite_Wires.TypeLazy = () => __tmp74;
+			Composite_Wires.TypeLazy = () => __tmp66;
 			Composite_Wires.Name = "Wires";
 			Composite_Wires.Documentation = null;
 			Composite_Wires.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -13782,12 +13782,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			Deployment.SuperClasses.AddLazy(() => Declaration);
 			Deployment.Properties.AddLazy(() => Deployment_Environments);
 			Deployment.Properties.AddLazy(() => Deployment_Wires);
-			Deployment_Environments.TypeLazy = () => __tmp71;
+			Deployment_Environments.TypeLazy = () => __tmp75;
 			Deployment_Environments.Name = "Environments";
 			Deployment_Environments.Documentation = null;
 			Deployment_Environments.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
 			Deployment_Environments.ClassLazy = () => Deployment;
-			Deployment_Wires.TypeLazy = () => __tmp72;
+			Deployment_Wires.TypeLazy = () => __tmp76;
 			Deployment_Wires.Name = "Wires";
 			Deployment_Wires.Documentation = null;
 			Deployment_Wires.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -13806,12 +13806,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			Environment_Runtime.Documentation = null;
 			Environment_Runtime.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
 			Environment_Runtime.ClassLazy = () => Environment;
-			Environment_Databases.TypeLazy = () => __tmp65;
+			Environment_Databases.TypeLazy = () => __tmp70;
 			Environment_Databases.Name = "Databases";
 			Environment_Databases.Documentation = null;
 			// Environment_Databases.Kind = null;
 			Environment_Databases.ClassLazy = () => Environment;
-			Environment_Assemblies.TypeLazy = () => __tmp66;
+			Environment_Assemblies.TypeLazy = () => __tmp71;
 			Environment_Assemblies.Name = "Assemblies";
 			Environment_Assemblies.Documentation = null;
 			// Environment_Assemblies.Kind = null;
@@ -13836,12 +13836,12 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			Binding_Transport.Documentation = null;
 			Binding_Transport.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
 			Binding_Transport.ClassLazy = () => Binding;
-			Binding_Encodings.TypeLazy = () => __tmp67;
+			Binding_Encodings.TypeLazy = () => __tmp68;
 			Binding_Encodings.Name = "Encodings";
 			Binding_Encodings.Documentation = null;
 			Binding_Encodings.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
 			Binding_Encodings.ClassLazy = () => Binding;
-			Binding_Protocols.TypeLazy = () => __tmp68;
+			Binding_Protocols.TypeLazy = () => __tmp69;
 			Binding_Protocols.Name = "Protocols";
 			Binding_Protocols.Documentation = null;
 			Binding_Protocols.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -13928,40 +13928,40 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			SoapVersion.NamespaceLazy = () => __tmp4;
 			SoapVersion.Documentation = null;
 			SoapVersion.Name = "SoapVersion";
-			SoapVersion.EnumLiterals.AddLazy(() => __tmp30);
-			SoapVersion.EnumLiterals.AddLazy(() => __tmp31);
-			__tmp30.TypeLazy = () => SoapVersion;
-			__tmp30.Name = "Soap11";
-			__tmp30.Documentation = null;
-			__tmp30.EnumLazy = () => SoapVersion;
-			__tmp31.TypeLazy = () => SoapVersion;
-			__tmp31.Name = "Soap12";
-			__tmp31.Documentation = null;
-			__tmp31.EnumLazy = () => SoapVersion;
+			SoapVersion.EnumLiterals.AddLazy(() => __tmp37);
+			SoapVersion.EnumLiterals.AddLazy(() => __tmp38);
+			__tmp37.TypeLazy = () => SoapVersion;
+			__tmp37.Name = "Soap11";
+			__tmp37.Documentation = null;
+			__tmp37.EnumLazy = () => SoapVersion;
+			__tmp38.TypeLazy = () => SoapVersion;
+			__tmp38.Name = "Soap12";
+			__tmp38.Documentation = null;
+			__tmp38.EnumLazy = () => SoapVersion;
 			SoapEncodingStyle.MetaModelLazy = () => __tmp5;
 			SoapEncodingStyle.NamespaceLazy = () => __tmp4;
 			SoapEncodingStyle.Documentation = null;
 			SoapEncodingStyle.Name = "SoapEncodingStyle";
+			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp32);
+			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp33);
 			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp34);
 			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp35);
-			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp36);
-			SoapEncodingStyle.EnumLiterals.AddLazy(() => __tmp37);
+			__tmp32.TypeLazy = () => SoapEncodingStyle;
+			__tmp32.Name = "DocumentWrapped";
+			__tmp32.Documentation = null;
+			__tmp32.EnumLazy = () => SoapEncodingStyle;
+			__tmp33.TypeLazy = () => SoapEncodingStyle;
+			__tmp33.Name = "DocumentLiteral";
+			__tmp33.Documentation = null;
+			__tmp33.EnumLazy = () => SoapEncodingStyle;
 			__tmp34.TypeLazy = () => SoapEncodingStyle;
-			__tmp34.Name = "DocumentWrapped";
+			__tmp34.Name = "RpcLiteral";
 			__tmp34.Documentation = null;
 			__tmp34.EnumLazy = () => SoapEncodingStyle;
 			__tmp35.TypeLazy = () => SoapEncodingStyle;
-			__tmp35.Name = "DocumentLiteral";
+			__tmp35.Name = "RpcEncoded";
 			__tmp35.Documentation = null;
 			__tmp35.EnumLazy = () => SoapEncodingStyle;
-			__tmp36.TypeLazy = () => SoapEncodingStyle;
-			__tmp36.Name = "RpcLiteral";
-			__tmp36.Documentation = null;
-			__tmp36.EnumLazy = () => SoapEncodingStyle;
-			__tmp37.TypeLazy = () => SoapEncodingStyle;
-			__tmp37.Name = "RpcEncoded";
-			__tmp37.Documentation = null;
-			__tmp37.EnumLazy = () => SoapEncodingStyle;
 			SoapEncodingBindingElement.MetaModelLazy = () => __tmp5;
 			SoapEncodingBindingElement.NamespaceLazy = () => __tmp4;
 			SoapEncodingBindingElement.Documentation = null;
@@ -14033,27 +14033,27 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 			__tmp64.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
 			__tmp64.InnerTypeLazy = () => Property;
 			__tmp65.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp65.InnerTypeLazy = () => Database;
+			__tmp65.InnerTypeLazy = () => Component;
 			__tmp66.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp66.InnerTypeLazy = () => Assembly;
+			__tmp66.InnerTypeLazy = () => Wire;
 			__tmp67.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp67.InnerTypeLazy = () => EncodingBindingElement;
+			__tmp67.InnerTypeLazy = () => Operation;
 			__tmp68.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp68.InnerTypeLazy = () => ProtocolBindingElement;
+			__tmp68.InnerTypeLazy = () => EncodingBindingElement;
+			__tmp69.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
+			__tmp69.InnerTypeLazy = () => ProtocolBindingElement;
 			__tmp70.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp70.InnerTypeLazy = () => Operation;
+			__tmp70.InnerTypeLazy = () => Database;
 			__tmp71.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp71.InnerTypeLazy = () => Environment;
+			__tmp71.InnerTypeLazy = () => Assembly;
 			__tmp72.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp72.InnerTypeLazy = () => Wire;
+			__tmp72.InnerTypeLazy = () => InputParameter;
 			__tmp73.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp73.InnerTypeLazy = () => Component;
-			__tmp74.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp74.InnerTypeLazy = () => Wire;
+			__tmp73.InnerTypeLazy = () => Struct;
 			__tmp75.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp75.InnerTypeLazy = () => InputParameter;
+			__tmp75.InnerTypeLazy = () => Environment;
 			__tmp76.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp76.InnerTypeLazy = () => Struct;
+			__tmp76.InnerTypeLazy = () => Wire;
 	
 			foreach (global::MetaDslx.Core.MutableSymbol symbol in this.Model.Symbols)
 			{
@@ -14263,9 +14263,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		/// Initializes the following derived properties:
 		/// <ul>
@@ -14281,9 +14281,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallNamespaceSuperConstructors(NamespaceBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
 			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14297,8 +14297,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Declaration(DeclarationBuilder _this)
 		{
@@ -14310,8 +14310,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallDeclarationSuperConstructors(DeclarationBuilder _this)
 		{
-			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14400,10 +14400,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
 		///     <li>SoalType</li>
+		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void PrimitiveType(PrimitiveTypeBuilder _this)
 		{
@@ -14415,10 +14415,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallPrimitiveTypeSuperConstructors(PrimitiveTypeBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
-			this.Declaration(_this);
 			this.SoalType(_this);
+			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14432,10 +14432,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
 		///     <li>SoalType</li>
+		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Enum(EnumBuilder _this)
 		{
@@ -14447,10 +14447,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallEnumSuperConstructors(EnumBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
-			this.Declaration(_this);
 			this.SoalType(_this);
+			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14465,9 +14465,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>TypedElement</li>
 		///     <li>NamedElement</li>
+		///     <li>TypedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void EnumLiteral(EnumLiteralBuilder _this)
 		{
@@ -14479,9 +14479,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallEnumLiteralSuperConstructors(EnumLiteralBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.TypedElement(_this);
 			this.NamedElement(_this);
+			this.TypedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14496,9 +14496,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>TypedElement</li>
 		///     <li>NamedElement</li>
+		///     <li>TypedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Property(PropertyBuilder _this)
 		{
@@ -14510,9 +14510,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallPropertySuperConstructors(PropertyBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.TypedElement(_this);
 			this.NamedElement(_this);
+			this.TypedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14526,10 +14526,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
 		///     <li>SoalType</li>
+		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Struct(StructBuilder _this)
 		{
@@ -14541,10 +14541,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallStructSuperConstructors(StructBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
-			this.Declaration(_this);
 			this.SoalType(_this);
+			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14558,10 +14558,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
 		///     <li>SoalType</li>
+		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Interface(InterfaceBuilder _this)
 		{
@@ -14573,10 +14573,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallInterfaceSuperConstructors(InterfaceBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
-			this.Declaration(_this);
 			this.SoalType(_this);
+			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14589,11 +14589,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
-		///     <li>SoalType</li>
 		///     <li>Interface</li>
+		///     <li>SoalType</li>
+		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Database(DatabaseBuilder _this)
 		{
@@ -14605,11 +14605,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallDatabaseSuperConstructors(DatabaseBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
-			this.Declaration(_this);
-			this.SoalType(_this);
 			this.Interface(_this);
+			this.SoalType(_this);
+			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14623,8 +14623,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
 		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		/// Initializes the following readonly properties:
 		/// <ul>
@@ -14640,8 +14640,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallOperationSuperConstructors(OperationBuilder _this)
 		{
-			this.AnnotatedElement(_this);
 			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14656,9 +14656,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>TypedElement</li>
 		///     <li>NamedElement</li>
+		///     <li>TypedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void InputParameter(InputParameterBuilder _this)
 		{
@@ -14670,9 +14670,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallInputParameterSuperConstructors(InputParameterBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.TypedElement(_this);
 			this.NamedElement(_this);
+			this.TypedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14686,8 +14686,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
 		///     <li>TypedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void OutputParameter(OutputParameterBuilder _this)
 		{
@@ -14699,8 +14699,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallOutputParameterSuperConstructors(OutputParameterBuilder _this)
 		{
-			this.AnnotatedElement(_this);
 			this.TypedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14713,9 +14713,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Component(ComponentBuilder _this)
 		{
@@ -14727,9 +14727,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallComponentSuperConstructors(ComponentBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
 			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14742,10 +14742,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
 		///     <li>Component</li>
+		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Composite(CompositeBuilder _this)
 		{
@@ -14757,10 +14757,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallCompositeSuperConstructors(CompositeBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
-			this.Declaration(_this);
 			this.Component(_this);
+			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14773,11 +14773,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
-		///     <li>Declaration</li>
-		///     <li>Component</li>
 		///     <li>Composite</li>
+		///     <li>Component</li>
+		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Assembly(AssemblyBuilder _this)
 		{
@@ -14789,11 +14789,11 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallAssemblySuperConstructors(AssemblyBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
-			this.Declaration(_this);
-			this.Component(_this);
 			this.Composite(_this);
+			this.Component(_this);
+			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -14942,9 +14942,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Deployment(DeploymentBuilder _this)
 		{
@@ -14956,9 +14956,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallDeploymentSuperConstructors(DeploymentBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
 			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -15021,9 +15021,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Binding(BindingBuilder _this)
 		{
@@ -15035,9 +15035,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallBindingSuperConstructors(BindingBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
 			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -15050,9 +15050,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>AnnotatedElement</li>
-		///     <li>NamedElement</li>
 		///     <li>Declaration</li>
+		///     <li>NamedElement</li>
+		///     <li>AnnotatedElement</li>
 		/// </ul>
 		public virtual void Endpoint(EndpointBuilder _this)
 		{
@@ -15064,9 +15064,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallEndpointSuperConstructors(EndpointBuilder _this)
 		{
-			this.AnnotatedElement(_this);
-			this.NamedElement(_this);
 			this.Declaration(_this);
+			this.NamedElement(_this);
+			this.AnnotatedElement(_this);
 		}
 	
 	
@@ -15104,8 +15104,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
 		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void TransportBindingElement(TransportBindingElementBuilder _this)
 		{
@@ -15117,8 +15117,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallTransportBindingElementSuperConstructors(TransportBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
 			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15131,8 +15131,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
 		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void EncodingBindingElement(EncodingBindingElementBuilder _this)
 		{
@@ -15144,8 +15144,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallEncodingBindingElementSuperConstructors(EncodingBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
 			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15158,8 +15158,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
 		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void ProtocolBindingElement(ProtocolBindingElementBuilder _this)
 		{
@@ -15171,8 +15171,8 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallProtocolBindingElementSuperConstructors(ProtocolBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
 			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15185,9 +15185,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>BindingElement</li>
 		///     <li>TransportBindingElement</li>
+		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void HttpTransportBindingElement(HttpTransportBindingElementBuilder _this)
 		{
@@ -15199,9 +15199,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallHttpTransportBindingElementSuperConstructors(HttpTransportBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
-			this.BindingElement(_this);
 			this.TransportBindingElement(_this);
+			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15214,9 +15214,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>BindingElement</li>
 		///     <li>TransportBindingElement</li>
+		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void RestTransportBindingElement(RestTransportBindingElementBuilder _this)
 		{
@@ -15228,9 +15228,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallRestTransportBindingElementSuperConstructors(RestTransportBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
-			this.BindingElement(_this);
 			this.TransportBindingElement(_this);
+			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15243,9 +15243,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>BindingElement</li>
 		///     <li>TransportBindingElement</li>
+		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void WebSocketTransportBindingElement(WebSocketTransportBindingElementBuilder _this)
 		{
@@ -15257,9 +15257,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallWebSocketTransportBindingElementSuperConstructors(WebSocketTransportBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
-			this.BindingElement(_this);
 			this.TransportBindingElement(_this);
+			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15272,9 +15272,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>BindingElement</li>
 		///     <li>EncodingBindingElement</li>
+		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void SoapEncodingBindingElement(SoapEncodingBindingElementBuilder _this)
 		{
@@ -15286,9 +15286,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallSoapEncodingBindingElementSuperConstructors(SoapEncodingBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
-			this.BindingElement(_this);
 			this.EncodingBindingElement(_this);
+			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15301,9 +15301,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>BindingElement</li>
 		///     <li>EncodingBindingElement</li>
+		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void XmlEncodingBindingElement(XmlEncodingBindingElementBuilder _this)
 		{
@@ -15315,9 +15315,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallXmlEncodingBindingElementSuperConstructors(XmlEncodingBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
-			this.BindingElement(_this);
 			this.EncodingBindingElement(_this);
+			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15330,9 +15330,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>BindingElement</li>
 		///     <li>EncodingBindingElement</li>
+		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void JsonEncodingBindingElement(JsonEncodingBindingElementBuilder _this)
 		{
@@ -15344,9 +15344,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallJsonEncodingBindingElementSuperConstructors(JsonEncodingBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
-			this.BindingElement(_this);
 			this.EncodingBindingElement(_this);
+			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15359,9 +15359,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>BindingElement</li>
 		///     <li>ProtocolBindingElement</li>
+		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void WsProtocolBindingElement(WsProtocolBindingElementBuilder _this)
 		{
@@ -15373,9 +15373,9 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallWsProtocolBindingElementSuperConstructors(WsProtocolBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
-			this.BindingElement(_this);
 			this.ProtocolBindingElement(_this);
+			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	
@@ -15388,10 +15388,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </ul>
 		/// All superclasses:
 		/// <ul>
-		///     <li>NamedElement</li>
-		///     <li>BindingElement</li>
-		///     <li>ProtocolBindingElement</li>
 		///     <li>WsProtocolBindingElement</li>
+		///     <li>ProtocolBindingElement</li>
+		///     <li>BindingElement</li>
+		///     <li>NamedElement</li>
 		/// </ul>
 		public virtual void WsAddressingBindingElement(WsAddressingBindingElementBuilder _this)
 		{
@@ -15403,10 +15403,10 @@ namespace MetaDslx.Languages.Soal.Symbols.Internal
 		/// </summary>
 		protected virtual void CallWsAddressingBindingElementSuperConstructors(WsAddressingBindingElementBuilder _this)
 		{
-			this.NamedElement(_this);
-			this.BindingElement(_this);
-			this.ProtocolBindingElement(_this);
 			this.WsProtocolBindingElement(_this);
+			this.ProtocolBindingElement(_this);
+			this.BindingElement(_this);
+			this.NamedElement(_this);
 		}
 	
 	

@@ -1,5 +1,9 @@
 ﻿lexer grammar SoalLexer;
 
+options {
+	                             
+}
+
 channels {
 	COMMENT,
 	WHITESPACE

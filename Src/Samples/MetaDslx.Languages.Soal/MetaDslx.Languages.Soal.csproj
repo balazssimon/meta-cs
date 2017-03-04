@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr4.Runtime.Standard, Version=4.6.0.0, Culture=neutral, PublicKeyToken=e78b2c5abd1fcb3f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Programs\Antlr4\Antlr4.Runtime.Standard.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Collections.Immutable" />
@@ -39,7 +43,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Antlr4.Runtime" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Binding\SoalBinderFactoryVisitor.cs" />
@@ -67,19 +70,13 @@
     <Compile Include="Syntax\InternalSyntax\SoalInternalSyntax.cs" />
     <Compile Include="Syntax\InternalSyntax\SoalLexer.cs">
       <DependentUpon>SoalLexer.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="Syntax\InternalSyntax\SoalLexer1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SoalLexer.ag4</DependentUpon>
     </Compile>
     <Compile Include="Syntax\InternalSyntax\SoalParser.cs">
       <DependentUpon>SoalParser.ag4</DependentUpon>
-    </Compile>
-    <Compile Include="Syntax\InternalSyntax\SoalParser1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SoalParser.ag4</DependentUpon>
     </Compile>
     <Compile Include="Syntax\InternalSyntax\SoalParserBaseListener.cs">
       <DependentUpon>SoalParser.ag4</DependentUpon>
@@ -105,7 +102,7 @@
     </None>
     <None Include="Syntax\InternalSyntax\SoalLexer.ag4">
       <Generator>Antlr4RoslynGenerator</Generator>
-      <LastGenOutput>SoalLexer1.cs</LastGenOutput>
+      <LastGenOutput>SoalLexer.cs</LastGenOutput>
     </None>
     <None Include="Syntax\InternalSyntax\SoalLexer.og4">
       <DependentUpon>SoalLexer.ag4</DependentUpon>
@@ -115,7 +112,7 @@
     </None>
     <None Include="Syntax\InternalSyntax\SoalParser.ag4">
       <Generator>Antlr4RoslynGenerator</Generator>
-      <LastGenOutput>SoalParser1.cs</LastGenOutput>
+      <LastGenOutput>SoalParser.cs</LastGenOutput>
     </None>
     <None Include="Syntax\InternalSyntax\SoalParser.og4">
       <DependentUpon>SoalParser.ag4</DependentUpon>
