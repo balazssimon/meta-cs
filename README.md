@@ -15,13 +15,15 @@ The documentation of the MetaDslx framework can be accessed here: [The MetaDslx 
 
 # Installation instructions
 
-## Instructions for users
+## Instructions for development with the MetaDslx plugin
 
 ### Installation
 
 These are the installation instructions if you would like to use the MetaDslx framework for creating your own DSLs. For an example DSL see the [SOAL language](https://github.com/balazssimon/soal-cs).
 
-The MetaDslx framework requires Visual Studio 2015 and .NET Framework 4.5.2.
+The MetaDslx plugin requires the following prerequisites:
+* Visual Studio 2015 and .NET Framework 4.6.1
+* Java 8 for running ANTLR4 (make sure the **java** command is on the PATH environment variable)
 
 Installation steps:
 
@@ -34,7 +36,17 @@ Installation steps:
 1. In Visual Studio open the **Tools / Extensions and Updates...** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
 2. Run **uninstall64.bat** on 64-bit systems, or **uninstall32.bat** on 32-bit systems to remove the MetaDslx DLLs from the GAC.
 
-## Instructions for developers
+## Instructions for running an application depending on the MetaDslx framework
+
+The MetaDslx core runtime (MetaDslx.Core.dll) requires the following prerequisites:
+* .NET Framework 4.6.1
+
+The MetaDslx compiler runtime (MetaDslx.Compiler.Antlr4.dll) requires the following prerequisites:
+* .NET Framework 4.6.1
+* Antlr4.Runtime.Standard.dll
+* MetaDslx.Core.dll
+
+## Instructions for developing the MetaDslx framework
 
 ### Installation
 
