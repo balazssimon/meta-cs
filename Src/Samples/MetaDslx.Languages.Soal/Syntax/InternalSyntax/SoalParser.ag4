@@ -6,7 +6,7 @@ options {
 }
 
 $Root(Namespace)
-main : $Property(Declarations) namespaceDeclaration* EOF;
+main : $Property(Symbols) namespaceDeclaration* EOF;
 
 $Name
 name : identifier;
@@ -364,7 +364,7 @@ returnType
 	| typeReference
 	;
 
-$SymbolUse
+$SymbolUse(SoalType)
 typeReference 
 	: nonNullableArrayType
 	| arrayType

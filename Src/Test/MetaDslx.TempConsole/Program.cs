@@ -8,6 +8,9 @@ using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.MetaGenerator.Compilation;
+using MetaDslx.Languages.Soal;
+using MetaDslx.Languages.Soal.Symbols;
+using MetaDslx.Languages.Soal.Syntax;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -141,7 +144,7 @@ namespace MetaDslx.TempConsole
                     @"../../../../Samples/MetaDslx.Languages.Soal\Soal.cs"
                     );
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm",
@@ -176,6 +179,9 @@ namespace MetaDslx.TempConsole
                 {
                     Console.WriteLine(DiagnosticFormatter.Instance.Format(diag));
                 }
+                //*/
+                //*/
+                CompileSoal(@"..\..\HelloWorld.soal");
                 //*/
             }
             /*catch (System.Exception ex)
@@ -480,5 +486,33 @@ namespace MetaDslx.TempConsole
             }
         }
 
+
+        private static void CompileSoal(string fileName)
+        {
+            string source;
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                source = reader.ReadToEnd();
+            }
+            var metaModelReference = MetadataReference.CreateFromModel(MetaInstance.Model);
+            var soalModelReference = MetadataReference.CreateFromModel(SoalInstance.Model);
+            var tree = SoalSyntaxTree.ParseText(source);
+            var compilation = SoalCompilation.Create("SoalFile").AddReferences(metaModelReference, soalModelReference).AddSyntaxTrees(tree);
+            ImmutableModel immutableModel = compilation.Model;
+            if (compilation.GetDiagnostics().Length == 0)
+            {
+                
+            }
+
+            using (StreamWriter writer = new StreamWriter("messages_soal.txt"))
+            {
+                foreach (var diag in compilation.GetDiagnostics())
+                {
+                    string msg = DiagnosticFormatter.Instance.Format(diag);
+                    writer.WriteLine(msg);
+                    Console.WriteLine(msg);
+                }
+            }
+        }
     }
 }

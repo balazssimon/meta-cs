@@ -63,7 +63,7 @@ namespace MetaDslx.Languages.Soal.Binding
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 				if (use == UseNamespaceDeclaration)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, node.NamespaceDeclaration.Node, "Declarations");
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.NamespaceDeclaration.Node, "Symbols");
 					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
 			}
@@ -2148,7 +2148,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
+				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.SoalType)));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;

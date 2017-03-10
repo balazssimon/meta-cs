@@ -30,7 +30,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
-			this.BeginProperty("Declarations");
+			this.BeginProperty("Symbols");
 			try
 			{
 				if (node.NamespaceDeclaration != null)

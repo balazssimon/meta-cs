@@ -633,7 +633,6 @@ namespace MetaDslx.Compiler
         {
             get
             {
-                GetBoundReferenceManager();
                 if (_lazySymbolBuilder == null)
                 {
                     Interlocked.CompareExchange(ref _lazySymbolBuilder, this.Language.CompilationFactory.CreateSymbolBuilder(this), null);

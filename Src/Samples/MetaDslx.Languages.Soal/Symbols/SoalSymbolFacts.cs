@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Languages.Soal
+namespace MetaDslx.Languages.Soal.Symbols
 {
     public static class SoalSymbolFacts
     {

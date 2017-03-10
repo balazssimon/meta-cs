@@ -60,13 +60,13 @@
     <Compile Include="Errors\SoalErrorCode.cs" />
     <Compile Include="Parser\SoalSyntaxParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Soal.cs">
+    <Compile Include="Symbols\Soal.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Soal.mm</DependentUpon>
     </Compile>
-    <Compile Include="SoalImplementation.cs" />
-    <Compile Include="SoalSymbolFacts.cs" />
+    <Compile Include="Symbols\SoalImplementation.cs" />
+    <Compile Include="Symbols\SoalSymbolFacts.cs" />
     <Compile Include="Syntax\InternalSyntax\SoalInternalSyntax.cs" />
     <Compile Include="Syntax\InternalSyntax\SoalLexer.cs">
       <DependentUpon>SoalLexer.ag4</DependentUpon>
@@ -96,7 +96,7 @@
     <Compile Include="Syntax\SoalSyntaxTree.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Soal.mm">
+    <None Include="Symbols\Soal.mm">
       <Generator>MetaModelGenerator</Generator>
       <LastGenOutput>Soal.cs</LastGenOutput>
     </None>

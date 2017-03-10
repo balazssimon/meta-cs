@@ -1,42 +1,33 @@
 ﻿namespace MetaDslx.Languages.Soal.Symbols
 {
 	metamodel Soal(Uri="http://MetaDslx.Languages.Soal/1.0");
-	
-	const PrimitiveType Object;// = new PrimitiveType() { Name = "object", Nullable = true };
-	const PrimitiveType String;// = new PrimitiveType() { Name = "string", Nullable = true };
-	const PrimitiveType Int;// = new PrimitiveType() { Name = "int" };
-	const PrimitiveType Long;// = new PrimitiveType() { Name = "long" };
-	const PrimitiveType Float;// = new PrimitiveType() { Name = "float" };
-	const PrimitiveType Double;// = new PrimitiveType() { Name = "double" };
-	const PrimitiveType Byte;// = new PrimitiveType() { Name = "byte" };
-	const PrimitiveType Bool;// = new PrimitiveType() { Name = "bool" };
-	const PrimitiveType Void;// = new PrimitiveType() { Name = "void" };
-	const PrimitiveType Date;// = new PrimitiveType() { Name = "Date" };
-	const PrimitiveType Time;// = new PrimitiveType() { Name = "Time" };
-	const PrimitiveType DateTime;// = new PrimitiveType() { Name = "DateTime" };
-	const PrimitiveType TimeSpan;// = new PrimitiveType() { Name = "TimeSpan" };
 
-	
+	const PrimitiveType Object;
+	const PrimitiveType String;
+	const PrimitiveType Int;
+	const PrimitiveType Long;
+	const PrimitiveType Float;
+	const PrimitiveType Double;
+	const PrimitiveType Byte;
+	const PrimitiveType Bool;
+	const PrimitiveType Void;
+	const PrimitiveType Date;
+	const PrimitiveType Time;
+	const PrimitiveType DateTime;
+	const PrimitiveType TimeSpan;
+
+	/*
+	Represents an annotated element.
+	*/
 	abstract class AnnotatedElement
 	{
-		containment list<Annotation> Annotations;
-		//Annotation AddAnnotation(string name);
-		bool HasAnnotation(string name);
-		Annotation GetAnnotation(string name);
-		list<Annotation> GetAnnotations(string name);
-		bool HasAnnotationProperty(string annotationName, string propertyName);
-		object GetAnnotationPropertyValue(string annotationName, string propertyName);
-		//AnnotationProperty SetAnnotationPropertyValue(string annotationName, string propertyName, object propertyValue);
+		// List of annotations
+		containment list<Annotation> Annotations; 
 	}
 
 	class Annotation : NamedElement
 	{
-		AnnotatedElement AnnotatedElement;
 		containment list<AnnotationProperty> Properties;
-		bool HasProperty(string name);
-		AnnotationProperty GetProperty(string name);
-		object GetPropertyValue(string name);
-		//AnnotationProperty SetPropertyValue(string name, object value);
 	}
 
 	association Annotation.AnnotatedElement with AnnotatedElement.Annotations;
@@ -45,8 +36,14 @@
 	{
 		object Value;
 	}
-	
-	abstract class NamedElement
+
+	abstract class DocumentedElement
+	{
+		string Documentation;
+		list<string> GetDocumentationLines();
+	}
+
+	abstract class NamedElement : DocumentedElement
 	{
 		[Name]
 		string Name;
@@ -63,22 +60,28 @@
 	{
 	}
 
-	[Scope]
-	class Namespace : Declaration
+	class NamedType : SoalType, NamedElement
 	{
-		string Uri;
-		string Prefix;
-		derived string FullName;
-		containment list<Declaration> Declarations;
 	}
 
 	abstract class Declaration : NamedElement, AnnotatedElement
 	{
 		Namespace Namespace;
+		derived string FullName;
+	}
+
+	[Scope]
+	class Namespace : Declaration
+	{
+		string Uri;
+		string Prefix;
+		[Import]
+		list<Namespace> Usings;
+		containment list<Declaration> Declarations;
 	}
 
 	association Namespace.Declarations with Declaration.Namespace;
-
+	
 	class ArrayType : SoalType
 	{
 		SoalType InnerType;
@@ -141,7 +144,7 @@
 	{
 		string Action;
 		containment list<InputParameter> Parameters;
-		readonly OutputParameter Result;
+		containment OutputParameter Result;
 		list<Struct> Exceptions;
 	}
 
@@ -184,12 +187,9 @@
 		Port Target;
 	}
 
-	class Port
+	class Port : NamedElement
 	{
 		Component Component;
-		[Name]
-		derived string Name;
-		string OptionalName;
 		Interface Interface;
 		Binding Binding;
 	}
@@ -221,7 +221,7 @@
 	class Environment : NamedElement
 	{
 		containment Runtime Runtime;
-		list<Database> Databases;
+		list<Interface> Databases;
 		list<Assembly> Assemblies;
 	}
 
@@ -312,5 +312,6 @@
 	class WsAddressingBindingElement : WsProtocolBindingElement
 	{
 	}
+
 
 }

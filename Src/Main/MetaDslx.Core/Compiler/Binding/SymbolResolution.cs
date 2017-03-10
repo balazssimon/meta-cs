@@ -93,12 +93,7 @@ namespace MetaDslx.Compiler.Binding
         public virtual object GetEnumLiteral(RedNode node, Type enumType)
         {
             string enumLiteralName = this.GetName(node);
-            long enumLiteral;
-            if (Enum.TryParse(enumLiteralName, out enumLiteral))
-            {
-                return enumLiteral;
-            }
-            return null;
+            return Enum.Parse(enumType, enumLiteralName);
         }
 
         public virtual ISymbol GetWellKnownSymbol(string name)

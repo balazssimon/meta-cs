@@ -7,8 +7,8 @@ using MetaDslx.Compiler;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
-using MetaDslx.Languages.Soal.Syntax.InternalSyntax;
 using MetaDslx.Languages.Soal.Syntax;
+using MetaDslx.Languages.Soal.Syntax.InternalSyntax;
 
 namespace MetaDslx.Languages.Soal
 {
@@ -16,9 +16,9 @@ namespace MetaDslx.Languages.Soal
     {
         internal const string LanguageName = "Soal";
 
-        internal static readonly SoalLanguage Instance = new SoalLanguage();
+        public static readonly SoalLanguage Instance = new SoalLanguage();
 
-        internal SoalLanguage()
+        private SoalLanguage()
         {
         }
 

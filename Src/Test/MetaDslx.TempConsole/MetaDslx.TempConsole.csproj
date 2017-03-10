@@ -68,6 +68,10 @@
       <Project>{c7bd8655-44d1-46a5-9fd9-7487c41538db}</Project>
       <Name>MetaDslx.Languages.Calculator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Samples\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj">
+      <Project>{9D723D66-E324-4EC4-96E5-B246F3D9E812}</Project>
+      <Name>MetaDslx.Languages.Soal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

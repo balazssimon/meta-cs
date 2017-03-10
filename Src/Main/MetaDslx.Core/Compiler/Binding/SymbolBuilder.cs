@@ -96,10 +96,10 @@ namespace MetaDslx.Compiler.Binding
             MutableSymbol parent = container as MutableSymbol;
             if (parent != null)
             {
-                ModelProperty parentProperty = symbol.MGetProperty(declaration.ParentPropertyToAddTo);
-                if (parentProperty != null)
+                ModelProperty parentProperty = parent.MGetProperty(declaration.ParentPropertyToAddTo);
+                if (parentProperty != null && (parentProperty.IsCollection || !parent.MIsSet(parentProperty)))
                 {
-                    parent.MAdd(parentProperty, symbol);
+                    parent.MSetOrAdd(parentProperty, symbol);
                 }
             }
             else if (_compilation != null)
@@ -184,7 +184,10 @@ namespace MetaDslx.Compiler.Binding
             Location location = node.GetLocation();
             DiagnosticBag diagnostics = (DiagnosticBag)symbol.MGet(CompilerAttachedProperties.DiagnosticBagProperty);
             var properties = new HashSet<string>(symbol.MProperties.Select(p => p.Name));
-            //properties.RemoveAll(declaration.ChildrenByParentProperties.Keys);
+            /*if (declaration != null)
+            {
+                properties.RemoveAll(declaration.ChildrenByParentProperties.Keys);
+            }*/
             foreach (var propertyName in properties)
             {
                 string currentName = propertyName;
@@ -206,7 +209,7 @@ namespace MetaDslx.Compiler.Binding
         {
             var binder = this.Compilation.GetBinder(node);
             if (binder == null) return null;
-            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName);
+            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IBodyBinder || (b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName));
             var values = propertyBinders.SelectMany(pb => pb.GetValues()).ToImmutableArray();
             var errors = propertyBinders.SelectMany(pb => pb.GetErrors()).ToImmutableArray();
             if (errors.Length > 0)
@@ -222,7 +225,7 @@ namespace MetaDslx.Compiler.Binding
         {
             var binder = this.Compilation.GetBinder(node);
             if (binder == null) return null;
-            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName);
+            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IBodyBinder || (b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName));
             var values = propertyBinders.SelectMany(pb => pb.GetValues()).ToImmutableArray();
             var errors = propertyBinders.SelectMany(pb => pb.GetErrors()).ToImmutableArray();
             if (errors.Length > 0)

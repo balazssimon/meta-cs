@@ -70,14 +70,14 @@
 
 	component UserDB
 	{
-		service HelloDB;
+		service HelloDB HelloDB;
 		implementation JPA;
 	}
 	component UserLogic
 	{
-		reference IHello;
-		reference HelloDB;
-		service IHello;
+		reference IHello IHello;
+		reference HelloDB HelloDB;
+		service IHello IHello;
 		implementation EJB; // implementation DotNet;
 	}
 	composite CinemaApp
