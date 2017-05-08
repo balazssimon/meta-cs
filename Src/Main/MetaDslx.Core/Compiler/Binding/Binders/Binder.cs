@@ -86,7 +86,7 @@ namespace MetaDslx.Compiler.Binding.Binders
                 {
                     RedNode currentNode = nodeStack.Pop();
                     Binder childBinder = this.Compilation.GetBinder(currentNode);
-                    Debug.Assert(childBinder != null);
+                    //Debug.Assert(childBinder != null);
                     if (childBinder != this)
                     {
                         Binder currentBinder = childBinder;

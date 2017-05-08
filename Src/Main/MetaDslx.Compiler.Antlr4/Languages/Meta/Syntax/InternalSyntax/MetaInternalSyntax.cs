@@ -676,8 +676,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	internal class MainGreen : MetaGreenNode
 	{
 	    private NamespaceDeclarationGreen namespaceDeclaration;
+	    private InternalSyntaxToken eof;
 	
-	    public MainGreen(MetaSyntaxKind kind, NamespaceDeclarationGreen namespaceDeclaration)
+	    public MainGreen(MetaSyntaxKind kind, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eof)
 	        : base(kind, null, null)
 	    {
 			if (namespaceDeclaration != null)
@@ -685,9 +686,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(namespaceDeclaration);
 				this.namespaceDeclaration = namespaceDeclaration;
 			}
+			if (eof != null)
+			{
+				this.AdjustFlagsAndWidth(eof);
+				this.eof = eof;
+			}
 	    }
 	
-	    public MainGreen(MetaSyntaxKind kind, NamespaceDeclarationGreen namespaceDeclaration, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public MainGreen(MetaSyntaxKind kind, NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eof, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			if (namespaceDeclaration != null)
@@ -695,11 +701,17 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(namespaceDeclaration);
 				this.namespaceDeclaration = namespaceDeclaration;
 			}
+			if (eof != null)
+			{
+				this.AdjustFlagsAndWidth(eof);
+				this.eof = eof;
+			}
 	    }
 	
-		public override int SlotCount { get { return 1; } }
+		public override int SlotCount { get { return 2; } }
 	
 	    public NamespaceDeclarationGreen NamespaceDeclaration { get { return this.namespaceDeclaration; } }
+	    public InternalSyntaxToken Eof { get { return this.eof; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -711,25 +723,27 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.namespaceDeclaration;
+	            case 1: return this.eof;
 	            default: return null;
 	        }
 	    }
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new MainGreen(this.Kind, this.namespaceDeclaration, diagnostics, this.GetAnnotations());
+	        return new MainGreen(this.Kind, this.namespaceDeclaration, this.eof, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new MainGreen(this.Kind, this.namespaceDeclaration, this.GetDiagnostics(), annotations);
+	        return new MainGreen(this.Kind, this.namespaceDeclaration, this.eof, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public MainGreen Update(NamespaceDeclarationGreen namespaceDeclaration)
+	    public MainGreen Update(NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eof)
 	    {
-	        if (this.namespaceDeclaration != namespaceDeclaration)
+	        if (this.namespaceDeclaration != namespaceDeclaration ||
+				this.eof != eof)
 	        {
-	            GreenNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.Main(namespaceDeclaration);
+	            GreenNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.Main(namespaceDeclaration, eof);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -5828,18 +5842,20 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return Token(null, MetaSyntaxKind.LComment, text, value, null);
 	    }
 	
-		public MainGreen Main(NamespaceDeclarationGreen namespaceDeclaration, bool errorNode = false)
+		public MainGreen Main(NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eof, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
 			{
 				if (namespaceDeclaration == null) throw new ArgumentNullException(nameof(namespaceDeclaration));
+				if (eof == null) throw new ArgumentNullException(nameof(eof));
+				if (eof.RawKind != (int)MetaSyntaxKind.Eof) throw new ArgumentException(nameof(eof));
 			}
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)MetaSyntaxKind.Main, namespaceDeclaration, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)MetaSyntaxKind.Main, namespaceDeclaration, eof, out hash);
 			if (cached != null) return (MainGreen)cached;
-			var result = new MainGreen(MetaSyntaxKind.Main, namespaceDeclaration);
+			var result = new MainGreen(MetaSyntaxKind.Main, namespaceDeclaration, eof);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);

@@ -754,6 +754,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         private Antlr4LexerMode currentMode;
         private Antlr4LexerRule currentLexerRule;
 
+        private bool firstRule;
         private int modeCounter;
 
         public Antlr4Grammar Grammar { get { return this.currentGrammar; } }
@@ -765,6 +766,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public RoslynRuleCollector(Antlr4RoslynCompiler compiler)
         {
+            this.firstRule = true;
             this.compiler = compiler;
         }
 
@@ -1098,6 +1100,28 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     this.Grammar.ParserRules.Add(rule);
                     rule.Name = ruleName;
                 }
+                if (this.firstRule)
+                {
+                    this.firstRule = false;
+                    Antlr4RoslynParser.LabeledAltContext[] labeledAlts = context.ruleAltList().labeledAlt();
+                    bool endsWithEof = false;
+                    if (labeledAlts != null && labeledAlts.Length > 0)
+                    {
+                        endsWithEof = true;
+                        for (int i = 0; i < labeledAlts.Length; i++)
+                        {
+                            if (!EndsWithEof(labeledAlts[i]))
+                            {
+                                endsWithEof = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (!endsWithEof)
+                    {
+                        this.compiler.AddDiagnostic(context, Antlr4RoslynErrorCode.ERR_MainRuleMustEndWithEof);
+                    }
+                }
             }
             else
             {
@@ -1187,6 +1211,32 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 }
             }
             return this.CheckUniqueElements(rule, ref reportedErrors);
+        }
+
+        private bool EndsWithEof(Antlr4RoslynParser.LabeledAltContext context)
+        {
+            Antlr4RoslynParser.ElementContext[] elems = context.alternative().element();
+            if (elems.Length > 0)
+            {
+                Antlr4RoslynParser.ElementContext elem = elems[elems.Length - 1];
+                if (elem.atom() != null)
+                {
+                    if (elem.atom().terminal() != null && elem.atom().terminal().TOKEN_REF() != null)
+                    {
+                        string name = elem.atom().terminal().TOKEN_REF().GetText();
+                        return name == "EOF";
+                    }
+                }
+                else if (elem.labeledElement() != null && elem.labeledElement().atom() != null)
+                {
+                    if (elem.labeledElement().atom().terminal() != null && elem.labeledElement().atom().terminal().TOKEN_REF() != null)
+                    {
+                        string name = elem.labeledElement().atom().terminal().TOKEN_REF().GetText();
+                        return name == "EOF";
+                    }
+                }
+            }
+            return false;
         }
 
         private int IsRoslynRuleElement(Antlr4RoslynParser.ElementContext first, Antlr4RoslynParser.ElementContext second, Antlr4RoslynParser.ElementContext third, bool allowBlocks, ref bool reportedErrors, out Antlr4ParserRuleElement element)
@@ -1512,7 +1562,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     }
                 }
             }
-            else if (first != null)
+            if (first != null)
             {
                 if (first.ebnf() != null && first.ebnf().blockSuffix() != null && first.ebnf().blockSuffix().ebnfSuffix() != null &&
                     (first.ebnf().blockSuffix().ebnfSuffix().PLUS() != null ||
@@ -1521,8 +1571,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     first.ebnf().block().altList().alternative().Length == 1 &&
                     first.ebnf().block().altList().alternative()[0].element().Length == 2)
                 {
-                    Antlr4RoslynParser.ElementContext ruleRep = second.ebnf().block().altList().alternative()[0].element()[0];
-                    Antlr4RoslynParser.ElementContext token = second.ebnf().block().altList().alternative()[0].element()[1];
+                    Antlr4RoslynParser.ElementContext ruleRep = first.ebnf().block().altList().alternative()[0].element()[0];
+                    Antlr4RoslynParser.ElementContext token = first.ebnf().block().altList().alternative()[0].element()[1];
                     Antlr4ParserRuleElement ruleRepElement;
                     Antlr4ParserRuleElement tokenElement;
                     if (this.IsSingleTokenOrRuleElement(ruleRep, TokenOrRule.Rule, false, out ruleRepElement) &&

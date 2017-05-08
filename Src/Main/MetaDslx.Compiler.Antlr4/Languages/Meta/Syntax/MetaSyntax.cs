@@ -90,7 +90,7 @@ namespace MetaDslx.Languages.Meta.Syntax
         }
     }
 	
-	public sealed class MainSyntax : MetaSyntaxNode
+	public sealed class MainSyntax : MetaSyntaxNode, ICompilationUnitSyntax
 	{
 	    private NamespaceDeclarationSyntax namespaceDeclaration;
 	
@@ -107,6 +107,15 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    public NamespaceDeclarationSyntax NamespaceDeclaration 
 		{ 
 			get { return this.GetRed(ref this.namespaceDeclaration, 0); } 
+		}
+	    public SyntaxToken Eof 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.MainGreen)this.Green;
+				var greenToken = green.Eof;
+				return greenToken == null ? null : new MetaSyntaxToken(greenToken, this, this.GetChildPosition(1), this.GetChildIndex(1)); 
+			}
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
@@ -129,14 +138,20 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	    public MainSyntax WithNamespaceDeclaration(NamespaceDeclarationSyntax namespaceDeclaration)
 		{
-			return this.Update(NamespaceDeclaration);
+			return this.Update(NamespaceDeclaration, this.Eof);
 		}
 	
-	    public MainSyntax Update(NamespaceDeclarationSyntax namespaceDeclaration)
+	    public MainSyntax WithEof(SyntaxToken eof)
+		{
+			return this.Update(this.NamespaceDeclaration, Eof);
+		}
+	
+	    public MainSyntax Update(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eof)
 	    {
-	        if (this.NamespaceDeclaration != namespaceDeclaration)
+	        if (this.NamespaceDeclaration != namespaceDeclaration ||
+				this.Eof != eof)
 	        {
-	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.Main(namespaceDeclaration);
+	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.Main(namespaceDeclaration, eof);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -5396,6 +5411,7 @@ namespace MetaDslx.Languages.Meta
 		public virtual void VisitMain(MainSyntax node)
 		{
 			this.Visit(node.NamespaceDeclaration);
+			this.VisitToken(node.Eof);
 		}
 		
 		public virtual void VisitName(NameSyntax node)
@@ -6111,7 +6127,8 @@ namespace MetaDslx.Languages.Meta
 		public virtual SyntaxNode VisitMain(MainSyntax node)
 		{
 		    var namespaceDeclaration = (NamespaceDeclarationSyntax)this.Visit(node.NamespaceDeclaration);
-			return node.Update(namespaceDeclaration);
+		    var eof = this.VisitToken(node.Eof);
+			return node.Update(namespaceDeclaration, eof);
 		}
 		
 		public virtual SyntaxNode VisitName(NameSyntax node)
@@ -6961,10 +6978,12 @@ namespace MetaDslx.Languages.Meta
 	        return (SyntaxToken)MetaLanguage.Instance.InternalSyntaxFactory.LComment(text, value).CreateRed();
 	    }
 		
-		public MainSyntax Main(NamespaceDeclarationSyntax namespaceDeclaration)
+		public MainSyntax Main(NamespaceDeclarationSyntax namespaceDeclaration, SyntaxToken eof)
 		{
 		    if (namespaceDeclaration == null) throw new ArgumentNullException(nameof(namespaceDeclaration));
-		    return (MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Main((Syntax.InternalSyntax.NamespaceDeclarationGreen)namespaceDeclaration.Green).CreateRed();
+		    if (eof == null) throw new ArgumentNullException(nameof(eof));
+		    if (eof.RawKind != (int)MetaSyntaxKind.Eof) throw new ArgumentException(nameof(eof));
+		    return (MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Main((Syntax.InternalSyntax.NamespaceDeclarationGreen)namespaceDeclaration.Green, (InternalSyntaxToken)eof.Green).CreateRed();
 		}
 		
 		public NameSyntax Name(IdentifierSyntax identifier)

@@ -87,7 +87,8 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					namespaceDeclaration = (NamespaceDeclarationGreen)this.Visit(namespaceDeclarationContext);
 				}
-				return this.factory.Main(namespaceDeclaration, true);
+				InternalSyntaxToken eof = (InternalSyntaxToken)this.VisitTerminal(context.Eof());
+				return this.factory.Main(namespaceDeclaration, eof, true);
 			}
 			
 			public override GreenNode VisitName(MetaParser.NameContext context)

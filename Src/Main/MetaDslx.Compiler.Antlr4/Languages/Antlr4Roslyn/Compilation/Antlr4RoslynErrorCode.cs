@@ -25,6 +25,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public static readonly Antlr4RoslynErrorCode INF_Antlr4Info = new Antlr4RoslynErrorCode(13, DiagnosticSeverity.Info, 0, "{0}");
         public static readonly Antlr4RoslynErrorCode ERR_Antlr4TimeoutError = new Antlr4RoslynErrorCode(14, DiagnosticSeverity.Error, 0, "ANTLR4 timed out after 30 seconds. Please, try compiling again. ({0})");
         public static readonly Antlr4RoslynErrorCode ERR_Antlr4CallError = new Antlr4RoslynErrorCode(15, DiagnosticSeverity.Error, 0, "Error calling ANTLR4: {0} ({1})");
+        public static readonly Antlr4RoslynErrorCode ERR_MainRuleMustEndWithEof = new Antlr4RoslynErrorCode(16, DiagnosticSeverity.Error, 0, "The first rule (main rule) must end with EOF.");
 
         public Antlr4RoslynErrorCode(int id, DiagnosticSeverity defaultSeverity, int warningLevel, string defaultMessage) 
             : base(Antlr4RoslynCategory, id, defaultSeverity, warningLevel, defaultMessage)

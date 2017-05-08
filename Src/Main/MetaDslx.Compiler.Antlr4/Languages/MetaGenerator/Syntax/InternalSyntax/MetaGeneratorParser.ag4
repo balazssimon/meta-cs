@@ -7,7 +7,7 @@ options
 	generateLanguageService=true;
 }
 
-main : namespaceDeclaration generatorDeclaration usingDeclaration* configDeclaration? methodDeclaration*;
+main : namespaceDeclaration generatorDeclaration usingDeclaration* configDeclaration? methodDeclaration* EOF;
 
 namespaceDeclaration : KNamespace qualifiedName TSemicolon;
 

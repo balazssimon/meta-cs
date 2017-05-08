@@ -11,7 +11,7 @@ using MetaDslx.Core;
 }
 
                     
-main:                    namespaceDeclaration;
+main:                    namespaceDeclaration EOF;
 
      
 name : identifier;

@@ -249,7 +249,7 @@ namespace MetaDslx.Languages.Meta.Syntax
             private readonly MainSyntax _node;
             public DummySyntaxTree()
             {
-                _node = new MainSyntax(MetaLanguage.Instance.InternalSyntaxFactory.Main(null, true), this, 0);
+                _node = new MainSyntax(MetaLanguage.Instance.InternalSyntaxFactory.Main(null, null, true), this, 0);
             }
             public override string ToString()
             {

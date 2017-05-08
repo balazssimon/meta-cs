@@ -65,7 +65,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
                 lastTriviaToken = i;
                 --i;
             }
-            if (lastNewLine < 0) return lastTriviaToken;
+            if (lastNewLine < 0 || previousToken == null) return lastTriviaToken;
             else return lastTriviaTokenBeforeNewLine;
         }
 

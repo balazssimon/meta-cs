@@ -67,6 +67,16 @@ namespace MetaDslx.TempConsole
                     );
                 //*/
                 /*
+                Program.CompileAntlr4Roslyn(@"..\..\Expression", @"..\..\Expression", "expressionLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
+                Program.CompileAntlr4Roslyn(@"..\..\Expression", @"..\..\Expression", "expressionParser.ag4", "MetaDslx.Languages.Antlr4Roslyn");
+                */
+                /*
+                CompileMeta(
+                    @"..\..\Expression\Expression.mm",
+                    @"..\..\Expression\Expression.cs"
+                    );
+                */
+                /*
                 Console.WriteLine("----");
                 Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
                 GenerateLanguageService(
@@ -181,7 +191,7 @@ namespace MetaDslx.TempConsole
                 }
                 //*/
                 //*/
-                CompileSoal(@"..\..\HelloWorld.soal");
+                //CompileSoal(@"..\..\HelloWorld.soal");
                 //*/
             }
             /*catch (System.Exception ex)

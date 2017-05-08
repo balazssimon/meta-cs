@@ -241,3 +241,5 @@ FakesAssemblies/
 /Src/Main/MetaDslx.Core/Languages/Meta/Symbols/ImmutableMetaModel1.cs
 /Src/Main/MetaDslx.Core/Languages/Meta/Symbols/ImmutableMetaModel0.cs
 /Install/MetaDslx-v0.8-alpha.zip
+/Src/Test/MetaDslx.TempConsole/Expression
+/Install/MetaDslx-v0.8.1-alpha.zip

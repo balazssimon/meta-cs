@@ -288,7 +288,7 @@ namespace MetaDslx.Core
 
         internal protected override object[] CreateRedValues()
         {
-            return lazy().ToArray();
+            return lazy()?.ToArray() ?? EmptyCollections.ObjectArray;
         }
     }
 

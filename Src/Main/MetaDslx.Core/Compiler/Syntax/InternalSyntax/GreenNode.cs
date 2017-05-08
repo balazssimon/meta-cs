@@ -269,16 +269,14 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public virtual int GetLeadingTriviaWidth()
         {
-            return this.FullWidth != 0 ?
-                this.GetFirstTerminal().GetLeadingTriviaWidth() :
-                0;
+            if (this.FullWidth == 0) return 0;
+            return this.GetFirstTerminal()?.GetLeadingTriviaWidth() ?? 0;
         }
 
         public virtual int GetTrailingTriviaWidth()
         {
-            return this.FullWidth != 0 ?
-                this.GetLastTerminal().GetTrailingTriviaWidth() :
-                0;
+            if (this.FullWidth == 0) return 0;
+            return this.GetLastTerminal()?.GetTrailingTriviaWidth() ?? 0;
         }
 
         public bool HasLeadingTrivia

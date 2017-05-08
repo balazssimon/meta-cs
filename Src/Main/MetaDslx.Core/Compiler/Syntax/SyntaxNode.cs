@@ -394,7 +394,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         public SyntaxTriviaList GetLeadingTrivia()
         {
-            return GetFirstToken(includeZeroWidth: true).LeadingTrivia;
+            return GetFirstToken(includeZeroWidth: true)?.LeadingTrivia;
         }
 
         /// <summary>
@@ -403,7 +403,7 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         public SyntaxTriviaList GetTrailingTrivia()
         {
-            return GetLastToken(includeZeroWidth: true).TrailingTrivia;
+            return GetLastToken(includeZeroWidth: true)?.TrailingTrivia;
         }
 
         /// <summary>
