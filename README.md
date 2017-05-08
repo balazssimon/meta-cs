@@ -28,13 +28,13 @@ The MetaDslx plugin requires the following prerequisites:
 Installation steps:
 
 1. Extract the **MetaDslx-v*.zip** file and make sure that the **GAC_DIR** environment variable in the install batch files point to the correct location of the .NET tools directory.
-2. Run **install64.bat** on 64-bit systems, or **install32.bat** on 32-bit systems to install the MetaDslx DLLs to the GAC.
+2. Run **install64.bat** on 64-bit systems, or **install32.bat** on 32-bit systems from an **admin** command prompt to install the MetaDslx DLLs to the GAC.
 3. Run the **MetaDslx.VisualStudio.vsix** to install the Visual Studio 2015 plugin.
 
 ### Uninstallation
 
 1. In Visual Studio open the **Tools / Extensions and Updates...** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
-2. Run **uninstall64.bat** on 64-bit systems, or **uninstall32.bat** on 32-bit systems to remove the MetaDslx DLLs from the GAC.
+2. Run **uninstall64.bat** on 64-bit systems, or **uninstall32.bat** on 32-bit systems from an **admin** command prompt to remove the MetaDslx DLLs from the GAC.
 
 ## Instructions for running an application with your own DSL depending on the MetaDslx framework
 
@@ -57,7 +57,7 @@ Building the MetaDslx framework requires Visual Studio 2015 and the Visual Studi
 Installation steps:
 
 1. Extract the **MetaDslx-v*.zip** file and make sure that the **GAC_DIR** environment variable in the install batch files point to the correct location of the .NET tools directory.
-2. Run **install64antlr.bat** on 64-bit systems, or **install32antlr.bat** on 32-bit systems to install the ANTLR4 runtime DLL to the GAC.
+2. Run **install64antlr.bat** on 64-bit systems, or **install32antlr.bat** on 32-bit systems from an **admin** command prompt to install the ANTLR4 runtime DLL to the GAC.
 3. Run the **MetaDslx.VisualStudio.vsix** to install the Visual Studio 2015 plugin.
 4. Check out the source from GitHub.
 5. Open the **Src\MetaDslx.sln** in Visual Studio.
@@ -69,4 +69,4 @@ Installation steps:
 ### Uninstallation
 
 1. In Visual Studio open the **Tools / Extensions and Updates...** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
-2. Run **uninstall64antlr.bat** on 64-bit systems, or **uninstall32antlr.bat** on 32-bit systems to remove the ANTLR4 runtime DLL from the GAC.
+2. Run **uninstall64antlr.bat** on 64-bit systems, or **uninstall32antlr.bat** on 32-bit systems from an **admin** command prompt to remove the ANTLR4 runtime DLL from the GAC.
