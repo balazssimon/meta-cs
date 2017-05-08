@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="MetaDslx.VisualStudio.Balazs Simon.66590322-fee5-42b2-a52a-a674780b8ef6" Version="0.8.1" Language="en-US" Publisher="Balazs Simon" />
+    <Identity Id="MetaDslx.VisualStudio.Balazs Simon.66590322-fee5-42b2-a52a-a674780b8ef6" Version="0.8.2" Language="en-US" Publisher="Balazs Simon" />
     <DisplayName>MetaDslx Extension for Visual Studio</DisplayName>
     <Description xml:space="preserve">A metamodel, compiler and template-based code generator framework for Visual Studio</Description>
   </Metadata>
