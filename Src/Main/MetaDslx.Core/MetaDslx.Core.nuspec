@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Balazs Simon</authors>
+    <owners>Balazs Simon</owners>
+    <licenseUrl>https://github.com/balazssimon/meta-cs/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/balazssimon/meta-cs</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MetaDslx is a metamodeling framework for .NET. It can be used to create custom Domain Specific Languages based on the Roslyn compiler and ANTLR4.</description>
+    <releaseNotes>Library ported to .NET Standard 2.0 and nuget.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>compiler roslyn meta modeling code generator</tags>
+  </metadata>
+</package>
