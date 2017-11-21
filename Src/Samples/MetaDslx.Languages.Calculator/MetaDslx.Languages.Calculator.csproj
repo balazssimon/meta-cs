@@ -3,4 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Main\MetaDslx.Compiler.Antlr4\MetaDslx.Compiler.Antlr4.csproj" />
+  </ItemGroup>
 </Project>

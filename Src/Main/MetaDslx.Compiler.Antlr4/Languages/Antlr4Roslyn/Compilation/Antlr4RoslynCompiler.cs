@@ -12,7 +12,6 @@ using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using MetaDslx.Compiler.MetaModel;
 using System.Diagnostics;
-using MetaDslx.Properties;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Generator;
 

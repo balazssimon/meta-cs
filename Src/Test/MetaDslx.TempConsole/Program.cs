@@ -8,9 +8,6 @@ using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.MetaGenerator.Compilation;
-using MetaDslx.Languages.Soal;
-using MetaDslx.Languages.Soal.Symbols;
-using MetaDslx.Languages.Soal.Syntax;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -496,7 +493,7 @@ namespace MetaDslx.TempConsole
             }
         }
 
-
+        /*
         private static void CompileSoal(string fileName)
         {
             string source;
@@ -523,6 +520,6 @@ namespace MetaDslx.TempConsole
                     Console.WriteLine(msg);
                 }
             }
-        }
+        }*/
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace MetaDslx.Core.Immutable.Test
 {
-    [TestClass]
     public class ImmutableMetaModelTest
     {
-        [TestMethod]
+        [Fact]
         public void TestHusbandWifeStatic1()
         {
             MutableModel model = new MutableModel();
@@ -18,55 +17,55 @@ namespace MetaDslx.Core.Immutable.Test
             h1.Wife = w1;
             w1.Name = "w1";
             h2.Name = "h2";
-            Assert.AreEqual(w1, h1.Wife);
-            Assert.AreEqual(h1, w1.Husband);
-            Assert.AreEqual("h1", h1.Name);
-            Assert.AreEqual("w1", w1.Name);
-            Assert.AreEqual("w1", h1.Wife.Name);
-            Assert.AreEqual("h1", w1.Husband.Name);
+            Assert.Equal(w1, h1.Wife);
+            Assert.Equal(h1, w1.Husband);
+            Assert.Equal("h1", h1.Name);
+            Assert.Equal("w1", w1.Name);
+            Assert.Equal("w1", h1.Wife.Name);
+            Assert.Equal("h1", w1.Husband.Name);
             w1.Husband = h2;
-            Assert.AreEqual(null, h1.Wife);
-            Assert.AreEqual(w1, h2.Wife);
-            Assert.AreEqual(h2, w1.Husband);
-            Assert.AreEqual("h1", h1.Name);
-            Assert.AreEqual("w1", w1.Name);
-            Assert.AreEqual("w1", h2.Wife.Name);
-            Assert.AreEqual("h2", w1.Husband.Name);
+            Assert.Null(h1.Wife);
+            Assert.Equal(w1, h2.Wife);
+            Assert.Equal(h2, w1.Husband);
+            Assert.Equal("h1", h1.Name);
+            Assert.Equal("w1", w1.Name);
+            Assert.Equal("w1", h2.Wife.Name);
+            Assert.Equal("h2", w1.Husband.Name);
             w1.Husband = h1;
-            Assert.AreEqual(w1, h1.Wife);
-            Assert.AreEqual(null, h2.Wife);
-            Assert.AreEqual(h1, w1.Husband);
-            Assert.AreEqual("h1", h1.Name);
-            Assert.AreEqual("w1", w1.Name);
-            Assert.AreEqual("w1", h1.Wife.Name);
-            Assert.AreEqual("h1", w1.Husband.Name);
+            Assert.Equal(w1, h1.Wife);
+            Assert.Null(h2.Wife);
+            Assert.Equal(h1, w1.Husband);
+            Assert.Equal("h1", h1.Name);
+            Assert.Equal("w1", w1.Name);
+            Assert.Equal("w1", h1.Wife.Name);
+            Assert.Equal("h1", w1.Husband.Name);
 
             ImmutableModel imodel = model.ToImmutable();
             ImmutableHusband ih1 = (ImmutableHusband)imodel.GetSymbol(h1);
             ImmutableWife iw1 = (ImmutableWife)imodel.GetSymbol(w1);
-            Assert.AreEqual(iw1, ih1.Wife);
-            Assert.AreEqual(ih1, iw1.Husband);
-            Assert.AreEqual("h1", ih1.Name);
-            Assert.AreEqual("w1", iw1.Name);
-            Assert.AreEqual("w1", ih1.Wife.Name);
-            Assert.AreEqual("h1", iw1.Husband.Name);
+            Assert.Equal(iw1, ih1.Wife);
+            Assert.Equal(ih1, iw1.Husband);
+            Assert.Equal("h1", ih1.Name);
+            Assert.Equal("w1", iw1.Name);
+            Assert.Equal("w1", ih1.Wife.Name);
+            Assert.Equal("h1", iw1.Husband.Name);
 
-            Assert.AreEqual(iw1, w1.ToImmutable());
-            Assert.AreEqual(ih1, h1.ToImmutable());
+            Assert.Equal(iw1, w1.ToImmutable());
+            Assert.Equal(ih1, h1.ToImmutable());
             ih1 = h1.ToImmutable();
             iw1 = w1.ToImmutable();
-            Assert.AreEqual(iw1, ih1.Wife);
-            Assert.AreEqual(ih1, iw1.Husband);
-            Assert.AreEqual("h1", ih1.Name);
-            Assert.AreEqual("w1", iw1.Name);
-            Assert.AreEqual("w1", ih1.Wife.Name);
-            Assert.AreEqual("h1", iw1.Husband.Name);
+            Assert.Equal(iw1, ih1.Wife);
+            Assert.Equal(ih1, iw1.Husband);
+            Assert.Equal("h1", ih1.Name);
+            Assert.Equal("w1", iw1.Name);
+            Assert.Equal("w1", ih1.Wife.Name);
+            Assert.Equal("h1", iw1.Husband.Name);
 
-            Assert.AreEqual(w1, iw1.ToMutable());
-            Assert.AreEqual(h1, ih1.ToMutable());
+            Assert.Equal(w1, iw1.ToMutable());
+            Assert.Equal(h1, ih1.ToMutable());
         }
 
-        [TestMethod]
+        [Fact]
         public void TestListParentChildStatic1()
         {
             MutableModel model = new MutableModel();
@@ -76,19 +75,19 @@ namespace MetaDslx.Core.Immutable.Test
             ListChild c2 = f.ListChild();
             c1.Parent = p1;
             c2.Parent = p1;
-            Assert.AreEqual(p1, c1.Parent);
-            Assert.AreEqual(p1, c2.Parent);
-            Assert.AreEqual(p1, c1.MParent);
-            Assert.AreEqual(p1, c2.MParent);
-            Assert.AreEqual(2, p1.Children.Count);
-            Assert.AreEqual(c1, p1.Children[0]);
-            Assert.AreEqual(c2, p1.Children[1]);
-            Assert.AreEqual(2, p1.MChildren.Count);
-            Assert.AreEqual(c1, p1.MChildren[0]);
-            Assert.AreEqual(c2, p1.MChildren[1]);
+            Assert.Equal(p1, c1.Parent);
+            Assert.Equal(p1, c2.Parent);
+            Assert.Equal(p1, c1.MParent);
+            Assert.Equal(p1, c2.MParent);
+            Assert.Equal(2, p1.Children.Count);
+            Assert.Equal(c1, p1.Children[0]);
+            Assert.Equal(c2, p1.Children[1]);
+            Assert.Equal(2, p1.MChildren.Count);
+            Assert.Equal(c1, p1.MChildren[0]);
+            Assert.Equal(c2, p1.MChildren[1]);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestListParentChildStatic2()
         {
             MutableModel model = new MutableModel();
@@ -98,28 +97,28 @@ namespace MetaDslx.Core.Immutable.Test
             ListChild c2 = f.ListChild();
             c1.Parent = p1;
             c2.Parent = p1;
-            Assert.AreEqual(p1, c1.Parent);
-            Assert.AreEqual(p1, c2.Parent);
-            Assert.AreEqual(p1, c1.MParent);
-            Assert.AreEqual(p1, c2.MParent);
-            Assert.AreEqual(2, p1.Children.Count);
-            Assert.AreEqual(c1, p1.Children[0]);
-            Assert.AreEqual(c2, p1.Children[1]);
-            Assert.AreEqual(2, p1.MChildren.Count);
-            Assert.AreEqual(c1, p1.MChildren[0]);
-            Assert.AreEqual(c2, p1.MChildren[1]);
+            Assert.Equal(p1, c1.Parent);
+            Assert.Equal(p1, c2.Parent);
+            Assert.Equal(p1, c1.MParent);
+            Assert.Equal(p1, c2.MParent);
+            Assert.Equal(2, p1.Children.Count);
+            Assert.Equal(c1, p1.Children[0]);
+            Assert.Equal(c2, p1.Children[1]);
+            Assert.Equal(2, p1.MChildren.Count);
+            Assert.Equal(c1, p1.MChildren[0]);
+            Assert.Equal(c2, p1.MChildren[1]);
             c1.Parent = null;
-            Assert.AreEqual(null, c1.Parent);
-            Assert.AreEqual(p1, c2.Parent);
-            Assert.AreEqual(null, c1.MParent);
-            Assert.AreEqual(p1, c2.MParent);
-            Assert.AreEqual(1, p1.Children.Count);
-            Assert.AreEqual(c2, p1.Children[0]);
-            Assert.AreEqual(1, p1.MChildren.Count);
-            Assert.AreEqual(c2, p1.MChildren[0]);
+            Assert.Null(c1.Parent);
+            Assert.Equal(p1, c2.Parent);
+            Assert.Null(c1.MParent);
+            Assert.Equal(p1, c2.MParent);
+            Assert.Single(p1.Children);
+            Assert.Equal(c2, p1.Children[0]);
+            Assert.Single(p1.MChildren);
+            Assert.Equal(c2, p1.MChildren[0]);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestListChildParentStatic1()
         {
             MutableModel model = new MutableModel();
@@ -129,19 +128,19 @@ namespace MetaDslx.Core.Immutable.Test
             ListChild c2 = f.ListChild();
             p1.Children.Add(c1);
             p1.Children.Add(c2);
-            Assert.AreEqual(p1, c1.Parent);
-            Assert.AreEqual(p1, c2.Parent);
-            Assert.AreEqual(p1, c1.MParent);
-            Assert.AreEqual(p1, c2.MParent);
-            Assert.AreEqual(2, p1.Children.Count);
-            Assert.AreEqual(c1, p1.Children[0]);
-            Assert.AreEqual(c2, p1.Children[1]);
-            Assert.AreEqual(2, p1.MChildren.Count);
-            Assert.AreEqual(c1, p1.MChildren[0]);
-            Assert.AreEqual(c2, p1.MChildren[1]);
+            Assert.Equal(p1, c1.Parent);
+            Assert.Equal(p1, c2.Parent);
+            Assert.Equal(p1, c1.MParent);
+            Assert.Equal(p1, c2.MParent);
+            Assert.Equal(2, p1.Children.Count);
+            Assert.Equal(c1, p1.Children[0]);
+            Assert.Equal(c2, p1.Children[1]);
+            Assert.Equal(2, p1.MChildren.Count);
+            Assert.Equal(c1, p1.MChildren[0]);
+            Assert.Equal(c2, p1.MChildren[1]);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestListChildParentStatic2()
         {
             MutableModel model = new MutableModel();
@@ -151,44 +150,44 @@ namespace MetaDslx.Core.Immutable.Test
             ListChild c2 = f.ListChild();
             p1.Children.Add(c1);
             p1.Children.Add(c2);
-            Assert.AreEqual(p1, c1.Parent);
-            Assert.AreEqual(p1, c2.Parent);
-            Assert.AreEqual(p1, c1.MParent);
-            Assert.AreEqual(p1, c2.MParent);
-            Assert.AreEqual(2, p1.Children.Count);
-            Assert.AreEqual(c1, p1.Children[0]);
-            Assert.AreEqual(c2, p1.Children[1]);
-            Assert.AreEqual(2, p1.MChildren.Count);
-            Assert.AreEqual(c1, p1.MChildren[0]);
-            Assert.AreEqual(c2, p1.MChildren[1]);
+            Assert.Equal(p1, c1.Parent);
+            Assert.Equal(p1, c2.Parent);
+            Assert.Equal(p1, c1.MParent);
+            Assert.Equal(p1, c2.MParent);
+            Assert.Equal(2, p1.Children.Count);
+            Assert.Equal(c1, p1.Children[0]);
+            Assert.Equal(c2, p1.Children[1]);
+            Assert.Equal(2, p1.MChildren.Count);
+            Assert.Equal(c1, p1.MChildren[0]);
+            Assert.Equal(c2, p1.MChildren[1]);
             p1.Children.Remove(c1);
-            Assert.AreEqual(null, c1.Parent);
-            Assert.AreEqual(p1, c2.Parent);
-            Assert.AreEqual(null, c1.MParent);
-            Assert.AreEqual(p1, c2.MParent);
-            Assert.AreEqual(1, p1.Children.Count);
-            Assert.AreEqual(c2, p1.Children[0]);
-            Assert.AreEqual(1, p1.MChildren.Count);
-            Assert.AreEqual(c2, p1.MChildren[0]);
+            Assert.Null(c1.Parent);
+            Assert.Equal(p1, c2.Parent);
+            Assert.Null(c1.MParent);
+            Assert.Equal(p1, c2.MParent);
+            Assert.Single(p1.Children);
+            Assert.Equal(c2, p1.Children[0]);
+            Assert.Single(p1.MChildren);
+            Assert.Equal(c2, p1.MChildren[0]);
             p1.Children.Add(c1);
-            Assert.AreEqual(p1, c1.Parent);
-            Assert.AreEqual(p1, c2.Parent);
-            Assert.AreEqual(p1, c1.MParent);
-            Assert.AreEqual(p1, c2.MParent);
-            Assert.AreEqual(2, p1.Children.Count);
-            Assert.AreEqual(c1, p1.Children[1]);
-            Assert.AreEqual(c2, p1.Children[0]);
-            Assert.AreEqual(2, p1.MChildren.Count);
-            Assert.AreEqual(c1, p1.MChildren[1]);
-            Assert.AreEqual(c2, p1.MChildren[0]);
+            Assert.Equal(p1, c1.Parent);
+            Assert.Equal(p1, c2.Parent);
+            Assert.Equal(p1, c1.MParent);
+            Assert.Equal(p1, c2.MParent);
+            Assert.Equal(2, p1.Children.Count);
+            Assert.Equal(c1, p1.Children[1]);
+            Assert.Equal(c2, p1.Children[0]);
+            Assert.Equal(2, p1.MChildren.Count);
+            Assert.Equal(c1, p1.MChildren[1]);
+            Assert.Equal(c2, p1.MChildren[0]);
             c1.Parent = null;
             p1.Children.Remove(c2);
-            Assert.AreEqual(null, c1.Parent);
-            Assert.AreEqual(null, c2.Parent);
-            Assert.AreEqual(null, c1.MParent);
-            Assert.AreEqual(null, c2.MParent);
-            Assert.AreEqual(0, p1.Children.Count);
-            Assert.AreEqual(0, p1.MChildren.Count);
+            Assert.Null(c1.Parent);
+            Assert.Null(c2.Parent);
+            Assert.Null(c1.MParent);
+            Assert.Null(c2.MParent);
+            Assert.Empty(p1.Children);
+            Assert.Empty(p1.MChildren);
         }
     }
 }

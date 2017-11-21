@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Parser
 {
@@ -188,12 +189,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
             GreenNode result = this.factory.MissingToken(kind);
             return this.AddDiagnostic(result, node.Symbol.TokenIndex);
         }
-        public void SyntaxError(IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+
+        public void SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
             this.Antlr4Errors[offendingSymbol] = msg;
         }
 
-        public void SyntaxError(IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        public void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
             if (offendingSymbol != null)
             {
