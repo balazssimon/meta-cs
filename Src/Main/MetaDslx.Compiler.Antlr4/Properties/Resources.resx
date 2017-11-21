@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Antlr4JarName" xml:space="preserve">
-    <value>antlr-4.6-complete.jar</value>
+    <value>antlr-4.7-complete.jar</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="antlr_4_6_complete" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\antlr-4.6-complete.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="antlr_4_7_complete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\antlr-4.7-complete.jar;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

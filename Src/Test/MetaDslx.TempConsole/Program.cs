@@ -59,61 +59,72 @@ namespace MetaDslx.TempConsole
                 /*
                 Console.WriteLine("----");
                 CompileGenerator(
-                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen",
-                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Generator\ImmutableMetaModelGenerator.cs"
+                    @"..\..\Main\MetaDslx.Core\Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen",
+                    @"..\..\Main\MetaDslx.Core\Languages\Meta\Generator\ImmutableMetaModelGenerator.cs"
                     );
                 //*/
                 /*
-                Program.CompileAntlr4Roslyn(@"..\..\Expression", @"..\..\Expression", "expressionLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
-                Program.CompileAntlr4Roslyn(@"..\..\Expression", @"..\..\Expression", "expressionParser.ag4", "MetaDslx.Languages.Antlr4Roslyn");
+                Program.CompileAntlr4Roslyn(@"Expression", @"Expression", "expressionLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
+                Program.CompileAntlr4Roslyn(@"Expression", @"Expression", "expressionParser.ag4", "MetaDslx.Languages.Antlr4Roslyn");
                 */
                 /*
                 CompileMeta(
-                    @"..\..\Expression\Expression.mm",
-                    @"..\..\Expression\Expression.cs"
+                    @"Expression\Expression.mm",
+                    @"Expression\Expression.cs"
                     );
                 */
                 /*
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynParser.ag4", "MetaDslx.Languages.Antlr4Roslyn");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator", "MetaGeneratorLexer.ag4", "MetaDslx.Languages.MetaGenerator");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator", "MetaGeneratorParser.ag4", "MetaDslx.Languages.MetaGenerator");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaParser.ag4", "MetaDslx.Languages.Meta");
+                //*/
+                /*
                 Console.WriteLine("----");
-                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
                 GenerateLanguageService(
                     "Antlr4Roslyn",
                     "MetaDslx.Languages.Antlr4Roslyn",
-                    @"..\..\..\..\Main\MetaDslx.VisualStudio\Antlr4Roslyn",
+                    @"..\..\Main\MetaDslx.VisualStudio\Antlr4Roslyn",
                     "Antlr4RoslynLanguageService.cs",
                     false,
                     true);
-                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator", "MetaGeneratorLexer.ag4", "MetaDslx.Languages.MetaGenerator");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator", "MetaGeneratorLexer.ag4", "MetaDslx.Languages.MetaGenerator");
                 GenerateLanguageService(
                     "MetaGenerator",
                     "MetaDslx.Languages.MetaGenerator",
-                    @"..\..\..\..\Main\MetaDslx.VisualStudio\MetaGenerator",
+                    @"..\..\Main\MetaDslx.VisualStudio\MetaGenerator",
                     "MetaGeneratorLanguageService.cs",
                     false,
                     false);
-                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
                 GenerateLanguageService(
                     "Meta",
                     "MetaDslx.Languages.Meta",
-                    @"..\..\..\..\Main\MetaDslx.VisualStudio\Meta",
+                    @"..\..\Main\MetaDslx.VisualStudio\Meta",
                     "MetaLanguageService.cs",
                     true,
                     false);
                 //*/
                 /*
-                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4", "Antlr4Lexer.ag4", "MetaDslx.Languages.Antlr4");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.VisualStudio\Soal\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.VisualStudio\Soal", "SoalLexer.ag4", "MetaDslx.Languages.Soal");
+                //*/
+                /*
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4", "Antlr4Lexer.ag4", "MetaDslx.Languages.Antlr4");
                 GenerateLanguageService(
                     "Antlr4",
                     "MetaDslx.Languages.Antlr4",
-                    @"..\..\..\..\Main\MetaDslx.VisualStudio\Antlr4Roslyn",
+                    @"..\..\Main\MetaDslx.VisualStudio\Antlr4Roslyn",
                     "Antlr4RoslynLanguageService.cs",
                     false,
                     true);
-                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
                 GenerateLanguageService(
                     "Meta",
                     "MetaDslx.Languages.Meta",
-                    @"..\..\..\..\Main\MetaDslx.VisualStudio\Meta",
+                    @"..\..\Main\MetaDslx.VisualStudio\Meta",
                     "MetaLanguageService.cs",
                     true,
                     false);
@@ -133,34 +144,34 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine(node0);
                 //*/
                 /*
-                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelLexer.ag4", "MetaDslx.Languages.Meta");
-                Program.CompileAntlr4Roslyn(@"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelParser.ag4", "MetaDslx.Languages.Meta");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelLexer.ag4", "MetaDslx.Languages.Meta");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelParser.ag4", "MetaDslx.Languages.Meta");
                 //*/
                 /*
-                Program.CompileAntlr4Roslyn("../../../../Samples/MetaDslx.Languages.Soal/Syntax/InternalSyntax", "../../../../Samples/MetaDslx.Languages.Soal", "SoalLexer.ag4", "MetaDslx.Languages.Soal");
-                Program.CompileAntlr4Roslyn("../../../../Samples/MetaDslx.Languages.Soal/Syntax/InternalSyntax", "../../../../Samples/MetaDslx.Languages.Soal", "SoalParser.ag4", "MetaDslx.Languages.Soal");
+                Program.CompileAntlr4Roslyn("../../Samples/MetaDslx.Languages.Soal/Syntax/InternalSyntax", "../../Samples/MetaDslx.Languages.Soal", "SoalLexer.ag4", "MetaDslx.Languages.Soal");
+                Program.CompileAntlr4Roslyn("../../Samples/MetaDslx.Languages.Soal/Syntax/InternalSyntax", "../../Samples/MetaDslx.Languages.Soal", "SoalParser.ag4", "MetaDslx.Languages.Soal");
                 //*/
                 /*
-                Program.CompileAntlr4Roslyn("../../../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
-                Program.CompileAntlr4Roslyn("../../../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
+                Program.CompileAntlr4Roslyn("../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
+                Program.CompileAntlr4Roslyn("../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
                 //*/
                 /*
                 Console.WriteLine("----");
                 CompileMeta(
-                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.mm",
-                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.cs"
+                    @"../../Samples/MetaDslx.Languages.Soal\Soal.mm",
+                    @"../../Samples/MetaDslx.Languages.Soal\Soal.cs"
                     );
                 //*/
                 /*
                 Console.WriteLine("----");
                 CompileMeta(
-                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm",
-                    @"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel1.cs"
+                    @"..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm",
+                    @"..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel1.cs"
                     );
                 //*/
                 /*
                 ImmutableMetaModelGenerator generator = new ImmutableMetaModelGenerator(MetaInstance.Model.Symbols);
-                using (StreamWriter writer = new StreamWriter(@"..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel3.cs"))
+                using (StreamWriter writer = new StreamWriter(@"..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel3.cs"))
                 {
                     writer.WriteLine(generator.Generate());
                 }
@@ -168,12 +179,12 @@ namespace MetaDslx.TempConsole
                 /*
                 Console.WriteLine("----");
                 CompileMeta(
-                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.mm",
-                    @"../../../../Samples/MetaDslx.Languages.Soal\Soal.cs"
+                    @"../../Samples/MetaDslx.Languages.Soal\Soal.mm",
+                    @"../../Samples/MetaDslx.Languages.Soal\Soal.cs"
                     );
                 //*/
                 /*
-                string fileName = "../../Calc1.txt";
+                string fileName = "Calc1.txt";
                 string source = null;
                 using (StreamReader reader = new StreamReader(fileName))
                 {
@@ -188,7 +199,7 @@ namespace MetaDslx.TempConsole
                 }
                 //*/
                 //*/
-                //CompileSoal(@"..\..\HelloWorld.soal");
+                //CompileSoal(@"HelloWorld.soal");
                 //*/
             }
             /*catch (System.Exception ex)

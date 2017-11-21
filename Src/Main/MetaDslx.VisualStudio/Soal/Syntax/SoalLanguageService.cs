@@ -18,7 +18,7 @@ using Microsoft.VisualStudio.Shell;
 
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
 
-namespace MetaDslx.VisualStudio.Soal.VisualStudio
+namespace MetaDslx.Languages.Soal.VisualStudio
 {
     public class SoalLanguageAuthoringScope : AuthoringScope
     {
@@ -258,8 +258,8 @@ namespace MetaDslx.VisualStudio.Soal.VisualStudio
     {
         private int currentOffset;
         private string currentLine;
-        private MetaDslx.VisualStudio.Soal.Syntax.InternalSyntax.SoalLexer lexer;
-        private MetaDslx.VisualStudio.Soal.Syntax.SoalSyntaxFacts syntaxFacts;
+        private MetaDslx.Languages.Soal.Syntax.InternalSyntax.SoalLexer lexer;
+        private MetaDslx.Languages.Soal.Syntax.SoalSyntaxFacts syntaxFacts;
         private Dictionary<LanguageScannerState, int> inverseStates;
         private Dictionary<int, LanguageScannerState> states;
         private int lastState;
@@ -268,15 +268,15 @@ namespace MetaDslx.VisualStudio.Soal.VisualStudio
             this.inverseStates = new Dictionary<LanguageScannerState, int>();
             this.states = new Dictionary<int, LanguageScannerState>();
             this.lastState = 0;
-            this.syntaxFacts = MetaDslx.VisualStudio.Soal.Syntax.SoalSyntaxFacts.Instance;
+            this.syntaxFacts = MetaDslx.Languages.Soal.Syntax.SoalSyntaxFacts.Instance;
         }
-        private void LoadState(int state, MetaDslx.VisualStudio.Soal.Syntax.InternalSyntax.SoalLexer lexer)
+        private void LoadState(int state, MetaDslx.Languages.Soal.Syntax.InternalSyntax.SoalLexer lexer)
         {
             LanguageScannerState value = default(LanguageScannerState);
             this.states.TryGetValue(state, out value);
             value.Restore(lexer);
         }
-        private int SaveState(MetaDslx.VisualStudio.Soal.Syntax.InternalSyntax.SoalLexer lexer)
+        private int SaveState(MetaDslx.Languages.Soal.Syntax.InternalSyntax.SoalLexer lexer)
         {
             int result = 0;
             LanguageScannerState state = new LanguageScannerState(lexer);
@@ -294,7 +294,7 @@ namespace MetaDslx.VisualStudio.Soal.VisualStudio
             {
                 if (this.lexer == null)
                 {
-                    this.lexer = new MetaDslx.VisualStudio.Soal.Syntax.InternalSyntax.SoalLexer(new AntlrInputStream(this.currentLine + "\r\n"));
+                    this.lexer = new MetaDslx.Languages.Soal.Syntax.InternalSyntax.SoalLexer(new AntlrInputStream(this.currentLine + "\r\n"));
                 }
                 this.LoadState(state, this.lexer);
                 IToken token = this.lexer.NextToken();
@@ -348,7 +348,7 @@ namespace MetaDslx.VisualStudio.Soal.VisualStudio
         }
         internal struct LanguageScannerState
         {
-            public LanguageScannerState(MetaDslx.VisualStudio.Soal.Syntax.InternalSyntax.SoalLexer lexer)
+            public LanguageScannerState(MetaDslx.Languages.Soal.Syntax.InternalSyntax.SoalLexer lexer)
             {
                 this._mode = lexer.CurrentMode;
                 this._modeStack = lexer.ModeStack.Count > 0 ? new List<int>(lexer.ModeStack) : null;
@@ -361,7 +361,7 @@ namespace MetaDslx.VisualStudio.Soal.VisualStudio
             internal List<int> _modeStack;
             internal int _type;
             internal int _channel;
-            public void Restore(MetaDslx.VisualStudio.Soal.Syntax.InternalSyntax.SoalLexer lexer)
+            public void Restore(MetaDslx.Languages.Soal.Syntax.InternalSyntax.SoalLexer lexer)
             {
                 lexer.CurrentMode = this._mode;
                 lexer.ModeStack.Clear();
@@ -502,7 +502,7 @@ namespace MetaDslx.VisualStudio.Soal.VisualStudio
 						// Store results in the AuthoringScope object.
 						string fileName = Path.GetFileName(req.FileName);
 						string inputDir = Path.GetDirectoryName(req.FileName);
-						var compilation = new MetaDslx.VisualStudio.Soal.Compilation.SoalCompiler(req.Text, "", inputDir, null, req.FileName);
+						var compilation = new MetaDslx.Languages.Soal.Compilation.SoalCompiler(req.Text, "", inputDir, null, req.FileName);
                         compilation.Compile();
 						foreach (var diagnostic in compilation.GetDiagnostics())
 						{

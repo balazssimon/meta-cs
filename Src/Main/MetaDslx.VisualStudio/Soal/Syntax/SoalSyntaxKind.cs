@@ -12,7 +12,7 @@ using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 
-namespace MetaDslx.VisualStudio.Soal.Syntax
+namespace MetaDslx.Languages.Soal.Syntax
 {
 	public enum SoalSyntaxKind : int
 	{

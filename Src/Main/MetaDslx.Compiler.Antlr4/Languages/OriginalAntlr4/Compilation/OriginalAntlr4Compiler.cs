@@ -1,8 +1,8 @@
 ﻿using Antlr4.Runtime;
+using MetaDslx.Compiler.Antlr4.Properties;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
-using MetaDslx.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -78,9 +78,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 Antlr4Jar = Path.Combine(metaDslxDir, Resources.Antlr4JarName);
                 if (!File.Exists(Antlr4Jar))
                 {
-                    File.WriteAllBytes(Antlr4Jar, Resources.antlr_4_6_complete);
+                    File.WriteAllBytes(Antlr4Jar, Resources.antlr_4_7_complete);
                 }
-                return new FileInfo(Antlr4Jar).Length == Resources.antlr_4_6_complete.Length;
+                return new FileInfo(Antlr4Jar).Length == Resources.antlr_4_7_complete.Length;
             }
             catch (Exception ex)
             {

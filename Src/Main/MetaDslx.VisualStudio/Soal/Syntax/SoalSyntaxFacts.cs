@@ -3,7 +3,7 @@ using MetaDslx.Compiler;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Text;
 
-namespace MetaDslx.VisualStudio.Soal.Syntax
+namespace MetaDslx.Languages.Soal.Syntax
 {
 	public enum SoalTokenKind : int
 	{
