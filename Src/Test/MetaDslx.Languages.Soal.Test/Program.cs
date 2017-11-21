@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Compiler;
 using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Soal.Binding;
 using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Languages.Soal.Syntax;
@@ -18,7 +19,7 @@ namespace MetaDslx.Languages.Soal.Test
         {
             /*try
             {*/
-            string fileName = "../../SoalTest1.soal";
+            string fileName = "SoalTest1.soal";
             string source = null;
             using (StreamReader reader = new StreamReader(fileName))
             {
@@ -52,9 +53,9 @@ namespace MetaDslx.Languages.Soal.Test
             Console.WriteLine("----");
             Console.WriteLine(comp.GlobalNamespace);
 
-            NamespaceBuilder gns = (NamespaceBuilder)comp.GlobalNamespace;
-            Console.WriteLine(gns.Declarations.LazyCount);
-            foreach (var childNs in gns.Declarations)
+            MetaRootNamespaceBuilder gns = (MetaRootNamespaceBuilder)comp.GlobalNamespace;
+            Console.WriteLine(gns.Symbols.LazyCount);
+            foreach (var childNs in gns.Symbols)
             {
                 Console.WriteLine(childNs);
                 Console.WriteLine(((NamespaceBuilder)childNs).Declarations.LazyCount);
