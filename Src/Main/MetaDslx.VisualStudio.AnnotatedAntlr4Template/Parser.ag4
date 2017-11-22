@@ -1,9 +1,0 @@
-﻿parser grammar $safeitemname$;
-
-options {
-	tokenVocab=$fileinputname$Lexer;
-	generateCompiler=false;
-	ignoreRoslynRules=false;
-	generateLanguageService=false;
-}
-

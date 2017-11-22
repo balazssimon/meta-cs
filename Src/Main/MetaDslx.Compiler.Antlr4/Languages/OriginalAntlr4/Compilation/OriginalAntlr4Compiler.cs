@@ -244,12 +244,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         if (this.OutputDirectory != null)
                         {
                             this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + ".tokens");
+                            if (this.IsLexer)
+                            {
+                                this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + ".cs");
+                            }
                             if (this.IsParser)
                             {
                                 this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + "BaseVisitor.cs");
                                 this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + "BaseListener.cs");
                                 this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + "Visitor.cs");
                                 this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + "Listener.cs");
+                                this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + ".cs");
                             }
                         }
                     }

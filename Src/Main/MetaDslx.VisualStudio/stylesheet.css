@@ -48,7 +48,7 @@ h1, h2, h3, h4, h5, h6 {
 h1, h2 {
   font-family: "Segoe UI Light", "Segoe UI", Helvetica, Arial, sans-serif;
   line-height: 1;
-  margin: 0 18px;;
+  margin: 0 18px;
   padding: 0;
 }
 #header h1 {
@@ -87,7 +87,8 @@ h1, h2, h3, h4, h5, h6 {
     }
 
 #main_content h2 {
-  font-size: 1.8em;
+  font-size: 1.4em;
+  font-weight: bold;
 }
 p, ul {
     margin: 11px 18px;
@@ -112,6 +113,7 @@ ul {
 }
 #rpanel ul {
     list-style-type: none;
+    width: 300px;
 }
     #rpanel ul li {
         line-height: 1.8em;
@@ -119,4 +121,9 @@ ul {
 #rpanel {
     background: #e7e7e7;
     width: 360px;
+        float: right;
+}
+
+#rpanel div {
+  width: 300px;
 }

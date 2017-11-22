@@ -1,29 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Core.Test", "Test\MetaDslx.Core.Test\MetaDslx.Core.Test.csproj", "{31F5D0D7-2A21-4BC7-93C6-4B411698FCE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Core.Test", "Test\MetaDslx.Core.Test\MetaDslx.Core.Test.csproj", "{31F5D0D7-2A21-4BC7-93C6-4B411698FCE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Core", "Main\MetaDslx.Core\MetaDslx.Core.csproj", "{0C605C74-47DD-4316-AE55-AD65FCD34DDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Core", "Main\MetaDslx.Core\MetaDslx.Core.csproj", "{0C605C74-47DD-4316-AE55-AD65FCD34DDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.TempConsole", "Test\MetaDslx.TempConsole\MetaDslx.TempConsole.csproj", "{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.TempConsole", "Test\MetaDslx.TempConsole\MetaDslx.TempConsole.csproj", "{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio", "Main\MetaDslx.VisualStudio\MetaDslx.VisualStudio.csproj", "{C1D34529-0F79-4E43-B9E6-497BB3C80EA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Calculator", "Samples\MetaDslx.Languages.Calculator\MetaDslx.Languages.Calculator.csproj", "{C7BD8655-44D1-46A5-9FD9-7487C41538DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio.MetaModelTemplate", "Main\MetaDslx.VisualStudio.MetaModelTemplate\MetaDslx.VisualStudio.MetaModelTemplate.csproj", "{2D2331C9-F9AD-44DF-A92F-D1D8B8BD55BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Compiler.Antlr4", "Main\MetaDslx.Compiler.Antlr4\MetaDslx.Compiler.Antlr4.csproj", "{D31D2069-6F71-4208-AA67-60AE8104CDC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio.MetaGeneratorTemplate", "Main\MetaDslx.VisualStudio.MetaGeneratorTemplate\MetaDslx.VisualStudio.MetaGeneratorTemplate.csproj", "{53753507-98E0-4265-B111-1628F00C01D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Soal", "Samples\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj", "{9D723D66-E324-4EC4-96E5-B246F3D9E812}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio.AnnotatedAntlr4Template", "Main\MetaDslx.VisualStudio.AnnotatedAntlr4Template\MetaDslx.VisualStudio.AnnotatedAntlr4Template.csproj", "{09DE6D64-0132-48F3-A46B-4A0E659C84EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Soal.Test", "Test\MetaDslx.Languages.Soal.Test\MetaDslx.Languages.Soal.Test.csproj", "{94E5D566-B5FF-4EE0-9C9C-53ECFDA0C70C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Languages.Calculator", "Samples\MetaDslx.Languages.Calculator\MetaDslx.Languages.Calculator.csproj", "{C7BD8655-44D1-46A5-9FD9-7487C41538DB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Compiler.Antlr4", "Main\MetaDslx.Compiler.Antlr4\MetaDslx.Compiler.Antlr4.csproj", "{D31D2069-6F71-4208-AA67-60AE8104CDC6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Languages.Soal", "Samples\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj", "{9D723D66-E324-4EC4-96E5-B246F3D9E812}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Languages.Soal.Test", "Test\MetaDslx.Languages.Soal.Test\MetaDslx.Languages.Soal.Test.csproj", "{94E5D566-B5FF-4EE0-9C9C-53ECFDA0C70C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio", "Main\MetaDslx.VisualStudio\MetaDslx.VisualStudio.csproj", "{E0205000-04AF-478C-9A8B-F4A7F23988A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,22 +37,6 @@ Global
 		{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A680A2D-00C2-411E-90C2-5A5912CF2DA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1D34529-0F79-4E43-B9E6-497BB3C80EA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1D34529-0F79-4E43-B9E6-497BB3C80EA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1D34529-0F79-4E43-B9E6-497BB3C80EA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1D34529-0F79-4E43-B9E6-497BB3C80EA0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D2331C9-F9AD-44DF-A92F-D1D8B8BD55BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D2331C9-F9AD-44DF-A92F-D1D8B8BD55BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D2331C9-F9AD-44DF-A92F-D1D8B8BD55BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D2331C9-F9AD-44DF-A92F-D1D8B8BD55BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53753507-98E0-4265-B111-1628F00C01D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53753507-98E0-4265-B111-1628F00C01D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53753507-98E0-4265-B111-1628F00C01D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53753507-98E0-4265-B111-1628F00C01D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09DE6D64-0132-48F3-A46B-4A0E659C84EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09DE6D64-0132-48F3-A46B-4A0E659C84EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09DE6D64-0132-48F3-A46B-4A0E659C84EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09DE6D64-0132-48F3-A46B-4A0E659C84EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7BD8655-44D1-46A5-9FD9-7487C41538DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7BD8655-44D1-46A5-9FD9-7487C41538DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7BD8655-44D1-46A5-9FD9-7487C41538DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,6 +53,10 @@ Global
 		{94E5D566-B5FF-4EE0-9C9C-53ECFDA0C70C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94E5D566-B5FF-4EE0-9C9C-53ECFDA0C70C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94E5D566-B5FF-4EE0-9C9C-53ECFDA0C70C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0205000-04AF-478C-9A8B-F4A7F23988A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0205000-04AF-478C-9A8B-F4A7F23988A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0205000-04AF-478C-9A8B-F4A7F23988A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0205000-04AF-478C-9A8B-F4A7F23988A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

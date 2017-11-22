@@ -143,9 +143,9 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine(node2);
                 Console.WriteLine(node0);
                 //*/
-                /*
-                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelLexer.ag4", "MetaDslx.Languages.Meta");
-                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaModelParser.ag4", "MetaDslx.Languages.Meta");
+                //*
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
+                Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaParser.ag4", "MetaDslx.Languages.Meta");
                 //*/
                 /*
                 Program.CompileAntlr4Roslyn("../../Samples/MetaDslx.Languages.Soal/Syntax/InternalSyntax", "../../Samples/MetaDslx.Languages.Soal", "SoalLexer.ag4", "MetaDslx.Languages.Soal");
