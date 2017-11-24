@@ -114,11 +114,28 @@ namespace MetaDslx.VisualStudio.Meta.Classification
         {
             internal MetaStringClassificationFormat()
             {
-                ForegroundColor = Colors.Red;
+                ForegroundColor = Color.FromRgb(163, 21, 21);
                 this.DisplayName = "Meta String";
             }
         }
 
+
+        [Name(MetaClassificationTypes.Type), Export]
+        internal ClassificationTypeDefinition MetaTypeClassificationType { get; set; }
+
+        [Export(typeof(EditorFormatDefinition))]
+        [UserVisible(true)]
+        [ClassificationType(ClassificationTypeNames = MetaClassificationTypes.Type)]
+        [Name("MetaTypeFormatDefinition")]
+        [Order]
+        internal sealed class MetaTypeClassificationFormat : ClassificationFormatDefinition
+        {
+            internal MetaTypeClassificationFormat()
+            {
+                ForegroundColor = Color.FromRgb(43, 145, 175);
+                this.DisplayName = "Meta Type";
+            }
+        }
 
         [Name(MetaClassificationTypes.Comment), Export]
         internal ClassificationTypeDefinition MetaCommentClassificationType { get; set; }

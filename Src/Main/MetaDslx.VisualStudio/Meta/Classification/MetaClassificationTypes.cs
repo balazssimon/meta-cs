@@ -15,5 +15,6 @@ namespace MetaDslx.VisualStudio.Meta.Classification
         internal const string Number = "MetaNumber";
         internal const string String = "MetaString";
         internal const string Whitespace = "MetaWhitespace";
+        internal const string Type = "MetaType";
     }
 }

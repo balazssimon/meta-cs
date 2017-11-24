@@ -10,74 +10,20 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Meta.Classification
 {
-    internal class MetaClassifier : IClassifier
+    internal class MetaClassifier : Antlr4LexerClassifier
     {
-        public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
-        private IClassificationTypeRegistryService classificationRegistryService;
-        private ITextBuffer textBuffer;
-
         internal MetaClassifier(ITextBuffer textBuffer, IClassificationTypeRegistryService classificationRegistryService)
+            : base(textBuffer, classificationRegistryService, new MetaDslx.Languages.Meta.Syntax.InternalSyntax.MetaLexer(Antlr4LexerClassifier.EmptyCharStream))
         {
-            this.textBuffer = textBuffer;
-            this.classificationRegistryService = classificationRegistryService;
         }
 
-        IList<ClassificationSpan> IClassifier.GetClassificationSpans(SnapshotSpan span)
+        protected override IClassificationType GetClassificationType(int tokenType, int mode)
         {
-            var classifications = new List<ClassificationSpan>();
-
-            //using (var systemState = new SystemState())
+            MetaTokenKind tokenKind = MetaSyntaxFacts.Instance.GetTokenKind(tokenType);
+            if (tokenKind == MetaTokenKind.None)
             {
-                int startIndex, endIndex;
-
-                // Execute the Meta lexer
-                var lexer = new MetaDslx.Languages.Meta.Syntax.InternalSyntax.MetaLexer(CharStreams.fromstring(span.GetText()));
-
-                IToken token = lexer.NextToken();
-
-                // Iterate the tokens
-                while (token != null/* && token.Type != MetaDslx.Languages.Meta.Syntax.InternalSyntax.MetaLexer.Eof*/)
-                {
-                    // Determine the bounds of the classfication span
-                    startIndex = span.Span.Start + token.StartIndex;
-                    endIndex = span.Span.Start + token.StopIndex+1;
-
-                    if (endIndex > span.Snapshot.GetText().Length)
-                        endIndex = span.Snapshot.GetText().Length;
-
-                    if (endIndex > startIndex && !span.Snapshot.TextBuffer.IsReadOnly(new Span(startIndex, endIndex - startIndex)))
-                    {
-                        // Add the classfication span
-                        int tokenKind = (int)MetaSyntaxFacts.Instance.GetTokenKind(token.Type);
-                        if (tokenKind == 0)
-                        {
-                            tokenKind = (int)MetaSyntaxFacts.Instance.GetModeTokenKind(lexer.CurrentMode);
-                        }
-                        classifications.Add(new ClassificationSpan(new SnapshotSpan(span.Snapshot, startIndex, endIndex - startIndex), GetClassificationType(tokenKind)));
-                    }
-                    
-                    if (token.Type == MetaDslx.Languages.Meta.Syntax.InternalSyntax.MetaLexer.Eof)
-                    {
-                        break;
-                    }
-
-                    // Get next token
-                    token = lexer.NextToken();
-                }
+                tokenKind = MetaSyntaxFacts.Instance.GetModeTokenKind(mode);
             }
-
-            foreach (var region in span.Snapshot.TextBuffer.GetReadOnlyExtents(span))
-            {
-                // Add classfication for read only regions
-                classifications.Add(new ClassificationSpan(new SnapshotSpan(span.Snapshot, region), classificationRegistryService.GetClassificationType(MetaClassificationTypes.None)));
-            }
-
-            return classifications;
-        }
-
-        private IClassificationType GetClassificationType(int tokenKind)
-        {
-
             switch ((MetaTokenKind)tokenKind)
             {
                 case MetaTokenKind.Comment:

@@ -47,6 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Antlr4LexerClassifier.cs" />
     <Compile Include="Meta\Classification\MetaClassificationDefinitions.cs" />
     <Compile Include="Meta\Classification\MetaClassificationProvider.cs" />
     <Compile Include="Meta\Classification\MetaClassificationTypes.cs" />
