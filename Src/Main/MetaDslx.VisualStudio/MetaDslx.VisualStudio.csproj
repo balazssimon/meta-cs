@@ -48,12 +48,29 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Antlr4LexerClassifier.cs" />
+    <Compile Include="Antlr4Roslyn\Antlr4RoslynContentTypeDefinition.cs" />
+    <Compile Include="Antlr4Roslyn\Classification\Antlr4RoslynClassificationDefinitions.cs" />
+    <Compile Include="Antlr4Roslyn\Classification\Antlr4RoslynClassificationProvider.cs" />
+    <Compile Include="Antlr4Roslyn\Classification\Antlr4RoslynClassificationTypes.cs" />
+    <Compile Include="Antlr4Roslyn\Classification\Antlr4RoslynClassifier.cs" />
+    <Compile Include="MetaGenerator\Classification\MetaGeneratorClassificationDefinitions.cs" />
+    <Compile Include="MetaGenerator\Classification\MetaGeneratorClassificationProvider.cs" />
+    <Compile Include="MetaGenerator\Classification\MetaGeneratorClassificationTypes.cs" />
+    <Compile Include="MetaGenerator\Classification\MetaGeneratorClassifier.cs" />
+    <Compile Include="MetaGenerator\MetaGeneratorContentTypeDefinition.cs" />
     <Compile Include="Meta\Classification\MetaClassificationDefinitions.cs" />
     <Compile Include="Meta\Classification\MetaClassificationProvider.cs" />
     <Compile Include="Meta\Classification\MetaClassificationTypes.cs" />
     <Compile Include="Meta\Classification\MetaClassifier.cs" />
     <Compile Include="Meta\MetaContentTypeDefinition.cs" />
+    <Compile Include="OriginalAntlr4\Classification\OriginalAntlr4ClassificationProvider.cs" />
+    <Compile Include="OriginalAntlr4\OriginalAntlr4ContentTypeDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Soal\Classification\SoalClassificationDefinitions.cs" />
+    <Compile Include="Soal\Classification\SoalClassificationProvider.cs" />
+    <Compile Include="Soal\Classification\SoalClassificationTypes.cs" />
+    <Compile Include="Soal\Classification\SoalClassifier.cs" />
+    <Compile Include="Soal\SoalContentTypeDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -66,7 +83,8 @@
     <Content Include="stylesheet.css" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Antlr4.Runtime.Core">
+    <Reference Include="Antlr4.Runtime.Core, Version=4.7.0.0, Culture=neutral, PublicKeyToken=e78b2c5abd1fcb3f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Antlr4.Runtime.Standard.4.7.1\lib\netstandard\Antlr4.Runtime.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.CoreUtility, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -113,6 +131,10 @@
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Samples\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj">
+      <Project>{9d723d66-e324-4ec4-96e5-b246f3d9e812}</Project>
+      <Name>MetaDslx.Languages.Soal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MetaDslx.Compiler.Antlr4\MetaDslx.Compiler.Antlr4.csproj">
       <Project>{d31d2069-6f71-4208-aa67-60ae8104cdc6}</Project>
       <Name>MetaDslx.Compiler.Antlr4</Name>
@@ -122,6 +144,7 @@
       <Name>MetaDslx.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
