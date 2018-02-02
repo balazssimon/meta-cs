@@ -18,6 +18,12 @@ namespace MetaDslx.VisualStudio
         public IClassificationType ClassificationType;
     }
 
+    /*internal struct TrackedBlock
+    {
+        public ITrackingSpan Tracking;
+        public ITextVersion Version;
+    }*/
+
     internal struct LexerState
     {
         public ITrackingSpan Tracking;
@@ -54,82 +60,62 @@ namespace MetaDslx.VisualStudio
         //Invoke ClassificationChanged that cause editor to re-classify specified span 
         protected void Invalidate(SnapshotSpan span)
         {
+            this.ReclassifySpan(span);
             if (ClassificationChanged != null)
                 ClassificationChanged(this, new ClassificationChangedEventArgs(span));
+        }
+
+        private void ReclassifySpan(SnapshotSpan span)
+        {
+            this.GetClassificationSpans(span);
         }
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
             var result = new List<ClassificationSpan>();
+            List<LexerState> newLexerStates = null;
 
-            bool isInsideMultiLineToken = false;
-            for (var i = multiLineTokens.Count - 1; i >= 0; i--)
+            int startPosition;
+            if (this.InvalidateMultiLineTokens(span, result, out startPosition)) return result;
+            string currentText = span.Snapshot.GetText(startPosition, span.End.Position - startPosition);
+
+            int currentLexerStateIndex = this.FindLexerStateIndex(startPosition, span, false);
+            if (currentLexerStateIndex >= this.lexerStates.Count)
             {
-                var multiLineTokenSpan = multiLineTokens[i].Tracking.GetSpan(span.Snapshot);
-                if (multiLineTokenSpan.Length == 0)
-                {
-                    multiLineTokens.RemoveAt(i);
-                }
-                else
-                {
-                    if (span.IntersectsWith(multiLineTokenSpan))
-                    {
-                        isInsideMultiLineToken = true;
-                        if (span.Snapshot.Version != multiLineTokens[i].Version)
-                        {
-                            multiLineTokens.RemoveAt(i);
-                            Invalidate(multiLineTokenSpan);
-                        }
-                        else
-                        {
-                            result.Add(new ClassificationSpan(multiLineTokenSpan, multiLineTokens[i].ClassificationType));
-                        }
-                    }
-                }
+                currentLexerStateIndex = this.lexerStates.Count - 1;
             }
-            if (isInsideMultiLineToken) return result;
-
-            List<LexerState> newLexerStates = new List<LexerState>();
-
-            int startPosition = span.Start.Position;
-            int endPosition;
-            int currentOffset = 0;
-            string currentText = span.GetText();
-
-            int startLexerStateIndex = this.lexerStates.FindIndex(ls => ls.Tracking.GetSpan(span.Snapshot).Contains(startPosition));
-            int endLexerStateIndex = this.lexerStates.FindIndex(ls => ls.Tracking.GetSpan(span.Snapshot).Contains(startPosition + currentText.Length));
-            LexerState startLexerState = new LexerState();
-            if (startLexerStateIndex >= 0)
-            {
-                startLexerState = this.lexerStates[startLexerStateIndex];
-            }
-            LexerState endLexerState = startLexerState;
-            if (endLexerStateIndex >= 0)
-            {
-                endLexerState = this.lexerStates[endLexerStateIndex];
-            }
-
-            LexerState currentLexerState = startLexerState;
+            LexerState currentLexerState = currentLexerStateIndex >= 0 ? this.lexerStates[currentLexerStateIndex] : new LexerState();
             int modeStartPosition = startPosition;
-            int modeEndPosition;
-            int currentMode = startLexerState.Mode;
+            if (currentLexerState.Tracking != null)
+            {
+                SnapshotSpan startLexerStateSpan = currentLexerState.Tracking.GetSpan(span.Snapshot);
+                modeStartPosition = startLexerStateSpan.Start.Position;
+            }
 
+            int currentMode = currentLexerState.Mode;
             this.lexer.SetInputStream(CharStreams.fromstring(currentText));
             this.lexer.CurrentMode = currentMode;
 
             IToken token = null;
+            int tokenType = -1;
             do
             {
-                startPosition = span.Start.Position + currentOffset;
-                endPosition = startPosition;
-
+                int endPosition = startPosition;
                 token = lexer.NextToken();
 
                 if (token != null)
                 {
-                    endPosition += token.StopIndex - token.StartIndex + 1;
+                    tokenType = token.Type;
+                    if (tokenType < 0)
+                    {
+                        endPosition = span.End.Position;
+                    }
+                    else
+                    {
+                        endPosition += token.StopIndex - token.StartIndex + 1;
+                    }
 
-                    while (token.Type < 0 && endPosition < span.Snapshot.Length)
+                    while (token != null && token.Type < 0 && endPosition < span.Snapshot.Length)
                     {
                         int textLength = Math.Min(span.Snapshot.Length - endPosition, 1024);
                         if (textLength > 0)
@@ -141,8 +127,17 @@ namespace MetaDslx.VisualStudio
                             this.lexer.CurrentMode = mode;
                             token = lexer.NextToken();
 
-                            if (token != null)
+                            if (lexer.HitEOF)
+                            {
+                                endPosition += textLength;
+                                token = null;
+                                tokenType = -1;
+                            }
+                            else if (token != null)
+                            {
+                                tokenType = token.Type;
                                 endPosition += token.StopIndex - token.StartIndex + 1;
+                            }
                         }
                         else
                         {
@@ -151,120 +146,279 @@ namespace MetaDslx.VisualStudio
                     }
                 }
 
-                var classification = this.GetClassificationType(token.Type, this.lexer.CurrentMode);
+                var classification = this.GetClassificationType(tokenType, this.lexer.CurrentMode);
                 var tokenSpan = new SnapshotSpan(span.Snapshot, startPosition, (endPosition - startPosition));
                 result.Add(new ClassificationSpan(tokenSpan, classification));
 
                 int startLine = span.Snapshot.GetLineFromPosition(startPosition).LineNumber;
                 int endLine = span.Snapshot.GetLineFromPosition(endPosition-1).LineNumber;
-                bool multiLineToken = startLine != endLine;
+                bool isMultiLineToken = startLine != endLine;
 
-                if (multiLineToken)
+                if (isMultiLineToken)
                 {
-                    this.InsertMultiLineToken(new MultiLineToken()
+                    MultiLineToken multiLineToken = 
+                        new MultiLineToken()
+                        {
+                            ClassificationType = classification,
+                            Version = span.Snapshot.Version,
+                            Tracking = span.Snapshot.CreateTrackingSpan(tokenSpan.Span, SpanTrackingMode.EdgeExclusive)
+                        };
+                    if (this.InsertMultiLineToken(multiLineToken, tokenSpan, span))
                     {
-                        ClassificationType = classification,
-                        Version = span.Snapshot.Version,
-                        Tracking = span.Snapshot.CreateTrackingSpan(tokenSpan.Span, SpanTrackingMode.EdgeExclusive)
-                    }, tokenSpan, span);
-
-                    if (tokenSpan.End > span.End)
-                        Invalidate(new SnapshotSpan(span.End + 1, tokenSpan.End));
+                        if (tokenSpan.End > span.End)
+                            Invalidate(new SnapshotSpan(span.End + 1, tokenSpan.End));
+                        if (tokenSpan.Start < span.Start)
+                            Invalidate(new SnapshotSpan(tokenSpan.Start, span.Start - 1));
+                    }
                 }
 
                 if (this.lexer.CurrentMode != currentMode)
                 {
-                    modeEndPosition = endPosition;
-                    SnapshotSpan modeSpan = new SnapshotSpan(span.Snapshot, modeStartPosition, modeEndPosition - modeStartPosition);
-                    newLexerStates.Add(new LexerState()
+                    int modeEndPosition = endPosition;
+                    if (modeStartPosition < modeEndPosition)
                     {
-                        Mode = currentMode,
-                        Tracking = span.Snapshot.CreateTrackingSpan(modeSpan, SpanTrackingMode.EdgeExclusive),
-                        Version = span.Snapshot.Version
-                    });
+                        SnapshotSpan modeSpan = new SnapshotSpan(span.Snapshot, modeStartPosition, modeEndPosition - modeStartPosition);
+                        if (currentLexerState.Tracking == null || currentLexerState.Version == null ||
+                            currentLexerState.Mode != currentMode ||
+                            currentLexerState.Tracking.GetSpan(span.Snapshot) != modeSpan ||
+                            currentLexerState.Version != span.Snapshot.Version)
+                        {
+                            LexerState newLexerState = new LexerState()
+                            {
+                                Mode = currentMode,
+                                Tracking = span.Snapshot.CreateTrackingSpan(modeSpan, SpanTrackingMode.EdgeExclusive),
+                                Version = span.Snapshot.Version
+                            };
+                            if (newLexerStates == null) newLexerStates = new List<LexerState>();
+                            newLexerStates.Add(newLexerState);
+                        }
+                    }
+                    while (currentLexerStateIndex < this.lexerStates.Count - 1)
+                    {
+                        ++currentLexerStateIndex;
+                        currentLexerState = this.lexerStates[currentLexerStateIndex];
+                        if (currentLexerState.Tracking.GetSpan(span.Snapshot).Contains(modeEndPosition))
+                        {
+                            break;
+                        }
+                    }
                     modeStartPosition = modeEndPosition;
                     currentMode = this.lexer.CurrentMode;
                 }
 
-                currentOffset += endPosition - startPosition;
+                startPosition = endPosition;
             }
-            while (token != null && currentOffset < currentText.Length);
+            while (token != null && startPosition < span.End.Position);
 
-            if (newLexerStates.Count > 0)
-            {
-                int startPoint = newLexerStates[0].Tracking.GetStartPoint(span.Snapshot);
-                int endPoint = newLexerStates[newLexerStates.Count - 1].Tracking.GetEndPoint(span.Snapshot);
-                SnapshotSpan fullSpan = new SnapshotSpan(span.Snapshot, startPoint, endPoint - startPoint);
-                bool indexSet = false;
-                int index = lexerStates.Count;
-                for (int i = lexerStates.Count - 1; i >= 0; --i)
-                {
-                    SnapshotSpan lexerStateSpan = lexerStates[i].Tracking.GetSpan(span.Snapshot);
-                    if (lexerStateSpan.End < fullSpan.Start && lexerStateSpan.Start > fullSpan.End)
-                    {
-                        if (lexerStateSpan.End > fullSpan.End)
-                        {
-                            Invalidate(new SnapshotSpan(fullSpan.End + 1, lexerStateSpan.End));
-                        }
-                        lexerStates.RemoveAt(i);
-                        index = i;
-                        indexSet = true;
-                    }
-                    else if (lexerStateSpan.Start >= fullSpan.End)
-                    {
-                        index = i;
-                        indexSet = true;
-                    }
-                    else if (!indexSet && lexerStateSpan.End <= fullSpan.Start)
-                    {
-                        index = i + 1;
-                        indexSet = true;
-                    }
-                }
-                lexerStates.InsertRange(index, newLexerStates);
-                bool ordered = true;
-                for (int i = 0; i < lexerStates.Count - 1; ++i)
-                {
-                    if (lexerStates[i].Tracking.GetSpan(span.Snapshot).Start > lexerStates[i + 1].Tracking.GetSpan(span.Snapshot).End)
-                    {
-                        ordered = false;
-                    }
-                }
-                Console.WriteLine(ordered);
-            }
-
+            this.InsertNewLexerStates(newLexerStates, span);
             return result;
         }
 
-        private void InsertMultiLineToken(MultiLineToken token, SnapshotSpan tokenSpan, SnapshotSpan span)
+        private bool InvalidateMultiLineTokens(SnapshotSpan span, List<ClassificationSpan> classifications, out int startPosition)
         {
-            bool indexSet = false;
-            int index = multiLineTokens.Count;
-            for (int i = multiLineTokens.Count - 1; i >= 0; --i)
+            bool result = false;
+            startPosition = span.Start.Position;
+
+            ValueTuple<int, int> range = this.FindMultiLineTokenRange(span);
+            int startIndex = range.Item1;
+            int endIndex = range.Item2;
+            if(endIndex >= this.multiLineTokens.Count)
             {
-                SnapshotSpan multiLineTokenSpan = multiLineTokens[i].Tracking.GetSpan(span.Snapshot);
-                if (multiLineTokenSpan.IntersectsWith(tokenSpan))
+                endIndex = this.multiLineTokens.Count - 1;
+            }
+
+            for (var i = endIndex; i >= startIndex; i--)
+            {
+                var multiLineTokenSpan = multiLineTokens[i].Tracking.GetSpan(span.Snapshot);
+                if (multiLineTokenSpan.Length == 0)
                 {
-                    if (multiLineTokenSpan.End > tokenSpan.End)
-                    {
-                        Invalidate(new SnapshotSpan(tokenSpan.End + 1, multiLineTokenSpan.End));
-                    }
                     multiLineTokens.RemoveAt(i);
-                    index = i;
-                    indexSet = true;
                 }
-                else if (multiLineTokenSpan.Start >= tokenSpan.End)
+                else
                 {
-                    index = i;
-                    indexSet = true;
-                }
-                else if (!indexSet && multiLineTokenSpan.End <= tokenSpan.Start)
-                {
-                    index = i + 1;
-                    indexSet = true;
+                    if (span.IntersectsWith(multiLineTokenSpan))
+                    {
+                        if (span.Snapshot.Version != multiLineTokens[i].Version)
+                        {
+                            multiLineTokens.RemoveAt(i);
+                            Invalidate(multiLineTokenSpan);
+                            //this.RemoveLexerStates(multiLineTokenSpan);
+                            if (multiLineTokenSpan.Start.Position < span.Start.Position)
+                            {
+                                startPosition = multiLineTokenSpan.Start.Position;
+                            }
+                        }
+                        else
+                        {
+                            if (multiLineTokenSpan.Contains(span)) result = true;
+                            if (multiLineTokenSpan.Contains(startPosition))
+                            {
+                                startPosition = multiLineTokenSpan.End.Position;
+                            }
+                            classifications.Add(new ClassificationSpan(multiLineTokenSpan, multiLineTokens[i].ClassificationType));
+                        }
+                    }
                 }
             }
-            multiLineTokens.Insert(index, token);
+            return result;
+        }
+
+        private bool InsertMultiLineToken(MultiLineToken token, SnapshotSpan tokenSpan, SnapshotSpan span)
+        {
+            ValueTuple<int, int> range = this.FindMultiLineTokenRange(span);
+            int startIndex = range.Item1;
+            int endIndex = range.Item2;
+
+            if (startIndex < endIndex)
+            {
+                if (endIndex < this.multiLineTokens.Count)
+                {
+                    /*SnapshotSpan endMultiLineTokenSpan = multiLineTokens[endIndex].Tracking.GetSpan(span.Snapshot);
+                    if (endMultiLineTokenSpan.End > tokenSpan.End)
+                    {
+                        Invalidate(new SnapshotSpan(tokenSpan.End + 1, endMultiLineTokenSpan.End));
+                    }*/
+                    multiLineTokens.RemoveRange(startIndex, endIndex - startIndex + 1);
+                }
+                else
+                {
+                    multiLineTokens.RemoveRange(startIndex, endIndex - startIndex);
+                }
+            }
+            else if (startIndex == endIndex && endIndex < this.multiLineTokens.Count)
+            {
+                MultiLineToken multiLineToken = multiLineTokens[startIndex];
+                if (multiLineToken.Version != token.Version)
+                {
+                    multiLineTokens.RemoveAt(startIndex);
+                }
+                else
+                {
+                    SnapshotSpan multiLineTokenSpan = multiLineToken.Tracking.GetSpan(span.Snapshot);
+                    if (multiLineTokenSpan != tokenSpan)
+                    {
+                        multiLineTokens.RemoveAt(startIndex);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            multiLineTokens.Insert(startIndex, token);
+            return true;
+        }
+
+        private ValueTuple<int,int> FindMultiLineTokenRange(SnapshotSpan span)
+        {
+            int startIndex = this.FindMultiLineTokenIndex(span.Start, span, false);
+            int endIndex = this.FindMultiLineTokenIndex(span.End, span, false);
+            return new ValueTuple<int, int>(startIndex, endIndex);
+        }
+
+        private ValueTuple<int, int> FindLexerStateRange(SnapshotSpan span)
+        {
+            int startIndex = this.FindLexerStateIndex(span.Start, span, false);
+            int endIndex = this.FindLexerStateIndex(span.End, span, false);
+            return new ValueTuple<int, int>(startIndex, endIndex);
+        }
+
+        private void InsertNewLexerStates(List<LexerState> newLexerStates, SnapshotSpan span)
+        {
+            if (newLexerStates == null || newLexerStates.Count == 0) return;
+
+            int startPoint = newLexerStates[0].Tracking.GetStartPoint(span.Snapshot);
+            int endPoint = newLexerStates[newLexerStates.Count - 1].Tracking.GetEndPoint(span.Snapshot);
+            SnapshotSpan fullSpan = new SnapshotSpan(span.Snapshot, startPoint, endPoint - startPoint - 1);
+
+            int index = this.RemoveLexerStates(fullSpan);
+            lexerStates.InsertRange(index, newLexerStates);
+
+            bool ordered = true;
+            for (int i = 0; i < lexerStates.Count - 1; ++i)
+            {
+                if (lexerStates[i].Tracking.GetSpan(span.Snapshot).Start > lexerStates[i + 1].Tracking.GetSpan(span.Snapshot).End)
+                {
+                    ordered = false;
+                }
+            }
+            Console.WriteLine(ordered);
+        }
+
+        private int RemoveLexerStates(SnapshotSpan span)
+        {
+            ValueTuple<int, int> range = this.FindLexerStateRange(span);
+            int startIndex = range.Item1;
+            int endIndex = range.Item2;
+
+            if (startIndex < 0) startIndex = 0;
+            if (startIndex <= endIndex)
+            {
+                if (endIndex >= this.lexerStates.Count) endIndex = this.lexerStates.Count - 1;
+                /*for (int i = endIndex; i >= startIndex; --i)
+                {
+                    SnapshotSpan lexerStateSpan = lexerStates[endIndex].Tracking.GetSpan(span.Snapshot);
+                    if (!span.Contains(lexerStateSpan))
+                    {
+                        if (span.End.Position < lexerStateSpan.End.Position && span.End.Position+1 < span.Snapshot.Length)
+                        {
+                            Invalidate(new SnapshotSpan(span.Snapshot, span.End.Position + 1, lexerStateSpan.End.Position - span.End.Position - 1));
+                        }
+                    }
+                }*/
+                lexerStates.RemoveRange(startIndex, endIndex - startIndex + 1);
+            }
+            return startIndex;
+        }
+
+        private int FindMultiLineTokenIndex(int position, SnapshotSpan span, bool inside)
+        {
+            int firstIndex = 0;
+            int lastIndex = this.multiLineTokens.Count - 1;
+            while (firstIndex <= lastIndex)
+            {
+                int currentIndex = (firstIndex + lastIndex) / 2;
+                SnapshotSpan multiLineTokenSpan = this.multiLineTokens[currentIndex].Tracking.GetSpan(span.Snapshot);
+                if (multiLineTokenSpan.Contains(position))
+                {
+                    return currentIndex;
+                }
+                else if (position < multiLineTokenSpan.Start)
+                {
+                    lastIndex = currentIndex - 1;
+                }
+                else if (position >= multiLineTokenSpan.End)
+                {
+                    firstIndex = currentIndex + 1;
+                }
+            }
+            if (inside) return -1;
+            else return firstIndex;
+        }
+
+        private int FindLexerStateIndex(int position, SnapshotSpan span, bool inside)
+        {
+            int firstIndex = 0;
+            int lastIndex = this.lexerStates.Count - 1;
+            while (firstIndex <= lastIndex)
+            {
+                int currentIndex = (firstIndex + lastIndex) / 2;
+                SnapshotSpan lexerStateSpan = this.lexerStates[currentIndex].Tracking.GetSpan(span.Snapshot);
+                if (lexerStateSpan.Contains(position))
+                {
+                    return currentIndex;
+                }
+                else if (position < lexerStateSpan.Start)
+                {
+                    lastIndex = currentIndex - 1;
+                }
+                else if (position >= lexerStateSpan.End)
+                {
+                    firstIndex = currentIndex + 1;
+                }
+            }
+            if (inside) return -1;
+            else return firstIndex;
         }
 
         protected abstract IClassificationType GetClassificationType(int tokenType, int mode);
