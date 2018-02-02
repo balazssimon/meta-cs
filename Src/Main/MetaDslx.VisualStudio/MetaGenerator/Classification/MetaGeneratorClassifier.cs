@@ -46,5 +46,49 @@ namespace MetaDslx.VisualStudio.MetaGenerator.Classification
 
         }
 
+        protected override LexerState SaveLexerState()
+        {
+            return new MetaGeneratorLexerState(this.lexer);
+        }
+
+        private class MetaGeneratorLexerState : LexerState
+        {
+            private int templateBrackets;
+            private int templateParenthesis;
+
+            public MetaGeneratorLexerState(Lexer lexer)
+                : base(lexer)
+            {
+                var typedLexer = lexer as MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax.MetaGeneratorLexer;
+                if (lexer != null)
+                {
+                    this.templateBrackets = typedLexer._templateBrackets;
+                    this.templateParenthesis = typedLexer._templateParenthesis;
+                }
+            }
+
+            public override void Restore(Lexer lexer)
+            {
+                base.Restore(lexer);
+                var typedLexer = lexer as MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax.MetaGeneratorLexer;
+                if (lexer != null)
+                {
+                    typedLexer._templateBrackets = this.templateBrackets;
+                    typedLexer._templateParenthesis = this.templateParenthesis;
+                }
+            }
+
+            public override bool Equals(LexerState obj)
+            {
+                if (!base.Equals(obj)) return false;
+                MetaGeneratorLexerState other = obj as MetaGeneratorLexerState;
+                if (other != null)
+                {
+                    return this.templateBrackets == other.templateBrackets &&
+                        this.templateParenthesis == other.templateParenthesis;
+                }
+                return false;
+            }
+        }
     }
 }
