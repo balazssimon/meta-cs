@@ -207,5 +207,23 @@ namespace MetaDslx.VisualStudio.Antlr4Roslyn.Classification
                 this.DisplayName = "Antlr4Roslyn Token";
             }
         }
+
+
+        [Name(Antlr4RoslynClassificationTypes.Annotation), Export]
+        internal ClassificationTypeDefinition Antlr4RoslynAnnotationClassificationType { get; set; }
+
+        [Export(typeof(EditorFormatDefinition))]
+        [UserVisible(true)]
+        [ClassificationType(ClassificationTypeNames = Antlr4RoslynClassificationTypes.Annotation)]
+        [Name("Antlr4RoslynAnnotationFormatDefinition")]
+        [Order]
+        internal sealed class Antlr4RoslynAnnotationClassificationFormat : ClassificationFormatDefinition
+        {
+            internal Antlr4RoslynAnnotationClassificationFormat()
+            {
+                ForegroundColor = Color.FromRgb(43, 145, 175);
+                this.DisplayName = "Antlr4Roslyn Annotation";
+            }
+        }
     }
 }

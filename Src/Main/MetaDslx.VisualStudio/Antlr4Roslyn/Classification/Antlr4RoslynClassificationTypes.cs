@@ -19,5 +19,6 @@ namespace MetaDslx.VisualStudio.Antlr4Roslyn.Classification
         internal const string Options = "Antlr4RoslynOptions";
         internal const string Rule = "Antlr4RoslynRule";
         internal const string Token = "Antlr4RoslynToken";
+        internal const string Annotation = "Antlr4RoslynAnnotation";
     }
 }
