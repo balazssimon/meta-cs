@@ -45,6 +45,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <GetVsixSourceItemsDependsOn>$(GetVsixSourceItemsDependsOn);IncludeNuGetResolvedAssets</GetVsixSourceItemsDependsOn>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Antlr4LexerClassifier.cs" />
     <Compile Include="Antlr4Roslyn\Antlr4RoslynContentTypeDefinition.cs" />
@@ -77,10 +80,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Antlr4.Runtime.Standard.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="index.html" />
     <Content Include="stylesheet.css" />
   </ItemGroup>
@@ -106,6 +105,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes">
       <Version>15.0.16</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.SDK.VsixSuppression">
+      <Version>14.1.37</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Text.UI.Wpf">
       <Version>15.5.27130</Version>
@@ -133,4 +135,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="IncludeNuGetResolvedAssets" DependsOnTargets="ResolveNuGetPackageAssets">
+    <ItemGroup>
+      <VSIXCopyLocalReferenceSourceItem Include="$(OutputPath)\Antlr4.Runtime.Standard.dll" />
+    </ItemGroup>
+  </Target>
 </Project>
