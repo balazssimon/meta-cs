@@ -16,7 +16,7 @@ namespace MetaDslx.VisualStudio.Soal
         /// Exports the Soal content type
         /// </summary>
         [Export(typeof(ContentTypeDefinition))]
-        [Name(SoalContentTypeDefinition.ContentType)]
+        [Name(ContentType)]
         [BaseDefinition("code")]
         public ContentTypeDefinition SoalContentType { get; set; }
 

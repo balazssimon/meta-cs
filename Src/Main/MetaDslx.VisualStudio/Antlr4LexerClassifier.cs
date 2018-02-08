@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Utilities;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using System;
@@ -71,6 +72,11 @@ namespace MetaDslx.VisualStudio
                 if (this.ModeStack[i] != other.ModeStack[i]) return false;
             }
             return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return Hash.Combine(this.Mode, this.ModeStack.GetHashCode());
         }
 
         public virtual void Restore(Lexer lexer)
@@ -340,6 +346,7 @@ namespace MetaDslx.VisualStudio
 
             Span textSpan = block.Block.GetSpan(span.Snapshot);
             string text = span.Snapshot.GetText(textSpan);
+            this.lexer.Reset();
             this.lexer.SetInputStream(CharStreams.fromstring(text));
             if (block.StartState == null)
             {
@@ -357,36 +364,49 @@ namespace MetaDslx.VisualStudio
             int blockEnd = startPosition + BlockSize * 2;
             do
             {
+                LexerState state = this.SaveLexerState();
                 token = lexer.NextToken();
 
-                if (token != null)
+                if (lexer.HitEOF)
+                {
+                    tokenType = -1;
+                    endPosition = textSpan.End;
+                }
+                else if(token != null)
                 {
                     tokenType = token.Type;
                     endPosition += token.StopIndex - token.StartIndex + 1;
                 }
                 if (token == null || tokenType < 0)
                 {
-                    endPosition = textSpan.End;
+                    int textLength = endPosition - startPosition;
+                    int delta = 0;
                     tokenType = -1;
-                    while (tokenType < 0 && endPosition < span.Snapshot.Length)
+                    while (tokenType < 0 && startPosition + textLength < span.Snapshot.Length)
                     {
-                        int textLength = Math.Min(span.Snapshot.Length - endPosition, 1024);
-                        string currentText = span.Snapshot.GetText(endPosition, textLength);
+                        delta += 1024;
+                        textLength += Math.Min(span.Snapshot.Length - startPosition - textLength, delta);
+                        string currentText = span.Snapshot.GetText(startPosition, textLength);
+                        textLength = currentText.Length;
 
-                        LexerState state = this.SaveLexerState();
+                        this.lexer.Reset();
                         this.lexer.SetInputStream(CharStreams.fromstring(currentText));
                         state.Restore(this.lexer);
 
                         token = lexer.NextToken();
 
-                        if (token != null)
+                        if (lexer.HitEOF)
+                        {
+                            endPosition = startPosition + textLength;
+                        }
+                        else if (token != null)
                         {
                             tokenType = token.Type;
-                            endPosition += token.StopIndex - token.StartIndex + 1;
+                            endPosition = startPosition + token.StopIndex - token.StartIndex + 1;
                         }
                         else
                         {
-                            endPosition += textLength;
+                            endPosition = startPosition + textLength;
                         }
                     }
                 }
@@ -404,7 +424,7 @@ namespace MetaDslx.VisualStudio
             while (token != null && startPosition < textSpan.End && startPosition < blockEnd);
 
             Span blockSpan = Span.FromBounds(textSpan.Start, endPosition);
-            block.Block = span.Snapshot.CreateTrackingSpan(blockSpan, SpanTrackingMode.EdgeExclusive);
+            block.Block = span.Snapshot.CreateTrackingSpan(blockSpan, textSpan.Start == 0 ? SpanTrackingMode.EdgeNegative : SpanTrackingMode.EdgeExclusive);
             block.EndState = this.SaveLexerState();
             this.InvalidateBlockEdge(span, block);
         }

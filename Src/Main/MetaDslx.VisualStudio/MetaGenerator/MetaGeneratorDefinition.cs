@@ -8,15 +8,22 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.MetaGenerator
 {
-    public sealed class MetaGeneratorContentTypeDefinition
+    public sealed class MetaGeneratorDefinition
     {
         public const string ContentType = "MetaGenerator";
+        public const string FileExtension = ".mgen";
+
+        public const string MetaGeneratorGeneratorServiceGuid = "46F65E7B-4C31-43B1-B69C-E4FE342075DF";
+        public const string GeneratorServiceName = "C# Code Generator for MetaDslx Generator";
+
+        public const string FilterList = "MetaDslx Generator Files (*.mgen)\n*.mgen";
+
 
         /// <summary>
         /// Exports the MetaGenerator content type
         /// </summary>
         [Export(typeof(ContentTypeDefinition))]
-        [Name(MetaGeneratorContentTypeDefinition.ContentType)]
+        [Name(MetaGeneratorDefinition.ContentType)]
         [BaseDefinition("code")]
         public ContentTypeDefinition MetaGeneratorContentType { get; set; }
 
@@ -24,8 +31,8 @@ namespace MetaDslx.VisualStudio.MetaGenerator
         /// Exports the MetaGenerator file extension
         /// </summary>
 		[Export(typeof(FileExtensionToContentTypeDefinition))]
-        [ContentType(MetaGeneratorContentTypeDefinition.ContentType)]
-        [FileExtension(".mgen")]
+        [ContentType(MetaGeneratorDefinition.ContentType)]
+        [FileExtension(MetaGeneratorDefinition.FileExtension)]
         public FileExtensionToContentTypeDefinition MetaGeneratorFileExtension { get; set; }
 
     }

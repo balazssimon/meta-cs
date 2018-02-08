@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Utilities;
-using Microsoft.VisualStudio.Editor;
 using System.IO;
 using System.ComponentModel.Composition;
 
 namespace MetaDslx.VisualStudio.MetaGenerator.Classification
 {
     [Export(typeof(IClassifierProvider))]
-    [ContentType(MetaGeneratorContentTypeDefinition.ContentType)]
+    [ContentType(MetaGeneratorDefinition.ContentType)]
     internal class MetaGeneratorClassificationProvider : IClassifierProvider
     {
         [Import]
