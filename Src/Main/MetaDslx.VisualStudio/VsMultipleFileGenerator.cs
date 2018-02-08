@@ -5,10 +5,9 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using System.Runtime.InteropServices;
 using System.IO;
-using System.ComponentModel;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.ProjectSystem;
-using System.Composition;
+using System.ComponentModel.Composition;
 
 namespace MetaDslx.VisualStudio
 {
@@ -152,8 +151,16 @@ namespace MetaDslx.VisualStudio
         }
     }
 
+    internal static class VSConstants
+    {
+        internal const int S_OK = 0;
+        internal const int S_FALSE = 1;
+        internal const int E_FAIL = -2147467259;
+    }
+
     public abstract class VsSingleFileGenerator : IVsSingleFileGenerator
     {
+
         protected abstract SingleFileGenerator CreateGenerator(string inputFilePath, string inputFileContents, string defaultNamespace);
         public abstract string GetDefaultFileExtension();
 
@@ -162,11 +169,11 @@ namespace MetaDslx.VisualStudio
             pbstrDefaultExtension = this.GetDefaultFileExtension();
             if (!string.IsNullOrWhiteSpace(pbstrDefaultExtension))
             {
-                return Microsoft.VisualStudio.VSConstants.S_OK;
+                return VSConstants.S_OK;
             }
             else
             {
-                return Microsoft.VisualStudio.VSConstants.S_FALSE;
+                return VSConstants.S_FALSE;
             }
         }
 
@@ -181,13 +188,13 @@ namespace MetaDslx.VisualStudio
                 rgbOutputFileContents[0] = Marshal.AllocCoTaskMem(contents.Length);
                 Marshal.Copy(contents, 0, rgbOutputFileContents[0], contents.Length);
                 pcbOutput = (uint)contents.Length;
-                return Microsoft.VisualStudio.VSConstants.S_OK;
+                return VSConstants.S_OK;
             }
             catch (Exception ex)
             {
                 pGenerateProgress.GeneratorError(0, 0, string.Format("[{2}] Could not process input file: {0}. Error: {1}", wszInputFilePath, ex.ToString(), this.GetType().Name), 0, 0);
             }
-            return Microsoft.VisualStudio.VSConstants.E_FAIL;
+            return VSConstants.E_FAIL;
         }
     }
 
@@ -218,10 +225,10 @@ namespace MetaDslx.VisualStudio
                         break;
                     }
                 }
-                if (project == null) return Microsoft.VisualStudio.VSConstants.S_FALSE;
+                if (project == null) return VSConstants.S_FALSE;
 
                 ConfiguredProject configuredProject = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
-                if (configuredProject == null) return Microsoft.VisualStudio.VSConstants.S_FALSE;
+                if (configuredProject == null) return VSConstants.S_FALSE;
 
                 MultipleFileGenerator<T> generator = this.CreateGenerator(inputPath, bstrInputFileContents, wszDefaultNamespace);
                 List<string> newFileNames = new List<string>();
@@ -231,7 +238,7 @@ namespace MetaDslx.VisualStudio
 
                 string defaultFileName = generator.InputFileName;
                 string defaultExt = null;
-                if (this.DefaultExtension(out defaultExt) == Microsoft.VisualStudio.VSConstants.S_OK)
+                if (this.DefaultExtension(out defaultExt) == VSConstants.S_OK)
                 {
                     defaultFileName = Path.ChangeExtension(defaultFileName, defaultExt);
                 }
@@ -374,7 +381,7 @@ namespace MetaDslx.VisualStudio
             {
                 pGenerateProgress.GeneratorError(0, 0, string.Format("[{2}] Could not process input file: {0}. Error: {1}", wszInputFilePath, ex.ToString(), this.GetType().Name), 0, 0);
             }
-            return Microsoft.VisualStudio.VSConstants.S_OK;
+            return VSConstants.S_OK;
         }
 
         public abstract string GetDefaultFileExtension();
@@ -384,11 +391,11 @@ namespace MetaDslx.VisualStudio
             pbstrDefaultExtension = this.GetDefaultFileExtension();
             if (!string.IsNullOrWhiteSpace(pbstrDefaultExtension))
             {
-                return Microsoft.VisualStudio.VSConstants.S_OK;
+                return VSConstants.S_OK;
             }
             else
             {
-                return Microsoft.VisualStudio.VSConstants.S_FALSE;
+                return VSConstants.S_FALSE;
             }
         }
 
