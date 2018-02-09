@@ -33,7 +33,7 @@ namespace MetaDslx.VisualStudio
     /// </remarks>
     //[CodeGeneratorRegistration(typeof(MetaGeneratorGenerator), MetaGeneratorDefinition.GeneratorServiceName, MetaGeneratorDefinition.MetaGeneratorGeneratorServiceGuid, GeneratesDesignTimeSource = true)]
     //[ProvideObject(typeof(MetaGeneratorGenerator))]
-
+    /*
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(MetaDslxVsPackage.PackageGuidString)]
@@ -68,5 +68,5 @@ namespace MetaDslx.VisualStudio
         }
 
         #endregion
-    }
+    }*/
 }

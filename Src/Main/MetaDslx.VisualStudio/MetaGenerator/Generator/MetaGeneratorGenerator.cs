@@ -22,27 +22,16 @@ namespace MetaDslx.VisualStudio.MetaGenerator.Generator
 
         private MetaGeneratorCompiler compiler;
 
-        public MetaGeneratorGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
-            : base(inputFilePath, inputFileContents, defaultNamespace)
+        public MetaGeneratorGenerator()
+            : base()
         {
-            if (this.InputFileContents != null)
-            {
-                compiler = new MetaGeneratorCompiler(this.InputFileContents, defaultNamespace, this.InputDirectory, null, this.InputFileName);
-                compiler.Compile();
-            }
         }
 
         public override string GenerateStringContent()
         {
-            if (compiler == null)
-            {
-                return string.Empty;
-            }
-            else
-            {
-                compiler.Generate();
-                return compiler.GeneratedSource;
-            }
+            MetaGeneratorCompiler compiler = new MetaGeneratorCompiler(this.InputFileContents, this.DefaultNamespace, this.InputFileDirectory, this.InputFileDirectory, this.InputFileName);
+            compiler.Generate();
+            return compiler.GeneratedSource;
         }
     }
 }

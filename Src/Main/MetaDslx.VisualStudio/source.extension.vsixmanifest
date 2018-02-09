@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="MetaDslx.VisualStudio.4b8c85a7-4ba2-49a4-b4c8-04c0423cde0d" Version="0.9" Language="en-US" Publisher="Balazs Simon" />
+        <Identity Id="MetaDslx.VisualStudio.4b8c85a7-4ba2-49a4-b4c8-04c0423cde0d" Version="0.10" Language="en-US" Publisher="Balazs Simon" />
         <DisplayName>MetaDslx Extension for Visual Studio</DisplayName>
         <Description xml:space="preserve">Visual Studio plugin for the MetaDslx metamodel, compiler and template-based code generator framework</Description>
     </Metadata>
     <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0]" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[14.0,16.0)" />
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-      <Dependency Id="Microsoft.VisualStudio.MPF.15.0" DisplayName="Visual Studio MPF 15.0" d:Source="Installed" Version="[15.0]" />
-  </Dependencies>
+        <Dependency Id="Microsoft.VisualStudio.MPF.15.0" DisplayName="Visual Studio MPF 15.0" d:Source="Installed" Version="[15.0,16.0)" />
+    </Dependencies>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
-      <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-  </Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
     <Prerequisites>
         <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
     </Prerequisites>

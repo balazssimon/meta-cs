@@ -13,7 +13,7 @@ namespace MetaDslx.VisualStudio.MetaGenerator
         public const string ContentType = "MetaGenerator";
         public const string FileExtension = ".mgen";
 
-        public const string MetaGeneratorGeneratorServiceGuid = "46F65E7B-4C31-43B1-B69C-E4FE342075DF";
+        public const string MetaGeneratorGeneratorServiceGuid = "46F65E7B-4C31-43B1-B69C-E4FE342075DA";
 
         public const string GeneratorName = "MetaGenerator";
         public const string GeneratorServiceName = "C# Code Generator for MetaDslx Generator";
