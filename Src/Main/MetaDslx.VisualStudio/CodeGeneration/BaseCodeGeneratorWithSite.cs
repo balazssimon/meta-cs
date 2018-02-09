@@ -27,6 +27,7 @@ namespace MetaDslx.VisualStudio
     /// <summary>
     /// Base code generator with site implementation
     /// </summary>
+    [ComVisible(true)]
     public abstract class BaseCodeGeneratorWithSite : BaseCodeGenerator, VSOLE.IObjectWithSite
     {
         private object site = null;

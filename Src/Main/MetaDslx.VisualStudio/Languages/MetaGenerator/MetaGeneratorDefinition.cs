@@ -6,16 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.VisualStudio.MetaGenerator
+namespace MetaDslx.VisualStudio.Languages.MetaGenerator
 {
     public sealed class MetaGeneratorDefinition
     {
         public const string ContentType = "MetaGenerator";
         public const string FileExtension = ".mgen";
 
-        public const string MetaGeneratorGeneratorServiceGuid = "46F65E7B-4C31-43B1-B69C-E4FE342075DA";
-
-        public const string GeneratorName = "MetaGenerator";
+        public const string GeneratorServiceGuid = "46F65E7B-4C31-43B1-B69C-E4FE342075DA";
         public const string GeneratorServiceName = "C# Code Generator for MetaDslx Generator";
         public const string FilterList = "MetaDslx Generator Files (*.mgen)\n*.mgen";
 

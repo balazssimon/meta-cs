@@ -7,76 +7,229 @@ using System.Runtime.InteropServices;
 using System.IO;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.ComponentModel.Composition;
+using EnvDTE;
 
 namespace MetaDslx.VisualStudio
 {
-    public class MultipleFileItem<T>
+    public class MultipleFileItem
     {
-        public MultipleFileItem()
+        public MultipleFileItem(string filePath, bool isDefault)
         {
             this.Properties = new Dictionary<string, string>();
+            this.IsDefault = isDefault;
+            this.FilePath = filePath;
+            this.FileName = Path.GetFileName(filePath);
+            this.DependUponInputFile = true;
         }
-        public T Info { get; set; }
+
+        public bool IsDefault { get; }
+        public string FileName { get; }
+        public string FilePath { get; }
         public string CustomTool { get; set; }
-        public Dictionary<string,string> Properties { get; private set; }
+        public Dictionary<string,string> Properties { get; }
         public bool EmbedResource { get; set; }
+        public bool DependUponInputFile { get; set; }
         public bool GeneratedExternally { get; set; }
     }
 
 
-    public abstract class MultipleFileGenerator<T>
+    internal static class VSConstants
     {
-        public MultipleFileGenerator(string inputFilePath, string inputFileContents, string defaultNamespace)
+        internal const int S_OK = 0;
+        internal const int S_FALSE = 1;
+        internal const int E_FAIL = -2147467259;
+    }
+
+    [ComVisible(true)]
+    public abstract class SingleFileGenerator : BaseCodeGeneratorWithSite
+    {
+
+    }
+
+    [ComVisible(true)]
+    public abstract class MultipleFileGenerator<TFileItem> : BaseCodeGeneratorWithSite
+        where TFileItem : MultipleFileItem
+    {
+        private IEnumerable<TFileItem> fileItems;
+
+        public MultipleFileGenerator()
         {
-            if (inputFilePath != null)
+        }
+
+        protected string FilePathWithoutExtension
+        {
+            get { return Path.Combine(this.InputFileDirectory, Path.GetFileNameWithoutExtension(this.InputFileName)); }
+        }
+
+        public override int Generate(string wszInputFilePath, string bstrInputFileContents, string wszDefaultNamespace, IntPtr[] rgbOutputFileContents, out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
+        {
+            int result = base.Generate(wszInputFilePath, bstrInputFileContents, wszDefaultNamespace, rgbOutputFileContents, out pcbOutput, pGenerateProgress);
+            if (result == VSConstants.S_OK)
             {
-                this.InputFilePath = Path.GetFullPath(inputFilePath);
-                this.InputFileName = Path.GetFileName(inputFilePath);
-                this.InputDirectory = Path.GetDirectoryName(this.InputFilePath);
+                try
+                {
+                    string defaultFileName = this.InputFileName;
+                    string defaultExt = this.GetDefaultExtension();
+                    if (!string.IsNullOrEmpty(defaultExt))
+                    {
+                        defaultFileName = Path.ChangeExtension(defaultFileName, defaultExt);
+                    }
+                    else
+                    {
+                        defaultFileName = Path.GetFileNameWithoutExtension(defaultFileName);
+                    }
+
+                    var project = this.GetProject();
+                    var inputProjectItem = this.GetProjectItem();
+                    List<string> newFileNames = new List<string>();
+                    // now we can start our work, iterate across all the 'elements' in our source file 
+                    foreach (TFileItem item in this.GetFileItems())
+                    {
+                        if (item.IsDefault) continue;
+                        try
+                        {
+                            if (item.GeneratedExternally)
+                            {
+                                newFileNames.Add(item.FileName);
+                            }
+                            else
+                            {
+                                FileStream fs = File.Create(item.FilePath);
+                                try
+                                {
+                                    byte[] data = this.GenerateByteContent(item);
+                                    fs.Write(data, 0, data.Length);
+                                    fs.Close();
+                                    if (item.DependUponInputFile)
+                                    {
+                                        newFileNames.Add(item.FileName);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    fs.Close();
+                                    if (File.Exists(item.FilePath))
+                                    {
+                                        File.Delete(item.FilePath);
+                                    }
+                                    throw ex;
+                                }
+                            }
+
+                            // add the newly generated file to the solution, as a child of the source file...
+                            if (File.Exists(item.FilePath))
+                            {
+                                ProjectItem projectItem = null;
+                                projectItem = FindItemByFilePath(project.ProjectItems, item.FilePath, true);
+                                if (projectItem == null)
+                                {
+                                    if (item.DependUponInputFile)
+                                    {
+                                        projectItem = inputProjectItem.ProjectItems.AddFromFile(item.FilePath);
+                                    }
+                                    else
+                                    {
+                                        projectItem = project.ProjectItems.AddFromFile(item.FilePath);
+                                    }
+                                }
+
+                                // embed as a resource:
+                                if (item.EmbedResource)
+                                {
+                                    projectItem.Properties.Item("BuildAction").Value = 3;
+                                }
+
+                                // set a custom tool:
+                                if (!string.IsNullOrEmpty(item.CustomTool))
+                                {
+                                    string customTool = item.Properties["CustomTool"];
+                                    if (string.IsNullOrEmpty(customTool) || !string.Equals(customTool, item.CustomTool))
+                                    {
+                                        item.Properties["CustomTool"] = item.CustomTool;
+                                    }
+                                }
+
+                                foreach (var key in item.Properties.Keys)
+                                {
+                                    string value = item.Properties[key];
+                                    if (string.IsNullOrEmpty((string)value) || !string.Equals((string)value, value))
+                                    {
+                                        item.Properties[key] = value;
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                    }
+
+                    List<ProjectItem> itemsToRemove = new List<ProjectItem>();
+                    foreach (ProjectItem projectItem in inputProjectItem.ProjectItems)
+                    {
+                        if (!newFileNames.Contains(projectItem.Name))
+                        {
+                            itemsToRemove.Add(projectItem);
+                        }
+                    }
+                    // perform some clean-up, making sure we delete any old (stale) target-files
+                    foreach (var projectItem in itemsToRemove)
+                    {
+                        projectItem.Delete();
+                    }
+                    return VSConstants.S_OK;
+                }
+                catch (Exception ex)
+                {
+                    this.GeneratorError(0, string.Format("[{2}] Could not process input file: {0}. Error: {1}", wszInputFilePath, ex.ToString(), this.GetType().Name), 0, 0);
+                }
+                return VSConstants.S_FALSE;
             }
-            this.InputFileContents = inputFileContents;
-            this.DefaultNamespace = defaultNamespace;
+            return result;
         }
 
-        public string InputFileContents
+        protected abstract IEnumerable<TFileItem> Compile();
+
+        protected IEnumerable<TFileItem> GetFileItems()
         {
-            get;
-            private set;
+            return this.fileItems;
         }
 
-        public string InputFileName
+        public sealed override string GenerateStringContent()
         {
-            get;
-            private set;
+            return base.GenerateStringContent();
         }
 
-        public string InputFilePath
+        public sealed override byte[] GenerateByteContent()
         {
-            get;
-            private set;
+            this.fileItems = this.Compile();
+            foreach (TFileItem item in this.GetFileItems())
+            {
+                if (item.IsDefault)
+                {
+                    return this.GenerateByteContent(item);
+                }
+            }
+            return new byte[0];
         }
 
-        public string InputDirectory
-        {
-            get;
-            private set;
-        }
-
-        public string DefaultNamespace
-        {
-            get;
-            private set;
-        }
-
-        public abstract IEnumerable<MultipleFileItem<T>> GetFileItems();
-        public abstract string GetFileName(MultipleFileItem<T> element);
-        public virtual string GenerateStringContent(MultipleFileItem<T> element)
+        /// <summary>
+        /// The method that does the actual work of generating code given the input file
+        /// </summary>
+        /// <returns>The generated code file as a string</returns>
+        public virtual string GenerateStringContent(TFileItem item)
         {
             return "";
         }
-        public virtual byte[] GenerateByteContent(MultipleFileItem<T> element)
+
+        /// <summary>
+        /// The method that does the actual work of generating code given the input file
+        /// </summary>
+        /// <returns>The generated code file as a byte-array</returns>
+        public virtual byte[] GenerateByteContent(TFileItem item)
         {
-            string stringContent = this.GenerateStringContent(element);
+            string stringContent = this.GenerateStringContent(item);
             MemoryStream memory = new MemoryStream();
             StreamWriter writer = new StreamWriter(memory, Encoding.UTF8);
             writer.Write(stringContent);
@@ -87,185 +240,39 @@ namespace MetaDslx.VisualStudio
             memory.Read(contents, 0, contents.Length);
             return contents;
         }
+
+
+        /// <summary>
+        /// Finds a <see cref="ProjectItem"/> by name. 
+        /// The comparison is not case sensitive.
+        /// </summary>
+        /// <param name="collection">The collection.</param>
+        /// <param name="name">The file path.</param>
+        /// <param name="recursive">if set to <c>true</c> [recursive].</param>
+        /// <returns></returns>
+        public static ProjectItem FindItemByFilePath(ProjectItems collection, string filePath, bool recursive)
+        {
+            if (collection != null)
+            {
+                foreach (ProjectItem item1 in collection)
+                {
+                    if (string.Compare((string)item1.Properties.Item("FullPath")?.Value, filePath, true) == 0)
+                    {
+                        return item1;
+                    }
+                    if (recursive)
+                    {
+                        ProjectItem item2 = FindItemByFilePath(item1.ProjectItems, filePath, recursive);
+                        if (item2 != null)
+                        {
+                            return item2;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
     }
-
-    internal static class VSConstants
-    {
-        internal const int S_OK = 0;
-        internal const int S_FALSE = 1;
-        internal const int E_FAIL = -2147467259;
-    }
-
-    public abstract class SingleFileGenerator : BaseCodeGeneratorWithSite
-    {
-
-    }
-
-    //public abstract class MultipleFileGenerator<T> : BaseCodeGeneratorWithSite
-    //{
-    //    public MultipleFileGenerator()
-    //    {
-    //    }
-
-    //    public override int Generate(string wszInputFilePath, string bstrInputFileContents, string wszDefaultNamespace, IntPtr[] rgbOutputFileContents, out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
-    //    {
-    //        int result = base.Generate(wszInputFilePath, bstrInputFileContents, wszDefaultNamespace, rgbOutputFileContents, out pcbOutput, pGenerateProgress);
-    //        if (result == VSConstants.S_OK)
-    //        {
-    //            try
-    //            {
-    //                string defaultFileName = generator.InputFileName;
-    //                string defaultExt = null;
-    //                if (this.DefaultExtension(out defaultExt) == VSConstants.S_OK)
-    //                {
-    //                    defaultFileName = Path.ChangeExtension(defaultFileName, defaultExt);
-    //                }
-    //                else
-    //                {
-    //                    defaultFileName = Path.GetFileNameWithoutExtension(defaultFileName);
-    //                }
-
-    //                var existingItems = sourceItems.GetItemsAsync().Result;
-
-    //                // now we can start our work, iterate across all the 'elements' in our source file 
-    //                foreach (MultipleFileItem<T> element in generator.GetFileItems())
-    //                {
-    //                    try
-    //                    {
-    //                        // obtain a name for this target file
-    //                        string fileName = generator.GetFileName(element);
-    //                        // add it to the tracking cache
-    //                        newFileNames.Add(fileName);
-    //                        // fully qualify the file on the filesystem
-    //                        string strFile = Path.Combine(wszInputFilePath.Substring(0, wszInputFilePath.LastIndexOf(Path.DirectorySeparatorChar)), fileName);
-
-    //                        if (!element.GeneratedExternally)
-    //                        {
-    //                            if (fileName == defaultFileName)
-    //                            {
-    //                                // generate our target file content
-    //                                byte[] data = generator.GenerateByteContent(element);
-    //                                if (data == null)
-    //                                {
-    //                                    rgbOutputFileContents[0] = IntPtr.Zero;
-    //                                    pcbOutput = 0;
-    //                                }
-    //                                else
-    //                                {
-    //                                    // return our summary data, so that Visual Studio may write it to disk.
-    //                                    rgbOutputFileContents[0] = Marshal.AllocCoTaskMem(data.Length);
-    //                                    Marshal.Copy(data, 0, rgbOutputFileContents[0], data.Length);
-    //                                    pcbOutput = (uint)data.Length;
-    //                                }
-    //                            }
-    //                            else
-    //                            {
-    //                                // create the file
-    //                                FileStream fs = File.Create(strFile);
-    //                                try
-    //                                {
-    //                                    // generate our target file content
-    //                                    byte[] data = generator.GenerateByteContent(element);
-
-    //                                    // write it out to the stream
-    //                                    fs.Write(data, 0, data.Length);
-
-    //                                    fs.Close();
-    //                                }
-    //                                catch (Exception ex)
-    //                                {
-    //                                    fs.Close();
-    //                                    if (File.Exists(strFile))
-    //                                    {
-    //                                        File.Delete(strFile);
-    //                                    }
-    //                                    throw ex;
-    //                                }
-    //                            }
-    //                        }
-
-    //                        // add the newly generated file to the solution, as a child of the source file...
-    //                        if (File.Exists(strFile) && fileName != defaultFileName)
-    //                        {
-    //                            bool newItem = true;
-    //                            foreach (var item in existingItems)
-    //                            {
-    //                                if (item.EvaluatedIncludeAsFullPath == strFile)
-    //                                {
-    //                                    newItem = false;
-    //                                    break;
-    //                                }
-    //                            }
-    //                            if (newItem)
-    //                            {
-    //                                List<KeyValuePair<string, string>> metadata = new List<KeyValuePair<string, string>>();
-    //                                metadata.Add(new KeyValuePair<string, string>("DependentUpon", inputFilePathInProject));
-    //                                sourceItems.AddAsync(strFile, null, metadata).RunSynchronously();
-    //                            }
-    //                            /*EnvDTE.ProjectItem itm = item.ProjectItems.AddFromFile(strFile);
-
-    //                            // embed as a resource:
-    //                            if (element.EmbedResource)
-    //                            {
-    //                                itm.Properties.Item("BuildAction").Value = 3;
-    //                            }
-
-    //                            // set a custom tool:
-    //                            if (!string.IsNullOrEmpty(element.CustomTool))
-    //                            {
-    //                                EnvDTE.Property prop = itm.Properties.Item("CustomTool");
-    //                                if (string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, element.CustomTool))
-    //                                {
-    //                                    prop.Value = element.CustomTool;
-    //                                }
-    //                            }
-
-    //                            foreach (var key in element.Properties.Keys)
-    //                            {
-    //                                string value = element.Properties[key];
-    //                                EnvDTE.Property prop = itm.Properties.Item(key);
-    //                                if (prop != null && string.IsNullOrEmpty((string)prop.Value) || !string.Equals((string)prop.Value, value))
-    //                                {
-    //                                    prop.Value = value;
-    //                                }
-    //                            }*/
-    //                        }
-    //                    }
-    //                    catch (Exception ex)
-    //                    {
-    //                        throw ex;
-    //                    }
-    //                }
-
-    //                List<IProjectItem> itemsToRemove = new List<IProjectItem>();
-    //                foreach (var item in existingItems)
-    //                {
-    //                    string parentItem = item.Metadata.GetEvaluatedPropertyValueAsync("DependentUpon").Result;
-    //                    if (parentItem == inputFilePathInProject)
-    //                    {
-    //                        if (!newFileNames.Contains(item.EvaluatedIncludeAsFullPath))
-    //                        {
-    //                            itemsToRemove.Add(item);
-    //                        }
-    //                    }
-    //                }
-    //                // perform some clean-up, making sure we delete any old (stale) target-files
-    //                foreach (var item in itemsToRemove)
-    //                {
-    //                    sourceItems.RemoveAsync(item, DeleteOptions.DeleteFromStorage).RunSynchronously();
-    //                }
-    //                return VSConstants.S_OK;
-    //            }
-    //            catch (Exception ex)
-    //            {
-    //                pGenerateProgress.GeneratorError(0, 0, string.Format("[{2}] Could not process input file: {0}. Error: {1}", wszInputFilePath, ex.ToString(), this.GetType().Name), 0, 0);
-    //            }
-    //            return VSConstants.S_FALSE;
-    //        }
-    //        return result;
-    //    }
-
-    //}
 }
 
 

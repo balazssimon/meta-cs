@@ -24,6 +24,7 @@ namespace MetaDslx.VisualStudio
     /// a custom tool invoked at design time which can take any file as an input
     /// and provide any file as output.
     /// </summary>
+    [ComVisible(true)]
     public abstract class BaseCodeGenerator : IVsSingleFileGenerator
     {
         private IVsGeneratorProgress codeGeneratorProgress;
@@ -32,6 +33,11 @@ namespace MetaDslx.VisualStudio
         private string codeFileDirectory = string.Empty;
         private string codeFileName = string.Empty;
         private string codeFileContents = string.Empty;
+
+        public BaseCodeGenerator()
+        {
+
+        }
 
         #region IVsSingleFileGenerator Members
 
@@ -82,7 +88,6 @@ namespace MetaDslx.VisualStudio
             codeFileContents = bstrInputFileContents;
             codeGeneratorProgress = pGenerateProgress;
 
-            rgbOutputFileContents = null;
             pcbOutput = 0;
 
             try
@@ -92,6 +97,7 @@ namespace MetaDslx.VisualStudio
                 if (bytes == null)
                 {
                     // This signals that GenerateCode() has failed. Tasklist items have been put up in GenerateCode()
+                    rgbOutputFileContents = null;
                     // Return E_FAIL to inform Visual Studio that the generator has failed (so that no file gets generated)
                     return VSConstants.E_FAIL;
                 }
@@ -111,7 +117,7 @@ namespace MetaDslx.VisualStudio
             }
             catch (Exception ex)
             {
-                pGenerateProgress.GeneratorError(0, 0, string.Format("[{2}] Could not process input file: {0}. Error: {1}", wszInputFilePath, ex.ToString(), this.GetType().Name), 0, 0);
+                this.GeneratorError(0, string.Format("[{2}] Could not process input file: {0}. Error: {1}", wszInputFilePath, ex.ToString(), this.GetType().Name), 0, 0);
             }
             return VSConstants.E_FAIL;
         }

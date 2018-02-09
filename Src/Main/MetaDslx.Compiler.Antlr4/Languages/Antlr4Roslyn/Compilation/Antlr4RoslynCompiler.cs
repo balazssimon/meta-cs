@@ -63,6 +63,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public string GeneratedLanguageService { get; private set; }
 
+        public IEnumerable<string> GeneratedRoslynFiles { get; private set; }
+
         public Antlr4RoslynCompiler(string source, string defaultNamespace, string inputDirectory, string outputDirectory, string fileName)
             : base(source, defaultNamespace, inputDirectory, outputDirectory, fileName)
         {
@@ -257,9 +259,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             if (this.OutputDirectory == null) return;
 
+            List<string> generatedRoslynFiles = new List<string>();
+            this.GeneratedRoslynFiles = generatedRoslynFiles;
+
             if (this.GenerateLanguageService || this.GenerateCompiler)
             {
                 string outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxFacts);
@@ -268,11 +274,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (this.GenerateLanguageService)
             {
                 string outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxKind);
                 }
                 outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "LanguageService.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedLanguageService);
@@ -300,6 +308,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             CompilerGenerator generator = new CompilerGenerator(this.Grammar);
             generator.Properties.DefaultNamespace = this.DefaultNamespace;
             generator.Properties.LanguageName = this.LanguageName;
+
+            List<string> generatedRoslynFiles = new List<string>();
+            this.GeneratedRoslynFiles = generatedRoslynFiles;
 
             this.GeneratedSyntaxKind = generator.GenerateSyntaxKind();
 
@@ -331,36 +342,43 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Compilation"));
                 Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Binding"));
                 string outputFileName = Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "InternalSyntax.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedInternalSyntax);
                 }
                 outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxKind);
                 }
                 outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "Syntax.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntax);
                 }
                 outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxTree.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxTree);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Errors\" + this.LanguageName + @"ErrorCode.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedErrorCode);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Parser\" + this.LanguageName + @"SyntaxParser.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxParser);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Language.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 if (!File.Exists(outputFileName))
                 {
                     using (StreamWriter writer = new StreamWriter(outputFileName))
@@ -369,51 +387,61 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     }
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Compilation.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedCompilation);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedCompilationFactory);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationOptions.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedCompilationOptions);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedScriptCompilationInfo);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedLanguageVersion);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"ParseOptions.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedParseOptions);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedFeature);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedDeclarationTreeBuilder);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedBinderFactoryVisitor);
                 }
                 outputFileName = Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"SymbolBuilder.cs");
+                generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSymbolBuilder);
