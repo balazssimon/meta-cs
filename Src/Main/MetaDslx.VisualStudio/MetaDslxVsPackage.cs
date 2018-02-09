@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using MetaDslx.VisualStudio.MetaGenerator;
-using MetaDslx.VisualStudio.MetaGenerator.Generator;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
@@ -31,9 +29,6 @@ namespace MetaDslx.VisualStudio
     /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
     /// </para>
     /// </remarks>
-    //[CodeGeneratorRegistration(typeof(MetaGeneratorGenerator), MetaGeneratorDefinition.GeneratorServiceName, MetaGeneratorDefinition.MetaGeneratorGeneratorServiceGuid, GeneratesDesignTimeSource = true)]
-    //[ProvideObject(typeof(MetaGeneratorGenerator))]
-    /*
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(MetaDslxVsPackage.PackageGuidString)]
@@ -43,7 +38,7 @@ namespace MetaDslx.VisualStudio
         /// <summary>
         /// MetaDslxVsPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "0b2e594b-3fd7-4c05-bf60-2c0df4b90a23";
+        public const string PackageGuidString = "447b5571-03a4-4165-bea3-e0bc1c65a630";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MetaDslxVsPackage"/> class.
@@ -68,5 +63,5 @@ namespace MetaDslx.VisualStudio
         }
 
         #endregion
-    }*/
+    }
 }
