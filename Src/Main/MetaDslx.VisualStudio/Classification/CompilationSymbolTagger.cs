@@ -11,23 +11,20 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Classification
 {
-    public class CompilationSymbolTagger : CompilationTagger, ITagger<IClassificationTag>
+    internal class CompilationSymbolTagger : CompilationTagger, ITagger<IClassificationTag>
     {
-        public CompilationSymbolTagger(CompilationTaggerProvider taggerProvider, ITextView textView, ITextBuffer buffer)
-            : base(taggerProvider, textView, buffer)
+        public CompilationSymbolTagger(CompilationTaggerProvider taggerProvider, BackgroundCompilation backgroundCompilation)
+            : base(taggerProvider, backgroundCompilation)
         {
 
         }
 
         public IEnumerable<ITagSpan<IClassificationTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            this.CheckCompilationVersion();
+            this.BackgroundCompilation.CheckCompilationVersion();
             return ImmutableArray<ITagSpan<IClassificationTag>>.Empty;
         }
 
-        protected override void CompilationUpdated(ITextSnapshot newTextSnapshot, Compilation newCompilation, ITextSnapshot oldTextSnapshot, Compilation oldCompilation)
-        {
-            
-        }
+
     }
 }

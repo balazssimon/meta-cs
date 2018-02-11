@@ -56,10 +56,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classification\Antlr4LexerClassifier.cs" />
+    <Compile Include="Classification\BackgroundCompilation.cs" />
     <Compile Include="Classification\CompilationErrorsFactory.cs" />
     <Compile Include="Classification\CompilationErrorsSnapshot.cs" />
     <Compile Include="Classification\CompilationErrorTagger.cs" />
-    <Compile Include="Classification\CompilationManager.cs" />
+    <Compile Include="Classification\CompilationSnapshot.cs" />
     <Compile Include="Classification\CompilationSymbolTagger.cs" />
     <Compile Include="Classification\CompilationTagger.cs" />
     <Compile Include="Classification\CompilationTaggerProvider.cs" />

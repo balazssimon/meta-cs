@@ -46,15 +46,22 @@ namespace MetaDslx.VisualStudio.Classification
             if (buffer == null) throw new ArgumentNullException("buffer");
             if (buffer != textView.TextBuffer) return null;
             ITagger<T> tagger = null;
+            BackgroundCompilation compilation = buffer.Properties.GetOrCreateSingletonProperty(typeof(BackgroundCompilation), () => new BackgroundCompilation(this, buffer));
+            compilation.CompilationChanged += CompilationChanged;
             if (typeof(T) == typeof(IErrorTag))
             {
-                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationErrorTagger), () => new CompilationErrorTagger(this, textView, buffer));
+                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationErrorTagger), () => new CompilationErrorTagger(this, compilation));
             }
             else if (typeof(T) == typeof(IClassificationTag))
             {
-                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationSymbolTagger), () => new CompilationSymbolTagger(this, textView, buffer));
+                tagger = (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(typeof(CompilationSymbolTagger), () => new CompilationSymbolTagger(this, compilation));
             }
             return tagger;
+        }
+
+        private void CompilationChanged(object sender, CompilationChangedEventArgs e)
+        {
+            this.UpdateAllSinks();
         }
 
         internal Compilation Compile(string filePath, string sourceText, CancellationToken cancellationToken)

@@ -1,4 +1,5 @@
-﻿using MetaDslx.Compiler.Diagnostics;
+﻿using MetaDslx.Compiler;
+using MetaDslx.Compiler.Diagnostics;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
@@ -9,32 +10,51 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Classification
 {
     internal class CompilationErrorsSnapshot : WpfTableEntriesSnapshotBase
     {
-        private readonly string _filePath;
-        private readonly int _versionNumber;
-        private readonly ITextSnapshot _textSnapshot;
-        private readonly ImmutableArray<Diagnostic> _diagnostics;
+        private readonly string filePath;
+        private readonly int versionNumber;
+        private readonly CompilationSnapshot compilationSnapshot;
 
         internal CompilationErrorsSnapshot NextSnapshot;
 
-        internal CompilationErrorsSnapshot(string filePath, int versionNumber, ITextSnapshot textSnapshot, ImmutableArray<Diagnostic> diagnostics)
+        internal CompilationErrorsSnapshot(string filePath, int versionNumber, CompilationSnapshot compilationSnapshot)
         {
-            _filePath = filePath;
-            _versionNumber = versionNumber;
-            _textSnapshot = textSnapshot;
-            _diagnostics = diagnostics;
+            this.filePath = filePath;
+            this.versionNumber = versionNumber;
+            this.compilationSnapshot = compilationSnapshot;
+        }
+
+        private Compilation Compilation
+        {
+            get { return this.compilationSnapshot.Compilation; }
+        }
+
+        private ImmutableArray<Diagnostic> SyntaxDiagnostics
+        {
+            get { return this.Compilation.GetSyntaxDiagnostics(); }
+        }
+
+        private ImmutableArray<Diagnostic> SemanticDiagnostics
+        {
+            get { return this.Compilation.GetSemanticDiagnostics(); }
+        }
+
+        private ImmutableArray<Diagnostic> Diagnostics
+        {
+            get { return this.Compilation.GetDiagnostics(); }
         }
 
         public override int Count
         {
             get
             {
-                return this._diagnostics.Length;
+                return this.Diagnostics.Length;
             }
         }
 
@@ -42,13 +62,15 @@ namespace MetaDslx.VisualStudio.Classification
         {
             get
             {
-                return _versionNumber;
+                return this.versionNumber;
             }
         }
 
-        public ImmutableArray<Diagnostic> Diagnostics
+        public CompilationErrorsSnapshot Update(string filePath, CompilationSnapshot compilationSnapshot)
         {
-            get { return _diagnostics; }
+            Debug.Assert(this.NextSnapshot == null);
+            Interlocked.CompareExchange(ref this.NextSnapshot, new CompilationErrorsSnapshot(filePath, this.versionNumber + 1, compilationSnapshot), null);
+            return this.NextSnapshot;
         }
 
         public override int IndexOf(int currentIndex, ITableEntriesSnapshot newerSnapshot)
@@ -78,13 +100,14 @@ namespace MetaDslx.VisualStudio.Classification
 
         public override bool TryGetValue(int index, string columnName, out object content)
         {
-            if ((index >= 0) && (index < this._diagnostics.Length))
+            var diagnostics = this.Diagnostics;
+            if ((index >= 0) && (index < diagnostics.Length))
             {
-                var diagnostic = this._diagnostics[index];
+                var diagnostic = diagnostics[index];
                 if (columnName == StandardTableKeyNames.DocumentName)
                 {
                     // We return the full file path here. The UI handles displaying only the Path.GetFileName().
-                    content = _filePath;
+                    content = this.filePath;
                     return true;
                 }
                 else if (columnName == StandardTableKeyNames.ErrorCategory)

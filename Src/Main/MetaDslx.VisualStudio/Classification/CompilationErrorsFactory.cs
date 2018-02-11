@@ -13,17 +13,21 @@ namespace MetaDslx.VisualStudio.Classification
 {
     internal class CompilationErrorsFactory : TableEntriesSnapshotFactoryBase
     {
-        private CompilationErrorsSnapshot CurrentSnapshot;
+        private CompilationErrorsSnapshot currentSnapshot;
 
         public CompilationErrorsFactory(CompilationErrorTagger errorTagger, CompilationErrorsSnapshot compilationErrors)
         {
-            this.CurrentSnapshot = compilationErrors;
+            this.currentSnapshot = compilationErrors;
         }
 
-        internal void UpdateErrors(CompilationErrorsSnapshot compilationErrors)
+        internal void UpdateErrors(string filePath, CompilationSnapshot compilationSnapshot)
         {
-            Interlocked.Exchange(ref this.CurrentSnapshot.NextSnapshot, compilationErrors);
-            Interlocked.Exchange(ref this.CurrentSnapshot, compilationErrors);
+            Interlocked.Exchange(ref this.currentSnapshot, this.currentSnapshot.Update(filePath, compilationSnapshot));
+        }
+
+        public CompilationErrorsSnapshot CurrentSnapshot
+        {
+            get { return this.currentSnapshot; }
         }
 
         #region ITableEntriesSnapshotFactory members

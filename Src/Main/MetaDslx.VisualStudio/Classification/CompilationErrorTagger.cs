@@ -14,15 +14,14 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.VisualStudio.Classification
 {
-    public class CompilationErrorTagger : CompilationTagger, ITagger<IErrorTag>
+    internal class CompilationErrorTagger : CompilationTagger, ITagger<IErrorTag>
     {
-        private ImmutableArray<Diagnostic> diagnostics;
         internal readonly CompilationErrorsFactory Factory;
 
-        public CompilationErrorTagger(CompilationTaggerProvider taggerProvider, ITextView textView, ITextBuffer buffer)
-            : base(taggerProvider, textView, buffer)
+        public CompilationErrorTagger(CompilationTaggerProvider taggerProvider, BackgroundCompilation backgroundCompilation)
+            : base(taggerProvider, backgroundCompilation)
         {
-            this.Factory = new CompilationErrorsFactory(this, new CompilationErrorsSnapshot(string.Empty, 0, null, ImmutableArray<Diagnostic>.Empty));
+            this.Factory = new CompilationErrorsFactory(this, new CompilationErrorsSnapshot(backgroundCompilation.FilePath, 0, backgroundCompilation.CompilationSnapshot));
             taggerProvider.AddCompilationErrorsFactory(this.Factory);
         }
 
@@ -32,11 +31,18 @@ namespace MetaDslx.VisualStudio.Classification
             base.Dispose();
         }
 
+        protected override void CompilationChanged(object sender, CompilationChangedEventArgs e)
+        {
+            base.CompilationChanged(sender, e);
+            this.Factory.UpdateErrors(this.BackgroundCompilation.FilePath, this.BackgroundCompilation.CompilationSnapshot);
+        }
+
         public IEnumerable<ITagSpan<IErrorTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            this.CheckCompilationVersion();
-            ImmutableArray<Diagnostic> diagnostics = this.diagnostics;
-            ITextSnapshot textSnapshot = this.TextSnapshot;
+            this.BackgroundCompilation.CheckCompilationVersion();
+            var compilationSnapshot = this.BackgroundCompilation.CompilationSnapshot;
+            ImmutableArray<Diagnostic> diagnostics = compilationSnapshot.Compilation.GetDiagnostics();
+            ITextSnapshot textSnapshot = compilationSnapshot.Text;
             if (diagnostics != null)
             {
                 foreach (var diagnostic in diagnostics)
@@ -68,18 +74,6 @@ namespace MetaDslx.VisualStudio.Classification
             }
         }
 
-        protected override void CompilationUpdated(ITextSnapshot newTextSnapshot, Compilation newCompilation, ITextSnapshot oldTextSnapshot, Compilation oldCompilation)
-        {
-            if (newCompilation != null)
-            {
-                ImmutableArray<Diagnostic> diagnostics = newCompilation.GetDiagnostics();
-                ImmutableInterlocked.InterlockedExchange(ref this.diagnostics, diagnostics);
-            }
-            else
-            {
-                ImmutableInterlocked.InterlockedExchange(ref this.diagnostics, ImmutableArray<Diagnostic>.Empty);
-            }
-        }
     }
 
 }
