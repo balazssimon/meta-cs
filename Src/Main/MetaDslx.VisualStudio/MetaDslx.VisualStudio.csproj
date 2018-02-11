@@ -56,6 +56,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classification\Antlr4LexerClassifier.cs" />
+    <Compile Include="Classification\CompilationErrorsFactory.cs" />
+    <Compile Include="Classification\CompilationErrorsSnapshot.cs" />
+    <Compile Include="Classification\CompilationErrorTagger.cs" />
+    <Compile Include="Classification\CompilationManager.cs" />
+    <Compile Include="Classification\CompilationSymbolTagger.cs" />
+    <Compile Include="Classification\CompilationTagger.cs" />
+    <Compile Include="Classification\CompilationTaggerProvider.cs" />
+    <Compile Include="Classification\SinkManager.cs" />
     <Compile Include="CodeGeneration\BaseCodeGenerator.cs" />
     <Compile Include="CodeGeneration\BaseCodeGeneratorWithSite.cs" />
     <Compile Include="CodeGeneration\VsMultipleFileGenerator.cs" />
@@ -75,6 +83,7 @@
     <Compile Include="Languages\Meta\Classification\MetaClassificationProvider.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassificationTypes.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassifier.cs" />
+    <Compile Include="Languages\Meta\Classification\MetaTaggerProvider.cs" />
     <Compile Include="Languages\Meta\CodeGeneration\MetaGenerator.cs" />
     <Compile Include="Languages\Meta\MetaDefinition.cs" />
     <Compile Include="Languages\OriginalAntlr4\Classification\OriginalAntlr4ClassificationProvider.cs" />

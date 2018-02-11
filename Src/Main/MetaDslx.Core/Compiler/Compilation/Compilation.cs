@@ -701,6 +701,11 @@ namespace MetaDslx.Compiler
             }
         }
 
+        public void Execute(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            this.ForceCompleteModel(null, cancellationToken);
+        }
+
         /// <summary>
         /// The root namespace that contains all namespaces and types defined in source code or in 
         /// referenced metadata, merged into a single namespace hierarchy.
