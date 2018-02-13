@@ -29,16 +29,6 @@ namespace MetaDslx.VisualStudio
         public void CacheClassification(ClassificationSpan classification)
         {
             this.CachedClassifications.Add(classification);
-            /*
-            int startLine = classification.Span.Snapshot.GetLineFromPosition(classification.Span.Start.Position).LineNumber;
-            int endLine = classification.Span.Snapshot.GetLineFromPosition(classification.Span.End.Position - 1).LineNumber;
-            bool isMultiLineToken = startLine != endLine;
-
-            if (isMultiLineToken)
-            {
-                if (this.MultiLineTokens == null) this.MultiLineTokens = new List<int>();
-                this.MultiLineTokens.Add(this.CachedClassifications.Count - 1);
-            }*/
         }
     }
 
@@ -122,7 +112,6 @@ namespace MetaDslx.VisualStudio
 
         protected virtual LexerState SaveLexerState()
         {
-            //if (this.lexer.CurrentMode == 0 && this.lexer.ModeStack.Count == 0) return null;
             LexerState state = new LexerState(this.lexer);
             return state;
         }
@@ -297,14 +286,6 @@ namespace MetaDslx.VisualStudio
                     this.Invalidate(this.CreateSnapshotSpan(span, classificationSpan.Start, span.Start.Position));
                 }
             }
-            /*if (endIndex >= 0)
-            {
-                Span classificationSpan = block.CachedClassifications[endIndex].Span.Span;
-                if (span.End.Position < classificationSpan.End)
-                {
-                    this.Invalidate(this.CreateSnapshotSpan(span, span.End.Position, classificationSpan.End));
-                }
-            }*/
             if (span.End.Position > blockSpan.Start && span.End.Position < blockSpan.End)
             {
                 this.Invalidate(this.CreateSnapshotSpan(span, span.End.Position, blockSpan.End));
@@ -315,7 +296,6 @@ namespace MetaDslx.VisualStudio
         {
             Span blockSpan = block.Block.GetSpan(span.Snapshot);
             if (span.Contains(blockSpan)) return;
-            //if (span.Start.Position >= blockSpan.End) return;
             if (span.Start.Position > blockSpan.Start && span.Start.Position < blockSpan.End)
             {
                 this.Invalidate(this.CreateSnapshotSpan(span, blockSpan.Start, span.Start.Position));

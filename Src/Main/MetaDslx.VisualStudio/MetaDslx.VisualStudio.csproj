@@ -56,6 +56,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classification\Antlr4LexerClassifier.cs" />
+    <Compile Include="Classification\Antlr4Tagging\BackgroundCompilation.cs" />
+    <Compile Include="Classification\Antlr4Tagging\CompilationErrorsFactory.cs" />
+    <Compile Include="Classification\Antlr4Tagging\CompilationErrorsSnapshot.cs" />
+    <Compile Include="Classification\Antlr4Tagging\CompilationErrorTagger.cs" />
+    <Compile Include="Classification\Antlr4Tagging\CompilationSnapshot.cs" />
+    <Compile Include="Classification\Antlr4Tagging\CompilationSymbolTagger.cs" />
+    <Compile Include="Classification\Antlr4Tagging\CompilationTagger.cs" />
+    <Compile Include="Classification\Antlr4Tagging\CompilationTaggerProvider.cs" />
+    <Compile Include="Classification\Antlr4Tagging\SinkManager.cs" />
     <Compile Include="Classification\BackgroundCompilation.cs" />
     <Compile Include="Classification\CompilationErrorsFactory.cs" />
     <Compile Include="Classification\CompilationErrorsSnapshot.cs" />
@@ -67,17 +76,20 @@
     <Compile Include="Classification\SinkManager.cs" />
     <Compile Include="CodeGeneration\BaseCodeGenerator.cs" />
     <Compile Include="CodeGeneration\BaseCodeGeneratorWithSite.cs" />
+    <Compile Include="CodeGeneration\CodeGeneratorExtensionRegistrationAttribute.cs" />
     <Compile Include="CodeGeneration\VsMultipleFileGenerator.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Antlr4RoslynDefinition.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassificationDefinitions.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassificationProvider.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassificationTypes.cs" />
     <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassifier.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynTaggerProvider.cs" />
     <Compile Include="Languages\Antlr4Roslyn\CodeGeneration\Antlr4RoslynGenerator.cs" />
     <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassificationDefinitions.cs" />
     <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassificationProvider.cs" />
     <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassificationTypes.cs" />
     <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassifier.cs" />
+    <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorTaggerProvider.cs" />
     <Compile Include="Languages\MetaGenerator\CodeGeneration\MetaGeneratorGenerator.cs" />
     <Compile Include="Languages\MetaGenerator\MetaGeneratorDefinition.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassificationDefinitions.cs" />
@@ -87,6 +99,7 @@
     <Compile Include="Languages\Meta\Classification\MetaTaggerProvider.cs" />
     <Compile Include="Languages\Meta\CodeGeneration\MetaGenerator.cs" />
     <Compile Include="Languages\Meta\MetaDefinition.cs" />
+    <Compile Include="Languages\OriginalAntlr4\Classification\Antlr4TaggerProvider.cs" />
     <Compile Include="Languages\OriginalAntlr4\Classification\OriginalAntlr4ClassificationProvider.cs" />
     <Compile Include="Languages\OriginalAntlr4\CodeGeneration\Antlr4Generator.cs" />
     <Compile Include="Languages\OriginalAntlr4\OriginalAntlr4Definition.cs" />

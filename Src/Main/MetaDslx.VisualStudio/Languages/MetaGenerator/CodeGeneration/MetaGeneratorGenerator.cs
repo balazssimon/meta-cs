@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Languages.MetaGenerator.Compilation;
+using MetaDslx.VisualStudio.CodeGeneration;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace MetaDslx.VisualStudio.Languages.MetaGenerator.CodeGeneration
     [Guid(MetaGeneratorDefinition.GeneratorServiceGuid)]
     [CodeGeneratorRegistration(typeof(MetaGeneratorGenerator), MetaGeneratorDefinition.GeneratorServiceName, "{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}", GeneratesDesignTimeSource = true)]
     [CodeGeneratorRegistration(typeof(MetaGeneratorGenerator), MetaGeneratorDefinition.GeneratorServiceName, "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}", GeneratesDesignTimeSource = true)]
+    [CodeGeneratorExtensionRegistration(typeof(MetaGeneratorGenerator), "{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}", MetaGeneratorDefinition.FileExtension)]
+    [CodeGeneratorExtensionRegistration(typeof(MetaGeneratorGenerator), "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}", MetaGeneratorDefinition.FileExtension)]
     [ProvideObject(typeof(MetaGeneratorGenerator))]
     public class MetaGeneratorGenerator : SingleFileGenerator
     {
