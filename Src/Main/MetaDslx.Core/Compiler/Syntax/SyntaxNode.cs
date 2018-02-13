@@ -861,7 +861,7 @@ namespace MetaDslx.Compiler.Syntax
             {
                 value = default(RedNode);
 
-                while (_stack[_stackPtr].MoveToNextNode())
+                while (_stack[_stackPtr].MoveNext())
                 {
                     value = _stack[_stackPtr].Current;
                     if (IsInSpan(ref span, value.FullSpan))

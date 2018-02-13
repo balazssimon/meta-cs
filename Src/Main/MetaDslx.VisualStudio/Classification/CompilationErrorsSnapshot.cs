@@ -37,17 +37,17 @@ namespace MetaDslx.VisualStudio.Classification
 
         private ImmutableArray<Diagnostic> SyntaxDiagnostics
         {
-            get { return this.Compilation.GetSyntaxDiagnostics(); }
+            get { return this.Compilation?.GetSyntaxDiagnostics() ?? ImmutableArray<Diagnostic>.Empty; }
         }
 
         private ImmutableArray<Diagnostic> SemanticDiagnostics
         {
-            get { return this.Compilation.GetSemanticDiagnostics(); }
+            get { return this.Compilation?.GetSemanticDiagnostics() ?? ImmutableArray<Diagnostic>.Empty; }
         }
 
         private ImmutableArray<Diagnostic> Diagnostics
         {
-            get { return this.Compilation.GetDiagnostics(); }
+            get { return this.Compilation?.GetDiagnostics() ?? ImmutableArray<Diagnostic>.Empty; }
         }
 
         public override int Count

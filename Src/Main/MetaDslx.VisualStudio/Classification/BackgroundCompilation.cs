@@ -1,6 +1,11 @@
-﻿using Microsoft.VisualStudio.Text;
+﻿using MetaDslx.Compiler;
+using MetaDslx.Compiler.Syntax;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Tagging;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,7 +19,11 @@ namespace MetaDslx.VisualStudio.Classification
         private WeakReference<ITextBuffer> textBuffer;
 
         private CompilationSnapshot compilationSnapshot;
+        private CompilationSnapshot backgroundCompilationSnapshot;
+        private ITextVersion backgroundVersion;
         private CancellationTokenSource cancellationTokenSource;
+
+        private BackgroundWorker backgroundWorker;
 
         public BackgroundCompilation(CompilationTaggerProvider provider, ITextBuffer textBuffer)
         {
@@ -22,6 +31,7 @@ namespace MetaDslx.VisualStudio.Classification
             this.textBuffer = new WeakReference<ITextBuffer>(textBuffer);
             this.cancellationTokenSource = new CancellationTokenSource();
             this.compilationSnapshot = MetaDslx.VisualStudio.Classification.CompilationSnapshot.Default;
+            this.backgroundCompilationSnapshot = MetaDslx.VisualStudio.Classification.CompilationSnapshot.Default;
         }
 
         public void Dispose()
@@ -81,25 +91,60 @@ namespace MetaDslx.VisualStudio.Classification
 
         public void CheckCompilationVersion()
         {
-            ITextSnapshot textSnapshot = this.TextBuffer?.CurrentSnapshot;
-            if (this.compilationSnapshot == null || this.compilationSnapshot.Changed(textSnapshot))
+            ITextVersion textVersion = this.TextBuffer?.CurrentSnapshot?.Version;
+            if (this.backgroundVersion == null || this.backgroundVersion != textVersion)
             {
+                Interlocked.Exchange(ref this.backgroundVersion, textVersion);
                 this.Compile();
             }
         }
 
-        public void Compile()
+        private void Compile()
         {
-            this.cancellationTokenSource.Cancel();
-            this.cancellationTokenSource.Dispose();
+            try
+            {
+                this.cancellationTokenSource.Cancel();
+                this.cancellationTokenSource.Dispose();
+                this.cancellationTokenSource = null;
+            }
+            catch(Exception)
+            {
+                // nop
+            }
+            try
+            {
+                if (this.backgroundWorker != null)
+                {
+                    this.backgroundWorker.Dispose();
+                    this.backgroundWorker = null;
+                }
+            }
+            catch (Exception)
+            {
+                // nop
+            }
             this.cancellationTokenSource = new CancellationTokenSource();
-            this.BackgroundCompile();
-            // TODO: Task.Run(() => this.BackgroundCompile());
+            this.backgroundWorker = new BackgroundWorker();
+            this.backgroundWorker.DoWork += BackgroundWorker_DoWork;
+            this.backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
+            this.backgroundWorker.RunWorkerAsync();
+            //this.BackgroundCompile();
+            //Task.Run(() => this.BackgroundCompile());
         }
 
-        public void Cancel()
+        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.cancellationTokenSource.Cancel();
+            CompilationSnapshot oldCompilation = this.backgroundCompilationSnapshot;
+            if (this.compilationSnapshot != oldCompilation)
+            {
+                Interlocked.Exchange(ref this.compilationSnapshot, this.backgroundCompilationSnapshot);
+                this.CompilationChanged?.Invoke(this, new CompilationChangedEventArgs(oldCompilation, this.compilationSnapshot));
+            }
+        }
+
+        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            this.BackgroundCompile();
         }
 
         private void BackgroundCompile()
@@ -107,25 +152,48 @@ namespace MetaDslx.VisualStudio.Classification
             ITextBuffer textBuffer = this.TextBuffer;
             if (textBuffer == null) return;
             ITextSnapshot textSnapshot = textBuffer.CurrentSnapshot;
-            if (this.compilationSnapshot.Changed(textSnapshot))
+            if (this.backgroundCompilationSnapshot.Changed(textSnapshot))
             {
                 string filePath = this.FilePath;
                 string sourceText = textSnapshot.GetText();
                 var versionBefore = textSnapshot.Version;
                 var compilation = this.provider.Compile(filePath, sourceText, this.cancellationTokenSource.Token);
-                if (this.compilationSnapshot == null || compilation != null)
+                if (this.backgroundCompilationSnapshot == null || compilation != null)
                 {
                     textSnapshot = textBuffer.CurrentSnapshot;
                     var versionAfter = textSnapshot.Version;
                     if (versionAfter == versionBefore)
                     {
-                        CompilationSnapshot oldCompilation = this.compilationSnapshot;
-                        Interlocked.Exchange(ref this.compilationSnapshot, this.compilationSnapshot.Update(textSnapshot, compilation));
-                        this.CompilationChanged?.Invoke(this, new CompilationChangedEventArgs(oldCompilation, this.compilationSnapshot));
+                        Interlocked.Exchange(ref this.backgroundCompilationSnapshot, this.backgroundCompilationSnapshot.Update(textSnapshot, compilation, this.GetSymbolTokens(compilation)));
+                        //Interlocked.Exchange(ref this.compilationSnapshot, this.backgroundCompilationSnapshot);
                     }
                 }
             }
         }
+
+        private Dictionary<SyntaxToken, IClassificationTag> GetSymbolTokens(Compilation compilation)
+        {
+            Dictionary<SyntaxToken, IClassificationTag> result = new Dictionary<SyntaxToken, IClassificationTag>();
+            SyntaxTree syntaxTree = compilation.SyntaxTrees.FirstOrDefault();
+            if (syntaxTree == null) return result;
+            SyntaxNode root;
+            if (syntaxTree.TryGetRoot(out root))
+            {
+                var errorSymbol = compilation.ErrorSymbol;
+                SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
+                foreach (var token in root.DescendantTokens())
+                {
+                    var tag = this.provider.GetTokenClassificationTag(token, syntaxTree, compilation, semanticModel);
+                    if (tag != null)
+                    {
+                        result.Add(token, tag);
+                    }
+                }
+                return result;
+            }
+            return result;
+        }
+
     }
 
     internal class CompilationChangedEventArgs

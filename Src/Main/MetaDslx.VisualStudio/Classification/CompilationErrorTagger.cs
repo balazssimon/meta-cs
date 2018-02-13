@@ -41,8 +41,10 @@ namespace MetaDslx.VisualStudio.Classification
         {
             this.BackgroundCompilation.CheckCompilationVersion();
             var compilationSnapshot = this.BackgroundCompilation.CompilationSnapshot;
+            if (compilationSnapshot.Compilation == null) yield break;
             ImmutableArray<Diagnostic> diagnostics = compilationSnapshot.Compilation.GetDiagnostics();
             ITextSnapshot textSnapshot = compilationSnapshot.Text;
+            if (textSnapshot == null || spans.Count == 0 || spans.First().Snapshot.Version != textSnapshot.Version) yield break;
             if (diagnostics != null)
             {
                 foreach (var diagnostic in diagnostics)

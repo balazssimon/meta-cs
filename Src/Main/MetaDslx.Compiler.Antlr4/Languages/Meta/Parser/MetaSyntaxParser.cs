@@ -59,22 +59,22 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			private MetaGreenFactory factory;
             private MetaSyntaxParser syntaxParser;
 			private IList<IToken> tokens;
-            private IToken lastToken;
+            private IToken lastTokenOrTrivia;
             public Antlr4ToRoslynVisitor(MetaSyntaxParser syntaxParser)
             {
                 this.language = MetaLanguage.Instance;
 				this.factory = language.InternalSyntaxFactory;
                 this.syntaxParser = syntaxParser;
 				this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
-                this.lastToken = null;
+                this.lastTokenOrTrivia = null;
             }
             public override GreenNode VisitTerminal(ITerminalNode node)
             {
-                GreenNode result = this.syntaxParser.VisitTerminal(node, this.lastToken);
-                if (result != null && !result.IsMissing)
+                GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastTokenOrTrivia);
+                /*if (result != null && !result.IsMissing)
                 {
-                    this.lastToken = node.Symbol;
-                }
+                    this.lastGreenToken = result;
+                }*/
                 return result;
             }
 			

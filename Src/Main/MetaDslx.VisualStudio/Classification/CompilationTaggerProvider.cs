@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler;
+using MetaDslx.Compiler.Syntax;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.VisualStudio.Text;
@@ -24,14 +25,17 @@ namespace MetaDslx.VisualStudio.Classification
     {
         public readonly ITableManager ErrorTableManager;
         public readonly ITextDocumentFactoryService TextDocumentFactoryService;
+        public readonly IClassificationTypeRegistryService ClassificationRegistryService;
 
         private readonly List<SinkManager> _managers = new List<SinkManager>();      // Also used for locks
         private readonly List<CompilationErrorsFactory> _factories = new List<CompilationErrorsFactory>();
 
-        protected CompilationTaggerProvider(ITableManagerProvider provider, ITextDocumentFactoryService textDocumentFactoryService)
+        protected CompilationTaggerProvider(ITableManagerProvider provider, ITextDocumentFactoryService textDocumentFactoryService,
+            IClassificationTypeRegistryService classificationRegistryService)
         {
             this.ErrorTableManager = provider.GetTableManager(StandardTables.ErrorsTable);
             this.TextDocumentFactoryService = textDocumentFactoryService;
+            this.ClassificationRegistryService = classificationRegistryService;
 
             this.ErrorTableManager.AddSource(this, StandardTableColumnDefinitions.DetailsExpander,
                                                    StandardTableColumnDefinitions.ErrorSeverity, StandardTableColumnDefinitions.ErrorCode,
@@ -79,7 +83,8 @@ namespace MetaDslx.VisualStudio.Classification
         }
 
         protected abstract Compilation CreateCompilation(string filePath, string sourceText, CancellationToken cancellationToken);
-        
+
+        public abstract IClassificationTag GetTokenClassificationTag(SyntaxToken token, SyntaxTree syntaxTree, Compilation compilation, SemanticModel semanticModel);
 
         #region ITableDataSource members
         public abstract string DisplayName

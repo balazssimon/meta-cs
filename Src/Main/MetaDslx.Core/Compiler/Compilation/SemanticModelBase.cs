@@ -584,7 +584,8 @@ namespace MetaDslx.Compiler
         protected static TypeInfo GetTypeInfoForSymbol(ISymbol symbol, BindingOptions options)
         {
             Debug.Assert((object)symbol != null);
-            return new TypeInfo(symbol, symbol);
+            if (symbol.MIsType) return new TypeInfo(symbol, symbol);
+            else return TypeInfo.None;
         }
     }
 }

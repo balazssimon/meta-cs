@@ -13,6 +13,10 @@ namespace MetaDslx.VisualStudio.Languages.OriginalAntlr4
         public const string ContentType = "OriginalAntlr4";
         public const string FileExtension = ".g4";
 
+        public const string GeneratorServiceGuid = "88821DA7-9F79-4E6D-B129-D8D37DA23E74";
+        public const string GeneratorServiceName = "C# Code Generator for ANTLR4";
+        public const string FilterList = "ANTLR4 Files (*.g4)\n*.g4";
+
         /// <summary>
         /// Exports the OriginalAntlr4 content type
         /// </summary>

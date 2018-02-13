@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Meta.Syntax;
@@ -25,10 +26,13 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
     [ContentType(MetaDefinition.ContentType)]
     public class MetaTaggerProvider : CompilationTaggerProvider
     {
+        public readonly IClassificationTag TypeClassificationTag;
+
         [ImportingConstructor]
-        internal MetaTaggerProvider([Import] ITableManagerProvider provider, [Import] ITextDocumentFactoryService textDocumentFactoryService) 
-            : base(provider, textDocumentFactoryService)
+        internal MetaTaggerProvider([Import] ITableManagerProvider provider, [Import] ITextDocumentFactoryService textDocumentFactoryService, [Import] IClassificationTypeRegistryService classificationRegistryService) 
+            : base(provider, textDocumentFactoryService, classificationRegistryService)
         {
+            this.TypeClassificationTag = new ClassificationTag(this.ClassificationRegistryService.GetClassificationType(MetaClassificationTypes.Type)); 
         }
 
         public override string DisplayName => "MetaModel";
@@ -40,5 +44,52 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
             var compilation = MetaCompilation.Create(filePath).AddReferences(metaModelReference).AddSyntaxTrees(tree);
             return compilation;
         }
+
+        public override IClassificationTag GetTokenClassificationTag(SyntaxToken token, SyntaxTree syntaxTree, Compilation compilation, SemanticModel semanticModel)
+        {
+            var metaToken = token as MetaSyntaxToken;
+            if (metaToken != null)
+            {
+                MetaTokenKind kind = MetaLanguage.Instance.SyntaxFacts.GetTokenKind(metaToken.Kind);
+                if (kind == MetaTokenKind.None || kind == MetaTokenKind.Identifier)
+                {
+                    if (this.IsTypeSymbolToken(token, semanticModel, compilation.ErrorSymbol))
+                    {
+                        return this.TypeClassificationTag;
+                    }
+                    else if (this.IsAnnotationSymbolToken(token, semanticModel))
+                    {
+                        return this.TypeClassificationTag;
+                    }
+                }
+            }
+            return null;
+        }
+
+
+        protected bool IsTypeSymbolToken(SyntaxToken token, SemanticModel semanticModel, MetaDslx.Core.ISymbol errorSymbol)
+        {
+            SyntaxNode node = token.Parent;
+            while (node != null && node.SlotCount == 1)
+            {
+                var si = semanticModel.GetTypeInfo(node);
+                if (si != null && si != TypeInfo.None) return si.Type != errorSymbol;
+                node = node.Parent;
+            }
+            return false;
+        }
+
+        protected bool IsAnnotationSymbolToken(SyntaxToken token, SemanticModel semanticModel)
+        {
+            SyntaxNode node = token.Parent;
+            while (node != null && node.SlotCount == 1)
+            {
+                var si = semanticModel.GetSymbolInfo(node);
+                if (si != null && si != SymbolInfo.None) return si.Symbol is MetaAnnotation;
+                node = node.Parent;
+            }
+            return false;
+        }
+
     }
 }

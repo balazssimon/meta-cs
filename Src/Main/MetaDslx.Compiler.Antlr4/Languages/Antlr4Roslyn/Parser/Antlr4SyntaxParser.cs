@@ -49,7 +49,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
 
         private int GetLeadingTriviaTokenStartIndex(IToken token, IToken previousToken)
         {
-            int lastNewLine = -1;
+            return previousToken != null ? previousToken.TokenIndex + 1 : 0;
+            /*int lastNewLine = -1;
             int i = token.TokenIndex - 1;
             int lastTriviaToken = token.TokenIndex;
             int lastTriviaTokenBeforeNewLine = lastTriviaToken;
@@ -67,7 +68,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
                 --i;
             }
             if (lastNewLine < 0 || previousToken == null) return lastTriviaToken;
-            else return lastTriviaTokenBeforeNewLine;
+            else return lastTriviaTokenBeforeNewLine;*/
         }
 
         private int GetTrailingTriviaTokenEndIndex(IToken token, IToken nextToken)
@@ -112,7 +113,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
             return null;
         }
 
-        private GreenNode GetTrailingTrivia(IToken token)
+        private GreenNode GetTrailingTrivia(IToken token, ref IToken lastTokenOrTrivia)
         {
             int startIndex = token.TokenIndex + 1;
             int endIndex = GetTrailingTriviaTokenEndIndex(token, null);
@@ -127,6 +128,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
                     trivia = (InternalSyntaxTrivia)this.AddDiagnostic(trivia, i);
                     triviaArray[i - startIndex] = trivia;
                 }
+                lastTokenOrTrivia = this.tokens[endIndex];
                 return new InternalSyntaxTriviaList(triviaArray, null, null);
             }
             return null;
@@ -144,11 +146,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
         }
 
 
-        protected GreenNode VisitTerminal(ITerminalNode node, IToken previousToken)
+        protected GreenNode VisitTerminal(ITerminalNode node, ref IToken previousTokenOrTrivia)
         {
             if (node == null) return null;
             InternalSyntaxToken result = null;
             bool addTrivia = true;
+            bool updatePreviousTokenOrTrivia = true;
             IToken token = node.Symbol;
             if (token.Type >= 0)
             {
@@ -165,8 +168,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
                 else
                 {
                     string text = node.GetText();
-                    result = this.factory.Token(this.GetLeadingTrivia(token, previousToken), kind, text, text, this.GetTrailingTrivia(token));
+                    GreenNode leadingTrivia = this.GetLeadingTrivia(token, previousTokenOrTrivia);
+                    previousTokenOrTrivia = token;
+                    GreenNode trailingTrivia = this.GetTrailingTrivia(token, ref previousTokenOrTrivia);
+                    result = this.factory.Token(leadingTrivia, kind, text, text, trailingTrivia);
                     addTrivia = false;
+                    updatePreviousTokenOrTrivia = false;
                 }
             }
             else
@@ -175,10 +182,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
             }
             if (addTrivia)
             {
-                GreenNode leadingTrivia = this.GetLeadingTrivia(token, previousToken);
+                GreenNode leadingTrivia = this.GetLeadingTrivia(token, previousTokenOrTrivia);
                 if (leadingTrivia != null) result = result.WithLeadingTrivia(leadingTrivia);
-                GreenNode trailingTrivia = this.GetTrailingTrivia(token);
+                previousTokenOrTrivia = token;
+                GreenNode trailingTrivia = this.GetTrailingTrivia(token, ref previousTokenOrTrivia);
                 if (trailingTrivia != null) result = result.WithTrailingTrivia(trailingTrivia);
+                updatePreviousTokenOrTrivia = false;
+            }
+            if (updatePreviousTokenOrTrivia)
+            {
+                previousTokenOrTrivia = token;
             }
             return this.AddDiagnostic(result, token.TokenIndex);
         }
