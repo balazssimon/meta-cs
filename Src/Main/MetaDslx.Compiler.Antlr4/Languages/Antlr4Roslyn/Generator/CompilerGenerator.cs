@@ -8587,7 +8587,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.AppendLine(false); //1278:72
             __out.Append("            {"); //1279:1
             __out.AppendLine(false); //1279:14
-            __out.Append("                GreenNode result = this.syntaxParser.VisitTerminal(node, this.lastToken);"); //1280:1
+            __out.Append("                GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastToken);"); //1280:1
             __out.AppendLine(false); //1280:90
             __out.Append("                if (result != null && !result.IsMissing)"); //1281:1
             __out.AppendLine(false); //1281:57

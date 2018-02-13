@@ -70,7 +70,7 @@ namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
             }
             public override GreenNode VisitTerminal(ITerminalNode node)
             {
-                GreenNode result = this.syntaxParser.VisitTerminal(node, this.lastToken);
+                GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastToken);
                 if (result != null && !result.IsMissing)
                 {
                     this.lastToken = node.Symbol;
