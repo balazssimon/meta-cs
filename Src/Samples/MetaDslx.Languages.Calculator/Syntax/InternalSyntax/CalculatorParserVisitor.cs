@@ -129,3 +129,4 @@ public interface ICalculatorParserVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitArg([NotNull] CalculatorParser.ArgContext context);
 }
 } // namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
+

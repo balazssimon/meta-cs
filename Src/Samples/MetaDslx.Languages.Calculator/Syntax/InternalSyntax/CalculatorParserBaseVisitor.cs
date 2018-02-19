@@ -191,3 +191,4 @@ public partial class CalculatorParserBaseVisitor<Result> : AbstractParseTreeVisi
 	public virtual Result VisitArg([NotNull] CalculatorParser.ArgContext context) { return VisitChildren(context); }
 }
 } // namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
+

@@ -17,6 +17,11 @@
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Languages\Antlr4Roslyn\Generator\CompilerGenerator.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CompilerGenerator.mgen</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -30,13 +35,29 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Languages\Antlr4Roslyn\Generator\CompilerGenerator.mgen">
+      <Generator>MetaGeneratorGenerator</Generator>
+      <LastGenOutput>CompilerGenerator.cs</LastGenOutput>
+    </None>
     <None Update="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.ag4">
       <CustomToolNamespace>MetaDslx.Languages.Antlr4Roslyn</CustomToolNamespace>
-      <Generator></Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>Antlr4RoslynLexer.g4</LastGenOutput>
+    </None>
+    <None Update="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.g4">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Antlr4RoslynLexer.ag4</DependentUpon>
     </None>
     <None Update="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.ag4">
       <CustomToolNamespace>MetaDslx.Languages.Antlr4Roslyn</CustomToolNamespace>
-      <Generator></Generator>
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>Antlr4RoslynParser.g4</LastGenOutput>
+    </None>
+    <None Update="Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.g4">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Antlr4RoslynParser.ag4</DependentUpon>
     </None>
     <None Update="Languages\MetaGenerator\Syntax\InternalSyntax\MetaGeneratorLexer.ag4">
       <Generator>Antlr4RoslynGenerator</Generator>
@@ -57,6 +78,26 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>MetaGeneratorParser.ag4</DependentUpon>
+    </None>
+    <None Update="Languages\Meta\Syntax\InternalSyntax\MetaLexer.ag4">
+      <CustomToolNamespace>MetaDslx.Languages.Meta.Syntax.InternalSyntax</CustomToolNamespace>
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>MetaLexer.g4</LastGenOutput>
+    </None>
+    <None Update="Languages\Meta\Syntax\InternalSyntax\MetaLexer.g4">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MetaLexer.ag4</DependentUpon>
+    </None>
+    <None Update="Languages\Meta\Syntax\InternalSyntax\MetaParser.ag4">
+      <CustomToolNamespace>MetaDslx.Languages.Meta.Syntax.InternalSyntax</CustomToolNamespace>
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>MetaParser.g4</LastGenOutput>
+    </None>
+    <None Update="Languages\Meta\Syntax\InternalSyntax\MetaParser.g4">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MetaParser.ag4</DependentUpon>
     </None>
   </ItemGroup>
 </Project>

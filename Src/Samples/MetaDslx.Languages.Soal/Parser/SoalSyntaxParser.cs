@@ -71,10 +71,6 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
             public override GreenNode VisitTerminal(ITerminalNode node)
             {
                 GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastToken);
-                if (result != null && !result.IsMissing)
-                {
-                    this.lastToken = node.Symbol;
-                }
                 return result;
             }
 			

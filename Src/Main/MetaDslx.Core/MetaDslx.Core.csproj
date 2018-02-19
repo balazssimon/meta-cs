@@ -16,4 +16,27 @@
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.2.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Languages\Meta\Generator\ImmutableMetaModelGenerator.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ImmutableMetaModelGenerator.mgen</DependentUpon>
+    </Compile>
+    <Compile Update="Languages\Meta\Symbols\ImmutableMetaModel.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ImmutableMetaModel.mm</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen">
+      <CustomToolNamespace>MetaDslx.Languages.Meta.Generator</CustomToolNamespace>
+      <Generator>MetaGeneratorGenerator</Generator>
+      <LastGenOutput>ImmutableMetaModelGenerator.cs</LastGenOutput>
+    </None>
+    <None Update="Languages\Meta\Symbols\ImmutableMetaModel.mm">
+      <Generator>MetaGenerator</Generator>
+      <LastGenOutput>ImmutableMetaModel.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>

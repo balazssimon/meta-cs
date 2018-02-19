@@ -1391,3 +1391,4 @@ public interface ISoalParserListener : IParseTreeListener {
 	void ExitContextualKeywords([NotNull] SoalParser.ContextualKeywordsContext context);
 }
 } // namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
+

@@ -1674,3 +1674,4 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 }
 } // namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
+

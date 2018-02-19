@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
 {
     public abstract class LexerAdaptor : Lexer
     {
-        public LexerAdaptor(ICharStream input)
-            : base(input)
+        public LexerAdaptor(ICharStream input, TextWriter output, TextWriter errorOutput)
+            : base(input, output, errorOutput)
         {
         }
 

@@ -484,3 +484,4 @@ public interface IAntlr4RoslynParserVisitor<Result> : IParseTreeVisitor<Result> 
 	Result VisitNullLiteral([NotNull] Antlr4RoslynParser.NullLiteralContext context);
 }
 } // namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
+

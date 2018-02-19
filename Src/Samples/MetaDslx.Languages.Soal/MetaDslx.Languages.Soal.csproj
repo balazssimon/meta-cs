@@ -9,4 +9,26 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.Compiler.Antlr4\MetaDslx.Compiler.Antlr4.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Syntax\InternalSyntax\SoalLexer.ag4">
+      <CustomToolNamespace>MetaDslx.Languages.Soal.Syntax.InternalSyntax</CustomToolNamespace>
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>SoalLexer.g4</LastGenOutput>
+    </None>
+    <None Update="Syntax\InternalSyntax\SoalLexer.g4">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SoalLexer.ag4</DependentUpon>
+    </None>
+    <None Update="Syntax\InternalSyntax\SoalParser.ag4">
+      <CustomToolNamespace>MetaDslx.Languages.Soal.Syntax.InternalSyntax</CustomToolNamespace>
+      <Generator>Antlr4RoslynGenerator</Generator>
+      <LastGenOutput>SoalParser.g4</LastGenOutput>
+    </None>
+    <None Update="Syntax\InternalSyntax\SoalParser.g4">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SoalParser.ag4</DependentUpon>
+    </None>
+  </ItemGroup>
 </Project>

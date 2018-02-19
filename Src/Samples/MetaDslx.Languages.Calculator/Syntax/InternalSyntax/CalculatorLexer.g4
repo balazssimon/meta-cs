@@ -1,7 +1,7 @@
 ﻿lexer grammar CalculatorLexer;
 
 options {
-	                             
+	                              
 }
 
 channels {

@@ -846,3 +846,4 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitContextualKeywords([NotNull] SoalParser.ContextualKeywordsContext context);
 }
 } // namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
+

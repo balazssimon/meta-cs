@@ -786,3 +786,4 @@ public partial class Antlr4RoslynParserBaseVisitor<Result> : AbstractParseTreeVi
 	public virtual Result VisitNullLiteral([NotNull] Antlr4RoslynParser.NullLiteralContext context) { return VisitChildren(context); }
 }
 } // namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
+

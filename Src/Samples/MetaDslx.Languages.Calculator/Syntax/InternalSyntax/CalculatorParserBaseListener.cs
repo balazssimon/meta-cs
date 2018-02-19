@@ -240,3 +240,4 @@ public partial class CalculatorParserBaseListener : ICalculatorParserListener {
 	public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 }
 } // namespace MetaDslx.Languages.Calculator.Syntax.InternalSyntax
+

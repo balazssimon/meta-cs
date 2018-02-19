@@ -950,3 +950,4 @@ public partial class Antlr4RoslynParserBaseListener : IAntlr4RoslynParserListene
 	public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 }
 } // namespace MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax
+

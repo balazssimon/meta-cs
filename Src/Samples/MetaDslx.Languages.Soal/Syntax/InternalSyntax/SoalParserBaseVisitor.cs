@@ -1380,3 +1380,4 @@ public partial class SoalParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	public virtual Result VisitContextualKeywords([NotNull] SoalParser.ContextualKeywordsContext context) { return VisitChildren(context); }
 }
 } // namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
+

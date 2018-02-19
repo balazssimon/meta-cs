@@ -403,21 +403,6 @@ namespace MetaDslx.TempConsole
             }
         }
 
-        private static void GenerateLanguageService(string language, string languageNamespace, string outputDirectory, string outputFileName, bool roslynCompiler, bool generateMultipleFiles)
-        {
-            LanguageServiceGenerator generator = new LanguageServiceGenerator(null);
-            generator.Properties.LanguageServiceNamespace = "MetaDslx.VisualStudio";
-            generator.Properties.LanguageClassName = language;
-            generator.Properties.LanguageNamespace = languageNamespace;
-            generator.Properties.LanguageName = language;
-            generator.Properties.RoslynCompiler = roslynCompiler;
-            generator.Properties.GenerateMultipleFiles = generateMultipleFiles;
-            using (StreamWriter writer = new StreamWriter(Path.Combine(outputDirectory, outputFileName)))
-            {
-                writer.WriteLine(generator.Generate());
-            }
-        }
-
         private static void LazyPropertyTest()
         {
 

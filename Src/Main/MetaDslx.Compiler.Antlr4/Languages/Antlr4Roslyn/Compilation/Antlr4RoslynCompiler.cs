@@ -280,18 +280,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
-        private string GetLanguageService()
-        {
-            LanguageServiceGenerator generator = new LanguageServiceGenerator(null);
-            generator.Properties.LanguageServiceNamespace = this.DefaultNamespace+".VisualStudio";
-            generator.Properties.LanguageClassName = this.LanguageName;
-            generator.Properties.LanguageNamespace = this.DefaultNamespace;
-            generator.Properties.LanguageName = this.LanguageName;
-            generator.Properties.RoslynCompiler = this.GenerateCompiler && !this.IgnoreRoslynRules;
-            generator.Properties.GenerateMultipleFiles = false;
-            return generator.Generate();
-        }
-
         private void GenerateParser()
         {
             if (!this.IsParser) return;
