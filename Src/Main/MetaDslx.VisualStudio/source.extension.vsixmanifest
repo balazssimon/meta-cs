@@ -2,8 +2,8 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
         <Identity Id="MetaDslx.VisualStudio.50b1d033-9524-4c69-982e-ac24d6e495a1" Version="0.11" Language="en-US" Publisher="Balazs Simon" />
-        <DisplayName>MetaDslx.VisualStudio</DisplayName>
-        <Description xml:space="preserve">Empty VSIX Project.</Description>
+        <DisplayName>MetaDslx Extension for Visual Studio</DisplayName>
+        <Description xml:space="preserve">A metamodel, compiler and template-based code generator framework for Visual Studio</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,16.0)" />

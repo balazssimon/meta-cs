@@ -18,6 +18,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string Antlr4Jar { get; private set; }
         public string CSharpSource { get; private set; }
         public string TokensSource { get; private set; }
+        public string VisitorSource { get; private set; }
+        public string ListenerSource { get; private set; }
+        public string BaseVisitorSource { get; private set; }
+        public string BaseListenerSource { get; private set; }
+
+        public bool GenerateCSharpSource { get; set; }
 
         public bool IsParser { get; private set; }
         public bool IsLexer { get; private set; }
@@ -27,6 +33,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             : base(source, defaultNamespace, inputDirectory, outputDirectory, fileName)
         {
             this.Imports = new List<string>();
+            this.GenerateCSharpSource = true;
         }
 
         protected override Antlr4RoslynLexer CreateLexer(AntlrInputStream stream)
@@ -52,11 +59,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.IsParser = v.IsParser;
             this.IsLexer = v.IsLexer;
             this.Imports.AddRange(v.Imports);
-        }
 
-        protected override void DoGenerate()
-        {
-            this.GenerateAntlr4();
+            this.CompileAntlr4();
         }
 
         private LinePositionSpan GetTokenSpanAt(int line, int column)
@@ -94,18 +98,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
             Directory.CreateDirectory(tempDirectory);
             return tempDirectory;
-        }
-
-        private bool CopyToOutput(string sourceDir, string targetDir, string fileName)
-        {
-            string tmpFile = Path.Combine(sourceDir, fileName);
-            string outputFile = Path.Combine(targetDir, fileName);
-            if (File.Exists(tmpFile))
-            {
-                File.Copy(tmpFile, outputFile, true);
-                return true;
-            }
-            return false;
         }
 
         private bool ProcessAntlr4ErrorLine(string antlr4Line)
@@ -161,7 +153,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return false;
         }
 
-        private void GenerateAntlr4()
+        private void CompileAntlr4()
         {
             try
             {
@@ -241,20 +233,27 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         {
                             this.CSharpSource = File.ReadAllText(csFileName);
                         }
-                        if (this.OutputDirectory != null)
+                        if (this.IsParser)
                         {
-                            this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + ".tokens");
-                            if (this.IsLexer)
+                            string baseVisitorFileName = Path.Combine(tmpDir, bareFileName + "BaseVisitor.cs");
+                            if (File.Exists(baseVisitorFileName))
                             {
-                                this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + ".cs");
+                                this.BaseVisitorSource = File.ReadAllText(baseVisitorFileName);
                             }
-                            if (this.IsParser)
+                            string baseListenerFileName = Path.Combine(tmpDir, bareFileName + "BaseListener.cs");
+                            if (File.Exists(baseListenerFileName))
                             {
-                                this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + "BaseVisitor.cs");
-                                this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + "BaseListener.cs");
-                                this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + "Visitor.cs");
-                                this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + "Listener.cs");
-                                this.CopyToOutput(tmpDir, this.OutputDirectory, bareFileName + ".cs");
+                                this.BaseListenerSource = File.ReadAllText(baseListenerFileName);
+                            }
+                            string visitorFileName = Path.Combine(tmpDir, bareFileName + "Visitor.cs");
+                            if (File.Exists(visitorFileName))
+                            {
+                                this.VisitorSource = File.ReadAllText(visitorFileName);
+                            }
+                            string listenerFileName = Path.Combine(tmpDir, bareFileName + "Listener.cs");
+                            if (File.Exists(listenerFileName))
+                            {
+                                this.ListenerSource = File.ReadAllText(listenerFileName);
                             }
                         }
                     }
@@ -268,6 +267,37 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             {
                 this.AddDiagnostic(Antlr4RoslynErrorCode.ERR_Antlr4CallError, ex.Message, this.FileName);
             }
+        }
+
+
+        protected override void DoGenerate()
+        {
+            if (this.OutputDirectory != null)
+            {
+                string bareFileName = Path.GetFileNameWithoutExtension(this.FileName);
+                this.WriteToOutput(this.TokensSource, this.OutputDirectory, bareFileName + ".tokens");
+                if (this.GenerateCSharpSource)
+                {
+                    this.WriteToOutput(this.CSharpSource, this.OutputDirectory, bareFileName + ".cs");
+                }
+                if (this.IsParser)
+                {
+                    this.WriteToOutput(this.BaseVisitorSource, this.OutputDirectory, bareFileName + "BaseVisitor.cs");
+                    this.WriteToOutput(this.BaseListenerSource, this.OutputDirectory, bareFileName + "BaseListener.cs");
+                    this.WriteToOutput(this.VisitorSource, this.OutputDirectory, bareFileName + "Visitor.cs");
+                    this.WriteToOutput(this.ListenerSource, this.OutputDirectory, bareFileName + "Listener.cs");
+                }
+            }
+        }
+
+        private bool WriteToOutput(string sourceText, string targetDir, string fileName)
+        {
+            string outputFile = Path.Combine(targetDir, fileName);
+            using (StreamWriter writer = new StreamWriter(outputFile))
+            {
+                writer.WriteLine(sourceText);
+            }
+            return false;
         }
 
     }

@@ -96,13 +96,11 @@ $Property(Declarations)
 $SymbolDef(MetaConstant)
 constDeclaration : KConst $Property(Type) typeReference name TSemicolon;
 
-$SymbolUse(MetaType)
 returnType : typeReference | voidType;
 typeOfReference : typeReference;
-$SymbolUse(MetaType)
 typeReference : collectionType | simpleType;
-$SymbolUse
-simpleType : primitiveType | objectType | nullableType | qualifier;
+simpleType : primitiveType | objectType | nullableType | classType;
+
 $SymbolUse(MetaClass)
 classType : qualifier;
 

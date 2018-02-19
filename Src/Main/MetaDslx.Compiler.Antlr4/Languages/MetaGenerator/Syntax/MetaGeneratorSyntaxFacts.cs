@@ -73,6 +73,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.KIn:
 				case MetaGeneratorSyntaxKind.KIf:
 				case MetaGeneratorSyntaxKind.KElse:
+				case MetaGeneratorSyntaxKind.KRepeat:
+				case MetaGeneratorSyntaxKind.KUntil:
+				case MetaGeneratorSyntaxKind.KWhile:
 				case MetaGeneratorSyntaxKind.KLoop:
 				case MetaGeneratorSyntaxKind.KHasLoop:
 				case MetaGeneratorSyntaxKind.KWhere:
@@ -216,6 +219,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.KIn:
 				case MetaGeneratorSyntaxKind.KIf:
 				case MetaGeneratorSyntaxKind.KElse:
+				case MetaGeneratorSyntaxKind.KRepeat:
+				case MetaGeneratorSyntaxKind.KUntil:
+				case MetaGeneratorSyntaxKind.KWhile:
 				case MetaGeneratorSyntaxKind.KLoop:
 				case MetaGeneratorSyntaxKind.KHasLoop:
 				case MetaGeneratorSyntaxKind.KWhere:
@@ -345,6 +351,12 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return "if";
 				case MetaGeneratorSyntaxKind.KElse:
 					return "else";
+				case MetaGeneratorSyntaxKind.KRepeat:
+					return "repeat";
+				case MetaGeneratorSyntaxKind.KUntil:
+					return "until";
+				case MetaGeneratorSyntaxKind.KWhile:
+					return "while";
 				case MetaGeneratorSyntaxKind.KLoop:
 					return "loop";
 				case MetaGeneratorSyntaxKind.KHasLoop:
@@ -544,6 +556,12 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorSyntaxKind.KIf;
 				case "else":
 					return MetaGeneratorSyntaxKind.KElse;
+				case "repeat":
+					return MetaGeneratorSyntaxKind.KRepeat;
+				case "until":
+					return MetaGeneratorSyntaxKind.KUntil;
+				case "while":
+					return MetaGeneratorSyntaxKind.KWhile;
 				case "loop":
 					return MetaGeneratorSyntaxKind.KLoop;
 				case "hasloop":
@@ -753,6 +771,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.KIn:
 				case MetaGeneratorSyntaxKind.KIf:
 				case MetaGeneratorSyntaxKind.KElse:
+				case MetaGeneratorSyntaxKind.KRepeat:
+				case MetaGeneratorSyntaxKind.KUntil:
+				case MetaGeneratorSyntaxKind.KWhile:
 				case MetaGeneratorSyntaxKind.KLoop:
 				case MetaGeneratorSyntaxKind.KHasLoop:
 				case MetaGeneratorSyntaxKind.KWhere:
@@ -998,6 +1019,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 				case MetaGeneratorSyntaxKind.KIn:
 				case MetaGeneratorSyntaxKind.KIf:
 				case MetaGeneratorSyntaxKind.KElse:
+				case MetaGeneratorSyntaxKind.KRepeat:
+				case MetaGeneratorSyntaxKind.KUntil:
+				case MetaGeneratorSyntaxKind.KWhile:
 				case MetaGeneratorSyntaxKind.KLoop:
 				case MetaGeneratorSyntaxKind.KHasLoop:
 				case MetaGeneratorSyntaxKind.KWhere:

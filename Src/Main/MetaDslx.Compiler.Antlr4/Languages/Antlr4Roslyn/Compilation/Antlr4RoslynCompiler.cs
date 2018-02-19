@@ -61,7 +61,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string GeneratedBinderFactoryVisitor { get; private set; }
         public string GeneratedSymbolBuilder { get; private set; }
 
-        public string GeneratedLanguageService { get; private set; }
+        //public string GeneratedLanguageService { get; private set; }
 
         public IEnumerable<string> GeneratedRoslynFiles { get; private set; }
 
@@ -151,6 +151,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.remover.Visit(this.ParseTree);
             this.Antlr4Source = remover.GetText();
             OriginalAntlr4Compiler antlr4Compiler = new Compilation.OriginalAntlr4Compiler(this.Antlr4Source, this.DefaultNamespace+ ".Syntax.InternalSyntax", this.InputDirectory, this.OutputDirectory != null && this.GenerateAntlr4 ? this.InputDirectory : null, Path.ChangeExtension(this.FileName, ".g4"));
+            antlr4Compiler.GenerateOutput = this.GenerateOutput;
             antlr4Compiler.Generate();
             this.Antlr4CSharpSource = antlr4Compiler.CSharpSource;
             this.ReadTokens(antlr4Compiler.TokensSource);
@@ -255,14 +256,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             generator.Properties.LanguageName = this.LanguageName;
             this.GeneratedSyntaxFacts = generator.GenerateSyntaxFacts();
             this.GeneratedSyntaxKind = generator.GenerateSyntaxKind();
-            this.GeneratedLanguageService = this.GetLanguageService();
+            //this.GeneratedLanguageService = this.GetLanguageService();
 
             if (this.OutputDirectory == null) return;
 
             List<string> generatedRoslynFiles = new List<string>();
             this.GeneratedRoslynFiles = generatedRoslynFiles;
 
-            if (this.GenerateLanguageService || this.GenerateCompiler)
+            if (this.GenerateCompiler)
             {
                 string outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.cs");
                 generatedRoslynFiles.Add(outputFileName);
@@ -270,20 +271,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 {
                     writer.WriteLine(this.GeneratedSyntaxFacts);
                 }
-            }
-            if (this.GenerateLanguageService)
-            {
-                string outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs");
+                outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs");
                 generatedRoslynFiles.Add(outputFileName);
                 using (StreamWriter writer = new StreamWriter(outputFileName))
                 {
                     writer.WriteLine(this.GeneratedSyntaxKind);
-                }
-                outputFileName = Path.Combine(this.SyntaxDirectory, this.LanguageName + "LanguageService.cs");
-                generatedRoslynFiles.Add(outputFileName);
-                using (StreamWriter writer = new StreamWriter(outputFileName))
-                {
-                    writer.WriteLine(this.GeneratedLanguageService);
                 }
             }
         }
@@ -1220,7 +1212,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         private bool IsRoslynRule(Antlr4RoslynParser.LabeledAltContext context, ref bool reportedErrors, out Antlr4ParserRule rule)
         {
-            Antlr4RoslynParser.ElementContext[] elems = context.alternative().element();
+            Antlr4RoslynParser.ElementContext[] elems = context.alternative().element().Where(e => !this.IsActionBlock(e)).ToArray();
             rule = new Antlr4ParserRule(this.Grammar);
             for (int i = 0; i < elems.Length; ++i)
             {
@@ -1240,9 +1232,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return this.CheckUniqueElements(rule, ref reportedErrors);
         }
 
+        private bool IsActionBlock(Antlr4RoslynParser.ElementContext elem)
+        {
+            return elem.actionBlock() != null;
+        }
+
         private bool EndsWithEof(Antlr4RoslynParser.LabeledAltContext context)
         {
-            Antlr4RoslynParser.ElementContext[] elems = context.alternative().element();
+            Antlr4RoslynParser.ElementContext[] elems = context.alternative().element().Where(e => !this.IsActionBlock(e)).ToArray();
             if (elems.Length > 0)
             {
                 Antlr4RoslynParser.ElementContext elem = elems[elems.Length - 1];
@@ -1423,7 +1420,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 block = new Antlr4ParserRuleElement(context);
                 block.IsBlock = true;
                 var alt = context.altList().alternative()[0];
-                Antlr4RoslynParser.ElementContext[] elems = alt.element();
+                Antlr4RoslynParser.ElementContext[] elems = alt.element().Where(e => !this.IsActionBlock(e)).ToArray();
                 for (int i = 0; i < elems.Length; ++i)
                 {
                     Antlr4ParserRuleElement element;
@@ -1450,7 +1447,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         private bool IsRoslynSingleElementAlt(Antlr4RoslynParser.AlternativeContext context, TokenOrRule kind, bool allowEbnf, ref bool reportedErrors, out Antlr4ParserRuleElement element)
         {
-            Antlr4RoslynParser.ElementContext[] elems = context.element();
+            Antlr4RoslynParser.ElementContext[] elems = context.element().Where(e => !this.IsActionBlock(e)).ToArray();
             int skip = this.IsRoslynRuleElement(elems[0], elems.Length >= 2 ? elems[1] : null, elems.Length >= 3 ? elems[2] : null, false, ref reportedErrors, out element);
             if (skip > 0 && skip == elems.Length)
             {

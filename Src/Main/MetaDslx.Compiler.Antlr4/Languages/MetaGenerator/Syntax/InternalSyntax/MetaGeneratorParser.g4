@@ -27,7 +27,7 @@ methodDeclaration : functionDeclaration | templateDeclaration | externFunctionDe
 
 externFunctionDeclaration : KExtern functionSignature;
 functionDeclaration : functionSignature body KEnd KFunction;
-functionSignature : KFunction returnType identifier TOpenParenthesis paramList? TCloseParenthesis;
+functionSignature : KFunction returnType identifier typeArgumentList? TOpenParenthesis paramList? TCloseParenthesis;
 paramList : parameter (TComma parameter)*;
 parameter : typeReference identifier (TAssign expression)?;
 
@@ -35,6 +35,8 @@ body : statement*;
 statement 
     : singleStatementSemicolon
     | ifStatement
+    | whileStatement
+    | repeatStatement
     | loopStatement
 	| switchStatement;
 
@@ -49,6 +51,7 @@ singleStatementSemicolon : singleStatement TSemicolon;
 variableDeclarationStatement : typeReference identifier (TAssign expression)?;
 returnStatement : KReturn expression;
 expressionStatement : expression;
+
 ifStatement : ifStatementBegin body elseIfStatementBody* ifStatementElseBody? ifStatementEnd;
 elseIfStatementBody : elseIfStatement body;
 ifStatementElseBody : ifStatementElse body;
@@ -57,6 +60,22 @@ ifStatementBegin : KIf TOpenParenthesis expression TCloseParenthesis;
 elseIfStatement : KElse KIf TOpenParenthesis expression TCloseParenthesis;
 ifStatementElse : KElse;
 ifStatementEnd : KEnd KIf;
+
+
+whileStatement : whileStatementBegin body whileStatementEnd;
+
+whileStatementBegin : KWhile TOpenParenthesis expression /*whileRunExpression?*/ TCloseParenthesis;
+whileStatementEnd : KEnd KWhile;
+whileRunExpression : separatorStatement;
+
+
+repeatStatement : repeatStatementBegin body repeatStatementEnd;
+
+repeatStatementBegin : KRepeat;
+repeatStatementEnd : KUntil TOpenParenthesis expression /*repeatRunExpression?*/ TCloseParenthesis;
+repeatRunExpression : separatorStatement;
+
+
 loopStatement : loopStatementBegin body loopStatementEnd;
 loopStatementBegin : KLoop TOpenParenthesis loopChain loopWhereExpression? /*loopOrderByExpression?*/ loopRunExpression? TCloseParenthesis;
 loopStatementEnd : KEnd KLoop;
@@ -74,6 +93,8 @@ loopWhereExpression : KWhere expression;
 //loopRun : separatorStatement | variableDeclarationStatement | expressionStatement;
 loopRunExpression : separatorStatement;
 separatorStatement : TSemicolon KSeparator identifier TAssign stringLiteral;
+
+
 switchStatement : switchStatementBegin switchBranchStatement* switchDefaultStatement? switchStatementEnd;
 switchStatementBegin : KSwitch TOpenParenthesis expression TCloseParenthesis;
 switchStatementEnd : KEnd KSwitch;
@@ -102,6 +123,10 @@ templateStatement
     | elseIfStatement
     | ifStatementElse
     | ifStatementEnd
+    | whileStatementBegin
+    | whileStatementEnd
+    | repeatStatementBegin
+    | repeatStatementEnd
     | loopStatementBegin
     | loopStatementEnd
 	| switchStatementBegin

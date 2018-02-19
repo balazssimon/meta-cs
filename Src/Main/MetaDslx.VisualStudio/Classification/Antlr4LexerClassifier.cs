@@ -341,7 +341,7 @@ namespace MetaDslx.VisualStudio
             int tokenType = -1;
             int startPosition = textSpan.Start;
             int endPosition = startPosition;
-            int blockEnd = startPosition + BlockSize * 2;
+            int blockEnd = startPosition + BlockSize;
             do
             {
                 LexerState state = this.SaveLexerState();
@@ -404,7 +404,7 @@ namespace MetaDslx.VisualStudio
             while (token != null && startPosition < textSpan.End && startPosition < blockEnd);
 
             Span blockSpan = Span.FromBounds(textSpan.Start, endPosition);
-            block.Block = span.Snapshot.CreateTrackingSpan(blockSpan, textSpan.Start == 0 ? SpanTrackingMode.EdgeNegative : SpanTrackingMode.EdgeExclusive);
+            block.Block = span.Snapshot.CreateTrackingSpan(blockSpan, textSpan.Start == 0 ? SpanTrackingMode.EdgeInclusive : SpanTrackingMode.EdgePositive);
             block.EndState = this.SaveLexerState();
             this.InvalidateBlockEdge(span, block);
         }

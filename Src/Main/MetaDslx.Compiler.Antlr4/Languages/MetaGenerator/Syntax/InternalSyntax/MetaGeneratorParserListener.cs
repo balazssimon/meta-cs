@@ -230,6 +230,26 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitVariableDeclarationStatement([NotNull] MetaGeneratorParser.VariableDeclarationStatementContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterVariableDeclarationExpression([NotNull] MetaGeneratorParser.VariableDeclarationExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitVariableDeclarationExpression([NotNull] MetaGeneratorParser.VariableDeclarationExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationItem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterVariableDeclarationItem([NotNull] MetaGeneratorParser.VariableDeclarationItemContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationItem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitVariableDeclarationItem([NotNull] MetaGeneratorParser.VariableDeclarationItemContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.returnStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -319,6 +339,126 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitIfStatementEnd([NotNull] MetaGeneratorParser.IfStatementEndContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.forStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterForStatement([NotNull] MetaGeneratorParser.ForStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.forStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitForStatement([NotNull] MetaGeneratorParser.ForStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.forStatementBegin"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterForStatementBegin([NotNull] MetaGeneratorParser.ForStatementBeginContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.forStatementBegin"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitForStatementBegin([NotNull] MetaGeneratorParser.ForStatementBeginContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.forStatementEnd"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterForStatementEnd([NotNull] MetaGeneratorParser.ForStatementEndContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.forStatementEnd"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitForStatementEnd([NotNull] MetaGeneratorParser.ForStatementEndContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.forInitStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterForInitStatement([NotNull] MetaGeneratorParser.ForInitStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.forInitStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitForInitStatement([NotNull] MetaGeneratorParser.ForInitStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.whileStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhileStatement([NotNull] MetaGeneratorParser.WhileStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.whileStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhileStatement([NotNull] MetaGeneratorParser.WhileStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.whileStatementBegin"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhileStatementBegin([NotNull] MetaGeneratorParser.WhileStatementBeginContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.whileStatementBegin"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhileStatementBegin([NotNull] MetaGeneratorParser.WhileStatementBeginContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.whileStatementEnd"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhileStatementEnd([NotNull] MetaGeneratorParser.WhileStatementEndContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.whileStatementEnd"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhileStatementEnd([NotNull] MetaGeneratorParser.WhileStatementEndContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.whileRunExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhileRunExpression([NotNull] MetaGeneratorParser.WhileRunExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.whileRunExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhileRunExpression([NotNull] MetaGeneratorParser.WhileRunExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.repeatStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRepeatStatement([NotNull] MetaGeneratorParser.RepeatStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.repeatStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRepeatStatement([NotNull] MetaGeneratorParser.RepeatStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementBegin"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRepeatStatementBegin([NotNull] MetaGeneratorParser.RepeatStatementBeginContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementBegin"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRepeatStatementBegin([NotNull] MetaGeneratorParser.RepeatStatementBeginContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementEnd"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRepeatStatementEnd([NotNull] MetaGeneratorParser.RepeatStatementEndContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementEnd"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRepeatStatementEnd([NotNull] MetaGeneratorParser.RepeatStatementEndContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.repeatRunExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRepeatRunExpression([NotNull] MetaGeneratorParser.RepeatRunExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.repeatRunExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRepeatRunExpression([NotNull] MetaGeneratorParser.RepeatRunExpressionContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.loopStatement"/>.
 	/// </summary>
@@ -1447,3 +1587,4 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	void ExitGuidLiteral([NotNull] MetaGeneratorParser.GuidLiteralContext context);
 }
 } // namespace MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax
+

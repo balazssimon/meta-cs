@@ -151,6 +151,18 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <return>The visitor result.</return>
 	Result VisitVariableDeclarationStatement([NotNull] MetaGeneratorParser.VariableDeclarationStatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVariableDeclarationExpression([NotNull] MetaGeneratorParser.VariableDeclarationExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationItem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVariableDeclarationItem([NotNull] MetaGeneratorParser.VariableDeclarationItemContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.returnStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -204,6 +216,78 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIfStatementEnd([NotNull] MetaGeneratorParser.IfStatementEndContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.forStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForStatement([NotNull] MetaGeneratorParser.ForStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.forStatementBegin"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForStatementBegin([NotNull] MetaGeneratorParser.ForStatementBeginContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.forStatementEnd"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForStatementEnd([NotNull] MetaGeneratorParser.ForStatementEndContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.forInitStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForInitStatement([NotNull] MetaGeneratorParser.ForInitStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.whileStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileStatement([NotNull] MetaGeneratorParser.WhileStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.whileStatementBegin"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileStatementBegin([NotNull] MetaGeneratorParser.WhileStatementBeginContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.whileStatementEnd"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileStatementEnd([NotNull] MetaGeneratorParser.WhileStatementEndContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.whileRunExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileRunExpression([NotNull] MetaGeneratorParser.WhileRunExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.repeatStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRepeatStatement([NotNull] MetaGeneratorParser.RepeatStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementBegin"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRepeatStatementBegin([NotNull] MetaGeneratorParser.RepeatStatementBeginContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementEnd"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRepeatStatementEnd([NotNull] MetaGeneratorParser.RepeatStatementEndContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.repeatRunExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRepeatRunExpression([NotNull] MetaGeneratorParser.RepeatRunExpressionContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.loopStatement"/>.
 	/// </summary>
@@ -874,3 +958,4 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	Result VisitGuidLiteral([NotNull] MetaGeneratorParser.GuidLiteralContext context);
 }
 } // namespace MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax
+

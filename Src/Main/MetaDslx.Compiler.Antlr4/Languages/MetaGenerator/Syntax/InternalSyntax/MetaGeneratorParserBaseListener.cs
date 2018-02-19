@@ -272,6 +272,30 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitVariableDeclarationStatement([NotNull] MetaGeneratorParser.VariableDeclarationStatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVariableDeclarationExpression([NotNull] MetaGeneratorParser.VariableDeclarationExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVariableDeclarationExpression([NotNull] MetaGeneratorParser.VariableDeclarationExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationItem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVariableDeclarationItem([NotNull] MetaGeneratorParser.VariableDeclarationItemContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.variableDeclarationItem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVariableDeclarationItem([NotNull] MetaGeneratorParser.VariableDeclarationItemContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.returnStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -379,6 +403,150 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitIfStatementEnd([NotNull] MetaGeneratorParser.IfStatementEndContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.forStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterForStatement([NotNull] MetaGeneratorParser.ForStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.forStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitForStatement([NotNull] MetaGeneratorParser.ForStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.forStatementBegin"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterForStatementBegin([NotNull] MetaGeneratorParser.ForStatementBeginContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.forStatementBegin"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitForStatementBegin([NotNull] MetaGeneratorParser.ForStatementBeginContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.forStatementEnd"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterForStatementEnd([NotNull] MetaGeneratorParser.ForStatementEndContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.forStatementEnd"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitForStatementEnd([NotNull] MetaGeneratorParser.ForStatementEndContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.forInitStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterForInitStatement([NotNull] MetaGeneratorParser.ForInitStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.forInitStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitForInitStatement([NotNull] MetaGeneratorParser.ForInitStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.whileStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileStatement([NotNull] MetaGeneratorParser.WhileStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.whileStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileStatement([NotNull] MetaGeneratorParser.WhileStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.whileStatementBegin"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileStatementBegin([NotNull] MetaGeneratorParser.WhileStatementBeginContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.whileStatementBegin"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileStatementBegin([NotNull] MetaGeneratorParser.WhileStatementBeginContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.whileStatementEnd"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileStatementEnd([NotNull] MetaGeneratorParser.WhileStatementEndContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.whileStatementEnd"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileStatementEnd([NotNull] MetaGeneratorParser.WhileStatementEndContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.whileRunExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileRunExpression([NotNull] MetaGeneratorParser.WhileRunExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.whileRunExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileRunExpression([NotNull] MetaGeneratorParser.WhileRunExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.repeatStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRepeatStatement([NotNull] MetaGeneratorParser.RepeatStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.repeatStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRepeatStatement([NotNull] MetaGeneratorParser.RepeatStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementBegin"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRepeatStatementBegin([NotNull] MetaGeneratorParser.RepeatStatementBeginContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementBegin"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRepeatStatementBegin([NotNull] MetaGeneratorParser.RepeatStatementBeginContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementEnd"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRepeatStatementEnd([NotNull] MetaGeneratorParser.RepeatStatementEndContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.repeatStatementEnd"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRepeatStatementEnd([NotNull] MetaGeneratorParser.RepeatStatementEndContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.repeatRunExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRepeatRunExpression([NotNull] MetaGeneratorParser.RepeatRunExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.repeatRunExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRepeatRunExpression([NotNull] MetaGeneratorParser.RepeatRunExpressionContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.loopStatement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -1730,3 +1898,4 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 }
 } // namespace MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax
+

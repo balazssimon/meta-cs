@@ -1,8 +1,8 @@
 ﻿lexer grammar MetaGeneratorLexer;
 
 options 
-{
-	                               
+{ 
+	                        
 }
 
 channels
@@ -37,6 +37,9 @@ KForEach : 'foreach';
 KIn : 'in';
 KIf : 'if';
 KElse : 'else';
+KRepeat : 'repeat';
+KUntil : 'until';
+KWhile : 'while';
 KLoop : 'loop';
 KHasLoop : 'hasloop';
 KWhere : 'where';
@@ -171,8 +174,8 @@ fragment TimeHour
     | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19' | '20' | '21'
     | '22' | '23';
 fragment TimeHourMinute: TimeHour ':' TimeMinute;
-fragment TimeMinute: ['0'-'5'] DecimalDigit;
-fragment TimeSecond: ['0'-'5'] DecimalDigit TimeSecondDecimalPart?;
+fragment TimeMinute: [0-5] DecimalDigit;
+fragment TimeSecond: [0-5] DecimalDigit TimeSecondDecimalPart?;
 fragment TimeSecondDecimalPart: '.' DecimalDigits;
 
                    
@@ -191,7 +194,7 @@ fragment SingleQuoteTextCharacter
 fragment SingleQuoteTextSimple 
     : ~('\'' | '\\' | '\u000A' | '\u000D' | '\u0085' | '\u2028' | '\u2029');
 fragment SingleQuoteTextVerbatimCharacter 
-    : ~['\''] | SingleQuoteTextVerbatimCharacterEscape;
+    : ~'\'' | SingleQuoteTextVerbatimCharacterEscape;
 fragment SingleQuoteTextVerbatimCharacterEscape : '\'' '\'';
 fragment SingleQuoteTextVerbatimCharacters : SingleQuoteTextVerbatimCharacter+;
 fragment DoubleQuoteTextCharacter 
@@ -199,7 +202,7 @@ fragment DoubleQuoteTextCharacter
 fragment DoubleQuoteTextSimple 
     : ~('"' | '\\' | '\u000A' | '\u000D' | '\u0085' | '\u2028' | '\u2029');
 fragment DoubleQuoteTextVerbatimCharacter 
-    : ~['"'] | DoubleQuoteTextVerbatimCharacterEscape;
+    : ~'"' | DoubleQuoteTextVerbatimCharacterEscape;
 fragment DoubleQuoteTextVerbatimCharacterEscape : '"' '"';
 fragment DoubleQuoteTextVerbatimCharacters : DoubleQuoteTextVerbatimCharacter+;
 fragment CharacterEscapeSimple : '\\' CharacterEscapeSimpleCharacter;
@@ -268,6 +271,9 @@ TH_KForEach : KForEach -> type(KForEach);
 TH_KIn : KIn -> type(KIn);
 TH_KIf : KIf -> type(KIf);
 TH_KElse : KElse -> type(KElse);
+TH_KWhile : KWhile -> type(KWhile);
+TH_KRepeat : KRepeat -> type(KRepeat);
+TH_KUntil : KUntil -> type(KUntil);
 TH_KLoop : KLoop -> type(KLoop);
 TH_KHasLoop : KHasLoop -> type(KHasLoop);
 TH_KWhere : KWhere -> type(KWhere);
@@ -395,6 +401,9 @@ TS_KForEach : KForEach -> type(KForEach);
 TS_KIn : KIn -> type(KIn);
 TS_KIf : KIf -> type(KIf);
 TS_KElse : KElse -> type(KElse);
+TS_KRepeat : KRepeat -> type(KRepeat);
+TS_KUntil : KUntil -> type(KUntil);
+TS_KWhile : KWhile -> type(KWhile);
 TS_KLoop : KLoop -> type(KLoop);
 TS_KHasLoop : KHasLoop -> type(KHasLoop);
 TS_KWhere : KWhere -> type(KWhere);

@@ -59,6 +59,8 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
     {
         public string Name { get; set; }
         public List<LoopItemInfo> Items { get; private set; }
+        public MetaGeneratorParser.WhileStatementBeginContext While { get; set; }
+        public MetaGeneratorParser.RepeatStatementEndContext Repeat { get; set; }
         public MetaGeneratorParser.LoopStatementBeginContext Loop { get; set; }
         public MetaGeneratorParser.HasLoopExpressionContext HasLoop { get; set; }
         public LoopInfo()
@@ -98,6 +100,8 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         private string indent;
         private int loopCounter;
         public Dictionary<MetaGeneratorParser.ExternFunctionDeclarationContext, ExternFunctionInfo> ExternFunctions { get; set; }
+        public Dictionary<MetaGeneratorParser.WhileStatementBeginContext, LoopInfo> Whiles { get; set; }
+        public Dictionary<MetaGeneratorParser.RepeatStatementEndContext, LoopInfo> Repeats { get; set; }
         public Dictionary<MetaGeneratorParser.LoopStatementBeginContext, LoopInfo> Loops { get; set; }
         public Dictionary<MetaGeneratorParser.HasLoopExpressionContext, LoopInfo> HasLoops { get; set; }
 
@@ -107,6 +111,8 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             this.indent = "";
             this.loopCounter = 0;
             this.ExternFunctions = new Dictionary<MetaGeneratorParser.ExternFunctionDeclarationContext, ExternFunctionInfo>();
+            this.Whiles = new Dictionary<MetaGeneratorParser.WhileStatementBeginContext, LoopInfo>();
+            this.Repeats = new Dictionary<MetaGeneratorParser.RepeatStatementEndContext, LoopInfo>();
             this.Loops = new Dictionary<MetaGeneratorParser.LoopStatementBeginContext, LoopInfo>();
             this.HasLoops = new Dictionary<MetaGeneratorParser.HasLoopExpressionContext, LoopInfo>();
         }
@@ -180,6 +186,26 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             {
                 return GetLoopChainItemName(((MetaGeneratorParser.LoopChainMethodCallExpressionContext)context).loopChainExpression());
             }
+            return null;
+        }
+
+        public override object VisitWhileStatementBegin([NotNull] MetaGeneratorParser.WhileStatementBeginContext context)
+        {
+            ++this.loopCounter;
+            LoopInfo li = new LoopInfo();
+            li.Name = "__loop" + this.loopCounter.ToString();
+            li.While = context;
+            this.Whiles.Add(context, li);
+            return null;
+        }
+
+        public override object VisitRepeatStatementEnd([NotNull] MetaGeneratorParser.RepeatStatementEndContext context)
+        {
+            ++this.loopCounter;
+            LoopInfo li = new LoopInfo();
+            li.Name = "__loop" + this.loopCounter.ToString();
+            li.Repeat = context;
+            this.Repeats.Add(context, li);
             return null;
         }
 
@@ -665,7 +691,12 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public object VisitExternFunctionSignature(MetaGeneratorParser.FunctionSignatureContext context)
         {
             WriteIndent();
-            Write("internal {0} {1}(", context.returnType().GetText(), context.identifier().GetText());
+            Write("internal {0} {1}", context.returnType().GetText(), context.identifier().GetText());
+            if (context.typeArgumentList() != null)
+            {
+                Visit(context.typeArgumentList());
+            }
+            Write("(");
             if (context.paramList() != null)
             {
                 Visit(context.paramList());
@@ -679,7 +710,12 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         {
             WriteIndent();
             if (context.returnType().GetText() != "void") Write("return ");
-            Write("this.extensionFunctions.{0}(", context.identifier().GetText());
+            Write("this.extensionFunctions.{0}", context.identifier().GetText());
+            if (context.typeArgumentList() != null)
+            {
+                Visit(context.typeArgumentList());
+            }
+            Write("(");
             if (context.paramList() != null)
             {
                 VisitParamListCall(context.paramList());
@@ -705,7 +741,12 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public override object VisitFunctionSignature(MetaGeneratorParser.FunctionSignatureContext context)
         {
             WriteIndent();
-            Write("public {0} {1}(", context.returnType().GetText(), context.identifier().GetText());
+            Write("public {0} {1}", context.returnType().GetText(), context.identifier().GetText());
+            if (context.typeArgumentList() != null)
+            {
+                Visit(context.typeArgumentList());
+            }
+            Write("(");
             if (context.paramList() != null)
             {
                 Visit(context.paramList());
@@ -718,7 +759,12 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public object VisitFunctionSignatureExtension(MetaGeneratorParser.FunctionSignatureContext context)
         {
             WriteIndent();
-            Write("{0} {1}(", context.returnType().GetText(), context.identifier().GetText());
+            Write("{0} {1}", context.returnType().GetText(), context.identifier().GetText());
+            if (context.typeArgumentList() != null)
+            {
+                Visit(context.typeArgumentList());
+            }
+            Write("(");
             if (context.paramList() != null)
             {
                 Visit(context.paramList());
@@ -794,14 +840,34 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public override object VisitVariableDeclarationStatement(MetaGeneratorParser.VariableDeclarationStatementContext context)
         {
             WriteIndent();
-            Write("{0} {1}", context.typeReference().GetText(), context.identifier().GetText());
+            Visit(context.variableDeclarationExpression());
+            Write("; ");
+            Write(context.ToComment());
+            AppendLine();
+            return null;
+        }
+
+        public override object VisitVariableDeclarationExpression([NotNull] MetaGeneratorParser.VariableDeclarationExpressionContext context)
+        {
+            Write(context.typeReference().GetText());
+            Write(" ");
+            var items = context.variableDeclarationItem();
+            for (int i = 0; i < items.Length; ++i)
+            {
+                if (i > 0) Write(", ");
+                Visit(items[i]);
+            }
+            return null;
+        }
+
+        public override object VisitVariableDeclarationItem([NotNull] MetaGeneratorParser.VariableDeclarationItemContext context)
+        {
+            Write(context.identifier().GetText());
             if (context.expression() != null)
             {
                 Write(" = ");
                 Visit(context.expression());
             }
-            Write("; " + context.ToComment());
-            AppendLine();
             return null;
         }
 
@@ -1020,7 +1086,10 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                     if (this.externFunctionNames.Contains(name))
                     {
                         Write(name);
-                        if (mac.typeArgumentList() != null) Visit(mac.typeArgumentList());
+                        if (mac.typeArgumentList() != null)
+                        {
+                            Visit(mac.typeArgumentList());
+                        }
                         Write("(");
                         Visit(mac.expression());
                         if (context.expressionList() != null)
@@ -1588,6 +1657,77 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public override object VisitTemplateStatement(MetaGeneratorParser.TemplateStatementContext context)
         {
             return VisitTemplateStatement(context, "__out");
+        }
+
+        public override object VisitForStatementBegin([NotNull] MetaGeneratorParser.ForStatementBeginContext context)
+        {
+            WriteIndent();
+            Write("for (");
+            if (context.forInitStatement() != null)
+            {
+                Visit(context.forInitStatement());
+            }
+            Write("; ");
+            if (context.endExpression != null)
+            {
+                Visit(context.endExpression);
+            }
+            Write("; ");
+            if (context.stepExpression != null)
+            {
+                Visit(context.stepExpression);
+            }
+            Write(") " + context.ToComment());
+            AppendLine();
+            WriteLine("{");
+            IncIndent();
+            return null;
+        }
+
+        public override object VisitForStatementEnd([NotNull] MetaGeneratorParser.ForStatementEndContext context)
+        {
+            DecIndent();
+            WriteLine("} " + context.ToComment());
+            return null;
+        }
+
+        public override object VisitWhileStatementBegin([NotNull] MetaGeneratorParser.WhileStatementBeginContext context)
+        {
+            WriteIndent();
+            Write("while (");
+            Visit(context.expression());
+            Write(") " + context.ToComment());
+            AppendLine();
+            WriteLine("{");
+            IncIndent();
+            return null;
+        }
+
+        public override object VisitWhileStatementEnd([NotNull] MetaGeneratorParser.WhileStatementEndContext context)
+        {
+            DecIndent();
+            WriteLine("} " + context.ToComment());
+            return null;
+        }
+
+        public override object VisitRepeatStatementBegin([NotNull] MetaGeneratorParser.RepeatStatementBeginContext context)
+        {
+            WriteLine("do " + context.ToComment());
+            WriteLine("{");
+            IncIndent();
+            return null;
+        }
+
+        public override object VisitRepeatStatementEnd([NotNull] MetaGeneratorParser.RepeatStatementEndContext context)
+        {
+            DecIndent();
+            WriteLine("}");
+            WriteIndent();
+            Write("while (!(");
+            Visit(context.expression());
+            Write(")); " + context.ToComment());
+            AppendLine();
+            return null;
         }
 
         public override object VisitLoopStatementBegin(MetaGeneratorParser.LoopStatementBeginContext context)

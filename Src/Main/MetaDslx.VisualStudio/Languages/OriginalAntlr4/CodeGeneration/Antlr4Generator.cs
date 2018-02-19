@@ -47,6 +47,7 @@ namespace MetaDslx.VisualStudio.Languages.OriginalAntlr4.CodeGeneration
 
             compiler = new OriginalAntlr4Compiler(this.InputFileContents, this.DefaultNamespace, this.InputFileDirectory, this.InputFileDirectory, this.InputFileName);
             compiler.GenerateOutput = true;
+            compiler.GenerateCSharpSource = false;
             compiler.Compile();
             compiler.Generate();
             if (compiler.HasErrors) return result;

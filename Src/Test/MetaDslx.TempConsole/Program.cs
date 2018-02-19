@@ -76,8 +76,10 @@ namespace MetaDslx.TempConsole
                 /*
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Antlr4Roslyn", "Antlr4RoslynParser.ag4", "MetaDslx.Languages.Antlr4Roslyn");
+                //*/
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator", "MetaGeneratorLexer.ag4", "MetaDslx.Languages.MetaGenerator");
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator", "MetaGeneratorParser.ag4", "MetaDslx.Languages.MetaGenerator");
+                /*/
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaParser.ag4", "MetaDslx.Languages.Meta");
                 //*/
@@ -143,7 +145,7 @@ namespace MetaDslx.TempConsole
                 Console.WriteLine(node2);
                 Console.WriteLine(node0);
                 //*/
-                //*
+                /*
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaParser.ag4", "MetaDslx.Languages.Meta");
                 //*/
