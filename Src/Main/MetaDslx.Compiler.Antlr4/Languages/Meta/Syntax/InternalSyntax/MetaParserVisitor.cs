@@ -349,3 +349,4 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStringLiteral([NotNull] MetaParser.StringLiteralContext context);
 }
 } // namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
+

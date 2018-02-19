@@ -765,6 +765,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
+				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.MetaType)));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -800,7 +801,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
+				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.MetaType)));
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -818,7 +819,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
 			{
 				resultBinder = this.GetParentBinder(node);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray.Create(typeof(Symbols.MetaClass)));
+				resultBinder = this.CreateSymbolUseBinder(resultBinder, node, ImmutableArray<Type>.Empty);
 				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
 			}
 			return resultBinder;

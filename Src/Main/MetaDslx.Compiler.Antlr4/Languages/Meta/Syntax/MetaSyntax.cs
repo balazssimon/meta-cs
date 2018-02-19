@@ -3177,7 +3177,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    private PrimitiveTypeSyntax primitiveType;
 	    private ObjectTypeSyntax objectType;
 	    private NullableTypeSyntax nullableType;
-	    private QualifierSyntax qualifier;
+	    private ClassTypeSyntax classType;
 	
 	    public SimpleTypeSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -3201,9 +3201,9 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get { return this.GetRed(ref this.nullableType, 2); } 
 		}
-	    public QualifierSyntax Qualifier 
+	    public ClassTypeSyntax ClassType 
 		{ 
-			get { return this.GetRed(ref this.qualifier, 3); } 
+			get { return this.GetRed(ref this.classType, 3); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
@@ -3213,7 +3213,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case 0: return this.GetRed(ref this.primitiveType, 0);
 				case 1: return this.GetRed(ref this.objectType, 1);
 				case 2: return this.GetRed(ref this.nullableType, 2);
-				case 3: return this.GetRed(ref this.qualifier, 3);
+				case 3: return this.GetRed(ref this.classType, 3);
 				default: return null;
 	        }
 	    }
@@ -3225,7 +3225,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case 0: return this.primitiveType;
 				case 1: return this.objectType;
 				case 2: return this.nullableType;
-				case 3: return this.qualifier;
+				case 3: return this.classType;
 				default: return null;
 	        }
 	    }
@@ -3245,9 +3245,9 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(nullableType);
 		}
 	
-	    public SimpleTypeSyntax WithQualifier(QualifierSyntax qualifier)
+	    public SimpleTypeSyntax WithClassType(ClassTypeSyntax classType)
 		{
-			return this.Update(qualifier);
+			return this.Update(classType);
 		}
 	
 	    public SimpleTypeSyntax Update(PrimitiveTypeSyntax primitiveType)
@@ -3289,11 +3289,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
-	    public SimpleTypeSyntax Update(QualifierSyntax qualifier)
+	    public SimpleTypeSyntax Update(ClassTypeSyntax classType)
 	    {
-	        if (this.Qualifier != qualifier)
+	        if (this.ClassType != classType)
 	        {
-	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.SimpleType(qualifier);
+	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.SimpleType(classType);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -5623,7 +5623,7 @@ namespace MetaDslx.Languages.Meta
 			this.Visit(node.PrimitiveType);
 			this.Visit(node.ObjectType);
 			this.Visit(node.NullableType);
-			this.Visit(node.Qualifier);
+			this.Visit(node.ClassType);
 		}
 		
 		public virtual void VisitClassType(ClassTypeSyntax node)
@@ -6446,11 +6446,11 @@ namespace MetaDslx.Languages.Meta
 			    var newNullableType = (NullableTypeSyntax)this.Visit(oldNullableType);
 				return node.Update(newNullableType);
 			}
-			var oldQualifier = node.Qualifier;
-			if (oldQualifier != null)
+			var oldClassType = node.ClassType;
+			if (oldClassType != null)
 			{
-			    var newQualifier = (QualifierSyntax)this.Visit(oldQualifier);
-				return node.Update(newQualifier);
+			    var newClassType = (ClassTypeSyntax)this.Visit(oldClassType);
+				return node.Update(newClassType);
 			}
 			return node;   
 		}
@@ -7354,10 +7354,10 @@ namespace MetaDslx.Languages.Meta
 		    return (SimpleTypeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.SimpleType((Syntax.InternalSyntax.NullableTypeGreen)nullableType.Green).CreateRed();
 		}
 		
-		public SimpleTypeSyntax SimpleType(QualifierSyntax qualifier)
+		public SimpleTypeSyntax SimpleType(ClassTypeSyntax classType)
 		{
-		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
-		    return (SimpleTypeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.SimpleType((Syntax.InternalSyntax.QualifierGreen)qualifier.Green).CreateRed();
+		    if (classType == null) throw new ArgumentNullException(nameof(classType));
+		    return (SimpleTypeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.SimpleType((Syntax.InternalSyntax.ClassTypeGreen)classType.Green).CreateRed();
 		}
 		
 		public ClassTypeSyntax ClassType(QualifierSyntax qualifier)

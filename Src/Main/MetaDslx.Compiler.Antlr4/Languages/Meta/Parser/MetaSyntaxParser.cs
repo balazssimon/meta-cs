@@ -59,22 +59,18 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			private MetaGreenFactory factory;
             private MetaSyntaxParser syntaxParser;
 			private IList<IToken> tokens;
-            private IToken lastTokenOrTrivia;
+            private IToken lastToken;
             public Antlr4ToRoslynVisitor(MetaSyntaxParser syntaxParser)
             {
                 this.language = MetaLanguage.Instance;
 				this.factory = language.InternalSyntaxFactory;
                 this.syntaxParser = syntaxParser;
 				this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
-                this.lastTokenOrTrivia = null;
+                this.lastToken = null;
             }
             public override GreenNode VisitTerminal(ITerminalNode node)
             {
-                GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastTokenOrTrivia);
-                /*if (result != null && !result.IsMissing)
-                {
-                    this.lastGreenToken = result;
-                }*/
+                GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastToken);
                 return result;
             }
 			
@@ -688,10 +684,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					return this.factory.SimpleType((NullableTypeGreen)this.Visit(nullableTypeContext), true);
 				}
-				MetaParser.QualifierContext qualifierContext = context.qualifier();
-				if (qualifierContext != null) 
+				MetaParser.ClassTypeContext classTypeContext = context.classType();
+				if (classTypeContext != null) 
 				{
-					return this.factory.SimpleType((QualifierGreen)this.Visit(qualifierContext), true);
+					return this.factory.SimpleType((ClassTypeGreen)this.Visit(classTypeContext), true);
 				}
 				return null;
 			}

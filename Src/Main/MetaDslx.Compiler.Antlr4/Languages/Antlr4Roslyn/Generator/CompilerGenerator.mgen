@@ -1272,7 +1272,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 				this.factory = language.InternalSyntaxFactory;
                 this.syntaxParser = syntaxParser;
 				this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
-                this.lastToken = null;
+                this.lastTokenOrTrivia = null;
             }
 
             public override GreenNode VisitTerminal(ITerminalNode node)

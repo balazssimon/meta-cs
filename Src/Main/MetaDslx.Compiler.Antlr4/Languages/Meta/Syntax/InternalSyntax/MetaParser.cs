@@ -2198,8 +2198,8 @@ public partial class MetaParser : Parser {
 		public NullableTypeContext nullableType() {
 			return GetRuleContext<NullableTypeContext>(0);
 		}
-		public QualifierContext qualifier() {
-			return GetRuleContext<QualifierContext>(0);
+		public ClassTypeContext classType() {
+			return GetRuleContext<ClassTypeContext>(0);
 		}
 		public SimpleTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2250,7 +2250,7 @@ public partial class MetaParser : Parser {
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 317; qualifier();
+				State = 317; classType();
 				}
 				break;
 			}
@@ -3617,7 +3617,7 @@ public partial class MetaParser : Parser {
 		'\x3', '\x2', '\x2', '\x2', '\x13A', '\x139', '\x3', '\x2', '\x2', '\x2', 
 		'\x13B', '\x41', '\x3', '\x2', '\x2', '\x2', '\x13C', '\x141', '\x5', 
 		'H', '%', '\x2', '\x13D', '\x141', '\x5', '\x46', '$', '\x2', '\x13E', 
-		'\x141', '\x5', 'L', '\'', '\x2', '\x13F', '\x141', '\x5', '\b', '\x5', 
+		'\x141', '\x5', 'L', '\'', '\x2', '\x13F', '\x141', '\x5', '\x44', '#', 
 		'\x2', '\x140', '\x13C', '\x3', '\x2', '\x2', '\x2', '\x140', '\x13D', 
 		'\x3', '\x2', '\x2', '\x2', '\x140', '\x13E', '\x3', '\x2', '\x2', '\x2', 
 		'\x140', '\x13F', '\x3', '\x2', '\x2', '\x2', '\x141', '\x43', '\x3', 
@@ -3694,3 +3694,4 @@ public partial class MetaParser : Parser {
 
 }
 } // namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
+

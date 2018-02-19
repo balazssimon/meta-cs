@@ -556,3 +556,4 @@ public interface IMetaParserListener : IParseTreeListener {
 	void ExitStringLiteral([NotNull] MetaParser.StringLiteralContext context);
 }
 } // namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
+

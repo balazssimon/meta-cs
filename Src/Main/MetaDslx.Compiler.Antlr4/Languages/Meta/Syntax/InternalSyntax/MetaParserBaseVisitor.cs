@@ -559,3 +559,4 @@ public partial class MetaParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	public virtual Result VisitStringLiteral([NotNull] MetaParser.StringLiteralContext context) { return VisitChildren(context); }
 }
 } // namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
+

@@ -533,7 +533,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitTypeOfReference(TypeOfReferenceSyntax node)
 		{
-			this.Visit(node.TypeReference);
 		}
 		
 		public virtual void VisitTypeReference(TypeReferenceSyntax node)

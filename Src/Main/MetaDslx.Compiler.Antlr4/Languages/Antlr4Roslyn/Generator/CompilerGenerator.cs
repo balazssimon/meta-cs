@@ -8588,14 +8588,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.Append("            {"); //1279:1
             __out.AppendLine(false); //1279:14
             __out.Append("                GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastToken);"); //1280:1
-            __out.AppendLine(false); //1280:90
-            __out.Append("                if (result != null && !result.IsMissing)"); //1281:1
-            __out.AppendLine(false); //1281:57
-            __out.Append("                {"); //1282:1
-            __out.AppendLine(false); //1282:18
-            __out.Append("                    this.lastToken = node.Symbol;"); //1283:1
-            __out.AppendLine(false); //1283:50
-            __out.Append("                }"); //1284:1
             __out.AppendLine(false); //1284:18
             __out.Append("                return result;"); //1285:1
             __out.AppendLine(false); //1285:31

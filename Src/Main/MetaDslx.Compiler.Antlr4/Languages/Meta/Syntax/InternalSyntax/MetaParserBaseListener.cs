@@ -677,3 +677,4 @@ public partial class MetaParserBaseListener : IMetaParserListener {
 	public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 }
 } // namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
+

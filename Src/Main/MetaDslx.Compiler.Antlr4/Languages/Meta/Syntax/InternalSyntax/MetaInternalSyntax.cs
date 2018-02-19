@@ -3691,9 +3691,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    private PrimitiveTypeGreen primitiveType;
 	    private ObjectTypeGreen objectType;
 	    private NullableTypeGreen nullableType;
-	    private QualifierGreen qualifier;
+	    private ClassTypeGreen classType;
 	
-	    public SimpleTypeGreen(MetaSyntaxKind kind, PrimitiveTypeGreen primitiveType, ObjectTypeGreen objectType, NullableTypeGreen nullableType, QualifierGreen qualifier)
+	    public SimpleTypeGreen(MetaSyntaxKind kind, PrimitiveTypeGreen primitiveType, ObjectTypeGreen objectType, NullableTypeGreen nullableType, ClassTypeGreen classType)
 	        : base(kind, null, null)
 	    {
 			if (primitiveType != null)
@@ -3711,14 +3711,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(nullableType);
 				this.nullableType = nullableType;
 			}
-			if (qualifier != null)
+			if (classType != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(classType);
+				this.classType = classType;
 			}
 	    }
 	
-	    public SimpleTypeGreen(MetaSyntaxKind kind, PrimitiveTypeGreen primitiveType, ObjectTypeGreen objectType, NullableTypeGreen nullableType, QualifierGreen qualifier, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public SimpleTypeGreen(MetaSyntaxKind kind, PrimitiveTypeGreen primitiveType, ObjectTypeGreen objectType, NullableTypeGreen nullableType, ClassTypeGreen classType, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			if (primitiveType != null)
@@ -3736,10 +3736,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(nullableType);
 				this.nullableType = nullableType;
 			}
-			if (qualifier != null)
+			if (classType != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(classType);
+				this.classType = classType;
 			}
 	    }
 	
@@ -3748,7 +3748,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    public PrimitiveTypeGreen PrimitiveType { get { return this.primitiveType; } }
 	    public ObjectTypeGreen ObjectType { get { return this.objectType; } }
 	    public NullableTypeGreen NullableType { get { return this.nullableType; } }
-	    public QualifierGreen Qualifier { get { return this.qualifier; } }
+	    public ClassTypeGreen ClassType { get { return this.classType; } }
 	
 	    public override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -3762,19 +3762,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	            case 0: return this.primitiveType;
 	            case 1: return this.objectType;
 	            case 2: return this.nullableType;
-	            case 3: return this.qualifier;
+	            case 3: return this.classType;
 	            default: return null;
 	        }
 	    }
 	
 	    public override GreenNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new SimpleTypeGreen(this.Kind, this.primitiveType, this.objectType, this.nullableType, this.qualifier, diagnostics, this.GetAnnotations());
+	        return new SimpleTypeGreen(this.Kind, this.primitiveType, this.objectType, this.nullableType, this.classType, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override GreenNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new SimpleTypeGreen(this.Kind, this.primitiveType, this.objectType, this.nullableType, this.qualifier, this.GetDiagnostics(), annotations);
+	        return new SimpleTypeGreen(this.Kind, this.primitiveType, this.objectType, this.nullableType, this.classType, this.GetDiagnostics(), annotations);
 	    }
 	
 	    public SimpleTypeGreen Update(PrimitiveTypeGreen primitiveType)
@@ -3825,11 +3825,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return this;
 	    }
 	
-	    public SimpleTypeGreen Update(QualifierGreen qualifier)
+	    public SimpleTypeGreen Update(ClassTypeGreen classType)
 	    {
-	        if (this.qualifier != qualifier)
+	        if (this.classType != classType)
 	        {
-	            GreenNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.SimpleType(qualifier);
+	            GreenNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.SimpleType(classType);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -6569,15 +6569,15 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return new SimpleTypeGreen(MetaSyntaxKind.SimpleType, null, null, nullableType, null);
 	    }
 	
-		public SimpleTypeGreen SimpleType(QualifierGreen qualifier, bool errorNode = false)
+		public SimpleTypeGreen SimpleType(ClassTypeGreen classType, bool errorNode = false)
 	    {
 	#if DEBUG
 			if (!errorNode)
 			{
-		        if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		        if (classType == null) throw new ArgumentNullException(nameof(classType));
 			}
 	#endif
-			return new SimpleTypeGreen(MetaSyntaxKind.SimpleType, null, null, null, qualifier);
+			return new SimpleTypeGreen(MetaSyntaxKind.SimpleType, null, null, null, classType);
 	    }
 	
 		public ClassTypeGreen ClassType(QualifierGreen qualifier, bool errorNode = false)
