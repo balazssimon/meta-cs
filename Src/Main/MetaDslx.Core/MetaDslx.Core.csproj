@@ -14,7 +14,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Collections.Immutable" Version="1.2.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="[1.2,2)" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Languages\Meta\Generator\ImmutableMetaModelGenerator.cs">
