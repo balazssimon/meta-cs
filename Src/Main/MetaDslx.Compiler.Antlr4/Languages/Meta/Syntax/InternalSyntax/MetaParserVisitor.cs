@@ -210,6 +210,24 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitConstDeclaration([NotNull] MetaParser.ConstDeclarationContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.externTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExternTypeDeclaration([NotNull] MetaParser.ExternTypeDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.externClassTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExternClassTypeDeclaration([NotNull] MetaParser.ExternClassTypeDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.externStructTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExternStructTypeDeclaration([NotNull] MetaParser.ExternStructTypeDeclarationContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.returnType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

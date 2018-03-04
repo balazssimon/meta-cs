@@ -33,6 +33,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseFieldModifier = new object();
 		public static object UseTypeReference = new object();
 		public static object UseNameUseList = new object();
+		public static object UseKStruct = new object();
 		public static object UseObjectType = new object();
 		public static object UsePrimitiveType = new object();
 		public static object UseKVoid = new object();
@@ -729,6 +730,87 @@ namespace MetaDslx.Languages.Meta.Binding
 				if (use == UseTypeReference)
 				{
 					resultBinder = this.CreatePropertyBinder(resultBinder, node.TypeReference, "Type");
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.GetParentBinder(node);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
+			{
+				resultBinder = this.GetParentBinder(node);
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.GetParentBinder(node);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
+			{
+				resultBinder = this.GetParentBinder(node);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Declarations");
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.MetaExternalType));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
+				if (use == UseQualifier)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "ExternalName");
+					resultBinder = this.CreateValueBinder(resultBinder, node.Qualifier);
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
+		{
+		    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
+		    if (!node.FullSpan.Contains(this.Position))
+		    {
+		        return this.GetParentBinder(node);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, node.KStruct)) use = UseKStruct;
+				if (LookupPosition.IsInNode(this.Position, node.Qualifier)) use = UseQualifier;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
+			{
+				resultBinder = this.GetParentBinder(node);
+				resultBinder = this.CreatePropertyBinder(resultBinder, node, "Declarations");
+				resultBinder = this.CreateSymbolDefBinder(resultBinder, node, typeof(Symbols.MetaExternalType));
+				this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
+				if (use == UseKStruct)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.KStruct, "IsValueType", true);
+					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
+				}
+				if (use == UseQualifier)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, node.Qualifier, "ExternalName");
+					resultBinder = this.CreateValueBinder(resultBinder, node.Qualifier);
 					this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
 				}
 			}

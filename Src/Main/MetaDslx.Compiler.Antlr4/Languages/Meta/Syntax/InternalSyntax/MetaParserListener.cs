@@ -325,6 +325,36 @@ public interface IMetaParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitConstDeclaration([NotNull] MetaParser.ConstDeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.externTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExternTypeDeclaration([NotNull] MetaParser.ExternTypeDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.externTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExternTypeDeclaration([NotNull] MetaParser.ExternTypeDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.externClassTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExternClassTypeDeclaration([NotNull] MetaParser.ExternClassTypeDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.externClassTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExternClassTypeDeclaration([NotNull] MetaParser.ExternClassTypeDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.externStructTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExternStructTypeDeclaration([NotNull] MetaParser.ExternStructTypeDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.externStructTypeDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExternStructTypeDeclaration([NotNull] MetaParser.ExternStructTypeDeclarationContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.returnType"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

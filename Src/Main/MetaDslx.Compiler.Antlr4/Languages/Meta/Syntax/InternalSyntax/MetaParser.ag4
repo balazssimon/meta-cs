@@ -52,7 +52,7 @@ metamodelProperty : metamodelUriProperty;
 $Property(Uri)
 metamodelUriProperty : IUri TAssign $Value stringLiteral;
 
-declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
+declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | externTypeDeclaration;
 
 $Property(Declarations) 
 $SymbolDef(MetaEnum)
@@ -95,6 +95,16 @@ nameUseList : qualifier (TComma qualifier)*;
 $Property(Declarations) 
 $SymbolDef(MetaConstant)
 constDeclaration : KConst $Property(Type) typeReference name TSemicolon;
+
+externTypeDeclaration : externClassTypeDeclaration | externStructTypeDeclaration;
+
+$Property(Declarations) 
+$SymbolDef(MetaExternalType)
+externClassTypeDeclaration : KExtern KClass $Property(ExternalName) $Value qualifier name TSemicolon;
+
+$Property(Declarations) 
+$SymbolDef(MetaExternalType)
+externStructTypeDeclaration : KExtern $Property(name=IsValueType,value=true) KStruct $Property(ExternalName) $Value qualifier name TSemicolon;
 
 $SymbolUse(MetaType)
 returnType : typeReference | voidType;

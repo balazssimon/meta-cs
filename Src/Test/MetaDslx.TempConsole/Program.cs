@@ -81,7 +81,7 @@ namespace MetaDslx.TempConsole
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator", "MetaGeneratorLexer.ag4", "MetaDslx.Languages.MetaGenerator");
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\MetaGenerator", "MetaGeneratorParser.ag4", "MetaDslx.Languages.MetaGenerator");
                 //*/
-                //*/
+                /*/
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaLexer.ag4", "MetaDslx.Languages.Meta");
                 Program.CompileAntlr4Roslyn(@"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta\Syntax\InternalSyntax", @"..\..\Main\MetaDslx.Compiler.Antlr4\Languages\Meta", "MetaParser.ag4", "MetaDslx.Languages.Meta");
                 //*/
@@ -159,11 +159,11 @@ namespace MetaDslx.TempConsole
                 Program.CompileAntlr4Roslyn("../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
                 Program.CompileAntlr4Roslyn("../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
                 //*/
-                /*
+                //*
                 Console.WriteLine("----");
                 CompileMeta(
-                    @"../../Samples/MetaDslx.Languages.Soal\Soal.mm",
-                    @"../../Samples/MetaDslx.Languages.Soal\Soal.cs"
+                    @"../../Samples/MetaDslx.Languages.Soal\Symbols\Soal.mm",
+                    @"../../Samples/MetaDslx.Languages.Soal\Symbols\Soal.cs"
                     );
                 //*/
                 /*

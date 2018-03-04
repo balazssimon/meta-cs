@@ -138,6 +138,34 @@ namespace MetaDslx.Languages.Meta.Generator
         private string CSharpName(MetaPrimitiveType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
         {
             string result;
+            if (mtype is MetaExternalType)
+            {
+                switch (kind)
+                {
+                    case ClassKind.ImmutableInstance:
+                    case ClassKind.BuilderInstance:
+                    case ClassKind.FactoryMethod:
+                        result = mtype.Name;
+                        break;
+                    default:
+                        return ((MetaExternalType)mtype).ExternalName;
+                }
+                if (fullName)
+                {
+                    bool modelContainsType = this.ContainsType(mmodel, mtype);
+                    if (kind == ClassKind.Descriptor || kind == ClassKind.ImmutableInstance || kind == ClassKind.BuilderInstance || kind == ClassKind.FactoryMethod)
+                    {
+                        string fullNamePrefix = this.CSharpName(mtype.MetaModel, this.ToModelKind(kind), !modelContainsType);
+                        result = fullNamePrefix + "." + result;
+                    }
+                    else if (!modelContainsType)
+                    {
+                        string fullNamePrefix = this.CSharpName(mtype.Namespace, this.ToNamespaceKind(kind), true);
+                        result = "global::" + fullNamePrefix + "." + result;
+                    }
+                }
+                return result;
+            }
             if (mtype.Name == "symbol")
             {
                 switch (kind)
@@ -482,6 +510,10 @@ namespace MetaDslx.Languages.Meta.Generator
             {
                 return mmodel.Namespace.Declarations.Contains((MetaDeclaration)mtype);
             }
+            else if (mtype is MetaExternalType)
+            {
+                return mmodel.Namespace.Declarations.Contains((MetaExternalType)mtype);
+            }
             else if (mtype is MetaPrimitiveType)
             {
                 return mmodel.Namespace.Declarations.Any(d => d is MetaConstant && ((MetaConstant)d).Type == MetaInstance.MetaPrimitiveType && ((MetaConstant)d).Name == this.ToPascalCase(((MetaPrimitiveType)mtype).Name));
@@ -593,6 +625,10 @@ namespace MetaDslx.Languages.Meta.Generator
             if (mtype == null) return false;
             if (mtype is MetaCollectionType) return true;
             if (mtype is MetaNullableType) return true;
+            if (mtype is MetaExternalType)
+            {
+                return !((MetaExternalType)mtype).IsValueType;
+            }
             MetaPrimitiveType primitive = mtype as MetaPrimitiveType;
             if (primitive != null)
             {

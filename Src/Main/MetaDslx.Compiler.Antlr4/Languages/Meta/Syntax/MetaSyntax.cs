@@ -1132,6 +1132,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    private ClassDeclarationSyntax classDeclaration;
 	    private AssociationDeclarationSyntax associationDeclaration;
 	    private ConstDeclarationSyntax constDeclaration;
+	    private ExternTypeDeclarationSyntax externTypeDeclaration;
 	
 	    public DeclarationSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -1159,6 +1160,10 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get { return this.GetRed(ref this.constDeclaration, 3); } 
 		}
+	    public ExternTypeDeclarationSyntax ExternTypeDeclaration 
+		{ 
+			get { return this.GetRed(ref this.externTypeDeclaration, 4); } 
+		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -1168,6 +1173,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case 1: return this.GetRed(ref this.classDeclaration, 1);
 				case 2: return this.GetRed(ref this.associationDeclaration, 2);
 				case 3: return this.GetRed(ref this.constDeclaration, 3);
+				case 4: return this.GetRed(ref this.externTypeDeclaration, 4);
 				default: return null;
 	        }
 	    }
@@ -1180,6 +1186,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case 1: return this.classDeclaration;
 				case 2: return this.associationDeclaration;
 				case 3: return this.constDeclaration;
+				case 4: return this.externTypeDeclaration;
 				default: return null;
 	        }
 	    }
@@ -1202,6 +1209,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    public DeclarationSyntax WithConstDeclaration(ConstDeclarationSyntax constDeclaration)
 		{
 			return this.Update(constDeclaration);
+		}
+	
+	    public DeclarationSyntax WithExternTypeDeclaration(ExternTypeDeclarationSyntax externTypeDeclaration)
+		{
+			return this.Update(externTypeDeclaration);
 		}
 	
 	    public DeclarationSyntax Update(EnumDeclarationSyntax enumDeclaration)
@@ -1248,6 +1260,19 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        if (this.ConstDeclaration != constDeclaration)
 	        {
 	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.Declaration(constDeclaration);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (DeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public DeclarationSyntax Update(ExternTypeDeclarationSyntax externTypeDeclaration)
+	    {
+	        if (this.ExternTypeDeclaration != externTypeDeclaration)
+	        {
+	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.Declaration(externTypeDeclaration);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -2921,6 +2946,345 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    public override void Accept(IMetaSyntaxVisitor visitor)
 	    {
 	        visitor.VisitConstDeclaration(this);
+	    }
+	}
+	
+	public sealed class ExternTypeDeclarationSyntax : MetaSyntaxNode
+	{
+	    private ExternClassTypeDeclarationSyntax externClassTypeDeclaration;
+	    private ExternStructTypeDeclarationSyntax externStructTypeDeclaration;
+	
+	    public ExternTypeDeclarationSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ExternTypeDeclarationSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public ExternClassTypeDeclarationSyntax ExternClassTypeDeclaration 
+		{ 
+			get { return this.GetRed(ref this.externClassTypeDeclaration, 0); } 
+		}
+	    public ExternStructTypeDeclarationSyntax ExternStructTypeDeclaration 
+		{ 
+			get { return this.GetRed(ref this.externStructTypeDeclaration, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.externClassTypeDeclaration, 0);
+				case 1: return this.GetRed(ref this.externStructTypeDeclaration, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.externClassTypeDeclaration;
+				case 1: return this.externStructTypeDeclaration;
+				default: return null;
+	        }
+	    }
+	
+	    public ExternTypeDeclarationSyntax WithExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax externClassTypeDeclaration)
+		{
+			return this.Update(externClassTypeDeclaration);
+		}
+	
+	    public ExternTypeDeclarationSyntax WithExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax externStructTypeDeclaration)
+		{
+			return this.Update(externStructTypeDeclaration);
+		}
+	
+	    public ExternTypeDeclarationSyntax Update(ExternClassTypeDeclarationSyntax externClassTypeDeclaration)
+	    {
+	        if (this.ExternClassTypeDeclaration != externClassTypeDeclaration)
+	        {
+	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.ExternTypeDeclaration(externClassTypeDeclaration);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExternTypeDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public ExternTypeDeclarationSyntax Update(ExternStructTypeDeclarationSyntax externStructTypeDeclaration)
+	    {
+	        if (this.ExternStructTypeDeclaration != externStructTypeDeclaration)
+	        {
+	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.ExternTypeDeclaration(externStructTypeDeclaration);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExternTypeDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitExternTypeDeclaration(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitExternTypeDeclaration(this);
+	    }
+	}
+	
+	public sealed class ExternClassTypeDeclarationSyntax : MetaSyntaxNode
+	{
+	    private QualifierSyntax qualifier;
+	    private NameSyntax name;
+	
+	    public ExternClassTypeDeclarationSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ExternClassTypeDeclarationSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KExtern 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternClassTypeDeclarationGreen)this.Green;
+				var greenToken = green.KExtern;
+				return greenToken == null ? null : new MetaSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
+			}
+		}
+	    public SyntaxToken KClass 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternClassTypeDeclarationGreen)this.Green;
+				var greenToken = green.KClass;
+				return greenToken == null ? null : new MetaSyntaxToken(greenToken, this, this.GetChildPosition(1), this.GetChildIndex(1)); 
+			}
+		}
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 2); } 
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 3); } 
+		}
+	    public SyntaxToken TSemicolon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternClassTypeDeclarationGreen)this.Green;
+				var greenToken = green.TSemicolon;
+				return greenToken == null ? null : new MetaSyntaxToken(greenToken, this, this.GetChildPosition(4), this.GetChildIndex(4)); 
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 2: return this.GetRed(ref this.qualifier, 2);
+				case 3: return this.GetRed(ref this.name, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 2: return this.qualifier;
+				case 3: return this.name;
+				default: return null;
+	        }
+	    }
+	
+	    public ExternClassTypeDeclarationSyntax WithKExtern(SyntaxToken kExtern)
+		{
+			return this.Update(KExtern, this.KClass, this.Qualifier, this.Name, this.TSemicolon);
+		}
+	
+	    public ExternClassTypeDeclarationSyntax WithKClass(SyntaxToken kClass)
+		{
+			return this.Update(this.KExtern, KClass, this.Qualifier, this.Name, this.TSemicolon);
+		}
+	
+	    public ExternClassTypeDeclarationSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(this.KExtern, this.KClass, Qualifier, this.Name, this.TSemicolon);
+		}
+	
+	    public ExternClassTypeDeclarationSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.KExtern, this.KClass, this.Qualifier, Name, this.TSemicolon);
+		}
+	
+	    public ExternClassTypeDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
+		{
+			return this.Update(this.KExtern, this.KClass, this.Qualifier, this.Name, TSemicolon);
+		}
+	
+	    public ExternClassTypeDeclarationSyntax Update(SyntaxToken kExtern, SyntaxToken kClass, QualifierSyntax qualifier, NameSyntax name, SyntaxToken tSemicolon)
+	    {
+	        if (this.KExtern != kExtern ||
+				this.KClass != kClass ||
+				this.Qualifier != qualifier ||
+				this.Name != name ||
+				this.TSemicolon != tSemicolon)
+	        {
+	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.ExternClassTypeDeclaration(kExtern, kClass, qualifier, name, tSemicolon);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExternClassTypeDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitExternClassTypeDeclaration(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitExternClassTypeDeclaration(this);
+	    }
+	}
+	
+	public sealed class ExternStructTypeDeclarationSyntax : MetaSyntaxNode
+	{
+	    private QualifierSyntax qualifier;
+	    private NameSyntax name;
+	
+	    public ExternStructTypeDeclarationSyntax(InternalSyntaxNode green, SyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public ExternStructTypeDeclarationSyntax(InternalSyntaxNode green, SyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KExtern 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternStructTypeDeclarationGreen)this.Green;
+				var greenToken = green.KExtern;
+				return greenToken == null ? null : new MetaSyntaxToken(greenToken, this, this.GetChildPosition(0), this.GetChildIndex(0)); 
+			}
+		}
+	    public SyntaxToken KStruct 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternStructTypeDeclarationGreen)this.Green;
+				var greenToken = green.KStruct;
+				return greenToken == null ? null : new MetaSyntaxToken(greenToken, this, this.GetChildPosition(1), this.GetChildIndex(1)); 
+			}
+		}
+	    public QualifierSyntax Qualifier 
+		{ 
+			get { return this.GetRed(ref this.qualifier, 2); } 
+		}
+	    public NameSyntax Name 
+		{ 
+			get { return this.GetRed(ref this.name, 3); } 
+		}
+	    public SyntaxToken TSemicolon 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternStructTypeDeclarationGreen)this.Green;
+				var greenToken = green.TSemicolon;
+				return greenToken == null ? null : new MetaSyntaxToken(greenToken, this, this.GetChildPosition(4), this.GetChildIndex(4)); 
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 2: return this.GetRed(ref this.qualifier, 2);
+				case 3: return this.GetRed(ref this.name, 3);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 2: return this.qualifier;
+				case 3: return this.name;
+				default: return null;
+	        }
+	    }
+	
+	    public ExternStructTypeDeclarationSyntax WithKExtern(SyntaxToken kExtern)
+		{
+			return this.Update(KExtern, this.KStruct, this.Qualifier, this.Name, this.TSemicolon);
+		}
+	
+	    public ExternStructTypeDeclarationSyntax WithKStruct(SyntaxToken kStruct)
+		{
+			return this.Update(this.KExtern, KStruct, this.Qualifier, this.Name, this.TSemicolon);
+		}
+	
+	    public ExternStructTypeDeclarationSyntax WithQualifier(QualifierSyntax qualifier)
+		{
+			return this.Update(this.KExtern, this.KStruct, Qualifier, this.Name, this.TSemicolon);
+		}
+	
+	    public ExternStructTypeDeclarationSyntax WithName(NameSyntax name)
+		{
+			return this.Update(this.KExtern, this.KStruct, this.Qualifier, Name, this.TSemicolon);
+		}
+	
+	    public ExternStructTypeDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
+		{
+			return this.Update(this.KExtern, this.KStruct, this.Qualifier, this.Name, TSemicolon);
+		}
+	
+	    public ExternStructTypeDeclarationSyntax Update(SyntaxToken kExtern, SyntaxToken kStruct, QualifierSyntax qualifier, NameSyntax name, SyntaxToken tSemicolon)
+	    {
+	        if (this.KExtern != kExtern ||
+				this.KStruct != kStruct ||
+				this.Qualifier != qualifier ||
+				this.Name != name ||
+				this.TSemicolon != tSemicolon)
+	        {
+	            SyntaxNode newNode = MetaLanguage.Instance.SyntaxFactory.ExternStructTypeDeclaration(kExtern, kStruct, qualifier, name, tSemicolon);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ExternStructTypeDeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitExternStructTypeDeclaration(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitExternStructTypeDeclaration(this);
 	    }
 	}
 	
@@ -5090,6 +5454,12 @@ namespace MetaDslx.Languages.Meta
 		
 		void VisitConstDeclaration(ConstDeclarationSyntax node);
 		
+		void VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node);
+		
+		void VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node);
+		
+		void VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node);
+		
 		void VisitReturnType(ReturnTypeSyntax node);
 		
 		void VisitTypeOfReference(TypeOfReferenceSyntax node);
@@ -5281,6 +5651,21 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual void VisitConstDeclaration(ConstDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -5486,6 +5871,7 @@ namespace MetaDslx.Languages.Meta
 			this.Visit(node.ClassDeclaration);
 			this.Visit(node.AssociationDeclaration);
 			this.Visit(node.ConstDeclaration);
+			this.Visit(node.ExternTypeDeclaration);
 		}
 		
 		public virtual void VisitEnumDeclaration(EnumDeclarationSyntax node)
@@ -5597,6 +5983,30 @@ namespace MetaDslx.Languages.Meta
 		{
 			this.VisitToken(node.KConst);
 			this.Visit(node.TypeReference);
+			this.Visit(node.Name);
+			this.VisitToken(node.TSemicolon);
+		}
+		
+		public virtual void VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
+		{
+			this.Visit(node.ExternClassTypeDeclaration);
+			this.Visit(node.ExternStructTypeDeclaration);
+		}
+		
+		public virtual void VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
+		{
+			this.VisitToken(node.KExtern);
+			this.VisitToken(node.KClass);
+			this.Visit(node.Qualifier);
+			this.Visit(node.Name);
+			this.VisitToken(node.TSemicolon);
+		}
+		
+		public virtual void VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
+		{
+			this.VisitToken(node.KExtern);
+			this.VisitToken(node.KStruct);
+			this.Visit(node.Qualifier);
 			this.Visit(node.Name);
 			this.VisitToken(node.TSemicolon);
 		}
@@ -5806,6 +6216,12 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitConstDeclaration(ConstDeclarationSyntax node);
 		
+		TResult VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node);
+		
+		TResult VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node);
+		
+		TResult VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node);
+		
 		TResult VisitReturnType(ReturnTypeSyntax node);
 		
 		TResult VisitTypeOfReference(TypeOfReferenceSyntax node);
@@ -5997,6 +6413,21 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual TResult VisitConstDeclaration(ConstDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -6233,6 +6664,12 @@ namespace MetaDslx.Languages.Meta
 			    var newConstDeclaration = (ConstDeclarationSyntax)this.Visit(oldConstDeclaration);
 				return node.Update(newConstDeclaration);
 			}
+			var oldExternTypeDeclaration = node.ExternTypeDeclaration;
+			if (oldExternTypeDeclaration != null)
+			{
+			    var newExternTypeDeclaration = (ExternTypeDeclarationSyntax)this.Visit(oldExternTypeDeclaration);
+				return node.Update(newExternTypeDeclaration);
+			}
 			return node;   
 		}
 		
@@ -6384,6 +6821,43 @@ namespace MetaDslx.Languages.Meta
 		    var name = (NameSyntax)this.Visit(node.Name);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
 			return node.Update(kConst, typeReference, name, tSemicolon);
+		}
+		
+		public virtual SyntaxNode VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
+		{
+			var oldExternClassTypeDeclaration = node.ExternClassTypeDeclaration;
+			if (oldExternClassTypeDeclaration != null)
+			{
+			    var newExternClassTypeDeclaration = (ExternClassTypeDeclarationSyntax)this.Visit(oldExternClassTypeDeclaration);
+				return node.Update(newExternClassTypeDeclaration);
+			}
+			var oldExternStructTypeDeclaration = node.ExternStructTypeDeclaration;
+			if (oldExternStructTypeDeclaration != null)
+			{
+			    var newExternStructTypeDeclaration = (ExternStructTypeDeclarationSyntax)this.Visit(oldExternStructTypeDeclaration);
+				return node.Update(newExternStructTypeDeclaration);
+			}
+			return node;   
+		}
+		
+		public virtual SyntaxNode VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
+		{
+		    var kExtern = this.VisitToken(node.KExtern);
+		    var kClass = this.VisitToken(node.KClass);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tSemicolon = this.VisitToken(node.TSemicolon);
+			return node.Update(kExtern, kClass, qualifier, name, tSemicolon);
+		}
+		
+		public virtual SyntaxNode VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
+		{
+		    var kExtern = this.VisitToken(node.KExtern);
+		    var kStruct = this.VisitToken(node.KStruct);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
+		    var name = (NameSyntax)this.Visit(node.Name);
+		    var tSemicolon = this.VisitToken(node.TSemicolon);
+			return node.Update(kExtern, kStruct, qualifier, name, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitReturnType(ReturnTypeSyntax node)
@@ -7118,6 +7592,12 @@ namespace MetaDslx.Languages.Meta
 		    return (DeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.ConstDeclarationGreen)constDeclaration.Green).CreateRed();
 		}
 		
+		public DeclarationSyntax Declaration(ExternTypeDeclarationSyntax externTypeDeclaration)
+		{
+		    if (externTypeDeclaration == null) throw new ArgumentNullException(nameof(externTypeDeclaration));
+		    return (DeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.ExternTypeDeclarationGreen)externTypeDeclaration.Green).CreateRed();
+		}
+		
 		public EnumDeclarationSyntax EnumDeclaration(SyntaxNodeList<AnnotationSyntax> annotation, SyntaxToken kEnum, NameSyntax name, EnumBodySyntax enumBody)
 		{
 		    if (kEnum == null) throw new ArgumentNullException(nameof(kEnum));
@@ -7304,6 +7784,54 @@ namespace MetaDslx.Languages.Meta
 		public ConstDeclarationSyntax ConstDeclaration(TypeReferenceSyntax typeReference, NameSyntax name)
 		{
 			return this.ConstDeclaration(this.Token(MetaSyntaxKind.KConst), typeReference, name, this.Token(MetaSyntaxKind.TSemicolon));
+		}
+		
+		public ExternTypeDeclarationSyntax ExternTypeDeclaration(ExternClassTypeDeclarationSyntax externClassTypeDeclaration)
+		{
+		    if (externClassTypeDeclaration == null) throw new ArgumentNullException(nameof(externClassTypeDeclaration));
+		    return (ExternTypeDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ExternTypeDeclaration((Syntax.InternalSyntax.ExternClassTypeDeclarationGreen)externClassTypeDeclaration.Green).CreateRed();
+		}
+		
+		public ExternTypeDeclarationSyntax ExternTypeDeclaration(ExternStructTypeDeclarationSyntax externStructTypeDeclaration)
+		{
+		    if (externStructTypeDeclaration == null) throw new ArgumentNullException(nameof(externStructTypeDeclaration));
+		    return (ExternTypeDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ExternTypeDeclaration((Syntax.InternalSyntax.ExternStructTypeDeclarationGreen)externStructTypeDeclaration.Green).CreateRed();
+		}
+		
+		public ExternClassTypeDeclarationSyntax ExternClassTypeDeclaration(SyntaxToken kExtern, SyntaxToken kClass, QualifierSyntax qualifier, NameSyntax name, SyntaxToken tSemicolon)
+		{
+		    if (kExtern == null) throw new ArgumentNullException(nameof(kExtern));
+		    if (kExtern.RawKind != (int)MetaSyntaxKind.KExtern) throw new ArgumentException(nameof(kExtern));
+		    if (kClass == null) throw new ArgumentNullException(nameof(kClass));
+		    if (kClass.RawKind != (int)MetaSyntaxKind.KClass) throw new ArgumentException(nameof(kClass));
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
+		    if (tSemicolon.RawKind != (int)MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
+		    return (ExternClassTypeDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ExternClassTypeDeclaration((InternalSyntaxToken)kExtern.Green, (InternalSyntaxToken)kClass.Green, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tSemicolon.Green).CreateRed();
+		}
+		
+		public ExternClassTypeDeclarationSyntax ExternClassTypeDeclaration(QualifierSyntax qualifier, NameSyntax name)
+		{
+			return this.ExternClassTypeDeclaration(this.Token(MetaSyntaxKind.KExtern), this.Token(MetaSyntaxKind.KClass), qualifier, name, this.Token(MetaSyntaxKind.TSemicolon));
+		}
+		
+		public ExternStructTypeDeclarationSyntax ExternStructTypeDeclaration(SyntaxToken kExtern, SyntaxToken kStruct, QualifierSyntax qualifier, NameSyntax name, SyntaxToken tSemicolon)
+		{
+		    if (kExtern == null) throw new ArgumentNullException(nameof(kExtern));
+		    if (kExtern.RawKind != (int)MetaSyntaxKind.KExtern) throw new ArgumentException(nameof(kExtern));
+		    if (kStruct == null) throw new ArgumentNullException(nameof(kStruct));
+		    if (kStruct.RawKind != (int)MetaSyntaxKind.KStruct) throw new ArgumentException(nameof(kStruct));
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
+		    if (tSemicolon.RawKind != (int)MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
+		    return (ExternStructTypeDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ExternStructTypeDeclaration((InternalSyntaxToken)kExtern.Green, (InternalSyntaxToken)kStruct.Green, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tSemicolon.Green).CreateRed();
+		}
+		
+		public ExternStructTypeDeclarationSyntax ExternStructTypeDeclaration(QualifierSyntax qualifier, NameSyntax name)
+		{
+			return this.ExternStructTypeDeclaration(this.Token(MetaSyntaxKind.KExtern), this.Token(MetaSyntaxKind.KStruct), qualifier, name, this.Token(MetaSyntaxKind.TSemicolon));
 		}
 		
 		public ReturnTypeSyntax ReturnType(TypeReferenceSyntax typeReference)
@@ -7600,6 +8128,9 @@ namespace MetaDslx.Languages.Meta
 				typeof(SubsettingsSyntax),
 				typeof(NameUseListSyntax),
 				typeof(ConstDeclarationSyntax),
+				typeof(ExternTypeDeclarationSyntax),
+				typeof(ExternClassTypeDeclarationSyntax),
+				typeof(ExternStructTypeDeclarationSyntax),
 				typeof(ReturnTypeSyntax),
 				typeof(TypeOfReferenceSyntax),
 				typeof(TypeReferenceSyntax),

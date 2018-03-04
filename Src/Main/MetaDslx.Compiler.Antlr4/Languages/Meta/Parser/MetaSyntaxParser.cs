@@ -59,18 +59,18 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			private MetaGreenFactory factory;
             private MetaSyntaxParser syntaxParser;
 			private IList<IToken> tokens;
-            private IToken lastToken;
+            private IToken lastTokenOrTrivia;
             public Antlr4ToRoslynVisitor(MetaSyntaxParser syntaxParser)
             {
                 this.language = MetaLanguage.Instance;
 				this.factory = language.InternalSyntaxFactory;
                 this.syntaxParser = syntaxParser;
 				this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
-                this.lastToken = null;
+                this.lastTokenOrTrivia = null;
             }
             public override GreenNode VisitTerminal(ITerminalNode node)
             {
-                GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastToken);
+                GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastTokenOrTrivia);
                 return result;
             }
 			
@@ -285,6 +285,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				if (constDeclarationContext != null) 
 				{
 					return this.factory.Declaration((ConstDeclarationGreen)this.Visit(constDeclarationContext), true);
+				}
+				MetaParser.ExternTypeDeclarationContext externTypeDeclarationContext = context.externTypeDeclaration();
+				if (externTypeDeclarationContext != null) 
+				{
+					return this.factory.Declaration((ExternTypeDeclarationGreen)this.Visit(externTypeDeclarationContext), true);
 				}
 				return null;
 			}
@@ -620,6 +625,64 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
 				return this.factory.ConstDeclaration(kConst, typeReference, name, tSemicolon, true);
+			}
+			
+			public override GreenNode VisitExternTypeDeclaration(MetaParser.ExternTypeDeclarationContext context)
+			{
+				if (context == null) return null;
+				MetaParser.ExternClassTypeDeclarationContext externClassTypeDeclarationContext = context.externClassTypeDeclaration();
+				if (externClassTypeDeclarationContext != null) 
+				{
+					return this.factory.ExternTypeDeclaration((ExternClassTypeDeclarationGreen)this.Visit(externClassTypeDeclarationContext), true);
+				}
+				MetaParser.ExternStructTypeDeclarationContext externStructTypeDeclarationContext = context.externStructTypeDeclaration();
+				if (externStructTypeDeclarationContext != null) 
+				{
+					return this.factory.ExternTypeDeclaration((ExternStructTypeDeclarationGreen)this.Visit(externStructTypeDeclarationContext), true);
+				}
+				return null;
+			}
+			
+			public override GreenNode VisitExternClassTypeDeclaration(MetaParser.ExternClassTypeDeclarationContext context)
+			{
+				if (context == null) return null;
+				InternalSyntaxToken kExtern = (InternalSyntaxToken)this.VisitTerminal(context.KExtern());
+				InternalSyntaxToken kClass = (InternalSyntaxToken)this.VisitTerminal(context.KClass());
+				MetaParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
+				{
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				}
+				MetaParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
+				{
+					name = (NameGreen)this.Visit(nameContext);
+				}
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
+				return this.factory.ExternClassTypeDeclaration(kExtern, kClass, qualifier, name, tSemicolon, true);
+			}
+			
+			public override GreenNode VisitExternStructTypeDeclaration(MetaParser.ExternStructTypeDeclarationContext context)
+			{
+				if (context == null) return null;
+				InternalSyntaxToken kExtern = (InternalSyntaxToken)this.VisitTerminal(context.KExtern());
+				InternalSyntaxToken kStruct = (InternalSyntaxToken)this.VisitTerminal(context.KStruct());
+				MetaParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
+				{
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				}
+				MetaParser.NameContext nameContext = context.name();
+				NameGreen name = null;
+				if (nameContext != null)
+				{
+					name = (NameGreen)this.Visit(nameContext);
+				}
+				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon());
+				return this.factory.ExternStructTypeDeclaration(kExtern, kStruct, qualifier, name, tSemicolon, true);
 			}
 			
 			public override GreenNode VisitReturnType(MetaParser.ReturnTypeContext context)

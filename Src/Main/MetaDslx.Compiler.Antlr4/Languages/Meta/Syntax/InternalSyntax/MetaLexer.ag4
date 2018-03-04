@@ -1,5 +1,10 @@
 ﻿lexer grammar MetaLexer;
 
+options
+{
+	generateCompiler=true;
+}
+
 channels
 {
 	COMMENT,
@@ -15,6 +20,7 @@ KExtern : 'extern';
 KTypeDef : 'typedef';
 KAbstract : 'abstract';
 KClass : 'class';
+KStruct : 'struct';
 KEnum : 'enum';
 KAssociation : 'association';
 KContainment : 'containment';

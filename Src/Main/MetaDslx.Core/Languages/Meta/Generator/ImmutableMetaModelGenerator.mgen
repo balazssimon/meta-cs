@@ -309,6 +309,8 @@ template GenerateSymbolInstancePropertyValue(MetaModel model, bool metaMetaModel
 [name].[prop.Name] = [value.ToString()];
 [else if (value is Enum)]
 [name].[prop.Name] = [GetEnumValueOf((Enum)value)];
+[else if (value is MetaExternalType)]
+[name].[prop.Name]Lazy = () => [((MetaExternalType)value).Name.ToPascalCase()];
 [else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
 	[if (metaMetaModel)]
 [name].[prop.Name]Lazy = () => [((MetaPrimitiveType)value).Name.ToPascalCase()];
@@ -349,6 +351,8 @@ template GenerateSymbolInstancePropertyCollectionValue(MetaModel model, bool met
 [name].[prop.Name].Add([value.ToString()]);
 [else if (value is Enum)]
 [name].[prop.Name].Add([GetEnumValueOf((Enum)value)]);
+[else if (value is MetaExternalType)]
+[name].[prop.Name].AddLazy(() => [((MetaExternalType)value).Name.ToPascalCase()]);
 [else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
 	[if (metaMetaModel)]
 [name].[prop.Name].AddLazy(() => [((MetaPrimitiveType)value).Name.ToPascalCase()]);

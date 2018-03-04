@@ -387,6 +387,42 @@ public partial class MetaParserBaseListener : IMetaParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitConstDeclaration([NotNull] MetaParser.ConstDeclarationContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.externTypeDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExternTypeDeclaration([NotNull] MetaParser.ExternTypeDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.externTypeDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExternTypeDeclaration([NotNull] MetaParser.ExternTypeDeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.externClassTypeDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExternClassTypeDeclaration([NotNull] MetaParser.ExternClassTypeDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.externClassTypeDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExternClassTypeDeclaration([NotNull] MetaParser.ExternClassTypeDeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.externStructTypeDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExternStructTypeDeclaration([NotNull] MetaParser.ExternStructTypeDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.externStructTypeDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExternStructTypeDeclaration([NotNull] MetaParser.ExternStructTypeDeclarationContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.returnType"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

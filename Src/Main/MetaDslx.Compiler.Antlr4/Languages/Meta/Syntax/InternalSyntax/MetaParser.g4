@@ -52,7 +52,7 @@ metamodelProperty : metamodelUriProperty;
               
 metamodelUriProperty : IUri TAssign        stringLiteral;
 
-declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
+declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | externTypeDeclaration;
 
                         
                     
@@ -95,6 +95,16 @@ nameUseList : qualifier (TComma qualifier)*;
                         
                         
 constDeclaration : KConst                 typeReference name TSemicolon;
+
+externTypeDeclaration : externClassTypeDeclaration | externStructTypeDeclaration;
+
+                        
+                            
+externClassTypeDeclaration : KExtern KClass                                qualifier name TSemicolon;
+
+                        
+                            
+externStructTypeDeclaration : KExtern                                        KStruct                                qualifier name TSemicolon;
 
                     
 returnType : typeReference | voidType;

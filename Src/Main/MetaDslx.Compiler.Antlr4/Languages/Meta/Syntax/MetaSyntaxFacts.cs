@@ -56,6 +56,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaSyntaxKind.KTypeDef:
 				case MetaSyntaxKind.KAbstract:
 				case MetaSyntaxKind.KClass:
+				case MetaSyntaxKind.KStruct:
 				case MetaSyntaxKind.KEnum:
 				case MetaSyntaxKind.KAssociation:
 				case MetaSyntaxKind.KContainment:
@@ -160,6 +161,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaSyntaxKind.LSingleQuoteVerbatimString:
 				case MetaSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 				case MetaSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
+				case MetaSyntaxKind.LCommentStart:
 					return true;
 				default:
 					return false;
@@ -183,6 +185,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaSyntaxKind.KTypeDef:
 				case MetaSyntaxKind.KAbstract:
 				case MetaSyntaxKind.KClass:
+				case MetaSyntaxKind.KStruct:
 				case MetaSyntaxKind.KEnum:
 				case MetaSyntaxKind.KAssociation:
 				case MetaSyntaxKind.KContainment:
@@ -267,6 +270,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaSyntaxKind.IUri:
 				case MetaSyntaxKind.DoubleQuoteVerbatimStringLiteralStart:
 				case MetaSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
+				case MetaSyntaxKind.LCommentStart:
 				case MetaSyntaxKind.LDoubleQuoteVerbatimString:
 				case MetaSyntaxKind.LSingleQuoteVerbatimString:
 					return true;
@@ -298,6 +302,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return "abstract";
 				case MetaSyntaxKind.KClass:
 					return "class";
+				case MetaSyntaxKind.KStruct:
+					return "struct";
 				case MetaSyntaxKind.KEnum:
 					return "enum";
 				case MetaSyntaxKind.KAssociation:
@@ -466,6 +472,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return "@\"";
 				case MetaSyntaxKind.SingleQuoteVerbatimStringLiteralStart:
 					return "@\'";
+				case MetaSyntaxKind.LCommentStart:
+					return "/*";
 				case MetaSyntaxKind.LDoubleQuoteVerbatimString:
 					return "\"";
 				case MetaSyntaxKind.LSingleQuoteVerbatimString:
@@ -493,6 +501,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaSyntaxKind.KAbstract;
 				case "class":
 					return MetaSyntaxKind.KClass;
+				case "struct":
+					return MetaSyntaxKind.KStruct;
 				case "enum":
 					return MetaSyntaxKind.KEnum;
 				case "association":
@@ -661,6 +671,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaSyntaxKind.DoubleQuoteVerbatimStringLiteralStart;
 				case "@\'":
 					return MetaSyntaxKind.SingleQuoteVerbatimStringLiteralStart;
+				case "/*":
+					return MetaSyntaxKind.LCommentStart;
 				case "\"":
 					return MetaSyntaxKind.LDoubleQuoteVerbatimString;
 				case "\'":
@@ -714,6 +726,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaSyntaxKind.KTypeDef:
 				case MetaSyntaxKind.KAbstract:
 				case MetaSyntaxKind.KClass:
+				case MetaSyntaxKind.KStruct:
 				case MetaSyntaxKind.KEnum:
 				case MetaSyntaxKind.KAssociation:
 				case MetaSyntaxKind.KContainment:
@@ -876,6 +889,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaSyntaxKind.KTypeDef:
 				case MetaSyntaxKind.KAbstract:
 				case MetaSyntaxKind.KClass:
+				case MetaSyntaxKind.KStruct:
 				case MetaSyntaxKind.KEnum:
 				case MetaSyntaxKind.KAssociation:
 				case MetaSyntaxKind.KContainment:

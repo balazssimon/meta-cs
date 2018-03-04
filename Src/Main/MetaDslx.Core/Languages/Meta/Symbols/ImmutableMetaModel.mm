@@ -114,6 +114,12 @@
 	{
 	}
 
+	class MetaExternalType : MetaPrimitiveType
+	{
+		string ExternalName;
+		bool IsValueType;
+	}
+
 	[Scope]
 	class MetaEnum : MetaDeclaration, MetaType
 	{

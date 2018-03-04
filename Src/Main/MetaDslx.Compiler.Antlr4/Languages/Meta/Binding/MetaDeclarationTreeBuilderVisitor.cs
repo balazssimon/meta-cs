@@ -213,6 +213,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.Visit(node.ClassDeclaration);
 			this.Visit(node.AssociationDeclaration);
 			this.Visit(node.ConstDeclaration);
+			this.Visit(node.ExternTypeDeclaration);
 		}
 		
 		public virtual void VisitEnumDeclaration(EnumDeclarationSyntax node)
@@ -513,6 +514,62 @@ namespace MetaDslx.Languages.Meta.Binding
 					finally
 					{
 						this.EndProperty();
+					}
+					this.Visit(node.Name);
+				}
+				finally
+				{
+					this.EndDeclaration();
+				}
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
+		{
+			this.Visit(node.ExternClassTypeDeclaration);
+			this.Visit(node.ExternStructTypeDeclaration);
+		}
+		
+		public virtual void VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
+		{
+			this.BeginProperty("Declarations");
+			try
+			{
+				this.BeginDeclaration(typeof(Symbols.MetaExternalType), node);
+				try
+				{
+					this.Visit(node.Name);
+				}
+				finally
+				{
+					this.EndDeclaration();
+				}
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
+		{
+			this.BeginProperty("Declarations");
+			try
+			{
+				this.BeginDeclaration(typeof(Symbols.MetaExternalType), node);
+				try
+				{
+					if (node.KStruct != null)
+					{
+						switch (((MetaSyntaxToken)node.KStruct).Kind)
+						{
+							default:
+								break;
+						}
 					}
 					this.Visit(node.Name);
 				}
