@@ -319,6 +319,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
     internal class MetaGenCSharpClassVisitor : MetaGenVisitor
     {
         private int tmpCounter = 0;
+        private bool processTemplateOutput = false;
         private List<SwitchInfo> switchStack = new List<SwitchInfo>();
         private HashSet<string> externFunctionNames = new HashSet<string>();
 
@@ -472,17 +473,22 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             AppendLine();
             this.GenerateExtensionsInterface(name);
             AppendLine();
-            WriteLine("public class {0} {1}", name, context.ToComment());
+            string baseType = string.Empty;
+            if (context.qualifiedName() != null)
+            {
+                this.processTemplateOutput = true;
+                baseType = " : " + context.qualifiedName().GetText();
+            }
+            WriteLine("public class {0}{1} {2}", name, baseType, context.ToComment());
             WriteLine("{");
             this.IncIndent();
             this.GenerateExtensionsField(name);
-            string instancesType = "object";
             if (context.typeReference() != null)
             {
-                instancesType = context.typeReference().GetText();
+                string instancesType = context.typeReference().GetText();
+                WriteLine("private {0} Instances; {1}", instancesType, context.ToComment());
+                AppendLine();
             }
-            WriteLine("private {0} Instances; {1}", instancesType, context.ToComment());
-            AppendLine();
             WriteLine("public {0}() {1}", name, context.ToComment());
             WriteLine("{");
             IncIndent();
@@ -496,13 +502,17 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             DecIndent();
             WriteLine("}");
             AppendLine();
-            WriteLine("public {0}({1} instances) : this() {2}", name, instancesType, context.ToComment());
-            WriteLine("{");
-            IncIndent();
-            WriteLine("this.Instances = instances;");
-            DecIndent();
-            WriteLine("}");
-            AppendLine();
+            if (context.typeReference() != null)
+            {
+                string instancesType = context.typeReference().GetText();
+                WriteLine("public {0}({1} instances) : this() {2}", name, instancesType, context.ToComment());
+                WriteLine("{");
+                IncIndent();
+                WriteLine("this.Instances = instances;");
+                DecIndent();
+                WriteLine("}");
+                AppendLine();
+            }
             WriteLine("private Stream __ToStream(string text)");
             WriteLine("{");
             IncIndent();
@@ -515,7 +525,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             DecIndent();
             WriteLine("}");
             AppendLine();
-            WriteLine("private static IEnumerable<T> __Enumerate<T>(IEnumerator<T> items)", name, instancesType);
+            WriteLine("private static IEnumerable<T> __Enumerate<T>(IEnumerator<T> items)");
             WriteLine("{");
             IncIndent();
             WriteLine("while (items.MoveNext())");
@@ -527,14 +537,16 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             DecIndent();
             WriteLine("}");
             AppendLine();
-            WriteLine("private int counter = 0;");
-            WriteLine("private int NextCounter()");
-            WriteLine("{");
-            IncIndent();
-            WriteLine("return ++counter;");
-            DecIndent();
-            WriteLine("}");
-            AppendLine();
+            if (this.processTemplateOutput)
+            {
+                WriteLine("protected override string ProcessTemplateOutput(object output) {0}", context.ToComment());
+                WriteLine("{");
+                IncIndent();
+                WriteLine("return base.ProcessTemplateOutput(output);");
+                DecIndent();
+                WriteLine("}");
+                AppendLine();
+            }
             return null;
         }
 
@@ -875,6 +887,15 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         {
             WriteIndent();
             Write("return ");
+            Visit(context.expression());
+            Write("; " + context.ToComment());
+            AppendLine();
+            return null;
+        }
+
+        public override object VisitVoidStatement(MetaGeneratorParser.VoidStatementContext context)
+        {
+            WriteIndent();
             Visit(context.expression());
             Write("; " + context.ToComment());
             AppendLine();
@@ -1580,7 +1601,14 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
 
         public object VisitTemplateOutput(MetaGeneratorParser.TemplateOutputContext context, string output)
         {
-            WriteLine("{0}.Append(\"{1}\"); {2}", output, EscapeText(context.TemplateOutput().GetText()), context.ToComment());
+            if (this.processTemplateOutput)
+            {
+                WriteLine("{0}.Append(this.ProcessTemplateOutput(\"{1}\")); {2}", output, EscapeText(context.TemplateOutput().GetText()), context.ToComment());
+            }
+            else
+            {
+                WriteLine("{0}.Append(\"{1}\"); {2}", output, EscapeText(context.TemplateOutput().GetText()), context.ToComment());
+            }
             return null;
         }
 
@@ -1641,9 +1669,23 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 else
                 {
                     WriteIndent();
-                    Write("{0}.Append(", output);
+                    if (this.processTemplateOutput)
+                    {
+                        Write("{0}.Append(this.ProcessTemplateOutput(", output);
+                    }
+                    else
+                    {
+                        Write("{0}.Append(", output);
+                    }
                     Visit(expression);
-                    Write(");");
+                    if (this.processTemplateOutput)
+                    {
+                        Write("));");
+                    }
+                    else
+                    {
+                        Write(");");
+                    }
                     AppendLine();
                 }
             }

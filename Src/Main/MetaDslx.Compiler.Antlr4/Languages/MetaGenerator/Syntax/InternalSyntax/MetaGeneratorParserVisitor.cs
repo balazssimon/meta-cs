@@ -163,6 +163,12 @@ public interface IMetaGeneratorParserVisitor<Result> : IParseTreeVisitor<Result>
 	/// <return>The visitor result.</return>
 	Result VisitVariableDeclarationItem([NotNull] MetaGeneratorParser.VariableDeclarationItemContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.voidStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVoidStatement([NotNull] MetaGeneratorParser.VoidStatementContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaGeneratorParser.returnStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -265,6 +265,7 @@ TH_CRLF : '\r'? '\n' -> type(LCrLf), channel(WHITESPACE);
 TH_LINEBREAK : [\u0085\u2028\u2029] -> type(LLineBreak), channel(WHITESPACE);
 TH_WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> type(LWhitespace), channel(WHITESPACE);
 
+TH_KVoid : KVoid -> type(KVoid);
 TH_KEnd : KEnd -> type(KEnd);
 TH_KFor : KFor -> type(KFor);
 TH_KForEach : KForEach -> type(KForEach);
@@ -392,6 +393,7 @@ TemplateStatementEnd : {_templateBrackets == 0}? ']' -> mode(TEMPLATE_OUTPUT);
 TemplateStatement_COMMENT_START : '/*' -> more, mode(TEMPLATE_STATEMENT_COMMENT);
 TemplateStatement_WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> type(LWhitespace), channel(WHITESPACE);
 
+TS_KVoid : KVoid -> type(KVoid);
 TS_KSwitch : KSwitch -> type(KSwitch);
 TS_KCase : KCase -> type(KCase);
 TS_KType : KType -> type(KType);

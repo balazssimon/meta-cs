@@ -4,14 +4,13 @@ options
 { 
     tokenVocab = MetaGeneratorLexer;
 	generateCompiler = false;
-	generateLanguageService=true;
 }
 
 main : namespaceDeclaration generatorDeclaration usingDeclaration* configDeclaration? methodDeclaration* EOF;
 
 namespaceDeclaration : KNamespace qualifiedName TSemicolon;
 
-generatorDeclaration : KGenerator identifier (KFor typeReference) TSemicolon;
+generatorDeclaration : KGenerator identifier (TColon qualifiedName)? (KFor typeReference)? TSemicolon;
 
 usingDeclaration
     : KUsing qualifiedName TSemicolon								#usingNamespaceDeclaration
@@ -52,6 +51,9 @@ singleStatementSemicolon : singleStatement TSemicolon;
 variableDeclarationStatement : variableDeclarationExpression;
 variableDeclarationExpression : typeReference variableDeclarationItem (TComma variableDeclarationItem)*;
 variableDeclarationItem : identifier (TAssign expression)?;
+
+voidStatement : KVoid expression;
+
 returnStatement : KReturn expression;
 expressionStatement : expression;
 
@@ -126,8 +128,9 @@ templateLineEnd : TemplateCrLf | TemplateLineBreak | TemplateLineControl;
 templateStatementStartEnd : TemplateStatementStart templateStatement? TemplateStatementEnd;
 
 templateStatement 
-    : variableDeclarationStatement
-    | expressionStatement
+    : voidStatement
+    | variableDeclarationStatement
+	| expressionStatement
     | ifStatementBegin
     | elseIfStatement
     | ifStatementElse

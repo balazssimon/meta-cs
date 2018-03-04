@@ -56,6 +56,13 @@ namespace MetaDslx.TempConsole
         {
             //try
             {
+                //*
+                Console.WriteLine("----");
+                CompileGenerator(
+                    @"Test1.mgen",
+                    @"Test1.cs"
+                    );
+                //*/
                 /*
                 Console.WriteLine("----");
                 CompileGenerator(
@@ -159,7 +166,7 @@ namespace MetaDslx.TempConsole
                 Program.CompileAntlr4Roslyn("../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../Samples/MetaDslx.Languages.Calculator", "CalculatorLexer.ag4", "MetaDslx.Languages.Calculator");
                 Program.CompileAntlr4Roslyn("../../Samples/MetaDslx.Languages.Calculator/Syntax/InternalSyntax", "../../Samples/MetaDslx.Languages.Calculator", "CalculatorParser.ag4", "MetaDslx.Languages.Calculator");
                 //*/
-                //*
+                /*
                 Console.WriteLine("----");
                 CompileMeta(
                     @"../../Samples/MetaDslx.Languages.Soal\Symbols\Soal.mm",

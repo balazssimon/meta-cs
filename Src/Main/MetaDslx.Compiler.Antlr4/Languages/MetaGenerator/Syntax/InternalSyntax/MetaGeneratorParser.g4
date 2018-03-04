@@ -4,14 +4,13 @@ options
 { 
     tokenVocab = MetaGeneratorLexer;
 	                         
-	                             
 }
 
 main : namespaceDeclaration generatorDeclaration usingDeclaration* configDeclaration? methodDeclaration* EOF;
 
 namespaceDeclaration : KNamespace qualifiedName TSemicolon;
 
-generatorDeclaration : KGenerator identifier (KFor typeReference) TSemicolon;
+generatorDeclaration : KGenerator identifier (TColon qualifiedName)? (KFor typeReference)? TSemicolon;
 
 usingDeclaration
     : KUsing qualifiedName TSemicolon								#usingNamespaceDeclaration
@@ -35,6 +34,7 @@ body : statement*;
 statement 
     : singleStatementSemicolon
     | ifStatement
+	| forStatement
     | whileStatement
     | repeatStatement
     | loopStatement
@@ -48,7 +48,12 @@ singleStatement
 
 singleStatementSemicolon : singleStatement TSemicolon;
 
-variableDeclarationStatement : typeReference identifier (TAssign expression)?;
+variableDeclarationStatement : variableDeclarationExpression;
+variableDeclarationExpression : typeReference variableDeclarationItem (TComma variableDeclarationItem)*;
+variableDeclarationItem : identifier (TAssign expression)?;
+
+voidStatement : KVoid expression;
+
 returnStatement : KReturn expression;
 expressionStatement : expression;
 
@@ -61,6 +66,12 @@ elseIfStatement : KElse KIf TOpenParenthesis expression TCloseParenthesis;
 ifStatementElse : KElse;
 ifStatementEnd : KEnd KIf;
 
+
+forStatement : forStatementBegin body forStatementEnd;
+
+forStatementBegin : KFor TOpenParenthesis forInitStatement? semi1=TSemicolon endExpression=expressionList? semi2=TSemicolon stepExpression=expressionList? /*whileRunExpression?*/ TCloseParenthesis;
+forStatementEnd : KEnd KFor;
+forInitStatement : variableDeclarationExpression | expressionList;
 
 whileStatement : whileStatementBegin body whileStatementEnd;
 
@@ -117,12 +128,15 @@ templateLineEnd : TemplateCrLf | TemplateLineBreak | TemplateLineControl;
 templateStatementStartEnd : TemplateStatementStart templateStatement? TemplateStatementEnd;
 
 templateStatement 
-    : variableDeclarationStatement
-    | expressionStatement
+    : voidStatement
+    | variableDeclarationStatement
+	| expressionStatement
     | ifStatementBegin
     | elseIfStatement
     | ifStatementElse
     | ifStatementEnd
+	| forStatementBegin
+	| forStatementEnd
     | whileStatementBegin
     | whileStatementEnd
     | repeatStatementBegin

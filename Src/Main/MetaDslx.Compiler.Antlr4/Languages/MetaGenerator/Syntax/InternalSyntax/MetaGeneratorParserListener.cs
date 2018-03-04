@@ -250,6 +250,16 @@ public interface IMetaGeneratorParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitVariableDeclarationItem([NotNull] MetaGeneratorParser.VariableDeclarationItemContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.voidStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterVoidStatement([NotNull] MetaGeneratorParser.VoidStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.voidStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitVoidStatement([NotNull] MetaGeneratorParser.VoidStatementContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.returnStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -296,6 +296,18 @@ public partial class MetaGeneratorParserBaseListener : IMetaGeneratorParserListe
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitVariableDeclarationItem([NotNull] MetaGeneratorParser.VariableDeclarationItemContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.voidStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVoidStatement([NotNull] MetaGeneratorParser.VoidStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaGeneratorParser.voidStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVoidStatement([NotNull] MetaGeneratorParser.VoidStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaGeneratorParser.returnStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
