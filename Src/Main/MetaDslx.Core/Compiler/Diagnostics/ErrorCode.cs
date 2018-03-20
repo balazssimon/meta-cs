@@ -17,8 +17,10 @@ namespace MetaDslx.Compiler.Diagnostics
 
         public ErrorCode(string category, int id, DiagnosticSeverity defaultSeverity, int warningLevel, string defaultMessage)
         {
+            this.category = category;
             this.id = id;
             this.defaultSeverity = defaultSeverity;
+            this.warningLevel = warningLevel;
             this.defaultMessage = defaultMessage;
         }
 
