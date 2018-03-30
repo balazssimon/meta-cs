@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public class Conversions
+    public class Conversions<TBinder>
+        where TBinder: Binder<TBinder>
     {
         private const int MaximumRecursionDepth = 50;
 
-        private readonly Binder _binder;
+        private readonly TBinder _binder;
         private readonly int _currentRecursionDepth;
 
-        public Conversions(Binder binder)
+        public Conversions(TBinder binder)
             : this(binder, currentRecursionDepth: 0)
         {
         }
 
-        private Conversions(Binder binder, int currentRecursionDepth)
+        private Conversions(TBinder binder, int currentRecursionDepth)
         {
             _binder = binder;
             _currentRecursionDepth = currentRecursionDepth;

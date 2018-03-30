@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding.Binders
 {
-    internal sealed class CachingBinderFactory : BinderFactory
+    internal sealed class CachingBinderFactory<TBinder> : BinderFactory<TBinder>
+        where TBinder: Binder<TBinder>
     {
         // key in the binder cache.
         // PERF: we are not using ValueTuple because its Equals is relatively slow.
@@ -44,7 +45,7 @@ namespace MetaDslx.Compiler.Binding.Binders
 
         // This dictionary stores contexts so we don't have to recreate them, which can be
         // expensive. 
-        private readonly ConcurrentCache<BinderCacheKey, Binder> _binderCache;
+        private readonly ConcurrentCache<BinderCacheKey, TBinder> _binderCache;
 
         // In a typing scenario, GetBinder is regularly called with a non-zero position.
         // This results in a lot of allocations of BinderFactoryVisitors. Pooling them
@@ -63,16 +64,16 @@ namespace MetaDslx.Compiler.Binding.Binders
             // making this cache big is not very useful.
             // I noticed that while compiling Roslyn C# compiler most caches never see 
             // more than 50 items added before getting collected.
-            _binderCache = new ConcurrentCache<BinderCacheKey, Binder>(50);
+            _binderCache = new ConcurrentCache<BinderCacheKey, TBinder>(50);
         }
 
-        public override bool TryGetBinder(RedNode node, object usage, out Binder binder)
+        public override bool TryGetBinder(RedNode node, object usage, out TBinder binder)
         {
             var key = new BinderCacheKey(node, usage);
             return _binderCache.TryGetValue(key, out binder);
         }
 
-        public override bool TryAddBinder(RedNode node, object usage, ref Binder binder)
+        public override bool TryAddBinder(RedNode node, object usage, ref TBinder binder)
         {
             var key = new BinderCacheKey(node, usage);
             if (!_binderCache.TryAdd(key, binder))

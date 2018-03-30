@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding.Binders
 {
-    internal sealed class MappingBinderFactory : BinderFactory
+    internal sealed class MappingBinderFactory<TBinder> : BinderFactory<TBinder>
+        where TBinder: Binder<TBinder>
     {
-        private ConcurrentDictionary<RedNode, Binder> _map;
+        private ConcurrentDictionary<RedNode, TBinder> _map;
 
         internal MappingBinderFactory(CompilationBase compilation, SyntaxTree syntaxTree) 
             : base(compilation, syntaxTree)
         {
-            _map = new ConcurrentDictionary<RedNode, Binder>();
+            _map = new ConcurrentDictionary<RedNode, TBinder>();
         }
 
-        public override bool TryGetBinder(RedNode node, object usage, out Binder binder)
+        public override bool TryGetBinder(RedNode node, object usage, out TBinder binder)
         {
             if (usage == null)
             {
@@ -31,7 +32,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public override bool TryAddBinder(RedNode node, object usage, ref Binder binder)
+        public override bool TryAddBinder(RedNode node, object usage, ref TBinder binder)
         {
             if (usage == null)
             {

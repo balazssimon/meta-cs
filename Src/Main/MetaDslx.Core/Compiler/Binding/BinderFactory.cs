@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Binding.Binders
+namespace MetaDslx.Compiler.Binding
 {
-    public abstract class BinderFactory
+    public abstract class BinderFactory<TBinder>
+        where TBinder: Binder<TBinder>
     {
         private readonly Compilation _compilation;
         private readonly SyntaxTree _syntaxTree;
-        private readonly BuckStopsHereBinder _buckStopsHereBinder;
 
         // In a typing scenario, GetBinder is regularly called with a non-zero position.
         // This results in a lot of allocations of BinderFactoryVisitors. Pooling them
@@ -26,8 +26,6 @@ namespace MetaDslx.Compiler.Binding.Binders
             _syntaxTree = syntaxTree;
 
             _binderFactoryVisitorPool = new ObjectPool<BinderFactoryVisitor>(() => compilation.Language.CompilationFactory.CreateBinderFactoryVisitor(this), 64);
-
-            _buckStopsHereBinder = new BuckStopsHereBinder(compilation);
         }
 
         public CompilationBase Compilation
@@ -51,18 +49,10 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public BuckStopsHereBinder BuckStopsHereBinder
-        {
-            get
-            {
-                return _buckStopsHereBinder;
-            }
-        }
-
         /// <summary>
         /// Note, there is no guarantee that the factory always gives back the same binder instance for the same <param name="node"/>.
         /// </summary>
-        public Binder GetBinder(RedNode node)
+        public TBinder GetBinder(RedNode node)
         {
             if (node == null) return null;
             int position = node.SpanStart;
@@ -76,7 +66,7 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        public Binder GetBinder(RedNode node, int position)
+        public TBinder GetBinder(RedNode node, int position)
         {
             if (node == null) return null;
             if (node is SyntaxNode)
@@ -89,10 +79,10 @@ namespace MetaDslx.Compiler.Binding.Binders
             }
         }
 
-        private Binder GetBinder(SyntaxNode node, int position, bool forChild)
+        private TBinder GetBinder(SyntaxNode node, int position, bool forChild)
         {
             Debug.Assert(node != null);
-            Binder result = null;
+            TBinder result = null;
             BinderFactoryVisitor visitor = _binderFactoryVisitorPool.Allocate();
             try
             {
@@ -106,13 +96,13 @@ namespace MetaDslx.Compiler.Binding.Binders
             return result;
         }
 
-        public virtual bool TryGetBinder(RedNode node, object usage, out Binder binder)
+        public virtual bool TryGetBinder(RedNode node, object usage, out TBinder binder)
         {
             binder = null;
             return false;
         }
 
-        public virtual bool TryAddBinder(RedNode node, object usage, ref Binder binder)
+        public virtual bool TryAddBinder(RedNode node, object usage, ref TBinder binder)
         {
             return false;
         }

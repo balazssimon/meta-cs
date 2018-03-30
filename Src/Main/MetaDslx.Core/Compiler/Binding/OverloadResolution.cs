@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public class OverloadResolution
+    public class OverloadResolution<TBinder>
+        where TBinder: Binder<TBinder>, ITypeBinder<TBinder>
     {
-        private readonly Binder _binder;
+        private readonly TBinder _binder;
 
-        public OverloadResolution(Binder binder)
+        public OverloadResolution(TBinder binder)
         {
             _binder = binder;
         }
@@ -21,7 +22,7 @@ namespace MetaDslx.Compiler.Binding
             get { return _binder.Compilation; }
         }
 
-        private Conversions Conversions
+        private Conversions<TBinder> Conversions
         {
             get { return _binder.Conversions; }
         }

@@ -13,7 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Binding.Binders
+namespace MetaDslx.Compiler.Binding
 {
     public abstract class BinderFactoryVisitor : SyntaxVisitor<Binder> 
     {
