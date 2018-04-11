@@ -1447,9 +1447,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         private bool IsRoslynSingleTokenOrRuleElementAlt(Antlr4RoslynParser.AlternativeContext context, TokenOrRule kind, bool allowEbnf, out Antlr4ParserRuleElement element)
         {
-            if (context.element().Length == 1)
+            Antlr4RoslynParser.ElementContext[] elems = context.element().Where(e => !this.IsActionBlock(e)).ToArray();
+            if (elems.Length == 1)
             {
-                Antlr4RoslynParser.ElementContext elem = context.element()[0];
+                Antlr4RoslynParser.ElementContext elem = elems[0];
                 if (this.IsSingleTokenOrRuleElement(elem, kind, allowEbnf, out element))
                 {
                     return true;
@@ -1539,38 +1540,41 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     (second.ebnf().blockSuffix().ebnfSuffix().PLUS() != null ||
                     second.ebnf().blockSuffix().ebnfSuffix().STAR() != null) &&
                     second.ebnf().blockSuffix().ebnfSuffix().QUESTION().Length == 0 &&
-                    second.ebnf().block().altList().alternative().Length == 1 &&
-                    second.ebnf().block().altList().alternative()[0].element().Length == 2)
+                    second.ebnf().block().altList().alternative().Length == 1)
                 {
-                    Antlr4RoslynParser.ElementContext token = second.ebnf().block().altList().alternative()[0].element()[0];
-                    Antlr4RoslynParser.ElementContext ruleRep = second.ebnf().block().altList().alternative()[0].element()[1];
-                    Antlr4ParserRuleElement ruleElement;
-                    Antlr4ParserRuleElement tokenElement;
-                    Antlr4ParserRuleElement ruleRepElement;
-                    if (this.IsSingleTokenOrRuleElement(first, TokenOrRule.Rule, false, out ruleElement) &&
-                        this.IsSingleTokenOrRuleElement(token, TokenOrRule.Token, false, out tokenElement) &&
-                        this.IsSingleTokenOrRuleElement(ruleRep, TokenOrRule.Rule, false, out ruleRepElement) &&
-                        ruleElement.Type == ruleRepElement.Type && ruleElement.Name == ruleRepElement.Name)
+                    Antlr4RoslynParser.ElementContext[] secondBlockElements = second.ebnf().block().altList().alternative()[0].element().Where(e => !this.IsActionBlock(e)).ToArray();
+                    if (secondBlockElements.Length == 2)
                     {
-                        skip = 2;
-                        ruleElement.IsList = true;
-                        ruleElement.IsSeparated = true;
-                        ruleElement.Separator = tokenElement;
-                        tokenElement.ParentBlock = ruleElement;
-                        ruleElement.EndToken = Antlr4SeparatedListEndToken.Forbidden;
-                        Antlr4ParserRuleElement lastElement;
-                        if (third != null && this.IsSingleTokenOrRuleElement(third, TokenOrRule.Token, true, out lastElement) &&
-                            lastElement.Type == tokenElement.Type && lastElement.Name == tokenElement.Name)
+                        Antlr4RoslynParser.ElementContext token = secondBlockElements[0];
+                        Antlr4RoslynParser.ElementContext ruleRep = secondBlockElements[1];
+                        Antlr4ParserRuleElement ruleElement;
+                        Antlr4ParserRuleElement tokenElement;
+                        Antlr4ParserRuleElement ruleRepElement;
+                        if (this.IsSingleTokenOrRuleElement(first, TokenOrRule.Rule, false, out ruleElement) &&
+                            this.IsSingleTokenOrRuleElement(token, TokenOrRule.Token, false, out tokenElement) &&
+                            this.IsSingleTokenOrRuleElement(ruleRep, TokenOrRule.Rule, false, out ruleRepElement) &&
+                            ruleElement.Type == ruleRepElement.Type && ruleElement.Name == ruleRepElement.Name)
                         {
-                            ++skip;
-                            if (!lastElement.IsList)
+                            skip = 2;
+                            ruleElement.IsList = true;
+                            ruleElement.IsSeparated = true;
+                            ruleElement.Separator = tokenElement;
+                            tokenElement.ParentBlock = ruleElement;
+                            ruleElement.EndToken = Antlr4SeparatedListEndToken.Forbidden;
+                            Antlr4ParserRuleElement lastElement;
+                            if (third != null && this.IsSingleTokenOrRuleElement(third, TokenOrRule.Token, true, out lastElement) &&
+                                lastElement.Type == tokenElement.Type && lastElement.Name == tokenElement.Name)
                             {
-                                if (lastElement.IsOptional) ruleElement.EndToken = Antlr4SeparatedListEndToken.Allowed;
-                                else ruleElement.EndToken = Antlr4SeparatedListEndToken.Mandatory;
+                                ++skip;
+                                if (!lastElement.IsList)
+                                {
+                                    if (lastElement.IsOptional) ruleElement.EndToken = Antlr4SeparatedListEndToken.Allowed;
+                                    else ruleElement.EndToken = Antlr4SeparatedListEndToken.Mandatory;
+                                }
                             }
+                            element = ruleElement;
+                            return skip;
                         }
-                        element = ruleElement;
-                        return skip;
                     }
                 }
             }
@@ -1580,31 +1584,34 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     (first.ebnf().blockSuffix().ebnfSuffix().PLUS() != null ||
                     first.ebnf().blockSuffix().ebnfSuffix().STAR() != null) &&
                     first.ebnf().blockSuffix().ebnfSuffix().QUESTION().Length == 0 &&
-                    first.ebnf().block().altList().alternative().Length == 1 &&
-                    first.ebnf().block().altList().alternative()[0].element().Length == 2)
+                    first.ebnf().block().altList().alternative().Length == 1)
                 {
-                    Antlr4RoslynParser.ElementContext ruleRep = first.ebnf().block().altList().alternative()[0].element()[0];
-                    Antlr4RoslynParser.ElementContext token = first.ebnf().block().altList().alternative()[0].element()[1];
-                    Antlr4ParserRuleElement ruleRepElement;
-                    Antlr4ParserRuleElement tokenElement;
-                    if (this.IsSingleTokenOrRuleElement(ruleRep, TokenOrRule.Rule, false, out ruleRepElement) &&
-                        this.IsSingleTokenOrRuleElement(token, TokenOrRule.Token, false, out tokenElement))
+                    Antlr4RoslynParser.ElementContext[] firstBlockElements = first.ebnf().block().altList().alternative()[0].element().Where(e => !this.IsActionBlock(e)).ToArray();
+                    if (firstBlockElements.Length == 2)
                     {
-                        skip = 1;
-                        ruleRepElement.IsList = true;
-                        ruleRepElement.IsSeparated = true;
-                        ruleRepElement.Separator = tokenElement;
-                        tokenElement.ParentBlock = ruleRepElement;
-                        ruleRepElement.EndToken = Antlr4SeparatedListEndToken.Mandatory;
-                        Antlr4ParserRuleElement lastElement;
-                        if (second != null && this.IsSingleTokenOrRuleElement(second, TokenOrRule.Rule, false, out lastElement) &&
-                            lastElement.Type == ruleRepElement.Type && lastElement.Name == ruleRepElement.Name)
+                        Antlr4RoslynParser.ElementContext ruleRep = firstBlockElements[0];
+                        Antlr4RoslynParser.ElementContext token = firstBlockElements[1];
+                        Antlr4ParserRuleElement ruleRepElement;
+                        Antlr4ParserRuleElement tokenElement;
+                        if (this.IsSingleTokenOrRuleElement(ruleRep, TokenOrRule.Rule, false, out ruleRepElement) &&
+                            this.IsSingleTokenOrRuleElement(token, TokenOrRule.Token, false, out tokenElement))
                         {
-                            ruleRepElement.EndToken = Antlr4SeparatedListEndToken.Forbidden;
-                            ++skip;
+                            skip = 1;
+                            ruleRepElement.IsList = true;
+                            ruleRepElement.IsSeparated = true;
+                            ruleRepElement.Separator = tokenElement;
+                            tokenElement.ParentBlock = ruleRepElement;
+                            ruleRepElement.EndToken = Antlr4SeparatedListEndToken.Mandatory;
+                            Antlr4ParserRuleElement lastElement;
+                            if (second != null && this.IsSingleTokenOrRuleElement(second, TokenOrRule.Rule, false, out lastElement) &&
+                                lastElement.Type == ruleRepElement.Type && lastElement.Name == ruleRepElement.Name)
+                            {
+                                ruleRepElement.EndToken = Antlr4SeparatedListEndToken.Forbidden;
+                                ++skip;
+                            }
+                            element = ruleRepElement;
+                            return skip;
                         }
-                        element = ruleRepElement;
-                        return skip;
                     }
                 }
             }

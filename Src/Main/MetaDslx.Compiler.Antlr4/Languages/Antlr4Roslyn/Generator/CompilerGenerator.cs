@@ -10,8 +10,8 @@ using MetaDslx.Languages.Antlr4Roslyn.Compilation; //6:1
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
 {
-    using __Hidden_CompilerGenerator_606956248;
-    namespace __Hidden_CompilerGenerator_606956248
+    using __Hidden_CompilerGenerator_1427585747;
+    namespace __Hidden_CompilerGenerator_1427585747
     {
         internal static class __Extensions
         {
@@ -54,12 +54,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             {
                 yield return items.Current;
             }
-        }
-
-        private int counter = 0;
-        private int NextCounter()
-        {
-            return ++counter;
         }
 
         public __Properties Properties { get; private set; } //8:1
