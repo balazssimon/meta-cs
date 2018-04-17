@@ -105,6 +105,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         private TextSpan GetTextSpan(IToken token)
         {
+            if (token == null) return TextSpan.Default;
             return new TextSpan(token.StartIndex, token.StopIndex - token.StartIndex + 1);
         }
 
@@ -186,9 +187,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.DiagnosticBag.Add(Location.Create(this.FileName, TextSpan.Default, LinePositionSpan.Zero), code, args);
         }
 
-        internal void AddDiagnostic(LinePositionSpan position, Antlr4RoslynErrorCode code, params object[] args)
+        internal void AddDiagnostic(IToken token, Antlr4RoslynErrorCode code, params object[] args)
         {
-            this.DiagnosticBag.Add(Location.Create(this.FileName, TextSpan.Default, position), code, args);
+            this.DiagnosticBag.Add(Location.Create(this.FileName, this.GetTextSpan(token), this.GetLinePositionSpan(token)), code, args);
         }
 
         internal void AddDiagnostic(ITerminalNode token, Antlr4RoslynErrorCode code, params object[] args)

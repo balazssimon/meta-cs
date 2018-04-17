@@ -63,13 +63,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.CompileAntlr4();
         }
 
-        private LinePositionSpan GetTokenSpanAt(int line, int column)
+        private IToken GetTokenAt(int line, int column)
         {
             foreach (var token in this.CommonTokenStream.GetTokens())
             {
-                if (token.Line == line && token.Column == column) return new LinePositionSpan(new LinePosition(token.Line - 1, token.Column), new LinePosition(token.Line - 1, token.Column + token.StopIndex - token.StartIndex + 1));
+                if (token.Line == line && token.Column == column) return token;
             }
-            return new LinePositionSpan(new LinePosition(line - 1, column), new LinePosition(line - 1, column));
+            return this.CommonTokenStream.GetTokens().FirstOrDefault();
         }
 
         private bool PrepareAntlr4()
@@ -143,8 +143,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                                 lineIndex = 1;
                                 colIndex = 0;
                             }
-                            LinePositionSpan span = this.GetTokenSpanAt(lineIndex, colIndex);
-                            this.AddDiagnostic(span, errorCode, line);
+                            IToken token = this.GetTokenAt(lineIndex, colIndex);
+                            this.AddDiagnostic(token, errorCode, line);
                             return true;
                         }
                     }

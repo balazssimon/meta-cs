@@ -65,12 +65,12 @@ namespace MetaDslx.VisualStudio.Classification
                                 errorType = PredefinedErrorTypeNames.Warning;
                                 break;
                             case DiagnosticSeverity.Error:
-                                errorType = PredefinedErrorTypeNames.CompilerError;
+                                errorType = PredefinedErrorTypeNames.SyntaxError;
                                 break;
                             default:
                                 break;
                         }
-                        yield return new TagSpan<IErrorTag>(diagnosticSpan, new ErrorTag(errorType));
+                        yield return new TagSpan<IErrorTag>(diagnosticSpan, new ErrorTag(errorType, diagnostic.Info.GetMessage()));
                     }
                 }
             }

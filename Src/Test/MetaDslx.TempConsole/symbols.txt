@@ -1,0 +1,809 @@
+MetaRootNamespace
+  Parent=
+MetaDslx (MetaNamespace)
+  Parent=MetaRootNamespace
+  Documentation=
+  Name=MetaDslx
+Languages (MetaNamespace)
+  Parent=MetaDslx (MetaNamespace)
+  Documentation=
+  Name=Languages
+Soal (MetaNamespace)
+  Parent=Languages (MetaNamespace)
+  Documentation=
+  Name=Soal
+Symbols (MetaNamespace)
+  Parent=Soal (MetaNamespace)
+  Documentation=
+  Name=Symbols
+Soal (MetaModel)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Soal
+  Uri=http://MetaDslx.Languages.Soal/1.0
+Object (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Object
+  Type=PrimitiveType (MetaClass)
+String (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=String
+  Type=PrimitiveType (MetaClass)
+Int (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Int
+  Type=PrimitiveType (MetaClass)
+Long (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Long
+  Type=PrimitiveType (MetaClass)
+Float (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Float
+  Type=PrimitiveType (MetaClass)
+Double (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Double
+  Type=PrimitiveType (MetaClass)
+Byte (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Byte
+  Type=PrimitiveType (MetaClass)
+Bool (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Bool
+  Type=PrimitiveType (MetaClass)
+Void (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Void
+  Type=PrimitiveType (MetaClass)
+Date (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Date
+  Type=PrimitiveType (MetaClass)
+Time (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Time
+  Type=PrimitiveType (MetaClass)
+DateTime (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=DateTime
+  Type=PrimitiveType (MetaClass)
+TimeSpan (MetaConstant)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=TimeSpan
+  Type=PrimitiveType (MetaClass)
+Z (MetaExternalType)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Z
+AnnotatedElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=AnnotatedElement
+  IsAbstract=True
+Annotation (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Annotation
+  IsAbstract=
+AnnotationProperty (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=AnnotationProperty
+  IsAbstract=
+DocumentedElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=DocumentedElement
+  IsAbstract=True
+NamedElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=NamedElement
+  IsAbstract=True
+TypedElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=TypedElement
+  IsAbstract=True
+SoalType (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=SoalType
+  IsAbstract=True
+NamedType (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=NamedType
+  IsAbstract=
+Declaration (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Declaration
+  IsAbstract=True
+Namespace (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Namespace
+  IsAbstract=
+ArrayType (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=ArrayType
+  IsAbstract=
+NullableType (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=NullableType
+  IsAbstract=
+NonNullableType (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=NonNullableType
+  IsAbstract=
+PrimitiveType (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=PrimitiveType
+  IsAbstract=
+Enum (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Enum
+  IsAbstract=
+EnumLiteral (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=EnumLiteral
+  IsAbstract=
+Property (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Property
+  IsAbstract=
+Struct (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Struct
+  IsAbstract=
+Interface (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Interface
+  IsAbstract=
+Database (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Database
+  IsAbstract=
+Operation (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Operation
+  IsAbstract=
+InputParameter (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=InputParameter
+  IsAbstract=
+OutputParameter (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=OutputParameter
+  IsAbstract=
+Component (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Component
+  IsAbstract=
+Composite (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Composite
+  IsAbstract=
+Assembly (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Assembly
+  IsAbstract=
+Wire (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Wire
+  IsAbstract=
+Port (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Port
+  IsAbstract=
+Service (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Service
+  IsAbstract=
+Reference (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Reference
+  IsAbstract=
+Implementation (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Implementation
+  IsAbstract=
+Language (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Language
+  IsAbstract=
+Deployment (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Deployment
+  IsAbstract=
+Environment (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Environment
+  IsAbstract=
+Runtime (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Runtime
+  IsAbstract=
+Binding (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Binding
+  IsAbstract=
+Endpoint (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=Endpoint
+  IsAbstract=
+BindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=BindingElement
+  IsAbstract=True
+TransportBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=TransportBindingElement
+  IsAbstract=True
+EncodingBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=EncodingBindingElement
+  IsAbstract=True
+ProtocolBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=ProtocolBindingElement
+  IsAbstract=True
+HttpTransportBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=HttpTransportBindingElement
+  IsAbstract=
+RestTransportBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=RestTransportBindingElement
+  IsAbstract=
+WebSocketTransportBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=WebSocketTransportBindingElement
+  IsAbstract=
+SoapVersion (MetaEnum)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=SoapVersion
+  EnumLiterals:
+    Soap11 (MetaEnumLiteral)
+    Soap12 (MetaEnumLiteral)
+SoapEncodingStyle (MetaEnum)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=SoapEncodingStyle
+  EnumLiterals:
+    DocumentWrapped (MetaEnumLiteral)
+    DocumentLiteral (MetaEnumLiteral)
+    RpcLiteral (MetaEnumLiteral)
+    RpcEncoded (MetaEnumLiteral)
+SoapEncodingBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=SoapEncodingBindingElement
+  IsAbstract=
+XmlEncodingBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=XmlEncodingBindingElement
+  IsAbstract=
+JsonEncodingBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=JsonEncodingBindingElement
+  IsAbstract=
+WsProtocolBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=WsProtocolBindingElement
+  IsAbstract=True
+WsAddressingBindingElement (MetaClass)
+  Parent=Symbols (MetaNamespace)
+  Documentation=
+  Name=WsAddressingBindingElement
+  IsAbstract=
+Properties (MetaProperty)
+  Parent=Annotation (MetaClass)
+  Documentation=
+  Name=Properties
+  Type=MetaCollectionType
+MetaPrimitiveType
+  Parent=
+  Documentation=
+  Name=
+Annotations (MetaProperty)
+  Parent=AnnotatedElement (MetaClass)
+  Documentation=
+  Name=Annotations
+  Type=MetaCollectionType
+Scope (MetaAnnotation)
+  Parent=Namespace (MetaClass)
+  Documentation=
+  Name=Scope
+Uri (MetaProperty)
+  Parent=Namespace (MetaClass)
+  Documentation=
+  Name=Uri
+  Type=string (MetaPrimitiveType)
+Prefix (MetaProperty)
+  Parent=Namespace (MetaClass)
+  Documentation=
+  Name=Prefix
+  Type=string (MetaPrimitiveType)
+Usings (MetaProperty)
+  Parent=Namespace (MetaClass)
+  Documentation=
+  Name=Usings
+  Type=MetaCollectionType
+Declarations (MetaProperty)
+  Parent=Namespace (MetaClass)
+  Documentation=
+  Name=Declarations
+  Type=MetaCollectionType
+Namespace (MetaProperty)
+  Parent=Declaration (MetaClass)
+  Documentation=
+  Name=Namespace
+  Type=Namespace (MetaClass)
+FullName (MetaProperty)
+  Parent=Declaration (MetaClass)
+  Documentation=
+  Name=FullName
+  Type=string (MetaPrimitiveType)
+Enum (MetaProperty)
+  Parent=EnumLiteral (MetaClass)
+  Documentation=
+  Name=Enum
+  Type=Enum (MetaClass)
+Scope (MetaAnnotation)
+  Parent=Enum (MetaClass)
+  Documentation=
+  Name=Scope
+BaseType (MetaProperty)
+  Parent=Enum (MetaClass)
+  Documentation=
+  Name=BaseType
+  Type=Enum (MetaClass)
+EnumLiterals (MetaProperty)
+  Parent=Enum (MetaClass)
+  Documentation=
+  Name=EnumLiterals
+  Type=MetaCollectionType
+Component (MetaProperty)
+  Parent=Port (MetaClass)
+  Documentation=
+  Name=Component
+  Type=Component (MetaClass)
+Interface (MetaProperty)
+  Parent=Port (MetaClass)
+  Documentation=
+  Name=Interface
+  Type=Interface (MetaClass)
+Binding (MetaProperty)
+  Parent=Port (MetaClass)
+  Documentation=
+  Name=Binding
+  Type=Binding (MetaClass)
+Scope (MetaAnnotation)
+  Parent=Component (MetaClass)
+  Documentation=
+  Name=Scope
+BaseComponent (MetaProperty)
+  Parent=Component (MetaClass)
+  Documentation=
+  Name=BaseComponent
+  Type=Component (MetaClass)
+IsAbstract (MetaProperty)
+  Parent=Component (MetaClass)
+  Documentation=
+  Name=IsAbstract
+  Type=bool (MetaPrimitiveType)
+Ports (MetaProperty)
+  Parent=Component (MetaClass)
+  Documentation=
+  Name=Ports
+  Type=MetaCollectionType
+Services (MetaProperty)
+  Parent=Component (MetaClass)
+  Documentation=
+  Name=Services
+  Type=MetaCollectionType
+References (MetaProperty)
+  Parent=Component (MetaClass)
+  Documentation=
+  Name=References
+  Type=MetaCollectionType
+Properties (MetaProperty)
+  Parent=Component (MetaClass)
+  Documentation=
+  Name=Properties
+  Type=MetaCollectionType
+Implementation (MetaProperty)
+  Parent=Component (MetaClass)
+  Documentation=
+  Name=Implementation
+  Type=Implementation (MetaClass)
+Language (MetaProperty)
+  Parent=Component (MetaClass)
+  Documentation=
+  Name=Language
+  Type=Language (MetaClass)
+Type (MetaProperty)
+  Parent=TypedElement (MetaClass)
+  Documentation=
+  Name=Type
+  Type=SoalType (MetaClass)
+Entities (MetaProperty)
+  Parent=Database (MetaClass)
+  Documentation=
+  Name=Entities
+  Type=MetaCollectionType
+DocumentWrapped (MetaEnumLiteral)
+  Parent=SoapEncodingStyle (MetaEnum)
+  Documentation=
+  Name=DocumentWrapped
+  Type=SoapEncodingStyle (MetaEnum)
+DocumentLiteral (MetaEnumLiteral)
+  Parent=SoapEncodingStyle (MetaEnum)
+  Documentation=
+  Name=DocumentLiteral
+  Type=SoapEncodingStyle (MetaEnum)
+RpcLiteral (MetaEnumLiteral)
+  Parent=SoapEncodingStyle (MetaEnum)
+  Documentation=
+  Name=RpcLiteral
+  Type=SoapEncodingStyle (MetaEnum)
+RpcEncoded (MetaEnumLiteral)
+  Parent=SoapEncodingStyle (MetaEnum)
+  Documentation=
+  Name=RpcEncoded
+  Type=SoapEncodingStyle (MetaEnum)
+Name (MetaProperty)
+  Parent=NamedElement (MetaClass)
+  Documentation=
+  Name=Name
+  Type=string (MetaPrimitiveType)
+InnerType (MetaProperty)
+  Parent=ArrayType (MetaClass)
+  Documentation=
+  Name=InnerType
+  Type=SoalType (MetaClass)
+Scope (MetaAnnotation)
+  Parent=Struct (MetaClass)
+  Documentation=
+  Name=Scope
+BaseType (MetaProperty)
+  Parent=Struct (MetaClass)
+  Documentation=
+  Name=BaseType
+  Type=Struct (MetaClass)
+Properties (MetaProperty)
+  Parent=Struct (MetaClass)
+  Documentation=
+  Name=Properties
+  Type=MetaCollectionType
+InnerType (MetaProperty)
+  Parent=NullableType (MetaClass)
+  Documentation=
+  Name=InnerType
+  Type=SoalType (MetaClass)
+Scope (MetaAnnotation)
+  Parent=Interface (MetaClass)
+  Documentation=
+  Name=Scope
+Operations (MetaProperty)
+  Parent=Interface (MetaClass)
+  Documentation=
+  Name=Operations
+  Type=MetaCollectionType
+Transport (MetaProperty)
+  Parent=Binding (MetaClass)
+  Documentation=
+  Name=Transport
+  Type=TransportBindingElement (MetaClass)
+Encodings (MetaProperty)
+  Parent=Binding (MetaClass)
+  Documentation=
+  Name=Encodings
+  Type=MetaCollectionType
+Protocols (MetaProperty)
+  Parent=Binding (MetaClass)
+  Documentation=
+  Name=Protocols
+  Type=MetaCollectionType
+Value (MetaProperty)
+  Parent=AnnotationProperty (MetaClass)
+  Documentation=
+  Name=Value
+  Type=object (MetaPrimitiveType)
+Z (MetaProperty)
+  Parent=AnnotationProperty (MetaClass)
+  Documentation=
+  Name=Z
+  Type=Z (MetaExternalType)
+InnerType (MetaProperty)
+  Parent=NonNullableType (MetaClass)
+  Documentation=
+  Name=InnerType
+  Type=SoalType (MetaClass)
+Environments (MetaProperty)
+  Parent=Deployment (MetaClass)
+  Documentation=
+  Name=Environments
+  Type=MetaCollectionType
+Wires (MetaProperty)
+  Parent=Deployment (MetaClass)
+  Documentation=
+  Name=Wires
+  Type=MetaCollectionType
+Interface (MetaProperty)
+  Parent=Endpoint (MetaClass)
+  Documentation=
+  Name=Interface
+  Type=Interface (MetaClass)
+Binding (MetaProperty)
+  Parent=Endpoint (MetaClass)
+  Documentation=
+  Name=Binding
+  Type=Binding (MetaClass)
+Address (MetaProperty)
+  Parent=Endpoint (MetaClass)
+  Documentation=
+  Name=Address
+  Type=string (MetaPrimitiveType)
+Source (MetaProperty)
+  Parent=Wire (MetaClass)
+  Documentation=
+  Name=Source
+  Type=Port (MetaClass)
+Target (MetaProperty)
+  Parent=Wire (MetaClass)
+  Documentation=
+  Name=Target
+  Type=Port (MetaClass)
+Type (MetaAnnotation)
+  Parent=SoalType (MetaClass)
+  Documentation=
+  Name=Type
+Soap11 (MetaEnumLiteral)
+  Parent=SoapVersion (MetaEnum)
+  Documentation=
+  Name=Soap11
+  Type=SoapVersion (MetaEnum)
+Soap12 (MetaEnumLiteral)
+  Parent=SoapVersion (MetaEnum)
+  Documentation=
+  Name=Soap12
+  Type=SoapVersion (MetaEnum)
+IsOneway (MetaProperty)
+  Parent=OutputParameter (MetaClass)
+  Documentation=
+  Name=IsOneway
+  Type=bool (MetaPrimitiveType)
+Runtime (MetaProperty)
+  Parent=Environment (MetaClass)
+  Documentation=
+  Name=Runtime
+  Type=Runtime (MetaClass)
+Databases (MetaProperty)
+  Parent=Environment (MetaClass)
+  Documentation=
+  Name=Databases
+  Type=MetaCollectionType
+Assemblies (MetaProperty)
+  Parent=Environment (MetaClass)
+  Documentation=
+  Name=Assemblies
+  Type=MetaCollectionType
+Ssl (MetaProperty)
+  Parent=HttpTransportBindingElement (MetaClass)
+  Documentation=
+  Name=Ssl
+  Type=bool (MetaPrimitiveType)
+ClientAuthentication (MetaProperty)
+  Parent=HttpTransportBindingElement (MetaClass)
+  Documentation=
+  Name=ClientAuthentication
+  Type=bool (MetaPrimitiveType)
+Components (MetaProperty)
+  Parent=Composite (MetaClass)
+  Documentation=
+  Name=Components
+  Type=MetaCollectionType
+Wires (MetaProperty)
+  Parent=Composite (MetaClass)
+  Documentation=
+  Name=Wires
+  Type=MetaCollectionType
+Action (MetaProperty)
+  Parent=Operation (MetaClass)
+  Documentation=
+  Name=Action
+  Type=string (MetaPrimitiveType)
+Parameters (MetaProperty)
+  Parent=Operation (MetaClass)
+  Documentation=
+  Name=Parameters
+  Type=MetaCollectionType
+Result (MetaProperty)
+  Parent=Operation (MetaClass)
+  Documentation=
+  Name=Result
+  Type=OutputParameter (MetaClass)
+Exceptions (MetaProperty)
+  Parent=Operation (MetaClass)
+  Documentation=
+  Name=Exceptions
+  Type=MetaCollectionType
+Style (MetaProperty)
+  Parent=SoapEncodingBindingElement (MetaClass)
+  Documentation=
+  Name=Style
+  Type=SoapEncodingStyle (MetaEnum)
+Version (MetaProperty)
+  Parent=SoapEncodingBindingElement (MetaClass)
+  Documentation=
+  Name=Version
+  Type=SoapVersion (MetaEnum)
+Mtom (MetaProperty)
+  Parent=SoapEncodingBindingElement (MetaClass)
+  Documentation=
+  Name=Mtom
+  Type=bool (MetaPrimitiveType)
+Documentation (MetaProperty)
+  Parent=DocumentedElement (MetaClass)
+  Documentation=
+  Name=Documentation
+  Type=string (MetaPrimitiveType)
+GetDocumentationLines (MetaOperation)
+  Parent=DocumentedElement (MetaClass)
+  Documentation=
+  Name=GetDocumentationLines
+  ReturnType=MetaCollectionType
+Nullable (MetaProperty)
+  Parent=PrimitiveType (MetaClass)
+  Documentation=
+  Name=Nullable
+  Type=bool (MetaPrimitiveType)
+MetaCollectionType
+  Parent=
+  InnerType=AnnotationProperty (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Annotation (MetaClass)
+Import (MetaAnnotation)
+  Parent=Usings (MetaProperty)
+  Documentation=
+  Name=Import
+MetaCollectionType
+  Parent=
+  InnerType=Namespace (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Declaration (MetaClass)
+BaseScope (MetaAnnotation)
+  Parent=BaseType (MetaProperty)
+  Documentation=
+  Name=BaseScope
+MetaCollectionType
+  Parent=
+  InnerType=EnumLiteral (MetaClass)
+BaseScope (MetaAnnotation)
+  Parent=BaseComponent (MetaProperty)
+  Documentation=
+  Name=BaseScope
+MetaCollectionType
+  Parent=
+  InnerType=Port (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Service (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Reference (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Property (MetaClass)
+Type (MetaAnnotation)
+  Parent=Type (MetaProperty)
+  Documentation=
+  Name=Type
+MetaCollectionType
+  Parent=
+  InnerType=Struct (MetaClass)
+Name (MetaAnnotation)
+  Parent=Name (MetaProperty)
+  Documentation=
+  Name=Name
+BaseScope (MetaAnnotation)
+  Parent=BaseType (MetaProperty)
+  Documentation=
+  Name=BaseScope
+MetaCollectionType
+  Parent=
+  InnerType=Property (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Operation (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=EncodingBindingElement (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=ProtocolBindingElement (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Environment (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Wire (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Interface (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Assembly (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Component (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Wire (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=InputParameter (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=Struct (MetaClass)
+MetaCollectionType
+  Parent=
+  InnerType=string (MetaPrimitiveType)
