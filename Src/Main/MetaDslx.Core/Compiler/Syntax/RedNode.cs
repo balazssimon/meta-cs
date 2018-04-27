@@ -573,5 +573,22 @@ namespace MetaDslx.Compiler.Syntax
         /// </summary>
         public abstract SyntaxNode GetCachedSlot(int index);
 
+        public bool HasErrors
+        {
+            get
+            {
+                if (!this.ContainsDiagnostics)
+                {
+                    return false;
+                }
+
+                return HasErrorsSlow();
+            }
+        }
+
+        private bool HasErrorsSlow()
+        {
+            return new Syntax.InternalSyntax.SyntaxDiagnosticInfoList(this.Green).Any((info) => info.Severity == DiagnosticSeverity.Error);
+        }
     }
 }

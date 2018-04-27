@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Compiler.Binding.SymbolBinding;
 using MetaDslx.Compiler.Syntax;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,9 @@ namespace MetaDslx.Compiler.Binding
         private readonly SyntaxNode _root;
         private readonly Binder _rootBinder;
         private readonly int _position;
-        private readonly BindingOptions _bindingOption;
+        private readonly SymbolBindingOptions _bindingOption;
 
-        private static SpeculativeSyntaxTreeSemanticModel CreateCore(SemanticModel parentSemanticModel, SyntaxNode root, Binder rootBinder, int position, BindingOptions bindingOption)
+        private static SpeculativeSyntaxTreeSemanticModel CreateCore(SemanticModel parentSemanticModel, SyntaxNode root, Binder rootBinder, int position, SymbolBindingOptions bindingOption)
         {
             Debug.Assert(parentSemanticModel is SyntaxTreeSemanticModel);
             Debug.Assert(root != null);
@@ -29,7 +30,7 @@ namespace MetaDslx.Compiler.Binding
             return speculativeModel;
         }
 
-        private SpeculativeSyntaxTreeSemanticModel(SemanticModel parentSemanticModel, SyntaxNode root, Binder rootBinder, int position, BindingOptions bindingOption)
+        private SpeculativeSyntaxTreeSemanticModel(SemanticModel parentSemanticModel, SyntaxNode root, Binder rootBinder, int position, SymbolBindingOptions bindingOption)
             : base(parentSemanticModel.Compilation, parentSemanticModel.SyntaxTree, root.SyntaxTree)
         {
             _parentSemanticModel = parentSemanticModel;
@@ -71,17 +72,17 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        protected override Binder GetEnclosingBinderCore(int position)
+        protected override ISymbolBinder GetEnclosingBinderCore(int position)
         {
-            return _rootBinder;
+            return _rootBinder.AsBinder<ISymbolBinder>();
         }
 
-        protected override SymbolInfo GetSymbolInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override SymbolInfo GetSymbolInfoWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _parentSemanticModel.GetSpeculativeSymbolInfo(_position, node);
         }
 
-        protected override TypeInfo GetTypeInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override TypeInfo GetTypeInfoWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _parentSemanticModel.GetSpeculativeTypeInfo(_position, node);
         }

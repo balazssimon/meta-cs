@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Binding
+namespace MetaDslx.Compiler.Binding.SymbolBinding
 {
-    public class OverloadResolution<TBinder>
-        where TBinder: Binder<TBinder>, ITypeBinder<TBinder>
+    public class OverloadResolution
     {
-        private readonly TBinder _binder;
+        private readonly ISymbolBinder _binder;
 
-        public OverloadResolution(TBinder binder)
+        public OverloadResolution(ISymbolBinder binder)
         {
             _binder = binder;
         }
@@ -22,7 +21,7 @@ namespace MetaDslx.Compiler.Binding
             get { return _binder.Compilation; }
         }
 
-        private Conversions<TBinder> Conversions
+        private Conversions Conversions
         {
             get { return _binder.Conversions; }
         }

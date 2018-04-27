@@ -4,46 +4,34 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding.Binders
 {
-    internal sealed class MappingBinderFactory<TBinder> : BinderFactory<TBinder>
-        where TBinder: Binder<TBinder>
+    internal sealed class MappingBinderFactory : BinderFactory
     {
-        private ConcurrentDictionary<RedNode, TBinder> _map;
+        private ConcurrentDictionary<RedNode, BoundNode> _map;
 
         internal MappingBinderFactory(CompilationBase compilation, SyntaxTree syntaxTree) 
             : base(compilation, syntaxTree)
         {
-            _map = new ConcurrentDictionary<RedNode, TBinder>();
+            _map = new ConcurrentDictionary<RedNode, BoundNode>();
         }
 
-        public override bool TryGetBinder(RedNode node, object usage, out TBinder binder)
+        public override bool TryGetBoundNode(RedNode node, out BoundNode boundNode)
         {
-            if (usage == null)
-            {
-                return _map.TryGetValue(node, out binder);
-            }
-            else
-            {
-                binder = null;
-                return false;
-            }
+            return _map.TryGetValue(node, out boundNode);
         }
 
-        public override bool TryAddBinder(RedNode node, object usage, ref TBinder binder)
+        public override bool TryAddBoundNode(RedNode node, ref BoundNode boundNode)
         {
-            if (usage == null)
+            if (!_map.TryAdd(node, boundNode))
             {
-                if (!_map.TryAdd(node, binder))
-                {
-                    binder = _map[node];
-                    return true;
-                }
+                Interlocked.Exchange(ref boundNode, _map[node]);
                 return true;
             }
-            return false;
+            return true;
         }
     }
 }

@@ -9,8 +9,9 @@ using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Compiler.Syntax;
 
-namespace MetaDslx.Compiler.Binding
+namespace MetaDslx.Compiler.Binding.SymbolBinding
 {
     /// <summary>
     /// Represents symbols imported to the binding scope via using namespace, using alias, and extern alias.
@@ -30,6 +31,11 @@ namespace MetaDslx.Compiler.Binding
             return imports;
         }
 
+        internal static Imports FromSyntax(RedNode syntaxNode, InContainerBinder inContainerBinder, ConsList<ISymbol> basesBeingResolved, bool inUsing)
+        {
+            return Imports.Empty;
+        }
+
         public Imports Concat(Imports imports)
         {
             return this;
@@ -37,17 +43,17 @@ namespace MetaDslx.Compiler.Binding
 
         internal void Complete(CancellationToken cancellationToken)
         {
-            
+
         }
 
-        internal void AddLookupSymbolsInfo(ArrayBuilder<ISymbol> result, BindingOptions options, Binder originalBinder)
+        internal void AddLookupSymbolsInfo(ArrayBuilder<ISymbol> result, SymbolBindingOptions options, ISymbolBinder originalBinder)
         {
-            
+
         }
 
-        internal void LookupSymbol(Binder originalBinder, LookupResult result, string name, ConsList<ISymbol> basesBeingResolved, BindingOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        internal void LookupSymbol(ISymbolBinder originalBinder, LookupResult result, string name, ConsList<ISymbol> basesBeingResolved, SymbolBindingOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            
+
         }
     }
 }

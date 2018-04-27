@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Compiler.Binding;
 using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Compiler.Binding.SymbolBinding;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Syntax;
@@ -40,7 +41,7 @@ namespace MetaDslx.Compiler
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="options">Options to control behavior.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected abstract SymbolInfo GetSymbolInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract SymbolInfo GetSymbolInfoWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets type information about a syntax node. This is overridden by various specializations of SemanticModel.
@@ -49,7 +50,7 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected abstract TypeInfo GetTypeInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract TypeInfo GetTypeInfoWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets a list of method or indexed property symbols for a syntax node. This is overridden by various specializations of SemanticModel.
@@ -59,7 +60,7 @@ namespace MetaDslx.Compiler
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="options"></param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected abstract ImmutableArray<ISymbol> GetMembersWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<ISymbol> GetMembersWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the constant value for a syntax node. This is overridden by various specializations of SemanticModel.
@@ -68,11 +69,11 @@ namespace MetaDslx.Compiler
         /// </summary>
         /// <param name="node">The syntax node to get semantic information for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected abstract Optional<object> GetConstantValueWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract Optional<object> GetConstantValueWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
-        protected abstract ISymbol GetDeclaredSymbolWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ISymbol GetDeclaredSymbolWorker(SyntaxNode declaration, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
-        protected abstract ImmutableArray<ISymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
+        protected abstract ImmutableArray<ISymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         #endregion Abstract worker methods
 
@@ -200,7 +201,7 @@ namespace MetaDslx.Compiler
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
-                ? GetSymbolInfoWorker(node, BindingOptions.Default, cancellationToken)
+                ? GetSymbolInfoWorker(node, SymbolBindingOptions.Default, cancellationToken)
                 : SymbolInfo.None;
         }
 
@@ -209,7 +210,7 @@ namespace MetaDslx.Compiler
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
-                ? GetTypeInfoWorker(node, BindingOptions.Default, cancellationToken)
+                ? GetTypeInfoWorker(node, SymbolBindingOptions.Default, cancellationToken)
                 : TypeInfo.None;
         }
 
@@ -223,7 +224,7 @@ namespace MetaDslx.Compiler
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
-                ? this.GetMembersWorker(node, BindingOptions.Default, cancellationToken)
+                ? this.GetMembersWorker(node, SymbolBindingOptions.Default, cancellationToken)
                 : ImmutableArray<ISymbol>.Empty;
         }
 
@@ -232,7 +233,7 @@ namespace MetaDslx.Compiler
             CheckSyntaxNode(node);
 
             return CanGetSemanticInfo(node)
-                ? this.GetConstantValueWorker(node, BindingOptions.Default, cancellationToken)
+                ? this.GetConstantValueWorker(node, SymbolBindingOptions.Default, cancellationToken)
                 : default(Optional<object>);
         }
 
@@ -250,18 +251,18 @@ namespace MetaDslx.Compiler
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return this.GetDeclaredSymbolWorker(declaration, BindingOptions.Default, cancellationToken);
+            return this.GetDeclaredSymbolWorker(declaration, SymbolBindingOptions.Default, cancellationToken);
         }
 
         protected sealed override ImmutableArray<ISymbol> GetDeclaredSymbolsCore(SyntaxNode declaration, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            ImmutableArray<ISymbol> result = this.GetDeclaredSymbolsWorker(declaration, BindingOptions.Default, cancellationToken);
+            ImmutableArray<ISymbol> result = this.GetDeclaredSymbolsWorker(declaration, SymbolBindingOptions.Default, cancellationToken);
 
             if (result.IsDefault)
             {
-                var symbol = this.GetDeclaredSymbolWorker(declaration, BindingOptions.Default, cancellationToken);
+                var symbol = this.GetDeclaredSymbolWorker(declaration, SymbolBindingOptions.Default, cancellationToken);
                 if (symbol != null)
                 {
                     return ImmutableArray.Create(symbol);
@@ -287,14 +288,14 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Gets the binder that encloses the position.
         /// </summary>
-        protected Binder GetEnclosingBinder(int position)
+        protected ISymbolBinder GetEnclosingBinder(int position)
         {
-            Binder result = this.GetEnclosingBinderCore(position);
+            ISymbolBinder result = this.GetEnclosingBinderCore(position);
             Debug.Assert(result == null || result.IsSemanticModelBinder);
             return result;
         }
 
-        protected abstract Binder GetEnclosingBinderCore(int position);
+        protected abstract ISymbolBinder GetEnclosingBinderCore(int position);
 
         /// <summary>
         /// Gets the available named symbols in the context of the specified location and optional container. Only
@@ -322,7 +323,7 @@ namespace MetaDslx.Compiler
             ISymbol container = null,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container, name, BindingOptions.Default);
+            return LookupSymbolsInternal(position, container, name, SymbolBindingOptions.Default);
         }
 
         /// <summary>
@@ -364,7 +365,7 @@ namespace MetaDslx.Compiler
             int position,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container: null, name: name, options: BindingOptions.Default.AddLookupFlags(LookupFlags.UseBaseReferenceAccessibility));
+            return LookupSymbolsInternal(position, container: null, name: name, options: SymbolBindingOptions.Default.AddLookupFlags(LookupFlags.UseBaseReferenceAccessibility));
         }
 
         /// <summary>
@@ -390,7 +391,7 @@ namespace MetaDslx.Compiler
             ISymbol container = null,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container, name, BindingOptions.None.SetLookupFlags(LookupFlags.StaticMembers));
+            return LookupSymbolsInternal(position, container, name, SymbolBindingOptions.None.SetLookupFlags(LookupFlags.StaticMembers));
         }
 
         /// <summary>
@@ -416,7 +417,7 @@ namespace MetaDslx.Compiler
             ISymbol container = null,
             string name = null)
         {
-            return LookupSymbolsInternal(position, container, name, BindingOptions.None.SetLookupFlags(LookupFlags.NamespacesOrTypes));
+            return LookupSymbolsInternal(position, container, name, SymbolBindingOptions.None.SetLookupFlags(LookupFlags.NamespacesOrTypes));
         }
 
         /// <summary>
@@ -443,7 +444,7 @@ namespace MetaDslx.Compiler
             int position,
             ISymbol container,
             string name,
-            BindingOptions options)
+            SymbolBindingOptions options)
         {
             SyntaxToken token;
             position = CheckAndAdjustPosition(position, out token);
@@ -574,14 +575,14 @@ namespace MetaDslx.Compiler
 
         // Gets symbol info for a type or namespace or alias reference. It is assumed that any error cases will come in
         // as a type whose OriginalDefinition is an error symbol from which the ResultKind can be retrieved.
-        protected static SymbolInfo GetSymbolInfoForSymbol(ISymbol symbol, BindingOptions options)
+        protected static SymbolInfo GetSymbolInfoForSymbol(ISymbol symbol, SymbolBindingOptions options)
         {
             Debug.Assert((object)symbol != null);
             return new SymbolInfo(symbol, ImmutableArray<ISymbol>.Empty, CandidateReason.None);
         }
 
         // Gets TypeInfo for a type or namespace or alias reference.
-        protected static TypeInfo GetTypeInfoForSymbol(ISymbol symbol, BindingOptions options)
+        protected static TypeInfo GetTypeInfoForSymbol(ISymbol symbol, SymbolBindingOptions options)
         {
             Debug.Assert((object)symbol != null);
             if (symbol.MIsType) return new TypeInfo(symbol, symbol);

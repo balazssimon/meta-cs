@@ -1,4 +1,4 @@
-﻿using MetaDslx.Compiler.Binding.Binders;
+﻿using MetaDslx.Compiler.Binding.SymbolBinding;
 using MetaDslx.Compiler.Declarations;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Symbols;
@@ -271,7 +271,7 @@ namespace MetaDslx.Compiler.Binding
             return f.MetaRootNamespace();
         }
 
-        public ISymbol CreateGlobalNamespaceAlias(ISymbol globalNamespace, RootBinder rootBinder)
+        public ISymbol CreateGlobalNamespaceAlias(ISymbol globalNamespace, ISymbolBinder rootBinder)
         {
             var result = this.CreateGlobalNamespaceAliasCore(globalNamespace);
             result.MAttachProperty(CompilerAttachedProperties.ContainingCompilationProperty);

@@ -68,24 +68,6 @@ namespace MetaDslx.Compiler.Syntax
             return this.SyntaxTree.GetDiagnostics(this);
         }
 
-        public bool HasErrors
-        {
-            get
-            {
-                if (!this.ContainsDiagnostics)
-                {
-                    return false;
-                }
-
-                return HasErrorsSlow();
-            }
-        }
-
-        private bool HasErrorsSlow()
-        {
-            return new Syntax.InternalSyntax.SyntaxDiagnosticInfoList(this.Green).Any((info) => info.Severity == DiagnosticSeverity.Error);
-        }
-
         /// <summary>
         /// Determines whether this node has any leading trivia.
         /// </summary>

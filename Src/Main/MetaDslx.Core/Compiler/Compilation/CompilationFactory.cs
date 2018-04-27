@@ -13,21 +13,17 @@ using MetaDslx.Compiler.Diagnostics;
 using System.Collections.Immutable;
 using MetaDslx.Compiler.References;
 using MetaDslx.Compiler.Binding.Binders;
-using MetaDslx.Compiler.Binding.MetaBinders;
 
 namespace MetaDslx.Compiler
 {
-    public abstract class CompilationFactory<TSyntaxTree, TCompilation, TBinder>
-        where TSyntaxTree: SyntaxTree
-        where TCompilation: CompilationBase
-        where TBinder: Binder<TBinder>
+    public abstract class CompilationFactory
     {
-        internal static readonly CompilationFactory<SyntaxTree, CompilationBase, MetaBinder> Default = new DefaultCompilationFactory();
+        internal static readonly CompilationFactory Default = new DefaultCompilationFactory();
 
         public abstract ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType);
 
         public abstract RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
-        public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory<TBinder> binderFactory);
+        public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
         public abstract SymbolBuilder CreateSymbolBuilder(CompilationBase compilation);
 
         public virtual SymbolResolution CreateSymbolResolution(CompilationBase compilation)
@@ -46,14 +42,14 @@ namespace MetaDslx.Compiler
         }
     }
 
-    internal sealed class DefaultCompilationFactory : CompilationFactory<SyntaxTree, CompilationBase, MetaBinder>
+    internal sealed class DefaultCompilationFactory : CompilationFactory
     {
         public override AnonymousTypeManager CreateAnonymousTypeManager(CompilationBase compilationBase)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory<MetaBinder> binderFactory)
+        public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
         {
             throw ExceptionUtilities.Unreachable;
         }

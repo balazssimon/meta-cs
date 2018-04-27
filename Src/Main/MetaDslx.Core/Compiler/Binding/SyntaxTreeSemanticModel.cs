@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Compiler.Binding.SymbolBinding;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Text;
@@ -94,56 +95,31 @@ namespace MetaDslx.Compiler.Binding
             get { return null; }
         }
 
-        protected override SymbolInfo GetSymbolInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override SymbolInfo GetSymbolInfoWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var binder = this.GetEnclosingBinder(GetAdjustedNodePosition(node));
-            if (binder != null)
-            {
-                var diagnostics = DiagnosticBag.GetInstance();
-                try
-                {
-                    var values = binder.Bind(node, diagnostics);
-                    ISymbol symbol = values.FirstOrDefault() as ISymbol;
-                    return (object)symbol != null ? GetSymbolInfoForSymbol(symbol, options) : SymbolInfo.None;
-                }
-                finally
-                {
-                    diagnostics.Free();
-                }
-            }
-            return null;
+            var boundNode = this.Compilation.Bind(node) as ISymbolBoundNode;
+            ISymbol symbol = boundNode.Symbol;
+            return (object)symbol != null ? GetSymbolInfoForSymbol(symbol, options) : SymbolInfo.None;
         }
 
-        protected override TypeInfo GetTypeInfoWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override TypeInfo GetTypeInfoWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var binder = this.GetEnclosingBinder(GetAdjustedNodePosition(node));
-            if (binder != null)
-            {
-                var diagnostics = DiagnosticBag.GetInstance();
-                try
-                {
-                    ISymbol symbol = binder.Bind(node, diagnostics).FirstOrDefault() as ISymbol;
-                    return (object)symbol != null ? GetTypeInfoForSymbol(symbol, options) : TypeInfo.None;
-                }
-                finally
-                {
-                    diagnostics.Free();
-                }
-            }
-            return null;
+            var boundNode = this.Compilation.Bind(node) as ISymbolBoundNode;
+            ISymbol symbol = boundNode.Symbol;
+            return (object)symbol != null ? GetTypeInfoForSymbol(symbol, options) : TypeInfo.None;
         }
 
-        protected override ImmutableArray<ISymbol> GetMembersWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override ImmutableArray<ISymbol> GetMembersWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }
 
-        protected override Optional<object> GetConstantValueWorker(SyntaxNode node, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override Optional<object> GetConstantValueWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }
 
-        protected override ISymbol GetDeclaredSymbolWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override ISymbol GetDeclaredSymbolWorker(SyntaxNode declaration, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var container = GetDeclaredContainer(declaration);
             return GetDeclaredMember(container, declaration.Span, null);
@@ -160,7 +136,7 @@ namespace MetaDslx.Compiler.Binding
             return container;
         }
 
-        protected override ImmutableArray<ISymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, BindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override ImmutableArray<ISymbol> GetDeclaredSymbolsWorker(SyntaxNode declaration, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }
@@ -217,7 +193,7 @@ namespace MetaDslx.Compiler.Binding
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        protected override Binder GetEnclosingBinderCore(int position)
+        protected override ISymbolBinder GetEnclosingBinderCore(int position)
         {
             AssertPositionAdjusted(position);
             SyntaxToken token = this.Root.FindToken(position);
@@ -226,10 +202,10 @@ namespace MetaDslx.Compiler.Binding
             // the binder for the compilation unit.
             if (position == 0 && position != token.SpanStart)
             {
-                return _binderFactory.GetBinder(this.Root, position); // SB-TODO: .WithAdditionalFlags(GetSemanticModelBinderFlags());
+                return _compilation.DefaultSymbolBinder; // SB-TODO: .WithAdditionalFlags(GetSemanticModelBinderFlags());
             }
 
-            return _binderFactory.GetBinder(token.Parent, position); // SB-TODO: .WithAdditionalFlags(GetSemanticModelBinderFlags());
+            return _binderFactory.GetBinder<ISymbolBinder>(token); // SB-TODO: .WithAdditionalFlags(GetSemanticModelBinderFlags());
         }
 
     }

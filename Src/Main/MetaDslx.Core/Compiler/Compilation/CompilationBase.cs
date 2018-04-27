@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Compiler.Binding;
 using MetaDslx.Compiler.Binding.Binders;
+using MetaDslx.Compiler.Binding.SymbolBinding;
 using MetaDslx.Compiler.Declarations;
 using MetaDslx.Compiler.Diagnostics;
 using MetaDslx.Compiler.References;
@@ -44,6 +45,13 @@ namespace MetaDslx.Compiler
         // and re-created.
         private ConcurrentSet<ImportInfo> _lazyImportInfos;
 
+        internal protected abstract Binder DefaultBinder { get; }
+
+        internal protected ISymbolBinder DefaultSymbolBinder
+        {
+            get { return this.DefaultBinder.AsBinder<ISymbolBinder>(); }
+        }
+
         private Conversions _conversions;
         internal Conversions Conversions
         {
@@ -51,7 +59,7 @@ namespace MetaDslx.Compiler
             {
                 if (_conversions == null)
                 {
-                    Interlocked.CompareExchange(ref _conversions, new BuckStopsHereBinder(this).Conversions, null);
+                    Interlocked.CompareExchange(ref _conversions, this.DefaultSymbolBinder.Conversions, null);
                 }
 
                 return _conversions;
@@ -801,7 +809,7 @@ namespace MetaDslx.Compiler
                 return Imports.Empty;
             }
 
-            var binder = GetBinderFactory(tree).GetBinder(tree.GetRoot());
+            var binder = GetBinderFactory(tree).GetBinder<ISymbolBinder>(tree.GetRoot());
             return binder.GetImports(basesBeingResolved: null);
         }
 
@@ -904,6 +912,16 @@ namespace MetaDslx.Compiler
             }
         }
 
+        internal BoundNode Bind(SyntaxReference reference)
+        {
+            return GetBinderFactory(reference.SyntaxTree).Bind(reference.GetSyntax());
+        }
+
+        internal BoundNode Bind(RedNode node)
+        {
+            return GetBinderFactory(node.SyntaxTree).Bind(node);
+        }
+
         internal Binder GetBinder(SyntaxReference reference)
         {
             return GetBinderFactory(reference.SyntaxTree).GetBinder(reference.GetSyntax());
@@ -914,22 +932,17 @@ namespace MetaDslx.Compiler
             return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax);
         }
 
-        internal Binder GetBinder(SyntaxNode syntax, int position)
-        {
-            return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax, position);
-        }
-
         /// <summary>
         /// Returns imported symbols for the given declaration.
         /// </summary>
         internal Imports GetImports(SingleDeclaration declaration)
         {
-            return GetBinderFactory(declaration.SyntaxReference.SyntaxTree).GetBinder(declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
+            return GetBinderFactory(declaration.SyntaxReference.SyntaxTree).GetBinder<ISymbolBinder>(declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
         }
 
         private ISymbol CreateGlobalNamespaceAlias()
         {
-            return this.SymbolBuilder.CreateGlobalNamespaceAlias(this.GlobalNamespace, new RootBinder(new BuckStopsHereBinder(this), null, this.GlobalNamespace));
+            return this.SymbolBuilder.CreateGlobalNamespaceAlias(this.GlobalNamespace, new InContainerBinder(this.DefaultBinder, this.GlobalNamespace));
         }
 
         private void CompleteTree(SyntaxTree tree)

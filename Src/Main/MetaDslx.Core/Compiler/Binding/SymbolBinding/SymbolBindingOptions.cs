@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Binding
+namespace MetaDslx.Compiler.Binding.SymbolBinding
 {
     [Flags]
     public enum LookupFlags : uint
@@ -38,16 +38,16 @@ namespace MetaDslx.Compiler.Binding
         SemanticModel = 1 << 1,
     }
 
-    public class BindingOptions
+    public class SymbolBindingOptions
     {
-        public static readonly BindingOptions None = new BindingOptions(LookupFlags.None, BindingFlags.None, ImmutableArray<Type>.Empty);
-        public static readonly BindingOptions Default = new BindingOptions(LookupFlags.NamespacesOrTypesOrMembers, BindingFlags.None, ImmutableArray<Type>.Empty);
+        public static readonly SymbolBindingOptions None = new SymbolBindingOptions(LookupFlags.None, BindingFlags.None, ImmutableArray<Type>.Empty);
+        public static readonly SymbolBindingOptions Default = new SymbolBindingOptions(LookupFlags.NamespacesOrTypesOrMembers, BindingFlags.None, ImmutableArray<Type>.Empty);
 
         private LookupFlags lookupFlags;
         private BindingFlags bindingFlags;
         private ImmutableArray<Type> symbolTypes;
 
-        protected BindingOptions(LookupFlags lookupFlags, BindingFlags bindingFlags, ImmutableArray<Type> symbolTypes)
+        protected SymbolBindingOptions(LookupFlags lookupFlags, BindingFlags bindingFlags, ImmutableArray<Type> symbolTypes)
         {
             this.lookupFlags = lookupFlags;
             this.bindingFlags = bindingFlags;
@@ -56,7 +56,7 @@ namespace MetaDslx.Compiler.Binding
 
         public bool IsDefault
         {
-            get { return this == BindingOptions.Default; }
+            get { return this == SymbolBindingOptions.Default; }
         }
 
         public LookupFlags LookupFlags
@@ -104,76 +104,76 @@ namespace MetaDslx.Compiler.Binding
             get { return (this.bindingFlags & BindingFlags.SemanticModel) != 0; }
         }
 
-        protected virtual BindingOptions Update(LookupFlags lookupFlags, BindingFlags bindingFlags, ImmutableArray<Type> symbolTypes)
+        protected virtual SymbolBindingOptions Update(LookupFlags lookupFlags, BindingFlags bindingFlags, ImmutableArray<Type> symbolTypes)
         {
             if (this.lookupFlags != lookupFlags || this.bindingFlags != bindingFlags || this.symbolTypes != symbolTypes)
             {
-                return new BindingOptions(lookupFlags, bindingFlags, symbolTypes);
+                return new SymbolBindingOptions(lookupFlags, bindingFlags, symbolTypes);
             }
             return this;
         }
 
-        public BindingOptions SetLookupFlags(LookupFlags flags)
+        public SymbolBindingOptions SetLookupFlags(LookupFlags flags)
         {
             return this.SetLookupFlagsCore(flags);
         }
 
-        protected virtual BindingOptions SetLookupFlagsCore(LookupFlags flags)
+        protected virtual SymbolBindingOptions SetLookupFlagsCore(LookupFlags flags)
         {
             return this.Update(flags, this.bindingFlags, this.symbolTypes);
         }
 
-        public BindingOptions AddLookupFlags(LookupFlags flags)
+        public SymbolBindingOptions AddLookupFlags(LookupFlags flags)
         {
             return this.AddLookupFlagsCore(flags);
         }
 
-        protected virtual BindingOptions AddLookupFlagsCore(LookupFlags flags)
+        protected virtual SymbolBindingOptions AddLookupFlagsCore(LookupFlags flags)
         {
             return this.Update(this.lookupFlags | flags, this.bindingFlags, this.symbolTypes);
         }
 
-        public BindingOptions RemoveLookupFlags(LookupFlags flags)
+        public SymbolBindingOptions RemoveLookupFlags(LookupFlags flags)
         {
             return this.RemoveLookupFlagsCore(flags);
         }
 
-        protected virtual BindingOptions RemoveLookupFlagsCore(LookupFlags flags)
+        protected virtual SymbolBindingOptions RemoveLookupFlagsCore(LookupFlags flags)
         {
             return this.Update(this.lookupFlags & ~flags, this.bindingFlags, this.symbolTypes);
         }
 
-        public BindingOptions SetBindingFlags(BindingFlags flags)
+        public SymbolBindingOptions SetBindingFlags(BindingFlags flags)
         {
             return this.SetBindingFlagsCore(flags);
         }
 
-        protected virtual BindingOptions SetBindingFlagsCore(BindingFlags flags)
+        protected virtual SymbolBindingOptions SetBindingFlagsCore(BindingFlags flags)
         {
             return this.Update(this.lookupFlags, flags, this.symbolTypes);
         }
 
-        public BindingOptions AddBindingFlags(BindingFlags flags)
+        public SymbolBindingOptions AddBindingFlags(BindingFlags flags)
         {
             return this.AddBindingFlagsCore(flags);
         }
 
-        protected virtual BindingOptions AddBindingFlagsCore(BindingFlags flags)
+        protected virtual SymbolBindingOptions AddBindingFlagsCore(BindingFlags flags)
         {
             return this.Update(this.lookupFlags, this.bindingFlags | flags, this.symbolTypes);
         }
 
-        public BindingOptions RemoveBindingFlags(BindingFlags flags)
+        public SymbolBindingOptions RemoveBindingFlags(BindingFlags flags)
         {
             return this.RemoveBindingFlagsCore(flags);
         }
 
-        protected virtual BindingOptions RemoveBindingFlagsCore(BindingFlags flags)
+        protected virtual SymbolBindingOptions RemoveBindingFlagsCore(BindingFlags flags)
         {
             return this.Update(this.lookupFlags, this.bindingFlags & ~flags, this.symbolTypes);
         }
 
-        public BindingOptions WithSymbolTypes(ImmutableArray<Type> symbolTypes)
+        public SymbolBindingOptions WithSymbolTypes(ImmutableArray<Type> symbolTypes)
         {
             return this.Update(this.lookupFlags, this.bindingFlags, symbolTypes);
         }

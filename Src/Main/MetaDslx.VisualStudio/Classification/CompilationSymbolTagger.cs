@@ -38,6 +38,7 @@ namespace MetaDslx.VisualStudio.Classification
                 int firstPos = firstSpan.Start.Position;
                 int lastPos = lastSpan.End.Position;
                 if (lastPos > root.FullSpan.End) lastPos = root.FullSpan.End;
+                if (lastPos < firstPos) return ImmutableArray<ITagSpan<IClassificationTag>>.Empty;
                 SyntaxNode node = root.FindNode(Compiler.Text.TextSpan.FromBounds(firstPos, lastPos), getInnermostNodeForTie: true);
                 if (node != null)
                 {
