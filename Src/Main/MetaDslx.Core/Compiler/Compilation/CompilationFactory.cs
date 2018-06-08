@@ -24,6 +24,8 @@ namespace MetaDslx.Compiler
 
         public abstract RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
         public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
+        public abstract BoundNodeFactoryVisitor CreateBoundNodeFactoryVisitor(BoundTree boundTree);
+        public abstract TBinder GetDefaultBinder<TBinder>() where TBinder : class;
         public abstract SymbolBuilder CreateSymbolBuilder(CompilationBase compilation);
 
         public virtual SymbolResolution CreateSymbolResolution(CompilationBase compilation)
@@ -40,6 +42,7 @@ namespace MetaDslx.Compiler
         {
             return new SyntaxTreeSemanticModel(compilation, syntaxTree, ignoreAccessibility);
         }
+
     }
 
     internal sealed class DefaultCompilationFactory : CompilationFactory
@@ -50,6 +53,11 @@ namespace MetaDslx.Compiler
         }
 
         public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        public override BoundNodeFactoryVisitor CreateBoundNodeFactoryVisitor(BoundTree boundTree)
         {
             throw ExceptionUtilities.Unreachable;
         }
@@ -75,6 +83,11 @@ namespace MetaDslx.Compiler
         }
 
         public override SemanticModel CreateSyntaxTreeSemanticModel(CompilationBase compilationBase, SyntaxTree syntaxTree, bool ignoreAccessibility)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        public override TBinder GetDefaultBinder<TBinder>()
         {
             throw ExceptionUtilities.Unreachable;
         }

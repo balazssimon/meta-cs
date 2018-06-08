@@ -37,7 +37,7 @@ namespace MetaDslx.Compiler.Binding
 
         public Binder DefaultBinder
         {
-            get { return this.Compilation.DefaultBinder; }
+            get { return (Binder)this.Compilation.GetDefaultBinder<IBinder>(); }
         }
 
         public SyntaxTree SyntaxTree
@@ -56,69 +56,110 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        public Binder GetBinder(RedNode node)
-        {
-            RedNode current = node;
-            while (current != null)
-            {
-                BoundNode boundNode = this.Bind(current);
-                if (boundNode.Binders.Length> 0)
-                {
-                    return boundNode.Binders[boundNode.Binders.Length - 1];
-                }
-                current = current.Parent;
-            }
-            return this.Compilation.DefaultBinder;
-        }
-
         public TBinder GetBinder<TBinder>(RedNode node)
-            where TBinder: class
+            where TBinder : class
         {
-            return this.GetBinder(node).AsBinder<TBinder>();
+            var currentNode = node;
+            while (currentNode != null)
+            {
+                var binders = this.GetBinders(node);
+                var binder = binders.FirstOrDefault();
+                if (binder != null) return binder.GetBinder<TBinder>();
+                currentNode = currentNode.Parent;
+            }
+            return null;
         }
 
-        public BoundNode Bind(RedNode node)
+        public ImmutableArray<Binder> GetBinders(RedNode node)
         {
-            if (node == null) return null;
             int position = node.SpanStart;
-            if (node is SyntaxNode)
+            var syntaxNode = node as SyntaxNode;
+            if (syntaxNode != null)
             {
-                return Bind((SyntaxNode)node, position, false);
+                return this.GetBinders(syntaxNode, position, false);
             }
             else
             {
-                return Bind(node.Parent, position, true);
+                return this.GetBinders(node.Parent, position, true);
             }
         }
 
-        private BoundNode Bind(SyntaxNode node, int position, bool bindToken)
+        private ImmutableArray<Binder> GetBinders(SyntaxNode node, int position, bool bindChild)
         {
             Debug.Assert(node != null);
-            BoundNode result = null;
             BinderFactoryVisitor visitor = _binderFactoryVisitorPool.Allocate();
             ArrayBuilder<Binder> binders = _binderArrayBuilderPool.Allocate();
             try
             {
-                visitor.Reset(position, bindToken, binders);
-                result = node.Accept(visitor);
+                visitor.Reset(position, bindChild, binders);
+                node.Accept(visitor);
+                return binders.ToImmutable();
             }
             finally
             {
                 _binderFactoryVisitorPool.Free(visitor);
                 _binderArrayBuilderPool.Free(binders);
             }
-            return result;
         }
 
-        public virtual bool TryGetBoundNode(RedNode node, out BoundNode boundNode)
+        public bool TryGetBinders(RedNode node, object usage, out ImmutableArray<Binder> binders)
         {
-            boundNode = null;
+            BinderCacheKey key = new BinderCacheKey(node, usage);
+            return this.TryGetBinders(key, out binders);
+        }
+
+        public bool TryAddBinders(RedNode node, object usage, ref ImmutableArray<Binder> binders)
+        {
+            BinderCacheKey key = new BinderCacheKey(node, usage);
+            if (this.TryAddBinders(key, ref binders))
+            {
+                for (int i = 0; i < binders.Length; i++)
+                {
+                    binders[i].InitializeByBinderFactory(node, i);
+                }
+                return true;
+            }
             return false;
         }
 
-        public virtual bool TryAddBoundNode(RedNode node, ref BoundNode boundNode)
+        protected virtual bool TryGetBinders(BinderCacheKey key, out ImmutableArray<Binder> binders)
+        {
+            binders = ImmutableArray<Binder>.Empty;
+            return false;
+        }
+
+        protected virtual bool TryAddBinders(BinderCacheKey key, ref ImmutableArray<Binder> binders)
         {
             return false;
+        }
+
+
+        // PERF: we are not using ValueTuple because its Equals is relatively slow.
+        protected struct BinderCacheKey : IEquatable<BinderCacheKey>
+        {
+            public readonly RedNode syntaxNode;
+            public readonly object usage;
+
+            public BinderCacheKey(RedNode syntaxNode, object usage)
+            {
+                this.syntaxNode = syntaxNode;
+                this.usage = usage;
+            }
+
+            bool IEquatable<BinderCacheKey>.Equals(BinderCacheKey other)
+            {
+                return syntaxNode == other.syntaxNode && this.usage == other.usage;
+            }
+
+            public override int GetHashCode()
+            {
+                return Hash.Combine(syntaxNode.GetHashCode(), (int)usage);
+            }
+
+            public override bool Equals(object obj)
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 }

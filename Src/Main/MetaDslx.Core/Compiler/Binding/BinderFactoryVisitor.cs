@@ -16,11 +16,11 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Compiler.Binding
 {
-    public abstract class BinderFactoryVisitor : SyntaxVisitor<BoundNode> 
+    public abstract class BinderFactoryVisitor : SyntaxVisitor 
     {
         private readonly BinderFactory _binderFactory;
         private int _position;
-        private bool _bindToken;
+        private bool _bindChild;
         private ArrayBuilder<Binder> _binders;
 
         public BinderFactoryVisitor(BinderFactory binderFactory)
@@ -48,17 +48,21 @@ namespace MetaDslx.Compiler.Binding
             get { return _position; }
         }
 
-        public bool BindToken
+        public bool BindChild
         {
-            get { return _bindToken; }
+            get { return _bindChild; }
         }
 
-        public virtual void Reset(int position, bool bindToken, ArrayBuilder<Binder> binders)
+        internal void Reset(int position, bool bindChild, ArrayBuilder<Binder> binders)
         {
             _position = position;
-            _bindToken = bindToken;
+            _bindChild = bindChild;
             _binders = binders;
         }
 
+        protected void AddBinder(Binder binder)
+        {
+            _binders.Add(binder);
+        }
     }
 }

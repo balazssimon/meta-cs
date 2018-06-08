@@ -10,9 +10,9 @@ namespace MetaDslx.Compiler.Binding
     public interface IBinder
     {
         CompilationBase Compilation { get; }
-        IBinder Next { get; }
-        BoundTree BoundTree { get; }
-        BoundNode BoundNode { get; }
+        IBinder Parent { get; }
         bool IsSemanticModelBinder { get; }
+        RedNode RedNode { get; }
+        BoundNode BoundNode { get; }
     }
 }

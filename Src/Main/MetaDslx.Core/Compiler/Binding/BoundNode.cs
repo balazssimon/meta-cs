@@ -26,21 +26,19 @@ namespace MetaDslx.Compiler.Binding
         private readonly int _kind;
         private readonly RedNode _redNode;
         private readonly BoundTree _boundTree;
-        private readonly ImmutableArray<Binder> _binders;
         private int _attributes;
 
-        public BoundNode(int kind, RedNode redNode, BoundTree boundTree, ImmutableArray<Binder> binders)
+        public BoundNode(int kind, RedNode redNode, BoundTree boundTree)
         {
             Debug.Assert(redNode != null);
 
             _kind = kind;
             _redNode = redNode;
             _boundTree = boundTree;
-            _binders = binders;
         }
 
-        public BoundNode(int kind, RedNode redNode, BoundTree boundTree, ImmutableArray<Binder> binders, bool hasErrors) 
-            : this(kind, redNode, boundTree, binders)
+        public BoundNode(int kind, RedNode redNode, BoundTree boundTree, bool hasErrors) 
+            : this(kind, redNode, boundTree)
         {
             if (hasErrors)
             {
@@ -169,381 +167,81 @@ namespace MetaDslx.Compiler.Binding
             get { return _kind; }
         }
 
+        public TBinder GetBinder<TBinder>()
+            where TBinder : class
+        {
+            return this.Binder.GetBinder<TBinder>();
+        }
+
         public ImmutableArray<Binder> Binders
         {
-            get { return _binders; }
+            get { return this.Compilation.GetBinders(this.RedNode); }
         }
 
-        internal Binder TopBinder
+        public Binder ParentBinder
         {
             get
             {
-                if (_binders.Length > 0) return _binders[0];
-                else return this.Compilation.GetBinder(this.RedNode.Parent);
+                return this.Parent?.Binder ?? (Binder)this.Compilation.GetDefaultBinder<IBinder>();
             }
         }
 
-        internal Binder BottomBinder
+        public Binder TopBinder
         {
             get
             {
-                if (_binders.Length > 0) return _binders[_binders.Length - 1];
-                else return this.Compilation.GetBinder(this.RedNode.Parent);
+                var binders = this.Binders;
+                if (binders.Length > 0) return binders[0];
+                else return this.ParentBinder;
             }
         }
 
-        internal Binder Binder
+        public Binder Binder
         {
             get
             {
-                return this.BottomBinder;
+                var binders = this.Binders;
+                if (binders.Length > 0) return binders[binders.Length - 1];
+                else return this.ParentBinder;
             }
         }
 
-        public void Bind(BoundTree boundTree, ImmutableArray<Binder> binders)
+        public Lazy<TValue> GetSingleValue<TValue>(Action<LookupResult<TValue>> selector)
         {
-            int oldAttributes = _attributes;
-            if (Interlocked.Exchange(ref _attributes, _attributes | BoundNode.IsBoundFlag) == oldAttributes)
-            {
-                foreach (var binder in _binders)
-                {
-                    binder.InternalBind(this);
-                }
-            }
+            return new Lazy<TValue>(() => this.GetSingleValueLazy(selector));
         }
 
-        public Binder GetPreviousBinderInNode(Binder binder)
+        private TValue GetSingleValueLazy<TValue>(Action<LookupResult<TValue>> selector)
         {
-            int index = this.Binders.IndexOf(binder);
-            if (index + 1 < this.Binders.Length)
-            {
-                return this.Binders[index + 1];
-            }
-            return null;
-        }
-
-        public bool ExecuteCurrent<TBinder>(Func<TBinder, bool> action)
-            where TBinder : class
-        {
-            return this.ExecuteCurrent(this.TopBinder, action);
-        }
-
-        public bool ExecuteCurrent<TBinder>(Binder binder, Func<TBinder, bool> action)
-            where TBinder : class
-        {
-            int index = this.Binders.IndexOf(binder);
-            while (index >= 0)
-            {
-                IBinder currentBinder = this.Binders[index];
-                if (this.TryExecute(currentBinder, action))
-                {
-                    return true;
-                }
-                --index;
-            }
-            return false;
-        }
-
-        public bool ExecuteCurrentOrInherited<TBinder>(Func<TBinder, bool> action)
-            where TBinder : class
-        {
-            return this.ExecuteInherited<TBinder>(this.Binder, action);
-        }
-
-        public bool ExecuteInherited<TBinder>(Func<TBinder, bool> action)
-            where TBinder : class
-        {
-            return this.ExecuteInherited<TBinder>(this.Parent.BottomBinder, action);
-        }
-
-        public bool ExecuteInherited<TBinder>(Binder binder, Func<TBinder, bool> action)
-            where TBinder : class
-        {
-            if (binder == null)
-            {
-                return false;
-            }
-            IBinder currentBinder = binder;
-            while (currentBinder != null)
-            {
-                if (this.TryExecute(currentBinder, action))
-                {
-                    return true;
-                }
-                currentBinder = currentBinder.Next;
-            }
-            return false;
-        }
-
-        public bool ExecuteCurrentOrSynthesized<TBinder>(Func<TBinder, bool> action)
-            where TBinder : class
-        {
-            return this.ExecuteCurrentOrSynthesized<TBinder>(this.TopBinder, action);
-        }
-
-        public bool ExecuteSynthesized<TBinder>(Func<TBinder, bool> action)
-            where TBinder : class
-        {
-            return this.ExecuteCurrentOrSynthesized<TBinder>(null, action);
-        }
-
-        public bool ExecuteCurrentOrSynthesized<TBinder>(Binder binder, Func<TBinder, bool> action)
-            where TBinder : class
-        {
-            if (binder != null)
-            {
-                int index = this.Binders.IndexOf(binder);
-                if (index >= 0)
-                {
-                    while (index < this.Binders.Length)
-                    {
-                        if (this.TryExecute(this.Binders[index], action))
-                        {
-                            return true;
-                        }
-                        ++index;
-                    }
-                }
-            }
-            bool success = false;
-            Stack<RedNode> nodeStack = new Stack<RedNode>();
-            nodeStack.Push(this.RedNode);
-            while (nodeStack.Count > 0)
-            {
-                RedNode currentNode = nodeStack.Pop();
-                bool stop = false;
-                if (currentNode != this.RedNode)
-                {
-                    var binders = this.Compilation.Bind(currentNode).Binders;
-                    for (int i = 0; i < binders.Length; i++)
-                    {
-                        if (this.TryExecute(binders[i], action))
-                        {
-                            stop = true;
-                            success = true;
-                        }
-                    }
-                }
-                if (!stop && (currentNode is SyntaxNode))
-                {
-                    foreach (var child in ((SyntaxNode)currentNode).ChildNodesAndTokens())
-                    {
-                        nodeStack.Push(child);
-                    }
-                }
-            }
-            return success;
-        }
-
-        public Lazy<TValue> GetCurrentLazy<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            return new Lazy<TValue>(() => this.GetCurrent(selector));
-        }
-
-        public TValue GetCurrent<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            TValue result;
-            this.TryGetCurrent(selector, out result);
-            return result;
-        }
-
-        public bool TryGetCurrent<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector, out TValue value)
-            where TBinder : class
-        {
-            int index = this.Binders.Length - 1;
-            while (index >= 0)
-            {
-                IBinder currentBinder = this.Binders[index];
-                if (this.TryGetValue(currentBinder, selector, out value))
-                {
-                    return true;
-                }
-                --index;
-            }
-            value = default(TValue);
-            return false;
-        }
-
-        public Lazy<TValue> GetCurrentOrInheritedLazy<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            return new Lazy<TValue>(() => this.GetCurrentOrInherited(selector));
-        }
-
-        public TValue GetCurrentOrInherited<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            TValue result;
-            this.TryGetInherited(this.Binder, selector, out result);
-            return result;
-        }
-
-        public Lazy<TValue> GetInheritedLazy<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            return new Lazy<TValue>(() => this.GetInherited(selector));
-        }
-
-        public TValue GetInherited<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            TValue result;
-            this.TryGetInherited(this.Parent.BottomBinder, selector, out result);
-            return result;
-        }
-
-        public TValue GetInherited<TBinder, TValue>(Binder binder, Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            TValue result;
-            this.TryGetInherited(binder, selector, out result);
-            return result;
-        }
-
-        public bool TryGetInherited<TBinder,TValue>(Binder binder, Func<TBinder,Optional<TValue>> selector, out TValue value)
-            where TBinder: class
-        {
-            if (binder == null)
-            {
-                value = default(TValue);
-                return false;
-            }
-            IBinder currentBinder = binder;
-            while (currentBinder != null)
-            {
-                if (this.TryGetValue(currentBinder, selector, out value))
-                {
-                    return true;
-                }
-                currentBinder = currentBinder.Next;
-            }
-            value = default(TValue);
-            return false;
-        }
-
-        public Lazy<ImmutableArray<TValue>> GetCurrentOrSynthesizedLazy<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            return new Lazy<ImmutableArray<TValue>>(() => this.GetCurrentOrSynthesized(selector));
-        }
-
-        public ImmutableArray<TValue> GetCurrentOrSynthesized<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            ImmutableArray<TValue> result;
-            this.TryGetSynthesized(this.TopBinder, selector, out result);
-            return result;
-        }
-
-        public Lazy<ImmutableArray<TValue>> GetSynthesizedLazy<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            return new Lazy<ImmutableArray<TValue>>(() => this.GetSynthesized(selector));
-        }
-
-        public ImmutableArray<TValue> GetSynthesized<TBinder, TValue>(Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            ImmutableArray<TValue> result;
-            this.TryGetSynthesized(null, selector, out result);
-            return result;
-        }
-
-        public ImmutableArray<TValue> GetSynthesized<TBinder, TValue>(Binder binder, Func<TBinder, Optional<TValue>> selector)
-            where TBinder : class
-        {
-            ImmutableArray<TValue> result;
-            this.TryGetSynthesized(binder, selector, out result);
-            return result;
-        }
-
-        public bool TryGetSynthesized<TBinder, TValue>(Binder binder, Func<TBinder, Optional<TValue>> selector, out ImmutableArray<TValue> values)
-            where TBinder : class
-        {
-            ArrayBuilder<TValue> valuesBuilder = ArrayBuilder<TValue>.GetInstance();
+            LookupResult<TValue> lookupResult = LookupResult<TValue>.GetInstance();
             try
             {
-                if (binder != null)
-                {
-                    int index = this.Binders.IndexOf(binder);
-                    if (index >= 0)
-                    {
-                        while (index < this.Binders.Length)
-                        {
-                            TValue value;
-                            if (this.TryGetValue(this.Binders[index], selector, out value))
-                            {
-                                valuesBuilder.Add(value);
-                                return true;
-                            }
-                            ++index;
-                        }
-                    }
-                }
-                Stack<RedNode> nodeStack = new Stack<RedNode>();
-                nodeStack.Push(this.RedNode);
-                while(nodeStack.Count > 0)
-                {
-                    RedNode currentNode = nodeStack.Pop();
-                    bool added = false;
-                    if (currentNode != this.RedNode)
-                    {
-                        var binders = this.Compilation.Bind(currentNode).Binders;
-                        for (int i = 0; i < binders.Length; i++)
-                        {
-                            TValue value;
-                            if (this.TryGetValue(binders[i], selector, out value))
-                            {
-                                valuesBuilder.Add(value);
-                                added = true;
-                            }
-                        }
-                    }
-                    if (!added && (currentNode is SyntaxNode))
-                    {
-                        foreach (var child in ((SyntaxNode)currentNode).ChildNodesAndTokens())
-                        {
-                            nodeStack.Push(child);
-                        }
-                    }
-                }
-                values = valuesBuilder.ToImmutable();
-                return values.Length > 0;
+                selector(lookupResult);
+                return lookupResult.GetSingleResultOrDefault();
             }
             finally
             {
-                valuesBuilder.Free();
+                lookupResult.Free();
             }
         }
 
-        private bool TryExecute<TBinder>(IBinder binder, Func<TBinder, bool> action)
-            where TBinder : class
+        public Lazy<ImmutableArray<TValue>> GetMultipleValues<TValue>(Action<LookupResult<TValue>> selector)
         {
-            TBinder typedBinder = binder as TBinder;
-            if (typedBinder != null)
-            {
-                return action(typedBinder);
-            }
-            return false;
+            return new Lazy<ImmutableArray<TValue>>(() => this.GetMultipleValuesLazy(selector));
         }
 
-        private bool TryGetValue<TBinder, TValue>(IBinder binder, Func<TBinder, Optional<TValue>> selector, out TValue value)
-            where TBinder : class
+        private ImmutableArray<TValue> GetMultipleValuesLazy<TValue>(Action<LookupResult<TValue>> selector)
         {
-            TBinder typedBinder = binder as TBinder;
-            if (typedBinder != null)
+            LookupResult<TValue> lookupResult = LookupResult<TValue>.GetInstance();
+            try
             {
-                var result = selector(typedBinder);
-                if (result.HasValue)
-                {
-                    value = result.Value;
-                    return true;
-                }
+                selector(lookupResult);
+                return lookupResult.GetResults();
             }
-            value = default(TValue);
-            return false;
+            finally
+            {
+                lookupResult.Free();
+            }
         }
     }
 }

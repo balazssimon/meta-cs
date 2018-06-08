@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 namespace MetaDslx.Compiler.Binding
 {
     /// <summary>
-    /// represents one-to-one symbol -> SingleLookupResult filter.
+    /// represents one-to-one result -> SingleLookupResult filter.
     /// </summary>
-    internal delegate SingleLookupResult LookupFilter(ISymbol sym);
+    internal delegate SingleLookupResult<TResult> LookupFilter<TResult>(TResult result);
 
     /// <summary>
-    /// A LookupResult summarizes the result of a name lookup within a scope It also allows
-    /// combining name lookups from different scopes in an easy way.
+    /// A LookupResult summarizes the result of a result lookup within a binder. It also allows
+    /// combining lookup results from different binders in an easy way.
     /// 
     /// A LookupResult can be ONE OF:
     ///    empty - nothing found.
@@ -51,31 +51,23 @@ namespace MetaDslx.Compiler.Binding
     /// 
     /// 
     /// </summary>
-    /// <remarks>
-    /// Currently LookupResult is intended only for name lookup, not for overload resolution. It is
-    /// not clear if overload resolution will work with the structure as is, require enhancements,
-    /// or be best served by an alternate mechanism.
-    /// 
-    /// We might want to extend this to a more general priority scheme.
-    /// 
-    /// </remarks>
-    public sealed class LookupResult
+    public sealed class LookupResult<TResult>
     {
         // the kind of result.
         private LookupResultKind _kind;
 
         // If there is more than one symbol, they are stored in this list.
-        private readonly ArrayBuilder<ISymbol> _symbolList;
+        private readonly ArrayBuilder<TResult> _resultList;
 
         // the error of the result, if it is NonViable or Inaccessible
         private DiagnosticInfo _error;
-        private readonly ObjectPool<LookupResult> _pool;
+        private readonly ObjectPool<LookupResult<TResult>> _pool;
 
-        private LookupResult(ObjectPool<LookupResult> pool)
+        private LookupResult(ObjectPool<LookupResult<TResult>> pool)
         {
             _pool = pool;
             _kind = LookupResultKind.Empty;
-            _symbolList = new ArrayBuilder<ISymbol>();
+            _resultList = new ArrayBuilder<TResult>();
             _error = null;
         }
 
@@ -83,14 +75,14 @@ namespace MetaDslx.Compiler.Binding
         {
             get
             {
-                return _kind == LookupResultKind.Empty && _error == null && _symbolList.Count == 0;
+                return _kind == LookupResultKind.Empty && _error == null && _resultList.Count == 0;
             }
         }
 
         public void Clear()
         {
             _kind = LookupResultKind.Empty;
-            _symbolList.Clear();
+            _resultList.Clear();
             _error = null;
         }
 
@@ -105,25 +97,14 @@ namespace MetaDslx.Compiler.Binding
         /// <summary>
         /// Return the single symbol if there is exactly one, otherwise null.
         /// </summary>
-        public ISymbol SingleSymbolOrDefault
+        public TResult GetSingleResultOrDefault()
         {
-            get
-            {
-                return (_symbolList.Count == 1) ? _symbolList[0] : null;
-            }
+            return (_resultList.Count == 1) ? _resultList[0] : default(TResult);
         }
 
-        internal ArrayBuilder<ISymbol> Symbols
+        public ImmutableArray<TResult> GetResults()
         {
-            get
-            {
-                return _symbolList;
-            }
-        }
-
-        public ImmutableArray<ISymbol> GetSymbols()
-        {
-            return _symbolList.ToImmutable();
+            return _resultList.ToImmutable();
         }
 
         public DiagnosticInfo Error
@@ -152,44 +133,44 @@ namespace MetaDslx.Compiler.Binding
         {
             get
             {
-                return Kind == LookupResultKind.Viable && _symbolList.Count == 1;
+                return Kind == LookupResultKind.Viable && _resultList.Count == 1;
             }
         }
 
-        public static SingleLookupResult Good(ISymbol symbol)
+        public static SingleLookupResult<TResult> Good(TResult result)
         {
-            return new SingleLookupResult(LookupResultKind.Viable, symbol, null);
+            return new SingleLookupResult<TResult>(LookupResultKind.Viable, result, null);
         }
 
-        public static SingleLookupResult Wrong(ISymbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult<TResult> Wrong(TResult result, DiagnosticInfo error)
         {
-            return new SingleLookupResult(LookupResultKind.NonViable, symbol, error);
+            return new SingleLookupResult<TResult>(LookupResultKind.NonViable, result, error);
         }
 
-        public static SingleLookupResult Inaccessible(ISymbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult<TResult> Inaccessible(TResult result, DiagnosticInfo error)
         {
-            return new SingleLookupResult(LookupResultKind.Inaccessible, symbol, error);
+            return new SingleLookupResult<TResult>(LookupResultKind.Inaccessible, result, error);
         }
 
         /// <summary>
         /// Set current result according to another.
         /// </summary>
-        public void SetFrom(SingleLookupResult other)
+        public void SetFrom(SingleLookupResult<TResult> other)
         {
             _kind = other.Kind;
-            _symbolList.Clear();
-            _symbolList.Add(other.Symbol);
+            _resultList.Clear();
+            _resultList.Add(other.Result);
             _error = other.Error;
         }
 
         /// <summary>
         /// Set current result according to another.
         /// </summary>
-        public void SetFrom(LookupResult other)
+        public void SetFrom(LookupResult<TResult> other)
         {
             _kind = other._kind;
-            _symbolList.Clear();
-            _symbolList.AddRange(other._symbolList);
+            _resultList.Clear();
+            _resultList.AddRange(other._resultList);
             _error = other._error;
         }
 
@@ -201,7 +182,7 @@ namespace MetaDslx.Compiler.Binding
 
         // Merge another result with this one, with the current result being prioritized
         // over the other if they are of equal "goodness". Mutates the current result.
-        public void MergePrioritized(LookupResult other)
+        public void MergePrioritized(LookupResult<TResult> other)
         {
             if (other.Kind > Kind)
             {
@@ -214,7 +195,7 @@ namespace MetaDslx.Compiler.Binding
         /// this and other are viable. Otherwise the highest priority result wins (this if equal 
         /// priority and non-viable.)
         /// </summary>
-        public void MergeEqual(LookupResult other)
+        public void MergeEqual(LookupResult<TResult> other)
         {
             if (Kind > other.Kind)
             {
@@ -232,12 +213,12 @@ namespace MetaDslx.Compiler.Binding
             }
             else
             {
-                // Merging two viable results together. We will always end up with at least two symbols.
-                _symbolList.AddRange(other._symbolList);
+                // Merging two viable results together. We will always end up with at least two results.
+                _resultList.AddRange(other._resultList);
             }
         }
 
-        public void MergeEqual(SingleLookupResult result)
+        public void MergeEqual(SingleLookupResult<TResult> result)
         {
             if (Kind > result.Kind)
             {
@@ -247,26 +228,26 @@ namespace MetaDslx.Compiler.Binding
             {
                 this.SetFrom(result);
             }
-            else if ((object)result.Symbol != null)
+            else if ((object)result.Result != null)
             {
-                // Same goodness. Include all symbols
-                _symbolList.Add(result.Symbol);
+                // Same goodness. Include all results
+                _resultList.Add(result.Result);
             }
         }
 
         // global pool
         //TODO: consider if global pool is ok.
-        private static readonly ObjectPool<LookupResult> s_poolInstance = CreatePool();
+        private static readonly ObjectPool<LookupResult<TResult>> s_poolInstance = CreatePool();
 
         // if someone needs to create a pool
-        public static ObjectPool<LookupResult> CreatePool()
+        public static ObjectPool<LookupResult<TResult>> CreatePool()
         {
-            ObjectPool<LookupResult> pool = null;
-            pool = new ObjectPool<LookupResult>(() => new LookupResult(pool), 128); // we rarely need more than 10
+            ObjectPool<LookupResult<TResult>> pool = null;
+            pool = new ObjectPool<LookupResult<TResult>>(() => new LookupResult<TResult>(pool), 128); // we rarely need more than 10
             return pool;
         }
 
-        public static LookupResult GetInstance()
+        public static LookupResult<TResult> GetInstance()
         {
             var instance = s_poolInstance.Allocate();
             Debug.Assert(instance.IsClear);

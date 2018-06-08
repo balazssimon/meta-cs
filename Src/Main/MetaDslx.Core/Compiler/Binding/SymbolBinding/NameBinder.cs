@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Compiler.Utilities;
+using MetaDslx.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,11 +12,18 @@ namespace MetaDslx.Compiler.Binding.SymbolBinding
         {
         }
 
-        public override bool AddNameBinder(ArrayBuilder<ISymbolBinder> result)
+        public override bool GetName(LookupResult<Qualifier> result)
         {
-            result.Add(this);
+            LookupResult<Qualifier> qualifiers = LookupResult<Qualifier>.GetInstance();
+            try
+            {
+                this.GetQualifier(result);
+            }
+            finally
+            {
+                qualifiers.Free();
+            }
             return true;
         }
-
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,24 +12,24 @@ namespace MetaDslx.Compiler.Binding.Binders
 {
     internal sealed class MappingBinderFactory : BinderFactory
     {
-        private ConcurrentDictionary<RedNode, BoundNode> _map;
+        private ConcurrentDictionary<BinderCacheKey, ImmutableArray<Binder>> _map;
 
         internal MappingBinderFactory(CompilationBase compilation, SyntaxTree syntaxTree) 
             : base(compilation, syntaxTree)
         {
-            _map = new ConcurrentDictionary<RedNode, BoundNode>();
+            _map = new ConcurrentDictionary<BinderCacheKey, ImmutableArray<Binder>>();
         }
 
-        public override bool TryGetBoundNode(RedNode node, out BoundNode boundNode)
+        protected override bool TryGetBinders(BinderCacheKey key, out ImmutableArray<Binder> binders)
         {
-            return _map.TryGetValue(node, out boundNode);
+            return _map.TryGetValue(key, out binders);
         }
 
-        public override bool TryAddBoundNode(RedNode node, ref BoundNode boundNode)
+        protected override bool TryAddBinders(BinderCacheKey key, ref ImmutableArray<Binder> binders)
         {
-            if (!_map.TryAdd(node, boundNode))
+            if (!_map.TryAdd(key, binders))
             {
-                Interlocked.Exchange(ref boundNode, _map[node]);
+                ImmutableInterlocked.InterlockedExchange(ref binders, _map[key]);
                 return true;
             }
             return true;

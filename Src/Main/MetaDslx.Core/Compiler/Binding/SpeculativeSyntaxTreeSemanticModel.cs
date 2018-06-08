@@ -74,7 +74,7 @@ namespace MetaDslx.Compiler.Binding
 
         protected override ISymbolBinder GetEnclosingBinderCore(int position)
         {
-            return _rootBinder.AsBinder<ISymbolBinder>();
+            return _rootBinder.GetBinder<ISymbolBinder>();
         }
 
         protected override SymbolInfo GetSymbolInfoWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))

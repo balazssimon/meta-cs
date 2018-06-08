@@ -66,89 +66,43 @@ namespace MetaDslx.Compiler.Binding.SymbolBinding
             }
         }
 
-        public override void AddLookupSymbolsInfoInSingleBinder(ArrayBuilder<ISymbol> result, SymbolBindingOptions options, ISymbolBinder originalBinder)
-        {
-            if (this.ContainingSymbol != null)
-            {
-                this.AddMemberLookupSymbolsInfo(result, this.ContainingSymbol, options, originalBinder);
-            }
-
-            // Submission imports are handled by AddMemberLookupSymbolsInfo (above).
-            if (!IsSubmissionClass)
-            {
-                var imports = GetImports(basesBeingResolved: null);
-                imports.AddLookupSymbolsInfo(result, options, originalBinder);
-            }
-        }
-
-        public override void AddMemberLookupSymbolsInfo(ArrayBuilder<ISymbol> result, ISymbol container, SymbolBindingOptions options, ISymbolBinder originalBinder)
-        {
-            this.AddMemberLookupSymbolsInfoInType(result, container, options, originalBinder, null);
-        }
-
-        private void AddMemberLookupSymbolsInfoInType(ArrayBuilder<ISymbol> result, ISymbol type, SymbolBindingOptions options, ISymbolBinder originalBinder, ISymbol accessThroughType)
-        {
-            AddMemberLookupSymbolsInfoWithoutInheritance(result, type, options, originalBinder, accessThroughType);
-
-            foreach (var baseType in type.MGetAllBases())
-            {
-                AddMemberLookupSymbolsInfoWithoutInheritance(result, baseType, options, originalBinder, accessThroughType);
-            }
-
-            // SB-TODO: add Object type here, if needed:
-            //this.AddMemberLookupSymbolsInfoInClass(result, Compilation.GetSpecialType(SpecialType.System_Object), options, originalBinder, accessThroughType);
-        }
-
-        private static void AddMemberLookupSymbolsInfoWithoutInheritance(ArrayBuilder<ISymbol> result, ISymbol symbol, SymbolBindingOptions options, ISymbolBinder originalBinder, ISymbol accessThroughType)
-        {
-            HashSet<DiagnosticInfo> discardedDiagnostics = null;
-            foreach (var member in symbol.MGetMembers())
-            {
-                SingleLookupResult lookupResult = originalBinder.CheckViability(member, options, accessThroughType, false, ref discardedDiagnostics);
-                if (lookupResult.Kind == LookupResultKind.Viable)
-                {
-                    result.Add(member);
-                }
-            }
-        }
-
-        public override void LookupSymbolsInSingleBinder(LookupResult result, string name, ConsList<ISymbol> basesBeingResolved, SymbolBindingOptions options, ISymbolBinder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public override bool LookupSymbolsCore(LookupResult<ISymbol> result, string name, SymbolBindingOptions options)
         {
             Debug.Assert(result.IsClear);
 
             if (IsSubmissionClass)
             {
-                this.LookupMembersCore(result, null, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
-                return;
+                return this.LookupMembersCore(result, null, name, options);
             }
 
-            var imports = GetImports(basesBeingResolved);
+            var imports = this.GetImports(ConsList<ISymbol>.Empty);
 
             // first lookup members of the namespace
             if (this.ContainingSymbol != null)
             {
-                this.LookupMembersCore(result, null, name, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                this.LookupMembersCore(result, null, name, options);
 
                 if (result.IsMultiViable)
                 {
-                    return;
+                    return true;
                 }
             }
 
             // next try using aliases or symbols in imported namespaces
-            imports.LookupSymbol(originalBinder, result, name, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+            imports.LookupSymbol(result, name, options);
+            return result.IsMultiViable;
         }
 
-        public override void LookupMembersCore(LookupResult result, ISymbol qualifierOpt, string name, ConsList<ISymbol> basesBeingResolved, SymbolBindingOptions options, ISymbolBinder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public override bool LookupMembersCore(LookupResult<ISymbol> result, ISymbol qualifierOpt, string name, SymbolBindingOptions options)
         {
             if (qualifierOpt == null)
             {
-                if (this.ContainingSymbol == null) return;
+                if (this.ContainingSymbol == null) return false;
                 foreach (var child in this.ContainingSymbol.MGetMembers())
                 {
                     if (child.MName != null && child.MName == name)
                     {
-                        result.MergeEqual(this.CheckViability(child, options, null, diagnose, ref useSiteDiagnostics));
+                        result.MergeEqual(this.CheckViability(child, options, null, true));
                     }
                 }
             }
@@ -158,13 +112,14 @@ namespace MetaDslx.Compiler.Binding.SymbolBinding
                 {
                     if (child.MName != null && child.MName == name)
                     {
-                        result.MergeEqual(this.CheckViability(child, options, null, diagnose, ref useSiteDiagnostics));
+                        result.MergeEqual(this.CheckViability(child, options, null, true));
                     }
                 }
             }
+            return result.IsMultiViable;
         }
 
-        public override Imports GetImports(ConsList<ISymbol> basesBeingResolved)
+        public override bool GetImportsCore(LookupResult<Imports> result, ConsList<ISymbol> basesBeingResolved)
         {
             Debug.Assert(_lazyImports != null || _computeImports != null, "Have neither imports nor a way to compute them.");
 
@@ -173,7 +128,55 @@ namespace MetaDslx.Compiler.Binding.SymbolBinding
                 Interlocked.CompareExchange(ref _lazyImports, _computeImports(basesBeingResolved), null);
             }
 
-            return _lazyImports;
+            result.MergeEqual(LookupResult<Imports>.Good(_lazyImports));
+            return true;
         }
+
     }
 }
+
+//public override void AddLookupSymbolsInfoInSingleBinder(ArrayBuilder<ISymbol> result, SymbolBindingOptions options, ISymbolBinder originalBinder)
+//{
+//    if (this.ContainingSymbol != null)
+//    {
+//        this.AddMemberLookupSymbolsInfo(result, this.ContainingSymbol, options, originalBinder);
+//    }
+
+//    // Submission imports are handled by AddMemberLookupSymbolsInfo (above).
+//    if (!IsSubmissionClass)
+//    {
+//        var imports = GetImports(basesBeingResolved: null);
+//        imports.AddLookupSymbolsInfo(result, options, originalBinder);
+//    }
+//}
+
+//public override void AddMemberLookupSymbolsInfo(ArrayBuilder<ISymbol> result, ISymbol container, SymbolBindingOptions options, ISymbolBinder originalBinder)
+//{
+//    this.AddMemberLookupSymbolsInfoInType(result, container, options, originalBinder, null);
+//}
+
+//private void AddMemberLookupSymbolsInfoInType(ArrayBuilder<ISymbol> result, ISymbol type, SymbolBindingOptions options, ISymbolBinder originalBinder, ISymbol accessThroughType)
+//{
+//    AddMemberLookupSymbolsInfoWithoutInheritance(result, type, options, originalBinder, accessThroughType);
+
+//    foreach (var baseType in type.MGetAllBases())
+//    {
+//        AddMemberLookupSymbolsInfoWithoutInheritance(result, baseType, options, originalBinder, accessThroughType);
+//    }
+
+//    // SB-TODO: add Object type here, if needed:
+//    //this.AddMemberLookupSymbolsInfoInClass(result, Compilation.GetSpecialType(SpecialType.System_Object), options, originalBinder, accessThroughType);
+//}
+
+//private static void AddMemberLookupSymbolsInfoWithoutInheritance(ArrayBuilder<ISymbol> result, ISymbol symbol, SymbolBindingOptions options, ISymbolBinder originalBinder, ISymbol accessThroughType)
+//{
+//    HashSet<DiagnosticInfo> discardedDiagnostics = null;
+//    foreach (var member in symbol.MGetMembers())
+//    {
+//        SingleLookupResult lookupResult = originalBinder.CheckViability(member, options, accessThroughType, false, ref discardedDiagnostics);
+//        if (lookupResult.Kind == LookupResultKind.Viable)
+//        {
+//            result.Add(member);
+//        }
+//    }
+//}

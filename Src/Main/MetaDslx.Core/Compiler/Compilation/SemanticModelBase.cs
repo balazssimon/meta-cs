@@ -455,7 +455,7 @@ namespace MetaDslx.Compiler
                 return ImmutableArray<ISymbol>.Empty;
             }
 
-            var results = ArrayBuilder<ISymbol>.GetInstance();
+            var results = LookupResult<ISymbol>.GetInstance();
             ImmutableArray<ISymbol> sealedResults = ImmutableArray<ISymbol>.Empty;
             try
             {
@@ -465,12 +465,13 @@ namespace MetaDslx.Compiler
                 }
                 else
                 {
-                    binder.AddMemberLookupSymbolsInfo(results, container, options, binder);
+                    binder.AddMemberLookupSymbolsInfo(results, container, options);
                 }
+                sealedResults = results.GetResults();
             }
             finally
             {
-                sealedResults = results.ToImmutableAndFree();
+                results.Free();
             }
 
             return name == null
@@ -530,8 +531,7 @@ namespace MetaDslx.Compiler
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                return binder.IsAccessible(symbol, ref useSiteDiagnostics, null);
+                return binder.IsAccessible(symbol);
             }
 
             return false;

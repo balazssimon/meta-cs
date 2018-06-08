@@ -38,7 +38,7 @@ namespace MetaDslx.Compiler.Binding.SymbolBinding
 
         public Imports Concat(Imports imports)
         {
-            return this;
+            return imports;
         }
 
         internal void Complete(CancellationToken cancellationToken)
@@ -46,12 +46,12 @@ namespace MetaDslx.Compiler.Binding.SymbolBinding
 
         }
 
-        internal void AddLookupSymbolsInfo(ArrayBuilder<ISymbol> result, SymbolBindingOptions options, ISymbolBinder originalBinder)
+        internal void AddLookupSymbolsInfo(LookupResult<ISymbol> result, SymbolBindingOptions options)
         {
 
         }
 
-        internal void LookupSymbol(ISymbolBinder originalBinder, LookupResult result, string name, ConsList<ISymbol> basesBeingResolved, SymbolBindingOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        internal void LookupSymbol(LookupResult<ISymbol> result, string name, SymbolBindingOptions options)
         {
 
         }

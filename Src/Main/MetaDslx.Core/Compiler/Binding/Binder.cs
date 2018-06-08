@@ -22,8 +22,10 @@ namespace MetaDslx.Compiler.Binding
         protected static Func<Binder, bool> ReturnFalse = (Binder b) => false;
 
         private readonly CompilationBase _compilation;
-        private readonly Binder _next;
-        private BoundNode _boundNode;
+        private readonly Binder _parent;
+
+        private RedNode _redNode;
+        private int _index;
 
         /// <summary>
         /// Used to create a root binder.
@@ -32,13 +34,30 @@ namespace MetaDslx.Compiler.Binding
         {
             Debug.Assert(compilation != null);
             _compilation = compilation;
+            _parent = null;
+            _redNode = null;
+            _index = -1;
         }
 
-        public Binder(Binder next)
+        public Binder(Binder parent)
         {
-            Debug.Assert(next != null);
-            _next = next;
-            _compilation = next.Compilation;
+            Debug.Assert(parent != null);
+            _parent = parent;
+            _compilation = parent.Compilation;
+            _redNode = null;
+            _index = -1;
+        }
+
+        internal void InitializeByBinderFactory(RedNode syntaxNode, int index)
+        {
+            if (_index >= 0)
+            {
+                Debug.Assert(_redNode == syntaxNode);
+                Debug.Assert(_index == index);
+                return;
+            }
+            _redNode = syntaxNode;
+            _index = index;
         }
 
         public CompilationBase Compilation
@@ -49,14 +68,11 @@ namespace MetaDslx.Compiler.Binding
             }
         }
 
-        /// <summary>
-        /// Get the next binder in which to look up a name, if not found by this binder.
-        /// </summary>
-        public IBinder Next
+        public IBinder Parent
         {
             get
             {
-                return _next;
+                return _parent;
             }
         }
 
@@ -65,55 +81,212 @@ namespace MetaDslx.Compiler.Binding
             get { return true; }
         }
 
-        public BoundTree BoundTree
+        public RedNode RedNode
         {
-            get { return this.BoundNode?.BoundTree; }
+            get
+            {
+                return _redNode;
+            }
+        }
+
+        internal int Index
+        {
+            get { return _index; }
         }
 
         public BoundNode BoundNode
         {
-            get { return _boundNode; }
+            get
+            {
+                return _compilation.Bind(_redNode);
+            }
         }
 
-        protected DiagnosticBag DiagnosticBag
-        {
-            get { return this.BoundTree?.DiagnosticBag; }
-        }
-
-        internal void InternalBind(BoundNode node)
-        {
-            if (node == null) throw new ArgumentNullException(nameof(node));
-            if (node.Compilation != this.Compilation) throw new ArgumentException("The node is from a different compilation.");
-            Interlocked.Exchange(ref _boundNode, node);
-            this.Bind();
-        }
-
-        public abstract void Bind();
-
-        public Binder GetBinder(RedNode node)
-        {
-            return this.Compilation.GetBinder(node);
-        }
-
-        public TBinder AsBinder<TBinder>()
+        public TBinder GetDefaultBinder<TBinder>()
             where TBinder : class
         {
-            var result = this as TBinder;
-            if (result != null) return result;
-            else return this.GetNextBinder<TBinder>();
+            return this.Compilation.GetDefaultBinder<TBinder>();
         }
 
-        protected TBinder GetNextBinder<TBinder>()
+        public TBinder GetBinder<TBinder>()
             where TBinder : class
         {
-            IBinder next = this.Next;
+            return this.GetBinderOfType<TBinder>(this, b => true);
+        }
+
+        public TBinder GetBinder<TBinder>(Func<TBinder, bool> condition)
+            where TBinder : class
+        {
+            return this.GetBinderOfType<TBinder>(this, condition);
+        }
+
+        public TBinder GetParentBinder<TBinder>()
+            where TBinder : class
+        {
+            return this.GetBinderOfType<TBinder>(this.Parent, b => true);
+        }
+
+        public TBinder GetParentBinder<TBinder>(Func<TBinder, bool> condition)
+            where TBinder : class
+        {
+            return this.GetBinderOfType<TBinder>(this.Parent, condition);
+        }
+
+        private TBinder GetBinderOfType<TBinder>(IBinder next, Func<TBinder, bool> condition)
+            where TBinder: class
+        {
             while (next != null)
             {
                 var result = next as TBinder;
-                if (result != null) return result;
-                next = next.Next;
+                if (result != null && condition(result)) return result;
+                next = next.Parent;
             }
-            return this.Compilation.DefaultBinder as TBinder;
+            return this.GetDefaultBinder<TBinder>();
+        }
+
+        public ImmutableArray<TBinder> GetChildBinders<TBinder>()
+            where TBinder : class
+        {
+            ArrayBuilder<TBinder> builder = ArrayBuilder<TBinder>.GetInstance();
+            try
+            {
+                this.ExecuteSynthesized<TBinder>(
+                    b => {
+                        builder.Add(b);
+                        return true;
+                    });
+                return builder.ToImmutableAndFree();
+            }
+            finally
+            {
+                builder.Free();
+            }
+        }
+
+        public ImmutableArray<TBinder> GetChildBinders<TBinder>(Func<TBinder, bool> condition)
+            where TBinder : class
+        {
+            ArrayBuilder<TBinder> builder = ArrayBuilder<TBinder>.GetInstance();
+            try
+            {
+                this.ExecuteSynthesized<TBinder>(false, condition,
+                    b => {
+                        builder.Add(b);
+                        return true;
+                    });
+                return builder.ToImmutableAndFree();
+            }
+            finally
+            {
+                builder.Free();
+            }
+        }
+
+        public bool ExecuteCurrentOrInherited<TBinder>(Func<TBinder, bool> action)
+            where TBinder : class
+        {
+            return this.ExecuteInherited<TBinder>(true, action);
+        }
+
+        public bool ExecuteInherited<TBinder>(Func<TBinder, bool> action)
+            where TBinder : class
+        {
+            return this.ExecuteInherited<TBinder>(false, action);
+        }
+
+        private bool ExecuteInherited<TBinder>(bool includeCurrentBinder, Func<TBinder, bool> action)
+            where TBinder : class
+        {
+            IBinder currentBinder = includeCurrentBinder ? this : this.Parent;
+            while (currentBinder != null)
+            {
+                if (this.TryExecute(currentBinder, b => true, action))
+                {
+                    return true;
+                }
+                currentBinder = currentBinder.Parent;
+            }
+            return false;
+        }
+
+        public bool ExecuteCurrentOrSynthesized<TBinder>(Func<TBinder, bool> action)
+            where TBinder : class
+        {
+            return this.ExecuteSynthesized<TBinder>(true, b => true, action);
+        }
+
+        public bool ExecuteSynthesized<TBinder>(Func<TBinder, bool> action)
+            where TBinder : class
+        {
+            return this.ExecuteSynthesized<TBinder>(false, b => true, action);
+        }
+
+        private bool ExecuteSynthesized<TBinder>(bool includeCurrentBinder, Func<TBinder, bool> condition, Func<TBinder, bool> action)
+            where TBinder : class
+        {
+            if (includeCurrentBinder)
+            {
+                if (this.TryExecute(this, condition, action))
+                {
+                    return true;
+                }
+            }
+            if (_index >= 0 && _redNode != null)
+            {
+                var currentBinders = this.Compilation.GetBinders(_redNode);
+                if (currentBinders.Length > 0)
+                {
+                    int index = _index + 1;
+                    while (index < currentBinders.Length)
+                    {
+                        if (this.TryExecute(currentBinders[index], condition, action))
+                        {
+                            return true;
+                        }
+                        ++index;
+                    }
+                }
+            }
+            bool success = false;
+            Stack<RedNode> nodeStack = new Stack<RedNode>();
+            nodeStack.Push(_redNode);
+            while (nodeStack.Count > 0)
+            {
+                RedNode currentNode = nodeStack.Pop();
+                if (currentNode == null) continue;
+                bool stop = false;
+                if (currentNode != _redNode)
+                {
+                    var binders = this.Compilation.GetBinders(currentNode);
+                    for (int i = 0; i < binders.Length; i++)
+                    {
+                        if (this.TryExecute(binders[i], condition, action))
+                        {
+                            stop = true;
+                            success = true;
+                        }
+                    }
+                }
+                if (!stop && (currentNode is SyntaxNode))
+                {
+                    foreach (var child in ((SyntaxNode)currentNode).ChildNodesAndTokens())
+                    {
+                        nodeStack.Push(child);
+                    }
+                }
+            }
+            return success;
+        }
+
+        private bool TryExecute<TBinder>(IBinder binder, Func<TBinder, bool> condition, Func<TBinder, bool> action)
+            where TBinder : class
+        {
+            TBinder typedBinder = binder as TBinder;
+            if (typedBinder != null && condition(typedBinder))
+            {
+                return action(typedBinder);
+            }
+            return false;
         }
 
 #if DEBUG
@@ -121,7 +294,7 @@ namespace MetaDslx.Compiler.Binding
         public IBinder[] GetAllBinders()
         {
             var binders = ArrayBuilder<IBinder>.GetInstance();
-            for (IBinder binder = this; binder != null; binder = binder.Next)
+            for (IBinder binder = this; binder != null; binder = binder.Parent)
             {
                 binders.Add(binder);
             }
@@ -143,38 +316,52 @@ namespace MetaDslx.Compiler.Binding
         {
         }
 
-        public new TBinder Next
+        public new TBinder Parent
         {
             get
             {
-                return this.GetNextBinder<TBinder>();
+                return this.GetParentBinder<TBinder>();
             }
         }
 
-        public bool ExecuteCurrent(Func<TBinder, bool> action)
+        public TBinder GetParentBinder()
         {
-            return this.BoundNode?.ExecuteCurrent(this, action) ?? false;
+            return base.GetParentBinder<TBinder>();
+        }
+
+        public TBinder GetParentBinder(Func<TBinder, bool> condition)
+        {
+            return base.GetParentBinder<TBinder>(condition);
+        }
+
+        public ImmutableArray<TBinder> GetChildBinders()
+        {
+            return base.GetChildBinders<TBinder>();
+        }
+
+        public ImmutableArray<TBinder> GetChildBinders(Func<TBinder, bool> condition)
+        {
+            return base.GetChildBinders<TBinder>(condition);
         }
 
         public bool ExecuteCurrentOrInherited(Func<TBinder, bool> action)
         {
-            return this.BoundNode?.ExecuteInherited(this, action) ?? false;
+            return base.ExecuteInherited<TBinder>(action);
         }
 
         public bool ExecuteInherited(Func<TBinder, bool> action)
         {
-            return this.BoundNode?.ExecuteInherited(this.Next as Binder, action) ?? false;
+            return base.ExecuteInherited<TBinder>(action);
         }
 
         public bool ExecuteCurrentOrSynthesized(Func<TBinder, bool> action)
         {
-            return this.BoundNode?.ExecuteCurrentOrSynthesized(this, action) ?? false;
+            return base.ExecuteSynthesized<TBinder>(action);
         }
 
         public bool ExecuteSynthesized(Func<TBinder, bool> action)
         {
-            return this.BoundNode?.ExecuteCurrentOrSynthesized(this.BoundNode?.GetPreviousBinderInNode(this), action) ?? false;
+            return base.ExecuteSynthesized<TBinder>(action);
         }
-
     }
 }

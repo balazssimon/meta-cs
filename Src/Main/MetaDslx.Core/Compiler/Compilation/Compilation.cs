@@ -642,7 +642,7 @@ namespace MetaDslx.Compiler
         {
             get
             {
-                this.ForceCompleteModel(null);
+                this.ForceComplete(null);
                 return _lazyModelGroup;
             }
         }
@@ -684,26 +684,26 @@ namespace MetaDslx.Compiler
 
         protected abstract SymbolBuilder SymbolBuilderCore { get; }
 
-        protected void CompleteModel(CancellationToken cancellationToken)
+        protected virtual void Complete(CancellationToken cancellationToken)
         {
             this.ModelGroupBuilder.GetModel(this.ModelId)?.EvaluateLazyValues(cancellationToken);
         }
 
-        protected void ForceCompleteModel(SourceLocation location, CancellationToken cancellationToken = default(CancellationToken))
+        protected void ForceComplete(SourceLocation location, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (_lazyModelGroup == null)
             {
                 if (Interlocked.CompareExchange(ref _lazyModelGroup, this.ModelGroupBuilder.ToImmutable(), null) == null)
                 {
-                    this.CompleteModel(cancellationToken);
+                    this.Complete(cancellationToken);
                     Interlocked.Exchange(ref _lazyModelGroup, this.ModelGroupBuilder.ToImmutable());
                 }
             }
         }
 
-        public void Execute(CancellationToken cancellationToken = default(CancellationToken))
+        public void Compile(CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.ForceCompleteModel(null, cancellationToken);
+            this.ForceComplete(null, cancellationToken);
         }
 
         /// <summary>

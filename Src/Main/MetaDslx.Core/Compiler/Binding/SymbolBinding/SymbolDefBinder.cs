@@ -9,47 +9,38 @@ namespace MetaDslx.Compiler.Binding.SymbolBinding
     public class SymbolDefBinder : SymbolBinder
     {
         private Type _symbolType;
-        private ISymbol _symbol;
 
         public SymbolDefBinder(Binder next, Type symbolType) : base(next)
         {
             _symbolType = symbolType;
         }
 
-        public override void Bind()
-        {
-
-        }
-
-        public override Optional<ISymbol> GetSymbol()
-        {
-            if (_symbol != null) return new Optional<ISymbol>(_symbol);
-            else return Optional<ISymbol>.None;
-        }
-
-        public override Optional<object> GetValue()
-        {
-            if (_symbol != null) return new Optional<object>(_symbol);
-            else return Optional<object>.None;
-        }
-
-        public override bool AddNameBinder(ArrayBuilder<ISymbolBinder> result)
+        public override bool GetName(LookupResult<Qualifier> result)
         {
             return true;
         }
 
-        public override bool AddPropertyBinder(ArrayBuilder<ISymbolBinder> result)
+        public override bool GetProperty(LookupResult<Property> result)
         {
             return true;
         }
 
-        public override bool AddValueBinder(ArrayBuilder<ISymbolBinder> result)
+        public override bool GetSymbol(LookupResult<ISymbol> result)
         {
-            result.Add(this);
             return true;
         }
 
-        public override bool AddIdentifierBinder(ArrayBuilder<ISymbolBinder> result)
+        public override bool GetValue(LookupResult<object> result)
+        {
+            return true;
+        }
+
+        public override bool GetQualifier(LookupResult<Qualifier> result)
+        {
+            return true;
+        }
+
+        public override bool GetIdentifier(LookupResult<string> result)
         {
             return true;
         }

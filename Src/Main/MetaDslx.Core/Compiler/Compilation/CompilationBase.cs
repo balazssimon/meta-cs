@@ -45,11 +45,20 @@ namespace MetaDslx.Compiler
         // and re-created.
         private ConcurrentSet<ImportInfo> _lazyImportInfos;
 
-        internal protected abstract Binder DefaultBinder { get; }
-
-        internal protected ISymbolBinder DefaultSymbolBinder
+        internal TBinder GetDefaultBinder<TBinder>() 
+            where TBinder : class
         {
-            get { return this.DefaultBinder.AsBinder<ISymbolBinder>(); }
+            TBinder result = this.Language.CompilationFactory.GetDefaultBinder<TBinder>();
+            if (result == null)
+            {
+                throw new InvalidOperationException(string.Format("Language.CompilationFactory.GetDefaultBinder<'{0}'>() must not return null.", typeof(TBinder).Name));
+            }
+            Binder binder = result as Binder;
+            if (binder == null)
+            {
+                throw new InvalidOperationException(string.Format("Language.CompilationFactory.GetDefaultBinder<'{0}'>() must return a Binder.", typeof(TBinder).Name));
+            }
+            return result;
         }
 
         private Conversions _conversions;
@@ -59,7 +68,7 @@ namespace MetaDslx.Compiler
             {
                 if (_conversions == null)
                 {
-                    Interlocked.CompareExchange(ref _conversions, this.DefaultSymbolBinder.Conversions, null);
+                    Interlocked.CompareExchange(ref _conversions, this.GetDefaultBinder<ISymbolBinder>().Conversions, null);
                 }
 
                 return _conversions;
@@ -912,24 +921,84 @@ namespace MetaDslx.Compiler
             }
         }
 
+        private WeakReference<BoundTree>[] _boundTrees;
+
+        public BoundTree GetBoundTree(SyntaxTree syntaxTree)
+        {
+            var treeNum = GetSyntaxTreeOrdinal(syntaxTree);
+            var boundTrees = _boundTrees;
+            if (boundTrees == null)
+            {
+                boundTrees = new WeakReference<BoundTree>[this.SyntaxTrees.Length];
+                boundTrees = Interlocked.CompareExchange(ref _boundTrees, boundTrees, null) ?? boundTrees;
+            }
+
+            BoundTree previousTree;
+            var previousWeakReference = boundTrees[treeNum];
+            if (previousWeakReference != null && previousWeakReference.TryGetTarget(out previousTree))
+            {
+                return previousTree;
+            }
+
+            return AddNewBoundTree(syntaxTree, ref boundTrees[treeNum]);
+        }
+
+        private BoundTree AddNewBoundTree(SyntaxTree syntaxTree, ref WeakReference<BoundTree> slot)
+        {
+            var newTree = new BoundTree(this, syntaxTree);
+            var newWeakReference = new WeakReference<BoundTree>(newTree);
+
+            while (true)
+            {
+                BoundTree previousTree;
+                WeakReference<BoundTree> previousWeakReference = slot;
+                if (previousWeakReference != null && previousWeakReference.TryGetTarget(out previousTree))
+                {
+                    return previousTree;
+                }
+
+                if (Interlocked.CompareExchange(ref slot, newWeakReference, previousWeakReference) == previousWeakReference)
+                {
+                    return newTree;
+                }
+            }
+        }
+
+        protected override void Complete(CancellationToken cancellationToken)
+        {
+            BoundTree[] boundTrees = new BoundTree[this.SyntaxTrees.Length];
+            int i = 0;
+            foreach (var syntaxTree in this.SyntaxTrees)
+            {
+                boundTrees[i] = this.GetBoundTree(syntaxTree);
+                if (cancellationToken.IsCancellationRequested) return;
+                ++i;
+            }
+            foreach (var boundTree in boundTrees)
+            {
+                boundTree.Complete(cancellationToken);
+            }
+            base.Complete(cancellationToken);
+        }
+
         internal BoundNode Bind(SyntaxReference reference)
         {
-            return GetBinderFactory(reference.SyntaxTree).Bind(reference.GetSyntax());
+            return GetBoundTree(reference.SyntaxTree).GetBoundNode(reference.GetSyntax());
         }
 
         internal BoundNode Bind(RedNode node)
         {
-            return GetBinderFactory(node.SyntaxTree).Bind(node);
+            return GetBoundTree(node.SyntaxTree).GetBoundNode(node);
         }
 
-        internal Binder GetBinder(SyntaxReference reference)
+        internal ImmutableArray<Binder> GetBinders(SyntaxReference reference)
         {
-            return GetBinderFactory(reference.SyntaxTree).GetBinder(reference.GetSyntax());
+            return GetBinderFactory(reference.SyntaxTree).GetBinders(reference.GetSyntax());
         }
 
-        internal Binder GetBinder(RedNode syntax)
+        internal ImmutableArray<Binder> GetBinders(RedNode syntax)
         {
-            return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax);
+            return GetBinderFactory(syntax.SyntaxTree).GetBinders(syntax);
         }
 
         /// <summary>
@@ -942,7 +1011,7 @@ namespace MetaDslx.Compiler
 
         private ISymbol CreateGlobalNamespaceAlias()
         {
-            return this.SymbolBuilder.CreateGlobalNamespaceAlias(this.GlobalNamespace, new InContainerBinder(this.DefaultBinder, this.GlobalNamespace));
+            return this.SymbolBuilder.CreateGlobalNamespaceAlias(this.GlobalNamespace, new InContainerBinder((Binder)this.GetDefaultBinder<ISymbolBinder>(), this.GlobalNamespace));
         }
 
         private void CompleteTree(SyntaxTree tree)
@@ -1225,7 +1294,7 @@ namespace MetaDslx.Compiler
         // IL or emit an assembly.
         private void GetDiagnosticsForAllSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            this.CompleteModel(cancellationToken);
+            this.Complete(cancellationToken);
             foreach (var symbol in this.ModelBuilder.Symbols)
             {
                 DiagnosticBag symbolDiagnostics = (DiagnosticBag)symbol.MGet(CompilerAttachedProperties.DiagnosticBagProperty);
@@ -1340,7 +1409,7 @@ namespace MetaDslx.Compiler
                     new SourceLocation(root);
             }
 
-            this.ForceCompleteModel(location, cancellationToken);
+            this.ForceComplete(location, cancellationToken);
 
             var result = this.FreezeDeclarationDiagnostics();
 

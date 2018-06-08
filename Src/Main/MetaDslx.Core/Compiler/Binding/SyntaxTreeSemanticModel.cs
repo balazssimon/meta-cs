@@ -18,16 +18,11 @@ namespace MetaDslx.Compiler.Binding
 {
     internal class SyntaxTreeSemanticModel : SemanticModelBase
     {
-        private readonly CompilationBase _compilation;
-        private readonly SyntaxTree _syntaxTree;
-
-        private readonly BinderFactory _binderFactory;
+        private readonly BoundTree _boundTree;
         private readonly bool _ignoresAccessibility;
 
         internal SyntaxTreeSemanticModel(CompilationBase compilation, SyntaxTree syntaxTree, bool ignoreAccessibility = false)
         {
-            _compilation = compilation;
-            _syntaxTree = syntaxTree;
             _ignoresAccessibility = ignoreAccessibility;
 
             if (!this.Compilation.SyntaxTrees.Contains(syntaxTree))
@@ -35,14 +30,12 @@ namespace MetaDslx.Compiler.Binding
                 throw new ArgumentOutOfRangeException(nameof(syntaxTree), "tree not part of compilation");
             }
 
-            _binderFactory = compilation.GetBinderFactory(SyntaxTree);
+            _boundTree = new BoundTree(compilation, syntaxTree);
         }
 
         internal SyntaxTreeSemanticModel(CompilationBase parentCompilation, SyntaxTree parentSyntaxTree, SyntaxTree speculatedSyntaxTree)
         {
-            _compilation = parentCompilation;
-            _syntaxTree = speculatedSyntaxTree;
-            _binderFactory = _compilation.GetBinderFactory(parentSyntaxTree);
+            _boundTree = new BoundTree(parentCompilation, parentSyntaxTree, speculatedSyntaxTree);
         }
 
         /// <summary>
@@ -52,7 +45,7 @@ namespace MetaDslx.Compiler.Binding
         {
             get
             {
-                return _compilation;
+                return _boundTree.Compilation;
             }
         }
 
@@ -60,7 +53,7 @@ namespace MetaDslx.Compiler.Binding
         {
             get
             {
-                return _syntaxTree.GetRoot();
+                return this.SyntaxTree.GetRoot();
             }
         }
 
@@ -68,7 +61,23 @@ namespace MetaDslx.Compiler.Binding
         {
             get
             {
-                return _syntaxTree;
+                return _boundTree.SyntaxTree;
+            }
+        }
+
+        protected BoundTree BoundTree
+        {
+            get
+            {
+                return _boundTree;
+            }
+        }
+
+        protected BinderFactory BinderFactory
+        {
+            get
+            {
+                return _boundTree.BinderFactory;
             }
         }
 
@@ -98,14 +107,14 @@ namespace MetaDslx.Compiler.Binding
         protected override SymbolInfo GetSymbolInfoWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var boundNode = this.Compilation.Bind(node) as ISymbolBoundNode;
-            ISymbol symbol = boundNode.Symbol;
-            return (object)symbol != null ? GetSymbolInfoForSymbol(symbol, options) : SymbolInfo.None;
+            var symbol = boundNode.Symbol;
+            return symbol != null ? GetSymbolInfoForSymbol(symbol, options) : SymbolInfo.None;
         }
 
         protected override TypeInfo GetTypeInfoWorker(SyntaxNode node, SymbolBindingOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var boundNode = this.Compilation.Bind(node) as ISymbolBoundNode;
-            ISymbol symbol = boundNode.Symbol;
+            var symbol = boundNode.Symbol;
             return (object)symbol != null ? GetTypeInfoForSymbol(symbol, options) : TypeInfo.None;
         }
 
@@ -202,10 +211,10 @@ namespace MetaDslx.Compiler.Binding
             // the binder for the compilation unit.
             if (position == 0 && position != token.SpanStart)
             {
-                return _compilation.DefaultSymbolBinder; // SB-TODO: .WithAdditionalFlags(GetSemanticModelBinderFlags());
+                return this.Compilation.GetDefaultBinder<ISymbolBinder>(); // SB-TODO: .WithAdditionalFlags(GetSemanticModelBinderFlags());
             }
 
-            return _binderFactory.GetBinder<ISymbolBinder>(token); // SB-TODO: .WithAdditionalFlags(GetSemanticModelBinderFlags());
+            return this.BinderFactory.GetBinder<ISymbolBinder>(token); // SB-TODO: .WithAdditionalFlags(GetSemanticModelBinderFlags());
         }
 
     }
