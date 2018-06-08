@@ -183,57 +183,53 @@ namespace MetaDslx.Compiler.Binding
             Debug.Assert(symbol != null);
             Location location = node.GetLocation();
             DiagnosticBag diagnostics = (DiagnosticBag)symbol.MGet(CompilerAttachedProperties.DiagnosticBagProperty);
-            var properties = new HashSet<string>(symbol.MProperties.Select(p => p.Name));
+            var boundNode = this.Compilation.Bind(node);
+            var binder = boundNode.Binder.GetBinder<ISymbolBinder>();
+            if (binder == null) return;
+            var properties = boundNode.GetMultipleValues<Property>(r => binder.GetProperty(r)).Value;
             /*if (declaration != null)
             {
                 properties.RemoveAll(declaration.ChildrenByParentProperties.Keys);
             }*/
-            foreach (var propertyName in properties)
+            foreach (var property in properties)
             {
-                string currentName = propertyName;
+                string currentName = property.Name;
                 ModelProperty currentProperty = symbol.MGetProperty(currentName);
                 if (currentProperty.IsCollection)
                 {
-                    symbol.MAddRangeLazy(currentProperty, LazyValue.CreateMultiple(() => BindMultipleValues(symbol, node, currentName), node.GetLocation(), diagnostics));
-                    //symbol.MAddRangeLazy(currentProperty, LazyValue.CreateMultiple(() => BindMultipleValues(symbol, node, currentName), true));
+                    symbol.MAddRangeLazy(currentProperty, LazyValue.CreateMultiple(() => BindMultipleValues(property), node.GetLocation(), diagnostics));
                 }
                 else if (!symbol.MIsSet(currentProperty))
                 {
-                    symbol.MSetLazy(currentProperty, LazyValue.CreateSingle(() => BindSingleValue(symbol, node, currentName), node.GetLocation(), diagnostics));
-                    //symbol.MSetLazy(currentProperty, LazyValue.CreateSingle(() => BindSingleValue(symbol, node, currentName), true));
+                    symbol.MSetLazy(currentProperty, LazyValue.CreateSingle(() => BindSingleValue(property), node.GetLocation(), diagnostics));
                 }
             }
         }
 
-        private object BindSingleValue(MutableSymbol symbol, RedNode node, string propertyName)
+        private object BindSingleValue(Property property)
         {
-            var binder = this.Compilation.GetBinder(node);
-            if (binder == null) return null;
-            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IBodyBinder || (b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName));
-            var values = propertyBinders.SelectMany(pb => pb.GetValues()).ToImmutableArray();
-            var errors = propertyBinders.SelectMany(pb => pb.GetErrors()).ToImmutableArray();
-            if (errors.Length > 0)
+            LookupResult<object> result = LookupResult<object>.GetInstance();
+            try
             {
-                DiagnosticBag diagnostics = (DiagnosticBag)symbol.MGet(CompilerAttachedProperties.DiagnosticBagProperty);
-                diagnostics.AddRange(errors);
+                return result.GetSingleResultOrDefault();
             }
-            return values.FirstOrDefault();
+            finally
+            {
+                result.Free();
+            }
         }
 
-
-        private IEnumerable<object> BindMultipleValues(MutableSymbol symbol, RedNode node, string propertyName)
+        private IEnumerable<object> BindMultipleValues(Property property)
         {
-            var binder = this.Compilation.GetBinder(node);
-            if (binder == null) return null;
-            var propertyBinders = binder.FindDescendantBinders<IPropertyBinder>(pb => pb.PropertyName == propertyName, b => b is IBodyBinder || (b is IPropertyBinder && ((IPropertyBinder)b).PropertyName != propertyName));
-            var values = propertyBinders.SelectMany(pb => pb.GetValues()).ToImmutableArray();
-            var errors = propertyBinders.SelectMany(pb => pb.GetErrors()).ToImmutableArray();
-            if (errors.Length > 0)
+            LookupResult<object> result = LookupResult<object>.GetInstance();
+            try
             {
-                DiagnosticBag diagnostics = (DiagnosticBag)symbol.MGet(CompilerAttachedProperties.DiagnosticBagProperty);
-                diagnostics.AddRange(errors);
+                return result.GetResults();
             }
-            return values;
+            finally
+            {
+                result.Free();
+            }
         }
 
         public MutableSymbol CreateSymbol(Type symbolType)
