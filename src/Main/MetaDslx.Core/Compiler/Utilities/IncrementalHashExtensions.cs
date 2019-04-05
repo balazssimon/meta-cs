@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Security.Cryptography;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     internal static class IncrementalHashExtensions
     {

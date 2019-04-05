@@ -11,7 +11,7 @@ using System.Reflection.Metadata;
 using System.Security.Cryptography;
 using MetaDslx.Compiler.Text;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     internal abstract class CryptographicHashProvider
     {

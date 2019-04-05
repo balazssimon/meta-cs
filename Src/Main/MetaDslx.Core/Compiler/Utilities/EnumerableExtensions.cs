@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using MetaDslx.Compiler.PooledObjects;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     internal static partial class EnumerableExtensions
     {
@@ -386,7 +386,7 @@ namespace System.Linq
 {
     /// <summary>
     /// Declare the following extension methods in System.Linq namespace to avoid accidental boxing of ImmutableArray{T} that implements IEnumerable{T}.
-    /// The boxing would occur if the methods were defined in Roslyn.Utilities and the file calling these methods has <c>using Roslyn.Utilities</c>
+    /// The boxing would occur if the methods were defined in MetaDslx.Compiler.Utilities and the file calling these methods has <c>using MetaDslx.Compiler.Utilities</c>
     /// but not <c>using System.Linq</c>.
     /// </summary>
     internal static class EnumerableExtensions

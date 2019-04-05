@@ -2,10 +2,15 @@
 
 using System.Collections.Generic;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     internal static partial class SpecializedCollections
     {
+        public static T[] EmptyArray<T>()
+        {
+            return Empty.Array<T>.Instance;
+        }
+
         public static IEnumerator<T> EmptyEnumerator<T>()
         {
             return Empty.Enumerator<T>.Instance;

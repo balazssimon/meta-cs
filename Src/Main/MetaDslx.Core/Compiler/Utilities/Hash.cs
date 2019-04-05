@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
+using MetaDslx.Compiler;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     internal static class Hash
     {

@@ -2,7 +2,7 @@
 // Changed for MetaDslx.
 
 using System;
-using Roslyn.Utilities;
+using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {

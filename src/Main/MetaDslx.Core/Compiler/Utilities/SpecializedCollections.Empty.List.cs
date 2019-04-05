@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     internal partial class SpecializedCollections
     {

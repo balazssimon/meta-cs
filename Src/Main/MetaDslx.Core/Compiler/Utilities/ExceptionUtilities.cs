@@ -3,7 +3,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     internal static class ExceptionUtilities
     {

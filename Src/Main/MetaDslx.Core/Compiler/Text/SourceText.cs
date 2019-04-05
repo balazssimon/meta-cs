@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using MetaDslx.Compiler.PooledObjects;
-using Roslyn.Utilities;
+using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {

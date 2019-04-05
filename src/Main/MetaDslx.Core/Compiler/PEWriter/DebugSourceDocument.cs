@@ -4,7 +4,7 @@
 using System.Collections.Immutable;
 using System;
 using System.Threading.Tasks;
-using Roslyn.Utilities;
+using MetaDslx.Compiler.Utilities;
 using MetaDslx.Compiler.Text;
 using System.Diagnostics;
 

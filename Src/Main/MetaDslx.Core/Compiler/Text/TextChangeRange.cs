@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using MetaDslx.Compiler.Text;
-using Roslyn.Utilities;
+using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {

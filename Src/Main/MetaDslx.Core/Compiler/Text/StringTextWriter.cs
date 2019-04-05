@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Roslyn.Utilities;
+using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {

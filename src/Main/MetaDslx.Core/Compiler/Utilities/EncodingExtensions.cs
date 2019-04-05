@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis;
+using MetaDslx.Compiler;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     internal static class EncodingExtensions
     {
@@ -28,7 +28,7 @@ namespace Roslyn.Utilities
 #if WORKSPACE
             throw new IOException(WorkspacesResources.Stream_is_too_long);
 #else
-            throw new IOException(CodeAnalysisResources.StreamIsTooLong);
+            throw new IOException(CompilerResources.StreamIsTooLong);
 #endif
         }
 

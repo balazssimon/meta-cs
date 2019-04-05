@@ -5,10 +5,10 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis;
+using MetaDslx.Compiler.PooledObjects;
+using MetaDslx.Compiler;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.Compiler.Utilities
 {
     /// <summary>
     /// A write-only memory stream backed by a <see cref="BlobBuilder"/>.
