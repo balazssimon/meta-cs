@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Immutable;
 using System.IO;
 using System.Text;
 using System.Threading;
+using MetaDslx.Compiler.PooledObjects;
+using Roslyn.Utilities;
+using System.Diagnostics;
 
 namespace MetaDslx.Compiler.Text
 {
@@ -23,14 +26,15 @@ namespace MetaDslx.Compiler.Text
         private readonly ImmutableArray<char[]> _chunks;
         private readonly int[] _chunkStartOffsets;
         private readonly int _length;
-        private readonly Encoding _encoding;
+        private readonly Encoding _encodingOpt;
 
-        internal LargeText(ImmutableArray<char[]> chunks, Encoding encoding, ImmutableArray<byte> checksum, SourceHashAlgorithm checksumAlgorithm)
-            : base(checksum, checksumAlgorithm)
+        internal LargeText(ImmutableArray<char[]> chunks, Encoding encodingOpt, ImmutableArray<byte> checksum, SourceHashAlgorithm checksumAlgorithm, ImmutableArray<byte> embeddedTextBlob)
+            : base(checksum, checksumAlgorithm, embeddedTextBlob)
         {
             _chunks = chunks;
-            _encoding = encoding;
+            _encodingOpt = encodingOpt;
             _chunkStartOffsets = new int[chunks.Length];
+
             int offset = 0;
             for (int i = 0; i < chunks.Length; i++)
             {
@@ -41,59 +45,90 @@ namespace MetaDslx.Compiler.Text
             _length = offset;
         }
 
-        internal static SourceText Decode(Stream stream, Encoding encoding, SourceHashAlgorithm checksumAlgorithm, bool throwIfBinaryDetected)
+        internal LargeText(ImmutableArray<char[]> chunks, Encoding encodingOpt, SourceHashAlgorithm checksumAlgorithm)
+            : this(chunks, encodingOpt, default(ImmutableArray<byte>), checksumAlgorithm, default(ImmutableArray<byte>))
+        {
+        }
+
+        internal static SourceText Decode(Stream stream, Encoding encoding, SourceHashAlgorithm checksumAlgorithm, bool throwIfBinaryDetected, bool canBeEmbedded)
         {
             stream.Seek(0, SeekOrigin.Begin);
 
-            int length = (int)stream.Length;
-            if (length == 0)
+            long longLength = stream.Length;
+            if (longLength == 0)
             {
                 return SourceText.From(string.Empty, encoding, checksumAlgorithm);
             }
 
-            var maxCharRemainingGuess = encoding.GetMaxCharCount(length);
+            var maxCharRemainingGuess = encoding.GetMaxCharCountOrThrowIfHuge(stream);
+            Debug.Assert(longLength > 0 && longLength <= int.MaxValue); // GetMaxCharCountOrThrowIfHuge should have thrown.
+            int length = (int)longLength;
 
             using (var reader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks: true, bufferSize: Math.Min(length, 4096), leaveOpen: true))
             {
-                ArrayBuilder<char[]> chunks = ArrayBuilder<char[]>.GetInstance(1 + maxCharRemainingGuess / ChunkSize);
-                while (!reader.EndOfStream)
+                var chunks = ReadChunksFromTextReader(reader, maxCharRemainingGuess, throwIfBinaryDetected);
+
+                // We must compute the checksum and embedded text blob now while we still have the original bytes in hand.
+                // We cannot re-encode to obtain checksum and blob as the encoding is not guaranteed to round-trip.
+                var checksum = CalculateChecksum(stream, checksumAlgorithm);
+                var embeddedTextBlob = canBeEmbedded ? EmbeddedText.CreateBlob(stream) : default(ImmutableArray<byte>);
+                return new LargeText(chunks, reader.CurrentEncoding, checksum, checksumAlgorithm, embeddedTextBlob);
+            }
+        }
+
+        internal static SourceText Decode(TextReader reader, int length, Encoding encodingOpt, SourceHashAlgorithm checksumAlgorithm)
+        {
+            if (length == 0)
+            {
+                return SourceText.From(string.Empty, encodingOpt, checksumAlgorithm);
+            }
+
+            // throwIfBinaryDetected == false since we are given text reader from the beginning
+            var chunks = ReadChunksFromTextReader(reader, length, throwIfBinaryDetected: false);
+
+            return new LargeText(chunks, encodingOpt, checksumAlgorithm);
+        }
+
+        private static ImmutableArray<char[]> ReadChunksFromTextReader(TextReader reader, int maxCharRemainingGuess, bool throwIfBinaryDetected)
+        {
+            var chunks = ArrayBuilder<char[]>.GetInstance(1 + maxCharRemainingGuess / ChunkSize);
+
+            while (reader.Peek() != -1)
+            {
+                var nextChunkSize = ChunkSize;
+                if (maxCharRemainingGuess < ChunkSize)
                 {
-                    var nextChunkSize = ChunkSize;
-                    if (maxCharRemainingGuess < ChunkSize)
-                    {
-                        // maxCharRemainingGuess typically overestimates a little
-                        // so we will first fill a slightly smaller (maxCharRemainingGuess - 64) chunk
-                        // and then use 64 char tail, which is likley to be resized.
-                        nextChunkSize = Math.Max(maxCharRemainingGuess - 64, 64);
-                    }
-
-                    char[] chunk = new char[nextChunkSize];
-
-                    int charsRead = reader.ReadBlock(chunk, 0, chunk.Length);
-                    if (charsRead == 0)
-                    {
-                        break;
-                    }
-
-                    maxCharRemainingGuess -= charsRead;
-
-                    if (charsRead < chunk.Length)
-                    {
-                        Array.Resize(ref chunk, charsRead);
-                    }
-
-                    // Check for binary files
-                    if (throwIfBinaryDetected && IsBinary(chunk))
-                    {
-                        throw new InvalidDataException();
-                    }
-
-                    chunks.Add(chunk);
+                    // maxCharRemainingGuess typically overestimates a little
+                    // so we will first fill a slightly smaller (maxCharRemainingGuess - 64) chunk
+                    // and then use 64 char tail, which is likley to be resized.
+                    nextChunkSize = Math.Max(maxCharRemainingGuess - 64, 64);
                 }
 
-                var checksum = CalculateChecksum(stream, checksumAlgorithm);
-                return new LargeText(chunks.ToImmutableAndFree(), reader.CurrentEncoding, checksum, checksumAlgorithm);
+                char[] chunk = new char[nextChunkSize];
+
+                int charsRead = reader.ReadBlock(chunk, 0, chunk.Length);
+                if (charsRead == 0)
+                {
+                    break;
+                }
+
+                maxCharRemainingGuess -= charsRead;
+
+                if (charsRead < chunk.Length)
+                {
+                    Array.Resize(ref chunk, charsRead);
+                }
+
+                // Check for binary files
+                if (throwIfBinaryDetected && IsBinary(chunk))
+                {
+                    throw new InvalidDataException();
+                }
+
+                chunks.Add(chunk);
             }
+
+            return chunks.ToImmutableAndFree();
         }
 
         /// <summary>
@@ -127,7 +162,7 @@ namespace MetaDslx.Compiler.Text
         private int GetIndexFromPosition(int position)
         {
             // Binary search to find the chunk that contains the given position.
-            int idx = ArrayUtilities.BinarySearch(_chunkStartOffsets, position);
+            int idx = _chunkStartOffsets.BinarySearch(position);
             return idx >= 0 ? idx : (~idx - 1);
         }
 
@@ -140,7 +175,7 @@ namespace MetaDslx.Compiler.Text
             }
         }
 
-        public override Encoding Encoding => _encoding;
+        public override Encoding Encoding => _encodingOpt;
 
         public override int Length => _length;
 
@@ -266,7 +301,7 @@ namespace MetaDslx.Compiler.Text
                         case '\u0085':
                         case '\u2028':
                         case '\u2029':
-                        line_break:
+line_break:
                             arrayBuilder.Add(position);
                             position = index;
                             break;

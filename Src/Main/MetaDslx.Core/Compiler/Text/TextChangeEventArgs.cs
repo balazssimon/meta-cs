@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using MetaDslx.Compiler.Utilities;
+using MetaDslx.Compiler.Text;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {
@@ -18,10 +19,10 @@ namespace MetaDslx.Compiler.Text
         /// </summary>
         /// <param name="oldText">The text before the change.</param>
         /// <param name="newText">The text after the change.</param>
-        /// <param name="changes">A non-empty set of ranges for the change.</param>
+        /// <param name="changes">A set of ranges for the change.</param>
         public TextChangeEventArgs(SourceText oldText, SourceText newText, IEnumerable<TextChangeRange> changes)
         {
-            if (changes == null || !changes.Any())
+            if (changes == null)
             {
                 throw new ArgumentException("changes");
             }
@@ -36,7 +37,7 @@ namespace MetaDslx.Compiler.Text
         /// </summary>
         /// <param name="oldText">The text before the change.</param>
         /// <param name="newText">The text after the change.</param>
-        /// <param name="changes">A non-empty set of ranges for the change.</param>
+        /// <param name="changes">A set of ranges for the change.</param>
         public TextChangeEventArgs(SourceText oldText, SourceText newText, params TextChangeRange[] changes)
             : this(oldText, newText, (IEnumerable<TextChangeRange>)changes)
         {

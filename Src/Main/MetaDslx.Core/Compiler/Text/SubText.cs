@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
 using System;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text;
 namespace MetaDslx.Compiler.Text
 {
     /// <summary>
-    /// An <see cref="SourceText"/> that represents a subrange of another <see cref="SourceText"/>.
+    /// A <see cref="SourceText"/> that represents a subrange of another <see cref="SourceText"/>.
     /// </summary>
     internal sealed class SubText : SourceText
     {

@@ -1,15 +1,17 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
+using MetaDslx.Compiler.Text;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {
     /// <summary>
     /// Represents the change to a span of text.
     /// </summary>
-    public struct TextChangeRange : IEquatable<TextChangeRange>
+    public readonly struct TextChangeRange : IEquatable<TextChangeRange>
     {
         /// <summary>
         /// The span of text before the edit which is being changed
@@ -44,7 +46,7 @@ namespace MetaDslx.Compiler.Text
         public bool Equals(TextChangeRange other)
         {
             return
-                other.Span.Equals(this.Span) &&
+                other.Span == this.Span &&
                 other.NewLength == this.NewLength;
         }
 
@@ -66,9 +68,25 @@ namespace MetaDslx.Compiler.Text
         }
 
         /// <summary>
+        /// Determines if two instances of <see cref="TextChangeRange"/> are same.
+        /// </summary>
+        public static bool operator ==(TextChangeRange left, TextChangeRange right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Determines if two instances of <see cref="TextChangeRange"/> are different.
+        /// </summary>
+        public static bool operator !=(TextChangeRange left, TextChangeRange right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
         /// An empty set of changes.
         /// </summary>
-        public static IReadOnlyList<TextChangeRange> NoChanges => EmptyCollections.ReadOnlyList<TextChangeRange>();
+        public static IReadOnlyList<TextChangeRange> NoChanges => SpecializedCollections.EmptyReadOnlyList<TextChangeRange>();
 
         /// <summary>
         /// Collapse a set of <see cref="TextChangeRange"/>s into a single encompassing range.  If

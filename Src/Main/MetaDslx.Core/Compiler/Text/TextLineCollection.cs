@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using MetaDslx.Compiler.Text;
 
 namespace MetaDslx.Compiler.Text
 {
@@ -85,7 +87,7 @@ namespace MetaDslx.Compiler.Text
             return this.GetEnumerator();
         }
 
-        [SuppressMessage("Performance", "RS0008", Justification = "Equality not actually implemented")]
+        [SuppressMessage("Performance", "CA1067", Justification = "Equality not actually implemented")]
         public struct Enumerator : IEnumerator<TextLine>, IEnumerator
         {
             private readonly TextLineCollection _lines;

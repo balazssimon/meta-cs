@@ -1,19 +1,20 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {
     /// <summary>
     /// Immutable representation of a line number and position within a SourceText instance.
     /// </summary>
-    public struct LinePosition : IEquatable<LinePosition>, IComparable<LinePosition>
+    public readonly struct LinePosition : IEquatable<LinePosition>, IComparable<LinePosition>
     {
         /// <summary>
         /// A <see cref="LinePosition"/> that represents position 0 at line 0.
         /// </summary>
-        public static readonly LinePosition Zero = new LinePosition(0, 0);
+        public static LinePosition Zero => default(LinePosition);
 
         private readonly int _line;
         private readonly int _character;
@@ -130,6 +131,26 @@ namespace MetaDslx.Compiler.Text
         {
             int result = _line.CompareTo(other._line);
             return (result != 0) ? result : _character.CompareTo(other.Character);
+        }
+
+        public static bool operator >(LinePosition left, LinePosition right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(LinePosition left, LinePosition right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
+
+        public static bool operator <(LinePosition left, LinePosition right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(LinePosition left, LinePosition right)
+        {
+            return left.CompareTo(right) <= 0;
         }
     }
 }

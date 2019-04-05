@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Immutable;
 using System.Text;
+using MetaDslx.Compiler.PooledObjects;
 
 namespace MetaDslx.Compiler.Text
 {
@@ -28,7 +29,7 @@ namespace MetaDslx.Compiler.Text
         public override SourceText ToSourceText()
         {
             this.Flush();
-            return new LargeText(_chunks.ToImmutableAndFree(), _encoding, default(ImmutableArray<byte>), _checksumAlgorithm);
+            return new LargeText(_chunks.ToImmutableAndFree(), _encoding, default(ImmutableArray<byte>), _checksumAlgorithm, default(ImmutableArray<byte>));
         }
 
         public override Encoding Encoding

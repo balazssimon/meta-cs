@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
 using System;
 using System.Diagnostics;
@@ -80,7 +81,7 @@ namespace MetaDslx.Compiler.Text
                 // The buffer must be able to hold at least one character from the 
                 // SourceText stream.  Returning 0 for that case isn't correct because
                 // that indicates end of stream vs. insufficient buffer. 
-                throw new ArgumentException(nameof(count));
+                throw new ArgumentException($"{nameof(count)} must be greater than or equal to {_minimumTargetBufferCount}", nameof(count));
             }
 
             int originalCount = count;

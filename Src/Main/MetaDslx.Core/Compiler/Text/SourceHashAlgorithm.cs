@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
 namespace MetaDslx.Compiler.Text
 {
@@ -13,7 +14,7 @@ namespace MetaDslx.Compiler.Text
         None = 0,
 
         /// <summary>
-        /// Secure Hash Algorithm 1 with a hash size of 160 bits.
+        /// Secure Hash Algorithm 1.
         /// </summary>
         Sha1 = 1,
 

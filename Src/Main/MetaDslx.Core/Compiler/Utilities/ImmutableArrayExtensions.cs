@@ -1,84 +1,51 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MetaDslx.Compiler.Utilities
+namespace Roslyn.Utilities
 {
     internal static class ImmutableArrayExtensions
     {
-        /// <summary>
-        /// Converts a sequence to an immutable array.
-        /// </summary>
-        /// <typeparam name="T">Elemental type of the sequence.</typeparam>
-        /// <param name="items">The sequence to convert.</param>
-        /// <returns>An immutable copy of the contents of the sequence.</returns>
-        /// <remarks>If the sequence is null, this will return the default (null) array.</remarks>
-        public static ImmutableArray<T> AsImmutableOrNull<T>(this IEnumerable<T> items)
+        internal static ImmutableArray<T> ToImmutableArrayOrEmpty<T>(this IEnumerable<T> items)
+            => items == null ? ImmutableArray<T>.Empty : ImmutableArray.CreateRange(items);
+
+        internal static ImmutableArray<T> ToImmutableArrayOrEmpty<T>(this ImmutableArray<T> items)
+            => items.IsDefault ? ImmutableArray<T>.Empty : items;
+
+        // same as Array.BinarySearch but the ability to pass arbitrary value to the comparer without allocation
+        internal static int BinarySearch<TElement, TValue>(this ImmutableArray<TElement> array, TValue value, Func<TElement, TValue, int> comparer)
         {
-            if (items == null)
+            int low = 0;
+            int high = array.Length - 1;
+
+            while (low <= high)
             {
-                return default(ImmutableArray<T>);
+                int middle = low + ((high - low) >> 1);
+                int comparison = comparer(array[middle], value);
+
+                if (comparison == 0)
+                {
+                    return middle;
+                }
+
+                if (comparison > 0)
+                {
+                    high = middle - 1;
+                }
+                else
+                {
+                    low = middle + 1;
+                }
             }
 
-            return ImmutableArray.CreateRange<T>(items);
+            return ~low;
         }
 
-        /// <summary>
-        /// Returns an empty array if the input array is null (default)
-        /// </summary>
-        public static ImmutableArray<T> NullToEmpty<T>(this ImmutableArray<T> array)
+        internal static ImmutableArray<TDerived> CastDown<TOriginal, TDerived>(this ImmutableArray<TOriginal> array) where TDerived : class, TOriginal
         {
-            return array.IsDefault ? ImmutableArray<T>.Empty : array;
-        }
-
-
-        /// <summary>
-        /// Determines whether this instance and another immutable array are equal.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="array1"></param>
-        /// <param name="array2"></param>
-        /// <param name="comparer">The comparer to determine if the two arrays are equal.</param>
-        /// <returns>True if the two arrays are equal</returns>
-        public static bool SetEquals<T>(this ImmutableArray<T> array1, ImmutableArray<T> array2, IEqualityComparer<T> comparer)
-        {
-            if (array1.IsDefault)
-            {
-                return array2.IsDefault;
-            }
-            else if (array2.IsDefault)
-            {
-                return false;
-            }
-
-            var count1 = array1.Length;
-            var count2 = array2.Length;
-
-            // avoid constructing HashSets in these common cases
-            if (count1 == 0)
-            {
-                return count2 == 0;
-            }
-            else if (count2 == 0)
-            {
-                return false;
-            }
-            else if (count1 == 1 && count2 == 1)
-            {
-                var item1 = array1[0];
-                var item2 = array2[0];
-
-                return comparer.Equals(item1, item2);
-            }
-
-            var set1 = new HashSet<T>(array1, comparer);
-            var set2 = new HashSet<T>(array2, comparer);
-
-            // internally recognizes that set2 is a HashSet with the same comparer (http://msdn.microsoft.com/en-us/library/bb346516.aspx)
-            return set1.SetEquals(set2);
+            return array.CastArray<TDerived>();
         }
     }
 }

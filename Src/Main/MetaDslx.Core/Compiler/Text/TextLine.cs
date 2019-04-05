@@ -1,14 +1,15 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {
     /// <summary>
     /// Information about the character boundaries of a single line of text.
     /// </summary>
-    public struct TextLine : IEquatable<TextLine>
+    public readonly struct TextLine : IEquatable<TextLine>
     {
         private readonly SourceText _text;
         private readonly int _start;
@@ -45,7 +46,7 @@ namespace MetaDslx.Compiler.Text
                 // check span is start of line
                 if (span.Start > 0 && !TextUtilities.IsAnyLineBreakCharacter(text[span.Start - 1]))
                 {
-                    throw new ArgumentOutOfRangeException(nameof(span), "The span does not include start of line.");
+                    throw new ArgumentOutOfRangeException(nameof(span), CompilerResources.SpanDoesNotIncludeStartOfLine);
                 }
 
                 bool endIncludesLineBreak = false;
@@ -68,7 +69,7 @@ namespace MetaDslx.Compiler.Text
                 // check end of span is at end of line
                 if (span.End < text.Length && !endIncludesLineBreak)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(span), "The span does not include end of line.");
+                    throw new ArgumentOutOfRangeException(nameof(span), CompilerResources.SpanDoesNotIncludeEndOfLine);
                 }
 
                 return new TextLine(text, span.Start, span.End);
@@ -164,6 +165,16 @@ namespace MetaDslx.Compiler.Text
             {
                 return _text.ToString(this.Span);
             }
+        }
+
+        public static bool operator ==(TextLine left, TextLine right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(TextLine left, TextLine right)
+        {
+            return !left.Equals(right);
         }
 
         public bool Equals(TextLine other)

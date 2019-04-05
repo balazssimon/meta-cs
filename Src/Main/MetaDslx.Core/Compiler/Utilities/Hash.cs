@@ -1,23 +1,23 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 
-namespace MetaDslx.Compiler.Utilities
+namespace Roslyn.Utilities
 {
-    public static class Hash
+    internal static class Hash
     {
         /// <summary>
         /// This is how VB Anonymous Types combine hash values for fields.
         /// </summary>
-        public static int Combine(int newKey, int currentKey)
+        internal static int Combine(int newKey, int currentKey)
         {
             return unchecked((currentKey * (int)0xA5555529) + newKey);
         }
 
-        public static int Combine(bool newKeyPart, int currentKey)
+        internal static int Combine(bool newKeyPart, int currentKey)
         {
             return Combine(currentKey, newKeyPart ? 1 : 0);
         }
@@ -28,7 +28,7 @@ namespace MetaDslx.Compiler.Utilities
         /// unnecessary boxing operations.  Unfortunately, we can't constrain
         /// T to "non-enum", so we'll use a more restrictive constraint.
         /// </summary>
-        public static int Combine<T>(T newKeyPart, int currentKey) where T : class
+        internal static int Combine<T>(T newKeyPart, int currentKey) where T : class
         {
             int hash = unchecked(currentKey * (int)0xA5555529);
 
@@ -40,7 +40,7 @@ namespace MetaDslx.Compiler.Utilities
             return hash;
         }
 
-        public static int CombineValues<T>(IEnumerable<T> values, int maxItemsToHash = int.MaxValue)
+        internal static int CombineValues<T>(IEnumerable<T> values, int maxItemsToHash = int.MaxValue)
         {
             if (values == null)
             {
@@ -66,7 +66,7 @@ namespace MetaDslx.Compiler.Utilities
             return hashCode;
         }
 
-        public static int CombineValues<T>(T[] values, int maxItemsToHash = int.MaxValue)
+        internal static int CombineValues<T>(T[] values, int maxItemsToHash = int.MaxValue)
         {
             if (values == null)
             {
@@ -90,7 +90,7 @@ namespace MetaDslx.Compiler.Utilities
             return hashCode;
         }
 
-        public static int CombineValues<T>(ImmutableArray<T> values, int maxItemsToHash = int.MaxValue)
+        internal static int CombineValues<T>(ImmutableArray<T> values, int maxItemsToHash = int.MaxValue)
         {
             if (values.IsDefaultOrEmpty)
             {
@@ -116,7 +116,7 @@ namespace MetaDslx.Compiler.Utilities
             return hashCode;
         }
 
-        public static int CombineValues(IEnumerable<string> values, StringComparer stringComparer, int maxItemsToHash = int.MaxValue)
+        internal static int CombineValues(IEnumerable<string> values, StringComparer stringComparer, int maxItemsToHash = int.MaxValue)
         {
             if (values == null)
             {
@@ -178,16 +178,15 @@ namespace MetaDslx.Compiler.Utilities
         /// See http://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
         /// </summary>
         /// <param name="data">The sequence of bytes that are likely to be ASCII text.</param>
-        /// <param name="length">The length of the sequence.</param>
         /// <param name="isAscii">True if the sequence contains only characters in the ASCII range.</param>
         /// <returns>The FNV-1a hash of <paramref name="data"/></returns>
-        internal static unsafe int GetFNVHashCode(byte* data, int length, out bool isAscii)
+        internal static int GetFNVHashCode(ReadOnlySpan<byte> data, out bool isAscii)
         {
             int hashCode = Hash.FnvOffsetBias;
 
             byte asciiMask = 0;
 
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < data.Length; i++)
             {
                 byte b = data[i];
                 asciiMask |= b;
@@ -236,6 +235,24 @@ namespace MetaDslx.Compiler.Utilities
             for (int i = start; i < end; i++)
             {
                 hashCode = unchecked((hashCode ^ text[i]) * Hash.FnvPrime);
+            }
+
+            return hashCode;
+        }
+
+        internal static int GetCaseInsensitiveFNVHashCode(string text)
+        {
+            return GetCaseInsensitiveFNVHashCode(text, 0, text.Length);
+        }
+
+        internal static int GetCaseInsensitiveFNVHashCode(string text, int start, int length)
+        {
+            int hashCode = Hash.FnvOffsetBias;
+            int end = start + length;
+
+            for (int i = start; i < end; i++)
+            {
+                hashCode = unchecked((hashCode ^ CaseInsensitiveComparison.ToLower(text[i])) * Hash.FnvPrime);
             }
 
             return hashCode;

@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
 using System;
 using System.IO;
@@ -21,7 +22,7 @@ namespace MetaDslx.Compiler.Text
             // if (c > '\r' && c <= 127)
             // if (c >= ('\r'+1) && c <= 127)
             const uint bias = '\r' + 1;
-            if (unchecked(c - bias) <= (127 - bias))
+            if (unchecked(c - bias) <= 127 - bias)
             {
                 return 0;
             }
@@ -34,7 +35,7 @@ namespace MetaDslx.Compiler.Text
             if (c == '\r')
             {
                 var next = index + 1;
-                return (next < text.Length) && '\n' == text[next] ? 2 : 1;
+                return next < text.Length && '\n' == text[next] ? 2 : 1;
             }
             else if (IsAnyLineBreakCharacter(c))
             {

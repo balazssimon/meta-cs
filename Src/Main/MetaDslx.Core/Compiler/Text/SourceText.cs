@@ -1,14 +1,17 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using MetaDslx.Compiler.PooledObjects;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {
@@ -27,6 +30,7 @@ namespace MetaDslx.Compiler.Text
         private SourceTextContainer _lazyContainer;
         private TextLineCollection _lazyLineInfo;
         private ImmutableArray<byte> _lazyChecksum;
+        private ImmutableArray<byte> _precomputedEmbeddedTextBlob;
 
         private static readonly Encoding s_utf8EncodingWithNoBOM = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: false);
 
@@ -34,9 +38,9 @@ namespace MetaDslx.Compiler.Text
         {
             ValidateChecksumAlgorithm(checksumAlgorithm);
 
-            if (!checksum.IsDefault && checksum.Length != SourceHashProvider.GetHashSize(checksumAlgorithm))
+            if (!checksum.IsDefault && checksum.Length != CryptographicHashProvider.GetHashSize(checksumAlgorithm))
             {
-                throw new ArgumentException("Invalid hash.", nameof(checksum));
+                throw new ArgumentException(CompilerResources.InvalidHash, nameof(checksum));
             }
 
             _checksumAlgorithm = checksumAlgorithm;
@@ -44,11 +48,29 @@ namespace MetaDslx.Compiler.Text
             _lazyContainer = container;
         }
 
+        internal SourceText(ImmutableArray<byte> checksum, SourceHashAlgorithm checksumAlgorithm, ImmutableArray<byte> embeddedTextBlob)
+            : this(checksum, checksumAlgorithm, container: null)
+        {
+            // We should never have precomputed the embedded text blob without precomputing the checksum.
+            Debug.Assert(embeddedTextBlob.IsDefault || !checksum.IsDefault);
+
+            if (!checksum.IsDefault && embeddedTextBlob.IsDefault)
+            {
+                // We can't compute the embedded text blob lazily if we're given a precomputed checksum.
+                // This happens when source bytes/stream were given, but canBeEmbedded=true was not passed.
+                _precomputedEmbeddedTextBlob = ImmutableArray<byte>.Empty;
+            }
+            else
+            {
+                _precomputedEmbeddedTextBlob = embeddedTextBlob;
+            }
+        }
+
         internal static void ValidateChecksumAlgorithm(SourceHashAlgorithm checksumAlgorithm)
         {
-            if (checksumAlgorithm != SourceHashAlgorithm.Sha1 && checksumAlgorithm != SourceHashAlgorithm.Sha256)
+            if (!Cci.DebugSourceDocument.IsSupportedAlgorithm(checksumAlgorithm))
             {
-                throw new ArgumentException("Unsupported hash algorithm.", nameof(checksumAlgorithm));
+                throw new ArgumentException(CompilerResources.UnsupportedHashAlgorithm, nameof(checksumAlgorithm));
             }
         }
 
@@ -78,6 +100,48 @@ namespace MetaDslx.Compiler.Text
         }
 
         /// <summary>
+        /// Constructs a <see cref="SourceText"/> from text in a string.
+        /// </summary>
+        /// <param name="reader">TextReader</param>
+        /// <param name="length">length of content from <paramref name="reader"/></param>
+        /// <param name="encoding">
+        /// Encoding of the file that the <paramref name="reader"/> was read from or is going to be saved to.
+        /// <c>null</c> if the encoding is unspecified.
+        /// If the encoding is not specified the resulting <see cref="SourceText"/> isn't debuggable.
+        /// If an encoding-less <see cref="SourceText"/> is written to a file a <see cref="Encoding.UTF8"/> shall be used as a default.
+        /// </param>
+        /// <param name="checksumAlgorithm">
+        /// Hash algorithm to use to calculate checksum of the text that's saved to PDB.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="reader"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="checksumAlgorithm"/> is not supported.</exception>
+        public static SourceText From(
+            TextReader reader,
+            int length,
+            Encoding encoding = null,
+            SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            // If the resulting string would end up on the large object heap, then use LargeEncodedText.
+            if (length >= LargeObjectHeapLimitInChars)
+            {
+                return LargeText.Decode(reader, length, encoding, checksumAlgorithm);
+            }
+
+            string text = reader.ReadToEnd();
+            return From(text, encoding, checksumAlgorithm);
+        }
+
+        // 1.0 BACKCOMPAT OVERLOAD - DO NOT TOUCH
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static SourceText From(Stream stream, Encoding encoding, SourceHashAlgorithm checksumAlgorithm, bool throwIfBinaryDetected)
+          => From(stream, encoding, checksumAlgorithm, throwIfBinaryDetected, canBeEmbedded: false);
+
+        /// <summary>
         /// Constructs a <see cref="SourceText"/> from stream content.
         /// </summary>
         /// <param name="stream">Stream. The stream must be seekable.</param>
@@ -90,6 +154,7 @@ namespace MetaDslx.Compiler.Text
         /// </param>
         /// <param name="throwIfBinaryDetected">If the decoded text contains at least two consecutive NUL
         /// characters, then an <see cref="InvalidDataException"/> is thrown.</param>
+        /// <param name="canBeEmbedded">True if the text can be passed to <see cref="EmbeddedText.FromSource"/> and be embedded in a PDB.</param>
         /// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="stream"/> doesn't support reading or seeking.
@@ -99,7 +164,12 @@ namespace MetaDslx.Compiler.Text
         /// <exception cref="InvalidDataException">Two consecutive NUL characters were detected in the decoded text and <paramref name="throwIfBinaryDetected"/> was true.</exception>
         /// <exception cref="IOException">An I/O error occurs.</exception>
         /// <remarks>Reads from the beginning of the stream. Leaves the stream open.</remarks>
-        public static SourceText From(Stream stream, Encoding encoding = null, SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1, bool throwIfBinaryDetected = false)
+        public static SourceText From(
+            Stream stream,
+            Encoding encoding = null,
+            SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1,
+            bool throwIfBinaryDetected = false,
+            bool canBeEmbedded = false)
         {
             if (stream == null)
             {
@@ -108,7 +178,7 @@ namespace MetaDslx.Compiler.Text
 
             if (!stream.CanRead || !stream.CanSeek)
             {
-                throw new ArgumentException("The stream must support read and seek.", nameof(stream));
+                throw new ArgumentException(CompilerResources.StreamMustSupportReadAndSeek, nameof(stream));
             }
 
             ValidateChecksumAlgorithm(checksumAlgorithm);
@@ -116,9 +186,9 @@ namespace MetaDslx.Compiler.Text
             encoding = encoding ?? s_utf8EncodingWithNoBOM;
 
             // If the resulting string would end up on the large object heap, then use LargeEncodedText.
-            if (encoding.GetMaxCharCount((int)stream.Length) >= LargeObjectHeapLimitInChars)
+            if (encoding.GetMaxCharCountOrThrowIfHuge(stream) >= LargeObjectHeapLimitInChars)
             {
-                return LargeText.Decode(stream, encoding, checksumAlgorithm, throwIfBinaryDetected);
+                return LargeText.Decode(stream, encoding, checksumAlgorithm, throwIfBinaryDetected, canBeEmbedded);
             }
 
             string text = Decode(stream, encoding, out encoding);
@@ -127,9 +197,17 @@ namespace MetaDslx.Compiler.Text
                 throw new InvalidDataException();
             }
 
+            // We must compute the checksum and embedded text blob now while we still have the original bytes in hand.
+            // We cannot re-encode to obtain checksum and blob as the encoding is not guaranteed to round-trip.
             var checksum = CalculateChecksum(stream, checksumAlgorithm);
-            return new StringText(text, encoding, checksum, checksumAlgorithm);
+            var embeddedTextBlob = canBeEmbedded ? EmbeddedText.CreateBlob(stream) : default(ImmutableArray<byte>);
+            return new StringText(text, encoding, checksum, checksumAlgorithm, embeddedTextBlob);
         }
+
+        // 1.0 BACKCOMPAT OVERLOAD - DO NOT TOUCH
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static SourceText From(byte[] buffer, int length, Encoding encoding, SourceHashAlgorithm checksumAlgorithm, bool throwIfBinaryDetected)
+            => From(buffer, length, encoding, checksumAlgorithm, throwIfBinaryDetected, canBeEmbedded: false);
 
         /// <summary>
         /// Constructs a <see cref="SourceText"/> from a byte array.
@@ -146,12 +224,19 @@ namespace MetaDslx.Compiler.Text
         /// <param name="throwIfBinaryDetected">If the decoded text contains at least two consecutive NUL
         /// characters, then an <see cref="InvalidDataException"/> is thrown.</param>
         /// <returns>The decoded text.</returns>
+        /// <param name="canBeEmbedded">True if the text can be passed to <see cref="EmbeddedText.FromSource"/> and be embedded in a PDB.</param>
         /// <exception cref="ArgumentNullException">The <paramref name="buffer"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="length"/> is negative or longer than the <paramref name="buffer"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="checksumAlgorithm"/> is not supported.</exception>
         /// <exception cref="DecoderFallbackException">If the given encoding is set to use a throwing decoder as a fallback</exception>
         /// <exception cref="InvalidDataException">Two consecutive NUL characters were detected in the decoded text and <paramref name="throwIfBinaryDetected"/> was true.</exception>
-        public static SourceText From(byte[] buffer, int length, Encoding encoding = null, SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1, bool throwIfBinaryDetected = false)
+        public static SourceText From(
+            byte[] buffer,
+            int length,
+            Encoding encoding = null,
+            SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1,
+            bool throwIfBinaryDetected = false,
+            bool canBeEmbedded = false)
         {
             if (buffer == null)
             {
@@ -171,9 +256,11 @@ namespace MetaDslx.Compiler.Text
                 throw new InvalidDataException();
             }
 
-            // Since we have the bytes in hand, it's easy to compute the checksum.
+            // We must compute the checksum and embedded text blob now while we still have the original bytes in hand.
+            // We cannot re-encode to obtain checksum and blob as the encoding is not guaranteed to round-trip.
             var checksum = CalculateChecksum(buffer, 0, length, checksumAlgorithm);
-            return new StringText(text, encoding, checksum, checksumAlgorithm);
+            var embeddedTextBlob = canBeEmbedded ? EmbeddedText.CreateBlob(new ArraySegment<byte>(buffer, 0, length)) : default(ImmutableArray<byte>);
+            return new StringText(text, encoding, checksum, checksumAlgorithm, embeddedTextBlob);
         }
 
         /// <summary>
@@ -300,6 +387,42 @@ namespace MetaDslx.Compiler.Text
         }
 
         /// <summary>
+        /// Indicates whether this source text can be embedded in the PDB.
+        /// </summary>
+        /// <remarks>
+        /// If this text was constructed via <see cref="From(byte[], int, Encoding, SourceHashAlgorithm, bool, bool)"/> or
+        /// <see cref="From(Stream, Encoding, SourceHashAlgorithm, bool, bool)"/>, then the canBeEmbedded arg must have
+        /// been true.
+        ///
+        /// Otherwise, <see cref="Encoding" /> must be non-null.
+        /// </remarks>
+        public bool CanBeEmbedded
+        {
+            get
+            {
+                if (_precomputedEmbeddedTextBlob.IsDefault)
+                {
+                    // If we didn't precompute the embedded text blob from bytes/stream, 
+                    // we can only support embedding if we have an encoding with which 
+                    // to encode the text in the PDB.
+                    return Encoding != null;
+                }
+
+                // We use a sentinel empty blob to indicate that embedding has been disallowed.
+                return !_precomputedEmbeddedTextBlob.IsEmpty;
+            }
+        }
+
+        /// <summary>
+        /// If the text was created from a stream or byte[] and canBeEmbedded argument was true, 
+        /// this provides the embedded text blob that was precomputed using the original stream
+        /// or byte[]. The precomputation was required in that case so that the bytes written to
+        /// the PDB match the original bytes exactly (and match the checksum of the original 
+        /// bytes). 
+        /// </summary>
+        internal ImmutableArray<byte> PrecomputedEmbeddedTextBlob => _precomputedEmbeddedTextBlob;
+
+        /// <summary>
         /// Returns a character at given position.
         /// </summary>
         /// <param name="position">The position to get the character from.</param>
@@ -415,14 +538,11 @@ namespace MetaDslx.Compiler.Text
             }
         }
 
-        internal ImmutableArray<byte> GetChecksum(bool useDefaultEncodingIfNull = false)
+        public ImmutableArray<byte> GetChecksum()
         {
             if (_lazyChecksum.IsDefault)
             {
-                // we shouldn't be asking for a checksum of encoding-less source text, except for SourceText comparison.
-                Debug.Assert(this.Encoding != null || useDefaultEncodingIfNull);
-
-                using (var stream = new SourceTextStream(this, useDefaultEncodingIfNull: useDefaultEncodingIfNull))
+                using (var stream = new SourceTextStream(this, useDefaultEncodingIfNull: true))
                 {
                     ImmutableInterlocked.InterlockedInitialize(ref _lazyChecksum, CalculateChecksum(stream, _checksumAlgorithm));
                 }
@@ -431,18 +551,26 @@ namespace MetaDslx.Compiler.Text
             return _lazyChecksum;
         }
 
-        private static ImmutableArray<byte> CalculateChecksum(byte[] buffer, int offset, int count, SourceHashAlgorithm algorithmId)
+        internal static ImmutableArray<byte> CalculateChecksum(byte[] buffer, int offset, int count, SourceHashAlgorithm algorithmId)
         {
-            return ImmutableArray.Create(SourceHashProvider.ComputeHash(algorithmId, buffer, offset, count));
+            using (var algorithm = CryptographicHashProvider.TryGetAlgorithm(algorithmId))
+            {
+                Debug.Assert(algorithm != null);
+                return ImmutableArray.Create(algorithm.ComputeHash(buffer, offset, count));
+            }
         }
 
         internal static ImmutableArray<byte> CalculateChecksum(Stream stream, SourceHashAlgorithm algorithmId)
         {
-            if (stream.CanSeek)
+            using (var algorithm = CryptographicHashProvider.TryGetAlgorithm(algorithmId))
             {
-                stream.Seek(0, SeekOrigin.Begin);
+                Debug.Assert(algorithm != null);
+                if (stream.CanSeek)
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                }
+                return ImmutableArray.Create(algorithm.ComputeHash(stream));
             }
-            return ImmutableArray.Create(SourceHashProvider.ComputeHash(algorithmId, stream));
         }
 
         /// <summary>
@@ -506,7 +634,19 @@ namespace MetaDslx.Compiler.Text
                 // there can be no overlapping changes
                 if (change.Span.Start < position)
                 {
-                    throw new ArgumentException("Changes must be ordered and not overlapping.", nameof(changes));
+                    // Handle the case of unordered changes by sorting the input and retrying. This is inefficient, but
+                    // downstream consumers have been known to hit this case in the past and we want to avoid crashes.
+                    // https://github.com/dotnet/roslyn/pull/26339
+                    if (change.Span.End <= changeRanges.Last().Span.Start)
+                    {
+                        changes = (from c in changes
+                                   where !c.Span.IsEmpty || c.NewText?.Length > 0
+                                   orderby c.Span
+                                   select c).ToList();
+                        return WithChanges(changes);
+                    }
+
+                    throw new ArgumentException(CompilerResources.ChangesMustNotOverlap, nameof(changes));
                 }
 
                 var newTextLength = change.NewText?.Length ?? 0;
@@ -533,7 +673,7 @@ namespace MetaDslx.Compiler.Text
                 changeRanges.Add(new TextChangeRange(change.Span, newTextLength));
             }
 
-            // no changes actually happend?
+            // no changes actually happened?
             if (position == 0 && segments.Count == 0)
             {
                 changeRanges.Free();
@@ -636,7 +776,7 @@ namespace MetaDslx.Compiler.Text
                 newPosDelta += range.NewLength - range.Span.Length;
             }
 
-            return ArrayUtilities.ToImmutableArrayOrEmpty(textChanges);
+            return textChanges.ToImmutableArrayOrEmpty();
         }
 
         #endregion
@@ -736,7 +876,7 @@ namespace MetaDslx.Compiler.Text
                 // Binary search to find the right line
                 // if no lines start exactly at position, round to the left
                 // EoF position will map to the last line.
-                lineNumber = ArrayUtilities.BinarySearch(_lineStarts, position);
+                lineNumber = _lineStarts.BinarySearch(position);
                 if (lineNumber < 0)
                 {
                     lineNumber = (~lineNumber) - 1;

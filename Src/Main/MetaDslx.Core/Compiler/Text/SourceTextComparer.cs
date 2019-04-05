@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System.Collections.Generic;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {
@@ -25,7 +26,7 @@ namespace MetaDslx.Compiler.Text
 
         public int GetHashCode(SourceText obj)
         {
-            var checksum = obj.GetChecksum(useDefaultEncodingIfNull: true);
+            var checksum = obj.GetChecksum();
             var contentsHash = !checksum.IsDefault ? Hash.CombineValues(checksum) : 0;
             var encodingHash = obj.Encoding != null ? obj.Encoding.GetHashCode() : 0;
 

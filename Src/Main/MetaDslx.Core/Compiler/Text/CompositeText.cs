@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,6 +8,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using MetaDslx.Compiler.PooledObjects;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {
@@ -102,7 +104,7 @@ namespace MetaDslx.Compiler.Text
         private void GetIndexAndOffset(int position, out int index, out int offset)
         {
             // Binary search to find the chunk that contains the given position.
-            int idx = ArrayUtilities.BinarySearch(_segmentOffsets, position);
+            int idx = _segmentOffsets.BinarySearch(position);
             index = idx >= 0 ? idx : (~idx - 1);
             offset = position - _segmentOffsets[index];
         }
@@ -195,7 +197,7 @@ namespace MetaDslx.Compiler.Text
 
         /// <summary>
         /// Reduces the number of segments toward the target number of segments,
-        /// if the number of regments is deemed to be too large (beyond the maximum).
+        /// if the number of segments is deemed to be too large (beyond the maximum).
         /// </summary>
         private static void ReduceSegmentCountIfNecessary(ArrayBuilder<SourceText> segments)
         {

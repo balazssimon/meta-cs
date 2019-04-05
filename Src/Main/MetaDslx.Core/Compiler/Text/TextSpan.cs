@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {
@@ -9,10 +10,8 @@ namespace MetaDslx.Compiler.Text
     /// Immutable abstract representation of a span of text.  For example, in an error diagnostic that reports a
     /// location, it could come from a parsed string, text from a tool editor buffer, etc.
     /// </summary>
-    public struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
+    public readonly struct TextSpan : IEquatable<TextSpan>, IComparable<TextSpan>
     {
-        public static readonly TextSpan Default = new TextSpan(0, 0);
-
         /// <summary>
         /// Creates a TextSpan instance beginning with the position Start and having the Length
         /// specified with <paramref name="length" />.
@@ -182,15 +181,31 @@ namespace MetaDslx.Compiler.Text
         {
             if (start < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(start), "The start must not be negative.");
+                throw new ArgumentOutOfRangeException(nameof(start), CompilerResources.StartMustNotBeNegative);
             }
 
             if (end < start)
             {
-                throw new ArgumentOutOfRangeException(nameof(end), "The end must not be less than the start.");
+                throw new ArgumentOutOfRangeException(nameof(end), CompilerResources.EndMustNotBeLessThanStart);
             }
 
             return new TextSpan(start, end - start);
+        }
+
+        /// <summary>
+        /// Determines if two instances of <see cref="TextSpan"/> are the same.
+        /// </summary>
+        public static bool operator ==(TextSpan left, TextSpan right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Determines if two instances of <see cref="TextSpan"/> are different.
+        /// </summary>
+        public static bool operator !=(TextSpan left, TextSpan right)
+        {
+            return !left.Equals(right);
         }
 
         /// <summary>

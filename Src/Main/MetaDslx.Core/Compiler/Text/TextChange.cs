@@ -1,15 +1,17 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
-using MetaDslx.Compiler.Utilities;
 using System;
 using System.Collections.Generic;
+using MetaDslx.Compiler.Text;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Compiler.Text
 {
     /// <summary>
     /// Describes a single change when a particular span is replaced with a new text.
     /// </summary>
-    public struct TextChange : IEquatable<TextChange>
+    public readonly struct TextChange : IEquatable<TextChange>
     {
         /// <summary>
         /// The original span of the changed text. 
@@ -63,6 +65,16 @@ namespace MetaDslx.Compiler.Text
             return Hash.Combine(this.Span.GetHashCode(), this.NewText.GetHashCode());
         }
 
+        public static bool operator ==(TextChange left, TextChange right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(TextChange left, TextChange right)
+        {
+            return !(left == right);
+        }
+
         /// <summary>
         /// Converts a <see cref="TextChange"/> to a <see cref="TextChangeRange"/>.
         /// </summary>
@@ -75,6 +87,6 @@ namespace MetaDslx.Compiler.Text
         /// <summary>
         /// An empty set of changes.
         /// </summary>
-        public static IReadOnlyList<TextChange> NoChanges => EmptyCollections.ReadOnlyList<TextChange>();
+        public static IReadOnlyList<TextChange> NoChanges => SpecializedCollections.EmptyReadOnlyList<TextChange>();
     }
 }

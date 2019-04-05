@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Changed for MetaDslx.
 
 using System;
 using System.Collections.Immutable;
@@ -17,8 +18,13 @@ namespace MetaDslx.Compiler.Text
         private readonly string _source;
         private readonly Encoding _encodingOpt;
 
-        internal StringText(string source, Encoding encodingOpt, ImmutableArray<byte> checksum = default(ImmutableArray<byte>), SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1)
-            : base(checksum, checksumAlgorithm)
+        internal StringText(
+            string source,
+            Encoding encodingOpt,
+            ImmutableArray<byte> checksum = default(ImmutableArray<byte>),
+            SourceHashAlgorithm checksumAlgorithm = SourceHashAlgorithm.Sha1,
+            ImmutableArray<byte> embeddedTextBlob = default(ImmutableArray<byte>))
+            : base(checksum, checksumAlgorithm, embeddedTextBlob)
         {
             Debug.Assert(source != null);
 
