@@ -5,11 +5,11 @@ using System.Diagnostics;
 
 namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
-    internal struct SeparatedSyntaxList<TNode> : IEquatable<SeparatedSyntaxList<TNode>> where TNode : GreenNode
+    public struct SeparatedSyntaxList<TNode> : IEquatable<SeparatedSyntaxList<TNode>> where TNode : GreenNode
     {
         private readonly SyntaxList<GreenNode> _list;
 
-        internal SeparatedSyntaxList(SyntaxList<GreenNode> list)
+        public SeparatedSyntaxList(SyntaxList<GreenNode> list)
         {
             Validate(list);
             _list = list;

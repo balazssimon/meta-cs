@@ -397,7 +397,7 @@ namespace MetaDslx.Compiler
                     // if item before insertion point is a node, add a separator
                     if (nodesToInsertWithSeparators.Count > 0 || (insertionIndex > 0 && nodesWithSeps[insertionIndex - 1].IsNode))
                     {
-                        nodesToInsertWithSeparators.Add(item.Green.CreateSeparator<TNode>(item));
+                        nodesToInsertWithSeparators.Add(_list.Node.CreateSeparator<TNode>(item));
                     }
 
                     nodesToInsertWithSeparators.Add(item);
@@ -408,7 +408,7 @@ namespace MetaDslx.Compiler
             if (insertionIndex < nodesWithSeps.Count && nodesWithSeps[insertionIndex].IsNode)
             {
                 var node = nodesWithSeps[insertionIndex].AsNode();
-                nodesToInsertWithSeparators.Add(node.Green.CreateSeparator<TNode>(node)); // separator
+                nodesToInsertWithSeparators.Add(_list.Node.CreateSeparator<TNode>(node)); // separator
             }
 
             return new SeparatedSyntaxList<TNode>(nodesWithSeps.InsertRange(insertionIndex, nodesToInsertWithSeparators));

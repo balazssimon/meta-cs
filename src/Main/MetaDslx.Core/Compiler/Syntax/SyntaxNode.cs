@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
 
@@ -15,7 +16,7 @@ namespace MetaDslx.Compiler
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix
     /// <summary>
     /// Represents a non-terminal node in the syntax tree. This is the language agnostic equivalent of <see
-    /// cref="T:MetaDslx.Compiler.CSharp.SyntaxNode"/> and <see cref="T:MetaDslx.Compiler.VisualBasic.SyntaxNode"/>.
+    /// cref="T:MetaDslx.Compiler.SyntaxNode"/> and <see cref="T:MetaDslx.Compiler.VisualBasic.SyntaxNode"/>.
     /// </summary>
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
@@ -24,7 +25,7 @@ namespace MetaDslx.Compiler
         private readonly SyntaxNode _parent;
         internal SyntaxTree _syntaxTree;
 
-        internal SyntaxNode(GreenNode green, SyntaxNode parent, int position)
+        protected SyntaxNode(GreenNode green, SyntaxNode parent, int position)
         {
             Debug.Assert(position >= 0, "position cannot be negative");
             Debug.Assert(parent?.Green.IsList != true, "list cannot be a parent");
@@ -38,7 +39,7 @@ namespace MetaDslx.Compiler
         /// Used by structured trivia which has "parent == null", and therefore must know its
         /// SyntaxTree explicitly when created.
         /// </summary>
-        internal SyntaxNode(GreenNode green, int position, SyntaxTree syntaxTree)
+        protected SyntaxNode(GreenNode green, int position, SyntaxTree syntaxTree)
             : this(green, null, position)
         {
             this._syntaxTree = syntaxTree;
@@ -59,7 +60,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The language name that this node is syntax of.
         /// </summary>
-        public abstract string Language { get; }
+        public abstract Language Language { get; }
 
         internal GreenNode Green { get; }
 
@@ -1495,5 +1496,8 @@ recurse:
 
             return clone;
         }
+
+        public abstract SyntaxToken CreateSeparator<TNode>(SyntaxNode element);
+
     }
 }

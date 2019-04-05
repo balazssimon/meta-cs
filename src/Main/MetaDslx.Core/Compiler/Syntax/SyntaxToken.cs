@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
 
@@ -13,7 +14,7 @@ namespace MetaDslx.Compiler
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix
     /// <summary>
     /// Represents a token in the syntax tree. This is the language agnostic equivalent of <see
-    /// cref="T:MetaDslx.Compiler.CSharp.SyntaxToken"/> and <see cref="T:MetaDslx.Compiler.VisualBasic.SyntaxToken"/>.
+    /// cref="T:MetaDslx.Compiler.SyntaxToken"/> and <see cref="T:MetaDslx.Compiler.VisualBasic.SyntaxToken"/>.
     /// </summary>
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix
     [StructLayout(LayoutKind.Auto)]
@@ -53,9 +54,9 @@ namespace MetaDslx.Compiler
         public int RawKind => Node?.RawKind ?? 0;
 
         /// <summary>
-        /// The language name that this token is syntax of.
+        /// The language that this token is syntax of.
         /// </summary>
-        public string Language => Node?.Language ?? string.Empty;
+        public Language Language => Node?.Language ?? Language.Default;
 
         /// <summary>
         /// The kind of token, given its position in the syntax. This differs from <see

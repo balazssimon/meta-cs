@@ -5,7 +5,7 @@ namespace MetaDslx.Compiler
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix
     /// <summary>
     /// Represents structured trivia that contains skipped tokens. This is implemented by
-    /// <see cref="T:MetaDslx.Compiler.CSharp.Syntax.SkippedTokensTriviaSyntax"/> and
+    /// <see cref="T:MetaDslx.Compiler.Syntax.SkippedTokensTriviaSyntax"/> and
     /// <see cref="T:MetaDslx.Compiler.VisualBasic.Syntax.SkippedTokensTriviaSyntax"/>.
     /// </summary>
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix

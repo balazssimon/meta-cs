@@ -6,7 +6,7 @@ using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
-    internal partial struct SyntaxList<TNode> : IEquatable<SyntaxList<TNode>>
+    public partial struct SyntaxList<TNode> : IEquatable<SyntaxList<TNode>>
         where TNode : GreenNode
     {
         private readonly GreenNode _node;

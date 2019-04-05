@@ -7,22 +7,25 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using MetaDslx.Compiler.PooledObjects;
-using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Utilities;
 
-namespace MetaDslx.Compiler
+namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    internal abstract class GreenNode : IObjectWritable
+    public abstract class GreenNode : IObjectWritable
     {
+        // Maximum size of tokens/trivia that we cache and use in quick scanner.
+        // From what I see in our own codebase, tokens longer then 40-50 chars are 
+        // not very common. 
+        // So it seems reasonable to limit the sizes to some round number like 42.
+        internal const int MaxCachedTokenSize = 42;
+
         private string GetDebuggerDisplay()
         {
             return this.GetType().Name + " " + this.KindText + " " + this.ToString();
         }
 
-        internal const int ListKind = 1;
-
-        private readonly ushort _kind;
+        private readonly int _kind;
         protected NodeFlags flags;
         private byte _slotCount;
         private int _fullWidth;
@@ -37,18 +40,18 @@ namespace MetaDslx.Compiler
         private static readonly SyntaxAnnotation[] s_noAnnotations = Array.Empty<SyntaxAnnotation>();
         private static readonly IEnumerable<SyntaxAnnotation> s_noAnnotationsEnumerable = SpecializedCollections.EmptyEnumerable<SyntaxAnnotation>();
 
-        protected GreenNode(ushort kind)
+        protected GreenNode(int kind)
         {
             _kind = kind;
         }
 
-        protected GreenNode(ushort kind, int fullWidth)
+        protected GreenNode(int kind, int fullWidth)
         {
             _kind = kind;
             _fullWidth = fullWidth;
         }
 
-        protected GreenNode(ushort kind, DiagnosticInfo[] diagnostics, int fullWidth)
+        protected GreenNode(int kind, DiagnosticInfo[] diagnostics, int fullWidth)
         {
             _kind = kind;
             _fullWidth = fullWidth;
@@ -59,7 +62,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected GreenNode(ushort kind, DiagnosticInfo[] diagnostics)
+        protected GreenNode(int kind, DiagnosticInfo[] diagnostics)
         {
             _kind = kind;
             if (diagnostics?.Length > 0)
@@ -69,7 +72,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected GreenNode(ushort kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations) :
+        protected GreenNode(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations) :
             this(kind, diagnostics)
         {
             if (annotations?.Length > 0)
@@ -84,7 +87,7 @@ namespace MetaDslx.Compiler
             }
         }
 
-        protected GreenNode(ushort kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations, int fullWidth) :
+        protected GreenNode(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations, int fullWidth) :
             this(kind, diagnostics, fullWidth)
         {
             if (annotations?.Length > 0)
@@ -106,7 +109,7 @@ namespace MetaDslx.Compiler
             _fullWidth += node._fullWidth;
         }
 
-        public abstract string Language { get; }
+        public abstract Language Language { get; }
 
         #region Kind 
         public int RawKind
@@ -114,21 +117,18 @@ namespace MetaDslx.Compiler
             get { return _kind; }
         }
 
-        public bool IsList
-        {
-            get
-            {
-                return RawKind == ListKind;
-            }
-        }
+        public bool IsList => this.RawKind == (int)SyntaxKind.List;
 
-        public abstract string KindText { get; }
+        public string KindText
+        {
+            get { return this.Language.SyntaxFacts.GetKindText(this.RawKind); }
+        }
 
         public virtual bool IsStructuredTrivia => false;
         public virtual bool IsDirective => false;
         public virtual bool IsToken => false;
         public virtual bool IsTrivia => false;
-        public virtual bool IsSkippedTokensTrivia => false;
+        public virtual bool IsSkippedTokensTrivia => this.RawKind == (int)SyntaxKind.SkippedTokensTrivia;
         public virtual bool IsDocumentationCommentTrivia => false;
 
         #endregion
@@ -250,7 +250,7 @@ namespace MetaDslx.Compiler
 
         #region Flags 
         [Flags]
-        internal enum NodeFlags : byte
+        public enum NodeFlags : byte
         {
             None = 0,
             ContainsDiagnostics = 1 << 0,
@@ -259,10 +259,6 @@ namespace MetaDslx.Compiler
             ContainsSkippedText = 1 << 3,
             ContainsAnnotations = 1 << 4,
             IsNotMissing = 1 << 5,
-
-            FactoryContextIsInAsync = 1 << 6,
-            FactoryContextIsInQuery = 1 << 7,
-            FactoryContextIsInIterator = FactoryContextIsInQuery,  // VB does not use "InQuery", but uses "InIterator" instead
 
             InheritMask = ContainsDiagnostics | ContainsStructuredTrivia | ContainsDirectives | ContainsSkippedText | ContainsAnnotations | IsNotMissing,
         }
@@ -288,30 +284,6 @@ namespace MetaDslx.Compiler
             {
                 // flag has reversed meaning hence "=="
                 return (this.flags & NodeFlags.IsNotMissing) == 0;
-            }
-        }
-
-        internal bool ParsedInAsync
-        {
-            get
-            {
-                return (this.flags & NodeFlags.FactoryContextIsInAsync) != 0;
-            }
-        }
-
-        internal bool ParsedInQuery
-        {
-            get
-            {
-                return (this.flags & NodeFlags.FactoryContextIsInQuery) != 0;
-            }
-        }
-
-        internal bool ParsedInIterator
-        {
-            get
-            {
-                return (this.flags & NodeFlags.FactoryContextIsInIterator) != 0;
             }
         }
 
@@ -741,6 +713,17 @@ namespace MetaDslx.Compiler
         public virtual int RawContextualKind { get { return this.RawKind; } }
         public virtual object GetValue() { return null; }
         public virtual string GetValueText() { return string.Empty; }
+
+        public GreenNode GetLeadingTrivia()
+        {
+            return this.GetLeadingTriviaCore();
+        }
+
+        public GreenNode GetTrailingTrivia() 
+        {
+            return this.GetTrailingTriviaCore();
+        }
+
         public virtual GreenNode GetLeadingTriviaCore() { return null; }
         public virtual GreenNode GetTrailingTriviaCore() { return null; }
 
@@ -886,12 +869,45 @@ namespace MetaDslx.Compiler
         }
         #endregion
 
-        public abstract SyntaxNode GetStructure(SyntaxTrivia parentTrivia);
+        // Use conditional weak table so we always return same identity for structured trivia
+        private static readonly ConditionalWeakTable<SyntaxNode, Dictionary<Compiler.SyntaxTrivia, SyntaxNode>> s_structuresTable
+            = new ConditionalWeakTable<SyntaxNode, Dictionary<Compiler.SyntaxTrivia, SyntaxNode>>();
+
+        public SyntaxNode GetStructure(MetaDslx.Compiler.SyntaxTrivia trivia)
+        {
+            if (trivia.HasStructure)
+            {
+                var parent = trivia.Token.Parent;
+                if (parent != null)
+                {
+                    SyntaxNode structure;
+                    var structsInParent = s_structuresTable.GetOrCreateValue(parent);
+                    lock (structsInParent)
+                    {
+                        if (!structsInParent.TryGetValue(trivia, out structure))
+                        {
+                            structure = this.Language.InternalSyntaxFactory.CreateStructure(trivia);
+                            structsInParent.Add(trivia, structure);
+                        }
+                    }
+
+                    return structure;
+                }
+                else
+                {
+                    return this.Language.InternalSyntaxFactory.CreateStructure(trivia);
+                }
+            }
+
+            return null;
+        }
 
         #region Factories 
 
-        public abstract SyntaxToken CreateSeparator<TNode>(SyntaxNode element) where TNode : SyntaxNode;
-        public abstract bool IsTriviaWithEndOfLine(); // trivia node has end of line
+        public bool IsTriviaWithEndOfLine()
+        {
+            return this.Language.SyntaxFacts.IsTriviaWithEndOfLine(this.RawKind);
+        }
 
         public virtual GreenNode CreateList(IEnumerable<GreenNode> nodes, bool alwaysCreateListNode = false)
         {
@@ -1024,5 +1040,6 @@ namespace MetaDslx.Compiler
             // Get a new green node with the errors added on.
             return SetDiagnostics(errorInfos);
         }
+
     }
 }

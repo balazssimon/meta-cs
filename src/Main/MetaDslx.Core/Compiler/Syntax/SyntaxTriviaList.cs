@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using MetaDslx.Compiler.PooledObjects;
 using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
 

@@ -8,12 +8,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
     internal abstract partial class SyntaxList : GreenNode
     {
         internal SyntaxList()
-            : base(GreenNode.ListKind)
+            : base(SyntaxKind.List)
         {
         }
 
         internal SyntaxList(DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-            : base(GreenNode.ListKind, diagnostics, annotations)
+            : base(SyntaxKind.List, diagnostics, annotations)
         {
         }
 
@@ -33,7 +33,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             Debug.Assert(child1 != null);
 
             int hash;
-            GreenNode cached = SyntaxNodeCache.TryGetNode(GreenNode.ListKind, child0, child1, out hash);
+            GreenNode cached = SyntaxNodeCache.TryGetNode(SyntaxKind.List, child0, child1, out hash);
             if (cached != null)
                 return (WithTwoChildren)cached;
 
@@ -53,7 +53,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             Debug.Assert(child2 != null);
 
             int hash;
-            GreenNode cached = SyntaxNodeCache.TryGetNode(GreenNode.ListKind, child0, child1, child2, out hash);
+            GreenNode cached = SyntaxNodeCache.TryGetNode(SyntaxKind.List, child0, child1, child2, out hash);
             if (cached != null)
                 return (WithThreeChildren)cached;
 
@@ -143,35 +143,12 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             }
         }
 
-        public sealed override string Language
+        public sealed override Language Language
         {
             get
             {
                 throw ExceptionUtilities.Unreachable;
             }
-        }
-
-        public sealed override string KindText
-        {
-            get
-            {
-                throw ExceptionUtilities.Unreachable;
-            }
-        }
-
-        public sealed override SyntaxNode GetStructure(SyntaxTrivia parentTrivia)
-        {
-            throw ExceptionUtilities.Unreachable;
-        }
-
-        public sealed override SyntaxToken CreateSeparator<TNode>(SyntaxNode element)
-        {
-            throw ExceptionUtilities.Unreachable;
-        }
-
-        public sealed override bool IsTriviaWithEndOfLine()
-        {
-            return false;
         }
     }
 }

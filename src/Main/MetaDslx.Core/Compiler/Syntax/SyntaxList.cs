@@ -13,7 +13,7 @@ namespace MetaDslx.Compiler.Syntax
         {
         }
 
-        public override string Language
+        public override Language Language
         {
             get
             {
@@ -71,6 +71,11 @@ namespace MetaDslx.Compiler.Syntax
         protected override bool IsEquivalentToCore(SyntaxNode node, bool topLevel = false)
         {
             throw ExceptionUtilities.Unreachable;
+        }
+
+        public override SyntaxToken CreateSeparator<TNode>(SyntaxNode element)
+        {
+            return this.Parent.CreateSeparator<TNode>(element);
         }
     }
 }

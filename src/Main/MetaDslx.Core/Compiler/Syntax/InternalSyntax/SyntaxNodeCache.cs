@@ -38,7 +38,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
     ///     and are not likely to be repetitive.
     ///     
     /// </summary>
-    internal class GreenStats
+    public class GreenStats
     {
         // TODO: remove when done tweaking this cache.
 #if STATS
@@ -85,22 +85,22 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             Console.WriteLine("RateOfCacheable: " + (cacheHits * 100 / (cacheableNodes)) + "%");
         }
 #else
-        internal static void NoteGreen(GreenNode node)
+        public static void NoteGreen(GreenNode node)
         {
         }
 
         [Conditional("DEBUG")]
-        internal static void ItemAdded()
+        public static void ItemAdded()
         {
         }
 
         [Conditional("DEBUG")]
-        internal static void ItemCacheable()
+        public static void ItemCacheable()
         {
         }
 
         [Conditional("DEBUG")]
-        internal static void CacheHit()
+        public static void CacheHit()
         {
         }
 #endif

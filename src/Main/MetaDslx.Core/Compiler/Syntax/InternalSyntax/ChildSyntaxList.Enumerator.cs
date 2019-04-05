@@ -54,7 +54,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
                             continue;
                         }
 
-                        if (child.RawKind == GreenNode.ListKind)
+                        if (child.RawKind == SyntaxKind.List)
                         {
                             _list = child;
                             _listIndex++;

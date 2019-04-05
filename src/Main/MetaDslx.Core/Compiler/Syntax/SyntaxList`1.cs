@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using MetaDslx.Compiler.Syntax;
+using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
 
@@ -50,7 +51,7 @@ namespace MetaDslx.Compiler
             }
 
             var collection = nodes as ICollection<TNode>;
-            var builder = (collection != null) ? new SyntaxListBuilder<TNode>(collection.Count) : SyntaxListBuilder<TNode>.Create();
+            var builder = (collection != null) ? new Syntax.SyntaxListBuilder<TNode>(collection.Count) : Syntax.SyntaxListBuilder<TNode>.Create();
 
             foreach (TNode node in nodes)
             {

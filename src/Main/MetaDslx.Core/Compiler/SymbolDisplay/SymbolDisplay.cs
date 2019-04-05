@@ -14,7 +14,7 @@ namespace MetaDslx.Compiler.Diagnostics
     /// <summary>
     /// Displays a symbol in the C# style.
     /// </summary>
-    /// <seealso cref="T:Microsoft.CodeAnalysis.VisualBasic.Symbols.SymbolDisplay"/>
+    /// <seealso cref="T:MetaDslx.Compiler.VisualBasic.Symbols.SymbolDisplay"/>
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix
     public static class SymbolDisplay
     {

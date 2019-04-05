@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
 
@@ -12,7 +13,7 @@ namespace MetaDslx.Compiler
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix
     /// <summary>
     /// Represents a trivia in the syntax tree. This is the language agnostic equivalent of <see
-    /// cref="T:MetaDslx.Compiler.CSharp.SyntaxTrivia"/> and <see cref="T:MetaDslx.Compiler.VisualBasic.SyntaxTrivia"/>.
+    /// cref="T:MetaDslx.Compiler.SyntaxTrivia"/> and <see cref="T:MetaDslx.Compiler.VisualBasic.SyntaxTrivia"/>.
     /// </summary>
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
@@ -44,7 +45,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The language name that this trivia is syntax of.
         /// </summary>
-        public string Language => UnderlyingNode?.Language ?? string.Empty;
+        public Language Language => UnderlyingNode?.Language ?? Language.Default;
 
         /// <summary>
         /// The parent token that contains this token in its LeadingTrivia or TrailingTrivia collection.
@@ -184,8 +185,8 @@ namespace MetaDslx.Compiler
         /// </summary>
         public bool IsDirective => UnderlyingNode?.IsDirective ?? false;
 
-        internal bool IsSkippedTokensTrivia => UnderlyingNode?.IsSkippedTokensTrivia ?? false;
-        internal bool IsDocumentationCommentTrivia => UnderlyingNode?.IsDocumentationCommentTrivia ?? false;
+        public bool IsSkippedTokensTrivia => UnderlyingNode?.IsSkippedTokensTrivia ?? false;
+        public bool IsDocumentationCommentTrivia => UnderlyingNode?.IsDocumentationCommentTrivia ?? false;
 
         /// <summary>
         /// Returns the child non-terminal node representing the syntax tree structure under this structured trivia.

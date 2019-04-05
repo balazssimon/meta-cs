@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
 
@@ -95,7 +96,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// The language name that this node or token is syntax of.
         /// </summary>
-        public string Language
+        public Language Language
         {
             get
             {
@@ -109,7 +110,7 @@ namespace MetaDslx.Compiler
                     return _nodeOrParent.Language;
                 }
 
-                return string.Empty;
+                return Language.Default;
             }
         }
 
