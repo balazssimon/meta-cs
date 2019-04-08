@@ -13,6 +13,8 @@ namespace MetaDslx.Compiler
 
         public abstract string Name { get; }
         public abstract InternalSyntaxFactory InternalSyntaxFactory { get; }
+        public abstract SyntaxFactory SyntaxFactory { get; }
         public abstract SyntaxFacts SyntaxFacts { get; }
+        public abstract CompilationFactory CompilationFactory { get; }
     }
 }

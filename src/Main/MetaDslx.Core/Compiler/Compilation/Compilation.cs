@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.Compiler.Declarations;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -31,6 +32,34 @@ namespace MetaDslx.Compiler
     {
         public string AssemblyName { get; private set; }
         public CompilationOptions Options { get; private set; }
+
+        private readonly SyntaxAndDeclarationManager _syntaxAndDeclarations;
+
+        internal DeclarationTable Declarations
+        {
+            get
+            {
+                return _syntaxAndDeclarations.GetLazyState().DeclarationTable;
+            }
+        }
+
+        internal MergedDeclaration MergedRootDeclaration
+        {
+            get
+            {
+                return Declarations.GetMergedRoot(this);
+            }
+        }
+
+        internal int GetSyntaxTreeOrdinal(SyntaxTree tree)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal int CompareSourceLocations(SyntaxReference syntaxReference1, SyntaxReference syntaxReference2)
+        {
+            throw new NotImplementedException();
+        }
 
         internal int CompareSourceLocations(Location location1, Location location2)
         {

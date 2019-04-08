@@ -125,6 +125,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         }
 
         public virtual bool IsStructuredTrivia => false;
+        public virtual bool IsStructuredToken => false;
         public virtual bool IsDirective => false;
         public virtual bool IsToken => false;
         public virtual bool IsTrivia => false;
@@ -869,9 +870,40 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         }
         #endregion
 
-        // Use conditional weak table so we always return same identity for structured trivia
-        private static readonly ConditionalWeakTable<SyntaxNode, Dictionary<Compiler.SyntaxTrivia, SyntaxNode>> s_structuresTable
+        // Use conditional weak table so we always return same identity for structured token and trivia
+        private static readonly ConditionalWeakTable<SyntaxNode, Dictionary<Compiler.SyntaxToken, SyntaxNode>> s_tokenStructuresTable
+            = new ConditionalWeakTable<SyntaxNode, Dictionary<Compiler.SyntaxToken, SyntaxNode>>();
+        private static readonly ConditionalWeakTable<SyntaxNode, Dictionary<Compiler.SyntaxTrivia, SyntaxNode>> s_triviaStructuresTable
             = new ConditionalWeakTable<SyntaxNode, Dictionary<Compiler.SyntaxTrivia, SyntaxNode>>();
+
+        public SyntaxNode GetStructure(MetaDslx.Compiler.SyntaxToken token)
+        {
+            if (token.HasStructure)
+            {
+                var parent = token.Parent;
+                if (parent != null)
+                {
+                    SyntaxNode structure;
+                    var structsInParent = s_tokenStructuresTable.GetOrCreateValue(parent);
+                    lock (structsInParent)
+                    {
+                        if (!structsInParent.TryGetValue(token, out structure))
+                        {
+                            structure = this.Language.InternalSyntaxFactory.CreateStructure(token);
+                            structsInParent.Add(token, structure);
+                        }
+                    }
+
+                    return structure;
+                }
+                else
+                {
+                    return this.Language.InternalSyntaxFactory.CreateStructure(token);
+                }
+            }
+
+            return null;
+        }
 
         public SyntaxNode GetStructure(MetaDslx.Compiler.SyntaxTrivia trivia)
         {
@@ -881,7 +913,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
                 if (parent != null)
                 {
                     SyntaxNode structure;
-                    var structsInParent = s_structuresTable.GetOrCreateValue(parent);
+                    var structsInParent = s_triviaStructuresTable.GetOrCreateValue(parent);
                     lock (structsInParent)
                     {
                         if (!structsInParent.TryGetValue(trivia, out structure))

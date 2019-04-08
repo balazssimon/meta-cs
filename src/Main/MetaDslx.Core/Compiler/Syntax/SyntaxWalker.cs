@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using MetaDslx.Compiler.Text;
+using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Compiler
 {
@@ -8,7 +9,8 @@ namespace MetaDslx.Compiler
     /// Walks the syntax tree, allowing subclasses to operate on all nodes, token and trivia.  The
     /// walker will perform a depth first walk of the tree.
     /// </summary>
-    public abstract class SyntaxWalker
+    public abstract class SyntaxWalker<TNode> : SyntaxVisitor<TNode>
+        where TNode : LanguageSyntaxNode
     {
         /// <summary>
         /// Syntax the <see cref="SyntaxWalker"/> should descend into.
@@ -24,30 +26,24 @@ namespace MetaDslx.Compiler
             this.Depth = depth;
         }
 
+        private int _recursionDepth;
+
         /// <summary>
         /// Called when the walker visits a node.  This method may be overridden if subclasses want
         /// to handle the node.  Overrides should call back into this base method if they want the
         /// children of this node to be visited.
         /// </summary>
         /// <param name="node">The current node that the walker is visiting.</param>
-        public virtual void Visit(SyntaxNode node)
+        public override void Visit(TNode node)
         {
-            foreach (var child in node.ChildNodesAndTokens())
+            if (node != null)
             {
-                if (child.IsNode)
-                {
-                    if (this.Depth >= SyntaxWalkerDepth.Node)
-                    {
-                        Visit(child.AsNode());
-                    }
-                }
-                else if (child.IsToken)
-                {
-                    if (this.Depth >= SyntaxWalkerDepth.Token)
-                    {
-                        VisitToken(child.AsToken());
-                    }
-                }
+                _recursionDepth++;
+                StackGuard.EnsureSufficientExecutionStack(_recursionDepth);
+
+                node.Accept(this);
+
+                _recursionDepth--;
             }
         }
 
@@ -62,6 +58,10 @@ namespace MetaDslx.Compiler
             if (this.Depth >= SyntaxWalkerDepth.Trivia)
             {
                 this.VisitLeadingTrivia(token);
+                if (this.Depth >= SyntaxWalkerDepth.StructuredTokenOrTrivia && token.HasStructure)
+                {
+                    this.Visit((TNode)token.GetStructure());
+                }
                 this.VisitTrailingTrivia(token);
             }
         }
@@ -87,7 +87,7 @@ namespace MetaDslx.Compiler
                 }
             }
         }
-
+        
         /// <summary>
         /// Called when the walker visits a trivia syntax.  This method may be overridden if
         /// subclasses want to handle the token.  Overrides should call back into this base method if
@@ -96,9 +96,9 @@ namespace MetaDslx.Compiler
         /// <param name="trivia">The current trivia syntax that the walker is visiting.</param>
         protected virtual void VisitTrivia(SyntaxTrivia trivia)
         {
-            if (this.Depth >= SyntaxWalkerDepth.StructuredTrivia && trivia.HasStructure)
+            if (this.Depth >= SyntaxWalkerDepth.StructuredTokenOrTrivia && trivia.HasStructure)
             {
-                this.Visit(trivia.GetStructure());
+                this.Visit((TNode)trivia.GetStructure());
             }
         }
     }

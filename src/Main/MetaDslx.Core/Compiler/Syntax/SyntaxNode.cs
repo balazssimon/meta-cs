@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Syntax.InternalSyntax;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Compiler.Utilities;
@@ -61,6 +62,11 @@ namespace MetaDslx.Compiler
         /// The language name that this node is syntax of.
         /// </summary>
         public abstract Language Language { get; }
+
+        protected SyntaxFactory SyntaxFactory
+        {
+            get { return Language.SyntaxFactory; }
+        }
 
         internal GreenNode Green { get; }
 
@@ -343,6 +349,11 @@ namespace MetaDslx.Compiler
                 return false;
             }
 
+            return this.IsEquivalentToCore(other);
+        }
+
+        protected virtual bool IsEquivalentToCore(SyntaxNode other)
+        {
             return this.Green.IsEquivalentTo(other.Green);
         }
 
@@ -1222,20 +1233,6 @@ recurse:
 
         #endregion
 
-        /// <summary>
-        /// Determines if two nodes are the same, disregarding trivia differences.
-        /// </summary>
-        /// <param name="node">The node to compare against.</param>
-        /// <param name="topLevel"> If true then the nodes are equivalent if the contained nodes and
-        /// tokens declaring metadata visible symbolic information are equivalent, ignoring any
-        /// differences of nodes inside method bodies or initializer expressions, otherwise all
-        /// nodes and tokens must be equivalent. 
-        /// </param>
-        public bool IsEquivalentTo(SyntaxNode node, bool topLevel = false)
-        {
-            return IsEquivalentToCore(node, topLevel);
-        }
-
         public virtual void SerializeTo(Stream stream, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (stream == null)
@@ -1496,6 +1493,99 @@ recurse:
 
             return clone;
         }
+
+
+        #region Directives
+
+        public IList<TDirective> GetDirectives<TDirective>(Func<TDirective, bool> filter = null)
+            where TDirective : SyntaxNode
+        {
+            return ((SyntaxNodeOrToken)this).GetDirectives(filter);
+        }
+
+        /// <summary>
+        /// Gets the first directive of the tree rooted by this node.
+        /// </summary>
+        public TDirective GetFirstDirective<TDirective>(Func<TDirective, bool> predicate = null)
+            where TDirective : SyntaxNode
+        {
+            foreach (var child in this.ChildNodesAndTokens())
+            {
+                if (child.ContainsDirectives)
+                {
+                    if (child.IsNode)
+                    {
+                        var d = child.AsNode().GetFirstDirective(predicate);
+                        if (d != null)
+                        {
+                            return d;
+                        }
+                    }
+                    else
+                    {
+                        var token = child.AsToken();
+
+                        // directives can only occur in leading trivia
+                        foreach (var tr in token.LeadingTrivia)
+                        {
+                            if (tr.IsDirective)
+                            {
+                                var d = (TDirective)tr.GetStructure();
+                                if (predicate == null || predicate(d))
+                                {
+                                    return d;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the last directive of the tree rooted by this node.
+        /// </summary>
+        public TDirective GetLastDirective<TDirective>(Func<TDirective, bool> predicate = null)
+            where TDirective : SyntaxNode
+        {
+            foreach (var child in this.ChildNodesAndTokens().Reverse())
+            {
+                if (child.ContainsDirectives)
+                {
+                    if (child.IsNode)
+                    {
+                        var d = child.AsNode().GetLastDirective(predicate);
+                        if (d != null)
+                        {
+                            return d;
+                        }
+                    }
+                    else
+                    {
+                        var token = child.AsToken();
+
+                        // directives can only occur in leading trivia
+                        foreach (var tr in token.LeadingTrivia.Reverse())
+                        {
+                            if (tr.IsDirective)
+                            {
+                                var d = (TDirective)tr.GetStructure();
+                                if (predicate == null || predicate(d))
+                                {
+                                    return d;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
 
         public abstract SyntaxToken CreateSeparator<TNode>(SyntaxNode element);
 

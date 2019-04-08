@@ -64,7 +64,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             }
         }
 
-        private InternalSyntaxTrivia EndOfLine(string text, bool elastic = false)
+        public InternalSyntaxTrivia EndOfLine(string text, bool elastic = false)
         {
             InternalSyntaxTrivia trivia = null;
 
@@ -97,7 +97,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             return (InternalSyntaxTrivia)trivia.WithAnnotationsGreen(new[] { SyntaxAnnotation.ElasticAnnotation });
         }
 
-        private InternalSyntaxTrivia Whitespace(string text, bool elastic = false)
+        public InternalSyntaxTrivia Whitespace(string text, bool elastic = false)
         {
             var trivia = this.Trivia(this.Language.SyntaxFacts.DefaultWhitespaceSyntaxKind, text);
             if (!elastic)
@@ -119,11 +119,24 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         public abstract InternalSyntaxTrivia Trivia(int kind, string text);
     
         /// <summary>
+        /// Gets the syntax node represented the structure of this token, if any. The HasStructure property can be used to 
+        /// determine if this trivia has structure.
+        /// </summary>
+        /// <returns>
+        /// A GreenNode with the structured view of this token node. 
+        /// If this token node does not have structure, returns null.
+        /// </returns>
+        public virtual SyntaxNode CreateStructure(MetaDslx.Compiler.SyntaxToken token)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Gets the syntax node represented the structure of this trivia, if any. The HasStructure property can be used to 
         /// determine if this trivia has structure.
         /// </summary>
         /// <returns>
-        /// A GreenNode derived from StructuredTriviaSyntax, with the structured view of this trivia node. 
+        /// A GreenNode with the structured view of this trivia node. 
         /// If this trivia node does not have structure, returns null.
         /// </returns>
         /// <remarks>
@@ -133,6 +146,9 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         ///   documentation comments, where the structure describes the XML structure of the comment.
         ///   skipped tokens, where the structure describes the tokens that were skipped by the parser.
         /// </remarks>        
-        public abstract SyntaxNode CreateStructure(MetaDslx.Compiler.SyntaxTrivia trivia);
+        public virtual SyntaxNode CreateStructure(MetaDslx.Compiler.SyntaxTrivia trivia)
+        {
+            return null;
+        }
     }
 }

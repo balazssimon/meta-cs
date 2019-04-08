@@ -28,6 +28,21 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Creates a <see cref="Diagnostic"/> instance.
         /// </summary>
+        /// <param name="diagnosticInfo">A <see cref="DiagnosticInfo"/> describing the diagnostic</param>
+        /// <param name="location">An optional primary location of the diagnostic. If null, <see cref="Location"/> will return <see cref="Location.None"/>.</param>
+        /// <param name="messageArgs">Arguments to the message of the diagnostic</param>
+        /// <returns>The <see cref="Diagnostic"/> instance.</returns>
+        public static Diagnostic Create(
+            DiagnosticInfo diagnosticInfo,
+            Location location,
+            params object[] messageArgs)
+        {
+            return Create(diagnosticInfo.Descriptor, location, null, null, messageArgs);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Diagnostic"/> instance.
+        /// </summary>
         /// <param name="descriptor">A <see cref="DiagnosticDescriptor"/> describing the diagnostic</param>
         /// <param name="location">An optional primary location of the diagnostic. If null, <see cref="Location"/> will return <see cref="Location.None"/>.</param>
         /// <param name="messageArgs">Arguments to the message of the diagnostic</param>

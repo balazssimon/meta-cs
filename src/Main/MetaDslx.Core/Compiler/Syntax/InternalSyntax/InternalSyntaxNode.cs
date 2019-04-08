@@ -20,11 +20,19 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         {
         }
 
+        public override bool IsStructuredToken
+        {
+            get
+            {
+                return this.IsToken && this is IStructuredSyntax;
+            }
+        }
+
         public override bool IsStructuredTrivia
         {
             get
             {
-                return this is IStructuredTriviaSyntax;
+                return this.IsTrivia && this is IStructuredSyntax;
             }
         }
 

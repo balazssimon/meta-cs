@@ -12,7 +12,7 @@ using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
-    internal abstract partial class SyntaxParser : IDisposable
+    public abstract partial class SyntaxParser : IDisposable
     {
         protected readonly SourceText text;
         protected readonly Language language;

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MetaDslx.Compiler.Syntax.InternalSyntax
 {
-    /*public interface IDirectiveTriviaSyntax
+    public interface IStructuredSyntax
     {
-    }*/
+    }
 }

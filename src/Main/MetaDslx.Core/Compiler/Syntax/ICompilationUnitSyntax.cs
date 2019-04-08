@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.Compiler.Syntax;
 using MetaDslx.Compiler.Text;
+using System.Collections.Generic;
 
 namespace MetaDslx.Compiler
 {
@@ -21,5 +23,16 @@ namespace MetaDslx.Compiler
         /// <see cref="SyntaxTrivia"/> (whitespace, comments, directives) attached to it.
         /// </summary>
         SyntaxToken EndOfFileToken { get; }
+
+        /// <summary>
+        /// Returns #r directives specified in the compilation.
+        /// </summary>
+        IList<IDirectiveTriviaSyntax> GetReferenceDirectives();
+
+        /// <summary>
+        /// Returns #load directives specified in the compilation.
+        /// </summary>
+        IList<IDirectiveTriviaSyntax> GetLoadDirectives();
+        DirectiveStack GetConditionalDirectivesStack();
     }
 }

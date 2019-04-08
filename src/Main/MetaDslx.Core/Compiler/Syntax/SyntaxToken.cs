@@ -219,6 +219,21 @@ namespace MetaDslx.Compiler
         }
 
         /// <summary>
+        /// Determines whether this token is a structured token.
+        /// </summary>
+        public bool HasStructure => Node?.IsStructuredToken ?? false;
+
+        /// <summary>
+        /// Returns the child non-terminal node representing the syntax tree structure under this structured token.
+        /// </summary>
+        /// <returns>The child non-terminal node representing the syntax tree structure under this structured
+        /// token.</returns>
+        public SyntaxNode GetStructure()
+        {
+            return HasStructure ? Node.GetStructure(this) : null;
+        }
+
+        /// <summary>
         /// Determines whether any of this token's trivia is structured.
         /// </summary>
         public bool HasStructuredTrivia => Node?.ContainsStructuredTrivia ?? false;

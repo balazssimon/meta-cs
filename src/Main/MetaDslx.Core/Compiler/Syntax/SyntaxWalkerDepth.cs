@@ -25,6 +25,6 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// descend into everything
         /// </summary>
-        StructuredTrivia = 3,
+        StructuredTokenOrTrivia = 3,
     }
 }

@@ -6,7 +6,7 @@ using MetaDslx.Compiler.Utilities;
 
 namespace MetaDslx.Compiler.Diagnostics
 {
-    internal class SyntaxDiagnosticInfo : DiagnosticInfo
+    public class SyntaxDiagnosticInfo : DiagnosticInfo
     {
         static SyntaxDiagnosticInfo()
         {

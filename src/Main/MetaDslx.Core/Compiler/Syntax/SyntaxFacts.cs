@@ -33,5 +33,8 @@ namespace MetaDslx.Compiler.Syntax
         public abstract bool IsFixedToken(int rawKind);
         public abstract bool IsTriviaWithEndOfLine(int rawKind);
         internal abstract bool IsWhiteSpaceTrivia(int rawKind);
+        internal abstract bool IsStructuredToken(int rawKind);
+        internal abstract bool IsStructuredTrivia(int rawKind);
+        internal abstract bool IsStructuredTokenOrTrivia(int rawKind);
     }
 }

@@ -21,6 +21,8 @@ namespace MetaDslx.Compiler
         private ImmutableArray<byte> _lazyChecksum;
         private SourceHashAlgorithm _lazyHashAlgorithm;
 
+        public abstract Language Language { get; }
+
         /// <summary>
         /// The path of the source document file.
         /// </summary>
@@ -355,5 +357,7 @@ namespace MetaDslx.Compiler
         {
             get { return this.HasCompilationUnitRoot; }
         }
+
+        public abstract SyntaxTree CreateWithoutClone(SyntaxNode node);
     }
 }
