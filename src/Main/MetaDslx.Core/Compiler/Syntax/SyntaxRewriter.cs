@@ -14,11 +14,18 @@ namespace MetaDslx.Compiler
     /// </summary>
     public abstract partial class SyntaxRewriter : SyntaxVisitor<SyntaxNode, SyntaxNode>
     {
+        private readonly bool _visitIntoStructuredToken;
         private readonly bool _visitIntoStructuredTrivia;
 
-        public SyntaxRewriter(bool visitIntoStructuredTrivia = false)
+        public SyntaxRewriter(bool visitIntoStructuredToken = false, bool visitIntoStructuredTrivia = false)
         {
+            _visitIntoStructuredToken = visitIntoStructuredToken;
             _visitIntoStructuredTrivia = visitIntoStructuredTrivia;
+        }
+
+        public virtual bool VisitIntoStructuredToken
+        {
+            get { return _visitIntoStructuredToken; }
         }
 
         public virtual bool VisitIntoStructuredTrivia
@@ -59,6 +66,20 @@ namespace MetaDslx.Compiler
             {
                 return token;
             }
+
+            /* TODO:MetaDslx
+            if (this.VisitIntoStructuredToken && token.HasStructure)
+            {
+                var structure = (SyntaxNode)token.GetStructure();
+                var newStructure = this.Visit(structure);
+                if (newStructure != structure)
+                {
+                    if (newStructure != null)
+                    {
+                        token = token.Language.SyntaxFactory.Token(newStructure);
+                    }
+                }
+            }*/
 
             // PERF: Make one virtual method call each to get the leading and trailing trivia
             var leadingTrivia = node.GetLeadingTriviaCore();

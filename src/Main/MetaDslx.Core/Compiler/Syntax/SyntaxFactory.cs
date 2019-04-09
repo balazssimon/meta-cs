@@ -59,6 +59,8 @@ namespace MetaDslx.Compiler.Syntax
         public abstract string ExtractName(SyntaxNode node);
         public abstract string ExtractName(SyntaxToken token);
 
+        public abstract SyntaxNormalizer Normalizer(TextSpan consideredSpan, int initialDepth, string indentWhitespace, string eolWhitespace, bool useElasticTrivia);
+
         protected abstract SyntaxTree ParseSyntaxTreeCore(SourceText text, ParseOptions options = null, string path = "", CancellationToken cancellationToken = default(CancellationToken));
         public abstract SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes);
         public abstract SyntaxParser MakeParser(string text);
@@ -613,6 +615,68 @@ namespace MetaDslx.Compiler.Syntax
             return SyntaxEquivalence.AreEquivalent(oldList.Node, newList.Node, ignoreChildNode);
         }
 
+        public TNode Normalize<TNode>(TNode node, string indentWhitespace, string eolWhitespace, bool useElasticTrivia = false)
+            where TNode : SyntaxNode
+        {
+            var normalizer = this.Normalizer(node.FullSpan, GetDeclarationDepth(node), indentWhitespace, eolWhitespace, useElasticTrivia);
+            var result = (TNode)normalizer.Visit(node);
+            normalizer.Free();
+            return result;
+        }
+
+        public SyntaxToken Normalize(SyntaxToken token, string indentWhitespace, string eolWhitespace, bool useElasticTrivia = false)
+        {
+            var normalizer = this.Normalizer(token.FullSpan, GetDeclarationDepth(token), indentWhitespace, eolWhitespace, useElasticTrivia);
+            var result = normalizer.VisitToken(token);
+            normalizer.Free();
+            return result;
+        }
+
+        public SyntaxTriviaList Normalize(SyntaxTriviaList trivia, string indentWhitespace, string eolWhitespace, bool useElasticTrivia = false)
+        {
+            var normalizer = this.Normalizer(trivia.FullSpan, GetDeclarationDepth(trivia.Token), indentWhitespace, eolWhitespace, useElasticTrivia);
+            var result = normalizer.RewriteTrivia(
+                trivia,
+                GetDeclarationDepth((SyntaxToken)trivia.ElementAt(0).Token),
+                isTrailing: false,
+                indentAfterLineBreak: false,
+                mustHaveSeparator: false,
+                lineBreaksAfter: 0);
+            normalizer.Free();
+            return result;
+        }
+
+        public virtual int GetDeclarationDepth(SyntaxToken token)
+        {
+            return GetDeclarationDepth(token.Parent);
+        }
+
+        public virtual int GetDeclarationDepth(SyntaxTrivia trivia)
+        {
+            if (Language.SyntaxFacts.IsPreprocessorDirective(trivia.RawKind))
+            {
+                return 0;
+            }
+
+            return GetDeclarationDepth((SyntaxToken)trivia.Token);
+        }
+
+        public virtual int GetDeclarationDepth(SyntaxNode node)
+        {
+            if (node != null)
+            {
+                if (node.IsStructuredTrivia)
+                {
+                    var tr = ((IStructuredTriviaSyntax)node).ParentTrivia;
+                    return GetDeclarationDepth(tr);
+                }
+                else if (node.Parent != null)
+                {
+                    return GetDeclarationDepth(node.Parent);
+                }
+            }
+            return 0;
+        }
         /*
 
 /// <summary>

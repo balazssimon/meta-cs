@@ -408,9 +408,7 @@ namespace MetaDslx.Compiler
 
         protected internal override SyntaxNode NormalizeWhitespaceCore(string indentation, string eol, bool elasticTrivia)
         {
-            return this;
-            // TODO:MetaDslx
-            //return SyntaxNormalizer.Normalize(this, indentation, eol, elasticTrivia).AsRootOfNewTreeWithOptionsFrom(this.SyntaxTree);
+            return SyntaxFactory.Normalize(this, indentation, eol, elasticTrivia).AsRootOfNewTreeWithOptionsFrom(this.SyntaxTree);
         }
 
         protected override bool IsEquivalentToCore(SyntaxNode node)

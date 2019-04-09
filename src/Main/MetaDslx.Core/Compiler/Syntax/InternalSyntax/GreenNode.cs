@@ -938,7 +938,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public bool IsTriviaWithEndOfLine()
         {
-            return this.Language.SyntaxFacts.IsTriviaWithEndOfLine(this.RawKind);
+            return this.Language.SyntaxFacts.EndsWithLineBreak(this.RawKind);
         }
 
         public virtual GreenNode CreateList(IEnumerable<GreenNode> nodes, bool alwaysCreateListNode = false)

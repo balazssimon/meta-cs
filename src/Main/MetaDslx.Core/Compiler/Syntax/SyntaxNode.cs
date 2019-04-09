@@ -372,6 +372,20 @@ namespace MetaDslx.Compiler
         }
 
         /// <summary>
+        /// Determines whether this node is a descendant of a structured token.
+        /// </summary>
+        public bool IsPartOfStructuredToken()
+        {
+            for (var node = this; node != null; node = node.Parent)
+            {
+                if (node.IsStructuredTrivia)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Determines whether this node is a descendant of a structured trivia.
         /// </summary>
         public bool IsPartOfStructuredTrivia()

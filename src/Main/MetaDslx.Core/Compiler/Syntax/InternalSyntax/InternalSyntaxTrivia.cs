@@ -25,7 +25,7 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
 
         public override bool IsTrivia => true;
 
-        internal override bool ShouldReuseInSerialization => this.Language.SyntaxFacts.IsWhiteSpaceTrivia(this.RawKind) &&
+        internal override bool ShouldReuseInSerialization => this.Language.SyntaxFacts.IsWhiteSpace(this.RawKind) &&
                                                              FullWidth < GreenNode.MaxCachedTokenSize;
 
         internal override void WriteTo(ObjectWriter writer)

@@ -56,7 +56,7 @@ namespace MetaDslx.Compiler.Syntax
                 Language language,
                 SyntaxNode[] nodesToRemove,
                 SyntaxRemoveOptions options)
-                : base(nodesToRemove.Any(n => n.IsPartOfStructuredTrivia()))
+                : base(nodesToRemove.Any(n => n.IsPartOfStructuredToken()), nodesToRemove.Any(n => n.IsPartOfStructuredTrivia()))
             {
                 Language = language;
                 _nodesToRemove = new HashSet<SyntaxNode>(nodesToRemove);
@@ -118,7 +118,7 @@ namespace MetaDslx.Compiler.Syntax
                     return;
                 }
 
-                if (_residualTrivia.Count == 0 || !this.Language.SyntaxFacts.IsTriviaWithEndOfLine(_residualTrivia[_residualTrivia.Count - 1].RawKind))
+                if (_residualTrivia.Count == 0 || !this.Language.SyntaxFacts.EndsWithLineBreak(_residualTrivia[_residualTrivia.Count - 1].RawKind))
                 {
                     _residualTrivia.Add(eolTrivia.Value);
                 }
@@ -131,7 +131,7 @@ namespace MetaDslx.Compiler.Syntax
             {
                 foreach (var trivia in list)
                 {
-                    if (this.Language.SyntaxFacts.IsTriviaWithEndOfLine(trivia.RawKind))
+                    if (this.Language.SyntaxFacts.EndsWithLineBreak(trivia.RawKind))
                     {
                         return trivia;
                     }
@@ -179,8 +179,8 @@ namespace MetaDslx.Compiler.Syntax
             {
                 SyntaxToken result = token;
 
-                // only bother visiting trivia if we are removing a node in structured trivia
-                if (this.VisitIntoStructuredTrivia)
+                // only bother visiting trivia if we are removing a node in structured token or trivia
+                if (this.VisitIntoStructuredToken || this.VisitIntoStructuredTrivia)
                 {
                     result = base.VisitToken(token);
                 }
