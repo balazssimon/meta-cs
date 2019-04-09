@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace MetaDslx.Compiler.PooledObjects
 {
-    internal partial class ArrayBuilder<T>
+    public partial class ArrayBuilder<T>
     {
         /// <summary>
         /// struct enumerator used in foreach.
         /// </summary>
-        internal struct Enumerator : IEnumerator<T>
+        public struct Enumerator : IEnumerator<T>
         {
             private readonly ArrayBuilder<T> _builder;
             private int _index;

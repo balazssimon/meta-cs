@@ -34,14 +34,14 @@ namespace MetaDslx.Compiler
         /// children of this node to be visited.
         /// </summary>
         /// <param name="node">The current node that the walker is visiting.</param>
-        public override void Visit(TNode node)
+        public override void Visit(SyntaxNode node)
         {
             if (node != null)
             {
                 _recursionDepth++;
                 StackGuard.EnsureSufficientExecutionStack(_recursionDepth);
 
-                node.Accept(this);
+                ((LanguageSyntaxNode)node).Accept(this);
 
                 _recursionDepth--;
             }

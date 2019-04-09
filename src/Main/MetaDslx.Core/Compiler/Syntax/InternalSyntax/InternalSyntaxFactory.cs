@@ -108,7 +108,6 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
             return (InternalSyntaxTrivia)trivia.WithAnnotationsGreen(new[] { SyntaxAnnotation.ElasticAnnotation });
         }
 
-
         public abstract InternalSyntaxToken Token(int kind);
         public abstract InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing);
         public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing);
@@ -117,7 +116,9 @@ namespace MetaDslx.Compiler.Syntax.InternalSyntax
         public abstract InternalSyntaxToken MissingToken(int kind);
         public abstract InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing);
         public abstract InternalSyntaxTrivia Trivia(int kind, string text);
-    
+
+        public abstract string ExtractValueText(int kind, string text);
+        public abstract object ExtractValue(int kind, string text);
         /// <summary>
         /// Gets the syntax node represented the structure of this token, if any. The HasStructure property can be used to 
         /// determine if this trivia has structure.

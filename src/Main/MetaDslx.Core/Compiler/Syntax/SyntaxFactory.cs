@@ -56,6 +56,9 @@ namespace MetaDslx.Compiler.Syntax
         internal protected abstract SyntaxNode StructuredToken(SyntaxToken token);
         internal protected abstract SyntaxNode StructuredTrivia(SyntaxTrivia trivia);
 
+        public abstract string ExtractName(SyntaxNode node);
+        public abstract string ExtractName(SyntaxToken token);
+
         protected abstract SyntaxTree ParseSyntaxTreeCore(SourceText text, ParseOptions options = null, string path = "", CancellationToken cancellationToken = default(CancellationToken));
         public abstract SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes);
         public abstract SyntaxParser MakeParser(string text);

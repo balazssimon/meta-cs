@@ -10,7 +10,7 @@ namespace MetaDslx.Compiler.PooledObjects
 {
     [DebuggerDisplay("Count = {Count,nq}")]
     [DebuggerTypeProxy(typeof(ArrayBuilder<>.DebuggerProxy))]
-    internal sealed partial class ArrayBuilder<T> : IReadOnlyCollection<T>, IReadOnlyList<T>
+    public sealed partial class ArrayBuilder<T> : IReadOnlyCollection<T>, IReadOnlyList<T>
     {
         #region DebuggerProxy
 

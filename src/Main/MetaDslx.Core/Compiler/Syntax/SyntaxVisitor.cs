@@ -17,11 +17,11 @@ namespace MetaDslx.Compiler
     public abstract partial class SyntaxVisitor<TNode, TResult>
         where TNode: SyntaxNode
     {
-        public virtual TResult Visit(TNode node)
+        public virtual TResult Visit(SyntaxNode node)
         {
             if (node != null)
             {
-                return ((LanguageSyntaxNode)(SyntaxNode)node).Accept(this);
+                return ((LanguageSyntaxNode)node).Accept(this);
             }
 
             // should not come here too often so we will put this at the end of the method.
@@ -41,11 +41,11 @@ namespace MetaDslx.Compiler
     public abstract partial class SyntaxVisitor<TNode>
         where TNode : SyntaxNode
     {
-        public virtual void Visit(TNode node)
+        public virtual void Visit(SyntaxNode node)
         {
             if (node != null)
             {
-                ((LanguageSyntaxNode)(SyntaxNode)node).Accept(this);
+                ((LanguageSyntaxNode)node).Accept(this);
             }
         }
 
