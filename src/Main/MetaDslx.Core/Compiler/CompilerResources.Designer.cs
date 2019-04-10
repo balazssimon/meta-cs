@@ -775,6 +775,15 @@ namespace MetaDslx.Compiler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid model name: &apos;{0}&apos;.
+        /// </summary>
+        internal static string InvalidModelName {
+            get {
+                return ResourceManager.GetString("InvalidModelName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid module name specified in metadata module &apos;{0}&apos;: &apos;{1}&apos;.
         /// </summary>
         internal static string InvalidModuleName {

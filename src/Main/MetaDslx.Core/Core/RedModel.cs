@@ -1307,7 +1307,7 @@ namespace MetaDslx.Core
         private ConditionalWeakTable<SymbolId, MutableSymbol> symbols;
         private ThreadLocal<GreenModelUpdater> updater;
 
-        public MutableModel(string name = null, ModelVersion version = null)
+        public MutableModel(string name = null, ModelVersion version = default)
             : this(new GreenModel(new ModelId(), name, version), null)
         {
         }
@@ -2794,7 +2794,7 @@ namespace MetaDslx.Core
             throw new NotImplementedException();
         }
 
-        public MutableModel CreateModel(string name = null, ModelVersion version = null)
+        public MutableModel CreateModel(string name = null, ModelVersion version = default)
         {
             ModelId mid = new ModelId();
             MutableModel model = new MutableModel(mid, this, false, null);

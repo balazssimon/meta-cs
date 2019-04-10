@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MetaDslx.Compiler.Diagnostics.Telemetry;
 using MetaDslx.Compiler.Operations;
 using MetaDslx.Compiler.PooledObjects;
 using MetaDslx.Compiler.Text;

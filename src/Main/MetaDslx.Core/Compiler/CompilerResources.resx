@@ -633,4 +633,7 @@
   <data name="OperationMustNotBeControlFlowGraphPart" xml:space="preserve">
     <value>The provided operation must not be part of a Control Flow Graph.</value>
   </data>
+  <data name="InvalidModelName" xml:space="preserve">
+    <value>Invalid model name: '{0}'</value>
+  </data>
 </root>

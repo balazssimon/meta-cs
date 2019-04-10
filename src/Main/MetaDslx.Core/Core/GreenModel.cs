@@ -27,16 +27,14 @@ namespace MetaDslx.Core
         public abstract MutableSymbolBase CreateMutable(MutableModel model, bool creating);
     }
 
-    public sealed class ModelVersion
+    public struct ModelVersion : IEquatable<ModelVersion>, IComparable<ModelVersion>
     {
-        public static readonly ModelVersion None = new ModelVersion(0, 0, 0, 0);
+        private readonly ushort _major;
+        private readonly ushort _minor;
+        private readonly ushort _build;
+        private readonly ushort _revision;
 
-        private readonly int _major;
-        private readonly int _minor;
-        private readonly int _build;
-        private readonly int _revision;
-
-        public ModelVersion(int major, int minor, int build, int revision)
+        public ModelVersion(ushort major, ushort minor, ushort build, ushort revision)
         {
             _major = major;
             _minor = minor;
@@ -64,21 +62,21 @@ namespace MetaDslx.Core
             get { return _revision; }
         }
 
+        private ulong ToInteger()
+        {
+            return ((ulong)_major << 48) | ((ulong)_minor << 32) | ((ulong)_build << 16) | _revision;
+        }
+
         public int CompareTo(ModelVersion other)
         {
-            int cmp = this._major.CompareTo(other._major);
-            if (cmp != 0) return cmp;
-            cmp = this._minor.CompareTo(other._minor);
-            if (cmp != 0) return cmp;
-            cmp = this._build.CompareTo(other._build);
-            if (cmp != 0) return cmp;
-            cmp = this._revision.CompareTo(other._revision);
-            return cmp;
+            var left = ToInteger();
+            var right = other.ToInteger();
+            return (left == right) ? 0 : (left < right) ? -1 : +1;
         }
 
         public bool Equals(ModelVersion other)
         {
-            return this.CompareTo(other) == 0;
+            return ToInteger() == other.ToInteger();
         }
 
         public override bool Equals(object obj)
@@ -91,11 +89,51 @@ namespace MetaDslx.Core
             return ((_major & 0x000f) << 28) | ((_minor & 0x00ff) << 20) | ((_build & 0x00ff) << 12) | (_revision & 0x0fff);
         }
 
-        public override string ToString()
+        public static bool operator ==(ModelVersion left, ModelVersion right)
         {
-            return string.Format("{0}.{1}.{2}.{3}", _major, _minor, _build, _revision);
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ModelVersion left, ModelVersion right)
+        {
+            return !left.Equals(right);
+        }
+
+        public static bool operator <(ModelVersion left, ModelVersion right)
+        {
+            return left.ToInteger() < right.ToInteger();
+        }
+
+        public static bool operator <=(ModelVersion left, ModelVersion right)
+        {
+            return left.ToInteger() <= right.ToInteger();
+        }
+
+        public static bool operator >(ModelVersion left, ModelVersion right)
+        {
+            return left.ToInteger() > right.ToInteger();
+        }
+
+        public static bool operator >=(ModelVersion left, ModelVersion right)
+        {
+            return left.ToInteger() >= right.ToInteger();
+        }
+
+        /// <summary>
+        /// Converts <see cref="Version"/> to <see cref="ModelVersion"/>.
+        /// </summary>
+        /// <exception cref="InvalidCastException">Major, minor, build or revision number are less than 0 or greater than 0xFFFF.</exception>
+        public static explicit operator ModelVersion(Version version)
+        {
+            return new ModelVersion((ushort)version.Major, (ushort)version.Minor, (ushort)version.Build, (ushort)version.Revision);
+        }
+
+        public static explicit operator Version(ModelVersion version)
+        {
+            return new Version(version.Major, version.Minor, version.Build, version.Revision);
         }
     }
+
 
     public class ModelId
     {
@@ -407,7 +445,7 @@ namespace MetaDslx.Core
         {
             this.id = id;
             this.name = name;
-            this.version = version ?? ModelVersion.None;
+            this.version = version;
             this.symbols = ImmutableDictionary<SymbolId, GreenSymbol>.Empty;
             this.strongSymbols = ImmutableList<SymbolId>.Empty;
             this.lazyProperties = ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>.Empty;
@@ -424,7 +462,7 @@ namespace MetaDslx.Core
         {
             this.id = id;
             this.name = name;
-            this.version = version ?? ModelVersion.None;
+            this.version = version;
             this.symbols = symbols;
             this.strongSymbols = strongSymbols;
             this.lazyProperties = lazyProperties;
