@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Roslyn.Utilities
+namespace MetaDslx.CodeAnalysis.Utilities
 {
-    internal static class EmptyArray<T>
+    public static class EmptyArray<T>
     {
         public static readonly T[] Instance = new T[0];
     }

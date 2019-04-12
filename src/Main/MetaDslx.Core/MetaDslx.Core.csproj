@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Language\MetaDslx.CodeAnalysis.Language.csproj" />
     <ProjectReference Include="..\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj" />
   </ItemGroup>
 
