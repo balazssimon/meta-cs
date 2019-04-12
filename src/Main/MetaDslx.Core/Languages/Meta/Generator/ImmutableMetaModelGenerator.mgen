@@ -392,7 +392,7 @@ public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFa
 				[end if]
 			[end loop]
 			default:
-				throw new [Properties.CoreNs].ModelException(global::Microsoft.CodeAnalysis.Diagnostics.Location.None, new global::Microsoft.CodeAnalysis.Diagnostics.DiagnosticInfo([Properties.CoreNs].ModelErrorCode.ERR_UnknownTypeName, type));
+				throw new [Properties.CoreNs].ModelException(global::Microsoft.CodeAnalysis.Diagnostics.Location.None, new global::Microsoft.CodeAnalysis.Diagnostics.LanguageDiagnosticInfo([Properties.CoreNs].ModelErrorCode.ERR_UnknownTypeName, type));
 		}
 	}
 	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]

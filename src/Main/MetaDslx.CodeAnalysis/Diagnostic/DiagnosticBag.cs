@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis
     /// <remarks>The bag is optimized to be efficient when containing zero errors.</remarks>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     [DebuggerTypeProxy(typeof(DebuggerProxy))]
-    internal class DiagnosticBag
+    public sealed class DiagnosticBag
     {
         // The lazyBag field is populated lazily -- the first time an error is added.
         private ConcurrentQueue<Diagnostic> _lazyBag;

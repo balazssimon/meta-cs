@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core
 {
-    public class LazyEvaluationDiagnosticInfo : DiagnosticInfo
+    public class LazyEvaluationDiagnosticInfo : LanguageDiagnosticInfo
     {
+        // not serialized:
         public ImmutableArray<LazyEvalEntry> EvaluationStack { get; }
 
-        public LazyEvaluationDiagnosticInfo(ImmutableArray<LazyEvalEntry> evaluationStack, DiagnosticDescriptor descriptor, params object[] args)
-            : base(descriptor, args)
+        public LazyEvaluationDiagnosticInfo(ImmutableArray<LazyEvalEntry> evaluationStack, ErrorCode errorCode, params object[] args)
+            : base(errorCode, args)
         {
             this.EvaluationStack = evaluationStack;
         }

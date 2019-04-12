@@ -1,5 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Utilities;
+using Roslyn.Utilities;
 using MetaDslx.Languages.Meta.Symbols;
 using System;
 using System.Collections.Generic;
@@ -125,7 +125,7 @@ namespace MetaDslx.Core
 
         internal protected virtual object[] CreateRedValues()
         {
-            return SpecializedCollections.EmptyArray<object>();
+            return EmptyArray<object>.Instance;
         }
 
         internal object CreateGreenValue()
@@ -288,7 +288,7 @@ namespace MetaDslx.Core
 
         internal protected override object[] CreateRedValues()
         {
-            return lazy()?.ToArray() ?? SpecializedCollections.EmptyArray<object>();
+            return lazy()?.ToArray() ?? EmptyArray<object>.Instance;
         }
     }
 
@@ -318,7 +318,7 @@ namespace MetaDslx.Core
 
         internal protected override object[] CreateRedValues()
         {
-            return lazy().ToArray();
+            return lazy()?.ToArray() ?? EmptyArray<object>.Instance;
         }
     }
 
@@ -677,13 +677,13 @@ namespace MetaDslx.Core
 
         public void MSet(ModelProperty property, object value)
         {
-            if (property.IsCollection) throw new ModelException(Location.None, new DiagnosticInfo(ModelDiagnosticDescriptors.ERR_CannotReassignCollectionProperty, property, this));
+            if (property.IsCollection) throw new ModelException(Location.None, new LanguageDiagnosticInfo(ModelErrorCode.ERR_CannotReassignCollectionProperty, property, this));
             this.model.SetValue(this.id, property, value, this.creating);
         }
 
         public void MSetLazy(ModelProperty property, LazyValue value)
         {
-            if (property.IsCollection) throw new ModelException(value.Location, new DiagnosticInfo(ModelDiagnosticDescriptors.ERR_CannotReassignCollectionProperty, property, this));
+            if (property.IsCollection) throw new ModelException(value.Location, new LanguageDiagnosticInfo(ModelErrorCode.ERR_CannotReassignCollectionProperty, property, this));
             this.model.SetLazyValue(this.id, property, value, this.creating);
         }
 
@@ -713,19 +713,19 @@ namespace MetaDslx.Core
 
         public void MAddRange(ModelProperty property, IEnumerable<object> values)
         {
-            if (!property.IsCollection) throw new ModelException(Location.None, new DiagnosticInfo(ModelDiagnosticDescriptors.ERR_CannotAddMultipleValuesToNonCollectionProperty, property, this));
+            if (!property.IsCollection) throw new ModelException(Location.None, new LanguageDiagnosticInfo(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty, property, this));
             this.model.AddItems(this.id, property, values, this.creating);
         }
 
         public void MAddRangeLazy(ModelProperty property, LazyValue values)
         {
-            if (!property.IsCollection) throw new ModelException(values.Location, new DiagnosticInfo(ModelDiagnosticDescriptors.ERR_CannotAddMultipleValuesToNonCollectionProperty, property, this));
+            if (!property.IsCollection) throw new ModelException(values.Location, new LanguageDiagnosticInfo(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty, property, this));
             this.model.AddLazyItems(this.id, property, values, this.creating);
         }
 
         public void MAddRangeLazy(ModelProperty property, IEnumerable<LazyValue> values)
         {
-            if (!property.IsCollection) throw new ModelException(Location.None, new DiagnosticInfo(ModelDiagnosticDescriptors.ERR_CannotAddMultipleValuesToNonCollectionProperty, property, this));
+            if (!property.IsCollection) throw new ModelException(Location.None, new LanguageDiagnosticInfo(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty, property, this));
             this.model.AddLazyItems(this.id, property, values, this.creating);
         }
 
@@ -1541,7 +1541,7 @@ namespace MetaDslx.Core
         public void MergeSymbols(MutableSymbol targetSymbol, MutableSymbol partSymbol)
         {
             if (targetSymbol == partSymbol) return;
-            if (targetSymbol.MMetaClass != partSymbol.MMetaClass) throw new ModelException(Location.None, new DiagnosticInfo(ModelDiagnosticDescriptors.ERR_CannotMergeDifferentSymbols, partSymbol, targetSymbol, partSymbol.MId.SymbolInfo.MutableType, targetSymbol.MId.SymbolInfo.MutableType));
+            if (targetSymbol.MMetaClass != partSymbol.MMetaClass) throw new ModelException(Location.None, new LanguageDiagnosticInfo(ModelErrorCode.ERR_CannotMergeDifferentSymbols, partSymbol, targetSymbol, partSymbol.MId.SymbolInfo.MutableType, targetSymbol.MId.SymbolInfo.MutableType));
             ModelUpdateContext ctx = null;
             try
             {

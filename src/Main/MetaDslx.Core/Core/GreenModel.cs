@@ -812,35 +812,35 @@ namespace MetaDslx.Core
             this.redModelGroup = redModelGroup;
         }
 
-        private void MakeException(Location location, DiagnosticDescriptor descriptor, params object[] args)
+        private void MakeException(Location location, ErrorCode errorCode, params object[] args)
         {
             this.ArgsToRedMessageSerializable(args);
-            throw new ModelException(location, new DiagnosticInfo(descriptor, args));
+            throw new ModelException(location, new LanguageDiagnosticInfo(errorCode, args));
         }
 
-        private void MakeSymbolException(ImmutableArray<SymbolId> symbols, Location location, DiagnosticDescriptor descriptor, params object[] args)
+        private void MakeSymbolException(ImmutableArray<SymbolId> symbols, Location location, ErrorCode errorCode, params object[] args)
         {
             this.ArgsToRedMessageSerializable(args);
-            throw new ModelException(location, new DiagnosticInfoWithSymbols(descriptor, args, symbols.Select(sid => (ISymbol)this.redModel.ResolveSymbol(sid)).ToImmutableArray()));
+            throw new ModelException(location, new LanguageDiagnosticInfoWithSymbols(symbols.Select(sid => (ISymbol)this.redModel.ResolveSymbol(sid)).ToImmutableArray(), errorCode, args));
         }
 
-        private void MakeLazyEvalException(List<GreenLazyEvalEntry> evaluationStack, Exception innerException, LazyValue lazy, DiagnosticDescriptor descriptor, params object[] args)
+        private void MakeLazyEvalException(List<GreenLazyEvalEntry> evaluationStack, Exception innerException, LazyValue lazy, ErrorCode errorCode, params object[] args)
         {
             this.ArgsToRedMessageSerializable(args);
             if (lazy != null)
             {
                 if (lazy.Diagnostics != null)
                 {
-                    lazy.Diagnostics.Add(Diagnostic.Create(new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), descriptor, args)).WithLocation(lazy.Location));
+                    lazy.Diagnostics.Add(LanguageDiagnostic.Create(new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), errorCode, args)).WithLocation(lazy.Location));
                 }
                 else if (!lazy.IsSilent)
                 {
-                    throw new LazyEvaluationException(lazy.Location, new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), descriptor, args), innerException);
+                    throw new LazyEvaluationException(lazy.Location, new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), errorCode, args), innerException);
                 }
             }
             else
             {
-                throw new LazyEvaluationException(Location.None, new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), descriptor, args), innerException);
+                throw new LazyEvaluationException(Location.None, new LazyEvaluationDiagnosticInfo(evaluationStack.Select(e => new LazyEvalEntry(this.redModel?.ResolveSymbol(e.Symbol), e.Property)).ToImmutableArray(), errorCode, args), innerException);
             }
         }
 
@@ -851,7 +851,7 @@ namespace MetaDslx.Core
                 SymbolId sid = args[i] as SymbolId;
                 if (sid != null)
                 {
-                    ISymbol symbol = null;
+                    IMetaSymbol symbol = null;
                     if (redModelGroup != null) symbol = this.redModelGroup.ResolveSymbol(sid);
                     else symbol = this.redModel.ResolveSymbol(sid);
                     if (symbol != null)
@@ -1165,14 +1165,14 @@ namespace MetaDslx.Core
         {
             if (this.ContainsSymbol(sid))
             {
-                if (this.group != null) this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_SymbolAlreadyContainedByModelGroup, sid);
-                else this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_SymbolAlreadyContainedByModel, sid);
+                if (this.group != null) this.MakeException(Location.None, ModelErrorCode.ERR_SymbolAlreadyContainedByModelGroup, sid);
+                else this.MakeException(Location.None, ModelErrorCode.ERR_SymbolAlreadyContainedByModel, sid);
             }
             GreenModel model = this.GetModel(mid);
             if (model == null)
             {
                 Debug.Assert(false);
-                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotResolveModel, mid);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotResolveModel, mid);
             }
             if (this.group != null)
             {
@@ -1215,7 +1215,7 @@ namespace MetaDslx.Core
             if (targetSid == partSid) return;
             SymbolRef targetSymbolRef = this.ResolveSymbol(mid, targetSid, true);
             SymbolRef partSymbolRef = this.ResolveSymbol(mid, partSid, true);
-            if (targetSymbolRef == null || partSymbolRef == null) this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotMergeSymbolsResolve, partSid, targetSid);
+            if (targetSymbolRef == null || partSymbolRef == null) this.MakeException(Location.None, ModelErrorCode.ERR_CannotMergeSymbolsResolve, partSid, targetSid);
             GreenSymbol partSymbol = partSymbolRef.Symbol;
             foreach (var property in partSymbol.Properties.Keys)
             {
@@ -1247,7 +1247,7 @@ namespace MetaDslx.Core
                         }
                         else if (targetValue != partValue)
                         {
-                            this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotMergeSymbolsProperty, partSid, targetSid, property.Name, partValue, targetValue);
+                            this.MakeException(Location.None, ModelErrorCode.ERR_CannotMergeSymbolsProperty, partSid, targetSid, property.Name, partValue, targetValue);
                         }
                         this.SetValue(mid, partSid, property, true, null);
                     }
@@ -1377,8 +1377,8 @@ namespace MetaDslx.Core
             {
                 if (!this.SymbolExists((SymbolId)value))
                 {
-                    if (this.group != null) this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_SymbolCannotBeAssignedToPropertyModelGroup, value, property, sid);
-                    else this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_SymbolCannotBeAssignedToPropertyModel, value, property, sid);
+                    if (this.group != null) this.MakeException(Location.None, ModelErrorCode.ERR_SymbolCannotBeAssignedToPropertyModelGroup, value, property, sid);
+                    else this.MakeException(Location.None, ModelErrorCode.ERR_SymbolCannotBeAssignedToPropertyModel, value, property, sid);
                 }
             }
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
@@ -1408,8 +1408,8 @@ namespace MetaDslx.Core
             {
                 if (!this.SymbolExists((SymbolId)value))
                 {
-                    if (this.group != null) this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_SymbolCannotBeAddedToPropertyModelGroup, value, property, sid);
-                    else this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_SymbolCannotBeAddedToPropertyModel, value, property, sid);
+                    if (this.group != null) this.MakeException(Location.None, ModelErrorCode.ERR_SymbolCannotBeAddedToPropertyModelGroup, value, property, sid);
+                    else this.MakeException(Location.None, ModelErrorCode.ERR_SymbolCannotBeAddedToPropertyModel, value, property, sid);
                 }
             }
             SymbolRef symbolRef = this.ResolveSymbol(mid, sid, true);
@@ -1687,17 +1687,17 @@ namespace MetaDslx.Core
             {
                 if (property.IsDerived && oldValue != GreenSymbol.Unassigned)
                 {
-                    this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotReassignDerivedProperty, property, symbolRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignDerivedProperty, property, symbolRef.Id);
                     return false;
                 }
                 if (property.IsReadonly && oldValue != GreenSymbol.Unassigned)
                 {
-                    this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotReassignReadOnlyProperty, property, symbolRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignReadOnlyProperty, property, symbolRef.Id);
                     return false;
                 }
                 if (oldValue is LazyValue)
                 {
-                    this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotReassignLazyValuedProperty, property, symbolRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotReassignLazyValuedProperty, property, symbolRef.Id);
                     return false;
                 }
             }
@@ -1708,7 +1708,7 @@ namespace MetaDslx.Core
         {
             if (value == null && property.IsNonNull)
             {
-                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAssignNullToProperty, property, symbolRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignNullToProperty, property, symbolRef.Id);
                 value = null;
                 return false;
             }
@@ -1718,13 +1718,13 @@ namespace MetaDslx.Core
             }
             if ((value is SymbolId) && !property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))
             {
-                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAssignValueToProperty, value, ((SymbolId)value).SymbolInfo.MutableType, property, property.MutableTypeInfo.Type, symbolRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, ((SymbolId)value).SymbolInfo.MutableType, property, property.MutableTypeInfo.Type, symbolRef.Id);
                 value = null;
                 return false;
             }
             if (!(value is SymbolId) && !property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))
             {
-                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAssignValueToProperty, value, value.GetType(), property, property.MutableTypeInfo.Type, symbolRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, value.GetType(), property, property.MutableTypeInfo.Type, symbolRef.Id);
                 value = null;
                 return false;
             }
@@ -1737,12 +1737,12 @@ namespace MetaDslx.Core
             {
                 if (property.IsDerived)
                 {
-                    this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotChangeDerivedProperty, property, symbolRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, property, symbolRef.Id);
                     return false;
                 }
                 if (property.IsReadonly)
                 {
-                    this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotChangeReadOnlyProperty, property, symbolRef.Id);
+                    this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, property, symbolRef.Id);
                     return false;
                 }
             }
@@ -1753,7 +1753,7 @@ namespace MetaDslx.Core
         {
             if (value == null && property.IsNonNull)
             {
-                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAddNullToProperty, property, symbolRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddNullToProperty, property, symbolRef.Id);
                 value = null;
                 return false;
             }
@@ -1763,13 +1763,13 @@ namespace MetaDslx.Core
             }
             if ((value is SymbolId) && !property.MutableTypeInfo.Type.IsAssignableFrom(((SymbolId)value).SymbolInfo.MutableType))
             {
-                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAddValueToProperty, value, ((SymbolId)value).SymbolInfo.MutableType, property, property.MutableTypeInfo.Type, symbolRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, ((SymbolId)value).SymbolInfo.MutableType, property, property.MutableTypeInfo.Type, symbolRef.Id);
                 value = null;
                 return false;
             }
             if (!(value is SymbolId) && !property.MutableTypeInfo.Type.IsAssignableFrom(value.GetType()))
             {
-                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAddValueToProperty, value, value.GetType(), property, property.MutableTypeInfo.Type, symbolRef.Id);
+                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, value.GetType(), property, property.MutableTypeInfo.Type, symbolRef.Id);
                 value = null;
                 return false;
             }
@@ -1995,11 +1995,11 @@ namespace MetaDslx.Core
                 {
                     if (eqProp.IsDerived)
                     {
-                        this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotChangeDerivedProperty, eqProp, sid);
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, eqProp, sid);
                     }
                     if (eqProp.IsReadonly)
                     {
-                        this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotChangeReadOnlyProperty, eqProp, sid);
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, eqProp, sid);
                     }
                 }
             }
@@ -2011,11 +2011,11 @@ namespace MetaDslx.Core
                     {
                         if (eqProp.IsCollection)
                         {
-                            this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAddNullToProperty, eqProp, sid);
+                            this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddNullToProperty, eqProp, sid);
                         }
                         else
                         {
-                            this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAssignNullToProperty, eqProp, sid);
+                            this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignNullToProperty, eqProp, sid);
                         }
                     }
                 }
@@ -2030,11 +2030,11 @@ namespace MetaDslx.Core
                         {
                             if (eqProp.IsCollection)
                             {
-                                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAddValueToProperty, value, valueId.SymbolInfo.MutableType, eqProp, eqProp.MutableTypeInfo.Type, sid);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, valueId.SymbolInfo.MutableType, eqProp, eqProp.MutableTypeInfo.Type, sid);
                             }
                             else
                             {
-                                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAssignValueToProperty, value, valueId.SymbolInfo.MutableType, eqProp, eqProp.MutableTypeInfo.Type, sid);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, valueId.SymbolInfo.MutableType, eqProp, eqProp.MutableTypeInfo.Type, sid);
                             }
                         }
                     }
@@ -2048,11 +2048,11 @@ namespace MetaDslx.Core
                         {
                             if (eqProp.IsCollection)
                             {
-                                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAddValueToProperty, value, valueType, eqProp, eqProp.MutableTypeInfo.Type, sid);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAddValueToProperty, value, valueType, eqProp, eqProp.MutableTypeInfo.Type, sid);
                             }
                             else
                             {
-                                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotAssignValueToProperty, value, valueType, eqProp, eqProp.MutableTypeInfo.Type, sid);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_CannotAssignValueToProperty, value, valueType, eqProp, eqProp.MutableTypeInfo.Type, sid);
                             }
                         }
                     }
@@ -2153,11 +2153,11 @@ namespace MetaDslx.Core
                 {
                     if (eqProp.IsDerived)
                     {
-                        this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotChangeDerivedProperty, eqProp, sid);
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeDerivedProperty, eqProp, sid);
                     }
                     if (eqProp.IsReadonly)
                     {
-                        this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_CannotChangeReadOnlyProperty, eqProp, sid);
+                        this.MakeException(Location.None, ModelErrorCode.ERR_CannotChangeReadOnlyProperty, eqProp, sid);
                     }
                 }
             }
@@ -2261,18 +2261,18 @@ namespace MetaDslx.Core
                         {
                             if (valueRef.Symbol.Parent != sid)
                             {
-                                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_InvalidContainment, valueSid, property, sid, valueRef.Symbol.Parent);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_InvalidContainment, valueSid, property, sid, valueRef.Symbol.Parent);
                             }
                         }
                         else
                         {
                             if (valueSid == sid)
                             {
-                                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_InvalidSelfContainment, valueSid, property, sid);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_InvalidSelfContainment, valueSid, property, sid);
                             }
                             if (valueRef.Model.Id != model.Id)
                             {
-                                this.MakeException(Location.None, ModelDiagnosticDescriptors.ERR_InvalidModelContainment, valueSid, property, sid);
+                                this.MakeException(Location.None, ModelErrorCode.ERR_InvalidModelContainment, valueSid, property, sid);
                             }
                             if (symbolRef.Symbol.Parent != null)
                             {
@@ -2284,7 +2284,7 @@ namespace MetaDslx.Core
                                 {
                                     if (ids.Contains(currentId))
                                     {
-                                        this.MakeSymbolException(ids.ToImmutableArray(), Location.None, ModelDiagnosticDescriptors.ERR_CircularContainment, valueSid, property, sid);
+                                        this.MakeSymbolException(ids.ToImmutableArray(), Location.None, ModelErrorCode.ERR_CircularContainment, valueSid, property, sid);
                                     }
                                     ids.Add(currentId);
                                     if (model.Symbols.TryGetValue(currentId, out currentSymbol))
@@ -2494,7 +2494,7 @@ namespace MetaDslx.Core
             int entryIndex = this.lazyEvalStack.IndexOf(entry);
             if (entryIndex >= 0)
             {
-                this.MakeLazyEvalException(this.lazyEvalStack, null, null, ModelDiagnosticDescriptors.ERR_CircularLazyEvaluation);
+                this.MakeLazyEvalException(this.lazyEvalStack, null, null, ModelErrorCode.ERR_CircularLazyEvaluation);
             }
             try
             {
@@ -2510,7 +2510,7 @@ namespace MetaDslx.Core
                         }
                         catch (Exception ex)
                         {
-                            this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelDiagnosticDescriptors.ERR_LazyEvaluationError, ex.Message);
+                            this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                             this.SetValue(mid, sid, property, true, null);
                         }
                     }
@@ -2526,7 +2526,7 @@ namespace MetaDslx.Core
                         }
                         catch (Exception ex)
                         {
-                            this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelDiagnosticDescriptors.ERR_LazyEvaluationError, ex.Message);
+                            this.MakeLazyEvalException(this.lazyEvalStack, ex, (LazyValue)lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                         }
                     }
                     else if (lazyValue is GreenList)
@@ -2549,7 +2549,7 @@ namespace MetaDslx.Core
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyItem, ModelDiagnosticDescriptors.ERR_LazyEvaluationError, ex.Message);
+                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyItem, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                                     }
                                 }
                                 else 
@@ -2567,7 +2567,7 @@ namespace MetaDslx.Core
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyItem, ModelDiagnosticDescriptors.ERR_LazyEvaluationError, ex.Message);
+                                        this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyItem, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
                                     }
                                 }
                             }
@@ -2598,7 +2598,7 @@ namespace MetaDslx.Core
             }
             catch (Exception ex)
             {
-                this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyValue, ModelDiagnosticDescriptors.ERR_LazyEvaluationError, ex.Message);
+                this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyValue, ModelErrorCode.ERR_LazyEvaluationError, ex.Message);
             }
             return null;
         }
@@ -2620,7 +2620,7 @@ namespace MetaDslx.Core
             }
             catch (Exception ex)
             {
-                this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyValues, ModelDiagnosticDescriptors.ERR_LazyEvaluationError, ex.ToString());
+                this.MakeLazyEvalException(this.lazyEvalStack, ex, lazyValues, ModelErrorCode.ERR_LazyEvaluationError, ex.ToString());
             }
             return SpecializedCollections.EmptyEnumerable<object>();
         }

@@ -207,7 +207,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 				case "MetaParameter": return this.MetaParameter();
 				case "MetaProperty": return this.MetaProperty();
 				default:
-					throw new global::MetaDslx.Core.ModelException(global::Microsoft.CodeAnalysis.Location.None, new global::Microsoft.CodeAnalysis.DiagnosticInfo(global::MetaDslx.Core.ModelDiagnosticDescriptors.ERR_UnknownTypeName, type));
+					throw new global::MetaDslx.Core.ModelException(global::Microsoft.CodeAnalysis.Location.None, new global::Microsoft.CodeAnalysis.LanguageDiagnosticInfo(global::MetaDslx.Core.ModelErrorCode.ERR_UnknownTypeName, type));
 			}
 		}
 	

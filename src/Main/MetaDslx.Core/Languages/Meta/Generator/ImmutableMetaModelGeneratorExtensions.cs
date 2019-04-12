@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Utilities;
+﻿using Roslyn.Utilities;
 using MetaDslx.Core;
 using MetaDslx.Languages.Meta.Symbols;
 using System;

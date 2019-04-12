@@ -5604,7 +5604,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     if (!__tmp39_last) __out.AppendLine(true);
                 }
             }
-            string __tmp40_line = ".ModelException(global::Microsoft.CodeAnalysis.Diagnostics.Location.None, new global::Microsoft.CodeAnalysis.Diagnostics.DiagnosticInfo("; //395:34
+            string __tmp40_line = ".ModelException(global::Microsoft.CodeAnalysis.Diagnostics.Location.None, new global::Microsoft.CodeAnalysis.Diagnostics.LanguageDiagnosticInfo("; //395:34
             if (!string.IsNullOrEmpty(__tmp40_line))
             {
                 __out.Append(__tmp40_line);

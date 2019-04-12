@@ -1,5 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Utilities;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -12,14 +12,14 @@ namespace MetaDslx.Core
     public class ModelException : Exception
     {
         private Location location;
-        private DiagnosticInfo diagnosticInfo;
+        private LanguageDiagnosticInfo diagnosticInfo;
 
-        public ModelException(Location location, DiagnosticInfo diagnosticInfo)
+        public ModelException(Location location, LanguageDiagnosticInfo diagnosticInfo)
             : this(location, diagnosticInfo, null)
         {
         }
 
-        public ModelException(Location location, DiagnosticInfo diagnosticInfo, Exception innerException)
+        public ModelException(Location location, LanguageDiagnosticInfo diagnosticInfo, Exception innerException)
             : base(string.Format(diagnosticInfo.GetMessage()), innerException)
         {
             this.location = location;
@@ -31,7 +31,7 @@ namespace MetaDslx.Core
             get { return this.location; }
         }
 
-        public DiagnosticInfo DiagnosticInfo
+        public LanguageDiagnosticInfo LanguageDiagnosticInfo
         {
             get { return this.diagnosticInfo; }
         }
@@ -82,7 +82,7 @@ namespace MetaDslx.Core
 
         public ImmutableArray<LazyEvalEntry> EvaluationStack
         {
-            get { return ((LazyEvaluationDiagnosticInfo)this.DiagnosticInfo).EvaluationStack; }
+            get { return ((LazyEvaluationDiagnosticInfo)this.LanguageDiagnosticInfo).EvaluationStack; }
         }
     }
 

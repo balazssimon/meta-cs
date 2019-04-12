@@ -24,7 +24,7 @@ namespace Roslyn.Utilities
     /// <summary>
     /// An <see cref="ObjectWriter"/> that serializes objects to a byte stream.
     /// </summary>
-    internal sealed partial class ObjectWriter : IDisposable
+    public sealed partial class ObjectWriter : IDisposable
     {
         private readonly BinaryWriter _writer;
         private readonly CancellationToken _cancellationToken;
