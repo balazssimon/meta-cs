@@ -1,5 +1,5 @@
-﻿using MetaDslx.Compiler;
-using MetaDslx.Compiler.Utilities;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Utilities;
 using MetaDslx.Languages.Meta.Symbols;
 using System;
 using System.Collections.Generic;

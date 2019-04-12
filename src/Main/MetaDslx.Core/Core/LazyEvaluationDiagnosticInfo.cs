@@ -1,5 +1,5 @@
-﻿using MetaDslx.Compiler;
-using MetaDslx.Compiler.Diagnostics;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

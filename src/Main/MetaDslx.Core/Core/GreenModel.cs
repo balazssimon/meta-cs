@@ -1,6 +1,6 @@
-﻿using MetaDslx.Compiler;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Utilities;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Roslyn.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
