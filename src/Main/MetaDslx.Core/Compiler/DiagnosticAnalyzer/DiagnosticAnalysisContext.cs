@@ -6,6 +6,7 @@ using System.Threading;
 using MetaDslx.Compiler.FlowAnalysis;
 using MetaDslx.Compiler.Operations;
 using MetaDslx.Compiler.PooledObjects;
+using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Text;
 using MetaDslx.Core;
 
@@ -71,7 +72,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// A symbol action reports <see cref="Diagnostic"/>s about <see cref="ISymbol"/>s.
         /// </summary>
         /// <param name="action">Action to be executed for an <see cref="ISymbol"/>.</param>
-        /// <param name="symbolKinds">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches one of the <see cref="ModelSymbolInfo"/> values.</param>
+        /// <param name="symbolKinds">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches one of the <see cref="SymbolKind"/> values.</param>
         public void RegisterSymbolAction(Action<SymbolAnalysisContext> action, params ModelSymbolInfo[] symbolKinds)
         {
             this.RegisterSymbolAction(action, symbolKinds.AsImmutableOrEmpty());
@@ -82,14 +83,14 @@ namespace MetaDslx.Compiler.Diagnostics
         /// A symbol action reports <see cref="Diagnostic"/>s about <see cref="ISymbol"/>s.
         /// </summary>
         /// <param name="action">Action to be executed for an <see cref="ISymbol"/>.</param>
-        /// <param name="symbolKinds">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches one of the <see cref="ModelSymbolInfo"/> values.</param>
+        /// <param name="symbolKinds">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches one of the <see cref="SymbolKind"/> values.</param>
         public abstract void RegisterSymbolAction(Action<SymbolAnalysisContext> action, ImmutableArray<ModelSymbolInfo> symbolKinds);
 
         /// <summary>
         /// Register an action to be executed at start of semantic analysis of an <see cref="ISymbol"/> and its members with an appropriate Kind.
         /// </summary>
         /// <param name="action">Action to be executed.</param>
-        /// <param name="symbolKind">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches the given <see cref="ModelSymbolInfo"/>.</param>
+        /// <param name="symbolKind">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches the given <see cref="SymbolKind"/>.</param>
         public virtual void RegisterSymbolStartAction(Action<SymbolStartAnalysisContext> action, ModelSymbolInfo symbolKind)
         {
             throw new NotImplementedException();
@@ -335,7 +336,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// A symbol action reports <see cref="Diagnostic"/>s about <see cref="ISymbol"/>s.
         /// </summary>
         /// <param name="action">Action to be executed for an <see cref="ISymbol"/>.</param>
-        /// <param name="symbolKinds">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches one of the <see cref="ModelSymbolInfo"/> values.</param>
+        /// <param name="symbolKinds">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches one of the <see cref="SymbolKind"/> values.</param>
         public void RegisterSymbolAction(Action<SymbolAnalysisContext> action, params ModelSymbolInfo[] symbolKinds)
         {
             this.RegisterSymbolAction(action, symbolKinds.AsImmutableOrEmpty());
@@ -346,14 +347,14 @@ namespace MetaDslx.Compiler.Diagnostics
         /// A symbol action reports <see cref="Diagnostic"/>s about <see cref="ISymbol"/>s.
         /// </summary>
         /// <param name="action">Action to be executed for an <see cref="ISymbol"/>.</param>
-        /// <param name="symbolKinds">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches one of the <see cref="ModelSymbolInfo"/> values.</param>
+        /// <param name="symbolKinds">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches one of the <see cref="SymbolKind"/> values.</param>
         public abstract void RegisterSymbolAction(Action<SymbolAnalysisContext> action, ImmutableArray<ModelSymbolInfo> symbolKinds);
 
         /// <summary>
         /// Register an action to be executed at start of semantic analysis of an <see cref="ISymbol"/> and its members with an appropriate Kind.
         /// </summary>
         /// <param name="action">Action to be executed.</param>
-        /// <param name="symbolKind">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches the given <see cref="ModelSymbolInfo"/>.</param>
+        /// <param name="symbolKind">Action will be executed only if an <see cref="ISymbol"/>'s Kind matches the given <see cref="SymbolKind"/>.</param>
         public virtual void RegisterSymbolStartAction(Action<SymbolStartAnalysisContext> action, ModelSymbolInfo symbolKind)
         {
             throw new NotImplementedException();
@@ -657,7 +658,7 @@ namespace MetaDslx.Compiler.Diagnostics
     /// </summary>
     public struct SymbolAnalysisContext
     {
-        private readonly ISymbol _symbol;
+        private readonly ISymbol0 _symbol;
         private readonly Compilation _compilation;
         private readonly AnalyzerOptions _options;
         private readonly Action<Diagnostic> _reportDiagnostic;
@@ -667,7 +668,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <summary>
         /// <see cref="ISymbol"/> that is the subject of the analysis.
         /// </summary>
-        public ISymbol Symbol { get { return _symbol; } }
+        public ISymbol0 Symbol { get { return _symbol; } }
 
         /// <summary>
         /// <see cref="CodeAnalysis.Compilation"/> containing the <see cref="ISymbol"/>.
@@ -686,7 +687,7 @@ namespace MetaDslx.Compiler.Diagnostics
 
         internal Func<Diagnostic, bool> IsSupportedDiagnostic => _isSupportedDiagnostic;
 
-        public SymbolAnalysisContext(ISymbol symbol, Compilation compilation, AnalyzerOptions options, Action<Diagnostic> reportDiagnostic, Func<Diagnostic, bool> isSupportedDiagnostic, CancellationToken cancellationToken)
+        public SymbolAnalysisContext(ISymbol0 symbol, Compilation compilation, AnalyzerOptions options, Action<Diagnostic> reportDiagnostic, Func<Diagnostic, bool> isSupportedDiagnostic, CancellationToken cancellationToken)
         {
             _symbol = symbol;
             _compilation = compilation;
@@ -719,7 +720,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <summary>
         /// <see cref="ISymbol"/> that is the subject of the analysis.
         /// </summary>
-        public ISymbol Symbol { get; }
+        public ISymbol0 Symbol { get; }
 
         /// <summary>
         /// <see cref="CodeAnalysis.Compilation"/> containing the <see cref="ISymbol"/>.
@@ -736,7 +737,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// </summary>
         public CancellationToken CancellationToken { get; }
 
-        public SymbolStartAnalysisContext(ISymbol symbol, Compilation compilation, AnalyzerOptions options, CancellationToken cancellationToken)
+        public SymbolStartAnalysisContext(ISymbol0 symbol, Compilation compilation, AnalyzerOptions options, CancellationToken cancellationToken)
         {
             Symbol = symbol;
             Compilation = compilation;
@@ -843,7 +844,7 @@ namespace MetaDslx.Compiler.Diagnostics
     public abstract class CodeBlockStartAnalysisContext<TLanguageKindEnum> where TLanguageKindEnum : struct
     {
         private readonly SyntaxNode _codeBlock;
-        private readonly ISymbol _owningSymbol;
+        private readonly ISymbol0 _owningSymbol;
         private readonly SemanticModel _semanticModel;
         private readonly AnalyzerOptions _options;
         private readonly CancellationToken _cancellationToken;
@@ -856,7 +857,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <summary>
         /// <see cref="ISymbol"/> for which the code block provides a definition or value.
         /// </summary>
-        public ISymbol OwningSymbol { get { return _owningSymbol; } }
+        public ISymbol0 OwningSymbol { get { return _owningSymbol; } }
 
         /// <summary>
         /// <see cref="CodeAnalysis.SemanticModel"/> that can provide semantic information about the <see cref="SyntaxNode"/>s in the code block.
@@ -873,7 +874,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// </summary>
         public CancellationToken CancellationToken { get { return _cancellationToken; } }
 
-        protected CodeBlockStartAnalysisContext(SyntaxNode codeBlock, ISymbol owningSymbol, SemanticModel semanticModel, AnalyzerOptions options, CancellationToken cancellationToken)
+        protected CodeBlockStartAnalysisContext(SyntaxNode codeBlock, ISymbol0 owningSymbol, SemanticModel semanticModel, AnalyzerOptions options, CancellationToken cancellationToken)
         {
             _codeBlock = codeBlock;
             _owningSymbol = owningSymbol;
@@ -918,7 +919,7 @@ namespace MetaDslx.Compiler.Diagnostics
     public struct CodeBlockAnalysisContext
     {
         private readonly SyntaxNode _codeBlock;
-        private readonly ISymbol _owningSymbol;
+        private readonly ISymbol0 _owningSymbol;
         private readonly SemanticModel _semanticModel;
         private readonly AnalyzerOptions _options;
         private readonly Action<Diagnostic> _reportDiagnostic;
@@ -933,7 +934,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <summary>
         /// <see cref="ISymbol"/> for which the code block provides a definition or value.
         /// </summary>
-        public ISymbol OwningSymbol { get { return _owningSymbol; } }
+        public ISymbol0 OwningSymbol { get { return _owningSymbol; } }
 
         /// <summary>
         /// <see cref="CodeAnalysis.SemanticModel"/> that can provide semantic information about the <see cref="SyntaxNode"/>s in the code block.
@@ -950,7 +951,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// </summary>
         public CancellationToken CancellationToken { get { return _cancellationToken; } }
 
-        public CodeBlockAnalysisContext(SyntaxNode codeBlock, ISymbol owningSymbol, SemanticModel semanticModel, AnalyzerOptions options, Action<Diagnostic> reportDiagnostic, Func<Diagnostic, bool> isSupportedDiagnostic, CancellationToken cancellationToken)
+        public CodeBlockAnalysisContext(SyntaxNode codeBlock, ISymbol0 owningSymbol, SemanticModel semanticModel, AnalyzerOptions options, Action<Diagnostic> reportDiagnostic, Func<Diagnostic, bool> isSupportedDiagnostic, CancellationToken cancellationToken)
         {
             _codeBlock = codeBlock;
             _owningSymbol = owningSymbol;
@@ -991,7 +992,7 @@ namespace MetaDslx.Compiler.Diagnostics
     public abstract class OperationBlockStartAnalysisContext
     {
         private readonly ImmutableArray<IOperation> _operationBlocks;
-        private readonly ISymbol _owningSymbol;
+        private readonly ISymbol0 _owningSymbol;
         private readonly Compilation _compilation;
         private readonly AnalyzerOptions _options;
         private readonly Func<IOperation, ControlFlowGraph> _getControlFlowGraphOpt;
@@ -1008,7 +1009,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <summary>
         /// <see cref="ISymbol"/> for which the <see cref="OperationBlocks"/> provides a definition or value.
         /// </summary>
-        public ISymbol OwningSymbol => _owningSymbol;
+        public ISymbol0 OwningSymbol => _owningSymbol;
 
         /// <summary>
         /// <see cref="CodeAnalysis.Compilation"/> containing the <see cref="OperationBlocks"/>.
@@ -1027,7 +1028,7 @@ namespace MetaDslx.Compiler.Diagnostics
 
         protected OperationBlockStartAnalysisContext(
             ImmutableArray<IOperation> operationBlocks,
-            ISymbol owningSymbol,
+            ISymbol0 owningSymbol,
             Compilation compilation,
             AnalyzerOptions options,
             CancellationToken cancellationToken)
@@ -1042,7 +1043,7 @@ namespace MetaDslx.Compiler.Diagnostics
 
         internal OperationBlockStartAnalysisContext(
             ImmutableArray<IOperation> operationBlocks,
-            ISymbol owningSymbol,
+            ISymbol0 owningSymbol,
             Compilation compilation,
             AnalyzerOptions options,
             Func<IOperation, ControlFlowGraph> getControlFlowGraph,
@@ -1111,7 +1112,7 @@ namespace MetaDslx.Compiler.Diagnostics
     public struct OperationBlockAnalysisContext
     {
         private readonly ImmutableArray<IOperation> _operationBlocks;
-        private readonly ISymbol _owningSymbol;
+        private readonly ISymbol0 _owningSymbol;
         private readonly Compilation _compilation;
         private readonly AnalyzerOptions _options;
         private readonly Action<Diagnostic> _reportDiagnostic;
@@ -1130,7 +1131,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <summary>
         /// <see cref="ISymbol"/> for which the <see cref="OperationBlocks"/> provides a definition or value.
         /// </summary>
-        public ISymbol OwningSymbol => _owningSymbol;
+        public ISymbol0 OwningSymbol => _owningSymbol;
 
         /// <summary>
         /// <see cref="CodeAnalysis.Compilation"/> containing the <see cref="OperationBlocks"/>.
@@ -1149,7 +1150,7 @@ namespace MetaDslx.Compiler.Diagnostics
 
         public OperationBlockAnalysisContext(
             ImmutableArray<IOperation> operationBlocks,
-            ISymbol owningSymbol,
+            ISymbol0 owningSymbol,
             Compilation compilation,
             AnalyzerOptions options,
             Action<Diagnostic> reportDiagnostic,
@@ -1168,7 +1169,7 @@ namespace MetaDslx.Compiler.Diagnostics
 
         internal OperationBlockAnalysisContext(
             ImmutableArray<IOperation> operationBlocks,
-            ISymbol owningSymbol,
+            ISymbol0 owningSymbol,
             Compilation compilation,
             AnalyzerOptions options,
             Action<Diagnostic> reportDiagnostic,
@@ -1290,7 +1291,7 @@ namespace MetaDslx.Compiler.Diagnostics
     public struct SyntaxNodeAnalysisContext
     {
         private readonly SyntaxNode _node;
-        private readonly ISymbol _containingSymbol;
+        private readonly ISymbol0 _containingSymbol;
         private readonly SemanticModel _semanticModel;
         private readonly AnalyzerOptions _options;
         private readonly Action<Diagnostic> _reportDiagnostic;
@@ -1305,8 +1306,8 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <summary>
         /// <see cref="ISymbol"/> for the declaration containing the syntax node.
         /// </summary>
-        public ISymbol ContainingSymbol => _containingSymbol;
-
+        public ISymbol0 ContainingSymbol => _containingSymbol;
+        
         /// <summary>
         /// <see cref="CodeAnalysis.SemanticModel"/> that can provide semantic information about the <see cref="SyntaxNode"/>.
         /// </summary>
@@ -1327,7 +1328,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// </summary>
         public CancellationToken CancellationToken => _cancellationToken;
 
-        public SyntaxNodeAnalysisContext(SyntaxNode node, ISymbol containingSymbol, SemanticModel semanticModel, AnalyzerOptions options, Action<Diagnostic> reportDiagnostic, Func<Diagnostic, bool> isSupportedDiagnostic, CancellationToken cancellationToken)
+        public SyntaxNodeAnalysisContext(SyntaxNode node, ISymbol0 containingSymbol, SemanticModel semanticModel, AnalyzerOptions options, Action<Diagnostic> reportDiagnostic, Func<Diagnostic, bool> isSupportedDiagnostic, CancellationToken cancellationToken)
         {
             _node = node;
             _containingSymbol = containingSymbol;
@@ -1364,7 +1365,7 @@ namespace MetaDslx.Compiler.Diagnostics
     public struct OperationAnalysisContext
     {
         private readonly IOperation _operation;
-        private readonly ISymbol _containingSymbol;
+        private readonly ISymbol0 _containingSymbol;
         private readonly Compilation _compilation;
         private readonly AnalyzerOptions _options;
         private readonly Action<Diagnostic> _reportDiagnostic;
@@ -1380,7 +1381,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// <summary>
         /// <see cref="ISymbol"/> for the declaration containing the operation.
         /// </summary>
-        public ISymbol ContainingSymbol => _containingSymbol;
+        public ISymbol0 ContainingSymbol => _containingSymbol;
 
         /// <summary>
         /// <see cref="CodeAnalysis.Compilation"/> containing the <see cref="IOperation"/>.
@@ -1399,7 +1400,7 @@ namespace MetaDslx.Compiler.Diagnostics
 
         public OperationAnalysisContext(
             IOperation operation,
-            ISymbol containingSymbol,
+            ISymbol0 containingSymbol,
             Compilation compilation,
             AnalyzerOptions options,
             Action<Diagnostic> reportDiagnostic,
@@ -1418,7 +1419,7 @@ namespace MetaDslx.Compiler.Diagnostics
 
         internal OperationAnalysisContext(
             IOperation operation,
-            ISymbol containingSymbol,
+            ISymbol0 containingSymbol,
             Compilation compilation,
             AnalyzerOptions options,
             Action<Diagnostic> reportDiagnostic,

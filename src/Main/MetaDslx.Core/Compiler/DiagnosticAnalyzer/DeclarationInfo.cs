@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using MetaDslx.Core;
+using MetaDslx.Compiler.Symbols;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
@@ -13,9 +13,9 @@ namespace MetaDslx.Compiler
     {
         private readonly SyntaxNode _declaredNode;
         private readonly ImmutableArray<SyntaxNode> _executableCodeBlocks;
-        private readonly ISymbol _declaredSymbol;
+        private readonly ISymbol0 _declaredSymbol;
 
-        internal DeclarationInfo(SyntaxNode declaredNode, ImmutableArray<SyntaxNode> executableCodeBlocks, ISymbol declaredSymbol)
+        internal DeclarationInfo(SyntaxNode declaredNode, ImmutableArray<SyntaxNode> executableCodeBlocks, ISymbol0 declaredSymbol)
         {
             Debug.Assert(declaredNode != null);
             Debug.Assert(!executableCodeBlocks.IsDefault);
@@ -42,6 +42,6 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Symbol declared by this declaration.
         /// </summary>
-        public ISymbol DeclaredSymbol => _declaredSymbol;
+        public ISymbol0 DeclaredSymbol => _declaredSymbol;
     }
 }

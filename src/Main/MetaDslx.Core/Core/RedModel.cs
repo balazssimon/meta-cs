@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Core
 {
-    public interface ISymbol
+    public interface IMetaSymbol
     {
         MetaModel MMetaModel { get; }
         MetaClass MMetaClass { get; }
@@ -21,15 +21,15 @@ namespace MetaDslx.Core
         IModel MModel { get; }
 
         string MName { get; }
-        ISymbol MType { get; }
+        IMetaSymbol MType { get; }
         bool MIsNamespace { get; }
         bool MIsType { get; }
         bool MIsNamedType { get; }
         bool MIsScope { get; }
         bool MIsLocalScope { get; }
 
-        ISymbol MParent { get; }
-        IReadOnlyList<ISymbol> MChildren { get; }
+        IMetaSymbol MParent { get; }
+        IReadOnlyList<IMetaSymbol> MChildren { get; }
 
         ImmutableList<ModelProperty> MProperties { get; }
         ImmutableList<ModelProperty> MAllProperties { get; }
@@ -39,10 +39,10 @@ namespace MetaDslx.Core
         object MGet(ModelProperty property);
         bool MHasConcreteValue(ModelProperty property);
         bool MIsSet(ModelProperty property);
-        IReadOnlyList<ISymbol> MGetImports();
-        IReadOnlyList<ISymbol> MGetBases();
-        IReadOnlyList<ISymbol> MGetAllBases();
-        IReadOnlyList<ISymbol> MGetMembers();
+        IReadOnlyList<IMetaSymbol> MGetImports();
+        IReadOnlyList<IMetaSymbol> MGetBases();
+        IReadOnlyList<IMetaSymbol> MGetAllBases();
+        IReadOnlyList<IMetaSymbol> MGetMembers();
     }
 
     public interface IModel
@@ -52,7 +52,7 @@ namespace MetaDslx.Core
         ModelVersion Version { get; }
     }
 
-    public interface ImmutableSymbol : ISymbol
+    public interface ImmutableSymbol : IMetaSymbol
     {
         new ImmutableModel MModel { get; }
         new ImmutableSymbol MParent { get; }
@@ -64,7 +64,7 @@ namespace MetaDslx.Core
         MutableSymbol ToMutable(MutableModel mutableModel);
     }
 
-    public interface MutableSymbol : ISymbol
+    public interface MutableSymbol : IMetaSymbol
     {
         bool MIsReadOnly { get; }
         new MutableModel MModel { get; }
@@ -381,17 +381,17 @@ namespace MetaDslx.Core
         public abstract MetaClass MMetaClass { get; }
 
         public ImmutableModel MModel { get { return this.model; } }
-        IModel ISymbol.MModel { get { return this.MModel; } }
+        IModel IMetaSymbol.MModel { get { return this.MModel; } }
         public ImmutableSymbol MParent { get { return this.model.MParent(this.id); } }
         public ImmutableModelList<ImmutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
 
-        ISymbol ISymbol.MParent { get { return this.model.MParent(this.id); } }
-        IReadOnlyList<ISymbol> ISymbol.MChildren { get { return this.model.MChildren(this.id); } }
+        IMetaSymbol IMetaSymbol.MParent { get { return this.model.MParent(this.id); } }
+        IReadOnlyList<IMetaSymbol> IMetaSymbol.MChildren { get { return this.model.MChildren(this.id); } }
 
-        public IReadOnlyList<ISymbol> MGetImports() { return this.model.MGetImports(this.id); }
-        public IReadOnlyList<ISymbol> MGetBases() { return this.model.MGetBases(this.id); }
-        public IReadOnlyList<ISymbol> MGetAllBases() { return this.model.MGetAllBases(this.id); }
-        public IReadOnlyList<ISymbol> MGetMembers() { return this.model.MGetMembers(this.id); }
+        public IReadOnlyList<IMetaSymbol> MGetImports() { return this.model.MGetImports(this.id); }
+        public IReadOnlyList<IMetaSymbol> MGetBases() { return this.model.MGetBases(this.id); }
+        public IReadOnlyList<IMetaSymbol> MGetAllBases() { return this.model.MGetAllBases(this.id); }
+        public IReadOnlyList<IMetaSymbol> MGetMembers() { return this.model.MGetMembers(this.id); }
 
         public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -444,7 +444,7 @@ namespace MetaDslx.Core
         public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
         public bool MIsLocalScope { get { return this.id.SymbolInfo.IsLocalScope; } }
 
-        ISymbol ISymbol.MType
+        IMetaSymbol IMetaSymbol.MType
         {
             get
             {
@@ -555,17 +555,17 @@ namespace MetaDslx.Core
         public abstract MetaClass MMetaClass { get; }
 
         public MutableModel MModel { get { return this.model; } }
-        IModel ISymbol.MModel { get { return this.MModel; } }
+        IModel IMetaSymbol.MModel { get { return this.MModel; } }
         public MutableSymbol MParent { get { return this.model.MParent(this.id); } }
         public ImmutableModelList<MutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
 
-        ISymbol ISymbol.MParent { get { return this.model.MParent(this.id); } }
-        IReadOnlyList<ISymbol> ISymbol.MChildren { get { return this.model.MChildren(this.id); } }
+        IMetaSymbol IMetaSymbol.MParent { get { return this.model.MParent(this.id); } }
+        IReadOnlyList<IMetaSymbol> IMetaSymbol.MChildren { get { return this.model.MChildren(this.id); } }
 
-        public IReadOnlyList<ISymbol> MGetImports() { return this.model.MGetImports(this); }
-        public IReadOnlyList<ISymbol> MGetBases() { return this.model.MGetBases(this); }
-        public IReadOnlyList<ISymbol> MGetAllBases() { return this.model.MGetAllBases(this); }
-        public IReadOnlyList<ISymbol> MGetMembers() { return this.model.MGetMembers(this); }
+        public IReadOnlyList<IMetaSymbol> MGetImports() { return this.model.MGetImports(this); }
+        public IReadOnlyList<IMetaSymbol> MGetBases() { return this.model.MGetBases(this); }
+        public IReadOnlyList<IMetaSymbol> MGetAllBases() { return this.model.MGetAllBases(this); }
+        public IReadOnlyList<IMetaSymbol> MGetMembers() { return this.model.MGetMembers(this); }
 
         public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -638,7 +638,7 @@ namespace MetaDslx.Core
         public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
         public bool MIsLocalScope { get { return this.id.SymbolInfo.IsLocalScope; } }
 
-        ISymbol ISymbol.MType
+        IMetaSymbol IMetaSymbol.MType
         {
             get
             {

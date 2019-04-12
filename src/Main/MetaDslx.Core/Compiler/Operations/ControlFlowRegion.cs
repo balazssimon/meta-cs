@@ -3,8 +3,8 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.Compiler.Operations;
+using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Utilities;
-using MetaDslx.Core;
 
 namespace MetaDslx.Compiler.FlowAnalysis
 {
@@ -28,7 +28,7 @@ namespace MetaDslx.Compiler.FlowAnalysis
         /// Target exception type for <see cref="ControlFlowRegionKind.Filter"/>, <see cref="ControlFlowRegionKind.Catch"/>, 
         /// <see cref="ControlFlowRegionKind.FilterAndHandler "/>
         /// </summary>
-        public ISymbol ExceptionType { get; }
+        public ITypeSymbol ExceptionType { get; }
 
         /// <summary>
         /// Ordinal (<see cref="BasicBlock.Ordinal"/>) of the first <see cref="BasicBlock"/> within the region. 
@@ -48,12 +48,12 @@ namespace MetaDslx.Compiler.FlowAnalysis
         /// <summary>
         /// Locals for which this region represent the life-time.
         /// </summary>
-        public ImmutableArray<ISymbol> Locals { get; }
+        public ImmutableArray<ILocalSymbol> Locals { get; }
 
         /// <summary>
         /// Local functions declared within the region.
         /// </summary>
-        public ImmutableArray<ISymbol> LocalFunctions { get; }
+        public ImmutableArray<IMethodSymbol> LocalFunctions { get; }
 
         /// <summary>
         /// Capture Ids used for intermediate results within the region.
@@ -62,10 +62,10 @@ namespace MetaDslx.Compiler.FlowAnalysis
 
         internal ControlFlowRegion(ControlFlowRegionKind kind, int firstBlockOrdinal, int lastBlockOrdinal,
                         ImmutableArray<ControlFlowRegion> nestedRegions,
-                        ImmutableArray<ISymbol> locals,
-                        ImmutableArray<ISymbol> methods,
+                        ImmutableArray<ILocalSymbol> locals,
+                        ImmutableArray<IMethodSymbol> methods,
                         ImmutableArray<CaptureId> captureIds,
-                        ISymbol exceptionType,
+                        ITypeSymbol exceptionType,
                         ControlFlowRegion enclosingRegion)
         {
             Debug.Assert(firstBlockOrdinal >= 0);

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using MetaDslx.Compiler.Operations;
+using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Utilities;
 using MetaDslx.Core;
 
@@ -31,7 +32,7 @@ namespace MetaDslx.Compiler
         /// <summary>
         /// Result type of the operation, or null if the operation does not produce a result.
         /// </summary>
-        ISymbol Type { get; }
+        ITypeSymbol Type { get; }
 
         /// <summary>
         /// If the operation is an expression that evaluates to a constant value, <see cref="Optional{Object}.HasValue"/> is true and <see cref="Optional{Object}.Value"/> is the value of the expression. Otherwise, <see cref="Optional{Object}.HasValue"/> is false.

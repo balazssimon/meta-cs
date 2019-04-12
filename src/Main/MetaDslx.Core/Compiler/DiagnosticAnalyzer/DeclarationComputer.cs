@@ -5,8 +5,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Utilities;
-using MetaDslx.Core;
 
 namespace MetaDslx.Compiler
 {
@@ -34,7 +34,7 @@ namespace MetaDslx.Compiler
             return GetDeclarationInfo(model, node, getSymbol, executableCodeBlocks.AsEnumerable(), cancellationToken);
         }
 
-        private static ISymbol GetDeclaredSymbol(SemanticModel model, SyntaxNode node, bool getSymbol, CancellationToken cancellationToken)
+        private static ISymbol0 GetDeclaredSymbol(SemanticModel model, SyntaxNode node, bool getSymbol, CancellationToken cancellationToken)
         {
             if (!getSymbol)
             {
@@ -46,7 +46,6 @@ namespace MetaDslx.Compiler
             // For namespace declarations, GetDeclaredSymbol returns a compilation scoped namespace symbol,
             // which includes declarations across the compilation, including those in referenced assemblies.
             // However, we are only interested in the namespace symbol scoped to the compilation's source assembly.
-            /* TODO:MetaDslx
             var namespaceSymbol = declaredSymbol as INamespaceSymbol;
             if (namespaceSymbol != null && namespaceSymbol.ConstituentNamespaces.Length > 1)
             {
@@ -58,7 +57,7 @@ namespace MetaDslx.Compiler
                     declaredSymbol = assemblyScopedNamespaceSymbol;
                 }
             }
-            */
+
             return declaredSymbol;
         }
     }

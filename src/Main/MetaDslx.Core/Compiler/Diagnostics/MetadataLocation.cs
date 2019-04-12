@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 // Changed for MetaDslx.
 
+using MetaDslx.Compiler.Symbols;
 using MetaDslx.Core;
 using System;
 using System.Diagnostics;
@@ -12,9 +13,9 @@ namespace MetaDslx.Compiler
     /// </summary>
     internal sealed class MetadataLocation : Location, IEquatable<MetadataLocation>
     {
-        private readonly ISymbol _module;
+        private readonly IModuleSymbol _module;
 
-        internal MetadataLocation(ISymbol module)
+        internal MetadataLocation(IModuleSymbol module)
         {
             Debug.Assert(module != null);
             _module = module;
@@ -25,7 +26,7 @@ namespace MetaDslx.Compiler
             get { return LocationKind.MetadataFile; }
         }
 
-        public override ISymbol MetadataModule
+        public override IModuleSymbol MetadataModule
         {
             get { return _module; }
         }

@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using MetaDslx.Compiler.Utilities;
 using System;
-using MetaDslx.Core;
 using MetaDslx.Compiler.Diagnostics;
+using MetaDslx.Compiler.Symbols;
 
 namespace MetaDslx.Compiler.Errors
 {
@@ -20,21 +20,21 @@ namespace MetaDslx.Compiler.Errors
         private readonly ImmutableArray<Location> _additionalLocations;
 
         internal DefaultDiagnosticInfo(DiagnosticDescriptor descriptor)
-            : this(descriptor, Array.Empty<object>(), ImmutableArray<ISymbol>.Empty, ImmutableArray<Location>.Empty)
+            : this(descriptor, Array.Empty<object>(), ImmutableArray<ISymbol0>.Empty, ImmutableArray<Location>.Empty)
         {
         }
 
         internal DefaultDiagnosticInfo(DiagnosticDescriptor descriptor, params object[] args)
-            : this(descriptor, args, ImmutableArray<ISymbol>.Empty, ImmutableArray<Location>.Empty)
+            : this(descriptor, args, ImmutableArray<ISymbol0>.Empty, ImmutableArray<Location>.Empty)
         {
         }
 
-        internal DefaultDiagnosticInfo(DiagnosticDescriptor descriptor, ImmutableArray<ISymbol> symbols, object[] args)
+        internal DefaultDiagnosticInfo(DiagnosticDescriptor descriptor, ImmutableArray<ISymbol0> symbols, object[] args)
             : this(descriptor, args, symbols, ImmutableArray<Location>.Empty)
         {
         }
 
-        internal DefaultDiagnosticInfo(DiagnosticDescriptor descriptor, object[] args, ImmutableArray<ISymbol> symbols, ImmutableArray<Location> additionalLocations)
+        internal DefaultDiagnosticInfo(DiagnosticDescriptor descriptor, object[] args, ImmutableArray<ISymbol0> symbols, ImmutableArray<Location> additionalLocations)
             : base(descriptor, args, symbols)
         {
             _additionalLocations = additionalLocations;

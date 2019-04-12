@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using MetaDslx.Core;
+
+using MetaDslx.Compiler.Symbols;
 
 namespace MetaDslx.Compiler.FlowAnalysis
 {
@@ -23,7 +24,7 @@ namespace MetaDslx.Compiler.FlowAnalysis
         /// <summary>
         /// Symbol of the anonymous function. 
         /// </summary>
-        ISymbol Symbol { get; }
+        IMethodSymbol Symbol { get; }
     }
 }
 

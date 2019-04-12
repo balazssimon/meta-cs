@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using MetaDslx.Core;
+using MetaDslx.Compiler.Symbols;
 using System;
 
-namespace MetaDslx.Compiler
+namespace MetaDslx.Compiler.Operations
 {
     /// <summary>
     /// Represents the common, language-agnostic elements of a conversion.
@@ -26,7 +26,7 @@ namespace MetaDslx.Compiler
 
         private readonly ConversionKind _conversionKind;
 
-        internal CommonConversion(bool exists, bool isIdentity, bool isNumeric, bool isReference, bool isImplicit, ISymbol methodSymbol)
+        internal CommonConversion(bool exists, bool isIdentity, bool isNumeric, bool isReference, bool isImplicit, IMethodSymbol methodSymbol)
         {
             _conversionKind = (exists ? ConversionKind.Exists : ConversionKind.None) |
                               (isIdentity ? ConversionKind.IsIdentity : ConversionKind.None) |
@@ -68,6 +68,6 @@ namespace MetaDslx.Compiler
         /// Returns the method used to perform the conversion for a user-defined conversion if <see cref="IsUserDefined"/> is true.
         /// Otherwise, returns null.
         /// </summary>
-        public ISymbol MethodSymbol { get; }
+        public IMethodSymbol MethodSymbol { get; }
     }
 }

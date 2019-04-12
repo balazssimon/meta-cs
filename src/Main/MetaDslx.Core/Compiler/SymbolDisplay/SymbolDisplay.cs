@@ -4,7 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.Compiler.PooledObjects;
-using MetaDslx.Core;
+using MetaDslx.Compiler.Symbols;
 
 namespace MetaDslx.Compiler.Diagnostics
 {
@@ -28,7 +28,7 @@ namespace MetaDslx.Compiler.Diagnostics
         /// The return value is not expected to be syntactically valid C#.
         /// </remarks>
         public static string ToDisplayString(
-            ISymbol symbol,
+            ISymbol0 symbol,
             SymbolDisplayFormat format = null)
         {
             return symbol.MName ?? string.Empty;
@@ -36,5 +36,9 @@ namespace MetaDslx.Compiler.Diagnostics
 
     }
 
-    public class SymbolDisplayFormat { }
+    public class SymbolDisplayFormat
+    {
+        public static readonly SymbolDisplayFormat Default = new SymbolDisplayFormat();
+        public static readonly SymbolDisplayFormat MinimallyQualifiedFormat = new SymbolDisplayFormat();
+    }
 }

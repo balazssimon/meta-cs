@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using MetaDslx.Core;
+using MetaDslx.Compiler.Symbols;
 using System.Collections.Immutable;
 
 namespace MetaDslx.Compiler.Operations
@@ -26,7 +26,7 @@ namespace MetaDslx.Compiler.Operations
         /// <summary>
         /// Local declarations contained within the block.
         /// </summary>
-        ImmutableArray<ISymbol> Locals { get; }
+        ImmutableArray<ILocalSymbol> Locals { get; }
     }
 }
 

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using MetaDslx.Compiler.Symbols;
-using MetaDslx.Core;
 using System;
 using System.Collections.Immutable;
 
@@ -16,13 +15,13 @@ namespace MetaDslx.Compiler.Diagnostics
     {
         private readonly Lazy<ImmutableArray<SyntaxReference>> _lazyCachedDeclaringReferences;
 
-        public SymbolDeclaredCompilationEvent(Compilation compilation, ISymbol symbol) : base(compilation)
+        public SymbolDeclaredCompilationEvent(Compilation compilation, ISymbol0 symbol) : base(compilation)
         {
             this.Symbol = symbol;
             this._lazyCachedDeclaringReferences = new Lazy<ImmutableArray<SyntaxReference>>(() => symbol.DeclaringSyntaxReferences());
         }
 
-        public SymbolDeclaredCompilationEvent(Compilation compilation, ISymbol symbol, Lazy<SemanticModel> lazySemanticModel) : this(compilation, symbol)
+        public SymbolDeclaredCompilationEvent(Compilation compilation, ISymbol0 symbol, Lazy<SemanticModel> lazySemanticModel) : this(compilation, symbol)
         {
             _lazySemanticModel = lazySemanticModel;
         }
@@ -32,7 +31,7 @@ namespace MetaDslx.Compiler.Diagnostics
             _semanticModel = newSemanticModel;
         }
 
-        public ISymbol Symbol { get; }
+        public ISymbol0 Symbol { get; }
 
         // PERF: We avoid allocations in re-computing syntax references for declared symbol during event processing by caching them directly on this member.
         public ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _lazyCachedDeclaringReferences.Value;
@@ -89,10 +88,10 @@ namespace MetaDslx.Compiler.Diagnostics
 
         public override string ToString()
         {
-            var name = this.Symbol.MName;
+            var name = this.Symbol.Name;
             if (name == "") name = "<empty>";
             var loc = DeclaringSyntaxReferences.Length != 0 ? " @ " + String.Join(", ", System.Linq.Enumerable.Select(DeclaringSyntaxReferences, r => r.GetLocation().GetLineSpan())) : null;
-            return "SymbolDeclaredCompilationEvent(" + name + ": " + this.Symbol.MMetaClass.MName + loc + ")";
+            return "SymbolDeclaredCompilationEvent(" + name + " " + this.Symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat) + loc + ")";
         }
     }
 }

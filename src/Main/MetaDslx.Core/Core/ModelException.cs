@@ -39,16 +39,16 @@ namespace MetaDslx.Core
 
     public sealed class LazyEvalEntry : IEquatable<LazyEvalEntry>
     {
-        private ISymbol symbol;
+        private IMetaSymbol symbol;
         private ModelProperty property;
 
-        public LazyEvalEntry(ISymbol symbol, ModelProperty property)
+        public LazyEvalEntry(IMetaSymbol symbol, ModelProperty property)
         {
             this.symbol = symbol;
             this.property = property;
         }
 
-        public ISymbol Symbol { get { return this.symbol; } }
+        public IMetaSymbol Symbol { get { return this.symbol; } }
         public ModelProperty Property { get { return this.property; } }
 
         public bool Equals(LazyEvalEntry other)

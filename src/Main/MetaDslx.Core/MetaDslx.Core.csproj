@@ -23,6 +23,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CompilerResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Compiler\LanguageCompilerResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LanguageCompilerResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +35,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>CompilerResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Compiler\LanguageCompilerResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>LanguageCompilerResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   

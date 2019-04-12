@@ -7,8 +7,8 @@ using System.Linq;
 using System.Threading;
 using MetaDslx.Compiler.ErrorReporting;
 using MetaDslx.Compiler.Operations;
+using MetaDslx.Compiler.Symbols;
 using MetaDslx.Compiler.Utilities;
-using MetaDslx.Core;
 
 namespace MetaDslx.Compiler.FlowAnalysis
 {
@@ -22,7 +22,7 @@ namespace MetaDslx.Compiler.FlowAnalysis
     public sealed partial class ControlFlowGraph
     {
         private readonly ControlFlowGraphBuilder.CaptureIdDispenser _captureIdDispenser;
-        private readonly ImmutableDictionary<ISymbol, (ControlFlowRegion region, ILocalFunctionOperation operation, int ordinal)> _localFunctionsMap;
+        private readonly ImmutableDictionary<IMethodSymbol, (ControlFlowRegion region, ILocalFunctionOperation operation, int ordinal)> _localFunctionsMap;
         private ControlFlowGraph[] _lazyLocalFunctionsGraphs;
         private readonly ImmutableDictionary<IFlowAnonymousFunctionOperation, (ControlFlowRegion region, int ordinal)> _anonymousFunctionsMap;
         private ControlFlowGraph[] _lazyAnonymousFunctionsGraphs;
@@ -132,7 +132,7 @@ namespace MetaDslx.Compiler.FlowAnalysis
         /// <summary>
         /// Local functions declared within <see cref="OriginalOperation"/>.
         /// </summary>
-        public ImmutableArray<ISymbol> LocalFunctions { get; }
+        public ImmutableArray<IMethodSymbol> LocalFunctions { get; }
 
     }
 }
