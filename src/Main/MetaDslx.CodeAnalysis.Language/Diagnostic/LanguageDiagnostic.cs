@@ -37,6 +37,20 @@ namespace Microsoft.CodeAnalysis
         /// <returns>The <see cref="Diagnostic"/> instance.</returns>
         public static Diagnostic Create(
             ErrorCode errorCode,
+            params object[] messageArgs)
+        {
+            return Create(errorCode, Location.None, null, null, messageArgs);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Diagnostic"/> instance.
+        /// </summary>
+        /// <param name="descriptor">A <see cref="DiagnosticDescriptor"/> describing the diagnostic</param>
+        /// <param name="location">An optional primary location of the diagnostic. If null, <see cref="Location"/> will return <see cref="Location.None"/>.</param>
+        /// <param name="messageArgs">Arguments to the message of the diagnostic</param>
+        /// <returns>The <see cref="Diagnostic"/> instance.</returns>
+        public static Diagnostic Create(
+            ErrorCode errorCode,
             Location location,
             params object[] messageArgs)
         {
