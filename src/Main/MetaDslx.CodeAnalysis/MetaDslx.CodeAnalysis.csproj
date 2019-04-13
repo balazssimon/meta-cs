@@ -14,7 +14,7 @@
 	
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
-    <PackageId>MetaDslx.CodeAnalysis.Common</PackageId>
+    <PackageId>MetaDslx.CodeAnalysis</PackageId>
     <PackageDescription>
       A shared package used by the MetaDslx metamodeling platform.
       Do not install this package manually, it will be added as a prerequisite by other packages that require it.
