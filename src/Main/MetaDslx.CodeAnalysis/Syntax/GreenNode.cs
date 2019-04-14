@@ -14,7 +14,7 @@ using Roslyn.Utilities;
 namespace Microsoft.CodeAnalysis
 {
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    internal abstract class GreenNode : IObjectWritable
+    public abstract class GreenNode : IObjectWritable
     {
         private string GetDebuggerDisplay()
         {
@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis
 
         internal const int ListKind = 1;
 
-        private readonly ushort _kind;
+        private readonly int _kind;
         protected NodeFlags flags;
         private byte _slotCount;
         private int _fullWidth;
@@ -38,18 +38,18 @@ namespace Microsoft.CodeAnalysis
         private static readonly SyntaxAnnotation[] s_noAnnotations = Array.Empty<SyntaxAnnotation>();
         private static readonly IEnumerable<SyntaxAnnotation> s_noAnnotationsEnumerable = SpecializedCollections.EmptyEnumerable<SyntaxAnnotation>();
 
-        protected GreenNode(ushort kind)
+        protected GreenNode(int kind)
         {
             _kind = kind;
         }
 
-        protected GreenNode(ushort kind, int fullWidth)
+        protected GreenNode(int kind, int fullWidth)
         {
             _kind = kind;
             _fullWidth = fullWidth;
         }
 
-        protected GreenNode(ushort kind, DiagnosticInfo[] diagnostics, int fullWidth)
+        protected GreenNode(int kind, DiagnosticInfo[] diagnostics, int fullWidth)
         {
             _kind = kind;
             _fullWidth = fullWidth;
@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis
             }
         }
 
-        protected GreenNode(ushort kind, DiagnosticInfo[] diagnostics)
+        protected GreenNode(int kind, DiagnosticInfo[] diagnostics)
         {
             _kind = kind;
             if (diagnostics?.Length > 0)
@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis
             }
         }
 
-        protected GreenNode(ushort kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations) :
+        protected GreenNode(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations) :
             this(kind, diagnostics)
         {
             if (annotations?.Length > 0)
@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis
             }
         }
 
-        protected GreenNode(ushort kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations, int fullWidth) :
+        protected GreenNode(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations, int fullWidth) :
             this(kind, diagnostics, fullWidth)
         {
             if (annotations?.Length > 0)
@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis
 
         #region Flags 
         [Flags]
-        internal enum NodeFlags : byte
+        public enum NodeFlags : byte
         {
             None = 0,
             ContainsDiagnostics = 1 << 0,
@@ -439,7 +439,7 @@ namespace Microsoft.CodeAnalysis
 
         bool IObjectWritable.ShouldReuseInSerialization => ShouldReuseInSerialization;
 
-        internal virtual bool ShouldReuseInSerialization => this.IsCacheable;
+        internal protected virtual bool ShouldReuseInSerialization => this.IsCacheable;
 
         void IObjectWritable.WriteTo(ObjectWriter writer)
         {
@@ -596,12 +596,12 @@ namespace Microsoft.CodeAnalysis
             return s_noAnnotations;
         }
 
-        internal abstract GreenNode SetAnnotations(SyntaxAnnotation[] annotations);
+        public abstract GreenNode SetAnnotations(SyntaxAnnotation[] annotations);
 
         #endregion
 
         #region Diagnostics
-        internal DiagnosticInfo[] GetDiagnostics()
+        internal protected DiagnosticInfo[] GetDiagnostics()
         {
             if (this.ContainsDiagnostics)
             {
@@ -615,7 +615,7 @@ namespace Microsoft.CodeAnalysis
             return s_noDiagnostics;
         }
 
-        internal abstract GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics);
+        public abstract GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics);
         #endregion
 
         #region Text

@@ -10,7 +10,7 @@ namespace Roslyn.Utilities
     /// the 'reader' function used to deserialize serialized instances of those types.  Registration
     /// must happen ahead of time using the <see cref="RegisterTypeReader"/> method.
     /// </summary>
-    internal static class ObjectBinder
+    public static class ObjectBinder
     {
         /// <summary>
         /// Lock for all data in this type.

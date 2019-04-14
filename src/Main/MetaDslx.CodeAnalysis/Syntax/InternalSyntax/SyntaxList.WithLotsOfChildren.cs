@@ -74,12 +74,12 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
                 return childOffsets;
             }
 
-            internal override GreenNode SetDiagnostics(DiagnosticInfo[] errors)
+            public override GreenNode SetDiagnostics(DiagnosticInfo[] errors)
             {
                 return new WithLotsOfChildren(errors, this.GetAnnotations(), children, _childOffsets);
             }
 
-            internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+            public override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
             {
                 return new WithLotsOfChildren(GetDiagnostics(), annotations, children, _childOffsets);
             }

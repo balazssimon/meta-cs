@@ -88,12 +88,12 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
                 return new Syntax.SyntaxList.WithThreeChildren(this, parent, position);
             }
 
-            internal override GreenNode SetDiagnostics(DiagnosticInfo[] errors)
+            public override GreenNode SetDiagnostics(DiagnosticInfo[] errors)
             {
                 return new WithThreeChildren(errors, this.GetAnnotations(), _child0, _child1, _child2);
             }
 
-            internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+            public override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
             {
                 return new WithThreeChildren(GetDiagnostics(), annotations, _child0, _child1, _child2);
             }
