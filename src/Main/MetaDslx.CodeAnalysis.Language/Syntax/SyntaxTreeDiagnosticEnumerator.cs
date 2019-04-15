@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     var spanStart = Math.Min(_position - leadingWidthAlreadyCounted + sdi.Offset, length);
                     var spanWidth = Math.Min(spanStart + sdi.Width, length) - spanStart;
 
-                    _current = new CSDiagnostic(sdi, new SourceLocation(_syntaxTree, new TextSpan(spanStart, spanWidth)));
+                    _current = new LanguageDiagnostic(sdi, new SourceLocation(_syntaxTree, new TextSpan(spanStart, spanWidth)));
 
                     _stack.UpdateDiagnosticIndexForStackTop(diagIndex);
                     return true;
@@ -136,7 +136,7 @@ tryAgain:
 
             internal void PushNodeOrToken(GreenNode node)
             {
-                var token = node as Syntax.InternalSyntax.SyntaxToken;
+                var token = node as Syntax.InternalSyntax.InternalSyntaxToken;
                 if (token != null)
                 {
                     PushToken(token);
@@ -147,7 +147,7 @@ tryAgain:
                 }
             }
 
-            private void PushToken(Syntax.InternalSyntax.SyntaxToken token)
+            private void PushToken(Syntax.InternalSyntax.InternalSyntaxToken token)
             {
                 var trailing = token.GetTrailingTrivia();
                 if (trailing != null)

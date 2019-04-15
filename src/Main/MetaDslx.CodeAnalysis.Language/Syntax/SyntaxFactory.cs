@@ -191,7 +191,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             {
                 throw new ArgumentNullException(nameof(text));
             }
-            if (!Language.SyntaxFacts.IsAnyTrivia(kind))
+            if (!Language.SyntaxFacts.IsTrivia(kind))
             {
                 throw new ArgumentException("kind");
             }
@@ -597,131 +597,6 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             return new SyntaxNodeOrTokenList(nodesAndTokens);
         }
 
-        // direct access to parsing for common grammar areas
-
-        /// <summary>
-        /// Create a new syntax tree from a syntax node.
-        /// </summary>
-        public virtual SyntaxTree SyntaxTree(SyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
-        {
-            return CSharpSyntaxTree.Create((CSharpSyntaxNode)root, (CSharpParseOptions)options, path, encoding);
-        }
-
-        /// <summary>
-        /// Produces a syntax tree by parsing the source text.
-        /// </summary>
-        public virtual SyntaxTree ParseSyntaxTree(
-            string text,
-            ParseOptions options = null,
-            string path = "",
-            Encoding encoding = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return ParseSyntaxTree(SourceText.From(text, encoding), options, path, cancellationToken);
-        }
-
-        /// <summary>
-        /// Produces a syntax tree by parsing the source text.
-        /// </summary>
-        public virtual SyntaxTree ParseSyntaxTree(
-            SourceText text,
-            ParseOptions options = null,
-            string path = "",
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return CSharpSyntaxTree.ParseText(text, (CSharpParseOptions)options, path, cancellationToken);
-        }
-
-        /// <summary>
-        /// Parse a list of trivia rules for leading trivia.
-        /// </summary>
-        public virtual SyntaxTriviaList ParseLeadingTrivia(string text, int offset = 0)
-        {
-            return ParseLeadingTrivia(text, CSharpParseOptions.Default, offset);
-        }
-
-        /// <summary>
-        /// Parse a list of trivia rules for leading trivia.
-        /// </summary>
-        internal virtual SyntaxTriviaList ParseLeadingTrivia(string text, CSharpParseOptions options, int offset = 0)
-        {
-            using (var lexer = new InternalSyntax.Lexer(MakeSourceText(text, offset), options))
-            {
-                return lexer.LexSyntaxLeadingTrivia();
-            }
-        }
-
-        /// <summary>
-        /// Parse a list of trivia using the parsing rules for trailing trivia.
-        /// </summary>
-        public virtual SyntaxTriviaList ParseTrailingTrivia(string text, int offset = 0)
-        {
-            using (var lexer = new InternalSyntax.Lexer(MakeSourceText(text, offset), CSharpParseOptions.Default))
-            {
-                return lexer.LexSyntaxTrailingTrivia();
-            }
-        }
-
-        /// <summary>
-        /// Parse a C# language token.
-        /// </summary>
-        /// <param name="text">The text of the token including leading and trailing trivia.</param>
-        /// <param name="offset">Optional offset into text.</param>
-        public virtual SyntaxToken ParseToken(string text, int offset = 0)
-        {
-            using (var lexer = new InternalSyntax.Lexer(MakeSourceText(text, offset), CSharpParseOptions.Default))
-            {
-                return new SyntaxToken(lexer.Lex(InternalSyntax.LexerMode.Syntax));
-            }
-        }
-
-        /// <summary>
-        /// Parse a sequence of C# language tokens.
-        /// </summary>
-        /// <param name="text">The text of all the tokens.</param>
-        /// <param name="initialTokenPosition">An integer to use as the starting position of the first token.</param>
-        /// <param name="offset">Optional offset into text.</param>
-        /// <param name="options">Parse options.</param>
-        public virtual IEnumerable<SyntaxToken> ParseTokens(string text, int offset = 0, int initialTokenPosition = 0, CSharpParseOptions options = null)
-        {
-            using (var lexer = new InternalSyntax.Lexer(MakeSourceText(text, offset), options ?? CSharpParseOptions.Default))
-            {
-                var position = initialTokenPosition;
-                while (true)
-                {
-                    var token = lexer.Lex(InternalSyntax.LexerMode.Syntax);
-                    yield return new SyntaxToken(parent: null, token: token, position: position, index: 0);
-
-                    position += token.FullWidth;
-
-                    if (token.Kind == int.EndOfFileToken)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Helper method for wrapping a string in an SourceText.
-        /// </summary>
-        private virtual SourceText MakeSourceText(string text, int offset)
-        {
-            return SourceText.From(text, Encoding.UTF8).GetSubText(offset);
-        }
-
-        private virtual InternalSyntax.Lexer MakeLexer(string text, int offset, CSharpParseOptions options = null)
-        {
-            return new InternalSyntax.Lexer(
-                text: MakeSourceText(text, offset),
-                options: options ?? CSharpParseOptions.Default);
-        }
-
-        private virtual InternalSyntax.LanguageParser MakeParser(InternalSyntax.Lexer lexer)
-        {
-            return new InternalSyntax.LanguageParser(lexer, oldTree: null, changes: null);
-        }
-
         /// <summary>
         /// Determines if two trees are the same, disregarding trivia differences.
         /// </summary>
@@ -878,7 +753,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 return false;
             }
 
-            var compilation = (CompilationUnitSyntax)tree.GetRoot();
+            var compilation = tree.GetRoot();
             return !compilation.HasErrors;
         }
     }

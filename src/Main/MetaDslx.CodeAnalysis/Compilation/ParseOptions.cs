@@ -72,9 +72,9 @@ namespace Microsoft.CodeAnalysis
         /// <summary>
         /// Performs validation of options compatibilities and generates diagnostics if needed
         /// </summary>
-        internal abstract void ValidateOptions(ArrayBuilder<Diagnostic> builder);
+        public abstract void ValidateOptions(ArrayBuilder<Diagnostic> builder);
 
-        internal void ValidateOptions(ArrayBuilder<Diagnostic> builder, CommonMessageProvider messageProvider)
+        protected virtual void ValidateOptions(ArrayBuilder<Diagnostic> builder, CommonMessageProvider messageProvider)
         {
             // Validate SpecifiedKind not Kind, to catch deprecated specified kinds:
             if (!SpecifiedKind.IsValid())
@@ -120,6 +120,7 @@ namespace Microsoft.CodeAnalysis
         public abstract IReadOnlyDictionary<string, string> Features
         {
             get;
+            protected set;
         }
 
         /// <summary>

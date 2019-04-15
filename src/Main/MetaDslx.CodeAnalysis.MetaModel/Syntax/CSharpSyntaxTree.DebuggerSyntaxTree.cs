@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.CodeAnalysis.MetaModel.Syntax;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.MetaModel
 {
-    public partial class CSharpSyntaxTree
+    public partial class MetaModelSyntaxTree
     {
         private class DebuggerSyntaxTree : ParsedSyntaxTree
         {
-            public DebuggerSyntaxTree(CSharpSyntaxNode root, SourceText text, CSharpParseOptions options)
+            public DebuggerSyntaxTree(MetaModelSyntaxNode root, SourceText text, MetaModelParseOptions options)
                 : base(
                     text,
                     text.Encoding,
@@ -16,11 +18,11 @@ namespace Microsoft.CodeAnalysis.CSharp
                     path: "",
                     options: options,
                     root: root,
-                    directives: Syntax.InternalSyntax.DirectiveStack.Empty)
+                    directives: DirectiveStack.Empty)
             {
             }
 
-            internal override bool SupportsLocations
+            public override bool SupportsLocations
             {
                 get { return true; }
             }

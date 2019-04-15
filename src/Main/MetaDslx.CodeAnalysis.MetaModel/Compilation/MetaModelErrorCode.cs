@@ -45,5 +45,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel
         }
 
         public static readonly MetaModelErrorCode ERR_InvalidErrorCode = new MetaModelErrorCode(0, "Invalid error code", "Invalid error code. This should not happen. There is an error in the compiler.", DiagnosticSeverity.Error, false);
+        public static readonly MetaModelErrorCode ERR_BadLanguageVersion = new MetaModelErrorCode(1, "Bad language version", "Invalid language version: {0}.", DiagnosticSeverity.Error);
+        public static readonly MetaModelErrorCode ERR_FeatureNotAvailableInVersion1 = new MetaModelErrorCode(2, "Feature not available", "Feature not available in MetaModel language version 1.", DiagnosticSeverity.Error);
     }
 }

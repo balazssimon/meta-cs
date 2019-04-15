@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
 
         public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing)
         {
-            Debug.Assert(MetaModelLanguage.Instance.SyntaxFacts.IsAnyToken(kind));
+            Debug.Assert(MetaModelLanguage.Instance.SyntaxFacts.IsToken(kind));
             string defaultText = MetaModelLanguage.Instance.SyntaxFacts.GetText(kind);
             return kind >= (int)SyntaxToken.FirstTokenWithWellKnownText && kind <= (int)SyntaxToken.LastTokenWithWellKnownText && text == defaultText
                 ? Token(leading, kind, trailing)
@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
 
         public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing)
         {
-            Debug.Assert(MetaModelLanguage.Instance.SyntaxFacts.IsAnyToken(kind));
+            Debug.Assert(MetaModelLanguage.Instance.SyntaxFacts.IsToken(kind));
             string defaultText = MetaModelLanguage.Instance.SyntaxFacts.GetText(kind);
             return kind >= (int)SyntaxToken.FirstTokenWithWellKnownText && kind <= (int)SyntaxToken.LastTokenWithWellKnownText && text == defaultText && valueText == defaultText
                 ? Token(leading, kind, trailing)
@@ -62,7 +62,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
 
         public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing)
         {
-            Debug.Assert(MetaModelLanguage.Instance.SyntaxFacts.IsAnyToken(kind));
+            Debug.Assert(MetaModelLanguage.Instance.SyntaxFacts.IsToken(kind));
             string defaultText = MetaModelLanguage.Instance.SyntaxFacts.GetText(kind);
             return kind >= (int)SyntaxToken.FirstTokenWithWellKnownText && kind <= (int)SyntaxToken.LastTokenWithWellKnownText && text == defaultText && defaultText.Equals(value)
                 ? Token(leading, kind, trailing)

@@ -6,7 +6,7 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.CSharp
 {
-    internal class SyntaxDiagnosticInfo : LanguageDiagnosticInfo
+    public class SyntaxDiagnosticInfo : LanguageDiagnosticInfo
     {
         static SyntaxDiagnosticInfo()
         {

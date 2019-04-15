@@ -122,9 +122,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             /// </summary>
             private static bool IsEndOfLine(SyntaxTrivia trivia)
             {
-                return trivia.Kind() == SyntaxKind.EndOfLineTrivia
-                    || trivia.Kind() == SyntaxKind.SingleLineCommentTrivia
-                    || trivia.IsDirective;
+                var green = (InternalSyntax.InternalSyntaxTrivia)trivia.UnderlyingNode;
+                return green.Language.SyntaxFacts.IsTriviaWithEndOfLine(trivia.RawKind);
             }
 
             /// <summary>

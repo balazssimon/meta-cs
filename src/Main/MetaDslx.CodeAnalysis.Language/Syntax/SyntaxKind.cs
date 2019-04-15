@@ -16,5 +16,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         public const int DefaultWhitespace = -7;
         public const int DefaultEndOfLine = -8;
         public const int DefaultSeparator = -9;
+        public const int DefaultIdentifier = -10;
+        public const int EndOfDirectiveToken = -11;
+        public const int CompilationUnit = -12;
     }
 }

@@ -4,22 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.MetaModel
 {
     /// <summary>
     /// This class stores several source parsing related options and offers access to their values.
     /// </summary>
-    public sealed class CSharpParseOptions : ParseOptions, IEquatable<CSharpParseOptions>
+    public sealed class MetaModelParseOptions : CSharpParseOptions, IEquatable<MetaModelParseOptions>
     {
         /// <summary>
         /// The default parse options.
         /// </summary>
-        public static CSharpParseOptions Default { get; } = new CSharpParseOptions();
-
-        private ImmutableDictionary<string, string> _features;
+        public static MetaModelParseOptions Default { get; } = new MetaModelParseOptions();
 
         /// <summary>
         /// Gets the effective language version, which the compiler uses to select the
@@ -34,17 +34,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         public LanguageVersion SpecifiedLanguageVersion { get; private set; }
 
-        internal ImmutableArray<string> PreprocessorSymbols { get; private set; }
 
-        /// <summary>
-        /// Gets the names of defined preprocessor symbols.
-        /// </summary>
-        public override IEnumerable<string> PreprocessorSymbolNames
-        {
-            get { return PreprocessorSymbols; }
-        }
-
-        public CSharpParseOptions(
+        public MetaModelParseOptions(
             LanguageVersion languageVersion = LanguageVersion.Default,
             DocumentationMode documentationMode = DocumentationMode.Parse,
             SourceCodeKind kind = SourceCodeKind.Regular,
@@ -57,21 +48,19 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
         }
 
-        internal CSharpParseOptions(
+        internal MetaModelParseOptions(
             LanguageVersion languageVersion,
             DocumentationMode documentationMode,
             SourceCodeKind kind,
             ImmutableArray<string> preprocessorSymbols,
             IReadOnlyDictionary<string, string> features)
-            : base(kind, documentationMode)
+            : base(documentationMode, kind, preprocessorSymbols, features)
         {
             this.SpecifiedLanguageVersion = languageVersion;
             this.LanguageVersion = languageVersion.MapSpecifiedToEffectiveVersion();
-            this.PreprocessorSymbols = preprocessorSymbols.ToImmutableArrayOrEmpty();
-            _features = features?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
         }
 
-        private CSharpParseOptions(CSharpParseOptions other) : this(
+        private MetaModelParseOptions(MetaModelParseOptions other) : this(
             languageVersion: other.SpecifiedLanguageVersion,
             documentationMode: other.DocumentationMode,
             kind: other.Kind,
@@ -82,7 +71,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override string Language => LanguageNames.CSharp;
 
-        public new CSharpParseOptions WithKind(SourceCodeKind kind)
+        public new MetaModelParseOptions WithKind(SourceCodeKind kind)
         {
             if (kind == this.SpecifiedKind)
             {
@@ -90,10 +79,10 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var effectiveKind = kind.MapSpecifiedToEffectiveKind();
-            return new CSharpParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
+            return new MetaModelParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
         }
 
-        public CSharpParseOptions WithLanguageVersion(LanguageVersion version)
+        public MetaModelParseOptions WithLanguageVersion(LanguageVersion version)
         {
             if (version == this.SpecifiedLanguageVersion)
             {
@@ -101,20 +90,20 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var effectiveLanguageVersion = version.MapSpecifiedToEffectiveVersion();
-            return new CSharpParseOptions(this) { SpecifiedLanguageVersion = version, LanguageVersion = effectiveLanguageVersion };
+            return new MetaModelParseOptions(this) { SpecifiedLanguageVersion = version, LanguageVersion = effectiveLanguageVersion };
         }
 
-        public CSharpParseOptions WithPreprocessorSymbols(IEnumerable<string> preprocessorSymbols)
+        public MetaModelParseOptions WithPreprocessorSymbols(IEnumerable<string> preprocessorSymbols)
         {
             return WithPreprocessorSymbols(preprocessorSymbols.AsImmutableOrNull());
         }
 
-        public CSharpParseOptions WithPreprocessorSymbols(params string[] preprocessorSymbols)
+        public MetaModelParseOptions WithPreprocessorSymbols(params string[] preprocessorSymbols)
         {
             return WithPreprocessorSymbols(ImmutableArray.Create(preprocessorSymbols));
         }
 
-        public CSharpParseOptions WithPreprocessorSymbols(ImmutableArray<string> symbols)
+        public MetaModelParseOptions WithPreprocessorSymbols(ImmutableArray<string> symbols)
         {
             if (symbols.IsDefault)
             {
@@ -126,17 +115,17 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return this;
             }
 
-            return new CSharpParseOptions(this) { PreprocessorSymbols = symbols };
+            return new MetaModelParseOptions(this) { PreprocessorSymbols = symbols };
         }
 
-        public new CSharpParseOptions WithDocumentationMode(DocumentationMode documentationMode)
+        public new MetaModelParseOptions WithDocumentationMode(DocumentationMode documentationMode)
         {
             if (documentationMode == this.DocumentationMode)
             {
                 return this;
             }
 
-            return new CSharpParseOptions(this) { DocumentationMode = documentationMode };
+            return new MetaModelParseOptions(this) { DocumentationMode = documentationMode };
         }
 
         public override ParseOptions CommonWithKind(SourceCodeKind kind)
@@ -157,50 +146,28 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <summary>
         /// Enable some experimental language features for testing.
         /// </summary>
-        public new CSharpParseOptions WithFeatures(IEnumerable<KeyValuePair<string, string>> features)
+        public new MetaModelParseOptions WithFeatures(IEnumerable<KeyValuePair<string, string>> features)
         {
             ImmutableDictionary<string, string> dictionary =
                 features?.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase)
                 ?? ImmutableDictionary<string, string>.Empty;
 
-            return new CSharpParseOptions(this) { _features = dictionary };
-        }
-
-        public override IReadOnlyDictionary<string, string> Features
-        {
-            get
-            {
-                return _features;
-            }
+            return new MetaModelParseOptions(this) { Features = dictionary };
         }
 
         public override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
         {
-            ValidateOptions(builder, MessageProvider.Instance);
+            base.ValidateOptions(builder);
 
             // Validate LanguageVersion not SpecifiedLanguageVersion, after Latest/Default has been converted:
             if (!LanguageVersion.IsValid())
             {
-                builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)ErrorCode.ERR_BadLanguageVersion, LanguageVersion.ToString()));
-            }
-
-            if (!PreprocessorSymbols.IsDefaultOrEmpty)
-            {
-                foreach (var symbol in PreprocessorSymbols)
-                {
-                    if (symbol == null)
-                    {
-                        builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)ErrorCode.ERR_InvalidPreprocessingSymbol, "null"));
-                    }
-                    else if (!SyntaxFacts.IsValidIdentifier(symbol))
-                    {
-                        builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)ErrorCode.ERR_InvalidPreprocessingSymbol, symbol));
-                    }
-                }
+                builder.Add(LanguageDiagnostic.Create(MetaModelErrorCode.ERR_BadLanguageVersion, LanguageVersion.ToString()));
             }
         }
 
-        internal bool IsFeatureEnabled(MessageID feature)
+        /* TODO:MetaDslx
+        public bool IsFeatureEnabled(string feature)
         {
             string featureFlag = feature.RequiredFeature();
             if (featureFlag != null)
@@ -210,14 +177,14 @@ namespace Microsoft.CodeAnalysis.CSharp
             LanguageVersion availableVersion = LanguageVersion;
             LanguageVersion requiredVersion = feature.RequiredVersion();
             return availableVersion >= requiredVersion;
-        }
+        }*/
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as CSharpParseOptions);
+            return this.Equals(obj as MetaModelParseOptions);
         }
 
-        public bool Equals(CSharpParseOptions other)
+        public bool Equals(MetaModelParseOptions other)
         {
             if (object.ReferenceEquals(this, other))
             {

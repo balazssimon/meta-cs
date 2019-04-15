@@ -3,20 +3,22 @@
 using System;
 using System.Text;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MetaDslx.CodeAnalysis.MetaModel.Syntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.MetaModel
 {
-    public partial class CSharpSyntaxTree
+    public partial class MetaModelSyntaxTree
     {
-        internal sealed class DummySyntaxTree : CSharpSyntaxTree
+        internal sealed class DummySyntaxTree : MetaModelSyntaxTree
         {
-            private readonly CompilationUnitSyntax _node;
+            private readonly MetaModelSyntaxNode _node;
 
             public DummySyntaxTree()
             {
-                _node = this.CloneNodeAsRoot(SyntaxFactory.ParseCompilationUnit(string.Empty));
+                _node = this.CloneNodeAsRoot(MetaModelLanguage.Instance.SyntaxFactory.ParseCompilationUnit(string.Empty));
             }
 
             public override string ToString()
@@ -45,9 +47,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                 get { return 0; }
             }
 
-            public override CSharpParseOptions Options
+            public override MetaModelParseOptions Options
             {
-                get { return CSharpParseOptions.Default; }
+                get { return MetaModelParseOptions.Default; }
             }
 
             public override string FilePath
@@ -60,12 +62,12 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return new SimpleSyntaxReference(node);
             }
 
-            public override CSharpSyntaxNode GetRoot(CancellationToken cancellationToken)
+            public override MetaModelSyntaxNode GetRoot(CancellationToken cancellationToken)
             {
                 return _node;
             }
 
-            public override bool TryGetRoot(out CSharpSyntaxNode root)
+            public override bool TryGetRoot(out MetaModelSyntaxNode root)
             {
                 root = _node;
                 return true;
@@ -83,12 +85,12 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             public override SyntaxTree WithRootAndOptions(SyntaxNode root, ParseOptions options)
             {
-                return SyntaxFactory.SyntaxTree(root, options: options, path: FilePath, encoding: null);
+                return MetaModelLanguage.Instance.SyntaxFactory.SyntaxTree(root, options: options, path: FilePath, encoding: null);
             }
 
             public override SyntaxTree WithFilePath(string path)
             {
-                return SyntaxFactory.SyntaxTree(_node, options: this.Options, path: path, encoding: null);
+                return MetaModelLanguage.Instance.SyntaxFactory.SyntaxTree(_node, options: this.Options, path: path, encoding: null);
             }
         }
     }

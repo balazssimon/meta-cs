@@ -1488,7 +1488,7 @@ recurse:
         /// Creates a clone of a red node that can be used as a root of given syntaxTree.
         /// New node has no parents, position == 0, and syntaxTree as specified.
         /// </summary>
-        internal static T CloneNodeAsRoot<T>(T node, SyntaxTree syntaxTree) where T : SyntaxNode
+        public static T CloneNodeAsRoot<T>(T node, SyntaxTree syntaxTree) where T : SyntaxNode
         {
             var clone = (T)node.Green.CreateRed(null, 0);
             clone._syntaxTree = syntaxTree;

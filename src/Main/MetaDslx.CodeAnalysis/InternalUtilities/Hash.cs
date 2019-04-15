@@ -7,17 +7,17 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslyn.Utilities
 {
-    internal static class Hash
+    public static class Hash
     {
         /// <summary>
         /// This is how VB Anonymous Types combine hash values for fields.
         /// </summary>
-        internal static int Combine(int newKey, int currentKey)
+        public static int Combine(int newKey, int currentKey)
         {
             return unchecked((currentKey * (int)0xA5555529) + newKey);
         }
 
-        internal static int Combine(bool newKeyPart, int currentKey)
+        public static int Combine(bool newKeyPart, int currentKey)
         {
             return Combine(currentKey, newKeyPart ? 1 : 0);
         }
@@ -28,7 +28,7 @@ namespace Roslyn.Utilities
         /// unnecessary boxing operations.  Unfortunately, we can't constrain
         /// T to "non-enum", so we'll use a more restrictive constraint.
         /// </summary>
-        internal static int Combine<T>(T newKeyPart, int currentKey) where T : class
+        public static int Combine<T>(T newKeyPart, int currentKey) where T : class
         {
             int hash = unchecked(currentKey * (int)0xA5555529);
 
@@ -40,7 +40,7 @@ namespace Roslyn.Utilities
             return hash;
         }
 
-        internal static int CombineValues<T>(IEnumerable<T> values, int maxItemsToHash = int.MaxValue)
+        public static int CombineValues<T>(IEnumerable<T> values, int maxItemsToHash = int.MaxValue)
         {
             if (values == null)
             {
@@ -66,7 +66,7 @@ namespace Roslyn.Utilities
             return hashCode;
         }
 
-        internal static int CombineValues<T>(T[] values, int maxItemsToHash = int.MaxValue)
+        public static int CombineValues<T>(T[] values, int maxItemsToHash = int.MaxValue)
         {
             if (values == null)
             {
@@ -90,7 +90,7 @@ namespace Roslyn.Utilities
             return hashCode;
         }
 
-        internal static int CombineValues<T>(ImmutableArray<T> values, int maxItemsToHash = int.MaxValue)
+        public static int CombineValues<T>(ImmutableArray<T> values, int maxItemsToHash = int.MaxValue)
         {
             if (values.IsDefaultOrEmpty)
             {
@@ -116,7 +116,7 @@ namespace Roslyn.Utilities
             return hashCode;
         }
 
-        internal static int CombineValues(IEnumerable<string> values, StringComparer stringComparer, int maxItemsToHash = int.MaxValue)
+        public static int CombineValues(IEnumerable<string> values, StringComparer stringComparer, int maxItemsToHash = int.MaxValue)
         {
             if (values == null)
             {

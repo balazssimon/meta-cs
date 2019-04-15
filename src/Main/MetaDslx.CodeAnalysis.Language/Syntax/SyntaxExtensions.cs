@@ -22,6 +22,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             return ((Syntax.InternalSyntax.CSharpSyntaxNode)token.Node).Language;
         }
 
+        public static Language Language(this GreenNode node)
+        {
+            return ((Syntax.InternalSyntax.CSharpSyntaxNode)node).Language;
+        }
+
         /// <summary>
         /// Creates a new syntax token with all whitespace and end of line trivia replaced with
         /// regularly formatted trivia.

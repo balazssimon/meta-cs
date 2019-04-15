@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -62,7 +63,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         internal string GetDebuggerDisplay()
         {
             var writer = new System.IO.StringWriter(System.Globalization.CultureInfo.InvariantCulture);
-            _node.WriteTo(writer, false, false);
+            _node.WriteTo(writer);
             return writer.ToString();
         }
 
@@ -306,6 +307,45 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         public int Line => _line;
     }
 
+    public enum PragmaWarningKind
+    {
+        Warning,
+        Nullable
+    }
+
+    public class PragmaWarningDirective : Directive
+    {
+        private readonly PragmaWarningState _state;
+        private readonly PragmaWarningKind _kind;
+        private readonly ImmutableArray<string> _errorIds;
+
+        public PragmaWarningDirective(CSharpSyntaxNode node, bool isActive, PragmaWarningState state, PragmaWarningKind kind, ImmutableArray<string> errorIds)
+            : base(node, isActive)
+        {
+            _state = state;
+            _kind = kind;
+            _errorIds = errorIds;
+        }
+
+        public override DirectiveKind Kind => DirectiveKind.PragmaWarning;
+        public PragmaWarningKind PragmaWarningKind => _kind;
+        public PragmaWarningState State => _state;
+        public ImmutableArray<string> ErrorIds => _errorIds;
+    }
+
+    public class NullableDirective : Directive
+    {
+        private readonly PragmaWarningState _state;
+
+        public NullableDirective(CSharpSyntaxNode node, bool isActive, PragmaWarningState state)
+            : base(node, isActive)
+        {
+            _state = state;
+        }
+
+        public override DirectiveKind Kind => DirectiveKind.Line;
+        public PragmaWarningState State => _state;
+    }
 
     public enum DefineState
     {

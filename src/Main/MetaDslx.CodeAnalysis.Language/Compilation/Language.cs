@@ -12,6 +12,8 @@ namespace Microsoft.CodeAnalysis
 
         public SyntaxFacts SyntaxFacts => this.SyntaxFactsCore;
         internal protected abstract SyntaxFacts SyntaxFactsCore { get; }
+        public LookupPosition LookupPosition => this.LookupPositionCore;
+        internal protected abstract LookupPosition LookupPositionCore { get; }
         public InternalSyntaxFactory InternalSyntaxFactory => this.InternalSyntaxFactoryCore;
         internal protected abstract InternalSyntaxFactory InternalSyntaxFactoryCore { get; }
         public SyntaxFactory SyntaxFactory => this.SyntaxFactoryCore;

@@ -9,13 +9,13 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal static class SyntaxTreeExtensions
+    public static class SyntaxTreeExtensions
     {
         /// <summary>
         /// Verify nodes match source.
         /// </summary>
         [Conditional("DEBUG")]
-        internal static void VerifySource(this SyntaxTree tree, IEnumerable<TextChangeRange> changes = null)
+        public static void VerifySource(this SyntaxTree tree, IEnumerable<TextChangeRange> changes = null)
         {
             var root = tree.GetRoot();
             var text = tree.GetText();

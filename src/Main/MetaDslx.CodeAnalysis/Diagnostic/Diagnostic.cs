@@ -552,7 +552,7 @@ namespace Microsoft.CodeAnalysis
     /// This type is attached to diagnostics for required language version and should only be used
     /// on such diagnostics, as they are recognized by <see cref="Compilation.GetRequiredLanguageVersion"/>.
     /// </summary>
-    internal abstract class RequiredLanguageVersion : IFormattable
+    public abstract class RequiredLanguageVersion : IFormattable
     {
         public abstract override string ToString();
 

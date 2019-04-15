@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal static class StackGuard
+    public static class StackGuard
     {
         public const int MaxUncheckedRecursionDepth = 20;
 

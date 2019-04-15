@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis
         /// internal indexer that does not verify index.
         /// Used when caller has already ensured that index is within bounds.
         /// </summary>
-        internal static SyntaxNodeOrToken ItemInternal(SyntaxNode node, int index)
+        public static SyntaxNodeOrToken ItemInternal(SyntaxNode node, int index)
         {
             GreenNode greenChild;
             var green = node.Green;

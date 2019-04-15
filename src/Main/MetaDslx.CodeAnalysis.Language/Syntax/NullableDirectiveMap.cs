@@ -75,6 +75,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         private static ImmutableArray<(int Position, bool? State)> GetDirectives(SyntaxTree tree)
         {
             var builder = ArrayBuilder<(int Position, bool? State)>.GetInstance();
+            /* TODO:MetaDslx
             foreach (var d in tree.GetRoot().GetDirectives())
             {
                 if (d.Kind() != SyntaxKind.NullableDirectiveTrivia)
@@ -105,7 +106,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 }
 
                 builder.Add((nn.Location.SourceSpan.End, state));
-            }
+            }*/
             return builder.ToImmutableAndFree();
         }
 

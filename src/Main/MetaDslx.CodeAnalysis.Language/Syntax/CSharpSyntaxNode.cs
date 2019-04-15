@@ -22,9 +22,9 @@ namespace Microsoft.CodeAnalysis.CSharp
     //to defer the realization of strings. Often diagnostics generated while binding
     //in service of a SemanticModel API are never realized. So this
     //deferral can result in meaningful savings of strings.
-    public abstract partial class CSharpSyntaxNode : SyntaxNode, IFormattable
+    public abstract partial class CSharpSyntaxNode : SyntaxNodeAdapter, IFormattable
     {
-        internal CSharpSyntaxNode(GreenNode green, SyntaxNode parent, int position)
+        protected CSharpSyntaxNode(GreenNode green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
         }
@@ -33,84 +33,12 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// Used by structured trivia which has "parent == null", and therefore must know its
         /// SyntaxTree explicitly when created.
         /// </summary>
-        internal CSharpSyntaxNode(GreenNode green, int position, SyntaxTree syntaxTree)
+        protected CSharpSyntaxNode(GreenNode green, int position, SyntaxTree syntaxTree)
             : base(green, position, syntaxTree)
         {
         }
 
-        /// <summary>
-        /// Returns a non-null <see cref="SyntaxTree"/> that owns this node.
-        /// If this node was created with an explicit non-null <see cref="SyntaxTree"/>, returns that tree.
-        /// Otherwise, if this node has a non-null parent, then returns the parent's <see cref="SyntaxTree"/>.
-        /// Otherwise, returns a newly created <see cref="SyntaxTree"/> rooted at this node, preserving this node's reference identity.
-        /// </summary>
-        internal new SyntaxTree SyntaxTree
-        {
-            get
-            {
-                var result = this._syntaxTree ?? ComputeSyntaxTree(this);
-                Debug.Assert(result != null);
-                return result;
-            }
-        }
-
-        private static SyntaxTree ComputeSyntaxTree(CSharpSyntaxNode node)
-        {
-            ArrayBuilder<CSharpSyntaxNode> nodes = null;
-            SyntaxTree tree = null;
-
-            // Find the nearest parent with a non-null syntax tree
-            while (true)
-            {
-                tree = node._syntaxTree;
-                if (tree != null)
-                {
-                    break;
-                }
-
-                var parent = node.Parent;
-                if (parent == null)
-                {
-                    // set the tree on the root node atomically
-                    Interlocked.CompareExchange(ref node._syntaxTree, CSharpSyntaxTree.CreateWithoutClone(node), null);
-                    tree = node._syntaxTree;
-                    break;
-                }
-
-                tree = parent._syntaxTree;
-                if (tree != null)
-                {
-                    node._syntaxTree = tree;
-                    break;
-                }
-
-                (nodes ?? (nodes = ArrayBuilder<CSharpSyntaxNode>.GetInstance())).Add(node);
-                node = parent;
-            }
-
-            // Propagate the syntax tree downwards if necessary
-            if (nodes != null)
-            {
-                Debug.Assert(tree != null);
-
-                foreach (var n in nodes)
-                {
-                    var existingTree = n._syntaxTree;
-                    if (existingTree != null)
-                    {
-                        Debug.Assert(existingTree == tree, "how could this node belong to a different tree?");
-
-                        // yield the race
-                        break;
-                    }
-                    n._syntaxTree = tree;
-                }
-
-                nodes.Free();
-            }
-
-            return tree;
-        }
+        public new abstract Language Language { get; }
 
         public abstract TResult Accept<TResult>(CSharpSyntaxVisitor<TResult> visitor);
 
@@ -119,7 +47,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <summary>
         /// The node that contains this node in its Children collection.
         /// </summary>
-        internal new CSharpSyntaxNode Parent
+        internal protected new CSharpSyntaxNode Parent
         {
             get
             {
@@ -127,34 +55,12 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
         }
 
-        internal new CSharpSyntaxNode ParentOrStructuredTriviaParent
+        internal protected new CSharpSyntaxNode ParentOrStructuredTriviaParent
         {
             get
             {
                 return (CSharpSyntaxNode)base.ParentOrStructuredTriviaParent;
             }
-        }
-
-        // TODO: may be eventually not needed
-        internal Syntax.InternalSyntax.CSharpSyntaxNode CsGreen
-        {
-            get { return (Syntax.InternalSyntax.CSharpSyntaxNode)this.Green; }
-        }
-
-        /// <summary>
-        /// Returns the <see cref="SyntaxKind"/> of the node.
-        /// </summary>
-        public SyntaxKind Kind()
-        {
-            return (SyntaxKind)this.Green.RawKind;
-        }
-
-        /// <summary>
-        /// The language name that this node is syntax of.
-        /// </summary>
-        public override string Language
-        {
-            get { return LanguageNames.CSharp; }
         }
 
         /// <summary>
@@ -236,9 +142,9 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         #region Directives
 
-        internal IList<IDirectiveTriviaSyntax> GetDirectives(Func<IDirectiveTriviaSyntax, bool> filter = null)
+        internal IList<CSharpSyntaxNode> GetDirectives(Func<CSharpSyntaxNode, bool> filter = null)
         {
-            return ((SyntaxNodeOrToken)this).GetDirectives<IDirectiveTriviaSyntax>(filter);
+            return ((SyntaxNodeOrToken)this).GetDirectives<CSharpSyntaxNode>(filter);
         }
 
         /// <summary>
@@ -487,21 +393,12 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         protected override bool IsEquivalentToCore(SyntaxNode node, bool topLevel = false)
         {
-            return SyntaxFactory.AreEquivalent(this, (CSharpSyntaxNode)node, topLevel);
+            return Language.SyntaxFactory.AreEquivalent(this, (CSharpSyntaxNode)node, topLevel);
         }
 
         internal override bool ShouldCreateWeakList()
         {
-            if (this.Kind() == SyntaxKind.Block)
-            {
-                var parent = this.Parent;
-                if (parent is MemberDeclarationSyntax || parent is AccessorDeclarationSyntax)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return Language.SyntaxFacts.IsWeakChild(this);
         }
 
         #endregion

@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
         {
             if (kind > LastTokenWithWellKnownText)
             {
-                if (!MetaModelLanguage.Instance.SyntaxFacts.IsAnyToken(kind))
+                if (!MetaModelLanguage.Instance.SyntaxFacts.IsToken(kind))
                 {
                     throw new ArgumentException(string.Format("Invalid SyntaxKind: {0}. This method can only be used to create tokens.", kind), nameof(kind));
                 }
@@ -84,7 +84,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
         {
             if (kind > LastTokenWithWellKnownText)
             {
-                if (!MetaModelLanguage.Instance.SyntaxFacts.IsAnyToken(kind))
+                if (!MetaModelLanguage.Instance.SyntaxFacts.IsToken(kind))
                 {
                     throw new ArgumentException(string.Format("Invalid SyntaxKind: {0}. This method can only be used to create tokens.", kind), nameof(kind));
                 }

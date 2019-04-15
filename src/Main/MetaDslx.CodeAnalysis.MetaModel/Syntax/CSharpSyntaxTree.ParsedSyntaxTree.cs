@@ -4,24 +4,27 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+using MetaDslx.CodeAnalysis.MetaModel.Syntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.MetaModel
 {
-    public partial class CSharpSyntaxTree
+    public partial class MetaModelSyntaxTree
     {
-        private class ParsedSyntaxTree : CSharpSyntaxTree
+        private class ParsedSyntaxTree : MetaModelSyntaxTree
         {
-            private readonly CSharpParseOptions _options;
+            private readonly MetaModelParseOptions _options;
             private readonly string _path;
-            private readonly CSharpSyntaxNode _root;
+            private readonly MetaModelSyntaxNode _root;
             private readonly bool _hasCompilationUnitRoot;
             private readonly Encoding _encodingOpt;
             private readonly SourceHashAlgorithm _checksumAlgorithm;
             private SourceText _lazyText;
 
-            internal ParsedSyntaxTree(SourceText textOpt, Encoding encodingOpt, SourceHashAlgorithm checksumAlgorithm, string path, CSharpParseOptions options, CSharpSyntaxNode root, DirectiveStack directives, bool cloneRoot = true)
+            internal ParsedSyntaxTree(SourceText textOpt, Encoding encodingOpt, SourceHashAlgorithm checksumAlgorithm, string path, MetaModelParseOptions options, MetaModelSyntaxNode root, DirectiveStack directives, bool cloneRoot = true)
             {
                 Debug.Assert(root != null);
                 Debug.Assert(options != null);
@@ -33,7 +36,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 _options = options;
                 _path = path ?? string.Empty;
                 _root = cloneRoot ? this.CloneNodeAsRoot(root) : root;
-                _hasCompilationUnitRoot = root.Kind() == SyntaxKind.CompilationUnit;
+                _hasCompilationUnitRoot = root.RawKind == Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.CompilationUnit;
                 this.SetDirectiveStack(directives);
             }
 
@@ -68,12 +71,12 @@ namespace Microsoft.CodeAnalysis.CSharp
                 get { return _root.FullSpan.Length; }
             }
 
-            public override CSharpSyntaxNode GetRoot(CancellationToken cancellationToken)
+            public override MetaModelSyntaxNode GetRoot(CancellationToken cancellationToken)
             {
                 return _root;
             }
 
-            public override bool TryGetRoot(out CSharpSyntaxNode root)
+            public override bool TryGetRoot(out MetaModelSyntaxNode root)
             {
                 root = _root;
                 return true;
@@ -87,7 +90,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
             }
 
-            public override CSharpParseOptions Options
+            public override MetaModelParseOptions Options
             {
                 get
                 {
@@ -112,9 +115,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                     _encodingOpt,
                     _checksumAlgorithm,
                     _path,
-                    (CSharpParseOptions)options,
-                    (CSharpSyntaxNode)root,
-                    _directives);
+                    (MetaModelParseOptions)options,
+                    (MetaModelSyntaxNode)root,
+                    this.GetDirectives());
             }
 
             public override SyntaxTree WithFilePath(string path)
@@ -131,7 +134,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     path,
                     _options,
                     _root,
-                    _directives);
+                    this.GetDirectives());
             }
         }
     }

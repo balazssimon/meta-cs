@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
     /// <summary>
     /// Describes how to report a warning diagnostic.
     /// </summary>
-    internal enum PragmaWarningState : byte
+    public enum PragmaWarningState : byte
     {
         /// <summary>
         /// Report a diagnostic by default.
@@ -42,8 +42,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         protected override WarningStateMapEntry[] CreateWarningStateMapEntries(SyntaxTree syntaxTree)
         {
             // Accumulate all the pragma warning directives, in source code order
-            var directives = ArrayBuilder<DirectiveTriviaSyntax>.GetInstance();
-            GetAllPragmaWarningDirectives(syntaxTree, directives);
+            var directives = ArrayBuilder<IDirectiveTriviaSyntax>.GetInstance();
+            GetAllPragmaWarningDirectives((CSharpSyntaxTree)syntaxTree, directives);
 
             // Create the pragma warning map.
             WarningStateMapEntry[] result = CreatePragmaWarningStateEntries(directives, _isGeneratedCode);
@@ -53,36 +53,23 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         }
 
         // Add all active #pragma warn and #nullable directives under trivia into the list, in source code order.
-        private static void GetAllPragmaWarningDirectives(SyntaxTree syntaxTree, ArrayBuilder<DirectiveTriviaSyntax> directiveList)
+        private static void GetAllPragmaWarningDirectives(CSharpSyntaxTree syntaxTree, ArrayBuilder<IDirectiveTriviaSyntax> directiveList)
         {
-            foreach (var d in syntaxTree.GetRoot().GetDirectives())
+            foreach (var directive in syntaxTree.GetRootNode().GetDirectives())
             {
+                var d = ((IDirectiveTriviaSyntax)directive).Directive;
+                if (d == null) continue;
                 // Ignore directives inside disabled code (by #if and #endif)
                 if (!d.IsActive)
                 {
                     continue;
                 }
 
-                switch (d.Kind())
+                switch (d.Kind)
                 {
-                    case SyntaxKind.PragmaWarningDirectiveTrivia:
-                        var w = (PragmaWarningDirectiveTriviaSyntax)d;
-
-                        // Ignore directives with errors (i.e., Unrecognized #pragma directive)
-                        if (!w.DisableOrRestoreKeyword.IsMissing && !w.WarningKeyword.IsMissing && !w.NullableKeyword.IsMissing)
-                        {
-                            directiveList.Add(w);
-                        }
-                        break;
-
-                    case SyntaxKind.NullableDirectiveTrivia:
-                        var nullableDirective = (NullableDirectiveTriviaSyntax)d;
-
-                        // Ignore directives with errors (i.e., Unrecognized #nullable directive)
-                        if (!nullableDirective.SettingToken.IsMissing)
-                        {
-                            directiveList.Add(nullableDirective);
-                        }
+                    case DirectiveKind.PragmaWarning:
+                    case DirectiveKind.Nullable:
+                        directiveList.Add((IDirectiveTriviaSyntax)directive);
                         break;
                 }
             }
@@ -91,8 +78,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         // Given the ordered list of all pragma warning and nullable directives in the syntax tree, return a list of mapping entries, 
         // containing the cumulative set of warnings that are disabled for that point in the source.
         // This mapping also contains a global warning option, accumulated of all #pragma up to the current line position.
-        private static WarningStateMapEntry[] CreatePragmaWarningStateEntries(ArrayBuilder<DirectiveTriviaSyntax> directiveList, bool isGeneratedCode)
+        private static WarningStateMapEntry[] CreatePragmaWarningStateEntries(ArrayBuilder<IDirectiveTriviaSyntax> directiveList, bool isGeneratedCode)
         {
+            return new WarningStateMapEntry[0];
+            /* TODO:MetaDslx
             var entries = new WarningStateMapEntry[directiveList.Count + 1];
             var index = 0;
 
@@ -113,13 +102,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
 
             while (index < directiveList.Count)
             {
-                var currentDirective = directiveList[index];
+                var currentDirective = directiveList[index].Directive;
 
-                if (currentDirective.IsKind(SyntaxKind.PragmaWarningDirectiveTrivia))
+                if (currentDirective.Kind == DirectiveKind.PragmaWarning)
                 {
-                    var currentPragmaDirective = (PragmaWarningDirectiveTriviaSyntax)currentDirective;
+                    var currentPragmaDirective = (PragmaWarningDirective)currentDirective;
 
-                    if (currentPragmaDirective.NullableKeyword.IsKind(SyntaxKind.NullableKeyword))
+                    if (currentPragmaDirective.PragmaWarningKind == PragmaWarningKind.Nullable)
                     {
                         accumulatedNullableWarningState(currentPragmaDirective.DisableOrRestoreKeyword.Kind());
                     }
@@ -247,7 +236,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                         builder.Add(new KeyValuePair<string, PragmaWarningState>(id, directiveState));
                     }
                 }
-            }
+            }*/
         }
     }
 }

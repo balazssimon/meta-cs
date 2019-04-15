@@ -15,6 +15,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax
         ConflictMarkerTrivia = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.ConflictMarkerTrivia,
         DefaultWhitespaceSyntaxKind = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.DefaultWhitespace,
         DefaultEndOfLineSyntaxKind = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.DefaultEndOfLine,
+        CompilationUnit,
 
         FirstTokenWithWellKnownText = 0,
         LastTokenWithWellKnownText = 0,

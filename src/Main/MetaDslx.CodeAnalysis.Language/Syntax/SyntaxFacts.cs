@@ -13,9 +13,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         public virtual int MaxCachedTokenSize => 42;
 
         public abstract bool IsToken(int rawKind);
+        public abstract bool IsFixedToken(int rawKind);
         public abstract bool IsTrivia(int kind);
         public abstract bool IsReservedKeyword(int kind);
         public abstract bool IsContextualKeyword(int kind);
+        public abstract bool IsPreprocessorKeyword(int kind);
+        public abstract bool IsPreprocessorContextualKeyword(int kind);
         public abstract bool IsPreprocessorDirective(int kind);
         public abstract bool IsName(int kind);
         public abstract bool IsPredefinedType(int kind);
@@ -24,6 +27,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         public abstract bool IsGlobalMemberDeclaration(int kind);
         public abstract bool IsNamespaceMemberDeclaration(int kind);
         public abstract bool IsIdentifier(int rawKind);
+        public abstract bool IsGeneralCommentTrivia(int rawKind);
         public abstract bool IsDocumentationCommentTrivia(int rawKind);
         public abstract bool IsTriviaWithEndOfLine(int rawKind);
 
@@ -37,7 +41,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         public abstract IEnumerable<int> GetReservedKeywordKinds();
         public abstract IEnumerable<int> GetContextualKeywordKinds();
 
-        public bool IsKeywordKind(int kind)
+        public bool IsCommentTrivia(int rawKind)
+        {
+            return IsGeneralCommentTrivia(rawKind) || IsDocumentationCommentTrivia(rawKind);
+        }
+
+        public bool IsKeyword(int kind)
         {
             return IsReservedKeyword(kind) || IsContextualKeyword(kind);
         }
@@ -53,6 +62,50 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             {
                 yield return contextual;
             }
+        }
+
+        public virtual int GetDeclarationDepth(SyntaxToken token)
+        {
+            return GetDeclarationDepth(token.Parent);
+        }
+
+        public virtual int GetDeclarationDepth(SyntaxTrivia trivia)
+        {
+            if (IsPreprocessorDirective(trivia.RawKind))
+            {
+                return 0;
+            }
+
+            return GetDeclarationDepth((SyntaxToken)trivia.Token);
+        }
+
+        public virtual int GetDeclarationDepth(SyntaxNode node)
+        {
+            if (node != null)
+            {
+                if (node.IsStructuredTrivia)
+                {
+                    var tr = ((IStructuredTriviaSyntax)node).ParentTrivia;
+                    return GetDeclarationDepth(tr);
+                }
+                else if (node.Parent != null)
+                {
+                    if (node.Parent.RawKind == SyntaxKind.CompilationUnit)
+                    {
+                        return 0;
+                    }
+
+                    int parentDepth = GetDeclarationDepth(node.Parent);
+                    return parentDepth;
+                }
+            }
+
+            return 0;
+        }
+
+        public virtual bool IsWeakChild(SyntaxNode node)
+        {
+            return false;
         }
     }
 }

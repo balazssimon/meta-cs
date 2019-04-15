@@ -17,6 +17,9 @@ namespace MetaDslx.CodeAnalysis.MetaModel
         public new MetaModelSyntaxFacts SyntaxFacts => (MetaModelSyntaxFacts)this.SyntaxFactsCore;
         protected override SyntaxFacts SyntaxFactsCore => new MetaModelSyntaxFacts();
 
+        public new MetaModelLookupPosition LookupPosition => (MetaModelLookupPosition)this.LookupPositionCore;
+        protected override LookupPosition LookupPositionCore => new MetaModelLookupPosition();
+
         internal new MetaModelInternalSyntaxFactory InternalSyntaxFactory => (MetaModelInternalSyntaxFactory)this.InternalSyntaxFactoryCore;
         protected override InternalSyntaxFactory InternalSyntaxFactoryCore => new MetaModelInternalSyntaxFactory();
 

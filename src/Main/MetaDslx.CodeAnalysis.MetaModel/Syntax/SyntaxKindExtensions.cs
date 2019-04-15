@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp
+namespace MetaDslx.CodeAnalysis.MetaModel.Syntax
 {
     internal static partial class SyntaxKindExtensions
     {
@@ -10,7 +11,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             switch (kind)
             {
-                case SyntaxKind.VoidKeyword:
+                /*case SyntaxKind.VoidKeyword:
                     return SpecialType.System_Void;
                 case SyntaxKind.BoolKeyword:
                     return SpecialType.System_Boolean;
@@ -41,7 +42,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case SyntaxKind.CharKeyword:
                     return SpecialType.System_Char;
                 case SyntaxKind.ObjectKeyword:
-                    return SpecialType.System_Object;
+                    return SpecialType.System_Object;*/
                 default:
                     // Note that "dynamic" is a contextual keyword, so it should never show up here.
                     throw ExceptionUtilities.UnexpectedValue(kind);
