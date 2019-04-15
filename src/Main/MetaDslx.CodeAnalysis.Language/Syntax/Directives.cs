@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
+namespace Microsoft.CodeAnalysis.CSharp.Syntax
 {
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public abstract class Directive
@@ -71,6 +71,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             return null;
         }
 
+        public virtual bool HasRelatedDirectives
+        {
+            get { return false; }
+        }
+
         public virtual bool IsActive
         {
             get { return _isActive; }
@@ -120,6 +125,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         public override bool ConditionValue => _conditionValue;
 
         public override DirectiveKind Kind => DirectiveKind.If;
+
+        public override bool HasRelatedDirectives => true;
     }
 
     public class ElifDirective : ConditionalDirective
@@ -141,6 +148,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         public override bool ConditionValue => _conditionValue;
 
         public override DirectiveKind Kind => DirectiveKind.Elif;
+
+        public override bool HasRelatedDirectives => true;
     }
 
     public class ElseDirective : BranchingDirective
@@ -154,6 +163,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         }
 
         public override DirectiveKind Kind => DirectiveKind.Else;
+
+        public override bool HasRelatedDirectives => true;
     }
 
     public class EndIfDirective : Directive
@@ -164,6 +175,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         }
 
         public override DirectiveKind Kind => DirectiveKind.EndIf;
+
+        public override bool HasRelatedDirectives => true;
     }
 
     public class RegionDirective : Directive
@@ -174,6 +187,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         }
 
         public override DirectiveKind Kind => DirectiveKind.Region;
+
+        public override bool HasRelatedDirectives => true;
     }
 
     public class EndRegionDirective : Directive
@@ -184,6 +199,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         }
 
         public override DirectiveKind Kind => DirectiveKind.EndRegion;
+
+        public override bool HasRelatedDirectives => true;
     }
     public class DefineDirective : Directive
     {
@@ -255,6 +272,39 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         public string File => _file;
     }
 
+    public enum LineDirectiveKind
+    {
+        Default,
+        Hidden,
+        Number
+    }
+
+    public class LineDirective : Directive
+    {
+        private readonly LineDirectiveKind _kind;
+        private readonly int _line;
+        private readonly string _file;
+
+        public LineDirective(CSharpSyntaxNode node, bool isActive, int line, string file = null)
+            : base(node, isActive)
+        {
+            _kind = LineDirectiveKind.Number;
+            _line = line;
+            _file = file;
+        }
+
+        public LineDirective(CSharpSyntaxNode node, bool isActive, LineDirectiveKind kind)
+            : base(node, isActive)
+        {
+            _kind = kind;
+        }
+
+        public override DirectiveKind Kind => DirectiveKind.Line;
+
+        public LineDirectiveKind LineKind => _kind;
+        public string File => _file;
+        public int Line => _line;
+    }
 
 
     public enum DefineState

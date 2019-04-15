@@ -12,12 +12,47 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         // So it seems reasonable to limit the sizes to some round number like 42.
         public virtual int MaxCachedTokenSize => 42;
 
-        public abstract bool IsAnyToken(int rawKind);
+        public abstract bool IsToken(int rawKind);
+        public abstract bool IsTrivia(int kind);
+        public abstract bool IsReservedKeyword(int kind);
+        public abstract bool IsContextualKeyword(int kind);
+        public abstract bool IsPreprocessorDirective(int kind);
+        public abstract bool IsName(int kind);
+        public abstract bool IsPredefinedType(int kind);
+        public abstract bool IsType(int kind);
+        public abstract bool IsTypeDeclaration(int kind);
+        public abstract bool IsGlobalMemberDeclaration(int kind);
+        public abstract bool IsNamespaceMemberDeclaration(int kind);
         public abstract bool IsIdentifier(int rawKind);
         public abstract bool IsDocumentationCommentTrivia(int rawKind);
         public abstract bool IsTriviaWithEndOfLine(int rawKind);
+
         public abstract string GetKindText(int rawKind);
         public abstract string GetText(int rawKind);
         public abstract object GetValue(int rawKind);
+        public abstract int GetKeywordKind(string text);
+        public abstract int GetContextualKeywordKind(string text);
+        public abstract int GetPreprocessorKeywordKind(string text);
+
+        public abstract IEnumerable<int> GetReservedKeywordKinds();
+        public abstract IEnumerable<int> GetContextualKeywordKinds();
+
+        public bool IsKeywordKind(int kind)
+        {
+            return IsReservedKeyword(kind) || IsContextualKeyword(kind);
+        }
+
+        public IEnumerable<int> GetKeywordKinds()
+        {
+            foreach (var reserved in GetReservedKeywordKinds())
+            {
+                yield return reserved;
+            }
+
+            foreach (var contextual in GetContextualKeywordKinds())
+            {
+                yield return contextual;
+            }
+        }
     }
 }
