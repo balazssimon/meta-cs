@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis
     /// provide access to additional information about the error, such as what symbols were involved in the ambiguity.
     /// </remarks>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    public class LanguageDiagnosticInfo : IFormattable, IObjectWritable
+    public class LanguageDiagnosticInfo : DiagnosticInfo, IFormattable, IObjectWritable
     {
         private readonly ErrorCode _errorCode;
         private readonly object[] _arguments;
@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis
         }
 
         // Create a copy of this instance with a explicit overridden severity
-        public LanguageDiagnosticInfo GetInstanceWithSeverity(DiagnosticSeverity severity)
+        internal override DiagnosticInfo GetInstanceWithSeverity(DiagnosticSeverity severity)
         {
             return new LanguageDiagnosticInfo(this, severity);
         }
@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis
             this.WriteTo(writer);
         }
 
-        protected virtual void WriteTo(ObjectWriter writer)
+        protected override void WriteTo(ObjectWriter writer)
         {
             writer.WriteValue(_errorCode);
             writer.WriteInt32((int)_effectiveSeverity);
@@ -99,6 +99,11 @@ namespace Microsoft.CodeAnalysis
 
         #endregion
 
+        public override DiagnosticDescriptor Descriptor
+        {
+            get { return _errorCode.DiagnosticDescriptor; }
+        }
+
         public ErrorCode ErrorCode
         {
             get { return _errorCode; }
@@ -108,7 +113,7 @@ namespace Microsoft.CodeAnalysis
         /// Returns the effective severity of the diagnostic: whether this diagnostic is informational, warning, or error.
         /// If IsWarningsAsError is true, then this returns <see cref="DiagnosticSeverity.Error"/>, while <see cref="DefaultSeverity"/> returns <see cref="DiagnosticSeverity.Warning"/>.
         /// </summary>
-        public DiagnosticSeverity Severity
+        public override DiagnosticSeverity Severity
         {
             get
             {
@@ -120,7 +125,7 @@ namespace Microsoft.CodeAnalysis
         /// Returns whether this diagnostic is informational, warning, or error by default, based on the error code.
         /// To get diagnostic's effective severity, use <see cref="Severity"/>.
         /// </summary>
-        public DiagnosticSeverity DefaultSeverity
+        public override DiagnosticSeverity DefaultSeverity
         {
             get
             {
@@ -132,7 +137,7 @@ namespace Microsoft.CodeAnalysis
         /// Gets the warning level. This is 0 for diagnostics with severity <see cref="DiagnosticSeverity.Error"/>,
         /// otherwise an integer between 1 and 4.
         /// </summary>
-        public int WarningLevel
+        public override int WarningLevel
         {
             get
             {
@@ -141,26 +146,10 @@ namespace Microsoft.CodeAnalysis
         }
 
         /// <summary>
-        /// Returns true if this is a warning treated as an error.
-        /// </summary>
-        /// <remarks>
-        /// True implies <see cref="Severity"/> = <see cref="DiagnosticSeverity.Error"/> and
-        /// <see cref="DefaultSeverity"/> = <see cref="DiagnosticSeverity.Warning"/>.
-        /// </remarks>
-        public bool IsWarningAsError
-        {
-            get
-            {
-                return this.DefaultSeverity == DiagnosticSeverity.Warning &&
-                    this.Severity == DiagnosticSeverity.Error;
-            }
-        }
-
-        /// <summary>
         /// Get the diagnostic category for the given diagnostic code.
         /// Default category is <see cref="Diagnostic.CompilerDiagnosticCategory"/>.
         /// </summary>
-        public string Category
+        public override string Category
         {
             get
             {
@@ -168,45 +157,11 @@ namespace Microsoft.CodeAnalysis
             }
         }
 
-        internal ImmutableArray<string> CustomTags
-        {
-            get
-            {
-                return GetCustomTags(_errorCode.DefaultSeverity);
-            }
-        }
-
-        private static ImmutableArray<string> GetCustomTags(DiagnosticSeverity defaultSeverity)
-        {
-            return defaultSeverity == DiagnosticSeverity.Error ?
-                s_compilerErrorCustomTags :
-                s_compilerNonErrorCustomTags;
-        }
-
-        internal bool IsNotConfigurable()
-        {
-            // Only compiler errors are non-configurable.
-            return _errorCode.DefaultSeverity == DiagnosticSeverity.Error;
-        }
-
-        /// <summary>
-        /// If a derived class has additional information about other referenced symbols, it can
-        /// expose the locations of those symbols in a general way, so they can be reported along
-        /// with the error.
-        /// </summary>
-        public virtual IReadOnlyList<Location> AdditionalLocations
-        {
-            get
-            {
-                return SpecializedCollections.EmptyReadOnlyList<Location>();
-            }
-        }
-
         /// <summary>
         /// Get the message id (for example "CS1001") for the message. This includes both the error number
         /// and a prefix identifying the source.
         /// </summary>
-        public string MessageIdentifier
+        public override string MessageIdentifier
         {
             get { return _errorCode.Id; }
         }
@@ -222,7 +177,7 @@ namespace Microsoft.CodeAnalysis
         /// <summary>
         /// Get the error code for the message. (For example, 1001 for "CS1001".)
         /// </summary>
-        public int Code
+        public override int Code
         {
             get { return _errorCode.Code; }
         }
@@ -230,7 +185,7 @@ namespace Microsoft.CodeAnalysis
         /// <summary>
         /// Get the text of the message in the given language.
         /// </summary>
-        public virtual string GetMessage(IFormatProvider formatProvider = null)
+        public override string GetMessage(IFormatProvider formatProvider = null)
         {
             // Get the message and fill in arguments.
             string message = _errorCode.MessageFormat.ToString(formatProvider);
@@ -247,7 +202,7 @@ namespace Microsoft.CodeAnalysis
             return String.Format(formatProvider, message, GetArgumentsToUse(formatProvider));
         }
 
-        protected object[] GetArgumentsToUse(IFormatProvider formatProvider)
+        protected override object[] GetArgumentsToUse(IFormatProvider formatProvider)
         {
             object[] argumentsToUse = null;
             for (int i = 0; i < _arguments.Length; i++)
@@ -284,23 +239,12 @@ namespace Microsoft.CodeAnalysis
             return newArguments;
         }
 
-        internal object[] Arguments
+        internal override object[] Arguments
         {
             get { return _arguments; }
         }
 
-        // TODO (tomat): remove
-        public override string ToString()
-        {
-            return ToString(null);
-        }
-
-        public string ToString(IFormatProvider formatProvider)
-        {
-            return ((IFormattable)this).ToString(null, formatProvider);
-        }
-
-        string IFormattable.ToString(string format, IFormatProvider formatProvider)
+        protected override string ToFormattedString(IFormatProvider formatProvider)
         {
             return String.Format(formatProvider, "{0}: {1}", _errorCode.Id, this.GetMessage(formatProvider));
         }
@@ -354,16 +298,5 @@ namespace Microsoft.CodeAnalysis
         {
             return ToString();
         }
-
-        /// <summary>
-        /// For a LanguageDiagnosticInfo that is lazily evaluated, this method evaluates it
-        /// and returns a non-lazy LanguageDiagnosticInfo.
-        /// </summary>
-        internal virtual LanguageDiagnosticInfo GetResolvedInfo()
-        {
-            // We should never call GetResolvedInfo on a non-lazy LanguageDiagnosticInfo
-            throw ExceptionUtilities.Unreachable;
-        }
-
     }
 }

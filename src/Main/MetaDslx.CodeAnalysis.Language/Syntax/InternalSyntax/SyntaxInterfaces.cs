@@ -8,10 +8,5 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
     public interface IDirectiveTriviaSyntax
     {
         Directive Directive { get; }
-
-        /*DirectiveStack ApplyDirectives(DirectiveStack stack);
-        {
-            return stack.Add(new Directive(this));
-        }*/
     }
 }

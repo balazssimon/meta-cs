@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if (!uniqueFilePaths.Add(normalizedFilePath))
                 {
                     // warning CS2002: Source file '{0}' specified multiple times
-                    diagnostics.Add(new DiagnosticInfo(MessageProvider, (int)ErrorCode.WRN_FileAlreadyIncluded,
+                    diagnostics.Add(new DiagnosticInfoWithMessageProvider(MessageProvider, (int)ErrorCode.WRN_FileAlreadyIncluded,
                         Arguments.PrintFullPaths ? normalizedFilePath : _diagnosticFormatter.RelativizeNormalizedPath(normalizedFilePath)));
 
                     trees[i] = null;
@@ -130,7 +130,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
                 catch (Exception ex)
                 {
-                    diagnostics.Add(new DiagnosticInfo(MessageProvider, (int)ErrorCode.ERR_CantReadConfigFile, appConfigPath, ex.Message));
+                    diagnostics.Add(new DiagnosticInfoWithMessageProvider(MessageProvider, (int)ErrorCode.ERR_CantReadConfigFile, appConfigPath, ex.Message));
                 }
             }
 

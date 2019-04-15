@@ -95,19 +95,19 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             return offset;
         }
 
-        public SyntaxToken GetFirstToken()
+        public InternalSyntaxToken GetFirstToken()
         {
-            return (SyntaxToken)this.GetFirstTerminal();
+            return (InternalSyntaxToken)this.GetFirstTerminal();
         }
 
-        public SyntaxToken GetLastToken()
+        public InternalSyntaxToken GetLastToken()
         {
-            return (SyntaxToken)this.GetLastTerminal();
+            return (InternalSyntaxToken)this.GetLastTerminal();
         }
 
-        public SyntaxToken GetLastNonmissingToken()
+        public InternalSyntaxToken GetLastNonmissingToken()
         {
-            return (SyntaxToken)this.GetLastNonmissingTerminal();
+            return (InternalSyntaxToken)this.GetLastNonmissingTerminal();
         }
 
         public virtual GreenNode GetLeadingTrivia()
@@ -129,6 +129,20 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             return this.GetTrailingTrivia();
         }
+
+        internal override GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics)
+        {
+            return this.WithDiagnostics(diagnostics);
+        }
+
+        public abstract CSharpSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics);
+
+        internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+        {
+            return this.WithAnnotations(annotations);
+        }
+
+        public abstract CSharpSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations);
 
         public abstract TResult Accept<TResult>(CSharpSyntaxVisitor<TResult> visitor);
 
@@ -196,7 +210,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 }
                 else
                 {
-                    var t = node as SyntaxToken;
+                    var t = node as InternalSyntaxToken;
                     if (t != null)
                     {
                         GetDirectives(t.GetLeadingTrivia(), directives);

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
@@ -41,32 +43,27 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
             {
                 get
                 {
-                    switch (this.Kind)
-                    {
-                        case SyntaxKind.IdentifierToken:
-                            return string.Empty;
-                        default:
-                            return null;
-                    }
+                    if (Language.SyntaxFacts.IsIdentifier(this.RawKind)) return string.Empty;
+                    else return null;
                 }
             }
 
-            public override SyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
+            public override InternalSyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
             {
                 return new MissingTokenWithTrivia(this.Kind, trivia, this.TrailingField, this.GetDiagnostics(), this.GetAnnotations());
             }
 
-            public override SyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
+            public override InternalSyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
             {
                 return new MissingTokenWithTrivia(this.Kind, this.LeadingField, trivia, this.GetDiagnostics(), this.GetAnnotations());
             }
 
-            internal override GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics)
+            public override CSharpSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
             {
                 return new MissingTokenWithTrivia(this.Kind, this.LeadingField, this.TrailingField, diagnostics, this.GetAnnotations());
             }
 
-            internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+            public override CSharpSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
             {
                 return new MissingTokenWithTrivia(this.Kind, this.LeadingField, this.TrailingField, this.GetDiagnostics(), annotations);
             }

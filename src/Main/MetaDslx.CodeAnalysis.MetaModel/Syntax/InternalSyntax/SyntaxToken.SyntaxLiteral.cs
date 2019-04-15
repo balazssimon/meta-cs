@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System.Globalization;
+using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
 
 namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
 {
@@ -40,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
                 ObjectBinder.RegisterTypeReader(typeof(SyntaxTokenWithValue<T>), r => new SyntaxTokenWithValue<T>(r));
             }
 
-            internal override void WriteTo(ObjectWriter writer)
+            protected override void WriteTo(ObjectWriter writer)
             {
                 base.WriteTo(writer);
                 writer.WriteString(this.TextField);
@@ -71,22 +73,22 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
                 }
             }
 
-            public override SyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
+            public override InternalSyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
             {
                 return new SyntaxTokenWithValueAndTrivia<T>(this.Kind, this.TextField, this.ValueField, trivia, null, this.GetDiagnostics(), this.GetAnnotations());
             }
 
-            public override SyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
+            public override InternalSyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
             {
                 return new SyntaxTokenWithValueAndTrivia<T>(this.Kind, this.TextField, this.ValueField, null, trivia, this.GetDiagnostics(), this.GetAnnotations());
             }
 
-            internal override GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics)
+            public override CSharpSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
             {
                 return new SyntaxTokenWithValue<T>(this.Kind, this.TextField, this.ValueField, diagnostics, this.GetAnnotations());
             }
 
-            internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+            public override CSharpSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
             {
                 return new SyntaxTokenWithValue<T>(this.Kind, this.TextField, this.ValueField, this.GetDiagnostics(), annotations);
             }

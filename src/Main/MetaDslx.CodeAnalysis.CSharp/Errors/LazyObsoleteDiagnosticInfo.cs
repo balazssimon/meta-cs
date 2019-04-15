@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Symbols;
 
 namespace Microsoft.CodeAnalysis.CSharp
 {
-    internal sealed class LazyObsoleteDiagnosticInfo : DiagnosticInfo
+    internal sealed class LazyObsoleteDiagnosticInfo : DiagnosticInfoWithMessageProvider
     {
         private DiagnosticInfo _lazyActualObsoleteDiagnostic;
 

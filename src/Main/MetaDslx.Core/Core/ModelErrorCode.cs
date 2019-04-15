@@ -1,28 +1,50 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MetaDslx.Core
 {
-    public class ModelErrorCode : ErrorCode
+    public sealed class ModelErrorCode : ErrorCode
     {
+        private static ImmutableDictionary<int, ModelErrorCode> s_errorCodeToDescriptorMap = ImmutableDictionary<int, ModelErrorCode>.Empty;
+
         public const string ModelCategory = "MetaDslx.Core";
         public const string Prefix = "MM";
 
         public ModelErrorCode(int code, string title, string messageFormat, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault = true, string description = null, string helpLinkUri = null, params string[] customTags) 
             : base(code, Prefix, title, messageFormat, ModelCategory, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
         {
+            ModelErrorCode old = ImmutableInterlocked.GetOrAdd(ref s_errorCodeToDescriptorMap, code, c => this);
+            Debug.Assert(old == null);
         }
 
         public ModelErrorCode(int code, LocalizableString title, LocalizableString messageFormat, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault, LocalizableString description = null, string helpLinkUri = null, params string[] customTags)
             : base(code, Prefix, title, messageFormat, ModelCategory, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
         {
+            ModelErrorCode old = ImmutableInterlocked.GetOrAdd(ref s_errorCodeToDescriptorMap, code, c => this);
+            Debug.Assert(old == null);
         }
 
+        static ModelErrorCode()
+        {
+            ObjectBinder.RegisterTypeReader(typeof(ModelErrorCode), r => ResolveErrorCode(r));
+        }
+
+        private static ModelErrorCode ResolveErrorCode(ObjectReader reader)
+        {
+            int errorCode = reader.ReadInt32();
+            s_errorCodeToDescriptorMap.TryGetValue(errorCode, out ModelErrorCode result);
+            return result ?? ERR_InvalidErrorCode;
+        }
+
+        public static readonly ModelErrorCode ERR_InvalidErrorCode = new ModelErrorCode(0, "Invalid error code", "Invalid error code. This should not happen. There is an error in the compiler.", DiagnosticSeverity.Error, false);
         public static readonly ModelErrorCode ERR_SymbolAlreadyContainedByModelGroup = new ModelErrorCode(1, "Symbol already contained by model group", "The symbol '{0}' is already contained by the model group.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_SymbolAlreadyContainedByModel = new ModelErrorCode(2, "Symbol already contained by model", "The symbol '{0}' is already contained by the model.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotResolveModel = new ModelErrorCode(3, "Cannot resolve model", "Cannot resolve the model based on the id '{0}'.", DiagnosticSeverity.Error);

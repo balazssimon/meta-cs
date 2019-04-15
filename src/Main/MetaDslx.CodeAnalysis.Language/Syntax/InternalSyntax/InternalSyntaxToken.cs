@@ -8,53 +8,53 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
     using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 
-    public abstract class SyntaxToken : CSharpSyntaxNode
+    public abstract class InternalSyntaxToken : CSharpSyntaxNode
     {
         //====================
         // Optimization: Normally, we wouldn't accept this much duplicate code, but these constructors
         // are called A LOT and we want to keep them as short and simple as possible and increase the
         // likelihood that they will be inlined.
 
-        protected SyntaxToken(int kind)
+        protected InternalSyntaxToken(int kind)
             : base(kind)
         {
             FullWidth = this.Text.Length;
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected SyntaxToken(int kind, DiagnosticInfo[] diagnostics)
+        protected InternalSyntaxToken(int kind, DiagnosticInfo[] diagnostics)
             : base(kind, diagnostics)
         {
             FullWidth = this.Text.Length;
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected SyntaxToken(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        protected InternalSyntaxToken(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(kind, diagnostics, annotations)
         {
             FullWidth = this.Text.Length;
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected SyntaxToken(int kind, int fullWidth)
+        protected InternalSyntaxToken(int kind, int fullWidth)
             : base(kind, fullWidth)
         {
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected SyntaxToken(int kind, int fullWidth, DiagnosticInfo[] diagnostics)
+        protected InternalSyntaxToken(int kind, int fullWidth, DiagnosticInfo[] diagnostics)
             : base(kind, diagnostics, fullWidth)
         {
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected SyntaxToken(int kind, int fullWidth, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        protected InternalSyntaxToken(int kind, int fullWidth, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(kind, diagnostics, annotations, fullWidth)
         {
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected SyntaxToken(ObjectReader reader)
+        protected InternalSyntaxToken(ObjectReader reader)
             : base(reader)
         {
             var text = this.Text;
@@ -137,6 +137,20 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             get { return new SyntaxList<CSharpSyntaxNode>(this.GetTrailingTrivia()); }
         }
 
+        public sealed override GreenNode WithLeadingTrivia(GreenNode trivia)
+        {
+            return TokenWithLeadingTrivia(trivia);
+        }
+
+        public abstract InternalSyntaxToken TokenWithLeadingTrivia(GreenNode trivia);
+
+        public sealed override GreenNode WithTrailingTrivia(GreenNode trivia)
+        {
+            return TokenWithTrailingTrivia(trivia);
+        }
+
+        public abstract InternalSyntaxToken TokenWithTrailingTrivia(GreenNode trivia);
+
         internal override DirectiveStack ApplyDirectives(DirectiveStack stack)
         {
             if (this.ContainsDirectives)
@@ -198,7 +212,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 return false;
             }
 
-            var otherToken = (SyntaxToken)other;
+            var otherToken = (InternalSyntaxToken)other;
 
             if (this.Text != otherToken.Text)
             {

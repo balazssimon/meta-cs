@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,9 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
 {
-    internal partial class SyntaxToken : Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax.SyntaxToken
+    using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
+
+    internal partial class SyntaxToken : InternalSyntaxToken
     {
         //====================
         // Optimization: Normally, we wouldn't accept this much duplicate code, but these constructors
@@ -56,10 +57,11 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
             this.flags |= NodeFlags.IsNotMissing;  //note: cleared by subclasses representing missing tokens
         }
 
+        public new MetaModelLanguage Language => MetaModelLanguage.Instance;
         protected override Language LanguageCore => MetaModelLanguage.Instance;
 
         protected override bool ShouldReuseInSerialization => base.ShouldReuseInSerialization &&
-                                                             FullWidth < Lexer.MaxCachedTokenSize;
+                                                             FullWidth < Language.SyntaxFacts.MaxCachedTokenSize;
 
         //====================
 
@@ -67,9 +69,9 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
         {
             if (kind > LastTokenWithWellKnownText)
             {
-                if (!SyntaxFacts.IsAnyToken(kind))
+                if (!MetaModelLanguage.Instance.SyntaxFacts.IsAnyToken(kind))
                 {
-                    throw new ArgumentException(string.Format(CSharpResources.ThisMethodCanOnlyBeUsedToCreateTokens, kind), nameof(kind));
+                    throw new ArgumentException(string.Format("Invalid SyntaxKind: {0}. This method can only be used to create tokens.", kind), nameof(kind));
                 }
 
                 return CreateMissing(kind, null, null);
@@ -82,9 +84,9 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
         {
             if (kind > LastTokenWithWellKnownText)
             {
-                if (!SyntaxFacts.IsAnyToken(kind))
+                if (!MetaModelLanguage.Instance.SyntaxFacts.IsAnyToken(kind))
                 {
-                    throw new ArgumentException(string.Format(CSharpResources.ThisMethodCanOnlyBeUsedToCreateTokens, kind), nameof(kind));
+                    throw new ArgumentException(string.Format("Invalid SyntaxKind: {0}. This method can only be used to create tokens.", kind), nameof(kind));
                 }
 
                 return CreateMissing(kind, leading, trailing);
@@ -119,8 +121,8 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
             return new MissingTokenWithTrivia(kind, leading, trailing);
         }
 
-        internal const SyntaxKind FirstTokenWithWellKnownText = SyntaxKind.TildeToken;
-        internal const SyntaxKind LastTokenWithWellKnownText = SyntaxKind.EndOfFileToken;
+        internal const SyntaxKind FirstTokenWithWellKnownText = SyntaxKind.FirstTokenWithWellKnownText;
+        internal const SyntaxKind LastTokenWithWellKnownText = SyntaxKind.LastTokenWithWellKnownText;
 
         // TODO: eliminate the blank space before the first interesting element?
         private static readonly ArrayElement<SyntaxToken>[] s_tokensWithNoTrivia = new ArrayElement<SyntaxToken>[(int)LastTokenWithWellKnownText + 1];
@@ -135,7 +137,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
             for (var kind = FirstTokenWithWellKnownText; kind <= LastTokenWithWellKnownText; kind++)
             {
                 s_tokensWithNoTrivia[(int)kind].Value = new SyntaxToken(kind);
-                s_tokensWithElasticTrivia[(int)kind].Value = new SyntaxTokenWithTrivia(kind, MetaModelLanguage.Instance.InternalSyntaxFactory.ElasticZeroSpace, SyntaxFactory.ElasticZeroSpace);
+                s_tokensWithElasticTrivia[(int)kind].Value = new SyntaxTokenWithTrivia(kind, MetaModelLanguage.Instance.InternalSyntaxFactory.ElasticZeroSpace, MetaModelLanguage.Instance.InternalSyntaxFactory.ElasticZeroSpace);
                 s_tokensWithSingleTrailingSpace[(int)kind].Value = new SyntaxTokenWithTrivia(kind, null, MetaModelLanguage.Instance.InternalSyntaxFactory.Space);
                 s_tokensWithSingleTrailingCRLF[(int)kind].Value = new SyntaxTokenWithTrivia(kind, null, MetaModelLanguage.Instance.InternalSyntaxFactory.CarriageReturnLineFeed);
             }
@@ -236,33 +238,23 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
             }
         }
 
-        public sealed override GreenNode WithLeadingTrivia(GreenNode trivia)
-        {
-            return TokenWithLeadingTrivia(trivia);
-        }
-
-        public virtual SyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
+        public override InternalSyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
         {
             return new SyntaxTokenWithTrivia(this.Kind, trivia, null, this.GetDiagnostics(), this.GetAnnotations());
         }
 
-        public sealed override GreenNode WithTrailingTrivia(GreenNode trivia)
-        {
-            return TokenWithTrailingTrivia(trivia);
-        }
-
-        public virtual SyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
+        public override InternalSyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
         {
             return new SyntaxTokenWithTrivia(this.Kind, null, trivia, this.GetDiagnostics(), this.GetAnnotations());
         }
 
-        internal override GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics)
+        public override CSharpSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
         {
             System.Diagnostics.Debug.Assert(this.GetType() == typeof(SyntaxToken));
             return new SyntaxToken(this.Kind, this.FullWidth, diagnostics, this.GetAnnotations());
         }
 
-        internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+        public override CSharpSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
         {
             System.Diagnostics.Debug.Assert(this.GetType() == typeof(SyntaxToken));
             return new SyntaxToken(this.Kind, this.FullWidth, this.GetDiagnostics(), annotations);
@@ -285,7 +277,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
                 var trivia = this.GetLeadingTrivia();
                 if (trivia != null)
                 {
-                    trivia.WriteTo(writer, true, true);
+                    trivia.WriteTo(writer);
                 }
             }
 
@@ -296,7 +288,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
                 var trivia = this.GetTrailingTrivia();
                 if (trivia != null)
                 {
-                    trivia.WriteTo(writer, true, true);
+                    trivia.WriteTo(writer);
                 }
             }
         }

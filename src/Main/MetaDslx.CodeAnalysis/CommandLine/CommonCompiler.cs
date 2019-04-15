@@ -371,15 +371,15 @@ namespace Microsoft.CodeAnalysis
 
             if (e is FileNotFoundException || e is DirectoryNotFoundException)
             {
-                diagnosticInfo = new DiagnosticInfo(messageProvider, messageProvider.ERR_FileNotFound, filePath);
+                diagnosticInfo = new DiagnosticInfoWithMessageProvider(messageProvider, messageProvider.ERR_FileNotFound, filePath);
             }
             else if (e is InvalidDataException)
             {
-                diagnosticInfo = new DiagnosticInfo(messageProvider, messageProvider.ERR_BinaryFile, filePath);
+                diagnosticInfo = new DiagnosticInfoWithMessageProvider(messageProvider, messageProvider.ERR_BinaryFile, filePath);
             }
             else
             {
-                diagnosticInfo = new DiagnosticInfo(messageProvider, messageProvider.ERR_NoSourceFile, filePath, e.Message);
+                diagnosticInfo = new DiagnosticInfoWithMessageProvider(messageProvider, messageProvider.ERR_NoSourceFile, filePath, e.Message);
             }
 
             return diagnosticInfo;
@@ -530,7 +530,7 @@ namespace Microsoft.CodeAnalysis
                 var errorCode = MessageProvider.ERR_CompileCancelled;
                 if (errorCode > 0)
                 {
-                    var diag = new DiagnosticInfo(MessageProvider, errorCode);
+                    var diag = new DiagnosticInfoWithMessageProvider(MessageProvider, errorCode);
                     ReportErrors(new[] { diag }, consoleOutput, errorLogger);
                 }
 
@@ -1112,7 +1112,7 @@ namespace Microsoft.CodeAnalysis
         {
             var diagnostics = DiagnosticBag.GetInstance();
             var stream = GetWin32Resources(messageProvider, arguments, compilation, diagnostics);
-            errors = diagnostics.ToReadOnlyAndFree().SelectAsArray(diag => new DiagnosticInfo(messageProvider, diag.IsWarningAsError, diag.Code, (object[])diag.Arguments));
+            errors = diagnostics.ToReadOnlyAndFree().SelectAsArray(diag => new DiagnosticInfoWithMessageProvider(messageProvider, diag.IsWarningAsError, diag.Code, (object[])diag.Arguments));
             return stream;
         }
 

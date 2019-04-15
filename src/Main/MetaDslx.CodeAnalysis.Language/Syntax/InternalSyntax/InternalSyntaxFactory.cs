@@ -8,25 +8,25 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
     using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 
-    public abstract class SyntaxFactory
+    public abstract class InternalSyntaxFactory
     {
         private const string CrLf = "\r\n";
 
-        public readonly SyntaxTrivia CarriageReturnLineFeed;
-        public readonly SyntaxTrivia LineFeed;
-        public readonly SyntaxTrivia CarriageReturn;
-        public readonly SyntaxTrivia Space;
-        public readonly SyntaxTrivia Tab;
+        public readonly InternalSyntaxTrivia CarriageReturnLineFeed;
+        public readonly InternalSyntaxTrivia LineFeed;
+        public readonly InternalSyntaxTrivia CarriageReturn;
+        public readonly InternalSyntaxTrivia Space;
+        public readonly InternalSyntaxTrivia Tab;
 
-        public readonly SyntaxTrivia ElasticCarriageReturnLineFeed;
-        public readonly SyntaxTrivia ElasticLineFeed;
-        public readonly SyntaxTrivia ElasticCarriageReturn;
-        public readonly SyntaxTrivia ElasticSpace;
-        public readonly SyntaxTrivia ElasticTab;
+        public readonly InternalSyntaxTrivia ElasticCarriageReturnLineFeed;
+        public readonly InternalSyntaxTrivia ElasticLineFeed;
+        public readonly InternalSyntaxTrivia ElasticCarriageReturn;
+        public readonly InternalSyntaxTrivia ElasticSpace;
+        public readonly InternalSyntaxTrivia ElasticTab;
 
-        public readonly SyntaxTrivia ElasticZeroSpace;
+        public readonly InternalSyntaxTrivia ElasticZeroSpace;
 
-        protected SyntaxFactory()
+        protected InternalSyntaxFactory()
         {
             CarriageReturnLineFeed = EndOfLine(CrLf);
             LineFeed = EndOfLine("\n");
@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         public abstract Language Language { get; }
 
-        public virtual SyntaxToken DefaultSeparator
+        public virtual InternalSyntaxToken DefaultSeparator
         {
             get { return this.Token(SyntaxKind.DefaultSeparator); }
         }
@@ -56,9 +56,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         // could cause unpredictable behavior, since SyntaxToken's static constructor already depends on the 
         // static fields of this class (specifically, ElasticZeroSpace).
 
-        public SyntaxTrivia EndOfLine(string text, bool elastic = false)
+        public InternalSyntaxTrivia EndOfLine(string text, bool elastic = false)
         {
-            SyntaxTrivia trivia = null;
+            InternalSyntaxTrivia trivia = null;
 
             // use predefined trivia
             switch (text)
@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             return trivia.WithAnnotationsGreen(new[] { SyntaxAnnotation.ElasticAnnotation });
         }
 
-        public SyntaxTrivia Whitespace(string text, bool elastic = false)
+        public InternalSyntaxTrivia Whitespace(string text, bool elastic = false)
         {
             var trivia = this.Trivia(SyntaxKind.DefaultWhitespace, text);
             if (!elastic)
@@ -100,49 +100,49 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             return trivia.WithAnnotationsGreen(new[] { SyntaxAnnotation.ElasticAnnotation });
         }
 
-        public abstract SyntaxTrivia Trivia(int kind, string text, bool elastic = false);
-        public abstract SyntaxTrivia ConflictMarker(string text);
-        public abstract SyntaxTrivia DisabledText(string text);
-        public abstract SyntaxToken Token(int kind);
-        public abstract SyntaxToken Token(GreenNode leading, int kind, GreenNode trailing);
-        public abstract SyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing);
-        public abstract SyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing);
-        public abstract SyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing);
-        public abstract SyntaxToken MissingToken(int kind);
-        public abstract SyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing);
-        public abstract SyntaxToken BadToken(GreenNode leading, string text, GreenNode trailing);
+        public abstract InternalSyntaxTrivia Trivia(int kind, string text, bool elastic = false);
+        public abstract InternalSyntaxTrivia ConflictMarker(string text);
+        public abstract InternalSyntaxTrivia DisabledText(string text);
+        public abstract InternalSyntaxToken Token(int kind);
+        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing);
+        public abstract InternalSyntaxToken MissingToken(int kind);
+        public abstract InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing);
+        public abstract InternalSyntaxToken BadToken(GreenNode leading, string text, GreenNode trailing);
 
-        internal SyntaxList<TNode> List<TNode>() where TNode : CSharpSyntaxNode
+        public SyntaxList<TNode> List<TNode>() where TNode : CSharpSyntaxNode
         {
             return default(SyntaxList<TNode>);
         }
 
-        internal SyntaxList<TNode> List<TNode>(TNode node) where TNode : CSharpSyntaxNode
+        public SyntaxList<TNode> List<TNode>(TNode node) where TNode : CSharpSyntaxNode
         {
             return new SyntaxList<TNode>(SyntaxList.List(node));
         }
 
-        internal SyntaxList<TNode> List<TNode>(TNode node0, TNode node1) where TNode : CSharpSyntaxNode
+        public SyntaxList<TNode> List<TNode>(TNode node0, TNode node1) where TNode : CSharpSyntaxNode
         {
             return new SyntaxList<TNode>(SyntaxList.List(node0, node1));
         }
 
-        internal GreenNode ListNode(CSharpSyntaxNode node0, CSharpSyntaxNode node1)
+        public GreenNode ListNode(CSharpSyntaxNode node0, CSharpSyntaxNode node1)
         {
             return SyntaxList.List(node0, node1);
         }
 
-        internal SyntaxList<TNode> List<TNode>(TNode node0, TNode node1, TNode node2) where TNode : CSharpSyntaxNode
+        public SyntaxList<TNode> List<TNode>(TNode node0, TNode node1, TNode node2) where TNode : CSharpSyntaxNode
         {
             return new SyntaxList<TNode>(SyntaxList.List(node0, node1, node2));
         }
 
-        internal GreenNode ListNode(CSharpSyntaxNode node0, CSharpSyntaxNode node1, CSharpSyntaxNode node2)
+        public GreenNode ListNode(CSharpSyntaxNode node0, CSharpSyntaxNode node1, CSharpSyntaxNode node2)
         {
             return SyntaxList.List(node0, node1, node2);
         }
 
-        internal SyntaxList<TNode> List<TNode>(params TNode[] nodes) where TNode : CSharpSyntaxNode
+        public SyntaxList<TNode> List<TNode>(params TNode[] nodes) where TNode : CSharpSyntaxNode
         {
             if (nodes != null)
             {
@@ -152,27 +152,27 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             return default(SyntaxList<TNode>);
         }
 
-        internal GreenNode ListNode(params ArrayElement<GreenNode>[] nodes)
+        public GreenNode ListNode(params ArrayElement<GreenNode>[] nodes)
         {
             return SyntaxList.List(nodes);
         }
 
-        internal SeparatedSyntaxList<TNode> SeparatedList<TNode>(TNode node) where TNode : CSharpSyntaxNode
+        public SeparatedSyntaxList<TNode> SeparatedList<TNode>(TNode node) where TNode : CSharpSyntaxNode
         {
             return new SeparatedSyntaxList<TNode>(new SyntaxList<CSharpSyntaxNode>(node));
         }
 
-        internal SeparatedSyntaxList<TNode> SeparatedList<TNode>(SyntaxToken token) where TNode : CSharpSyntaxNode
+        public SeparatedSyntaxList<TNode> SeparatedList<TNode>(InternalSyntaxToken token) where TNode : CSharpSyntaxNode
         {
             return new SeparatedSyntaxList<TNode>(new SyntaxList<CSharpSyntaxNode>(token));
         }
 
-        internal SeparatedSyntaxList<TNode> SeparatedList<TNode>(TNode node1, SyntaxToken token, TNode node2) where TNode : CSharpSyntaxNode
+        public SeparatedSyntaxList<TNode> SeparatedList<TNode>(TNode node1, InternalSyntaxToken token, TNode node2) where TNode : CSharpSyntaxNode
         {
             return new SeparatedSyntaxList<TNode>(new SyntaxList<CSharpSyntaxNode>(SyntaxList.List(node1, token, node2)));
         }
 
-        internal SeparatedSyntaxList<TNode> SeparatedList<TNode>(params CSharpSyntaxNode[] nodes) where TNode : CSharpSyntaxNode
+        public SeparatedSyntaxList<TNode> SeparatedList<TNode>(params CSharpSyntaxNode[] nodes) where TNode : CSharpSyntaxNode
         {
             if (nodes != null)
             {
@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             return default(SeparatedSyntaxList<TNode>);
         }
 
-        internal protected virtual IEnumerable<SyntaxTrivia> GetWellKnownTrivia()
+        public virtual IEnumerable<InternalSyntaxTrivia> GetWellKnownTrivia()
         {
             yield return CarriageReturnLineFeed;
             yield return LineFeed;
@@ -199,6 +199,6 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             yield return ElasticZeroSpace;
         }
 
-        internal protected abstract IEnumerable<SyntaxToken> GetWellKnownTokens();
+        public abstract IEnumerable<InternalSyntaxToken> GetWellKnownTokens();
     }
 }

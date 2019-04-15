@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Microsoft.CodeAnalysis
 {
-    public class LanguageDiagnosticInfoWithSymbols : LanguageDiagnosticInfo
+    public class DiagnosticInfoWithSymbols : LanguageDiagnosticInfo
     {
         // not serialized:
         internal readonly ImmutableArray<ISymbol> Symbols;
 
-        public LanguageDiagnosticInfoWithSymbols(ImmutableArray<ISymbol> symbols, ErrorCode errorCode, object[] arguments)
+        public DiagnosticInfoWithSymbols(ImmutableArray<ISymbol> symbols, ErrorCode errorCode, object[] arguments)
             : base(errorCode, arguments)
         {
             this.Symbols = symbols;

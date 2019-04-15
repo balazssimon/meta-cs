@@ -6,7 +6,9 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
 {
-    internal class SyntaxNode : Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax.CSharpSyntaxNode
+    using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
+
+    internal abstract class SyntaxNode : CSharpSyntaxNode
     {
         protected SyntaxNode(int kind)
             : base(kind)
@@ -43,6 +45,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
         {
         }
 
+        public new MetaModelLanguage Language => MetaModelLanguage.Instance;
         protected override Language LanguageCore => MetaModelLanguage.Instance;
 
         public SyntaxKind Kind => (SyntaxKind)this.RawKind;

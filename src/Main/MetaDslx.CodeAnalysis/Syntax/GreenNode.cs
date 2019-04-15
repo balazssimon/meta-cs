@@ -596,7 +596,7 @@ namespace Microsoft.CodeAnalysis
             return s_noAnnotations;
         }
 
-        public abstract GreenNode SetAnnotations(SyntaxAnnotation[] annotations);
+        internal abstract GreenNode SetAnnotations(SyntaxAnnotation[] annotations);
 
         #endregion
 
@@ -615,7 +615,7 @@ namespace Microsoft.CodeAnalysis
             return s_noDiagnostics;
         }
 
-        public abstract GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics);
+        internal abstract GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics);
         #endregion
 
         #region Text

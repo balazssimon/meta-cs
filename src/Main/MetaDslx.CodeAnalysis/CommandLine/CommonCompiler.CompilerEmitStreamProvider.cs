@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis
                 catch (Exception e)
                 {
                     var messageProvider = _compiler.MessageProvider;
-                    var diagnosticInfo = new DiagnosticInfo(messageProvider, messageProvider.ERR_OutputWriteFailed, _filePath, e.Message);
+                    var diagnosticInfo = new DiagnosticInfoWithMessageProvider(messageProvider, messageProvider.ERR_OutputWriteFailed, _filePath, e.Message);
                     diagnostics.Add(messageProvider.CreateDiagnostic(diagnosticInfo));
                 }
             }

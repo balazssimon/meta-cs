@@ -15,7 +15,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             this.VisitIntoStructuredTrivia = visitIntoStructuredTrivia;
         }
 
-        public override CSharpSyntaxNode VisitToken(SyntaxToken token)
+        public override CSharpSyntaxNode VisitToken(InternalSyntaxToken token)
         {
             var leading = this.VisitList(token.LeadingTrivia);
             var trailing = this.VisitList(token.TrailingTrivia);
@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
                 if (alternate != null)
                 {
-                    Debug.Assert(visited != null && visited.Kind != SyntaxKind.None, "Cannot remove node using Syntax.InternalSyntax.SyntaxRewriter.");
+                    Debug.Assert(visited != null && visited.RawKind != SyntaxKind.None, "Cannot remove node using Syntax.InternalSyntax.SyntaxRewriter.");
                     alternate.Add(visited);
                 }
             }

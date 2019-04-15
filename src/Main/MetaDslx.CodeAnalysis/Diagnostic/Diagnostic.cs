@@ -267,12 +267,12 @@ namespace Microsoft.CodeAnalysis
 
         internal static Diagnostic Create(CommonMessageProvider messageProvider, int errorCode)
         {
-            return Create(new DiagnosticInfo(messageProvider, errorCode));
+            return Create(new DiagnosticInfoWithMessageProvider(messageProvider, errorCode));
         }
 
         internal static Diagnostic Create(CommonMessageProvider messageProvider, int errorCode, params object[] arguments)
         {
-            return Create(new DiagnosticInfo(messageProvider, errorCode, arguments));
+            return Create(new DiagnosticInfoWithMessageProvider(messageProvider, errorCode, arguments));
         }
 
         internal static Diagnostic Create(DiagnosticInfo info)

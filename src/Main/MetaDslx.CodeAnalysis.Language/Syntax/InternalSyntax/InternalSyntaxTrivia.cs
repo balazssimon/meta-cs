@@ -6,11 +6,11 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
-    public abstract class SyntaxTrivia : CSharpSyntaxNode
+    public abstract class InternalSyntaxTrivia : CSharpSyntaxNode
     {
         public readonly string Text;
 
-        protected SyntaxTrivia(int kind, string text, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
+        protected InternalSyntaxTrivia(int kind, string text, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
             : base(kind, diagnostics, annotations, text.Length)
         {
             this.Text = text;
@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             }*/
         }
 
-        protected SyntaxTrivia(ObjectReader reader)
+        protected InternalSyntaxTrivia(ObjectReader reader)
             : base(reader)
         {
             this.Text = reader.ReadString();
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             writer.Write(Text);
         }
 
-        public static implicit operator Microsoft.CodeAnalysis.SyntaxTrivia(SyntaxTrivia trivia)
+        public static implicit operator Microsoft.CodeAnalysis.SyntaxTrivia(InternalSyntaxTrivia trivia)
         {
             return new Microsoft.CodeAnalysis.SyntaxTrivia(default(Microsoft.CodeAnalysis.SyntaxToken), trivia, position: 0, index: 0);
         }
@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 return false;
             }
 
-            if (this.Text != ((SyntaxTrivia)other).Text)
+            if (this.Text != ((InternalSyntaxTrivia)other).Text)
             {
                 return false;
             }

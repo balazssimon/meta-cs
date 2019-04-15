@@ -56,5 +56,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         protected abstract Language LanguageCore { get; }
 
+        internal protected new virtual void WriteTo(ObjectWriter writer)
+        {
+            base.WriteTo(writer);
+        }
     }
 }

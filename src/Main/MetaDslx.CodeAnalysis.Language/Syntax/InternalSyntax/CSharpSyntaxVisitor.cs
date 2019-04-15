@@ -17,12 +17,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             return node.Accept(this);
         }
 
-        public virtual TResult VisitToken(SyntaxToken token)
+        public virtual TResult VisitToken(InternalSyntaxToken token)
         {
             return this.DefaultVisit(token);
         }
 
-        public virtual TResult VisitTrivia(SyntaxTrivia trivia)
+        public virtual TResult VisitTrivia(InternalSyntaxTrivia trivia)
         {
             return this.DefaultVisit(trivia);
         }
@@ -45,12 +45,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             node.Accept(this);
         }
 
-        public virtual void VisitToken(SyntaxToken token)
+        public virtual void VisitToken(InternalSyntaxToken token)
         {
             this.DefaultVisit(token);
         }
 
-        public virtual void VisitTrivia(SyntaxTrivia trivia)
+        public virtual void VisitTrivia(InternalSyntaxTrivia trivia)
         {
             this.DefaultVisit(trivia);
         }

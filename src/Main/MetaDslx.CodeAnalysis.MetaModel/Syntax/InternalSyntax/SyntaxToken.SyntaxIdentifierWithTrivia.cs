@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
@@ -34,6 +36,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
             }
 
             internal SyntaxIdentifierWithTrivia(
+                SyntaxKind kind,
                 SyntaxKind contextualKind,
                 string text,
                 string valueText,
@@ -41,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
                 GreenNode trailing,
                 DiagnosticInfo[] diagnostics,
                 SyntaxAnnotation[] annotations)
-                : base(contextualKind, text, valueText, diagnostics, annotations)
+                : base(kind, contextualKind, text, valueText, diagnostics, annotations)
             {
                 if (leading != null)
                 {
@@ -77,7 +80,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
                 ObjectBinder.RegisterTypeReader(typeof(SyntaxIdentifierWithTrivia), r => new SyntaxIdentifierWithTrivia(r));
             }
 
-            internal override void WriteTo(ObjectWriter writer)
+            protected override void WriteTo(ObjectWriter writer)
             {
                 base.WriteTo(writer);
                 writer.WriteValue(_leading);
@@ -94,24 +97,24 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
                 return _trailing;
             }
 
-            public override SyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
+            public override InternalSyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
             {
-                return new SyntaxIdentifierWithTrivia(this.contextualKind, this.TextField, this.valueText, trivia, _trailing, this.GetDiagnostics(), this.GetAnnotations());
+                return new SyntaxIdentifierWithTrivia(this.Kind, this.contextualKind, this.TextField, this.valueText, trivia, _trailing, this.GetDiagnostics(), this.GetAnnotations());
             }
 
-            public override SyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
+            public override InternalSyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
             {
-                return new SyntaxIdentifierWithTrivia(this.contextualKind, this.TextField, this.valueText, _leading, trivia, this.GetDiagnostics(), this.GetAnnotations());
+                return new SyntaxIdentifierWithTrivia(this.Kind, this.contextualKind, this.TextField, this.valueText, _leading, trivia, this.GetDiagnostics(), this.GetAnnotations());
             }
 
-            internal override GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics)
+            public override CSharpSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
             {
-                return new SyntaxIdentifierWithTrivia(this.contextualKind, this.TextField, this.valueText, _leading, _trailing, diagnostics, this.GetAnnotations());
+                return new SyntaxIdentifierWithTrivia(this.Kind, this.contextualKind, this.TextField, this.valueText, _leading, _trailing, diagnostics, this.GetAnnotations());
             }
 
-            internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+            public override CSharpSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
             {
-                return new SyntaxIdentifierWithTrivia(this.contextualKind, this.TextField, this.valueText, _leading, _trailing, this.GetDiagnostics(), annotations);
+                return new SyntaxIdentifierWithTrivia(this.Kind, this.contextualKind, this.TextField, this.valueText, _leading, _trailing, this.GetDiagnostics(), annotations);
             }
         }
     }

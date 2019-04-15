@@ -6,7 +6,7 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.CSharp
 {
-    internal class SyntaxDiagnosticInfo : DiagnosticInfoWithMessageProvider
+    internal class SyntaxDiagnosticInfo : LanguageDiagnosticInfo
     {
         static SyntaxDiagnosticInfo()
         {
@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal readonly int Width;
 
         internal SyntaxDiagnosticInfo(int offset, int width, ErrorCode code, params object[] args)
-            : base(CSharp.MessageProvider.Instance, (int)code, args)
+            : base(code, args)
         {
             Debug.Assert(width >= 0);
             this.Offset = offset;
@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public SyntaxDiagnosticInfo WithOffset(int offset)
         {
-            return new SyntaxDiagnosticInfo(offset, this.Width, (ErrorCode)this.Code, this.Arguments);
+            return new SyntaxDiagnosticInfo(offset, this.Width, this.ErrorCode, this.Arguments);
         }
 
         #region Serialization

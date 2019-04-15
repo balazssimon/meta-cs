@@ -28,124 +28,6 @@ namespace Microsoft.CodeAnalysis
             _isSuppressed = isSuppressed;
         }
 
-        /// <summary>
-        /// Creates a <see cref="Diagnostic"/> instance.
-        /// </summary>
-        /// <param name="descriptor">A <see cref="DiagnosticDescriptor"/> describing the diagnostic</param>
-        /// <param name="location">An optional primary location of the diagnostic. If null, <see cref="Location"/> will return <see cref="Location.None"/>.</param>
-        /// <param name="messageArgs">Arguments to the message of the diagnostic</param>
-        /// <returns>The <see cref="Diagnostic"/> instance.</returns>
-        public static Diagnostic Create(
-            ErrorCode errorCode,
-            Location location,
-            params object[] messageArgs)
-        {
-            return Create(errorCode, location, null, null, messageArgs);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="Diagnostic"/> instance.
-        /// </summary>
-        /// <param name="descriptor">A <see cref="DiagnosticDescriptor"/> describing the diagnostic.</param>
-        /// <param name="location">An optional primary location of the diagnostic. If null, <see cref="Location"/> will return <see cref="Location.None"/>.</param>
-        /// <param name="properties">
-        /// An optional set of name-value pairs by means of which the analyzer that creates the diagnostic
-        /// can convey more detailed information to the fixer. If null, <see cref="Properties"/> will return
-        /// <see cref="ImmutableDictionary{TKey, TValue}.Empty"/>.
-        /// </param>
-        /// <param name="messageArgs">Arguments to the message of the diagnostic.</param>
-        /// <returns>The <see cref="Diagnostic"/> instance.</returns>
-        public static Diagnostic Create(
-            ErrorCode errorCode,
-            Location location,
-            ImmutableDictionary<string, string> properties,
-            params object[] messageArgs)
-        {
-            return Create(errorCode, location, null, properties, messageArgs);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="Diagnostic"/> instance.
-        /// </summary>
-        /// <param name="descriptor">A <see cref="DiagnosticDescriptor"/> describing the diagnostic.</param>
-        /// <param name="location">An optional primary location of the diagnostic. If null, <see cref="Location"/> will return <see cref="Location.None"/>.</param>
-        /// <param name="additionalLocations">
-        /// An optional set of additional locations related to the diagnostic.
-        /// Typically, these are locations of other items referenced in the message.
-        /// If null, <see cref="AdditionalLocations"/> will return an empty list.
-        /// </param>
-        /// <param name="messageArgs">Arguments to the message of the diagnostic.</param>
-        /// <returns>The <see cref="Diagnostic"/> instance.</returns>
-        public static Diagnostic Create(
-            ErrorCode errorCode,
-            Location location,
-            IEnumerable<Location> additionalLocations,
-            params object[] messageArgs)
-        {
-            return Create(errorCode, location, additionalLocations, properties: null, messageArgs: messageArgs);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="Diagnostic"/> instance.
-        /// </summary>
-        /// <param name="descriptor">A <see cref="DiagnosticDescriptor"/> describing the diagnostic.</param>
-        /// <param name="location">An optional primary location of the diagnostic. If null, <see cref="Location"/> will return <see cref="Location.None"/>.</param>
-        /// <param name="additionalLocations">
-        /// An optional set of additional locations related to the diagnostic.
-        /// Typically, these are locations of other items referenced in the message.
-        /// If null, <see cref="AdditionalLocations"/> will return an empty list.
-        /// </param>
-        /// <param name="properties">
-        /// An optional set of name-value pairs by means of which the analyzer that creates the diagnostic
-        /// can convey more detailed information to the fixer. If null, <see cref="Properties"/> will return
-        /// <see cref="ImmutableDictionary{TKey, TValue}.Empty"/>.
-        /// </param>
-        /// <param name="messageArgs">Arguments to the message of the diagnostic.</param>
-        /// <returns>The <see cref="Diagnostic"/> instance.</returns>
-        public static Diagnostic Create(
-            ErrorCode errorCode,
-            Location location,
-            IEnumerable<Location> additionalLocations,
-            ImmutableDictionary<string, string> properties,
-            params object[] messageArgs)
-        {
-            return Create(errorCode, location, effectiveSeverity: errorCode.DefaultSeverity, additionalLocations, properties, messageArgs);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="Diagnostic"/> instance.
-        /// </summary>
-        /// <param name="descriptor">A <see cref="DiagnosticDescriptor"/> describing the diagnostic.</param>
-        /// <param name="location">An optional primary location of the diagnostic. If null, <see cref="Location"/> will return <see cref="Location.None"/>.</param>
-        /// <param name="effectiveSeverity">Effective severity of the diagnostic.</param>
-        /// <param name="additionalLocations">
-        /// An optional set of additional locations related to the diagnostic.
-        /// Typically, these are locations of other items referenced in the message.
-        /// If null, <see cref="AdditionalLocations"/> will return an empty list.
-        /// </param>
-        /// <param name="properties">
-        /// An optional set of name-value pairs by means of which the analyzer that creates the diagnostic
-        /// can convey more detailed information to the fixer. If null, <see cref="Properties"/> will return
-        /// <see cref="ImmutableDictionary{TKey, TValue}.Empty"/>.
-        /// </param>
-        /// <param name="messageArgs">Arguments to the message of the diagnostic.</param>
-        /// <returns>The <see cref="Diagnostic"/> instance.</returns>
-        public static Diagnostic Create(
-            ErrorCode errorCode,
-            Location location,
-            DiagnosticSeverity effectiveSeverity,
-            IEnumerable<Location> additionalLocations,
-            ImmutableDictionary<string, string> properties,
-            params object[] messageArgs)
-        {
-            return Create(errorCode, location, effectiveSeverity, additionalLocations, properties, messageArgs);
-        }
-
-        public static LanguageDiagnostic Create(LanguageDiagnosticInfo info)
-        {
-            return new LanguageDiagnostic(info, Location.None);
-        }
-
         public override Location Location
         {
             get { return _location; }
@@ -232,7 +114,7 @@ namespace Microsoft.CodeAnalysis
             {
                 if (_info.Severity == InternalDiagnosticSeverity.Unknown)
                 {
-                    return _info.GetResolvedInfo();
+                    return (LanguageDiagnosticInfo)_info.GetResolvedInfo();
                 }
 
                 return _info;
@@ -321,7 +203,7 @@ namespace Microsoft.CodeAnalysis
         {
             if (this.Severity != severity)
             {
-                return new LanguageDiagnostic(this.Info.GetInstanceWithSeverity(severity), _location, _isSuppressed);
+                return new LanguageDiagnostic((LanguageDiagnosticInfo)this.Info.GetInstanceWithSeverity(severity), _location, _isSuppressed);
             }
 
             return this;

@@ -1,5 +1,8 @@
+using MetaDslx.CodeAnalysis.MetaModel.Syntax;
+using MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
 using System;
 using System.Diagnostics;
 
@@ -11,6 +14,13 @@ namespace MetaDslx.CodeAnalysis.MetaModel
 
         public override string Name => throw new NotImplementedException();
 
-        public override SyntaxFacts SyntaxFacts => throw new NotImplementedException();
+        public new MetaModelSyntaxFacts SyntaxFacts => (MetaModelSyntaxFacts)this.SyntaxFactsCore;
+        protected override SyntaxFacts SyntaxFactsCore => new MetaModelSyntaxFacts();
+
+        internal new MetaModelInternalSyntaxFactory InternalSyntaxFactory => (MetaModelInternalSyntaxFactory)this.InternalSyntaxFactoryCore;
+        protected override InternalSyntaxFactory InternalSyntaxFactoryCore => new MetaModelInternalSyntaxFactory();
+
+        public new MetaModelSyntaxFactory SyntaxFactory => (MetaModelSyntaxFactory)this.SyntaxFactoryCore;
+        protected override SyntaxFactory SyntaxFactoryCore => throw new NotImplementedException();
     }
 }

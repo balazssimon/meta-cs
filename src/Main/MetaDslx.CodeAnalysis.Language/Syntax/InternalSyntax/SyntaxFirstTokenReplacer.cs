@@ -8,12 +8,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
     internal class SyntaxFirstTokenReplacer : CSharpSyntaxRewriter
     {
-        private readonly SyntaxToken _oldToken;
-        private readonly SyntaxToken _newToken;
+        private readonly InternalSyntaxToken _oldToken;
+        private readonly InternalSyntaxToken _newToken;
         private readonly int _diagnosticOffsetDelta;
         private bool _foundOldToken;
 
-        private SyntaxFirstTokenReplacer(SyntaxToken oldToken, SyntaxToken newToken, int diagnosticOffsetDelta)
+        private SyntaxFirstTokenReplacer(InternalSyntaxToken oldToken, InternalSyntaxToken newToken, int diagnosticOffsetDelta)
         {
             _oldToken = oldToken;
             _newToken = newToken;
@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             _foundOldToken = false;
         }
 
-        internal static TRoot Replace<TRoot>(TRoot root, SyntaxToken oldToken, SyntaxToken newToken, int diagnosticOffsetDelta)
+        internal static TRoot Replace<TRoot>(TRoot root, InternalSyntaxToken oldToken, InternalSyntaxToken newToken, int diagnosticOffsetDelta)
             where TRoot : CSharpSyntaxNode
         {
             var replacer = new SyntaxFirstTokenReplacer(oldToken, newToken, diagnosticOffsetDelta);
@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             {
                 if (!_foundOldToken)
                 {
-                    var token = node as SyntaxToken;
+                    var token = node as InternalSyntaxToken;
                     if (token != null)
                     {
                         Debug.Assert(token == _oldToken);
@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     new SyntaxDiagnosticInfo(
                         oldSyntaxDiagnostic.Offset + diagnosticOffsetDelta,
                         oldSyntaxDiagnostic.Width,
-                        (ErrorCode)oldSyntaxDiagnostic.Code,
+                        oldSyntaxDiagnostic.ErrorCode,
                         oldSyntaxDiagnostic.Arguments);
             }
             return node.WithDiagnosticsGreen(newDiagnostics);

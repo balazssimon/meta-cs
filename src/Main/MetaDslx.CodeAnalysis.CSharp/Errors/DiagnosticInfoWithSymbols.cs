@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 namespace Microsoft.CodeAnalysis.CSharp
 {
-    internal class DiagnosticInfoWithSymbols : DiagnosticInfo
+    internal class DiagnosticInfoWithSymbols : DiagnosticInfoWithMessageProvider
     {
         // not serialized:
         internal readonly ImmutableArray<Symbol> Symbols;

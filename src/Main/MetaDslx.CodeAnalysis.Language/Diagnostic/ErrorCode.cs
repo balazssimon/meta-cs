@@ -11,7 +11,7 @@ namespace Microsoft.CodeAnalysis
     /// <summary>
     /// Provides a description about a <see cref="Diagnostic"/>
     /// </summary>
-    public class ErrorCode : IEquatable<ErrorCode>
+    public class ErrorCode : IEquatable<ErrorCode>, IObjectWritable
     {
         public int Code { get; }
 
@@ -197,7 +197,8 @@ namespace Microsoft.CodeAnalysis
                 this.DefaultSeverity == other.DefaultSeverity &&
                 this.Description.Equals(other.Description) &&
                 this.HelpLinkUri == other.HelpLinkUri &&
-                this.Id == other.Id &&
+                this.Code == other.Code &&
+                this.MessagePrefix == other.MessagePrefix &&
                 this.IsEnabledByDefault == other.IsEnabledByDefault &&
                 this.MessageFormat.Equals(other.MessageFormat) &&
                 this.Title.Equals(other.Title);
@@ -214,10 +215,11 @@ namespace Microsoft.CodeAnalysis
                 Hash.Combine(this.DefaultSeverity.GetHashCode(),
                 Hash.Combine(this.Description.GetHashCode(),
                 Hash.Combine(this.HelpLinkUri.GetHashCode(),
-                Hash.Combine(this.Id.GetHashCode(),
+                Hash.Combine(this.Code.GetHashCode(),
+                Hash.Combine(this.MessagePrefix.GetHashCode(),
                 Hash.Combine(this.IsEnabledByDefault.GetHashCode(),
                 Hash.Combine(this.MessageFormat.GetHashCode(),
-                    this.Title.GetHashCode())))))));
+                    this.Title.GetHashCode()))))))));
         }
 
         /// <summary>
@@ -262,5 +264,22 @@ namespace Microsoft.CodeAnalysis
         {
             return AnalyzerManager.HasNotConfigurableTag(this.CustomTags);
         }
+
+        #region Serialization
+
+        bool IObjectWritable.ShouldReuseInSerialization => true;
+
+        void IObjectWritable.WriteTo(ObjectWriter writer)
+        {
+            this.WriteTo(writer);
+        }
+
+        protected virtual void WriteTo(ObjectWriter writer)
+        {
+            writer.WriteInt32((int)this.Code);
+        }
+
+        #endregion
+
     }
 }

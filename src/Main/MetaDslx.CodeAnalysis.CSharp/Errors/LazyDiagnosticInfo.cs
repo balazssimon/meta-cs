@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Microsoft.CodeAnalysis.CSharp
 {
-    internal abstract class LazyDiagnosticInfo : DiagnosticInfo
+    internal abstract class LazyDiagnosticInfo : DiagnosticInfoWithMessageProvider
     {
         private DiagnosticInfo _lazyInfo;
 

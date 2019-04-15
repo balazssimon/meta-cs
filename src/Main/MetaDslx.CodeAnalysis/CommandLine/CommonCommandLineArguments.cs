@@ -370,7 +370,7 @@ namespace Microsoft.CodeAnalysis
 
             if (references.IsDefaultOrEmpty && diagnosticsOpt != null)
             {
-                diagnosticsOpt.Add(new DiagnosticInfo(messageProviderOpt, messageProviderOpt.ERR_MetadataFileNotFound, cmdReference.Reference));
+                diagnosticsOpt.Add(new DiagnosticInfoWithMessageProvider(messageProviderOpt, messageProviderOpt.ERR_MetadataFileNotFound, cmdReference.Reference));
                 return ImmutableArray<PortableExecutableReference>.Empty;
             }
 
@@ -410,13 +410,13 @@ namespace Microsoft.CodeAnalysis
                 switch (e.ErrorCode)
                 {
                     case AnalyzerLoadFailureEventArgs.FailureErrorCode.UnableToLoadAnalyzer:
-                        diagnostic = new DiagnosticInfo(messageProvider, messageProvider.WRN_UnableToLoadAnalyzer, analyzerReference.FullPath, e.Message);
+                        diagnostic = new DiagnosticInfoWithMessageProvider(messageProvider, messageProvider.WRN_UnableToLoadAnalyzer, analyzerReference.FullPath, e.Message);
                         break;
                     case AnalyzerLoadFailureEventArgs.FailureErrorCode.UnableToCreateAnalyzer:
-                        diagnostic = new DiagnosticInfo(messageProvider, messageProvider.WRN_AnalyzerCannotBeCreated, e.TypeName, analyzerReference.FullPath, e.Message);
+                        diagnostic = new DiagnosticInfoWithMessageProvider(messageProvider, messageProvider.WRN_AnalyzerCannotBeCreated, e.TypeName, analyzerReference.FullPath, e.Message);
                         break;
                     case AnalyzerLoadFailureEventArgs.FailureErrorCode.NoAnalyzers:
-                        diagnostic = new DiagnosticInfo(messageProvider, messageProvider.WRN_NoAnalyzerInAssembly, analyzerReference.FullPath);
+                        diagnostic = new DiagnosticInfoWithMessageProvider(messageProvider, messageProvider.WRN_NoAnalyzerInAssembly, analyzerReference.FullPath);
                         break;
                     case AnalyzerLoadFailureEventArgs.FailureErrorCode.None:
                     default:
@@ -445,7 +445,7 @@ namespace Microsoft.CodeAnalysis
                 }
                 else
                 {
-                    diagnostics.Add(new DiagnosticInfo(messageProvider, messageProvider.ERR_MetadataFileNotFound, reference.FilePath));
+                    diagnostics.Add(new DiagnosticInfoWithMessageProvider(messageProvider, messageProvider.ERR_MetadataFileNotFound, reference.FilePath));
                 }
             }
 

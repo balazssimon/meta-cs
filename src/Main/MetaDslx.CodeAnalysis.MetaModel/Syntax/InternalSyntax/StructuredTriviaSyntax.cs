@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
 {
-    internal class StructuredTriviaSyntax : SyntaxNode
+    internal abstract class StructuredTriviaSyntax : SyntaxNode
     {
         protected StructuredTriviaSyntax(int kind, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
             : base(kind, diagnostics, annotations)

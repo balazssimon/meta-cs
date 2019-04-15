@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 var builder = ImmutableArray.CreateBuilder<DiagnosticDescriptor>(errorCodes.Length);
                 foreach (var errorCode in errorCodes)
                 {
-                    var descriptor = DiagnosticInfo.GetDescriptor(errorCode, messageProvider);
+                    var descriptor = DiagnosticInfoWithMessageProvider.GetDescriptor(errorCode, messageProvider);
                     builder.Add(descriptor);
                 }
 

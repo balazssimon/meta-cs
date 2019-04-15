@@ -140,12 +140,12 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             {
             }
 
-            public override GreenNode SetDiagnostics(DiagnosticInfo[] errors)
+            internal override GreenNode SetDiagnostics(DiagnosticInfo[] errors)
             {
                 return new WithManyChildren(errors, this.GetAnnotations(), children);
             }
 
-            public override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+            internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
             {
                 return new WithManyChildren(GetDiagnostics(), annotations, children);
             }

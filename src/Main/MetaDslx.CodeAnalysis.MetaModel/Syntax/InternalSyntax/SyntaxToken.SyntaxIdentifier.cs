@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
@@ -35,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
                 this.FullWidth = this.TextField.Length;
             }
 
-            internal override void WriteTo(ObjectWriter writer)
+            protected override void WriteTo(ObjectWriter writer)
             {
                 base.WriteTo(writer);
                 writer.WriteString(this.TextField);
@@ -56,24 +58,24 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
                 get { return this.TextField; }
             }
 
-            public override SyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
+            public override InternalSyntaxToken TokenWithLeadingTrivia(GreenNode trivia)
             {
-                return new SyntaxIdentifierWithTrivia(this.Kind, this.TextField, this.TextField, trivia, null, this.GetDiagnostics(), this.GetAnnotations());
+                return new SyntaxIdentifierWithTrivia(this.Kind, this.ContextualKind, this.TextField, this.TextField, trivia, null, this.GetDiagnostics(), this.GetAnnotations());
             }
 
-            public override SyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
+            public override InternalSyntaxToken TokenWithTrailingTrivia(GreenNode trivia)
             {
-                return new SyntaxIdentifierWithTrivia(this.Kind, this.TextField, this.TextField, null, trivia, this.GetDiagnostics(), this.GetAnnotations());
+                return new SyntaxIdentifierWithTrivia(this.Kind, this.ContextualKind, this.TextField, this.TextField, null, trivia, this.GetDiagnostics(), this.GetAnnotations());
             }
 
-            internal override GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics)
+            public override CSharpSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
             {
-                return new SyntaxIdentifier(this.Text, diagnostics, this.GetAnnotations());
+                return new SyntaxIdentifier(this.Kind, this.Text, diagnostics, this.GetAnnotations());
             }
 
-            internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+            public override CSharpSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
             {
-                return new SyntaxIdentifier(this.Text, this.GetDiagnostics(), annotations);
+                return new SyntaxIdentifier(this.Kind, this.Text, this.GetDiagnostics(), annotations);
             }
         }
     }

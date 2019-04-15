@@ -1,12 +1,13 @@
 using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
 {
-    internal class SyntaxTrivia : Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax.SyntaxTrivia
+    using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
+
+    internal class SyntaxTrivia : InternalSyntaxTrivia
     {
         internal SyntaxTrivia(SyntaxKind kind, string text, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
             : base((int)kind, text, diagnostics, annotations)
@@ -23,16 +24,17 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
             ObjectBinder.RegisterTypeReader(typeof(SyntaxTrivia), r => new SyntaxTrivia(r));
         }
 
+        public new MetaModelLanguage Language => MetaModelLanguage.Instance;
         protected override Language LanguageCore => MetaModelLanguage.Instance;
 
         public SyntaxKind Kind => (SyntaxKind)this.RawKind;
 
         public override bool IsTrivia => true;
 
-        internal override bool ShouldReuseInSerialization => this.Kind == SyntaxKind.WhitespaceTrivia &&
-                                                             FullWidth < Lexer.MaxCachedTokenSize;
+        protected override bool ShouldReuseInSerialization => this.Kind == SyntaxKind.DefaultWhitespaceSyntaxKind &&
+                                                             FullWidth < Language.SyntaxFacts.MaxCachedTokenSize;
 
-        internal protected override void WriteTo(ObjectWriter writer)
+        protected override void WriteTo(ObjectWriter writer)
         {
             base.WriteTo(writer);
             writer.WriteString(this.Text);
@@ -43,12 +45,12 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
             return new SyntaxTrivia(kind, text);
         }
 
-        public override GreenNode SetDiagnostics(DiagnosticInfo[] diagnostics)
+        public override CSharpSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
         {
             return new SyntaxTrivia(this.Kind, this.Text, diagnostics, GetAnnotations());
         }
 
-        public override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
+        public override CSharpSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
         {
             return new SyntaxTrivia(this.Kind, this.Text, GetDiagnostics(), annotations);
         }

@@ -8,18 +8,18 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 {
     internal class SyntaxLastTokenReplacer : CSharpSyntaxRewriter
     {
-        private readonly SyntaxToken _oldToken;
-        private readonly SyntaxToken _newToken;
+        private readonly InternalSyntaxToken _oldToken;
+        private readonly InternalSyntaxToken _newToken;
         private int _count = 1;
         private bool _found;
 
-        private SyntaxLastTokenReplacer(SyntaxToken oldToken, SyntaxToken newToken)
+        private SyntaxLastTokenReplacer(InternalSyntaxToken oldToken, InternalSyntaxToken newToken)
         {
             _oldToken = oldToken;
             _newToken = newToken;
         }
 
-        internal static TRoot Replace<TRoot>(TRoot root, SyntaxToken newToken)
+        internal static TRoot Replace<TRoot>(TRoot root, InternalSyntaxToken newToken)
             where TRoot : CSharpSyntaxNode
         {
             var oldToken = root.GetLastToken();
@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 _count--;
                 if (_count == 0)
                 {
-                    var token = node as SyntaxToken;
+                    var token = node as InternalSyntaxToken;
                     if (token != null)
                     {
                         Debug.Assert(token == _oldToken);
