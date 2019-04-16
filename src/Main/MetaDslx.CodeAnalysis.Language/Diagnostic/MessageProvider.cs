@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override Diagnostic CreateDiagnostic(int code, Location location, params object[] args)
         {
-            var info = new CSDiagnosticInfo((ErrorCode)code, args, ImmutableArray<Symbol>.Empty, ImmutableArray<Location>.Empty);
+            var info = new LanguageDiagnosticInfo((ErrorCode)code, args, ImmutableArray<Symbol>.Empty, ImmutableArray<Location>.Empty);
             return new CSDiagnostic(info, location);
         }
 

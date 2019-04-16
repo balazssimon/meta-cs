@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace Microsoft.CodeAnalysis
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public class LanguageDiagnosticInfo : DiagnosticInfo, IFormattable, IObjectWritable
     {
+        public static readonly LanguageDiagnosticInfo EmptyErrorInfo = new LanguageDiagnosticInfo(CSharpErrorCode.ERR_InvalidErrorCode);
+
         private readonly ErrorCode _errorCode;
         private readonly object[] _arguments;
         private readonly DiagnosticSeverity _effectiveSeverity;

@@ -8,7 +8,7 @@ namespace Microsoft.CodeAnalysis
     /// Specifies the different kinds of comparison between types.
     /// </summary>
     [Flags]
-    internal enum TypeCompareKind
+    public enum TypeCompareKind
     {
         ConsiderEverything = 0,
 

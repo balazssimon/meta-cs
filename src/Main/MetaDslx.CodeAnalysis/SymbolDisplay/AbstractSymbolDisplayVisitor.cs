@@ -7,7 +7,7 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.SymbolDisplay
 {
-    internal abstract partial class AbstractSymbolDisplayVisitor : SymbolVisitor
+    public abstract partial class AbstractSymbolDisplayVisitor : SymbolVisitor
     {
         protected readonly ArrayBuilder<SymbolDisplayPart> builder;
         protected readonly SymbolDisplayFormat format;

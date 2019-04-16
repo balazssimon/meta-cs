@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     if (symbol == null)
                     {
-                        builder.Add(LanguageDiagnostic.Create(InternalErrorCode.ERR_InvalidPreprocessingSymbol, "null"));
+                        builder.Add(LanguageDiagnostic.Create(CSharpErrorCode.ERR_InvalidPreprocessingSymbol, "null"));
                     }
                 }
             }

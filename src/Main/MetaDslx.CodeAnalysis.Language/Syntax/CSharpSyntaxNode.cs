@@ -24,6 +24,8 @@ namespace Microsoft.CodeAnalysis.CSharp
     //deferral can result in meaningful savings of strings.
     public abstract partial class CSharpSyntaxNode : SyntaxNodeAdapter, IFormattable
     {
+        internal static readonly CSharpSyntaxNode Dummy = new DummySyntaxNode();
+
         protected CSharpSyntaxNode(GreenNode green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
@@ -406,6 +408,38 @@ namespace Microsoft.CodeAnalysis.CSharp
         string IFormattable.ToString(string format, IFormatProvider formatProvider)
         {
             return ToString();
+        }
+
+        private class DummySyntaxNode : CSharpSyntaxNode
+        {
+            public DummySyntaxNode() 
+                : base(null, null, 0)
+            {
+            }
+
+            public override Language Language => throw new NotImplementedException();
+
+            protected override Language LanguageCore => throw new NotImplementedException();
+
+            public override TResult Accept<TResult>(CSharpSyntaxVisitor<TResult> visitor)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void Accept(CSharpSyntaxVisitor visitor)
+            {
+                throw new NotImplementedException();
+            }
+
+            internal override SyntaxNode GetCachedSlot(int index)
+            {
+                throw new NotImplementedException();
+            }
+
+            internal override SyntaxNode GetNodeSlot(int slot)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
