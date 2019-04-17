@@ -2,7 +2,7 @@
   <Import Project="..\Versions.props" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.CodeAnalysis</RootNamespace>
+    <RootNamespace>MetaDslx.Languages.MetaModel</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>netstandard2.0</TargetFramework>
     <DefineConstants>$(DefineConstants);COMPILERCORE</DefineConstants>
@@ -12,10 +12,9 @@
 
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
-    <PackageId>MetaDslx.CodeAnalysis.CSharp</PackageId>
+    <PackageId>MetaDslx.Languages.MetaModel</PackageId>
     <PackageDescription>
-      MetaDslx support for C#, MetaDslx.CodeAnalysis.CSharp.dll.
-	  Do not install this package manually, it will be added as a prerequisite by other packages that require it.
+      MetaDslx support for MetaModel, MetaDslx.Languages.MetaModel.dll.
     </PackageDescription>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
@@ -54,6 +53,8 @@
   
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj" />
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
+    <ProjectReference Include="..\MetaDslx.Core\MetaDslx.CodeAnalysis.Language.csproj" />
   </ItemGroup>
 
   <ItemGroup>

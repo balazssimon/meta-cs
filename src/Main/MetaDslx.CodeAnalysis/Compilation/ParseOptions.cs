@@ -117,11 +117,7 @@ namespace Microsoft.CodeAnalysis
         /// <summary>
         /// Returns the experimental features.
         /// </summary>
-        public abstract IReadOnlyDictionary<string, string> Features
-        {
-            get;
-            protected set;
-        }
+        public abstract IReadOnlyDictionary<string, string> Features { get; }
 
         /// <summary>
         /// Names of defined preprocessor symbols.

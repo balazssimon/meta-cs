@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Core", "Main\MetaDslx.Core\MetaDslx.Core.csproj", "{4DB44467-DE84-4CAE-AA04-289C60D4F27D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis", "Main\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj", "{0E9C6D8B-E5E9-4880-B308-9EB8CBE262F0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Language", "Main\MetaDslx.CodeAnalysis.Language\MetaDslx.CodeAnalysis.Language.csproj", "{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.CSharp", "Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj", "{4AF052DC-20F4-4F5D-8631-10A458AF86FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.MetaModel", "Main\MetaDslx.CodeAnalysis.MetaModel\MetaDslx.CodeAnalysis.MetaModel.csproj", "{BA598C0D-DE63-46C5-9FC0-881D918B3088}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Core", "Main\MetaDslx.Core\MetaDslx.Core.csproj", "{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.MetaModel", "Main\MetaDslx.Languages.MetaModel\MetaDslx.Languages.MetaModel.csproj", "{BA598C0D-DE63-46C5-9FC0-881D918B3088}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4DB44467-DE84-4CAE-AA04-289C60D4F27D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DB44467-DE84-4CAE-AA04-289C60D4F27D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DB44467-DE84-4CAE-AA04-289C60D4F27D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DB44467-DE84-4CAE-AA04-289C60D4F27D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0E9C6D8B-E5E9-4880-B308-9EB8CBE262F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E9C6D8B-E5E9-4880-B308-9EB8CBE262F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E9C6D8B-E5E9-4880-B308-9EB8CBE262F0}.Release|Any CPU.ActiveCfg = Release|Any CPU

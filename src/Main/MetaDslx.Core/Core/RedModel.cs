@@ -10,42 +10,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MetaDslx.CodeAnalysis.Utilities;
 
 namespace MetaDslx.Core
 {
-    public interface IMetaSymbol
-    {
-        MetaModel MMetaModel { get; }
-        MetaClass MMetaClass { get; }
-        SymbolId MId { get; }
-        IModel MModel { get; }
-
-        string MName { get; }
-        IMetaSymbol MType { get; }
-        bool MIsNamespace { get; }
-        bool MIsType { get; }
-        bool MIsNamedType { get; }
-        bool MIsScope { get; }
-        bool MIsLocalScope { get; }
-
-        IMetaSymbol MParent { get; }
-        IReadOnlyList<IMetaSymbol> MChildren { get; }
-
-        ImmutableList<ModelProperty> MProperties { get; }
-        ImmutableList<ModelProperty> MAllProperties { get; }
-        ModelProperty MGetProperty(string name);
-        ImmutableList<ModelProperty> MGetProperties(string name);
-
-        object MGet(ModelProperty property);
-        bool MHasConcreteValue(ModelProperty property);
-        bool MIsSet(ModelProperty property);
-        IReadOnlyList<IMetaSymbol> MGetImports();
-        IReadOnlyList<IMetaSymbol> MGetBases();
-        IReadOnlyList<IMetaSymbol> MGetAllBases();
-        IReadOnlyList<IMetaSymbol> MGetMembers();
-    }
-
     public interface IModel
     {
         ModelId Id { get; }
@@ -394,11 +361,11 @@ namespace MetaDslx.Core
         public IReadOnlyList<IMetaSymbol> MGetAllBases() { return this.model.MGetAllBases(this.id); }
         public IReadOnlyList<IMetaSymbol> MGetMembers() { return this.model.MGetMembers(this.id); }
 
-        public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
-        public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
+        public IReadOnlyList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
+        public IReadOnlyList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
         public ModelProperty MGetProperty(string name)
         {
-            ImmutableList<ModelProperty> properties = this.MProperties;
+            IReadOnlyList<ModelProperty> properties = this.MProperties;
             for (int i = properties.Count - 1; i >= 0; i--)
             {
                 ModelProperty prop = properties[i];
@@ -406,7 +373,7 @@ namespace MetaDslx.Core
             }
             return null;
         }
-        public ImmutableList<ModelProperty> MGetProperties(string name)
+        public IReadOnlyList<ModelProperty> MGetProperties(string name)
         {
             return this.MProperties.Where(p => p.Name == name).ToImmutableList().Reverse();
         }
@@ -438,12 +405,6 @@ namespace MetaDslx.Core
                 return null;
             }
         }
-        public bool MIsNamespace { get { return this.id.SymbolInfo.IsNamespace; } }
-        public bool MIsType { get { return this.id.SymbolInfo.IsType; } }
-        public bool MIsNamedType { get { return this.id.SymbolInfo.IsNamedType; } }
-
-        public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
-        public bool MIsLocalScope { get { return this.id.SymbolInfo.IsLocalScope; } }
 
         IMetaSymbol IMetaSymbol.MType
         {
@@ -464,6 +425,18 @@ namespace MetaDslx.Core
         public bool MHasConcreteValue(ModelProperty property)
         {
             return this.model.MHasConcreteValue(this.id, property);
+        }
+
+        public T MGetValue<T>(ModelProperty property) where T : struct
+        {
+            T dummy = default;
+            return this.GetValue<T>(property, ref dummy);
+        }
+
+        public T MGetReference<T>(ModelProperty property) where T : class
+        {
+            T dummy = null;
+            return this.GetReference<T>(property, ref dummy);
         }
 
         protected T GetValue<T>(ModelProperty property, ref T value)
@@ -568,11 +541,11 @@ namespace MetaDslx.Core
         public IReadOnlyList<IMetaSymbol> MGetAllBases() { return this.model.MGetAllBases(this); }
         public IReadOnlyList<IMetaSymbol> MGetMembers() { return this.model.MGetMembers(this); }
 
-        public ImmutableList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
-        public ImmutableList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
+        public IReadOnlyList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
+        public IReadOnlyList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
         public ModelProperty MGetProperty(string name)
         {
-            ImmutableList<ModelProperty> properties = this.MProperties;
+            IReadOnlyList<ModelProperty> properties = this.MProperties;
             for (int i = properties.Count - 1; i >= 0; i--)
             {
                 ModelProperty prop = properties[i];
@@ -580,7 +553,7 @@ namespace MetaDslx.Core
             }
             return null;
         }
-        public ImmutableList<ModelProperty> MGetProperties(string name)
+        public IReadOnlyList<ModelProperty> MGetProperties(string name)
         {
             return this.MProperties.Where(p => p.Name == name).ToImmutableList().Reverse();
         }
@@ -752,6 +725,16 @@ namespace MetaDslx.Core
             {
                 this.model.SetLazyValue(this.id, property, value, this.creating);
             }
+        }
+
+        public T MGetValue<T>(ModelProperty property) where T: struct
+        {
+            return this.GetValue<T>(property);
+        }
+
+        public T MGetReference<T>(ModelProperty property) where T : class
+        {
+            return this.GetReference<T>(property);
         }
 
         protected T GetValue<T>(ModelProperty property)
@@ -1201,22 +1184,22 @@ namespace MetaDslx.Core
             return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
         }
 
-        internal ImmutableList<ModelProperty> MProperties(SymbolId sid)
+        internal IReadOnlyList<ModelProperty> MProperties(SymbolId sid)
         {
             ModelSymbolInfo msi = sid.SymbolInfo;
             if (msi != null)
             {
                 return msi.Properties;
             }
-            return ImmutableList<ModelProperty>.Empty;
+            return ImmutableArray<ModelProperty>.Empty;
         }
 
-        internal ImmutableList<ModelProperty> MAllProperties(SymbolId sid)
+        internal IReadOnlyList<ModelProperty> MAllProperties(SymbolId sid)
         {
             GreenSymbol greenSymbol;
             if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
             {
-                return greenSymbol.Properties.Keys.ToImmutableList();
+                return greenSymbol.Properties.Keys.ToList();
             }
             return ImmutableList<ModelProperty>.Empty;
         }
@@ -2313,24 +2296,24 @@ namespace MetaDslx.Core
             return result;
         }
 
-        internal ImmutableList<ModelProperty> MProperties(SymbolId sid)
+        internal IReadOnlyList<ModelProperty> MProperties(SymbolId sid)
         {
             ModelSymbolInfo msi = sid.SymbolInfo;
             if (msi != null)
             {
                 return msi.Properties;
             }
-            return ImmutableList<ModelProperty>.Empty;
+            return ImmutableArray<ModelProperty>.Empty;
         }
 
-        internal ImmutableList<ModelProperty> MAllProperties(SymbolId sid)
+        internal IReadOnlyList<ModelProperty> MAllProperties(SymbolId sid)
         {
             GreenSymbol greenSymbol;
             if (this.Green.Symbols.TryGetValue(sid, out greenSymbol))
             {
-                return greenSymbol.Properties.Keys.ToImmutableList();
+                return greenSymbol.Properties.Keys.ToImmutableArray();
             }
-            return ImmutableList<ModelProperty>.Empty;
+            return ImmutableArray<ModelProperty>.Empty;
         }
 
         internal object MGet(MutableSymbolBase symbol, ModelProperty property)

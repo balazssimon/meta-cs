@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Roslyn.Utilities;
 using System;
 using System.Collections;
@@ -417,7 +416,7 @@ namespace MetaDslx.Core
             return this;
         }
 
-        internal static GreenSymbol CreateWithProperties(ImmutableList<ModelProperty> properties)
+        internal static GreenSymbol CreateWithProperties(ImmutableArray<ModelProperty> properties)
         {
             return GreenSymbol.Empty.Update(
                 null, 
@@ -821,7 +820,7 @@ namespace MetaDslx.Core
         private void MakeSymbolException(ImmutableArray<SymbolId> symbols, Location location, ErrorCode errorCode, params object[] args)
         {
             this.ArgsToRedMessageSerializable(args);
-            throw new ModelException(location, new LanguageDiagnosticInfoWithSymbols(symbols.Select(sid => (IMetaSymbol)this.redModel.ResolveSymbol(sid)).ToImmutableArray(), errorCode, args));
+            throw new ModelException(location, new DiagnosticInfoWithSymbols(symbols.Select(sid => (ISymbol)this.redModel.ResolveSymbol(sid)).ToImmutableArray(), errorCode, args));
         }
 
         private void MakeLazyEvalException(List<GreenLazyEvalEntry> evaluationStack, Exception innerException, LazyValue lazy, ErrorCode errorCode, params object[] args)

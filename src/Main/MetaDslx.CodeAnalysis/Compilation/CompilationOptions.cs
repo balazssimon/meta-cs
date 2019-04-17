@@ -586,8 +586,6 @@ namespace Microsoft.CodeAnalysis
             get { return _lazyErrors.Value; }
         }
 
-        public bool AllowUnsafe { get; internal set; }
-
         public abstract override bool Equals(object obj);
 
         protected bool EqualsHelper(CompilationOptions other)

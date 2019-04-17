@@ -37,37 +37,6 @@ namespace MetaDslx.Core
         }
     }
 
-    public sealed class LazyEvalEntry : IEquatable<LazyEvalEntry>
-    {
-        private IMetaSymbol symbol;
-        private ModelProperty property;
-
-        public LazyEvalEntry(IMetaSymbol symbol, ModelProperty property)
-        {
-            this.symbol = symbol;
-            this.property = property;
-        }
-
-        public IMetaSymbol Symbol { get { return this.symbol; } }
-        public ModelProperty Property { get { return this.property; } }
-
-        public bool Equals(LazyEvalEntry other)
-        {
-            if (other == null) return false;
-            return this.symbol == other.symbol && this.property == other.property;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as LazyEvalEntry);
-        }
-
-        public override int GetHashCode()
-        {
-            return Hash.Combine(this.symbol.GetHashCode(), this.property.GetHashCode());
-        }
-    }
-
     public sealed class LazyEvaluationException : ModelException
     {
         internal LazyEvaluationException(Location location, LazyEvaluationDiagnosticInfo diagnosticInfo)
