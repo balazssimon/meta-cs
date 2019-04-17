@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.MetaModel.Syntax
+namespace MetaDslx.Languages.MetaModel.Syntax
 {
     public enum SyntaxKind
     {
-        None = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.None,
-        Eof = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.Eof,
-        List = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.List,
-        BadToken = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.BadToken,
-        SkippedTokensTrivia = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.SkippedTokensTrivia,
-        DisabledTextTrivia = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.DisabledTextTrivia,
-        ConflictMarkerTrivia = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.ConflictMarkerTrivia,
-        DefaultWhitespaceSyntaxKind = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.DefaultWhitespace,
-        DefaultEndOfLineSyntaxKind = Microsoft.CodeAnalysis.CSharp.Syntax.SyntaxKind.DefaultEndOfLine,
+        None = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None,
+        Eof = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.Eof,
+        List = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.List,
+        BadToken = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.BadToken,
+        SkippedTokensTrivia = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.SkippedTokensTrivia,
+        DisabledTextTrivia = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.DisabledTextTrivia,
+        ConflictMarkerTrivia = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.ConflictMarkerTrivia,
+        DefaultWhitespaceSyntaxKind = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.DefaultWhitespace,
+        DefaultEndOfLineSyntaxKind = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.DefaultEndOfLine,
         CompilationUnit,
 
         FirstTokenWithWellKnownText = 0,

@@ -54,7 +54,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj" />
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
-    <ProjectReference Include="..\MetaDslx.Core\MetaDslx.CodeAnalysis.Language.csproj" />
+    <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
+namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 {
-    internal abstract class StructuredTriviaSyntax : SyntaxNode
+    internal abstract class StructuredTriviaSyntax : GreenSyntaxNode
     {
         protected StructuredTriviaSyntax(int kind, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
             : base(kind, diagnostics, annotations)

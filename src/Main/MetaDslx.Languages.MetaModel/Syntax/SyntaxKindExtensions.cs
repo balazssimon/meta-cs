@@ -3,7 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.MetaModel.Syntax
+namespace MetaDslx.Languages.MetaModel.Syntax
 {
     internal static partial class SyntaxKindExtensions
     {

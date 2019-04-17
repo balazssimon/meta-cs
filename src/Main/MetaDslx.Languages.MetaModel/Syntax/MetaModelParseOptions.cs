@@ -4,17 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.MetaModel
+namespace MetaDslx.Languages.MetaModel
 {
     /// <summary>
     /// This class stores several source parsing related options and offers access to their values.
     /// </summary>
-    public sealed class MetaModelParseOptions : CSharpParseOptions, IEquatable<MetaModelParseOptions>
+    public sealed class MetaModelParseOptions : LanguageParseOptions, IEquatable<MetaModelParseOptions>
     {
         /// <summary>
         /// The default parse options.
@@ -152,7 +152,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel
                 features?.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase)
                 ?? ImmutableDictionary<string, string>.Empty;
 
-            return new MetaModelParseOptions(this) { Features = dictionary };
+            return new MetaModelParseOptions(this); // TODO:MetaDslx { Features = dictionary };
         }
 
         public override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
@@ -162,7 +162,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel
             // Validate LanguageVersion not SpecifiedLanguageVersion, after Latest/Default has been converted:
             if (!LanguageVersion.IsValid())
             {
-                builder.Add(LanguageDiagnostic.Create(MetaModelErrorCode.ERR_BadLanguageVersion, LanguageVersion.ToString()));
+                builder.Add(MetaModelErrorCode.ERR_BadLanguageVersion.ToDiagnosticWithNoLocation(LanguageVersion.ToString()));
             }
         }
 

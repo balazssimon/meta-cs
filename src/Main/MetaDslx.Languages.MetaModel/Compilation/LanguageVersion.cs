@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.MetaModel
+namespace MetaDslx.Languages.MetaModel
 {
     /// <summary>
     /// Specifies the language version.
@@ -61,11 +62,11 @@ namespace MetaDslx.CodeAnalysis.MetaModel
         }
     }
 
-    internal class CSharpRequiredLanguageVersion : RequiredLanguageVersion
+    internal class MetaModelRequiredLanguageVersion : RequiredLanguageVersion
     {
         internal LanguageVersion Version { get; }
 
-        internal CSharpRequiredLanguageVersion(LanguageVersion version)
+        internal MetaModelRequiredLanguageVersion(LanguageVersion version)
         {
             Version = (version == LanguageVersion.Preview.MapSpecifiedToEffectiveVersion()) ? LanguageVersion.Preview : version;
         }

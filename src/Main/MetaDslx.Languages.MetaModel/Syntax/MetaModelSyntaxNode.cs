@@ -8,13 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.MetaModel.Syntax
+namespace MetaDslx.Languages.MetaModel.Syntax
 {
     /// <summary>
     /// Represents a non-terminal node in the syntax tree.
@@ -24,9 +22,9 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax
     //to defer the realization of strings. Often diagnostics generated while binding
     //in service of a SemanticModel API are never realized. So this
     //deferral can result in meaningful savings of strings.
-    public abstract partial class MetaModelSyntaxNode : CSharpSyntaxNode, IFormattable
+    public abstract partial class MetaModelSyntaxNode : LanguageSyntaxNode, IFormattable
     {
-        internal MetaModelSyntaxNode(GreenNode green, SyntaxNode parent, int position)
+        internal MetaModelSyntaxNode(GreenNode green, MetaModelSyntaxNode parent, int position)
             : base(green, parent, position)
         {
         }
@@ -35,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax
         /// Used by structured trivia which has "parent == null", and therefore must know its
         /// SyntaxTree explicitly when created.
         /// </summary>
-        internal MetaModelSyntaxNode(GreenNode green, int position, SyntaxTree syntaxTree)
+        internal MetaModelSyntaxNode(GreenNode green, int position, MetaModelSyntaxTree syntaxTree)
             : base(green, position, syntaxTree)
         {
         }

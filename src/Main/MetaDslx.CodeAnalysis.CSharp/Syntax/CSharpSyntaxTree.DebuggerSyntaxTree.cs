@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
             }
 
-            internal override bool SupportsLocations
+            public override bool SupportsLocations
             {
                 get { return true; }
             }

@@ -1,9 +1,9 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using MetaDslx.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.MetaModel.Syntax
+namespace MetaDslx.Languages.MetaModel.Syntax
 {
     public class MetaModelSyntaxFacts : SyntaxFacts
     {

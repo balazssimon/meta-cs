@@ -1,20 +1,21 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.MetaModel.Syntax
+namespace MetaDslx.Languages.MetaModel.Syntax
 {
     public class MetaModelSyntaxFactory : SyntaxFactory
     {
         public override Language Language => MetaModelLanguage.Instance;
 
-        public override Microsoft.CodeAnalysis.SyntaxToken DefaultSeparator => throw new NotImplementedException();
+        public override SyntaxToken DefaultSeparator => throw new NotImplementedException();
 
-        public override Microsoft.CodeAnalysis.SyntaxNode CreateStructure(Microsoft.CodeAnalysis.SyntaxTrivia trivia)
+        public override SyntaxNode CreateStructure(SyntaxTrivia trivia)
         {
             throw new NotImplementedException();
         }

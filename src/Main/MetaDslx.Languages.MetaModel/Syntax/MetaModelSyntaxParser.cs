@@ -1,18 +1,17 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
+﻿using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
+namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 {
     internal class MetaModelSyntaxParser : SyntaxParser
     {
-        public MetaModelSyntaxParser(SourceText text, CSharpParseOptions options, Microsoft.CodeAnalysis.SyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default) 
+        public MetaModelSyntaxParser(SourceText text, MetaModelParseOptions options, SyntaxNode oldTree, IEnumerable<TextChangeRange> changes, CancellationToken cancellationToken = default) 
             : base(text, MetaModelLanguage.Instance, options, oldTree, changes, cancellationToken)
         {
         }
@@ -24,7 +23,7 @@ namespace MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax
             throw new NotImplementedException();
         }
 
-        internal SyntaxNode ParseCompilationUnit()
+        internal GreenSyntaxNode ParseCompilationUnit()
         {
             throw new NotImplementedException();
         }

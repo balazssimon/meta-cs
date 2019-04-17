@@ -1,12 +1,12 @@
-using MetaDslx.CodeAnalysis.MetaModel.Syntax;
-using MetaDslx.CodeAnalysis.MetaModel.Syntax.InternalSyntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax;
+using MetaDslx.Languages.MetaModel.Syntax;
+using MetaDslx.Languages.MetaModel.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using System;
 using System.Diagnostics;
 
-namespace MetaDslx.CodeAnalysis.MetaModel
+namespace MetaDslx.Languages.MetaModel
 {
     public sealed class MetaModelLanguage : Language
     {
