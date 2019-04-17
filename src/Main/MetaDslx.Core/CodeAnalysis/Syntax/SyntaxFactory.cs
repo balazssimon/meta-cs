@@ -12,6 +12,7 @@ using Roslyn.Utilities;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Text;
 
 namespace MetaDslx.CodeAnalysis.Syntax
 {
@@ -756,5 +757,29 @@ namespace MetaDslx.CodeAnalysis.Syntax
             var compilation = tree.GetRoot();
             return !compilation.HasErrors;
         }
+
+        /// <summary>
+        /// Create a new syntax tree from a syntax node.
+        /// </summary>
+        public abstract LanguageSyntaxTree SyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null);
+
+        /// <summary>
+        /// Produces a syntax tree by parsing the source text.
+        /// </summary>
+        public abstract LanguageSyntaxTree ParseSyntaxTree(
+            string text,
+            ParseOptions options = null,
+            string path = "",
+            Encoding encoding = null,
+            CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Produces a syntax tree by parsing the source text.
+        /// </summary>
+        public abstract LanguageSyntaxTree ParseSyntaxTree(
+            SourceText text,
+            ParseOptions options = null,
+            string path = "",
+            CancellationToken cancellationToken = default(CancellationToken));
     }
 }

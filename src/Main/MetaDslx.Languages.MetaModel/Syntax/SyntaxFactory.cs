@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.Languages.MetaModel.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;
@@ -30,7 +31,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax
         /// <summary>
         /// Create a new syntax tree from a syntax node.
         /// </summary>
-        public virtual SyntaxTree SyntaxTree(SyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
+        public override LanguageSyntaxTree SyntaxTree(LanguageSyntaxNode root, ParseOptions options = null, string path = "", Encoding encoding = null)
         {
             return MetaModelSyntaxTree.Create((MetaModelSyntaxNode)root, (MetaModelParseOptions)options, path, encoding);
         }
@@ -38,7 +39,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax
         /// <summary>
         /// Produces a syntax tree by parsing the source text.
         /// </summary>
-        public virtual SyntaxTree ParseSyntaxTree(
+        public override LanguageSyntaxTree ParseSyntaxTree(
             string text,
             ParseOptions options = null,
             string path = "",
@@ -51,7 +52,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax
         /// <summary>
         /// Produces a syntax tree by parsing the source text.
         /// </summary>
-        public virtual SyntaxTree ParseSyntaxTree(
+        public override LanguageSyntaxTree ParseSyntaxTree(
             SourceText text,
             ParseOptions options = null,
             string path = "",
@@ -68,10 +69,9 @@ namespace MetaDslx.Languages.MetaModel.Syntax
             return SourceText.From(text, Encoding.UTF8).GetSubText(offset);
         }
 
-        private InternalSyntax.MetaModelSyntaxParser MakeParser(SourceText text)
+        private MetaModelSyntaxParser MakeParser(SourceText text)
         {
-            return new InternalSyntax.MetaModelSyntaxParser(text, MetaModelParseOptions.Default, oldTree: null, changes: null);
+            return new MetaModelSyntaxParser(text, MetaModelParseOptions.Default, oldTree: null, changes: null);
         }
-
     }
 }

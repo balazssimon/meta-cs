@@ -104,7 +104,24 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return 0;
         }
 
-        public virtual bool IsWeakChild(SyntaxNode node)
+        public virtual string ExtractName(LanguageSyntaxNode node)
+        {
+            return null;
+        }
+        public virtual string ExtractName(SyntaxToken token)
+        {
+            return token.Text;
+        }
+        public virtual object ExtractValue(LanguageSyntaxNode node)
+        {
+            return null;
+        }
+        public virtual object ExtractValue(SyntaxToken token)
+        {
+            return token.Value;
+        }
+
+    public virtual bool IsWeakChild(SyntaxNode node)
         {
             return false;
         }

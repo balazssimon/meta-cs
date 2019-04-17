@@ -2258,7 +2258,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static void AppendLoadDirectiveDiagnostics(DiagnosticBag builder, SyntaxAndDeclarationManager syntaxAndDeclarations, SyntaxTree syntaxTree, Func<IEnumerable<Diagnostic>, IEnumerable<Diagnostic>> locationFilterOpt = null)
         {
-            ImmutableArray<LoadDirective> loadDirectives;
+            ImmutableArray<DeclarationLoadDirective> loadDirectives;
             if (syntaxAndDeclarations.GetLazyState().LoadDirectiveMap.TryGetValue(syntaxTree, out loadDirectives))
             {
                 Debug.Assert(!loadDirectives.IsEmpty);

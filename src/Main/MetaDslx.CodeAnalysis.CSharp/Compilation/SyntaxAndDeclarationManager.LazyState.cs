@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             internal readonly ImmutableArray<SyntaxTree> SyntaxTrees; // In ordinal order.
             internal readonly ImmutableDictionary<SyntaxTree, int> OrdinalMap; // Inverse of syntaxTrees array (i.e. maps tree to index)
-            internal readonly ImmutableDictionary<SyntaxTree, ImmutableArray<LoadDirective>> LoadDirectiveMap;
+            internal readonly ImmutableDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> LoadDirectiveMap;
             internal readonly ImmutableDictionary<string, SyntaxTree> LoadedSyntaxTreeMap;
             internal readonly ImmutableDictionary<SyntaxTree, Lazy<RootSingleNamespaceDeclaration>> RootNamespaces;
             internal readonly DeclarationTable DeclarationTable;
@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             internal State(
                 ImmutableArray<SyntaxTree> syntaxTrees,
                 ImmutableDictionary<SyntaxTree, int> syntaxTreeOrdinalMap,
-                ImmutableDictionary<SyntaxTree, ImmutableArray<LoadDirective>> loadDirectiveMap,
+                ImmutableDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,
                 ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap,
                 ImmutableDictionary<SyntaxTree, Lazy<RootSingleNamespaceDeclaration>> rootNamespaces,
                 DeclarationTable declarationTable)

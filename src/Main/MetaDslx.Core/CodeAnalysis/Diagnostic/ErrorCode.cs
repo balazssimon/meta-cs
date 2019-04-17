@@ -270,8 +270,6 @@ namespace MetaDslx.CodeAnalysis
 
         bool IObjectWritable.ShouldReuseInSerialization => true;
 
-        public static ErrorCode ERR_VariableUsedBeforeDeclaration { get; internal set; }
-
         void IObjectWritable.WriteTo(ObjectWriter writer)
         {
             this.WriteTo(writer);

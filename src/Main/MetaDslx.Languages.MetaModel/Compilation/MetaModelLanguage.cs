@@ -24,6 +24,9 @@ namespace MetaDslx.Languages.MetaModel
         protected override InternalSyntaxFactory InternalSyntaxFactoryCore => new MetaModelInternalSyntaxFactory();
 
         public new MetaModelSyntaxFactory SyntaxFactory => (MetaModelSyntaxFactory)this.SyntaxFactoryCore;
-        protected override SyntaxFactory SyntaxFactoryCore => throw new NotImplementedException();
+        protected override SyntaxFactory SyntaxFactoryCore => new MetaModelSyntaxFactory();
+
+        public new MetaModelCompilationFactory CompilationFactory => (MetaModelCompilationFactory)this.CompilationFactoryCore;
+        protected override CompilationFactory CompilationFactoryCore => new MetaModelCompilationFactory();
     }
 }

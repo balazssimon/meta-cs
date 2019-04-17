@@ -85,7 +85,7 @@ namespace MetaDslx.Languages.MetaModel
 
             public override SyntaxTree WithRootAndOptions(SyntaxNode root, ParseOptions options)
             {
-                return MetaModelLanguage.Instance.SyntaxFactory.SyntaxTree(root, options: options, path: FilePath, encoding: null);
+                return MetaModelLanguage.Instance.SyntaxFactory.SyntaxTree((LanguageSyntaxNode)root, options: options, path: FilePath, encoding: null);
             }
 
             public override SyntaxTree WithFilePath(string path)

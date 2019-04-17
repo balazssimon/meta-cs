@@ -22,6 +22,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public abstract DirectiveKind Kind { get; }
 
+        
+
         public virtual bool IncrementallyEquivalent(Directive other)
         {
             if (this.Kind != other.Kind)

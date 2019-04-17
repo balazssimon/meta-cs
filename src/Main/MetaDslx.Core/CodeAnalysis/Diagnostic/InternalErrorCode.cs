@@ -46,5 +46,9 @@ namespace MetaDslx.CodeAnalysis
         public static readonly InternalErrorCode ERR_BindToBogus = new InternalErrorCode(2, "Symbol not supported", "'{0}' is not supported by the language", DiagnosticSeverity.Error);
         public static readonly InternalErrorCode ERR_BogusType = new InternalErrorCode(3, "Type not supported", "'{0}' is a type not supported by the language", DiagnosticSeverity.Error);
         public static readonly InternalErrorCode ERR_HighestPrioriry = new InternalErrorCode(int.MaxValue, "", "", DiagnosticSeverity.Error);
+        public static ErrorCode ERR_VariableUsedBeforeDeclaration { get; internal set; }
+        public static ErrorCode ERR_SourceFileReferencesNotSupported { get; internal set; }
+        public static ErrorCode ERR_NoSourceFile { get; internal set; }
+        public static ErrorCode ERR_FileReadError { get; internal set; }
     }
 }

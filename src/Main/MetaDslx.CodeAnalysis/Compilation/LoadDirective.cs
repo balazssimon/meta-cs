@@ -8,12 +8,12 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal struct LoadDirective : IEquatable<LoadDirective>
+    internal struct DeclarationLoadDirective : IEquatable<DeclarationLoadDirective>
     {
         public readonly string ResolvedPath;
         public readonly ImmutableArray<Diagnostic> Diagnostics;
 
-        public LoadDirective(string resolvedPath, ImmutableArray<Diagnostic> diagnostics)
+        public DeclarationLoadDirective(string resolvedPath, ImmutableArray<Diagnostic> diagnostics)
         {
             Debug.Assert((resolvedPath != null) || !diagnostics.IsEmpty);
             Debug.Assert(!diagnostics.IsDefault);
@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis
             Diagnostics = diagnostics;
         }
 
-        public bool Equals(LoadDirective other)
+        public bool Equals(DeclarationLoadDirective other)
         {
             return this.ResolvedPath == other.ResolvedPath &&
                 this.Diagnostics.SequenceEqual(other.Diagnostics);
@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is LoadDirective && Equals((LoadDirective)obj);
+            return obj is DeclarationLoadDirective && Equals((DeclarationLoadDirective)obj);
         }
 
         public override int GetHashCode()
