@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Binding;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace MetaDslx.CodeAnalysis
         }
 
         public override string Language => throw new NotImplementedException();
+
+        internal BinderFlags TopLevelBinderFlags { get; set; }
 
         public override bool Equals(object obj)
         {
