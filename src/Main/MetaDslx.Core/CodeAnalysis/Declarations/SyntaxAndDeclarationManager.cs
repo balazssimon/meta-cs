@@ -610,9 +610,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         internal bool MayHaveReferenceDirectives()
         {
-            // TODO:MetaDslx
-            return false;
-            /*
             var state = _lazyState;
             if (state == null)
             {
@@ -620,7 +617,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 return externalSyntaxTrees.Any(t => t.HasReferenceOrLoadDirectives());
             }
 
-            return state.DeclarationTable.ReferenceDirectives.Any();*/
+            return state.DeclarationTable.ReferenceDirectives.Any();
         }
 
         private static bool TryGetLoadedSyntaxTree(ImmutableDictionary<string, LanguageSyntaxTree> loadedSyntaxTreeMap, DeclarationLoadDirective directive, out LanguageSyntaxTree loadedTree)
