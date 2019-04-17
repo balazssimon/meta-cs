@@ -75,4 +75,8 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CodeAnalysis\Binding\Semantics\" />
+  </ItemGroup>
 </Project>

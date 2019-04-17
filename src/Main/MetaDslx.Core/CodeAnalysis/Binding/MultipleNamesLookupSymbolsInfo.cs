@@ -38,7 +38,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             public UniqueSymbolOrMultiNames(TSymbol uniqueSymbol, string multiName)
             {
-                _uniqueSymbolOrMultiNames = uniqueSymbol;
+                _uniqueSymbolOrMultiNames = new Tuple<string, TSymbol>(multiName, uniqueSymbol);
                 //if there's no unique symbol, how can there be a multi name?
                 Debug.Assert((uniqueSymbol != null) || (multiName == null));
             }
