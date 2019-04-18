@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis
 {
     using MetadataOrDiagnostic = System.Object;
 
-    internal abstract class CommonReferenceManager
+    public abstract class CommonReferenceManager
     {
         /// <summary>
         /// Must be acquired whenever the following data are about to be modified:

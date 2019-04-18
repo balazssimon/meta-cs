@@ -11,6 +11,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    /*
     public class MetaNamedTypeSymbol : NamedTypeSymbol
     {
         public override int Arity => throw new NotImplementedException();
@@ -147,5 +148,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

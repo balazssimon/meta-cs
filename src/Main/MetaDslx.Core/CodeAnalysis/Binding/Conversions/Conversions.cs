@@ -1,0 +1,35 @@
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using Microsoft.CodeAnalysis.CSharp.Symbols;
+
+namespace MetaDslx.CodeAnalysis.Binding
+{
+    // TODO:MetaDslx
+    internal sealed class Conversions : ConversionsBase
+    {
+        private readonly Binder _binder;
+
+        public Conversions(Binder binder)
+            : this(binder, currentRecursionDepth: 0)
+        {
+        }
+
+        private Conversions(Binder binder, int currentRecursionDepth)
+            : base(binder.Compilation.Assembly.CorLibrary, currentRecursionDepth)
+        {
+            _binder = binder;
+        }
+
+        protected override ConversionsBase CreateInstance(int currentRecursionDepth)
+        {
+            return new Conversions(_binder, currentRecursionDepth);
+        }
+
+        private LanguageCompilation Compilation { get { return _binder.Compilation; } }
+
+    }
+}

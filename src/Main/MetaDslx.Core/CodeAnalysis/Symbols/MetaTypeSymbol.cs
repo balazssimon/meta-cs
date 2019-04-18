@@ -10,6 +10,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    /*
     public class MetaTypeSymbol : TypeSymbol
     {
         public override bool IsReferenceType => throw new NotImplementedException();
@@ -118,5 +119,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

@@ -167,5 +167,10 @@ namespace MetaDslx.CodeAnalysis
         {
             throw new NotImplementedException();
         }
+
+        internal LanguageCompilationOptions WithReferencesSupersedeLowerVersions(bool v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

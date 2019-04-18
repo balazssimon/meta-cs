@@ -62,7 +62,7 @@ namespace MetaDslx.CodeAnalysis
 
         public override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
         {
-            ValidateOptions(builder, MessageProvider.Instance);
+            ValidateOptions(builder, Microsoft.CodeAnalysis.CSharp.MessageProvider.Instance);
 
             if (!PreprocessorSymbols.IsDefaultOrEmpty)
             {

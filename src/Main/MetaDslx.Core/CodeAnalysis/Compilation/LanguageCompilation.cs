@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeGen;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -25,6 +26,9 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
 {
+    using CSharp = Microsoft.CodeAnalysis.CSharp;
+    using ReferenceDirective = Syntax.ReferenceDirective;
+
     /// <summary>
     /// The compilation object is an immutable representation of a single invocation of the
     /// compiler. Although immutable, a compilation is also on-demand, and will realize and cache
@@ -33,7 +37,7 @@ namespace MetaDslx.CodeAnalysis
     /// new compilation from scratch, as the new compilation can reuse information from the old
     /// compilation.
     /// </summary>
-    public class LanguageCompilation : Compilation
+    public abstract class LanguageCompilation : Compilation
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //
@@ -84,21 +88,11 @@ namespace MetaDslx.CodeAnalysis
         internal readonly BuiltInOperators builtInOperators;
 
         /// <summary>
-        /// The <see cref="SourceAssemblySymbol"/> for this compilation. Do not access directly, use Assembly property
-        /// instead. This field is lazily initialized by ReferenceManager, ReferenceManager.CacheLockObject must be locked
-        /// while ReferenceManager "calculates" the value and assigns it, several threads must not perform duplicate
-        /// "calculation" simultaneously.
+        /// The compiler backend. Could generate C# code or emit IL code.
+        /// The default backend does nothing, just creates the assembly 
+        /// symbol and the reference manager.
         /// </summary>
-        private SourceAssemblySymbol _lazyAssemblySymbol;
-
-        /// <summary>
-        /// Holds onto data related to reference binding.
-        /// The manager is shared among multiple compilations that we expect to have the same result of reference binding.
-        /// In most cases this can be determined without performing the binding. If the compilation however contains a circular
-        /// metadata reference (a metadata reference that refers back to the compilation) we need to avoid sharing of the binding results.
-        /// We do so by creating a new reference manager for such compilation.
-        /// </summary>
-        private ReferenceManager _referenceManager;
+        private CompilerBackend _lazyBackend;
 
         private readonly SyntaxAndDeclarationManager _syntaxAndDeclarations;
 
@@ -112,13 +106,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         private HashSet<SyntaxTree> _lazyCompilationUnitCompletedTrees;
 
-        public override string Language
-        {
-            get
-            {
-                return LanguageNames.CSharp;
-            }
-        }
+        public new abstract Language Language { get; }
 
         public override bool IsCaseSensitive
         {
@@ -155,29 +143,6 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        /// <summary>
-        /// True when the compiler is run in "strict" mode, in which it enforces the language specification
-        /// in some cases even at the expense of full compatibility. Such differences typically arise when
-        /// earlier versions of the compiler failed to enforce the full language specification.
-        /// </summary>
-        internal bool FeatureStrictEnabled => Feature("strict") != null;
-
-        /// <summary>
-        /// True when the "peverify-compat" feature flag is set or the language version is below C# 7.2.
-        /// With this flag we will avoid certain patterns known not be compatible with PEVerify.
-        /// The code may be less efficient and may deviate from spec in corner cases.
-        /// The flag is only to be used if PEVerify pass is extremely important.
-        /// </summary>
-        internal bool IsPeVerifyCompatEnabled => LanguageVersion < LanguageVersion.CSharp7_2 || Feature("peverify-compat") != null;
-
-        /// <summary>
-        /// The language version that was used to parse the syntax trees of this compilation.
-        /// </summary>
-        public LanguageVersion LanguageVersion
-        {
-            get;
-        }
-
         protected override INamedTypeSymbol CommonCreateErrorTypeSymbol(INamespaceOrTypeSymbol container, string name, int arity)
         {
             return new ExtendedErrorTypeSymbol(
@@ -194,104 +159,7 @@ namespace MetaDslx.CodeAnalysis
 
         #region Constructors and Factories
 
-        private static readonly LanguageCompilationOptions s_defaultOptions = new LanguageCompilationOptions(OutputKind.ConsoleApplication);
-        private static readonly LanguageCompilationOptions s_defaultSubmissionOptions = new LanguageCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
-
-        /// <summary>
-        /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
-        /// on the returned object will allow to continue building up the Compilation incrementally.
-        /// </summary>
-        /// <param name="assemblyName">Simple assembly name.</param>
-        /// <param name="syntaxTrees">The syntax trees with the source code for the new compilation.</param>
-        /// <param name="references">The references for the new compilation.</param>
-        /// <param name="options">The compiler options to use.</param>
-        /// <returns>A new compilation.</returns>
-        public static LanguageCompilation Create(
-            string assemblyName,
-            IEnumerable<SyntaxTree> syntaxTrees = null,
-            IEnumerable<MetadataReference> references = null,
-            LanguageCompilationOptions options = null)
-        {
-            return Create(
-                assemblyName,
-                options ?? s_defaultOptions,
-                syntaxTrees,
-                references,
-                previousSubmission: null,
-                returnType: null,
-                hostObjectType: null,
-                isSubmission: false);
-        }
-
-        /// <summary>
-        /// Creates a new compilation that can be used in scripting.
-        /// </summary>
-        public static LanguageCompilation CreateScriptCompilation(
-            string assemblyName,
-            SyntaxTree syntaxTree = null,
-            IEnumerable<MetadataReference> references = null,
-            LanguageCompilationOptions options = null,
-            LanguageCompilation previousScriptCompilation = null,
-            Type returnType = null,
-            Type globalsType = null)
-        {
-            CheckSubmissionOptions(options);
-            ValidateScriptCompilationParameters(previousScriptCompilation, returnType, ref globalsType);
-
-            return Create(
-                assemblyName,
-                options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
-                (syntaxTree != null) ? new[] { syntaxTree } : SpecializedCollections.EmptyEnumerable<SyntaxTree>(),
-                references,
-                previousScriptCompilation,
-                returnType,
-                globalsType,
-                isSubmission: true);
-        }
-
-        private static LanguageCompilation Create(
-            string assemblyName,
-            LanguageCompilationOptions options,
-            IEnumerable<SyntaxTree> syntaxTrees,
-            IEnumerable<MetadataReference> references,
-            LanguageCompilation previousSubmission,
-            Type returnType,
-            Type hostObjectType,
-            bool isSubmission)
-        {
-            Debug.Assert(options != null);
-            Debug.Assert(!isSubmission || options.ReferencesSupersedeLowerVersions);
-
-            var validatedReferences = ValidateReferences<CSharpCompilationReference>(references);
-
-            var compilation = new LanguageCompilation(
-                assemblyName,
-                options,
-                validatedReferences,
-                previousSubmission,
-                returnType,
-                hostObjectType,
-                isSubmission,
-                referenceManager: null,
-                reuseReferenceManager: false,
-                syntaxAndDeclarations: new SyntaxAndDeclarationManager(
-                    ImmutableArray<SyntaxTree>.Empty,
-                    options.ScriptClassName,
-                    options.SourceReferenceResolver,
-                    CSharp.MessageProvider.Instance,
-                    isSubmission,
-                    state: null));
-
-            if (syntaxTrees != null)
-            {
-                compilation = compilation.AddSyntaxTrees(syntaxTrees);
-            }
-
-            Debug.Assert((object)compilation._lazyAssemblySymbol == null);
-            return compilation;
-        }
-
-        private LanguageCompilation(
+        protected LanguageCompilation(
             string assemblyName,
             LanguageCompilationOptions options,
             ImmutableArray<MetadataReference> references,
@@ -345,206 +213,10 @@ namespace MetaDslx.CodeAnalysis
             if (EventQueue != null) EventQueue.TryEnqueue(new CompilationStartedEvent(this));
         }
 
-        internal override void ValidateDebugEntryPoint(IMethodSymbol debugEntryPoint, DiagnosticBag diagnostics)
-        {
-            Debug.Assert(debugEntryPoint != null);
-
-            // Debug entry point has to be a method definition from this compilation.
-            var methodSymbol = debugEntryPoint as MethodSymbol;
-            if (methodSymbol?.DeclaringCompilation != this || !methodSymbol.IsDefinition)
-            {
-                diagnostics.Add(ErrorCode.ERR_DebugEntryPointNotSourceMethodDefinition, Location.None);
-            }
-        }
-
-        private static LanguageVersion CommonLanguageVersion(ImmutableArray<SyntaxTree> syntaxTrees)
-        {
-            LanguageVersion? result = null;
-            foreach (var tree in syntaxTrees)
-            {
-                var version = ((CSharpParseOptions)tree.Options).LanguageVersion;
-                if (result == null)
-                {
-                    result = version;
-                }
-                else if (result != version)
-                {
-                    throw new ArgumentException(CodeAnalysisResources.InconsistentLanguageVersions, nameof(syntaxTrees));
-                }
-            }
-
-            return result ?? LanguageVersion.Default.MapSpecifiedToEffectiveVersion();
-        }
-
-        /// <summary>
-        /// Create a duplicate of this compilation with different symbol instances.
-        /// </summary>
-        public new LanguageCompilation Clone()
-        {
-            return new LanguageCompilation(
-                this.AssemblyName,
-                _options,
-                this.ExternalReferences,
-                this.PreviousSubmission,
-                this.SubmissionReturnType,
-                this.HostObjectType,
-                this.IsSubmission,
-                _referenceManager,
-                reuseReferenceManager: true,
-                syntaxAndDeclarations: _syntaxAndDeclarations);
-        }
-
-        private LanguageCompilation Update(
-            ReferenceManager referenceManager,
+        protected abstract LanguageCompilation Update(
+            CommonReferenceManager referenceManager,
             bool reuseReferenceManager,
-            SyntaxAndDeclarationManager syntaxAndDeclarations)
-        {
-            return new LanguageCompilation(
-                this.AssemblyName,
-                _options,
-                this.ExternalReferences,
-                this.PreviousSubmission,
-                this.SubmissionReturnType,
-                this.HostObjectType,
-                this.IsSubmission,
-                referenceManager,
-                reuseReferenceManager,
-                syntaxAndDeclarations);
-        }
-
-        /// <summary>
-        /// Creates a new compilation with the specified name.
-        /// </summary>
-        public new LanguageCompilation WithAssemblyName(string assemblyName)
-        {
-            // Can't reuse references since the source assembly name changed and the referenced symbols might
-            // have internals-visible-to relationship with this compilation or they might had a circular reference
-            // to this compilation.
-
-            return new LanguageCompilation(
-                assemblyName,
-                _options,
-                this.ExternalReferences,
-                this.PreviousSubmission,
-                this.SubmissionReturnType,
-                this.HostObjectType,
-                this.IsSubmission,
-                _referenceManager,
-                reuseReferenceManager: assemblyName == this.AssemblyName,
-                syntaxAndDeclarations: _syntaxAndDeclarations);
-        }
-
-        /// <summary>
-        /// Creates a new compilation with the specified references.
-        /// </summary>
-        /// <remarks>
-        /// The new <see cref="LanguageCompilation"/> will query the given <see cref="MetadataReference"/> for the underlying
-        /// metadata as soon as the are needed.
-        ///
-        /// The new compilation uses whatever metadata is currently being provided by the <see cref="MetadataReference"/>.
-        /// E.g. if the current compilation references a metadata file that has changed since the creation of the compilation
-        /// the new compilation is going to use the updated version, while the current compilation will be using the previous (it doesn't change).
-        /// </remarks>
-        public new LanguageCompilation WithReferences(IEnumerable<MetadataReference> references)
-        {
-            // References might have changed, don't reuse reference manager.
-            // Don't even reuse observed metadata - let the manager query for the metadata again.
-
-            return new LanguageCompilation(
-                this.AssemblyName,
-                _options,
-                ValidateReferences<CSharpCompilationReference>(references),
-                this.PreviousSubmission,
-                this.SubmissionReturnType,
-                this.HostObjectType,
-                this.IsSubmission,
-                referenceManager: null,
-                reuseReferenceManager: false,
-                syntaxAndDeclarations: _syntaxAndDeclarations);
-        }
-
-        /// <summary>
-        /// Creates a new compilation with the specified references.
-        /// </summary>
-        public new LanguageCompilation WithReferences(params MetadataReference[] references)
-        {
-            return this.WithReferences((IEnumerable<MetadataReference>)references);
-        }
-
-        /// <summary>
-        /// Creates a new compilation with the specified compilation options.
-        /// </summary>
-        public LanguageCompilation WithOptions(LanguageCompilationOptions options)
-        {
-            var oldOptions = this.Options;
-            bool reuseReferenceManager = oldOptions.CanReuseCompilationReferenceManager(options);
-            bool reuseSyntaxAndDeclarationManager = oldOptions.ScriptClassName == options.ScriptClassName &&
-                oldOptions.SourceReferenceResolver == options.SourceReferenceResolver;
-
-            return new LanguageCompilation(
-                this.AssemblyName,
-                options,
-                this.ExternalReferences,
-                this.PreviousSubmission,
-                this.SubmissionReturnType,
-                this.HostObjectType,
-                this.IsSubmission,
-                _referenceManager,
-                reuseReferenceManager,
-                reuseSyntaxAndDeclarationManager ?
-                    _syntaxAndDeclarations :
-                    new SyntaxAndDeclarationManager(
-                        _syntaxAndDeclarations.ExternalSyntaxTrees,
-                        options.ScriptClassName,
-                        options.SourceReferenceResolver,
-                        _syntaxAndDeclarations.MessageProvider,
-                        _syntaxAndDeclarations.IsSubmission,
-                        state: null));
-        }
-
-        /// <summary>
-        /// Returns a new compilation with the given compilation set as the previous submission.
-        /// </summary>
-        public LanguageCompilation WithScriptCompilationInfo(CSharpScriptCompilationInfo info)
-        {
-            if (info == ScriptCompilationInfo)
-            {
-                return this;
-            }
-
-            // Reference binding doesn't depend on previous submission so we can reuse it.
-
-            return new LanguageCompilation(
-                this.AssemblyName,
-                _options,
-                this.ExternalReferences,
-                info?.PreviousScriptCompilation,
-                info?.ReturnTypeOpt,
-                info?.GlobalsType,
-                info != null,
-                _referenceManager,
-                reuseReferenceManager: true,
-                syntaxAndDeclarations: _syntaxAndDeclarations);
-        }
-
-        /// <summary>
-        /// Returns a new compilation with a given event queue.
-        /// </summary>
-        internal override Compilation WithEventQueue(AsyncQueue<CompilationEvent> eventQueue)
-        {
-            return new LanguageCompilation(
-                this.AssemblyName,
-                _options,
-                this.ExternalReferences,
-                this.PreviousSubmission,
-                this.SubmissionReturnType,
-                this.HostObjectType,
-                this.IsSubmission,
-                _referenceManager,
-                reuseReferenceManager: true,
-                syntaxAndDeclarations: _syntaxAndDeclarations,
-                eventQueue: eventQueue);
-        }
+            SyntaxAndDeclarationManager syntaxAndDeclarations);
 
         #endregion
 
@@ -831,28 +503,24 @@ namespace MetaDslx.CodeAnalysis
 
         #region References
 
+        protected virtual CompilerBackend CreateCompilerBackend()
+        {
+            return CSharpBackend.CreateDummyBackend(this);
+        }
+
         internal override CommonReferenceManager CommonGetBoundReferenceManager()
         {
             return GetBoundReferenceManager();
         }
 
-        internal new ReferenceManager GetBoundReferenceManager()
+        internal CommonReferenceManager GetBoundReferenceManager()
         {
-            if ((object)_lazyAssemblySymbol == null)
+            if ((object)_lazyBackend == null)
             {
-                _referenceManager.CreateSourceAssemblyForCompilation(this);
-                Debug.Assert((object)_lazyAssemblySymbol != null);
+                Interlocked.CompareExchange(ref _lazyBackend, this.CreateCompilerBackend(), null);
+                Debug.Assert((object)_lazyBackend != null);
             }
-
-            // referenceManager can only be accessed after we initialized the lazyAssemblySymbol.
-            // In fact, initialization of the assembly symbol might change the reference manager.
-            return _referenceManager;
-        }
-
-        // for testing only:
-        internal bool ReferenceManagerEquals(LanguageCompilation other)
-        {
-            return ReferenceEquals(_referenceManager, other._referenceManager);
+            return _lazyBackend.GetBoundReferenceManager();
         }
 
         public override ImmutableArray<MetadataReference> DirectiveReferences
@@ -922,8 +590,9 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         /// <param name="directive">#r directive.</param>
         /// <returns>Metadata reference the specified directive resolves to, or null if the <paramref name="directive"/> doesn't match any #r directive in the compilation.</returns>
-        public MetadataReference GetDirectiveReference(ReferenceDirectiveTriviaSyntax directive)
+        public MetadataReference GetDirectiveReference(SyntaxNode directive)
         {
+            // TODO:MetaDslx
             MetadataReference reference;
             return ReferenceDirectiveMap.TryGetValue((directive.SyntaxTree.FilePath, directive.File.ValueText), out reference) ? reference : null;
         }
@@ -1039,19 +708,19 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// The AssemblySymbol that represents the assembly being created.
         /// </summary>
-        internal SourceAssemblySymbol SourceAssembly
+        internal IAssemblySymbol SourceAssembly
         {
             get
             {
                 GetBoundReferenceManager();
-                return _lazyAssemblySymbol;
+                return _lazyBackend.AssemblySymbol;
             }
         }
 
         /// <summary>
         /// The AssemblySymbol that represents the assembly being created.
         /// </summary>
-        internal new AssemblySymbol Assembly
+        internal new IAssemblySymbol Assembly
         {
             get
             {
@@ -1064,7 +733,7 @@ namespace MetaDslx.CodeAnalysis
         /// By getting the GlobalNamespace property of that module, all of the namespaces and types
         /// defined in source code can be obtained.
         /// </summary>
-        internal new ModuleSymbol SourceModule
+        internal new IModuleSymbol SourceModule
         {
             get
             {

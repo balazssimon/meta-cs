@@ -8,6 +8,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
+    /*
     public class MetaNamespaceSymbol : NamespaceSymbol
     {
         public override AssemblySymbol ContainingAssembly => throw new NotImplementedException();
@@ -39,5 +40,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

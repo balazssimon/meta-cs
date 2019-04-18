@@ -141,6 +141,20 @@ namespace MetaDslx.CodeAnalysis.Binding
             return _next.GetImports(basesBeingResolved);
         }
 
+        private Conversions _lazyConversions;
+        internal Conversions Conversions
+        {
+            get
+            {
+                if (_lazyConversions == null)
+                {
+                    Interlocked.CompareExchange(ref _lazyConversions, new Conversions(this), null);
+                }
+
+                return _lazyConversions;
+            }
+        }
+
         /// <summary>
         /// The type containing the binding context
         /// </summary>
