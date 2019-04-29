@@ -7,14 +7,14 @@ namespace MetaDslx.CodeAnalysis.Declarations
 {
     internal abstract class CommonSyntaxAndDeclarationManager
     {
-        internal readonly ImmutableArray<LanguageSyntaxTree> ExternalSyntaxTrees;
+        internal readonly ImmutableArray<SyntaxTree> ExternalSyntaxTrees;
         internal readonly string ScriptClassName;
         internal readonly SourceReferenceResolver Resolver;
         internal readonly LanguageCompilation Compilation;
         internal readonly bool IsSubmission;
 
         public CommonSyntaxAndDeclarationManager(
-            ImmutableArray<LanguageSyntaxTree> externalSyntaxTrees,
+            ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
             LanguageCompilation compilation,

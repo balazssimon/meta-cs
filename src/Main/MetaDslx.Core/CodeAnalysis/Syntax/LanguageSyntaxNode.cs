@@ -40,6 +40,8 @@ namespace MetaDslx.CodeAnalysis
 
         public new abstract Language Language { get; }
 
+        protected override Language LanguageCore => this.Language;
+
         public abstract TResult Accept<TResult>(SyntaxVisitor<TResult> visitor);
 
         public abstract void Accept(SyntaxVisitor visitor);
@@ -416,8 +418,6 @@ namespace MetaDslx.CodeAnalysis
             }
 
             public override Language Language => throw new NotImplementedException();
-
-            protected override Language LanguageCore => throw new NotImplementedException();
 
             public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
             {

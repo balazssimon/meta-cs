@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -112,6 +113,14 @@ namespace MetaDslx.CodeAnalysis.Syntax
         {
             return token.Text;
         }
+        public virtual string ExtractMetadataName(LanguageSyntaxNode node)
+        {
+            return null;
+        }
+        public virtual string ExtractMetadataName(SyntaxToken token)
+        {
+            return token.Text;
+        }
         public virtual object ExtractValue(LanguageSyntaxNode node)
         {
             return null;
@@ -120,8 +129,12 @@ namespace MetaDslx.CodeAnalysis.Syntax
         {
             return token.Value;
         }
+        public virtual TypeKind ToTypeKind(ModelSymbolInfo info)
+        {
+            return TypeKind.Class;
+        }
 
-    public virtual bool IsWeakChild(SyntaxNode node)
+        public virtual bool IsWeakChild(SyntaxNode node)
         {
             return false;
         }

@@ -46,9 +46,36 @@ namespace MetaDslx.CodeAnalysis
         public static readonly InternalErrorCode ERR_BindToBogus = new InternalErrorCode(2, "Symbol not supported", "'{0}' is not supported by the language", DiagnosticSeverity.Error);
         public static readonly InternalErrorCode ERR_BogusType = new InternalErrorCode(3, "Type not supported", "'{0}' is a type not supported by the language", DiagnosticSeverity.Error);
         public static readonly InternalErrorCode ERR_HighestPrioriry = new InternalErrorCode(int.MaxValue, "", "", DiagnosticSeverity.Error);
-        public static ErrorCode ERR_VariableUsedBeforeDeclaration { get; internal set; }
-        public static ErrorCode ERR_SourceFileReferencesNotSupported { get; internal set; }
-        public static ErrorCode ERR_NoSourceFile { get; internal set; }
-        public static ErrorCode ERR_FileReadError { get; internal set; }
+        public static InternalErrorCode ERR_VariableUsedBeforeDeclaration { get; internal set; }
+        public static InternalErrorCode ERR_SourceFileReferencesNotSupported { get; internal set; }
+        public static InternalErrorCode ERR_NoSourceFile { get; internal set; }
+        public static InternalErrorCode ERR_FileReadError { get; internal set; }
+        public static InternalErrorCode ERR_DebugEntryPointNotSourceMethodDefinition { get; internal set; }
+        public static InternalErrorCode ERR_MainClassNotFound { get; internal set; }
+        public static InternalErrorCode ERR_MainClassNotClass { get; internal set; }
+        public static InternalErrorCode WRN_MainIgnored { get; internal set; }
+        public static InternalErrorCode WRN_InvalidMainSig { get; internal set; }
+        public static InternalErrorCode WRN_MainCantBeGeneric { get; internal set; }
+        public static InternalErrorCode ERR_NonTaskMainCantBeAsync { get; internal set; }
+        public static InternalErrorCode ERR_NoEntryPoint { get; internal set; }
+        public static InternalErrorCode ERR_NoMainInClass { get; internal set; }
+        public static InternalErrorCode ERR_MultipleEntryPoints { get; internal set; }
+        public static InternalErrorCode ERR_NoTypeDef { get; internal set; }
+        public static InternalErrorCode ERR_GlobalSingleTypeNameNotFound { get; internal set; }
+        public static InternalErrorCode HDN_UnusedExternAlias { get; internal set; }
+        public static InternalErrorCode HDN_UnusedUsingDirective { get; internal set; }
+        public static InternalErrorCode ERR_AssemblySpecifiedForLinkAndRef { get; internal set; }
+        public static InternalErrorCode ERR_BadExternAlias { get; internal set; }
+        public static InternalErrorCode ERR_PartialModifierConflict { get; internal set; }
+        public static InternalErrorCode ERR_AbstractSealedStatic { get; internal set; }
+        public static InternalErrorCode ERR_SealedStaticClass { get; internal set; }
+        public static InternalErrorCode ERR_DuplicateNameInNS { get; internal set; }
+        public static InternalErrorCode ERR_PartialTypeKindConflict { get; internal set; }
+        public static InternalErrorCode ERR_DuplicateNameInClass { get; internal set; }
+        public static InternalErrorCode ERR_MemberNameSameAsType { get; internal set; }
+        public static InternalErrorCode ERR_PartialMethodOnlyOneActual { get; internal set; }
+        public static InternalErrorCode ERR_PartialMethodOnlyOneLatent { get; internal set; }
+        public static InternalErrorCode ERR_PartialMethodMustHaveLatent { get; internal set; }
+
     }
 }

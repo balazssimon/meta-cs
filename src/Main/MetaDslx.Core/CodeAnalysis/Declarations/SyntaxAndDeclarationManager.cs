@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private State _lazyState;
 
         internal SyntaxAndDeclarationManager(
-            ImmutableArray<LanguageSyntaxTree> externalSyntaxTrees,
+            ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
             LanguageCompilation compilation,
@@ -39,17 +39,17 @@ namespace MetaDslx.CodeAnalysis.Declarations
         }
 
         private static State CreateState(
-            ImmutableArray<LanguageSyntaxTree> externalSyntaxTrees,
+            ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
             LanguageCompilation compilation,
             bool isSubmission)
         {
-            var treesBuilder = ArrayBuilder<LanguageSyntaxTree>.GetInstance();
-            var ordinalMapBuilder = PooledDictionary<LanguageSyntaxTree, int>.GetInstance();
-            var loadDirectiveMapBuilder = PooledDictionary<LanguageSyntaxTree, ImmutableArray<DeclarationLoadDirective>>.GetInstance();
-            var loadedSyntaxTreeMapBuilder = PooledDictionary<string, LanguageSyntaxTree>.GetInstance();
-            var declMapBuilder = PooledDictionary<LanguageSyntaxTree, Lazy<RootSingleDeclaration>>.GetInstance();
+            var treesBuilder = ArrayBuilder<SyntaxTree>.GetInstance();
+            var ordinalMapBuilder = PooledDictionary<SyntaxTree, int>.GetInstance();
+            var loadDirectiveMapBuilder = PooledDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>>.GetInstance();
+            var loadedSyntaxTreeMapBuilder = PooledDictionary<string, SyntaxTree>.GetInstance();
+            var declMapBuilder = PooledDictionary<SyntaxTree, Lazy<RootSingleDeclaration>>.GetInstance();
             var declTable = DeclarationTable.Empty;
 
             foreach (var tree in externalSyntaxTrees)
@@ -77,7 +77,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 declTable);
         }
 
-        public SyntaxAndDeclarationManager AddSyntaxTrees(IEnumerable<LanguageSyntaxTree> trees)
+        public SyntaxAndDeclarationManager AddSyntaxTrees(IEnumerable<SyntaxTree> trees)
         {
             var scriptClassName = this.ScriptClassName;
             var resolver = this.Resolver;
@@ -97,7 +97,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             var declMapBuilder = state.RootNamespaces.ToBuilder();
             var declTable = state.DeclarationTable;
 
-            var treesBuilder = ArrayBuilder<LanguageSyntaxTree>.GetInstance();
+            var treesBuilder = ArrayBuilder<SyntaxTree>.GetInstance();
             treesBuilder.AddRange(state.SyntaxTrees);
 
             foreach (var tree in trees)
@@ -137,16 +137,16 @@ namespace MetaDslx.CodeAnalysis.Declarations
         /// Appends all trees (including any trees from #load'ed files).
         /// </summary>
         private static void AppendAllSyntaxTrees(
-            ArrayBuilder<LanguageSyntaxTree> treesBuilder,
-            LanguageSyntaxTree tree,
+            ArrayBuilder<SyntaxTree> treesBuilder,
+            SyntaxTree tree,
             string scriptClassName,
             SourceReferenceResolver resolver,
             LanguageCompilation compilation,
             bool isSubmission,
-            IDictionary<LanguageSyntaxTree, int> ordinalMapBuilder,
-            IDictionary<LanguageSyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMapBuilder,
-            IDictionary<string, LanguageSyntaxTree> loadedSyntaxTreeMapBuilder,
-            IDictionary<LanguageSyntaxTree, Lazy<RootSingleDeclaration>> declMapBuilder,
+            IDictionary<SyntaxTree, int> ordinalMapBuilder,
+            IDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMapBuilder,
+            IDictionary<string, SyntaxTree> loadedSyntaxTreeMapBuilder,
+            IDictionary<SyntaxTree, Lazy<RootSingleDeclaration>> declMapBuilder,
             ref DeclarationTable declTable)
         {
             var sourceCodeKind = tree.Options.Kind;
@@ -163,21 +163,21 @@ namespace MetaDslx.CodeAnalysis.Declarations
         }
 
         private static void AppendAllLoadedSyntaxTrees(
-            ArrayBuilder<LanguageSyntaxTree> treesBuilder,
-            LanguageSyntaxTree tree,
+            ArrayBuilder<SyntaxTree> treesBuilder,
+            SyntaxTree tree,
             string scriptClassName,
             SourceReferenceResolver resolver,
             LanguageCompilation compilation,
             bool isSubmission,
-            IDictionary<LanguageSyntaxTree, int> ordinalMapBuilder,
-            IDictionary<LanguageSyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMapBuilder,
-            IDictionary<string, LanguageSyntaxTree> loadedSyntaxTreeMapBuilder,
-            IDictionary<LanguageSyntaxTree, Lazy<RootSingleDeclaration>> declMapBuilder,
+            IDictionary<SyntaxTree, int> ordinalMapBuilder,
+            IDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMapBuilder,
+            IDictionary<string, SyntaxTree> loadedSyntaxTreeMapBuilder,
+            IDictionary<SyntaxTree, Lazy<RootSingleDeclaration>> declMapBuilder,
             ref DeclarationTable declTable)
         {
             ArrayBuilder<DeclarationLoadDirective> loadDirectives = null;
 
-            foreach (var d in tree.GetRootSyntax().GetLoadDirectives())
+            foreach (var d in tree.GetCompilationUnitRoot().GetLoadDirectives())
             {
                 var directive = (LoadDirective)d.Directive;
                 var node = (LanguageSyntaxNode)d;
@@ -255,18 +255,20 @@ namespace MetaDslx.CodeAnalysis.Declarations
         }
         
         private static void AddSyntaxTreeToDeclarationMapAndTable(
-            LanguageSyntaxTree tree,
+            SyntaxTree tree,
             string scriptClassName,
             bool isSubmission,
-            IDictionary<LanguageSyntaxTree, Lazy<RootSingleDeclaration>> declMapBuilder,
+            IDictionary<SyntaxTree, Lazy<RootSingleDeclaration>> declMapBuilder,
             ref DeclarationTable declTable)
         {
-            var lazyRoot = new Lazy<RootSingleDeclaration>(() => tree.Language.CompilationFactory.CreateDeclarationTree(tree, scriptClassName, isSubmission));
+            var languageTree = (LanguageSyntaxTree)tree;
+            var language = languageTree.Language;
+            var lazyRoot = new Lazy<RootSingleDeclaration>(() => language.CompilationFactory.CreateDeclarationTree(languageTree, scriptClassName, isSubmission));
             declMapBuilder.Add(tree, lazyRoot); // Callers are responsible for checking for existing entries.
             declTable = declTable.AddRootDeclaration(lazyRoot);
         }
 
-        public SyntaxAndDeclarationManager RemoveSyntaxTrees(HashSet<LanguageSyntaxTree> trees)
+        public SyntaxAndDeclarationManager RemoveSyntaxTrees(HashSet<SyntaxTree> trees)
         {
             var state = _lazyState;
             var newExternalSyntaxTrees = this.ExternalSyntaxTrees.RemoveAll(t => trees.Contains(t));
@@ -278,7 +280,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             var syntaxTrees = state.SyntaxTrees;
             var loadDirectiveMap = state.LoadDirectiveMap;
             var loadedSyntaxTreeMap = state.LoadedSyntaxTreeMap;
-            var removeSet = PooledHashSet<LanguageSyntaxTree>.GetInstance();
+            var removeSet = PooledHashSet<SyntaxTree>.GetInstance();
             foreach (var tree in trees)
             {
                 int unused1;
@@ -295,8 +297,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
                     oldLoadDirectives: out unused2);
             }
 
-            var treesBuilder = ArrayBuilder<LanguageSyntaxTree>.GetInstance();
-            var ordinalMapBuilder = PooledDictionary<LanguageSyntaxTree, int>.GetInstance();
+            var treesBuilder = ArrayBuilder<SyntaxTree>.GetInstance();
+            var ordinalMapBuilder = PooledDictionary<SyntaxTree, int>.GetInstance();
             var declMapBuilder = state.RootNamespaces.ToBuilder();
             var declTable = state.DeclarationTable;
             foreach (var tree in syntaxTrees)
@@ -342,13 +344,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
         /// with all the trees that are safe to remove (not #load'ed by any other tree).
         /// </summary>
         private static void GetRemoveSet(
-            LanguageSyntaxTree oldTree,
+            SyntaxTree oldTree,
             bool includeLoadedTrees,
-            ImmutableArray<LanguageSyntaxTree> syntaxTrees,
-            ImmutableDictionary<LanguageSyntaxTree, int> syntaxTreeOrdinalMap,
-            ImmutableDictionary<LanguageSyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,
-            ImmutableDictionary<string, LanguageSyntaxTree> loadedSyntaxTreeMap,
-            HashSet<LanguageSyntaxTree> removeSet,
+            ImmutableArray<SyntaxTree> syntaxTrees,
+            ImmutableDictionary<SyntaxTree, int> syntaxTreeOrdinalMap,
+            ImmutableDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,
+            ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap,
+            HashSet<SyntaxTree> removeSet,
             out int totalReferencedTreeCount,
             out ImmutableArray<DeclarationLoadDirective> oldLoadDirectives)
         {
@@ -380,7 +382,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                         Debug.Assert(!loadDirectives.IsEmpty);
                         foreach (var directive in loadDirectives)
                         {
-                            LanguageSyntaxTree loadedTree;
+                            SyntaxTree loadedTree;
                             if (TryGetLoadedSyntaxTree(loadedSyntaxTreeMap, directive, out loadedTree))
                             {
                                 removeSet.Remove(loadedTree);
@@ -393,15 +395,15 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         private static void GetRemoveSetForLoadedTrees(
             ImmutableArray<DeclarationLoadDirective> loadDirectives,
-            ImmutableDictionary<LanguageSyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,
-            ImmutableDictionary<string, LanguageSyntaxTree> loadedSyntaxTreeMap,
-            HashSet<LanguageSyntaxTree> removeSet)
+            ImmutableDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,
+            ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap,
+            HashSet<SyntaxTree> removeSet)
         {
             foreach (var directive in loadDirectives)
             {
                 if (directive.ResolvedPath != null)
                 {
-                    LanguageSyntaxTree loadedTree;
+                    SyntaxTree loadedTree;
                     if (TryGetLoadedSyntaxTree(loadedSyntaxTreeMap, directive, out loadedTree) && removeSet.Add(loadedTree))
                     {
                         ImmutableArray<DeclarationLoadDirective> nestedLoadDirectives;
@@ -416,8 +418,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
         }
 
         private static void RemoveSyntaxTreeFromDeclarationMapAndTable(
-            LanguageSyntaxTree tree,
-            IDictionary<LanguageSyntaxTree, Lazy<RootSingleDeclaration>> declMap,
+            SyntaxTree tree,
+            IDictionary<SyntaxTree, Lazy<RootSingleDeclaration>> declMap,
             ref DeclarationTable declTable)
         {
             var lazyRoot = declMap[tree];
@@ -425,7 +427,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             declMap.Remove(tree);
         }
 
-        public SyntaxAndDeclarationManager ReplaceSyntaxTree(LanguageSyntaxTree oldTree, LanguageSyntaxTree newTree)
+        public SyntaxAndDeclarationManager ReplaceSyntaxTree(SyntaxTree oldTree, SyntaxTree newTree)
         {
             var state = _lazyState;
             var newExternalSyntaxTrees = this.ExternalSyntaxTrees.Replace(oldTree, newTree);
@@ -434,13 +436,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 return this.WithExternalSyntaxTrees(newExternalSyntaxTrees);
             }
 
-            var newLoadDirectivesSyntax = newTree.GetRootSyntax().GetLoadDirectives();
-            var loadDirectivesHaveChanged = !oldTree.GetRootSyntax().GetLoadDirectives().SequenceEqual(newLoadDirectivesSyntax);
+            var newLoadDirectivesSyntax = newTree.GetCompilationUnitRoot().GetLoadDirectives();
+            var loadDirectivesHaveChanged = !oldTree.GetCompilationUnitRoot().GetLoadDirectives().SequenceEqual(newLoadDirectivesSyntax);
             var syntaxTrees = state.SyntaxTrees;
             var ordinalMap = state.OrdinalMap;
             var loadDirectiveMap = state.LoadDirectiveMap;
             var loadedSyntaxTreeMap = state.LoadedSyntaxTreeMap;
-            var removeSet = PooledHashSet<LanguageSyntaxTree>.GetInstance();
+            var removeSet = PooledHashSet<SyntaxTree>.GetInstance();
             int totalReferencedTreeCount;
             ImmutableArray<DeclarationLoadDirective> oldLoadDirectives;
             GetRemoveSet(
@@ -467,7 +469,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             removeSet.Free();
 
             var oldOrdinal = ordinalMap[oldTree];
-            ImmutableArray<LanguageSyntaxTree> newTrees;
+            ImmutableArray<SyntaxTree> newTrees;
             if (loadDirectivesHaveChanged)
             {
                 // Should have been removed above...
@@ -476,8 +478,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
                 // If we're inserting new #load'ed trees, we'll rebuild
                 // the whole syntaxTree array and the ordinalMap.
-                var treesBuilder = ArrayBuilder<LanguageSyntaxTree>.GetInstance();
-                var ordinalMapBuilder = PooledDictionary<LanguageSyntaxTree, int>.GetInstance();
+                var treesBuilder = ArrayBuilder<SyntaxTree>.GetInstance();
+                var ordinalMapBuilder = PooledDictionary<SyntaxTree, int>.GetInstance();
                 for (var i = 0; i <= (oldOrdinal - totalReferencedTreeCount); i++)
                 {
                     var tree = syntaxTrees[i];
@@ -555,23 +557,23 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 state);
         }
 
-        internal SyntaxAndDeclarationManager WithExternalSyntaxTrees(ImmutableArray<LanguageSyntaxTree> trees)
+        internal SyntaxAndDeclarationManager WithExternalSyntaxTrees(ImmutableArray<SyntaxTree> trees)
         {
             return new SyntaxAndDeclarationManager(trees, this.ScriptClassName, this.Resolver, this.Compilation, this.IsSubmission, state: null);
         }
 
-        internal static bool IsLoadedSyntaxTree(LanguageSyntaxTree tree, ImmutableDictionary<string, LanguageSyntaxTree> loadedSyntaxTreeMap)
+        internal static bool IsLoadedSyntaxTree(SyntaxTree tree, ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap)
         {
-            LanguageSyntaxTree loadedTree;
+            SyntaxTree loadedTree;
             return loadedSyntaxTreeMap.TryGetValue(tree.FilePath, out loadedTree) && (tree == loadedTree);
         }
 
         private static void UpdateSyntaxTreesAndOrdinalMapOnly(
-            ArrayBuilder<LanguageSyntaxTree> treesBuilder,
-            LanguageSyntaxTree tree,
-            IDictionary<LanguageSyntaxTree, int> ordinalMapBuilder,
-            ImmutableDictionary<LanguageSyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,
-            ImmutableDictionary<string, LanguageSyntaxTree> loadedSyntaxTreeMap)
+            ArrayBuilder<SyntaxTree> treesBuilder,
+            SyntaxTree tree,
+            IDictionary<SyntaxTree, int> ordinalMapBuilder,
+            ImmutableDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,
+            ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap)
         {
             var sourceCodeKind = tree.Options.Kind;
             if (sourceCodeKind == SourceCodeKind.Script)
@@ -589,7 +591,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                             continue;
                         }
 
-                        LanguageSyntaxTree loadedTree;
+                        SyntaxTree loadedTree;
                         if (TryGetLoadedSyntaxTree(loadedSyntaxTreeMap, directive, out loadedTree))
                         {
                             UpdateSyntaxTreesAndOrdinalMapOnly(
@@ -620,7 +622,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return state.DeclarationTable.ReferenceDirectives.Any();
         }
 
-        private static bool TryGetLoadedSyntaxTree(ImmutableDictionary<string, LanguageSyntaxTree> loadedSyntaxTreeMap, DeclarationLoadDirective directive, out LanguageSyntaxTree loadedTree)
+        private static bool TryGetLoadedSyntaxTree(ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap, DeclarationLoadDirective directive, out SyntaxTree loadedTree)
         {
             if (loadedSyntaxTreeMap.TryGetValue(directive.ResolvedPath, out loadedTree))
             {

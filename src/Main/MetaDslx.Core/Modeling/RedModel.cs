@@ -44,6 +44,8 @@ namespace MetaDslx.Modeling
         new string MName { get; set; }
         new MutableSymbol MType { get; set; }
 
+
+        // TODO:MetaDslx - provide initialization, e.g. MInit, MTrySet, etc.
         void MSet(ModelProperty property, object value);
         void MSetLazy(ModelProperty property, LazyValue value);
         void MAdd(ModelProperty property, object value);

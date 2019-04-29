@@ -21,6 +21,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly SyntaxReference _syntaxReference;
         private readonly SourceLocation _nameLocation;
         private readonly ImmutableArray<SingleDeclaration> _children;
+        private ImmutableArray<string> _lazyChildNames;
 
         /// <summary>
         /// Any diagnostics reported while converting the Namespace/Type syntax into the Declaration
@@ -52,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this._kind; }
         }
 
-        public SourceLocation Location
+        public Location Location
         {
             get { return new SourceLocation(this.SyntaxReference); }
         }
@@ -62,16 +63,28 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this._syntaxReference; }
         }
 
-        public SourceLocation NameLocation
+        public Location NameLocation
         {
             get { return this._nameLocation; }
+        }
+
+        public override ImmutableArray<string> ChildNames
+        {
+            get
+            {
+                if (_lazyChildNames.IsDefault)
+                {
+                    var values = new HashSet<string>(_children.Select(c => c.Name)).ToImmutableArray();
+                    ImmutableInterlocked.InterlockedInitialize(ref _lazyChildNames, values);
+                }
+                return _lazyChildNames;
+            }
         }
 
         protected override ImmutableArray<Declaration> GetDeclarationChildren()
         {
             return StaticCast<Declaration>.From(this._children);
         }
-
 
         public virtual IDeclarationIdentity Identity
         {

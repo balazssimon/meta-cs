@@ -29,10 +29,10 @@ namespace MetaDslx.Modeling
         T MGetReference<T>(ModelProperty property) where T : class;
         bool MHasConcreteValue(ModelProperty property);
         bool MIsSet(ModelProperty property);
-
+        /*
         IReadOnlyList<IMetaSymbol> MGetImports();
         IReadOnlyList<IMetaSymbol> MGetBases();
         IReadOnlyList<IMetaSymbol> MGetAllBases();
-        IReadOnlyList<IMetaSymbol> MGetMembers();
+        IReadOnlyList<IMetaSymbol> MGetMembers();*/
     }
 }

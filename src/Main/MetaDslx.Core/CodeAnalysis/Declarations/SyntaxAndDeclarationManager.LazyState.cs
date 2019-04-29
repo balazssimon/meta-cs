@@ -14,23 +14,23 @@ namespace MetaDslx.CodeAnalysis.Declarations
     {
         internal sealed class State
         {
-            internal readonly ImmutableArray<LanguageSyntaxTree> SyntaxTrees; // In ordinal order.
-            internal readonly ImmutableDictionary<LanguageSyntaxTree, int> OrdinalMap; // Inverse of syntaxTrees array (i.e. maps tree to index)
-            internal readonly ImmutableDictionary<LanguageSyntaxTree, ImmutableArray<DeclarationLoadDirective>> LoadDirectiveMap;
-            internal readonly ImmutableDictionary<string, LanguageSyntaxTree> LoadedSyntaxTreeMap;
-            internal readonly ImmutableDictionary<LanguageSyntaxTree, Lazy<RootSingleDeclaration>> RootNamespaces;
+            internal readonly ImmutableArray<SyntaxTree> SyntaxTrees; // In ordinal order.
+            internal readonly ImmutableDictionary<SyntaxTree, int> OrdinalMap; // Inverse of syntaxTrees array (i.e. maps tree to index)
+            internal readonly ImmutableDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> LoadDirectiveMap;
+            internal readonly ImmutableDictionary<string, SyntaxTree> LoadedSyntaxTreeMap;
+            internal readonly ImmutableDictionary<SyntaxTree, Lazy<RootSingleDeclaration>> RootNamespaces;
             internal readonly DeclarationTable DeclarationTable;
 
             internal State(
-                ImmutableArray<LanguageSyntaxTree> syntaxTrees,
-                ImmutableDictionary<LanguageSyntaxTree, int> syntaxTreeOrdinalMap,
-                ImmutableDictionary<LanguageSyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,
-                ImmutableDictionary<string, LanguageSyntaxTree> loadedSyntaxTreeMap,
-                ImmutableDictionary<LanguageSyntaxTree, Lazy<RootSingleDeclaration>> rootNamespaces,
+                ImmutableArray<SyntaxTree> syntaxTrees,
+                ImmutableDictionary<SyntaxTree, int> syntaxTreeOrdinalMap,
+                ImmutableDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,
+                ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap,
+                ImmutableDictionary<SyntaxTree, Lazy<RootSingleDeclaration>> rootNamespaces,
                 DeclarationTable declarationTable)
             {
                 Debug.Assert(syntaxTrees.All(tree => syntaxTrees[syntaxTreeOrdinalMap[tree]] == tree));
-                Debug.Assert(syntaxTrees.SetEquals(rootNamespaces.Keys.AsImmutable(), EqualityComparer<LanguageSyntaxTree>.Default));
+                Debug.Assert(syntaxTrees.SetEquals(rootNamespaces.Keys.AsImmutable(), EqualityComparer<SyntaxTree>.Default));
 
                 this.SyntaxTrees = syntaxTrees;
                 this.OrdinalMap = syntaxTreeOrdinalMap;

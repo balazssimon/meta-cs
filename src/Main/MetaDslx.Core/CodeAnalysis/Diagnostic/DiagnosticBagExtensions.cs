@@ -52,6 +52,29 @@ namespace MetaDslx.CodeAnalysis
             return info;
         }
 
+        /// <summary>
+        /// Add a diagnostic to the bag.
+        /// </summary>
+        /// <param name="diagnostics"></param>
+        /// <param name="code"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        internal static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ErrorCode code, Location location, params object[] args)
+        {
+            var info = new LanguageDiagnosticInfo(code, args);
+            var diag = new LanguageDiagnostic(info, location);
+            diagnostics.Add(diag);
+            return info;
+        }
+
+        internal static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ErrorCode code, params object[] args)
+        {
+            var info = new LanguageDiagnosticInfo(code, args);
+            var diag = new LanguageDiagnostic(info, Location.None);
+            diagnostics.Add(diag);
+            return info;
+        }
+
         internal static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, Location location, ImmutableArray<ISymbol> symbols, ErrorCode code, params object[] args)
         {
             var info = new SymbolDiagnosticInfo(code, args, symbols, ImmutableArray<Location>.Empty);

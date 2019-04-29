@@ -4,7 +4,7 @@ using System;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal enum ObsoleteAttributeKind
+    public enum ObsoleteAttributeKind
     {
         None,
         Uninitialized,
@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis
     /// <summary>
     /// Information decoded from <see cref="ObsoleteAttribute"/>.
     /// </summary>
-    internal sealed class ObsoleteAttributeData
+    public sealed class ObsoleteAttributeData
     {
         public static readonly ObsoleteAttributeData Uninitialized = new ObsoleteAttributeData(ObsoleteAttributeKind.Uninitialized, null, false);
         public static readonly ObsoleteAttributeData Experimental = new ObsoleteAttributeData(ObsoleteAttributeKind.Experimental, null, false);

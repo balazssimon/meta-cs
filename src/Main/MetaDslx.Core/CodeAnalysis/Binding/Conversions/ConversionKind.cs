@@ -10,5 +10,6 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         UnsetConversionKind = 0,
         NoConversion,
+        DefaultOrNullLiteral,
     }
 }

@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// Summarizes whether a conversion is allowed, and if so, which kind of conversion (and in some cases, the
     /// associated symbol).
     /// </summary>
-    public struct Conversion 
+    public struct Conversion : IEquatable<Conversion>, IConvertibleConversion
     {
         private readonly ConversionKind _kind;
 
@@ -25,5 +25,44 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         internal static Conversion UnsetConversion => new Conversion(ConversionKind.UnsetConversionKind);
         internal static Conversion NoConversion => new Conversion(ConversionKind.NoConversion);
+        internal static Conversion DefaultOrNullLiteral => new Conversion(ConversionKind.DefaultOrNullLiteral);
+
+        public bool Equals(Conversion other)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+
+        /// <summary>
+        /// Creates a <seealso cref="CommonConversion"/> from this C# conversion.
+        /// </summary>
+        /// <returns>The <see cref="CommonConversion"/> that represents this conversion.</returns>
+        /// <remarks>
+        /// This is a lossy conversion; it is not possible to recover the original <see cref="Conversion"/>
+        /// from the <see cref="CommonConversion"/> struct.
+        /// </remarks>
+        public CommonConversion ToCommonConversion()
+        {
+            // The MethodSymbol of CommonConversion only refers to UserDefined conversions, not method groups
+            /* TODO:MetaDslx
+            var methodSymbol = IsUserDefined ? MethodSymbol : null;
+            return new CommonConversion(Exists, IsIdentity, IsNumeric, IsReference, IsImplicit, methodSymbol);
+            */
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        /// <summary>
+        /// Returns true if the conversion is an implicit reference conversion or explicit reference conversion.
+        /// </summary>
+        /// <remarks>
+        /// Implicit and explicit reference conversions are described in sections 6.1.6 and 6.2.4 of the C# language specification.
+        /// </remarks>
+        public bool IsReference
+        {
+            get
+            {
+                throw new NotImplementedException("TODO:MetaDslx");
+            }
+        }
     }
 }

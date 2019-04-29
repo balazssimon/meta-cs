@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// A Binder converts names in to symbols and syntax nodes into bound trees. It is context
     /// dependent, relative to a location in source code.
     /// </summary>
-    internal partial class Binder
+    public class Binder
     {
         internal LanguageCompilation Compilation { get; }
         private readonly Binder _next;
@@ -49,6 +49,22 @@ namespace MetaDslx.CodeAnalysis.Binding
             _next = next;
             this.Flags = flags;
             this.Compilation = next.Compilation;
+        }
+
+        public Language Language => this.Compilation.Language;
+
+        internal Binder WithFlags(BinderFlags flags)
+        {
+            return this.Flags == flags
+                ? this
+                : new Binder(this, flags);
+        }
+
+        internal Binder WithAdditionalFlags(BinderFlags flags)
+        {
+            return this.Flags.Includes(flags)
+                ? this
+                : new Binder(this, this.Flags | flags);
         }
 
         internal bool IsSemanticModelBinder

@@ -17,6 +17,19 @@ namespace MetaDslx.CodeAnalysis
     {
         private ImmutableDictionary<string, string> _features;
 
+        /// <summary>
+        /// Gets the effective language version, which the compiler uses to select the
+        /// language rules to apply to the program.
+        /// </summary>
+        public LanguageVersion LanguageVersion { get; private set; }
+
+        /// <summary>
+        /// Gets the specified language version, which is the value that was specified in
+        /// the call to the constructor, or modified using the <see cref="WithLanguageVersion"/> method,
+        /// or provided on the command line.
+        /// </summary>
+        public LanguageVersion SpecifiedLanguageVersion { get; private set; }
+
         public ImmutableArray<string> PreprocessorSymbols { get; protected set; }
 
         /// <summary>
@@ -28,10 +41,12 @@ namespace MetaDslx.CodeAnalysis
         }
 
         protected LanguageParseOptions(
+            LanguageVersion languageVersion = null,
             DocumentationMode documentationMode = DocumentationMode.Parse,
             SourceCodeKind kind = SourceCodeKind.Regular,
             IEnumerable<string> preprocessorSymbols = null)
-            : this(documentationMode,
+            : this(languageVersion,
+                  documentationMode,
                   kind,
                   preprocessorSymbols.ToImmutableArrayOrEmpty(),
                   ImmutableDictionary<string, string>.Empty)
@@ -39,12 +54,15 @@ namespace MetaDslx.CodeAnalysis
         }
 
         protected LanguageParseOptions(
+            LanguageVersion languageVersion,
             DocumentationMode documentationMode,
             SourceCodeKind kind,
             ImmutableArray<string> preprocessorSymbols,
             IReadOnlyDictionary<string, string> features)
             : base(kind, documentationMode)
         {
+            this.SpecifiedLanguageVersion = languageVersion ?? LanguageVersion.Default;
+            this.LanguageVersion = languageVersion;
             this.PreprocessorSymbols = preprocessorSymbols.ToImmutableArrayOrEmpty();
             _features = features?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
         }

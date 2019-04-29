@@ -22,7 +22,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public abstract DirectiveKind Kind { get; }
 
-        
+        public LanguageSyntaxNode SyntaxNode => _node;
+
+        public Microsoft.CodeAnalysis.SyntaxTree SyntaxTree => _node.SyntaxTree;
 
         public virtual bool IncrementallyEquivalent(Directive other)
         {
@@ -253,9 +255,14 @@ namespace MetaDslx.CodeAnalysis.Syntax
             _file = file;
         }
 
-        public override DirectiveKind Kind => DirectiveKind.Undef;
+        public override DirectiveKind Kind => DirectiveKind.Reference;
 
         public string File => _file;
+
+        internal Microsoft.CodeAnalysis.ReferenceDirective ToMicrosoft()
+        {
+            return new Microsoft.CodeAnalysis.ReferenceDirective(this.File, this.SyntaxNode.Location);
+        }
     }
 
     public class LoadDirective : Directive
@@ -268,9 +275,19 @@ namespace MetaDslx.CodeAnalysis.Syntax
             _file = file;
         }
 
-        public override DirectiveKind Kind => DirectiveKind.Undef;
+        public override DirectiveKind Kind => DirectiveKind.Load;
 
         public string File => _file;
+    }
+
+    public class ExternAliasDirective : Directive
+    {
+        public ExternAliasDirective(LanguageSyntaxNode node)
+            : base(node, true)
+        {
+        }
+
+        public override DirectiveKind Kind => DirectiveKind.ExternAlias;
     }
 
     public enum LineDirectiveKind

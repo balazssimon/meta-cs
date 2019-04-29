@@ -19,5 +19,6 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public const int DefaultIdentifier = -10;
         public const int EndOfDirectiveToken = -11;
         public const int CompilationUnit = -12;
+        public const int ExternAliasDirective = -13;
     }
 }

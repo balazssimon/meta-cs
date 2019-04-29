@@ -1712,8 +1712,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             return (array.IsSZArray && array.ElementType.SpecialType == SpecialType.System_String, returnsTaskOrTaskOfInt);
         }
 
-        internal override bool IsUnreferencedAssemblyIdentityDiagnosticCode(int code)
-            => code == (int)ErrorCode.ERR_NoTypeDef;
+        internal override bool IsUnreferencedAssemblyIdentityDiagnostic(Diagnostic diagnostic)
+            => diagnostic.Code == (int)ErrorCode.ERR_NoTypeDef;
 
         internal class EntryPoint
         {

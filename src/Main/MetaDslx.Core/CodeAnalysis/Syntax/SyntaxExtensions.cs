@@ -314,6 +314,11 @@ namespace MetaDslx.CodeAnalysis
         }
 
         #region SyntaxTree
+        public static ICompilationUnitRootSyntax GetCompilationUnitRoot(this SyntaxTree tree, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return (ICompilationUnitRootSyntax)tree.GetRoot(cancellationToken);
+        }
+
         public static bool HasReferenceDirectives(this SyntaxTree tree)
         {
             var csharpTree = tree as LanguageSyntaxTree;

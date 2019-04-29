@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Symbols;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
@@ -30,6 +32,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         private LanguageCompilation Compilation { get { return _binder.Compilation; } }
+
+        internal Conversion ClassifyConversionFromType(ITypeSymbol source, ITypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }

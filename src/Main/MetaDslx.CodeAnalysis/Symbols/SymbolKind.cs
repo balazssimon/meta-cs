@@ -7,6 +7,8 @@ namespace Microsoft.CodeAnalysis
     /// </summary>
     public enum SymbolKind
     {
+        Unknown = -1,
+
         /// <summary>
         /// Symbol is an alias.
         /// </summary>

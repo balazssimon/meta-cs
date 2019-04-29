@@ -8,7 +8,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// A specific location for binding.
     /// </summary>
     [Flags]
-    internal enum BinderFlags : uint
+    public enum BinderFlags : uint
     {
         None, // No specific location
         /// <summary>
@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// <summary>
     /// Extension methods for the <see cref="BinderFlags"/> type.
     /// </summary>
-    internal static class BinderFlagsExtensions
+    public static class BinderFlagsExtensions
     {
         public static bool Includes(this BinderFlags self, BinderFlags other)
         {

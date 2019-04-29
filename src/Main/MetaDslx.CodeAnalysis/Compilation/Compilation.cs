@@ -3141,7 +3141,7 @@ namespace Microsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(diagnostic));
             }
 
-            if (!IsUnreferencedAssemblyIdentityDiagnosticCode(diagnostic.Code))
+            if (!IsUnreferencedAssemblyIdentityDiagnostic(diagnostic))
             {
                 return ImmutableArray<AssemblyIdentity>.Empty;
             }
@@ -3159,7 +3159,7 @@ namespace Microsoft.CodeAnalysis
             return builder.ToImmutableAndFree();
         }
 
-        internal abstract bool IsUnreferencedAssemblyIdentityDiagnosticCode(int code);
+        internal abstract bool IsUnreferencedAssemblyIdentityDiagnostic(Diagnostic diagnostic);
 
         /// <summary>
         /// Returns the required language version found in a <see cref="Diagnostic"/>, if any is found.

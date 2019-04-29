@@ -31,6 +31,16 @@ namespace MetaDslx.CodeAnalysis
             return _csharpCompilation.GetBoundReferenceManager();
         }
 
+        protected override CompilerBackend Update(CommonReferenceManager referenceManager, bool reuseReferenceManager)
+        {
+            return Update(_csharpCompilation, referenceManager, reuseReferenceManager);
+        }
+
+        protected CSharpBackend Update(CSharpCompilation csharpCompilation, CommonReferenceManager referenceManager, bool reuseReferenceManager)
+        {
+
+        }
+
         // TODO:MetaDslx -> Make sure that the ReferenceManager does not change! Or that the 
         // change is handled correctly.
         public override void Emit()

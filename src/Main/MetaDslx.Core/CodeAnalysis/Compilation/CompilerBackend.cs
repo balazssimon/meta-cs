@@ -20,6 +20,8 @@ namespace MetaDslx.CodeAnalysis
 
         public abstract CommonReferenceManager GetBoundReferenceManager();
 
+        protected abstract CompilerBackend Update(CommonReferenceManager referenceManager, bool reuseReferenceManager);
+
         public abstract void Emit();
     }
 }

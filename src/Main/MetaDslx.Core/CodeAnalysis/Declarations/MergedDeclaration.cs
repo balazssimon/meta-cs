@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Symbols;
+using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
@@ -16,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
     {
         private readonly ImmutableArray<SingleDeclaration> _declarations;
         private ImmutableArray<MergedDeclaration> _lazyChildren;
-        private IReadOnlyDictionary<string, ImmutableArray<MergedDeclaration>> _lazyChildrenByParentProperties;
+        private ImmutableArray<string> _lazyChildNames;
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations.IsEmpty ? string.Empty : declarations[0].Name,
@@ -61,7 +62,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return sortKey;
         }
 
-        public ImmutableArray<SourceLocation> NameLocations
+        public ImmutableArray<Location> NameLocations
         {
             get
             {
@@ -71,10 +72,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 }
                 else
                 {
-                    var builder = ArrayBuilder<SourceLocation>.GetInstance();
+                    var builder = ArrayBuilder<Location>.GetInstance();
                     foreach (var decl in Declarations)
                     {
-                        SourceLocation loc = decl.NameLocation;
+                        Location loc = decl.NameLocation;
                         if (loc != null)
                             builder.Add(loc);
                     }
@@ -83,7 +84,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        private ImmutableArray<MergedDeclaration> MakeChildren()
+        private void MakeChildren()
         {
             ArrayBuilder<SingleDeclaration> nestedDeclarations = null;
 
@@ -91,68 +92,59 @@ namespace MetaDslx.CodeAnalysis.Declarations
             {
                 foreach (var child in decl.Children)
                 {
-                    var asType = child as SingleDeclaration;
-                    if (asType != null)
+                    var asSingle = child as SingleDeclaration;
+                    if (asSingle != null)
                     {
                         if (nestedDeclarations == null)
                         {
                             nestedDeclarations = ArrayBuilder<SingleDeclaration>.GetInstance();
                         }
-                        nestedDeclarations.Add(asType);
+                        nestedDeclarations.Add(asSingle);
                     }
                 }
             }
 
-            var children = ArrayBuilder<MergedDeclaration>.GetInstance();
+            var members = ArrayBuilder<MergedDeclaration>.GetInstance();
+            var memberNames = ArrayBuilder<string>.GetInstance();
 
             if (nestedDeclarations != null)
             {
-                var typesGrouped = nestedDeclarations.ToDictionary(t => t.Identity);
+                var membersGrouped = nestedDeclarations.ToDictionary(m => m.Identity);
                 nestedDeclarations.Free();
 
-                foreach (var typeGroup in typesGrouped.Values)
+                foreach (var memberGroup in membersGrouped.Values)
                 {
-                    children.Add(new MergedDeclaration(typeGroup));
+                    var merged = new MergedDeclaration(memberGroup);
+                    members.Add(merged);
+                    memberNames.Add(merged.Name);
                 }
             }
 
-            return children.ToImmutableAndFree();
+            ImmutableInterlocked.InterlockedInitialize(ref _lazyChildren, members.ToImmutableAndFree());
+            ImmutableInterlocked.InterlockedInitialize(ref _lazyChildNames, memberNames.ToImmutableAndFree());
         }
 
         public new ImmutableArray<MergedDeclaration> Children
         {
             get
             {
-                if (_lazyChildren.IsDefault)
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyChildren, MakeChildren());
-                }
-
+                if (_lazyChildren.IsDefault) MakeChildren();
                 return _lazyChildren;
             }
         }
 
-        protected override ImmutableArray<Declaration> GetDeclarationChildren()
-        {
-            return StaticCast<Declaration>.From(this.Children);
-        }
-
-        public IReadOnlyDictionary<string, ImmutableArray<MergedDeclaration>> ChildrenByParentProperties
+        public override ImmutableArray<string> ChildNames
         {
             get
             {
-                if (_lazyChildrenByParentProperties == null)
-                {
-                    var result =
-                        this.Children.GroupBy(
-                            c => c.ParentPropertyToAddTo,
-                            c => c,
-                            (key, group) => new { Property = key, Items = group.ToImmutableArray() }
-                        ).ToDictionary(kvp => kvp.Property, kvp => kvp.Items);
-                    Interlocked.CompareExchange(ref _lazyChildrenByParentProperties, result, null);
-                }
-                return _lazyChildrenByParentProperties;
+                if (_lazyChildNames.IsDefault) MakeChildren();
+                return _lazyChildNames;
             }
+        }
+        
+        protected override ImmutableArray<Declaration> GetDeclarationChildren()
+        {
+            return StaticCast<Declaration>.From(this.Children);
         }
 
         public static MergedDeclaration Create(ImmutableArray<SingleDeclaration> declarations)

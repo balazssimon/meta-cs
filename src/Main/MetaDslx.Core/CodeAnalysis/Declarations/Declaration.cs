@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using MetaDslx.Modeling;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Declarations
@@ -51,6 +52,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.name; }
         }
 
+        public string MetadataName
+        {
+            get { return this.name; } // TODO:MetaDslx
+        }
+
         public bool CanMerge
         {
             get { return this.canMerge; }
@@ -71,16 +77,43 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
+        public abstract ImmutableArray<string> ChildNames { get; }
+
         protected abstract ImmutableArray<Declaration> GetDeclarationChildren();
 
         public bool IsType
         {
-            get { return this.Kind != null && this.Kind.IsType; }
+            get { return this.Kind?.IsType ?? false; }
         }
 
         public bool IsNamespace
         {
-            get { return this.Kind != null && this.Kind.IsNamespace; }
+            get { return this.Kind?.IsNamespace ?? false; }
         }
+
+        public bool IsName
+        {
+            get { return this.Kind?.IsName ?? false; }
+        }
+
+        public bool IsImplicit
+        {
+            get { return false; } // TODO:MetaDslx - for scripts, submissions and implicit classes
+        }
+
+        public bool HasUsings
+        {
+            get { return false; } // TODO:MetaDslx 
+        }
+
+        public bool HasExternAliases
+        {
+            get { return false; } // TODO:MetaDslx
+        }
+        /*
+        public DeclarationModifiers Modifiers
+        {
+            get { return DeclarationModifiers.Public; } // TODO:MetaDslx
+        }*/
     }
 }

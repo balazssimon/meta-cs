@@ -277,7 +277,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 mergedRoot,
                 n => n == name,
                 filter,
-                t => t.Children.Contains(c => c.Name == name),
+                t => t.ChildNames.Contains(name),
                 cancellationToken);
         }
 
