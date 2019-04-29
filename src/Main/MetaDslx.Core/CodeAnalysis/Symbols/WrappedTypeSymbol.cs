@@ -66,7 +66,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        internal sealed override ObsoleteAttributeData ObsoleteAttributeData
+        public override ObsoleteAttributeData ObsoleteAttributeData
         {
             get { return null; }
         }

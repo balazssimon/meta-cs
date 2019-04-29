@@ -15,38 +15,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 {
     using MetadataOrDiagnostic = System.Object;
     using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpCompilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
 
-    /// <summary>
-    /// ReferenceManager encapsulates functionality to create an underlying SourceAssemblySymbol 
-    /// (with underlying ModuleSymbols) for Compilation and AssemblySymbols for referenced
-    /// assemblies (with underlying ModuleSymbols) all properly linked together based on
-    /// reference resolution between them.
-    /// 
-    /// ReferenceManager is also responsible for reuse of metadata readers for imported modules
-    /// and assemblies as well as existing AssemblySymbols for referenced assemblies. In order
-    /// to do that, it maintains global cache for metadata readers and AssemblySymbols
-    /// associated with them. The cache uses WeakReferences to refer to the metadata readers and
-    /// AssemblySymbols to allow memory and resources being reclaimed once they are no longer
-    /// used. The tricky part about reusing existing AssemblySymbols is to find a set of
-    /// AssemblySymbols that are created for the referenced assemblies, which (the
-    /// AssemblySymbols from the set) are linked in a way, consistent with the reference
-    /// resolution between the referenced assemblies.
-    /// 
-    /// When existing Compilation is used as a metadata reference, there are scenarios when its
-    /// underlying SourceAssemblySymbol cannot be used to provide symbols in context of the new
-    /// Compilation. Consider classic multi-targeting scenario: compilation C1 references v1 of
-    /// Lib.dll and compilation C2 references C1 and v2 of Lib.dll. In this case,
-    /// SourceAssemblySymbol for C1 is linked to AssemblySymbol for v1 of Lib.dll. However,
-    /// given the set of references for C2, the same reference for C1 should be resolved against
-    /// v2 of Lib.dll. In other words, in context of C2, all types from v1 of Lib.dll leaking
-    /// through C1 (through method signatures, etc.) must be retargeted to the types from v2 of
-    /// Lib.dll. In this case, ReferenceManager creates a special RetargetingAssemblySymbol for
-    /// C1, which is responsible for the type retargeting. The RetargetingAssemblySymbols could
-    /// also be reused for different Compilations, ReferenceManager maintains a cache of
-    /// RetargetingAssemblySymbols (WeakReferences) for each Compilation.
-    /// 
-    /// The only public entry point of this class is CreateSourceAssembly() method.
-    /// </summary>
     /// <summary>
     /// ReferenceManager encapsulates functionality to create an underlying SourceAssemblySymbol 
     /// (with underlying ModuleSymbols) for Compilation and AssemblySymbols for referenced
@@ -342,7 +312,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             Debug.Assert(!HasCircularReference);
 
             string moduleName = compilation.MakeSourceModuleName();
-            var assemblySymbol = new SourceAssemblySymbol(compilation, this.SimpleAssemblyName, moduleName, this.ReferencedModules);
+            var assemblySymbol = new SourceAssemblySymbol(compilation.CSharpCompilationForReferenceManager, this.SimpleAssemblyName, moduleName, this.ReferencedModules);
+            var languageAssemblySymbol = new MetaDslx.CodeAnalysis.Symbols.SourceAssemblySymbol(compilation, assemblySymbol);
 
             InitializeAssemblyReuseData(assemblySymbol, this.ReferencedAssemblies, this.UnifiedAssemblies);
 
@@ -352,7 +323,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     if ((object)compilation._lazyAssemblySymbol == null)
                     {
-                        compilation._lazyAssemblySymbol = assemblySymbol;
+                        compilation.CSharpCompilationForReferenceManager.MetaDslx_DangerousSetLazyAssemblySymbol(assemblySymbol);
+                        compilation._lazyAssemblySymbol = languageAssemblySymbol;
                         Debug.Assert(ReferenceEquals(compilation._referenceManager, this));
                     }
                 }
@@ -464,7 +436,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                     Debug.Assert(allAssemblyData[i].IsLinked == bindingResult[i].AssemblySymbol.IsLinked);
                 }
 
-                var assemblySymbol = new SourceAssemblySymbol(compilation, SimpleAssemblyName, compilation.MakeSourceModuleName(), netModules: modules);
+                var assemblySymbol = new SourceAssemblySymbol(compilation.CSharpCompilationForReferenceManager, SimpleAssemblyName, compilation.MakeSourceModuleName(), netModules: modules);
+                var languageAssemblySymbol = new MetaDslx.CodeAnalysis.Symbols.SourceAssemblySymbol(compilation, assemblySymbol);
 
                 AssemblySymbol corLibrary;
 
@@ -549,7 +522,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                             // Finally, publish the source symbol after all data have been written.
                             // Once lazyAssemblySymbol is non-null other readers might start reading the data written above.
-                            compilation._lazyAssemblySymbol = assemblySymbol;
+                            compilation.CSharpCompilationForReferenceManager.MetaDslx_DangerousSetLazyAssemblySymbol(assemblySymbol);
+                            compilation._lazyAssemblySymbol = languageAssemblySymbol;
                         }
                     }
                 }
@@ -1119,10 +1093,13 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 for (int i = 0; i < sourceReferencedAssemblies.Length; i++)
                 {
-                    var sourceAssembly = sourceReferencedAssemblySymbols[i] as AssemblySymbol;
-                    if (sourceAssembly != null && !sourceAssembly.IsLinked)
+                    var assemblySymbol = sourceReferencedAssemblySymbols[i];
+                    bool isLinked = false;
+                    if (assemblySymbol is Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol csharpAssembly) isLinked = csharpAssembly.IsLinked;
+                    if (assemblySymbol is MetaDslx.CodeAnalysis.Symbols.AssemblySymbol metadslxAssembly) isLinked = metadslxAssembly.IsLinked;
+                    if (!isLinked)
                     {
-                        result.Add(sourceReferencedAssemblies[i]);
+                        result.Add(assemblySymbol.Identity);
                     }
                 }
 
@@ -1136,12 +1113,31 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             internal override AssemblySymbol CreateAssemblySymbol()
             {
-                return new RetargetingAssemblySymbol(Compilation.SourceAssembly, this.IsLinked);
+                if (Compilation is CSharpCompilation csharpCompilation)
+                {
+                    return new RetargetingAssemblySymbol(csharpCompilation.SourceAssembly, this.IsLinked);
+                }
+                else if (Compilation is LanguageCompilation languageCompilation)
+                {
+                    return new RetargetingAssemblySymbol(languageCompilation.CSharpSourceAssembly, this.IsLinked);
+                }
+                throw ExceptionUtilities.Unreachable;
             }
 
             protected override void AddAvailableSymbols(List<AssemblySymbol> assemblies)
             {
-                assemblies.Add(Compilation.Assembly);
+                if (Compilation is CSharpCompilation csharpCompilation)
+                {
+                    assemblies.Add(csharpCompilation.Assembly);
+                }
+                else if (Compilation is LanguageCompilation languageCompilation)
+                {
+                    assemblies.Add(languageCompilation.CSharpSourceAssembly);
+                }
+                else
+                {
+                    throw ExceptionUtilities.Unreachable;
+                }
 
                 // accessing cached symbols requires a lock
                 lock (SymbolCacheAndReferenceManagerStateGuard)
@@ -1173,7 +1169,18 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 get
                 {
-                    return Compilation.MightContainNoPiaLocalTypes();
+                    if (Compilation is CSharpCompilation csharpCompilation)
+                    {
+                        return csharpCompilation.MightContainNoPiaLocalTypes();
+                    }
+                    else if (Compilation is LanguageCompilation languageCompilation)
+                    {
+                        return languageCompilation.CSharpSourceAssembly.MightContainNoPiaLocalTypes();
+                    }
+                    else
+                    {
+                        throw ExceptionUtilities.Unreachable;
+                    }
                 }
             }
 
@@ -1181,7 +1188,18 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 get
                 {
-                    return Compilation.DeclaresTheObjectClass;
+                    if (Compilation is CSharpCompilation csharpCompilation)
+                    {
+                        return csharpCompilation.DeclaresTheObjectClass;
+                    }
+                    else if (Compilation is LanguageCompilation languageCompilation)
+                    {
+                        return languageCompilation.CSharpSourceAssembly.DeclaresTheObjectClass;
+                    }
+                    else
+                    {
+                        throw ExceptionUtilities.Unreachable;
+                    }
                 }
             }
 

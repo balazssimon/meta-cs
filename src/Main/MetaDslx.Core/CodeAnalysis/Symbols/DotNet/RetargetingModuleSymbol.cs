@@ -7,16 +7,27 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    internal sealed class DotNetModuleSymbol : ModuleSymbol
+    internal sealed class RetargetingModuleSymbol : ModuleSymbol
     {
-        private DotNetAssemblySymbol _assembly;
-        private Microsoft.CodeAnalysis.CSharp.Symbols.ModuleSymbol _module;
+        private AssemblySymbol _assembly;
+        private IModuleSymbol _module;
+        private int _ordinal;
 
-        internal DotNetModuleSymbol(DotNetAssemblySymbol assembly, Microsoft.CodeAnalysis.CSharp.Symbols.ModuleSymbol module)
+        internal RetargetingModuleSymbol(RetargetingAssemblySymbol assembly, IModuleSymbol module, int ordinal)
         {
             _assembly = assembly;
             _module = module;
+            _ordinal = ordinal;
         }
+
+        internal RetargetingModuleSymbol(SourceAssemblySymbol assembly, IModuleSymbol module, int ordinal)
+        {
+            _assembly = assembly;
+            _module = module;
+            _ordinal = ordinal;
+        }
+
+        public override int Ordinal => _ordinal;
 
         public override INamespaceSymbol GlobalNamespace => _module.GlobalNamespace;
 
@@ -27,11 +38,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override ModuleMetadata GetMetadata()
         {
             return _module.GetMetadata();
-        }
-
-        public override INamespaceSymbol GetModuleNamespace(INamespaceSymbol namespaceSymbol)
-        {
-            return _module.GetModuleNamespace(namespaceSymbol);
         }
 
         public override Symbol ContainingSymbol => _assembly;

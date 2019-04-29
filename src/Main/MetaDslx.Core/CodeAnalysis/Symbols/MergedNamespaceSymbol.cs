@@ -115,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        internal override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             foreach (var part in _namespacesToMerge)
             {
@@ -243,17 +243,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override IAssemblySymbol ContainingAssembly
+        public override AssemblySymbol ContainingAssembly
         {
             get
             {
                 if (_extent.Kind == NamespaceKind.Module)
                 {
-                    return _extent.Module.ContainingAssembly;
+                    return (AssemblySymbol)_extent.Module.ContainingAssembly;
                 }
                 else if (_extent.Kind == NamespaceKind.Assembly)
                 {
-                    return _extent.Assembly;
+                    return (AssemblySymbol)_extent.Assembly;
                 }
                 else
                 {

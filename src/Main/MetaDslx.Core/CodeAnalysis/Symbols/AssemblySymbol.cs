@@ -9,6 +9,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public abstract class AssemblySymbol : Symbol, IAssemblySymbol
     {
+        public virtual bool IsLinked => false;
         public abstract bool IsInteractive { get; }
         public abstract AssemblyIdentity Identity { get; }
         public abstract INamespaceSymbol GlobalNamespace { get; }
@@ -52,6 +53,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract INamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName);
         public abstract bool GivesAccessTo(IAssemblySymbol toAssembly);
         public abstract INamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName);
+
+        public abstract INamedTypeSymbol GetSpecialType(SpecialType type);
+        public abstract ISymbol GetSpecialTypeMember(SpecialMember member);
 
         #region Symbol
 

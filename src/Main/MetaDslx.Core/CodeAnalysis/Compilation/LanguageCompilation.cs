@@ -28,7 +28,6 @@ namespace MetaDslx.CodeAnalysis
     using CSharp = Microsoft.CodeAnalysis.CSharp;
     using ReferenceDirective = Syntax.ReferenceDirective;
     using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
-    using AssemblySymbol = Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol;
 
     /// <summary>
     /// The compilation object is an immutable representation of a single invocation of the
@@ -104,6 +103,8 @@ namespace MetaDslx.CodeAnalysis
         /// We do so by creating a new reference manager for such compilation.
         /// </summary>
         internal ReferenceManager _referenceManager;
+
+        internal readonly CSharp.CSharpCompilation CSharpCompilationForReferenceManager;
 
         private readonly SyntaxAndDeclarationManager _syntaxAndDeclarations;
 
@@ -223,6 +224,8 @@ namespace MetaDslx.CodeAnalysis
                     this.Options.AssemblyIdentityComparer,
                     observedMetadata: referenceManager?.ObservedMetadata);
             }
+
+            CSharpCompilationForReferenceManager = CSharp.CSharpCompilation.Create(assemblyName, references: references);
 
             _syntaxAndDeclarations = syntaxAndDeclarations;
 
@@ -928,6 +931,17 @@ namespace MetaDslx.CodeAnalysis
         }
 
         /// <summary>
+        /// The CSharpAssemblySymbol that represents the assembly being created.
+        /// </summary>
+        internal Microsoft.CodeAnalysis.CSharp.Symbols.SourceAssemblySymbol CSharpSourceAssembly
+        {
+            get
+            {
+                throw new NotImplementedException("TODO:MetaDslx");
+            }
+        }
+
+        /// <summary>
         /// Get a ModuleSymbol that refers to the module being created by compiling all of the code.
         /// By getting the GlobalNamespace property of that module, all of the namespaces and types
         /// defined in source code can be obtained.
@@ -1477,6 +1491,11 @@ namespace MetaDslx.CodeAnalysis
                 entryPointCandidates.Free();
                 sealedDiagnostics = diagnostics.ToReadOnlyAndFree();
             }
+        }
+
+        internal bool MightContainNoPiaLocalTypes()
+        {
+            return false;
         }
 
         private void AddEntryPointCandidates(

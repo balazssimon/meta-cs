@@ -3,7 +3,7 @@
 namespace Microsoft.CodeAnalysis
 {
     // members of special types
-    internal enum SpecialMember
+    public enum SpecialMember
     {
         System_String__CtorSZArrayChar,
 

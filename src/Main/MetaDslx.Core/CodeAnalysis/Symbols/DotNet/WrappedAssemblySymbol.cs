@@ -1,30 +1,21 @@
-using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    internal sealed class DotNetAssemblySymbol : AssemblySymbol
+    public abstract class WrappedAssemblySymbol : AssemblySymbol
     {
-        private Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol _assembly;
-        private ImmutableArray<ModuleSymbol> _lazyModules;
+        private RetargetingAssemblySymbol _assembly;
 
-        private DotNetAssemblySymbol(Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol assembly)
+        protected WrappedAssemblySymbol(RetargetingAssemblySymbol assembly)
         {
-            Debug.Assert(assembly != null);
+            _assembly = assembly;
         }
 
-        internal DotNetAssemblySymbol Create(Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol assembly)
-        {
-            return new DotNetAssemblySymbol(assembly);
-        }
-
-        public IAssemblySymbol CSharpAssembly => _assembly;
+        public IAssemblySymbol WrappedAssembly => _assembly;
 
         public override bool IsInteractive => _assembly.IsInteractive;
         public override AssemblyIdentity Identity => _assembly.Identity;
@@ -33,11 +24,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                if (_lazyModules.IsDefault)
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyModules, _assembly.Modules.Select(m => new DotNetModuleSymbol(this, m)).ToImmutableArray<ModuleSymbol>());
-                }
-                return _lazyModules;
+                return _assembly.Modules;
             }
         }
 
@@ -86,13 +73,22 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override bool GivesAccessTo(IAssemblySymbol toAssembly)
         {
-            IAssemblySymbol baseAssembly = _assembly;
-            return baseAssembly.GivesAccessTo(toAssembly);
+            return _assembly.GivesAccessTo(toAssembly);
         }
 
         public override INamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName)
         {
             return _assembly.ResolveForwardedType(fullyQualifiedMetadataName);
+        }
+
+        public override INamedTypeSymbol GetSpecialType(SpecialType type)
+        {
+            return _assembly.GetSpecialType(type);
+        }
+
+        public override ISymbol GetSpecialTypeMember(SpecialMember member)
+        {
+            return _assembly.GetSpecialTypeMember(member);
         }
     }
 }

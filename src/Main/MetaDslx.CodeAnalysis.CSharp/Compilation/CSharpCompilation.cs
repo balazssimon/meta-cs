@@ -92,6 +92,11 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         private SourceAssemblySymbol _lazyAssemblySymbol;
 
+        internal void MetaDslx_DangerousSetLazyAssemblySymbol(SourceAssemblySymbol lazyAssemblySymbol)
+        {
+            _lazyAssemblySymbol = lazyAssemblySymbol;
+        }
+
         /// <summary>
         /// Holds onto data related to reference binding.
         /// The manager is shared among multiple compilations that we expect to have the same result of reference binding.
