@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Diagnostics;
 using System.Reflection.PortableExecutable;
-using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             globalNamespace = new MissingNamespaceSymbol(this);
         }
 
-        public override int Ordinal
+        internal override int Ordinal
         {
             get
             {
@@ -40,7 +40,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public sealed override bool IsMissing
+        internal override Machine Machine
+        {
+            get
+            {
+                return Machine.I386;
+            }
+        }
+
+        internal override bool Bit32Required
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        internal sealed override bool IsMissing
         {
             get
             {
@@ -106,6 +122,37 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        internal override ICollection<string> NamespaceNames
+        {
+            get
+            {
+                return SpecializedCollections.EmptyCollection<string>();
+            }
+        }
+
+        internal override ICollection<string> TypeNames
+        {
+            get
+            {
+                return SpecializedCollections.EmptyCollection<string>();
+            }
+        }
+
+        internal override NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
+        {
+            return new MissingMetadataTypeSymbol.TopLevel(this, ref emittedName);
+        }
+
+        internal override ImmutableArray<AssemblyIdentity> GetReferencedAssemblies()
+        {
+            return ImmutableArray<AssemblyIdentity>.Empty;
+        }
+
+        internal override ImmutableArray<AssemblySymbol> GetReferencedAssemblySymbols()
+        {
+            return ImmutableArray<AssemblySymbol>.Empty;
+        }
+
         internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly)
         {
             throw ExceptionUtilities.Unreachable;
@@ -116,13 +163,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return false; }
         }
 
-        public override ImmutableArray<AssemblyIdentity> ReferencedAssemblies => ImmutableArray<AssemblyIdentity>.Empty;
-
-        public override ImmutableArray<IAssemblySymbol> ReferencedAssemblySymbols => ImmutableArray<IAssemblySymbol>.Empty;
-
         internal override bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, TypeSymbol dependentType)
         {
             throw ExceptionUtilities.Unreachable;
+        }
+
+        internal override bool HasAssemblyCompilationRelaxationsAttribute
+        {
+            get { return false; }
+        }
+
+        internal override bool HasAssemblyRuntimeCompatibilityAttribute
+        {
+            get { return false; }
+        }
+
+        internal override CharSet? DefaultMarshallingCharSet
+        {
+            get { return null; }
         }
 
         public override ModuleMetadata GetMetadata() => null;

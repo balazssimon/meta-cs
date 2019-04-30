@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.CodeAnalysis;
 using System;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.Symbols
 {
     internal sealed class UnsupportedMetadataTypeSymbol : ErrorTypeSymbol
     {
@@ -17,7 +18,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             get
             {
-                return new CSDiagnosticInfo(ErrorCode.ERR_BogusType, string.Empty);
+                return new LanguageDiagnosticInfo(InternalErrorCode.ERR_BogusType, string.Empty);
             }
         }
 

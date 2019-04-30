@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             moduleSymbol = new MissingModuleSymbol(this, 0);
         }
 
-        public sealed override bool IsMissing
+        internal sealed override bool IsMissing
         {
             get
             {
@@ -38,12 +38,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override bool IsLinked
+        internal override bool IsLinked
         {
             get
             {
                 return false;
             }
+        }
+
+        internal override Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
+        {
+            return null;
         }
 
         public override AssemblyIdentity Identity
@@ -52,6 +57,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 return identity;
             }
+        }
+
+        public override Version AssemblyVersionPattern => null;
+
+        internal override ImmutableArray<byte> PublicKey
+        {
+            get { return Identity.PublicKey; }
         }
 
         public override ImmutableArray<ModuleSymbol> Modules
@@ -100,6 +112,26 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        internal override void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        internal override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
+        {
+            return ImmutableArray<AssemblySymbol>.Empty;
+        }
+
+        internal override void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
+        {
+            return ImmutableArray<AssemblySymbol>.Empty;
+        }
+
         public sealed override NamespaceSymbol GlobalNamespace
         {
             get
@@ -124,6 +156,28 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        internal override NamedTypeSymbol LookupTopLevelMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies, bool digThroughForwardedTypes)
+        {
+            var result = this.moduleSymbol.LookupTopLevelMetadataType(ref emittedName);
+            Debug.Assert(result is MissingMetadataTypeSymbol);
+            return result;
+        }
+
+        internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        internal override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
+        {
+            return false;
+        }
+
+        internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
+        {
+            return SpecializedCollections.EmptyEnumerable<ImmutableArray<byte>>();
+        }
+
         public override bool MightContainExtensionMethods
         {
             get
@@ -132,43 +186,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override bool IsInteractive => false;
-
         public override AssemblyMetadata GetMetadata() => null;
-
-        public override INamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
-        {
-            return null;
-        }
-
-        public override bool GivesAccessTo(IAssemblySymbol toAssembly)
-        {
-            return false;
-        }
-
-        public override INamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName)
-        {
-            return null;
-        }
-
-        public override INamedTypeSymbol GetSpecialType(SpecialType type)
-        {
-            return null;
-        }
-
-        public override ISymbol GetSpecialTypeMember(SpecialMember member)
-        {
-            return null;
-        }
-
-        public override INamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
-        {
-            return null;
-        }
-
-        public override ISymbol GetDeclaredSpecialTypeMember(SpecialMember member)
-        {
-            return null;
-        }
     }
 }

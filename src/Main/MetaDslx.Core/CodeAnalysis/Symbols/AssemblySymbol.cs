@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// <summary>
     /// Represents a .NET assembly, consisting of one or more modules.
     /// </summary>
-    internal abstract class AssemblySymbol : Symbol, IAssemblySymbolInternal
+    public abstract class AssemblySymbol : Symbol, IAssemblySymbolInternal
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -353,13 +353,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal ErrorTypeSymbol CreateCycleInTypeForwarderErrorTypeSymbol(ref MetadataTypeName emittedName)
         {
-            DiagnosticInfo diagnosticInfo = new CSDiagnosticInfo(ErrorCode.ERR_CycleInTypeForwarder, emittedName.FullName, this.Name);
+            DiagnosticInfo diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_CycleInTypeForwarder, emittedName.FullName, this.Name);
             return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(this.Modules[0], ref emittedName, diagnosticInfo);
         }
 
         internal ErrorTypeSymbol CreateMultipleForwardingErrorTypeSymbol(ref MetadataTypeName emittedName, ModuleSymbol forwardingModule, AssemblySymbol destination1, AssemblySymbol destination2)
         {
-            var diagnosticInfo = new CSDiagnosticInfo(ErrorCode.ERR_TypeForwardedToMultipleAssemblies, forwardingModule, this, emittedName.FullName, destination1, destination2);
+            var diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_TypeForwardedToMultipleAssemblies, forwardingModule, this, emittedName.FullName, destination1, destination2);
             return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(forwardingModule, ref emittedName, diagnosticInfo);
         }
 
@@ -812,7 +812,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     else
                     {
                         // The predefined type '{0}' is defined in multiple assemblies in the global alias; using definition from '{1}'
-                        warnings.Add(ErrorCode.WRN_MultiplePredefTypes, NoLocation.Singleton, result, result.ContainingAssembly);
+                        warnings.Add(InternalErrorCode.WRN_MultiplePredefTypes, NoLocation.Singleton, result, result.ContainingAssembly);
                     }
 
                     break;

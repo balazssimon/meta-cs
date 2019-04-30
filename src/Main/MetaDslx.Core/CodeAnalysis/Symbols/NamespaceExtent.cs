@@ -31,13 +31,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// If the Kind is ExtendKind.Module, returns the module symbol that this namespace
         /// encompasses. Otherwise throws InvalidOperationException.
         /// </summary>
-        public IModuleSymbol Module
+        public ModuleSymbol Module
         {
             get
             {
                 if (_kind == NamespaceKind.Module)
                 {
-                    return (IModuleSymbol)_symbolOrCompilation;
+                    return (ModuleSymbol)_symbolOrCompilation;
                 }
 
                 throw new InvalidOperationException();
@@ -48,13 +48,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// If the Kind is ExtendKind.Assembly, returns the assembly symbol that this namespace
         /// encompasses. Otherwise throws InvalidOperationException.
         /// </summary>
-        public IAssemblySymbol Assembly
+        public AssemblySymbol Assembly
         {
             get
             {
                 if (_kind == NamespaceKind.Assembly)
                 {
-                    return (IAssemblySymbol)_symbolOrCompilation;
+                    return (AssemblySymbol)_symbolOrCompilation;
                 }
 
                 throw new InvalidOperationException();
@@ -86,7 +86,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Create a NamespaceExtent that represents a given ModuleSymbol.
         /// </summary>
-        internal NamespaceExtent(IModuleSymbol module)
+        internal NamespaceExtent(ModuleSymbol module)
         {
             _kind = NamespaceKind.Module;
             _symbolOrCompilation = module;
@@ -95,7 +95,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Create a NamespaceExtent that represents a given AssemblySymbol.
         /// </summary>
-        internal NamespaceExtent(IAssemblySymbol assembly)
+        internal NamespaceExtent(AssemblySymbol assembly)
         {
             _kind = NamespaceKind.Assembly;
             _symbolOrCompilation = assembly;

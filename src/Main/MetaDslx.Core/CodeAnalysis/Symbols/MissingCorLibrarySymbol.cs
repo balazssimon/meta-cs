@@ -35,12 +35,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// called if it is know that this is the Cor Library (mscorlib).
         /// </summary>
         /// <param name="type"></param>
-        public override INamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
+        internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
         {
 #if DEBUG
             foreach (var module in this.Modules)
             {
-                Debug.Assert(module.ReferencedAssemblies.Length == 0);
+                Debug.Assert(module.GetReferencedAssemblies().Length == 0);
             }
 #endif
 

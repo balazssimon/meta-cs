@@ -4,10 +4,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// A <see cref="NonMissingAssemblySymbol"/> is a special kind of <see cref="AssemblySymbol"/> that represents
     /// an assembly that is not missing, i.e. the "real" thing.
     /// </summary>
-    internal abstract class NonMissingAssemblySymbol : AssemblySymbol
+    public abstract class NonMissingAssemblySymbol : AssemblySymbol
     {
         /// <summary>
         /// This is a cache similar to the one used by MetaImport::GetTypeByName
@@ -34,7 +34,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Does this symbol represent a missing assembly.
         /// </summary>
-        public sealed override bool IsMissing
+        internal sealed override bool IsMissing
         {
             get
             {

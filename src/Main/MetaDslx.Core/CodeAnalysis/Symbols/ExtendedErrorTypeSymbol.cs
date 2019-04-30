@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
@@ -19,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     internal sealed class ExtendedErrorTypeSymbol : ErrorTypeSymbol
     {
         private readonly string _name;
-        private readonly string _metadataName;
+        private readonly int _arity;
         private readonly DiagnosticInfo _errorInfo;
         private readonly NamespaceOrTypeSymbol _containingSymbol;
         private readonly bool _unreported;
@@ -27,12 +26,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private readonly ImmutableArray<Symbol> _candidateSymbols;  // Best guess at what user meant, but was wrong.
         private readonly LookupResultKind _resultKind; // why the guessSymbols were wrong.
 
-        internal ExtendedErrorTypeSymbol(LanguageCompilation compilation, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
-            : this((NamespaceOrTypeSymbol)compilation.Assembly.GlobalNamespace, name, metadataName, errorInfo, unreported, variableUsedBeforeDeclaration)
+        internal ExtendedErrorTypeSymbol(LanguageCompilation compilation, string name, int arity, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
+            : this(compilation.Assembly.GlobalNamespace, name, arity, errorInfo, unreported, variableUsedBeforeDeclaration)
         {
         }
 
-        internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
+        internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, string name, int arity, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
         {
             Debug.Assert(((object)containingSymbol == null) ||
                 (containingSymbol.Kind == SymbolKind.Namespace) ||
@@ -45,18 +44,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _name = name;
             _errorInfo = errorInfo;
             _containingSymbol = containingSymbol;
-            _metadataName = metadataName;
+            _arity = arity;
             _unreported = unreported;
             this.VariableUsedBeforeDeclaration = variableUsedBeforeDeclaration;
             _resultKind = LookupResultKind.Empty;
         }
 
-        private ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported, bool variableUsedBeforeDeclaration, ImmutableArray<Symbol> candidateSymbols, LookupResultKind resultKind)
+        private ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, string name, int arity, DiagnosticInfo errorInfo, bool unreported, bool variableUsedBeforeDeclaration, ImmutableArray<Symbol> candidateSymbols, LookupResultKind resultKind)
         {
             _name = name;
             _errorInfo = errorInfo;
             _containingSymbol = containingSymbol;
-            _metadataName = metadataName;
+            _arity = arity;
             _unreported = unreported;
             this.VariableUsedBeforeDeclaration = variableUsedBeforeDeclaration;
             _candidateSymbols = candidateSymbols;
@@ -64,17 +63,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol guessSymbol, LookupResultKind resultKind, DiagnosticInfo errorInfo, bool unreported = false)
-            : this((NamespaceOrTypeSymbol)guessSymbol.ContainingSymbol, guessSymbol, resultKind, errorInfo, unreported)
+            : this(guessSymbol.ContainingNamespaceOrType(), guessSymbol, resultKind, errorInfo, unreported)
         {
         }
 
         internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, Symbol guessSymbol, LookupResultKind resultKind, DiagnosticInfo errorInfo, bool unreported = false)
-            : this(containingSymbol, ImmutableArray.Create<Symbol>(guessSymbol), resultKind, errorInfo, guessSymbol.MetadataName, unreported)
+            : this(containingSymbol, ImmutableArray.Create<Symbol>(guessSymbol), resultKind, errorInfo, GetArity(guessSymbol), unreported)
         {
         }
 
-        internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, ImmutableArray<Symbol> candidateSymbols, LookupResultKind resultKind, DiagnosticInfo errorInfo, string metadataName, bool unreported = false)
-            : this(containingSymbol, candidateSymbols[0].Name, metadataName, errorInfo, unreported)
+        internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, ImmutableArray<Symbol> candidateSymbols, LookupResultKind resultKind, DiagnosticInfo errorInfo, int arity, bool unreported = false)
+            : this(containingSymbol, candidateSymbols[0].Name, arity, errorInfo, unreported)
         {
             _candidateSymbols = UnwrapErrorCandidates(candidateSymbols);
             _resultKind = resultKind;
@@ -84,7 +83,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal ExtendedErrorTypeSymbol AsUnreported()
         {
             return this.Unreported ? this :
-                new ExtendedErrorTypeSymbol(_containingSymbol, _name, _metadataName, _errorInfo, true, VariableUsedBeforeDeclaration, _candidateSymbols, _resultKind);
+                new ExtendedErrorTypeSymbol(_containingSymbol, _name, _arity, _errorInfo, true, VariableUsedBeforeDeclaration, _candidateSymbols, _resultKind);
         }
 
         private static ImmutableArray<Symbol> UnwrapErrorCandidates(ImmutableArray<Symbol> candidateSymbols)
@@ -126,11 +125,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        public override string MetadataName 
+        public override int Arity
         {
             get
             {
-                return _metadataName;
+                return _arity;
             }
         }
 
@@ -138,7 +137,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                return _metadataName != _name;
+                return _arity > 0;
             }
         }
 
@@ -182,8 +181,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return this;
             }
         }
-
-        public override ModelSymbolInfo ModelSymbolInfo => null;
 
         internal override NamedTypeSymbol GetDeclaredBaseType(ConsList<TypeSymbol> basesBeingResolved)
         {
@@ -295,14 +292,28 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return
                 ((object)this.ContainingType != null ? this.ContainingType.Equals(other.ContainingType, comparison) :
                  (object)this.ContainingSymbol == null ? (object)other.ContainingSymbol == null : this.ContainingSymbol.Equals(other.ContainingSymbol)) &&
-                this.Name == other.Name && this.MetadataName == other.MetadataName;
+                this.Name == other.Name && this.Arity == other.Arity;
         }
 
         public override int GetHashCode()
         {
-            return Hash.Combine(this.MetadataName,
+            return Hash.Combine(this.Arity,
                         Hash.Combine((object)this.ContainingSymbol != null ? this.ContainingSymbol.GetHashCode() : 0,
                                      this.Name != null ? this.Name.GetHashCode() : 0));
+        }
+
+        private static int GetArity(Symbol symbol)
+        {
+            switch (symbol.Kind)
+            {
+                case SymbolKind.NamedType:
+                case SymbolKind.ErrorType:
+                    return ((NamedTypeSymbol)symbol).Arity;
+                case SymbolKind.Method:
+                    return ((MethodSymbol)symbol).Arity;
+                default:
+                    return 0;
+            }
         }
     }
 }

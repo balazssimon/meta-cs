@@ -8,6 +8,12 @@ namespace MetaDslx.CodeAnalysis
 {
     internal static class DiagnosticBagExtensions
     {
+        internal static ErrorCode GetErrorCode(this DiagnosticInfo info)
+        {
+            var languageInfo = info as LanguageDiagnosticInfo;
+            return languageInfo?.ErrorCode;
+        }
+
         internal static Diagnostic ToDiagnostic(this DiagnosticInfo info, Location location)
         {
             var languageInfo = info as LanguageDiagnosticInfo;

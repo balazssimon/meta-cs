@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// exposed by the compiler.
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    internal abstract partial class Symbol : ISymbol, IFormattable
+    public abstract partial class Symbol : ISymbol, IFormattable
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version of Symbol.
@@ -35,7 +35,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // to the VB version.
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        public virtual ModelSymbolInfo SymbolInfo => null;
+        public virtual ModelSymbolInfo ModelSymbolInfo => null;
+
+        public virtual Language Language => Language.None;
 
         /// <summary>
         /// True if this Symbol should be completed by calling ForceComplete.
@@ -424,7 +426,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                return SymbolInfo?.HasName ?? false;
+                return ModelSymbolInfo?.HasName ?? false;
             }
         }
 
@@ -530,29 +532,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
-        /// Build and add synthesized attributes for this symbol.
-        /// </summary>
-        internal virtual void AddSynthesizedAttributes(PEModuleBuilder moduleBuilder, ref ArrayBuilder<SynthesizedAttributeData> attributes)
-        {
-        }
-
-        /// <summary>
-        /// Convenience helper called by subclasses to add a synthesized attribute to a collection of attributes.
-        /// </summary>
-        internal static void AddSynthesizedAttribute(ref ArrayBuilder<SynthesizedAttributeData> attributes, SynthesizedAttributeData attribute)
-        {
-            if (attribute != null)
-            {
-                if (attributes == null)
-                {
-                    attributes = new ArrayBuilder<SynthesizedAttributeData>(1);
-                }
-
-                attributes.Add(attribute);
-            }
-        }
-
-        /// <summary>
         /// <see cref="CharSet"/> effective for this symbol (type or DllImport method).
         /// Nothing if <see cref="DefaultCharSetAttribute"/> isn't applied on the containing module or it doesn't apply on this symbol.
         /// </summary>
@@ -637,7 +616,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             try
             {
                 StringBuilder builder = pool.Builder;
-                DocumentationCommentIDVisitor.Instance.Visit(this, builder);
+                // TODO:MetaDslx
+                // DocumentationCommentIDVisitor.Instance.Visit(this, builder);
                 return builder.Length == 0 ? null : builder.ToString();
             }
             finally
@@ -706,11 +686,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Return error code that has highest priority while calculating use site error for this symbol. 
         /// Supposed to be ErrorCode, but it causes inconsistent accessibility error.
         /// </summary>
-        protected virtual int HighestPriorityUseSiteError
+        protected virtual ErrorCode HighestPriorityUseSiteError
         {
             get
             {
-                return int.MaxValue;
+                return null;
             }
         }
 
@@ -762,7 +742,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return false;
             }
 
-            if (info.Severity == DiagnosticSeverity.Error && (info.Code == HighestPriorityUseSiteError || HighestPriorityUseSiteError == Int32.MaxValue))
+            if (info.Severity == DiagnosticSeverity.Error && (info.GetErrorCode() == HighestPriorityUseSiteError || HighestPriorityUseSiteError == null))
             {
                 // this error is final, no other error can override it:
                 result = info;
@@ -832,31 +812,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return MergeUseSiteDiagnostics(ref result, info);
         }
 
-        internal bool DeriveUseSiteDiagnosticFromType(ref DiagnosticInfo result, TypeWithAnnotations type)
-        {
-            return DeriveUseSiteDiagnosticFromType(ref result, type.Type) ||
-                   DeriveUseSiteDiagnosticFromCustomModifiers(ref result, type.CustomModifiers);
-        }
-
-        internal bool DeriveUseSiteDiagnosticFromParameter(ref DiagnosticInfo result, ParameterSymbol param)
-        {
-            return DeriveUseSiteDiagnosticFromType(ref result, param.TypeWithAnnotations) ||
-                   DeriveUseSiteDiagnosticFromCustomModifiers(ref result, param.RefCustomModifiers);
-        }
-
-        internal bool DeriveUseSiteDiagnosticFromParameters(ref DiagnosticInfo result, ImmutableArray<ParameterSymbol> parameters)
-        {
-            foreach (ParameterSymbol param in parameters)
-            {
-                if (DeriveUseSiteDiagnosticFromParameter(ref result, param))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         internal bool DeriveUseSiteDiagnosticFromCustomModifiers(ref DiagnosticInfo result, ImmutableArray<CustomModifier> customModifiers)
         {
             foreach (CustomModifier modifier in customModifiers)
@@ -891,51 +846,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return false;
         }
 
-        internal static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<TypeWithAnnotations> types, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
-        {
-            foreach (var t in types)
-            {
-                if (t.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         internal static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<CustomModifier> modifiers, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
         {
             foreach (var modifier in modifiers)
             {
                 if (((TypeSymbol)modifier.Modifier).GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        internal static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<ParameterSymbol> parameters, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
-        {
-            foreach (var parameter in parameters)
-            {
-                if (parameter.TypeWithAnnotations.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes) ||
-                    GetUnificationUseSiteDiagnosticRecursive(ref result, parameter.RefCustomModifiers, owner, ref checkedTypes))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        internal static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<TypeParameterSymbol> typeParameters, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
-        {
-            foreach (var typeParameter in typeParameters)
-            {
-                if (GetUnificationUseSiteDiagnosticRecursive(ref result, typeParameter.ConstraintTypesNoUseSiteDiagnostics, owner, ref checkedTypes))
                 {
                     return true;
                 }
@@ -990,17 +905,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         internal bool GetGuidStringDefaultImplementation(out string guidString)
         {
-            foreach (var attrData in this.GetAttributes())
-            {
-                if (attrData.IsTargetAttribute(this, AttributeDescription.GuidAttribute))
-                {
-                    if (attrData.TryGetGuidAttributeValue(out guidString))
-                    {
-                        return true;
-                    }
-                }
-            }
-
             guidString = null;
             return false;
         }
@@ -1033,11 +937,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #region ISymbol Members
 
-        public string Language
+        string ISymbol.Language
         {
             get
             {
-                return LanguageNames.CSharp;
+                return this.Language.Name;
             }
         }
 
@@ -1064,7 +968,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var csharpModel = semanticModel as LanguageSemanticModel;
             if (csharpModel == null)
             {
-                throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language);
+                throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language.Name);
             }
 
             return SymbolDisplay.ToMinimalDisplayString(this, csharpModel, position, format);
@@ -1078,7 +982,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var csharpModel = semanticModel as LanguageSemanticModel;
             if (csharpModel == null)
             {
-                throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language);
+                throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language.Name);
             }
 
             return SymbolDisplay.ToMinimalDisplayParts(this, csharpModel, position, format);

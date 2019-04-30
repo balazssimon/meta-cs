@@ -2,11 +2,10 @@
 
 using System.Diagnostics;
 using System.Threading;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System;
-using Microsoft.CodeAnalysis;
-using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -22,19 +21,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
     internal abstract class MissingMetadataTypeSymbol : ErrorTypeSymbol
     {
         protected readonly string name;
-        protected readonly string metadataName;
+        protected readonly int arity;
         protected readonly bool mangleName;
 
-        private MissingMetadataTypeSymbol(string name, string metadataName, bool mangleName)
+        private MissingMetadataTypeSymbol(string name, int arity, bool mangleName)
         {
             Debug.Assert(name != null);
 
             this.name = name;
-            this.metadataName = metadataName;
-            this.mangleName = (mangleName && metadataName != name);
+            this.arity = arity;
+            this.mangleName = (mangleName && arity > 0);
         }
-
-        public override ModelSymbolInfo ModelSymbolInfo => null;
 
         public override string Name
         {
@@ -49,11 +46,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
         /// <summary>
-        /// Get the metadataName of the missing type.
+        /// Get the arity of the missing type.
         /// </summary>
-        public override string MetadataName
+        public override int Arity
         {
-            get { return metadataName; }
+            get { return arity; }
         }
 
         internal override DiagnosticInfo ErrorInfo
@@ -133,8 +130,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             /// </summary>
             private int _lazyTypeId = -1;
 
-            public TopLevel(ModuleSymbol module, string @namespace, string name, string metadataName, bool mangleName)
-                : base(name, metadataName, mangleName)
+            public TopLevel(ModuleSymbol module, string @namespace, string name, int arity, bool mangleName)
+                : base(name, arity, mangleName)
             {
                 Debug.Assert((object)module != null);
                 Debug.Assert(@namespace != null);
@@ -161,14 +158,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
             private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, int typeId)
                 : this(module, ref fullName, fullName.ForcedArity == -1 || fullName.ForcedArity == fullName.InferredArity)
             {
-                Debug.Assert(typeId == -1 || typeId == (int)SpecialType.None || MetadataName == Name || MangleName);
+                Debug.Assert(typeId == -1 || typeId == (int)SpecialType.None || Arity == 0 || MangleName);
                 _lazyTypeId = typeId;
             }
 
             private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, bool mangleName)
                 : this(module, fullName.NamespaceName,
                        mangleName ? fullName.UnmangledTypeName : fullName.TypeName,
-                       mangleName ? fullName.UnmangledTypeName : fullName.TypeName,
+                       mangleName ? fullName.InferredArity : fullName.ForcedArity,
                        mangleName)
             {
             }
@@ -182,7 +179,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 get { return _namespaceName; }
             }
 
-            public override ModuleSymbol ContainingModule
+            internal override ModuleSymbol ContainingModule
             {
                 get
                 {
@@ -256,7 +253,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                         AssemblySymbol containingAssembly = _containingModule.ContainingAssembly;
 
-                        if ((MetadataName == Name || MangleName) && (object)containingAssembly != null && ReferenceEquals(containingAssembly, containingAssembly.CorLibrary) && _containingModule.Ordinal == 0)
+                        if ((Arity == 0 || MangleName) && (object)containingAssembly != null && ReferenceEquals(containingAssembly, containingAssembly.CorLibrary) && _containingModule.Ordinal == 0)
                         {
                             // Check the name 
                             string emittedName = MetadataHelpers.BuildQualifiedName(_namespaceName, MetadataName);
@@ -300,7 +297,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
                 }
 
-                return Hash.Combine(MetadataName, Hash.Combine(_containingModule, Hash.Combine(_namespaceName, metadataName.GetHashCode())));
+                return Hash.Combine(MetadataName, Hash.Combine(_containingModule, Hash.Combine(_namespaceName, arity)));
             }
 
             internal override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
@@ -323,7 +320,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                 return (object)other != null &&
                     string.Equals(MetadataName, other.MetadataName, StringComparison.Ordinal) &&
-                    metadataName == other.metadataName &&
+                    arity == other.arity &&
                     string.Equals(_namespaceName, other.NamespaceName, StringComparison.Ordinal) &&
                     _containingModule.Equals(other._containingModule);
             }
@@ -370,8 +367,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             private readonly NamedTypeSymbol _containingType;
 
-            public Nested(NamedTypeSymbol containingType, string name, string metadataName, bool mangleName)
-                : base(name, metadataName, mangleName)
+            public Nested(NamedTypeSymbol containingType, string name, int arity, bool mangleName)
+                : base(name, arity, mangleName)
             {
                 Debug.Assert((object)containingType != null);
 
@@ -386,7 +383,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             private Nested(NamedTypeSymbol containingType, ref MetadataTypeName emittedName, bool mangleName)
                 : this(containingType,
                        mangleName ? emittedName.UnmangledTypeName : emittedName.TypeName,
-                       mangleName ? emittedName.UnmangledTypeName : emittedName.TypeName,
+                       mangleName ? emittedName.InferredArity : emittedName.ForcedArity,
                        mangleName)
             {
             }
@@ -410,7 +407,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             public override int GetHashCode()
             {
-                return Hash.Combine(_containingType, Hash.Combine(MetadataName, metadataName.GetHashCode()));
+                return Hash.Combine(_containingType, Hash.Combine(MetadataName, arity));
             }
 
             internal override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
@@ -422,7 +419,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                 var other = t2 as Nested;
                 return (object)other != null && string.Equals(MetadataName, other.MetadataName, StringComparison.Ordinal) &&
-                    metadataName == other.metadataName &&
+                    arity == other.arity &&
                     _containingType.Equals(other._containingType, comparison);
             }
         }

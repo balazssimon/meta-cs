@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// <summary>
     /// Represents a module within an assembly. Every assembly contains one or more modules.
     /// </summary>
-    internal abstract class ModuleSymbol : Symbol, IModuleSymbol
+    public abstract class ModuleSymbol : Symbol, IModuleSymbol
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version.
@@ -57,21 +57,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 return SymbolKind.NetModule;
             }
-        }
-
-        internal override TResult Accept<TArgument, TResult>(CSharpSymbolVisitor<TArgument, TResult> visitor, TArgument argument)
-        {
-            return visitor.VisitModule(this, argument);
-        }
-
-        public override void Accept(CSharpSymbolVisitor visitor)
-        {
-            visitor.VisitModule(this);
-        }
-
-        public override TResult Accept<TResult>(CSharpSymbolVisitor<TResult> visitor)
-        {
-            return visitor.VisitModule(this);
         }
 
         // Only the compiler can create ModuleSymbols.

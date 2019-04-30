@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Returns data decoded from Obsolete attribute or null if there is no Obsolete attribute.
         /// This property returns ObsoleteAttributeData.Uninitialized if attribute arguments haven't been decoded yet.
         /// </summary>
-        public override ObsoleteAttributeData ObsoleteAttributeData
+        internal override ObsoleteAttributeData ObsoleteAttributeData
         {
             get { return null; }
         }

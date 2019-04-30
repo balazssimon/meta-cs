@@ -2,11 +2,10 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis;
-using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -106,8 +105,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override ModelSymbolInfo ModelSymbolInfo => null;
-
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
         {
             return ImmutableArray<NamedTypeSymbol>.Empty;
@@ -118,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }
 
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, int arity)
         {
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }
@@ -129,11 +126,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public override ImmutableArray<Symbol> GetMembers(string name)
-        {
-            return ImmutableArray<Symbol>.Empty;
-        }
-
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
         {
             return ImmutableArray<Symbol>.Empty;
         }

@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
@@ -22,14 +21,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // Only the compiler can create new instances.
-        protected NamespaceOrTypeSymbol()
+        internal NamespaceOrTypeSymbol()
         {
         }
 
         /// <summary>
         /// Returns true if this symbol is a namespace. If it is not a namespace, it must be a type.
         /// </summary>
-        public virtual bool IsNamespace
+        public bool IsNamespace
         {
             get
             {
@@ -40,7 +39,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Returns true if this symbols is a type. Equivalent to !IsNamespace.
         /// </summary>
-        public virtual bool IsType
+        public bool IsType
         {
             get
             {
@@ -124,19 +123,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract ImmutableArray<Symbol> GetMembers(string name);
 
         /// <summary>
-        /// Get all the members of this symbol that have a particular name and metadata name
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the members of this symbol with the given name and metadata name.
-        /// If this symbol has no type members with this name and metadata name,
-        /// returns an empty ImmutableArray. Never returns null.</returns>
-        public virtual ImmutableArray<Symbol> GetMembers(string name, string metadataName)
-        {
-            // default implementation does a post-filter. We can override this if its a performance burden, but 
-            // experience is that it won't be.
-            return GetMembers(name).WhereAsArray(t => t.MetadataName == metadataName);
-        }
-
-        /// <summary>
         /// Get all the members of this symbol that are types. The members may not be in a particular order, and the order
         /// may not be stable from call-to-call.
         /// </summary>
@@ -166,27 +152,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name);
 
         /// <summary>
-        /// Get all the members of this symbol that are types that have a particular name and metadata name
+        /// Get all the members of this symbol that are types that have a particular name and arity
         /// </summary>
-        /// <returns>An ImmutableArray containing all the types that are members of this symbol with the given name and metadata name.
-        /// If this symbol has no type members with this name and metadata name,
-        /// returns an empty ImmutableArray. Never returns null.</returns>
-        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+        /// <returns>An IEnumerable containing all the types that are members of this symbol with the given name and arity.
+        /// If this symbol has no type members with this name and arity,
+        /// returns an empty IEnumerable. Never returns null.</returns>
+        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, int arity)
         {
             // default implementation does a post-filter. We can override this if its a performance burden, but 
             // experience is that it won't be.
-            return GetTypeMembers(name).WhereAsArray(t => t.MetadataName == metadataName);
+            return GetTypeMembers(name).WhereAsArray(t => t.Arity == arity);
         }
 
-        /// <summary>
-        /// Get a source type symbol for the given declaration syntax.
-        /// </summary>
-        /// <returns>Null if there is no matching declaration.</returns>
-        internal SourceNamedTypeSymbol GetSourceTypeMember(LanguageSyntaxNode syntax)
-        {
-            return GetSourceTypeMember(this.Language.SyntaxFacts.ExtractName(syntax), this.Language.SyntaxFacts.ExtractMetadataName(syntax), null, syntax);
-        }
-        
         /// <summary>
         /// Get a source type symbol of given name, arity and kind.  If a tree and syntax are provided, restrict the results
         /// to those that are declared within the given syntax.
@@ -194,14 +171,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>Null if there is no matching declaration.</returns>
         internal SourceNamedTypeSymbol GetSourceTypeMember(
             string name,
-            string metadataName,
-            ModelSymbolInfo typeKind,
+            int arity,
+            ModelSymbolInfo kind,
             LanguageSyntaxNode syntax)
         {
-            foreach (var member in GetTypeMembers(name, metadataName))
+            foreach (var member in GetTypeMembers(name, arity))
             {
                 var memberT = member as SourceNamedTypeSymbol;
-                if ((object)memberT != null && (typeKind == null || memberT.ModelSymbolInfo == typeKind))
+                if ((object)memberT != null && memberT.ModelSymbolInfo == kind)
                 {
                     if (syntax != null)
                     {
@@ -236,7 +213,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </returns>
         internal virtual NamedTypeSymbol LookupMetadataType(ref MetadataTypeName emittedTypeName)
         {
-            /* TODO:MetaDslx
             Debug.Assert(!emittedTypeName.IsNull);
 
             NamespaceOrTypeSymbol scope = this;
@@ -335,8 +311,7 @@ Done:
                 }
             }
 
-            return namedType;*/
-            return null;
+            return namedType;
         }
 
         /// <summary>
@@ -352,21 +327,21 @@ Done:
         /// </remarks>
         internal IEnumerable<NamespaceOrTypeSymbol> GetNamespaceOrTypeByQualifiedName(IEnumerable<string> qualifiedName)
         {
-            IEnumerable<NamespaceOrTypeSymbol> namespacesOrTypes = ImmutableArray.Create(this);
+            NamespaceOrTypeSymbol namespaceOrType = this;
             IEnumerable<NamespaceOrTypeSymbol> symbols = null;
             foreach (string name in qualifiedName)
             {
                 if (symbols != null)
                 {
                     // there might be multiple types of different arity, prefer a non-generic type:
-                    namespacesOrTypes = symbols;
-                    if ((object)namespacesOrTypes == null)
+                    namespaceOrType = symbols.OfMinimalArity();
+                    if ((object)namespaceOrType == null)
                     {
                         return SpecializedCollections.EmptyEnumerable<NamespaceOrTypeSymbol>();
                     }
                 }
 
-                symbols = namespacesOrTypes.SelectMany(nt => nt.GetMembers(name).OfType<NamespaceOrTypeSymbol>());
+                symbols = namespaceOrType.GetMembers(name).OfType<NamespaceOrTypeSymbol>();
             }
 
             return symbols;
@@ -396,7 +371,7 @@ Done:
 
         ImmutableArray<INamedTypeSymbol> INamespaceOrTypeSymbol.GetTypeMembers(string name, int arity)
         {
-            return StaticCast<INamedTypeSymbol>.From(this.GetTypeMembers(name/*, arity*/)); // TODO:MetaDslx: arity
+            return StaticCast<INamedTypeSymbol>.From(this.GetTypeMembers(name, arity));
         }
 
         #endregion

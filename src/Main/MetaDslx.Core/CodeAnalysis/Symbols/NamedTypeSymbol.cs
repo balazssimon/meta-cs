@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -22,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private bool _hasNoBaseCycles;
 
         // Only the compiler can create NamedTypeSymbols.
-        protected NamedTypeSymbol()
+        internal NamedTypeSymbol()
         {
         }
 
@@ -37,11 +36,29 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // type that matches the metadata name.
 
         /// <summary>
+        /// Returns the arity of this type, or the number of type parameters it takes.
+        /// A non-generic type has zero arity.
+        /// </summary>
+        public abstract int Arity { get; }
+
+        /// <summary>
         /// Returns the type symbol that this type was constructed from. This type symbol
         /// has the same containing type (if any), but has type arguments that are the same
         /// as the type parameters (although its containing type might not).
         /// </summary>
         public abstract NamedTypeSymbol ConstructedFrom { get; }
+
+        /// <summary>
+        /// For enum types, gets the underlying type. Returns null on all other
+        /// kinds of types.
+        /// </summary>
+        public virtual NamedTypeSymbol EnumUnderlyingType
+        {
+            get
+            {
+                return null;
+            }
+        }
 
         public override NamedTypeSymbol ContainingType
         {
@@ -82,18 +99,77 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
+        /// Is this a NoPia local type explicitly declared in source, i.e.
+        /// top level type with a TypeIdentifier attribute on it?
+        /// </summary>
+        internal virtual bool IsExplicitDefinitionOfNoPiaLocalType
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns true and a string from the first GuidAttribute on the type, 
+        /// the string might be null or an invalid guid representation. False, 
+        /// if there is no GuidAttribute with string argument.
+        /// </summary>
+        internal virtual bool GetGuidString(out string guidString)
+        {
+            return GetGuidStringDefaultImplementation(out guidString);
+        }
+
+        /// <summary>
+        /// For delegate types, gets the delegate's invoke method.  Returns null on
+        /// all other kinds of types.  Note that it is possible to have an ill-formed
+        /// delegate type imported from metadata which does not have an Invoke method.
+        /// Such a type will be classified as a delegate but its DelegateInvokeMethod
+        /// would be null.
+        /// </summary>
+        public MethodSymbol DelegateInvokeMethod
+        {
+            get
+            {
+                if (TypeKind != TypeKind.Delegate)
+                {
+                    return null;
+                }
+
+                var methods = GetMembers(WellKnownMemberNames.DelegateInvokeName);
+                if (methods.Length != 1)
+                {
+                    return null;
+                }
+
+                var method = methods[0] as MethodSymbol;
+
+                //EDMAURER we used to also check 'method.IsVirtual' because section 13.6
+                //of the CLI spec dictates that it be virtual, but real world
+                //working metadata has been found that contains an Invoke method that is
+                //marked as virtual but not newslot (both of those must be combined to
+                //meet the C# definition of virtual). Rather than weaken the check
+                //I've removed it, as the Dev10 compiler makes no check, and we don't
+                //stand to gain anything by having it.
+
+                //return method != null && method.IsVirtual ? method : null;
+                return method;
+            }
+        }
+
+        /// <summary>
         /// Get the operators for this type by their metadata name
         /// </summary>
-        internal ImmutableArray<IMethodSymbol> GetOperators(string name)
+        internal ImmutableArray<MethodSymbol> GetOperators(string name)
         {
             ImmutableArray<Symbol> candidates = GetSimpleNonTypeMembers(name);
             if (candidates.IsEmpty)
             {
-                return ImmutableArray<IMethodSymbol>.Empty;
+                return ImmutableArray<MethodSymbol>.Empty;
             }
 
-            ArrayBuilder<IMethodSymbol> operators = ArrayBuilder<IMethodSymbol>.GetInstance();
-            foreach (IMethodSymbol candidate in candidates.OfType<IMethodSymbol>())
+            ArrayBuilder<MethodSymbol> operators = ArrayBuilder<MethodSymbol>.GetInstance();
+            foreach (MethodSymbol candidate in candidates.OfType<MethodSymbol>())
             {
                 if (candidate.MethodKind == MethodKind.UserDefinedOperator || candidate.MethodKind == MethodKind.Conversion)
                 {
@@ -107,33 +183,33 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Get the instance constructors for this type.
         /// </summary>
-        public ImmutableArray<IMethodSymbol> InstanceConstructors
+        public ImmutableArray<MethodSymbol> InstanceConstructors
         {
             get
             {
-                return GetConstructors<IMethodSymbol>(includeInstance: true, includeStatic: false);
+                return GetConstructors<MethodSymbol>(includeInstance: true, includeStatic: false);
             }
         }
 
         /// <summary>
         /// Get the static constructors for this type.
         /// </summary>
-        public ImmutableArray<IMethodSymbol> StaticConstructors
+        public ImmutableArray<MethodSymbol> StaticConstructors
         {
             get
             {
-                return GetConstructors<IMethodSymbol>(includeInstance: false, includeStatic: true);
+                return GetConstructors<MethodSymbol>(includeInstance: false, includeStatic: true);
             }
         }
 
         /// <summary>
         /// Get the instance and static constructors for this type.
         /// </summary>
-        public ImmutableArray<IMethodSymbol> Constructors
+        public ImmutableArray<MethodSymbol> Constructors
         {
             get
             {
-                return GetConstructors<IMethodSymbol>(includeInstance: true, includeStatic: true);
+                return GetConstructors<MethodSymbol>(includeInstance: true, includeStatic: true);
             }
         }
 
@@ -176,6 +252,50 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
             return constructors.ToImmutableAndFree();
         }
+
+        /// <summary>
+        /// Get the indexers for this type.
+        /// </summary>
+        /// <remarks>
+        /// Won't include indexers that are explicit interface implementations.
+        /// </remarks>
+        public ImmutableArray<PropertySymbol> Indexers
+        {
+            get
+            {
+                ImmutableArray<Symbol> candidates = GetSimpleNonTypeMembers(WellKnownMemberNames.Indexer);
+
+                if (candidates.IsEmpty)
+                {
+                    return ImmutableArray<PropertySymbol>.Empty;
+                }
+
+                // The common case will be returning a list with the same elements as "candidates",
+                // but we need a list of PropertySymbols, so we're stuck building a new list anyway.
+                ArrayBuilder<PropertySymbol> indexers = ArrayBuilder<PropertySymbol>.GetInstance();
+                foreach (Symbol candidate in candidates)
+                {
+                    if (candidate.Kind == SymbolKind.Property)
+                    {
+                        Debug.Assert(((PropertySymbol)candidate).IsIndexer);
+                        indexers.Add((PropertySymbol)candidate);
+                    }
+                }
+                return indexers.ToImmutableAndFree();
+            }
+        }
+
+        /// <summary>
+        /// Returns true if this type might contain extension methods. If this property
+        /// returns false, there are no extension methods in this type.
+        /// </summary>
+        /// <remarks>
+        /// This property allows the search for extension methods to be narrowed quickly.
+        /// </remarks>
+        public abstract bool MightContainExtensionMethods { get; }
+
+        // TODO: Probably should provide similar accessors for static constructor, destructor, 
+        // TODO: operators, conversions.
 
         /// <summary>
         /// Returns true if this type is known to be a reference type. It is never the case that
@@ -241,25 +361,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        /* TODO:MetaDslx implementing IScriptSymbol
-        internal SynthesizedInstanceConstructor GetScriptConstructor()
+        internal MethodSymbol GetScriptConstructor()
         {
             Debug.Assert(IsScriptClass);
-            return (SynthesizedInstanceConstructor)InstanceConstructors.Single();
+            throw new NotImplementedException("TODO:MetaDslx");
         }
 
-        internal SynthesizedInteractiveInitializerMethod GetScriptInitializer()
+        internal MethodSymbol GetScriptInitializer()
         {
             Debug.Assert(IsScriptClass);
-            return (SynthesizedInteractiveInitializerMethod)GetMembers(SynthesizedInteractiveInitializerMethod.InitializerName).Single();
+            throw new NotImplementedException("TODO:MetaDslx");
         }
 
-        internal SynthesizedEntryPointSymbol GetScriptEntryPoint()
+        internal MethodSymbol GetScriptEntryPoint()
         {
             Debug.Assert(IsScriptClass);
-            var name = (TypeKind == TypeKind.Submission) ? SynthesizedEntryPointSymbol.FactoryName : SynthesizedEntryPointSymbol.MainName;
-            return (SynthesizedEntryPointSymbol)GetMembers(name).Single();
-        }*/
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
 
         /// <summary>
         /// Returns true if the type is the implicit class that holds onto invalid global members (like methods or
@@ -278,6 +396,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// never returned.
         /// </summary>
         public abstract override string Name { get; }
+
+        /// <summary>
+        /// Return the name including the metadata arity suffix.
+        /// </summary>
+        public override string MetadataName
+        {
+            get
+            {
+                return MangleName ? MetadataHelpers.ComposeAritySuffixedMetadataName(Name, Arity) : Name;
+            }
+        }
 
         /// <summary>
         /// Should the name returned by Name property be mangled with [`arity] suffix in order to get metadata name.
@@ -308,13 +437,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
         public abstract override ImmutableArray<Symbol> GetMembers(string name);
 
-        /// <summary>
-        /// Get all the members of this symbol that have a particular name.
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
-        /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract override ImmutableArray<Symbol> GetMembers(string name, string metadataName);
-
         internal virtual ImmutableArray<Symbol> GetSimpleNonTypeMembers(string name)
         {
             return GetMembers(name);
@@ -341,40 +463,59 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>An ImmutableArray containing all the types that are members of this symbol with the given name and arity.
         /// If this symbol has no type members with this name and arity,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        public abstract override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName);
+        public abstract override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, int arity);
 
         /// <summary>
-        /// Get all instance members.
+        /// Get all instance field and event members.
         /// </summary>
         /// <remarks>
         /// For source symbols may be called while calculating
         /// <see cref="NamespaceOrTypeSymbol.GetMembersUnordered"/>.
         /// </remarks>
-        internal virtual IEnumerable<Symbol> GetInstanceMembers()
+        internal virtual IEnumerable<Symbol> GetInstanceFieldsAndEvents()
         {
-            return GetMembersUnordered().Where(IsInstanceMember);
+            return GetMembersUnordered().Where(IsInstanceFieldOrEvent);
         }
 
-        /// <summary>
-        /// Get all static members.
-        /// </summary>
-        /// <remarks>
-        /// For source symbols may be called while calculating
-        /// <see cref="NamespaceOrTypeSymbol.GetMembersUnordered"/>.
-        /// </remarks>
-        internal virtual IEnumerable<Symbol> GetStaticMembers()
+        protected static Func<Symbol, bool> IsInstanceFieldOrEvent = symbol =>
         {
-            return GetMembersUnordered().Where(IsStaticMember);
-        }
-
-        protected static Func<Symbol, bool> IsInstanceMember = symbol => !symbol.IsStatic;
-        protected static Func<Symbol, bool> IsStaticMember = symbol => symbol.IsStatic;
+            if (!symbol.IsStatic)
+            {
+                switch (symbol.Kind)
+                {
+                    case SymbolKind.Field:
+                    case SymbolKind.Event:
+                        return true;
+                }
+            }
+            return false;
+        };
 
         /// <summary>
         /// Get this accessibility that was declared on this symbol. For symbols that do not have
         /// accessibility declared on them, returns NotApplicable.
         /// </summary>
         public abstract override Accessibility DeclaredAccessibility { get; }
+
+        /// <summary>
+        /// During early attribute decoding, we consider a safe subset of all members that will not
+        /// cause cyclic dependencies.  Get all such members for this symbol.
+        /// </summary>
+        /// <remarks>
+        /// Never returns null (empty instead).
+        /// Expected implementations: for source, return type and field members; for metadata, return all members.
+        /// </remarks>
+        internal abstract ImmutableArray<Symbol> GetEarlyAttributeDecodingMembers();
+
+        /// <summary>
+        /// During early attribute decoding, we consider a safe subset of all members that will not
+        /// cause cyclic dependencies.  Get all such members for this symbol that have a particular name.
+        /// </summary>
+        /// <remarks>
+        /// Never returns null (empty instead).
+        /// Expected implementations: for source, return type and field members; for metadata, return all members.
+        /// </remarks>
+        internal abstract ImmutableArray<Symbol> GetEarlyAttributeDecodingMembers(string name);
 
         /// <summary>
         /// Gets the kind of this symbol.
@@ -410,6 +551,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         internal override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
         {
+            Debug.Assert(!this.IsTupleType);
+
             if ((object)t2 == this) return true;
             if ((object)t2 == null) return false;
 
@@ -422,6 +565,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     {
                         return true;
                     }
+                }
+            }
+
+            if ((comparison & TypeCompareKind.IgnoreTupleNames) != 0)
+            {
+                // If ignoring tuple element names, compare underlying tuple types
+                if (t2.IsTupleType)
+                {
+                    t2 = t2.TupleUnderlyingType;
+                    if (this.Equals(t2, comparison)) return true;
                 }
             }
 
@@ -458,7 +611,153 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             // The checks above are supposed to handle the vast majority of cases.
             // More complicated cases are handled in a special helper to make the common case scenario simple/fast (fewer locals and smaller stack frame)
-            return false; // TODO:MetaDslx: EqualsComplicatedCases(other, comparison);
+            return EqualsComplicatedCases(other, comparison);
+        }
+
+        /// <summary>
+        /// Helper for more complicated cases of Equals like when we have generic instantiations or types nested within them.
+        /// </summary>
+        private bool EqualsComplicatedCases(NamedTypeSymbol other, TypeCompareKind comparison)
+        {
+            if ((object)this.ContainingType != null &&
+                !this.ContainingType.Equals(other.ContainingType, comparison))
+            {
+                return false;
+            }
+
+            var thisIsNotConstructed = ReferenceEquals(ConstructedFrom, this);
+            var otherIsNotConstructed = ReferenceEquals(other.ConstructedFrom, other);
+
+            if (thisIsNotConstructed && otherIsNotConstructed)
+            {
+                // Note that the arguments might appear different here due to alpha-renaming.  For example, given
+                // class A<T> { class B<U> {} }
+                // The type A<int>.B<int> is "constructed from" A<int>.B<1>, which may be a distinct type object
+                // with a different alpha-renaming of B's type parameter every time that type expression is bound,
+                // but these should be considered the same type each time.
+                return true;
+            }
+
+            if (this.IsUnboundGenericType != other.IsUnboundGenericType)
+            {
+                return false;
+            }
+
+            if ((thisIsNotConstructed || otherIsNotConstructed) &&
+                 (comparison & (TypeCompareKind.IgnoreCustomModifiersAndArraySizesAndLowerBounds | TypeCompareKind.AllNullableIgnoreOptions)) == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static VarianceKind GetTypeArgumentVariance(VarianceKind typeVariance, VarianceKind typeParameterVariance)
+        {
+            switch (typeVariance)
+            {
+                case VarianceKind.In:
+                    switch (typeParameterVariance)
+                    {
+                        case VarianceKind.In:
+                            return VarianceKind.Out;
+                        case VarianceKind.Out:
+                            return VarianceKind.In;
+                        default:
+                            return VarianceKind.None;
+                    }
+                case VarianceKind.Out:
+                    return typeParameterVariance;
+                default:
+                    return VarianceKind.None;
+            }
+        }
+
+        /// <summary>
+        /// Returns a constructed type given its type arguments.
+        /// </summary>
+        /// <param name="typeArguments">The immediate type arguments to be replaced for type
+        /// parameters in the type.</param>
+        public NamedTypeSymbol Construct(params TypeSymbol[] typeArguments)
+        {
+            // https://github.com/dotnet/roslyn/issues/30064: We should fix the callers to pass TypeWithAnnotations[] instead of TypeSymbol[].
+            return ConstructWithoutModifiers(typeArguments.AsImmutableOrNull(), false);
+        }
+
+        /// <summary>
+        /// Returns a constructed type given its type arguments.
+        /// </summary>
+        /// <param name="typeArguments">The immediate type arguments to be replaced for type
+        /// parameters in the type.</param>
+        public NamedTypeSymbol Construct(ImmutableArray<TypeSymbol> typeArguments)
+        {
+            // https://github.com/dotnet/roslyn/issues/30064: We should fix the callers to pass ImmutableArray<TypeWithAnnotations> instead of ImmutableArray<TypeSymbol>.
+            return ConstructWithoutModifiers(typeArguments, false);
+        }
+
+        /// <summary>
+        /// Returns a constructed type given its type arguments.
+        /// </summary>
+        /// <param name="typeArguments"></param>
+        public NamedTypeSymbol Construct(IEnumerable<TypeSymbol> typeArguments)
+        {
+            // https://github.com/dotnet/roslyn/issues/30064: We should fix the callers to pass IEnumerable<TypeWithAnnotations> instead of IEnumerable<TypeSymbol>.
+            return ConstructWithoutModifiers(typeArguments.AsImmutableOrNull(), false);
+        }
+
+        /// <summary>
+        /// Returns an unbound generic type of this named type.
+        /// </summary>
+        public NamedTypeSymbol ConstructUnboundGenericType()
+        {
+            return OriginalDefinition.AsUnboundGenericType();
+        }
+
+        internal NamedTypeSymbol GetUnboundGenericTypeOrSelf()
+        {
+            if (!this.IsGenericType)
+            {
+                return this;
+            }
+
+            return this.ConstructUnboundGenericType();
+        }
+
+        private NamedTypeSymbol ConstructWithoutModifiers(ImmutableArray<TypeSymbol> typeArguments, bool unbound)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this type has an EmbeddedAttribute or not.
+        /// </summary>
+        internal abstract bool HasCodeAnalysisEmbeddedAttribute { get; }
+
+        /// <summary>
+        /// True if this type or some containing type has type parameters.
+        /// </summary>
+        public bool IsGenericType
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// True if this is a reference to an <em>unbound</em> generic type.  These occur only
+        /// within a <c>typeof</c> expression.  A generic type is considered <em>unbound</em>
+        /// if all of the type argument lists in its fully qualified name are empty.
+        /// Note that the type arguments of an unbound generic type will be returned as error
+        /// types because they do not really have type arguments.  An unbound generic type
+        /// yields null for its BaseType and an empty result for its Interfaces.
+        /// </summary>
+        public virtual bool IsUnboundGenericType
+        {
+            get
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -480,6 +779,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 return this.OriginalDefinition;
             }
+        }
+
+        internal virtual NamedTypeSymbol AsMember(NamedTypeSymbol newOwner)
+        {
+            Debug.Assert(this.IsDefinition);
+            Debug.Assert(ReferenceEquals(newOwner.OriginalDefinition, this.ContainingSymbol.OriginalDefinition));
+            throw new NotImplementedException("TODO:MetaDslx");
+            //return newOwner.IsDefinition ? this : new SubstitutedNestedTypeSymbol((SubstitutedNamedTypeSymbol)newOwner, this);
         }
 
         #region Use-Site Diagnostics
@@ -577,6 +884,95 @@ namespace MetaDslx.CodeAnalysis.Symbols
         #endregion
 
         /// <summary>
+        /// True if the type itself is excluded from code coverage instrumentation.
+        /// True for source types marked with <see cref="AttributeDescription.ExcludeFromCodeCoverageAttribute"/>.
+        /// </summary>
+        internal virtual bool IsDirectlyExcludedFromCodeCoverage { get => false; }
+
+        /// <summary>
+        /// True if this symbol has a special name (metadata flag SpecialName is set).
+        /// </summary>
+        internal abstract bool HasSpecialName { get; }
+
+        /// <summary>
+        /// Returns a flag indicating whether this symbol is ComImport.
+        /// </summary>
+        /// <remarks>
+        /// A type can me marked as a ComImport type in source by applying the <see cref="System.Runtime.InteropServices.ComImportAttribute"/>
+        /// </remarks>
+        internal abstract bool IsComImport { get; }
+
+        /// <summary>
+        /// True if the type is a Windows runtime type.
+        /// </summary>
+        /// <remarks>
+        /// A type can me marked as a Windows runtime type in source by applying the WindowsRuntimeImportAttribute.
+        /// WindowsRuntimeImportAttribute is a pseudo custom attribute defined as an internal class in System.Runtime.InteropServices.WindowsRuntime namespace.
+        /// This is needed to mark Windows runtime types which are redefined in mscorlib.dll and System.Runtime.WindowsRuntime.dll.
+        /// These two assemblies are special as they implement the CLR's support for WinRT.
+        /// </remarks>
+        internal abstract bool IsWindowsRuntimeImport { get; }
+
+        /// <summary>
+        /// True if the type should have its WinRT interfaces projected onto .NET types and
+        /// have missing .NET interface members added to the type.
+        /// </summary>
+        internal abstract bool ShouldAddWinRTMembers { get; }
+
+        /// <summary>
+        /// Returns a flag indicating whether this symbol has at least one applied/inherited conditional attribute.
+        /// </summary>
+        /// <remarks>
+        /// Forces binding and decoding of attributes.
+        /// </remarks>
+        internal bool IsConditional
+        {
+            get
+            {
+                if (this.GetAppliedConditionalSymbols().Any())
+                {
+                    return true;
+                }
+
+                // Conditional attributes are inherited by derived types.
+                var baseType = this.BaseTypeNoUseSiteDiagnostics;
+                return (object)baseType != null ? baseType.IsConditional : false;
+            }
+        }
+
+        /// <summary>
+        /// True if the type is serializable (has Serializable metadata flag).
+        /// </summary>
+        public abstract bool IsSerializable { get; }
+
+        /// <summary>
+        /// Type layout information (ClassLayout metadata and layout kind flags).
+        /// </summary>
+        internal abstract TypeLayout Layout { get; }
+
+        /// <summary>
+        /// The default charset used for type marshalling. 
+        /// Can be changed via <see cref="DefaultCharSetAttribute"/> applied on the containing module.
+        /// </summary>
+        protected CharSet DefaultMarshallingCharSet
+        {
+            get
+            {
+                return this.GetEffectiveDefaultMarshallingCharSet() ?? CharSet.Ansi;
+            }
+        }
+
+        /// <summary>
+        /// Marshalling charset of string data fields within the type (string formatting flags in metadata).
+        /// </summary>
+        internal abstract CharSet MarshallingCharSet { get; }
+
+        /// <summary>
+        /// Returns a sequence of preprocessor symbols specified in <see cref="ConditionalAttribute"/> applied on this symbol, or null if there are none.
+        /// </summary>
+        internal abstract ImmutableArray<string> GetAppliedConditionalSymbols();
+
+        /// <summary>
         /// Requires less computation than <see cref="TypeSymbol.TypeKind"/> == <see cref="TypeKind.Interface"/>.
         /// </summary>
         /// <remarks>
@@ -586,13 +982,26 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>True if this is an interface type.</returns>
         internal abstract bool IsInterface { get; }
 
+        /// <summary>
+        /// Verify if the given type can be used to back a tuple type 
+        /// and return cardinality of that tuple type in <paramref name="tupleCardinality"/>. 
+        /// </summary>
+        /// <param name="tupleCardinality">If method returns true, contains cardinality of the compatible tuple type.</param>
+        /// <returns></returns>
+        public sealed override bool IsTupleCompatible(out int tupleCardinality)
+        {
+            // TODO:MetaDslx
+            tupleCardinality = 0;
+            return false;
+        }
+
         #region INamedTypeSymbol Members
 
         int INamedTypeSymbol.Arity
         {
             get
             {
-                return 0; // TODO:MetaDslx
+                return this.Arity;
             }
         }
 
@@ -658,7 +1067,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                return null;
+                return this.DelegateInvokeMethod;
             }
         }
 
@@ -666,7 +1075,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                return null;
+                return this.EnumUnderlyingType;
             }
         }
 
@@ -680,12 +1089,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         INamedTypeSymbol INamedTypeSymbol.Construct(params ITypeSymbol[] arguments)
         {
-            return this;
+            foreach (var arg in arguments)
+            {
+                arg.EnsureCSharpSymbolOrNull<ITypeSymbol, TypeSymbol>("typeArguments");
+            }
+
+            return this.Construct(arguments.Cast<TypeSymbol>().ToArray());
         }
 
         INamedTypeSymbol INamedTypeSymbol.ConstructUnboundGenericType()
         {
-            return this;
+            return this.ConstructUnboundGenericType();
         }
 
         ISymbol INamedTypeSymbol.AssociatedSymbol
@@ -707,34 +1121,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// If this is a tuple type symbol, returns the symbol for its underlying type.
         /// Otherwise, returns null.
         /// </summary>
-        INamedTypeSymbol INamedTypeSymbol.TupleUnderlyingType => this;
+        INamedTypeSymbol INamedTypeSymbol.TupleUnderlyingType => this.TupleUnderlyingType;
 
-        bool INamedTypeSymbol.IsComImport => false;
-
-        bool INamedTypeSymbol.IsGenericType => false;
-
-        bool INamedTypeSymbol.IsUnboundGenericType => false;
-
-        bool INamedTypeSymbol.IsScriptClass => false;
-
-        bool INamedTypeSymbol.IsImplicitClass => false;
-
-        public virtual bool MightContainExtensionMethods => false;
-
-        public virtual bool IsSerializable => false;
+        bool INamedTypeSymbol.IsComImport => IsComImport;
 
         #endregion
 
         #region ISymbol Members
-
-        /// <summary>
-        /// Returns data decoded from Obsolete attribute or null if there is no Obsolete attribute.
-        /// This property returns ObsoleteAttributeData.Uninitialized if attribute arguments haven't been decoded yet.
-        /// </summary>
-        public override ObsoleteAttributeData ObsoleteAttributeData
-        {
-            get { return null; }
-        }
 
         public override void Accept(SymbolVisitor visitor)
         {

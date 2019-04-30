@@ -1,180 +1,290 @@
-using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+using Roslyn.Utilities;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using System.Globalization;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public sealed class RetargetingAssemblySymbol : AssemblySymbol
+    /// <summary>
+    /// Essentially this is a wrapper around another AssemblySymbol that is responsible for retargeting
+    /// symbols from one assembly to another. It can retarget symbols for multiple assemblies at the same time. 
+    /// 
+    /// For example, compilation C1 references v1 of Lib.dll and compilation C2 references C1 and v2 of Lib.dll. 
+    /// In this case, in context of C2, all types from v1 of Lib.dll leaking through C1 (through method 
+    /// signatures, etc.) must be retargeted to the types from v2 of Lib.dll. This is what 
+    /// RetargetingAssemblySymbol is responsible for. In the example above, modules in C2 do not 
+    /// reference C1.m_AssemblySymbol, but reference a special RetargetingAssemblySymbol created for 
+    /// C1 by ReferenceManager.
+    /// 
+    /// Here is how retargeting is implemented in general:
+    /// - Symbols from underlying assembly are substituted with retargeting symbols.
+    /// - Symbols from referenced assemblies that can be reused as is (i.e. doesn't have to be retargeted) are
+    ///   used as is.
+    /// - Symbols from referenced assemblies that must be retargeted are substituted with result of retargeting.
+    /// </summary>
+    internal sealed class RetargetingAssemblySymbol : NonMissingAssemblySymbol
     {
-        private IAssemblySymbol _assembly;
-        private bool _isLinked;
-        private ImmutableArray<ModuleSymbol> _lazyModules;
+        /// <summary>
+        /// The underlying AssemblySymbol, it leaks symbols that should be retargeted.
+        /// This cannot be an instance of RetargetingAssemblySymbol.
+        /// </summary>
+        private readonly SourceAssemblySymbol _underlyingAssembly;
 
-        private RetargetingAssemblySymbol(IAssemblySymbol assembly, bool isLinked)
+        /// <summary>
+        /// The list of contained ModuleSymbol objects. First item in the list
+        /// is RetargetingModuleSymbol that wraps corresponding SourceModuleSymbol 
+        /// from underlyingAssembly.Modules list, the rest are PEModuleSymbols for 
+        /// added modules.
+        /// </summary>
+        private readonly ImmutableArray<ModuleSymbol> _modules;
+
+        /// <summary>
+        /// An array of assemblies involved in canonical type resolution of
+        /// NoPia local types defined within this assembly. In other words, all 
+        /// references used by a compilation referencing this assembly.
+        /// The array and its content is provided by ReferenceManager and must not be modified.
+        /// </summary>
+        private ImmutableArray<AssemblySymbol> _noPiaResolutionAssemblies;
+
+        /// <summary>
+        /// An array of assemblies referenced by this assembly, which are linked (/l-ed) by 
+        /// each compilation that is using this AssemblySymbol as a reference. 
+        /// If this AssemblySymbol is linked too, it will be in this array too.
+        /// The array and its content is provided by ReferenceManager and must not be modified.
+        /// </summary>
+        private ImmutableArray<AssemblySymbol> _linkedReferencedAssemblies;
+
+        /// <summary>
+        /// Backing field for the map from a local NoPia type to corresponding canonical type.
+        /// </summary>
+        private ConcurrentDictionary<NamedTypeSymbol, NamedTypeSymbol> _noPiaUnificationMap;
+
+        /// <summary>
+        /// A map from a local NoPia type to corresponding canonical type.
+        /// </summary>
+        internal ConcurrentDictionary<NamedTypeSymbol, NamedTypeSymbol> NoPiaUnificationMap =>
+            LazyInitializer.EnsureInitialized(ref _noPiaUnificationMap, () => new ConcurrentDictionary<NamedTypeSymbol, NamedTypeSymbol>(concurrencyLevel: 2, capacity: 0));
+
+        /// <summary>
+        /// Assembly is /l-ed by compilation that is using it as a reference.
+        /// </summary>
+        private readonly bool _isLinked;
+
+        /// <summary>
+        /// Retargeted custom attributes
+        /// </summary>
+        private ImmutableArray<AttributeData> _lazyCustomAttributes;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="underlyingAssembly">
+        /// The underlying AssemblySymbol, cannot be an instance of RetargetingAssemblySymbol.
+        /// </param>
+        /// <param name="isLinked">
+        /// Assembly is /l-ed by compilation that is using it as a reference.
+        /// </param>
+        public RetargetingAssemblySymbol(SourceAssemblySymbol underlyingAssembly, bool isLinked)
         {
-            Debug.Assert(assembly != null);
-            if (assembly is RetargetingAssemblySymbol retargetingAssembly)
+            Debug.Assert((object)underlyingAssembly != null);
+
+            _underlyingAssembly = underlyingAssembly;
+
+            ModuleSymbol[] modules = new ModuleSymbol[underlyingAssembly.Modules.Length];
+
+            modules[0] = new RetargetingModuleSymbol(this, (SourceModuleSymbol)underlyingAssembly.Modules[0]);
+
+            for (int i = 1; i < underlyingAssembly.Modules.Length; i++)
             {
-                assembly = retargetingAssembly._assembly;
+                PEModuleSymbol under = (PEModuleSymbol)underlyingAssembly.Modules[i];
+                modules[i] = new PEModuleSymbol(this, under.Module, under.ImportOptions, i);
             }
-            _assembly = assembly;
+
+            _modules = modules.AsImmutableOrNull();
             _isLinked = isLinked;
         }
 
-        internal static RetargetingAssemblySymbol Create(AssemblySymbol assembly, bool isLinked = false)
+        private RetargetingSymbolTranslator RetargetingTranslator
         {
-            return new RetargetingAssemblySymbol(assembly, isLinked);
+            get
+            {
+                return ((RetargetingModuleSymbol)_modules[0]).RetargetingTranslator;
+            }
         }
 
-        internal static RetargetingAssemblySymbol Create(Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol assembly, bool isLinked = false)
+        /// <summary>
+        /// The underlying AssemblySymbol.
+        /// This cannot be an instance of RetargetingAssemblySymbol.
+        /// </summary>
+        public AssemblySymbol UnderlyingAssembly
         {
-            return new RetargetingAssemblySymbol(assembly, isLinked);
+            get
+            {
+                return _underlyingAssembly;
+            }
         }
 
-        internal static RetargetingAssemblySymbol Create(Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE.PEAssemblySymbol assembly, bool isLinked = false)
+        public override bool IsImplicitlyDeclared
         {
-            return new RetargetingAssemblySymbol(assembly, isLinked);
+            get { return _underlyingAssembly.IsImplicitlyDeclared; }
         }
 
-        internal IAssemblySymbol CSharpAssembly => _assembly;
+        public override AssemblyIdentity Identity
+        {
+            get
+            {
+                return _underlyingAssembly.Identity;
+            }
+        }
 
-        public override bool IsInteractive => _assembly.IsInteractive;
-        public override AssemblyIdentity Identity => _assembly.Identity;
-        public override INamespaceSymbol GlobalNamespace => _assembly.GlobalNamespace;
+        public override Version AssemblyVersionPattern => _underlyingAssembly.AssemblyVersionPattern;
+
+        internal override ImmutableArray<byte> PublicKey
+        {
+            get { return _underlyingAssembly.PublicKey; }
+        }
+
+        public override string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _underlyingAssembly.GetDocumentationCommentXml(preferredCulture, expandIncludes, cancellationToken);
+        }
+
         public override ImmutableArray<ModuleSymbol> Modules
         {
             get
             {
-                if (_lazyModules.IsDefault)
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyModules, _assembly.Modules.Select((m,index) => new RetargetingModuleSymbol(this, m, index)).ToImmutableArray<ModuleSymbol>());
-                }
-                return _lazyModules;
+                return _modules;
             }
+        }
+
+        internal override bool KeepLookingForDeclaredSpecialTypes
+        {
+            get
+            {
+                // RetargetingAssemblySymbol never represents Core library. 
+                return false;
+            }
+        }
+
+        public override ImmutableArray<Location> Locations
+        {
+            get
+            {
+                return _underlyingAssembly.Locations;
+            }
+        }
+
+        internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
+        {
+            return _underlyingAssembly.GetInternalsVisibleToPublicKeys(simpleName);
+        }
+
+        internal override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
+        {
+            return _underlyingAssembly.AreInternalsVisibleToThisAssembly(other);
+        }
+
+        public override ImmutableArray<AttributeData> GetAttributes()
+        {
+            return RetargetingTranslator.GetRetargetedAttributes(_underlyingAssembly.GetAttributes(), ref _lazyCustomAttributes);
         }
 
         /// <summary>
-        /// Gets the set of type identifiers from this assembly.
+        /// Lookup declaration for FX type in this Assembly.
         /// </summary>
-        /// <remarks>
-        /// These names are the simple identifiers for the type, and do not include namespaces,
-        /// outer type names, or type parameters.
-        /// 
-        /// This functionality can be used for features that want to quickly know if a name could be
-        /// a type for performance reasons.  For example, classification does not want to incur an
-        /// expensive binding call cost if it knows that there is no type with the name that they
-        /// are looking at.
-        /// </remarks>
-        public override ICollection<string> TypeNames => _assembly.TypeNames;
-
-        /// <summary>
-        /// Gets the set of namespace names from this assembly.
-        /// </summary>
-        public override ICollection<string> NamespaceNames => _assembly.NamespaceNames;
-
-        /// <summary>
-        /// Returns true if this assembly might contain extension methods. If this property
-        /// returns false, there are no extension methods in this assembly.
-        /// </summary>
-        /// <remarks>
-        /// This property allows the search for extension methods to be narrowed quickly.
-        /// </remarks>
-        public override bool MightContainExtensionMethods => _assembly.MightContainExtensionMethods;
-
-        /// <summary>
-        /// If this symbol represents a metadata assembly returns the underlying <see cref="AssemblyMetadata"/>.
-        /// 
-        /// Otherwise, this returns <see langword="null"/>.
-        /// </summary>
-        public override AssemblyMetadata GetMetadata()
+        /// <param name="type"></param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
         {
-            return _assembly.GetMetadata();
+            // Cor library should not have any references and, therefore, should never be
+            // wrapped by a RetargetingAssemblySymbol.
+            throw ExceptionUtilities.Unreachable;
         }
 
-        public override INamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
+        internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
         {
-            return _assembly.GetTypeByMetadataName(fullyQualifiedMetadataName);
+            return _noPiaResolutionAssemblies;
         }
 
-        public override bool GivesAccessTo(IAssemblySymbol toAssembly)
+        internal override void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies)
         {
-            IAssemblySymbol baseAssembly = _assembly;
-            return baseAssembly.GivesAccessTo(toAssembly);
+            _noPiaResolutionAssemblies = assemblies;
         }
 
-        public override INamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName)
+        internal override void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies)
         {
-            return _assembly.ResolveForwardedType(fullyQualifiedMetadataName);
+            _linkedReferencedAssemblies = assemblies;
         }
 
-        public override INamedTypeSymbol GetSpecialType(SpecialType type)
+        internal override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
         {
-            if (_assembly is Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol csharpAssembly)
+            return _linkedReferencedAssemblies;
+        }
+
+        internal override bool IsLinked
+        {
+            get
             {
-                return csharpAssembly.GetSpecialType(type);
+                return _isLinked;
             }
-            else if (_assembly is AssemblySymbol languageAssembly)
+        }
+
+        public override ICollection<string> TypeNames
+        {
+            get
             {
-                return languageAssembly.GetSpecialType(type);
+                return _underlyingAssembly.TypeNames;
             }
-            else
+        }
+
+        public override ICollection<string> NamespaceNames
+        {
+            get
+            {
+                return _underlyingAssembly.NamespaceNames;
+            }
+        }
+
+        public override bool MightContainExtensionMethods
+        {
+            get
+            {
+                return _underlyingAssembly.MightContainExtensionMethods;
+            }
+        }
+
+        internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
+        {
+            get { return null; }
+        }
+
+        internal override bool GetGuidString(out string guidString)
+        {
+            return _underlyingAssembly.GetGuidString(out guidString);
+        }
+
+        internal override NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
+        {
+            NamedTypeSymbol underlying = _underlyingAssembly.TryLookupForwardedMetadataType(ref emittedName);
+
+            if ((object)underlying == null)
             {
                 return null;
             }
+
+            return this.RetargetingTranslator.Retarget(underlying, RetargetOptions.RetargetPrimitiveTypesByName);
         }
 
-        public override ISymbol GetSpecialTypeMember(SpecialMember member)
-        {
-            if (_assembly is Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol csharpAssembly)
-            {
-                return csharpAssembly.GetSpecialTypeMember(member);
-            }
-            else if (_assembly is AssemblySymbol languageAssembly)
-            {
-                return languageAssembly.GetSpecialTypeMember(member);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public override INamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
-        {
-            if (_assembly is Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol csharpAssembly)
-            {
-                return csharpAssembly.GetDeclaredSpecialType(type);
-            }
-            else if (_assembly is AssemblySymbol languageAssembly)
-            {
-                return languageAssembly.GetDeclaredSpecialType(type);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public override ISymbol GetDeclaredSpecialTypeMember(SpecialMember member)
-        {
-            if (_assembly is Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol csharpAssembly)
-            {
-                return csharpAssembly.GetDeclaredSpecialTypeMember(member);
-            }
-            else if (_assembly is AssemblySymbol languageAssembly)
-            {
-                return languageAssembly.GetDeclaredSpecialTypeMember(member);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
+        public override AssemblyMetadata GetMetadata() => _underlyingAssembly.GetMetadata();
     }
 }

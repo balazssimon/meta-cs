@@ -18,12 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </summary>
     internal abstract partial class ErrorTypeSymbol : NamedTypeSymbol, IErrorTypeSymbol
     {
-        //internal static readonly ErrorTypeSymbol UnknownResultType = new UnsupportedMetadataTypeSymbol();
-
-        // Only the compiler should create error symbols.
-        internal ErrorTypeSymbol()
-        {
-        }
+        internal static readonly ErrorTypeSymbol UnknownResultType = new UnsupportedMetadataTypeSymbol();
 
         /// <summary>
         /// The underlying error.
@@ -140,17 +135,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// no members with this name, returns an empty ImmutableArray. Never returns Null.</returns>
         public override ImmutableArray<Symbol> GetMembers(string name)
         {
-            return ImmutableArray<Symbol>.Empty;
+            return GetMembers().WhereAsArray(m => m.Name == name);
         }
 
-        /// <summary>
-        /// Get all the members of this symbol that have a particular name.
-        /// </summary>
-        /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
-        /// no members with this name, returns an empty ImmutableArray. Never returns Null.</returns>
-        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        internal override ImmutableArray<Symbol> GetEarlyAttributeDecodingMembers()
         {
-            return ImmutableArray<Symbol>.Empty;
+            return this.GetMembersUnordered();
+        }
+
+        internal override ImmutableArray<Symbol> GetEarlyAttributeDecodingMembers(string name)
+        {
+            return this.GetMembers(name);
         }
 
         /// <summary>
@@ -180,7 +175,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>An ImmutableArray containing all the types that are members of this symbol with the given name and arity.
         /// If this symbol has no type members with this name and arity,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, int arity)
         {
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }
@@ -245,6 +240,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
+        /// Returns the arity of this type, or the number of type parameters it takes.
+        /// A non-generic type has zero arity.
+        /// </summary>
+        public override int Arity
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
         /// Gets the name of this symbol. Symbols without a name return the empty string; null is
         /// never returned.
         /// </summary>
@@ -267,6 +274,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 return this;
             }
+        }
+
+        // Only the compiler should create error symbols.
+        internal ErrorTypeSymbol()
+        {
         }
 
         /// <summary>
@@ -320,6 +332,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        internal sealed override bool HasSpecialName
+        {
+            get { return false; }
+        }
+
         public sealed override bool MightContainExtensionMethods
         {
             get
@@ -328,7 +345,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override NamedTypeSymbol BaseTypeNoUseSiteDiagnostics => null;
+        internal override NamedTypeSymbol BaseTypeNoUseSiteDiagnostics => null;
+
+        internal override bool HasCodeAnalysisEmbeddedAttribute => false;
 
         internal override ImmutableArray<NamedTypeSymbol> InterfacesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
         {
@@ -345,14 +364,51 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }
 
+        internal override NamedTypeSymbol AsMember(NamedTypeSymbol newOwner)
+        {
+            Debug.Assert(this.IsDefinition);
+            Debug.Assert(ReferenceEquals(newOwner.OriginalDefinition, this.ContainingSymbol.OriginalDefinition));
+            return newOwner.IsDefinition ? this : new SubstitutedNestedErrorTypeSymbol(newOwner, this);
+        }
+
+        internal sealed override bool ShouldAddWinRTMembers
+        {
+            get { return false; }
+        }
+
+        internal sealed override bool IsWindowsRuntimeImport
+        {
+            get { return false; }
+        }
+
+        internal sealed override TypeLayout Layout
+        {
+            get { return default(TypeLayout); }
+        }
+
+        internal override CharSet MarshallingCharSet
+        {
+            get { return DefaultMarshallingCharSet; }
+        }
+
         public sealed override bool IsSerializable
         {
             get { return false; }
         }
 
-        public sealed override ObsoleteAttributeData ObsoleteAttributeData
+        internal sealed override bool IsComImport
+        {
+            get { return false; }
+        }
+
+        internal sealed override ObsoleteAttributeData ObsoleteAttributeData
         {
             get { return null; }
+        }
+
+        internal sealed override ImmutableArray<string> GetAppliedConditionalSymbols()
+        {
+            return ImmutableArray<string>.Empty;
         }
 
         internal override AttributeUsageInfo GetAttributeUsageInfo()
@@ -365,7 +421,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return false; }
         }
 
-
         #region IErrorTypeSymbol Members
 
         ImmutableArray<ISymbol> IErrorTypeSymbol.CandidateSymbols
@@ -377,6 +432,71 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         #endregion IErrorTypeSymbol Members
+    }
+
+    internal abstract class SubstitutedErrorTypeSymbol : ErrorTypeSymbol
+    {
+        private readonly ErrorTypeSymbol _originalDefinition;
+        private int _hashCode;
+
+        protected SubstitutedErrorTypeSymbol(ErrorTypeSymbol originalDefinition)
+        {
+            _originalDefinition = originalDefinition;
+        }
+
+        public override NamedTypeSymbol OriginalDefinition
+        {
+            get { return _originalDefinition; }
+        }
+
+        internal override bool MangleName
+        {
+            get { return _originalDefinition.MangleName; }
+        }
+
+        internal override DiagnosticInfo ErrorInfo
+        {
+            get { return _originalDefinition.ErrorInfo; }
+        }
+
+        public override int Arity
+        {
+            get { return _originalDefinition.Arity; }
+        }
+
+        public override string Name
+        {
+            get { return _originalDefinition.Name; }
+        }
+
+        public override ImmutableArray<Location> Locations
+        {
+            get { return _originalDefinition.Locations; }
+        }
+
+        public override ImmutableArray<Symbol> CandidateSymbols
+        {
+            get { return _originalDefinition.CandidateSymbols; }
+        }
+
+        internal override LookupResultKind ResultKind
+        {
+            get { return _originalDefinition.ResultKind; }
+        }
+
+        internal override DiagnosticInfo GetUseSiteDiagnostic()
+        {
+            return _originalDefinition.GetUseSiteDiagnostic();
+        }
+
+        public override int GetHashCode()
+        {
+            if (_hashCode == 0)
+            {
+                _hashCode = this.ComputeHashCode();
+            }
+            return _hashCode;
+        }
     }
 
 }

@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using MetaDslx.Modeling;
+using MetaDslx.CodeAnalysis.Binding;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
@@ -15,6 +16,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     public abstract partial class NamespaceSymbol : NamespaceOrTypeSymbol, INamespaceSymbol
     {
         // PERF: initialization of the following fields will allocate, so we make them lazy
+        private ImmutableArray<NamedTypeSymbol> _lazyTypesMightContainExtensionMethods;
         private string _lazyQualifiedName;
 
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -22,13 +24,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // Do not make any changes to the public interface without making the corresponding change
         // to the VB version.
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        protected NamespaceSymbol()
-        {
-
-        }
-
-        public override bool CanBeReferencedByName => true;
 
         /// <summary>
         /// Get all the members of this symbol that are namespaces.
@@ -101,14 +96,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public abstract override AssemblySymbol ContainingAssembly { get; }
 
-        public override ModuleSymbol ContainingModule
+        internal override ModuleSymbol ContainingModule
         {
             get
             {
                 var extent = this.Extent;
                 if (extent.Kind == NamespaceKind.Module)
                 {
-                    return (ModuleSymbol)extent.Module;
+                    return extent.Module;
                 }
 
                 return null;
@@ -133,7 +128,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return this.IsGlobalNamespace;
             }
         }
-        
+
+        // Only the compiler can create namespace symbols.
+        internal NamespaceSymbol()
+        {
+        }
+
         /// <summary>
         /// Get this accessibility that was declared on this symbol. For symbols that do not have
         /// accessibility declared on them, returns NotApplicable.
@@ -190,7 +190,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Returns data decoded from Obsolete attribute or null if there is no Obsolete attribute.
         /// This property returns ObsoleteAttributeData.Uninitialized if attribute arguments haven't been decoded yet.
         /// </summary>
-        public override ObsoleteAttributeData ObsoleteAttributeData
+        internal sealed override ObsoleteAttributeData ObsoleteAttributeData
         {
             get { return null; }
         }
@@ -271,6 +271,57 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
 
             return null;
+        }
+
+        internal NamespaceSymbol GetNestedNamespace(LanguageSyntaxNode name)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        private ImmutableArray<NamedTypeSymbol> TypesMightContainExtensionMethods
+        {
+            get
+            {
+                var typesWithExtensionMethods = this._lazyTypesMightContainExtensionMethods;
+                if (typesWithExtensionMethods.IsDefault)
+                {
+                    this._lazyTypesMightContainExtensionMethods = this.GetTypeMembersUnordered().WhereAsArray(t => t.MightContainExtensionMethods);
+                    typesWithExtensionMethods = this._lazyTypesMightContainExtensionMethods;
+                }
+
+                return typesWithExtensionMethods;
+            }
+        }
+
+
+        /// <summary>
+        /// Add all extension methods in this namespace to the given list. If name or arity
+        /// or both are provided, only those extension methods that match are included.
+        /// </summary>
+        /// <param name="methods">Methods list</param>
+        /// <param name="nameOpt">Optional method name</param>
+        /// <param name="arity">Method arity</param>
+        /// <param name="options">Lookup options</param>
+        internal virtual void GetExtensionMethods(ArrayBuilder<MethodSymbol> methods, string nameOpt, int arity, LookupOptions options)
+        {
+            var assembly = this.ContainingAssembly;
+
+            // Only MergedAssemblySymbol should have a null ContainingAssembly
+            // and MergedAssemblySymbol overrides GetExtensionMethods.
+            Debug.Assert((object)assembly != null);
+
+            if (!assembly.MightContainExtensionMethods)
+            {
+                return;
+            }
+
+            var typesWithExtensionMethods = this.TypesMightContainExtensionMethods;
+
+            foreach (var type in typesWithExtensionMethods)
+            {
+                throw new NotImplementedException("TODO:MetaDslx");
+                //type.DoGetExtensionMethods(methods, nameOpt, arity, options);
+            }
         }
 
         #region INamespaceSymbol Members

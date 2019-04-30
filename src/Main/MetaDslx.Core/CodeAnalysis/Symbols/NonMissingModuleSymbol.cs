@@ -3,18 +3,17 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace Microsoft.CodeAnalysis.CSharp.Symbols
+namespace MetaDslx.CodeAnalysis.Symbols
 {
     /// <summary>
     /// A <see cref="NonMissingModuleSymbol"/> is a special kind of <see cref="ModuleSymbol"/> that represents
     /// a module that is not missing, i.e. the "real" thing.
     /// </summary>
-    internal abstract class NonMissingModuleSymbol : ModuleSymbol
+    public abstract class NonMissingModuleSymbol : ModuleSymbol
     {
         /// <summary>
         /// An array of <see cref="AssemblySymbol"/> objects corresponding to assemblies directly referenced by this module.
@@ -100,10 +99,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 {
                     // unified with a definition whose version is higher than the reference                    
                     ErrorCode warning = (definitionId.Version.Major == referenceId.Version.Major && definitionId.Version.Minor == referenceId.Version.Minor) ?
-                                        ErrorCode.WRN_UnifyReferenceBldRev : ErrorCode.WRN_UnifyReferenceMajMin;
+                                        InternalErrorCode.WRN_UnifyReferenceBldRev : InternalErrorCode.WRN_UnifyReferenceMajMin;
 
                     // warning: Assuming assembly reference '{0}' used by '{1}' matches identity '{2}' of '{3}', you may need to supply runtime policy.
-                    info = new CSDiagnosticInfo(
+                    info = new LanguageDiagnosticInfo(
                         warning,
                         new object[]
                         {
@@ -120,8 +119,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     // unified with a definition whose version is lower than the reference
 
                     // error: Assembly '{0}' with identity '{1}' uses '{2}' which has a higher version than referenced assembly '{3}' with identity '{4}'
-                    info = new CSDiagnosticInfo(
-                        ErrorCode.ERR_AssemblyMatchBadVersion,
+                    info = new LanguageDiagnosticInfo(
+                        InternalErrorCode.ERR_AssemblyMatchBadVersion,
                         new object[]
                         {
                             ownerAssembly.Name, // TODO (tomat): should rather be MetadataReference.Display for the corresponding reference

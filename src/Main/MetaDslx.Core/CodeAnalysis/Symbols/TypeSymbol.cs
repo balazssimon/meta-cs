@@ -8,9 +8,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Collections;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
@@ -27,11 +26,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // Do not make any changes to the public interface without making the corresponding change
         // to the VB version.
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        // Only the compiler can create TypeSymbols.
-        protected TypeSymbol()
-        {
-        }
 
         // TODO (tomat): Consider changing this to an empty name. This name shouldn't ever leak to the user in error messages.
         internal const string ImplicitTypeName = "<invalid-global-code>";
@@ -134,7 +128,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
                                                                   new TypeSymbolComparer(TypeCompareKind.AllIgnoreOptions & ~(TypeCompareKind.IgnoreNullableModifiersForReferenceTypes));
 
         internal static readonly EqualityComparer<TypeSymbol> EqualsCLRSignatureComparer = new TypeSymbolComparer(TypeCompareKind.CLRSignatureCompareOptions);
-        
         /// <summary>
         /// The original definition of this symbol. If this symbol is constructed from another
         /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in
@@ -170,7 +163,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// (for example, interfaces), null is returned. Also the special class System.Object
         /// always has a BaseType of null.
         /// </summary>
-        public abstract NamedTypeSymbol BaseTypeNoUseSiteDiagnostics { get; }
+        internal abstract NamedTypeSymbol BaseTypeNoUseSiteDiagnostics { get; }
 
         internal NamedTypeSymbol BaseTypeWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
@@ -461,6 +454,38 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
+        /// Returns the corresponding symbol in this type or a base type that implements 
+        /// interfaceMember (either implicitly or explicitly), or null if no such symbol exists
+        /// (which might be either because this type doesn't implement the container of
+        /// interfaceMember, or this type doesn't supply a member that successfully implements
+        /// interfaceMember).
+        /// </summary>
+        /// <param name="interfaceMember">
+        /// Must be a non-null interface property, method, or event.
+        /// </param>
+        public Symbol FindImplementationForInterfaceMember(Symbol interfaceMember)
+        {
+            if ((object)interfaceMember == null)
+            {
+                throw new ArgumentNullException(nameof(interfaceMember));
+            }
+
+            throw new NotImplementedException("TODO:MetaDslx");
+            /* 
+            if (!interfaceMember.IsImplementableInterfaceMember())
+            {
+                return null;
+            }
+
+            if (this.IsInterfaceType())
+            {
+                return FindMostSpecificImplementation(interfaceMember, (NamedTypeSymbol)this);
+            }
+
+            return FindImplementationForInterfaceMemberInNonInterfaceWithDiagnostics(interfaceMember).Symbol;*/
+        }
+
+        /// <summary>
         /// Returns true if this type is known to be a reference type. It is never the case that
         /// IsReferenceType and IsValueType both return true. However, for an unconstrained type
         /// parameter, IsReferenceType and IsValueType will both return false.
@@ -473,6 +498,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// parameter, IsReferenceType and IsValueType will both return false.
         /// </summary>
         public abstract bool IsValueType { get; }
+
+        // Only the compiler can create TypeSymbols.
+        internal TypeSymbol()
+        {
+        }
 
         /// <summary>
         /// Gets the kind of this type.
@@ -490,6 +520,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 return SpecialType.None;
+            }
+        }
+
+        /// <summary>
+        /// Gets corresponding primitive type code for this type declaration.
+        /// </summary>
+        internal Microsoft.Cci.PrimitiveTypeCode PrimitiveTypeCode
+        {
+            get
+            {
+                return SpecialTypes.GetTypeCode(SpecialType);
             }
         }
 
@@ -511,8 +552,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                LanguageDiagnosticInfo info = GetUseSiteDiagnostic() as LanguageDiagnosticInfo;
-                return (object)info != null && info.ErrorCode == InternalErrorCode.ERR_BogusType;
+                DiagnosticInfo info = GetUseSiteDiagnostic();
+                return (object)info != null && info.GetErrorCode() == InternalErrorCode.ERR_BogusType;
             }
         }
 
@@ -532,6 +573,52 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
+        /// Is this a symbol for a Tuple.
+        /// </summary>
+        public virtual bool IsTupleType => false;
+
+        /// <summary>
+        /// Verify if the given type can be used to back a tuple type 
+        /// and return cardinality of that tuple type in <paramref name="tupleCardinality"/>. 
+        /// </summary>
+        /// <param name="tupleCardinality">If method returns true, contains cardinality of the compatible tuple type.</param>
+        /// <returns></returns>
+        public virtual bool IsTupleCompatible(out int tupleCardinality)
+        {
+            tupleCardinality = 0;
+            return false;
+        }
+
+        /// <summary>
+        /// Verify if the given type can be used to back a tuple type. 
+        /// </summary>
+        public bool IsTupleCompatible()
+        {
+            int countOfItems;
+            return IsTupleCompatible(out countOfItems);
+        }
+        
+        /// <summary>
+        /// If this is a tuple type symbol, returns the symbol for its underlying type.
+        /// Otherwise, returns null.
+        /// The type argument corresponding to the type of the extension field (VT[8].Rest),
+        /// which is at the 8th (one based) position is always a symbol for another tuple, 
+        /// rather than its underlying type.
+        /// </summary>
+        public virtual NamedTypeSymbol TupleUnderlyingType
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// If this symbol represents a tuple type, get the names of the tuple's elements.
+        /// </summary>
+        public virtual ImmutableArray<string> TupleElementNames => default(ImmutableArray<string>);
+
+        /// <summary>
         /// Is this type a managed type (false for everything but enum, pointer, and
         /// some struct types).
         /// </summary>
@@ -547,6 +634,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal abstract ManagedKind ManagedKind { get; }
 
         bool ITypeSymbol.IsUnmanagedType => !IsManagedType;
+
+        /// <summary>
+        /// Returns true if the type may contain embedded references
+        /// </summary>
+        public abstract bool IsRefLikeType { get; }
+
+        /// <summary>
+        /// Returns true if the type is a readonly struct
+        /// </summary>
+        public abstract bool IsReadOnly { get; }
 
         #region ITypeSymbol Members
 
@@ -614,38 +711,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Is this a symbol for a Tuple.
         /// </summary>
-        bool ITypeSymbol.IsTupleType => false;
-
-        bool ITypeSymbol.IsAnonymousType => false;
-
-        SpecialType ITypeSymbol.SpecialType => throw new NotImplementedException();
-
-        public virtual bool IsRefLikeType => false;
-
-        public virtual bool IsReadOnly => false;
+        bool ITypeSymbol.IsTupleType => this.IsTupleType;
 
         #endregion
-
-        #region Interface member checks
-
-        protected class ExplicitInterfaceImplementationTargetMemberEqualityComparer : IEqualityComparer<Symbol>
-        {
-            public static readonly ExplicitInterfaceImplementationTargetMemberEqualityComparer Instance = new ExplicitInterfaceImplementationTargetMemberEqualityComparer();
-
-            private ExplicitInterfaceImplementationTargetMemberEqualityComparer() { }
-            public bool Equals(Symbol x, Symbol y)
-            {
-                return x.OriginalDefinition == y.OriginalDefinition &&
-                       x.ContainingType.Equals(y.ContainingType, TypeCompareKind.CLRSignatureCompareOptions);
-            }
-
-            public int GetHashCode(Symbol obj)
-            {
-                return obj.OriginalDefinition.GetHashCode();
-            }
-        }
-
-        #endregion Interface member checks
 
         public static bool Equals(TypeSymbol left, TypeSymbol right, TypeCompareKind comparison)
         {

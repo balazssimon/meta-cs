@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// <summary>
     /// Represents an assembly built by compiler.
     /// </summary>
-    internal sealed partial class SourceAssemblySymbol : AssemblySymbol
+    internal sealed partial class SourceAssemblySymbol : AssemblySymbol, IAttributeTargetSymbol
     {
         /// <summary>
         /// A Compilation the assembly is created for.
@@ -50,10 +50,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             ArrayBuilder<ModuleSymbol> moduleBuilder = new ArrayBuilder<ModuleSymbol>(_csharpAssemblySymbol.Modules.Length);
 
-            moduleBuilder.Add(new SourceModuleSymbol(this, compilation.Declarations, _csharpAssemblySymbol.Modules[0], 0));
+            moduleBuilder.Add(new SourceModuleSymbol(this, compilation.Declarations, _csharpAssemblySymbol.Modules[0].Name));
             for (int i = 1; i < _csharpAssemblySymbol.Modules.Length; i++)
             {
-                moduleBuilder.Add(new RetargetingModuleSymbol(this, _csharpAssemblySymbol.Modules[0], i));
+                moduleBuilder.Add(WrappedCSharpModuleSymbol.Create(this, _csharpAssemblySymbol.Modules[i], i));
             }
 
             _modules = moduleBuilder.ToImmutableAndFree();
@@ -70,7 +70,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <remarks>
         /// This override is essential - it's a base case of the recursive definition.
         /// </remarks>
-        public sealed override LanguageCompilation DeclaringCompilation
+        internal sealed override LanguageCompilation DeclaringCompilation
         {
             get
             {
@@ -102,44 +102,5 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return new AssemblyIdentity(_csharpAssemblySymbol.Name);
         }
 
-        public override INamedTypeSymbol GetSpecialType(SpecialType type)
-        {
-            return _csharpAssemblySymbol.GetSpecialType(type);
-        }
-
-        public override ISymbol GetSpecialTypeMember(SpecialMember member)
-        {
-            return _csharpAssemblySymbol.GetSpecialTypeMember(member);
-        }
-
-        public override INamespaceSymbol GlobalNamespace => throw new NotImplementedException();
-
-        public override ImmutableArray<ModuleSymbol> Modules => throw new NotImplementedException();
-
-        public override ICollection<string> TypeNames => throw new NotImplementedException();
-
-        public override ICollection<string> NamespaceNames => throw new NotImplementedException();
-
-        public override bool MightContainExtensionMethods => throw new NotImplementedException();
-
-        public override AssemblyMetadata GetMetadata()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override INamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool GivesAccessTo(IAssemblySymbol toAssembly)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override INamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

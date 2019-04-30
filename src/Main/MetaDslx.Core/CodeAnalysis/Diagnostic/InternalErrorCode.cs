@@ -76,6 +76,17 @@ namespace MetaDslx.CodeAnalysis
         public static InternalErrorCode ERR_PartialMethodOnlyOneActual { get; internal set; }
         public static InternalErrorCode ERR_PartialMethodOnlyOneLatent { get; internal set; }
         public static InternalErrorCode ERR_PartialMethodMustHaveLatent { get; internal set; }
+        public static InternalErrorCode ERR_NoTypeDefFromModule { get; internal set; }
+        public static InternalErrorCode ERR_MissingTypeInSource { get; internal set; }
+        public static InternalErrorCode ERR_MissingTypeInAssembly { get; internal set; }
+        public static InternalErrorCode ERR_PredefinedTypeNotFound { get; internal set; }
+        public static InternalErrorCode WRN_UnifyReferenceBldRev { get; internal set; }
+        public static InternalErrorCode WRN_UnifyReferenceMajMin { get; internal set; }
+        public static InternalErrorCode ERR_AssemblyMatchBadVersion { get; internal set; }
+        public static InternalErrorCode ERR_CycleInTypeForwarder { get; internal set; }
+        public static InternalErrorCode ERR_TypeForwardedToMultipleAssemblies { get; internal set; }
+        public static InternalErrorCode WRN_MultiplePredefTypes { get; internal set; }
+        public static InternalErrorCode ERR_ImportedCircularBase { get; internal set; }
 
     }
 }

@@ -1095,7 +1095,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     var assemblySymbol = sourceReferencedAssemblySymbols[i];
                     bool isLinked = false;
-                    if (assemblySymbol is Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol csharpAssembly) isLinked = csharpAssembly.IsLinked;
+                    if (assemblySymbol is MetaDslx.CodeAnalysis.Symbols.AssemblySymbol csharpAssembly) isLinked = csharpAssembly.IsLinked;
                     if (assemblySymbol is MetaDslx.CodeAnalysis.Symbols.AssemblySymbol metadslxAssembly) isLinked = metadslxAssembly.IsLinked;
                     if (!isLinked)
                     {

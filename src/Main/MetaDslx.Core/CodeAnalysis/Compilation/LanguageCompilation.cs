@@ -937,7 +937,8 @@ namespace MetaDslx.CodeAnalysis
         {
             get
             {
-                throw new NotImplementedException("TODO:MetaDslx");
+                throw new NotImplementedException("TODO:MetaDslx - replace with backend created symbol");
+                //return CSharpCompilationForReferenceManager.SourceAssembly;
             }
         }
 

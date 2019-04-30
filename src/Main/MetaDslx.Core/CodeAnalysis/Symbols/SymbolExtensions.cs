@@ -8,71 +8,38 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public static class SymbolExtensions
     {
-        internal static void AddUseSiteDiagnostics(
-            this TypeSymbol type,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        internal static TDestination EnsureCSharpSymbolOrNull<TSource, TDestination>(this TSource symbol, string paramName)
+            where TSource : ISymbol
+            where TDestination : Symbol, TSource
         {
-            DiagnosticInfo errorInfo = type.GetUseSiteDiagnostic();
+            var csSymbol = symbol as TDestination;
 
-            if ((object)errorInfo != null)
+            if ((object)csSymbol == null && (object)symbol != null)
             {
-                if (useSiteDiagnostics == null)
+                throw new ArgumentException(Microsoft.CodeAnalysis.CSharp.CSharpResources.NotACSharpSymbol, paramName);
+            }
+
+            return csSymbol;
+        }
+
+        /// <summary>
+        /// The immediately containing namespace or named type, or null
+        /// if the containing symbol is neither a namespace or named type.
+        /// </summary>
+        internal static NamespaceOrTypeSymbol ContainingNamespaceOrType(this Symbol symbol)
+        {
+            var containingSymbol = symbol.ContainingSymbol;
+            if ((object)containingSymbol != null)
+            {
+                switch (containingSymbol.Kind)
                 {
-                    useSiteDiagnostics = new HashSet<DiagnosticInfo>();
+                    case SymbolKind.Namespace:
+                    case SymbolKind.NamedType:
+                    case SymbolKind.ErrorType:
+                        return (NamespaceOrTypeSymbol)containingSymbol;
                 }
-
-                useSiteDiagnostics.Add(errorInfo);
             }
-        }
-        /// <summary>
-        /// Guess the non-error type that the given type was intended to represent.
-        /// If the type itself is not an error type, then it will be returned.
-        /// Otherwise, the underlying type (if any) of the error type will be
-        /// returned.
-        /// </summary>
-        /// <remarks>
-        /// Any non-null type symbol returned is guaranteed not to be an error type.
-        /// 
-        /// It is possible to pass in a constructed type and received back an 
-        /// unconstructed type.  This can occur when the type passed in was
-        /// constructed from an error type - the underlying definition will be
-        /// available, but there won't be a good way to "re-substitute" back up
-        /// to the level of the specified type.
-        /// </remarks>
-        internal static TypeSymbol GetNonErrorGuess(this TypeSymbol type)
-        {
-            var result = ExtendedErrorTypeSymbol.ExtractNonErrorType(type);
-            Debug.Assert((object)result == null || !result.IsErrorType());
-            return result;
-        }
-
-        /// <summary>
-        /// Guess the non-error type kind that the given type was intended to represent,
-        /// if possible. If not, return TypeKind.Error.
-        /// </summary>
-        internal static TypeKind GetNonErrorTypeKindGuess(this TypeSymbol type)
-        {
-            return ExtendedErrorTypeSymbol.ExtractNonErrorTypeKind(type);
-        }
-
-        public static bool IsErrorType(this TypeSymbol type)
-        {
-            Debug.Assert((object)type != null);
-            return type.Kind == SymbolKind.ErrorType;
-        }
-
-        /// <summary>
-        /// Add this instance to the set of checked types. Returns true
-        /// if this was added, false if the type was already in the set.
-        /// </summary>
-        public static bool MarkCheckedIfNecessary(this TypeSymbol type, ref HashSet<TypeSymbol> checkedTypes)
-        {
-            if (checkedTypes == null)
-            {
-                checkedTypes = new HashSet<TypeSymbol>();
-            }
-
-            return checkedTypes.Add(type);
+            return null;
         }
     }
 }

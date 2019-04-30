@@ -201,7 +201,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     case SymbolKind.Method:
                         // global statements
-                        return ((Microsoft.CodeAnalysis.CSharp.Symbols.MethodSymbol)containingMember).IsScriptInitializer;
+                        return ((MetaDslx.CodeAnalysis.Symbols.MethodSymbol)containingMember).IsScriptInitializer;
 
                     case SymbolKind.NamedType:
                         // script variable initializers
