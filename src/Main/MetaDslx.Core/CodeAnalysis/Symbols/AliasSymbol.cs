@@ -50,7 +50,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private readonly Binder _binder;
 
         private SymbolCompletionState _state;
-        private INamespaceOrTypeSymbol _aliasTarget;
+        private NamespaceOrTypeSymbol _aliasTarget;
         private readonly ImmutableArray<Location> _locations;  // NOTE: can be empty for the "global" alias.
 
         // lazy binding
@@ -58,7 +58,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private readonly bool _isExtern;
         private DiagnosticBag _aliasTargetDiagnostics;
 
-        private AliasSymbol(Binder binder, INamespaceOrTypeSymbol target, string aliasName, ImmutableArray<Location> locations, bool isExtern = false)
+        private AliasSymbol(Binder binder, NamespaceOrTypeSymbol target, string aliasName, ImmutableArray<Location> locations, bool isExtern = false)
         {
             _aliasName = aliasName;
             _locations = locations;
@@ -76,22 +76,22 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         // For the purposes of SemanticModel, it is convenient to have an AliasSymbol for the "global" namespace that "global::" binds
         // to. This alias symbol is returned only when binding "global::" (special case code).
-        internal static AliasSymbol CreateGlobalNamespaceAlias(INamespaceSymbol globalNamespace, Binder globalNamespaceBinder)
+        internal static AliasSymbol CreateGlobalNamespaceAlias(NamespaceSymbol globalNamespace, Binder globalNamespaceBinder)
         {
             return new AliasSymbol(globalNamespaceBinder, globalNamespace, "global", ImmutableArray<Location>.Empty);
         }
 
-        internal static AliasSymbol CreateAlias(INamespaceOrTypeSymbol targetSymbol, SyntaxToken aliasName, Binder binder)
+        internal static AliasSymbol CreateAlias(NamespaceOrTypeSymbol targetSymbol, SyntaxToken aliasName, Binder binder)
         {
             return new AliasSymbol(binder, targetSymbol, binder.Language.SyntaxFacts.ExtractName(aliasName), ImmutableArray.Create(aliasName.GetLocation()));
         }
 
-        internal static AliasSymbol CreateAlias(INamespaceOrTypeSymbol targetSymbol, LanguageSyntaxNode aliasName, Binder binder)
+        internal static AliasSymbol CreateAlias(NamespaceOrTypeSymbol targetSymbol, LanguageSyntaxNode aliasName, Binder binder)
         {
             return new AliasSymbol(binder, targetSymbol, binder.Language.SyntaxFacts.ExtractName(aliasName), ImmutableArray.Create(aliasName.GetLocation()));
         }
 
-        internal static AliasSymbol CreateExternAlias(INamespaceOrTypeSymbol targetSymbol, ExternAliasDirective externAlias, Binder binder)
+        internal static AliasSymbol CreateExternAlias(NamespaceOrTypeSymbol targetSymbol, ExternAliasDirective externAlias, Binder binder)
         {
             return new AliasSymbol(binder, targetSymbol, binder.Language.SyntaxFacts.ExtractName(externAlias.SyntaxNode), ImmutableArray.Create(externAlias.SyntaxNode.GetLocation()), true);
         }
@@ -136,7 +136,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Gets the <see cref="NamespaceOrTypeSymbol"/> for the
         /// namespace or type referenced by the alias.
         /// </summary>
-        public INamespaceOrTypeSymbol Target
+        public NamespaceOrTypeSymbol Target
         {
             get
             {
@@ -239,7 +239,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         // basesBeingResolved is only used to break circular references.
-        internal INamespaceOrTypeSymbol GetAliasTarget(ConsList<ITypeSymbol> basesBeingResolved)
+        internal NamespaceOrTypeSymbol GetAliasTarget(ConsList<TypeSymbol> basesBeingResolved)
         {
             if (!_state.HasComplete(CompletionPart.AliasTarget))
             {
@@ -247,7 +247,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 // symbol. If it is an extern alias then find the target in the list of metadata references.
                 var newDiagnostics = DiagnosticBag.GetInstance();
 
-                INamespaceOrTypeSymbol symbol = this.IsExtern ?
+                NamespaceOrTypeSymbol symbol = this.IsExtern ?
                     ResolveExternAliasTarget(newDiagnostics) :
                     ResolveAliasTarget(_binder, _aliasTargetName, newDiagnostics, basesBeingResolved);
 
@@ -295,9 +295,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }*/
         }
 
-        private INamespaceSymbol ResolveExternAliasTarget(DiagnosticBag diagnostics)
+        private NamespaceSymbol ResolveExternAliasTarget(DiagnosticBag diagnostics)
         {
-            INamespaceSymbol target;
+            NamespaceSymbol target;
             if (!_binder.Compilation.GetExternAliasTarget(_aliasName, out target))
             {
                 diagnostics.Add(_locations.FirstOrDefault(), InternalErrorCode.ERR_BadExternAlias, _aliasName);
@@ -308,7 +308,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return target;
         }
 
-        private static INamespaceOrTypeSymbol ResolveAliasTarget(Binder binder, LanguageSyntaxNode syntax, DiagnosticBag diagnostics, ConsList<ITypeSymbol> basesBeingResolved)
+        private static NamespaceOrTypeSymbol ResolveAliasTarget(Binder binder, LanguageSyntaxNode syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
             // TODO:MetaDslx
             // var declarationBinder = binder.WithAdditionalFlags(BinderFlags.SuppressConstraintChecks | BinderFlags.SuppressObsoleteChecks);

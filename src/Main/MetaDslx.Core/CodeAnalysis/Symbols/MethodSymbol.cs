@@ -10,6 +10,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
     {
         public virtual MethodKind MethodKind => throw new NotImplementedException();
 
+        public virtual bool IsGenericMethod => throw new NotImplementedException();
+
+        public virtual bool IsAsync => throw new NotImplementedException();
+
+        public virtual bool IsEntryPointCandidate => throw new NotImplementedException();
+        
+        public virtual TypeSymbol ReturnType => throw new NotImplementedException();
+
         public virtual int Arity => throw new NotImplementedException();
 
         public override SymbolKind Kind => throw new NotImplementedException();

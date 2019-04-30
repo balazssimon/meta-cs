@@ -136,7 +136,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <see cref="CompilationUnitSyntax"/> for top-level imports.
         /// </param>
         /// <param name="inUsing">True if the binder will be used to bind a using directive.</param>
-        public virtual InContainerBinder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing = false)
+        public virtual InContainerBinder GetImportsBinder(SyntaxNode unit, bool inUsing = false)
         {
             /* TODO:MetaDslx: in descendants
             switch (unit.Kind())

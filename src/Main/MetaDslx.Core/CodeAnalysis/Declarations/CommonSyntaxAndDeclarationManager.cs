@@ -10,20 +10,20 @@ namespace MetaDslx.CodeAnalysis.Declarations
         internal readonly ImmutableArray<SyntaxTree> ExternalSyntaxTrees;
         internal readonly string ScriptClassName;
         internal readonly SourceReferenceResolver Resolver;
-        internal readonly LanguageCompilation Compilation;
+        internal readonly Language Language;
         internal readonly bool IsSubmission;
 
         public CommonSyntaxAndDeclarationManager(
             ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            LanguageCompilation compilation,
+            Language language,
             bool isSubmission)
         {
             this.ExternalSyntaxTrees = externalSyntaxTrees;
             this.ScriptClassName = scriptClassName ?? "";
             this.Resolver = resolver;
-            this.Compilation = compilation;
+            this.Language = language;
             this.IsSubmission = isSubmission;
         }
     }

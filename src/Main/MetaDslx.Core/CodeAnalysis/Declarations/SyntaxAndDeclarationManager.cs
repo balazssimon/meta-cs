@@ -20,10 +20,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            LanguageCompilation compilation,
+            Language language,
             bool isSubmission,
             State state)
-            : base(externalSyntaxTrees, scriptClassName, resolver, compilation, isSubmission)
+            : base(externalSyntaxTrees, scriptClassName, resolver, language, isSubmission)
         {
             _lazyState = state;
         }
@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             if (_lazyState == null)
             {
-                Interlocked.CompareExchange(ref _lazyState, CreateState(this.ExternalSyntaxTrees, this.ScriptClassName, this.Resolver, this.Compilation, this.IsSubmission), null);
+                Interlocked.CompareExchange(ref _lazyState, CreateState(this.ExternalSyntaxTrees, this.ScriptClassName, this.Resolver, this.Language, this.IsSubmission), null);
             }
 
             return _lazyState;
@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            LanguageCompilation compilation,
+            Language language,
             bool isSubmission)
         {
             var treesBuilder = ArrayBuilder<SyntaxTree>.GetInstance();
@@ -59,7 +59,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                     tree,
                     scriptClassName,
                     resolver,
-                    compilation,
+                    language,
                     isSubmission,
                     ordinalMapBuilder,
                     loadDirectiveMapBuilder,
@@ -81,7 +81,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             var scriptClassName = this.ScriptClassName;
             var resolver = this.Resolver;
-            var compilation = this.Compilation;
+            var language = this.Language;
             var isSubmission = this.IsSubmission;
 
             var state = _lazyState;
@@ -107,7 +107,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                         tree,
                         scriptClassName,
                         resolver,
-                        compilation,
+                        language,
                         isSubmission,
                         ordinalMapBuilder,
                         loadDirectiveMapBuilder,
@@ -128,7 +128,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 newExternalSyntaxTrees,
                 scriptClassName,
                 resolver,
-                compilation,
+                language,
                 isSubmission,
                 state);
         }
@@ -141,7 +141,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             SyntaxTree tree,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            LanguageCompilation compilation,
+            Language language,
             bool isSubmission,
             IDictionary<SyntaxTree, int> ordinalMapBuilder,
             IDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMapBuilder,
@@ -152,7 +152,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             var sourceCodeKind = tree.Options.Kind;
             if (sourceCodeKind == SourceCodeKind.Script)
             {
-                AppendAllLoadedSyntaxTrees(treesBuilder, tree, scriptClassName, resolver, compilation, isSubmission, ordinalMapBuilder, loadDirectiveMapBuilder, loadedSyntaxTreeMapBuilder, declMapBuilder, ref declTable);
+                AppendAllLoadedSyntaxTrees(treesBuilder, tree, scriptClassName, resolver, language, isSubmission, ordinalMapBuilder, loadDirectiveMapBuilder, loadedSyntaxTreeMapBuilder, declMapBuilder, ref declTable);
             }
 
             AddSyntaxTreeToDeclarationMapAndTable(tree, scriptClassName, isSubmission, declMapBuilder, ref declTable);
@@ -167,7 +167,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             SyntaxTree tree,
             string scriptClassName,
             SourceReferenceResolver resolver,
-            LanguageCompilation compilation,
+            Language language,
             bool isSubmission,
             IDictionary<SyntaxTree, int> ordinalMapBuilder,
             IDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMapBuilder,
@@ -207,7 +207,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                         try
                         {
                             var code = resolver.ReadText(resolvedFilePath);
-                            var loadedTree = compilation.Language.SyntaxFactory.ParseSyntaxTree(
+                            var loadedTree = language.SyntaxFactory.ParseSyntaxTree(
                                 code,
                                 tree.Options, // Use ParseOptions propagated from "external" tree.
                                 resolvedFilePath);
@@ -220,7 +220,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                                 loadedTree,
                                 scriptClassName,
                                 resolver,
-                                compilation,
+                                language,
                                 isSubmission,
                                 ordinalMapBuilder,
                                 loadDirectiveMapBuilder,
@@ -333,7 +333,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 newExternalSyntaxTrees,
                 this.ScriptClassName,
                 this.Resolver,
-                this.Compilation,
+                this.Language,
                 this.IsSubmission,
                 state);
         }
@@ -492,7 +492,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                     newTree,
                     this.ScriptClassName,
                     this.Resolver,
-                    this.Compilation,
+                    this.Language,
                     this.IsSubmission,
                     ordinalMapBuilder,
                     loadDirectiveMapBuilder,
@@ -552,14 +552,14 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 newExternalSyntaxTrees,
                 this.ScriptClassName,
                 this.Resolver,
-                this.Compilation,
+                this.Language,
                 this.IsSubmission,
                 state);
         }
 
         internal SyntaxAndDeclarationManager WithExternalSyntaxTrees(ImmutableArray<SyntaxTree> trees)
         {
-            return new SyntaxAndDeclarationManager(trees, this.ScriptClassName, this.Resolver, this.Compilation, this.IsSubmission, state: null);
+            return new SyntaxAndDeclarationManager(trees, this.ScriptClassName, this.Resolver, this.Language, this.IsSubmission, state: null);
         }
 
         internal static bool IsLoadedSyntaxTree(SyntaxTree tree, ImmutableDictionary<string, SyntaxTree> loadedSyntaxTreeMap)

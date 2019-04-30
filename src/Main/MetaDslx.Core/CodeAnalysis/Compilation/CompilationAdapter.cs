@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -23,9 +24,15 @@ namespace MetaDslx.CodeAnalysis
 
         internal override IEnumerable<Microsoft.CodeAnalysis.ReferenceDirective> ReferenceDirectives
         {
-            get { return this.Declarations.ReferenceDirectives.Select(d => d.ToMicrosoft()); }
+            get { return this.ReferenceDirectivesCore.Select(d => d.ToMicrosoft()); }
         }
 
         protected abstract IEnumerable<MetaDslx.CodeAnalysis.Syntax.ReferenceDirective> ReferenceDirectivesCore { get; }
+
+        internal override CommonMessageProvider MessageProvider
+        {
+            get { return Microsoft.CodeAnalysis.CSharp.MessageProvider.Instance; }
+        }
+
     }
 }

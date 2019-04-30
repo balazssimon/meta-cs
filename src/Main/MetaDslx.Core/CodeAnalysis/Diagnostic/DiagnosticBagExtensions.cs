@@ -8,10 +8,16 @@ namespace MetaDslx.CodeAnalysis
 {
     internal static class DiagnosticBagExtensions
     {
-        internal static ErrorCode GetErrorCode(this DiagnosticInfo info)
+        internal static bool HasErrorCode(this Diagnostic diagnostic, ErrorCode errorCode)
         {
-            var languageInfo = info as LanguageDiagnosticInfo;
-            return languageInfo?.ErrorCode;
+            if (diagnostic is LanguageDiagnostic languageDiagnostic) return languageDiagnostic.Info.ErrorCode == errorCode;
+            else return diagnostic.Code == errorCode.Code;
+        }
+
+        internal static bool HasErrorCode(this DiagnosticInfo info, ErrorCode errorCode)
+        {
+            if (info is LanguageDiagnosticInfo languageDiagnostic) return languageDiagnostic.ErrorCode == errorCode;
+            else return info.Code == errorCode.Code;
         }
 
         internal static Diagnostic ToDiagnostic(this DiagnosticInfo info, Location location)

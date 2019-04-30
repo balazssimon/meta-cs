@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// <summary>
     /// An WrappedTypeSymbol represents an wrapped type, such as int[] or int?
     /// </summary>
-    internal abstract partial class WrappedTypeSymbol : TypeSymbol
+    public abstract partial class WrappedTypeSymbol : TypeSymbol
     {
         private readonly TypeSymbol _wrappedType;
 
@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public TypeSymbol WrappedType => _wrappedType;
 
-        internal WrappedTypeSymbol WithWrappedType(TypeSymbol wrappedType)
+        public WrappedTypeSymbol WithWrappedType(TypeSymbol wrappedType)
         {
             return (object)_wrappedType == (object)wrappedType ? this : WithWrappedTypeCore(wrappedType);
         }
@@ -66,7 +66,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override ObsoleteAttributeData ObsoleteAttributeData
+        internal override ObsoleteAttributeData ObsoleteAttributeData
         {
             get { return null; }
         }
@@ -91,7 +91,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }
 
-        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, int arity)
         {
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }

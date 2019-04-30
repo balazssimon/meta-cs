@@ -12,6 +12,8 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
 {
+    using CSharpSyntaxTree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree;
+
     public static class SyntaxExtensions
     {
         public static Language Language(this SyntaxNode node)
@@ -321,33 +323,53 @@ namespace MetaDslx.CodeAnalysis
 
         public static bool HasReferenceDirectives(this SyntaxTree tree)
         {
-            var csharpTree = tree as LanguageSyntaxTree;
-            return csharpTree != null && csharpTree.HasReferenceDirectives;
+            if (tree is LanguageSyntaxTree languageTree) return languageTree.HasReferenceDirectives;
+            if (tree is CSharpSyntaxTree csharpTree) return csharpTree.HasReferenceDirectives;
+            return false;
         }
 
         public static bool HasReferenceOrLoadDirectives(this SyntaxTree tree)
         {
-            var csharpTree = tree as LanguageSyntaxTree;
-            return csharpTree != null && csharpTree.HasReferenceOrLoadDirectives;
+            if (tree is LanguageSyntaxTree languageTree) return languageTree.HasReferenceOrLoadDirectives;
+            if (tree is CSharpSyntaxTree csharpTree) return csharpTree.HasReferenceOrLoadDirectives;
+            return false;
         }
 
         public static bool IsAnyPreprocessorSymbolDefined(this SyntaxTree tree, ImmutableArray<string> conditionalSymbols)
         {
-            var csharpTree = tree as LanguageSyntaxTree;
-            return csharpTree != null && csharpTree.IsAnyPreprocessorSymbolDefined(conditionalSymbols);
+            if (tree is LanguageSyntaxTree languageTree) return languageTree.IsAnyPreprocessorSymbolDefined(conditionalSymbols);
+            if (tree is CSharpSyntaxTree csharpTree) return csharpTree.IsAnyPreprocessorSymbolDefined(conditionalSymbols);
+            return false;
         }
 
         public static bool IsPreprocessorSymbolDefined(this SyntaxTree tree, string symbolName, int position)
         {
-            var csharpTree = tree as LanguageSyntaxTree;
-            return csharpTree != null && csharpTree.IsPreprocessorSymbolDefined(symbolName, position);
+            if (tree is LanguageSyntaxTree languageTree) return languageTree.IsPreprocessorSymbolDefined(symbolName, position);
+            if (tree is CSharpSyntaxTree csharpTree) return csharpTree.IsPreprocessorSymbolDefined(symbolName, position);
+            return false;
         }
 
         // Given the error code and the source location, get the warning state based on pragma warning directives.
         public static PragmaWarningState GetPragmaDirectiveWarningState(this SyntaxTree tree, string id, int position)
         {
-            return ((LanguageSyntaxTree)tree).GetPragmaDirectiveWarningState(id, position);
+            if (tree is LanguageSyntaxTree languageTree) return languageTree.GetPragmaDirectiveWarningState(id, position);
+            if (tree is CSharpSyntaxTree csharpTree)
+            {
+                switch (csharpTree.GetPragmaDirectiveWarningState(id, position))
+                {
+                    case Microsoft.CodeAnalysis.CSharp.Syntax.PragmaWarningState.Default:
+                        return PragmaWarningState.Default;
+                    case Microsoft.CodeAnalysis.CSharp.Syntax.PragmaWarningState.Enabled:
+                        return PragmaWarningState.Enabled;
+                    case Microsoft.CodeAnalysis.CSharp.Syntax.PragmaWarningState.Disabled:
+                        return PragmaWarningState.Disabled;
+                    default:
+                        break;
+                }
+            }
+            return PragmaWarningState.Default;
         }
+
         #endregion
 
     }
