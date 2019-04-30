@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -17,6 +18,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private DynamicTypeSymbol()
         {
         }
+
+        public override ModelSymbolInfo ModelSymbolInfo => null;
 
         public override string Name
         {
@@ -82,7 +85,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        internal override NamedTypeSymbol BaseTypeNoUseSiteDiagnostics => null;
+        public override NamedTypeSymbol BaseTypeNoUseSiteDiagnostics => null;
 
         internal override ImmutableArray<NamedTypeSymbol> InterfacesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
         {
@@ -123,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        internal sealed override ObsoleteAttributeData ObsoleteAttributeData
+        public sealed override ObsoleteAttributeData ObsoleteAttributeData
         {
             get { return null; }
         }

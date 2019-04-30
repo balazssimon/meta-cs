@@ -129,11 +129,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>An ImmutableArray containing all the members of this symbol with the given name and metadata name.
         /// If this symbol has no type members with this name and metadata name,
         /// returns an empty ImmutableArray. Never returns null.</returns>
-        public virtual ImmutableArray<NamedTypeSymbol> GetMembers(string name, string metadataName)
+        public virtual ImmutableArray<Symbol> GetMembers(string name, string metadataName)
         {
             // default implementation does a post-filter. We can override this if its a performance burden, but 
             // experience is that it won't be.
-            return GetTypeMembers(name).WhereAsArray(t => t.MetadataName == metadataName);
+            return GetMembers(name).WhereAsArray(t => t.MetadataName == metadataName);
         }
 
         /// <summary>

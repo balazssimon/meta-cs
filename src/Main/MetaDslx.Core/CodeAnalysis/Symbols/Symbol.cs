@@ -1,29 +1,33 @@
-﻿using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.Modeling;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
-using Microsoft.CodeAnalysis.Text;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Collections;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.CodeAnalysis.Text;
+using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     using SymbolDisplay = Microsoft.CodeAnalysis.CSharp.SymbolDisplay;
     using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
-    using CSharpSemanticModel = Microsoft.CodeAnalysis.CSharp.CSharpSemanticModel;
 
     /// <summary>
     /// The base class for all symbols (namespaces, classes, method, parameters, etc.) that are 
     /// exposed by the compiler.
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    public abstract partial class Symbol : ISymbol, IFormattable
+    internal abstract partial class Symbol : ISymbol, IFormattable
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Changes to the public interface of this class should remain synchronized with the VB version of Symbol.
@@ -31,26 +35,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // to the VB version.
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        protected Symbol()
-        {
-        }
+        public virtual ModelSymbolInfo SymbolInfo => null;
 
         /// <summary>
         /// True if this Symbol should be completed by calling ForceComplete.
         /// Intuitively, true for source entities (from any compilation).
         /// </summary>
-        public virtual bool RequiresCompletion
+        internal virtual bool RequiresCompletion
         {
             get { return false; }
         }
 
-        public virtual void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        internal virtual void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             // must be overridden by source symbols, no-op for other symbols
             Debug.Assert(!this.RequiresCompletion);
         }
 
-        public virtual bool HasComplete(CompletionPart part)
+        internal virtual bool HasComplete(CompletionPart part)
         {
             // must be overridden by source symbols, no-op for other symbols
             Debug.Assert(!this.RequiresCompletion);
@@ -90,11 +92,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Gets the kind of this symbol.
         /// </summary>
         public abstract SymbolKind Kind { get; }
-
-        /// <summary>
-        /// Gets the kind of this type.
-        /// </summary>
-        public abstract ModelSymbolInfo ModelSymbolInfo { get; }
 
         /// <summary>
         /// Get the symbol that logically contains this symbol. 
@@ -180,7 +177,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// 
         /// Remarks, not "ContainingCompilation" because it isn't transitive.
         /// </remarks>
-        public virtual LanguageCompilation DeclaringCompilation
+        internal virtual LanguageCompilation DeclaringCompilation
         {
             get
             {
@@ -189,14 +186,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     case SymbolKind.ErrorType:
                         return null;
                     case SymbolKind.Assembly:
-                        Debug.Assert(!(this is ISourceAssemblySymbol), "SourceAssemblySymbol must override DeclaringCompilation");
+                        Debug.Assert(!(this is SourceAssemblySymbol), "SourceAssemblySymbol must override DeclaringCompilation");
                         return null;
                     case SymbolKind.NetModule:
-                        Debug.Assert(!(this is ISourceSymbol), "SourceModuleSymbol must override DeclaringCompilation");
+                        Debug.Assert(!(this is SourceModuleSymbol), "SourceModuleSymbol must override DeclaringCompilation");
                         return null;
                 }
 
-                var sourceModuleSymbol = this.ContainingModule as ISourceSymbol;
+                var sourceModuleSymbol = this.ContainingModule as SourceModuleSymbol;
                 return (object)sourceModuleSymbol == null ? null : sourceModuleSymbol.DeclaringCompilation;
             }
         }
@@ -205,7 +202,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Returns the module containing this symbol. If this symbol is shared across multiple
         /// modules, or doesn't belong to a module, returns null.
         /// </summary>
-        public virtual ModuleSymbol ContainingModule
+        internal virtual ModuleSymbol ContainingModule
         {
             get
             {
@@ -269,7 +266,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// need implement this function if they want to do so for efficiency.
         /// </para>
         /// </summary>
-        public virtual LexicalSortKey GetLexicalSortKey()
+        internal virtual LexicalSortKey GetLexicalSortKey()
         {
             var locations = this.Locations;
             var declaringCompilation = this.DeclaringCompilation;
@@ -310,7 +307,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         /// <summary>
         /// Helper for implementing <see cref="DeclaringSyntaxReferences"/> for derived classes that store a location but not a 
-        /// <see cref="LanguageSyntaxNode"/> or <see cref="SyntaxReference"/>.
+        /// <see cref="CSharpSyntaxNode"/> or <see cref="SyntaxReference"/>.
         /// </summary>
         internal static ImmutableArray<SyntaxReference> GetDeclaringSyntaxReferenceHelper<TNode>(ImmutableArray<Location> locations)
             where TNode : LanguageSyntaxNode
@@ -395,15 +392,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract bool IsExtern { get; }
 
         /// <summary>
-        /// Returns true if this symbol is a partial symbol; i.e., it should be merged with
-        /// its other partial parts. 
-        /// </summary>
-        public virtual bool IsPartial
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Returns true if this symbol was automatically created by the compiler, and does not
         /// have an explicit corresponding source code declaration.  
         /// 
@@ -434,7 +422,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual bool CanBeReferencedByName
         {
-            get { return false; }
+            get
+            {
+                return SymbolInfo?.HasName ?? false;
+            }
         }
 
         /// <summary>
@@ -533,6 +524,48 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // want to expose publicly.
         // ---- End of Public Definition ---
 
+        // Prevent anyone else from deriving from this class.
+        internal Symbol()
+        {
+        }
+
+        /// <summary>
+        /// Build and add synthesized attributes for this symbol.
+        /// </summary>
+        internal virtual void AddSynthesizedAttributes(PEModuleBuilder moduleBuilder, ref ArrayBuilder<SynthesizedAttributeData> attributes)
+        {
+        }
+
+        /// <summary>
+        /// Convenience helper called by subclasses to add a synthesized attribute to a collection of attributes.
+        /// </summary>
+        internal static void AddSynthesizedAttribute(ref ArrayBuilder<SynthesizedAttributeData> attributes, SynthesizedAttributeData attribute)
+        {
+            if (attribute != null)
+            {
+                if (attributes == null)
+                {
+                    attributes = new ArrayBuilder<SynthesizedAttributeData>(1);
+                }
+
+                attributes.Add(attribute);
+            }
+        }
+
+        /// <summary>
+        /// <see cref="CharSet"/> effective for this symbol (type or DllImport method).
+        /// Nothing if <see cref="DefaultCharSetAttribute"/> isn't applied on the containing module or it doesn't apply on this symbol.
+        /// </summary>
+        /// <remarks>
+        /// Determined based upon value specified via <see cref="DefaultCharSetAttribute"/> applied on the containing module.
+        /// </remarks>
+        internal CharSet? GetEffectiveDefaultMarshallingCharSet()
+        {
+            Debug.Assert(this.Kind == SymbolKind.NamedType || this.Kind == SymbolKind.Method);
+            return this.ContainingModule.DefaultMarshallingCharSet;
+        }
+
+
         internal bool IsFromCompilation(LanguageCompilation compilation)
         {
             Debug.Assert(compilation != null);
@@ -559,7 +592,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return this.DeclaringCompilation != null; }
         }
 
-        public virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
+        internal virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
         {
             var declaringReferences = this.DeclaringSyntaxReferences;
             if (this.IsImplicitlyDeclared && declaringReferences.Length == 0)
@@ -596,7 +629,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public virtual string GetDocumentationCommentId()
         {
-            return null;
+            // NOTE: we're using a try-finally here because there's a test that specifically
+            // triggers an exception here to confirm that some symbols don't have documentation
+            // comment IDs.  We don't care about "leaks" in such cases, but we don't want spew
+            // in the test output.
+            var pool = PooledStringBuilder.GetInstance();
+            try
+            {
+                StringBuilder builder = pool.Builder;
+                DocumentationCommentIDVisitor.Instance.Visit(this, builder);
+                return builder.Length == 0 ? null : builder.ToString();
+            }
+            finally
+            {
+                pool.Free();
+            }
         }
 
         /// <summary>
@@ -659,11 +706,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Return error code that has highest priority while calculating use site error for this symbol. 
         /// Supposed to be ErrorCode, but it causes inconsistent accessibility error.
         /// </summary>
-        protected virtual ErrorCode HighestPriorityUseSiteError
+        protected virtual int HighestPriorityUseSiteError
         {
             get
             {
-                return null;
+                return int.MaxValue;
             }
         }
 
@@ -715,7 +762,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return false;
             }
 
-            if (info.Severity == DiagnosticSeverity.Error && ((info as LanguageDiagnosticInfo)?.ErrorCode == HighestPriorityUseSiteError || HighestPriorityUseSiteError == null))
+            if (info.Severity == DiagnosticSeverity.Error && (info.Code == HighestPriorityUseSiteError || HighestPriorityUseSiteError == Int32.MaxValue))
             {
                 // this error is final, no other error can override it:
                 result = info;
@@ -744,6 +791,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns>True if the diagnostic has error severity.</returns>
         internal static bool ReportUseSiteDiagnostic(DiagnosticInfo info, DiagnosticBag diagnostics, Location location)
         {
+            var languageInfo = info as LanguageDiagnosticInfo;
+            // Unlike VB the C# Dev11 compiler reports only a single unification error/warning.
+            // By dropping the location we effectively merge all unification use-site errors that have the same error code into a single error.
+            // The error message clearly explains how to fix the problem and reporting the error for each location wouldn't add much value. 
+            if (languageInfo != null &&
+                (languageInfo.ErrorCode == InternalErrorCode.WRN_UnifyReferenceBldRev ||
+                languageInfo.ErrorCode == InternalErrorCode.WRN_UnifyReferenceMajMin ||
+                languageInfo.ErrorCode == InternalErrorCode.ERR_AssemblyMatchBadVersion))
+            {
+                location = NoLocation.Singleton;
+            }
+
             diagnostics.Add(info, location);
             return info.Severity == DiagnosticSeverity.Error;
         }
@@ -754,10 +813,85 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal bool DeriveUseSiteDiagnosticFromType(ref DiagnosticInfo result, TypeSymbol type)
         {
             DiagnosticInfo info = type.GetUseSiteDiagnostic();
+            if (info != null)
+            {
+                if (info.GetErrorCode() == InternalErrorCode.ERR_BogusType)
+                {
+                    switch (this.Kind)
+                    {
+                        case SymbolKind.Field:
+                        case SymbolKind.Method:
+                        case SymbolKind.Property:
+                        case SymbolKind.Event:
+                            info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_BindToBogus, this);
+                            break;
+                    }
+                }
+            }
+
             return MergeUseSiteDiagnostics(ref result, info);
         }
 
+        internal bool DeriveUseSiteDiagnosticFromType(ref DiagnosticInfo result, TypeWithAnnotations type)
+        {
+            return DeriveUseSiteDiagnosticFromType(ref result, type.Type) ||
+                   DeriveUseSiteDiagnosticFromCustomModifiers(ref result, type.CustomModifiers);
+        }
+
+        internal bool DeriveUseSiteDiagnosticFromParameter(ref DiagnosticInfo result, ParameterSymbol param)
+        {
+            return DeriveUseSiteDiagnosticFromType(ref result, param.TypeWithAnnotations) ||
+                   DeriveUseSiteDiagnosticFromCustomModifiers(ref result, param.RefCustomModifiers);
+        }
+
+        internal bool DeriveUseSiteDiagnosticFromParameters(ref DiagnosticInfo result, ImmutableArray<ParameterSymbol> parameters)
+        {
+            foreach (ParameterSymbol param in parameters)
+            {
+                if (DeriveUseSiteDiagnosticFromParameter(ref result, param))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal bool DeriveUseSiteDiagnosticFromCustomModifiers(ref DiagnosticInfo result, ImmutableArray<CustomModifier> customModifiers)
+        {
+            foreach (CustomModifier modifier in customModifiers)
+            {
+                var modifierType = (NamedTypeSymbol)modifier.Modifier;
+
+                // Unbound generic type is valid as a modifier, let's not report any use site diagnostics because of that.
+                if (modifierType.IsUnboundGenericType)
+                {
+                    modifierType = modifierType.OriginalDefinition;
+                }
+
+                if (DeriveUseSiteDiagnosticFromType(ref result, modifierType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         internal static bool GetUnificationUseSiteDiagnosticRecursive<T>(ref DiagnosticInfo result, ImmutableArray<T> types, Symbol owner, ref HashSet<TypeSymbol> checkedTypes) where T : TypeSymbol
+        {
+            foreach (var t in types)
+            {
+                if (t.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<TypeWithAnnotations> types, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
         {
             foreach (var t in types)
             {
@@ -775,6 +909,33 @@ namespace MetaDslx.CodeAnalysis.Symbols
             foreach (var modifier in modifiers)
             {
                 if (((TypeSymbol)modifier.Modifier).GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<ParameterSymbol> parameters, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
+        {
+            foreach (var parameter in parameters)
+            {
+                if (parameter.TypeWithAnnotations.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes) ||
+                    GetUnificationUseSiteDiagnosticRecursive(ref result, parameter.RefCustomModifiers, owner, ref checkedTypes))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal static bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, ImmutableArray<TypeParameterSymbol> typeParameters, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
+        {
+            foreach (var typeParameter in typeParameters)
+            {
+                if (GetUnificationUseSiteDiagnosticRecursive(ref result, typeParameter.ConstraintTypesNoUseSiteDiagnostics, owner, ref checkedTypes))
                 {
                     return true;
                 }
@@ -820,7 +981,29 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Returns data decoded from <see cref="ObsoleteAttribute"/> attribute or null if there is no <see cref="ObsoleteAttribute"/> attribute.
         /// This property returns <see cref="Microsoft.CodeAnalysis.ObsoleteAttributeData.Uninitialized"/> if attribute arguments haven't been decoded yet.
         /// </summary>
-        public abstract ObsoleteAttributeData ObsoleteAttributeData { get; }
+        internal abstract ObsoleteAttributeData ObsoleteAttributeData { get; }
+
+        /// <summary>
+        /// Returns true and a <see cref="string"/> from the first <see cref="GuidAttribute"/> on the symbol, 
+        /// the string might be null or an invalid guid representation. False, 
+        /// if there is no <see cref="GuidAttribute"/> with string argument.
+        /// </summary>
+        internal bool GetGuidStringDefaultImplementation(out string guidString)
+        {
+            foreach (var attrData in this.GetAttributes())
+            {
+                if (attrData.IsTargetAttribute(this, AttributeDescription.GuidAttribute))
+                {
+                    if (attrData.TryGetGuidAttributeValue(out guidString))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            guidString = null;
+            return false;
+        }
 
         public string ToDisplayString(SymbolDisplayFormat format = null)
         {
@@ -848,29 +1031,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return SymbolDisplay.ToMinimalDisplayParts(this, semanticModel, position, format);
         }
 
-        /// Gets the attributes for this symbol. Returns an empty <see cref="ImmutableArray&lt;AttributeData&gt;"/> if
-        /// there are no attributes.
-        /// </summary>
-        public virtual ImmutableArray<AttributeData> GetAttributes()
-        {
-            // Return an empty array by default.
-            // Sub-classes that can have custom attributes must
-            // override this method
-            return ImmutableArray<AttributeData>.Empty;
-        }
-
-        public virtual Language Language
-        {
-            get { return Language.None; }
-        }
-
         #region ISymbol Members
 
-        string ISymbol.Language
+        public string Language
         {
             get
             {
-                return this.Language.Name;
+                return LanguageNames.CSharp;
             }
         }
 
@@ -894,12 +1061,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
             int position,
             SymbolDisplayFormat format)
         {
-            var csharpModel = semanticModel as CSharpSemanticModel;
-            if (csharpModel != null)
+            var csharpModel = semanticModel as LanguageSemanticModel;
+            if (csharpModel == null)
             {
-                return SymbolDisplay.ToMinimalDisplayString(this, csharpModel, position, format);
+                throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language);
             }
-            throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language.Name);
+
+            return SymbolDisplay.ToMinimalDisplayString(this, csharpModel, position, format);
         }
 
         ImmutableArray<SymbolDisplayPart> ISymbol.ToMinimalDisplayParts(
@@ -907,12 +1075,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
             int position,
             SymbolDisplayFormat format)
         {
-            var csharpModel = semanticModel as CSharpSemanticModel;
-            if (csharpModel != null)
+            var csharpModel = semanticModel as LanguageSemanticModel;
+            if (csharpModel == null)
             {
-                return SymbolDisplay.ToMinimalDisplayParts(this, csharpModel, position, format);
+                throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language);
             }
-            throw new ArgumentException(CSharpResources.WrongSemanticModelType, this.Language.Name);
+
+            return SymbolDisplay.ToMinimalDisplayParts(this, csharpModel, position, format);
         }
 
         bool ISymbol.IsImplicitlyDeclared
@@ -995,6 +1164,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 return this.DeclaringSyntaxReferences;
             }
+        }
+
+        ImmutableArray<AttributeData> ISymbol.GetAttributes()
+        {
+            return StaticCast<AttributeData>.From(this.GetAttributes());
         }
 
         Accessibility ISymbol.DeclaredAccessibility

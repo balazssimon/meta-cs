@@ -140,7 +140,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// no members with this name, returns an empty ImmutableArray. Never returns Null.</returns>
         public override ImmutableArray<Symbol> GetMembers(string name)
         {
-            return GetMembers().WhereAsArray(m => m.Name == name);
+            return ImmutableArray<Symbol>.Empty;
+        }
+
+        /// <summary>
+        /// Get all the members of this symbol that have a particular name.
+        /// </summary>
+        /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
+        /// no members with this name, returns an empty ImmutableArray. Never returns Null.</returns>
+        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        {
+            return ImmutableArray<Symbol>.Empty;
         }
 
         /// <summary>
@@ -310,11 +320,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        internal sealed override bool HasSpecialName
-        {
-            get { return false; }
-        }
-
         public sealed override bool MightContainExtensionMethods
         {
             get
@@ -323,9 +328,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        internal override NamedTypeSymbol BaseTypeNoUseSiteDiagnostics => null;
-
-        internal override bool HasCodeAnalysisEmbeddedAttribute => false;
+        public override NamedTypeSymbol BaseTypeNoUseSiteDiagnostics => null;
 
         internal override ImmutableArray<NamedTypeSymbol> InterfacesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved)
         {
@@ -347,7 +350,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return false; }
         }
 
-        internal sealed override ObsoleteAttributeData ObsoleteAttributeData
+        public sealed override ObsoleteAttributeData ObsoleteAttributeData
         {
             get { return null; }
         }
@@ -361,6 +364,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get { return false; }
         }
+
 
         #region IErrorTypeSymbol Members
 

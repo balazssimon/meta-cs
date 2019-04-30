@@ -308,6 +308,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
         public abstract override ImmutableArray<Symbol> GetMembers(string name);
 
+        /// <summary>
+        /// Get all the members of this symbol that have a particular name.
+        /// </summary>
+        /// <returns>An ImmutableArray containing all the members of this symbol with the given name. If there are
+        /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
+        public abstract override ImmutableArray<Symbol> GetMembers(string name, string metadataName);
+
         internal virtual ImmutableArray<Symbol> GetSimpleNonTypeMembers(string name)
         {
             return GetMembers(name);
@@ -493,6 +500,78 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
 
             return result;
+        }
+
+        internal DiagnosticInfo CalculateUseSiteDiagnostic()
+        {
+            DiagnosticInfo result = null;
+
+            // Check base type.
+            if (MergeUseSiteDiagnostics(ref result, DeriveUseSiteDiagnosticFromBase()))
+            {
+                return result;
+            }
+
+            // If we reach a type (Me) that is in an assembly with unified references, 
+            // we check if that type definition depends on a type from a unified reference.
+            if (this.ContainingModule.HasUnifiedReferences)
+            {
+                HashSet<TypeSymbol> unificationCheckedTypes = null;
+                if (GetUnificationUseSiteDiagnosticRecursive(ref result, this, ref unificationCheckedTypes))
+                {
+                    return result;
+                }
+            }
+
+            return result;
+        }
+
+        private DiagnosticInfo DeriveUseSiteDiagnosticFromBase()
+        {
+            NamedTypeSymbol @base = this.BaseTypeNoUseSiteDiagnostics;
+
+            while ((object)@base != null)
+            {
+                if (@base.IsErrorType())
+                {
+                    return @base.GetUseSiteDiagnostic();
+                }
+
+                @base = @base.BaseTypeNoUseSiteDiagnostics;
+            }
+
+            return null;
+        }
+
+        internal override bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
+        {
+            if (!this.MarkCheckedIfNecessary(ref checkedTypes))
+            {
+                return false;
+            }
+
+            Debug.Assert(owner.ContainingModule.HasUnifiedReferences);
+            if (owner.ContainingModule.GetUnificationUseSiteDiagnostic(ref result, this))
+            {
+                return true;
+            }
+
+            // We recurse into base types, interfaces and type *parameters* to check for
+            // problems with constraints. We recurse into type *arguments* in the overload
+            // in ConstructedNamedTypeSymbol.
+            //
+            // When we are binding a name with a nested type, Goo.Bar, then we ask for
+            // use-site errors to be reported on both Goo and Goo.Bar. Therefore we should
+            // not recurse into the containing type here; doing so will result in errors
+            // being reported twice if Goo is bad.
+
+            var @base = this.BaseTypeNoUseSiteDiagnostics;
+            if ((object)@base != null && @base.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes))
+            {
+                return true;
+            }
+
+            return GetUnificationUseSiteDiagnosticRecursive(ref result, this.InterfacesNoUseSiteDiagnostics(), owner, ref checkedTypes);
         }
 
         #endregion

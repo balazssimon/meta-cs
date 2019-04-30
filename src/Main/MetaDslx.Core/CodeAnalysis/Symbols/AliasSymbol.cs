@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
@@ -113,6 +114,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return new AliasSymbol(binder, expandedNamespace, _aliasName, _locations);
         }
 
+        public override ModelSymbolInfo ModelSymbolInfo => null;
+
         public override string Name
         {
             get
@@ -208,7 +211,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Returns data decoded from Obsolete attribute or null if there is no Obsolete attribute.
         /// This property returns ObsoleteAttributeData.Uninitialized if attribute arguments haven't been decoded yet.
         /// </summary>
-        internal sealed override ObsoleteAttributeData ObsoleteAttributeData
+        public sealed override ObsoleteAttributeData ObsoleteAttributeData
         {
             get { return null; }
         }
@@ -340,7 +343,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return Name.GetHashCode();
         }
 
-        internal override bool RequiresCompletion
+        public override bool RequiresCompletion
         {
             get { return true; }
         }
