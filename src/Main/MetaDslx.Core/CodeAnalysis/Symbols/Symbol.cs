@@ -43,10 +43,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// True if this Symbol should be completed by calling ForceComplete.
         /// Intuitively, true for source entities (from any compilation).
         /// </summary>
-        internal virtual bool RequiresCompletion
-        {
-            get { return false; }
-        }
+        internal virtual bool RequiresCompletion => false;
 
         internal virtual void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
@@ -65,13 +62,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Gets the name of this symbol. Symbols without a name return the empty string; null is
         /// never returned.
         /// </summary>
-        public virtual string Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
+        public virtual string Name => string.Empty;
 
         /// <summary>
         /// Gets the name of a symbol as it appears in metadata. Most of the time, this
@@ -82,18 +73,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// 2) The metadata name of explicit interface names have spaces removed, compared to
         /// the name property.
         /// </summary>
-        public virtual string MetadataName
-        {
-            get
-            {
-                return this.Name;
-            }
-        }
+        public virtual string MetadataName => this.Name;
 
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public abstract SymbolKind Kind { get; }
+        public virtual SymbolKind Kind => SymbolKind.Unknown;
 
         /// <summary>
         /// Get the symbol that logically contains this symbol. 
@@ -204,7 +189,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Returns the module containing this symbol. If this symbol is shared across multiple
         /// modules, or doesn't belong to a module, returns null.
         /// </summary>
-        internal virtual ModuleSymbol ContainingModule
+        public virtual ModuleSymbol ContainingModule
         {
             get
             {
@@ -230,32 +215,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in
         /// source or metadata.
         /// </summary>
-        public Symbol OriginalDefinition
-        {
-            get
-            {
-                return OriginalSymbolDefinition;
-            }
-        }
-
-        protected virtual Symbol OriginalSymbolDefinition
-        {
-            get
-            {
-                return this;
-            }
-        }
+        public virtual Symbol OriginalDefinition => this;
 
         /// <summary>
         /// Returns true if this is the original definition of this symbol.
         /// </summary>
-        public bool IsDefinition
-        {
-            get
-            {
-                return (object)this == (object)OriginalDefinition;
-            }
-        }
+        public bool IsDefinition => (object)this == (object)OriginalDefinition;
 
         /// <summary>
         /// <para>
