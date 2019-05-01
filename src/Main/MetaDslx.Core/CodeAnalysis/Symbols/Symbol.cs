@@ -194,28 +194,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 // Default implementation gets the containers module.
-
                 var container = this.ContainingSymbol;
                 return (object)container != null ? container.ContainingModule : null;
             }
         }
 
         /// <summary>
-        /// The index of this member in the containing symbol. This is an optional
-        /// property, implemented by anonymous type properties only, for comparing
-        /// symbols in flow analysis.
+        /// The original definition of this symbol. If this symbol is constructed from another
+        /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in
+        /// source or metadata.
         /// </summary>
-        /// <remarks>
-        /// Should this be used for tuple fields as well?
-        /// </remarks>
-        internal virtual int? MemberIndexOpt => null;
-
         /// <summary>
         /// The original definition of this symbol. If this symbol is constructed from another
         /// symbol by type substitution then OriginalDefinition gets the original symbol as it was defined in
         /// source or metadata.
         /// </summary>
-        public virtual Symbol OriginalDefinition => this;
+        public Symbol OriginalDefinition => OriginalSymbolDefinition;
+
+        protected virtual Symbol OriginalSymbolDefinition => this;
 
         /// <summary>
         /// Returns true if this is the original definition of this symbol.
@@ -311,7 +307,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Get this accessibility that was declared on this symbol. For symbols that do not have
         /// accessibility declared on them, returns <see cref="Accessibility.NotApplicable"/>.
         /// </summary>
-        public abstract Accessibility DeclaredAccessibility { get; }
+        public virtual Accessibility DeclaredAccessibility => Accessibility.NotApplicable;
 
         /// <summary>
         /// Returns true if this symbol is "static"; i.e., declared with the <c>static</c> modifier or
@@ -324,7 +320,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// base class member; i.e., declared with the <c>virtual</c> modifier. Does not return true for
         /// members declared as abstract or override.
         /// </summary>
-        public abstract bool IsVirtual { get; }
+        public virtual bool IsVirtual => false;
 
         /// <summary>
         /// Returns true if this symbol was declared to override a base class member; i.e., declared
@@ -335,14 +331,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Even for metadata symbols, <see cref="IsOverride"/> = true does not imply that <see cref="IMethodSymbol.OverriddenMethod"/> will
         /// be non-null.
         /// </remarks>
-        public abstract bool IsOverride { get; }
+        public virtual bool IsOverride => false;
 
         /// <summary>
         /// Returns true if this symbol was declared as requiring an override; i.e., declared with
         /// the <c>abstract</c> modifier. Also returns true on a type declared as "abstract", all
         /// interface types, and members of interface types.
         /// </summary>
-        public abstract bool IsAbstract { get; }
+        public virtual bool IsAbstract => false;
 
         /// <summary>
         /// Returns true if this symbol was declared to override a base class member and was also
@@ -350,13 +346,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// types that do not allow a derived class (declared with <c>sealed</c> or <c>static</c> or <c>struct</c>
         /// or <c>enum</c> or <c>delegate</c>).
         /// </summary>
-        public abstract bool IsSealed { get; }
+        public virtual bool IsSealed => false;
 
         /// <summary>
         /// Returns true if this symbol has external implementation; i.e., declared with the 
         /// <c>extern</c> modifier. 
         /// </summary>
-        public abstract bool IsExtern { get; }
+        public virtual bool IsExtern => false;
 
         /// <summary>
         /// Returns true if this symbol was automatically created by the compiler, and does not
@@ -376,10 +372,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         ///   methods in anonymous types,
         ///   anonymous functions
         /// </summary>
-        public virtual bool IsImplicitlyDeclared
-        {
-            get { return false; }
-        }
+        public virtual bool IsImplicitlyDeclared => false;
 
         /// <summary>
         /// Returns true if this symbol can be referenced by its name in code. Examples of symbols
@@ -395,12 +388,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        /// <summary>
-        /// Perform additional checks after the member has been
-        /// added to the member list of the containing type.
-        /// </summary>
-        internal virtual void AfterAddingTypeMembersChecks(ConversionsBase conversions, DiagnosticBag diagnostics)
+        public virtual ImmutableArray<AttributeData> GetAttributes()
         {
+            return ImmutableArray<AttributeData>.Empty;
         }
 
         // Note: This is no public "IsNew". This is intentional, because new has no syntactic meaning.
@@ -496,44 +486,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
         }
 
-        /// <summary>
-        /// <see cref="CharSet"/> effective for this symbol (type or DllImport method).
-        /// Nothing if <see cref="DefaultCharSetAttribute"/> isn't applied on the containing module or it doesn't apply on this symbol.
-        /// </summary>
-        /// <remarks>
-        /// Determined based upon value specified via <see cref="DefaultCharSetAttribute"/> applied on the containing module.
-        /// </remarks>
-        internal CharSet? GetEffectiveDefaultMarshallingCharSet()
-        {
-            Debug.Assert(this.Kind == SymbolKind.NamedType || this.Kind == SymbolKind.Method);
-            return this.ContainingModule.DefaultMarshallingCharSet;
-        }
-
-
         internal bool IsFromCompilation(LanguageCompilation compilation)
         {
             Debug.Assert(compilation != null);
             return compilation == this.DeclaringCompilation;
-        }
-
-        /// <summary>
-        /// Always prefer <see cref="IsFromCompilation"/>.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Unfortunately, when determining overriding/hiding/implementation relationships, we don't 
-        /// have the "current" compilation available.  We could, but that would clutter up the API 
-        /// without providing much benefit.  As a compromise, we consider all compilations "current".
-        /// </para>
-        /// <para>
-        /// Unlike in VB, we are not allowing retargeting symbols.  This method is used as an approximation
-        /// for <see cref="IsFromCompilation"/> when a compilation is not available and that method will never return
-        /// true for retargeting symbols.
-        /// </para>
-        /// </remarks>
-        internal bool Dangerous_IsFromSomeCompilation
-        {
-            get { return this.DeclaringCompilation != null; }
         }
 
         internal virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
@@ -603,7 +559,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             bool expandIncludes = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return "";
+            return string.Empty;
         }
 
         private static readonly SymbolDisplayFormat s_debuggerDisplayFormat =
@@ -649,15 +605,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         /// <summary>
         /// Return error code that has highest priority while calculating use site error for this symbol. 
-        /// Supposed to be ErrorCode, but it causes inconsistent accessibility error.
         /// </summary>
-        protected virtual ErrorCode HighestPriorityUseSiteError
-        {
-            get
-            {
-                return null;
-            }
-        }
+        protected virtual ErrorCode HighestPriorityUseSiteError => null;
 
         /// <summary>
         /// Indicates that this symbol uses metadata that cannot be supported by the language.
@@ -678,13 +627,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Property - type is unsupported
         /// Parameter - type is unsupported
         /// </summary>
-        public virtual bool HasUnsupportedMetadata
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool HasUnsupportedMetadata => false;
 
         internal DiagnosticInfo GetUseSiteDiagnosticForSymbolOrContainingType()
         {
@@ -693,7 +636,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 return info;
             }
-
             return this.ContainingType.GetUseSiteDiagnostic() ?? info;
         }
 
@@ -707,7 +649,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 return false;
             }
 
-            if (info.Severity == DiagnosticSeverity.Error && (info.GetErrorCode() == HighestPriorityUseSiteError || HighestPriorityUseSiteError == null))
+            if (info.Severity == DiagnosticSeverity.Error && (info.HasErrorCode(HighestPriorityUseSiteError) || HighestPriorityUseSiteError == null))
             {
                 // this error is final, no other error can override it:
                 result = info;
@@ -760,7 +702,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             DiagnosticInfo info = type.GetUseSiteDiagnostic();
             if (info != null)
             {
-                if (info.GetErrorCode() == InternalErrorCode.ERR_BogusType)
+                if (info.HasErrorCode(InternalErrorCode.ERR_BogusType))
                 {
                     switch (this.Kind)
                     {
@@ -782,23 +724,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
             foreach (CustomModifier modifier in customModifiers)
             {
                 var modifierType = (NamedTypeSymbol)modifier.Modifier;
-
-                // Unbound generic type is valid as a modifier, let's not report any use site diagnostics because of that.
-                if (modifierType.IsUnboundGenericType)
-                {
-                    modifierType = modifierType.OriginalDefinition;
-                }
-
                 if (DeriveUseSiteDiagnosticFromType(ref result, modifierType))
                 {
                     return true;
                 }
             }
-
             return false;
         }
 
-        internal static bool GetUnificationUseSiteDiagnosticRecursive<T>(ref DiagnosticInfo result, ImmutableArray<T> types, Symbol owner, ref HashSet<TypeSymbol> checkedTypes) where T : TypeSymbol
+        internal static bool GetUnificationUseSiteDiagnosticRecursive<T>(ref DiagnosticInfo result, ImmutableArray<T> types, Symbol owner, ref HashSet<TypeSymbol> checkedTypes) 
+            where T : TypeSymbol
         {
             foreach (var t in types)
             {
@@ -825,54 +760,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         #endregion
-
-        /// <summary>
-        /// True if this symbol has been marked with the <see cref="ObsoleteAttribute"/> attribute. 
-        /// This property returns <see cref="ThreeState.Unknown"/> if the <see cref="ObsoleteAttribute"/> attribute hasn't been cracked yet.
-        /// </summary>
-        internal ThreeState ObsoleteState
-        {
-            get
-            {
-                switch (ObsoleteKind)
-                {
-                    case ObsoleteAttributeKind.None:
-                    case ObsoleteAttributeKind.Experimental:
-                        return ThreeState.False;
-                    case ObsoleteAttributeKind.Uninitialized:
-                        return ThreeState.Unknown;
-                    default:
-                        return ThreeState.True;
-                }
-            }
-        }
-
-        internal ObsoleteAttributeKind ObsoleteKind
-        {
-            get
-            {
-                var data = this.ObsoleteAttributeData;
-                return (data == null) ? ObsoleteAttributeKind.None : data.Kind;
-            }
-        }
-
-
-        /// <summary>
-        /// Returns data decoded from <see cref="ObsoleteAttribute"/> attribute or null if there is no <see cref="ObsoleteAttribute"/> attribute.
-        /// This property returns <see cref="Microsoft.CodeAnalysis.ObsoleteAttributeData.Uninitialized"/> if attribute arguments haven't been decoded yet.
-        /// </summary>
-        internal abstract ObsoleteAttributeData ObsoleteAttributeData { get; }
-
-        /// <summary>
-        /// Returns true and a <see cref="string"/> from the first <see cref="GuidAttribute"/> on the symbol, 
-        /// the string might be null or an invalid guid representation. False, 
-        /// if there is no <see cref="GuidAttribute"/> with string argument.
-        /// </summary>
-        internal bool GetGuidStringDefaultImplementation(out string guidString)
-        {
-            guidString = null;
-            return false;
-        }
 
         public string ToDisplayString(SymbolDisplayFormat format = null)
         {
@@ -902,18 +789,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #region ISymbol Members
 
-        string ISymbol.Language
-        {
-            get
-            {
-                return this.Language.Name;
-            }
-        }
+        string ISymbol.Language => this.Language.Name;
 
-        string ISymbol.Name
-        {
-            get { return this.Name; }
-        }
+        string ISymbol.Name => this.Name;
 
         string ISymbol.ToDisplayString(SymbolDisplayFormat format)
         {
@@ -953,108 +831,42 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return SymbolDisplay.ToMinimalDisplayParts(this, csharpModel, position, format);
         }
 
-        bool ISymbol.IsImplicitlyDeclared
-        {
-            get { return this.IsImplicitlyDeclared; }
-        }
+        bool ISymbol.IsImplicitlyDeclared => this.IsImplicitlyDeclared;
 
-        ISymbol ISymbol.ContainingSymbol
-        {
-            get { return this.ContainingSymbol; }
-        }
+        ISymbol ISymbol.ContainingSymbol => this.ContainingSymbol;
 
-        IAssemblySymbol ISymbol.ContainingAssembly
-        {
-            get { return this.ContainingAssembly; }
-        }
+        IAssemblySymbol ISymbol.ContainingAssembly => this.ContainingAssembly;
 
-        IModuleSymbol ISymbol.ContainingModule
-        {
-            get { return this.ContainingModule; }
-        }
+        IModuleSymbol ISymbol.ContainingModule => this.ContainingModule;
 
-        INamedTypeSymbol ISymbol.ContainingType
-        {
-            get { return this.ContainingType; }
-        }
+        INamedTypeSymbol ISymbol.ContainingType => this.ContainingType;
 
-        INamespaceSymbol ISymbol.ContainingNamespace
-        {
-            get { return this.ContainingNamespace; }
-        }
+        INamespaceSymbol ISymbol.ContainingNamespace => this.ContainingNamespace;
 
-        bool ISymbol.IsDefinition
-        {
-            get { return this.IsDefinition; }
-        }
+        bool ISymbol.IsDefinition => this.IsDefinition;
 
-        bool ISymbol.IsStatic
-        {
-            get { return this.IsStatic; }
-        }
+        bool ISymbol.IsStatic => this.IsStatic;
 
-        bool ISymbol.IsVirtual
-        {
-            get { return this.IsVirtual; }
-        }
+        bool ISymbol.IsVirtual => this.IsVirtual;
 
-        bool ISymbol.IsOverride
-        {
-            get { return this.IsOverride; }
-        }
+        bool ISymbol.IsOverride => this.IsOverride;
 
-        bool ISymbol.IsAbstract
-        {
-            get
-            {
-                return this.IsAbstract;
-            }
-        }
+        bool ISymbol.IsAbstract => this.IsAbstract;
 
-        bool ISymbol.IsSealed
-        {
-            get
-            {
-                return this.IsSealed;
-            }
-        }
+        bool ISymbol.IsSealed => this.IsSealed;
 
-        ImmutableArray<Location> ISymbol.Locations
-        {
-            get
-            {
-                return this.Locations;
-            }
-        }
+        ImmutableArray<Location> ISymbol.Locations => this.Locations;
 
-        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences
-        {
-            get
-            {
-                return this.DeclaringSyntaxReferences;
-            }
-        }
+        ImmutableArray<SyntaxReference> ISymbol.DeclaringSyntaxReferences => this.DeclaringSyntaxReferences;
 
         ImmutableArray<AttributeData> ISymbol.GetAttributes()
         {
-            return StaticCast<AttributeData>.From(this.GetAttributes());
+            return this.GetAttributes();
         }
 
-        Accessibility ISymbol.DeclaredAccessibility
-        {
-            get
-            {
-                return this.DeclaredAccessibility;
-            }
-        }
+        Accessibility ISymbol.DeclaredAccessibility => this.DeclaredAccessibility;
 
-        ISymbol ISymbol.OriginalDefinition
-        {
-            get
-            {
-                return this.OriginalDefinition;
-            }
-        }
+        ISymbol ISymbol.OriginalDefinition => this.OriginalDefinition;
 
         public abstract void Accept(SymbolVisitor visitor);
 

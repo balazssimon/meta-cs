@@ -7,27 +7,13 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    using CSharpAssemblySymbol = Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol;
+    using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
-    public class AssemblySymbol : Symbol, IAssemblySymbol
+    public abstract class AssemblySymbol : Symbol, IAssemblySymbol
     {
-        private CSharpAssemblySymbol _csharpAssembly;
-        private CSharpSymbolMap _symbolMap;
-        private ImmutableArray<ModuleSymbol> _lazyModules;
-
-        protected AssemblySymbol(IAssemblySymbol assembly)
+        protected AssemblySymbol()
         {
-            if (assembly is CSharpAssemblySymbol csharpAssembly) _csharpAssembly = csharpAssembly;
-            else throw new ArgumentException("The assembly must be a Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol.", nameof(assembly));
-            _symbolMap = new CSharpSymbolMap();
         }
-
-        internal static AssemblySymbol FromCSharp(CSharpAssemblySymbol csharpAssembly)
-        {
-            return new AssemblySymbol(csharpAssembly);
-        }
-
-        internal CSharpSymbolMap CSharpSymbolMap => _symbolMap;
 
         public override AssemblySymbol ContainingAssembly => null;
 
@@ -39,64 +25,54 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public override NamedTypeSymbol ContainingType => null;
 
-        public virtual NamespaceSymbol GlobalNamespace => _symbolMap.GetNamespaceSymbol(_csharpAssembly.GlobalNamespace);
+        public abstract NamespaceSymbol GlobalNamespace { get; }
 
-        public ImmutableArray<ModuleSymbol> Modules
-        {
-            get
-            {
-                if (_lazyModules.IsDefault)
-                {
-                    var modules = _csharpAssembly.Modules.Select(csharpModule => _symbolMap.GetModuleSymbol(csharpModule)).ToImmutableArray();
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyModules, modules);
-                }
-                return _lazyModules;
-            }
-        }
+        public abstract ImmutableArray<ModuleSymbol> Modules { get; }
 
-        public NamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
-        {
-            return _symbolMap.GetNamedTypeSymbol(_csharpAssembly.GetTypeByMetadataName(fullyQualifiedMetadataName));
-        }
+        public abstract NamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName);
 
-        public NamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName)
-        {
-            return _symbolMap.GetNamedTypeSymbol(_csharpAssembly.ResolveForwardedType(fullyQualifiedMetadataName));
-        }
+        public abstract NamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName);
 
-        public bool IsInteractive => _csharpAssembly.IsInteractive;
+        public abstract bool IsInteractive { get; }
 
-        public AssemblyIdentity Identity => _csharpAssembly.Identity;
+        public abstract AssemblyIdentity Identity { get; }
 
         INamespaceSymbol IAssemblySymbol.GlobalNamespace => this.GlobalNamespace;
 
         IEnumerable<IModuleSymbol> IAssemblySymbol.Modules => this.Modules;
 
-        public ICollection<string> TypeNames => _csharpAssembly.TypeNames;
+        public abstract ICollection<string> TypeNames { get; }
 
-        public ICollection<string> NamespaceNames => _csharpAssembly.NamespaceNames;
+        public abstract ICollection<string> NamespaceNames { get; }
 
-        public bool MightContainExtensionMethods => _csharpAssembly.MightContainExtensionMethods;
+        public abstract bool MightContainExtensionMethods { get; }
 
-        public AssemblyMetadata GetMetadata()
-        {
-            return _csharpAssembly.GetMetadata();
-        }
+        public abstract AssemblyMetadata GetMetadata();
+
+        public abstract bool GivesAccessTo(IAssemblySymbol toAssembly);
 
         INamedTypeSymbol IAssemblySymbol.GetTypeByMetadataName(string fullyQualifiedMetadataName)
         {
             return this.GetTypeByMetadataName(fullyQualifiedMetadataName);
         }
 
-        public bool GivesAccessTo(IAssemblySymbol toAssembly)
-        {
-            if (toAssembly is AssemblySymbol assembly) return ((IAssemblySymbol)_csharpAssembly).GivesAccessTo(assembly._csharpAssembly);
-            else return ((IAssemblySymbol)_csharpAssembly).GivesAccessTo(toAssembly);
-        }
-
         INamedTypeSymbol IAssemblySymbol.ResolveForwardedType(string fullyQualifiedMetadataName)
         {
             return this.ResolveForwardedType(fullyQualifiedMetadataName);
+        }
+
+        public sealed override SymbolKind Kind => SymbolKind.Assembly;
+
+        public override bool IsStatic => false;
+
+        public override void Accept(SymbolVisitor visitor)
+        {
+            visitor.VisitAssembly(this);
+        }
+
+        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitAssembly(this);
         }
     }
 }

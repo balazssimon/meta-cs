@@ -11,14 +11,14 @@ namespace Roslyn.Utilities
     /// <summary>
     /// a simple Lisp-like immutable list.  Good to use when lists are always accessed from the head.
     /// </summary>
-    internal class ConsList<T> : IEnumerable<T>
+    public class ConsList<T> : IEnumerable<T>
     {
         public static readonly ConsList<T> Empty = new ConsList<T>();
 
         private readonly T _head;
         private readonly ConsList<T> _tail;
 
-        internal struct Enumerator : IEnumerator<T>
+        public struct Enumerator : IEnumerator<T>
         {
             private T _current;
             private ConsList<T> _tail;

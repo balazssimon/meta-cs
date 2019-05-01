@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public class NamedTypeSymbol : TypeSymbol, INamedTypeSymbol
+    public abstract class NamedTypeSymbol : TypeSymbol, INamedTypeSymbol
     {
     }
 }
