@@ -26,6 +26,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return new CSharpModuleSymbol(csharpModule);
         }
 
+        internal CSharpSymbols.ModuleSymbol CSharpModule => _csharpModule;
+
+        public override bool HasUnifiedReferences => _csharpModule.HasUnifiedReferences;
+
+        public override bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, Symbol dependentType)
+        {
+            if (dependentType is CSharpNamedTypeSymbol csharpNamedType) return _csharpModule.GetUnificationUseSiteDiagnostic(ref result, csharpNamedType.CSharpSymbol);
+            if (dependentType is UnsupportedSymbol unsupported && unsupported.Symbol is CSharpSymbols.TypeSymbol csharpType) return _csharpModule.GetUnificationUseSiteDiagnostic(ref result, csharpType);
+            return false;
+        }
+
         public override AssemblySymbol ContainingAssembly
         {
             get
@@ -57,7 +68,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 if (_lazyReferencedAssemblySymbols.IsDefault)
                 {
-                    var assemblies = _csharpModule.ReferencedAssemblySymbols.Select(csharpAssembly => (AssemblySymbol)CSharpSymbolMap.GetAssemblySymbol(csharpAssembly)).ToImmutableArray();
+                    var assemblies = CSharpSymbolMap.GetAssemblySymbols(_csharpModule.ReferencedAssemblySymbols);
                     ImmutableInterlocked.InterlockedInitialize(ref _lazyReferencedAssemblySymbols, assemblies);
                 }
                 return _lazyReferencedAssemblySymbols;

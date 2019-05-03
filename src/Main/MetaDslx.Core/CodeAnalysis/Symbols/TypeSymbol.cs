@@ -191,6 +191,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return this.Equals(type, comparison) || this.IsDerivedFrom(type, comparison, ref useSiteDiagnostics);
         }
 
+
+        public static bool Equals(TypeSymbol left, TypeSymbol right, TypeCompareKind comparison)
+        {
+            if (left is null)
+            {
+                return right is null;
+            }
+
+            return left.Equals(right, comparison);
+        }
+
         /// <summary>
         /// Determines if this type symbol represent the same type as another, according to the language
         /// semantics.
@@ -352,7 +363,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this type.
         /// </summary>
-        public abstract TypeKind TypeKind { get; }
+        public virtual TypeKind TypeKind => TypeKind.Unknown;
 
         /// <summary>
         /// Gets corresponding special TypeId of this type.
@@ -408,23 +419,23 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics.WhereAsArray(t => t.TypeKind == TypeKind.Interface));
 
-        public abstract bool IsReferenceType { get; }
+        public virtual bool IsReferenceType => false;
 
-        public abstract bool IsValueType { get; }
+        public virtual bool IsValueType => false;
 
-        public abstract bool IsAnonymousType { get; }
+        public virtual bool IsAnonymousType => false;
 
-        public abstract bool IsTupleType { get; }
+        public virtual bool IsTupleType => false;
 
         ITypeSymbol ITypeSymbol.OriginalDefinition => this.OriginalTypeSymbolDefinition;
 
         SpecialType ITypeSymbol.SpecialType => this.SpecialType;
 
-        public abstract bool IsRefLikeType { get; }
+        public virtual bool IsRefLikeType => false;
 
-        public abstract bool IsUnmanagedType { get; }
+        public virtual bool IsUnmanagedType => false;
 
-        public abstract bool IsReadOnly { get; }
+        public virtual bool IsReadOnly => false;
 
         ISymbol IMetaTypeSymbol.FindImplementationForBaseTypeMember(ISymbol baseMember)
         {

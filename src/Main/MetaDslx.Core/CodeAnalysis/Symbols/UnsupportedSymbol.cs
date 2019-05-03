@@ -2,10 +2,11 @@
 
 using Microsoft.CodeAnalysis;
 using System;
+using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public sealed class UnsupportedSymbol : ErrorTypeSymbol
+    public sealed class UnsupportedSymbol : Symbol, IMetaErrorSymbol
     {
         private ISymbol _symbol;
 
@@ -15,5 +16,25 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public ISymbol Symbol => _symbol;
+
+        public override SymbolKind Kind => _symbol.Kind;
+
+        public override Symbol ContainingSymbol => null;
+
+        public override ImmutableArray<Location> Locations => _symbol.Locations;
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _symbol.DeclaringSyntaxReferences;
+
+        public override bool IsStatic => _symbol.IsStatic;
+
+        public override void Accept(SymbolVisitor visitor)
+        {
+            // nop
+        }
+
+        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        {
+            return default;
+        }
     }
 }

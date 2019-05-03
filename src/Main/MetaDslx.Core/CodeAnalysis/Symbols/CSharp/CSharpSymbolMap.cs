@@ -1,6 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -35,24 +37,49 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return new UnsupportedSymbol(csharpSymbol);
         }
 
-        public static CSharpAssemblySymbol GetAssemblySymbol(CSharpSymbols.AssemblySymbol csharpSymbol)
+        public static ImmutableArray<Symbol> GetSymbols(ImmutableArray<CSharpSymbol> csharpSymbols)
+        {
+            return csharpSymbols.Select(symbol => GetSymbol(symbol)).ToImmutableArray();
+        }
+
+        public static AssemblySymbol GetAssemblySymbol(CSharpSymbols.AssemblySymbol csharpSymbol)
         {
             return GetSymbol(csharpSymbol, cs => CSharpAssemblySymbol.FromCSharp(cs));
         }
 
-        public static CSharpModuleSymbol GetModuleSymbol(CSharpSymbols.ModuleSymbol csharpSymbol)
+        public static ImmutableArray<AssemblySymbol> GetAssemblySymbols(ImmutableArray<CSharpSymbols.AssemblySymbol> csharpSymbols)
+        {
+            return csharpSymbols.Select(symbol => GetAssemblySymbol(symbol)).ToImmutableArray();
+        }
+
+        public static ModuleSymbol GetModuleSymbol(CSharpSymbols.ModuleSymbol csharpSymbol)
         {
             return GetSymbol(csharpSymbol, cs => CSharpModuleSymbol.FromCSharp(cs));
         }
 
-        public static CSharpNamespaceSymbol GetNamespaceSymbol(CSharpSymbols.NamespaceSymbol csharpSymbol)
+        public static ImmutableArray<ModuleSymbol> GetModuleSymbols(ImmutableArray<CSharpSymbols.ModuleSymbol> csharpSymbols)
+        {
+            return csharpSymbols.Select(symbol => GetModuleSymbol(symbol)).ToImmutableArray();
+        }
+
+        public static NamespaceSymbol GetNamespaceSymbol(CSharpSymbols.NamespaceSymbol csharpSymbol)
         {
             return GetSymbol(csharpSymbol, cs => CSharpNamespaceSymbol.FromCSharp(cs));
         }
 
-        public static CSharpNamedTypeSymbol GetNamedTypeSymbol(CSharpSymbols.NamedTypeSymbol csharpSymbol)
+        public static ImmutableArray<NamespaceSymbol> GetNamespaceSymbols(ImmutableArray<CSharpSymbols.NamespaceSymbol> csharpSymbols)
+        {
+            return csharpSymbols.Select(symbol => GetNamespaceSymbol(symbol)).ToImmutableArray();
+        }
+
+        public static NamedTypeSymbol GetNamedTypeSymbol(CSharpSymbols.NamedTypeSymbol csharpSymbol)
         {
             return GetSymbol(csharpSymbol, cs => CSharpNamedTypeSymbol.FromCSharp(cs));
+        }
+
+        public static ImmutableArray<NamedTypeSymbol> GetNamedTypeSymbols(ImmutableArray<CSharpSymbols.NamedTypeSymbol> csharpSymbols)
+        {
+            return csharpSymbols.Select(symbol => GetNamedTypeSymbol(symbol)).ToImmutableArray();
         }
     }
 }

@@ -24,6 +24,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return new CSharpAssemblySymbol(csharpAssembly);
         }
 
+        internal CSharpSymbols.AssemblySymbol CSharpAssembly => _csharpAssembly;
+
         public override AssemblySymbol ContainingAssembly => null;
 
         public override ModuleSymbol ContainingModule => null;
@@ -42,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 if (_lazyModules.IsDefault)
                 {
-                    var modules = _csharpAssembly.Modules.Select(csharpModule => (ModuleSymbol)CSharpSymbolMap.GetModuleSymbol(csharpModule)).ToImmutableArray();
+                    var modules = CSharpSymbolMap.GetModuleSymbols(_csharpAssembly.Modules);
                     ImmutableInterlocked.InterlockedInitialize(ref _lazyModules, modules);
                 }
                 return _lazyModules;

@@ -15,6 +15,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
         }
 
+        public abstract int Ordinal { get; }
+
+        /// <summary>
+        /// True if this module has any unified references.
+        /// </summary>
+        public abstract bool HasUnifiedReferences { get; }
+
+        /// <summary> 
+        /// Returns a unification use-site error (if any) for a symbol contained in this module 
+        /// that is referring to a specified <paramref name="dependentType"/>.
+        /// </summary> 
+        /// <remarks> 
+        /// If an assembly referenced by this module isn't exactly matching any reference given to compilation 
+        /// the Assembly Manager might decide to use another reference if it matches except for version 
+        /// (it unifies the version with the existing reference).  
+        /// </remarks>
+        public abstract bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, Symbol dependentType);
+
         public override ModuleSymbol ContainingModule => null;
 
         public override Symbol ContainingSymbol => this.ContainingAssembly;

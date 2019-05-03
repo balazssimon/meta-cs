@@ -23,8 +23,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal static CSharpNamespaceSymbol FromCSharp(CSharpSymbols.NamespaceSymbol csharpSymbol)
         {
-            return new CSharpNamespaceSymbol(CSharpSymbolMap.GetModuleSymbol(csharpSymbol.ContainingModule), csharpSymbol);
+            return new CSharpNamespaceSymbol((CSharpModuleSymbol)CSharpSymbolMap.GetModuleSymbol(csharpSymbol.ContainingModule), csharpSymbol);
         }
+
+        internal CSharpSymbols.NamespaceSymbol CSharpSymbol => _csharpSymbol;
 
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 

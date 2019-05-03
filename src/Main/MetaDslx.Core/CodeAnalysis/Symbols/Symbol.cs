@@ -229,7 +229,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// need implement this function if they want to do so for efficiency.
         /// </para>
         /// </summary>
-        internal virtual LexicalSortKey GetLexicalSortKey()
+        public virtual LexicalSortKey GetLexicalSortKey()
         {
             var locations = this.Locations;
             var declaringCompilation = this.DeclaringCompilation;
@@ -598,7 +598,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Returns diagnostic info that should be reported at the use site of the symbol, or null if there is none.
         /// </summary>
-        internal virtual DiagnosticInfo GetUseSiteDiagnostic()
+        public virtual DiagnosticInfo GetUseSiteDiagnostic()
         {
             return null;
         }

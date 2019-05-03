@@ -1,16 +1,21 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
     using CSharpSymbol = Microsoft.CodeAnalysis.CSharp.Symbol;
+    using Roslyn.Utilities;
+    using Microsoft.CodeAnalysis.PooledObjects;
 
     public class CSharpNamedTypeSymbol : NamedTypeSymbol
     {
         private CSharpModuleSymbol _module;
         private CSharpSymbols.NamedTypeSymbol _csharpSymbol;
+        private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
 
         private CSharpNamedTypeSymbol(CSharpModuleSymbol module, CSharpSymbols.NamedTypeSymbol csharpSymbol)
         {
@@ -20,7 +25,78 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal static CSharpNamedTypeSymbol FromCSharp(CSharpSymbols.NamedTypeSymbol csharpSymbol)
         {
-            return new CSharpNamedTypeSymbol(CSharpSymbolMap.GetModuleSymbol(csharpSymbol.ContainingModule), csharpSymbol);
+            return new CSharpNamedTypeSymbol((CSharpModuleSymbol)CSharpSymbolMap.GetModuleSymbol(csharpSymbol.ContainingModule), csharpSymbol);
+        }
+
+        public override ImmutableArray<Symbol> GetMembers()
+        {
+            return CSharpSymbolMap.GetSymbols(_csharpSymbol.GetMembers());
+        }
+
+        public override ImmutableArray<Symbol> GetMembers(string name)
+        {
+            return CSharpSymbolMap.GetSymbols(_csharpSymbol.GetMembers(name));
+        }
+
+        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        {
+            return GetMembers(name).WhereAsArray(s => s.MetadataName == metadataName);
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
+        {
+            return CSharpSymbolMap.GetNamedTypeSymbols(_csharpSymbol.GetTypeMembers());
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
+        {
+            return CSharpSymbolMap.GetNamedTypeSymbols(_csharpSymbol.GetTypeMembers(name));
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+        {
+            return GetTypeMembers(name).WhereAsArray(s => s.MetadataName == metadataName);
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
+        {
+            throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        internal CSharpSymbols.NamedTypeSymbol CSharpSymbol => _csharpSymbol;
+
+        public override Symbol ContainingSymbol => CSharpSymbolMap.GetSymbol(_csharpSymbol.ContainingSymbol);
+
+        public override ImmutableArray<Location> Locations => _csharpSymbol.Locations;
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _csharpSymbol.DeclaringSyntaxReferences;
+
+        public override IEnumerable<string> MemberNames => throw new NotImplementedException();
+
+        public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics
+        {
+            get
+            {
+                if (_lazyBaseTypes.IsDefault)
+                {
+                    var baseTypes = ArrayBuilder<NamedTypeSymbol>.GetInstance();
+                    if ((object)_csharpSymbol.BaseTypeNoUseSiteDiagnostics != null)
+                    {
+                        baseTypes.Add(CSharpSymbolMap.GetNamedTypeSymbol(_csharpSymbol.BaseTypeNoUseSiteDiagnostics));
+                    }
+                    foreach (var intf in _csharpSymbol.InterfacesNoUseSiteDiagnostics())
+                    {
+                        baseTypes.Add(CSharpSymbolMap.GetNamedTypeSymbol(intf));
+                    }
+                    ImmutableInterlocked.InterlockedInitialize(ref _lazyBaseTypes, baseTypes.ToImmutableAndFree());
+                }
+                return _lazyBaseTypes;
+            }
         }
     }
 }
