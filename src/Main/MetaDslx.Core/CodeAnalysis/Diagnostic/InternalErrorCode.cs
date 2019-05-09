@@ -89,6 +89,6 @@ namespace MetaDslx.CodeAnalysis
         public static InternalErrorCode ERR_ImportedCircularBase { get; internal set; }
         public static InternalErrorCode ERR_ProtectedInStruct { get; internal set; }
         public static InternalErrorCode WRN_ProtectedInSealed { get; internal set; }
-        
+        public static InternalErrorCode ERR_CycleInInterfaceInheritance { get; internal set; }
     }
 }

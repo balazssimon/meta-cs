@@ -8,7 +8,7 @@ namespace Microsoft.CodeAnalysis.PooledObjects
 {
     // Dictionary that can be recycled via an object pool
     // NOTE: these dictionaries always have the default comparer.
-    internal class PooledDictionary<K, V> : Dictionary<K, V>
+    public class PooledDictionary<K, V> : Dictionary<K, V>
     {
         private readonly ObjectPool<PooledDictionary<K, V>> _pool;
 

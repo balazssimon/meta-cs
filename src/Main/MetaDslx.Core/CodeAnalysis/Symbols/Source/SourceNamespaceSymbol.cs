@@ -13,9 +13,9 @@ using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Symbols
+namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public partial class SourceNamespaceSymbol : NamespaceSymbol
+    public class SourceNamespaceSymbol : NamespaceSymbol
     {
         private readonly SourceModuleSymbol _module;
         private readonly Symbol _container;
@@ -70,8 +70,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override string Name
-            => _mergedDeclaration.Name;
+        public override string Name => _mergedDeclaration.Name;
 
         public override LexicalSortKey GetLexicalSortKey()
         {
@@ -370,7 +369,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         private void RegisterDeclaredCorTypes()
         {
-            IAssemblySymbol containingAssembly = ContainingAssembly;
+            AssemblySymbol containingAssembly = ContainingAssembly;
 
             if (containingAssembly.KeepLookingForDeclaredSpecialTypes)
             {

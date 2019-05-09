@@ -18,6 +18,12 @@ namespace MetaDslx.Modeling
         ModelId Id { get; }
         string Name { get; }
         ModelVersion Version { get; }
+        IEnumerable<IMetaSymbol> Symbols { get; }
+    }
+
+    public interface IModelGroup
+    {
+        IEnumerable<IModel> Models { get; }
     }
 
     public interface ImmutableSymbol : IMetaSymbol
@@ -877,6 +883,8 @@ namespace MetaDslx.Modeling
             }
         }
 
+        IEnumerable<IMetaSymbol> IModel.Symbols => this.Symbols;
+
         internal ImmutableSymbol GetExistingSymbol(SymbolId sid)
         {
             if (sid == null) return null;
@@ -1419,6 +1427,8 @@ namespace MetaDslx.Modeling
                 }
             }
         }
+
+        IEnumerable<IMetaSymbol> IModel.Symbols => this.Symbols;
 
         internal MutableSymbol GetExistingSymbol(SymbolId sid)
         {
@@ -2353,7 +2363,7 @@ namespace MetaDslx.Modeling
     }
 
 
-    public sealed class ImmutableModelGroup
+    public sealed class ImmutableModelGroup : IModelGroup
     {
         private GreenModelGroup green;
         private WeakReference<MutableModelGroup> mutableModelGroup;
@@ -2369,6 +2379,8 @@ namespace MetaDslx.Modeling
         }
 
         internal GreenModelGroup Green { get { return this.green; } }
+
+        IEnumerable<IModel> IModelGroup.Models => this.Models;
 
         public IEnumerable<ImmutableModel> References
         {
@@ -2500,7 +2512,7 @@ namespace MetaDslx.Modeling
         }
     }
 
-    public sealed class MutableModelGroup
+    public sealed class MutableModelGroup : IModelGroup
     {
         private GreenModelGroup green;
         private ThreadLocal<GreenModelUpdater> updater;
@@ -2558,6 +2570,8 @@ namespace MetaDslx.Modeling
                 }
             }
         }
+
+        IEnumerable<IModel> IModelGroup.Models => this.Models;
 
         private ImmutableModel GetImmutableReference(ModelId mid)
         {

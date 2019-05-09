@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Symbols
+namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
+    using MetaDslx.CodeAnalysis.Symbols.Source;
     using System.Collections.Immutable;
     using System.Linq;
     using System.Threading;
@@ -15,6 +16,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private AssemblySymbol _lazyAssemblySymbol;
         private CSharpSymbols.ModuleSymbol _csharpModule;
         private ImmutableArray<AssemblySymbol> _lazyReferencedAssemblySymbols;
+        private ImmutableArray<string> _lazyTypeNames;
+        private ImmutableArray<string> _lazyNamespaceNames;
 
         private CSharpModuleSymbol(CSharpSymbols.ModuleSymbol csharpModule)
         {
@@ -80,13 +83,44 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return _csharpModule.GetMetadata();
         }
 
-        public override NamespaceSymbol GetModuleNamespace(INamespaceSymbol namespaceSymbol)
+        internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly = null)
         {
-            return CSharpSymbolMap.GetNamespaceSymbol(_csharpModule.GetModuleNamespace(namespaceSymbol));
+            throw new NotImplementedException();
+        }
+
+        public override NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
+        {
+            return CSharpSymbolMap.GetNamedTypeSymbol(_csharpModule.LookupTopLevelMetadataType(ref emittedName));
         }
 
         public override ImmutableArray<Location> Locations => _csharpModule.Locations;
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _csharpModule.DeclaringSyntaxReferences;
+
+        public override int Ordinal => _csharpModule.Ordinal;
+
+        public override ImmutableArray<string> TypeNames
+        {
+            get
+            {
+                if (_lazyTypeNames.IsDefault)
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeNames, _csharpModule.TypeNames.ToImmutableArray());
+                }
+                return _lazyTypeNames;
+            }
+        }
+
+        public override ImmutableArray<string> NamespaceNames 
+        {
+            get
+            {
+                if (_lazyNamespaceNames.IsDefault)
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _lazyNamespaceNames, _csharpModule.NamespaceNames.ToImmutableArray());
+                }
+                return _lazyNamespaceNames;
+            }
+        }
     }
 }

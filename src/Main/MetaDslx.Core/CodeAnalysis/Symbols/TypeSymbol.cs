@@ -128,7 +128,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// (for example, interfaces), null is returned. Also the special class System.Object
         /// always has a BaseType of null.
         /// </summary>
-        public abstract ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics { get; }
+        public virtual ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics => this.GetBaseTypesNoUseSiteDiagnostics();
 
         public abstract ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null);
 
@@ -142,15 +142,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// subtype" because it does not take into account variance: AllInterfaces for
         /// IEnumerable&lt;string&gt; will not include IEnumerable&lt;object&gt;
         /// </summary>
-        internal ImmutableArray<NamedTypeSymbol> AllBaseTypesNoUseSiteDiagnostics
-        {
-            get
-            {
-                return GetAllBaseTypes();
-            }
-        }
+        public ImmutableArray<NamedTypeSymbol> AllBaseTypesNoUseSiteDiagnostics => this.GetAllBaseTypes();
 
-        internal ImmutableArray<NamedTypeSymbol> AllBaseTypesWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public ImmutableArray<NamedTypeSymbol> AllBaseTypesWithDefinitionUseSiteDiagnostics(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             var result = AllBaseTypesNoUseSiteDiagnostics;
             foreach (var baseType in result)
@@ -163,9 +157,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// If this is a type parameter returns its effective base class, otherwise returns this type.
         /// </summary>
-        internal TypeSymbol EffectiveTypeNoUseSiteDiagnostics => this;
+        public TypeSymbol EffectiveTypeNoUseSiteDiagnostics => this;
 
-        internal TypeSymbol EffectiveType(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public TypeSymbol EffectiveType(ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             return this;
         }
@@ -173,7 +167,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Returns true if this type derives from a given type.
         /// </summary>
-        internal bool IsDerivedFrom(TypeSymbol type, TypeCompareKind comparison, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public bool IsDerivedFrom(TypeSymbol type, TypeCompareKind comparison, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             Debug.Assert((object)type != null);
             if ((object)this == (object)type)
@@ -186,7 +180,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         /// Returns true if this type is equal or derives from a given type.
         /// </summary>
-        internal bool IsEqualToOrDerivedFrom(TypeSymbol type, TypeCompareKind comparison, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public bool IsEqualToOrDerivedFrom(TypeSymbol type, TypeCompareKind comparison, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             return this.Equals(type, comparison) || this.IsDerivedFrom(type, comparison, ref useSiteDiagnostics);
         }
@@ -212,7 +206,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// You can ignore custom modifiers, ignore the distinction between object and dynamic, or ignore tuple element names differences.
         /// </param>
         /// <returns>True if the types are equivalent.</returns>
-        internal virtual bool Equals(TypeSymbol t2, TypeCompareKind compareKind = TypeCompareKind.ConsiderEverything)
+        public virtual bool Equals(TypeSymbol t2, TypeCompareKind compareKind = TypeCompareKind.ConsiderEverything)
         {
             return ReferenceEquals(this, t2);
         }

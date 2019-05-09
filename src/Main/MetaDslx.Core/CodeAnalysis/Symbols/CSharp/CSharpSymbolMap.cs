@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Symbols
+namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
     using CSharpSymbol = Microsoft.CodeAnalysis.CSharp.Symbol;

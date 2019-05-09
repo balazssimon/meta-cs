@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -492,7 +493,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return compilation == this.DeclaringCompilation;
         }
 
-        internal virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
+        /// <summary>
+        /// Always prefer <see cref="IsFromCompilation"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Unfortunately, when determining overriding/hiding/implementation relationships, we don't 
+        /// have the "current" compilation available.  We could, but that would clutter up the API 
+        /// without providing much benefit.  As a compromise, we consider all compilations "current".
+        /// </para>
+        /// <para>
+        /// Unlike in VB, we are not allowing retargeting symbols.  This method is used as an approximation
+        /// for <see cref="IsFromCompilation"/> when a compilation is not available and that method will never return
+        /// true for retargeting symbols.
+        /// </para>
+        /// </remarks>
+        internal bool Dangerous_IsFromSomeCompilation
+        {
+            get { return this.DeclaringCompilation != null; }
+        }
+
+        public virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
         {
             var declaringReferences = this.DeclaringSyntaxReferences;
             if (this.IsImplicitlyDeclared && declaringReferences.Length == 0)

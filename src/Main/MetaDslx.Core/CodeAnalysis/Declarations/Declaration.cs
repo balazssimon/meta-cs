@@ -96,6 +96,16 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.Kind?.IsName ?? false; }
         }
 
+        public bool IsScript
+        {
+            get { return false; } // TODO:MetaDslx - for scripts, submissions and implicit classes
+        }
+
+        public bool IsSubmission
+        {
+            get { return false; } // TODO:MetaDslx - for scripts, submissions and implicit classes
+        }
+
         public bool IsImplicit
         {
             get { return false; } // TODO:MetaDslx - for scripts, submissions and implicit classes

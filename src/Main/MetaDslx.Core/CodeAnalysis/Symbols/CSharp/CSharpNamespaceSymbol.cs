@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
-namespace MetaDslx.CodeAnalysis.Symbols
+namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
     using CSharpSymbol = Microsoft.CodeAnalysis.CSharp.Symbol;

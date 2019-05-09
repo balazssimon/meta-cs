@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -41,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// no members with this name, returns an empty ImmutableArray. Never returns null.</returns>
         public abstract override ImmutableArray<Symbol> GetMembers(string name, string metadataName);
 
-        internal virtual ImmutableArray<Symbol> GetSimpleNonTypeMembers(string name)
+        public virtual ImmutableArray<Symbol> GetNonTypeMembers(string name)
         {
             return GetMembers(name);
         }
@@ -70,11 +71,38 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName);
 
         /// <summary>
+        /// Get all instance members.
+        /// </summary>
+        /// <remarks>
+        /// For source symbols may be called while calculating
+        /// <see cref="NamespaceOrTypeSymbol.GetMembersUnordered"/>.
+        /// </remarks>
+        public virtual ImmutableArray<Symbol> GetInstanceMembers()
+        {
+            return GetMembersUnordered().WhereAsArray(IsInstanceMember);
+        }
+
+        /// <summary>
+        /// Get all static members.
+        /// </summary>
+        /// <remarks>
+        /// For source symbols may be called while calculating
+        /// <see cref="NamespaceOrTypeSymbol.GetMembersUnordered"/>.
+        /// </remarks>
+        public virtual ImmutableArray<Symbol> GetStaticMembers()
+        {
+            return GetMembersUnordered().WhereAsArray(IsStaticMember);
+        }
+
+        protected static Func<Symbol, bool> IsInstanceMember = symbol => !symbol.IsStatic;
+        protected static Func<Symbol, bool> IsStaticMember = symbol => symbol.IsStatic;
+
+        /// <summary>
         /// Get the operators for this type by their metadata name
         /// </summary>
-        internal ImmutableArray<MethodSymbol> GetOperators(string name)
+        public ImmutableArray<MethodSymbol> GetOperators(string name)
         {
-            ImmutableArray<Symbol> candidates = GetSimpleNonTypeMembers(name);
+            ImmutableArray<Symbol> candidates = GetNonTypeMembers(name);
             if (candidates.IsEmpty)
             {
                 return ImmutableArray<MethodSymbol>.Empty;
@@ -189,7 +217,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Compares this type to another type.
         /// </summary>
-        internal override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
+        public override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
         {
             Debug.Assert(!this.IsTupleType);
 
@@ -347,11 +375,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         bool INamedTypeSymbol.IsUnboundGenericType => false;
 
-        public virtual bool IsScriptClass => false;
+        public virtual bool IsScript => false;
 
-        public virtual bool IsSubmissionClass => TypeKind == TypeKind.Submission;
+        public virtual bool IsSubmission => TypeKind == TypeKind.Submission;
 
-        public virtual bool IsImplicitClass => false;
+        public virtual bool IsImplicit => false;
 
         bool INamedTypeSymbol.IsComImport => false;
 
@@ -384,6 +412,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
         INamedTypeSymbol INamedTypeSymbol.TupleUnderlyingType => this.TupleUnderlyingType;
 
         ImmutableArray<IFieldSymbol> INamedTypeSymbol.TupleElements => ImmutableArray<IFieldSymbol>.Empty;
+
+        bool INamedTypeSymbol.IsScriptClass => this.IsScript;
+
+        bool INamedTypeSymbol.IsImplicitClass => this.IsImplicit;
 
         INamedTypeSymbol INamedTypeSymbol.Construct(params ITypeSymbol[] typeArguments)
         {

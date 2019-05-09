@@ -18,8 +18,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </summary>
     public abstract partial class ErrorTypeSymbol : NamedTypeSymbol, IErrorTypeSymbol, IMetaErrorSymbol
     {
-        internal static readonly ErrorTypeSymbol UnknownResultType = new UnsupportedMetadataTypeSymbol();
-
         /// <summary>
         /// The underlying error.
         /// </summary>
