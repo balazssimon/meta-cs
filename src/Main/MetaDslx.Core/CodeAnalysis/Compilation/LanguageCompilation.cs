@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
@@ -27,10 +27,8 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
 {
-    using CSharp = Microsoft.CodeAnalysis.CSharp;
-    using ReferenceDirective = Syntax.ReferenceDirective;
-    using Binder = MetaDslx.CodeAnalysis.Binding.Binder;
     using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
+    using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
 
     /// <summary>
     /// The compilation object is an immutable representation of a single invocation of the
@@ -40,7 +38,7 @@ namespace MetaDslx.CodeAnalysis
     /// new compilation from scratch, as the new compilation can reuse information from the old
     /// compilation.
     /// </summary>
-    public class LanguageCompilation : CompilationAdapter
+    public partial class LanguageCompilation : CompilationAdapter
     {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //
@@ -94,13 +92,6 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         private SourceAssemblySymbol _lazyAssemblySymbol;
 
-        internal void MetaDslx_DangerousSetLazyAssemblySymbol(SourceAssemblySymbol lazyAssemblySymbol)
-        {
-            _lazyAssemblySymbol = lazyAssemblySymbol;
-        }
-
-        internal readonly CSharp.CSharpCompilation CSharpCompilationForReferenceManager;
-
         /// <summary>
         /// Holds onto data related to reference binding.
         /// The manager is shared among multiple compilations that we expect to have the same result of reference binding.
@@ -122,10 +113,9 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         private HashSet<SyntaxTree> _lazyCompilationUnitCompletedTrees;
 
-        public new Language Language
-        {
-            get { return this.LanguageCore; }
-        }
+        public new virtual Language Language => Language.None;
+
+        protected override Language LanguageCore => this.Language;
 
         public override bool IsCaseSensitive
         {
@@ -174,7 +164,7 @@ namespace MetaDslx.CodeAnalysis
         {
             return new ExtendedErrorTypeSymbol(
                        container.EnsureCSharpSymbolOrNull<INamespaceOrTypeSymbol, NamespaceOrTypeSymbol>(nameof(container)),
-                       name, arity, errorInfo: null);
+                       name, arity > 0 ? name+"`"+arity : name, errorInfo: null);
         }
 
         protected override INamespaceSymbol CommonCreateErrorNamespaceSymbol(INamespaceSymbol container, string name)
@@ -318,8 +308,6 @@ namespace MetaDslx.CodeAnalysis
                 Debug.Assert(previousSubmission == null && submissionReturnType == null && hostObjectType == null);
             }
 
-            CSharpCompilationForReferenceManager = CSharp.CSharpCompilation.Create(assemblyName, references: references);
-
             if (reuseReferenceManager)
             {
                 referenceManager.AssertCanReuseForCompilation(this);
@@ -328,7 +316,6 @@ namespace MetaDslx.CodeAnalysis
             else
             {
                 _referenceManager = new ReferenceManager(
-                    this.Language,
                     MakeSourceAssemblySimpleName(),
                     this.Options.AssemblyIdentityComparer,
                     observedMetadata: referenceManager?.ObservedMetadata);
@@ -492,7 +479,7 @@ namespace MetaDslx.CodeAnalysis
                         _syntaxAndDeclarations.ExternalSyntaxTrees,
                         options.ScriptClassName,
                         options.SourceReferenceResolver,
-                        this.Language,
+                        options.Language,
                         _syntaxAndDeclarations.IsSubmission,
                         state: null));
         }
@@ -567,7 +554,7 @@ namespace MetaDslx.CodeAnalysis
                 return false;
             }
 
-            // TODO:MetaDslx
+            // TODO:MetaDslx - in descendants:
             // Are there any top-level return statements?
             // Is there a trailing expression?
 
@@ -626,7 +613,7 @@ namespace MetaDslx.CodeAnalysis
             externalSyntaxTrees.AddAll(syntaxAndDeclarations.ExternalSyntaxTrees);
             bool reuseReferenceManager = true;
             int i = 0;
-            foreach (var tree in trees/* TODO:MetaDslx - .Cast<LanguageSyntaxTree>() check valid syntax tree types.*/)
+            foreach (var tree in trees.Cast<LanguageSyntaxTree>())
             {
                 if (tree == null)
                 {
@@ -649,7 +636,7 @@ namespace MetaDslx.CodeAnalysis
                 }
 
                 externalSyntaxTrees.Add(tree);
-                reuseReferenceManager &= !tree.HasReferenceOrLoadDirectives();
+                reuseReferenceManager &= !tree.HasReferenceOrLoadDirectives;
 
                 i++;
             }
@@ -700,7 +687,7 @@ namespace MetaDslx.CodeAnalysis
             externalSyntaxTrees.AddAll(syntaxAndDeclarations.ExternalSyntaxTrees);
             bool reuseReferenceManager = true;
             int i = 0;
-            foreach (var tree in trees/* TODO:MetaDslx - .Cast<LanguageSyntaxTree>() check valid syntax tree types.*/)
+            foreach (var tree in trees.Cast<LanguageSyntaxTree>())
             {
                 if (!externalSyntaxTrees.Contains(tree))
                 {
@@ -715,7 +702,7 @@ namespace MetaDslx.CodeAnalysis
                 }
 
                 removeSet.Add(tree);
-                reuseReferenceManager &= !tree.HasReferenceOrLoadDirectives();
+                reuseReferenceManager &= !tree.HasReferenceOrLoadDirectives;
 
                 i++;
             }
@@ -746,9 +733,8 @@ namespace MetaDslx.CodeAnalysis
         public new LanguageCompilation ReplaceSyntaxTree(SyntaxTree oldTree, SyntaxTree newTree)
         {
             // this is just to force a cast exception
-            //oldTree = (LanguageSyntaxTree)oldTree;
-            //newTree = (LanguageSyntaxTree)newTree;
-            /* TODO:MetaDslx - check valid syntax tree types.*/
+            oldTree = (LanguageSyntaxTree)oldTree;
+            newTree = (LanguageSyntaxTree)newTree;
 
             if (oldTree == null)
             {
@@ -888,15 +874,19 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// All reference directives used in this compilation.
         /// </summary>
-        public new IEnumerable<ReferenceDirective> ReferenceDirectives => this.Declarations.ReferenceDirectives;
-        protected override IEnumerable<ReferenceDirective> ReferenceDirectivesCore => this.ReferenceDirectives;
+        public new IEnumerable<Syntax.ReferenceDirective> ReferenceDirectives
+        {
+            get { return this.Declarations.ReferenceDirectives; }
+        }
+
+        protected override IEnumerable<Syntax.ReferenceDirective> ReferenceDirectivesCore => this.ReferenceDirectives;
 
         /// <summary>
         /// Returns a metadata reference that a given #r resolves to.
         /// </summary>
         /// <param name="directive">#r directive.</param>
         /// <returns>Metadata reference the specified directive resolves to, or null if the <paramref name="directive"/> doesn't match any #r directive in the compilation.</returns>
-        public MetadataReference GetDirectiveReference(ReferenceDirective directive)
+        public MetadataReference GetDirectiveReference(Syntax.ReferenceDirective directive)
         {
             MetadataReference reference;
             return ReferenceDirectiveMap.TryGetValue((directive.SyntaxTree.FilePath, directive.File), out reference) ? reference : null;
@@ -1009,18 +999,6 @@ namespace MetaDslx.CodeAnalysis
         #endregion
 
         #region Symbols
-
-        /// <summary>
-        /// The CSharpAssemblySymbol that represents the assembly being created.
-        /// </summary>
-        internal Microsoft.CodeAnalysis.CSharp.Symbols.SourceAssemblySymbol CSharpSourceAssembly
-        {
-            get
-            {
-                throw new NotImplementedException("TODO:MetaDslx - replace with backend created symbol");
-                //return CSharpCompilationForReferenceManager.SourceAssembly;
-            }
-        }
 
         /// <summary>
         /// The AssemblySymbol that represents the assembly being created.
@@ -1207,7 +1185,7 @@ namespace MetaDslx.CodeAnalysis
                 return Imports.Empty;
             }
 
-            var binder = GetBinderFactory(tree).GetImportsBinder(tree.GetRoot());
+            var binder = GetBinderFactory(tree).GetImportsBinder((LanguageSyntaxNode)tree.GetRoot());
             return binder.GetImports(basesBeingResolved: null);
         }
 
@@ -1427,7 +1405,7 @@ namespace MetaDslx.CodeAnalysis
                         return scriptClass.GetScriptEntryPoint();
                     }
 
-                    var mainTypeOrNamespace = globalNamespace.GetNamespaceOrTypeByQualifiedName(mainTypeName.Split('.')).OfMinimalArity();
+                    var mainTypeOrNamespace = globalNamespace.GetNamespaceOrTypeByQualifiedName(mainTypeName.Split('.')).FirstOrDefault();
                     if ((object)mainTypeOrNamespace == null)
                     {
                         diagnostics.Add(InternalErrorCode.ERR_MainClassNotFound, NoLocation.Singleton, mainTypeName);
@@ -1435,7 +1413,7 @@ namespace MetaDslx.CodeAnalysis
                     }
 
                     mainType = mainTypeOrNamespace as NamedTypeSymbol;
-                    if ((object)mainType == null || mainType.IsGenericType || (mainType.TypeKind != TypeKind.Class && mainType.TypeKind != TypeKind.Struct && !mainType.IsInterface))
+                    if ((object)mainType == null || (mainType.TypeKind != TypeKind.Class && mainType.TypeKind != TypeKind.Struct))
                     {
                         diagnostics.Add(InternalErrorCode.ERR_MainClassNotClass, mainTypeOrNamespace.Locations.First(), mainTypeOrNamespace);
                         return null;
@@ -1477,13 +1455,6 @@ namespace MetaDslx.CodeAnalysis
                     {
                         noMainFoundDiagnostics.Add(InternalErrorCode.WRN_InvalidMainSig, candidate.Locations.First(), candidate);
                         noMainFoundDiagnostics.AddRange(specificDiagnostics);
-                        return false;
-                    }
-
-                    if (candidate.IsGenericMethod || candidate.ContainingType.IsGenericType)
-                    {
-                        // a single error for partial methods:
-                        noMainFoundDiagnostics.Add(InternalErrorCode.WRN_MainCantBeGeneric, candidate.Locations.First(), candidate);
                         return false;
                     }
                     return true;
@@ -1597,11 +1568,13 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        private static void AddEntryPointCandidates(ArrayBuilder<MethodSymbol> entryPointCandidates, IEnumerable<ISymbol> members)
+        private static void AddEntryPointCandidates(
+            ArrayBuilder<MethodSymbol> entryPointCandidates, IEnumerable<ISymbol> members)
         {
             foreach (var member in members)
             {
-                if (member is MethodSymbol method && method.IsEntryPointCandidate)
+                if (member is MethodSymbol method &&
+                    method.IsEntryPointCandidate)
                 {
                     entryPointCandidates.Add(method);
                 }
@@ -1633,11 +1606,6 @@ namespace MetaDslx.CodeAnalysis
                 this.MethodSymbol = methodSymbol;
                 this.Diagnostics = diagnostics;
             }
-        }
-
-        internal bool MightContainNoPiaLocalTypes()
-        {
-            return SourceAssembly.MightContainNoPiaLocalTypes();
         }
 
         // NOTE(cyrusn): There is a bit of a discoverability problem with this method and the same
@@ -1714,20 +1682,6 @@ namespace MetaDslx.CodeAnalysis
             return result;
         }
 
-        /// <summary>
-        /// Returns a new ArrayTypeSymbol representing an array type tied to the base types of the
-        /// COR Library in this Compilation.
-        /// </summary>
-        internal ArrayTypeSymbol CreateArrayTypeSymbol(TypeSymbol elementType, int rank = 1)
-        {
-            if ((object)elementType == null)
-            {
-                throw new ArgumentNullException(nameof(elementType));
-            }
-
-            return ArrayTypeSymbol.CreateArray(this.Assembly, elementType, rank);
-        }
-
         private protected override bool IsSymbolAccessibleWithinCore(
             ISymbol symbol,
             ISymbol within,
@@ -1796,7 +1750,7 @@ namespace MetaDslx.CodeAnalysis
 
         private BinderFactory AddNewFactory(SyntaxTree syntaxTree, ref WeakReference<BinderFactory> slot)
         {
-            var newFactory = this.Language.CompilationFactory.CreateBinderFactory(this, syntaxTree);
+            var newFactory = Language.CompilationFactory.CreateBinderFactory(this, syntaxTree);
             var newWeakReference = new WeakReference<BinderFactory>(newFactory);
 
             while (true)
@@ -1825,7 +1779,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal Imports GetImports(SingleDeclaration declaration)
         {
-            return GetBinderFactory(declaration.SyntaxReference.SyntaxTree).GetImportsBinder(declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
+            return GetBinderFactory(declaration.SyntaxReference.SyntaxTree).GetImportsBinder((LanguageSyntaxNode)declaration.SyntaxReference.GetSyntax()).GetImports(basesBeingResolved: null);
         }
 
         private AliasSymbol CreateGlobalNamespaceAlias()
@@ -1866,7 +1820,7 @@ namespace MetaDslx.CodeAnalysis
                         TextSpan infoSpan = info.Span;
                         if (!this.IsImportDirectiveUsed(infoTree, infoSpan.Start))
                         {
-                            ErrorCode code = info.Kind == SyntaxKind.ExternAliasDirective
+                            InternalErrorCode code = info.Kind == SyntaxKind.ExternAliasDirective
                                 ? InternalErrorCode.HDN_UnusedExternAlias
                                 : InternalErrorCode.HDN_UnusedUsingDirective;
                             diagnostics.Add(code, infoTree.GetLocation(infoSpan));
@@ -1899,7 +1853,7 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        private void RecordImportInternal(SyntaxNode syntax)
+        private void RecordImport(LanguageSyntaxNode syntax)
         {
             LazyInitializer.EnsureInitialized(ref _lazyImportInfos).
                 Add(new ImportInfo(syntax.SyntaxTree, syntax.RawKind, syntax.Span));
@@ -1979,7 +1933,7 @@ namespace MetaDslx.CodeAnalysis
 
         private readonly DiagnosticBag _additionalCodegenWarnings = new DiagnosticBag();
 
-        internal override DeclarationTable Declarations
+        public override DeclarationTable Declarations
         {
             get
             {
@@ -2016,7 +1970,7 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// Gets the diagnostics produced during the analysis of method bodies and field initializers.
         /// </summary>
-        public override ImmutableArray<Diagnostic> GetMethodBodyDiagnostics(CancellationToken cancellationToken = default(CancellationToken))
+        public override ImmutableArray<Diagnostic> GetSymbolDiagnostics(CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDiagnostics(CompilationStage.Compile, false, cancellationToken);
         }
@@ -2110,7 +2064,7 @@ namespace MetaDslx.CodeAnalysis
             if (stage == CompilationStage.Compile || stage > CompilationStage.Compile && includeEarlierStages)
             {
                 var methodBodyDiagnostics = DiagnosticBag.GetInstance();
-                GetDiagnosticsForAllMethodBodies(methodBodyDiagnostics, cancellationToken);
+                GetDiagnosticsForAllSymbols(methodBodyDiagnostics, cancellationToken);
                 builder.AddRangeAndFree(methodBodyDiagnostics);
             }
 
@@ -2139,20 +2093,10 @@ namespace MetaDslx.CodeAnalysis
 
         // Do the steps in compilation to get the method body diagnostics, but don't actually generate
         // IL or emit an assembly.
-        private void GetDiagnosticsForAllMethodBodies(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        private void GetDiagnosticsForAllSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            MethodCompiler.CompileMethodBodies(
-                compilation: this,
-                moduleBeingBuiltOpt: null,
-                emittingPdb: false,
-                emitTestCoverageData: false,
-                hasDeclarationErrors: false,
-                diagnostics: diagnostics,
-                filterOpt: null,
-                cancellationToken: cancellationToken);
-
-            DocumentationCommentCompiler.WriteDocumentationCommentXml(this, null, null, diagnostics, cancellationToken);
-            this.ReportUnusedImports(null, diagnostics, cancellationToken);
+            throw new NotImplementedException("TODO:MetaDslx");
+            //this.ReportUnusedImports(null, diagnostics, cancellationToken);
         }
 
         private static bool IsDefinedOrImplementedInSourceTree(Symbol symbol, SyntaxTree tree, TextSpan? span)
@@ -2171,21 +2115,11 @@ namespace MetaDslx.CodeAnalysis
             return false;
         }
 
-        private ImmutableArray<Diagnostic> GetDiagnosticsForMethodBodiesInTree(SyntaxTree tree, TextSpan? span, CancellationToken cancellationToken)
+        private ImmutableArray<Diagnostic> GetDiagnosticsForSymbolsInTree(SyntaxTree tree, TextSpan? span, CancellationToken cancellationToken)
         {
-            DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
+            throw new NotImplementedException("TODO:MetaDslx");
 
-            MethodCompiler.CompileMethodBodies(
-                compilation: this,
-                moduleBeingBuiltOpt: null,
-                emittingPdb: false,
-                emitTestCoverageData: false,
-                hasDeclarationErrors: false,
-                diagnostics: diagnostics,
-                filterOpt: s => IsDefinedOrImplementedInSourceTree(s, tree, span),
-                cancellationToken: cancellationToken);
-
-            DocumentationCommentCompiler.WriteDocumentationCommentXml(this, null, null, diagnostics, cancellationToken, tree, span);
+            /*DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
 
             // Report unused directives only if computing diagnostics for the entire tree.
             // Otherwise we cannot determine if a particular directive is used outside of the given sub-span within the tree.
@@ -2194,7 +2128,7 @@ namespace MetaDslx.CodeAnalysis
                 ReportUnusedImports(tree, diagnostics, cancellationToken);
             }
 
-            return diagnostics.ToReadOnlyAndFree();
+            return diagnostics.ToReadOnlyAndFree();*/
         }
 
         private ImmutableArray<Diagnostic> GetSourceDeclarationDiagnostics(SyntaxTree syntaxTree = null, TextSpan? filterSpanWithinTree = null, Func<IEnumerable<Diagnostic>, SyntaxTree, TextSpan?, IEnumerable<Diagnostic>> locationFilterOpt = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -2284,14 +2218,14 @@ namespace MetaDslx.CodeAnalysis
                 //initializers which can result in 'field is never initialized' warnings for fields in partial
                 //types when the field is in a different source file than the one for which we're getting diagnostics.
                 //For that reason the bag must be also filtered by tree.
-                IEnumerable<Diagnostic> methodBodyDiagnostics = GetDiagnosticsForMethodBodiesInTree(syntaxTree, filterSpanWithinTree, cancellationToken);
+                IEnumerable<Diagnostic> symbolDiagnostics = GetDiagnosticsForSymbolsInTree(syntaxTree, filterSpanWithinTree, cancellationToken);
 
                 // TODO: Enable the below commented assert and remove the filtering code in the next line.
                 //       GetDiagnosticsForMethodBodiesInTree seems to be returning diagnostics with locations that don't satisfy the filter tree/span, this must be fixed.
                 // Debug.Assert(methodBodyDiagnostics.All(d => DiagnosticContainsLocation(d, syntaxTree, filterSpanWithinTree)));
-                methodBodyDiagnostics = FilterDiagnosticsByLocation(methodBodyDiagnostics, syntaxTree, filterSpanWithinTree);
+                symbolDiagnostics = FilterDiagnosticsByLocation(symbolDiagnostics, syntaxTree, filterSpanWithinTree);
 
-                builder.AddRange(methodBodyDiagnostics);
+                builder.AddRange(symbolDiagnostics);
             }
 
             // Before returning diagnostics, we filter warnings
@@ -2307,402 +2241,19 @@ namespace MetaDslx.CodeAnalysis
 
         protected override void AppendDefaultVersionResource(Stream resourceStream)
         {
-            var sourceAssembly = SourceAssembly;
-            string fileVersion = sourceAssembly.FileVersion ?? sourceAssembly.Identity.Version.ToString();
-
-            Win32ResourceConversions.AppendVersionToResourceStream(resourceStream,
-                !this.Options.OutputKind.IsApplication(),
-                fileVersion: fileVersion,
-                originalFileName: this.SourceModule.Name,
-                internalName: this.SourceModule.Name,
-                productVersion: sourceAssembly.InformationalVersion ?? fileVersion,
-                fileDescription: sourceAssembly.Title ?? " ", //alink would give this a blank if nothing was supplied.
-                assemblyVersion: sourceAssembly.Identity.Version,
-                legalCopyright: sourceAssembly.Copyright ?? " ", //alink would give this a blank if nothing was supplied.
-                legalTrademarks: sourceAssembly.Trademark,
-                productName: sourceAssembly.Product,
-                comments: sourceAssembly.Description,
-                companyName: sourceAssembly.Company);
+            throw new NotImplementedException();
         }
 
         #endregion
 
         #region Emit
 
-        internal override byte LinkerMajorVersion => 0x30;
-
-        internal override bool IsDelaySigned
-        {
-            get { return SourceAssembly.IsDelaySigned; }
-        }
-
-        internal override StrongNameKeys StrongNameKeys
-        {
-            get { return SourceAssembly.StrongNameKeys; }
-        }
-
-        internal override CommonPEModuleBuilder CreateModuleBuilder(
-            EmitOptions emitOptions,
-            IMethodSymbol debugEntryPoint,
-            Stream sourceLinkStream,
-            IEnumerable<EmbeddedText> embeddedTexts,
-            IEnumerable<ResourceDescription> manifestResources,
-            CompilationTestData testData,
-            DiagnosticBag diagnostics,
-            CancellationToken cancellationToken)
-        {
-            Debug.Assert(!IsSubmission || HasCodeToEmit());
-
-            string runtimeMDVersion = GetRuntimeMetadataVersion(emitOptions, diagnostics);
-            if (runtimeMDVersion == null)
-            {
-                return null;
-            }
-
-            var moduleProps = ConstructModuleSerializationProperties(emitOptions, runtimeMDVersion);
-
-            if (manifestResources == null)
-            {
-                manifestResources = SpecializedCollections.EmptyEnumerable<ResourceDescription>();
-            }
-
-            PEModuleBuilder moduleBeingBuilt;
-            if (_options.OutputKind.IsNetModule())
-            {
-                moduleBeingBuilt = new PENetModuleBuilder(
-                    (SourceModuleSymbol)SourceModule,
-                    emitOptions,
-                    moduleProps,
-                    manifestResources);
-            }
-            else
-            {
-                var kind = _options.OutputKind.IsValid() ? _options.OutputKind : OutputKind.DynamicallyLinkedLibrary;
-                moduleBeingBuilt = new PEAssemblyBuilder(
-                    SourceAssembly,
-                    emitOptions,
-                    kind,
-                    moduleProps,
-                    manifestResources);
-            }
-
-            if (debugEntryPoint != null)
-            {
-                moduleBeingBuilt.SetDebugEntryPoint((MethodSymbol)debugEntryPoint, diagnostics);
-            }
-
-            moduleBeingBuilt.SourceLinkStreamOpt = sourceLinkStream;
-
-            if (embeddedTexts != null)
-            {
-                moduleBeingBuilt.EmbeddedTexts = embeddedTexts;
-            }
-
-            // testData is only passed when running tests.
-            if (testData != null)
-            {
-                moduleBeingBuilt.SetMethodTestData(testData.Methods);
-                testData.Module = moduleBeingBuilt;
-            }
-
-            return moduleBeingBuilt;
-        }
-
-        internal override bool CompileMethods(
-            CommonPEModuleBuilder moduleBuilder,
-            bool emittingPdb,
-            bool emitMetadataOnly,
-            bool emitTestCoverageData,
-            DiagnosticBag diagnostics,
-            Predicate<ISymbol> filterOpt,
-            CancellationToken cancellationToken)
-        {
-            // The diagnostics should include syntax and declaration errors. We insert these before calling Emitter.Emit, so that the emitter
-            // does not attempt to emit if there are declaration errors (but we do insert all errors from method body binding...)
-            PooledHashSet<int> excludeDiagnostics = null;
-            if (emitMetadataOnly)
-            {
-                excludeDiagnostics = PooledHashSet<int>.GetInstance();
-                excludeDiagnostics.Add(InternalErrorCode.ERR_ConcreteMissingBody);
-            }
-            bool hasDeclarationErrors = !FilterAndAppendDiagnostics(diagnostics, GetDiagnostics(CompilationStage.Declare, true, cancellationToken), excludeDiagnostics);
-            excludeDiagnostics?.Free();
-
-            // TODO (tomat): NoPIA:
-            // EmbeddedSymbolManager.MarkAllDeferredSymbolsAsReferenced(this)
-
-            var moduleBeingBuilt = (PEModuleBuilder)moduleBuilder;
-
-            if (emitMetadataOnly)
-            {
-                if (hasDeclarationErrors)
-                {
-                    return false;
-                }
-
-                if (moduleBeingBuilt.SourceModule.HasBadAttributes)
-                {
-                    // If there were errors but no declaration diagnostics, explicitly add a "Failed to emit module" error.
-                    diagnostics.Add(ErrorCode.ERR_ModuleEmitFailure, NoLocation.Singleton, ((Cci.INamedEntity)moduleBeingBuilt).Name);
-                    return false;
-                }
-
-                SynthesizedMetadataCompiler.ProcessSynthesizedMembers(this, moduleBeingBuilt, cancellationToken);
-            }
-            else
-            {
-                if ((emittingPdb || emitTestCoverageData) &&
-                    !CreateDebugDocuments(moduleBeingBuilt.DebugDocumentsBuilder, moduleBeingBuilt.EmbeddedTexts, diagnostics))
-                {
-                    return false;
-                }
-
-                // Perform initial bind of method bodies in spite of earlier errors. This is the same
-                // behavior as when calling GetDiagnostics()
-
-                // Use a temporary bag so we don't have to refilter pre-existing diagnostics.
-                DiagnosticBag methodBodyDiagnosticBag = DiagnosticBag.GetInstance();
-
-                MethodCompiler.CompileMethodBodies(
-                    this,
-                    moduleBeingBuilt,
-                    emittingPdb,
-                    emitTestCoverageData,
-                    hasDeclarationErrors,
-                    diagnostics: methodBodyDiagnosticBag,
-                    filterOpt: filterOpt,
-                    cancellationToken: cancellationToken);
-
-                bool hasMethodBodyErrorOrWarningAsError = !FilterAndAppendAndFreeDiagnostics(diagnostics, ref methodBodyDiagnosticBag);
-
-                if (hasDeclarationErrors || hasMethodBodyErrorOrWarningAsError)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        internal override bool GenerateResourcesAndDocumentationComments(
-            CommonPEModuleBuilder moduleBuilder,
-            Stream xmlDocStream,
-            Stream win32Resources,
-            string outputNameOverride,
-            DiagnosticBag diagnostics,
-            CancellationToken cancellationToken)
-        {
-            // Use a temporary bag so we don't have to refilter pre-existing diagnostics.
-            var resourceDiagnostics = DiagnosticBag.GetInstance();
-
-            SetupWin32Resources(moduleBuilder, win32Resources, resourceDiagnostics);
-
-            ReportManifestResourceDuplicates(
-                moduleBuilder.ManifestResources,
-                SourceAssembly.Modules.Skip(1).Select(m => m.Name),   //all modules except the first one
-                AddedModulesResourceNames(resourceDiagnostics),
-                resourceDiagnostics);
-
-            if (!FilterAndAppendAndFreeDiagnostics(diagnostics, ref resourceDiagnostics))
-            {
-                return false;
-            }
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            // Use a temporary bag so we don't have to refilter pre-existing diagnostics.
-            var xmlDiagnostics = DiagnosticBag.GetInstance();
-
-            string assemblyName = FileNameUtilities.ChangeExtension(outputNameOverride, extension: null);
-            DocumentationCommentCompiler.WriteDocumentationCommentXml(this, assemblyName, xmlDocStream, xmlDiagnostics, cancellationToken);
-
-            return FilterAndAppendAndFreeDiagnostics(diagnostics, ref xmlDiagnostics);
-        }
-
-        private IEnumerable<string> AddedModulesResourceNames(DiagnosticBag diagnostics)
-        {
-            ImmutableArray<ModuleSymbol> modules = SourceAssembly.Modules;
-
-            for (int i = 1; i < modules.Length; i++)
-            {
-                var m = (Symbols.Metadata.PE.PEModuleSymbol)modules[i];
-                ImmutableArray<EmbeddedResource> resources;
-
-                try
-                {
-                    resources = m.Module.GetEmbeddedResourcesOrThrow();
-                }
-                catch (BadImageFormatException)
-                {
-                    diagnostics.Add(new LanguageDiagnosticInfo(InternalErrorCode.ERR_BindToBogus, m), NoLocation.Singleton);
-                    continue;
-                }
-
-                foreach (var resource in resources)
-                {
-                    yield return resource.Name;
-                }
-            }
-        }
-
-        internal override EmitDifferenceResult EmitDifference(
-            EmitBaseline baseline,
-            IEnumerable<SemanticEdit> edits,
-            Func<ISymbol, bool> isAddedSymbol,
-            Stream metadataStream,
-            Stream ilStream,
-            Stream pdbStream,
-            ICollection<MethodDefinitionHandle> updatedMethods,
-            CompilationTestData testData,
-            CancellationToken cancellationToken)
-        {
-            return EmitHelpers.EmitDifference(
-                this,
-                baseline,
-                edits,
-                isAddedSymbol,
-                metadataStream,
-                ilStream,
-                pdbStream,
-                updatedMethods,
-                testData,
-                cancellationToken);
-        }
-
-        internal string GetRuntimeMetadataVersion(EmitOptions emitOptions, DiagnosticBag diagnostics)
-        {
-            string runtimeMDVersion = GetRuntimeMetadataVersion(emitOptions);
-            if (runtimeMDVersion != null)
-            {
-                return runtimeMDVersion;
-            }
-
-            DiagnosticBag runtimeMDVersionDiagnostics = DiagnosticBag.GetInstance();
-            runtimeMDVersionDiagnostics.Add(InternalErrorCode.WRN_NoRuntimeMetadataVersion, NoLocation.Singleton);
-            if (!FilterAndAppendAndFreeDiagnostics(diagnostics, ref runtimeMDVersionDiagnostics))
-            {
-                return null;
-            }
-
-            return string.Empty; //prevent emitter from crashing.
-        }
-
-        private string GetRuntimeMetadataVersion(EmitOptions emitOptions)
-        {
-            var corAssembly = Assembly.CorLibrary as Symbols.Metadata.PE.PEAssemblySymbol;
-
-            if ((object)corAssembly != null)
-            {
-                return corAssembly.Assembly.ManifestModule.MetadataVersion;
-            }
-
-            return emitOptions.RuntimeMetadataVersion;
-        }
-
-        internal override void AddDebugSourceDocumentsForChecksumDirectives(
-            DebugDocumentsBuilder documentsBuilder,
-            SyntaxTree tree,
-            DiagnosticBag diagnostics)
-        {
-            var checksumDirectives = tree.GetRoot().GetDirectives(d => d.Kind() == SyntaxKind.PragmaChecksumDirectiveTrivia &&
-                                                                 !d.ContainsDiagnostics);
-
-            foreach (var directive in checksumDirectives)
-            {
-                var checksumDirective = (PragmaChecksumDirectiveTriviaSyntax)directive;
-                var path = checksumDirective.File.ValueText;
-
-                var checksumText = checksumDirective.Bytes.ValueText;
-                var normalizedPath = documentsBuilder.NormalizeDebugDocumentPath(path, basePath: tree.FilePath);
-                var existingDoc = documentsBuilder.TryGetDebugDocumentForNormalizedPath(normalizedPath);
-
-                // duplicate checksum pragmas are valid as long as values match
-                // if we have seen this document already, check for matching values.
-                if (existingDoc != null)
-                {
-                    // pragma matches a file path on an actual tree.
-                    // Dev12 compiler just ignores the pragma in this case which means that
-                    // checksum of the actual tree always wins and no warning is given.
-                    // We will continue doing the same.
-                    if (existingDoc.IsComputedChecksum)
-                    {
-                        continue;
-                    }
-
-                    var sourceInfo = existingDoc.GetSourceInfo();
-                    if (ChecksumMatches(checksumText, sourceInfo.Checksum))
-                    {
-                        var guid = Guid.Parse(checksumDirective.Guid.ValueText);
-                        if (guid == sourceInfo.ChecksumAlgorithmId)
-                        {
-                            // all parts match, nothing to do
-                            continue;
-                        }
-                    }
-
-                    // did not match to an existing document
-                    // produce a warning and ignore the pragma
-                    diagnostics.Add(InternalErrorCode.WRN_ConflictingChecksum, new SourceLocation(checksumDirective), path);
-                }
-                else
-                {
-                    var newDocument = new Cci.DebugSourceDocument(
-                        normalizedPath,
-                        Cci.DebugSourceDocument.CorSymLanguageTypeCSharp,
-                        MakeChecksumBytes(checksumDirective.Bytes.ValueText),
-                        Guid.Parse(checksumDirective.Guid.ValueText));
-
-                    documentsBuilder.AddDebugDocument(newDocument);
-                }
-            }
-        }
-
-        private bool ChecksumMatches(string bytesText, ImmutableArray<byte> bytes)
-        {
-            if (bytesText.Length != bytes.Length * 2)
-            {
-                return false;
-            }
-
-            for (int i = 0, len = bytesText.Length / 2; i < len; i++)
-            {
-                // 1A  in text becomes   0x1A
-                var b = Microsoft.CodeAnalysis.CSharp.SyntaxFacts.HexValue(bytesText[i * 2]) * 16 +
-                        Microsoft.CodeAnalysis.CSharp.SyntaxFacts.HexValue(bytesText[i * 2 + 1]);
-
-                if (b != bytes[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private static ImmutableArray<byte> MakeChecksumBytes(string bytesText)
-        {
-            int length = bytesText.Length / 2;
-            var builder = ArrayBuilder<byte>.GetInstance(length);
-
-            for (int i = 0; i < length; i++)
-            {
-                // 1A  in text becomes   0x1A
-                var b = Microsoft.CodeAnalysis.CSharp.SyntaxFacts.HexValue(bytesText[i * 2]) * 16 +
-                        Microsoft.CodeAnalysis.CSharp.SyntaxFacts.HexValue(bytesText[i * 2 + 1]);
-
-                builder.Add((byte)b);
-            }
-
-            return builder.ToImmutableAndFree();
-        }
-
-        internal override Guid DebugSourceDocumentLanguageId => Cci.DebugSourceDocument.CorSymLanguageTypeCSharp;
 
         internal override bool HasCodeToEmit()
         {
             foreach (var syntaxTree in this.SyntaxTrees)
             {
-                var unit = syntaxTree.GetCompilationUnitRoot();
+                var unit = syntaxTree.GetRoot();
                 if (unit.Members.Count > 0)
                 {
                     return true;
@@ -2822,90 +2373,6 @@ namespace MetaDslx.CodeAnalysis
         protected override INamedTypeSymbol CommonScriptClass
         {
             get { return this.ScriptClass; }
-        }
-
-        protected override IArrayTypeSymbol CommonCreateArrayTypeSymbol(ITypeSymbol elementType, int rank)
-        {
-            return CreateArrayTypeSymbol(elementType.EnsureCSharpSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(elementType)), rank);
-        }
-
-        protected override IPointerTypeSymbol CommonCreatePointerTypeSymbol(ITypeSymbol elementType)
-        {
-            return CreatePointerTypeSymbol(elementType.EnsureCSharpSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(elementType)));
-        }
-
-        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(
-            ImmutableArray<ITypeSymbol> elementTypes,
-            ImmutableArray<string> elementNames,
-            ImmutableArray<Location> elementLocations)
-        {
-            var typesBuilder = ArrayBuilder<TypeWithAnnotations>.GetInstance(elementTypes.Length);
-            for (int i = 0; i < elementTypes.Length; i++)
-            {
-                var elementType = elementTypes[i].EnsureCSharpSymbolOrNull<ITypeSymbol, TypeSymbol>($"{nameof(elementTypes)}[{i}]");
-                typesBuilder.Add(TypeWithAnnotations.Create(elementType));
-            }
-
-            return TupleTypeSymbol.Create(
-                locationOpt: null, // no location for the type declaration
-                elementTypesWithAnnotations: typesBuilder.ToImmutableAndFree(),
-                elementLocations: elementLocations,
-                elementNames: elementNames,
-                compilation: this,
-                shouldCheckConstraints: false,
-                includeNullability: false,
-                errorPositions: default(ImmutableArray<bool>));
-        }
-
-        protected override INamedTypeSymbol CommonCreateTupleTypeSymbol(
-            INamedTypeSymbol underlyingType,
-            ImmutableArray<string> elementNames,
-            ImmutableArray<Location> elementLocations)
-        {
-            var csharpUnderlyingTuple = underlyingType.EnsureCSharpSymbolOrNull<INamedTypeSymbol, NamedTypeSymbol>(nameof(underlyingType));
-
-            int cardinality;
-            if (!csharpUnderlyingTuple.IsTupleCompatible(out cardinality))
-            {
-                throw new ArgumentException(CodeAnalysisResources.TupleUnderlyingTypeMustBeTupleCompatible, nameof(underlyingType));
-            }
-
-            elementNames = CheckTupleElementNames(cardinality, elementNames);
-            CheckTupleElementLocations(cardinality, elementLocations);
-
-            return TupleTypeSymbol.Create(
-                csharpUnderlyingTuple, elementNames, elementLocations: elementLocations);
-        }
-
-        protected override INamedTypeSymbol CommonCreateAnonymousTypeSymbol(
-            ImmutableArray<ITypeSymbol> memberTypes,
-            ImmutableArray<string> memberNames,
-            ImmutableArray<Location> memberLocations,
-            ImmutableArray<bool> memberIsReadOnly)
-        {
-            for (int i = 0, n = memberTypes.Length; i < n; i++)
-            {
-                memberTypes[i].EnsureCSharpSymbolOrNull<ITypeSymbol, TypeSymbol>($"{nameof(memberTypes)}[{i}]");
-            }
-
-            if (!memberIsReadOnly.IsDefault && memberIsReadOnly.Any(v => !v))
-            {
-                throw new ArgumentException($"Non-ReadOnly members are not supported in C# anonymous types.");
-            }
-
-            var fields = ArrayBuilder<AnonymousTypeField>.GetInstance();
-
-            for (int i = 0, n = memberTypes.Length; i < n; i++)
-            {
-                var type = memberTypes[i];
-                var name = memberNames[i];
-                var location = memberLocations.IsDefault ? Location.None : memberLocations[i];
-                fields.Add(new AnonymousTypeField(name, location, TypeWithAnnotations.Create((TypeSymbol)type)));
-            }
-
-            var descriptor = new AnonymousTypeDescriptor(fields.ToImmutableAndFree(), Location.None);
-
-            return this.AnonymousTypeManager.ConstructAnonymousTypeSymbol(descriptor);
         }
 
         protected override ITypeSymbol CommonDynamicType
@@ -3155,7 +2622,7 @@ namespace MetaDslx.CodeAnalysis
 
                     if (_includeMember)
                     {
-                        var typeDeclaration = (MergedDeclaration)current;
+                        var typeDeclaration = current;
                         if (ShouldCheckTypeForMembers(typeDeclaration))
                         {
                             AppendMemberSymbolsWithName(spine, typeDeclaration, set);

@@ -1,6 +1,8 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Symbols.Source;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
@@ -25,6 +27,25 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
             }
             return null;
+        }
+
+        public static bool IsTypeOrTypeAlias(this Symbol symbol)
+        {
+            switch (symbol.Kind)
+            {
+                case SymbolKind.ArrayType:
+                case SymbolKind.DynamicType:
+                case SymbolKind.ErrorType:
+                case SymbolKind.NamedType:
+                case SymbolKind.PointerType:
+                case SymbolKind.TypeParameter:
+                    return true;
+                case SymbolKind.Alias:
+                    return IsTypeOrTypeAlias(((AliasSymbol)symbol).Target);
+                default:
+                    Debug.Assert(!(symbol is TypeSymbol));
+                    return false;
+            }
         }
     }
 }

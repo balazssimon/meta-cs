@@ -49,6 +49,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 diagnostics.AddRange(singleDeclaration.Diagnostics);
             }
+            _state = SymbolCompletionState.Create(module.Language);
         }
 
         public override ModelSymbolInfo ModelSymbolInfo => _mergedDeclaration.Kind;

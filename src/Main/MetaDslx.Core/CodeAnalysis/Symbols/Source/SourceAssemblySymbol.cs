@@ -56,7 +56,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             moduleBuilder.AddRange(netModules);
             _modules = moduleBuilder.ToImmutableAndFree();
 
-            _state = compilation.Language.CompilationFactory.CreateSymbolCompletionState();
+            _state = SymbolCompletionState.Create(compilation.Language);
         }
 
         public override string Name => _assemblySimpleName;

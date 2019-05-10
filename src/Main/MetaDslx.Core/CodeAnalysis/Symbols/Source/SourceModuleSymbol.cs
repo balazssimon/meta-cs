@@ -56,7 +56,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _name = moduleName;
             _model = new MutableModel(moduleName);
 
-            _state = assemblySymbol.Language.CompilationFactory.CreateSymbolCompletionState();
+            _state = SymbolCompletionState.Create(assemblySymbol.Language);
         }
 
         public override NamespaceSymbol GlobalNamespace

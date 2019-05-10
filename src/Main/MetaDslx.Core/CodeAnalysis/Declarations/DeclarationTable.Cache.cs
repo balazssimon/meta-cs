@@ -10,7 +10,7 @@ using ReferenceDirective = MetaDslx.CodeAnalysis.Syntax.ReferenceDirective;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
-    internal partial class DeclarationTable
+    public partial class DeclarationTable
     {
         // The structure of the DeclarationTable provides us with a set of 'old' declarations that
         // stay relatively unchanged and a 'new' declaration that is repeatedly added and removed.

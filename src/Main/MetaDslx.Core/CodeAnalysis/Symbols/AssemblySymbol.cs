@@ -11,7 +11,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
-    public abstract class AssemblySymbol : Symbol, IAssemblySymbol
+    public abstract class AssemblySymbol : Symbol, IAssemblySymbolInternal
     {
         protected AssemblySymbol()
         {
@@ -236,6 +236,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override bool IsStatic => false;
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+
+        public virtual Version AssemblyVersionPattern => new Version();
 
         public override void Accept(SymbolVisitor visitor)
         {

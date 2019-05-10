@@ -48,7 +48,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 diagnostics.AddRange(singleDeclaration.Diagnostics);
             }
-            _state = Language.CompilationFactory.CreateSymbolCompletionState();
+            _state = SymbolCompletionState.Create(containingSymbol.Language);
         }
 
         public MergedDeclaration MergedDeclaration => _declaration;
@@ -601,7 +601,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             return this.DeclaringCompilation.GetBinder(syntaxNode);
         }
-        
+
         protected virtual void MergePartialMembers(
             ArrayBuilder<string> memberNames,
             Dictionary<string, ImmutableArray<Symbol>> membersByName,
@@ -725,7 +725,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return _state.HasComplete(part);
         }
 
-        protected abstract void CheckBaseTypes(DiagnosticBag diagnostics);
+        protected virtual void CheckBaseTypes(DiagnosticBag diagnostics)
+        {
+
+        }
 
         public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
