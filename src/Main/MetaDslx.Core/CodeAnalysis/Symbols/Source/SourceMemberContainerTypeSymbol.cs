@@ -48,7 +48,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 diagnostics.AddRange(singleDeclaration.Diagnostics);
             }
-            _state = Language.CompilationFactory.CreateSymbolCompletionState(DeclaringCompilation, this);
+            _state = Language.CompilationFactory.CreateSymbolCompletionState();
         }
 
         public MergedDeclaration MergedDeclaration => _declaration;
@@ -710,7 +710,122 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
             return builder.ToImmutableAndFree();
         }
-        
+
         #endregion
+
+        #region Completion
+
+        public sealed override bool RequiresCompletion
+        {
+            get { return true; }
+        }
+
+        public sealed override bool HasComplete(CompletionPart part)
+        {
+            return _state.HasComplete(part);
+        }
+
+        protected abstract void CheckBaseTypes(DiagnosticBag diagnostics);
+
+        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                // NOTE: cases that depend on GetMembers[ByName] should call RequireCompletionPartMembers.
+                cancellationToken.ThrowIfCancellationRequested();
+                var incompletePart = _state.NextIncompletePart;
+                if (incompletePart == CompletionPart.Attributes)
+                {
+                    GetAttributes();
+                }
+                else if (incompletePart == CompletionPart.StartBaseTypes || incompletePart == CompletionPart.FinishBaseTypes)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartBaseTypes))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        CheckBaseTypes(diagnostics);
+                        AddDeclarationDiagnostics(diagnostics);
+                        _state.NotePartComplete(CompletionPart.FinishBaseTypes);
+                        diagnostics.Free();
+                    }
+                }
+                else if (incompletePart == CompletionPart.Members)
+                {
+                    this.GetMembersByName();
+                }
+                else if (incompletePart == CompletionPart.TypeMembers)
+                {
+                    this.GetTypeMembersUnordered();
+                }
+                else if (incompletePart == CompletionPart.StartMemberChecks || incompletePart == CompletionPart.FinishMemberChecks)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartMemberChecks))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        AfterMembersChecks(diagnostics);
+                        AddDeclarationDiagnostics(diagnostics);
+
+                        // We may produce a SymbolDeclaredEvent for the enclosing type before events for its contained members
+                        DeclaringCompilation.SymbolDeclaredEvent(this);
+                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishMemberChecks);
+                        Debug.Assert(thisThreadCompleted);
+                        diagnostics.Free();
+                    }
+                }
+                else if (incompletePart == CompletionPart.MembersCompleted)
+                {
+                    ImmutableArray<Symbol> members = this.GetMembersUnordered();
+
+                    bool allCompleted = true;
+
+                    if (locationOpt == null)
+                    {
+                        foreach (var member in members)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+                            member.ForceComplete(locationOpt, cancellationToken);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var member in members)
+                        {
+                            ForceCompleteMemberByLocation(locationOpt, member, cancellationToken);
+                            allCompleted = allCompleted && member.HasComplete(CompletionPart.All);
+                        }
+                    }
+
+                    if (!allCompleted)
+                    {
+                        // We did not complete all members so we won't have enough information for
+                        // the PointedAtManagedTypeChecks, so just kick out now.
+                        var allParts = CompletionPart.NamedTypeSymbolWithLocationAll;
+                        _state.SpinWaitComplete(allParts, cancellationToken);
+                        return;
+                    }
+
+                    // We've completed all members, so we're ready for the PointedAtManagedTypeChecks;
+                    // proceed to the next iteration.
+                    _state.NotePartComplete(CompletionPart.MembersCompleted);
+                }
+                else if (incompletePart == null)
+                {
+                    return;
+                }
+                else
+                {
+                    // This assert will trigger if we forgot to handle any of the completion parts
+                    Debug.Assert(!CompletionPart.NamedTypeSymbolAll.Contains(incompletePart));
+                    // any other values are completion parts intended for other kinds of symbols
+                    _state.NotePartComplete(incompletePart);
+                }
+                _state.SpinWaitComplete(incompletePart, cancellationToken);
+            }
+
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        #endregion
+
     }
 }

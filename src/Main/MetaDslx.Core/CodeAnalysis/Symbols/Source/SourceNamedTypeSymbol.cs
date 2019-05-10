@@ -132,14 +132,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             var baseTypesRO = baseTypes.ToImmutableAndFree();
-            this.CheckBaseTypes(baseTypesRO, baseTypeLocations, diagnostics, ref useSiteDiagnostics);
+            this.CheckDeclaredBaseTypes(baseTypesRO, baseTypeLocations, diagnostics, ref useSiteDiagnostics);
             baseTypeLocations.Free();
             diagnostics.Add(Locations[0], useSiteDiagnostics);
 
             return baseTypesRO;
         }
 
-        protected virtual void CheckBaseTypes(ImmutableArray<NamedTypeSymbol> baseTypes, PooledDictionary<NamedTypeSymbol, Location> baseTypeLocations, DiagnosticBag diagnostics, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        protected virtual void CheckDeclaredBaseTypes(ImmutableArray<NamedTypeSymbol> baseTypes, PooledDictionary<NamedTypeSymbol, Location> baseTypeLocations, DiagnosticBag diagnostics, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
 
         }
@@ -150,5 +150,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return ImmutableArray<NamedTypeSymbol>.Empty;
         }
 
+        protected override void CheckBaseTypes(DiagnosticBag diagnostics)
+        {
+            
+        }
     }
 }

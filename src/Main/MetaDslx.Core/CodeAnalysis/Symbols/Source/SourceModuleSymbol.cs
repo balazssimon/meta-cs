@@ -42,6 +42,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private MutableModel _model;
 
+        private SymbolCompletionState _state;
+
         internal SourceModuleSymbol(
             SourceAssemblySymbol assemblySymbol,
             DeclarationTable declarations,
@@ -53,6 +55,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _sources = declarations;
             _name = moduleName;
             _model = new MutableModel(moduleName);
+
+            _state = assemblySymbol.Language.CompilationFactory.CreateSymbolCompletionState();
         }
 
         public override NamespaceSymbol GlobalNamespace
@@ -219,6 +223,78 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override ModuleMetadata GetMetadata() => null;
+
+        public sealed override bool RequiresCompletion
+        {
+            get { return true; }
+        }
+
+        public sealed override bool HasComplete(CompletionPart part)
+        {
+            return _state.HasComplete(part);
+        }
+
+        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var incompletePart = _state.NextIncompletePart;
+                if (incompletePart == CompletionPart.Attributes)
+                {
+                    GetAttributes();
+                }
+                else if (incompletePart == CompletionPart.StartValidatingReferencedAssemblies)
+                {
+                    DiagnosticBag diagnostics = null;
+                    if (_state.NotePartComplete(CompletionPart.StartValidatingReferencedAssemblies))
+                    {
+                        if (diagnostics != null)
+                        {
+                            _assemblySymbol.DeclaringCompilation.DeclarationDiagnostics.AddRange(diagnostics);
+                        }
+
+                        _state.NotePartComplete(CompletionPart.FinishValidatingReferencedAssemblies);
+                    }
+
+                    if (diagnostics != null)
+                    {
+                        diagnostics.Free();
+                    }
+                }
+                else if (incompletePart == CompletionPart.FinishValidatingReferencedAssemblies)
+                {
+                    // some other thread has started validating references (otherwise we would be in the case above) so
+                    // we just wait for it to both finish and report the diagnostics.
+                    Debug.Assert(_state.HasComplete(CompletionPart.StartValidatingReferencedAssemblies));
+                    _state.SpinWaitComplete(CompletionPart.FinishValidatingReferencedAssemblies, cancellationToken);
+                }
+                else if (incompletePart == CompletionPart.MembersCompleted)
+                {
+                    this.GlobalNamespace.ForceComplete(locationOpt, cancellationToken);
+
+                    if (this.GlobalNamespace.HasComplete(CompletionPart.MembersCompleted))
+                    {
+                        _state.NotePartComplete(CompletionPart.MembersCompleted);
+                    }
+                    else
+                    {
+                        Debug.Assert(locationOpt != null, "If no location was specified, then the namespace members should be completed");
+                        return;
+                    }
+                }
+                else if (incompletePart == null)
+                {
+                    return;
+                }
+                else
+                {
+                    _state.NotePartComplete(incompletePart);
+                }
+                _state.SpinWaitComplete(incompletePart, cancellationToken);
+            }
+        }
+
 
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Reflection;
 using Roslyn.Utilities;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
@@ -19,6 +20,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private readonly LanguageCompilation _compilation;
 
+        private SymbolCompletionState _state;
 
         /// <summary>
         /// Assembly's identity.
@@ -53,6 +55,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             moduleBuilder.Add(new SourceModuleSymbol(this, compilation.Declarations, moduleName));
             moduleBuilder.AddRange(netModules);
             _modules = moduleBuilder.ToImmutableAndFree();
+
+            _state = compilation.Language.CompilationFactory.CreateSymbolCompletionState();
         }
 
         public override string Name => _assemblySimpleName;
@@ -95,76 +99,222 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             get { return (SourceModuleSymbol)this.Modules[0]; }
         }
 
-        internal override bool RequiresCompletion
+        public override bool RequiresCompletion
         {
             get { return true; }
         }
-        /*
-        internal override bool HasComplete(CompletionPart part)
+
+        public override bool HasComplete(CompletionPart part)
         {
             return _state.HasComplete(part);
         }
 
-        internal override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                switch (incompletePart)
+                if (incompletePart == CompletionPart.Attributes)
                 {
-                    case CompletionPart.Attributes:
-                        EnsureAttributesAreBound();
-                        break;
-                    case CompletionPart.StartAttributeChecks:
-                    case CompletionPart.FinishAttributeChecks:
-                        if (_state.NotePartComplete(CompletionPart.StartAttributeChecks))
-                        {
-                            var diagnostics = DiagnosticBag.GetInstance();
-                            ValidateAttributeSemantics(diagnostics);
-                            AddDeclarationDiagnostics(diagnostics);
-                            var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishAttributeChecks);
-                            Debug.Assert(thisThreadCompleted);
-                            diagnostics.Free();
-                        }
-                        break;
-                    case CompletionPart.Module:
-                        SourceModule.ForceComplete(locationOpt, cancellationToken);
-                        if (SourceModule.HasComplete(CompletionPart.MembersCompleted))
-                        {
-                            _state.NotePartComplete(CompletionPart.Module);
-                            break;
-                        }
-                        else
-                        {
-                            Debug.Assert(locationOpt != null, "If no location was specified, then the module members should be completed");
-                            // this is the last completion part we can handle if there is a location.
-                            return;
-                        }
-
-                    case CompletionPart.StartValidatingAddedModules:
-                    case CompletionPart.FinishValidatingAddedModules:
-                        if (_state.NotePartComplete(CompletionPart.StartValidatingAddedModules))
-                        {
-                            ReportDiagnosticsForAddedModules();
-                            var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishValidatingAddedModules);
-                            Debug.Assert(thisThreadCompleted);
-                        }
-                        break;
-
-                    case CompletionPart.None:
-                        return;
-
-                    default:
-                        // any other values are completion parts intended for other kinds of symbols
-                        _state.NotePartComplete(CompletionPart.All & ~CompletionPart.AssemblySymbolAll);
-                        break;
+                    GetAttributes();
                 }
-
+                else if (incompletePart == CompletionPart.Module)
+                {
+                    SourceModule.ForceComplete(locationOpt, cancellationToken);
+                    if (SourceModule.HasComplete(CompletionPart.MembersCompleted))
+                    {
+                        _state.NotePartComplete(CompletionPart.Module);
+                    }
+                    else
+                    {
+                        Debug.Assert(locationOpt != null, "If no location was specified, then the module members should be completed");
+                        // this is the last completion part we can handle if there is a location.
+                        return;
+                    }
+                }
+                else if (incompletePart == CompletionPart.StartValidatingAddedModules || incompletePart == CompletionPart.FinishValidatingAddedModules)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartValidatingAddedModules))
+                    {
+                        ReportDiagnosticsForAddedModules();
+                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishValidatingAddedModules);
+                        Debug.Assert(thisThreadCompleted);
+                    }
+                }
+                else if (incompletePart == null)
+                {
+                    return;
+                }
+                else
+                {
+                    // This assert will trigger if we forgot to handle any of the completion parts
+                    Debug.Assert(!CompletionPart.AssemblySymbolAll.Contains(incompletePart));
+                    // any other values are completion parts intended for other kinds of symbols
+                    _state.NotePartComplete(incompletePart);
+                }
                 _state.SpinWaitComplete(incompletePart, cancellationToken);
             }
         }
-        */
+
+        private void ReportDiagnosticsForAddedModules()
+        {
+            var diagnostics = DiagnosticBag.GetInstance();
+
+            foreach (var pair in _compilation.GetBoundReferenceManager().ReferencedModuleIndexMap)
+            {
+                var fileRef = pair.Key as PortableExecutableReference;
+
+                if ((object)fileRef != null && (object)fileRef.FilePath != null)
+                {
+                    string fileName = FileNameUtilities.GetFileName(fileRef.FilePath);
+                    string moduleName = _modules[pair.Value].Name;
+
+                    if (!string.Equals(fileName, moduleName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Used to be ERR_ALinkFailed
+                        diagnostics.Add(InternalErrorCode.ERR_NetModuleNameMismatch, NoLocation.Singleton, moduleName, fileName);
+                    }
+                }
+            }
+
+            // Alink performed these checks only when emitting an assembly.
+            if (_modules.Length > 1 && !_compilation.Options.OutputKind.IsNetModule())
+            {
+                var knownModuleNames = new HashSet<String>(StringComparer.OrdinalIgnoreCase);
+
+                for (int i = 1; i < _modules.Length; i++)
+                {
+                    ModuleSymbol m = _modules[i];
+                    if (!knownModuleNames.Add(m.Name))
+                    {
+                        diagnostics.Add(InternalErrorCode.ERR_NetModuleNameMustBeUnique, NoLocation.Singleton, m.Name);
+                    }
+                }
+
+                // Assembly main module must explicitly reference all the modules referenced by other assembly 
+                // modules, i.e. all modules from transitive closure must be referenced explicitly here
+                for (int i = 1; i < _modules.Length; i++)
+                {
+                    var csm = _modules[i] as CSharpModuleSymbol;
+                    var m = csm?.CSharpModule as Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE.PEModuleSymbol;
+
+                    try
+                    {
+                        foreach (var referencedModuleName in m.Module.GetReferencedManagedModulesOrThrow())
+                        {
+                            // Do not report error for this module twice
+                            if (knownModuleNames.Add(referencedModuleName))
+                            {
+                                diagnostics.Add(InternalErrorCode.ERR_MissingNetModuleReference, NoLocation.Singleton, referencedModuleName);
+                            }
+                        }
+                    }
+                    catch (BadImageFormatException)
+                    {
+                        diagnostics.Add(new LanguageDiagnosticInfo(InternalErrorCode.ERR_BindToBogus, m), NoLocation.Singleton);
+                    }
+                }
+            }
+
+            ReportNameCollisionDiagnosticsForAddedModules(this.GlobalNamespace, diagnostics);
+
+            _compilation.DeclarationDiagnostics.AddRange(diagnostics);
+            diagnostics.Free();
+        }
+
+        private void ReportNameCollisionDiagnosticsForAddedModules(NamespaceSymbol ns, DiagnosticBag diagnostics)
+        {
+            var mergedNs = ns as MergedNamespaceSymbol;
+
+            if ((object)mergedNs == null)
+            {
+                return;
+            }
+
+            ImmutableArray<NamespaceSymbol> constituent = mergedNs.ConstituentNamespaces;
+
+            if (constituent.Length > 2 || (constituent.Length == 2 && constituent[0].ContainingModule.Ordinal != 0 && constituent[1].ContainingModule.Ordinal != 0))
+            {
+                var topLevelTypesFromModules = ArrayBuilder<NamedTypeSymbol>.GetInstance();
+
+                foreach (var moduleNs in constituent)
+                {
+                    Debug.Assert(moduleNs.Extent.Kind == NamespaceKind.Module);
+
+                    if (moduleNs.ContainingModule.Ordinal != 0)
+                    {
+                        topLevelTypesFromModules.AddRange(moduleNs.GetTypeMembers());
+                    }
+                }
+
+                topLevelTypesFromModules.Sort(NameCollisionForAddedModulesTypeComparer.Singleton);
+
+                bool reportedAnError = false;
+
+                for (int i = 0; i < topLevelTypesFromModules.Count - 1; i++)
+                {
+                    NamedTypeSymbol x = topLevelTypesFromModules[i];
+                    NamedTypeSymbol y = topLevelTypesFromModules[i + 1];
+
+                    if (x.Arity == y.Arity && x.Name == y.Name)
+                    {
+                        if (!reportedAnError)
+                        {
+                            // Skip synthetic <Module> type which every .NET module has.
+                            if (x.Arity != 0 || !x.ContainingNamespace.IsGlobalNamespace || x.Name != "<Module>")
+                            {
+                                diagnostics.Add(InternalErrorCode.ERR_DuplicateNameInNS, y.Locations[0],
+                                                y.ToDisplayString(SymbolDisplayFormat.ShortFormat),
+                                                y.ContainingNamespace);
+                            }
+
+                            reportedAnError = true;
+                        }
+                    }
+                    else
+                    {
+                        reportedAnError = false;
+                    }
+                }
+
+                topLevelTypesFromModules.Free();
+
+                // Descent into child namespaces.
+                foreach (Symbol member in mergedNs.GetMembers())
+                {
+                    if (member.Kind == SymbolKind.Namespace)
+                    {
+                        ReportNameCollisionDiagnosticsForAddedModules((NamespaceSymbol)member, diagnostics);
+                    }
+                }
+            }
+        }
+
+        private class NameCollisionForAddedModulesTypeComparer : IComparer<NamedTypeSymbol>
+        {
+            public static readonly NameCollisionForAddedModulesTypeComparer Singleton = new NameCollisionForAddedModulesTypeComparer();
+
+            private NameCollisionForAddedModulesTypeComparer() { }
+
+            public int Compare(NamedTypeSymbol x, NamedTypeSymbol y)
+            {
+                int result = String.CompareOrdinal(x.Name, y.Name);
+
+                if (result == 0)
+                {
+                    result = x.Arity - y.Arity;
+
+                    if (result == 0)
+                    {
+                        result = x.ContainingModule.Ordinal - y.ContainingModule.Ordinal;
+                    }
+                }
+
+                return result;
+            }
+        }
+
 
         private AssemblyIdentity ComputeIdentity()
         {

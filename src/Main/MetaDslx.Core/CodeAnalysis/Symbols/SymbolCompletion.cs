@@ -1,4 +1,5 @@
-﻿using Roslyn.Utilities;
+﻿using Microsoft.CodeAnalysis.PooledObjects;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -11,15 +12,62 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public class CompletionPart
     {
-        public static readonly CompletionPart None = new CompletionPart();
-        public static readonly CompletionPart All = new CompletionPart();
-        public static readonly CompletionPart Attributes = new CompletionPart();
+        private string _name;
 
-        public static readonly CompletionPart TypeMembers = new CompletionPart();
-        public static readonly CompletionPart Members = new CompletionPart();
+        public CompletionPart(string name)
+        {
+            _name = name;
+        }
+
+        public string Name => _name;
+
+        public static readonly CompletionPart None = new CompletionPart(nameof(None));
+        public static readonly CompletionPart All = new CompletionPart(nameof(All));
+        public static readonly CompletionPart Attributes = new CompletionPart(nameof(Attributes));
+        public static readonly CompletionPart Module = new CompletionPart(nameof(Module));
+
+        public static readonly CompletionPart StartValidatingReferencedAssemblies = new CompletionPart(nameof(StartValidatingReferencedAssemblies));
+        public static readonly CompletionPart FinishValidatingReferencedAssemblies = new CompletionPart(nameof(FinishValidatingReferencedAssemblies));
+        
+        public static readonly CompletionPart StartValidatingAddedModules = new CompletionPart(nameof(StartValidatingAddedModules));
+        public static readonly CompletionPart FinishValidatingAddedModules = new CompletionPart(nameof(FinishValidatingAddedModules));
+
+        public static readonly CompletionPart StartBaseTypes = new CompletionPart(nameof(StartBaseTypes));
+        public static readonly CompletionPart FinishBaseTypes = new CompletionPart(nameof(FinishBaseTypes));
+
+        public static readonly CompletionPart Members = new CompletionPart(nameof(Members));
+        public static readonly CompletionPart TypeMembers = new CompletionPart(nameof(TypeMembers));
+
+        public static readonly CompletionPart StartMemberChecks = new CompletionPart(nameof(StartMemberChecks));
+        public static readonly CompletionPart FinishMemberChecks = new CompletionPart(nameof(FinishMemberChecks));
+
+        public static readonly CompletionPart NameToMembersMap = new CompletionPart(nameof(NameToMembersMap));
+        public static readonly CompletionPart MembersCompleted = new CompletionPart(nameof(MembersCompleted));
+
+        public static readonly CompletionPart AliasTarget = new CompletionPart(nameof(AliasTarget));
+
+        public static readonly ImmutableHashSet<CompletionPart> AssemblySymbolAll =
+            Combine(Attributes, Module, StartValidatingAddedModules, FinishValidatingAddedModules);
+        public static readonly ImmutableHashSet<CompletionPart> ModuleSymbolAll =
+            Combine(Attributes, StartValidatingReferencedAssemblies, FinishValidatingReferencedAssemblies, MembersCompleted);
+
+        public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolWithLocationAll =
+            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers, StartMemberChecks, FinishMemberChecks);
+        public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolAll = 
+            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers, StartMemberChecks, FinishMemberChecks, MembersCompleted);
+
+        public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolWithLocationAll =
+            Combine(Attributes, NameToMembersMap);
+        public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolAll =
+            Combine(Attributes, NameToMembersMap, MembersCompleted);
+
+        public static ImmutableHashSet<CompletionPart> Combine(params CompletionPart[] parts)
+        {
+            return ImmutableHashSet.CreateRange<CompletionPart>(parts);
+        }
     }
 
-    public class SymbolCompletionState
+    public sealed class SymbolCompletionState
     {
         /// <summary>
         /// This field keeps track of the <see cref="CompletionPart"/>s for which we already retrieved
@@ -33,6 +81,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         private volatile int _completeParts;
         private CompletionGraph _graph;
+
+        internal SymbolCompletionState(CompletionGraph graph)
+        {
+            _graph = graph;
+        }
 
         public IEnumerable<CompletionPart> IncompleteParts
         {
@@ -92,15 +145,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // ThreadSafeFlagOperations.Set performs interlocked assignments
             int index = _graph.IndexOf(part);
             if (index <= _completeParts) return false;
-            Debug.Assert(index == _completeParts + 1, "TODO:MetaDslx");
-            Interlocked.Exchange(ref _completeParts, index);
-            return true;
+            int oldIndex = _completeParts;
+            return Interlocked.CompareExchange(ref _completeParts, index, oldIndex) == oldIndex;
         }
 
         /// <summary>
         /// Produce the next (i.e. lowest) CompletionPart (bit) that is not set.
         /// </summary>
-        internal CompletionPart NextIncompletePart
+        public CompletionPart NextIncompletePart
         {
             get
             {
@@ -112,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        internal void SpinWaitComplete(CompletionPart part, CancellationToken cancellationToken)
+        public void SpinWaitComplete(CompletionPart part, CancellationToken cancellationToken)
         {
             if (HasComplete(part))
             {
@@ -129,6 +181,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        public void SpinWaitComplete(IEnumerable<CompletionPart> parts, CancellationToken cancellationToken)
+        {
+            if (!parts.Any()) return;
+            int index = parts.Select(p => _graph.IndexOf(p)).Max();
+            if (index < 0) return;
+            CompletionPart part = _graph.Parts[index];
+            this.SpinWaitComplete(part, cancellationToken);
+        }
+
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();
@@ -137,7 +198,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             for (int i = 0; i <= _completeParts; i++)
             {
                 if (any) result.Append(", ");
-                result.Append(i);
+                result.Append(_graph.Parts[i].Name);
                 any = true;
             }
             result.Append(")");
@@ -145,13 +206,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
     }
 
-    public class CompletionGraph
+    public sealed class CompletionGraph
     {
         private ImmutableArray<CompletionPart> _parts;
 
-        public CompletionGraph(ImmutableArray<CompletionPart> parts)
+        internal CompletionGraph(ImmutableArray<CompletionPart> parts)
         {
             _parts = parts;
+        }
+
+        public SymbolCompletionState CreateState()
+        {
+            return new SymbolCompletionState(this);
         }
 
         public ImmutableArray<CompletionPart> Parts => _parts;
@@ -183,43 +249,106 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
     }
 
-    public class CompletionGraphBuilder
+    public sealed class CompletionGraphBuilder
     {
-        private HashSet<CompletionPart> _parts;
+        private List<CompletionPart> _parts;
         private Dictionary<CompletionPart, HashSet<CompletionPart>> _edges;
 
         public CompletionGraphBuilder()
         {
-            _parts = new HashSet<CompletionPart>();
+            _parts = new List<CompletionPart>();
             _edges = new Dictionary<CompletionPart, HashSet<CompletionPart>>();
         }
 
-        public CompletionGraphBuilder AddPart(CompletionPart part)
+        public CompletionGraphBuilder Add(CompletionPart part)
         {
             _parts.Add(part);
             return this;
         }
 
-        public CompletionGraphBuilder DependsOn(CompletionPart depends, CompletionPart on)
+        public CompletionGraphBuilder AddLast(CompletionPart part)
         {
-            if (!_parts.Contains(depends)) throw new ArgumentException("Part is not in the completion graph.", nameof(depends));
-            if (!_parts.Contains(on)) throw new ArgumentException("Part is not in the completion graph.", nameof(on));
-            if (on == CompletionPart.All) throw new ArgumentException("Part cannot depend on CompletionPart.All", nameof(on));
-            if (depends == CompletionPart.None) throw new ArgumentException("None cannot depend on another part.", nameof(on));
-            HashSet<CompletionPart> pre;
-            if (!_edges.TryGetValue(depends, out pre))
+            _parts.Add(part);
+            if (_parts.Count >= 2)
             {
-                pre = new HashSet<CompletionPart>();
-                _edges.Add(depends, pre);
+                int index = _parts.Count - 1;
+                this.Precedes(_parts[index - 1], _parts[index]);
             }
-            pre.Add(on);
+            return this;
+        }
+
+        public CompletionGraphBuilder Precedes(CompletionPart source, CompletionPart target)
+        {
+            if (!_parts.Contains(source)) throw new ArgumentException("Part is not in the completion graph.", nameof(source));
+            if (!_parts.Contains(target)) throw new ArgumentException("Part is not in the completion graph.", nameof(target));
+            if (source == CompletionPart.None) throw new ArgumentException("Part cannot depend on CompletionPart.None", nameof(source));
+            if (source == CompletionPart.All) throw new ArgumentException("Part cannot depend on CompletionPart.All", nameof(source));
+            if (target == CompletionPart.None) throw new ArgumentException("None cannot depend on another part.", nameof(target));
+            if (target == CompletionPart.All) throw new ArgumentException("All cannot depend on another part.", nameof(target));
+            HashSet<CompletionPart> sources;
+            if (!_edges.TryGetValue(target, out sources))
+            {
+                sources = new HashSet<CompletionPart>();
+                _edges.Add(target, sources);
+            }
+            sources.Add(source);
             return this;
         }
 
         public CompletionGraph Build()
         {
-            // TODO:MetaDslx - sort parts in topological order
-            return new CompletionGraph(_parts.ToImmutableArray());
+            ArrayBuilder<CompletionPart> result = ArrayBuilder<CompletionPart>.GetInstance();
+            try
+            {
+                HashSet<CompletionPart> visited = new HashSet<CompletionPart>();
+                Stack<CompletionPart> stack = new Stack<CompletionPart>();
+                int rootIndex = 0;
+                while (rootIndex < _parts.Count)
+                {
+                    while (rootIndex < _parts.Count && visited.Contains(_parts[rootIndex])) ++rootIndex;
+                    if (rootIndex >= _parts.Count) break;
+                    VisitNode(_parts[rootIndex], stack, visited, result);
+                    ++rootIndex;
+                }
+                result.Add(CompletionPart.All);
+                return new CompletionGraph(result.ToImmutableArray());
+            }
+            finally
+            {
+                result.Free();
+            }
+        }
+
+        private void VisitNode(CompletionPart node, Stack<CompletionPart> stack, HashSet<CompletionPart> visited, ArrayBuilder<CompletionPart> result)
+        {
+            if (stack.Contains(node))
+            {
+                var items = stack.ToList();
+                var startIndex = items.IndexOf(node);
+                StringBuilder sb = new StringBuilder();
+                for (int i = startIndex; i < items.Count; i++)
+                {
+                    sb.Append(" -> ");
+                    sb.Append(items[i].Name);
+                }
+                sb.Append(node.Name);
+                throw new InvalidOperationException("Circular dependency in the completion graph: " + sb.ToString());
+            }
+            if (!visited.Add(node)) return;
+            if (!_edges.TryGetValue(node, out var sources)) return;
+            stack.Push(node);
+            try
+            {
+                foreach (var source in sources)
+                {
+                    VisitNode(source, stack, visited, result);
+                }
+                result.Add(node);
+            }
+            finally
+            {
+                stack.Pop();
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeGen;
@@ -61,10 +62,6 @@ namespace MetaDslx.CodeAnalysis
         // NOTE: We need to de-dup since the Imports objects that populate the list may be GC'd
         // and re-created.
         private ConcurrentSet<ImportInfo> _lazyImportInfos;
-
-        // Cache the CLS diagnostics for the whole compilation so they aren't computed repeatedly.
-        // NOTE: Presently, we do not cache the per-tree diagnostics.
-        private ImmutableArray<Diagnostic> _lazyClsComplianceDiagnostics;
 
         private Conversions _conversions;
         internal Conversions Conversions
@@ -357,7 +354,7 @@ namespace MetaDslx.CodeAnalysis
 
         private static LanguageVersion CommonLanguageVersion(ImmutableArray<SyntaxTree> syntaxTrees)
         {
-            LanguageVersion? result = null;
+            LanguageVersion result = null;
             foreach (var tree in syntaxTrees)
             {
                 var version = ((LanguageParseOptions)tree.Options).LanguageVersion;
@@ -884,7 +881,7 @@ namespace MetaDslx.CodeAnalysis
         {
             get
             {
-                return Assembly.Modules.SelectMany(module => module.GetReferencedAssemblies());
+                return Assembly.Modules.SelectMany(module => module.ReferencedAssemblies);
             }
         }
 

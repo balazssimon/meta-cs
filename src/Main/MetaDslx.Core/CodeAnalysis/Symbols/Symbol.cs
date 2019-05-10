@@ -44,15 +44,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// True if this Symbol should be completed by calling ForceComplete.
         /// Intuitively, true for source entities (from any compilation).
         /// </summary>
-        internal virtual bool RequiresCompletion => false;
+        public virtual bool RequiresCompletion => false;
 
-        internal virtual void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        public virtual void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             // must be overridden by source symbols, no-op for other symbols
             Debug.Assert(!this.RequiresCompletion);
         }
 
-        internal virtual bool HasComplete(CompletionPart part)
+        public virtual bool HasComplete(CompletionPart part)
         {
             // must be overridden by source symbols, no-op for other symbols
             Debug.Assert(!this.RequiresCompletion);
