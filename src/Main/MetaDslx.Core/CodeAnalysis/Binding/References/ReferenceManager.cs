@@ -4,20 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-
-using Microsoft.CodeAnalysis.CSharp.Emit;
-using Microsoft.CodeAnalysis.CSharp.Symbols;
-using Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE;
-using Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
+using MetaDslx.CodeAnalysis.Symbols.Retargeting;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Collections;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace MetaDslx.CodeAnalysis
 {
     using MetadataOrDiagnostic = System.Object;
+    using PEAssemblySymbol = Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE.PEAssemblySymbol;
+    using CSharpCompilationReference = Microsoft.CodeAnalysis.CSharp.CSharpCompilationReference;
+    using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
 
     public partial class LanguageCompilation
     {
@@ -52,12 +53,17 @@ namespace MetaDslx.CodeAnalysis
         /// 
         /// The only public entry point of this class is CreateSourceAssembly() method.
         /// </summary>
-        internal sealed class ReferenceManager : CommonReferenceManager<CSharpCompilation, AssemblySymbol>
+        internal sealed class ReferenceManager : CommonReferenceManager<LanguageCompilation, AssemblySymbol>
         {
-            public ReferenceManager(string simpleAssemblyName, AssemblyIdentityComparer identityComparer, Dictionary<MetadataReference, MetadataOrDiagnostic> observedMetadata)
+            private Language _language;
+
+            public ReferenceManager(Language language, string simpleAssemblyName, AssemblyIdentityComparer identityComparer, Dictionary<MetadataReference, MetadataOrDiagnostic> observedMetadata)
                 : base(simpleAssemblyName, identityComparer, observedMetadata)
             {
+                _language = language;
             }
+
+            public Language Language => _language;
 
             protected override CommonMessageProvider MessageProvider
             {
@@ -83,14 +89,14 @@ namespace MetaDslx.CodeAnalysis
 
             protected override AssemblyData CreateAssemblyDataForCompilation(CompilationReference compilationReference)
             {
-                var csReference = compilationReference as CSharpCompilationReference;
-                if (csReference == null)
+                var languageReference = compilationReference as LanguageCompilationReference;
+                if (languageReference == null)
                 {
-                    throw new NotSupportedException(string.Format(CSharpResources.CantReferenceCompilationOf, compilationReference.GetType(), "C#"));
+                    throw new NotSupportedException(string.Format(CSharpResources.CantReferenceCompilationOf, compilationReference.GetType(), _language.Name));
                 }
 
-                var result = new AssemblyDataForCompilation(csReference.Compilation, csReference.Properties.EmbedInteropTypes);
-                Debug.Assert((object)csReference.Compilation._lazyAssemblySymbol != null);
+                var result = new AssemblyDataForCompilation(languageReference.Compilation, languageReference.Properties.EmbedInteropTypes);
+                Debug.Assert((object)languageReference.Compilation._lazyAssemblySymbol != null);
                 return result;
             }
 
@@ -103,7 +109,7 @@ namespace MetaDslx.CodeAnalysis
             {
                 if (primaryReference.Properties.EmbedInteropTypes != duplicateReference.Properties.EmbedInteropTypes)
                 {
-                    diagnostics.Add(ErrorCode.ERR_AssemblySpecifiedForLinkAndRef, NoLocation.Singleton, duplicateReference.Display, primaryReference.Display);
+                    diagnostics.Add(InternalErrorCode.ERR_AssemblySpecifiedForLinkAndRef, NoLocation.Singleton, duplicateReference.Display, primaryReference.Display);
                     return false;
                 }
 
@@ -127,7 +133,7 @@ namespace MetaDslx.CodeAnalysis
 
                 foreach (var module in assemblySymbol.Modules)
                 {
-                    refs.AddRange(module.GetReferencedAssemblySymbols());
+                    refs.AddRange(module.ReferencedAssemblySymbols);
                 }
 
                 for (int i = 0; i < refs.Count; i++)
@@ -167,7 +173,7 @@ namespace MetaDslx.CodeAnalysis
                 return corLibrary.IsMissing ? null : corLibrary;
             }
 
-            public void CreateSourceAssemblyForCompilation(CSharpCompilation compilation)
+            public void CreateSourceAssemblyForCompilation(LanguageCompilation compilation)
             {
                 // We are reading the Reference Manager state outside of a lock by accessing 
                 // IsBound and HasCircularReference properties.
@@ -201,7 +207,7 @@ namespace MetaDslx.CodeAnalysis
 
                     // NOTE: The CreateSourceAssemblyFullBind is going to replace compilation's reference manager with newManager.
 
-                    var newManager = new ReferenceManager(this.SimpleAssemblyName, this.IdentityComparer, this.ObservedMetadata);
+                    var newManager = new ReferenceManager(this.Language, this.SimpleAssemblyName, this.IdentityComparer, this.ObservedMetadata);
                     var successful = newManager.CreateAndSetSourceAssemblyFullBind(compilation);
 
                     // The new manager isn't shared with any other compilation so there is no other 
@@ -246,7 +252,7 @@ namespace MetaDslx.CodeAnalysis
             /// the original metadata we need to map the identities of the PE assembly symbols back to the original AssemblyRefs (if different).
             /// In other words, we pretend that the versions of the dependencies haven't changed.
             /// </param>
-            public PEAssemblySymbol CreatePEAssemblyForAssemblyMetadata(AssemblyMetadata metadata, MetadataImportOptions importOptions, out ImmutableDictionary<AssemblyIdentity, AssemblyIdentity> assemblyReferenceIdentityMap)
+            public AssemblySymbol CreatePEAssemblyForAssemblyMetadata(AssemblyMetadata metadata, MetadataImportOptions importOptions, out ImmutableDictionary<AssemblyIdentity, AssemblyIdentity> assemblyReferenceIdentityMap)
             {
                 AssertBound();
 
@@ -265,7 +271,7 @@ namespace MetaDslx.CodeAnalysis
 
                 assemblyReferenceIdentityMap = GetAssemblyReferenceIdentityBaselineMap(peReferences, assembly.AssemblyReferences);
 
-                var assemblySymbol = new PEAssemblySymbol(assembly, DocumentationProvider.Default, isLinked: false, importOptions: importOptions);
+                var assemblySymbol = MetaDslx.CodeAnalysis.Symbols.CSharp.CSharpAssemblySymbol.FromCSharp(new PEAssemblySymbol(assembly, DocumentationProvider.Default, isLinked: false, importOptions: importOptions));
 
                 var unifiedAssemblies = this.UnifiedAssemblies.WhereAsArray(unified => referencedAssembliesByIdentity.Contains(unified.OriginalReference, allowHigherVersion: false));
                 InitializeAssemblyReuseData(assemblySymbol, peReferences, unifiedAssemblies);
@@ -295,7 +301,7 @@ namespace MetaDslx.CodeAnalysis
                 return new MissingAssemblySymbol(identity);
             }
 
-            private void CreateAndSetSourceAssemblyReuseData(CSharpCompilation compilation)
+            private void CreateAndSetSourceAssemblyReuseData(LanguageCompilation compilation)
             {
                 AssertBound();
 
@@ -340,7 +346,7 @@ namespace MetaDslx.CodeAnalysis
             }
 
             // Returns false if another compilation sharing this manager finished binding earlier and we should reuse its results.
-            private bool CreateAndSetSourceAssemblyFullBind(CSharpCompilation compilation)
+            private bool CreateAndSetSourceAssemblyFullBind(LanguageCompilation compilation)
             {
                 var resolutionDiagnostics = DiagnosticBag.GetInstance();
                 var assemblyReferencesBySimpleName = PooledDictionary<string, List<ReferencedAssemblyIdentity>>.GetInstance();
@@ -500,7 +506,7 @@ namespace MetaDslx.CodeAnalysis
                                     ReferenceEquals(corLibrary, assemblySymbol) ? null : corLibrary,
                                     modules,
                                     moduleReferences,
-                                    assemblySymbol.SourceModule.GetReferencedAssemblySymbols(),
+                                    assemblySymbol.SourceModule.ReferencedAssemblySymbols,
                                     aliasesOfReferencedAssemblies,
                                     assemblySymbol.SourceModule.GetUnifiedAssemblies());
 
@@ -554,7 +560,7 @@ namespace MetaDslx.CodeAnalysis
                 // Setup CorLibrary and NoPia stuff for newly created assemblies
 
                 var linkedReferencedAssembliesBuilder = ArrayBuilder<AssemblySymbol>.GetInstance();
-                var noPiaResolutionAssemblies = sourceAssembly.Modules[0].GetReferencedAssemblySymbols();
+                var noPiaResolutionAssemblies = sourceAssembly.Modules[0].ReferencedAssemblySymbols;
 
                 foreach (int i in newSymbols)
                 {
@@ -615,7 +621,7 @@ namespace MetaDslx.CodeAnalysis
                     else
                     {
                         var fileData = (AssemblyDataForFile)assemblies[i];
-                        fileData.CachedSymbols.Add((PEAssemblySymbol)bindingResult[i].AssemblySymbol);
+                        fileData.CachedSymbols.Add(bindingResult[i].AssemblySymbol);
                     }
                 }
             }
@@ -634,13 +640,13 @@ namespace MetaDslx.CodeAnalysis
                 for (int j = 0; j < moduleCount; j++)
                 {
                     ImmutableArray<AssemblyIdentity> referencedAssemblies =
-                        retargetingAssemblySymbol.UnderlyingAssembly.Modules[j].GetReferencedAssemblies();
+                        retargetingAssemblySymbol.UnderlyingAssembly.Modules[j].ReferencedAssemblies;
 
                     // For source module skip underlying linked references
                     if (j == 0)
                     {
                         ImmutableArray<AssemblySymbol> underlyingReferencedAssemblySymbols =
-                            retargetingAssemblySymbol.UnderlyingAssembly.Modules[0].GetReferencedAssemblySymbols();
+                            retargetingAssemblySymbol.UnderlyingAssembly.Modules[0].ReferencedAssemblySymbols;
 
                         int linkedUnderlyingReferences = 0;
                         foreach (AssemblySymbol asm in underlyingReferencedAssemblySymbols)
@@ -701,7 +707,7 @@ namespace MetaDslx.CodeAnalysis
                 ref Dictionary<AssemblyIdentity, MissingAssemblySymbol> missingAssemblies,
                 SourceAssemblySymbol sourceAssemblyDebugOnly)
             {
-                var portableExecutableAssemblySymbol = (PEAssemblySymbol)bindingResult[bindingIndex].AssemblySymbol;
+                var portableExecutableAssemblySymbol = (CSharpAssemblySymbol)bindingResult[bindingIndex].AssemblySymbol;
 
                 ImmutableArray<ModuleSymbol> modules = portableExecutableAssemblySymbol.Modules;
                 int moduleCount = modules.Length;
@@ -955,7 +961,7 @@ namespace MetaDslx.CodeAnalysis
 
                 internal override AssemblySymbol CreateAssemblySymbol()
                 {
-                    return new PEAssemblySymbol(Assembly, DocumentationProvider, this.IsLinked, this.EffectiveImportOptions);
+                    return CSharpSymbolMap.GetAssemblySymbol(new PEAssemblySymbol(Assembly, DocumentationProvider, this.IsLinked, this.EffectiveImportOptions));
                 }
 
                 internal bool InternalsMayBeVisibleToCompilation
@@ -993,7 +999,7 @@ namespace MetaDslx.CodeAnalysis
                     {
                         foreach (var assembly in CachedSymbols)
                         {
-                            var peAssembly = assembly as PEAssemblySymbol;
+                            var peAssembly = assembly as CSharpAssemblySymbol;
                             if (IsMatchingAssembly(peAssembly))
                             {
                                 assemblies.Add(peAssembly);
@@ -1004,11 +1010,13 @@ namespace MetaDslx.CodeAnalysis
 
                 public override bool IsMatchingAssembly(AssemblySymbol candidateAssembly)
                 {
-                    return IsMatchingAssembly(candidateAssembly as PEAssemblySymbol);
-                }
+                    var csharpAssembly = candidateAssembly as CSharpAssemblySymbol;
+                    if ((object)csharpAssembly == null)
+                    {
+                        return false;
+                    }
 
-                private bool IsMatchingAssembly(PEAssemblySymbol peAssembly)
-                {
+                    var peAssembly = csharpAssembly.CSharpAssembly as PEAssemblySymbol;
                     if ((object)peAssembly == null)
                     {
                         return false;
@@ -1057,15 +1065,15 @@ namespace MetaDslx.CodeAnalysis
 
             private sealed class AssemblyDataForCompilation : AssemblyDataForMetadataOrCompilation
             {
-                public readonly CSharpCompilation Compilation;
+                public readonly LanguageCompilation Compilation;
 
-                public AssemblyDataForCompilation(CSharpCompilation compilation, bool embedInteropTypes)
+                public AssemblyDataForCompilation(LanguageCompilation compilation, bool embedInteropTypes)
                     : base(compilation.Assembly.Identity, GetReferencedAssemblies(compilation), embedInteropTypes)
                 {
                     Compilation = compilation;
                 }
 
-                private static ImmutableArray<AssemblyIdentity> GetReferencedAssemblies(CSharpCompilation compilation)
+                private static ImmutableArray<AssemblyIdentity> GetReferencedAssemblies(LanguageCompilation compilation)
                 {
                     // Collect information about references
                     var result = ArrayBuilder<AssemblyIdentity>.GetInstance();
@@ -1073,8 +1081,8 @@ namespace MetaDslx.CodeAnalysis
                     var modules = compilation.Assembly.Modules;
 
                     // Filter out linked assemblies referenced by the source module.
-                    var sourceReferencedAssemblies = modules[0].GetReferencedAssemblies();
-                    var sourceReferencedAssemblySymbols = modules[0].GetReferencedAssemblySymbols();
+                    var sourceReferencedAssemblies = modules[0].ReferencedAssemblies;
+                    var sourceReferencedAssemblySymbols = modules[0].ReferencedAssemblySymbols;
 
                     Debug.Assert(sourceReferencedAssemblies.Length == sourceReferencedAssemblySymbols.Length);
 
@@ -1088,7 +1096,7 @@ namespace MetaDslx.CodeAnalysis
 
                     for (int i = 1; i < modules.Length; i++)
                     {
-                        result.AddRange(modules[i].GetReferencedAssemblies());
+                        result.AddRange(modules[i].ReferencedAssemblies);
                     }
 
                     return result.ToImmutableAndFree();
@@ -1151,7 +1159,7 @@ namespace MetaDslx.CodeAnalysis
             /// <summary>
             /// For testing purposes only.
             /// </summary>
-            internal static bool IsSourceAssemblySymbolCreated(CSharpCompilation compilation)
+            internal static bool IsSourceAssemblySymbolCreated(LanguageCompilation compilation)
             {
                 return (object)compilation._lazyAssemblySymbol != null;
             }
@@ -1159,7 +1167,7 @@ namespace MetaDslx.CodeAnalysis
             /// <summary>
             /// For testing purposes only.
             /// </summary>
-            internal static bool IsReferenceManagerInitialized(CSharpCompilation compilation)
+            internal static bool IsReferenceManagerInitialized(LanguageCompilation compilation)
             {
                 return compilation._referenceManager.IsBound;
             }

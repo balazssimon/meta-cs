@@ -24,9 +24,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             _csharpModule = csharpModule;
         }
 
+        private CSharpModuleSymbol(AssemblySymbol assembly, CSharpSymbols.ModuleSymbol module)
+        {
+            _lazyAssemblySymbol = assembly;
+            _csharpModule = module;
+        }
+
         internal static CSharpModuleSymbol FromCSharp(CSharpSymbols.ModuleSymbol csharpModule)
         {
             return new CSharpModuleSymbol(csharpModule);
+        }
+
+        internal static CSharpModuleSymbol FromCSharp(AssemblySymbol assembly, CSharpSymbols.ModuleSymbol module)
+        {
+            return new CSharpModuleSymbol(assembly, module);
         }
 
         internal CSharpSymbols.ModuleSymbol CSharpModule => _csharpModule;

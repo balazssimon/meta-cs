@@ -188,6 +188,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         protected override sealed TypeSymbol OriginalTypeSymbolDefinition => this.OriginalDefinition;
 
+        public virtual bool IsExplicitDefinitionOfNoPiaLocalType => false;
+
         /// <summary>
         /// For enum types, gets the underlying type. Returns null on all other
         /// kinds of types.

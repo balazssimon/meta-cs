@@ -316,6 +316,7 @@ namespace MetaDslx.CodeAnalysis
             else
             {
                 _referenceManager = new ReferenceManager(
+                    this.Language,
                     MakeSourceAssemblySimpleName(),
                     this.Options.AssemblyIdentityComparer,
                     observedMetadata: referenceManager?.ObservedMetadata);
@@ -1606,6 +1607,11 @@ namespace MetaDslx.CodeAnalysis
                 this.MethodSymbol = methodSymbol;
                 this.Diagnostics = diagnostics;
             }
+        }
+
+        internal bool MightContainNoPiaLocalTypes()
+        {
+            return SourceAssembly.MightContainNoPiaLocalTypes();
         }
 
         // NOTE(cyrusn): There is a bit of a discoverability problem with this method and the same

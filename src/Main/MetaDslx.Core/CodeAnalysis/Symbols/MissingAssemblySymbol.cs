@@ -38,6 +38,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        public override bool IsLinked
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public override AssemblyIdentity Identity
         {
             get
@@ -92,6 +100,26 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        internal override void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        public override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
+        {
+            return ImmutableArray<AssemblySymbol>.Empty;
+        }
+
+        internal override void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        public override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
+        {
+            return ImmutableArray<AssemblySymbol>.Empty;
+        }
+
         public sealed override NamespaceSymbol GlobalNamespace
         {
             get
@@ -138,10 +166,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        public override bool GivesAccessTo(IAssemblySymbol toAssembly)
+        public override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
         {
             return false;
         }
+
+        public override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
+        {
+            return SpecializedCollections.EmptyEnumerable<ImmutableArray<byte>>();
+        }
+
 
         internal override NamedTypeSymbol LookupTopLevelMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies, bool digThroughForwardedTypes)
         {

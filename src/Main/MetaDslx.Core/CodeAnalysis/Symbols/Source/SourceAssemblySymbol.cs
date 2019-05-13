@@ -15,6 +15,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
     public class SourceAssemblySymbol : MetadataOrSourceAssemblySymbol, ISourceAssemblySymbol
     {
+        private readonly Microsoft.CodeAnalysis.CSharp.Symbols.SourceAssemblySymbol _csharpSourceAssembly;
+
         /// <summary>
         /// A Compilation the assembly is created for.
         /// </summary>
@@ -25,8 +27,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// <summary>
         /// Assembly's identity.
         /// </summary>
-        internal AssemblyIdentity _lazyAssemblyIdentity;
-
+        private AssemblyIdentity _lazyAssemblyIdentity;
         private readonly string _assemblySimpleName;
 
         /// <summary>
@@ -59,6 +60,38 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _state = SymbolCompletionState.Create(compilation.Language);
         }
 
+
+        internal SourceAssemblySymbol(
+            LanguageCompilation compilation,
+            string assemblySimpleName,
+            string moduleName,
+            ImmutableArray<PEModule> netModules)
+        {
+            Debug.Assert(compilation != null);
+            Debug.Assert(assemblySimpleName != null);
+            Debug.Assert(!String.IsNullOrWhiteSpace(moduleName));
+            Debug.Assert(!netModules.IsDefault);
+
+            _compilation = compilation;
+            _assemblySimpleName = assemblySimpleName;
+
+            _csharpSourceAssembly = new Microsoft.CodeAnalysis.CSharp.Symbols.SourceAssemblySymbol(compilation.CSharpCompilationForReferencedModules, assemblySimpleName, moduleName, netModules);
+
+            ArrayBuilder<ModuleSymbol> moduleBuilder = new ArrayBuilder<ModuleSymbol>(1 + netModules.Length);
+
+            moduleBuilder.Add(new SourceModuleSymbol(this, compilation.Declarations, moduleName));
+
+            var importOptions = (compilation.Options.MetadataImportOptions == MetadataImportOptions.All) ?
+                MetadataImportOptions.All : MetadataImportOptions.Internal;
+
+            for (int i = 0; i < netModules.Length; i++)
+            {
+                moduleBuilder.Add(CSharpModuleSymbol.FromCSharp(this, _csharpSourceAssembly.Modules[i]));
+            }
+
+            _modules = moduleBuilder.ToImmutableAndFree();
+        }
+
         public override string Name => _assemblySimpleName;
 
         /// <remarks>
@@ -77,6 +110,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 return _lazyAssemblyIdentity;
             }
+        }
+
+        internal Microsoft.CodeAnalysis.CSharp.Symbols.SourceAssemblySymbol CSharpSourceAssembly => _csharpSourceAssembly;
+
+        internal bool MightContainNoPiaLocalTypes()
+        {
+            if (_csharpSourceAssembly.MightContainNoPiaLocalTypes()) return true;
+            return SourceModule.MightContainNoPiaLocalTypes();
         }
 
         public override ImmutableArray<ModuleSymbol> Modules => _modules;
@@ -670,7 +711,44 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             throw new NotImplementedException();
         }
 
-        public override bool GivesAccessTo(IAssemblySymbol toAssembly)
+        public override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
+        {
+            return _modules[0].ReferencedAssemblySymbols;
+        }
+
+        internal override void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        public override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
+        {
+            // SourceAssemblySymbol is never used directly as a reference
+            // when it is or any of its references is linked.
+            return default(ImmutableArray<AssemblySymbol>);
+        }
+
+        internal override void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies)
+        {
+            // SourceAssemblySymbol is never used directly as a reference
+            // when it is or any of its references is linked.
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        public override bool IsLinked
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool AreInternalsVisibleToThisAssembly(AssemblySymbol potentialGiverOfAccess)
         {
             throw new NotImplementedException();
         }

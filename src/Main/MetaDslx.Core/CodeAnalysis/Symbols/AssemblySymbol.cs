@@ -50,6 +50,31 @@ namespace MetaDslx.CodeAnalysis.Symbols
             _corLibrary = corLibrary;
         }
 
+        /// <summary>
+        /// Return an array of assemblies involved in canonical type resolution of
+        /// NoPia local types defined within this assembly. In other words, all 
+        /// references used by previous compilation referencing this assembly.
+        /// </summary>
+        /// <returns></returns>
+        public abstract ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies();
+        internal abstract void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies);
+
+        /// <summary>
+        /// Return an array of assemblies referenced by this assembly, which are linked (/l-ed) by 
+        /// each compilation that is using this AssemblySymbol as a reference. 
+        /// If this AssemblySymbol is linked too, it will be in this array too.
+        /// </summary>
+        public abstract ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies();
+        internal abstract void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies);
+
+        public abstract IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName);
+        public abstract bool AreInternalsVisibleToThisAssembly(AssemblySymbol other);
+
+        /// <summary>
+        /// Assembly is /l-ed by compilation that is using it as a reference.
+        /// </summary>
+        public abstract bool IsLinked { get; }
+
         public virtual bool IsMissing => false;
 
         /// <summary>
@@ -219,7 +244,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public abstract AssemblyMetadata GetMetadata();
 
-        public abstract bool GivesAccessTo(IAssemblySymbol toAssembly);
+        public virtual bool GivesAccessTo(IAssemblySymbol toAssembly)
+        {
+            return false;
+        }
 
         INamedTypeSymbol IAssemblySymbol.GetTypeByMetadataName(string fullyQualifiedMetadataName)
         {

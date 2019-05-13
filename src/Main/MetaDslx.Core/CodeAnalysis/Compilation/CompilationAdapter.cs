@@ -28,9 +28,9 @@ namespace MetaDslx.CodeAnalysis
 
         public abstract DeclarationTable Declarations { get; }
 
-        internal abstract Microsoft.CodeAnalysis.CSharp.CSharpCompilation CSharpCompilation { get; }
+        internal abstract Microsoft.CodeAnalysis.CSharp.CSharpCompilation CSharpCompilationForReferencedModules { get; }
 
-        internal Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol CSharpAssemblySymbol => CSharpCompilation.Assembly;
+        internal Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol CSharpAssemblySymbolForReferencedModules => CSharpCompilationForReferencedModules.Assembly;
 
         internal override IEnumerable<Microsoft.CodeAnalysis.ReferenceDirective> ReferenceDirectives
         {
@@ -159,5 +159,19 @@ namespace MetaDslx.CodeAnalysis
             throw new NotImplementedException();
         }
 
+        internal override ISymbol CommonGetWellKnownTypeMember(WellKnownMember member)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override bool IsAttributeType(ITypeSymbol type)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override bool IsSystemTypeReference(ITypeSymbol type)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

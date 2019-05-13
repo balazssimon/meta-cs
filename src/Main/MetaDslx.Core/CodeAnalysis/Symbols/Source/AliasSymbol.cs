@@ -62,7 +62,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _locations = locations;
             _aliasTarget = target;
             _binder = binder;
-            _state = binder.Language.CompilationFactory.CreateSymbolCompletionState();
+            _state = SymbolCompletionState.Create(binder.Language);
             _state.NotePartComplete(CompletionPart.AliasTarget);
         }
 

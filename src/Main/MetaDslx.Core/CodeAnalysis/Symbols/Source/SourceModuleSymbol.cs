@@ -209,6 +209,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return false;
         }
 
+        internal bool MightContainNoPiaLocalTypes()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// A helper method for ReferenceManager to set assembly identities for assemblies 
         /// referenced by this module and corresponding AssemblySymbols.

@@ -71,6 +71,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override bool IsInteractive => _csharpAssembly.IsInteractive;
 
+        public override bool IsLinked => _csharpAssembly.IsLinked; 
+
         public override AssemblyIdentity Identity => _csharpAssembly.Identity;
 
         public override ICollection<string> TypeNames => _csharpAssembly.TypeNames;
@@ -176,6 +178,38 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         internal override NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
         {
             throw new NotImplementedException("TODO:MetaDslx");
+        }
+
+        public override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool AreInternalsVisibleToThisAssembly(AssemblySymbol potentialGiverOfAccess)
+        {
+            CSharpAssemblySymbol csAssembly = potentialGiverOfAccess as CSharpAssemblySymbol;
+            if (csAssembly != null) return _csharpAssembly.AreInternalsVisibleToThisAssembly(csAssembly.CSharpAssembly);
+            else return false;
+        }
+
+        public override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
+        {
+            return _csharpAssembly.GetInternalsVisibleToPublicKeys(simpleName);
         }
     }
 }

@@ -115,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        internal override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
+        public override void ForceComplete(SourceLocation locationOpt, CancellationToken cancellationToken)
         {
             foreach (var part in _namespacesToMerge)
             {
