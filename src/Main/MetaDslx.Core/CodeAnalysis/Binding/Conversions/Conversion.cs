@@ -26,6 +26,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         internal static Conversion UnsetConversion => new Conversion(ConversionKind.UnsetConversionKind);
         internal static Conversion NoConversion => new Conversion(ConversionKind.NoConversion);
         internal static Conversion DefaultOrNullLiteral => new Conversion(ConversionKind.DefaultOrNullLiteral);
+        internal static Conversion Identity => new Conversion(ConversionKind.Identity);
 
         public bool Equals(Conversion other)
         {

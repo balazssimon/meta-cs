@@ -272,11 +272,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return this.RetargetingSymbolMap.GetNamedTypeSymbol(underlying);
         }
 
-        public override NamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
-        {
-            return this.RetargetingSymbolMap.GetNamedTypeSymbol(_underlyingAssembly.GetTypeByMetadataName(fullyQualifiedMetadataName));
-        }
-
         public override AssemblyMetadata GetMetadata() => _underlyingAssembly.GetMetadata();
     }
 }

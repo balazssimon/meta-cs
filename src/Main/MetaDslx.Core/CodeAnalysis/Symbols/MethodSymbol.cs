@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         bool IMethodSymbol.IsExtensionMethod => throw new NotImplementedException();
 
-        bool IMethodSymbol.IsAsync => throw new NotImplementedException();
+        public virtual bool IsAsync => false;
 
         bool IMethodSymbol.IsVararg => throw new NotImplementedException();
 
@@ -86,6 +86,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         IMethodSymbol IMethodSymbol.PartialImplementationPart => throw new NotImplementedException();
 
         INamedTypeSymbol IMethodSymbol.AssociatedAnonymousDelegate => throw new NotImplementedException();
+
+        public virtual bool IsScriptInitializer => false;
 
         int IMethodSymbolInternal.CalculateLocalSyntaxOffset(int declaratorPosition, SyntaxTree declaratorTree)
         {

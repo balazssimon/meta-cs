@@ -93,5 +93,7 @@ namespace MetaDslx.CodeAnalysis
         public static InternalErrorCode ERR_NetModuleNameMismatch { get; internal set; }
         public static InternalErrorCode ERR_NetModuleNameMustBeUnique { get; internal set; }
         public static InternalErrorCode ERR_MissingNetModuleReference { get; internal set; }
+        public static InternalErrorCode ERR_BadSKknown { get; internal set; }
+        public static InternalErrorCode ERR_InsufficientStack { get; internal set; }
     }
 }

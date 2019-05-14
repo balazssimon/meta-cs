@@ -38,7 +38,7 @@ namespace MetaDslx.CodeAnalysis
 
         protected CSharpBackend Update(CSharpCompilation csharpCompilation, CommonReferenceManager referenceManager, bool reuseReferenceManager)
         {
-
+            throw new NotImplementedException();
         }
 
         // TODO:MetaDslx -> Make sure that the ReferenceManager does not change! Or that the 

@@ -80,7 +80,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                     {
                         var ns = (NamespaceSymbol)namespaceOrType;
                         var assemblyRef = TryGetAssemblyScope(ns, moduleBuilder, diagnostics);
-                        usedNamespaces.Add(Cci.UsedNamespaceOrType.CreateNamespace(ns, assemblyRef));
+                        throw new NotImplementedException("TODO:MetaDslx");
+                        //usedNamespaces.Add(Cci.UsedNamespaceOrType.CreateNamespace(ns, assemblyRef));
                     }
                     else if (!namespaceOrType.ContainingAssembly.IsLinked)
                     {
@@ -110,7 +111,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                     {
                         var ns = (NamespaceSymbol)target;
                         var assemblyRef = TryGetAssemblyScope(ns, moduleBuilder, diagnostics);
-                        usedNamespaces.Add(Cci.UsedNamespaceOrType.CreateNamespace(ns, assemblyRef, alias));
+                        throw new NotImplementedException("TODO:MetaDslx");
+                        //usedNamespaces.Add(Cci.UsedNamespaceOrType.CreateNamespace(ns, assemblyRef, alias));
                     }
                     else if (!target.ContainingAssembly.IsLinked)
                     {

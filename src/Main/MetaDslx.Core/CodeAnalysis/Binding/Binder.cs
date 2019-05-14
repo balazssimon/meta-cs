@@ -1,4 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.BoundTree;
+using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
@@ -132,7 +134,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// The member containing the binding context.  Note that for the purposes of the compiler,
         /// a lambda expression is considered a "member" of its enclosing method, field, or lambda.
         /// </summary>
-        internal virtual ISymbol ContainingSymbol
+        internal virtual Symbol ContainingSymbol
         {
             get
             {
@@ -174,7 +176,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// The type containing the binding context
         /// </summary>
-        internal INamedTypeSymbol ContainingType
+        internal NamedTypeSymbol ContainingType
         {
             get
             {
@@ -183,7 +185,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return (object)member == null
                     ? null
                     : member.Kind == SymbolKind.NamedType
-                        ? (INamedTypeSymbol)member
+                        ? (NamedTypeSymbol)member
                         : member.ContainingType;
             }
         }
@@ -369,5 +371,56 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return (description, snippet, locals);
             }
         }
+
+        internal BoundNode BindNamespaceOrTypeSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void AddLookupSymbolsInfo(LookupSymbolsInfo info, LookupOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void AddMemberLookupSymbolsInfo(LookupSymbolsInfo info, NamespaceOrTypeSymbol container, LookupOptions options, Binder binder)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal BoundNode BindNamespaceOrTypeOrAliasSymbol(LanguageSyntaxNode node, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool v)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void LookupSymbolsSimpleName(LookupResult lookupResult, NamespaceOrTypeSymbol container, string name, int arity, object basesBeingResolved, LookupOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Symbol ResultSymbol(LookupResult lookupResult, string name, int arity, LanguageSyntaxNode root, DiagnosticBag diagnostics, bool v, out bool wasError, NamespaceOrTypeSymbol container, LookupOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal bool IsAccessible(Symbol cssymbol, ref HashSet<DiagnosticInfo> useSiteDiagnostics, object p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual BoundNode Bind(LanguageSyntaxNode node, DiagnosticBag diagnostics)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual BoundExpression BindExpression(LanguageSyntaxNode expression, DiagnosticBag diagnostics)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual BoundStatement BindStatement(LanguageSyntaxNode node, DiagnosticBag diagnostics)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

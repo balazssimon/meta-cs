@@ -278,7 +278,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static NamespaceOrTypeSymbol ResolveAliasTarget(Binder binder, SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
-            return binder.BindNamespaceOrTypeSymbol(syntax, diagnostics, basesBeingResolved).NamespaceOrTypeSymbol;
+            return (NamespaceOrTypeSymbol)binder.BindNamespaceOrTypeSymbol(syntax, diagnostics, basesBeingResolved).Symbol;
         }
 
         public override bool Equals(object obj)

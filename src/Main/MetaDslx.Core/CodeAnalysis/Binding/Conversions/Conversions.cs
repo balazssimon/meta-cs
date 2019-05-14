@@ -38,5 +38,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             throw new NotImplementedException();
         }
 
+        internal Conversion ClassifyConversionFromExpression(object bnode, TypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics, bool forCast)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Conversion ClassifyConversionFromExpression(object bnode, TypeSymbol cdestination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

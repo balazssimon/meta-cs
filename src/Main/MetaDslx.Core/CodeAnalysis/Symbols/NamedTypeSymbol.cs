@@ -97,6 +97,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
         protected static Func<Symbol, bool> IsInstanceMember = symbol => !symbol.IsStatic;
         protected static Func<Symbol, bool> IsStaticMember = symbol => symbol.IsStatic;
 
+        public virtual MethodSymbol GetScriptInitializer()
+        {
+            return null;
+        }
+
+        public virtual MethodSymbol GetScriptEntryPoint()
+        {
+            return null;
+        }
+
         /// <summary>
         /// Get the operators for this type by their metadata name
         /// </summary>

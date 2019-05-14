@@ -31,6 +31,16 @@ namespace MetaDslx.CodeAnalysis
             return ((Syntax.InternalSyntax.InternalSyntaxNode)node).Language;
         }
 
+        public static bool IsExpression(this LanguageSyntaxNode node)
+        {
+            return node.Language.SyntaxFacts.IsExpression(node);
+        }
+
+        public static bool IsStatement(this LanguageSyntaxNode node)
+        {
+            return node.Language.SyntaxFacts.IsStatement(node);
+        }
+
         public static TNode WithAnnotations<TNode>(this TNode node, params SyntaxAnnotation[] annotations) where TNode : LanguageSyntaxNode
         {
             return (TNode)node.Green.SetAnnotations(annotations).CreateRed();

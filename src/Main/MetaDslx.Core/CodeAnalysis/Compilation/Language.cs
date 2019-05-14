@@ -23,6 +23,8 @@ namespace MetaDslx.CodeAnalysis
         internal protected abstract SyntaxFactory SyntaxFactoryCore { get; }
         public CompilationFactory CompilationFactory => this.CompilationFactoryCore;
         internal protected abstract CompilationFactory CompilationFactoryCore { get; }
+        public SymbolFacts SymbolFacts => this.SymbolFactsCore;
+        internal protected abstract SymbolFacts SymbolFactsCore { get; }
         //CompilationFactory
         /*public SymbolDisplay SymbolDisplay => this.SymbolDisplayCore;
         internal protected virtual SymbolDisplay SymbolDisplayCore { get; } = new SymbolDisplay();
@@ -43,6 +45,8 @@ namespace MetaDslx.CodeAnalysis
         protected internal override SyntaxFactory SyntaxFactoryCore => throw new NotImplementedException();
 
         protected internal override CompilationFactory CompilationFactoryCore => throw new NotImplementedException();
+
+        protected internal override SymbolFacts SymbolFactsCore => throw new NotImplementedException();
 
         //protected internal override SymbolFacts SymbolFactsCore => throw new NotImplementedException();
     }

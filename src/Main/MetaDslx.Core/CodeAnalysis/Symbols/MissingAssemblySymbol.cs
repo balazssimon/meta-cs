@@ -161,11 +161,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        public override NamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
-        {
-            return null;
-        }
-
         public override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
         {
             return false;

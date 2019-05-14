@@ -1,6 +1,9 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Symbols.Source;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -78,6 +81,45 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public virtual bool IsMissing => false;
 
         /// <summary>
+        /// Gets the symbol for the pre-defined type from core library associated with this assembly.
+        /// </summary>
+        /// <returns>The symbol for the pre-defined type or an error type if the type is not defined in the core library.</returns>
+        public NamedTypeSymbol GetSpecialType(SpecialType type)
+        {
+            return CorLibrary.GetDeclaredSpecialType(type);
+        }
+
+        public static TypeSymbol DynamicType
+        {
+            get
+            {
+                return DynamicTypeSymbol.Instance;
+            }
+        }
+
+        /// <summary>
+        /// The NamedTypeSymbol for the .NET System.Object type, which could have a TypeKind of
+        /// Error if there was no COR Library in a compilation using the assembly.
+        /// </summary>
+        public NamedTypeSymbol ObjectType
+        {
+            get
+            {
+                return GetSpecialType(SpecialType.System_Object);
+            }
+        }
+
+        /// <summary>
+        /// Get symbol for predefined type from Cor Library used by this assembly.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        internal NamedTypeSymbol GetPrimitiveType(Microsoft.Cci.PrimitiveTypeCode type)
+        {
+            return GetSpecialType(SpecialTypes.GetTypeFromMetadataName(type));
+        }
+
+        /// <summary>
         /// Lookup declaration for predefined CorLib type in this Assembly.
         /// </summary>
         /// <returns>The symbol for the pre-defined type or an error type if the type is not defined in the core library.</returns>
@@ -90,6 +132,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal virtual void RegisterDeclaredSpecialType(NamedTypeSymbol corType)
         {
             throw ExceptionUtilities.Unreachable;
+        }
+
+        /// <summary>
+        /// Continue looking for declaration of predefined CorLib type in this Assembly
+        /// while symbols for new type declarations are constructed.
+        /// </summary>
+        public virtual bool KeepLookingForDeclaredSpecialTypes
+        {
+            get
+            {
+                throw ExceptionUtilities.Unreachable;
+            }
         }
 
         /// <summary>
@@ -168,12 +222,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
-        /// Continue looking for declaration of predefined CorLib type in this Assembly
-        /// while symbols for new type declarations are constructed.
-        /// </summary>
-        public virtual bool KeepLookingForDeclaredSpecialTypes => throw ExceptionUtilities.Unreachable;
-
-        /// <summary>
         /// Given a namespace symbol, returns the corresponding assembly specific namespace symbol
         /// </summary>
         internal NamespaceSymbol GetAssemblyNamespace(NamespaceSymbol namespaceSymbol)
@@ -212,6 +260,332 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return assemblyContainer.GetNestedNamespace(namespaceSymbol.Name);
         }
 
+        /// <summary>
+        /// Lookup member declaration in predefined CorLib type in this Assembly. Only valid if this 
+        /// assembly is the Cor Library
+        /// </summary>
+        public virtual Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Lookup member declaration in predefined CorLib type used by this Assembly.
+        /// </summary>
+        public virtual Symbol GetSpecialTypeMember(SpecialMember member)
+        {
+            return CorLibrary.GetDeclaredSpecialTypeMember(member);
+        }
+
+        /// <summary>
+        /// Lookup a type within the assembly using the canonical CLR metadata name of the type.
+        /// </summary>
+        /// <param name="fullyQualifiedMetadataName">Type name.</param>
+        /// <returns>Symbol for the type or null if type cannot be found or is ambiguous. </returns>
+        public NamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName)
+        {
+            if (fullyQualifiedMetadataName == null)
+            {
+                throw new ArgumentNullException(nameof(fullyQualifiedMetadataName));
+            }
+
+            return this.GetTypeByMetadataName(fullyQualifiedMetadataName, includeReferences: false, isWellKnownType: false, conflicts: out var _);
+        }
+
+        /// <summary>
+        /// Lookup a type within the assembly using its canonical CLR metadata name.
+        /// </summary>
+        /// <param name="metadataName"></param>
+        /// <param name="includeReferences">
+        /// If search within assembly fails, lookup in assemblies referenced by the primary module.
+        /// For source assembly, this is equivalent to all assembly references given to compilation.
+        /// </param>
+        /// <param name="isWellKnownType">
+        /// Extra restrictions apply when searching for a well-known type.  In particular, the type must be public.
+        /// </param>
+        /// <param name="useCLSCompliantNameArityEncoding">
+        /// While resolving the name, consider only types following CLS-compliant generic type names and arity encoding (ECMA-335, section 10.7.2).
+        /// I.e. arity is inferred from the name and matching type must have the same emitted name and arity.
+        /// </param>
+        /// <param name="warnings">
+        /// A diagnostic bag to receive warnings if we should allow multiple definitions and pick one.
+        /// </param>
+        /// <param name="ignoreCorLibraryDuplicatedTypes">
+        /// In case duplicate types are found, ignore the one from corlib. This is useful for any kind of compilation at runtime
+        /// (EE/scripting/Powershell) using a type that is being migrated to corlib.
+        /// </param>
+        /// <param name="conflicts">
+        /// In cases a type could not be found because of ambiguity, we return two of the candidates that caused the ambiguity.
+        /// </param>
+        /// <returns>Null if the type can't be found.</returns>
+        internal NamedTypeSymbol GetTypeByMetadataName(
+            string metadataName,
+            bool includeReferences,
+            bool isWellKnownType,
+            out (AssemblySymbol, AssemblySymbol) conflicts,
+            bool useCLSCompliantNameArityEncoding = false,
+            DiagnosticBag warnings = null,
+            bool ignoreCorLibraryDuplicatedTypes = false)
+        {
+            NamedTypeSymbol type;
+            MetadataTypeName mdName;
+
+            if (metadataName.IndexOf('+') >= 0)
+            {
+                var parts = metadataName.Split(s_nestedTypeNameSeparators);
+                Debug.Assert(parts.Length > 0);
+                mdName = MetadataTypeName.FromFullName(parts[0], useCLSCompliantNameArityEncoding);
+                type = GetTopLevelTypeByMetadataName(ref mdName, assemblyOpt: null, includeReferences: includeReferences, isWellKnownType: isWellKnownType,
+                    conflicts: out conflicts, warnings: warnings, ignoreCorLibraryDuplicatedTypes: ignoreCorLibraryDuplicatedTypes);
+
+                for (int i = 1; (object)type != null && !type.IsErrorType() && i < parts.Length; i++)
+                {
+                    mdName = MetadataTypeName.FromTypeName(parts[i]);
+                    NamedTypeSymbol temp = type.LookupMetadataType(ref mdName);
+                    type = (!isWellKnownType || IsValidWellKnownType(temp)) ? temp : null;
+                }
+            }
+            else
+            {
+                mdName = MetadataTypeName.FromFullName(metadataName, useCLSCompliantNameArityEncoding);
+                type = GetTopLevelTypeByMetadataName(ref mdName, assemblyOpt: null, includeReferences: includeReferences, isWellKnownType: isWellKnownType,
+                    conflicts: out conflicts, warnings: warnings, ignoreCorLibraryDuplicatedTypes: ignoreCorLibraryDuplicatedTypes);
+            }
+
+            return ((object)type == null || type.IsErrorType()) ? null : type;
+        }
+
+        private static readonly char[] s_nestedTypeNameSeparators = new char[] { '+' };
+
+        /// <summary>
+        /// Resolves <see cref="System.Type"/> to a <see cref="TypeSymbol"/> available in this assembly
+        /// its referenced assemblies.
+        /// </summary>
+        /// <param name="type">The type to resolve.</param>
+        /// <param name="includeReferences">Use referenced assemblies for resolution.</param>
+        /// <returns>The resolved symbol if successful or null on failure.</returns>
+        internal TypeSymbol GetTypeByReflectionType(Type type, bool includeReferences)
+        {
+            System.Reflection.TypeInfo typeInfo = type.GetTypeInfo();
+
+            Debug.Assert(!typeInfo.IsByRef);
+
+            // not supported (we don't accept open types as submission results nor host types):
+            Debug.Assert(!typeInfo.ContainsGenericParameters);
+
+            if (typeInfo.IsArray)
+            {
+                throw new NotImplementedException();
+            }
+            else if (typeInfo.IsPointer)
+            {
+                throw new NotImplementedException();
+            }
+            else if (typeInfo.DeclaringType != null)
+            {
+                Debug.Assert(!typeInfo.IsArray);
+
+                // consolidated generic arguments (includes arguments of all declaring types):
+                Type[] genericArguments = typeInfo.GenericTypeArguments;
+                int typeArgumentIndex = 0;
+
+                var currentTypeInfo = typeInfo.IsGenericType ? typeInfo.GetGenericTypeDefinition().GetTypeInfo() : typeInfo;
+                var nestedTypes = ArrayBuilder<System.Reflection.TypeInfo>.GetInstance();
+                while (true)
+                {
+                    Debug.Assert(currentTypeInfo.IsGenericTypeDefinition || !currentTypeInfo.IsGenericType);
+
+                    nestedTypes.Add(currentTypeInfo);
+                    if (currentTypeInfo.DeclaringType == null)
+                    {
+                        break;
+                    }
+
+                    currentTypeInfo = currentTypeInfo.DeclaringType.GetTypeInfo();
+                }
+
+                int i = nestedTypes.Count - 1;
+                var symbol = (NamedTypeSymbol)GetTypeByReflectionType(nestedTypes[i].AsType(), includeReferences);
+                if ((object)symbol == null)
+                {
+                    return null;
+                }
+
+                while (--i >= 0)
+                {
+                    int forcedArity = nestedTypes[i].GenericTypeParameters.Length - nestedTypes[i + 1].GenericTypeParameters.Length;
+                    MetadataTypeName mdName = MetadataTypeName.FromTypeName(nestedTypes[i].Name, forcedArity: forcedArity);
+
+                    symbol = symbol.LookupMetadataType(ref mdName);
+                    if ((object)symbol == null || symbol.IsErrorType())
+                    {
+                        return null;
+                    }
+                }
+
+                nestedTypes.Free();
+                Debug.Assert(typeArgumentIndex == genericArguments.Length);
+                return symbol;
+            }
+            else
+            {
+                AssemblyIdentity assemblyId = AssemblyIdentity.FromAssemblyDefinition(typeInfo.Assembly);
+
+                MetadataTypeName mdName = MetadataTypeName.FromNamespaceAndTypeName(
+                    typeInfo.Namespace ?? string.Empty,
+                    typeInfo.Name,
+                    forcedArity: typeInfo.GenericTypeArguments.Length);
+
+                NamedTypeSymbol symbol = GetTopLevelTypeByMetadataName(ref mdName, assemblyId, includeReferences, isWellKnownType: false, conflicts: out var _);
+
+                if ((object)symbol == null || symbol.IsErrorType())
+                {
+                    return null;
+                }
+
+                return symbol;
+            }
+        }
+
+        internal NamedTypeSymbol GetTopLevelTypeByMetadataName(
+            ref MetadataTypeName metadataName,
+            AssemblyIdentity assemblyOpt,
+            bool includeReferences,
+            bool isWellKnownType,
+            out (AssemblySymbol, AssemblySymbol) conflicts,
+            DiagnosticBag warnings = null,
+            bool ignoreCorLibraryDuplicatedTypes = false)
+        {
+            conflicts = default;
+            NamedTypeSymbol result;
+
+            // First try this assembly
+            result = GetTopLevelTypeByMetadataName(this, ref metadataName, assemblyOpt);
+
+            if (isWellKnownType && !IsValidWellKnownType(result))
+            {
+                result = null;
+            }
+
+            // ignore any types of the same name that might be in referenced assemblies (prefer the current assembly):
+            if ((object)result != null || !includeReferences)
+            {
+                return result;
+            }
+
+            Debug.Assert(this is SourceAssemblySymbol,
+                "Never include references for a non-source assembly, because they don't know about aliases.");
+
+            var assemblies = ArrayBuilder<AssemblySymbol>.GetInstance();
+
+            // ignore reference aliases if searching for a type from a specific assembly:
+            if (assemblyOpt != null)
+            {
+                assemblies.AddRange(DeclaringCompilation.GetBoundReferenceManager().ReferencedAssemblies);
+            }
+            else
+            {
+                DeclaringCompilation.GetUnaliasedReferencedAssemblies(assemblies);
+            }
+
+            // Lookup in references
+            foreach (var assembly in assemblies)
+            {
+                Debug.Assert(!(this is SourceAssemblySymbol && assembly.IsMissing)); // Non-source assemblies can have missing references
+
+                NamedTypeSymbol candidate = GetTopLevelTypeByMetadataName(assembly, ref metadataName, assemblyOpt);
+
+                if (isWellKnownType && !IsValidWellKnownType(candidate))
+                {
+                    candidate = null;
+                }
+
+                if ((object)candidate == null)
+                {
+                    continue;
+                }
+
+                Debug.Assert(!TypeSymbol.Equals(candidate, result, TypeCompareKind.ConsiderEverything2));
+
+                if ((object)result != null)
+                {
+                    // duplicate
+                    if (ignoreCorLibraryDuplicatedTypes)
+                    {
+                        if (IsInCorLib(candidate))
+                        {
+                            // ignore candidate
+                            continue;
+                        }
+                        if (IsInCorLib(result))
+                        {
+                            // drop previous result
+                            result = candidate;
+                            continue;
+                        }
+                    }
+
+                    if (warnings == null)
+                    {
+                        conflicts = (result.ContainingAssembly, candidate.ContainingAssembly);
+                        result = null;
+                    }
+                    else
+                    {
+                        // The predefined type '{0}' is defined in multiple assemblies in the global alias; using definition from '{1}'
+                        warnings.Add(InternalErrorCode.WRN_MultiplePredefTypes, NoLocation.Singleton, result, result.ContainingAssembly);
+                    }
+
+                    break;
+                }
+
+                result = candidate;
+            }
+
+            assemblies.Free();
+            return result;
+        }
+
+        private bool IsInCorLib(NamedTypeSymbol type)
+        {
+            return (object)type.ContainingAssembly == CorLibrary;
+        }
+
+        private bool IsValidWellKnownType(NamedTypeSymbol result)
+        {
+            if ((object)result == null || result.TypeKind == TypeKind.Error)
+            {
+                return false;
+            }
+
+            Debug.Assert((object)result.ContainingType == null || IsValidWellKnownType(result.ContainingType),
+                "Checking the containing type is the caller's responsibility.");
+
+            return result.DeclaredAccessibility == Accessibility.Public; // TODO:MetaDslx || IsSymbolAccessible(result, this);
+        }
+
+        private static NamedTypeSymbol GetTopLevelTypeByMetadataName(AssemblySymbol assembly, ref MetadataTypeName metadataName, AssemblyIdentity assemblyOpt)
+        {
+            var result = assembly.LookupTopLevelMetadataType(ref metadataName, digThroughForwardedTypes: false);
+            if (!IsAcceptableMatchForGetTypeByMetadataName(result))
+            {
+                return null;
+            }
+
+            if (assemblyOpt != null && !assemblyOpt.Equals(assembly.Identity))
+            {
+                return null;
+            }
+
+            return result;
+        }
+
+        private static bool IsAcceptableMatchForGetTypeByMetadataName(NamedTypeSymbol candidate)
+        {
+            return candidate.Kind != SymbolKind.ErrorType || !(candidate is MissingMetadataTypeSymbol);
+        }
+
+
         public override AssemblySymbol ContainingAssembly => null;
 
         public override ModuleSymbol ContainingModule => null;
@@ -225,8 +599,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract NamespaceSymbol GlobalNamespace { get; }
 
         public abstract ImmutableArray<ModuleSymbol> Modules { get; }
-
-        public abstract NamedTypeSymbol GetTypeByMetadataName(string fullyQualifiedMetadataName);
 
         public virtual bool IsInteractive => false;
 

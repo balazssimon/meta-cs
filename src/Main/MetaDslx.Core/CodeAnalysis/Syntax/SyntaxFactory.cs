@@ -172,6 +172,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return Language.InternalSyntaxFactory.DisabledText(text);
         }
 
+        public abstract LanguageSyntaxNode GetStandaloneNode(LanguageSyntaxNode node);
+
         /// <summary>
         /// Trivia nodes represent parts of the program text that are not parts of the
         /// syntactic grammar, such as spaces, newlines, comments, preprocessor

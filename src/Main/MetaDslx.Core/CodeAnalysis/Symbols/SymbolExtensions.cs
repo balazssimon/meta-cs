@@ -9,6 +9,25 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     internal static class SymbolExtensions
     {
+        public static string GetKindText(this Symbol symbol)
+        {
+            return symbol.ModelSymbolInfo.ImmutableType.Name;
+        }
+
+        internal static TDestination EnsureLanguageSymbolOrNull<TSource, TDestination>(this TSource symbol, string paramName)
+            where TSource : ISymbol
+            where TDestination : Symbol, TSource
+        {
+            var csSymbol = symbol as TDestination;
+
+            if ((object)csSymbol == null && (object)symbol != null)
+            {
+                throw new ArgumentException(Microsoft.CodeAnalysis.CSharp.CSharpResources.NotACSharpSymbol, paramName);
+            }
+
+            return csSymbol;
+        }
+
         /// <summary>
         /// The immediately containing namespace or named type, or null
         /// if the containing symbol is neither a namespace or named type.

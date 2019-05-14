@@ -134,8 +134,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
             if (!includeSelf) result.RemoveAt(0);
             result.Reverse();*/
             if (includeSelf) result.Add(_this);
-            result.AddRange(_this.MGetAllBases().Cast<MetaClass>());
-            return ImmutableModelList<MetaClass>.CreateUnique(result);
+            throw new NotImplementedException("TODO:MetaDslx");
+            //result.AddRange(_this.MGetAllBases().Cast<MetaClass>());
+            //return ImmutableModelList<MetaClass>.CreateUnique(result);
         }
 
         public override ImmutableModelList<MetaProperty> MetaClass_GetAllSuperProperties(MetaClass _this, bool includeSelf)

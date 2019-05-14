@@ -8,6 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using System;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
@@ -97,10 +99,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             switch (symbol.Kind)
             {
                 case SymbolKind.ArrayType:
-                    return IsSymbolAccessibleCore(((ArrayTypeSymbol)symbol).ElementType, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
+                    throw new NotImplementedException("TODO:MetaDslx");
+                    //return IsSymbolAccessibleCore(((ArrayTypeSymbol)symbol).ElementType, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
 
                 case SymbolKind.PointerType:
-                    return IsSymbolAccessibleCore(((PointerTypeSymbol)symbol).PointedAtType, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
+                    throw new NotImplementedException("TODO:MetaDslx");
+                    //return IsSymbolAccessibleCore(((PointerTypeSymbol)symbol).PointedAtType, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
 
                 case SymbolKind.NamedType:
                     return IsNamedTypeAccessible((NamedTypeSymbol)symbol, within, ref useSiteDiagnostics, basesBeingResolved);
@@ -158,21 +162,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             var compilation = within.DeclaringCompilation;
 
             bool unused;
-            if (!type.IsDefinition)
-            {
-                // All type argument must be accessible.
-                var typeArgs = type.TypeArgumentsWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics);
-                foreach (var typeArg in typeArgs)
-                {
-                    // type parameters are always accessible, so don't check those (so common it's
-                    // worth optimizing this).
-                    if (typeArg.Type.Kind != SymbolKind.TypeParameter && !IsSymbolAccessibleCore(typeArg.Type, within, null, out unused, compilation, ref useSiteDiagnostics, basesBeingResolved))
-                    {
-                        return false;
-                    }
-                }
-            }
-
             var containingType = type.ContainingType;
             return (object)containingType == null
                 ? IsNonNestedTypeAccessible(type.ContainingAssembly, type.DeclaredAccessibility, within)
@@ -485,20 +474,13 @@ namespace MetaDslx.CodeAnalysis.Binding
             Debug.Assert(type.IsDefinition);
             Debug.Assert(baseType.IsDefinition);
 
-            PooledHashSet<NamedTypeSymbol> interfacesLookedAt = null;
-            ArrayBuilder<NamedTypeSymbol> baseInterfaces = null;
-
-            bool baseTypeIsInterface = baseType.IsInterface;
-            if (baseTypeIsInterface)
-            {
-                interfacesLookedAt = PooledHashSet<NamedTypeSymbol>.GetInstance();
-                baseInterfaces = ArrayBuilder<NamedTypeSymbol>.GetInstance();
-            }
+            PooledHashSet<NamedTypeSymbol> interfacesLookedAt = PooledHashSet<NamedTypeSymbol>.GetInstance();
+            ArrayBuilder<NamedTypeSymbol> baseInterfaces = ArrayBuilder<NamedTypeSymbol>.GetInstance();
 
             PooledHashSet<NamedTypeSymbol> visited = null;
             var current = type;
             bool result = false;
-
+            /* TODO:MetaDslx
             while ((object)current != null)
             {
                 if (baseTypeIsInterface == current.IsInterfaceType() && current.Equals(baseType))
@@ -559,11 +541,11 @@ namespace MetaDslx.CodeAnalysis.Binding
                     }
                 }
             }
-
+            */
             interfacesLookedAt?.Free();
             baseInterfaces?.Free();
             return result;
-
+            /*
             static void getBaseInterfaces(TypeSymbol derived, ArrayBuilder<NamedTypeSymbol> baseInterfaces, PooledHashSet<NamedTypeSymbol> interfacesLookedAt, ConsList<TypeSymbol> basesBeingResolved)
             {
                 if (basesBeingResolved != null && basesBeingResolved.ContainsReference(derived))
@@ -596,7 +578,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         baseInterfaces.Add(definition);
                     }
                 }
-            }
+            }*/
         }
 
         /// <summary>

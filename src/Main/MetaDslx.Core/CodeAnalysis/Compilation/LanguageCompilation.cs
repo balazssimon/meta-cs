@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,7 +29,9 @@ using Roslyn.Utilities;
 namespace MetaDslx.CodeAnalysis
 {
     using CSharpResources = Microsoft.CodeAnalysis.CSharp.CSharpResources;
+    using CSharpCompilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
     using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
+    using Binder = MetaDslx.CodeAnalysis.Binding.Binder;
 
     /// <summary>
     /// The compilation object is an immutable representation of a single invocation of the
@@ -49,6 +52,8 @@ namespace MetaDslx.CodeAnalysis
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         internal static readonly ParallelOptions DefaultParallelOptions = new ParallelOptions();
+
+        private readonly CSharpCompilation _csharpCompilationForReferencedModules;
 
         private readonly LanguageCompilationOptions _options;
         private readonly Lazy<Imports> _globalImports;
@@ -160,24 +165,23 @@ namespace MetaDslx.CodeAnalysis
             get;
         }
 
+        internal override CSharpCompilation CSharpCompilationForReferencedModules => _csharpCompilationForReferencedModules;
+
         protected override INamedTypeSymbol CommonCreateErrorTypeSymbol(INamespaceOrTypeSymbol container, string name, int arity)
         {
             return new ExtendedErrorTypeSymbol(
-                       container.EnsureCSharpSymbolOrNull<INamespaceOrTypeSymbol, NamespaceOrTypeSymbol>(nameof(container)),
+                       container.EnsureLanguageSymbolOrNull<INamespaceOrTypeSymbol, NamespaceOrTypeSymbol>(nameof(container)),
                        name, arity > 0 ? name+"`"+arity : name, errorInfo: null);
         }
 
         protected override INamespaceSymbol CommonCreateErrorNamespaceSymbol(INamespaceSymbol container, string name)
         {
             return new MissingNamespaceSymbol(
-                       container.EnsureCSharpSymbolOrNull<INamespaceSymbol, NamespaceSymbol>(nameof(container)),
+                       container.EnsureLanguageSymbolOrNull<INamespaceSymbol, NamespaceSymbol>(nameof(container)),
                        name);
         }
 
         #region Constructors and Factories
-
-        private static readonly LanguageCompilationOptions s_defaultOptions = new LanguageCompilationOptions(OutputKind.ConsoleApplication);
-        private static readonly LanguageCompilationOptions s_defaultSubmissionOptions = new LanguageCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
 
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
@@ -196,7 +200,7 @@ namespace MetaDslx.CodeAnalysis
         {
             return Create(
                 assemblyName,
-                options ?? s_defaultOptions,
+                options,
                 syntaxTrees,
                 references,
                 previousSubmission: null,
@@ -222,7 +226,7 @@ namespace MetaDslx.CodeAnalysis
 
             return Create(
                 assemblyName,
-                options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
+                options?.WithReferencesSupersedeLowerVersions(true),
                 (syntaxTree != null) ? new[] { syntaxTree } : SpecializedCollections.EmptyEnumerable<SyntaxTree>(),
                 references,
                 previousScriptCompilation,
@@ -287,7 +291,6 @@ namespace MetaDslx.CodeAnalysis
             AsyncQueue<CompilationEvent> eventQueue = null)
             : base(assemblyName, references, SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
         {
-            WellKnownMemberSignatureComparer = new WellKnownMembersSignatureComparer(this);
             _options = options;
 
             this.builtInOperators = new BuiltInOperators(this);
@@ -307,6 +310,8 @@ namespace MetaDslx.CodeAnalysis
             {
                 Debug.Assert(previousSubmission == null && submissionReturnType == null && hostObjectType == null);
             }
+
+            _csharpCompilationForReferencedModules = CSharpCompilation.Create(assemblyName, references: references, options: options.ToCSharp());
 
             if (reuseReferenceManager)
             {
@@ -1260,7 +1265,7 @@ namespace MetaDslx.CodeAnalysis
             var result = Assembly.GetTypeByReflectionType(type, includeReferences: true);
             if ((object)result == null)
             {
-                var errorType = new ExtendedErrorTypeSymbol(this, type.Name, 0, CreateReflectionTypeNotFoundError(type));
+                var errorType = new ExtendedErrorTypeSymbol(this, type.Name, type.Name, CreateReflectionTypeNotFoundError(type));
                 diagnostics.Add(errorType.ErrorInfo, NoLocation.Singleton);
                 result = errorType;
             }
@@ -1569,13 +1574,12 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        private static void AddEntryPointCandidates(
+        private void AddEntryPointCandidates(
             ArrayBuilder<MethodSymbol> entryPointCandidates, IEnumerable<ISymbol> members)
         {
             foreach (var member in members)
             {
-                if (member is MethodSymbol method &&
-                    method.IsEntryPointCandidate)
+                if (member is MethodSymbol method && this.Language.SymbolFacts.IsEntryPointCandidate(method))
                 {
                     entryPointCandidates.Add(method);
                 }
@@ -1636,8 +1640,8 @@ namespace MetaDslx.CodeAnalysis
                 throw new ArgumentNullException(nameof(destination));
             }
 
-            var cssource = source.EnsureCSharpSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(source));
-            var csdest = destination.EnsureCSharpSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(destination));
+            var cssource = source.EnsureLanguageSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(source));
+            var csdest = destination.EnsureLanguageSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(destination));
 
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             return Conversions.ClassifyConversionFromType(cssource, csdest, ref useSiteDiagnostics);
@@ -1693,9 +1697,9 @@ namespace MetaDslx.CodeAnalysis
             ISymbol within,
             ITypeSymbol throughType)
         {
-            var symbol0 = symbol.EnsureCSharpSymbolOrNull<ISymbol, Symbol>(nameof(symbol));
-            var within0 = within.EnsureCSharpSymbolOrNull<ISymbol, Symbol>(nameof(within));
-            var throughType0 = throughType.EnsureCSharpSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(throughType));
+            var symbol0 = symbol.EnsureLanguageSymbolOrNull<ISymbol, Symbol>(nameof(symbol));
+            var within0 = within.EnsureLanguageSymbolOrNull<ISymbol, Symbol>(nameof(within));
+            var throughType0 = throughType.EnsureLanguageSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(throughType));
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             return
                 within0.Kind == SymbolKind.Assembly ?
@@ -2157,11 +2161,6 @@ namespace MetaDslx.CodeAnalysis
                 // Don't freeze the compilation if we're getting
                 // diagnostics for a single tree
                 _declarationDiagnosticsFrozen = true;
-
-                // Also freeze generated attribute flags.
-                // Symbols bound after getting the declaration
-                // diagnostics shouldn't need to modify the flags.
-                _needsGeneratedAttributes_IsFrozen = true;
             }
 
             var result = _lazyDeclarationDiagnostics?.AsEnumerable() ?? Enumerable.Empty<Diagnostic>();
@@ -2257,15 +2256,6 @@ namespace MetaDslx.CodeAnalysis
 
         internal override bool HasCodeToEmit()
         {
-            foreach (var syntaxTree in this.SyntaxTrees)
-            {
-                var unit = syntaxTree.GetRoot();
-                if (unit.Members.Count > 0)
-                {
-                    return true;
-                }
-            }
-
             return false;
         }
 
@@ -2502,34 +2492,6 @@ namespace MetaDslx.CodeAnalysis
 
         #endregion
 
-        /// <summary>
-        /// Returns if the compilation has all of the members necessary to emit metadata about
-        /// dynamic types.
-        /// </summary>
-        /// <returns></returns>
-        internal bool HasDynamicEmitAttributes()
-        {
-            return
-                (object)GetWellKnownTypeMember(WellKnownMember.System_Runtime_CompilerServices_DynamicAttribute__ctor) != null &&
-                (object)GetWellKnownTypeMember(WellKnownMember.System_Runtime_CompilerServices_DynamicAttribute__ctorTransformFlags) != null;
-        }
-
-        internal bool HasTupleNamesAttributes =>
-            (object)GetWellKnownTypeMember(WellKnownMember.System_Runtime_CompilerServices_TupleElementNamesAttribute__ctorTransformNames) != null;
-
-        /// <summary>
-        /// Returns whether the compilation has the Boolean type and if it's good.
-        /// </summary>
-        /// <returns>Returns true if Boolean is present and healthy.</returns>
-        internal bool CanEmitBoolean() => CanEmitSpecialType(SpecialType.System_Boolean);
-
-        internal bool CanEmitSpecialType(SpecialType type)
-        {
-            var typeSymbol = GetSpecialType(type);
-            var diagnostic = typeSymbol.GetUseSiteDiagnostic();
-            return (diagnostic == null) || (diagnostic.Severity != DiagnosticSeverity.Error);
-        }
-
         internal override AnalyzerDriver AnalyzerForLanguage(ImmutableArray<DiagnosticAnalyzer> analyzers, AnalyzerManager analyzerManager)
         {
             Func<SyntaxNode, int> getKind = node => node.RawKind;
@@ -2540,24 +2502,6 @@ namespace MetaDslx.CodeAnalysis
         internal void SymbolDeclaredEvent(Symbol symbol)
         {
             EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
-        }
-
-        /// <summary>
-        /// Determine if enum arrays can be initialized using block initialization.
-        /// </summary>
-        /// <returns>True if it's safe to use block initialization for enum arrays.</returns>
-        /// <remarks>
-        /// In NetFx 4.0, block array initializers do not work on all combinations of {32/64 X Debug/Retail} when array elements are enums.
-        /// This is fixed in 4.5 thus enabling block array initialization for a very common case.
-        /// We look for the presence of <see cref="System.Runtime.GCLatencyMode.SustainedLowLatency"/> which was introduced in .NET Framework 4.5
-        /// </remarks>
-        internal bool EnableEnumArrayBlockInitialization
-        {
-            get
-            {
-                var sustainedLowLatency = GetWellKnownTypeMember(WellKnownMember.System_Runtime_GCLatencyMode__SustainedLowLatency);
-                return sustainedLowLatency != null && sustainedLowLatency.ContainingAssembly == Assembly.CorLibrary;
-            }
         }
 
         private abstract class AbstractSymbolSearcher
