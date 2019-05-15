@@ -139,8 +139,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return false;
         }
 
-        internal abstract bool IsInNamespaceOrTypeContext(SyntaxNode node);
-        internal abstract bool IsStatement(SyntaxNode syntax);
-        internal abstract bool IsExpression(SyntaxNode node);
+        public abstract bool IsInNamespaceOrTypeContext(SyntaxNode node);
+        public abstract bool IsStatement(SyntaxNode syntax);
+        public abstract bool IsExpression(SyntaxNode node);
     }
 }

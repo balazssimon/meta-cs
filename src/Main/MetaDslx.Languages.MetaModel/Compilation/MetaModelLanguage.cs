@@ -5,6 +5,8 @@ using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using System;
 using System.Diagnostics;
+using MetaDslx.Languages.MetaModel.Symbols;
+using MetaDslx.CodeAnalysis.Symbols;
 
 namespace MetaDslx.Languages.MetaModel
 {
@@ -16,6 +18,9 @@ namespace MetaDslx.Languages.MetaModel
 
         public new MetaModelSyntaxFacts SyntaxFacts => (MetaModelSyntaxFacts)this.SyntaxFactsCore;
         protected override SyntaxFacts SyntaxFactsCore => new MetaModelSyntaxFacts();
+
+        public new MetaModelSymbolFacts SymbolFacts => (MetaModelSymbolFacts)this.SymbolFactsCore;
+        protected override SymbolFacts SymbolFactsCore => new MetaModelSymbolFacts();
 
         public new MetaModelLookupPosition LookupPosition => (MetaModelLookupPosition)this.LookupPositionCore;
         protected override LookupPosition LookupPositionCore => new MetaModelLookupPosition();

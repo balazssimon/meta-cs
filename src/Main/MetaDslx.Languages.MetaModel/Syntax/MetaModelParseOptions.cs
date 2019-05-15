@@ -21,22 +21,8 @@ namespace MetaDslx.Languages.MetaModel
         /// </summary>
         public static MetaModelParseOptions Default { get; } = new MetaModelParseOptions();
 
-        /// <summary>
-        /// Gets the effective language version, which the compiler uses to select the
-        /// language rules to apply to the program.
-        /// </summary>
-        public LanguageVersion LanguageVersion { get; private set; }
-
-        /// <summary>
-        /// Gets the specified language version, which is the value that was specified in
-        /// the call to the constructor, or modified using the <see cref="WithLanguageVersion"/> method,
-        /// or provided on the command line.
-        /// </summary>
-        public LanguageVersion SpecifiedLanguageVersion { get; private set; }
-
-
         public MetaModelParseOptions(
-            LanguageVersion languageVersion = LanguageVersion.Default,
+            LanguageVersion languageVersion = null,
             DocumentationMode documentationMode = DocumentationMode.Parse,
             SourceCodeKind kind = SourceCodeKind.Regular,
             IEnumerable<string> preprocessorSymbols = null)
@@ -54,10 +40,8 @@ namespace MetaDslx.Languages.MetaModel
             SourceCodeKind kind,
             ImmutableArray<string> preprocessorSymbols,
             IReadOnlyDictionary<string, string> features)
-            : base(documentationMode, kind, preprocessorSymbols, features)
+            : base(languageVersion, documentationMode, kind, preprocessorSymbols, features)
         {
-            this.SpecifiedLanguageVersion = languageVersion;
-            this.LanguageVersion = languageVersion.MapSpecifiedToEffectiveVersion();
         }
 
         private MetaModelParseOptions(MetaModelParseOptions other) : this(
@@ -82,15 +66,16 @@ namespace MetaDslx.Languages.MetaModel
             return new MetaModelParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
         }
 
-        public MetaModelParseOptions WithLanguageVersion(LanguageVersion version)
+        public MetaModelParseOptions WithLanguageVersion(MetaModelLanguageVersion version)
         {
             if (version == this.SpecifiedLanguageVersion)
             {
                 return this;
             }
 
-            var effectiveLanguageVersion = version.MapSpecifiedToEffectiveVersion();
-            return new MetaModelParseOptions(this) { SpecifiedLanguageVersion = version, LanguageVersion = effectiveLanguageVersion };
+            var effectiveLanguageVersion = (MetaModelLanguageVersion)version.MapSpecifiedToEffectiveVersion();
+            //return new MetaModelParseOptions(this) { SpecifiedLanguageVersion = version, LanguageVersion = effectiveLanguageVersion };
+            throw new NotImplementedException("TODO:MetaDslx");
         }
 
         public MetaModelParseOptions WithPreprocessorSymbols(IEnumerable<string> preprocessorSymbols)
@@ -203,7 +188,7 @@ namespace MetaDslx.Languages.MetaModel
         {
             return
                 Hash.Combine(base.GetHashCodeHelper(),
-                Hash.Combine((int)this.SpecifiedLanguageVersion, 0));
+                Hash.Combine(this.SpecifiedLanguageVersion.GetHashCode(), 0));
         }
     }
 }

@@ -53,6 +53,8 @@ namespace MetaDslx.CodeAnalysis
 
         internal static readonly ParallelOptions DefaultParallelOptions = new ParallelOptions();
 
+        private readonly Language _language;
+
         private readonly CSharpCompilation _csharpCompilationForReferencedModules;
 
         private readonly LanguageCompilationOptions _options;
@@ -118,9 +120,9 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         private HashSet<SyntaxTree> _lazyCompilationUnitCompletedTrees;
 
-        public new virtual Language Language => Language.None;
+        public new Language Language => this.LanguageCore;
 
-        protected override Language LanguageCore => this.Language;
+        protected override Language LanguageCore => _language;
 
         public override bool IsCaseSensitive
         {
@@ -183,6 +185,9 @@ namespace MetaDslx.CodeAnalysis
 
         #region Constructors and Factories
 
+        private static readonly LanguageCompilationOptions s_defaultOptions = new LanguageCompilationOptions(Language.None, OutputKind.ConsoleApplication);
+        private static readonly LanguageCompilationOptions s_defaultSubmissionOptions = new LanguageCompilationOptions(Language.None, OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
+
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
         /// on the returned object will allow to continue building up the Compilation incrementally.
@@ -200,7 +205,7 @@ namespace MetaDslx.CodeAnalysis
         {
             return Create(
                 assemblyName,
-                options,
+                options ?? s_defaultOptions,
                 syntaxTrees,
                 references,
                 previousSubmission: null,
@@ -226,7 +231,7 @@ namespace MetaDslx.CodeAnalysis
 
             return Create(
                 assemblyName,
-                options?.WithReferencesSupersedeLowerVersions(true),
+                options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
                 (syntaxTree != null) ? new[] { syntaxTree } : SpecializedCollections.EmptyEnumerable<SyntaxTree>(),
                 references,
                 previousScriptCompilation,
@@ -248,7 +253,7 @@ namespace MetaDslx.CodeAnalysis
             Debug.Assert(options != null);
             Debug.Assert(!isSubmission || options.ReferencesSupersedeLowerVersions);
 
-            var validatedReferences = ValidateReferences<CompilationReference>(references);
+            var validatedReferences = ValidateReferences<LanguageCompilationReference>(references);
 
             var compilation = new LanguageCompilation(
                 assemblyName,
@@ -292,6 +297,7 @@ namespace MetaDslx.CodeAnalysis
             : base(assemblyName, references, SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
         {
             _options = options;
+            _language = _options.Language;
 
             this.builtInOperators = new BuiltInOperators(this);
             _scriptClass = new Lazy<ImplicitNamedTypeSymbol>(BindScriptClass);
@@ -441,7 +447,7 @@ namespace MetaDslx.CodeAnalysis
             return new LanguageCompilation(
                 this.AssemblyName,
                 _options,
-                ValidateReferences<CompilationReference>(references),
+                ValidateReferences<LanguageCompilationReference>(references),
                 this.PreviousSubmission,
                 this.SubmissionReturnType,
                 this.HostObjectType,
@@ -485,7 +491,7 @@ namespace MetaDslx.CodeAnalysis
                         _syntaxAndDeclarations.ExternalSyntaxTrees,
                         options.ScriptClassName,
                         options.SourceReferenceResolver,
-                        options.Language,
+                        _syntaxAndDeclarations.Language,
                         _syntaxAndDeclarations.IsSubmission,
                         state: null));
         }

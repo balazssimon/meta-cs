@@ -95,5 +95,10 @@ namespace MetaDslx.CodeAnalysis
         public static InternalErrorCode ERR_MissingNetModuleReference { get; internal set; }
         public static InternalErrorCode ERR_BadSKknown { get; internal set; }
         public static InternalErrorCode ERR_InsufficientStack { get; internal set; }
+        public static InternalErrorCode ERR_NoMainOnDLL { get; internal set; }
+        public static InternalErrorCode ERR_BadCompilationOptionValue { get; internal set; }
+        public static InternalErrorCode ERR_BadPlatformType { get; internal set; }
+        public static InternalErrorCode ERR_BadModuleName { get; internal set; }
+        public static InternalErrorCode ERR_BadPrefer32OnLib { get; internal set; }
     }
 }

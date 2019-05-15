@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -165,6 +166,21 @@ namespace MetaDslx.Languages.MetaModel.Syntax
         }
 
         public override IEnumerable<int> GetContextualKeywordKinds()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsInNamespaceOrTypeContext(SyntaxNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsStatement(SyntaxNode syntax)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsExpression(SyntaxNode node)
         {
             throw new NotImplementedException();
         }

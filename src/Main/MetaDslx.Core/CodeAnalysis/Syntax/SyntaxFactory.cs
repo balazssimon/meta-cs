@@ -172,8 +172,6 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return Language.InternalSyntaxFactory.DisabledText(text);
         }
 
-        public abstract LanguageSyntaxNode GetStandaloneNode(LanguageSyntaxNode node);
-
         /// <summary>
         /// Trivia nodes represent parts of the program text that are not parts of the
         /// syntactic grammar, such as spaces, newlines, comments, preprocessor
@@ -735,6 +733,23 @@ namespace MetaDslx.CodeAnalysis.Syntax
         {
             return SyntaxEquivalence.AreEquivalent(oldList.Node, newList.Node, ignoreChildNode, topLevel: false);
         }
+
+        /// <summary>
+        /// Gets the containing expression that is actually a language expression (or something that
+        /// GetSymbolInfo can be applied to) and not just typed
+        /// as an ExpressionSyntax for convenience. For example, NameSyntax nodes on the right side
+        /// of qualified names and member access expressions are not language expressions, yet the
+        /// containing qualified names or member access expressions are indeed expressions.
+        /// Similarly, if the input node is a cref part that is not independently meaningful, then
+        /// the result will be the full cref. Besides an expression, an input that is a NameSyntax
+        /// of a SubpatternSyntax, e.g. in `name: 3` may cause this method to return the enclosing
+        /// SubpatternSyntax.
+        /// </summary>
+        public virtual LanguageSyntaxNode GetStandaloneNode(LanguageSyntaxNode node)
+        {
+            return node;
+        }
+
 
         /// <summary>
         /// Determines whether the given text is considered a syntactically complete submission.
