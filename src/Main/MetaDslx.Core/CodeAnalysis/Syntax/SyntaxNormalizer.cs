@@ -83,7 +83,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public override SyntaxToken VisitToken(SyntaxToken token)
         {
-            if (token.RawKind == SyntaxKind.None || (token.IsMissing && token.FullWidth == 0))
+            if (token.GetKind() == SyntaxKind.None || (token.IsMissing && token.FullWidth == 0))
             {
                 return token;
             }
@@ -130,8 +130,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
         {
             // get next token, skipping zero width tokens except for end-of-directive tokens
             var nextToken = token.GetNextToken(
-                t => SyntaxToken.NonZeroWidth(t) || t.RawKind == SyntaxKind.EndOfDirectiveToken,
-                t => t.RawKind == SyntaxKind.SkippedTokensTrivia);
+                t => SyntaxToken.NonZeroWidth(t) || t.GetKind() == SyntaxKind.EndOfDirectiveToken,
+                t => t.GetKind() == SyntaxKind.SkippedTokensTrivia);
 
             if (_consideredSpan.Contains(nextToken.FullSpan))
             {
@@ -171,17 +171,17 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         protected virtual bool NeedsIndentAfterLineBreak(SyntaxToken token)
         {
-            return token.RawKind != SyntaxKind.Eof;
+            return token.GetKind() != SyntaxKind.Eof;
         }
 
         protected virtual int LineBreaksAfter(SyntaxToken currentToken, SyntaxToken nextToken)
         {
-            if (currentToken.RawKind == SyntaxKind.EndOfDirectiveToken)
+            if (currentToken.GetKind() == SyntaxKind.EndOfDirectiveToken)
             {
                 return 1;
             }
 
-            if (nextToken.RawKind == SyntaxKind.None)
+            if (nextToken.GetKind() == SyntaxKind.None)
             {
                 return 0;
             }
@@ -202,14 +202,14 @@ namespace MetaDslx.CodeAnalysis.Syntax
                 return false;
             }
 
-            if (next.RawKind == SyntaxKind.EndOfDirectiveToken)
+            if (next.GetKind() == SyntaxKind.EndOfDirectiveToken)
             {
                 // In a directive, there's often no token between the directive keyword and 
                 // the end-of-directive, so we may need a separator.
-                return Language.SyntaxFacts.IsKeyword(token.RawKind) && next.LeadingWidth > 0;
+                return Language.SyntaxFacts.IsKeyword(token.GetKind()) && next.LeadingWidth > 0;
             }
 
-            if (IsWord(token.RawKind) && IsWord(next.RawKind))
+            if (IsWord(token.GetKind()) && IsWord(next.GetKind()))
             {
                 return true;
             }
@@ -239,8 +239,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
             {
                 foreach (var trivia in triviaList)
                 {
-                    if (trivia.RawKind == SyntaxKind.DefaultWhitespace ||
-                        trivia.RawKind == SyntaxKind.DefaultEndOfLine ||
+                    if (trivia.GetKind() == SyntaxKind.DefaultWhitespace ||
+                        trivia.GetKind() == SyntaxKind.DefaultEndOfLine ||
                         trivia.FullWidth == 0)
                     {
                         continue;
@@ -368,13 +368,13 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         protected virtual bool NeedsSeparatorBetween(SyntaxTrivia trivia)
         {
-            switch (trivia.RawKind)
+            switch (trivia.GetKind().Switch())
             {
                 case SyntaxKind.None:
                 case SyntaxKind.DefaultWhitespace:
                     return false;
                 default:
-                    return !Language.SyntaxFacts.IsPreprocessorDirective(trivia.RawKind);
+                    return !Language.SyntaxFacts.IsPreprocessorDirective(trivia.GetKind());
             }
         }
 
@@ -386,39 +386,39 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         protected virtual bool NeedsLineBreakBefore(SyntaxTrivia trivia, bool isTrailingTrivia)
         {
-            var kind = trivia.RawKind;
+            var kind = trivia.GetKind();
             return Language.SyntaxFacts.IsPreprocessorDirective(kind);
         }
 
         protected virtual bool NeedsLineBreakAfter(SyntaxTrivia trivia, bool isTrailingTrivia)
         {
-            var kind = trivia.RawKind;
+            var kind = trivia.GetKind();
             return Language.SyntaxFacts.IsPreprocessorDirective(kind);
         }
 
         protected virtual bool NeedsIndentAfterLineBreak(SyntaxTrivia trivia)
         {
-            var kind = trivia.RawKind;
+            var kind = trivia.GetKind();
             return Language.SyntaxFacts.IsCommentTrivia(kind);
         }
 
         protected virtual bool IsLineBreak(SyntaxToken token)
         {
-            return token.RawKind == SyntaxKind.DefaultEndOfLine;
+            return token.GetKind() == SyntaxKind.DefaultEndOfLine;
         }
 
         protected virtual bool EndsInLineBreak(SyntaxTrivia trivia)
         {
-            if (trivia.RawKind == SyntaxKind.DefaultEndOfLine) return true;
-            return Language.SyntaxFacts.IsTriviaWithEndOfLine(trivia.RawKind);
+            if (trivia.GetKind() == SyntaxKind.DefaultEndOfLine) return true;
+            return Language.SyntaxFacts.IsTriviaWithEndOfLine(trivia.GetKind());
         }
 
-        protected virtual bool IsWord(int kind)
+        protected virtual bool IsWord(SyntaxKind kind)
         {
             return kind == SyntaxKind.DefaultIdentifier || IsKeyword(kind);
         }
 
-        protected virtual bool IsKeyword(int kind)
+        protected virtual bool IsKeyword(SyntaxKind kind)
         {
             return Language.SyntaxFacts.IsKeyword(kind) || Language.SyntaxFacts.IsPreprocessorKeyword(kind);
         }

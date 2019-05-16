@@ -1872,16 +1872,16 @@ namespace MetaDslx.CodeAnalysis
         private void RecordImport(LanguageSyntaxNode syntax)
         {
             LazyInitializer.EnsureInitialized(ref _lazyImportInfos).
-                Add(new ImportInfo(syntax.SyntaxTree, syntax.RawKind, syntax.Span));
+                Add(new ImportInfo(syntax.SyntaxTree, syntax.Kind, syntax.Span));
         }
 
         private struct ImportInfo : IEquatable<ImportInfo>
         {
             public readonly SyntaxTree Tree;
-            public readonly int Kind;
+            public readonly SyntaxKind Kind;
             public readonly TextSpan Span;
 
-            public ImportInfo(SyntaxTree tree, int kind, TextSpan span)
+            public ImportInfo(SyntaxTree tree, SyntaxKind kind, TextSpan span)
             {
                 this.Tree = tree;
                 this.Kind = kind;
@@ -2501,7 +2501,7 @@ namespace MetaDslx.CodeAnalysis
         internal override AnalyzerDriver AnalyzerForLanguage(ImmutableArray<DiagnosticAnalyzer> analyzers, AnalyzerManager analyzerManager)
         {
             Func<SyntaxNode, int> getKind = node => node.RawKind;
-            Func<SyntaxTrivia, bool> isComment = trivia => Language.SyntaxFacts.IsCommentTrivia(trivia.RawKind);
+            Func<SyntaxTrivia, bool> isComment = trivia => Language.SyntaxFacts.IsCommentTrivia(trivia.GetKind());
             return new AnalyzerDriver<int>(analyzers, getKind, analyzerManager, isComment);
         }
 

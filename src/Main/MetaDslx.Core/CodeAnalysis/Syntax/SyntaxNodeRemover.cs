@@ -124,7 +124,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
             private static bool IsEndOfLine(SyntaxTrivia trivia)
             {
                 var green = (InternalSyntax.InternalSyntaxTrivia)trivia.UnderlyingNode;
-                return green.Language.SyntaxFacts.IsTriviaWithEndOfLine(trivia.RawKind);
+                return green.Language.SyntaxFacts.IsTriviaWithEndOfLine(trivia.GetKind());
             }
 
             /// <summary>
@@ -134,7 +134,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
             {
                 foreach (var trivia in list)
                 {
-                    if (trivia.RawKind == SyntaxKind.DefaultEndOfLine)
+                    if (trivia.GetKind() == SyntaxKind.DefaultEndOfLine)
                     {
                         return trivia;
                     }
@@ -189,7 +189,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
                 }
 
                 // the next token gets the accrued trivia.
-                if (result.RawKind != SyntaxKind.None && _residualTrivia != null && _residualTrivia.Count > 0)
+                if (result.GetKind() != SyntaxKind.None && _residualTrivia != null && _residualTrivia.Count > 0)
                 {
                     _residualTrivia.Add(result.LeadingTrivia);
                     result = result.WithLeadingTrivia(_residualTrivia.ToList());
@@ -236,7 +236,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
                             }
 
                             CommonSyntaxNodeRemover.GetSeparatorInfo(
-                                withSeps, i, SyntaxKind.DefaultEndOfLine,
+                                withSeps, i, ((SyntaxKind)SyntaxKind.DefaultEndOfLine).GetValue(),
                                 out bool nextTokenIsSeparator, out bool nextSeparatorBelongsToNode);
 
                             if (!nextSeparatorBelongsToNode &&
@@ -272,7 +272,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
                         alternate.Add(withSeps, 0, i);
                     }
 
-                    if (alternate != null && visited.RawKind != SyntaxKind.None)
+                    if (alternate != null && visited.GetKind() != SyntaxKind.None)
                     {
                         alternate.Add(visited);
                     }

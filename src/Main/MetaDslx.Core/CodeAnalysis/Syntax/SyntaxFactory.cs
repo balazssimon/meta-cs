@@ -186,7 +186,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// <param name="text">
         /// The actual text of this token.
         /// </param>
-        public virtual SyntaxTrivia SyntaxTrivia(int kind, string text)
+        public virtual SyntaxTrivia SyntaxTrivia(SyntaxKind kind, string text)
         {
             if (text == null)
             {
@@ -205,7 +205,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// </summary>
         /// <param name="kind">A syntax kind value for a token. These have the suffix Token or Keyword.</param>
         /// <returns></returns>
-        public virtual SyntaxToken Token(int kind)
+        public virtual SyntaxToken Token(SyntaxKind kind)
         {
             return new SyntaxToken(Language.InternalSyntaxFactory.Token(ElasticMarker.UnderlyingNode, kind, ElasticMarker.UnderlyingNode));
         }
@@ -217,7 +217,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// <param name="leading">A list of trivia immediately preceding the token.</param>
         /// <param name="kind">A syntax kind value for a token. These have the suffix Token or Keyword.</param>
         /// <param name="trailing">A list of trivia immediately following the token.</param>
-        public virtual SyntaxToken Token(SyntaxTriviaList leading, int kind, SyntaxTriviaList trailing)
+        public virtual SyntaxToken Token(SyntaxTriviaList leading, SyntaxKind kind, SyntaxTriviaList trailing)
         {
             return new SyntaxToken(Language.InternalSyntaxFactory.Token(leading.Node, kind, trailing.Node));
         }
@@ -234,7 +234,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// <param name="text">The text from which this token was created (e.g. lexed).</param>
         /// <param name="valueText">How C# should interpret the text of this token.</param>
         /// <param name="trailing">A list of trivia immediately following the token.</param>
-        public virtual SyntaxToken Token(SyntaxTriviaList leading, int kind, string text, string valueText, SyntaxTriviaList trailing)
+        public virtual SyntaxToken Token(SyntaxTriviaList leading, SyntaxKind kind, string text, string valueText, SyntaxTriviaList trailing)
         {
             return new SyntaxToken(Language.InternalSyntaxFactory.Token(leading.Node, kind, text, valueText, trailing.Node));
         }
@@ -244,7 +244,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// expected token is not found. A missing token has no text and normally has associated diagnostics.
         /// </summary>
         /// <param name="kind">A syntax kind value for a token. These have the suffix Token or Keyword.</param>
-        public virtual SyntaxToken MissingToken(int kind)
+        public virtual SyntaxToken MissingToken(SyntaxKind kind)
         {
             return new SyntaxToken(Language.InternalSyntaxFactory.MissingToken(ElasticMarker.UnderlyingNode, kind, ElasticMarker.UnderlyingNode));
         }
@@ -256,7 +256,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// <param name="leading">A list of trivia immediately preceding the token.</param>
         /// <param name="kind">A syntax kind value for a token. These have the suffix Token or Keyword.</param>
         /// <param name="trailing">A list of trivia immediately following the token.</param>
-        public virtual SyntaxToken MissingToken(SyntaxTriviaList leading, int kind, SyntaxTriviaList trailing)
+        public virtual SyntaxToken MissingToken(SyntaxTriviaList leading, SyntaxKind kind, SyntaxTriviaList trailing)
         {
             return new SyntaxToken(Language.InternalSyntaxFactory.MissingToken(leading.Node, kind, trailing.Node));
         }
@@ -272,7 +272,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// <param name="valueText">The text of the identifier name without escapes or leading '@' character.</param>
         /// <param name="trailing">A list of trivia immediately following the token.</param>
         /// <returns></returns>
-        public virtual SyntaxToken Identifier(SyntaxTriviaList leading, int contextualKind, string text, string valueText, SyntaxTriviaList trailing)
+        public virtual SyntaxToken Identifier(SyntaxTriviaList leading, SyntaxKind contextualKind, string text, string valueText, SyntaxTriviaList trailing)
         {
             return new SyntaxToken(Language.InternalSyntaxFactory.Token(leading.Node, contextualKind, text, valueText, trailing.Node));
         }

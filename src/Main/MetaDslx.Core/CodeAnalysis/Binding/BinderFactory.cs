@@ -108,7 +108,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // Unless this is interactive retrieving a binder for global statements
             // at the very top-level (i.e. in a completely empty file) use
             // node.Parent to maintain existing behavior.
-            if ((!InScript || node.RawKind != SyntaxKind.CompilationUnit) && node.Parent != null)
+            if ((!InScript || node.GetKind() != SyntaxKind.CompilationUnit) && node.Parent != null)
             {
                 node = node.Parent;
             }

@@ -292,7 +292,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 if (location.IsInSource)
                 {
                     SyntaxToken token = (SyntaxToken)location.SourceTree.GetRoot().FindToken(location.SourceSpan.Start);
-                    if (token.RawKind != SyntaxKind.None)
+                    if (token.GetKind() != SyntaxKind.None)
                     {
                         LanguageSyntaxNode node = token.Parent.FirstAncestorOrSelf<TNode>();
                         if (node != null)

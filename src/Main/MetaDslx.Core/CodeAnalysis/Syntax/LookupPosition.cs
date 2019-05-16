@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         protected bool IsBeforeToken(int position, SyntaxToken firstExcluded)
         {
-            return firstExcluded.RawKind == SyntaxKind.None || position < firstExcluded.SpanStart;
+            return firstExcluded.GetKind() == SyntaxKind.None || position < firstExcluded.SpanStart;
         }
     }
 }

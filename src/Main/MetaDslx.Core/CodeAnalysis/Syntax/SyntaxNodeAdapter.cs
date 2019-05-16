@@ -29,5 +29,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
         }
 
         protected abstract Language LanguageCore { get; }
+
+        public SyntaxKind Kind => ((GreenNodeAdapter)this.Green).Kind;
+
+
     }
 }

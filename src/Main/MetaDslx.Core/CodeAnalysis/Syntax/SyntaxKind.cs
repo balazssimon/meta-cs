@@ -1,24 +1,50 @@
-﻿using System;
+﻿using Roslyn.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Syntax
 {
-    public class SyntaxKind
+    public class SyntaxKind : EnumObject
     {
-        public const int None = 0;
-        public const int Eof = -1;
-        public const int List = -2;
-        public const int BadToken = -3;
-        public const int SkippedTokensTrivia = -4;
-        public const int DisabledTextTrivia = -5;
-        public const int ConflictMarkerTrivia = -6;
-        public const int DefaultWhitespace = -7;
-        public const int DefaultEndOfLine = -8;
-        public const int DefaultSeparator = -9;
-        public const int DefaultIdentifier = -10;
-        public const int EndOfDirectiveToken = -11;
-        public const int CompilationUnit = -12;
-        public const int ExternAliasDirective = -13;
+        private int _value;
+
+        public const string None = nameof(None);
+        public const string Eof = nameof(Eof);
+        public const string List = nameof(List);
+        public const string BadToken = nameof(BadToken);
+        public const string SkippedTokensTrivia = nameof(SkippedTokensTrivia);
+        public const string DisabledTextTrivia = nameof(DisabledTextTrivia);
+        public const string ConflictMarkerTrivia = nameof(ConflictMarkerTrivia);
+        public const string DefaultWhitespace = nameof(DefaultWhitespace);
+        public const string DefaultEndOfLine = nameof(DefaultEndOfLine);
+        public const string DefaultSeparator = nameof(DefaultSeparator);
+        public const string DefaultIdentifier = nameof(DefaultIdentifier);
+        public const string EndOfDirectiveToken = nameof(EndOfDirectiveToken);
+        public const string CompilationUnit = nameof(CompilationUnit);
+        public const string ExternAliasDirective = nameof(ExternAliasDirective);
+
+        protected SyntaxKind(string name)
+            : base(name)
+        {
+        }
+
+        protected SyntaxKind(EnumObject retargetedValue)
+            : base(retargetedValue)
+        {
+        }
+
+        static SyntaxKind()
+        {
+            EnumObject.AutoInit<SyntaxKind>();
+        }
+
+        public static implicit operator SyntaxKind(string name)
+        {
+            return FromString<SyntaxKind>(name);
+        }
+
+        public new static IEnumerable<EnumObject> EnumValues => EnumObject.EnumValues(typeof(SyntaxKind));
+
     }
 }

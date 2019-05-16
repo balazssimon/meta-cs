@@ -57,6 +57,10 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected abstract Language LanguageCore { get; }
 
+        public SyntaxKind Kind => EnumObject.FromIntUnsafe<SyntaxKind>(this.RawKind);
+
+        public override string KindText => Kind.GetName();
+
         internal protected new virtual void WriteTo(ObjectWriter writer)
         {
             base.WriteTo(writer);

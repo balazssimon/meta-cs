@@ -51,7 +51,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
                 if (alternate != null)
                 {
-                    Debug.Assert(visited != null && visited.RawKind != SyntaxKind.None, "Cannot remove node using Syntax.InternalSyntax.SyntaxRewriter.");
+                    Debug.Assert(visited != null && visited.GetKind() != SyntaxKind.None, "Cannot remove node using Syntax.InternalSyntax.SyntaxRewriter.");
                     alternate.Add(visited);
                 }
             }

@@ -27,55 +27,100 @@ namespace Roslyn.Utilities
 
         protected EnumObject(EnumObject retargetedValue)
         {
-            _name = retargetedValue._name;
-            _value = retargetedValue._value;
+            Debug.Assert(retargetedValue._name != null || retargetedValue._value != 0);
+            if (retargetedValue._name == null)
+            {
+                var descriptor = GetDescriptor(this.GetType());
+                _name = descriptor?.GetName(retargetedValue._value);
+            }
+            else
+            {
+                _name = retargetedValue._name;
+            }
+            if (retargetedValue._value == 0)
+            {
+                var descriptor = GetDescriptor(this.GetType());
+                _value = descriptor?.GetValue(retargetedValue._name)?._value ?? default;
+            }
+            else
+            {
+                _value = retargetedValue._value;
+            }
         }
 
-        public string Name => _name;
-
-        public int Value => _value;
-
-        public static IEnumerable<EnumObject> EnumValues(Type enumType)
+        private EnumObject(string name, int value)
         {
-            if (_descriptors.TryGetValue(enumType, out EnumObjectDescriptor descriptor))
+            _name = name;
+            _value = value;
+        }
+
+        public string Switch()
+        {
+            return this.GetName();
+        }
+
+        public string GetName()
+        {
+            if (_name != null)
             {
-                return descriptor.AllValues;
+                return _name;
             }
-            return emptyEnumObjectArray;
+            else
+            {
+                var descriptor = GetDescriptor(this.GetType());
+                return descriptor.GetName(_value);
+            }
         }
 
         public static bool TryParse<T>(string name, out T enumValue)
-            where T: EnumObject
+            where T : EnumObject
         {
-            Type enumType = typeof(T);
-            if (_descriptors.TryGetValue(enumType, out EnumObjectDescriptor descriptor))
+            var descriptor = GetDescriptor(typeof(T));
+            if (descriptor.TryGetValue(name, out var result))
             {
-                EnumObject result = descriptor.AllValues.FirstOrDefault(v => v._name == name);
-                if ((object)result != null)
-                {
-                    enumValue = (T)result;
-                    return true;
-                }
+                enumValue = (T)result;
+                return true;
             }
-            enumValue = null;
-            return false;
+            else
+            {
+                enumValue = null;
+                return false;
+            }
+        }
+
+        public int GetValue()
+        {
+            if (_value != 0)
+            {
+                return _value;
+            }
+            else
+            {
+                var descriptor = GetDescriptor(this.GetType());
+                return descriptor.GetValue(_name)?._value ?? 0;
+            }
         }
 
         public static bool TryGetValue<T>(int value, out T enumValue)
             where T : EnumObject
         {
-            Type enumType = typeof(T);
-            if (_descriptors.TryGetValue(enumType, out EnumObjectDescriptor descriptor))
+            var descriptor = GetDescriptor(typeof(T));
+            if (descriptor.TryGetValue(value, out var result))
             {
-                EnumObject result = descriptor.AllValues.FirstOrDefault(v => v._value == value);
-                if ((object)result != null)
-                {
-                    enumValue = (T)result;
-                    return true;
-                }
+                enumValue = (T)result;
+                return true;
             }
-            enumValue = null;
-            return false;
+            else
+            {
+                enumValue = null;
+                return false;
+            }
+        }
+
+        public static IEnumerable<EnumObject> EnumValues(Type enumType)
+        {
+            var descriptor = GetDescriptor(enumType);
+            return descriptor.AllEnumValues;
         }
 
         public override bool Equals(object obj)
@@ -86,11 +131,12 @@ namespace Roslyn.Utilities
         public bool Equals(EnumObject other)
         {
             if ((object)other == null) return false;
+            if (_value == 0) return other._value == 0;
             if (!other.IsAssignableFrom(this.GetType())) return false;
-            return other._value == _value;
+            return _name == other._name;
         }
-        /*
-        public static bool operator==(EnumObject left, EnumObject right)
+        
+        public static bool operator ==(EnumObject left, EnumObject right)
         {
             if ((object)left == null) return (object)right == null;
             return left.Equals(right);
@@ -101,45 +147,54 @@ namespace Roslyn.Utilities
             if ((object)left == null) return (object)right != null;
             return !left.Equals(right);
         }
-        */
+
         public static bool operator ==(EnumObject left, string right)
         {
             if ((object)left == null) return (object)right == null;
-            return left.Name == right;
+            var descriptor = GetDescriptor(left.GetType());
+            return descriptor.TryGetValue(right, out EnumObject rightValue) && left._value == rightValue._value;
         }
 
         public static bool operator !=(EnumObject left, string right)
         {
             if ((object)left == null) return (object)right != null;
-            return left.Name != right;
+            var descriptor = GetDescriptor(left.GetType());
+            return !descriptor.TryGetValue(right, out EnumObject rightValue) || left._value != rightValue._value;
         }
 
         public static bool operator ==(EnumObject left, int right)
         {
             if ((object)left == null) return (object)right == null;
-            return left.Value == right;
+            var descriptor = GetDescriptor(left.GetType());
+            return descriptor.TryGetValue(right, out EnumObject rightValue) && left._value == rightValue._value;
         }
 
         public static bool operator !=(EnumObject left, int right)
         {
             if ((object)left == null) return (object)right != null;
-            return left.Value != right;
+            var descriptor = GetDescriptor(left.GetType());
+            return !descriptor.TryGetValue(right, out EnumObject rightValue) || left._value != rightValue._value;
         }
-        
+
         public static implicit operator EnumObject(string name)
         {
             if (EnumObject.TryParse<EnumObject>(name, out var result)) return result;
             else return null;
         }
 
-        public static implicit operator string(EnumObject value)
+        public static explicit operator int(EnumObject value)
         {
-            return value.Name;
+            return value.GetValue();
         }
-        
+
+        public static explicit operator string(EnumObject value)
+        {
+            return value.GetName();
+        }
+
         public override int GetHashCode()
         {
-            return _value.GetHashCode();
+            return Hash.Combine(_name.GetHashCode(), _value.GetHashCode());
         }
 
         public bool IsDescendantOf(Type type)
@@ -173,89 +228,165 @@ namespace Roslyn.Utilities
             return false;
         }
 
-        protected static void Init<T>()
+        protected static void AutoInit<T>()
             where T : EnumObject
         {
-            _descriptors.Add(typeof(T), new EnumObjectDescriptor(typeof(T)));
+            var descriptor = EnsureInit<T>();
+            Debug.Assert(!descriptor.IsClosed);
+            Type type = typeof(T);
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+            HashSet<string> autoNames = new HashSet<string>();
+            foreach (var field in fields)
+            {
+                if (field.FieldType == typeof(string) && field.IsLiteral)
+                {
+                    var name = (string)field.GetValue(null);
+                    if (name != field.Name)
+                    {
+                        if (!descriptor.IsAlias(name)) throw new InvalidOperationException($"Name of the field {type}.{field.Name} is different than it's value '{name}'. If you want to create an alias, use RegisterAlias() in the static initializer.");
+                        else continue;
+                    }
+                    if (autoNames.Contains(name))
+                    {
+                        throw new InvalidOperationException($"Duplicate enum literal '{name}' in {type} registered by the field {type}.{field.Name}. If you want to create an alias, use RegisterAlias() in the static initializer.");
+                    }
+                    descriptor.RegisterUniqueValue(name);
+                    autoNames.Add(name);
+                }
+            }
+            Close<T>();
         }
 
-        protected static void Register<T>(string name)
-            where T: EnumObject
+        private static EnumObjectDescriptor EnsureInit<T>()
+            where T : EnumObject
         {
             if (_descriptors.TryGetValue(typeof(T), out EnumObjectDescriptor descriptor))
             {
-                descriptor.RegisterValue(name);
-                return;
+                return descriptor;
             }
-            Debug.Assert(false, "EnumObject was not initialized.");
+            else
+            {
+                descriptor = new EnumObjectDescriptor(typeof(T));
+                _descriptors.Add(typeof(T), descriptor);
+                return descriptor;
+            }
+        }
+
+        protected static void RegisterAlias<T>(string name)
+            where T : EnumObject
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            var descriptor = EnsureInit<T>();
+            Debug.Assert(!descriptor.IsClosed);
+            descriptor.RegisterAlias(name);
         }
 
         protected static void Close<T>()
             where T : EnumObject
         {
-            if (_descriptors.TryGetValue(typeof(T), out EnumObjectDescriptor descriptor))
-            {
-                descriptor.Close();
-                return;
-            }
-            Debug.Assert(false, "EnumObject was not initialized.");
+            var descriptor = EnsureInit<T>();
+            Debug.Assert(!descriptor.IsClosed);
+            descriptor.Close();
         }
 
         public T As<T>()
-            where T: EnumObject
+            where T : EnumObject
         {
-            if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException(typeof(T) + " is not assignable from "+ this.GetType() + ".");
-            if (_descriptors.TryGetValue(typeof(T), out EnumObjectDescriptor descriptor))
-            {
-                return (T)descriptor.GetValue(_value);
-            }
-            throw new InvalidOperationException(typeof(T) + " does not define a retargeting constructor.");
+            if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException($"{typeof(T)} is not assignable from {this.GetType()}.");
+            var descriptor = GetDescriptor(typeof(T));
+            if (descriptor.TryGetValue(_name, out EnumObject result)) return (T)result;
+            else throw new InvalidOperationException($"{typeof(T)} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
         }
 
         public T Cast<T>()
             where T : EnumObject
         {
             if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException(typeof(T) + " is not assignable from " + this.GetType() + ".");
-            if (_descriptors.TryGetValue(this.GetType(), out EnumObjectDescriptor descriptor))
-            {
-                return (T)descriptor.GetValue(_value);
-            }
-            throw new InvalidOperationException(typeof(T) + " does not define a retargeting constructor.");
+            var descriptor = GetDescriptor(this.GetType());
+            if (descriptor.TryGetValue(_name, out EnumObject result)) return (T)result;
+            else throw new InvalidOperationException($"{typeof(T)} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
         }
 
-        public static T ByValue<T>(int intValue)
-            where T: EnumObject
+        public static T ByValue<T>(int value)
+            where T : EnumObject
         {
-            foreach (var value in EnumValues(typeof(T)))
-            {
-                if (value.Value == intValue) return value.As<T>();
-            }
+            if (value < 1) return null;
+            Type enumType = typeof(T);
+            var descriptor = GetDescriptor(typeof(T));
+            if (descriptor.TryGetValue(value, out EnumObject result)) return (T)result;
             return null;
         }
 
         public static T ByName<T>(string name)
             where T : EnumObject
         {
-            foreach (var value in EnumValues(typeof(T)))
-            {
-                if (value.Name == name) return value.As<T>();
-            }
+            if (name == null) return null;
+            Type enumType = typeof(T);
+            var descriptor = GetDescriptor(typeof(T));
+            if (descriptor.TryGetValue(name, out EnumObject result)) return (T)result;
             return null;
+        }
+
+        public static T FromString<T>(string name)
+            where T : EnumObject
+        {
+            return ByName<T>(name) ?? throw new ArgumentException($"Enum literal '{name}' does not exist in {typeof(T)}.", nameof(name));
+        }
+
+        public static T FromInt<T>(int value)
+            where T : EnumObject
+        {
+            return ByValue<T>(value) ?? throw new ArgumentException($"Enum literal of value '{value}' does not exist in {typeof(T)}.", nameof(value));
+        }
+
+        public static T FromIntUnsafe<T>(int value)
+            where T : EnumObject
+        {
+            T result = ByValue<T>(value);
+            if ((object)result != null) return result;
+            var descriptor = GetDescriptor(typeof(T));
+            return (T)descriptor.CreateValue(new EnumObject(null, value));
+        }
+
+        internal static EnumObjectDescriptor GetDescriptor(Type type)
+        {
+            EnumObjectDescriptor descriptor;
+            if (_descriptors.TryGetValue(type, out descriptor))
+            {
+                return descriptor;
+            }
+            RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+            if (_descriptors.TryGetValue(type, out descriptor))
+            {
+                return descriptor;
+            }
+            throw new ArgumentException("Invalid EnumObject type: " + type);
+        }
+
+        private EnumObject CreateValue(Type type, int value)
+        {
+            var descriptor = GetDescriptor(type);
+            return descriptor.GetValue(value);
         }
 
         public override string ToString()
         {
-            return _name;
+            return this.GetName();
         }
 
-        private class EnumObjectDescriptor
+        internal class EnumObjectDescriptor
         {
+            public static readonly EnumObjectDescriptor Root = CreateRoot();
+
             private Type _type;
             private List<EnumObjectDescriptor> _baseDescriptors;
             private int _maxValue;
             private bool _closed;
+            private HashSet<string> _aliases = new HashSet<string>();
             private List<EnumObject> _values = new List<EnumObject>();
-            private EnumObject[] _cachedValues;
+            private List<string> _lazyValues = new List<string>();
+            private EnumObject[] _cachedByValue;
+            private Dictionary<string, EnumObject> _cachedByName = new Dictionary<string, EnumObject>();
 
             public EnumObjectDescriptor(Type type)
             {
@@ -265,6 +396,7 @@ namespace Roslyn.Utilities
                 Type baseType = type.BaseType;
                 if (baseType != null && baseType != typeof(EnumObject))
                 {
+                    RuntimeHelpers.RunClassConstructor(baseType.TypeHandle);
                     if (_descriptors.TryGetValue(baseType, out EnumObjectDescriptor baseDescriptor))
                     {
                         Debug.Assert(baseDescriptor._closed, baseType + " is not closed.");
@@ -279,12 +411,20 @@ namespace Roslyn.Utilities
                 }
             }
 
-            public EnumObjectDescriptor(Type type, int value, EnumObjectDescriptor directBaseDescriptor = null, IEnumerable<EnumObjectDescriptor> indirectBaseDescriptors = null)
+            private EnumObjectDescriptor()
             {
-                _type = type;
-                _baseDescriptors = indirectBaseDescriptors == null ? new List<EnumObjectDescriptor>() : new List<EnumObjectDescriptor>(indirectBaseDescriptors);
-                if (directBaseDescriptor != null) _baseDescriptors.Add(directBaseDescriptor);
-                _maxValue = value;
+                _type = typeof(EnumObject);
+                _baseDescriptors = new List<EnumObjectDescriptor>();
+                _maxValue = 0;
+                _cachedByValue = new EnumObject[0];
+                _closed = true;
+            }
+
+            private static EnumObjectDescriptor CreateRoot()
+            {
+                EnumObjectDescriptor result = new EnumObjectDescriptor();
+                _descriptors.Add(typeof(EnumObject), result);
+                return result;
             }
 
             public Type Type => _type;
@@ -294,37 +434,151 @@ namespace Roslyn.Utilities
 
             public void Close()
             {
-                _closed = true;
-                _cachedValues = new EnumObject[_maxValue];
+                if (_lazyValues != null)
+                {
+                    foreach (var lazy in _lazyValues)
+                    {
+                        if ((object)_cachedByName[lazy] == null)
+                        {
+                            var value = CreateValue(lazy);
+                            _values.Add(value);
+                            _cachedByName[lazy] = value;
+                        }
+                    }
+                }
+                _cachedByValue = new EnumObject[_maxValue];
                 int valuesCount = _values.Count;
                 for (int i = valuesCount - 1; i >= 0; i--)
                 {
-                    _cachedValues[_maxValue - valuesCount + i] = _values[i];
+                    _cachedByValue[_maxValue - valuesCount + i] = _values[i];
                 }
-                for (int i = 0; i < _maxValue - valuesCount; i++)
+                var baseDescriptor = this.BaseDescriptor;
+                if (baseDescriptor != null)
                 {
-                    _cachedValues[i] = CreateValue(this.BaseDescriptor.GetValue(i + 1));
+                    var baseValuesByName = baseDescriptor._cachedByName;
+                    foreach (var entry in baseValuesByName)
+                    {
+                        var name = entry.Key;
+                        var value = CreateValue(entry.Value);
+                        if (!_cachedByName.ContainsKey(name)) _cachedByName.Add(name, value);
+                        else throw new InvalidOperationException($"Enum literal '{name}' is registered multiple times in {_type}.");
+                    }
+                    var baseValues = baseDescriptor._cachedByValue;
+                    for (int i = 0; i < baseValues.Length; i++)
+                    {
+                        _cachedByValue[i] = _cachedByName[baseValues[i]._name];
+                    }
+                }
+                _closed = true;
+            }
+
+            public bool TryGetValue(int value, out EnumObject enumObject)
+            {
+                enumObject = null;
+                if (value < 1 || value > _maxValue) return false;
+                if (_closed)
+                {
+                    enumObject = _cachedByValue[value - 1];
+                    return true;
+                }
+                else
+                {
+                    int valuesCount = _values.Count;
+                    if (value >= _maxValue - valuesCount + 1)
+                    {
+                        enumObject = _values[value - 1];
+                        return true;
+                    }
+                    else
+                    {
+                        enumObject = this.BaseDescriptor?.GetValue(value);
+                        return enumObject != null;
+                    }
                 }
             }
 
             public EnumObject GetValue(int value)
             {
-                if (value < 1 || value > _maxValue) throw new ArgumentOutOfRangeException(nameof(value));
+                if (TryGetValue(value, out EnumObject result)) return result;
+                else throw new ArgumentOutOfRangeException(nameof(value));
+            }
+
+            public bool TryGetValue(string name, out EnumObject enumObject)
+            {
+                enumObject = null;
+                if (name == null) return false;
                 if (_closed)
                 {
-                    return _cachedValues[value - 1];
+                    return _cachedByName.TryGetValue(name, out enumObject);
+                }
+                else
+                {
+                    foreach (var value in _values)
+                    {
+                        if (value._name == name)
+                        {
+                            enumObject = value;
+                            return true;
+                        }
+                    }
+                    enumObject = this.BaseDescriptor?.GetValue(name);
+                    return enumObject != null;
+                }
+            }
+
+            public EnumObject GetValue(string name)
+            {
+                if (name == null) throw new ArgumentNullException(nameof(name));
+                if (TryGetValue(name, out EnumObject result)) return result;
+                else throw new ArgumentException($"Enum value '{name}' does not exist in {_type}.", nameof(name));
+            }
+
+            public bool TryGetName(int value, out string name)
+            {
+                name = null;
+                if (value < 1 || value > _maxValue) return false;
+                if (_closed)
+                {
+                    name = _cachedByValue[value - 1]._name;
+                    return true;
                 }
                 else
                 {
                     int valuesCount = _values.Count;
-                    if (value >= _maxValue - valuesCount + 1) return _values[value - 1];
-                    else return this.BaseDescriptor?.GetValue(value);
+                    if (value >= _maxValue - valuesCount + 1)
+                    {
+                        name = _values[value - 1]._name;
+                        return true;
+                    }
+                    else
+                    {
+                        name = this.BaseDescriptor?.GetName(value);
+                        return name != null;
+                    }
                 }
+            }
+
+            public string GetName(int value)
+            {
+                if (TryGetName(value, out string result)) return result;
+                else throw new ArgumentOutOfRangeException(nameof(value));
             }
 
             private EnumObjectDescriptor BaseDescriptor => _baseDescriptors.Count == 0 ? null : _baseDescriptors[_baseDescriptors.Count - 1];
 
-            private EnumObject CreateValue(EnumObject value)
+            private EnumObject CreateValue(string name)
+            {
+                var nameConstructor = _type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, nameConstructorSignature, null);
+                if (nameConstructor != null)
+                {
+                    var result = (EnumObject)nameConstructor.Invoke(new object[] { name });
+                    result._value = ++_maxValue;
+                    return result;
+                }
+                throw new InvalidOperationException(_type + " must have a string constructor.");
+            }
+
+            public EnumObject CreateValue(EnumObject value)
             {
                 var retargetingConstructor = _type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, retargetingConstructorSignature, null);
                 if (retargetingConstructor != null)
@@ -336,24 +590,30 @@ namespace Roslyn.Utilities
                 {
                     return baseDescriptor.CreateValue(value);
                 }
-                return null;
+                throw new InvalidOperationException(_type + " must have a retargeting constructor.");
             }
 
-            private EnumObject CreateValue(string name)
+            public void RegisterUniqueValue(string name)
             {
-                var nameConstructor = _type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, nameConstructorSignature, null);
-                if (nameConstructor != null)
+                if (!_cachedByName.ContainsKey(name))
                 {
-                    var result = (EnumObject)nameConstructor.Invoke(new object[] { name });
-                    result._value = ++_maxValue;
-                    return result;
+                    _lazyValues.Add(name);
+                    _cachedByName.Add(name, null);
                 }
-                throw new InvalidOperationException(_type+" must have a string constructor.");
             }
 
-            public void RegisterValue(string name)
+            public void RegisterAlias(string name)
             {
-                _values.Add(CreateValue(name));
+                if (!_cachedByName.ContainsKey(name))
+                {
+                    throw new InvalidOperationException($"Duplicate enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
+                }
+                _aliases.Add(name);
+            }
+
+            public bool IsAlias(string name)
+            {
+                return _aliases.Contains(name);
             }
 
             public bool IsDescendantOf(EnumObjectDescriptor other)
@@ -361,13 +621,13 @@ namespace Roslyn.Utilities
                 return _baseDescriptors.Contains(other);
             }
 
-            public IEnumerable<EnumObject> AllValues
+            public IEnumerable<EnumObject> AllEnumValues
             {
                 get
                 {
                     if (_closed)
                     {
-                        foreach (var value in _cachedValues)
+                        foreach (var value in _cachedByValue)
                         {
                             yield return value;
                         }
@@ -406,10 +666,14 @@ namespace Roslyn.Utilities
         }
     }
 
-	
-	/*
-	    public class LanguageVersion : EnumObject
+
+    /* Template:
+    
+    public class LanguageVersion : EnumObject
     {
+        public const string Default = nameof(Default);
+        public const string Latest = nameof(Latest);
+
         protected LanguageVersion(string name)
             : base(name)
         {
@@ -422,38 +686,16 @@ namespace Roslyn.Utilities
 
         static LanguageVersion()
         {
-            EnumObject.Init<LanguageVersion>();
-            EnumObject.Register<LanguageVersion>(Default);
-            EnumObject.Register<LanguageVersion>(Latest);
-            EnumObject.Close<LanguageVersion>();
-        }
-
-        public const string Default = nameof(Default);
-        public const string Latest = nameof(Latest);
-
-        public static explicit operator LanguageVersion(int value)
-        {
-            if (EnumObject.TryGetValue<LanguageVersion>(value, out var result)) return result;
-            else return null;
-        }
-
-        public static explicit operator int(LanguageVersion value)
-        {
-            return value.Value;
+            EnumObject.AutoInit<LanguageVersion>();
         }
 
         public static implicit operator LanguageVersion(string name)
         {
-            if (EnumObject.TryParse<LanguageVersion>(name, out var result)) return result;
-            else return null;
-        }
-
-        public static implicit operator string(LanguageVersion value)
-        {
-            return value.Name;
+            return FromString<LanguageVersion>(name);
         }
 
         public new static IEnumerable<EnumObject> EnumValues => EnumObject.EnumValues(typeof(LanguageVersion));
     }
-	*/
+    */
+
 }

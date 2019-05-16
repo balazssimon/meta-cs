@@ -67,8 +67,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             }
         }
 
-        public override bool IsSkippedTokensTrivia => this.RawKind == SyntaxKind.SkippedTokensTrivia;
-        public override bool IsDocumentationCommentTrivia => Language.SyntaxFacts.IsDocumentationCommentTrivia(this.RawKind);
+        public override bool IsSkippedTokensTrivia => this.GetKind() == SyntaxKind.SkippedTokensTrivia;
+        public override bool IsDocumentationCommentTrivia => Language.SyntaxFacts.IsDocumentationCommentTrivia(this.GetKind());
 
         public override int GetSlotOffset(int index)
         {
@@ -228,7 +228,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public override bool IsTriviaWithEndOfLine()
         {
-            return Language.SyntaxFacts.IsTriviaWithEndOfLine(this.RawKind);
+            return Language.SyntaxFacts.IsTriviaWithEndOfLine(this.GetKind());
         }
 
         // Use conditional weak table so we always return same identity for structured trivia

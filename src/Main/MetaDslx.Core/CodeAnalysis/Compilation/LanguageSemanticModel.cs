@@ -1494,7 +1494,7 @@ namespace MetaDslx.CodeAnalysis
         {
             CheckSyntaxNode(node);
 
-            if (node.Ancestors().Any(n => this.Language.SyntaxFacts.IsPreprocessorDirective(n.RawKind)))
+            if (node.Ancestors().Any(n => this.Language.SyntaxFacts.IsPreprocessorDirective(n.GetKind())))
             {
                 /*bool isDefined = this.SyntaxTree.IsPreprocessorSymbolDefined(node.Identifier.ValueText, node.Identifier.SpanStart);
                 return new PreprocessingSymbolInfo(new PreprocessingSymbol(node.Identifier.ValueText), isDefined);*/

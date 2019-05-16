@@ -68,7 +68,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
             SyntaxFacts facts = ((Green.InternalSyntaxToken)before).Language.SyntaxFacts;
 
-            if (!facts.IsFixedToken(before.RawKind))
+            if (!facts.IsFixedToken(before.GetKind()))
             {
                 return ((Green.InternalSyntaxToken)before).Text == ((Green.InternalSyntaxToken)after).Text;
             }

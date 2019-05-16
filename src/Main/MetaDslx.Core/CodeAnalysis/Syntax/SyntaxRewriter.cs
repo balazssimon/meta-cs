@@ -152,7 +152,7 @@ namespace MetaDslx.CodeAnalysis
                     alternate.AddRange(list, 0, i);
                 }
 
-                if (alternate != null && visited != null && visited.RawKind != SyntaxKind.None)
+                if (alternate != null && visited != null && visited.GetKind() != SyntaxKind.None)
                 {
                     alternate.Add(visited);
                 }
@@ -267,7 +267,7 @@ namespace MetaDslx.CodeAnalysis
                     alternate.Add(list, 0, index);
                 }
 
-                if (alternate != null && visited.RawKind != SyntaxKind.None) //skip the null check since SyntaxToken is a value type
+                if (alternate != null && visited.GetKind() != SyntaxKind.None) //skip the null check since SyntaxToken is a value type
                 {
                     alternate.Add(visited);
                 }
@@ -301,7 +301,7 @@ namespace MetaDslx.CodeAnalysis
                         alternate.Add(list, 0, index);
                     }
 
-                    if (alternate != null && visited.RawKind != SyntaxKind.None)
+                    if (alternate != null && visited.GetKind() != SyntaxKind.None)
                     {
                         alternate.Add(visited);
                     }

@@ -367,7 +367,7 @@ namespace Roslyn.Utilities
                 EnsureCapacity(other._capacity);
 
             Word oldbits = _bits0;
-            _bits0 |= ~other._bits0;
+            _bits0 &= ~other._bits0;
 
             if (oldbits != _bits0)
                 anyChanged = true;
@@ -375,7 +375,7 @@ namespace Roslyn.Utilities
             for (int i = 0; i < other._bits.Length; i++)
             {
                 oldbits = _bits[i];
-                _bits[i] |= ~other._bits[i];
+                _bits[i] &= ~other._bits[i];
 
                 if (_bits[i] != oldbits)
                     anyChanged = true;

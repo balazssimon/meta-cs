@@ -14,24 +14,24 @@ namespace MetaDslx.CodeAnalysis.Syntax
         // So it seems reasonable to limit the sizes to some round number like 42.
         public virtual int MaxCachedTokenSize => 42;
 
-        public abstract bool IsToken(int rawKind);
-        public abstract bool IsFixedToken(int rawKind);
-        public abstract bool IsTrivia(int kind);
-        public abstract bool IsReservedKeyword(int kind);
-        public abstract bool IsContextualKeyword(int kind);
-        public abstract bool IsPreprocessorKeyword(int kind);
-        public abstract bool IsPreprocessorContextualKeyword(int kind);
-        public abstract bool IsPreprocessorDirective(int kind);
-        public abstract bool IsName(int kind);
-        public abstract bool IsPredefinedType(int kind);
-        public abstract bool IsType(int kind);
-        public abstract bool IsTypeDeclaration(int kind);
-        public abstract bool IsGlobalMemberDeclaration(int kind);
-        public abstract bool IsNamespaceMemberDeclaration(int kind);
-        public abstract bool IsIdentifier(int rawKind);
-        public abstract bool IsGeneralCommentTrivia(int rawKind);
-        public abstract bool IsDocumentationCommentTrivia(int rawKind);
-        public abstract bool IsTriviaWithEndOfLine(int rawKind);
+        public abstract bool IsToken(SyntaxKind kind);
+        public abstract bool IsFixedToken(SyntaxKind kind);
+        public abstract bool IsTrivia(SyntaxKind kind);
+        public abstract bool IsReservedKeyword(SyntaxKind kind);
+        public abstract bool IsContextualKeyword(SyntaxKind kind);
+        public abstract bool IsPreprocessorKeyword(SyntaxKind kind);
+        public abstract bool IsPreprocessorContextualKeyword(SyntaxKind kind);
+        public abstract bool IsPreprocessorDirective(SyntaxKind kind);
+        public abstract bool IsName(SyntaxKind kind);
+        public abstract bool IsPredefinedType(SyntaxKind kind);
+        public abstract bool IsType(SyntaxKind kind);
+        public abstract bool IsTypeDeclaration(SyntaxKind kind);
+        public abstract bool IsGlobalMemberDeclaration(SyntaxKind kind);
+        public abstract bool IsNamespaceMemberDeclaration(SyntaxKind kind);
+        public abstract bool IsIdentifier(SyntaxKind rawKind);
+        public abstract bool IsGeneralCommentTrivia(SyntaxKind rawKind);
+        public abstract bool IsDocumentationCommentTrivia(SyntaxKind rawKind);
+        public abstract bool IsTriviaWithEndOfLine(SyntaxKind rawKind);
 
         public abstract string GetKindText(int rawKind);
         public abstract string GetText(int rawKind);
@@ -40,20 +40,20 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public abstract int GetContextualKeywordKind(string text);
         public abstract int GetPreprocessorKeywordKind(string text);
 
-        public abstract IEnumerable<int> GetReservedKeywordKinds();
-        public abstract IEnumerable<int> GetContextualKeywordKinds();
+        public abstract IEnumerable<SyntaxKind> GetReservedKeywordKinds();
+        public abstract IEnumerable<SyntaxKind> GetContextualKeywordKinds();
 
-        public bool IsCommentTrivia(int rawKind)
+        public bool IsCommentTrivia(SyntaxKind rawKind)
         {
             return IsGeneralCommentTrivia(rawKind) || IsDocumentationCommentTrivia(rawKind);
         }
 
-        public bool IsKeyword(int kind)
+        public bool IsKeyword(SyntaxKind kind)
         {
             return IsReservedKeyword(kind) || IsContextualKeyword(kind);
         }
 
-        public IEnumerable<int> GetKeywordKinds()
+        public IEnumerable<SyntaxKind> GetKeywordKinds()
         {
             foreach (var reserved in GetReservedKeywordKinds())
             {
@@ -73,7 +73,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public virtual int GetDeclarationDepth(SyntaxTrivia trivia)
         {
-            if (IsPreprocessorDirective(trivia.RawKind))
+            if (IsPreprocessorDirective(trivia.GetKind()))
             {
                 return 0;
             }
@@ -92,7 +92,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
                 }
                 else if (node.Parent != null)
                 {
-                    if (node.Parent.RawKind == SyntaxKind.CompilationUnit)
+                    if (node.Parent.GetKind() == SyntaxKind.CompilationUnit)
                     {
                         return 0;
                     }

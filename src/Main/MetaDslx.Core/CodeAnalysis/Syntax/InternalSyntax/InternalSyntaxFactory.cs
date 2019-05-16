@@ -101,16 +101,16 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return trivia.WithAnnotationsGreen(new[] { Microsoft.CodeAnalysis.SyntaxAnnotation.ElasticAnnotation });
         }
 
-        public abstract InternalSyntaxTrivia Trivia(int kind, string text, bool elastic = false);
+        public abstract InternalSyntaxTrivia Trivia(SyntaxKind kind, string text, bool elastic = false);
         public abstract InternalSyntaxTrivia ConflictMarker(string text);
         public abstract InternalSyntaxTrivia DisabledText(string text);
-        public abstract InternalSyntaxToken Token(int kind);
-        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing);
-        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing);
-        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing);
-        public abstract InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing);
-        public abstract InternalSyntaxToken MissingToken(int kind);
-        public abstract InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(SyntaxKind kind);
+        public abstract InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, string valueText, GreenNode trailing);
+        public abstract InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, object value, GreenNode trailing);
+        public abstract InternalSyntaxToken MissingToken(SyntaxKind kind);
+        public abstract InternalSyntaxToken MissingToken(GreenNode leading, SyntaxKind kind, GreenNode trailing);
         public abstract InternalSyntaxToken BadToken(GreenNode leading, string text, GreenNode trailing);
 
         public Internal.SyntaxList<TNode> List<TNode>() where TNode : InternalSyntaxNode
