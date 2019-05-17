@@ -12,32 +12,32 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public abstract class InternalSyntaxNode : GreenNodeAdapter
     {
-        protected InternalSyntaxNode(int kind)
+        protected InternalSyntaxNode(SyntaxKind kind)
             : base(kind)
         {
         }
 
-        protected InternalSyntaxNode(int kind, int fullWidth)
+        protected InternalSyntaxNode(SyntaxKind kind, int fullWidth)
             : base(kind, fullWidth)
         {
         }
 
-        protected InternalSyntaxNode(int kind, DiagnosticInfo[] diagnostics)
+        protected InternalSyntaxNode(SyntaxKind kind, DiagnosticInfo[] diagnostics)
             : base(kind, diagnostics)
         {
         }
 
-        protected InternalSyntaxNode(int kind, DiagnosticInfo[] diagnostics, int fullWidth)
+        protected InternalSyntaxNode(SyntaxKind kind, DiagnosticInfo[] diagnostics, int fullWidth)
             : base(kind, diagnostics, fullWidth)
         {
         }
 
-        protected InternalSyntaxNode(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        protected InternalSyntaxNode(SyntaxKind kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(kind, diagnostics, annotations)
         {
         }
 
-        protected InternalSyntaxNode(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations, int fullWidth)
+        protected InternalSyntaxNode(SyntaxKind kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations, int fullWidth)
             : base(kind, diagnostics, annotations, fullWidth)
         {
         }
@@ -48,8 +48,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         }
 
         public new Language Language => this.LanguageCore;
-
-        public override string KindText => Language.SyntaxFacts.GetKindText(this.RawKind);
 
         public override int RawContextualKind
         {

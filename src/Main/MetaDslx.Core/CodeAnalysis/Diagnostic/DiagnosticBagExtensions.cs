@@ -1,26 +1,27 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace MetaDslx.CodeAnalysis
+namespace Microsoft.CodeAnalysis
 {
-    internal static class DiagnosticBagExtensions
+    public static class DiagnosticBagExtensions
     {
-        internal static bool HasErrorCode(this Diagnostic diagnostic, ErrorCode errorCode)
+        public static bool HasErrorCode(this Diagnostic diagnostic, ErrorCode errorCode)
         {
             if (diagnostic is LanguageDiagnostic languageDiagnostic) return languageDiagnostic.Info.ErrorCode == errorCode;
             else return diagnostic.Code == errorCode.Code;
         }
 
-        internal static bool HasErrorCode(this DiagnosticInfo info, ErrorCode errorCode)
+        public static bool HasErrorCode(this DiagnosticInfo info, ErrorCode errorCode)
         {
             if (info is LanguageDiagnosticInfo languageDiagnostic) return languageDiagnostic.ErrorCode == errorCode;
             else return info.Code == errorCode.Code;
         }
 
-        internal static Diagnostic ToDiagnostic(this DiagnosticInfo info, Location location)
+        public static Diagnostic ToDiagnostic(this DiagnosticInfo info, Location location)
         {
             var languageInfo = info as LanguageDiagnosticInfo;
             if (languageInfo != null)
@@ -40,7 +41,7 @@ namespace MetaDslx.CodeAnalysis
         /// <param name="code"></param>
         /// <param name="location"></param>
         /// <returns></returns>
-        internal static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, Location location, ErrorCode code)
+        public static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ErrorCode code, Location location)
         {
             var info = new LanguageDiagnosticInfo(code);
             var diag = new LanguageDiagnostic(info, location);
@@ -48,38 +49,7 @@ namespace MetaDslx.CodeAnalysis
             return info;
         }
 
-        /// <summary>
-        /// Add a diagnostic to the bag.
-        /// </summary>
-        /// <param name="diagnostics"></param>
-        /// <param name="code"></param>
-        /// <param name="location"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        internal static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, Location location, ErrorCode code, params object[] args)
-        {
-            var info = new LanguageDiagnosticInfo(code, args);
-            var diag = new LanguageDiagnostic(info, location);
-            diagnostics.Add(diag);
-            return info;
-        }
-
-        /// <summary>
-        /// Add a diagnostic to the bag.
-        /// </summary>
-        /// <param name="diagnostics"></param>
-        /// <param name="code"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        internal static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ErrorCode code, Location location, params object[] args)
-        {
-            var info = new LanguageDiagnosticInfo(code, args);
-            var diag = new LanguageDiagnostic(info, location);
-            diagnostics.Add(diag);
-            return info;
-        }
-
-        internal static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ErrorCode code, params object[] args)
+        public static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ErrorCode code, params object[] args)
         {
             var info = new LanguageDiagnosticInfo(code, args);
             var diag = new LanguageDiagnostic(info, Location.None);
@@ -87,7 +57,22 @@ namespace MetaDslx.CodeAnalysis
             return info;
         }
 
-        internal static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, Location location, ImmutableArray<ISymbol> symbols, ErrorCode code, params object[] args)
+        /// <summary>
+        /// Add a diagnostic to the bag.
+        /// </summary>
+        /// <param name="diagnostics"></param>
+        /// <param name="code"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ErrorCode code, Location location, params object[] args)
+        {
+            var info = new LanguageDiagnosticInfo(code, args);
+            var diag = new LanguageDiagnostic(info, location);
+            diagnostics.Add(diag);
+            return info;
+        }
+
+        public static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ImmutableArray<ISymbol> symbols, ErrorCode code, Location location, params object[] args)
         {
             var info = new SymbolDiagnosticInfo(code, args, symbols, ImmutableArray<Location>.Empty);
             var diag = new LanguageDiagnostic(info, location);
@@ -95,7 +80,7 @@ namespace MetaDslx.CodeAnalysis
             return info;
         }
 
-        internal static void Add(this DiagnosticBag diagnostics, DiagnosticInfo info, Location location)
+        public static void Add(this DiagnosticBag diagnostics, DiagnosticInfo info, Location location)
         {
             diagnostics.Add(info.ToDiagnostic(location));
         }
@@ -103,7 +88,7 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// Adds diagnostics from useSiteDiagnostics into diagnostics and returns True if there were any errors.
         /// </summary>
-        internal static bool Add(
+        public static bool Add(
             this DiagnosticBag diagnostics,
             SyntaxNode node,
             HashSet<DiagnosticInfo> useSiteDiagnostics)
@@ -114,7 +99,7 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// Adds diagnostics from useSiteDiagnostics into diagnostics and returns True if there were any errors.
         /// </summary>
-        internal static bool Add(
+        public static bool Add(
             this DiagnosticBag diagnostics,
             SyntaxToken token,
             HashSet<DiagnosticInfo> useSiteDiagnostics)
@@ -122,7 +107,7 @@ namespace MetaDslx.CodeAnalysis
             return !useSiteDiagnostics.IsNullOrEmpty() && diagnostics.Add(token.GetLocation(), useSiteDiagnostics);
         }
 
-        internal static bool Add(
+        public static bool Add(
             this DiagnosticBag diagnostics,
             Location location,
             HashSet<DiagnosticInfo> useSiteDiagnostics)

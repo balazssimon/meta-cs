@@ -6,6 +6,7 @@ using System.Text;
 namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 {
     using MetaDslx.CodeAnalysis;
+    using MetaDslx.CodeAnalysis.Syntax;
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
     using Microsoft.CodeAnalysis;
 
@@ -13,9 +14,9 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
     {
         public override Language Language => MetaModelLanguage.Instance;
 
-        public override InternalSyntaxTrivia Trivia(int kind, string text, bool elastic = false)
+        public override InternalSyntaxTrivia Trivia(SyntaxKind kind, string text, bool elastic = false)
         {
-            var trivia = GreenSyntaxTrivia.Create((SyntaxKind)kind, text);
+            var trivia = GreenSyntaxTrivia.Create(kind, text);
             if (!elastic)
             {
                 return trivia;
@@ -33,56 +34,56 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
             return GreenSyntaxTrivia.Create(SyntaxKind.DisabledTextTrivia, text);
         }
 
-        public override InternalSyntaxToken Token(int kind)
+        public override InternalSyntaxToken Token(SyntaxKind kind)
         {
-            return GreenSyntaxToken.Create((SyntaxKind)kind);
+            return GreenSyntaxToken.Create(kind);
         }
 
-        public override InternalSyntaxToken Token(GreenNode leading, int kind, GreenNode trailing)
+        public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, GreenNode trailing)
         {
-            return GreenSyntaxToken.Create((SyntaxKind)kind, leading, trailing);
+            return GreenSyntaxToken.Create(kind, leading, trailing);
         }
 
-        public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, GreenNode trailing)
+        public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, GreenNode trailing)
         {
             Debug.Assert(MetaModelLanguage.Instance.SyntaxFacts.IsToken(kind));
             string defaultText = MetaModelLanguage.Instance.SyntaxFacts.GetText(kind);
-            return kind >= (int)GreenSyntaxToken.FirstTokenWithWellKnownText && kind <= (int)GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText
+            return kind >= GreenSyntaxToken.FirstTokenWithWellKnownText && kind <= GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText
                 ? Token(leading, kind, trailing)
-                : GreenSyntaxToken.Identifier((SyntaxKind)kind, leading, text, trailing);
+                : GreenSyntaxToken.Identifier(kind, leading, text, trailing);
         }
 
-        public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, string valueText, GreenNode trailing)
+        public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, string valueText, GreenNode trailing)
         {
             Debug.Assert(MetaModelLanguage.Instance.SyntaxFacts.IsToken(kind));
             string defaultText = MetaModelLanguage.Instance.SyntaxFacts.GetText(kind);
-            return kind >= (int)GreenSyntaxToken.FirstTokenWithWellKnownText && kind <= (int)GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText && valueText == defaultText
+            return kind >= GreenSyntaxToken.FirstTokenWithWellKnownText && kind <= GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText && valueText == defaultText
                 ? Token(leading, kind, trailing)
-                : GreenSyntaxToken.WithValue((SyntaxKind)kind, leading, text, valueText, trailing);
+                : GreenSyntaxToken.WithValue(kind, leading, text, valueText, trailing);
         }
 
-        public override InternalSyntaxToken Token(GreenNode leading, int kind, string text, object value, GreenNode trailing)
+        public override InternalSyntaxToken Token(GreenNode leading, SyntaxKind kind, string text, object value, GreenNode trailing)
         {
             Debug.Assert(MetaModelLanguage.Instance.SyntaxFacts.IsToken(kind));
             string defaultText = MetaModelLanguage.Instance.SyntaxFacts.GetText(kind);
-            return kind >= (int)GreenSyntaxToken.FirstTokenWithWellKnownText && kind <= (int)GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText && defaultText.Equals(value)
+            return kind >= GreenSyntaxToken.FirstTokenWithWellKnownText && kind <= GreenSyntaxToken.LastTokenWithWellKnownText && text == defaultText && defaultText.Equals(value)
                 ? Token(leading, kind, trailing)
-                : GreenSyntaxToken.WithValue((SyntaxKind)kind, leading, text, value, trailing);
+                : GreenSyntaxToken.WithValue(kind, leading, text, value, trailing);
         }
 
-        public override InternalSyntaxToken MissingToken(int kind)
+        public override InternalSyntaxToken MissingToken(SyntaxKind kind)
         {
-            return GreenSyntaxToken.CreateMissing((SyntaxKind)kind, null, null);
+            return GreenSyntaxToken.CreateMissing(kind, null, null);
         }
 
-        public override InternalSyntaxToken MissingToken(GreenNode leading, int kind, GreenNode trailing)
+        public override InternalSyntaxToken MissingToken(GreenNode leading, SyntaxKind kind, GreenNode trailing)
         {
-            return GreenSyntaxToken.CreateMissing((SyntaxKind)kind, leading, trailing);
+            return GreenSyntaxToken.CreateMissing(kind, leading, trailing);
         }
 
         public override InternalSyntaxToken BadToken(GreenNode leading, string text, GreenNode trailing)
         {
-            return GreenSyntaxToken.WithValue((SyntaxKind)SyntaxKind.BadToken, leading, text, text, trailing);
+            return GreenSyntaxToken.WithValue(SyntaxKind.BadToken, leading, text, text, trailing);
         }
 
         public override IEnumerable<InternalSyntaxToken> GetWellKnownTokens()

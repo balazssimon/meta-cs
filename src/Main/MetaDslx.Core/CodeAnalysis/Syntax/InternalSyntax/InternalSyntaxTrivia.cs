@@ -11,7 +11,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
     {
         public readonly string Text;
 
-        protected InternalSyntaxTrivia(int kind, string text, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
+        protected InternalSyntaxTrivia(SyntaxKind kind, string text, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
             : base(kind, diagnostics, annotations, text.Length)
         {
             this.Text = text;

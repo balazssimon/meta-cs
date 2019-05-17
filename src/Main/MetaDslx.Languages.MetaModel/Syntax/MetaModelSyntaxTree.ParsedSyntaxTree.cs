@@ -36,7 +36,7 @@ namespace MetaDslx.Languages.MetaModel
                 _options = options;
                 _path = path ?? string.Empty;
                 _root = cloneRoot ? this.CloneNodeAsRoot(root) : root;
-                _hasCompilationUnitRoot = root.RawKind == MetaDslx.CodeAnalysis.Syntax.SyntaxKind.CompilationUnit;
+                _hasCompilationUnitRoot = root.Kind == SyntaxKind.CompilationUnit;
                 this.SetDirectiveStack(directives);
             }
 

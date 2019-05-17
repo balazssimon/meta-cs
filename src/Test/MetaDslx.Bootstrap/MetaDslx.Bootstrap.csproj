@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\Main\Versions.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
+    <PackageReference Include="Antlr4.Runtime" Version="$(Antlr4Version)" />
+    <PackageReference Include="Antlr4.CodeGenerator" Version="$(Antlr4Version)" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj" />
+  </ItemGroup>
+
+</Project>

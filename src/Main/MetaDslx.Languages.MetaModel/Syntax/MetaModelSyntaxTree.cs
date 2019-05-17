@@ -104,7 +104,7 @@ namespace MetaDslx.Languages.MetaModel
                 throw new ArgumentNullException(nameof(root));
             }
 
-            var directives = root.Kind() == Syntax.SyntaxKind.CompilationUnit ?
+            var directives = root.Kind == SyntaxKind.CompilationUnit ?
                 ((ICompilationUnitRootSyntax)root).GetConditionalDirectivesStack() :
                 DirectiveStack.Empty;
 

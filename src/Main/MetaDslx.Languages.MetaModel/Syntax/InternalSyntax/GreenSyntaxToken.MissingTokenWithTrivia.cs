@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
@@ -43,7 +44,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
             {
                 get
                 {
-                    if (Language.SyntaxFacts.IsIdentifier(this.RawKind)) return string.Empty;
+                    if (Language.SyntaxFacts.IsIdentifier(this.Kind)) return string.Empty;
                     else return null;
                 }
             }

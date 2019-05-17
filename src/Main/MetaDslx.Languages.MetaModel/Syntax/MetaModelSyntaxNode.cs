@@ -60,10 +60,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax
         /// <summary>
         /// Returns the <see cref="SyntaxKind"/> of the node.
         /// </summary>
-        public SyntaxKind Kind()
-        {
-            return (SyntaxKind)this.RawKind;
-        }
+        public new MetaModelSyntaxKind Kind => (MetaModelSyntaxKind)base.Kind;
 
         /// <summary>
         /// The language name that this node is syntax of.

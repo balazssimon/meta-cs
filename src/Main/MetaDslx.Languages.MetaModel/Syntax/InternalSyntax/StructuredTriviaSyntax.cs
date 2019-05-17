@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 {
     internal abstract class StructuredTriviaSyntax : GreenSyntaxNode
     {
-        protected StructuredTriviaSyntax(int kind, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
+        protected StructuredTriviaSyntax(MetaModelSyntaxKind kind, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
             : base(kind, diagnostics, annotations)
         {
             this.Initialize();

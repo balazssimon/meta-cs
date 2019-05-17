@@ -6,12 +6,13 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 {
+    using MetaDslx.CodeAnalysis.Syntax;
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 
     internal class GreenSyntaxTrivia : InternalSyntaxTrivia
     {
         internal GreenSyntaxTrivia(SyntaxKind kind, string text, DiagnosticInfo[] diagnostics = null, SyntaxAnnotation[] annotations = null)
-            : base((int)kind, text, diagnostics, annotations)
+            : base(kind, text, diagnostics, annotations)
         {
         }
 
@@ -28,11 +29,9 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
         public new MetaModelLanguage Language => MetaModelLanguage.Instance;
         protected override Language LanguageCore => MetaModelLanguage.Instance;
 
-        public SyntaxKind Kind => (SyntaxKind)this.RawKind;
-
         public override bool IsTrivia => true;
 
-        protected override bool ShouldReuseInSerialization => this.Kind == SyntaxKind.DefaultWhitespaceSyntaxKind &&
+        protected override bool ShouldReuseInSerialization => this.Kind == SyntaxKind.DefaultWhitespace &&
                                                              FullWidth < Language.SyntaxFacts.MaxCachedTokenSize;
 
         protected override void WriteTo(ObjectWriter writer)

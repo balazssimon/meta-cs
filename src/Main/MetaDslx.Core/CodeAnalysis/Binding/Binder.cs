@@ -333,7 +333,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     if (snippet != null)
                     {
                         LanguageSyntaxNode node = scope.ScopeDesignator as LanguageSyntaxNode;
-                        string kindText = node != null ? node.Language.SyntaxFacts.GetKindText(node.RawKind) : scope.ScopeDesignator.RawKind.ToString();
+                        string kindText = (string)(node != null ? node.Kind : scope.ScopeDesignator.GetKind());
                         sub.Add(new TreeDumperNode($"scope", $"{snippet} ({kindText})", null));
                     }
                     if (current != null)

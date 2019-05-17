@@ -1,23 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Languages.MetaModel.Syntax
 {
-    public enum SyntaxKind
+    public class MetaModelSyntaxKind : MetaDslx.CodeAnalysis.Syntax.SyntaxKind
     {
-        None = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.None,
-        Eof = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.Eof,
-        List = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.List,
-        BadToken = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.BadToken,
-        SkippedTokensTrivia = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.SkippedTokensTrivia,
-        DisabledTextTrivia = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.DisabledTextTrivia,
-        ConflictMarkerTrivia = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.ConflictMarkerTrivia,
-        DefaultWhitespaceSyntaxKind = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.DefaultWhitespace,
-        DefaultEndOfLineSyntaxKind = MetaDslx.CodeAnalysis.Syntax.SyntaxKind.DefaultEndOfLine,
-        CompilationUnit,
+        public const string FirstTokenWithWellKnownText = nameof(FirstTokenWithWellKnownText);
+        public const string LastTokenWithWellKnownText = nameof(LastTokenWithWellKnownText);
 
-        FirstTokenWithWellKnownText = 0,
-        LastTokenWithWellKnownText = 0,
+
+        protected MetaModelSyntaxKind(string name) : base(name)
+        {
+        }
+
+        protected MetaModelSyntaxKind(EnumObject retargetedValue) : base(retargetedValue)
+        {
+        }
+
+        static MetaModelSyntaxKind()
+        {
+            EnumObject.AutoInit<MetaModelSyntaxKind>();
+        }
+
+        public static implicit operator MetaModelSyntaxKind(string name)
+        {
+            return FromString<MetaModelSyntaxKind>(name);
+        }
+
+        public new static IEnumerable<EnumObject> EnumValues => EnumObject.EnumValues(typeof(MetaModelSyntaxKind));
     }
 }

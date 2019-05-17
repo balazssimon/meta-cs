@@ -9,38 +9,38 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     public abstract class GreenNodeAdapter : GreenNode
     {
-        internal GreenNodeAdapter(int kind)
-            : base(kind)
+        internal GreenNodeAdapter(SyntaxKind kind)
+            : base(kind.GetValue())
         {
             GreenStats.NoteGreen(this);
         }
 
-        internal GreenNodeAdapter(int kind, int fullWidth)
-            : base(kind, fullWidth)
+        internal GreenNodeAdapter(SyntaxKind kind, int fullWidth)
+            : base(kind.GetValue(), fullWidth)
         {
             GreenStats.NoteGreen(this);
         }
 
-        internal GreenNodeAdapter(int kind, DiagnosticInfo[] diagnostics)
-            : base(kind, diagnostics)
+        internal GreenNodeAdapter(SyntaxKind kind, DiagnosticInfo[] diagnostics)
+            : base(kind.GetValue(), diagnostics)
         {
             GreenStats.NoteGreen(this);
         }
 
-        internal GreenNodeAdapter(int kind, DiagnosticInfo[] diagnostics, int fullWidth)
-            : base(kind, diagnostics, fullWidth)
+        internal GreenNodeAdapter(SyntaxKind kind, DiagnosticInfo[] diagnostics, int fullWidth)
+            : base(kind.GetValue(), diagnostics, fullWidth)
         {
             GreenStats.NoteGreen(this);
         }
 
-        internal GreenNodeAdapter(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-            : base(kind, diagnostics, annotations)
+        internal GreenNodeAdapter(SyntaxKind kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+            : base(kind.GetValue(), diagnostics, annotations)
         {
             GreenStats.NoteGreen(this);
         }
 
-        internal GreenNodeAdapter(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations, int fullWidth)
-            : base(kind, diagnostics, annotations, fullWidth)
+        internal GreenNodeAdapter(SyntaxKind kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations, int fullWidth)
+            : base(kind.GetValue(), diagnostics, annotations, fullWidth)
         {
             GreenStats.NoteGreen(this);
         }
@@ -57,7 +57,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected abstract Language LanguageCore { get; }
 
-        public SyntaxKind Kind => EnumObject.FromIntUnsafe<SyntaxKind>(this.RawKind);
+        public virtual SyntaxKind Kind => EnumObject.FromIntUnsafe<SyntaxKind>(this.RawKind);
 
         public override string KindText => Kind.GetName();
 

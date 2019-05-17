@@ -268,7 +268,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             NamespaceSymbol target;
             if (!_binder.Compilation.GetExternAliasTarget(_aliasName, out target))
             {
-                diagnostics.Add(_locations.FirstOrDefault(), InternalErrorCode.ERR_BadExternAlias, _aliasName);
+                diagnostics.Add(InternalErrorCode.ERR_BadExternAlias, _locations.FirstOrDefault(), _aliasName);
             }
 
             Debug.Assert((object)target != null);

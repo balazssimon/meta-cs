@@ -6,6 +6,7 @@ using System.Text;
 
 namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 {
+    using MetaDslx.CodeAnalysis.Syntax;
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
     using Microsoft.CodeAnalysis;
 
@@ -17,32 +18,32 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
         // likelihood that they will be inlined.
 
         internal GreenSyntaxToken(SyntaxKind kind)
-            : base((int)kind)
+            : base(kind)
         {
         }
 
         internal GreenSyntaxToken(SyntaxKind kind, DiagnosticInfo[] diagnostics)
-            : base((int)kind, diagnostics)
+            : base(kind, diagnostics)
         {
         }
 
         internal GreenSyntaxToken(SyntaxKind kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-            : base((int)kind, diagnostics, annotations)
+            : base(kind, diagnostics, annotations)
         {
         }
 
         internal GreenSyntaxToken(SyntaxKind kind, int fullWidth)
-            : base((int)kind, fullWidth)
+            : base(kind, fullWidth)
         {
         }
 
         internal GreenSyntaxToken(SyntaxKind kind, int fullWidth, DiagnosticInfo[] diagnostics)
-            : base((int)kind, fullWidth, diagnostics)
+            : base(kind, fullWidth, diagnostics)
         {
         }
 
         internal GreenSyntaxToken(SyntaxKind kind, int fullWidth, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-            : base((int)kind, fullWidth, diagnostics, annotations)
+            : base(kind, fullWidth, diagnostics, annotations)
         {
         }
 
@@ -122,25 +123,32 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
             return new MissingTokenWithTrivia(kind, leading, trailing);
         }
 
-        internal const SyntaxKind FirstTokenWithWellKnownText = SyntaxKind.FirstTokenWithWellKnownText;
-        internal const SyntaxKind LastTokenWithWellKnownText = SyntaxKind.LastTokenWithWellKnownText;
+        internal static readonly MetaModelSyntaxKind FirstTokenWithWellKnownText;
+        internal static readonly MetaModelSyntaxKind LastTokenWithWellKnownText;
 
         // TODO: eliminate the blank space before the first interesting element?
-        private static readonly ArrayElement<GreenSyntaxToken>[] s_tokensWithNoTrivia = new ArrayElement<GreenSyntaxToken>[(int)LastTokenWithWellKnownText + 1];
-        private static readonly ArrayElement<GreenSyntaxToken>[] s_tokensWithElasticTrivia = new ArrayElement<GreenSyntaxToken>[(int)LastTokenWithWellKnownText + 1];
-        private static readonly ArrayElement<GreenSyntaxToken>[] s_tokensWithSingleTrailingSpace = new ArrayElement<GreenSyntaxToken>[(int)LastTokenWithWellKnownText + 1];
-        private static readonly ArrayElement<GreenSyntaxToken>[] s_tokensWithSingleTrailingCRLF = new ArrayElement<GreenSyntaxToken>[(int)LastTokenWithWellKnownText + 1];
+        private static readonly ArrayElement<GreenSyntaxToken>[] s_tokensWithNoTrivia;
+        private static readonly ArrayElement<GreenSyntaxToken>[] s_tokensWithElasticTrivia;
+        private static readonly ArrayElement<GreenSyntaxToken>[] s_tokensWithSingleTrailingSpace;
+        private static readonly ArrayElement<GreenSyntaxToken>[] s_tokensWithSingleTrailingCRLF;
 
         static GreenSyntaxToken()
         {
             ObjectBinder.RegisterTypeReader(typeof(GreenSyntaxToken), r => new GreenSyntaxToken(r));
 
-            for (var kind = FirstTokenWithWellKnownText; kind <= LastTokenWithWellKnownText; kind++)
+            FirstTokenWithWellKnownText = MetaModelSyntaxKind.FirstTokenWithWellKnownText;
+            LastTokenWithWellKnownText = MetaModelSyntaxKind.LastTokenWithWellKnownText;
+
+            s_tokensWithNoTrivia = new ArrayElement<GreenSyntaxToken>[(int)LastTokenWithWellKnownText + 1];
+            s_tokensWithElasticTrivia = new ArrayElement<GreenSyntaxToken>[(int)LastTokenWithWellKnownText + 1];
+            s_tokensWithSingleTrailingSpace = new ArrayElement<GreenSyntaxToken>[(int)LastTokenWithWellKnownText + 1];
+            s_tokensWithSingleTrailingCRLF = new ArrayElement<GreenSyntaxToken>[(int)LastTokenWithWellKnownText + 1];
+            for (EnumObject kind = FirstTokenWithWellKnownText; kind <= LastTokenWithWellKnownText; kind++)
             {
-                s_tokensWithNoTrivia[(int)kind].Value = new GreenSyntaxToken(kind);
-                s_tokensWithElasticTrivia[(int)kind].Value = new SyntaxTokenWithTrivia(kind, MetaModelLanguage.Instance.InternalSyntaxFactory.ElasticZeroSpace, MetaModelLanguage.Instance.InternalSyntaxFactory.ElasticZeroSpace);
-                s_tokensWithSingleTrailingSpace[(int)kind].Value = new SyntaxTokenWithTrivia(kind, null, MetaModelLanguage.Instance.InternalSyntaxFactory.Space);
-                s_tokensWithSingleTrailingCRLF[(int)kind].Value = new SyntaxTokenWithTrivia(kind, null, MetaModelLanguage.Instance.InternalSyntaxFactory.CarriageReturnLineFeed);
+                s_tokensWithNoTrivia[(int)kind].Value = new GreenSyntaxToken((MetaModelSyntaxKind)kind);
+                s_tokensWithElasticTrivia[(int)kind].Value = new SyntaxTokenWithTrivia((MetaModelSyntaxKind)kind, MetaModelLanguage.Instance.InternalSyntaxFactory.ElasticZeroSpace, MetaModelLanguage.Instance.InternalSyntaxFactory.ElasticZeroSpace);
+                s_tokensWithSingleTrailingSpace[(int)kind].Value = new SyntaxTokenWithTrivia((MetaModelSyntaxKind)kind, null, MetaModelLanguage.Instance.InternalSyntaxFactory.Space);
+                s_tokensWithSingleTrailingCRLF[(int)kind].Value = new SyntaxTokenWithTrivia((MetaModelSyntaxKind)kind, null, MetaModelLanguage.Instance.InternalSyntaxFactory.CarriageReturnLineFeed);
             }
         }
 
@@ -220,8 +228,6 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
         {
             return new SyntaxTokenWithValueAndTrivia<T>(kind, text, value, leading, trailing);
         }
-
-        public SyntaxKind Kind => (SyntaxKind)this.RawKind;
 
         public virtual SyntaxKind ContextualKind
         {

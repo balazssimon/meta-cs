@@ -33,9 +33,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public abstract bool IsDocumentationCommentTrivia(SyntaxKind rawKind);
         public abstract bool IsTriviaWithEndOfLine(SyntaxKind rawKind);
 
-        public abstract string GetKindText(int rawKind);
-        public abstract string GetText(int rawKind);
-        public abstract object GetValue(int rawKind);
+        public abstract string GetKindText(SyntaxKind kind);
+        public abstract string GetText(SyntaxKind kind);
+        public abstract object GetValue(SyntaxKind kind);
         public abstract int GetKeywordKind(string text);
         public abstract int GetContextualKeywordKind(string text);
         public abstract int GetPreprocessorKeywordKind(string text);

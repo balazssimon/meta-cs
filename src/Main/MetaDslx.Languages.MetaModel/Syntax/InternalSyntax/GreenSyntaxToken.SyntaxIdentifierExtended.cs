@@ -4,6 +4,7 @@ using System;
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Roslyn.Utilities;
+using MetaDslx.CodeAnalysis.Syntax;
 
 namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 {
@@ -31,7 +32,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
             internal SyntaxIdentifierExtended(ObjectReader reader)
                 : base(reader)
             {
-                this.contextualKind = (SyntaxKind)reader.ReadInt16();
+                this.contextualKind = EnumObject.FromIntUnsafe<SyntaxKind>(reader.ReadInt32());
                 this.valueText = reader.ReadString();
             }
 
@@ -43,7 +44,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
             protected override void WriteTo(ObjectWriter writer)
             {
                 base.WriteTo(writer);
-                writer.WriteInt16((short)this.contextualKind);
+                writer.WriteInt32((int)this.contextualKind);
                 writer.WriteString(this.valueText);
             }
 

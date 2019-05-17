@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System.Globalization;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Syntax;
 
 namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 {

@@ -148,6 +148,39 @@ namespace Roslyn.Utilities
             return !left.Equals(right);
         }
 
+        public static bool operator <(EnumObject left, EnumObject right)
+        {
+            if ((object)left == null || (object)right == null) return false;
+            return left.GetValue() < right.GetValue();
+        }
+
+        public static bool operator >(EnumObject left, EnumObject right)
+        {
+            if ((object)left == null || (object)right == null) return false;
+            if (left._value == 0 || right._value == 0) return false;
+            return left.GetValue() > right.GetValue();
+        }
+
+        public static bool operator <=(EnumObject left, EnumObject right)
+        {
+            if ((object)left == null) return (object)right == null;
+            if ((object)right == null) return false;
+            return left.GetValue() <= right.GetValue();
+        }
+
+        public static bool operator >=(EnumObject left, EnumObject right)
+        {
+            if ((object)left == null) return (object)right == null;
+            if ((object)right == null) return false;
+            return left.GetValue() >= right.GetValue();
+        }
+
+        public static EnumObject operator++(EnumObject enumObj)
+        {
+            if (enumObj == null) return null;
+            return enumObj.CreateValue(enumObj.GetType(), enumObj.GetValue());
+        }
+
         public static bool operator ==(EnumObject left, string right)
         {
             if ((object)left == null) return (object)right == null;

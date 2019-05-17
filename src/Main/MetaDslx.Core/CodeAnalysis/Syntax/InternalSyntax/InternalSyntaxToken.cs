@@ -16,40 +16,40 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         // are called A LOT and we want to keep them as short and simple as possible and increase the
         // likelihood that they will be inlined.
 
-        protected InternalSyntaxToken(int kind)
+        protected InternalSyntaxToken(SyntaxKind kind)
             : base(kind)
         {
             FullWidth = this.Text.Length;
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected InternalSyntaxToken(int kind, DiagnosticInfo[] diagnostics)
+        protected InternalSyntaxToken(SyntaxKind kind, DiagnosticInfo[] diagnostics)
             : base(kind, diagnostics)
         {
             FullWidth = this.Text.Length;
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected InternalSyntaxToken(int kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        protected InternalSyntaxToken(SyntaxKind kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(kind, diagnostics, annotations)
         {
             FullWidth = this.Text.Length;
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected InternalSyntaxToken(int kind, int fullWidth)
+        protected InternalSyntaxToken(SyntaxKind kind, int fullWidth)
             : base(kind, fullWidth)
         {
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected InternalSyntaxToken(int kind, int fullWidth, DiagnosticInfo[] diagnostics)
+        protected InternalSyntaxToken(SyntaxKind kind, int fullWidth, DiagnosticInfo[] diagnostics)
             : base(kind, diagnostics, fullWidth)
         {
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
         }
 
-        protected InternalSyntaxToken(int kind, int fullWidth, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        protected InternalSyntaxToken(SyntaxKind kind, int fullWidth, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(kind, diagnostics, annotations, fullWidth)
         {
             this.flags |= NodeFlags.IsNotMissing; //note: cleared by subclasses representing missing tokens
@@ -78,7 +78,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public virtual string Text
         {
-            get { return Language.SyntaxFacts.GetText(this.RawKind); }
+            get { return Language.SyntaxFacts.GetText(this.Kind); }
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public virtual object Value
         {
-            get { return Language.SyntaxFacts.GetValue(this.RawKind); }
+            get { return Language.SyntaxFacts.GetValue(this.Kind); }
         }
 
         public override object GetValue()
