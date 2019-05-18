@@ -178,7 +178,25 @@ namespace Roslyn.Utilities
         public static EnumObject operator++(EnumObject enumObj)
         {
             if (enumObj == null) return null;
-            return enumObj.CreateValue(enumObj.GetType(), enumObj.GetValue());
+            return enumObj.CreateValue(enumObj.GetType(), enumObj.GetValue()+1);
+        }
+
+        public static EnumObject operator --(EnumObject enumObj)
+        {
+            if (enumObj == null) return null;
+            return enumObj.CreateValue(enumObj.GetType(), enumObj.GetValue()-1);
+        }
+
+        public static EnumObject operator +(EnumObject left, EnumObject right)
+        {
+            if ((object)left == null || (object)right == null) return null;
+            return EnumObject.GetDescriptor(left.GetType(), right.GetType()).GetValue(left.GetValue() + right.GetValue());
+        }
+
+        public static EnumObject operator -(EnumObject left, EnumObject right)
+        {
+            if ((object)left == null || (object)right == null) return null;
+            return EnumObject.GetDescriptor(left.GetType(), right.GetType()).GetValue(left.GetValue() - right.GetValue());
         }
 
         public static bool operator ==(EnumObject left, string right)
@@ -322,18 +340,20 @@ namespace Roslyn.Utilities
             descriptor.Close();
         }
 
-        public T As<T>()
+        public T CastUp<T>()
             where T : EnumObject
         {
+            if (this is T asT) return asT;
             if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException($"{typeof(T)} is not assignable from {this.GetType()}.");
             var descriptor = GetDescriptor(typeof(T));
             if (descriptor.TryGetValue(_name, out EnumObject result)) return (T)result;
             else throw new InvalidOperationException($"{typeof(T)} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
         }
 
-        public T Cast<T>()
+        public T CastDown<T>()
             where T : EnumObject
         {
+            if (this is T asT) return asT;
             if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException(typeof(T) + " is not assignable from " + this.GetType() + ".");
             var descriptor = GetDescriptor(this.GetType());
             if (descriptor.TryGetValue(_name, out EnumObject result)) return (T)result;
@@ -394,6 +414,26 @@ namespace Roslyn.Utilities
                 return descriptor;
             }
             throw new ArgumentException("Invalid EnumObject type: " + type);
+        }
+
+        internal static EnumObjectDescriptor GetDescriptor(params Type[] type)
+        {
+            if (type.Length == 0) return GetDescriptor(typeof(EnumObject));
+            if (type.Length == 1) return GetDescriptor(type[0]);
+            if (type.Length == 2)
+            {
+                if (type[0] == type[1]) return GetDescriptor(type[0]);
+                if (type[0].IsAssignableFrom(type[1])) GetDescriptor(type[1]);
+                if (type[1].IsAssignableFrom(type[0])) GetDescriptor(type[0]);
+            }
+            Type resultType = type[0];
+            for (int i = 1; i < type.Length; i++)
+            {
+                var current = type[i];
+                Type currentType = current.GetType();
+                if (resultType != currentType && resultType.IsAssignableFrom(currentType)) resultType = currentType;
+            }
+            return GetDescriptor(resultType);
         }
 
         private EnumObject CreateValue(Type type, int value)

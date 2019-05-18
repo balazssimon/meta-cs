@@ -427,7 +427,7 @@ namespace Roslyn.Utilities
             descriptor.Close();
         }
 
-        public T As<T>()
+        public T UpCast<T>()
             where T : FlagsObject
         {
             if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException($"{typeof(T)} is not assignable from {this.GetType()}.");
@@ -436,7 +436,7 @@ namespace Roslyn.Utilities
             else throw new InvalidOperationException($"{typeof(T)} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
         }
 
-        public T Cast<T>()
+        public T DownCast<T>()
             where T : FlagsObject
         {
             if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException(typeof(T) + " is not assignable from " + this.GetType() + ".");

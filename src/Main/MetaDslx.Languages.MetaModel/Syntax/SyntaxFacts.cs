@@ -135,7 +135,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax
             throw new NotImplementedException();
         }
 
-        public override int GetKeywordKind(string text)
+        public override int GetReservedKeywordKind(string text)
         {
             throw new NotImplementedException();
         }

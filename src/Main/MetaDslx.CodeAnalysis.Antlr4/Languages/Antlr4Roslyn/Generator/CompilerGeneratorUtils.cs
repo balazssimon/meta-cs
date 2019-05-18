@@ -1,5 +1,5 @@
-﻿using MetaDslx.Compiler.MetaModel;
-using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+﻿using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+using MetaDslx.Languages.Meta;
 using System;
 using System.Collections.Generic;
 using System.Linq;

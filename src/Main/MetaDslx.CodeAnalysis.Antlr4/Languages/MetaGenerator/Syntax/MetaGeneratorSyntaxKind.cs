@@ -1,6 +1,8 @@
 // !!!!!!!
 // WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
 // !!!!!!!
+using MetaDslx.CodeAnalysis.Syntax;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,153 +10,177 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Syntax.InternalSyntax;
 
 namespace MetaDslx.Languages.MetaGenerator.Syntax
 {
-	public enum MetaGeneratorSyntaxKind : int
+	public class MetaGeneratorSyntaxKind : SyntaxKind
 	{
-        None                          = SyntaxKind.None,
-        List                          = SyntaxKind.List,
-        BadToken                      = SyntaxKind.BadToken,
-        Eof                           = SyntaxKind.Eof,
+        public static readonly int __FirstAntlr4TokenValue;
+        public static readonly int __LastAntlr4TokenValue;
+        public static readonly int __FirstAntlr4RuleValue;
+        public static readonly int __LastAntlr4RuleValue;
 
-		// Tokens:
-		KNamespace = 1,
-		KGenerator = 2,
-		KUsing = 3,
-		KConfiguration = 4,
-		KProperties = 5,
-		KTemplate = 6,
-		KFunction = 7,
-		KExtern = 8,
-		KReturn = 9,
-		KSwitch = 10,
-		KCase = 11,
-		KType = 12,
-		KVoid = 13,
-		KEnd = 14,
-		KFor = 15,
-		KForEach = 16,
-		KIn = 17,
-		KIf = 18,
-		KElse = 19,
-		KRepeat = 20,
-		KUntil = 21,
-		KWhile = 22,
-		KLoop = 23,
-		KHasLoop = 24,
-		KWhere = 25,
-		KOrderBy = 26,
-		KDescending = 27,
-		KSeparator = 28,
-		KNull = 29,
-		KTrue = 30,
-		KFalse = 31,
-		KBool = 32,
-		KByte = 33,
-		KChar = 34,
-		KDecimal = 35,
-		KDouble = 36,
-		KFloat = 37,
-		KInt = 38,
-		KLong = 39,
-		KObject = 40,
-		KSByte = 41,
-		KShort = 42,
-		KString = 43,
-		KUInt = 44,
-		KULong = 45,
-		KUShort = 46,
-		KThis = 47,
-		KNew = 48,
-		KIs = 49,
-		KAs = 50,
-		KTypeof = 51,
-		KDefault = 52,
-		TSemicolon = 53,
-		TColon = 54,
-		TDot = 55,
-		TComma = 56,
-		TAssign = 57,
-		TAssignPlus = 58,
-		TAssignMinus = 59,
-		TAssignAsterisk = 60,
-		TAssignSlash = 61,
-		TAssignPercent = 62,
-		TAssignAmp = 63,
-		TAssignPipe = 64,
-		TAssignHat = 65,
-		TAssignLeftShift = 66,
-		TAssignRightShift = 67,
-		TOpenParenthesis = 68,
-		TCloseParenthesis = 69,
-		TOpenBracket = 70,
-		TCloseBracket = 71,
-		TOpenBrace = 72,
-		TCloseBrace = 73,
-		TEquals = 74,
-		TNotEquals = 75,
-		TArrow = 76,
-		TSingleArrow = 77,
-		TLessThan = 78,
-		TGreaterThan = 79,
-		TLessThanOrEquals = 80,
-		TGreaterThanOrEquals = 81,
-		TQuestion = 82,
-		TPlus = 83,
-		TMinus = 84,
-		TExclamation = 85,
-		TTilde = 86,
-		TAsterisk = 87,
-		TSlash = 88,
-		TPercent = 89,
-		TPlusPlus = 90,
-		TMinusMinus = 91,
-		TColonColon = 92,
-		TAmp = 93,
-		THat = 94,
-		TPipe = 95,
-		TAnd = 96,
-		TXor = 97,
-		TOr = 98,
-		TQuestionQuestion = 99,
-		IdentifierNormal = 100,
-		IntegerLiteral = 101,
-		DecimalLiteral = 102,
-		ScientificLiteral = 103,
-		DateTimeOffsetLiteral = 104,
-		DateTimeLiteral = 105,
-		DateLiteral = 106,
-		TimeLiteral = 107,
-		CharLiteral = 108,
-		RegularStringLiteral = 109,
-		GuidLiteral = 110,
-		LUtf8Bom = 111,
-		LWhitespace = 112,
-		LCrLf = 113,
-		LLineBreak = 114,
-		LLineComment = 115,
-		LMultiLineComment = 116,
-		DoubleQuoteVerbatimStringLiteral = 117,
-		TH_TOpenParenthesis = 118,
-		TH_TCloseParenthesis = 119,
-		KEndTemplate = 120,
-		TemplateLineControl = 121,
-		TemplateOutput = 122,
-		TemplateCrLf = 123,
-		TemplateLineBreak = 124,
-		TemplateStatementStart = 125,
-		TemplateStatementEnd = 126,
-		TS_TOpenBracket = 127,
-		TS_TCloseBracket = 128,
-		DoubleQuoteVerbatimStringLiteralStart = 129,
-		COMMENT_START = 130,
-		LastTokenSyntaxKind = 130,
+        // Tokens:
+        public const string KNamespace = nameof(KNamespace);
+        public const string KGenerator = nameof(KGenerator);
+        public const string KUsing = nameof(KUsing);
+        public const string KConfiguration = nameof(KConfiguration);
+        public const string KProperties = nameof(KProperties);
+        public const string KTemplate = nameof(KTemplate);
+        public const string KFunction = nameof(KFunction);
+        public const string KExtern = nameof(KExtern);
+        public const string KReturn = nameof(KReturn);
+        public const string KSwitch = nameof(KSwitch);
+        public const string KCase = nameof(KCase);
+        public const string KType = nameof(KType);
+        public const string KVoid = nameof(KVoid);
+        public const string KEnd = nameof(KEnd);
+        public const string KFor = nameof(KFor);
+        public const string KForEach = nameof(KForEach);
+        public const string KIn = nameof(KIn);
+        public const string KIf = nameof(KIf);
+        public const string KElse = nameof(KElse);
+        public const string KRepeat = nameof(KRepeat);
+        public const string KUntil = nameof(KUntil);
+        public const string KWhile = nameof(KWhile);
+        public const string KLoop = nameof(KLoop);
+        public const string KHasLoop = nameof(KHasLoop);
+        public const string KWhere = nameof(KWhere);
+        public const string KOrderBy = nameof(KOrderBy);
+        public const string KDescending = nameof(KDescending);
+        public const string KSeparator = nameof(KSeparator);
+        public const string KNull = nameof(KNull);
+        public const string KTrue = nameof(KTrue);
+        public const string KFalse = nameof(KFalse);
+        public const string KBool = nameof(KBool);
+        public const string KByte = nameof(KByte);
+        public const string KChar = nameof(KChar);
+        public const string KDecimal = nameof(KDecimal);
+        public const string KDouble = nameof(KDouble);
+        public const string KFloat = nameof(KFloat);
+        public const string KInt = nameof(KInt);
+        public const string KLong = nameof(KLong);
+        public const string KObject = nameof(KObject);
+        public const string KSByte = nameof(KSByte);
+        public const string KShort = nameof(KShort);
+        public const string KString = nameof(KString);
+        public const string KUInt = nameof(KUInt);
+        public const string KULong = nameof(KULong);
+        public const string KUShort = nameof(KUShort);
+        public const string KThis = nameof(KThis);
+        public const string KNew = nameof(KNew);
+        public const string KIs = nameof(KIs);
+        public const string KAs = nameof(KAs);
+        public const string KTypeof = nameof(KTypeof);
+        public const string KDefault = nameof(KDefault);
+        public const string TSemicolon = nameof(TSemicolon);
+        public const string TColon = nameof(TColon);
+        public const string TDot = nameof(TDot);
+        public const string TComma = nameof(TComma);
+        public const string TAssign = nameof(TAssign);
+        public const string TAssignPlus = nameof(TAssignPlus);
+        public const string TAssignMinus = nameof(TAssignMinus);
+        public const string TAssignAsterisk = nameof(TAssignAsterisk);
+        public const string TAssignSlash = nameof(TAssignSlash);
+        public const string TAssignPercent = nameof(TAssignPercent);
+        public const string TAssignAmp = nameof(TAssignAmp);
+        public const string TAssignPipe = nameof(TAssignPipe);
+        public const string TAssignHat = nameof(TAssignHat);
+        public const string TAssignLeftShift = nameof(TAssignLeftShift);
+        public const string TAssignRightShift = nameof(TAssignRightShift);
+        public const string TOpenParenthesis = nameof(TOpenParenthesis);
+        public const string TCloseParenthesis = nameof(TCloseParenthesis);
+        public const string TOpenBracket = nameof(TOpenBracket);
+        public const string TCloseBracket = nameof(TCloseBracket);
+        public const string TOpenBrace = nameof(TOpenBrace);
+        public const string TCloseBrace = nameof(TCloseBrace);
+        public const string TEquals = nameof(TEquals);
+        public const string TNotEquals = nameof(TNotEquals);
+        public const string TArrow = nameof(TArrow);
+        public const string TSingleArrow = nameof(TSingleArrow);
+        public const string TLessThan = nameof(TLessThan);
+        public const string TGreaterThan = nameof(TGreaterThan);
+        public const string TLessThanOrEquals = nameof(TLessThanOrEquals);
+        public const string TGreaterThanOrEquals = nameof(TGreaterThanOrEquals);
+        public const string TQuestion = nameof(TQuestion);
+        public const string TPlus = nameof(TPlus);
+        public const string TMinus = nameof(TMinus);
+        public const string TExclamation = nameof(TExclamation);
+        public const string TTilde = nameof(TTilde);
+        public const string TAsterisk = nameof(TAsterisk);
+        public const string TSlash = nameof(TSlash);
+        public const string TPercent = nameof(TPercent);
+        public const string TPlusPlus = nameof(TPlusPlus);
+        public const string TMinusMinus = nameof(TMinusMinus);
+        public const string TColonColon = nameof(TColonColon);
+        public const string TAmp = nameof(TAmp);
+        public const string THat = nameof(THat);
+        public const string TPipe = nameof(TPipe);
+        public const string TAnd = nameof(TAnd);
+        public const string TXor = nameof(TXor);
+        public const string TOr = nameof(TOr);
+        public const string TQuestionQuestion = nameof(TQuestionQuestion);
+        public const string IdentifierNormal = nameof(IdentifierNormal);
+        public const string IntegerLiteral = nameof(IntegerLiteral);
+        public const string DecimalLiteral = nameof(DecimalLiteral);
+        public const string ScientificLiteral = nameof(ScientificLiteral);
+        public const string DateTimeOffsetLiteral = nameof(DateTimeOffsetLiteral);
+        public const string DateTimeLiteral = nameof(DateTimeLiteral);
+        public const string DateLiteral = nameof(DateLiteral);
+        public const string TimeLiteral = nameof(TimeLiteral);
+        public const string CharLiteral = nameof(CharLiteral);
+        public const string RegularStringLiteral = nameof(RegularStringLiteral);
+        public const string GuidLiteral = nameof(GuidLiteral);
+        public const string LUtf8Bom = nameof(LUtf8Bom);
+        public const string LWhitespace = nameof(LWhitespace);
+        public const string LCrLf = nameof(LCrLf);
+        public const string LLineBreak = nameof(LLineBreak);
+        public const string LLineComment = nameof(LLineComment);
+        public const string LMultiLineComment = nameof(LMultiLineComment);
+        public const string DoubleQuoteVerbatimStringLiteral = nameof(DoubleQuoteVerbatimStringLiteral);
+        public const string TH_TOpenParenthesis = nameof(TH_TOpenParenthesis);
+        public const string TH_TCloseParenthesis = nameof(TH_TCloseParenthesis);
+        public const string KEndTemplate = nameof(KEndTemplate);
+        public const string TemplateLineControl = nameof(TemplateLineControl);
+        public const string TemplateOutput = nameof(TemplateOutput);
+        public const string TemplateCrLf = nameof(TemplateCrLf);
+        public const string TemplateLineBreak = nameof(TemplateLineBreak);
+        public const string TemplateStatementStart = nameof(TemplateStatementStart);
+        public const string TemplateStatementEnd = nameof(TemplateStatementEnd);
+        public const string TS_TOpenBracket = nameof(TS_TOpenBracket);
+        public const string TS_TCloseBracket = nameof(TS_TCloseBracket);
+        public const string DoubleQuoteVerbatimStringLiteralStart = nameof(DoubleQuoteVerbatimStringLiteralStart);
+        public const string COMMENT_START = nameof(COMMENT_START);
 
-		// Rules:
-	}
+        // Rules:
+
+        protected MetaGeneratorSyntaxKind(string name)
+            : base(name)
+        {
+        }
+
+        protected MetaGeneratorSyntaxKind(EnumObject retargetedValue)
+            : base(retargetedValue)
+        {
+        }
+
+        static MetaGeneratorSyntaxKind()
+        {
+            EnumObject.AutoInit<MetaGeneratorSyntaxKind>();
+            __FirstAntlr4TokenValue = KNamespace.As<MetaGeneratorSyntaxKind>().GetValue();
+            __LastAntlr4TokenValue = COMMENT_START.As<MetaGeneratorSyntaxKind>().GetValue();
+            __FirstAntlr4RuleValue = -1;
+            __LastAntlr4RuleValue = -1;
+        }
+
+        public static implicit operator MetaGeneratorSyntaxKind(string name)
+        {
+            return FromString<MetaGeneratorSyntaxKind>(name);
+        }
+
+        public new static IEnumerable<EnumObject> EnumValues => EnumObject.EnumValues(typeof(MetaGeneratorSyntaxKind));
+
+
+    }
 }
 

@@ -36,6 +36,11 @@
  */
 lexer grammar LexBasic;
 
+// Standard set of fragments
+tokens { 
+	DUMMY_TO_FIX_LEX_BASIC_GENERATION_ERROR 
+}
+
 // ======================================================
 // Lexer fragments
 //

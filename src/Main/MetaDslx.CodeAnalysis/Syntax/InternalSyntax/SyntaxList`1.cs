@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             _node = node;
         }
 
-        internal GreenNode Node => _node;
+        public GreenNode Node => _node;
 
         public int Count
         {

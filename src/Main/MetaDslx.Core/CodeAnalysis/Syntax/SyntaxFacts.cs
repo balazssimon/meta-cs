@@ -1,4 +1,5 @@
-﻿using MetaDslx.Modeling;
+﻿using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         // So it seems reasonable to limit the sizes to some round number like 42.
         public virtual int MaxCachedTokenSize => 42;
 
+        public abstract SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind);
         public abstract bool IsToken(SyntaxKind kind);
         public abstract bool IsFixedToken(SyntaxKind kind);
         public abstract bool IsTrivia(SyntaxKind kind);
@@ -22,23 +24,30 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public abstract bool IsPreprocessorKeyword(SyntaxKind kind);
         public abstract bool IsPreprocessorContextualKeyword(SyntaxKind kind);
         public abstract bool IsPreprocessorDirective(SyntaxKind kind);
-        public abstract bool IsName(SyntaxKind kind);
-        public abstract bool IsPredefinedType(SyntaxKind kind);
-        public abstract bool IsType(SyntaxKind kind);
-        public abstract bool IsTypeDeclaration(SyntaxKind kind);
-        public abstract bool IsGlobalMemberDeclaration(SyntaxKind kind);
-        public abstract bool IsNamespaceMemberDeclaration(SyntaxKind kind);
         public abstract bool IsIdentifier(SyntaxKind rawKind);
         public abstract bool IsGeneralCommentTrivia(SyntaxKind rawKind);
         public abstract bool IsDocumentationCommentTrivia(SyntaxKind rawKind);
-        public abstract bool IsTriviaWithEndOfLine(SyntaxKind rawKind);
 
-        public abstract string GetKindText(SyntaxKind kind);
+        public virtual string GetKindText(SyntaxKind kind)
+        {
+            return kind.ToString();
+        }
+
         public abstract string GetText(SyntaxKind kind);
-        public abstract object GetValue(SyntaxKind kind);
-        public abstract int GetKeywordKind(string text);
-        public abstract int GetContextualKeywordKind(string text);
-        public abstract int GetPreprocessorKeywordKind(string text);
+
+        public virtual object GetValue(SyntaxKind kind)
+        {
+            string text = GetText(kind);
+            if (text == "null") return null;
+            if (text == "true") return true;
+            if (text == "false") return false;
+            if (int.TryParse(text, out int i)) return i;
+            if (double.TryParse(text, out double d)) return d;
+            return text;
+        }
+
+        public abstract SyntaxKind GetKeywordKind(string text);
+        public abstract SyntaxKind GetFixedTokenKind(string text);
 
         public abstract IEnumerable<SyntaxKind> GetReservedKeywordKinds();
         public abstract IEnumerable<SyntaxKind> GetContextualKeywordKinds();
@@ -136,6 +145,17 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public virtual bool IsWeakChild(SyntaxNode node)
         {
+            return false;
+        }
+
+        public virtual bool IsTriviaWithEndOfLine(GreenNode trivia)
+        {
+            if (trivia is InternalSyntaxTrivia internalSyntaxTrivia)
+            {
+                string text = internalSyntaxTrivia.Text;
+                if (string.IsNullOrEmpty(text)) return false;
+                if (text.EndsWith("\r") || text.EndsWith("\n")) return true;
+            }
             return false;
         }
 

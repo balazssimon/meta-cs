@@ -1,6 +1,4 @@
 ﻿using Antlr4.Runtime;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,10 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Compiler.MetaModel;
 using System.Diagnostics;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Generator;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+using MetaDslx.Languages.Meta;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
@@ -150,13 +150,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.remover = new Antlr4AnnotationRemover(this.CommonTokenStream);
             this.remover.Visit(this.ParseTree);
             this.Antlr4Source = remover.GetText();
-            OriginalAntlr4Compiler antlr4Compiler = new Compilation.OriginalAntlr4Compiler(this.Antlr4Source, this.DefaultNamespace+ ".Syntax.InternalSyntax", this.InputDirectory, this.OutputDirectory != null && this.GenerateAntlr4 ? this.InputDirectory : null, Path.ChangeExtension(this.FileName, ".g4"));
-            antlr4Compiler.GenerateOutput = this.GenerateOutput;
-            antlr4Compiler.Generate();
-            this.Antlr4CSharpSource = antlr4Compiler.CSharpSource;
-            this.ReadTokens(antlr4Compiler.TokensSource);
-            var antlr4Diagnostics = antlr4Compiler.GetDiagnostics();
-            this.DiagnosticBag.AddRange(antlr4Diagnostics);
         }
 
         protected override void DoGenerate()
@@ -1834,7 +1827,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             {
                 if (token.Line == line && token.Column == column) return new LinePositionSpan(new LinePosition(token.Line-1, token.Column), new LinePosition(token.Line-1, token.Column+token.StopIndex-token.StartIndex+1));
             }
-            return LinePositionSpan.Zero;
+            return default;
         }
 
         private void RemoveText(ParserRuleContext context)

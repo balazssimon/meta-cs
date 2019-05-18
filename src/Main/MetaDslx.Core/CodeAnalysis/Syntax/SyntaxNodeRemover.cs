@@ -123,8 +123,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
             /// </summary>
             private static bool IsEndOfLine(SyntaxTrivia trivia)
             {
-                var green = (InternalSyntax.InternalSyntaxTrivia)trivia.UnderlyingNode;
-                return green.Language.SyntaxFacts.IsTriviaWithEndOfLine(trivia.GetKind());
+                return trivia.UnderlyingNode.IsTriviaWithEndOfLine();
             }
 
             /// <summary>

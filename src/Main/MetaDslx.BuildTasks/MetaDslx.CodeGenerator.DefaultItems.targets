@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <EnableDefaultMetaDslxItems Condition="'$(EnableDefaultAntlrItems)' == ''">True</EnableDefaultMetaDslxItems>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(EnableDefaultItems)' == 'True' AND '$(EnableDefaultNoneItems)' == 'True' AND '$(EnableDefaultMetaDslxItems)' == 'True'">
+    <None Remove="**/*.mgen" />
+    <None Remove="**/*.mm" />
+    <None Remove="**/*.ag4" />
+  </ItemGroup>
+
+  <!-- Modify the CustomToolNamespace based on the directory location of the file -->
+  <ItemGroup>
+    <MetaGenerator Update="@(MetaGenerator)" DefaultCustomToolNamespace="$([MSBuild]::ValueOrDefault(%(RelativeDir), '').Replace('\', '.').Replace('/', '.').TrimEnd('.'))" />
+    <MetaGenerator Update="@(MetaGenerator)" Condition="'$(RootNamespace)' != ''" DefaultCustomToolNamespace="$([MSBuild]::ValueOrDefault('$(RootNamespace).%(DefaultCustomToolNamespace)', '').TrimEnd('.'))" />
+    <MetaGenerator Update="@(MetaGenerator)" CustomToolNamespace="$([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))" />
+    <MetaModel Update="@(MetaModel)" DefaultCustomToolNamespace="$([MSBuild]::ValueOrDefault(%(RelativeDir), '').Replace('\', '.').Replace('/', '.').TrimEnd('.'))" />
+    <MetaModel Update="@(MetaModel)" Condition="'$(RootNamespace)' != ''" DefaultCustomToolNamespace="$([MSBuild]::ValueOrDefault('$(RootNamespace).%(DefaultCustomToolNamespace)', '').TrimEnd('.'))" />
+    <MetaModel Update="@(MetaModel)" CustomToolNamespace="$([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))" />
+    <Antlr4Roslyn Update="@(Antlr4Roslyn)" DefaultCustomToolNamespace="$([MSBuild]::ValueOrDefault(%(RelativeDir), '').Replace('\', '.').Replace('/', '.').TrimEnd('.'))" />
+    <Antlr4Roslyn Update="@(Antlr4Roslyn)" Condition="'$(RootNamespace)' != ''" DefaultCustomToolNamespace="$([MSBuild]::ValueOrDefault('$(RootNamespace).%(DefaultCustomToolNamespace)', '').TrimEnd('.'))" />
+    <Antlr4Roslyn Update="@(Antlr4Roslyn)" CustomToolNamespace="$([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))" />
+  </ItemGroup>
+</Project>

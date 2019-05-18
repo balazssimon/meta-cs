@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <!--
+    Note: In this file, only items may be conditioned on the MetaDslxIsSdkProject property. The EnableDefaultMetaDslxItems
+    is defined unconditionally, but it is simply unused outside of SDK projects.
+  -->
+  <ItemGroup Condition="'$(MetaDslxIsSdkProject)' == 'True' AND '$(EnableDefaultItems)' == 'True' AND '$(EnableDefaultMetaDslxItems)' == 'True'">
+    <MetaGenerator Include="**/*.mgen" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <MetaModel Include="**/*.mm" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <Antlr4Roslyn Include="**/*.ag4" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+  </ItemGroup>
+
+</Project>

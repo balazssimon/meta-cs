@@ -24,6 +24,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public const string CompilationUnit = nameof(CompilationUnit);
         public const string ExternAliasDirective = nameof(ExternAliasDirective);
 
+        public const string __LastPredefinedSyntaxKind = ExternAliasDirective;
+        public static readonly int __LastPredefinedSyntaxKindValue;
+
         protected SyntaxKind(string name)
             : base(name)
         {
@@ -36,7 +39,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         static SyntaxKind()
         {
+            EnumObject.RegisterAlias<SyntaxKind>(__LastPredefinedSyntaxKind);
             EnumObject.AutoInit<SyntaxKind>();
+            __LastPredefinedSyntaxKindValue = ((SyntaxKind)__LastPredefinedSyntaxKind).GetValue();
         }
 
         public static implicit operator SyntaxKind(string name)

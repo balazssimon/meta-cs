@@ -203,7 +203,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.DiagnosticBag.Add(code, Location.Create(this.FileName, this.GetTextSpan(rule), this.GetLinePositionSpan(rule)), args);
         }
 
-        public void SyntaxError(TextWriter output, IRecognizer recognizer, int offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] int offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
         {
             IToken token = e.OffendingToken;
             if (token != null)
@@ -216,7 +216,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
-        public void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+        public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
         {
             if (offendingSymbol != null)
             {

@@ -1,7 +1,7 @@
+using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
 using System.Threading;
-using MetaDslx.Compiler;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Text;
 
 namespace MetaDslx.Languages.MetaGenerator.Syntax
 {
@@ -34,24 +34,14 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 	{
 		public static readonly MetaGeneratorSyntaxFacts Instance = new MetaGeneratorSyntaxFacts();
 
-		protected override int DefaultEndOfLineSyntaxKindCore
-		{
-			get { return (int)MetaGeneratorSyntaxKind.None; }
-		}
+        public override SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind)
+        {
+            return kind.CastUp<MetaGeneratorSyntaxKind>();
+        }
 
-		protected override int DefaultWhitespaceSyntaxKindCore
+        public override bool IsToken(SyntaxKind kind)
 		{
-			get { return (int)MetaGeneratorSyntaxKind.None; }
-		}
-
-		public override bool IsToken(int rawKind)
-		{
-			return this.IsToken((MetaGeneratorSyntaxKind)rawKind);
-		}
-
-		public bool IsToken(MetaGeneratorSyntaxKind kind)
-		{
-			switch (kind)
+			switch (kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.Eof:
 				case MetaGeneratorSyntaxKind.KNamespace:
@@ -190,14 +180,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			}
 		}
 
-		public override bool IsFixedToken(int rawKind)
+		public override bool IsFixedToken(SyntaxKind kind)
 		{
-			return this.IsFixedToken((MetaGeneratorSyntaxKind)rawKind);
-		}
-
-		public bool IsFixedToken(MetaGeneratorSyntaxKind kind)
-		{
-			switch (kind)
+			switch (kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.Eof:
 				case MetaGeneratorSyntaxKind.KNamespace:
@@ -304,14 +289,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			}
 		}
 
-		public override string GetText(int rawKind)
+		public override string GetText(SyntaxKind kind)
 		{
-			return this.GetText((MetaGeneratorSyntaxKind)rawKind);
-		}
-
-		public string GetText(MetaGeneratorSyntaxKind kind)
-		{
-			switch (kind)
+			switch (kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.KNamespace:
 					return "namespace";
@@ -514,7 +494,7 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			}
 		}
 
-		public MetaGeneratorSyntaxKind GetKind(string text)
+		public override SyntaxKind GetFixedTokenKind(string text)
 		{
 			switch (text)
 			{
@@ -719,38 +699,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 			}
 		}
 
-		public override string GetKindText(int rawKind)
+		public override bool IsReservedKeyword(SyntaxKind kind)
 		{
-			return this.GetKindText((MetaGeneratorSyntaxKind)rawKind);
-		}
-
-		public string GetKindText(MetaGeneratorSyntaxKind kind)
-		{
-			return kind.ToString();
-		}
-
-		public override bool IsTriviaWithEndOfLine(int rawKind)
-		{
-			return this.IsTriviaWithEndOfLine((MetaGeneratorSyntaxKind)rawKind);
-		}
-
-		public bool IsTriviaWithEndOfLine(MetaGeneratorSyntaxKind kind)
-		{
-			switch(kind)
-			{
-				default:
-					return false;
-			}
-		}
-
-		public bool IsKeyword(int rawKind)
-		{
-			return this.IsKeyword((MetaGeneratorSyntaxKind)rawKind);
-		}
-
-		public bool IsKeyword(MetaGeneratorSyntaxKind kind)
-		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.KNamespace:
 				case MetaGeneratorSyntaxKind.KGenerator:
@@ -811,14 +762,187 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
-		public bool IsOperator(int rawKind)
-		{
-			return this.IsOperator((MetaGeneratorSyntaxKind)rawKind);
-		}
 
-		public bool IsOperator(MetaGeneratorSyntaxKind kind)
+        public override IEnumerable<SyntaxKind> GetReservedKeywordKinds()
+        {
+			yield return MetaGeneratorSyntaxKind.KNamespace;
+			yield return MetaGeneratorSyntaxKind.KGenerator;
+			yield return MetaGeneratorSyntaxKind.KUsing;
+			yield return MetaGeneratorSyntaxKind.KConfiguration;
+			yield return MetaGeneratorSyntaxKind.KProperties;
+			yield return MetaGeneratorSyntaxKind.KTemplate;
+			yield return MetaGeneratorSyntaxKind.KFunction;
+			yield return MetaGeneratorSyntaxKind.KExtern;
+			yield return MetaGeneratorSyntaxKind.KReturn;
+			yield return MetaGeneratorSyntaxKind.KSwitch;
+			yield return MetaGeneratorSyntaxKind.KCase;
+			yield return MetaGeneratorSyntaxKind.KType;
+			yield return MetaGeneratorSyntaxKind.KVoid;
+			yield return MetaGeneratorSyntaxKind.KEnd;
+			yield return MetaGeneratorSyntaxKind.KFor;
+			yield return MetaGeneratorSyntaxKind.KForEach;
+			yield return MetaGeneratorSyntaxKind.KIn;
+			yield return MetaGeneratorSyntaxKind.KIf;
+			yield return MetaGeneratorSyntaxKind.KElse;
+			yield return MetaGeneratorSyntaxKind.KRepeat;
+			yield return MetaGeneratorSyntaxKind.KUntil;
+			yield return MetaGeneratorSyntaxKind.KWhile;
+			yield return MetaGeneratorSyntaxKind.KLoop;
+			yield return MetaGeneratorSyntaxKind.KHasLoop;
+			yield return MetaGeneratorSyntaxKind.KWhere;
+			yield return MetaGeneratorSyntaxKind.KOrderBy;
+			yield return MetaGeneratorSyntaxKind.KDescending;
+			yield return MetaGeneratorSyntaxKind.KSeparator;
+			yield return MetaGeneratorSyntaxKind.KNull;
+			yield return MetaGeneratorSyntaxKind.KTrue;
+			yield return MetaGeneratorSyntaxKind.KFalse;
+			yield return MetaGeneratorSyntaxKind.KBool;
+			yield return MetaGeneratorSyntaxKind.KByte;
+			yield return MetaGeneratorSyntaxKind.KChar;
+			yield return MetaGeneratorSyntaxKind.KDecimal;
+			yield return MetaGeneratorSyntaxKind.KDouble;
+			yield return MetaGeneratorSyntaxKind.KFloat;
+			yield return MetaGeneratorSyntaxKind.KInt;
+			yield return MetaGeneratorSyntaxKind.KLong;
+			yield return MetaGeneratorSyntaxKind.KObject;
+			yield return MetaGeneratorSyntaxKind.KSByte;
+			yield return MetaGeneratorSyntaxKind.KShort;
+			yield return MetaGeneratorSyntaxKind.KString;
+			yield return MetaGeneratorSyntaxKind.KUInt;
+			yield return MetaGeneratorSyntaxKind.KULong;
+			yield return MetaGeneratorSyntaxKind.KUShort;
+			yield return MetaGeneratorSyntaxKind.KThis;
+			yield return MetaGeneratorSyntaxKind.KNew;
+			yield return MetaGeneratorSyntaxKind.KIs;
+			yield return MetaGeneratorSyntaxKind.KAs;
+			yield return MetaGeneratorSyntaxKind.KTypeof;
+			yield return MetaGeneratorSyntaxKind.KDefault;
+        }
+
+        public override bool IsContextualKeyword(SyntaxKind kind)
+        {
+            return false;
+        }
+
+        public override IEnumerable<SyntaxKind> GetContextualKeywordKinds()
+        {
+            yield break;
+        }
+
+        public override SyntaxKind GetKeywordKind(string text)
+        {
+            switch (text)
+            {
+                case "namespace":
+                    return MetaGeneratorSyntaxKind.KNamespace;
+                case "generator":
+                    return MetaGeneratorSyntaxKind.KGenerator;
+                case "using":
+                    return MetaGeneratorSyntaxKind.KUsing;
+                case "configuration":
+                    return MetaGeneratorSyntaxKind.KConfiguration;
+                case "properties":
+                    return MetaGeneratorSyntaxKind.KProperties;
+                case "template":
+                    return MetaGeneratorSyntaxKind.KTemplate;
+                case "function":
+                    return MetaGeneratorSyntaxKind.KFunction;
+                case "extern":
+                    return MetaGeneratorSyntaxKind.KExtern;
+                case "return":
+                    return MetaGeneratorSyntaxKind.KReturn;
+                case "switch":
+                    return MetaGeneratorSyntaxKind.KSwitch;
+                case "case":
+                    return MetaGeneratorSyntaxKind.KCase;
+                case "type":
+                    return MetaGeneratorSyntaxKind.KType;
+                case "void":
+                    return MetaGeneratorSyntaxKind.KVoid;
+                case "end":
+                    return MetaGeneratorSyntaxKind.KEnd;
+                case "for":
+                    return MetaGeneratorSyntaxKind.KFor;
+                case "foreach":
+                    return MetaGeneratorSyntaxKind.KForEach;
+                case "in":
+                    return MetaGeneratorSyntaxKind.KIn;
+                case "if":
+                    return MetaGeneratorSyntaxKind.KIf;
+                case "else":
+                    return MetaGeneratorSyntaxKind.KElse;
+                case "repeat":
+                    return MetaGeneratorSyntaxKind.KRepeat;
+                case "until":
+                    return MetaGeneratorSyntaxKind.KUntil;
+                case "while":
+                    return MetaGeneratorSyntaxKind.KWhile;
+                case "loop":
+                    return MetaGeneratorSyntaxKind.KLoop;
+                case "hasloop":
+                    return MetaGeneratorSyntaxKind.KHasLoop;
+                case "where":
+                    return MetaGeneratorSyntaxKind.KWhere;
+                case "orderby":
+                    return MetaGeneratorSyntaxKind.KOrderBy;
+                case "descending":
+                    return MetaGeneratorSyntaxKind.KDescending;
+                case "separator":
+                    return MetaGeneratorSyntaxKind.KSeparator;
+                case "null":
+                    return MetaGeneratorSyntaxKind.KNull;
+                case "true":
+                    return MetaGeneratorSyntaxKind.KTrue;
+                case "false":
+                    return MetaGeneratorSyntaxKind.KFalse;
+                case "byte":
+                    return MetaGeneratorSyntaxKind.KByte;
+                case "char":
+                    return MetaGeneratorSyntaxKind.KChar;
+                case "decimal":
+                    return MetaGeneratorSyntaxKind.KDecimal;
+                case "double":
+                    return MetaGeneratorSyntaxKind.KDouble;
+                case "float":
+                    return MetaGeneratorSyntaxKind.KFloat;
+                case "int":
+                    return MetaGeneratorSyntaxKind.KInt;
+                case "long":
+                    return MetaGeneratorSyntaxKind.KLong;
+                case "object":
+                    return MetaGeneratorSyntaxKind.KObject;
+                case "sbyte":
+                    return MetaGeneratorSyntaxKind.KSByte;
+                case "short":
+                    return MetaGeneratorSyntaxKind.KShort;
+                case "string":
+                    return MetaGeneratorSyntaxKind.KString;
+                case "uint":
+                    return MetaGeneratorSyntaxKind.KUInt;
+                case "ulong":
+                    return MetaGeneratorSyntaxKind.KULong;
+                case "ushort":
+                    return MetaGeneratorSyntaxKind.KUShort;
+                case "this":
+                    return MetaGeneratorSyntaxKind.KThis;
+                case "new":
+                    return MetaGeneratorSyntaxKind.KNew;
+                case "is":
+                    return MetaGeneratorSyntaxKind.KIs;
+                case "as":
+                    return MetaGeneratorSyntaxKind.KAs;
+                case "typeof":
+                    return MetaGeneratorSyntaxKind.KTypeof;
+                case "default":
+                    return MetaGeneratorSyntaxKind.KDefault;
+                default:
+                    return MetaGeneratorSyntaxKind.None;
+            }
+        }
+
+        public bool IsOperator(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.TSemicolon:
 				case MetaGeneratorSyntaxKind.TColon:
@@ -874,14 +998,10 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
-		public bool IsIdentifier(int rawKind)
-		{
-			return this.IsIdentifier((MetaGeneratorSyntaxKind)rawKind);
-		}
 
-		public bool IsIdentifier(MetaGeneratorSyntaxKind kind)
+		public override bool IsIdentifier(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.IdentifierNormal:
 					return true;
@@ -889,14 +1009,10 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
-		public bool IsNumber(int rawKind)
-		{
-			return this.IsNumber((MetaGeneratorSyntaxKind)rawKind);
-		}
 
-		public bool IsNumber(MetaGeneratorSyntaxKind kind)
+        public bool IsNumber(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.IntegerLiteral:
 					return true;
@@ -918,14 +1034,10 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
-		public bool IsString(int rawKind)
-		{
-			return this.IsString((MetaGeneratorSyntaxKind)rawKind);
-		}
 
-		public bool IsString(MetaGeneratorSyntaxKind kind)
+		public bool IsString(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.CharLiteral:
 					return true;
@@ -935,14 +1047,10 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
-		public bool IsComment(int rawKind)
+		
+		public override bool IsGeneralCommentTrivia(SyntaxKind kind)
 		{
-			return this.IsComment((MetaGeneratorSyntaxKind)rawKind);
-		}
-
-		public bool IsComment(MetaGeneratorSyntaxKind kind)
-		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.LLineComment:
 					return true;
@@ -952,14 +1060,10 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
-		public bool IsTemplateControl(int rawKind)
-		{
-			return this.IsTemplateControl((MetaGeneratorSyntaxKind)rawKind);
-		}
 
-		public bool IsTemplateControl(MetaGeneratorSyntaxKind kind)
+		public bool IsTemplateControl(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.TemplateLineControl:
 					return true;
@@ -971,14 +1075,10 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
-		public bool IsTemplateOutput(int rawKind)
-		{
-			return this.IsTemplateOutput((MetaGeneratorSyntaxKind)rawKind);
-		}
 
-		public bool IsTemplateOutput(MetaGeneratorSyntaxKind kind)
+		public bool IsTemplateOutput(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.TemplateOutput:
 					return true;
@@ -990,15 +1090,49 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return false;
 			}
 		}
+        public override bool IsDocumentationCommentTrivia(SyntaxKind kind)
+        {
+            switch (kind.Switch())
+            {
+                default:
+                    return false;
+            }
+        }
 
-		public MetaGeneratorTokenKind GetTokenKind(int rawKind)
-		{
-			return this.GetTokenKind((MetaGeneratorSyntaxKind)rawKind);
-		}
+        public override bool IsTrivia(SyntaxKind kind)
+        {
+            switch (kind.Switch())
+            {
+                case MetaGeneratorSyntaxKind.LUtf8Bom:
+                case MetaGeneratorSyntaxKind.LWhitespace:
+                case MetaGeneratorSyntaxKind.LCrLf:
+                case MetaGeneratorSyntaxKind.LLineBreak:
+                case MetaGeneratorSyntaxKind.LLineComment:
+                case MetaGeneratorSyntaxKind.LMultiLineComment:
+                    return true;
+                default:
+                    return false;
+            }
+        }
 
-		public MetaGeneratorTokenKind GetTokenKind(MetaGeneratorSyntaxKind kind)
+        public override bool IsPreprocessorDirective(SyntaxKind kind)
+        {
+            return false;
+        }
+
+        public override bool IsPreprocessorKeyword(SyntaxKind kind)
+        {
+            return false;
+        }
+
+        public override bool IsPreprocessorContextualKeyword(SyntaxKind kind)
+        {
+            return false;
+        }
+
+        public MetaGeneratorTokenKind GetTokenKind(MetaGeneratorSyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case MetaGeneratorSyntaxKind.KNamespace:
 				case MetaGeneratorSyntaxKind.KGenerator:
@@ -1169,6 +1303,21 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 					return MetaGeneratorTokenKind.None;
 			}
 		}
-	}
+
+        public override bool IsInNamespaceOrTypeContext(SyntaxNode node)
+        {
+            return false;
+        }
+
+        public override bool IsStatement(SyntaxNode syntax)
+        {
+            return false;
+        }
+
+        public override bool IsExpression(SyntaxNode node)
+        {
+            return false;
+        }
+    }
 }
 

@@ -1,7 +1,7 @@
+using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
 using System.Threading;
-using MetaDslx.Compiler;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Text;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 {
@@ -41,24 +41,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 	{
 		public static readonly Antlr4RoslynSyntaxFacts Instance = new Antlr4RoslynSyntaxFacts();
 
-		protected override int DefaultEndOfLineSyntaxKindCore
-		{
-			get { return (int)Antlr4RoslynSyntaxKind.None; }
-		}
+        public override SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind)
+        {
+            return kind.CastUp<Antlr4RoslynSyntaxKind>();
+        }
 
-		protected override int DefaultWhitespaceSyntaxKindCore
+        public override bool IsToken(SyntaxKind kind)
 		{
-			get { return (int)Antlr4RoslynSyntaxKind.None; }
-		}
-
-		public override bool IsToken(int rawKind)
-		{
-			return this.IsToken((Antlr4RoslynSyntaxKind)rawKind);
-		}
-
-		public bool IsToken(Antlr4RoslynSyntaxKind kind)
-		{
-			switch (kind)
+			switch (kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.Eof:
 				case Antlr4RoslynSyntaxKind.TOKEN_REF:
@@ -134,14 +124,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 			}
 		}
 
-		public override bool IsFixedToken(int rawKind)
+		public override bool IsFixedToken(SyntaxKind kind)
 		{
-			return this.IsFixedToken((Antlr4RoslynSyntaxKind)rawKind);
-		}
-
-		public bool IsFixedToken(Antlr4RoslynSyntaxKind kind)
-		{
-			switch (kind)
+			switch (kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.Eof:
 				case Antlr4RoslynSyntaxKind.OPTIONS:
@@ -170,14 +155,58 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 			}
 		}
 
-		public override string GetText(int rawKind)
-		{
-			return this.GetText((Antlr4RoslynSyntaxKind)rawKind);
-		}
+        public override SyntaxKind GetFixedTokenKind(string text)
+        {
+            switch (text)
+            {
+                case "options":
+                    return Antlr4RoslynSyntaxKind.OPTIONS;
+                case "tokens":
+                    return Antlr4RoslynSyntaxKind.TOKENS;
+                case "channels":
+                    return Antlr4RoslynSyntaxKind.CHANNELS;
+                case "import":
+                    return Antlr4RoslynSyntaxKind.IMPORT;
+                case "fragment":
+                    return Antlr4RoslynSyntaxKind.FRAGMENT;
+                case "lexer":
+                    return Antlr4RoslynSyntaxKind.LEXER;
+                case "parser":
+                    return Antlr4RoslynSyntaxKind.PARSER;
+                case "grammar":
+                    return Antlr4RoslynSyntaxKind.GRAMMAR;
+                case "protected":
+                    return Antlr4RoslynSyntaxKind.PROTECTED;
+                case "public":
+                    return Antlr4RoslynSyntaxKind.PUBLIC;
+                case "private":
+                    return Antlr4RoslynSyntaxKind.PRIVATE;
+                case "returns":
+                    return Antlr4RoslynSyntaxKind.RETURNS;
+                case "locals":
+                    return Antlr4RoslynSyntaxKind.LOCALS;
+                case "throws":
+                    return Antlr4RoslynSyntaxKind.THROWS;
+                case "catch":
+                    return Antlr4RoslynSyntaxKind.CATCH;
+                case "finally":
+                    return Antlr4RoslynSyntaxKind.FINALLY;
+                case "mode":
+                    return Antlr4RoslynSyntaxKind.MODE;
+                case "true":
+                    return Antlr4RoslynSyntaxKind.TRUE;
+                case "false":
+                    return Antlr4RoslynSyntaxKind.FALSE;
+                case "null":
+                    return Antlr4RoslynSyntaxKind.NULL;
+                default:
+                    return Antlr4RoslynSyntaxKind.None;
+            }
+        }
 
-		public string GetText(Antlr4RoslynSyntaxKind kind)
+        public override string GetText(SyntaxKind kind)
 		{
-			switch (kind)
+			switch (kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.OPTIONS:
 					return "options";
@@ -224,7 +253,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 			}
 		}
 
-		public Antlr4RoslynSyntaxKind GetKind(string text)
+		public override SyntaxKind GetKeywordKind(string text)
 		{
 			switch (text)
 			{
@@ -273,38 +302,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 			}
 		}
 
-		public override string GetKindText(int rawKind)
+		public bool IsAntlr4Token(SyntaxKind kind)
 		{
-			return this.GetKindText((Antlr4RoslynSyntaxKind)rawKind);
-		}
-
-		public string GetKindText(Antlr4RoslynSyntaxKind kind)
-		{
-			return kind.ToString();
-		}
-
-		public override bool IsTriviaWithEndOfLine(int rawKind)
-		{
-			return this.IsTriviaWithEndOfLine((Antlr4RoslynSyntaxKind)rawKind);
-		}
-
-		public bool IsTriviaWithEndOfLine(Antlr4RoslynSyntaxKind kind)
-		{
-			switch(kind)
-			{
-				default:
-					return false;
-			}
-		}
-
-		public bool IsAntlr4Token(int rawKind)
-		{
-			return this.IsAntlr4Token((Antlr4RoslynSyntaxKind)rawKind);
-		}
-
-		public bool IsAntlr4Token(Antlr4RoslynSyntaxKind kind)
-		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.TOKEN_REF:
 					return true;
@@ -312,14 +312,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsAntlr4Rule(int rawKind)
-		{
-			return this.IsAntlr4Rule((Antlr4RoslynSyntaxKind)rawKind);
-		}
 
-		public bool IsAntlr4Rule(Antlr4RoslynSyntaxKind kind)
+		public bool IsAntlr4Rule(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.RULE_REF:
 					return true;
@@ -327,14 +323,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsOperator(int rawKind)
-		{
-			return this.IsOperator((Antlr4RoslynSyntaxKind)rawKind);
-		}
 
-		public bool IsOperator(Antlr4RoslynSyntaxKind kind)
+		public bool IsOperator(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.LEXER_CHAR_SET:
 					return true;
@@ -342,14 +334,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsComment(int rawKind)
-		{
-			return this.IsComment((Antlr4RoslynSyntaxKind)rawKind);
-		}
 
-		public bool IsComment(Antlr4RoslynSyntaxKind kind)
+		public override bool IsGeneralCommentTrivia(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.LINE_COMMENT:
 					return true;
@@ -361,14 +349,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsNumber(int rawKind)
-		{
-			return this.IsNumber((Antlr4RoslynSyntaxKind)rawKind);
-		}
 
-		public bool IsNumber(Antlr4RoslynSyntaxKind kind)
+		public bool IsNumber(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.INT:
 					return true;
@@ -376,14 +360,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsString(int rawKind)
-		{
-			return this.IsString((Antlr4RoslynSyntaxKind)rawKind);
-		}
 
-		public bool IsString(Antlr4RoslynSyntaxKind kind)
+		public bool IsString(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.STRING_LITERAL:
 					return true;
@@ -393,14 +373,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsAntlr4Action(int rawKind)
-		{
-			return this.IsAntlr4Action((Antlr4RoslynSyntaxKind)rawKind);
-		}
 
-		public bool IsAntlr4Action(Antlr4RoslynSyntaxKind kind)
+		public bool IsAntlr4Action(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.BEGIN_ACTION:
 					return true;
@@ -408,14 +384,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsAntlr4Options(int rawKind)
-		{
-			return this.IsAntlr4Options((Antlr4RoslynSyntaxKind)rawKind);
-		}
 
-		public bool IsAntlr4Options(Antlr4RoslynSyntaxKind kind)
+		public bool IsAntlr4Options(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.OPTIONS:
 					return true;
@@ -427,14 +399,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsKeyword(int rawKind)
+		
+		public override bool IsReservedKeyword(SyntaxKind kind)
 		{
-			return this.IsKeyword((Antlr4RoslynSyntaxKind)rawKind);
-		}
-
-		public bool IsKeyword(Antlr4RoslynSyntaxKind kind)
-		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.IMPORT:
 				case Antlr4RoslynSyntaxKind.FRAGMENT:
@@ -458,14 +426,41 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsIdentifier(int rawKind)
-		{
-			return this.IsIdentifier((Antlr4RoslynSyntaxKind)rawKind);
-		}
 
-		public bool IsIdentifier(Antlr4RoslynSyntaxKind kind)
+        public override IEnumerable<SyntaxKind> GetReservedKeywordKinds()
+        {
+            yield return Antlr4RoslynSyntaxKind.IMPORT;
+			yield return Antlr4RoslynSyntaxKind.FRAGMENT;
+			yield return Antlr4RoslynSyntaxKind.LEXER;
+			yield return Antlr4RoslynSyntaxKind.PARSER;
+			yield return Antlr4RoslynSyntaxKind.GRAMMAR;
+			yield return Antlr4RoslynSyntaxKind.PROTECTED;
+			yield return Antlr4RoslynSyntaxKind.PUBLIC;
+			yield return Antlr4RoslynSyntaxKind.PRIVATE;
+			yield return Antlr4RoslynSyntaxKind.RETURNS;
+			yield return Antlr4RoslynSyntaxKind.LOCALS;
+			yield return Antlr4RoslynSyntaxKind.THROWS;
+			yield return Antlr4RoslynSyntaxKind.CATCH;
+			yield return Antlr4RoslynSyntaxKind.FINALLY;
+			yield return Antlr4RoslynSyntaxKind.MODE;
+			yield return Antlr4RoslynSyntaxKind.TRUE;
+			yield return Antlr4RoslynSyntaxKind.FALSE;
+			yield return Antlr4RoslynSyntaxKind.NULL;
+        }
+
+        public override bool IsContextualKeyword(SyntaxKind kind)
+        {
+            return false;
+        }
+
+        public override IEnumerable<SyntaxKind> GetContextualKeywordKinds()
+        {
+            yield break;
+        }
+
+        public override bool IsIdentifier(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.ID:
 					return true;
@@ -473,28 +468,51 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return false;
 			}
 		}
-		public bool IsDocComment(int rawKind)
-		{
-			return this.IsDocComment((Antlr4RoslynSyntaxKind)rawKind);
-		}
 
-		public bool IsDocComment(Antlr4RoslynSyntaxKind kind)
+		public override bool IsDocumentationCommentTrivia(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
-				default:
+                case Antlr4RoslynSyntaxKind.DOC_COMMENT:
+                    return true;
+                default:
 					return false;
 			}
 		}
 
-		public Antlr4RoslynTokenKind GetTokenKind(int rawKind)
-		{
-			return this.GetTokenKind((Antlr4RoslynSyntaxKind)rawKind);
-		}
+        public override bool IsTrivia(SyntaxKind kind)
+        {
+            switch (kind.Switch())
+            {
+                case Antlr4RoslynSyntaxKind.LINE_COMMENT:
+                case Antlr4RoslynSyntaxKind.DOC_COMMENT:
+                case Antlr4RoslynSyntaxKind.BLOCK_COMMENT:
+                case Antlr4RoslynSyntaxKind.WS:
+                case Antlr4RoslynSyntaxKind.ACTION_CONTENT:
+                    return true; 
+                default:
+                    return false;
+            }
+        }
 
-		public Antlr4RoslynTokenKind GetTokenKind(Antlr4RoslynSyntaxKind kind)
+        public override bool IsPreprocessorDirective(SyntaxKind kind)
+        {
+            return false;
+        }
+
+        public override bool IsPreprocessorKeyword(SyntaxKind kind)
+        {
+            return false;
+        }
+
+        public override bool IsPreprocessorContextualKeyword(SyntaxKind kind)
+        {
+            return false;
+        }
+
+        public Antlr4RoslynTokenKind GetTokenKind(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 				case Antlr4RoslynSyntaxKind.TOKEN_REF:
 					return Antlr4RoslynTokenKind.Antlr4Token;
@@ -547,11 +565,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 			}
 		}
 
-		public Antlr4RoslynTokenKind GetModeTokenKind(int rawKind)
-		{
-			return this.GetModeTokenKind((Antlr4RoslynLexerMode)rawKind);
-		}
-
 		public Antlr4RoslynTokenKind GetModeTokenKind(Antlr4RoslynLexerMode kind)
 		{
 			switch(kind)
@@ -576,6 +589,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return Antlr4RoslynTokenKind.None;
 			}
 		}
-	}
+
+        public override bool IsInNamespaceOrTypeContext(SyntaxNode node)
+        {
+            return false;
+        }
+
+        public override bool IsStatement(SyntaxNode syntax)
+        {
+            return false;
+        }
+
+        public override bool IsExpression(SyntaxNode node)
+        {
+            return false;
+        }
+    }
 }
 

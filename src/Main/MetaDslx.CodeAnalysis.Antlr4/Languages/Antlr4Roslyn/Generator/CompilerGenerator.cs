@@ -4,8 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler; //4:1
-using MetaDslx.Compiler.MetaModel; //5:1
+using MetaDslx.Languages.Meta; //4:1
 using MetaDslx.Languages.Antlr4Roslyn.Compilation; //6:1
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1

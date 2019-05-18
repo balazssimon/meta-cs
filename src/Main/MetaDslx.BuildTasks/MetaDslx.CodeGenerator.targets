@@ -1,0 +1,376 @@
+﻿<!--
+   Copyright (c) Terence Parr, Sam Harwell. All Rights Reserved.
+   Licensed under the BSD License. See LICENSE.txt in the project root for license information.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MetaDslxIsSdkProject)' == ''">
+    <MetaDslxIsSdkProject>False</MetaDslxIsSdkProject>
+    <MetaDslxIsSdkProject Condition="'$(TargetFramework)' != '' OR '$(TargetFrameworks)' != ''">True</MetaDslxIsSdkProject>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BuildSystem>MSBuild</BuildSystem>
+    <MetaDslxBuildTaskAssemblyName Condition="'$(MetaDslxBuildTaskAssemblyName)'==''">MetaDslx.BuildTasks</MetaDslxBuildTaskAssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LoadTimeSensitiveTargets>
+      $(LoadTimeSensitiveTargets);
+	  MetaGeneratorCompile;
+	  MetaModelCompile;
+      Antlr4RoslynCompile;
+    </LoadTimeSensitiveTargets>
+    <LoadTimeSensitiveProperties>
+      $(LoadTimeSensitiveProperties);
+	  MetaGeneratorCompileDependsOn;
+	  MetaModelCompileDependsOn;
+      Antlr4RoslynCompileDependsOn;
+    </LoadTimeSensitiveProperties>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MetaDslxBuildTaskLocation Condition="'$(MetaDslxRoslynBuildTaskPath)'==''">$(MSBuildBinPath)</MetaDslxBuildTaskLocation>
+    <MetaDslxBuildTaskLocation Condition="'$(MetaDslxBuildTaskPath)'!=''">$(MetaDslxBuildTaskPath)</MetaDslxBuildTaskLocation>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MetaGeneratorGenCodeFileNames Condition="'$(MetaGeneratorGenCodeFileNames)'==''">$(MSBuildProjectFile).MetaGeneratorGeneratedCodeFileListAbsolute.txt</MetaGeneratorGenCodeFileNames>
+    <MetaModelGenCodeFileNames Condition="'$(MetaModelGenCodeFileNames)'==''">$(MSBuildProjectFile).MetaModelGeneratedCodeFileListAbsolute.txt</MetaModelGenCodeFileNames>
+    <Antlr4RoslynGenCodeFileNames Condition="'$(Antlr4RoslynGenCodeFileNames)'==''">$(MSBuildProjectFile).Antlr4RoslynGeneratedCodeFileListAbsolute.txt</Antlr4RoslynGenCodeFileNames>
+  </PropertyGroup>
+
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'==''" TaskName="MetaDslx.BuildTasks.MetaGeneratorGenerationTask" AssemblyName="$(MetaDslxBuildTaskAssemblyName)" />
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'!=''" TaskName="MetaDslx.BuildTasks.MetaGeneratorGenerationTask" AssemblyFile="$(MetaDslxBuildTaskPath)\MetaDslx.BuildTasks.dll" />
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'==''" TaskName="MetaDslx.BuildTasks.MetaModelGenerationTask" AssemblyName="$(MetaDslxBuildTaskAssemblyName)" />
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'!=''" TaskName="MetaDslx.BuildTasks.MetaModelGenerationTask" AssemblyFile="$(MetaDslxBuildTaskPath)\MetaDslx.BuildTasks.dll" />
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'==''" TaskName="MetaDslx.BuildTasks.Antlr4RoslynGenerationTask" AssemblyName="$(MetaDslxBuildTaskAssemblyName)" />
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'!=''" TaskName="MetaDslx.BuildTasks.Antlr4RoslynGenerationTask" AssemblyFile="$(MetaDslxBuildTaskPath)\MetaDslx.BuildTasks.dll" />
+
+  <PropertyGroup>
+    <PrepareResourcesDependsOn>
+	  MetaGeneratorCompile;
+	  MetaGeneratorAddFilesGenerated;
+	  MetaModelCompile;
+	  MetaModelAddFilesGenerated;
+      Antlr4RoslynCompile;
+      Antlr4RoslynCompileAddFilesGenerated;
+      $(PrepareResourcesDependsOn)
+    </PrepareResourcesDependsOn>
+    <SourceFilesProjectOutputGroupDependsOn>
+	  MetaGeneratorCompile;
+	  MetaGeneratorAddFilesGenerated;
+	  MetaModelCompile;
+	  MetaModelAddFilesGenerated;
+      Antlr4RoslynCompile;
+      Antlr4RoslynCompileAddFilesGenerated;
+      $(SourceFilesProjectOutputGroupDependsOn)
+    </SourceFilesProjectOutputGroupDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MetaGeneratorCompileDependsOn>
+      MetaGeneratorCompileReadGeneratedFileList
+    </MetaGeneratorCompileDependsOn>
+    <MetaModelCompileDependsOn>
+      MetaModelCompileReadGeneratedFileList
+    </MetaGeneratorCompileDependsOn>
+    <Antlr4RoslynCompileDependsOn>
+      Antlr4RoslynCompileReadGeneratedFileList
+    </Antlr4RoslynCompileDependsOn>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
+    <AvailableItemName Include="MetaGenerator" />
+    <AvailableItemName Include="MetaModel" />
+    <AvailableItemName Include="Antlr4Roslyn" />
+  </ItemGroup>
+
+  <ItemDefinitionGroup>
+	<MetaGenerator>
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace Condition="'$(MetaDslxIsSdkProject)' != 'True'">$(RootNamespace)</CustomToolNamespace>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <Encoding>UTF-8</Encoding>
+    </MetaGenerator>
+	<MetaModel>
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace Condition="'$(MetaDslxIsSdkProject)' != 'True'">$(RootNamespace)</CustomToolNamespace>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <Encoding>UTF-8</Encoding>
+    </MetaModel>	
+    <Antlr4Roslyn>
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace Condition="'$(MetaDslxIsSdkProject)' != 'True'">$(RootNamespace)</CustomToolNamespace>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <Encoding>UTF-8</Encoding>
+      <Listener>true</Listener>
+      <Visitor>true</Visitor>
+      <Abstract>false</Abstract>
+      <ForceAtn>false</ForceAtn>
+    </Antlr4Roslyn>
+  </ItemDefinitionGroup>
+
+  <Target Name="MetaGeneratorCompileReadGeneratedFileList">
+    <ReadLinesFromFile File="$(IntermediateOutputPath)$(MetaGeneratorGenCodeFileNames)">
+      <Output TaskParameter="Lines" ItemName="MetaGeneratorOutputCodeFilesList"/>
+    </ReadLinesFromFile>
+  </Target>
+  
+  <Target Name="MetaModelCompileReadGeneratedFileList">
+    <ReadLinesFromFile File="$(IntermediateOutputPath)$(MetaModelGenCodeFileNames)">
+      <Output TaskParameter="Lines" ItemName="MetaModelOutputCodeFilesList"/>
+    </ReadLinesFromFile>
+  </Target>
+  
+  <Target Name="Antlr4RoslynCompileReadGeneratedFileList">
+    <ReadLinesFromFile File="$(IntermediateOutputPath)$(Antlr4RoslynGenCodeFileNames)">
+      <Output TaskParameter="Lines" ItemName="Antlr4RoslynOutputCodeFilesList"/>
+    </ReadLinesFromFile>
+  </Target>
+
+  <PropertyGroup>
+    <!-- Add grammar compilation to the CoreCompileDependsOn so that the IDE inproc compilers (particularly VB)
+         can "see" the generated source files. -->
+    <CoreCompileDependsOn Condition="'$(BuildingInsideVisualStudio)' == 'true' ">
+      MetaGeneratorDesignTimeCompilation;
+      MetaModelDesignTimeCompilation;
+      Antlr4RoslynDesignTimeCompilation;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <Target Name="MetaGeneratorDesignTimeCompilation">
+    <PropertyGroup>
+      <MetaGeneratorDesignTimeBuild Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">true</MetaGeneratorDesignTimeBuild>
+    </PropertyGroup>
+
+    <!-- Only if we are not actually performing a compile i.e. we are in design mode -->
+    <CallTarget Condition="'$(MetaGeneratorDesignTimeBuild)' == 'true'"
+                Targets="MetaGeneratorCompile" />
+  </Target>
+  
+  <Target Name="MetaModelDesignTimeCompilation">
+    <PropertyGroup>
+      <MetaModelDesignTimeBuild Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">true</MetaModelDesignTimeBuild>
+    </PropertyGroup>
+
+    <!-- Only if we are not actually performing a compile i.e. we are in design mode -->
+    <CallTarget Condition="'$(MetaModelDesignTimeBuild)' == 'true'"
+                Targets="MetaModelCompile" />
+  </Target>
+  
+  <Target Name="Antlr4RoslynDesignTimeCompilation">
+    <PropertyGroup>
+      <Antlr4RoslynDesignTimeBuild Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">true</Antlr4RoslynDesignTimeBuild>
+    </PropertyGroup>
+
+    <!-- Only if we are not actually performing a compile i.e. we are in design mode -->
+    <CallTarget Condition="'$(Antlr4RoslynDesignTimeBuild)' == 'true'"
+                Targets="Antlr4RoslynCompile" />
+  </Target>
+
+  <Target Name="MetaGeneratorCompile"
+          DependsOnTargets="$(MetaGeneratorCompileDependsOn)"
+          Condition="'@(MetaGenerator)' != ''"
+          Inputs="@(MetaGenerator)"
+          Outputs="@(MetaGeneratorOutputCodeFilesList);
+                  $(IntermediateOutputPath)$(MetaGeneratorGenCodeFileNames);">
+
+    <ItemGroup>
+      <MetaGeneratorGeneratedCodeFiles Remove="@(MetaGeneratorGeneratedCodeFiles)" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <MetaGeneratorDesignTimeBuild>false</MetaGeneratorDesignTimeBuild>
+      <MetaGeneratorDesignTimeBuild Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">true</MetaGeneratorDesignTimeBuild>
+    </PropertyGroup>
+
+    <MetaGeneratorGenerationTask
+      BuildTaskPath="$(MetaGeneratorBuildTaskLocation)"
+      OutputPath="$(IntermediateOutputPath)"
+      Encoding="%(MetaGenerator.Encoding)"
+      TargetLanguage="%(MetaGenerator.TargetLanguage)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      TargetNamespace="%(MetaGenerator.CustomToolNamespace)"
+      SourceCodeFiles="@(MetaGenerator -> '%(FullPath)')"
+      ContinueOnError="$(MetaGeneratorDesignTimeBuild)"
+      LanguageSourceExtensions="$(DefaultLanguageSourceExtension)">
+
+      <Output ItemName="MetaGeneratorGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
+    </MetaGeneratorGenerationTask>
+
+    <WriteLinesToFile
+      Condition="'$(MetaGeneratorDesignTimeBuild)' != 'true'"
+      File="$(IntermediateOutputPath)$(MetaGeneratorGenCodeFileNames)"
+      Lines="@(MetaGeneratorGeneratedCodeFiles)"
+      Overwrite="true"/>
+  </Target>
+
+  <Target Name="MetaModelCompile"
+          DependsOnTargets="$(MetaModelCompileDependsOn)"
+          Condition="'@(MetaModel)' != ''"
+          Inputs="@(MetaModel)"
+          Outputs="@(MetaModelOutputCodeFilesList);
+                  $(IntermediateOutputPath)$(MetaModelGenCodeFileNames);">
+
+    <ItemGroup>
+      <MetaModelGeneratedCodeFiles Remove="@(MetaModelGeneratedCodeFiles)" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <MetaModelDesignTimeBuild>false</MetaModelDesignTimeBuild>
+      <MetaModelDesignTimeBuild Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">true</MetaModelDesignTimeBuild>
+    </PropertyGroup>
+
+    <MetaModelGenerationTask
+      BuildTaskPath="$(MetaModelBuildTaskLocation)"
+      OutputPath="$(IntermediateOutputPath)"
+      Encoding="%(MetaModel.Encoding)"
+      TargetLanguage="%(MetaModel.TargetLanguage)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      TargetNamespace="%(MetaModel.CustomToolNamespace)"
+      SourceCodeFiles="@(MetaModel -> '%(FullPath)')"
+      ContinueOnError="$(MetaModelDesignTimeBuild)"
+      LanguageSourceExtensions="$(DefaultLanguageSourceExtension)">
+
+      <Output ItemName="MetaModelGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
+    </MetaModelGenerationTask>
+
+    <WriteLinesToFile
+      Condition="'$(MetaModelDesignTimeBuild)' != 'true'"
+      File="$(IntermediateOutputPath)$(MetaModelGenCodeFileNames)"
+      Lines="@(MetaModelGeneratedCodeFiles)"
+      Overwrite="true"/>
+  </Target>
+
+  <Target Name="Antlr4RoslynCompile"
+          DependsOnTargets="$(Antlr4RoslynCompileDependsOn)"
+          Condition="'@(Antlr4Roslyn)' != ''"
+          Inputs="@(Antlr4Roslyn)"
+          Outputs="@(Antlr4RoslynOutputCodeFilesList);
+                  $(IntermediateOutputPath)$(Antlr4RoslynGenCodeFileNames);">
+
+    <ItemGroup>
+      <Antlr4RoslynGeneratedCodeFiles Remove="@(Antlr4RoslynGeneratedCodeFiles)" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <Antlr4RoslynDesignTimeBuild>false</Antlr4RoslynDesignTimeBuild>
+      <Antlr4RoslynDesignTimeBuild Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">true</Antlr4RoslynDesignTimeBuild>
+    </PropertyGroup>
+  
+    <Antlr4RoslynGenerationTask
+      BuildTaskPath="$(Antlr4RoslynBuildTaskLocation)"
+      OutputPath="$(IntermediateOutputPath)"
+      Encoding="%(Antlr4Roslyn.Encoding)"
+      TargetLanguage="%(Antlr4Roslyn.TargetLanguage)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      TargetNamespace="%(Antlr4Roslyn.CustomToolNamespace)"
+      SourceCodeFiles="@(Antlr4Roslyn -> '%(FullPath)')"
+      ContinueOnError="$(Antlr4RoslynDesignTimeBuild)"
+      LanguageSourceExtensions="$(DefaultLanguageSourceExtension)">
+
+      <Output ItemName="Antlr4RoslynGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
+    </Antlr4RoslynGenerationTask>
+
+    <WriteLinesToFile
+      Condition="'$(Antlr4RoslynDesignTimeBuild)' != 'true'"
+      File="$(IntermediateOutputPath)$(Antlr4RoslynGenCodeFileNames)"
+      Lines="@(Antlr4RoslynGeneratedCodeFiles)"
+      Overwrite="true"/>
+  </Target>
+
+  <Target Name="MetaGeneratorCompileAddFilesGenerated"
+          AfterTargets="MetaGeneratorCompile"
+          Condition="'@(MetaGenerator)' != ''">
+
+    <ItemGroup>
+      <Antlr4GeneratedCodeFiles Condition="'@(MetaGeneratorGeneratedCodeFiles)' == ''" Include="@(MetaGeneratorOutputCodeFilesList)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <FileWrites Include="@(MetaGeneratorGeneratedCodeFiles);
+                           $(IntermediateOutputPath)$(MetaGeneratorGenCodeFileNames);" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="@(MetaGeneratorGeneratedCodeFiles)" />
+      <!-- The WinFX "GenerateTemporaryTargetAssembly" target requires generated code files be added here. -->
+      <_GeneratedCodeFiles Include="@(MetaGeneratorGeneratedCodeFiles)" />
+    </ItemGroup>
+
+  </Target>
+ 
+  <Target Name="MetaModelCompileAddFilesGenerated"
+          AfterTargets="MetaModelCompile"
+          Condition="'@(MetaModel)' != ''">
+
+    <ItemGroup>
+      <Antlr4GeneratedCodeFiles Condition="'@(MetaModelGeneratedCodeFiles)' == ''" Include="@(MetaModelOutputCodeFilesList)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <FileWrites Include="@(MetaModelGeneratedCodeFiles);
+                           $(IntermediateOutputPath)$(MetaModelGenCodeFileNames);" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="@(MetaModelGeneratedCodeFiles)" />
+      <!-- The WinFX "GenerateTemporaryTargetAssembly" target requires generated code files be added here. -->
+      <_GeneratedCodeFiles Include="@(MetaModelGeneratedCodeFiles)" />
+    </ItemGroup>
+
+  </Target>
+  
+  <Target Name="Antlr4RoslynCompileAddFilesGenerated"
+          AfterTargets="Antlr4RoslynCompile"
+          Condition="'@(Antlr4Roslyn)' != ''">
+
+    <ItemGroup>
+      <Antlr4GeneratedCodeFiles Condition="'@(Antlr4RoslynGeneratedCodeFiles)' == ''" Include="@(Antlr4RoslynOutputCodeFilesList)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <FileWrites Include="@(Antlr4RoslynGeneratedCodeFiles);
+                           $(IntermediateOutputPath)$(Antlr4RoslynGenCodeFileNames);" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="@(Antlr4RoslynGeneratedCodeFiles)" />
+      <!-- The WinFX "GenerateTemporaryTargetAssembly" target requires generated code files be added here. -->
+      <_GeneratedCodeFiles Include="@(Antlr4RoslynGeneratedCodeFiles)" />
+    </ItemGroup>
+
+  </Target>
+
+  <Choose>
+    <When Condition="'$(MetaDslxIsSdkProject)' == 'True'">
+      <ItemGroup>
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\MetaDslx.ProjectItemsSchema.xml">
+          <Context>Project</Context>
+        </PropertyPageSchema>
+        <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\MetaDslx.xml">
+          <Context>File;BrowseObject</Context>
+        </PropertyPageSchema>
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Import Condition="'$(MetaDslxIsSdkProject)' == 'True'" Project="MetaDslx.CodeGenerator.DefaultItems.targets" />
+  
+  <!-- Support for NCrunch -->
+  <ItemGroup Condition="'$(NCrunch)' == '1'">
+    <!-- NCrunch tries to copy the fewest possible files to its build directory, those it misses are declared here. -->
+    <!-- The tools directory needs to be copied in projects that use packages.config. -->
+    <None Include="$(MSBuildThisFileDirectory)..\tools\**\*" Condition="'$(MetaGenerator)' != 'True' OR '$(MetaModel)' != 'True' OR '$(Antlr4Roslyn)' != 'True'" />
+    <!-- NCrunch only copies files from known item types, so we need to add MetaDslx-specific items. -->
+    <None Include="@(MetaGenerator)" />
+    <None Include="@(MetaModel)" />
+    <None Include="@(Antlr4Roslyn)" />
+  </ItemGroup>
+
+</Project>

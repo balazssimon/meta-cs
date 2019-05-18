@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <ContentType Name="MetaGenerator" DisplayName="MetaDslx code generator" ItemType="MetaGenerator" />
+  <ItemType Name="MetaGenerator" DisplayName="MetaDslx code generator" />
+  <FileExtension Name=".mgen" ContentType="MetaGenerator" />
+
+  <ContentType Name="MetaModel" DisplayName="MetaDsxl meta-model description" ItemType="MetaModel" />
+  <ItemType Name="MetaModel" DisplayName="MetaDsxl meta-model description" />
+  <FileExtension Name=".mgen" ContentType="MetaModel" />
+
+  <ContentType Name="Antlr4Roslyn" DisplayName="ANTLR 4 to Roslyn grammar" ItemType="Antlr4Roslyn" />
+  <ItemType Name="Antlr4Roslyn" DisplayName="ANTLR 4 to Roslyn grammar" />
+  <FileExtension Name=".ag4" ContentType="Antlr4Roslyn" />
+
+</ProjectSchemaDefinitions>
+    

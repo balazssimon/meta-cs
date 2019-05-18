@@ -410,7 +410,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         protected virtual bool EndsInLineBreak(SyntaxTrivia trivia)
         {
             if (trivia.GetKind() == SyntaxKind.DefaultEndOfLine) return true;
-            return Language.SyntaxFacts.IsTriviaWithEndOfLine(trivia.GetKind());
+            return trivia.UnderlyingNode.IsTriviaWithEndOfLine();
         }
 
         protected virtual bool IsWord(SyntaxKind kind)
