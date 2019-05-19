@@ -40,13 +40,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             get { return this.DiagnosticBag.HasAnyErrors(); }
         }
 
-        public Antlr4Compiler(string source, string defaultNamespace, string inputDirectory, string outputDirectory, string fileName)
+        public Antlr4Compiler(string inputFilePath, string outputDirectory, string defaultNamespace = null)
         {
-            this.Source = source;
+            this.Source = File.ReadAllText(inputFilePath);
             this.DefaultNamespace = defaultNamespace;
-            this.InputDirectory = inputDirectory;
+            this.InputDirectory = Path.GetDirectoryName(inputFilePath);
             this.OutputDirectory = outputDirectory;
-            this.FileName = fileName;
+            this.FileName = Path.GetFileName(inputFilePath);
             this.GenerateOutput = true;
             this.diagnostics = ImmutableArray<Diagnostic>.Empty;
         }

@@ -68,22 +68,7 @@ namespace MetaDslx.BuildTasks
                 Log.LogError("The tokens file '{0}' does not exist.", filePath);
                 return false;
             }
-            string fileContent = string.Empty;
-            try
-            {
-                using (StreamReader reader = new StreamReader(taskItem.ItemSpec))
-                {
-                    fileContent = reader.ReadToEnd();
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.LogError("Error reading file '{0}': {1}", filePath, ex.Message);
-                return false;
-            }
-            string inputDirectory = Path.GetDirectoryName(filePath);
-            string fileName = Path.GetFileName(filePath);
-            var compiler = new MetaGeneratorCompiler(fileContent, null, inputDirectory, this.OutputPath, fileName);
+            var compiler = new MetaGeneratorCompiler(filePath, this.OutputPath);
             try
             {
                 compiler.Compile();
@@ -92,6 +77,7 @@ namespace MetaDslx.BuildTasks
                     foreach (var message in compiler.GetDiagnostics())
                     {
                         var position = message.Location.GetMappedLineSpan();
+                        string fileName = position.Path;
                         switch (message.Severity)
                         {
                             case Microsoft.CodeAnalysis.DiagnosticSeverity.Hidden:

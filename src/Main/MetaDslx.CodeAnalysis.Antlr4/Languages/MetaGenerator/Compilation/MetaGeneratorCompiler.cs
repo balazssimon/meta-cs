@@ -22,8 +22,8 @@ namespace MetaDslx.Languages.MetaGenerator.Compilation
         private MetaGeneratorGenerator generator;
         public string GeneratedSource { get; private set; }
 
-        public MetaGeneratorCompiler(string source, string defaultNamespace, string inputDirectory, string outputDirectory, string fileName)
-            : base(source, defaultNamespace, inputDirectory, outputDirectory, fileName)
+        public MetaGeneratorCompiler(string inputFilePath, string outputDirectory, string defaultNamespace = null)
+            : base(inputFilePath, outputDirectory, defaultNamespace)
         {
         }
 

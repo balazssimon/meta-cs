@@ -13,12 +13,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(PackageVersion)" />
     <!--
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(PackageVersion)" />
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(PackageVersion)" />
     -->
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
+    <!--
+    -->
+  </ItemGroup>
+
   <ItemGroup>
     <MetaModel Include="MGenTest.mgen"/>
   </ItemGroup>

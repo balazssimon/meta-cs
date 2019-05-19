@@ -9,6 +9,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
@@ -230,7 +231,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                         }
                         catch (Exception e)
                         {
-                            diagnostics.Add(InternalErrorCode.ERR_FileReadError.ToDiagnosticInfo(resolvedFilePath, e).ToDiagnostic(node.Location));
+                            diagnostics.Add(ModelErrorCode.ERR_FileReadError.ToDiagnosticInfo(resolvedFilePath, e).ToDiagnostic(node.Location));
                         }
                     }
                     else

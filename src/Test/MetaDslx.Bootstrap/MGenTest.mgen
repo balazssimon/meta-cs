@@ -1,4 +1,5 @@
-﻿generator MGenTest;
+﻿namespace MetaDslx.Bootstrap;
+generator MGenTest;
 
 template SayHello(string name)
 Hello, [name]!

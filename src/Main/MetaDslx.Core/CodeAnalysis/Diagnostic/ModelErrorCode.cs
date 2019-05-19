@@ -74,5 +74,6 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode ERR_CannotAddMultipleValuesToNonCollectionProperty = new ModelErrorCode(27, "Cannot add multiple values to non-collection property", "Cannot add multiple values to non-collection property '{0}' of symbol '{1}'.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotMergeDifferentSymbols = new ModelErrorCode(28, "Cannot merge different symbols", "Cannot merge part symbol '{0}' into target symbol '{1}'. The target and the part symbols must be of the same type (part symbol is of type '{2}', target symbol is of type '{3}').", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_Exception = new ModelErrorCode(29, "Unexpected exception", "Unexpected exception: {0}", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_FileReadError = new ModelErrorCode(30, "Cannot read file", "File read error: {0}", DiagnosticSeverity.Error);
     }
 }

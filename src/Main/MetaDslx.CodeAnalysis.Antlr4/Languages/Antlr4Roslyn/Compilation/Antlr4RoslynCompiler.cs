@@ -65,8 +65,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public IEnumerable<string> GeneratedRoslynFiles { get; private set; }
 
-        public Antlr4RoslynCompiler(string source, string defaultNamespace, string inputDirectory, string outputDirectory, string fileName)
-            : base(source, defaultNamespace, inputDirectory, outputDirectory, fileName)
+        public Antlr4RoslynCompiler(string inputFilePath, string outputDirectory, string defaultNamespace = null)
+            : base(inputFilePath, outputDirectory, defaultNamespace)
         {
             this.GenerateAntlr4 = true;
             string languageName = Path.GetFileNameWithoutExtension(this.FileName);

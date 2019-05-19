@@ -56,7 +56,8 @@
     <None Include="bin\Debug\netstandard2.0\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
     <None Include="bin\Debug\netstandard2.0\MetaDslx.Core.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
     <None Include="bin\Debug\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
-    <None Include="$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard1.1\Antlr4.Runtime.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard1.1\Antlr4.Runtime.dll" Condition="!Exists('$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard2.0\Antlr4.Runtime.dll')" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard2.0\Antlr4.Runtime.dll" Condition="Exists('$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard2.0\Antlr4.Runtime.dll')" Pack="true" PackagePath="lib\netstandard2.0"/>
 
     <None Include="bin\Debug\net461\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Debug\net461\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\net461"/>
@@ -70,7 +71,8 @@
     <None Include="bin\Release\netstandard2.0\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
     <None Include="bin\Release\netstandard2.0\MetaDslx.Core.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
     <None Include="bin\Release\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
-    <None Include="$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard1.1\Antlr4.Runtime.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard1.1\Antlr4.Runtime.dll" Condition="!Exists('$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard2.0\Antlr4.Runtime.dll')" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard2.0\Antlr4.Runtime.dll" Condition="Exists('$(NuGetPackageRoot)\antlr4.runtime\$(Antlr4Version)\lib\netstandard2.0\Antlr4.Runtime.dll')" Pack="true" PackagePath="lib\netstandard2.0"/>
 
     <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\net461"/>

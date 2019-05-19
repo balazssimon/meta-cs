@@ -6,8 +6,14 @@ namespace MetaDslx.Bootstrap
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            //MGenTest t;
+            /*/
+            MetaGeneratorBootstrap mg = new MetaGeneratorBootstrap(@"..\..\..\MGenTest.mgen");
+            mg.Compile();
+            //*/
+            MGenTest test = new MGenTest();
+            Console.WriteLine(test.SayHello("me"));
         }
+
+
     }
 }
