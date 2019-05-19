@@ -1,21 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\Main\Versions.props" />
-
+  <Import Project="..\..\Versions.props" />
+  
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>MetaDslx.Bootstrap</RootNamespace>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <NoStdLib>true</NoStdLib>
+    <ApplyNgenOptimization>partial</ApplyNgenOptimization>
+    <LangVersion>preview</LangVersion>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
-    <PackageReference Include="Antlr4.Runtime" Version="$(Antlr4Version)" />
-    <PackageReference Include="Antlr4.CodeGenerator" Version="$(Antlr4Version)" />
+    <PackageReference Include="MetaDslx.BuildTasks" Version="$(PackageVersion)" />
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
-    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj" />
-    <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj" />
+    <MetaModel Include="MGenTest.mgen"/>
   </ItemGroup>
-
 </Project>

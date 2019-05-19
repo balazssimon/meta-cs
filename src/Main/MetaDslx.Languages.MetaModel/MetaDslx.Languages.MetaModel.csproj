@@ -1,48 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\Versions.props" />
+  <Import Project="..\..\Versions.props" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>MetaDslx.Languages.MetaModel</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <DefineConstants>$(DefineConstants);COMPILERCORE</DefineConstants>
-    <CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
-
-    <!-- NuGet -->
-    <IsPackable>true</IsPackable>
-    <PackageId>MetaDslx.Languages.MetaModel</PackageId>
-    <PackageDescription>
-      MetaDslx support for MetaModel, MetaDslx.Languages.MetaModel.dll.
-    </PackageDescription>
     <LangVersion>preview</LangVersion>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="$(NuGetPackageRoot)\microsoft.diasymreader.native\$(MicrosoftDiaSymReaderNativeVersion)\runtimes\win\native\Microsoft.DiaSymReader.Native.x86.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-      <Pack>false</Pack>
-    </Content>
-    <Content Include="$(NuGetPackageRoot)\microsoft.diasymreader.native\$(MicrosoftDiaSymReaderNativeVersion)\runtimes\win\native\Microsoft.DiaSymReader.Native.amd64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-      <Pack>false</Pack>
-    </Content>
-  </ItemGroup>
-
 
   <ItemGroup>
-    <!--
-      Analyzers that will be used to analyze projects that references 
-      Microsoft.CodeAnalysis project or Microsoft.CodeAnalysis.Common package.
-      
-      Note: PrivateAssets="ContentFiles" ensures that projects referencing Microsoft.CodeAnalysis.Common package 
-      will import everything but content files from Microsoft.CodeAnalysis.Analyzers, specifically, analyzers.
-    -->
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="$(MicrosoftCodeAnalysisAnalyzersVersion)" PrivateAssets="ContentFiles" />
-
-    <PackageReference Include="Microsoft.DiaSymReader.Native" Version="$(MicrosoftDiaSymReaderNativeVersion)" PrivateAssets="all" />
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
     <PackageReference Include="System.Memory" Version="$(SystemMemoryVersion)" />
     <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" />
@@ -52,14 +21,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj" />
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\CodeAnalysisRules.ruleset">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
 </Project>

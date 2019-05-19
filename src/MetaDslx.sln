@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis", "Main\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj", "{0E9C6D8B-E5E9-4880-B308-9EB8CBE262F0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.CSharp", "Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj", "{4AF052DC-20F4-4F5D-8631-10A458AF86FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Core", "Main\MetaDslx.Core\MetaDslx.Core.csproj", "{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}"
@@ -15,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap", "Test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Antlr4", "Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj", "{2C630C7B-B5C1-4587-9382-D83B10A093EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.BuildTasks", "Main\MetaDslx.BuildTasks\MetaDslx.BuildTasks.csproj", "{93A7C322-B45E-4D2F-8FCE-8D8CD8B4AD32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.BuildTasks", "Main\MetaDslx.BuildTasks\MetaDslx.BuildTasks.csproj", "{93A7C322-B45E-4D2F-8FCE-8D8CD8B4AD32}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis", "Main\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj", "{679E9677-911B-44B9-8BD1-AF2A907D1E7F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Common", "Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj", "{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0E9C6D8B-E5E9-4880-B308-9EB8CBE262F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E9C6D8B-E5E9-4880-B308-9EB8CBE262F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E9C6D8B-E5E9-4880-B308-9EB8CBE262F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E9C6D8B-E5E9-4880-B308-9EB8CBE262F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4AF052DC-20F4-4F5D-8631-10A458AF86FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4AF052DC-20F4-4F5D-8631-10A458AF86FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AF052DC-20F4-4F5D-8631-10A458AF86FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +49,14 @@ Global
 		{93A7C322-B45E-4D2F-8FCE-8D8CD8B4AD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93A7C322-B45E-4D2F-8FCE-8D8CD8B4AD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93A7C322-B45E-4D2F-8FCE-8D8CD8B4AD32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{679E9677-911B-44B9-8BD1-AF2A907D1E7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{679E9677-911B-44B9-8BD1-AF2A907D1E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{679E9677-911B-44B9-8BD1-AF2A907D1E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{679E9677-911B-44B9-8BD1-AF2A907D1E7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

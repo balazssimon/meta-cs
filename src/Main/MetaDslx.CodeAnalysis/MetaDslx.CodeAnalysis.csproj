@@ -1,79 +1,61 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\Versions.props" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\Versions.props" />
+
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.CodeAnalysis</RootNamespace>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <DefineConstants>$(DefineConstants);COMPILERCORE</DefineConstants>
-    <CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>MetaDslx</RootNamespace>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
-	
+    <LangVersion>preview</LangVersion>
+
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
-    <PackageId>MetaDslx.CodeAnalysis.Common</PackageId>
+    <PackageId>MetaDslx.CodeAnalysis</PackageId>
     <PackageDescription>
-      A shared package used by the MetaDslx metamodeling platform.
-      Do not install this package manually, it will be added as a prerequisite by other packages that require it.
+      MetaDslx metamodeling platform for creating Roslyn-style ANTLR4 based compilers.
     </PackageDescription>
-    <LangVersion>preview</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="$(NuGetPackageRoot)\microsoft.diasymreader.native\$(MicrosoftDiaSymReaderNativeVersion)\runtimes\win\native\Microsoft.DiaSymReader.Native.x86.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-      <Pack>false</Pack>
-    </Content>
-    <Content Include="$(NuGetPackageRoot)\microsoft.diasymreader.native\$(MicrosoftDiaSymReaderNativeVersion)\runtimes\win\native\Microsoft.DiaSymReader.Native.amd64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-      <Pack>false</Pack>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="CodeAnalysisResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CodeAnalysisResources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <!--
-      Analyzers that will be used to analyze projects that references 
-      Microsoft.CodeAnalysis project or Microsoft.CodeAnalysis.Common package.
-      
-      Note: PrivateAssets="ContentFiles" ensures that projects referencing Microsoft.CodeAnalysis.Common package 
-      will import everything but content files from Microsoft.CodeAnalysis.Analyzers, specifically, analyzers.
-    -->
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="$(MicrosoftCodeAnalysisAnalyzersVersion)" PrivateAssets="ContentFiles" />
 
-    <PackageReference Include="Microsoft.DiaSymReader.Native" Version="$(MicrosoftDiaSymReaderNativeVersion)" PrivateAssets="all" />
+  <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
     <PackageReference Include="System.Memory" Version="$(SystemMemoryVersion)" />
     <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
+    <PackageReference Include="Antlr4.Runtime" Version="$(Antlr4Version)" />
   </ItemGroup>
+  
   <ItemGroup>
-    <EmbeddedResource Update="CodeAnalysisResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>CodeAnalysisResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\default.win32manifest" />
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" PrivateAssets="all" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\CodeAnalysisRules.ruleset">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="RuleSet\RuleSetSchema.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <PublicAPI Include="PublicAPI.Shipped.txt" />
-    <PublicAPI Include="PublicAPI.Unshipped.txt" />
+
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <None Include="bin\Debug\netstandard2.0\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="bin\Debug\netstandard2.0\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="bin\Debug\netstandard2.0\MetaDslx.Core.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="bin\Debug\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+
+    <None Include="bin\Debug\net461\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="lib\net461"/>
+    <None Include="bin\Debug\net461\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\net461"/>
+    <None Include="bin\Debug\net461\MetaDslx.Core.dll" Pack="true" PackagePath="lib\net461"/>
+    <None Include="bin\Debug\net461\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\net461"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <None Include="bin\Release\netstandard2.0\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="bin\Release\netstandard2.0\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="bin\Release\netstandard2.0\MetaDslx.Core.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="bin\Release\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+
+    <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="lib\net461"/>
+    <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\net461"/>
+    <None Include="bin\Release\net461\MetaDslx.Core.dll" Pack="true" PackagePath="lib\net461"/>
+    <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\net461"/>
   </ItemGroup>
 </Project>

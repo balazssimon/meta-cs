@@ -7,6 +7,7 @@ namespace MetaDslx.Bootstrap
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            MGenTest t;
         }
     }
 }

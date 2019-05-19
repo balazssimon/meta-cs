@@ -6,8 +6,9 @@
 
   <PropertyGroup>
     <!-- Folder containing MetaDslx.BuildTasks.dll -->
-    <MetaDslxBuildTaskPath Condition="'$(MSBuildRuntimeType)' == 'Core'">..\tools\netstandard</MetaDslxBuildTaskPath>
+    <MetaDslxBuildTaskPath Condition=" '$(MSBuildRuntimeType)' == 'Core' ">..\lib\netstandard2.0</MetaDslxBuildTaskPath>
+    <MetaDslxBuildTaskPath Condition=" '$(MSBuildRuntimeType)' != 'Core' ">..\lib\net461</MetaDslxBuildTaskPath>
   </PropertyGroup>
 
-  <Import Project="MetaDslx.CodeGenerator.DefaultItems.props" />
+  <Import Project="MetaDslx.BuildTasks.DefaultItems.props" />
 </Project>

@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\Versions.props" />
+  <Import Project="..\..\Versions.props" />
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MetaDslx</RootNamespace>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis\MetaDslx.CodeAnalysis.csproj" />
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj" />
   </ItemGroup>
 

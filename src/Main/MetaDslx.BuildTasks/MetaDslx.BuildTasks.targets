@@ -33,7 +33,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <MetaDslxBuildTaskLocation Condition="'$(MetaDslxRoslynBuildTaskPath)'==''">$(MSBuildBinPath)</MetaDslxBuildTaskLocation>
+    <MetaDslxBuildTaskLocation Condition="'$(MetaDslxBuildTaskPath)'==''">$(MSBuildBinPath)</MetaDslxBuildTaskLocation>
     <MetaDslxBuildTaskLocation Condition="'$(MetaDslxBuildTaskPath)'!=''">$(MetaDslxBuildTaskPath)</MetaDslxBuildTaskLocation>
   </PropertyGroup>
 
@@ -77,7 +77,7 @@
     </MetaGeneratorCompileDependsOn>
     <MetaModelCompileDependsOn>
       MetaModelCompileReadGeneratedFileList
-    </MetaGeneratorCompileDependsOn>
+    </MetaModelCompileDependsOn>
     <Antlr4RoslynCompileDependsOn>
       Antlr4RoslynCompileReadGeneratedFileList
     </Antlr4RoslynCompileDependsOn>
@@ -190,15 +190,10 @@
     </PropertyGroup>
 
     <MetaGeneratorGenerationTask
-      BuildTaskPath="$(MetaGeneratorBuildTaskLocation)"
       OutputPath="$(IntermediateOutputPath)"
       Encoding="%(MetaGenerator.Encoding)"
-      TargetLanguage="%(MetaGenerator.TargetLanguage)"
-      TargetFrameworkVersion="$(TargetFrameworkVersion)"
-      TargetNamespace="%(MetaGenerator.CustomToolNamespace)"
       SourceCodeFiles="@(MetaGenerator -> '%(FullPath)')"
-      ContinueOnError="$(MetaGeneratorDesignTimeBuild)"
-      LanguageSourceExtensions="$(DefaultLanguageSourceExtension)">
+      ContinueOnError="$(MetaGeneratorDesignTimeBuild)">
 
       <Output ItemName="MetaGeneratorGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
     </MetaGeneratorGenerationTask>
@@ -227,15 +222,10 @@
     </PropertyGroup>
 
     <MetaModelGenerationTask
-      BuildTaskPath="$(MetaModelBuildTaskLocation)"
       OutputPath="$(IntermediateOutputPath)"
       Encoding="%(MetaModel.Encoding)"
-      TargetLanguage="%(MetaModel.TargetLanguage)"
-      TargetFrameworkVersion="$(TargetFrameworkVersion)"
-      TargetNamespace="%(MetaModel.CustomToolNamespace)"
       SourceCodeFiles="@(MetaModel -> '%(FullPath)')"
-      ContinueOnError="$(MetaModelDesignTimeBuild)"
-      LanguageSourceExtensions="$(DefaultLanguageSourceExtension)">
+      ContinueOnError="$(MetaModelDesignTimeBuild)">
 
       <Output ItemName="MetaModelGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
     </MetaModelGenerationTask>
@@ -264,15 +254,10 @@
     </PropertyGroup>
   
     <Antlr4RoslynGenerationTask
-      BuildTaskPath="$(Antlr4RoslynBuildTaskLocation)"
       OutputPath="$(IntermediateOutputPath)"
       Encoding="%(Antlr4Roslyn.Encoding)"
-      TargetLanguage="%(Antlr4Roslyn.TargetLanguage)"
-      TargetFrameworkVersion="$(TargetFrameworkVersion)"
-      TargetNamespace="%(Antlr4Roslyn.CustomToolNamespace)"
       SourceCodeFiles="@(Antlr4Roslyn -> '%(FullPath)')"
-      ContinueOnError="$(Antlr4RoslynDesignTimeBuild)"
-      LanguageSourceExtensions="$(DefaultLanguageSourceExtension)">
+      ContinueOnError="$(Antlr4RoslynDesignTimeBuild)">
 
       <Output ItemName="Antlr4RoslynGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
     </Antlr4RoslynGenerationTask>
@@ -360,7 +345,7 @@
     </When>
   </Choose>
 
-  <Import Condition="'$(MetaDslxIsSdkProject)' == 'True'" Project="MetaDslx.CodeGenerator.DefaultItems.targets" />
+  <Import Condition="'$(MetaDslxIsSdkProject)' == 'True'" Project="MetaDslx.BuildTasks.DefaultItems.targets" />
   
   <!-- Support for NCrunch -->
   <ItemGroup Condition="'$(NCrunch)' == '1'">
