@@ -13,7 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(PackageVersion)" />
+    <!--
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(PackageVersion)" />
+    -->
   </ItemGroup>
   
   <ItemGroup>
