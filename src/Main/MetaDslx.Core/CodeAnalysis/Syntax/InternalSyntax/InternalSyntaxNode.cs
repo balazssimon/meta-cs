@@ -226,7 +226,8 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public override bool IsTriviaWithEndOfLine()
         {
-            return Language.SyntaxFacts.IsTriviaWithEndOfLine(this);
+            if (Language.SyntaxFacts.IsTriviaWithEndOfLine(this.Kind)) return true;
+            else return Language.SyntaxFacts.IsTriviaWithEndOfLine(this);
         }
 
         // Use conditional weak table so we always return same identity for structured trivia

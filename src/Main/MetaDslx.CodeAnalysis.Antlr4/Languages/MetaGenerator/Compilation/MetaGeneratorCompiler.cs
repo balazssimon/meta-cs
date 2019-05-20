@@ -37,7 +37,7 @@ namespace MetaDslx.Languages.MetaGenerator.Compilation
             return new MetaGeneratorParser(stream);
         }
 
-        protected override ParserRuleContext CreateTree()
+        protected override ParserRuleContext DoCreateTree()
         {
             return this.Parser.main();
         }

@@ -12,11 +12,12 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!--
+  <ItemGroup><!--
     <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(PackageVersion)" />
     <PackageReference Include="MetaDslx.BuildTasks" Version="$(PackageVersion)" />
     -->
+  
+    <Folder Include="Syntax\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,11 +25,12 @@
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.BuildTasks\MetaDslx.BuildTasks.csproj" />
     <!--
     -->
   </ItemGroup>
 
   <ItemGroup>
-    <MetaModel Include="MGenTest.mgen"/>
+    <MetaModel Include="MGenTest.mgen" />
   </ItemGroup>
 </Project>

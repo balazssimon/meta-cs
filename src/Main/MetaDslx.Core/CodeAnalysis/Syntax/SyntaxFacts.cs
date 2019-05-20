@@ -46,7 +46,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return text;
         }
 
-        public abstract SyntaxKind GetKeywordKind(string text);
+        public abstract SyntaxKind GetReservedKeywordKind(string text);
+        public abstract SyntaxKind GetContextualKeywordKind(string text);
         public abstract SyntaxKind GetFixedTokenKind(string text);
 
         public abstract IEnumerable<SyntaxKind> GetReservedKeywordKinds();
@@ -144,6 +145,11 @@ namespace MetaDslx.CodeAnalysis.Syntax
         }
 
         public virtual bool IsWeakChild(SyntaxNode node)
+        {
+            return false;
+        }
+
+        public virtual bool IsTriviaWithEndOfLine(SyntaxKind kind)
         {
             return false;
         }

@@ -2497,35 +2497,73 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis.Syntax;
+using Roslyn.Utilities;
 ^
+[string className = Properties.LanguageName+"SyntaxKind"]
 namespace [Properties.DefaultNamespace].Syntax
 {
-	public enum [Properties.LanguageName]SyntaxKind : int
+	public class [className] : SyntaxKind
 	{
-        None                          = SyntaxKind.None,
-        List                          = SyntaxKind.List,
-        BadToken                      = SyntaxKind.BadToken,
-        Eof                           = SyntaxKind.Eof,
+		[if(hasloop(rule:Instances.LexerRules where rule.Kind > 0))]
+        public static readonly int __FirstAntlr4TokenValue;
+        public static readonly int __LastAntlr4TokenValue;
+		[end if]
+		[if(hasloop(rule:Instances.ParserRules))]
+        public static readonly int __FirstAntlr4RuleValue;
+        public static readonly int __LastAntlr4RuleValue;
+		[end if]
 ^
+		[if(hasloop(rule:Instances.LexerRules where rule.Kind > 0))]
 		// Tokens:
 		[loop(rule:Instances.LexerRules where rule.Kind > 0)]
-		[rule.PlainName()] = [rule.Kind],
+		public const string [rule.PlainName()] = nameof([rule.PlainName()]); // [rule.Kind]
 		[end loop]
-		LastTokenSyntaxKind = [Instances.LastTokenSyntaxKind],
+		[end if]
 ^
+		[if(hasloop(rule:Instances.ParserRules))]
 		// Rules:
 		[loop(rule:Instances.ParserRules)]
 		[if (rule.Alternatives.Count > 0)]
 			[loop(alt:rule.Alternatives)]
-		[alt.PlainName()],
+		public const string [alt.PlainName()] = nameof([alt.PlainName()]);
 			[end loop]
 		[else]
-		[rule.PlainName()],
+		public const string [rule.PlainName()] = nameof([rule.PlainName()]);
 		[end if]
 		[end loop]
+		[end if]
+^
+		protected [className](string name)
+            : base(name)
+        {
+        }
+^
+        protected [className](EnumObject retargetedValue)
+            : base(retargetedValue)
+        {
+        }
+^
+        static [className]()
+        {
+            EnumObject.AutoInit<[className]>();
+			[if(hasloop(rule:Instances.LexerRules where rule.Kind > 0))]
+            __FirstAntlr4TokenValue = [Instances.FirstTokenSyntaxKind].As<[className]>().GetValue();
+            __LastAntlr4TokenValue = [Instances.LastTokenSyntaxKind].As<[className]>().GetValue();
+			[end if]
+			[if(hasloop(rule:Instances.ParserRules))]
+            __FirstAntlr4RuleValue = [Instances.FirstParserRuleSyntaxKind].As<[className]>().GetValue();
+            __LastAntlr4RuleValue = [Instances.LastParserRuleSyntaxKind].As<[className]>().GetValue();
+			[end if]
+        }
+^
+        public static implicit operator [className](string name)
+        {
+            return FromString<[className]>(name);
+        }
+^
+        public new static IEnumerable<EnumObject> EnumValues => EnumObject.EnumValues(typeof([className]));
+^
 	}
 }
 end template
@@ -2822,11 +2860,14 @@ public sealed class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCo
 end template
 
 template GenerateSyntaxFacts()
+using System.Collections.Generic;
 using System.Threading;
-using MetaDslx.Compiler;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Text;
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax;
+using Roslyn.Utilities;
 ^
+[string className = Properties.LanguageName+"SyntaxFacts"]
+[string syntaxKind = Properties.LanguageName+"SyntaxKind"]
 namespace [Properties.DefaultNamespace].Syntax
 {
 	public enum [Properties.LanguageName]TokenKind : int
@@ -2845,32 +2886,21 @@ namespace [Properties.DefaultNamespace].Syntax
 		[end loop]
 	}
 ^
-	public class [Properties.LanguageName]SyntaxFacts : SyntaxFacts
+	public class [className] : SyntaxFacts
 	{
-		public static readonly [Properties.LanguageName]SyntaxFacts Instance = new [Properties.LanguageName]SyntaxFacts();
+		public static readonly [className] Instance = new [className]();
 ^
-		protected override int DefaultEndOfLineSyntaxKindCore
-		{
-			get { return (int)[Properties.LanguageName]SyntaxKind.[Instances.DefaultEndOfLine != null ? Instances.DefaultEndOfLine.PlainName() : "None"]; }
-		}
+        public override SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind)
+        {
+            return kind.CastUp<[syntaxKind]>();
+        }
 ^
-		protected override int DefaultWhitespaceSyntaxKindCore
+		public override bool IsToken(SyntaxKind kind)
 		{
-			get { return (int)[Properties.LanguageName]SyntaxKind.[Instances.DefaultWhitespace != null ? Instances.DefaultWhitespace.PlainName() : "None"]; }
-		}
-^
-		public override bool IsToken(int rawKind)
-		{
-			return this.IsToken(([Properties.LanguageName]SyntaxKind)rawKind);
-		}
-^
-		public bool IsToken([Properties.LanguageName]SyntaxKind kind)
-		{
-			switch (kind)
+			switch (kind.Switch())
 			{
-				case [Properties.LanguageName]SyntaxKind.Eof:
 				[loop(literal:Instances.LexerRules where literal.Kind > 0)]
-				case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
+				case [syntaxKind].[literal.PlainName()]:
 				[end loop]
 					return true;
 				default:
@@ -2878,18 +2908,12 @@ namespace [Properties.DefaultNamespace].Syntax
 			}
 		}
 ^
-		public override bool IsFixedToken(int rawKind)
+		public override bool IsFixedToken(SyntaxKind kind)
 		{
-			return this.IsFixedToken(([Properties.LanguageName]SyntaxKind)rawKind);
-		}
-^
-		public bool IsFixedToken([Properties.LanguageName]SyntaxKind kind)
-		{
-			switch (kind)
+			switch (kind.Switch())
 			{
-				case [Properties.LanguageName]SyntaxKind.Eof:
 				[loop(literal:Instances.FixedTokens where literal.Kind > 0)]
-				case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
+				case [syntaxKind].[literal.PlainName()]:
 				[end loop]
 					return true;
 				default:
@@ -2897,25 +2921,7 @@ namespace [Properties.DefaultNamespace].Syntax
 			}
 		}
 ^
-		public override string GetText(int rawKind)
-		{
-			return this.GetText(([Properties.LanguageName]SyntaxKind)rawKind);
-		}
-^
-		public string GetText([Properties.LanguageName]SyntaxKind kind)
-		{
-			switch (kind)
-			{
-				[loop(literal:Instances.FixedTokens where literal.Kind > 0)]
-				case [Properties.LanguageName]SyntaxKind.[literal.PlainName()]:
-					return [literal.FixedToken.FixedTokenToCSharpString()];
-				[end loop]
-				default:
-					return string.Empty;
-			}
-		}
-^
-		public [Properties.LanguageName]SyntaxKind GetKind(string text)
+		public override SyntaxKind GetFixedTokenKind(string text)
 		{
 			switch (text)
 			{
@@ -2928,90 +2934,37 @@ namespace [Properties.DefaultNamespace].Syntax
 			}
 		}
 ^
-		public override string GetKindText(int rawKind)
+		public override string GetText(SyntaxKind kind)
 		{
-			return this.GetKindText(([Properties.LanguageName]SyntaxKind)rawKind);
-		}
-^
-		public string GetKindText([Properties.LanguageName]SyntaxKind kind)
-		{
-			return kind.ToString();
-		}
-^
-		public override bool IsTriviaWithEndOfLine(int rawKind)
-		{
-			return this.IsTriviaWithEndOfLine(([Properties.LanguageName]SyntaxKind)rawKind);
-		}
-^
-		public bool IsTriviaWithEndOfLine([Properties.LanguageName]SyntaxKind kind)
-		{
-			switch(kind)
+			switch (kind.Switch())
 			{
-			[loop (rule:Instances.LexerRules where rule.Kind > 0 && rule.Annotations.HasAnnotation("Token"))]
-				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
-				[if (annot.HasProperty("endOfLine") && annot.GetValue("endOfLine") == "true")]
-					[if (annot.HasProperty("first") && annot.HasProperty("last"))]
-						[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
-				case [Properties.LanguageName]SyntaxKind.[child.PlainName()]:
-						[end loop]
-					return true;
-					[else]
-				case [Properties.LanguageName]SyntaxKind.[rule.PlainName()]:
-					return true;
-					[end if]
-				[end if]
-			[end loop]
+				[loop(literal:Instances.FixedTokens where literal.Kind > 0)]
+				case [syntaxKind].[literal.PlainName()]:
+					return [literal.FixedToken.FixedTokenToCSharpString()];
+				[end loop]
 				default:
-					return false;
+					return string.Empty;
 			}
 		}
-^
-	[loop (kind:Instances.LexerTokenKinds)]
-		public bool Is[kind.Key](int rawKind)
-		{
-			return this.Is[kind.Key](([Properties.LanguageName]SyntaxKind)rawKind);
-		}
-^
-		public bool Is[kind.Key]([Properties.LanguageName]SyntaxKind kind)
-		{
-			switch(kind)
-			{
-			[loop (rule:kind.Value where rule.Kind > 0)]
-				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
-				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
-					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
-				case [Properties.LanguageName]SyntaxKind.[child.PlainName()]:
-					[end loop]
-					return true;
-				[else]
-				case [Properties.LanguageName]SyntaxKind.[rule.PlainName()]:
-					return true;
-				[end if]
-			[end loop]
-				default:
-					return false;
-			}
-		}
-	[end loop]
 ^
 		public [Properties.LanguageName]TokenKind GetTokenKind(int rawKind)
 		{
-			return this.GetTokenKind(([Properties.LanguageName]SyntaxKind)rawKind);
+			return this.GetTokenKind(EnumObject.FromIntUnsafe<[syntaxKind]>(rawKind));
 		}
 ^
-		public [Properties.LanguageName]TokenKind GetTokenKind([Properties.LanguageName]SyntaxKind kind)
+		public [Properties.LanguageName]TokenKind GetTokenKind(SyntaxKind kind)
 		{
-			switch(kind)
+			switch(kind.Switch())
 			{
 			[loop (rule:Instances.LexerRules where rule.Kind > 0 && rule.Annotations.HasAnnotation("Token"))]
 				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
 				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
 					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
-				case [Properties.LanguageName]SyntaxKind.[child.PlainName()]:
+				case [syntaxKind].[child.PlainName()]:
 					[end loop]
 					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
 				[else]
-				case [Properties.LanguageName]SyntaxKind.[rule.PlainName()]:
+				case [syntaxKind].[rule.PlainName()]:
 					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
 				[end if]
 			[end loop]
@@ -3038,8 +2991,116 @@ namespace [Properties.DefaultNamespace].Syntax
 					return [Properties.LanguageName]TokenKind.None;
 			}
 		}
-	}
+^
+		public override bool IsTriviaWithEndOfLine(SyntaxKind kind)
+		{
+			switch(kind.Switch())
+			{
+			[loop (rule:Instances.LexerRules where rule.Kind > 0 && rule.Annotations.HasAnnotation("Token"))]
+				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
+				[if (annot.HasProperty("endOfLine") && annot.GetValue("endOfLine") == "true")]
+					[if (annot.HasProperty("first") && annot.HasProperty("last"))]
+						[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
+				case [syntaxKind].[child.PlainName()]:
+						[end loop]
+					return true;
+					[else]
+				case [syntaxKind].[rule.PlainName()]:
+					return true;
+					[end if]
+				[end if]
+			[end loop]
+				default:
+					return false;
+			}
+		}
+^
+	[loop (kind:Instances.LexerTokenKinds where kind.Key != "Token" && kind.Key != "FixedToken")]
+		public[GenerateSyntaxFactsTokenKindOverride(kind.Key)] bool Is[kind.Key](SyntaxKind kind)
+		{
+			switch(kind.Switch())
+			{
+			[loop (rule:kind.Value where rule.Kind > 0)]
+				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
+				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
+					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
+				case [syntaxKind].[child.PlainName()]:
+					[end loop]
+					return true;
+				[else]
+				case [syntaxKind].[rule.PlainName()]:
+					return true;
+				[end if]
+			[end loop]
+				default:
+					return false;
+			}
+		}
+		[if (kind.Key == "ReservedKeyword" || kind.Key == "ContextualKeyword")]
+^
+        public override IEnumerable<SyntaxKind> Get[kind.Key]Kinds()
+        {
+			[if (hasloop(rule:kind.Value where rule.Kind > 0))]
+			[loop (rule:kind.Value where rule.Kind > 0)]
+				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
+				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
+					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
+				yield return [syntaxKind].[child.PlainName()];
+					[end loop]
+				[end if]
+			[end loop]
+			[else]
+			yield break;
+			[end if]
+        }
+^
+        public override SyntaxKind Get[kind.Key]Kind(string text)
+        {
+			switch(text)
+			{
+			[loop (rule:kind.Value where rule.Kind > 0)]
+				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
+				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
+					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0 && !string.IsNullOrWhiteSpace(child.FixedToken))]
+				case [child.FixedToken.FixedTokenToCSharpString()]:
+					return [syntaxKind].[child.PlainName()];
+					[end loop]
+				[else]
+					[if (rule.Kind > 0 && !string.IsNullOrWhiteSpace(rule.FixedToken))]
+				case [rule.FixedToken.FixedTokenToCSharpString()]:
+					return [syntaxKind].[rule.PlainName()];
+					[end if]
+				[end if]
+			[end loop]
+				default:
+					return SyntaxKind.None;
+			}
+        }
+		[end if]
+	[end loop]
+^
+        public override bool IsInNamespaceOrTypeContext(SyntaxNode node)
+        {
+            return false;
+        }
+^
+        public override bool IsStatement(SyntaxNode syntax)
+        {
+            return false;
+        }
+^
+        public override bool IsExpression(SyntaxNode node)
+        {
+            return false;
+        }
 }
+}
+end template
+
+template GenerateSyntaxFactsTokenKindOverride(string tokenKind)
+[if (Instances.VirtualTokenKinds.Contains(tokenKind))]
+ override
+[end if]
 end template
 
 template GenerateSyntaxVisitor()

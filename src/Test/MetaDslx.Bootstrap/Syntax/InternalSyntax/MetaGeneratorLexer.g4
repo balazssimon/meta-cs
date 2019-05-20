@@ -2,7 +2,7 @@ lexer grammar MetaGeneratorLexer;
 
 options 
 { 
-	generateCompiler = true;
+	                        
 }
 
 channels
@@ -17,7 +17,7 @@ channels
 }
 
 // Keywords
-$Token(first=KNamespace,last=KDefault,kind=Keyword)
+                                                           
 KNamespace : 'namespace';
 KGenerator : 'generator';
 KUsing : 'using';
@@ -72,7 +72,7 @@ KTypeof : 'typeof';
 KDefault : 'default';
 
 // Tokens
-$Token(kind=Operator, first=TSemicolon, last=TQuestionQuestion)
+                                                               
 TSemicolon : ';';
 TColon : ':';
 TDot : '.';
@@ -122,7 +122,7 @@ TOr : '||';
 TQuestionQuestion : '??';
 
 
-$Token(kind=Identifier)
+                       
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
 //IdentifierVerbatimStart : '@[' -> more, mode(VERBATIM_IDENTIFIER);
@@ -133,11 +133,11 @@ fragment IdentifierVerbatimEscape : '\\\\' | '\\]';
 fragment IdentifierGeneralBegin : [a-zA-Z_];
 fragment IdentifierGeneralCharacter : [a-zA-Z0-9_];
 
-$Token(kind=Number)
+                   
 IntegerLiteral : DecimalDigits | Hexadecimal;
-$Token(kind=Number)
+                   
 DecimalLiteral : DecimalDigit+ '.' DecimalDigit+;
-$Token(kind=Number)
+                   
 ScientificLiteral : DecimalLiteral [eE] Sign? DecimalDigit+;
 fragment DecimalDigits : DecimalDigit+;
 fragment DecimalDigit : [0-9];
@@ -145,13 +145,13 @@ fragment Sign : '+' | '-';
 fragment Hexadecimal : ('0x'|'0X') HexDigit*;
 fragment HexDigit : [0-9a-fA-F];
 
-$Token(kind=Number)
+                   
 DateTimeOffsetLiteral : DateLiteral 'T' TimeLiteral TimeZone;
-$Token(kind=Number)
+                   
 DateTimeLiteral : DateLiteral 'T' TimeLiteral;
-$Token(kind=Number)
+                   
 DateLiteral : Sign? DateYear '-' DateMonth '-' DateDay;
-$Token(kind=Number)
+                   
 TimeLiteral : TimeHourMinute ':' TimeSecond;
 fragment DateDay
     : '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10'
@@ -178,15 +178,15 @@ fragment TimeMinute: [0-5] DecimalDigit;
 fragment TimeSecond: [0-5] DecimalDigit TimeSecondDecimalPart?;
 fragment TimeSecondDecimalPart: '.' DecimalDigits;
 
-$Token(kind=String)
+                   
 CharLiteral : '\'' SingleQuoteTextCharacter* '\'';
 
-$Token(kind=String)
+                   
 RegularStringLiteral
     : '"' DoubleQuoteTextCharacter* '"';
 //    | '\'' SingleQuoteTextCharacter* '\'';
 
-$Token(kind=String)
+                   
 DoubleQuoteVerbatimStringLiteralStart : '@"' -> more, mode(DOUBLEQUOTE_VERBATIM_STRING);
 //SingleQuoteVerbatimStringLiteralStart : '@''' -> more, mode(SINGLEQUOTE_VERBATIM_STRING);
 fragment SingleQuoteTextCharacter 
@@ -212,7 +212,7 @@ fragment CharacterEscapeUnicode
     : '\\u' HexDigit HexDigit HexDigit HexDigit
     | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit;
 
-$Token(kind=Number)
+                   
 GuidLiteral : '#[' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
                    HexDigit '-' HexDigit HexDigit HexDigit HexDigit '-'
                    HexDigit HexDigit HexDigit HexDigit '-'
@@ -225,22 +225,22 @@ LUtf8Bom : [\u00EF][\u00BB][\u00BF] -> channel(WHITESPACE);
 LWhitespace : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(WHITESPACE);
 LCrLf : '\r'? '\n' -> channel(WHITESPACE);
 LLineBreak : [\u0085\u2028\u2029] -> channel(WHITESPACE);
-$Token(kind=Comment)
+                    
 LLineComment : '//' ~[\r\n]* -> channel(COMMENT);
-$Token(kind=Comment)
+                    
 COMMENT_START : '/*' -> more, mode(MULTILINE_COMMENT);
 
-$Token(kind=Comment)
+                    
 mode MULTILINE_COMMENT;
 
 COMMENT_CRLF : '\r'? '\n' -> more;
 COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
 COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
-$Token(kind=Comment)
+                    
 LMultiLineComment : '*/' -> mode(DEFAULT_MODE), channel(COMMENT);
 COMMENT_STAR : '*' -> more;
 
-$Token(kind=String)
+                   
 mode DOUBLEQUOTE_VERBATIM_STRING;
 
 DoubleQuoteVerbatimStringText : DoubleQuoteTextVerbatimCharacter -> more;
@@ -322,7 +322,7 @@ TH_TAssignHat : TAssignHat -> type(TAssignHat);
 TH_TAssignLeftShift : TAssignLeftShift -> type(TAssignLeftShift);
 TH_TAssignRightShift : TAssignRightShift -> type(TAssignRightShift);
 TH_TOpenParenthesis : TOpenParenthesis {Type=TOpenParenthesis; _templateParenthesis++;};
-$Token(kind=Operator)
+                     
 TH_TCloseParenthesis : TCloseParenthesis {Type=TCloseParenthesis; _templateParenthesis--; if(_templateParenthesis == 0) Mode(TEMPLATE_OUTPUT); };
 TH_TOpenBracket : TOpenBracket -> type(TCloseParenthesis);
 TH_TCloseBracket : TCloseBracket -> type(TCloseParenthesis);
@@ -367,28 +367,28 @@ TH_CharLiteral : CharLiteral -> type(CharLiteral);
 TH_RegularStringLiteral : RegularStringLiteral -> type(RegularStringLiteral);
 TH_GuidLiteral : GuidLiteral -> type(GuidLiteral);
 
-$Token(kind=TemplateOutput)
+                           
 mode TEMPLATE_OUTPUT;
 
-$Token(kind=Keyword)
+                            
 KEndTemplate : 'end template' ('\r'? '\n' | [\u0085\u2028\u2029]) -> mode(DEFAULT_MODE);
 
-$Token(kind=TemplateControl)
+                            
 TemplateLineControl : ('\\' | '^') [\u0020\u0009\u000B\u000C\u00A0\u001A]* (TemplateCrLf | TemplateLineBreak);
-$Token(kind=TemplateOutput)
+                           
 TemplateOutput : (~[\u005C\u005E\u005B\r\n\u0085\u2028\u2029]+ | '\\' | '^');
-$Token(kind=TemplateOutput)
+                           
 TemplateCrLf : '\r'? '\n';
-$Token(kind=TemplateOutput)
+                           
 TemplateLineBreak : [\u0085\u2028\u2029];
-$Token(kind=TemplateControl)
+                            
 TemplateStatementStart : '[' {Mode(TEMPLATE_STATEMENT); _templateBrackets=0;};
 
 mode TEMPLATE_STATEMENT;
 
 TemplateStatementCrLf : '\r'? '\n' -> type(LCrLf), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
 TemplateStatementLineBreak : [\u0085\u2028\u2029] -> type(LLineBreak), channel(WHITESPACE), mode(TEMPLATE_OUTPUT);
-$Token(kind=TemplateControl)
+                            
 TemplateStatementEnd : {_templateBrackets == 0}? ']' -> mode(TEMPLATE_OUTPUT);
 TemplateStatement_COMMENT_START : '/*' -> more, mode(TEMPLATE_STATEMENT_COMMENT);
 TemplateStatement_WHITESPACE : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> type(LWhitespace), channel(WHITESPACE);
@@ -497,7 +497,7 @@ TS_CharLiteral : CharLiteral -> type(CharLiteral);
 TS_RegularStringLiteral : RegularStringLiteral -> type(RegularStringLiteral);
 TS_GuidLiteral : GuidLiteral -> type(GuidLiteral);
 
-$Token(kind=Comment)
+                    
 mode TEMPLATE_STATEMENT_COMMENT;
 
 TemplateStatement_COMMENT_CRLF : '\r'? '\n' -> mode(TEMPLATE_OUTPUT), channel(COMMENT), type(LMultiLineComment);

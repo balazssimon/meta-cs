@@ -253,7 +253,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 			}
 		}
 
-		public override SyntaxKind GetKeywordKind(string text)
+		public override SyntaxKind GetReservedKeywordKind(string text)
 		{
 			switch (text)
 			{
@@ -302,7 +302,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 			}
 		}
 
-		public bool IsAntlr4Token(SyntaxKind kind)
+        public override SyntaxKind GetContextualKeywordKind(string text)
+        {
+            return SyntaxKind.None;
+        }
+
+        public bool IsAntlr4Token(SyntaxKind kind)
 		{
 			switch(kind.Switch())
 			{

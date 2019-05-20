@@ -37,7 +37,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public bool HasErrors
         {
-            get { return this.DiagnosticBag.HasAnyErrors(); }
+            get { return this.DiagnosticBag?.HasAnyErrors() ?? false; }
         }
 
         public Antlr4Compiler(string inputFilePath, string outputDirectory, string defaultNamespace = null)
@@ -56,21 +56,44 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return this.diagnostics;
         }
 
+        protected virtual void InitLexer()
+        {
+            if (this.Lexer != null) return;
+            AntlrInputStream inputStream = new AntlrInputStream(this.Source);
+            this.Lexer = this.CreateLexer(inputStream);
+            this.CommonTokenStream = new CommonTokenStream(this.Lexer);
+            this.Lexer.RemoveErrorListeners();
+            this.Lexer.AddErrorListener(this);
+        }
+
+        protected virtual void InitParser()
+        {
+            if (this.Lexer == null) this.InitLexer();
+            if (this.Parser != null) return;
+            this.Parser = this.CreateParser(this.CommonTokenStream);
+            this.Parser.RemoveErrorListeners();
+            this.Parser.AddErrorListener(this);
+        }
+
+        protected virtual void InitDiagnostics()
+        {
+            if (this.DiagnosticBag != null) return;
+            this.DiagnosticBag = new DiagnosticBag();
+        }
+
+        protected virtual void InitSyntaxTree()
+        {
+            if (this.ParseTree != null) return;
+            this.InitDiagnostics();
+            this.InitParser();
+            this.ParseTree = this.DoCreateTree();
+        }
+
         public void Compile()
         {
             if (this.compiled) return;
             else this.compiled = true;
-            AntlrInputStream inputStream = new AntlrInputStream(this.Source);
-            this.Lexer = this.CreateLexer(inputStream);
-            this.CommonTokenStream = new CommonTokenStream(this.Lexer);
-            this.Parser = this.CreateParser(this.CommonTokenStream);
-            this.Lexer.RemoveErrorListeners();
-            this.Parser.RemoveErrorListeners();
-            this.Lexer.AddErrorListener(this);
-            this.Parser.AddErrorListener(this);
-            this.DiagnosticBag = new DiagnosticBag();
-
-            this.ParseTree = this.CreateTree();
+            this.InitSyntaxTree();
 
             if (this.HasErrors)
             {
@@ -79,6 +102,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
 
             this.DoCompile();
+
+            if (this.HasErrors)
+            {
+                this.diagnostics = this.DiagnosticBag.ToReadOnly();
+                return;
+            }
 
             if (this.GenerateOutput) this.Generate();
 
@@ -100,7 +129,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         protected abstract TLexer CreateLexer(AntlrInputStream stream);
         protected abstract TParser CreateParser(CommonTokenStream stream);
-        protected abstract ParserRuleContext CreateTree();
+        protected abstract ParserRuleContext DoCreateTree();
         protected abstract void DoCompile();
         protected abstract void DoGenerate();
 
