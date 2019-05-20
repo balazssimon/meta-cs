@@ -30,8 +30,24 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         protected abstract Language LanguageCore { get; }
 
-        public SyntaxKind Kind => ((GreenNodeAdapter)this.Green).Kind;
+        public SyntaxKind Kind => this.KindCore;
 
+        protected abstract SyntaxKind KindCore { get; }
 
+        protected GreenNode GreenCore => this.Green;
+
+        internal sealed override SyntaxNode GetCachedSlot(int index)
+        {
+            return this.GetCachedSlotCore(index);
+        }
+
+        protected abstract SyntaxNode GetCachedSlotCore(int index);
+
+        internal sealed override SyntaxNode GetNodeSlot(int slot)
+        {
+            return this.GetNodeSlotCore(slot);
+        }
+
+        protected abstract SyntaxNode GetNodeSlotCore(int slot);
     }
 }

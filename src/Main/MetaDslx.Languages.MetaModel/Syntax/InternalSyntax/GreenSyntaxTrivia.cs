@@ -57,7 +57,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 
         public static implicit operator SyntaxTrivia(GreenSyntaxTrivia trivia)
         {
-            return new SyntaxTrivia(default(SyntaxToken), trivia, position: 0, index: 0);
+            return new SyntaxTrivia(default, trivia, position: 0, index: 0);
         }
     }
 }

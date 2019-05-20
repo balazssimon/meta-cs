@@ -491,7 +491,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         internal abstract SyntaxNode GetCachedSlot(int index);
 
-        internal int GetChildIndex(int slot)
+        public int GetChildIndex(int slot)
         {
             int index = 0;
             for (int i = 0; i < slot; i++)
@@ -521,7 +521,7 @@ namespace Microsoft.CodeAnalysis
         /// the number of children could be large (lists) this function is overridden with more
         /// efficient implementations.
         /// </summary>
-        internal virtual int GetChildPosition(int index)
+        public virtual int GetChildPosition(int index)
         {
             int offset = 0;
             var green = this.Green;
@@ -1089,7 +1089,7 @@ recurse:
             return this.Green.GetAnnotations(annotationKinds);
         }
 
-        internal SyntaxAnnotation[] GetAnnotations()
+        internal protected SyntaxAnnotation[] GetAnnotations()
         {
             return this.Green.GetAnnotations();
         }

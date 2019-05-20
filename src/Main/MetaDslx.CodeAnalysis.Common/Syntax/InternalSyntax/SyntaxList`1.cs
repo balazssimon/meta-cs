@@ -11,7 +11,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
     {
         private readonly GreenNode _node;
 
-        internal SyntaxList(GreenNode node)
+        public SyntaxList(GreenNode node)
         {
             _node = node;
         }

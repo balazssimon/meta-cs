@@ -87,6 +87,20 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return offset;
         }
 
+        protected override GreenNode GetSlotCore(int index)
+        {
+            return this.GetSlot(index);
+        }
+
+        protected new abstract GreenNode GetSlot(int index);
+
+        protected override SyntaxNode CreateRedCore(SyntaxNode parent, int position)
+        {
+            return this.CreateRed(parent, position);
+        }
+
+        protected new abstract SyntaxNode CreateRed(SyntaxNode parent, int position);
+
         public InternalSyntaxToken GetFirstToken()
         {
             return (InternalSyntaxToken)this.GetFirstTerminal();

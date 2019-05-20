@@ -117,7 +117,7 @@ namespace Roslyn.Utilities
             }
         }
 
-        public static IEnumerable<EnumObject> EnumValues(Type enumType)
+        public static IEnumerable<EnumObject> GetEnumValues(Type enumType)
         {
             var descriptor = GetDescriptor(enumType);
             return descriptor.AllEnumValues;

@@ -6,9 +6,9 @@ using System.Diagnostics;
 
 namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 {
-    internal partial class SyntaxList
+    public partial class SyntaxList
     {
-        internal sealed class WithLotsOfChildren : WithManyChildrenBase
+        public sealed class WithLotsOfChildren : WithManyChildrenBase
         {
             static WithLotsOfChildren()
             {

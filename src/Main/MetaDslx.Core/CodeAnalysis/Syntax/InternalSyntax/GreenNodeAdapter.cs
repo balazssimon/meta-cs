@@ -57,9 +57,25 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         protected abstract Language LanguageCore { get; }
 
-        public virtual SyntaxKind Kind => EnumObject.FromIntUnsafe<SyntaxKind>(this.RawKind);
+        public SyntaxKind Kind => this.KindCore;
+
+        protected virtual SyntaxKind KindCore => EnumObject.FromIntUnsafe<SyntaxKind>(this.RawKind);
 
         public override string KindText => Kind.GetName();
+
+        internal override GreenNode GetSlot(int index)
+        {
+            return this.GetSlotCore(index);
+        }
+
+        protected abstract GreenNode GetSlotCore(int index);
+
+        internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
+        {
+            return this.CreateRedCore(parent, position);
+        }
+
+        protected abstract SyntaxNode CreateRedCore(SyntaxNode parent, int position);
 
         internal protected new virtual void WriteTo(ObjectWriter writer)
         {

@@ -178,8 +178,10 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
             return FromString<MetaGeneratorSyntaxKind>(name);
         }
 
-        public new static IEnumerable<EnumObject> EnumValues => EnumObject.EnumValues(typeof(MetaGeneratorSyntaxKind));
-
+        public static explicit operator MetaGeneratorSyntaxKind(int value)
+        {
+            return FromIntUnsafe<MetaGeneratorSyntaxKind>(value);
+        }
 
     }
 }

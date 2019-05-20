@@ -43,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return this.Text;
         }
 
-        internal override GreenNode GetSlot(int index)
+        protected override GreenNode GetSlot(int index)
         {
             throw ExceptionUtilities.Unreachable;
         }
@@ -102,7 +102,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return true;
         }
 
-        internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
+        protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
         {
             throw ExceptionUtilities.Unreachable;
         }

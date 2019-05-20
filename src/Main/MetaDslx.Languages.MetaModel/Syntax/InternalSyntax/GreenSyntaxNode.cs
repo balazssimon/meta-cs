@@ -1,14 +1,14 @@
-﻿using MetaDslx.CodeAnalysis;
-using Roslyn.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
 {
+    using MetaDslx.CodeAnalysis;
     using MetaDslx.CodeAnalysis.Syntax;
     using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
     using Microsoft.CodeAnalysis;
+    using Roslyn.Utilities;
 
     internal abstract class GreenSyntaxNode : InternalSyntaxNode
     {
@@ -51,5 +51,7 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
         protected override Language LanguageCore => MetaModelLanguage.Instance;
 
         public override SyntaxKind Kind => EnumObject.FromIntUnsafe<MetaModelSyntaxKind>(this.RawKind);
+
+        
     }
 }

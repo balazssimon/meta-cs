@@ -144,8 +144,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 if (_antlr4Tool.OutputPath == null) _antlr4Tool.OutputPath = this.InternalSyntaxDirectory;
             }
             _antlr4Tool.SourceCodeFiles.Add(this.GeneratedAntlr4GrammarFile);
+            bool success = _antlr4Tool.Execute();
             this.DiagnosticBag.AddRange(_antlr4Tool.Diagnostics);
-            if (!_antlr4Tool.Execute())
+            if (!success)
             {
                 this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_Antlr4ToolError, "could not generate C# files");
                 return false;
@@ -187,11 +188,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             string antlr4TokensSource = File.ReadAllText(antlr4TokensFile);
             this.ReadTokens(antlr4TokensSource);
 
-            this.Grammar.FirstParserRuleSyntaxKind = this.Grammar.ParserRules.FirstOrDefault()?.Name;
-            this.Grammar.LastParserRuleSyntaxKind = this.Grammar.ParserRules.LastOrDefault()?.Name;
+            this.Grammar.FirstParserRuleSyntaxKind = this.Grammar.ParserRules.FirstOrDefault();
+            this.Grammar.LastParserRuleSyntaxKind = this.Grammar.ParserRules.LastOrDefault();
             this.Grammar.LexerRules.Sort((r1, r2) => r1.Kind.CompareTo(r2.Kind));
-            this.Grammar.FirstTokenSyntaxKind = this.Grammar.LexerRules.FirstOrDefault(r => r.Kind > 0)?.Name;
-            this.Grammar.LastTokenSyntaxKind = this.Grammar.LexerRules.LastOrDefault(r => r.Kind > 0)?.Name;
+            this.Grammar.FirstTokenSyntaxKind = this.Grammar.LexerRules.FirstOrDefault(r => r.Kind > 0);
+            this.Grammar.LastTokenSyntaxKind = this.Grammar.LexerRules.LastOrDefault(r => r.Kind > 0);
+            this.Grammar.FirstFixedTokenSyntaxKind = this.Grammar.LexerRules.FirstOrDefault(r => r.Kind > 0 && this.Grammar.FixedTokens.Contains(r));
+            this.Grammar.LastFixedTokenSyntaxKind = this.Grammar.LexerRules.LastOrDefault(r => r.Kind > 0 && this.Grammar.FixedTokens.Contains(r));
 
             if (this.IsLexer)
             {
@@ -361,7 +364,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "InternalSyntax.cs"), this.GeneratedInternalSyntax);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs"), this.GeneratedSyntaxKind);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "Syntax.cs"), this.GeneratedSyntax);
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxTree.cs"), this.GeneratedSyntaxTree);
+                /*this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxTree.cs"), this.GeneratedSyntaxTree);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Errors\" + this.LanguageName + @"ErrorCode.cs"), this.GeneratedErrorCode);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Parser\" + this.LanguageName + @"SyntaxParser.cs"), this.GeneratedSyntaxParser);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Language.cs"), this.GeneratedLanguage);
@@ -374,7 +377,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs"), this.GeneratedDeclarationTreeBuilder);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs"), this.GeneratedBinderFactoryVisitor);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"SymbolBuilder.cs"), this.GeneratedSymbolBuilder);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"SymbolBuilder.cs"), this.GeneratedSymbolBuilder);*/
             }
         }
 
@@ -1636,10 +1639,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public HashSet<string> ParserRuleElemUses { get; private set; }
         public List<string> VirtualTokenKinds { get; private set; }
         public Dictionary<string, List<Antlr4LexerRule>> LexerTokenKinds { get; private set; }
-        public string FirstTokenSyntaxKind { get; set; }
-        public string LastTokenSyntaxKind { get; set; }
-        public string FirstParserRuleSyntaxKind { get; set; }
-        public string LastParserRuleSyntaxKind { get; set; }
+        public Antlr4LexerRule FirstTokenSyntaxKind { get; set; }
+        public Antlr4LexerRule LastTokenSyntaxKind { get; set; }
+        public Antlr4LexerRule FirstFixedTokenSyntaxKind { get; set; }
+        public Antlr4LexerRule LastFixedTokenSyntaxKind { get; set; }
+        public Antlr4ParserRule FirstParserRuleSyntaxKind { get; set; }
+        public Antlr4ParserRule LastParserRuleSyntaxKind { get; set; }
         public List<Antlr4ParserRule> ParserRules { get; private set; }
         public List<Antlr4LexerRule> LexerRules { get; private set; }
         public Antlr4LexerRule DefaultWhitespace { get; set; }

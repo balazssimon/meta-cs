@@ -115,13 +115,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
 
         public static string GreenName(this Antlr4ParserRuleElement elem)
         {
-            if (elem.Name == "EOF") return "Eof";
+            if (elem.Name == "EOF") return "EndOfFileToken";
             else return elem.Name.ToPascalCase();
         }
 
         public static string RedName(this Antlr4ParserRuleElement elem)
         {
-            if (elem.Name == "EOF") return "Eof";
+            if (elem.Name == "EOF") return "EndOfFileToken";
             else return elem.Name.ToPascalCase();
         }
 
@@ -178,7 +178,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             {
                 return elem.OriginalType.ToPascalCase() + "Green";
             }
-            /*if (kind == TypeKind.Public)
+            if (kind == TypeKind.Public)
             {
                 if (elem.IsBlock)
                 {
@@ -187,17 +187,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
                 }
                 else if (elem.IsList)
                 {
-                    if (elem.IsSeparated) return "InternalSeparatedNodeList<" + elem.Type.ToPascalCase() + "Green>";
-                    else if (elem.IsToken) return "InternalSyntaxList<InternalSyntaxToken>";
-                    else return "InternalNodeList<" + elem.Type.ToPascalCase() + "Green>";
+                    if (elem.IsToken) return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<" + elem.Type.ToPascalCase() + "Green>";
+                    else if (elem.IsSeparated) return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<" + elem.Type.ToPascalCase() + "Green>";
+                    else return "Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<" + elem.Type.ToPascalCase() + "Green>";
                 }
-                else
-                {
-                    if (elem.IsToken) return "InternalSyntaxToken";
-                    else return elem.Type.ToPascalCase() + "Green";
-                }
+                else if (elem.IsToken) return "InternalSyntaxToken";
+                else return elem.Type.ToPascalCase() + "Green";
             }
-            else if (kind == TypeKind.Field)*/
+            else if (kind == TypeKind.Field)
             {
                 if (elem.IsBlock)
                 {
@@ -206,9 +203,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
                 }
                 else if (elem.IsList)
                 {
-                    if (elem.IsToken) return "InternalSyntaxTokenList";
-                    else if (elem.IsSeparated) return "InternalSeparatedSyntaxNodeList";
-                    else return "InternalSyntaxNodeList";
+                    if (elem.IsToken) return "InternalSyntaxNode";
+                    else if (elem.IsSeparated) return "InternalSyntaxNode";
+                    else return "InternalSyntaxNode";
                 }
                 else if (elem.IsToken) return "InternalSyntaxToken";
                 else return elem.Type.ToPascalCase() + "Green";
@@ -237,9 +234,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             }
             else if (elem.IsList)
             {
-                if (elem.IsSeparated) return "SeparatedSyntaxNodeList";
-                else if (elem.IsToken) return "SyntaxTokenList";
-                else return "SyntaxNodeList";
+                if (elem.IsSeparated) return "SyntaxNode";
+                else if (elem.IsToken) return "SyntaxNode";
+                else return "SyntaxNode";
             }
             else if (elem.IsToken) return "SyntaxToken";
             else return elem.Type.ToPascalCase() + "Syntax";
@@ -254,9 +251,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             }
             else if (elem.IsList)
             {
-                if (elem.IsSeparated) return "SeparatedSyntaxNodeList<" + elem.Type.ToPascalCase() + "Syntax>";
+                if (elem.IsSeparated) return "SeparatedSyntaxList<" + elem.Type.ToPascalCase() + "Syntax>";
                 else if (elem.IsToken) return "SyntaxTokenList";
-                else return "SyntaxNodeList<" + elem.Type.ToPascalCase() + "Syntax>";
+                else return "SyntaxList<" + elem.Type.ToPascalCase() + "Syntax>";
             }
             else if (elem.IsToken) return "SyntaxToken";
             else return elem.Type.ToPascalCase() + "Syntax";
@@ -264,14 +261,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
 
         public static string RedInnerType(this Antlr4ParserRuleElement elem)
         {
-            if (elem.IsBlock)
-            {
-                if (elem.IsFixedTokenAltBlock) return "SyntaxToken";
-                else return "SyntaxNode";
-            }
-            else if (elem.IsList) return elem.Type.ToPascalCase() + "Syntax";
-            else if (elem.IsToken) return "SyntaxToken";
-            else return elem.Type.ToPascalCase() + "Syntax";
+            return elem.Type.ToPascalCase() + "Syntax";
         }
 
         public static string FieldName(this Antlr4ParserRuleElement elem)

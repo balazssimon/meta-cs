@@ -12,10 +12,13 @@ namespace MetaDslx.Bootstrap
             mg.Compile();
             //*/
 
-            /*/
+            //*/
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorLexer.ag4", "MetaDslx.Bootstrap.MetaGenerator");
-            Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorParser.ag4", "MetaDslx.Bootstrap.MetaGenerator");
-            a4r.Compile();
+            //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorParser.ag4", "MetaDslx.Bootstrap.MetaGenerator");
+            Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\MetaLexer.ag4", "MetaDslx.Bootstrap.Meta");
+            a4l.Compile();
+            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\MetaParser.ag4", "MetaDslx.Bootstrap.Meta");
+            a4p.Compile();
             //*/
 
             /*/

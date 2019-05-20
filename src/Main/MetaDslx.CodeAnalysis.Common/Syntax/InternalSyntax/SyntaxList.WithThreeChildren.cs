@@ -5,9 +5,9 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 {
-    internal partial class SyntaxList
+    public partial class SyntaxList
     {
-        internal class WithThreeChildren : SyntaxList
+        public class WithThreeChildren : SyntaxList
         {
             static WithThreeChildren()
             {

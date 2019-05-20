@@ -5,29 +5,29 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 {
-    internal abstract partial class SyntaxList : GreenNode
+    public abstract partial class SyntaxList : GreenNode
     {
-        internal SyntaxList()
+        public SyntaxList()
             : base(GreenNode.ListKind)
         {
         }
 
-        internal SyntaxList(DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+        public SyntaxList(DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
             : base(GreenNode.ListKind, diagnostics, annotations)
         {
         }
 
-        internal SyntaxList(ObjectReader reader)
+        public SyntaxList(ObjectReader reader)
             : base(reader)
         {
         }
 
-        internal static GreenNode List(GreenNode child)
+        public static GreenNode List(GreenNode child)
         {
             return child;
         }
 
-        internal static WithTwoChildren List(GreenNode child0, GreenNode child1)
+        public static WithTwoChildren List(GreenNode child0, GreenNode child1)
         {
             Debug.Assert(child0 != null);
             Debug.Assert(child1 != null);
@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             return result;
         }
 
-        internal static WithThreeChildren List(GreenNode child0, GreenNode child1, GreenNode child2)
+        public static WithThreeChildren List(GreenNode child0, GreenNode child1, GreenNode child2)
         {
             Debug.Assert(child0 != null);
             Debug.Assert(child1 != null);
@@ -66,12 +66,12 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             return result;
         }
 
-        internal static GreenNode List(GreenNode[] nodes)
+        public static GreenNode List(GreenNode[] nodes)
         {
             return List(nodes, nodes.Length);
         }
 
-        internal static GreenNode List(GreenNode[] nodes, int count)
+        public static GreenNode List(GreenNode[] nodes, int count)
         {
             var array = new ArrayElement<GreenNode>[count];
             for (int i = 0; i < count; i++)
@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             return List(array);
         }
 
-        internal static SyntaxList List(ArrayElement<GreenNode>[] children)
+        public static SyntaxList List(ArrayElement<GreenNode>[] children)
         {
             // "WithLotsOfChildren" list will allocate a separate array to hold
             // precomputed node offsets. It may not be worth it for smallish lists.
@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 
         internal abstract void CopyTo(ArrayElement<GreenNode>[] array, int offset);
 
-        internal static GreenNode Concat(GreenNode left, GreenNode right)
+        public static GreenNode Concat(GreenNode left, GreenNode right)
         {
             if (left == null)
             {

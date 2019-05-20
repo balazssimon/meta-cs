@@ -115,9 +115,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
             return FromString<Antlr4RoslynSyntaxKind>(name);
         }
 
-        public new static IEnumerable<EnumObject> EnumValues => EnumObject.EnumValues(typeof(Antlr4RoslynSyntaxKind));
+        public static explicit operator Antlr4RoslynSyntaxKind(int value)
+        {
+            return FromIntUnsafe<Antlr4RoslynSyntaxKind>(value);
+        }
 
-
-	}
+    }
 }
 

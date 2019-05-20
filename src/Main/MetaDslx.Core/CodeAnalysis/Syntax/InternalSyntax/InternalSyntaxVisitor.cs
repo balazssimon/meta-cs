@@ -24,7 +24,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             return this.DefaultVisit(trivia);
         }
 
-        protected virtual TResult DefaultVisit(InternalSyntaxNode node)
+        public virtual TResult DefaultVisit(InternalSyntaxNode node)
         {
             return default(TResult);
         }

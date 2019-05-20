@@ -49,7 +49,11 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return FromString<SyntaxKind>(name);
         }
 
-        public new static IEnumerable<EnumObject> EnumValues => EnumObject.EnumValues(typeof(SyntaxKind));
+        public static explicit operator SyntaxKind(int value)
+        {
+            return FromIntUnsafe<SyntaxKind>(value);
+        }
+
 
     }
 }

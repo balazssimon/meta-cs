@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.Syntax
                 _childPositions = childOffsets;
             }
 
-            internal override int GetChildPosition(int index)
+            public override int GetChildPosition(int index)
             {
                 return _childPositions[index];
             }

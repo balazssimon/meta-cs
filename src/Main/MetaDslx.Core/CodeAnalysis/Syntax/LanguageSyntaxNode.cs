@@ -33,18 +33,38 @@ namespace MetaDslx.CodeAnalysis
         /// Used by structured trivia which has "parent == null", and therefore must know its
         /// SyntaxTree explicitly when created.
         /// </summary>
-        protected LanguageSyntaxNode(GreenNode green, int position, LanguageSyntaxTree syntaxTree)
+        protected LanguageSyntaxNode(GreenNode green, LanguageSyntaxTree syntaxTree, int position)
             : base(green, position, syntaxTree)
         {
         }
 
-        public new abstract Language Language { get; }
+        public new Language Language => this.LanguageCore;
 
-        protected override Language LanguageCore => this.Language;
+        public new GreenNode Green => this.GreenCore;
 
         public abstract TResult Accept<TResult>(SyntaxVisitor<TResult> visitor);
 
         public abstract void Accept(SyntaxVisitor visitor);
+
+        public new virtual SyntaxNode GetCachedSlot(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override SyntaxNode GetCachedSlotCore(int index)
+        {
+            return this.GetCachedSlot(index);
+        }
+
+        public new virtual SyntaxNode GetNodeSlot(int slot)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override SyntaxNode GetNodeSlotCore(int slot)
+        {
+            return this.GetNodeSlot(slot);
+        }
 
         /// <summary>
         /// The node that contains this node in its Children collection.
@@ -413,11 +433,13 @@ namespace MetaDslx.CodeAnalysis
         private class DummySyntaxNode : LanguageSyntaxNode
         {
             public DummySyntaxNode() 
-                : base(null, null, 0)
+                : base(null, (LanguageSyntaxTree)null, 0)
             {
             }
 
-            public override Language Language => throw new NotImplementedException();
+            protected override Language LanguageCore => throw new NotImplementedException();
+
+            protected override SyntaxKind KindCore => throw new NotImplementedException();
 
             public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
             {
@@ -429,12 +451,12 @@ namespace MetaDslx.CodeAnalysis
                 throw new NotImplementedException();
             }
 
-            internal override SyntaxNode GetCachedSlot(int index)
+            protected override SyntaxNode GetCachedSlotCore(int index)
             {
                 throw new NotImplementedException();
             }
 
-            internal override SyntaxNode GetNodeSlot(int slot)
+            protected override SyntaxNode GetNodeSlotCore(int slot)
             {
                 throw new NotImplementedException();
             }

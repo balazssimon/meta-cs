@@ -2,7 +2,7 @@
 
 namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 {
-    internal static class SyntaxListBuilderExtensions
+    public static class SyntaxListBuilderExtensions
     {
         public static SyntaxList<GreenNode> ToList(this SyntaxListBuilder builder)
         {

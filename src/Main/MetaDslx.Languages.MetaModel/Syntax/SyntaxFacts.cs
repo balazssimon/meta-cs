@@ -70,57 +70,22 @@ namespace MetaDslx.Languages.MetaModel.Syntax
             throw new NotImplementedException();
         }
 
-        public override bool IsName(SyntaxKind kind)
+        public override SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind)
         {
             throw new NotImplementedException();
         }
 
-        public override bool IsPredefinedType(SyntaxKind kind)
+        public override bool IsIdentifier(SyntaxKind rawKind)
         {
             throw new NotImplementedException();
         }
 
-        public override bool IsType(SyntaxKind kind)
+        public override bool IsGeneralCommentTrivia(SyntaxKind rawKind)
         {
             throw new NotImplementedException();
         }
 
-        public override bool IsTypeDeclaration(SyntaxKind kind)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsGlobalMemberDeclaration(SyntaxKind kind)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsNamespaceMemberDeclaration(SyntaxKind kind)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsIdentifier(SyntaxKind kind)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsGeneralCommentTrivia(SyntaxKind kind)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsDocumentationCommentTrivia(SyntaxKind kind)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsTriviaWithEndOfLine(SyntaxKind kind)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string GetKindText(SyntaxKind kind)
+        public override bool IsDocumentationCommentTrivia(SyntaxKind rawKind)
         {
             throw new NotImplementedException();
         }
@@ -130,22 +95,17 @@ namespace MetaDslx.Languages.MetaModel.Syntax
             throw new NotImplementedException();
         }
 
-        public override object GetValue(SyntaxKind kind)
+        public override SyntaxKind GetReservedKeywordKind(string text)
         {
             throw new NotImplementedException();
         }
 
-        public override int GetReservedKeywordKind(string text)
+        public override SyntaxKind GetContextualKeywordKind(string text)
         {
             throw new NotImplementedException();
         }
 
-        public override int GetContextualKeywordKind(string text)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int GetPreprocessorKeywordKind(string text)
+        public override SyntaxKind GetFixedTokenKind(string text)
         {
             throw new NotImplementedException();
         }

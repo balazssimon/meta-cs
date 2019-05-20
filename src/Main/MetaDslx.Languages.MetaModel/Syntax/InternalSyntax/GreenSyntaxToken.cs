@@ -60,7 +60,9 @@ namespace MetaDslx.Languages.MetaModel.Syntax.InternalSyntax
         }
 
         public new MetaModelLanguage Language => MetaModelLanguage.Instance;
-        protected override Language LanguageCore => MetaModelLanguage.Instance;
+        protected override Language LanguageCore => this.Language;
+        public new MetaModelSyntaxKind Kind => EnumObject.FromIntUnsafe<MetaModelSyntaxKind>(this.RawKind);
+        protected override SyntaxKind KindCore => this.Kind;
 
         protected override bool ShouldReuseInSerialization => base.ShouldReuseInSerialization &&
                                                              FullWidth < Language.SyntaxFacts.MaxCachedTokenSize;
