@@ -161,6 +161,8 @@ namespace MetaDslx.BuildTasks
 
                 arguments.AddRange(SourceCodeFiles);
 
+                if (this.Diagnostics == null) this.Diagnostics = new Microsoft.CodeAnalysis.DiagnosticBag();
+
 #if NETSTANDARD
                 if (UseCSharpGenerator && string.IsNullOrWhiteSpace(ToolPath))
                 {

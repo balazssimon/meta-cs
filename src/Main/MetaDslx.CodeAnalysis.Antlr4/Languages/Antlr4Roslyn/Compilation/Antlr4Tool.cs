@@ -30,6 +30,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.UseCSharpGenerator = true;
             this.Encoding = "UTF-8";
             this.TargetLanguage = "CSharp";
+            this.LanguageSourceExtensions = new string[] { ".cs", ".tokens" };
         }
 
         public IList<string> GeneratedCodeFiles
@@ -40,101 +41,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
-        public int TimeoutInSeconds
-        {
-            get;
-            set;
-        }
-
-        public string ToolPath
-        {
-            get;
-            set;
-        }
-
-        public string TargetLanguage
-        {
-            get;
-            set;
-        }
-
-        public string TargetFrameworkVersion
-        {
-            get;
-            set;
-        }
-
-        public string OutputPath
-        {
-            get;
-            set;
-        }
-
-        public string Encoding
-        {
-            get;
-            set;
-        }
-
-        public string TargetNamespace
-        {
-            get;
-            set;
-        }
-
-        public string[] LanguageSourceExtensions
-        {
-            get;
-            set;
-        }
-
-        public bool GenerateListener
-        {
-            get;
-            set;
-        }
-
-        public bool GenerateVisitor
-        {
-            get;
-            set;
-        }
-
-        public bool ForceAtn
-        {
-            get;
-            set;
-        }
-
-        public bool AbstractGrammar
-        {
-            get;
-            set;
-        }
-
-        public string JavaVendor
-        {
-            get;
-            set;
-        }
-
-        public string JavaInstallation
-        {
-            get;
-            set;
-        }
-
-        public string JavaExecutable
-        {
-            get;
-            set;
-        }
-
-        public bool UseCSharpGenerator
-        {
-            get;
-            set;
-        }
+        public int TimeoutInSeconds { get; set; }
+        public string ToolPath { get; set; }
+        public string TargetLanguage { get; set; }
+        public string TargetFrameworkVersion { get; set; }
+        public string OutputPath { get; set; }
+        public string Encoding { get; set; }
+        public string TargetNamespace { get; set; }
+        public string[] LanguageSourceExtensions { get; set; }
+        public bool GenerateListener { get; set; }
+        public bool GenerateVisitor { get; set; }
+        public bool ForceAtn { get; set; }
+        public bool AbstractGrammar { get; set; }
+        public string JavaVendor { get; set; }
+        public string JavaInstallation { get; set; }
+        public string JavaExecutable { get; set; }
+        public bool UseCSharpGenerator { get; set; }
 
         public IList<string> SourceCodeFiles
         {
@@ -142,17 +64,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             {
                 return this._sourceCodeFiles;
             }
-            set
-            {
-                this._sourceCodeFiles = value;
-            }
         }
 
-        public DiagnosticBag Diagnostics
-        {
-            get;
-            set;
-        }
+        public DiagnosticBag Diagnostics { get; set; }
 
         public abstract bool Execute();
     }

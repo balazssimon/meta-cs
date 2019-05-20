@@ -12,14 +12,6 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup><!--
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="$(PackageVersion)" />
-    <PackageReference Include="MetaDslx.BuildTasks" Version="$(PackageVersion)" />
-    -->
-  
-    <Folder Include="Syntax\" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />

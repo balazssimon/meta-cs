@@ -54,10 +54,8 @@ namespace MetaDslx.Languages.MetaGenerator.Compilation
             if (this.GenerateOutput && this.OutputDirectory != null)
             {
                 string fileName = Path.Combine(this.OutputDirectory, Path.ChangeExtension(this.FileName, ".cs"));
-                using (StreamWriter writer = new StreamWriter(fileName))
-                {
-                    writer.WriteLine(this.GeneratedSource);
-                }
+                this.RegisterGeneratedFile(fileName);
+                File.WriteAllText(fileName, this.GeneratedSource);
             }
         }
     }

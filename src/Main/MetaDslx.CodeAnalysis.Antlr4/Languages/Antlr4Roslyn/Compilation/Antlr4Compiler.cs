@@ -12,16 +12,27 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
-    public abstract class Antlr4Compiler<TLexer, TParser> : IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    public interface IAntlr4Compiler
+    {
+        void Compile();
+        void Generate();
+        bool HasErrors { get; }
+        ImmutableArray<Diagnostic> GetDiagnostics();
+        ImmutableArray<string> GetGeneratedFileList();
+    }
+
+    public abstract class Antlr4Compiler<TLexer, TParser> : IAntlr4Compiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
         where TLexer: Antlr4.Runtime.Lexer
         where TParser: Antlr4.Runtime.Parser
     {
         private bool compiled;
         private bool generated;
         private ImmutableArray<Diagnostic> diagnostics;
+        private ArrayBuilder<string> generatedFileList;
 
         protected TLexer Lexer { get; private set; }
         protected TParser Parser { get; private set; }
@@ -49,6 +60,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.FileName = Path.GetFileName(inputFilePath);
             this.GenerateOutput = true;
             this.diagnostics = ImmutableArray<Diagnostic>.Empty;
+            this.generatedFileList = new ArrayBuilder<string>();
         }
 
         public ImmutableArray<Diagnostic> GetDiagnostics()
@@ -255,6 +267,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             {
                 this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.FileName, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), msg);
             }
+        }
+
+        protected void RegisterGeneratedFile(string filePath)
+        {
+            this.generatedFileList.Add(filePath);
+        }
+
+        public ImmutableArray<string> GetGeneratedFileList()
+        {
+            return this.generatedFileList.AsImmutable();
         }
     }
 }
