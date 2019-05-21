@@ -15,9 +15,9 @@ namespace MetaDslx.Bootstrap
             //*/
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorLexer.ag4", "MetaDslx.Bootstrap.MetaGenerator");
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorParser.ag4", "MetaDslx.Bootstrap.MetaGenerator");
-            Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\MetaLexer.ag4", "MetaDslx.Bootstrap.Meta");
+            Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.Languages.Meta\Syntax\InternalSyntax\MetaLexer.ag4", "MetaDslx.Languages.Meta");
             a4l.Compile();
-            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\MetaParser.ag4", "MetaDslx.Bootstrap.Meta");
+            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.Languages.Meta\Syntax\InternalSyntax\MetaParser.ag4", "MetaDslx.Languages.Meta");
             a4p.Compile();
             //*/
 

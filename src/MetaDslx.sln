@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.CShar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Core", "Main\MetaDslx.Core\MetaDslx.Core.csproj", "{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.MetaModel", "Main\MetaDslx.Languages.MetaModel\MetaDslx.Languages.MetaModel.csproj", "{BA598C0D-DE63-46C5-9FC0-881D918B3088}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Meta", "Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj", "{BA598C0D-DE63-46C5-9FC0-881D918B3088}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Bootstrap", "Test\MetaDslx.Bootstrap\MetaDslx.Bootstrap.csproj", "{C317C78A-785A-4D47-A6D1-719ABBCB5EB1}"
 EndProject
