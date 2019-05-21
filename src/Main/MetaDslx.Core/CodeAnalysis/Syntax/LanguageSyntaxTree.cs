@@ -492,33 +492,5 @@ namespace MetaDslx.CodeAnalysis
 
         #endregion
 
-        #region SyntaxTree
-
-        protected override SyntaxNode GetRootCore(CancellationToken cancellationToken)
-        {
-            return this.GetRoot(cancellationToken);
-        }
-
-        protected override async Task<SyntaxNode> GetRootAsyncCore(CancellationToken cancellationToken)
-        {
-            return await this.GetRootAsync(cancellationToken).ConfigureAwait(false);
-        }
-
-        protected override bool TryGetRootCore(out SyntaxNode root)
-        {
-            SyntaxNode node;
-            if (this.TryGetRoot(out node))
-            {
-                root = node;
-                return true;
-            }
-            else
-            {
-                root = null;
-                return false;
-            }
-        }
-
-        #endregion
     }
 }

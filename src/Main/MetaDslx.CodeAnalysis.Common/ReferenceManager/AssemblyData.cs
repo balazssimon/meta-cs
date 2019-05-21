@@ -6,13 +6,13 @@ using System.Diagnostics;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
+    public partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
     {
         /// <summary>
         /// Information about an assembly, used as an input for the Binder class.
         /// </summary>
         [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-        internal abstract class AssemblyData
+        public abstract class AssemblyData
         {
             /// <summary>
             /// Identity of the assembly.

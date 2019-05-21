@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Microsoft.CodeAnalysis.Diagnostics
 {
-    internal sealed class CompilationUnitCompletedEvent : CompilationEvent
+    public sealed class CompilationUnitCompletedEvent : CompilationEvent
     {
         public CompilationUnitCompletedEvent(Compilation compilation, SyntaxTree compilationUnit) : base(compilation)
         {

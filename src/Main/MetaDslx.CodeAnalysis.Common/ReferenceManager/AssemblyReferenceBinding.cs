@@ -5,13 +5,13 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
+    public partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
     {
         /// <summary>
         /// Result of binding an AssemblyRef to an AssemblyDef. 
         /// </summary>
         [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-        internal struct AssemblyReferenceBinding
+        public struct AssemblyReferenceBinding
         {
             private readonly AssemblyIdentity _referenceIdentity;
             private readonly int _definitionIndex;

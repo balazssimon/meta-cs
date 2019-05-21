@@ -85,7 +85,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
             {
                 IToken t = tokens[i];
                 int type = t.Type;
-                SyntaxKind kind = _syntaxFacts.ToLanguageSyntaxKind(type.FromAntlr4());
+                SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
                 if (t.Channel == 0)
                 {
                     return token.TokenIndex;
@@ -110,7 +110,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
                 {
                     IToken t = this.tokens[i];
                     int type = t.Type;
-                    SyntaxKind kind = _syntaxFacts.ToLanguageSyntaxKind(type.FromAntlr4());
+                    SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
                     InternalSyntaxTrivia trivia = this.factory.Trivia(kind, t.Text);
                     trivia = this.AddDiagnostic(trivia, i);
                     triviaArray[i - startIndex] = trivia;
@@ -131,7 +131,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
                 {
                     IToken t = this.tokens[i];
                     int type = t.Type;
-                    SyntaxKind kind = _syntaxFacts.ToLanguageSyntaxKind(type.FromAntlr4());
+                    SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
                     InternalSyntaxTrivia trivia = this.factory.Trivia(kind, t.Text);
                     trivia = this.AddDiagnostic(trivia, i);
                     triviaArray[i - startIndex] = trivia;
@@ -174,7 +174,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
             if (token.Type >= 0)
             {
                 int type = token.Type;
-                SyntaxKind kind = _syntaxFacts.ToLanguageSyntaxKind(type.FromAntlr4());
+                SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
                 if (token.StartIndex < 0 || token.StopIndex < token.StartIndex)
                 {
                     result = this.factory.MissingToken(kind);
@@ -197,7 +197,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
             }
             else
             {
-                result = this.factory.Token(SyntaxKind.Eof);
+                result = this.factory.EndOfFile;
+            }
+            if (result == null)
+            {
+                return null;
             }
             if (addTrivia)
             {
@@ -218,7 +222,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
         protected InternalSyntaxToken VisitErrorNode(IErrorNode node)
         {
             int type = node.Symbol.Type;
-            SyntaxKind kind = _syntaxFacts.ToLanguageSyntaxKind(type.FromAntlr4());
+            SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
             InternalSyntaxToken result = this.factory.MissingToken(kind);
             return this.AddDiagnostic(result, node.Symbol.TokenIndex);
         }

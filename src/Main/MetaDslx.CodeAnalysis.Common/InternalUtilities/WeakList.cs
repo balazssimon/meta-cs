@@ -9,7 +9,7 @@ namespace Roslyn.Utilities
     /// <summary>
     /// Represents an ordered sequence of weak references.
     /// </summary>
-    internal sealed class WeakList<T> : IEnumerable<T>
+    public sealed class WeakList<T> : IEnumerable<T>
         where T : class
     {
         private WeakReference<T>[] _items;

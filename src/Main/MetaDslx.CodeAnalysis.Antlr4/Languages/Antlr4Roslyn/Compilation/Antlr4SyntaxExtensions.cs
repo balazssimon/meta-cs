@@ -9,12 +9,12 @@ namespace MetaDslx.CodeAnalysis.Syntax
     {
         public static int ToAntlr4(this SyntaxKind kind)
         {
-            return kind.GetValue() - SyntaxKind.__LastPredefinedSyntaxKindValue + 1;
+            return kind.GetValue() - SyntaxKind.__LastPredefinedSyntaxKindValue;
         }
 
-        public static SyntaxKind FromAntlr4(this int token)
+        public static SyntaxKind FromAntlr4(this int token, Type syntaxKindType)
         {
-            return EnumObject.FromIntUnsafe<SyntaxKind>(token + SyntaxKind.__LastPredefinedSyntaxKindValue - 1);
+            return (SyntaxKind)EnumObject.FromIntUnsafe(syntaxKindType, token + SyntaxKind.__LastPredefinedSyntaxKindValue);
         }
     }
 }

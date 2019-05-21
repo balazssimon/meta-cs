@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal sealed class PEAssembly
+    public sealed class PEAssembly
     {
         /// <summary>
         /// All assemblies this assembly references.

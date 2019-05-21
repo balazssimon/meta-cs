@@ -1,5 +1,6 @@
 using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -39,11 +40,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 
 	public class Antlr4RoslynSyntaxFacts : SyntaxFacts
 	{
-		public static readonly Antlr4RoslynSyntaxFacts Instance = new Antlr4RoslynSyntaxFacts();
-
-        public override SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind)
+        public Antlr4RoslynSyntaxFacts() 
+            : base(typeof(Antlr4RoslynSyntaxKind))
         {
-            return kind.CastUp<Antlr4RoslynSyntaxKind>();
         }
 
         public override bool IsToken(SyntaxKind kind)

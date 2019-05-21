@@ -157,17 +157,12 @@ namespace Microsoft.CodeAnalysis
         /// Used for time-based version generation when <see cref="System.Reflection.AssemblyVersionAttribute"/> contains a wildcard.
         /// If equal to default(<see cref="DateTime"/>) the actual current local time will be used.
         /// </summary>
-        internal DateTime CurrentLocalTime { get; private set; }
-
-        internal DateTime CurrentLocalTime_internal_protected_set { set { CurrentLocalTime = value; } }
+        public DateTime CurrentLocalTime { get; protected set; }
 
         /// <summary>
         /// Emit mode that favors debuggability. 
         /// </summary>
-        internal bool DebugPlusMode { get; private set; }
-
-        // TODO: change visibility of the DebugPlusMode setter to internal & protected
-        internal bool DebugPlusMode_internal_protected_set { set { DebugPlusMode = value; } }
+        public bool DebugPlusMode { get; protected set; }
 
         /// <summary>
         /// Specifies whether to import members with accessibility other than public or protected by default. 
@@ -181,17 +176,14 @@ namespace Microsoft.CodeAnalysis
         /// <summary>
         /// Apply additional disambiguation rules during resolution of referenced assemblies.
         /// </summary>
-        internal bool ReferencesSupersedeLowerVersions { get; private set; }
-
-        // TODO: change visibility of the ReferencesSupersedeLowerVersions setter to internal & protected
-        internal bool ReferencesSupersedeLowerVersions_internal_protected_set { set { ReferencesSupersedeLowerVersions = value; } }
+        public bool ReferencesSupersedeLowerVersions { get; protected set; }
 
         /// <summary>
         /// Modifies the incoming diagnostic, for example escalating its severity, or discarding it (returning null) based on the compilation options.
         /// </summary>
         /// <param name="diagnostic"></param>
         /// <returns>The modified diagnostic, or null</returns>
-        internal abstract Diagnostic FilterDiagnostic(Diagnostic diagnostic);
+        public abstract Diagnostic FilterDiagnostic(Diagnostic diagnostic);
 
         /// <summary>
         /// Warning report option for each warning.
@@ -232,22 +224,6 @@ namespace Microsoft.CodeAnalysis
         /// <see cref="AssemblyIdentityComparer.Default"/> if not specified.
         /// </summary>
         public AssemblyIdentityComparer AssemblyIdentityComparer { get; protected set; }
-
-        /// <summary>
-        /// A set of strings designating experimental compiler features that are to be enabled.
-        /// </summary>
-        [Obsolete]
-        protected internal ImmutableArray<string> Features
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            protected set
-            {
-                throw new NotImplementedException();
-            }
-        }
 
         private readonly Lazy<ImmutableArray<Diagnostic>> _lazyErrors;
 
@@ -317,12 +293,16 @@ namespace Microsoft.CodeAnalysis
             });
         }
 
-        internal bool CanReuseCompilationReferenceManager(CompilationOptions other)
+        /// <summary>
+        /// This condition has to include all options the Assembly Manager depends on when binding references.
+        /// In addition, the assembly name is determined based upon output kind. It is special for netmodules.
+        /// Can't reuse when file resolver or identity comparers change.
+        /// Can reuse even if StrongNameProvider changes. When resolving a cyclic reference only the simple name is considered, not the strong name.        
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public virtual bool CanReuseCompilationReferenceManager(CompilationOptions other)
         {
-            // This condition has to include all options the Assembly Manager depends on when binding references.
-            // In addition, the assembly name is determined based upon output kind. It is special for netmodules.
-            // Can't reuse when file resolver or identity comparers change.
-            // Can reuse even if StrongNameProvider changes. When resolving a cyclic reference only the simple name is considered, not the strong name.
             return this.MetadataImportOptions == other.MetadataImportOptions
                 && this.ReferencesSupersedeLowerVersions == other.ReferencesSupersedeLowerVersions
                 && this.OutputKind.IsNetModule() == other.OutputKind.IsNetModule()
@@ -336,7 +316,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public abstract string Language { get; }
 
-        internal bool EnableEditAndContinue
+        public bool EnableEditAndContinue
         {
             get
             {
@@ -359,8 +339,6 @@ namespace Microsoft.CodeAnalysis
                     return false;
             }
         }
-
-        internal abstract ImmutableArray<string> GetImports();
 
         /// <summary>
         /// Creates a new options instance with the specified general diagnostic option.
@@ -531,13 +509,11 @@ namespace Microsoft.CodeAnalysis
         protected abstract CompilationOptions CommonWithCheckOverflow(bool checkOverflow);
         protected abstract CompilationOptions CommonWithMetadataImportOptions(MetadataImportOptions value);
 
-        [Obsolete]
-        protected abstract CompilationOptions CommonWithFeatures(ImmutableArray<string> features);
 
         /// <summary>
         /// Performs validation of options compatibilities and generates diagnostics if needed
         /// </summary>
-        internal abstract void ValidateOptions(ArrayBuilder<Diagnostic> builder);
+        protected abstract void ValidateOptions(ArrayBuilder<Diagnostic> builder);
 
         internal void ValidateOptions(ArrayBuilder<Diagnostic> builder, CommonMessageProvider messageProvider)
         {

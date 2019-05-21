@@ -167,8 +167,8 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
         static MetaGeneratorSyntaxKind()
         {
             EnumObject.AutoInit<MetaGeneratorSyntaxKind>();
-            __FirstAntlr4TokenValue = KNamespace.As<MetaGeneratorSyntaxKind>().GetValue();
-            __LastAntlr4TokenValue = COMMENT_START.As<MetaGeneratorSyntaxKind>().GetValue();
+            __FirstAntlr4TokenValue = KNamespace.AsEnum<MetaGeneratorSyntaxKind>().GetValue();
+            __LastAntlr4TokenValue = COMMENT_START.AsEnum<MetaGeneratorSyntaxKind>().GetValue();
             __FirstAntlr4RuleValue = -1;
             __LastAntlr4RuleValue = -1;
         }

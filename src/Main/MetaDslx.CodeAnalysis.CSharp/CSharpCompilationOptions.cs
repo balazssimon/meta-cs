@@ -265,8 +265,6 @@ namespace Microsoft.CodeAnalysis.CSharp
             return (flags == TopLevelBinderFlags) ? this : new CSharpCompilationOptions(this) { TopLevelBinderFlags = flags };
         }
 
-        internal override ImmutableArray<string> GetImports() => Usings;
-
         public new CSharpCompilationOptions WithOutputKind(OutputKind kind)
         {
             if (kind == this.OutputKind)
@@ -518,7 +516,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return this;
             }
 
-            return new CSharpCompilationOptions(this) { CurrentLocalTime_internal_protected_set = value };
+            return new CSharpCompilationOptions(this) { CurrentLocalTime = value };
         }
 
         internal CSharpCompilationOptions WithDebugPlusMode(bool debugPlusMode)
@@ -528,7 +526,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return this;
             }
 
-            return new CSharpCompilationOptions(this) { DebugPlusMode_internal_protected_set = debugPlusMode };
+            return new CSharpCompilationOptions(this) { DebugPlusMode = debugPlusMode };
         }
 
         public new CSharpCompilationOptions WithMetadataImportOptions(MetadataImportOptions value)
@@ -548,7 +546,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return this;
             }
 
-            return new CSharpCompilationOptions(this) { ReferencesSupersedeLowerVersions_internal_protected_set = value };
+            return new CSharpCompilationOptions(this) { ReferencesSupersedeLowerVersions = value };
         }
 
         public new CSharpCompilationOptions WithXmlReferenceResolver(XmlReferenceResolver resolver)
@@ -632,13 +630,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         protected override CompilationOptions CommonWithMetadataImportOptions(MetadataImportOptions value) =>
             WithMetadataImportOptions(value);
 
-        [Obsolete]
-        protected override CompilationOptions CommonWithFeatures(ImmutableArray<string> features)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
+        protected override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
         {
             ValidateOptions(builder, MessageProvider.Instance);
 
@@ -737,7 +729,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                    Hash.Combine(TopLevelBinderFlags.GetHashCode(), this.NullableContextOptions.GetHashCode()))));
         }
 
-        internal override Diagnostic FilterDiagnostic(Diagnostic diagnostic)
+        public override Diagnostic FilterDiagnostic(Diagnostic diagnostic)
         {
             return CSharpDiagnosticFilter.Filter(diagnostic, WarningLevel, NullableContextOptions, GeneralDiagnosticOption, SpecificDiagnosticOptions);
         }

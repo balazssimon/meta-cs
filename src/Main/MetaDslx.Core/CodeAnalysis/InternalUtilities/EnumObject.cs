@@ -27,6 +27,7 @@ namespace Roslyn.Utilities
 
         protected EnumObject(EnumObject retargetedValue)
         {
+            if ((object)retargetedValue == null) return;
             Debug.Assert(retargetedValue._name != null || retargetedValue._value != 0);
             if (retargetedValue._name == null)
             {
@@ -340,65 +341,111 @@ namespace Roslyn.Utilities
             descriptor.Close();
         }
 
-        public T CastUp<T>()
-            where T : EnumObject
+        public EnumObject Cast(Type enumType)
         {
-            if (this is T asT) return asT;
-            if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException($"{typeof(T)} is not assignable from {this.GetType()}.");
-            var descriptor = GetDescriptor(typeof(T));
-            if (descriptor.TryGetValue(_name, out EnumObject result)) return (T)result;
-            else throw new InvalidOperationException($"{typeof(T)} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
+            if (enumType.IsAssignableFrom(this.GetType())) return this;
+            if (!this.IsAssignableFrom(enumType)) throw new InvalidOperationException($"{enumType} is not a descendant of {this.GetType()}.");
+            var descriptor = GetDescriptor(enumType);
+            if (descriptor.TryGetValue(_name, out EnumObject result)) return result;
+            else throw new InvalidOperationException($"{enumType} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
         }
 
-        public T CastDown<T>()
+        public T Cast<T>()
             where T : EnumObject
         {
-            if (this is T asT) return asT;
-            if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException(typeof(T) + " is not assignable from " + this.GetType() + ".");
+            return (T)Cast(typeof(T));
+        }
+
+        public EnumObject CastUnsafe(Type enumType)
+        {
+            if (enumType.IsAssignableFrom(this.GetType())) return this;
+            else return FromIntUnsafe(enumType, this.GetValue());
+        }
+
+        public T CastUnsafe<T>()
+            where T : EnumObject
+        {
+            return (T)CastUnsafe(typeof(T));
+        }
+
+        public EnumObject As(Type enumType)
+        {
+            if (enumType.IsAssignableFrom(this.GetType())) return this;
+            if (!this.IsAssignableFrom(enumType)) throw new InvalidOperationException($"{enumType} is not a descendant of {this.GetType()}.");
             var descriptor = GetDescriptor(this.GetType());
-            if (descriptor.TryGetValue(_name, out EnumObject result)) return (T)result;
-            else throw new InvalidOperationException($"{typeof(T)} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
+            if (descriptor.TryGetValue(_name, out EnumObject result)) return result;
+            else throw new InvalidOperationException($"{enumType} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
+        }
+
+        public T As<T>()
+            where T : EnumObject
+        {
+            return (T)As(typeof(T));
+        }
+
+        public static EnumObject ByValue(Type enumType, int value)
+        {
+            if (value < 1) return null;
+            var descriptor = GetDescriptor(enumType);
+            if (descriptor.TryGetValue(value, out EnumObject result)) return result;
+            return null;
         }
 
         public static T ByValue<T>(int value)
             where T : EnumObject
         {
-            if (value < 1) return null;
-            Type enumType = typeof(T);
-            var descriptor = GetDescriptor(typeof(T));
-            if (descriptor.TryGetValue(value, out EnumObject result)) return (T)result;
+            return (T)ByValue(typeof(T), value);
+        }
+
+        public static EnumObject ByName(Type enumType, string name)
+        {
+            if (name == null) return null;
+            var descriptor = GetDescriptor(enumType);
+            if (descriptor.TryGetValue(name, out EnumObject result)) return result;
             return null;
         }
 
         public static T ByName<T>(string name)
             where T : EnumObject
         {
-            if (name == null) return null;
-            Type enumType = typeof(T);
-            var descriptor = GetDescriptor(typeof(T));
-            if (descriptor.TryGetValue(name, out EnumObject result)) return (T)result;
-            return null;
+            return (T)ByName(typeof(T), name);
+        }
+
+        public static EnumObject FromString(Type enumType, string name)
+        {
+            return ByName(enumType, name) ?? throw new ArgumentException($"Enum literal '{name}' does not exist in {enumType}.", nameof(name));
         }
 
         public static T FromString<T>(string name)
             where T : EnumObject
         {
-            return ByName<T>(name) ?? throw new ArgumentException($"Enum literal '{name}' does not exist in {typeof(T)}.", nameof(name));
+            return (T)FromString(typeof(T), name);
+        }
+
+        public static EnumObject FromInt(Type enumType, int value)
+        {
+            return ByValue(enumType, value) ?? throw new ArgumentException($"Enum literal of value '{value}' does not exist in {enumType}.", nameof(value));
         }
 
         public static T FromInt<T>(int value)
             where T : EnumObject
         {
-            return ByValue<T>(value) ?? throw new ArgumentException($"Enum literal of value '{value}' does not exist in {typeof(T)}.", nameof(value));
+            return (T)FromInt(typeof(T), value);
+        }
+
+        public static EnumObject FromIntUnsafe(Type enumType, int value)
+        {
+            EnumObject result = ByValue(enumType, value);
+            if ((object)result != null) return result;
+            var descriptor = GetDescriptor(enumType);
+            if (descriptor.TryGetValue(value, out EnumObject stored)) return stored;
+            else return descriptor.CreateValue(new EnumObject(null, value));
         }
 
         public static T FromIntUnsafe<T>(int value)
             where T : EnumObject
         {
-            T result = ByValue<T>(value);
-            if ((object)result != null) return result;
-            var descriptor = GetDescriptor(typeof(T));
-            return (T)descriptor.CreateValue(new EnumObject(null, value));
+            return (T)FromIntUnsafe(typeof(T), value);
         }
 
         internal static EnumObjectDescriptor GetDescriptor(Type type)
@@ -677,7 +724,7 @@ namespace Roslyn.Utilities
 
             public void RegisterAlias(string name)
             {
-                if (!_cachedByName.ContainsKey(name))
+                if (_cachedByName.ContainsKey(name))
                 {
                     throw new InvalidOperationException($"Duplicate enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
                 }
@@ -726,16 +773,28 @@ namespace Roslyn.Utilities
 
     public static class EnumObjectExtensions
     {
-        public static T As<T>(this string name)
+        public static T AsEnum<T>(this string name)
             where T : EnumObject
         {
             return EnumObject.ByName<T>(name);
         }
 
-        public static T As<T>(this int value)
+        public static T AsEnum<T>(this string name, Type enumType)
+            where T : EnumObject
+        {
+            return (T)EnumObject.ByName(enumType, name);
+        }
+
+        public static T AsEnum<T>(this int value)
             where T : EnumObject
         {
             return EnumObject.ByValue<T>(value);
+        }
+
+        public static T AsEnum<T>(this int value, Type enumType)
+            where T : EnumObject
+        {
+            return (T)EnumObject.ByValue(enumType, value);
         }
     }
 

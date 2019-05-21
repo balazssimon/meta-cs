@@ -104,8 +104,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
         static Antlr4RoslynSyntaxKind()
         {
             EnumObject.AutoInit<Antlr4RoslynSyntaxKind>();
-            __FirstAntlr4TokenValue = TOKEN_REF.As<Antlr4RoslynSyntaxKind>().GetValue();
-            __LastAntlr4TokenValue = DOC_COMMENT_STAR.As<Antlr4RoslynSyntaxKind>().GetValue();
+            __FirstAntlr4TokenValue = TOKEN_REF.AsEnum<Antlr4RoslynSyntaxKind>().GetValue();
+            __LastAntlr4TokenValue = DOC_COMMENT_STAR.AsEnum<Antlr4RoslynSyntaxKind>().GetValue();
             __FirstAntlr4RuleValue = -1;
             __LastAntlr4RuleValue = -1;
         }

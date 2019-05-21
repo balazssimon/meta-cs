@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +16,19 @@ namespace MetaDslx.CodeAnalysis.Syntax
         // So it seems reasonable to limit the sizes to some round number like 42.
         public virtual int MaxCachedTokenSize => 42;
 
-        public abstract SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind);
+        private Type _syntaxKindType;
+
+        public SyntaxFacts(Type syntaxKindType)
+        {
+            _syntaxKindType = syntaxKindType;
+        }
+
+        public Type SyntaxKindType => _syntaxKindType;
+
+        public SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind)
+        {
+            return (SyntaxKind)kind.CastUnsafe(_syntaxKindType);
+        }
         public abstract bool IsToken(SyntaxKind kind);
         public abstract bool IsFixedToken(SyntaxKind kind);
         public abstract bool IsTrivia(SyntaxKind kind);

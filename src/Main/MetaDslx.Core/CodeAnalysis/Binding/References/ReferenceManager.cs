@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis
         /// 
         /// The only public entry point of this class is CreateSourceAssembly() method.
         /// </summary>
-        internal sealed class ReferenceManager : CommonReferenceManager<LanguageCompilation, AssemblySymbol>
+        public sealed class ReferenceManager : CommonReferenceManager<LanguageCompilation, AssemblySymbol>
         {
             private Language _language;
 

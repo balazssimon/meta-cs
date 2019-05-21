@@ -10,9 +10,9 @@ using System.Linq;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
-    internal sealed partial class SyntaxAndDeclarationManager : CommonSyntaxAndDeclarationManager
+    public sealed partial class SyntaxAndDeclarationManager : CommonSyntaxAndDeclarationManager
     {
-        internal sealed class State
+        public sealed class State
         {
             internal readonly ImmutableArray<SyntaxTree> SyntaxTrees; // In ordinal order.
             internal readonly ImmutableDictionary<SyntaxTree, int> OrdinalMap; // Inverse of syntaxTrees array (i.e. maps tree to index)
@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             internal readonly ImmutableDictionary<SyntaxTree, Lazy<RootSingleDeclaration>> RootNamespaces;
             internal readonly DeclarationTable DeclarationTable;
 
-            internal State(
+            public State(
                 ImmutableArray<SyntaxTree> syntaxTrees,
                 ImmutableDictionary<SyntaxTree, int> syntaxTreeOrdinalMap,
                 ImmutableDictionary<SyntaxTree, ImmutableArray<DeclarationLoadDirective>> loadDirectiveMap,

@@ -22,6 +22,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
     /// </summary>
     public abstract class SyntaxFactory
     {
+        private SyntaxToken _endOfFile;
+        private SyntaxToken _defaultSeparator;
+
         protected SyntaxFactory(InternalSyntaxFactory internalSyntaxFactory)
         {
             CarriageReturnLineFeed = internalSyntaxFactory.CarriageReturnLineFeed;
@@ -37,13 +40,32 @@ namespace MetaDslx.CodeAnalysis.Syntax
             ElasticTab = internalSyntaxFactory.ElasticTab;
 
             ElasticMarker = internalSyntaxFactory.ElasticZeroSpace;
-
-            DefaultSeparator = new SyntaxToken(internalSyntaxFactory.DefaultSeparator);
         }
 
         public Language Language => this.LanguageCore;
         protected abstract Language LanguageCore { get; }
-        public SyntaxToken DefaultSeparator { get; }
+        public SyntaxToken EndOfFile
+        {
+            get
+            {
+                if ((object)_endOfFile.Node == null)
+                {
+                    _endOfFile = new SyntaxToken(Language.InternalSyntaxFactory.EndOfFile);
+                }
+                return _endOfFile;
+            }
+        }
+        public SyntaxToken DefaultSeparator
+        {
+            get
+            {
+                if ((object)_defaultSeparator.Node == null)
+                {
+                    _defaultSeparator = new SyntaxToken(Language.InternalSyntaxFactory.DefaultSeparator);
+                }
+                return _defaultSeparator;
+            }
+        }
         public abstract SyntaxNode CreateStructure(SyntaxTrivia trivia);
 
         /// <summary>

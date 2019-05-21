@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis
     /// </summary>
     /// <typeparam name="TCompilation">Language specific representation for a compilation</typeparam>
     /// <typeparam name="TAssemblySymbol">Language specific representation for an assembly symbol.</typeparam>
-    internal abstract partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
+    public abstract partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
         where TCompilation : Compilation
         where TAssemblySymbol : class, IAssemblySymbolInternal
     {

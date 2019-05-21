@@ -4,7 +4,7 @@ using System;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal interface IAssemblySymbolInternal : IAssemblySymbol
+    public interface IAssemblySymbolInternal : IAssemblySymbol
     {
         Version AssemblyVersionPattern { get; }
     }

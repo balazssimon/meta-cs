@@ -2,13 +2,13 @@
 
 namespace Microsoft.CodeAnalysis
 {
-    internal partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
+    public partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
     {
         /// <summary>
         /// Private helper class to capture information about AssemblySymbol instance we 
         /// should check for suitability. Used by the Bind method.
         /// </summary>
-        private struct AssemblyReferenceCandidate
+        public struct AssemblyReferenceCandidate
         {
             /// <summary>
             /// An index of the AssemblyData object in the input array. AssemblySymbol instance should 

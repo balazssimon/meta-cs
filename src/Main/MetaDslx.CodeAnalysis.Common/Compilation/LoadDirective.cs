@@ -8,7 +8,7 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal struct DeclarationLoadDirective : IEquatable<DeclarationLoadDirective>
+    public struct DeclarationLoadDirective : IEquatable<DeclarationLoadDirective>
     {
         public readonly string ResolvedPath;
         public readonly ImmutableArray<Diagnostic> Diagnostics;

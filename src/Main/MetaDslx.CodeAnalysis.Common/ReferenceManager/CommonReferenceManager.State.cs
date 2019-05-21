@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis
         internal abstract IEnumerable<KeyValuePair<AssemblyIdentity, PortableExecutableReference>> GetImplicitlyResolvedAssemblyReferences();
     }
 
-    internal partial class CommonReferenceManager<TCompilation, TAssemblySymbol> : CommonReferenceManager
+    public partial class CommonReferenceManager<TCompilation, TAssemblySymbol> : CommonReferenceManager
     {
         /// <summary>
         /// If the compilation being built represents an assembly its assembly name.

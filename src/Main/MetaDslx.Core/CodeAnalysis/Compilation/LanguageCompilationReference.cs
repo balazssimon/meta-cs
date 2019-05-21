@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace MetaDslx.CodeAnalysis
 {
     /// <summary>
-    /// Represents a reference to another C# compilation. 
+    /// Represents a reference to another compilation. 
     /// </summary>
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     internal sealed class LanguageCompilationReference : CompilationReference

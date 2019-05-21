@@ -41,8 +41,10 @@ namespace MetaDslx.CodeAnalysis
     /// new compilation from scratch, as the new compilation can reuse information from the old
     /// compilation.
     /// </summary>
-    public partial class LanguageCompilation : CompilationAdapter
+    public abstract partial class LanguageCompilation : CompilationAdapter
     {
+        protected static readonly SyntaxTree[] NoSyntaxTrees = new SyntaxTree[0];
+
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //
         // Changes to the public interface of this class should remain synchronized with the VB
@@ -185,107 +187,10 @@ namespace MetaDslx.CodeAnalysis
 
         #region Constructors and Factories
 
-        private static readonly LanguageCompilationOptions s_defaultOptions = new LanguageCompilationOptions(Language.None, OutputKind.ConsoleApplication);
-        private static readonly LanguageCompilationOptions s_defaultSubmissionOptions = new LanguageCompilationOptions(Language.None, OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
-
-        /// <summary>
-        /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
-        /// on the returned object will allow to continue building up the Compilation incrementally.
-        /// </summary>
-        /// <param name="assemblyName">Simple assembly name.</param>
-        /// <param name="syntaxTrees">The syntax trees with the source code for the new compilation.</param>
-        /// <param name="references">The references for the new compilation.</param>
-        /// <param name="options">The compiler options to use.</param>
-        /// <returns>A new compilation.</returns>
-        public static LanguageCompilation Create(
-            string assemblyName,
-            IEnumerable<SyntaxTree> syntaxTrees = null,
-            IEnumerable<MetadataReference> references = null,
-            LanguageCompilationOptions options = null)
-        {
-            return Create(
-                assemblyName,
-                options ?? s_defaultOptions,
-                syntaxTrees,
-                references,
-                previousSubmission: null,
-                returnType: null,
-                hostObjectType: null,
-                isSubmission: false);
-        }
-
-        /// <summary>
-        /// Creates a new compilation that can be used in scripting.
-        /// </summary>
-        public static LanguageCompilation CreateScriptCompilation(
-            string assemblyName,
-            SyntaxTree syntaxTree = null,
-            IEnumerable<MetadataReference> references = null,
-            LanguageCompilationOptions options = null,
-            LanguageCompilation previousScriptCompilation = null,
-            Type returnType = null,
-            Type globalsType = null)
-        {
-            CheckSubmissionOptions(options);
-            ValidateScriptCompilationParameters(previousScriptCompilation, returnType, ref globalsType);
-
-            return Create(
-                assemblyName,
-                options?.WithReferencesSupersedeLowerVersions(true) ?? s_defaultSubmissionOptions,
-                (syntaxTree != null) ? new[] { syntaxTree } : SpecializedCollections.EmptyEnumerable<SyntaxTree>(),
-                references,
-                previousScriptCompilation,
-                returnType,
-                globalsType,
-                isSubmission: true);
-        }
-
-        private static LanguageCompilation Create(
+        protected LanguageCompilation(
             string assemblyName,
             LanguageCompilationOptions options,
-            IEnumerable<SyntaxTree> syntaxTrees,
             IEnumerable<MetadataReference> references,
-            LanguageCompilation previousSubmission,
-            Type returnType,
-            Type hostObjectType,
-            bool isSubmission)
-        {
-            Debug.Assert(options != null);
-            Debug.Assert(!isSubmission || options.ReferencesSupersedeLowerVersions);
-
-            var validatedReferences = ValidateReferences<LanguageCompilationReference>(references);
-
-            var compilation = new LanguageCompilation(
-                assemblyName,
-                options,
-                validatedReferences,
-                previousSubmission,
-                returnType,
-                hostObjectType,
-                isSubmission,
-                referenceManager: null,
-                reuseReferenceManager: false,
-                syntaxAndDeclarations: new SyntaxAndDeclarationManager(
-                    ImmutableArray<SyntaxTree>.Empty,
-                    options.ScriptClassName,
-                    options.SourceReferenceResolver,
-                    options.Language,
-                    isSubmission,
-                    state: null));
-
-            if (syntaxTrees != null)
-            {
-                compilation = compilation.AddSyntaxTrees(syntaxTrees);
-            }
-
-            Debug.Assert((object)compilation._lazyAssemblySymbol == null);
-            return compilation;
-        }
-
-        private LanguageCompilation(
-            string assemblyName,
-            LanguageCompilationOptions options,
-            ImmutableArray<MetadataReference> references,
             LanguageCompilation previousSubmission,
             Type submissionReturnType,
             Type hostObjectType,
@@ -294,7 +199,7 @@ namespace MetaDslx.CodeAnalysis
             bool reuseReferenceManager,
             SyntaxAndDeclarationManager syntaxAndDeclarations,
             AsyncQueue<CompilationEvent> eventQueue = null)
-            : base(assemblyName, references, SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
+            : base(assemblyName, ValidateReferences<LanguageCompilationReference>(references), SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
         {
             _options = options;
             _language = _options.Language;
@@ -370,12 +275,25 @@ namespace MetaDslx.CodeAnalysis
             return result ?? LanguageVersion.Default; // TODO:MetaDslx .MapSpecifiedToEffectiveVersion();
         }
 
+        protected abstract LanguageCompilation CreateNew(
+            string assemblyName,
+            LanguageCompilationOptions options,
+            IEnumerable<MetadataReference> references,
+            LanguageCompilation previousSubmission,
+            Type submissionReturnType,
+            Type hostObjectType,
+            bool isSubmission,
+            ReferenceManager referenceManager,
+            bool reuseReferenceManager,
+            SyntaxAndDeclarationManager syntaxAndDeclarations,
+            AsyncQueue<CompilationEvent> eventQueue = null);
+
         /// <summary>
         /// Create a duplicate of this compilation with different symbol instances.
         /// </summary>
         public new LanguageCompilation Clone()
         {
-            return new LanguageCompilation(
+            return this.CreateNew(
                 this.AssemblyName,
                 _options,
                 this.ExternalReferences,
@@ -388,12 +306,12 @@ namespace MetaDslx.CodeAnalysis
                 syntaxAndDeclarations: _syntaxAndDeclarations);
         }
 
-        private LanguageCompilation Update(
+        protected LanguageCompilation Update(
             ReferenceManager referenceManager,
             bool reuseReferenceManager,
             SyntaxAndDeclarationManager syntaxAndDeclarations)
         {
-            return new LanguageCompilation(
+            return this.CreateNew(
                 this.AssemblyName,
                 _options,
                 this.ExternalReferences,
@@ -415,7 +333,7 @@ namespace MetaDslx.CodeAnalysis
             // have internals-visible-to relationship with this compilation or they might had a circular reference
             // to this compilation.
 
-            return new LanguageCompilation(
+            return this.CreateNew(
                 assemblyName,
                 _options,
                 this.ExternalReferences,
@@ -444,7 +362,7 @@ namespace MetaDslx.CodeAnalysis
             // References might have changed, don't reuse reference manager.
             // Don't even reuse observed metadata - let the manager query for the metadata again.
 
-            return new LanguageCompilation(
+            return this.CreateNew(
                 this.AssemblyName,
                 _options,
                 ValidateReferences<LanguageCompilationReference>(references),
@@ -475,7 +393,7 @@ namespace MetaDslx.CodeAnalysis
             bool reuseSyntaxAndDeclarationManager = oldOptions.ScriptClassName == options.ScriptClassName &&
                 oldOptions.SourceReferenceResolver == options.SourceReferenceResolver;
 
-            return new LanguageCompilation(
+            return this.CreateNew(
                 this.AssemblyName,
                 options,
                 this.ExternalReferences,
@@ -508,7 +426,7 @@ namespace MetaDslx.CodeAnalysis
 
             // Reference binding doesn't depend on previous submission so we can reuse it.
 
-            return new LanguageCompilation(
+            return this.CreateNew(
                 this.AssemblyName,
                 _options,
                 this.ExternalReferences,
@@ -526,7 +444,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal override Compilation WithEventQueue(AsyncQueue<CompilationEvent> eventQueue)
         {
-            return new LanguageCompilation(
+            return this.CreateNew(
                 this.AssemblyName,
                 _options,
                 this.ExternalReferences,

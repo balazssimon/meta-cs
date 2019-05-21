@@ -183,7 +183,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
                 if (elem.IsBlock)
                 {
                     if (elem.IsFixedTokenAltBlock) return "InternalSyntaxToken";
-                    else return "InternalSyntaxNode";
+                    else return "GreenNode";
                 }
                 else if (elem.IsList)
                 {
@@ -199,13 +199,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
                 if (elem.IsBlock)
                 {
                     if (elem.IsFixedTokenAltBlock) return "InternalSyntaxToken";
-                    else return "InternalSyntaxNode";
+                    else return "GreenNode";
                 }
                 else if (elem.IsList)
                 {
-                    if (elem.IsToken) return "InternalSyntaxNode";
-                    else if (elem.IsSeparated) return "InternalSyntaxNode";
-                    else return "InternalSyntaxNode";
+                    if (elem.IsToken) return "GreenNode";
+                    else if (elem.IsSeparated) return "GreenNode";
+                    else return "GreenNode";
                 }
                 else if (elem.IsToken) return "InternalSyntaxToken";
                 else return elem.Type.ToPascalCase() + "Green";
@@ -218,7 +218,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             if (elem.IsBlock)
             {
                 if (elem.IsFixedTokenAltBlock) return "InternalSyntaxToken";
-                else return "InternalSyntaxNode";
+                else return "GreenNode";
             }
             else if (elem.IsToken) return "InternalSyntaxToken";
             else if (elem.IsList) return elem.Type.ToPascalCase() + "Green";

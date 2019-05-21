@@ -115,7 +115,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public abstract string Language { get; }
 
-        internal static void ValidateScriptCompilationParameters(Compilation previousScriptCompilation, Type returnType, ref Type globalsType)
+        protected static void ValidateScriptCompilationParameters(Compilation previousScriptCompilation, Type returnType, ref Type globalsType)
         {
             if (globalsType != null && !IsValidHostObjectType(globalsType))
             {
@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis
         /// Checks options passed to submission compilation constructor.
         /// Throws an exception if the options are not applicable to submissions.
         /// </summary>
-        internal static void CheckSubmissionOptions(CompilationOptions options)
+        protected static void CheckSubmissionOptions(CompilationOptions options)
         {
             if (options == null)
             {
@@ -502,7 +502,7 @@ namespace Microsoft.CodeAnalysis
 
         #region References
 
-        internal static ImmutableArray<MetadataReference> ValidateReferences<T>(IEnumerable<MetadataReference> references)
+        protected static ImmutableArray<MetadataReference> ValidateReferences<T>(IEnumerable<MetadataReference> references)
             where T : CompilationReference
         {
             var result = references.AsImmutableOrEmpty();

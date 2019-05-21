@@ -4,13 +4,13 @@ using System.Diagnostics;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
+    public partial class CommonReferenceManager<TCompilation, TAssemblySymbol>
     {
         /// <summary>
         /// Result of binding an input assembly and its references. 
         /// </summary>
         [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-        internal struct BoundInputAssembly
+        public struct BoundInputAssembly
         {
             /// <summary>
             /// Suitable AssemblySymbol instance for the corresponding assembly, 

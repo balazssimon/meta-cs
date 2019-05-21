@@ -13,11 +13,11 @@ using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
-    internal sealed partial class SyntaxAndDeclarationManager : CommonSyntaxAndDeclarationManager
+    public sealed partial class SyntaxAndDeclarationManager : CommonSyntaxAndDeclarationManager
     {
         private State _lazyState;
 
-        internal SyntaxAndDeclarationManager(
+        public SyntaxAndDeclarationManager(
             ImmutableArray<SyntaxTree> externalSyntaxTrees,
             string scriptClassName,
             SourceReferenceResolver resolver,
@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             _lazyState = state;
         }
 
-        internal State GetLazyState()
+        public State GetLazyState()
         {
             if (_lazyState == null)
             {

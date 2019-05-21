@@ -7,11 +7,18 @@ using System.Diagnostics;
 namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 {
     using Microsoft.CodeAnalysis;
+    using Roslyn.Utilities;
     using Internal = Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 
     public abstract class InternalSyntaxFactory
     {
         private const string CrLf = "\r\n";
+        private Type _syntaxKind;
+        private SyntaxKind DefaultSeparatorKind;
+        private SyntaxKind DefaultEndOfLineKind;
+        private SyntaxKind DefaultWhiteSpaceKind;
+        private SyntaxKind EofKind;
+
 
         public readonly InternalSyntaxTrivia CarriageReturnLineFeed;
         public readonly InternalSyntaxTrivia LineFeed;
@@ -27,8 +34,14 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public readonly InternalSyntaxTrivia ElasticZeroSpace;
 
-        protected InternalSyntaxFactory()
+        protected InternalSyntaxFactory(Type syntaxKind)
         {
+            _syntaxKind = syntaxKind;
+            DefaultSeparatorKind = ToLanguageSyntaxKind(SyntaxKind.DefaultSeparator);
+            DefaultEndOfLineKind = ToLanguageSyntaxKind(SyntaxKind.DefaultEndOfLine); 
+            DefaultWhiteSpaceKind = ToLanguageSyntaxKind(SyntaxKind.DefaultWhitespace);
+            EofKind = ToLanguageSyntaxKind(SyntaxKind.Eof);
+
             CarriageReturnLineFeed = EndOfLine(CrLf);
             LineFeed = EndOfLine("\n");
             CarriageReturn = EndOfLine("\r");
@@ -44,11 +57,21 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             ElasticZeroSpace = Whitespace(string.Empty, elastic: true);
         }
 
+        protected SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind)
+        {
+            return (SyntaxKind)kind.CastUnsafe(_syntaxKind);
+        }
+
         public abstract Language Language { get; }
 
         public virtual InternalSyntaxToken DefaultSeparator
         {
-            get { return this.Token(SyntaxKind.DefaultSeparator); }
+            get { return this.Token(DefaultSeparatorKind); }
+        }
+
+        public virtual InternalSyntaxToken EndOfFile
+        {
+            get { return this.Token(null, EofKind, string.Empty, null); }
         }
 
         // NOTE: it would be nice to have constants for OmittedArraySizeException and OmittedTypeArgument,
@@ -81,7 +104,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
                 return trivia;
             }
 
-            trivia = this.Trivia(SyntaxKind.DefaultEndOfLine, text);
+            trivia = this.Trivia(DefaultEndOfLineKind, text);
             if (!elastic)
             {
                 return trivia;
@@ -92,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public InternalSyntaxTrivia Whitespace(string text, bool elastic = false)
         {
-            var trivia = this.Trivia(SyntaxKind.DefaultWhitespace, text);
+            var trivia = this.Trivia(DefaultWhiteSpaceKind, text);
             if (!elastic)
             {
                 return trivia;

@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
-    internal abstract class CommonSyntaxAndDeclarationManager
+    public abstract class CommonSyntaxAndDeclarationManager
     {
         internal readonly ImmutableArray<SyntaxTree> ExternalSyntaxTrees;
         internal readonly string ScriptClassName;

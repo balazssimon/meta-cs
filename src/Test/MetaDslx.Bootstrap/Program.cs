@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MetaDslx.Languages.Meta;
+using System;
+using System.IO;
 
 namespace MetaDslx.Bootstrap
 {
@@ -12,7 +14,7 @@ namespace MetaDslx.Bootstrap
             mg.Compile();
             //*/
 
-            //*/
+            /*/
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorLexer.ag4", "MetaDslx.Bootstrap.MetaGenerator");
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorParser.ag4", "MetaDslx.Bootstrap.MetaGenerator");
             Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.Languages.Meta\Syntax\InternalSyntax\MetaLexer.ag4", "MetaDslx.Languages.Meta");
@@ -24,6 +26,12 @@ namespace MetaDslx.Bootstrap
             /*/
             MGenTest test = new MGenTest();
             Console.WriteLine(test.SayHello("me"));
+            //*/
+
+            //*/
+            string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            var tree = MetaSyntaxTree.ParseText(text);
+            Console.WriteLine(tree);
             //*/
         }
 

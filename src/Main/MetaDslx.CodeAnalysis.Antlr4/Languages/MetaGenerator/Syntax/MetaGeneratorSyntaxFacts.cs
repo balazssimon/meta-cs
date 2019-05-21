@@ -1,5 +1,6 @@
 using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -32,11 +33,9 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
 
 	public class MetaGeneratorSyntaxFacts : SyntaxFacts
 	{
-		public static readonly MetaGeneratorSyntaxFacts Instance = new MetaGeneratorSyntaxFacts();
-
-        public override SyntaxKind ToLanguageSyntaxKind(SyntaxKind kind)
+        public MetaGeneratorSyntaxFacts() 
+            : base(typeof(MetaGeneratorSyntaxKind))
         {
-            return kind.CastUp<MetaGeneratorSyntaxKind>();
         }
 
         public override bool IsToken(SyntaxKind kind)
