@@ -11,8 +11,6 @@ using MetaDslx.Languages.MetaModel.Syntax;
 using MetaDslx.Languages.MetaModel.Syntax.InternalSyntax;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
-using Roslyn.Utilities;
-using InternalSyntax = MetaDslx.Languages.MetaModel.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis;
 

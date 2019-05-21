@@ -8,27 +8,31 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis
+namespace MetaDslx.CodeAnalysis.Syntax
 {
     /// <summary>
     /// This class stores several source parsing related options and offers access to their values.
     /// </summary>
-    public abstract class LanguageParseOptions : ParseOptions
+    public abstract class LanguageParseOptions : ParseOptionsAdapter
     {
         private ImmutableDictionary<string, string> _features;
+
+        public new abstract Language Language { get; }
+
+        public override Language LanguageCore => this.Language;
 
         /// <summary>
         /// Gets the effective language version, which the compiler uses to select the
         /// language rules to apply to the program.
         /// </summary>
-        public LanguageVersion LanguageVersion { get; private set; }
+        public LanguageVersion LanguageVersion { get; protected set; }
 
         /// <summary>
         /// Gets the specified language version, which is the value that was specified in
         /// the call to the constructor, or modified using the <see cref="WithLanguageVersion"/> method,
         /// or provided on the command line.
         /// </summary>
-        public LanguageVersion SpecifiedLanguageVersion { get; private set; }
+        public LanguageVersion SpecifiedLanguageVersion { get; protected set; }
 
         public ImmutableArray<string> PreprocessorSymbols { get; protected set; }
 
@@ -67,15 +71,21 @@ namespace MetaDslx.CodeAnalysis
             _features = features?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
         }
 
-        public override IReadOnlyDictionary<string, string> Features
+        public new IReadOnlyDictionary<string, string> Features
         {
             get { return _features; }
-            /*protected set
+            protected set
             {
                 ImmutableDictionary<string, string> dictionary = value as ImmutableDictionary<string, string>;
                 if (dictionary == null) dictionary = value.ToImmutableDictionary();
                 _features = dictionary;
-            }*/
+            }
+        }
+
+        protected override IReadOnlyDictionary<string, string> FeaturesCore
+        {
+            get { return this.Features; }
+            set { this.Features = value; }
         }
 
         public override void ValidateOptions(ArrayBuilder<Diagnostic> builder)

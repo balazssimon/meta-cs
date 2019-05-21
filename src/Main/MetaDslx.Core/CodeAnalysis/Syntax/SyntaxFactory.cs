@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 
 namespace MetaDslx.CodeAnalysis.Syntax
 {
@@ -798,5 +799,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
             ParseOptions options = null,
             string path = "",
             CancellationToken cancellationToken = default(CancellationToken));
+
+        public abstract SyntaxParser MakeParser(SourceText text, ParseOptions options, SyntaxNode oldTree, IReadOnlyList<TextChangeRange> changes);
+        public abstract SyntaxParser MakeParser(string text);
+
     }
 }

@@ -1,5 +1,6 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,33 +11,31 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace MetaDslx.Languages.MetaModel.Syntax
+namespace MetaDslx.Bootstrap.Meta.Syntax
 {
     /// <summary>
     /// This class stores several source parsing related options and offers access to their values.
     /// </summary>
-    public sealed class MetaModelParseOptions : LanguageParseOptions, IEquatable<MetaModelParseOptions>
+    public sealed class MetaParseOptions : LanguageParseOptions, IEquatable<MetaParseOptions>
     {
         /// <summary>
         /// The default parse options.
         /// </summary>
-        public static MetaModelParseOptions Default { get; } = new MetaModelParseOptions();
-
-        public MetaModelParseOptions(
-            MetaModelLanguageVersion languageVersion = null,
+        public static MetaParseOptions Default { get; } = new MetaParseOptions();
+        public MetaParseOptions(
+            MetaLanguageVersion languageVersion = null,
             DocumentationMode documentationMode = DocumentationMode.Parse,
             SourceCodeKind kind = SourceCodeKind.Regular,
             IEnumerable<string> preprocessorSymbols = null)
-            : this(languageVersion ?? MetaModelLanguageVersion.MetaModel1,
+            : this(languageVersion ?? MetaLanguageVersion.Meta1,
                   documentationMode,
                   kind,
                   preprocessorSymbols.ToImmutableArrayOrEmpty(),
                   ImmutableDictionary<string, string>.Empty)
         {
         }
-
-        internal MetaModelParseOptions(
-            MetaModelLanguageVersion languageVersion,
+        internal MetaParseOptions(
+            MetaLanguageVersion languageVersion,
             DocumentationMode documentationMode,
             SourceCodeKind kind,
             ImmutableArray<string> preprocessorSymbols,
@@ -44,113 +43,92 @@ namespace MetaDslx.Languages.MetaModel.Syntax
             : base(languageVersion, documentationMode, kind, preprocessorSymbols, features)
         {
         }
-
-        private MetaModelParseOptions(MetaModelParseOptions other) : this(
-            languageVersion: (MetaModelLanguageVersion)other.LanguageVersion,
+        private MetaParseOptions(MetaParseOptions other) : this(
+            languageVersion: (MetaLanguageVersion)other.LanguageVersion,
             documentationMode: other.DocumentationMode,
             kind: other.Kind,
             preprocessorSymbols: other.PreprocessorSymbols,
             features: other.Features)
         {
         }
-
-        public override Language Language => MetaModelLanguage.Instance;
-
-        public new MetaModelParseOptions WithKind(SourceCodeKind kind)
+        public override Language Language => MetaLanguage.Instance;
+        public new MetaParseOptions WithKind(SourceCodeKind kind)
         {
             if (kind == this.SpecifiedKind)
             {
                 return this;
             }
-
             var effectiveKind = kind.MapSpecifiedToEffectiveKind();
-            return new MetaModelParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
+            return new MetaParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
         }
-
-        public MetaModelParseOptions WithLanguageVersion(MetaModelLanguageVersion version)
+        public MetaParseOptions WithLanguageVersion(MetaLanguageVersion version)
         {
             if (version == this.SpecifiedLanguageVersion)
             {
                 return this;
             }
-
-            var effectiveLanguageVersion = (MetaModelLanguageVersion)version.MapSpecifiedToEffectiveVersion();
-            return new MetaModelParseOptions(this) { SpecifiedLanguageVersion = version, LanguageVersion = effectiveLanguageVersion };
+            var effectiveLanguageVersion = (MetaLanguageVersion)version.MapSpecifiedToEffectiveVersion();
+            return new MetaParseOptions(this) { SpecifiedLanguageVersion = version, LanguageVersion = effectiveLanguageVersion };
         }
-
-        public MetaModelParseOptions WithPreprocessorSymbols(IEnumerable<string> preprocessorSymbols)
+        public MetaParseOptions WithPreprocessorSymbols(IEnumerable<string> preprocessorSymbols)
         {
             return WithPreprocessorSymbols(preprocessorSymbols.AsImmutableOrNull());
         }
-
-        public MetaModelParseOptions WithPreprocessorSymbols(params string[] preprocessorSymbols)
+        public MetaParseOptions WithPreprocessorSymbols(params string[] preprocessorSymbols)
         {
             return WithPreprocessorSymbols(ImmutableArray.Create(preprocessorSymbols));
         }
-
-        public MetaModelParseOptions WithPreprocessorSymbols(ImmutableArray<string> symbols)
+        public MetaParseOptions WithPreprocessorSymbols(ImmutableArray<string> symbols)
         {
             if (symbols.IsDefault)
             {
                 symbols = ImmutableArray<string>.Empty;
             }
-
             if (symbols.Equals(this.PreprocessorSymbols))
             {
                 return this;
             }
-
-            return new MetaModelParseOptions(this) { PreprocessorSymbols = symbols };
+            return new MetaParseOptions(this) { PreprocessorSymbols = symbols };
         }
-
-        public new MetaModelParseOptions WithDocumentationMode(DocumentationMode documentationMode)
+        public new MetaParseOptions WithDocumentationMode(DocumentationMode documentationMode)
         {
             if (documentationMode == this.DocumentationMode)
             {
                 return this;
             }
-
-            return new MetaModelParseOptions(this) { DocumentationMode = documentationMode };
+            return new MetaParseOptions(this) { DocumentationMode = documentationMode };
         }
-
         public override ParseOptions CommonWithKind(SourceCodeKind kind)
         {
             return WithKind(kind);
         }
-
         protected override ParseOptions CommonWithDocumentationMode(DocumentationMode documentationMode)
         {
             return WithDocumentationMode(documentationMode);
         }
-
         protected override ParseOptions CommonWithFeatures(IEnumerable<KeyValuePair<string, string>> features)
         {
             return WithFeatures(features);
         }
-
         /// <summary>
         /// Enable some experimental language features for testing.
         /// </summary>
-        public new MetaModelParseOptions WithFeatures(IEnumerable<KeyValuePair<string, string>> features)
+        public new MetaParseOptions WithFeatures(IEnumerable<KeyValuePair<string, string>> features)
         {
             ImmutableDictionary<string, string> dictionary =
                 features?.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase)
                 ?? ImmutableDictionary<string, string>.Empty;
-
-            return new MetaModelParseOptions(this) { Features = dictionary };
+            return new MetaParseOptions(this) { Features = dictionary };
         }
-
         public override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
         {
             base.ValidateOptions(builder);
-
             // Validate LanguageVersion not SpecifiedLanguageVersion, after Latest/Default has been converted:
             if (!LanguageVersion.IsValid())
             {
-                builder.Add(MetaModelErrorCode.ERR_BadLanguageVersion.ToDiagnosticWithNoLocation(LanguageVersion.ToString()));
+                builder.Add(MetaErrorCode.ERR_BadLanguageVersion.ToDiagnosticWithNoLocation(LanguageVersion.ToString()));
             }
         }
-
         public bool IsFeatureEnabled(string feature)
         {
             throw new NotImplementedException("TODO:MetaDslx");
@@ -163,27 +141,22 @@ namespace MetaDslx.Languages.MetaModel.Syntax
             LanguageVersion requiredVersion = feature.RequiredVersion();
             return availableVersion >= requiredVersion;*/
         }
-
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as MetaModelParseOptions);
+            return this.Equals(obj as MetaParseOptions);
         }
-
-        public bool Equals(MetaModelParseOptions other)
+        public bool Equals(MetaParseOptions other)
         {
             if (object.ReferenceEquals(this, other))
             {
                 return true;
             }
-
             if (!base.EqualsHelper(other))
             {
                 return false;
             }
-
             return this.LanguageVersion == other.LanguageVersion;
         }
-
         public override int GetHashCode()
         {
             return

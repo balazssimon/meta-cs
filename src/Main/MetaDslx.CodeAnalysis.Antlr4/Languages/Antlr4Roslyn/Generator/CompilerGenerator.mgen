@@ -89,170 +89,174 @@ template GenerateParseOptions()
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MetaDslx.Compiler;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Utilities;
+using System.Diagnostics;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Roslyn.Utilities;
 ^
-namespace [Properties.DefaultNamespace]
+[var lang = Properties.LanguageName]
+namespace [Properties.DefaultNamespace].Syntax
 {
     /// <summary>
     /// This class stores several source parsing related options and offers access to their values.
     /// </summary>
-    public sealed class [Properties.LanguageName]ParseOptions : ParseOptions, IEquatable<[Properties.LanguageName]ParseOptions>
+    public sealed class [lang]ParseOptions : LanguageParseOptions, IEquatable<[lang]ParseOptions>
     {
         /// <summary>
         /// The default parse options.
         /// </summary>
-        public static [Properties.LanguageName]ParseOptions Default { get; } = new [Properties.LanguageName]ParseOptions();
-^
-        private ImmutableDictionary<string, string> _features;
-^
-        /// <summary>
-        /// Gets the language version.
-        /// </summary>
-        public LanguageVersion LanguageVersion { get; private set; }
-^
-        public [Properties.LanguageName]ParseOptions(
-            LanguageVersion languageVersion = LanguageVersion.[Properties.LanguageName]1,
+        public static [lang]ParseOptions Default { get; } = new [lang]ParseOptions();
+
+        public [lang]ParseOptions(
+            [lang]LanguageVersion languageVersion = null,
             DocumentationMode documentationMode = DocumentationMode.Parse,
-            SourceCodeKind kind = SourceCodeKind.Regular)
-            : base(kind, documentationMode)
+            SourceCodeKind kind = SourceCodeKind.Regular,
+            IEnumerable<string> preprocessorSymbols = null)
+            : this(languageVersion ?? [lang]LanguageVersion.[lang]1,
+                  documentationMode,
+                  kind,
+                  preprocessorSymbols.ToImmutableArrayOrEmpty(),
+                  ImmutableDictionary<string, string>.Empty)
         {
-            if (!languageVersion.IsValid())
-            {
-                throw new ArgumentOutOfRangeException(nameof(languageVersion));
-            }
-            if (!kind.IsValid())
-            {
-                throw new ArgumentOutOfRangeException(nameof(kind));
-            }
-            this.LanguageVersion = languageVersion;
-            _features = ImmutableDictionary<string, string>.Empty;
         }
-^
-        internal [Properties.LanguageName]ParseOptions(
-            LanguageVersion languageVersion,
+
+        internal [lang]ParseOptions(
+            [lang]LanguageVersion languageVersion,
             DocumentationMode documentationMode,
             SourceCodeKind kind,
-            ImmutableDictionary<string, string> features)
-            : this(languageVersion, documentationMode, kind)
+            ImmutableArray<string> preprocessorSymbols,
+            IReadOnlyDictionary<string, string> features)
+            : base(languageVersion, documentationMode, kind, preprocessorSymbols, features)
         {
-            if (features == null)
-            {
-                throw new ArgumentNullException(nameof(features));
-            }
-            _features = features;
         }
-^
-        private [Properties.LanguageName]ParseOptions([Properties.LanguageName]ParseOptions other) : this(
-            languageVersion: other.LanguageVersion,
+
+        private [lang]ParseOptions([lang]ParseOptions other) : this(
+            languageVersion: ([lang]LanguageVersion)other.LanguageVersion,
             documentationMode: other.DocumentationMode,
-            kind: other.Kind)
+            kind: other.Kind,
+            preprocessorSymbols: other.PreprocessorSymbols,
+            features: other.Features)
         {
         }
-^
-        public new [Properties.LanguageName]ParseOptions WithKind(SourceCodeKind kind)
+
+        public override Language Language => [lang]Language.Instance;
+
+        public new [lang]ParseOptions WithKind(SourceCodeKind kind)
         {
-            if (kind == this.Kind)
+            if (kind == this.SpecifiedKind)
             {
                 return this;
             }
-^
-            if (!kind.IsValid())
-            {
-                throw new ArgumentOutOfRangeException(nameof(kind));
-            }
-^
-            return new [Properties.LanguageName]ParseOptions(this) { Kind = kind };
+
+            var effectiveKind = kind.MapSpecifiedToEffectiveKind();
+            return new [lang]ParseOptions(this) { SpecifiedKind = kind, Kind = effectiveKind };
         }
-^
-        public [Properties.LanguageName]ParseOptions WithLanguageVersion(LanguageVersion version)
+
+        public [lang]ParseOptions WithLanguageVersion([lang]LanguageVersion version)
         {
-            if (version == this.LanguageVersion)
+            if (version == this.SpecifiedLanguageVersion)
             {
                 return this;
             }
-^
-            if (!version.IsValid())
-            {
-                throw new ArgumentOutOfRangeException(nameof(version));
-            }
-^
-            return new [Properties.LanguageName]ParseOptions(this) { LanguageVersion = version };
+
+            var effectiveLanguageVersion = ([lang]LanguageVersion)version.MapSpecifiedToEffectiveVersion();
+            return new [lang]ParseOptions(this) { SpecifiedLanguageVersion = version, LanguageVersion = effectiveLanguageVersion };
         }
-^
-        public new [Properties.LanguageName]ParseOptions WithDocumentationMode(DocumentationMode documentationMode)
+
+        public [lang]ParseOptions WithPreprocessorSymbols(IEnumerable<string> preprocessorSymbols)
+        {
+            return WithPreprocessorSymbols(preprocessorSymbols.AsImmutableOrNull());
+        }
+
+        public [lang]ParseOptions WithPreprocessorSymbols(params string["[]"] preprocessorSymbols)
+        {
+            return WithPreprocessorSymbols(ImmutableArray.Create(preprocessorSymbols));
+        }
+
+        public [lang]ParseOptions WithPreprocessorSymbols(ImmutableArray<string> symbols)
+        {
+            if (symbols.IsDefault)
+            {
+                symbols = ImmutableArray<string>.Empty;
+            }
+
+            if (symbols.Equals(this.PreprocessorSymbols))
+            {
+                return this;
+            }
+
+            return new [lang]ParseOptions(this) { PreprocessorSymbols = symbols };
+        }
+
+        public new [lang]ParseOptions WithDocumentationMode(DocumentationMode documentationMode)
         {
             if (documentationMode == this.DocumentationMode)
             {
                 return this;
             }
-^
-            if (!documentationMode.IsValid())
-            {
-                throw new ArgumentOutOfRangeException(nameof(documentationMode));
-            }
-^
-            return new [Properties.LanguageName]ParseOptions(this) { DocumentationMode = documentationMode };
+
+            return new [lang]ParseOptions(this) { DocumentationMode = documentationMode };
         }
-^
+
         public override ParseOptions CommonWithKind(SourceCodeKind kind)
         {
             return WithKind(kind);
         }
-^
+
         protected override ParseOptions CommonWithDocumentationMode(DocumentationMode documentationMode)
         {
             return WithDocumentationMode(documentationMode);
         }
-^
+
         protected override ParseOptions CommonWithFeatures(IEnumerable<KeyValuePair<string, string>> features)
         {
             return WithFeatures(features);
         }
-^
+
         /// <summary>
         /// Enable some experimental language features for testing.
         /// </summary>
-        public new [Properties.LanguageName]ParseOptions WithFeatures(IEnumerable<KeyValuePair<string, string>> features)
+        public new [lang]ParseOptions WithFeatures(IEnumerable<KeyValuePair<string, string>> features)
         {
-            if (features == null)
-            {
-                throw new ArgumentNullException(nameof(features));
-            }
-^
-            return new [Properties.LanguageName]ParseOptions(this) { _features = features.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase) };
+            ImmutableDictionary<string, string> dictionary =
+                features?.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase)
+                ?? ImmutableDictionary<string, string>.Empty;
+
+            return new [lang]ParseOptions(this) { Features = dictionary };
         }
 
-        public override IReadOnlyDictionary<string, string> Features
+        public override void ValidateOptions(ArrayBuilder<Diagnostic> builder)
         {
-            get
+            base.ValidateOptions(builder);
+
+            // Validate LanguageVersion not SpecifiedLanguageVersion, after Latest/Default has been converted:
+            if (!LanguageVersion.IsValid())
             {
-                return _features;
+                builder.Add([lang]ErrorCode.ERR_BadLanguageVersion.ToDiagnosticWithNoLocation(LanguageVersion.ToString()));
             }
         }
 
-        internal bool IsFeatureEnabled([Properties.LanguageName]Feature feature)
+        public bool IsFeatureEnabled(string feature)
         {
-            string featureFlag = feature.RequiredFeature();
+            throw new NotImplementedException("TODO:MetaDslx");
+            /*string featureFlag = feature.RequiredFeature();
             if (featureFlag != null)
             {
                 return Features.ContainsKey(featureFlag);
             }
             LanguageVersion availableVersion = LanguageVersion;
             LanguageVersion requiredVersion = feature.RequiredVersion();
-            return availableVersion >= requiredVersion;
+            return availableVersion >= requiredVersion;*/
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as [Properties.LanguageName]ParseOptions);
+            return this.Equals(obj as [lang]ParseOptions);
         }
-^
-        public bool Equals([Properties.LanguageName]ParseOptions other)
+
+        public bool Equals([lang]ParseOptions other)
         {
             if (object.ReferenceEquals(this, other))
             {
@@ -266,7 +270,7 @@ namespace [Properties.DefaultNamespace]
 
             return this.LanguageVersion == other.LanguageVersion;
         }
-^
+
         public override int GetHashCode()
         {
             return
@@ -326,45 +330,150 @@ template GenerateLanguageVersion()
 // WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
 // !!!!!!!
 using System;
+using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
+using Roslyn.Utilities;
 ^
+[var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
 {
     /// <summary>
     /// Specifies the language version.
     /// </summary>
-    public enum LanguageVersion
+    public class [lang]LanguageVersion : LanguageVersion
     {
         /// <summary>
-        /// [Properties.LanguageName] language version 1.0.
+        /// [lang] language version 1
         /// </summary>
-        [Properties.LanguageName]1 = 1,
-    }
-^
-    internal static partial class LanguageVersionExtensions
-    {
-        internal static bool IsValid(this LanguageVersion value)
+        public const string [lang]1 = nameof([lang]1);
+
+        protected [lang]LanguageVersion(string name)
+            : base(name)
         {
-            return value >= LanguageVersion.[Properties.LanguageName]1 && value <= LanguageVersion.[Properties.LanguageName]1;
         }
-^
-        internal static object Localize(this LanguageVersion value)
+
+        protected [lang]LanguageVersion(EnumObject retargetedValue)
+            : base(retargetedValue)
         {
-            return (int)value;
         }
-^
-        internal static [Properties.LanguageName]ErrorCode GetErrorCode(this LanguageVersion version)
+
+        static [lang]LanguageVersion()
         {
-            switch (version)
+            EnumObject.AutoInit<[lang]LanguageVersion>();
+        }
+
+        public static implicit operator [lang]LanguageVersion(string name)
+        {
+            return FromString<[lang]LanguageVersion>(name);
+        }
+
+        public static explicit operator [lang]LanguageVersion(int value)
+        {
+            return FromIntUnsafe<[lang]LanguageVersion>(value);
+        }
+
+        public override bool IsValid()
+        {
+            if (this == [lang]1) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Map a language version (such as Default, Latest, or CSharpN) to a specific version (CSharpM).
+        /// </summary>
+        public override LanguageVersion MapSpecifiedToEffectiveVersion()
+        {
+            if (this == Latest || this == Default || this == LatestMajor || this == Preview)
             {
-                case LanguageVersion.[Properties.LanguageName]1:
-                    return [Properties.LanguageName]ErrorCode.ERR_FeatureNotAvailableInVersion1;
+                return [lang]1;
+            }
+            return this;
+        }
+
+        public override ErrorCode GetErrorCode()
+        {
+            switch (this.Switch())
+            {
+                case [lang]1:
+                    return [lang]ErrorCode.ERR_FeatureNotAvailableInVersion1;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(version), "Unexpected value: "+version);
+                    throw ExceptionUtilities.UnexpectedValue(this);
             }
         }
     }
-}
 
+    public class [lang]RequiredLanguageVersion : RequiredLanguageVersion
+    {
+        internal LanguageVersion Version { get; }
+
+        internal [lang]RequiredLanguageVersion(LanguageVersion version)
+        {
+            [lang]LanguageVersion preview = [lang]LanguageVersion.Preview;
+            Version = (version == preview.MapSpecifiedToEffectiveVersion()) ? [lang]LanguageVersion.Preview : version;
+        }
+
+        public override string ToString() => Version.ToDisplayString();
+    }
+
+    public static class LanguageVersionFacts
+    {
+        /// <summary>
+        /// Displays the version number in the format expected on the command-line (/langver flag).
+        /// For instance, "6", "7", "7.1", "latest".
+        /// </summary>
+        public static string ToDisplayString(this LanguageVersion version)
+        {
+            if (version == [lang]LanguageVersion.[lang]1) return "1";
+            if (version == [lang]LanguageVersion.Default) return "default";
+            if (version == [lang]LanguageVersion.Latest) return "latest";
+            if (version == [lang]LanguageVersion.LatestMajor) return "latestmajor";
+            if (version == [lang]LanguageVersion.Preview) return "preview";
+            throw ExceptionUtilities.UnexpectedValue(version);
+        }
+
+        /// <summary>
+        /// Try parse a <see cref="LanguageVersion"/> from a string input, returning default if input was null.
+        /// </summary>
+        public static bool TryParse(string version, out LanguageVersion result)
+        {
+            if (version == null)
+            {
+                result = LanguageVersion.Default;
+                return true;
+            }
+
+            switch (CaseInsensitiveComparison.ToLower(version))
+            {
+                case "default":
+                    result = LanguageVersion.Default;
+                    return true;
+
+                case "latest":
+                    result = LanguageVersion.Latest;
+                    return true;
+
+                case "latestmajor":
+                    result = LanguageVersion.LatestMajor;
+                    return true;
+
+                case "preview":
+                    result = LanguageVersion.Preview;
+                    return true;
+
+                case "1":
+                case "1.0":
+                    result = [lang]LanguageVersion.[lang]1;
+                    return true;
+                default:
+                    result = LanguageVersion.Default;
+                    return false;
+            }
+        }
+        
+        public static LanguageVersion CurrentVersion => [lang]LanguageVersion.[lang]1;
+
+    }
+}
 end template
 
 template GenerateCompilation()
@@ -1206,11 +1315,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Syntax.InternalSyntax;
-using MetaDslx.Compiler.Text;
-using MetaDslx.Compiler.MetaModel;
-using MetaDslx.Compiler.Utilities;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
+using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Parser;
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
@@ -1259,16 +1368,20 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 
         private class Antlr4ToRoslynVisitor : [Properties.LanguageName]ParserBaseVisitor<GreenNode>
         {
-            private [Properties.LanguageName]Language language;
-			private [Properties.LanguageName]GreenFactory factory;
+			// list pools - allocators for lists that are used to build sequences of nodes. The lists
+			// can be reused (hence pooled) since the syntax factory methods don't keep references to
+			// them
+
+			private readonly SyntaxListPool _pool = new SyntaxListPool(); // Don't need to reset this.            private [Properties.LanguageName]Language language;
+			
+			private [Properties.LanguageName]InternalSyntaxFactory factory;
             private [Properties.LanguageName]SyntaxParser syntaxParser;
 			private IList<IToken> tokens;
             private IToken lastTokenOrTrivia;
 
             public Antlr4ToRoslynVisitor([Properties.LanguageName]SyntaxParser syntaxParser)
             {
-                this.language = [Properties.LanguageName]Language.Instance;
-				this.factory = language.InternalSyntaxFactory;
+				this.factory = ([Properties.LanguageName]InternalSyntaxFactory)syntaxParser.Language.InternalSyntaxFactory;
                 this.syntaxParser = syntaxParser;
 				this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
                 this.lastTokenOrTrivia = null;
@@ -1304,12 +1417,12 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 			[if (elem.IsSimplified && elem.IsList && elem.IsSeparated)]
 	if ([elem.FieldName()]Context != null) 
 	{
-		return this.factory.[rule.PlainName()]((([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context))?.[elem.Grammar.FindParserRule(elem.OriginalType).Elements[0].GreenName()], true);
+		return this.factory.[rule.PlainName()]((([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context))?.[elem.Grammar.FindParserRule(elem.OriginalType).Elements[0].GreenName()]);
 	}
 			[else]
 	if ([elem.FieldName()]Context != null) 
 	{
-		return this.factory.[rule.PlainName()](([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context), true);
+		return this.factory.[rule.PlainName()](([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context));
 	}
 			[end if]
 		[end loop]
@@ -1342,33 +1455,36 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 				[if(elem.IsSeparated)]
     [Properties.LanguageName]Parser.[elem.PlainType()]Context["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
     ITerminalNode["[]"] [elem.Separator.FieldName()]Context = context.[elem.Separator.GetAccessorName()];
-    ArrayBuilder<GreenNode> [elem.FieldName()]Builder = ArrayBuilder<GreenNode>.GetInstance([elem.FieldName()]Context.Length+[elem.Separator.FieldName()]Context.Length);
+    var [elem.FieldName()]Builder _pool.AllocateSeparated<[elem.GreenInnerType()]>();
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
     {
         [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.Visit([elem.FieldName()]Context["[i]"]));
         if (i < [elem.Separator.FieldName()]Context.Length)
         {
-            [elem.FieldName()]Builder.Add((InternalSyntaxToken)this.VisitTerminal([elem.Separator.FieldName()]Context["[i]"]));
+            [elem.FieldName()]Builder.AddSeparator((InternalSyntaxToken)this.VisitTerminal([elem.Separator.FieldName()]Context["[i]"]));
         }
     }
-	[elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.GreenType(TypeKind.Public)].Create([elem.FieldName()]Builder.ToArrayAndFree());
+	var [elem.FieldName()] = [elem.FieldName()]Builder.ToList();
+	_pool.Free([elem.FieldName()]Builder);
 				[else]
 					[if(elem.IsToken)]
     ITerminalNode["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
-    ArrayBuilder<[elem.GreenInnerType()]> [elem.FieldName()]Builder = ArrayBuilder<[elem.GreenInnerType()]>.GetInstance([elem.FieldName()]Context.Length);
+    var [elem.FieldName()]Builder = _pool.Allocate<[elem.GreenInnerType()]>();
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
     {
         [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.VisitTerminal([elem.FieldName()]Context["[i]"]));
     }
-    [elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.GreenType(TypeKind.Public)].Create([elem.FieldName()]Builder.ToArrayAndFree());
+	var [elem.FieldName()] = [elem.FieldName()]Builder.ToList();
+	_pool.Free([elem.FieldName()]Builder);
 					[else]
     [Properties.LanguageName]Parser.[elem.PlainType()]Context["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
-    ArrayBuilder<[elem.GreenInnerType()]> [elem.FieldName()]Builder = ArrayBuilder<[elem.GreenInnerType()]>.GetInstance([elem.FieldName()]Context.Length);
+    var [elem.FieldName()]Builder = _pool.Allocate<[elem.GreenInnerType()]>();
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
     {
         [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.Visit([elem.FieldName()]Context["[i]"]));
     }
-	[elem.GreenType(TypeKind.Public)] [elem.FieldName()] = [elem.GreenType(TypeKind.Public)].Create([elem.FieldName()]Builder.ToArrayAndFree());
+	var [elem.FieldName()] = [elem.FieldName()]Builder.ToList();
+	_pool.Free([elem.FieldName()]Builder);
 					[end if]
 				[end if]
 			[else]
@@ -1386,7 +1502,7 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 		[end if]
 		[end if]
 	[end loop]
-	return this.factory.[rule.PlainName()]([GetRoslynVisitorElemParamList(rule, false, false)], true);
+	return this.factory.[rule.PlainName()]([GetRoslynVisitorElemParamList(rule, false, false)]);
 	[end if]
 }
 [end if]
@@ -1397,12 +1513,7 @@ template GenerateSyntaxTree()
 // !!!!!!!
 // WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
 // !!!!!!!
-using MetaDslx.Compiler;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Syntax.InternalSyntax;
-using MetaDslx.Compiler.Text;
-using MetaDslx.Compiler.Utilities;
+[var lang = Properties.LanguageName]
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -1410,30 +1521,64 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using [Properties.DefaultNamespace].Syntax;
+using [Properties.DefaultNamespace].Syntax.InternalSyntax;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax;
+using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
 
-namespace [Properties.DefaultNamespace].Syntax
+namespace [Properties.DefaultNamespace]
 {
     /// <summary>
-    /// The parsed representation of a [Properties.LanguageName] source document.
+    /// The parsed representation of a C# source document.
     /// </summary>
-    public abstract class [Properties.LanguageName]SyntaxTree : SyntaxTree
+    public abstract partial class [lang]SyntaxTree : LanguageSyntaxTree
     {
-        internal static readonly SyntaxTree Dummy = new DummySyntaxTree();
+        internal static readonly [lang]SyntaxTree Dummy = new DummySyntaxTree();
 
-        public override Language Language => [Properties.LanguageName]Language.Instance;
+        public override Language Language => [lang]Language.Instance;
 
         /// <summary>
         /// The options used by the parser to produce the syntax tree.
         /// </summary>
-        public new abstract [Properties.LanguageName]ParseOptions Options { get; }
+        public new abstract [lang]ParseOptions Options { get; }
+
+        // REVIEW: I would prefer to not expose CloneAsRoot and make the functionality
+        // internal to CaaS layer, to ensure that for a given SyntaxTree there can not
+        // be multiple trees claiming to be its children.
+        // 
+        // However, as long as we provide GetRoot extensibility point on SyntaxTree
+        // the guarantee above cannot be implemented and we have to provide some way for
+        // creating root nodes.
+        //
+        // Therefore I place CloneAsRoot API on SyntaxTree and make it protected to
+        // at least limit its visibility to SyntaxTree extenders.
+
+        /// <summary>
+        /// Produces a clone of a <see cref="[lang]SyntaxNode"/> which will have current syntax tree as its parent.
+        /// 
+        /// Caller must guarantee that if the same instance of <see cref="[lang]SyntaxNode"/> makes multiple calls
+        /// to this function, only one result is observable.
+        /// </summary>
+        /// <typeparam name="T">Type of the syntax node.</typeparam>
+        /// <param name="node">The original syntax node.</param>
+        /// <returns>A clone of the original syntax node that has current <see cref="CSharpSyntaxTree"/> as its parent.</returns>
+        protected T CloneNodeAsRoot<T>(T node) where T : [lang]SyntaxNode
+        {
+            return [lang]SyntaxNode.CloneNodeAsRoot(node, this);
+        }
+
         /// <summary>
         /// Gets the root node of the syntax tree.
         /// </summary>
-        public new abstract [Properties.LanguageName]SyntaxNode GetRoot(CancellationToken cancellationToken = default(CancellationToken));
+        public new abstract [lang]SyntaxNode GetRoot(CancellationToken cancellationToken = default(CancellationToken));
+
         /// <summary>
         /// Gets the root node of the syntax tree if it is already available.
         /// </summary>
-        public abstract bool TryGetRoot(out [Properties.LanguageName]SyntaxNode root);
+        public abstract bool TryGetRoot(out [lang]SyntaxNode root);
+
         /// <summary>
         /// Gets the root node of the syntax tree asynchronously.
         /// </summary>
@@ -1441,13 +1586,14 @@ namespace [Properties.DefaultNamespace].Syntax
         /// By default, the work associated with this method will be executed immediately on the current thread.
         /// Implementations that wish to schedule this work differently should override <see cref="GetRootAsync(CancellationToken)"/>.
         /// </remarks>
-        public new virtual Task<[Properties.LanguageName]SyntaxNode> GetRootAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public new virtual Task<[lang]SyntaxNode> GetRootAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            [Properties.LanguageName]SyntaxNode node;
+            [lang]SyntaxNode node;
             return Task.FromResult(this.TryGetRoot(out node) ? node : this.GetRoot(cancellationToken));
         }
+
         /// <summary>
-        /// Gets the root of the syntax tree statically typed as <see cref="CompilationUnitSyntax"/>.
+        /// Gets the root of the syntax tree statically typed as <see cref="[Instances.MainRule().RedName()]"/>.
         /// </summary>
         /// <remarks>
         /// Ensure that <see cref="SyntaxTree.HasCompilationUnitRoot"/> is true for this tree prior to invoking this method.
@@ -1457,6 +1603,109 @@ namespace [Properties.DefaultNamespace].Syntax
         {
             return ([Instances.MainRule().RedName()])this.GetRoot(cancellationToken);
         }
+
+        #region Factories
+
+        /// <summary>
+        /// Creates a new syntax tree from a syntax node.
+        /// </summary>
+        public static [lang]SyntaxTree Create([lang]SyntaxNode root, [lang]ParseOptions options = null, string path = "", Encoding encoding = null)
+        {
+            if (root == null)
+            {
+                throw new ArgumentNullException(nameof(root));
+            }
+
+            var directives = root.Kind == SyntaxKind.CompilationUnit ?
+                ((ICompilationUnitRootSyntax)root).GetConditionalDirectivesStack() :
+                DirectiveStack.Empty;
+
+            return new ParsedSyntaxTree(
+                textOpt: null,
+                encodingOpt: encoding,
+                checksumAlgorithm: SourceHashAlgorithm.Sha1,
+                path: path,
+                options: options ?? [lang]ParseOptions.Default,
+                root: root,
+                directives: directives);
+        }
+
+        /// <summary>
+        /// Creates a new syntax tree from a syntax node with text that should correspond to the syntax node.
+        /// </summary>
+        /// <remarks>This is used by the ExpressionEvaluator.</remarks>
+        internal static [lang]SyntaxTree CreateForDebugger([lang]SyntaxNode root, SourceText text, [lang]ParseOptions options)
+        {
+            Debug.Assert(root != null);
+
+            return new DebuggerSyntaxTree(root, text, options);
+        }
+
+        /// <summary>
+        /// <para>
+        /// Internal helper for <see cref="[lang]SyntaxNode"/> class to create a new syntax tree rooted at the given root node.
+        /// This method does not create a clone of the given root, but instead preserves it's reference identity.
+        /// </para>
+        /// <para>NOTE: This method is only intended to be used from <see cref="[lang]SyntaxNode.SyntaxTree"/> property.</para>
+        /// <para>NOTE: Do not use this method elsewhere, instead use <see cref="Create([lang]SyntaxNode, CSharpParseOptions, string, Encoding)"/> method for creating a syntax tree.</para>
+        /// </summary>
+        internal static [lang]SyntaxTree CreateWithoutClone([lang]SyntaxNode root)
+        {
+            Debug.Assert(root != null);
+
+            return new ParsedSyntaxTree(
+                textOpt: null,
+                encodingOpt: null,
+                checksumAlgorithm: SourceHashAlgorithm.Sha1,
+                path: "",
+                options: [lang]ParseOptions.Default,
+                root: root,
+                directives: DirectiveStack.Empty,
+                cloneRoot: false);
+        }
+
+        /// <summary>
+        /// Produces a syntax tree by parsing the source text.
+        /// </summary>
+        public static [lang]SyntaxTree ParseText(
+            string text,
+            [lang]ParseOptions options = null,
+            string path = "",
+            Encoding encoding = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return ParseText(SourceText.From(text, encoding), options, path, cancellationToken);
+        }
+
+        /// <summary>
+        /// Produces a syntax tree by parsing the source text.
+        /// </summary>
+        public static [lang]SyntaxTree ParseText(
+            SourceText text,
+            [lang]ParseOptions options = null,
+            string path = "",
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (text == null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            options = options ?? [lang]ParseOptions.Default;
+
+            using (var parser = new [lang]SyntaxParser(text, options, oldTree: null, changes: null, cancellationToken: cancellationToken))
+            {
+                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse[Instances.MainRule().PlainName()]().CreateRed();
+                var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.Directives);
+                tree.VerifySource();
+                return tree;
+            }
+        }
+
+        #endregion
+
+        #region Changes
+
         /// <summary>
         /// Creates a new syntax based off this tree using a new source text.
         /// </summary>
@@ -1472,151 +1721,49 @@ namespace [Properties.DefaultNamespace].Syntax
             if (this.TryGetText(out oldText))
             {
                 var changes = newText.GetChangeRanges(oldText);
+
                 if (changes.Count == 0 && newText == oldText)
                 {
                     return this;
                 }
+
                 return this.WithChanges(newText, changes);
             }
+
             // if we do not easily know the old text, then specify entire text as changed so we do a full reparse.
             return this.WithChanges(newText, new["[]"] { new TextChangeRange(new TextSpan(0, this.Length), newText.Length) });
         }
+
         private SyntaxTree WithChanges(SourceText newText, IReadOnlyList<TextChangeRange> changes)
         {
             if (changes == null)
             {
                 throw new ArgumentNullException(nameof(changes));
             }
+
             var oldTree = this;
+
             // if changes is entire text do a full reparse
-            if (changes.Count == 1 && new TextSpan(0, this.Length).Equals(changes["[0]"].Span) && changes["[0]"].NewLength == newText.Length)
+            if (changes.Count == 1 && changes["[0]"].Span == new TextSpan(0, this.Length) && changes["[0]"].NewLength == newText.Length)
             {
                 // parser will do a full parse if we give it no changes
                 changes = null;
                 oldTree = null;
             }
-            using (var parser = [Properties.LanguageName]Language.Instance.SyntaxFactory.MakeParser(newText, this.Options, oldTree?.GetRoot(), changes))
+
+            using (var parser = new [lang]SyntaxParser(newText, this.Options, oldTree?.GetRoot(), changes))
             {
-                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
+                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse[Instances.MainRule().PlainName()]().CreateRed();
                 var tree = new ParsedSyntaxTree(newText, newText.Encoding, newText.ChecksumAlgorithm, this.FilePath, this.Options, compilationUnit, parser.Directives);
                 tree.VerifySource(changes);
                 return tree;
             }
         }
-        public abstract [Properties.LanguageName]SyntaxTree WithRootAndOptions(SyntaxNode root, ParseOptions options);
-        public abstract [Properties.LanguageName]SyntaxTree WithFilePath(string path);
-        #region Factories
-        /// <summary>
-        /// Creates a new syntax tree from a syntax node.
-        /// </summary>
-        public static [Properties.LanguageName]SyntaxTree Create([Properties.LanguageName]SyntaxNode root, [Properties.LanguageName]ParseOptions options = null, string path = "", Encoding encoding = null)
-        {
-            if (root == null)
-            {
-                throw new ArgumentNullException(nameof(root));
-            }
-            var directives = DirectiveStack.Empty;
-            return new ParsedSyntaxTree(
-                textOpt: null,
-                encodingOpt: encoding,
-                checksumAlgorithm: SourceHashAlgorithm.Sha1,
-                path: path,
-                options: options ?? [Properties.LanguageName]ParseOptions.Default,
-                root: root,
-                directives: directives);
-        }
-        /// <summary>
-        /// Creates a new syntax tree from a syntax node with text that should correspond to the syntax node.
-        /// </summary>
-        /// <remarks>This is used by the ExpressionEvaluator.</remarks>
-        internal static [Properties.LanguageName]SyntaxTree CreateForDebugger([Properties.LanguageName]SyntaxNode root, SourceText text)
-        {
-            Debug.Assert(root != null);
-            return new DebuggerSyntaxTree(root, text);
-        }
-        /// <summary>
-        /// <para>
-        /// Internal helper for <see cref="[Properties.LanguageName]SyntaxNode"/> class to create a new syntax tree rooted at the given root node.
-        /// This method does not create a clone of the given root, but instead preserves it's reference identity.
-        /// </para>
-        /// <para>NOTE: This method is only intended to be used from <see cref="[Properties.LanguageName]SyntaxNode.SyntaxTree"/> property.</para>
-        /// <para>NOTE: Do not use this method elsewhere, instead use <see cref="Create([Properties.LanguageName]SyntaxNode, [Properties.LanguageName]ParseOptions, string, Encoding)"/> method for creating a syntax tree.</para>
-        /// </summary>
-        internal static [Properties.LanguageName]SyntaxTree CreateWithoutClone([Properties.LanguageName]SyntaxNode root)
-        {
-            Debug.Assert(root != null);
-            return new ParsedSyntaxTree(
-                textOpt: null,
-                encodingOpt: null,
-                checksumAlgorithm: SourceHashAlgorithm.Sha1,
-                path: "",
-                options: [Properties.LanguageName]ParseOptions.Default,
-                root: root,
-                directives: DirectiveStack.Empty,
-                cloneRoot: false);
-        }
-        /// <summary>
-        /// Produces a syntax tree by parsing the source text.
-        /// </summary>
-        public static [Properties.LanguageName]SyntaxTree ParseText(
-            string text,
-            [Properties.LanguageName]ParseOptions options = null,
-            string path = "",
-            Encoding encoding = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return ParseText(SourceText.From(text, encoding), options, path, cancellationToken);
-        }
-        /// <summary>
-        /// Produces a syntax tree by parsing the source text.
-        /// </summary>
-        public static [Properties.LanguageName]SyntaxTree ParseText(
-            SourceText text,
-            [Properties.LanguageName]ParseOptions options = null,
-            string path = "",
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (text == null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
-            if (path == null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-            options = options ?? [Properties.LanguageName]ParseOptions.Default;
-            using (var parser = [Properties.LanguageName]Language.Instance.SyntaxFactory.MakeParser(text, options, oldTree: null, changes: null))
-            {
-                var compilationUnit = ([Instances.MainRule().RedName()])parser.Parse().CreateRed();
-                var tree = new ParsedSyntaxTree(text, text.Encoding, text.ChecksumAlgorithm, path, options, compilationUnit, parser.Directives);
-                tree.VerifySource();
-                return tree;
-            }
-        }
+
         #endregion
+
         #region SyntaxTree
-        protected override SyntaxNode GetRootCore(CancellationToken cancellationToken)
-        {
-            return this.GetRoot(cancellationToken);
-        }
-        protected override async Task<SyntaxNode> GetRootAsyncCore(CancellationToken cancellationToken)
-        {
-            return await this.GetRootAsync(cancellationToken).ConfigureAwait(false);
-        }
-        protected override bool TryGetRootCore(out SyntaxNode root)
-        {
-            [Properties.LanguageName]SyntaxNode node;
-            if (this.TryGetRoot(out node))
-            {
-                root = node;
-                return true;
-            }
-            else
-            {
-                root = null;
-                return false;
-            }
-        }
+
         protected override ParseOptions OptionsCore
         {
             get
@@ -1624,141 +1771,159 @@ namespace [Properties.DefaultNamespace].Syntax
                 return this.Options;
             }
         }
+
         #endregion
-        private class DebuggerSyntaxTree : ParsedSyntaxTree
+
+        internal sealed class DummySyntaxTree : [lang]SyntaxTree
         {
-            public DebuggerSyntaxTree([Properties.LanguageName]SyntaxNode root, SourceText text)
-                : base(
-                    text,
-                    text.Encoding,
-                    text.ChecksumAlgorithm,
-                    path: "",
-                    options: [Properties.LanguageName]ParseOptions.Default,
-                    root: root,
-                    directives: DirectiveStack.Empty)
-            {
-            }
-            public override bool SupportsLocations
-            {
-                get { return true; }
-            }
-        }
-        private sealed class DummySyntaxTree : [Properties.LanguageName]SyntaxTree
-        {
-            private readonly [Instances.MainRule().RedName()] _node;
+            private readonly [lang]SyntaxNode _node;
+
             public DummySyntaxTree()
             {
-                _node = new [Instances.MainRule().RedName()]([Properties.LanguageName]Language.Instance.InternalSyntaxFactory.[Instances.MainRule().PlainName()]([GetElemNullParamList(Instances.MainRule(), false, true)]true), this, 0);
+                _node = this.CloneNodeAsRoot([lang]Language.Instance.SyntaxFactory.Parse[Instances.MainRule().PlainName()](string.Empty));
             }
+
             public override string ToString()
             {
                 return string.Empty;
             }
+
             public override SourceText GetText(CancellationToken cancellationToken)
             {
                 return SourceText.From(string.Empty, Encoding.UTF8);
             }
+
             public override bool TryGetText(out SourceText text)
             {
                 text = SourceText.From(string.Empty, Encoding.UTF8);
                 return true;
             }
+
             public override Encoding Encoding
             {
                 get { return Encoding.UTF8; }
             }
+
             public override int Length
             {
                 get { return 0; }
             }
-            public override [Properties.LanguageName]ParseOptions Options
+
+            public override [lang]ParseOptions Options
             {
-                get { return [Properties.LanguageName]ParseOptions.Default; }
+                get { return [lang]ParseOptions.Default; }
             }
+
             public override string FilePath
             {
                 get { return string.Empty; }
             }
-            public override [Properties.LanguageName]SyntaxNode GetRoot(CancellationToken cancellationToken)
+
+            public override SyntaxReference GetReference(SyntaxNode node)
+            {
+                return new SimpleSyntaxReference(node);
+            }
+
+            public override [lang]SyntaxNode GetRoot(CancellationToken cancellationToken)
             {
                 return _node;
             }
-            public override bool TryGetRoot(out [Properties.LanguageName]SyntaxNode root)
+
+            public override bool TryGetRoot(out [lang]SyntaxNode root)
             {
                 root = _node;
                 return true;
             }
+
             public override bool HasCompilationUnitRoot
             {
                 get { return true; }
             }
-            public override [Properties.LanguageName]SyntaxTree WithRootAndOptions(SyntaxNode root, ParseOptions options)
+
+            public override FileLinePositionSpan GetLineSpan(TextSpan span, CancellationToken cancellationToken = default(CancellationToken))
             {
-                return [Properties.LanguageName]Language.Instance.SyntaxFactory.SyntaxTree(root, options: ([Properties.LanguageName]ParseOptions)options, path: FilePath, encoding: null);
+                return default(FileLinePositionSpan);
             }
-            public override [Properties.LanguageName]SyntaxTree WithFilePath(string path)
+
+            public override SyntaxTree WithRootAndOptions(SyntaxNode root, ParseOptions options)
             {
-                return [Properties.LanguageName]Language.Instance.SyntaxFactory.SyntaxTree(_node, options: this.Options, path: path, encoding: null);
+                return [lang]Language.Instance.SyntaxFactory.SyntaxTree((LanguageSyntaxNode)root, options: ([lang]ParseOptions)options, path: FilePath, encoding: null);
+            }
+
+            public override SyntaxTree WithFilePath(string path)
+            {
+                return [lang]Language.Instance.SyntaxFactory.SyntaxTree(_node, options: this.Options, path: path, encoding: null);
             }
         }
-        private class ParsedSyntaxTree : [Properties.LanguageName]SyntaxTree
+
+        private class ParsedSyntaxTree : [lang]SyntaxTree
         {
-            private readonly [Properties.LanguageName]ParseOptions _options;
+            private readonly [lang]ParseOptions _options;
             private readonly string _path;
-            private readonly [Properties.LanguageName]SyntaxNode _root;
+            private readonly [lang]SyntaxNode _root;
             private readonly bool _hasCompilationUnitRoot;
             private readonly Encoding _encodingOpt;
             private readonly SourceHashAlgorithm _checksumAlgorithm;
             private SourceText _lazyText;
-            internal ParsedSyntaxTree(SourceText textOpt, Encoding encodingOpt, SourceHashAlgorithm checksumAlgorithm, string path, [Properties.LanguageName]ParseOptions options, [Properties.LanguageName]SyntaxNode root, DirectiveStack directives, bool cloneRoot = true)
+
+            internal ParsedSyntaxTree(SourceText textOpt, Encoding encodingOpt, SourceHashAlgorithm checksumAlgorithm, string path, [lang]ParseOptions options, [lang]SyntaxNode root, DirectiveStack directives, bool cloneRoot = true)
             {
                 Debug.Assert(root != null);
                 Debug.Assert(options != null);
-                Debug.Assert(path != null);
                 Debug.Assert(textOpt == null || textOpt.Encoding == encodingOpt && textOpt.ChecksumAlgorithm == checksumAlgorithm);
+
                 _lazyText = textOpt;
                 _encodingOpt = encodingOpt ?? textOpt?.Encoding;
                 _checksumAlgorithm = checksumAlgorithm;
                 _options = options;
-                _path = path;
-                _root = cloneRoot ? new [Instances.MainRule().RedName()]((InternalSyntaxNode)root.Green, this, 0) : root;
-                _hasCompilationUnitRoot = root.Kind == [Properties.LanguageName]SyntaxKind.Main;
+                _path = path ?? string.Empty;
+                _root = cloneRoot ? this.CloneNodeAsRoot(root) : root;
+                _hasCompilationUnitRoot = root.Kind == SyntaxKind.CompilationUnit;
                 this.SetDirectiveStack(directives);
             }
+
             public override string FilePath
             {
                 get { return _path; }
             }
+
             public override SourceText GetText(CancellationToken cancellationToken)
             {
                 if (_lazyText == null)
                 {
                     Interlocked.CompareExchange(ref _lazyText, this.GetRoot(cancellationToken).GetText(_encodingOpt, _checksumAlgorithm), null);
                 }
+
                 return _lazyText;
             }
+
             public override bool TryGetText(out SourceText text)
             {
                 text = _lazyText;
                 return text != null;
             }
+
             public override Encoding Encoding
             {
                 get { return _encodingOpt; }
             }
+
             public override int Length
             {
                 get { return _root.FullSpan.Length; }
             }
-            public override [Properties.LanguageName]SyntaxNode GetRoot(CancellationToken cancellationToken)
+
+            public override [lang]SyntaxNode GetRoot(CancellationToken cancellationToken)
             {
                 return _root;
             }
-            public override bool TryGetRoot(out [Properties.LanguageName]SyntaxNode root)
+
+            public override bool TryGetRoot(out [lang]SyntaxNode root)
             {
                 root = _root;
                 return true;
             }
+
             public override bool HasCompilationUnitRoot
             {
                 get
@@ -1766,7 +1931,8 @@ namespace [Properties.DefaultNamespace].Syntax
                     return _hasCompilationUnitRoot;
                 }
             }
-            public override [Properties.LanguageName]ParseOptions Options
+
+            public override [lang]ParseOptions Options
             {
                 get
                 {
@@ -1774,27 +1940,35 @@ namespace [Properties.DefaultNamespace].Syntax
                 }
             }
 
-            public override [Properties.LanguageName]SyntaxTree WithRootAndOptions(SyntaxNode root, ParseOptions options)
+            public override SyntaxReference GetReference(SyntaxNode node)
+            {
+                return new SimpleSyntaxReference(node);
+            }
+
+            public override SyntaxTree WithRootAndOptions(SyntaxNode root, ParseOptions options)
             {
                 if (ReferenceEquals(_root, root) && ReferenceEquals(_options, options))
                 {
                     return this;
                 }
+
                 return new ParsedSyntaxTree(
                     null,
                     _encodingOpt,
                     _checksumAlgorithm,
                     _path,
-                    ([Properties.LanguageName]ParseOptions)options,
-                    ([Properties.LanguageName]SyntaxNode)root,
+                    ([lang]ParseOptions)options,
+                    ([lang]SyntaxNode)root,
                     this.GetDirectives());
             }
-            public override [Properties.LanguageName]SyntaxTree WithFilePath(string path)
+
+            public override SyntaxTree WithFilePath(string path)
             {
                 if (_path == path)
                 {
                     return this;
                 }
+
                 return new ParsedSyntaxTree(
                     _lazyText,
                     _encodingOpt,
@@ -1803,6 +1977,26 @@ namespace [Properties.DefaultNamespace].Syntax
                     _options,
                     _root,
                     this.GetDirectives());
+            }
+        }
+
+        private class DebuggerSyntaxTree : ParsedSyntaxTree
+        {
+            public DebuggerSyntaxTree([lang]SyntaxNode root, SourceText text, [lang]ParseOptions options)
+                : base(
+                    text,
+                    text.Encoding,
+                    text.ChecksumAlgorithm,
+                    path: "",
+                    options: options,
+                    root: root,
+                    directives: DirectiveStack.Empty)
+            {
+            }
+
+            public override bool SupportsLocations
+            {
+                get { return true; }
             }
         }
     }

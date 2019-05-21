@@ -6,10 +6,6 @@ options
 	generateCompiler=true;
 }
 
-@header {
-using MetaDslx.Core;
-}
-
 $Root(MetaNamespace)
 main: $Property(Symbols) namespaceDeclaration EOF;
 

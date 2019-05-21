@@ -4,7 +4,7 @@ using System;
 
 namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 {
-    internal struct SeparatedSyntaxListBuilder<TNode> where TNode : GreenNode
+    public struct SeparatedSyntaxListBuilder<TNode> where TNode : GreenNode
     {
         private readonly SyntaxListBuilder _builder;
 

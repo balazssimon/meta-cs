@@ -767,7 +767,11 @@ namespace Roslyn.Utilities
             return FromString<LanguageVersion>(name);
         }
 
-        public new static IEnumerable<EnumObject> EnumValues => EnumObject.EnumValues(typeof(LanguageVersion));
+        public static explicit operator LanguageVersion(int value)
+        {
+            return FromIntUnsafe<LanguageVersion>(value);
+        }
+
     }
     */
 

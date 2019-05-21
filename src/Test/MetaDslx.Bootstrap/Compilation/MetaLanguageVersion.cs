@@ -1,52 +1,47 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-
+// !!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!
+using System;
 using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.Languages.MetaModel
+namespace MetaDslx.Bootstrap.Meta
 {
     /// <summary>
     /// Specifies the language version.
     /// </summary>
-    public class MetaModelLanguageVersion : LanguageVersion
+    public class MetaLanguageVersion : LanguageVersion
     {
         /// <summary>
-        /// MetaModel language version 1
+        /// Meta language version 1
         /// </summary>
-        public const string MetaModel1 = nameof(MetaModel1);
-
-        protected MetaModelLanguageVersion(string name)
+        public const string Meta1 = nameof(Meta1);
+        protected MetaLanguageVersion(string name)
             : base(name)
         {
         }
-
-        protected MetaModelLanguageVersion(EnumObject retargetedValue)
+        protected MetaLanguageVersion(EnumObject retargetedValue)
             : base(retargetedValue)
         {
         }
-
-        static MetaModelLanguageVersion()
+        static MetaLanguageVersion()
         {
-            EnumObject.AutoInit<MetaModelLanguageVersion>();
+            EnumObject.AutoInit<MetaLanguageVersion>();
         }
-
-        public static implicit operator MetaModelLanguageVersion(string name)
+        public static implicit operator MetaLanguageVersion(string name)
         {
-            return FromString<MetaModelLanguageVersion>(name);
+            return FromString<MetaLanguageVersion>(name);
         }
-
-        public static explicit operator MetaModelLanguageVersion(int value)
+        public static explicit operator MetaLanguageVersion(int value)
         {
-            return FromIntUnsafe<MetaModelLanguageVersion>(value);
+            return FromIntUnsafe<MetaLanguageVersion>(value);
         }
-
         public override bool IsValid()
         {
-            if (this == MetaModel1) return true;
+            if (this == Meta1) return true;
             return false;
         }
-
         /// <summary>
         /// Map a language version (such as Default, Latest, or CSharpN) to a specific version (CSharpM).
         /// </summary>
@@ -54,36 +49,31 @@ namespace MetaDslx.Languages.MetaModel
         {
             if (this == Latest || this == Default || this == LatestMajor || this == Preview)
             {
-                return MetaModel1;
+                return Meta1;
             }
             return this;
         }
-
         public override ErrorCode GetErrorCode()
         {
             switch (this.Switch())
             {
-                case MetaModel1:
-                    return MetaModelErrorCode.ERR_FeatureNotAvailableInVersion1;
+                case Meta1:
+                    return MetaErrorCode.ERR_FeatureNotAvailableInVersion1;
                 default:
                     throw ExceptionUtilities.UnexpectedValue(this);
             }
         }
     }
-
-    public class MetaModelRequiredLanguageVersion : RequiredLanguageVersion
+    public class MetaRequiredLanguageVersion : RequiredLanguageVersion
     {
         internal LanguageVersion Version { get; }
-
-        internal MetaModelRequiredLanguageVersion(LanguageVersion version)
+        internal MetaRequiredLanguageVersion(LanguageVersion version)
         {
-            MetaModelLanguageVersion preview = MetaModelLanguageVersion.Preview;
-            Version = (version == preview.MapSpecifiedToEffectiveVersion()) ? MetaModelLanguageVersion.Preview : version;
+            MetaLanguageVersion preview = MetaLanguageVersion.Preview;
+            Version = (version == preview.MapSpecifiedToEffectiveVersion()) ? MetaLanguageVersion.Preview : version;
         }
-
         public override string ToString() => Version.ToDisplayString();
     }
-
     public static class LanguageVersionFacts
     {
         /// <summary>
@@ -92,14 +82,13 @@ namespace MetaDslx.Languages.MetaModel
         /// </summary>
         public static string ToDisplayString(this LanguageVersion version)
         {
-            if (version == MetaModelLanguageVersion.MetaModel1) return "1";
-            if (version == MetaModelLanguageVersion.Default) return "default";
-            if (version == MetaModelLanguageVersion.Latest) return "latest";
-            if (version == MetaModelLanguageVersion.LatestMajor) return "latestmajor";
-            if (version == MetaModelLanguageVersion.Preview) return "preview";
+            if (version == MetaLanguageVersion.Meta1) return "1";
+            if (version == MetaLanguageVersion.Default) return "default";
+            if (version == MetaLanguageVersion.Latest) return "latest";
+            if (version == MetaLanguageVersion.LatestMajor) return "latestmajor";
+            if (version == MetaLanguageVersion.Preview) return "preview";
             throw ExceptionUtilities.UnexpectedValue(version);
         }
-
         /// <summary>
         /// Try parse a <see cref="LanguageVersion"/> from a string input, returning default if input was null.
         /// </summary>
@@ -110,36 +99,29 @@ namespace MetaDslx.Languages.MetaModel
                 result = LanguageVersion.Default;
                 return true;
             }
-
             switch (CaseInsensitiveComparison.ToLower(version))
             {
                 case "default":
                     result = LanguageVersion.Default;
                     return true;
-
                 case "latest":
                     result = LanguageVersion.Latest;
                     return true;
-
                 case "latestmajor":
                     result = LanguageVersion.LatestMajor;
                     return true;
-
                 case "preview":
                     result = LanguageVersion.Preview;
                     return true;
-
                 case "1":
                 case "1.0":
-                    result = MetaModelLanguageVersion.MetaModel1;
+                    result = MetaLanguageVersion.Meta1;
                     return true;
                 default:
                     result = LanguageVersion.Default;
                     return false;
             }
         }
-        
-        public static LanguageVersion CurrentVersion => MetaModelLanguageVersion.MetaModel1;
-
+        public static LanguageVersion CurrentVersion => MetaLanguageVersion.Meta1;
     }
 }

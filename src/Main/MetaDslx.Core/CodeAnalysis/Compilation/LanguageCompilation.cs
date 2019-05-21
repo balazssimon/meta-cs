@@ -367,7 +367,7 @@ namespace MetaDslx.CodeAnalysis
                 }
             }
 
-            return result ?? LanguageVersion.Default.MapSpecifiedToEffectiveVersion();
+            return result ?? LanguageVersion.Default; // TODO:MetaDslx .MapSpecifiedToEffectiveVersion();
         }
 
         /// <summary>
