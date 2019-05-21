@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\Balazs\Documents\git\meta-cs\Src\Test\MetaDslx.Bootstrap\Syntax\InternalSyntax\MetaParser.g4 by ANTLR 4.6.6
+// Generated from K:\VersionControl\meta-cs\src\Test\MetaDslx.Bootstrap\Syntax\InternalSyntax\MetaParser.g4 by ANTLR 4.6.6
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -18,7 +18,6 @@
 #pragma warning disable 1591
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
-
 
 using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;

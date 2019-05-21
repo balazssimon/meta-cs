@@ -25,8 +25,4 @@
   <ItemGroup>
     <MetaModel Include="MGenTest.mgen" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Compilation\" />
-  </ItemGroup>
 </Project>

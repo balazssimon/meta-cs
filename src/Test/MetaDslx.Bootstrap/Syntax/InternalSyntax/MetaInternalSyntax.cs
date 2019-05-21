@@ -1,6 +1,6 @@
-// !!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -984,7 +984,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MainSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MainSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1059,7 +1059,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NameSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NameSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1132,7 +1132,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.QualifiedNameSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.QualifiedNameSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1205,7 +1205,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.QualifierSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.QualifierSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1302,7 +1302,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.AnnotationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.AnnotationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1415,7 +1415,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NamespaceDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NamespaceDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1530,7 +1530,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NamespaceBodySyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NamespaceBodySyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1681,7 +1681,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MetamodelDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MetamodelDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1766,7 +1766,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MetamodelPropertyListSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MetamodelPropertyListSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1839,7 +1839,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MetamodelPropertySyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MetamodelPropertySyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1936,7 +1936,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MetamodelUriPropertySyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.MetamodelUriPropertySyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2061,7 +2061,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.DeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.DeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2238,7 +2238,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2365,7 +2365,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumBodySyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumBodySyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2446,7 +2446,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumValuesSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumValuesSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2531,7 +2531,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumValueSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumValueSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2606,7 +2606,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumMemberDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.EnumMemberDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2751,7 +2751,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2860,7 +2860,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassBodySyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassBodySyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -2937,7 +2937,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassAncestorsSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassAncestorsSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3010,7 +3010,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassAncestorSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassAncestorSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3095,7 +3095,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassMemberDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassMemberDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3245,7 +3245,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.FieldDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.FieldDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3328,7 +3328,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.FieldModifierSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.FieldModifierSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3413,7 +3413,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.RedefinitionsOrSubsettingsSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.RedefinitionsOrSubsettingsSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3515,7 +3515,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.RedefinitionsSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.RedefinitionsSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3602,7 +3602,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.SubsettingsSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.SubsettingsSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3677,7 +3677,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NameUseListSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NameUseListSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3786,7 +3786,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ConstDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ConstDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -3877,7 +3877,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ExternTypeDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ExternTypeDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4015,7 +4015,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ExternClassTypeDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ExternClassTypeDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4144,7 +4144,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ExternStructTypeDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ExternStructTypeDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4237,7 +4237,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ReturnTypeSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ReturnTypeSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4327,7 +4327,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.TypeOfReferenceSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.TypeOfReferenceSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4412,7 +4412,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.TypeReferenceSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.TypeReferenceSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4538,7 +4538,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.SimpleTypeSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.SimpleTypeSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4662,7 +4662,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassTypeSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ClassTypeSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4735,7 +4735,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ObjectTypeSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ObjectTypeSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4808,7 +4808,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.PrimitiveTypeSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.PrimitiveTypeSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4881,7 +4881,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.VoidTypeSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.VoidTypeSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -4966,7 +4966,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NullableTypeSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NullableTypeSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5077,7 +5077,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.CollectionTypeSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.CollectionTypeSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5156,7 +5156,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.CollectionKindSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.CollectionKindSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5313,7 +5313,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.OperationDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.OperationDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5400,7 +5400,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ParameterListSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ParameterListSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5497,7 +5497,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ParameterSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ParameterSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5634,7 +5634,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.AssociationDeclarationSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.AssociationDeclarationSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5717,7 +5717,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.IdentifierSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.IdentifierSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -5850,7 +5850,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.LiteralSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.LiteralSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6008,7 +6008,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NullLiteralSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.NullLiteralSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6081,7 +6081,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.BooleanLiteralSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.BooleanLiteralSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6154,7 +6154,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.IntegerLiteralSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.IntegerLiteralSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6227,7 +6227,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.DecimalLiteralSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.DecimalLiteralSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6300,7 +6300,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ScientificLiteralSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.ScientificLiteralSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -6373,7 +6373,7 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::MetaDslx.Bootstrap.Meta.Syntax.StringLiteralSyntax(this, parent, position);
+	        return new global::MetaDslx.Bootstrap.Meta.Syntax.StringLiteralSyntax(this, (MetaSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -7876,3 +7876,4 @@ namespace MetaDslx.Bootstrap.Meta.Syntax.InternalSyntax
 		}
 	}
 }
+

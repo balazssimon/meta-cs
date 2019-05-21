@@ -1,6 +1,4 @@
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
+// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
 using System;
 using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
@@ -125,3 +123,4 @@ namespace MetaDslx.Bootstrap.Meta
         public static LanguageVersion CurrentVersion => MetaLanguageVersion.Meta1;
     }
 }
+

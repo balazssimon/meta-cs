@@ -22,23 +22,23 @@ namespace MetaDslx.CodeAnalysis.Syntax
     /// </summary>
     public abstract class SyntaxFactory
     {
-        protected SyntaxFactory()
+        protected SyntaxFactory(InternalSyntaxFactory internalSyntaxFactory)
         {
-            CarriageReturnLineFeed = Language.InternalSyntaxFactory.CarriageReturnLineFeed;
-            LineFeed = Language.InternalSyntaxFactory.LineFeed;
-            CarriageReturn = Language.InternalSyntaxFactory.CarriageReturn;
-            Space = Language.InternalSyntaxFactory.Space;
-            Tab = Language.InternalSyntaxFactory.Tab;
+            CarriageReturnLineFeed = internalSyntaxFactory.CarriageReturnLineFeed;
+            LineFeed = internalSyntaxFactory.LineFeed;
+            CarriageReturn = internalSyntaxFactory.CarriageReturn;
+            Space = internalSyntaxFactory.Space;
+            Tab = internalSyntaxFactory.Tab;
 
-            ElasticCarriageReturnLineFeed = Language.InternalSyntaxFactory.ElasticCarriageReturnLineFeed;
-            ElasticLineFeed = Language.InternalSyntaxFactory.ElasticLineFeed;
-            ElasticCarriageReturn = Language.InternalSyntaxFactory.ElasticCarriageReturn;
-            ElasticSpace = Language.InternalSyntaxFactory.ElasticSpace;
-            ElasticTab = Language.InternalSyntaxFactory.ElasticTab;
+            ElasticCarriageReturnLineFeed = internalSyntaxFactory.ElasticCarriageReturnLineFeed;
+            ElasticLineFeed = internalSyntaxFactory.ElasticLineFeed;
+            ElasticCarriageReturn = internalSyntaxFactory.ElasticCarriageReturn;
+            ElasticSpace = internalSyntaxFactory.ElasticSpace;
+            ElasticTab = internalSyntaxFactory.ElasticTab;
 
-            ElasticMarker = Language.InternalSyntaxFactory.ElasticZeroSpace;
+            ElasticMarker = internalSyntaxFactory.ElasticZeroSpace;
 
-            DefaultSeparator = new SyntaxToken(Language.InternalSyntaxFactory.DefaultSeparator);
+            DefaultSeparator = new SyntaxToken(internalSyntaxFactory.DefaultSeparator);
         }
 
         public Language Language => this.LanguageCore;

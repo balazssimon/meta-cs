@@ -179,6 +179,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         protected virtual bool PostCompile()
         {
+            this.Grammar.ErrorCodeCategory = this.LanguageName;
+            this.Grammar.MessagePrefix = new string(this.LanguageName.Where(c => char.IsUpper(c) || char.IsNumber(c)).ToArray());
             string antlr4TokensFile = Path.ChangeExtension(this.GeneratedAntlr4GrammarFile, ".tokens");
             if (!File.Exists(antlr4TokensFile))
             {
@@ -297,10 +299,28 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return tokenName != null && int.TryParse(tokenLine.Substring(index + 1).Trim(), out tokenKind) && tokenKind > 0;
         }
 
-        private void GenerateOutputFile(string filePath, string fileContent)
+        private void GenerateOutputFile(string filePath, string fileContent, bool overwrite = true)
         {
-            File.WriteAllText(filePath, fileContent);
-            this.RegisterGeneratedFile(filePath);
+            if (overwrite || !File.Exists(filePath))
+            {
+                if (overwrite)
+                {
+                    File.WriteAllLines(filePath, new string[] {
+                            "// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                            "// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.",
+                            "// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                            fileContent
+                        });
+                }
+                else
+                {
+                    File.WriteAllLines(filePath, new string[] {
+                            "// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.",
+                            fileContent
+                        });
+                }
+                this.RegisterGeneratedFile(filePath);
+            }
         }
 
         private void GenerateLexer()
@@ -367,16 +387,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxTree.cs"), this.GeneratedSyntaxTree);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + @"ParseOptions.cs"), this.GeneratedParseOptions);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + @"SyntaxParser.cs"), this.GeneratedSyntaxParser);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs"), this.GeneratedLanguageVersion);
-                /*this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Errors\" + this.LanguageName + @"ErrorCode.cs"), this.GeneratedErrorCode);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Language.cs"), this.GeneratedLanguage);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Compilation.cs"), this.GeneratedCompilation);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs"), this.GeneratedLanguageVersion, false);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Errors\" + this.LanguageName + @"ErrorCode.cs"), this.GeneratedErrorCode, false);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Language.cs"), this.GeneratedLanguage, false);
+                /*this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs"), this.GeneratedDeclarationTreeBuilder);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs"), this.GeneratedBinderFactoryVisitor);
+                /*this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Compilation.cs"), this.GeneratedCompilation);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs"), this.GeneratedCompilationFactory);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationOptions.cs"), this.GeneratedCompilationOptions);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs"), this.GeneratedScriptCompilationInfo);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs"), this.GeneratedDeclarationTreeBuilder);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs"), this.GeneratedBinderFactoryVisitor);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"SymbolBuilder.cs"), this.GeneratedSymbolBuilder);*/
             }
         }
@@ -1634,6 +1654,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.FixedTokens = new List<Antlr4LexerRule>();
         }
         public string Name { get; set; }
+        public string ErrorCodeCategory { get; set; }
+        public string MessagePrefix { get; set; }
         public List<MetaCompilerAnnotation> CustomAnnotations { get; private set; }
         public HashSet<string> Imports { get; private set; }
         public HashSet<string> ParserRuleElemUses { get; private set; }

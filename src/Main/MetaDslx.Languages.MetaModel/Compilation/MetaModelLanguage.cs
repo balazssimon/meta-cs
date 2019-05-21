@@ -1,12 +1,12 @@
-using MetaDslx.Languages.MetaModel.Syntax;
-using MetaDslx.Languages.MetaModel.Syntax.InternalSyntax;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using System;
 using System.Diagnostics;
-using MetaDslx.Languages.MetaModel.Symbols;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using MetaDslx.Languages.MetaModel.Symbols;
+using MetaDslx.Languages.MetaModel.Syntax;
+using MetaDslx.Languages.MetaModel.Syntax.InternalSyntax;
 
 namespace MetaDslx.Languages.MetaModel
 {
@@ -14,7 +14,7 @@ namespace MetaDslx.Languages.MetaModel
     {
         public static readonly MetaModelLanguage Instance = new MetaModelLanguage();
 
-        public override string Name => throw new NotImplementedException();
+        public override string Name => "MetaModel";
 
         public new MetaModelSyntaxFacts SyntaxFacts => (MetaModelSyntaxFacts)this.SyntaxFactsCore;
         protected override SyntaxFacts SyntaxFactsCore => new MetaModelSyntaxFacts();

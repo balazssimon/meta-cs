@@ -6,10 +6,6 @@ options
 	                      
 }
 
-@header {
-using MetaDslx.Core;
-}
-
                     
 main:                    namespaceDeclaration EOF;
 

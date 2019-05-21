@@ -11,81 +11,63 @@ end properties
 
 template GenerateLanguage()
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MetaDslx.Compiler;
-using MetaDslx.Compiler.Diagnostics;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Syntax.InternalSyntax;
+using System.Diagnostics;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using [Properties.DefaultNamespace].Symbols;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 ^
+[var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
 {
-    public sealed class [Properties.LanguageName]Language : Language
+    public sealed class [lang]Language : Language
     {
-        internal const string LanguageName = "[Properties.LanguageName]";
+        public static readonly [lang]Language Instance = new [lang]Language();
 ^
-        public static readonly [Properties.LanguageName]Language Instance = new [Properties.LanguageName]Language();
+		private [lang]SyntaxFacts _syntaxFacts;
+		private [lang]SymbolFacts _symbolFacts;
+		private [lang]LookupPosition _lookupPosition;
+		private [lang]InternalSyntaxFactory _internalSyntaxFactory;
+		private [lang]SyntaxFactory _syntaxFactory;
+		private [lang]CompilationFactory _compilationFactory;
 ^
-        private [Properties.LanguageName]Language()
-        {
-        }
+		private [lang]Language()
+		{
+			_syntaxFacts = new [lang]SyntaxFacts();
+			_internalSyntaxFactory = new [lang]InternalSyntaxFactory();
+			_syntaxFactory = new [lang]SyntaxFactory(_internalSyntaxFactory);
+			_lookupPosition = new [lang]LookupPosition();
+			_symbolFacts = new [lang]SymbolFacts();
+			_compilationFactory = new [lang]CompilationFactory();
+		}
 ^
-        public override string Name
-        {
-            get { return [Properties.LanguageName]Language.LanguageName; }
-        }
+        public override string Name => "[lang]";
 ^
-        protected override SyntaxFacts SyntaxFactsCore
-        {
-            get { return [Properties.LanguageName]SyntaxFacts.Instance; }
-        }
+        public new [lang]SyntaxFacts SyntaxFacts => _syntaxFacts;
+        protected override SyntaxFacts SyntaxFactsCore => this.SyntaxFacts;
 ^
-        public new [Properties.LanguageName]SyntaxFacts SyntaxFacts
-        {
-            get { return ([Properties.LanguageName]SyntaxFacts)base.SyntaxFacts; }
-        }
+        public new [lang]SymbolFacts SymbolFacts => _symbolFacts;
+        protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
 ^
-        protected override InternalSyntaxFactory InternalSyntaxFactoryCore
-        {
-            get { return [Properties.LanguageName]GreenFactory.Instance; }
-        }
+        public new [lang]LookupPosition LookupPosition => _lookupPosition;
+        protected override LookupPosition LookupPositionCore => this.LookupPosition;
 ^
-        internal [Properties.LanguageName]GreenFactory InternalSyntaxFactory
-        {
-            get { return ([Properties.LanguageName]GreenFactory)this.InternalSyntaxFactoryCore; }
-        }
+        internal new [lang]InternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
+        protected override InternalSyntaxFactory InternalSyntaxFactoryCore => this.InternalSyntaxFactory;
 ^
-        protected override SyntaxFactory SyntaxFactoryCore
-        {
-            get { return [Properties.LanguageName]SyntaxFactory.Instance; }
-        }
+        public new [lang]SyntaxFactory SyntaxFactory => _syntaxFactory;
+        protected override SyntaxFactory SyntaxFactoryCore => this.SyntaxFactory;
 ^
-        public new [Properties.LanguageName]SyntaxFactory SyntaxFactory
-        {
-            get { return ([Properties.LanguageName]SyntaxFactory)base.SyntaxFactory; }
-        }
-^
-        protected override CompilationFactory CompilationFactoryCore
-        {
-            get { return [Properties.LanguageName]CompilationFactory.Instance; }
-        }
-^
-        internal [Properties.LanguageName]CompilationFactory CompilationFactory
-        {
-            get { return ([Properties.LanguageName]CompilationFactory)this.CompilationFactoryCore; }
-        }
+        public new [lang]CompilationFactory CompilationFactory => _compilationFactory;
+        protected override CompilationFactory CompilationFactoryCore => this.CompilationFactory;
     }
 }
 end template
 
 template GenerateParseOptions()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -282,9 +264,6 @@ namespace [Properties.DefaultNamespace].Syntax
 end template
 
 template GenerateFeature()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -326,9 +305,6 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateLanguageVersion()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using MetaDslx.CodeAnalysis;
 using Microsoft.CodeAnalysis;
@@ -477,9 +453,6 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateCompilation()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -960,9 +933,6 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateCompilationFactory()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1011,9 +981,6 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateCompilationOptions()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -1247,9 +1214,6 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateScriptCompilationInfo()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1285,28 +1249,37 @@ end template
 
 
 template GenerateErrorCode()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 ^
+[var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
 {
-    internal enum [Properties.LanguageName]ErrorCode
+    public class [lang]ErrorCode : ErrorCode
     {
-        ERR_FeatureNotAvailableInVersion1
+        public new const string Category = "[Instances.ErrorCodeCategory]";
+        public new const string MessagePrefix = "[Instances.MessagePrefix]";
+^
+        public static readonly [lang]ErrorCode ERR_GeneralError = new [lang]ErrorCode(1, DiagnosticSeverity.Error, "Error", "Error: {0}");
+        public static readonly [lang]ErrorCode WRN_GeneralWarning = new [lang]ErrorCode(2, DiagnosticSeverity.Warning, "Warning", "Warning: {0}");
+        public static readonly [lang]ErrorCode INF_GeneralInfo = new [lang]ErrorCode(3, DiagnosticSeverity.Info, "Info", "Info: {0}");
+        public static readonly [lang]ErrorCode ERR_BadLanguageVersion = new [lang]ErrorCode(4, DiagnosticSeverity.Error, "Bad language version", "Bad [lang] language version: {0}");
+        public static readonly [lang]ErrorCode ERR_FeatureNotAvailableInVersion1 = new [lang]ErrorCode(5, DiagnosticSeverity.Error, "Feature not available", "Feature not available in [lang] version 1: {0}");
+^
+        private [lang]ErrorCode(int code, DiagnosticSeverity defaultSeverity, string title, string messageFormat, bool isEnabledByDefault = true, string description = null, string helpLinkUri = null, params string["[]"] customTags) 
+            : base(code, MessagePrefix, title, messageFormat, Category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
+        {
+        }
     }
 }
 end template
 
 template GenerateSyntaxParser()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1455,7 +1428,7 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 				[if(elem.IsSeparated)]
     [Properties.LanguageName]Parser.[elem.PlainType()]Context["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
     ITerminalNode["[]"] [elem.Separator.FieldName()]Context = context.[elem.Separator.GetAccessorName()];
-    var [elem.FieldName()]Builder _pool.AllocateSeparated<[elem.GreenInnerType()]>();
+    var [elem.FieldName()]Builder = _pool.AllocateSeparated<[elem.GreenInnerType()]>();
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
     {
         [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.Visit([elem.FieldName()]Context["[i]"]));
@@ -1510,9 +1483,6 @@ end template
 
 
 template GenerateSyntaxTree()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 [var lang = Properties.LanguageName]
 using System;
 using System.Collections.Generic;
@@ -2004,9 +1974,6 @@ namespace [Properties.DefaultNamespace]
 end template
 
 template GenerateInternalSyntax()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -2449,7 +2416,7 @@ internal class [rule.GreenName()] : GreenSyntaxNode[GetCompilationUnitInternal(r
 ^
     protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-        return new global::[Properties.DefaultNamespace].Syntax.[rule.RedName()](this, parent, position);
+        return new global::[Properties.DefaultNamespace].Syntax.[rule.RedName()](this, ([Properties.LanguageName]SyntaxNode)parent, position);
     }
 ^
     protected override GreenNode GetSlot(int index)
@@ -2747,9 +2714,6 @@ template GenerateInternalSyntaxFactoryCreate(Antlr4ParserRule rule)
 end template
 
 template GenerateSyntaxKind()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -2848,9 +2812,6 @@ namespace [Properties.DefaultNamespace].Syntax
 end template
 
 template GenerateSyntax()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -3539,7 +3500,8 @@ template GenerateSyntaxFactory()
 [var lang = Properties.LanguageName]
 public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 {
-	public [lang]SyntaxFactory() 
+	internal [lang]SyntaxFactory([lang]InternalSyntaxFactory internalSyntaxFactory) 
+		: base(internalSyntaxFactory)
 	{
 	}
 	
@@ -4665,9 +4627,6 @@ end template
 
 
 template GenerateDeclarationTreeBuilder()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -4864,9 +4823,6 @@ if (node.[elem.RedName()] != null)
 end template
 
 template GenerateBinderFactoryVisitor()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -5069,9 +5025,6 @@ end template
 
 
 template GenerateSymbolBuilder()
-// !!!!!!!
-// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
-// !!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
