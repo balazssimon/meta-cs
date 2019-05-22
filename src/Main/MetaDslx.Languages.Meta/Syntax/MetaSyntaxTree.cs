@@ -245,7 +245,7 @@ namespace MetaDslx.Languages.Meta
             private readonly MetaSyntaxNode _node;
             public DummySyntaxTree()
             {
-                _node = this.CloneNodeAsRoot((MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.MainForDummySyntaxTree().CreateRed());
+                _node = this.CloneNodeAsRoot((MainSyntax)MainGreen.__Missing.CreateRed());
             }
             public override string ToString()
             {

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis
@@ -41,6 +42,85 @@ namespace MetaDslx.CodeAnalysis
         public new Language Language => this.LanguageCore;
 
         public new GreenNode Green => this.GreenCore;
+
+        /// <summary>
+        /// Returns a non-null <see cref="SyntaxTree"/> that owns this node.
+        /// If this node was created with an explicit non-null <see cref="SyntaxTree"/>, returns that tree.
+        /// Otherwise, if this node has a non-null parent, then returns the parent's <see cref="SyntaxTree"/>.
+        /// Otherwise, returns a newly created <see cref="SyntaxTree"/> rooted at this node, preserving this node's reference identity.
+        /// </summary>
+        internal new SyntaxTree SyntaxTree
+        {
+            get
+            {
+                var result = this._syntaxTree ?? ComputeSyntaxTree(this);
+                Debug.Assert(result != null);
+                return result;
+            }
+        }
+
+        protected abstract SyntaxTree CreateSyntaxTreeForRoot();
+
+        private static SyntaxTree ComputeSyntaxTree(LanguageSyntaxNode node)
+        {
+            ArrayBuilder<LanguageSyntaxNode> nodes = null;
+            SyntaxTree tree = null;
+
+            // Find the nearest parent with a non-null syntax tree
+            while (true)
+            {
+                tree = node._syntaxTree;
+                if (tree != null)
+                {
+                    break;
+                }
+
+                var parent = node.Parent;
+                if (parent == null)
+                {
+                    // set the tree on the root node atomically
+                    Interlocked.CompareExchange(ref node._syntaxTree, node.CreateSyntaxTreeForRoot(), null);
+                    tree = node._syntaxTree;
+                    break;
+                }
+
+                tree = parent._syntaxTree;
+                if (tree != null)
+                {
+                    node._syntaxTree = tree;
+                    break;
+                }
+
+                (nodes ?? (nodes = ArrayBuilder<LanguageSyntaxNode>.GetInstance())).Add(node);
+                node = parent;
+            }
+
+            // Propagate the syntax tree downwards if necessary
+            if (nodes != null)
+            {
+                Debug.Assert(tree != null);
+
+                foreach (var n in nodes)
+                {
+                    var existingTree = n._syntaxTree;
+                    if (existingTree != null)
+                    {
+                        Debug.Assert(existingTree == tree, "how could this node belong to a different tree?");
+
+                        // yield the race
+                        break;
+                    }
+                    n._syntaxTree = tree;
+                }
+
+                nodes.Free();
+            }
+
+            return tree;
+        }
+
+        protected override SyntaxTree SyntaxTreeCore => this.SyntaxTree;
+
 
         public abstract TResult Accept<TResult>(SyntaxVisitor<TResult> visitor);
 
@@ -354,14 +434,6 @@ namespace MetaDslx.CodeAnalysis
             throw ExceptionUtilities.Unreachable;
         }
 
-        protected override SyntaxTree SyntaxTreeCore
-        {
-            get
-            {
-                return this.SyntaxTree;
-            }
-        }
-
         protected internal override SyntaxNode ReplaceCore<TNode>(
             IEnumerable<TNode> nodes = null,
             Func<TNode, TNode, SyntaxNode> computeReplacementNode = null,
@@ -430,36 +502,5 @@ namespace MetaDslx.CodeAnalysis
             return ToString();
         }
 
-        private class DummySyntaxNode : LanguageSyntaxNode
-        {
-            public DummySyntaxNode() 
-                : base(null, (LanguageSyntaxTree)null, 0)
-            {
-            }
-
-            protected override Language LanguageCore => throw new NotImplementedException();
-
-            protected override SyntaxKind KindCore => throw new NotImplementedException();
-
-            public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void Accept(SyntaxVisitor visitor)
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override SyntaxNode GetCachedSlotCore(int index)
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override SyntaxNode GetNodeSlotCore(int slot)
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }

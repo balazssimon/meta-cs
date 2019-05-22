@@ -32,6 +32,11 @@ namespace MetaDslx.Languages.Meta.Syntax
         public new MetaSyntaxKind Kind => (MetaSyntaxKind)this.RawKind;
         protected override SyntaxKind KindCore => this.Kind;
 
+        protected override SyntaxTree CreateSyntaxTreeForRoot()
+        {
+            return MetaSyntaxTree.CreateWithoutClone(this);
+        }
+
         public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
         {
             if (visitor is IMetaSyntaxVisitor<TResult> typedVisitor) return this.Accept(typedVisitor);

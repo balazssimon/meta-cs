@@ -13,6 +13,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public const string Eof = nameof(Eof);
         public const string List = nameof(List);
         public const string BadToken = nameof(BadToken);
+        public const string MissingToken = nameof(MissingToken);
         public const string SkippedTokensTrivia = nameof(SkippedTokensTrivia);
         public const string DisabledTextTrivia = nameof(DisabledTextTrivia);
         public const string ConflictMarkerTrivia = nameof(ConflictMarkerTrivia);

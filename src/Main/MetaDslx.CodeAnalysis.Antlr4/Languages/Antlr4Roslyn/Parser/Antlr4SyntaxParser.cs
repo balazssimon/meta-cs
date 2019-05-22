@@ -166,7 +166,23 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
 
         protected GreenNode VisitTerminal(ITerminalNode node, ref IToken previousTokenOrTrivia)
         {
-            if (node == null) return null;
+            return this.VisitTerminal(node, null, ref previousTokenOrTrivia);
+        }
+
+        protected GreenNode VisitTerminal(ITerminalNode node, SyntaxKind expectedKind, ref IToken previousTokenOrTrivia)
+        {
+            if (node == null)
+            {
+                if ((object)expectedKind == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    var missing = this.factory.MissingToken(expectedKind);
+                    return missing; // TODO:MetaDslx is adding diagnostics necessary? this.AddDiagnostic(result, token.TokenIndex);
+                }
+            }
             InternalSyntaxToken result = null;
             bool addTrivia = true;
             bool updatePreviousTokenOrTrivia = true;
@@ -175,6 +191,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
             {
                 int type = token.Type;
                 SyntaxKind kind = type.FromAntlr4(_syntaxFacts.SyntaxKindType);
+                Debug.Assert((object)expectedKind == null || kind == expectedKind);
                 if (token.StartIndex < 0 || token.StopIndex < token.StartIndex)
                 {
                     result = this.factory.MissingToken(kind);

@@ -1,4 +1,4 @@
-﻿namespace MetaDslx.Languages.Meta.Symbols
+﻿namespacex MetaDslx.Languages.Meta.Symbols
 {
 	/*
 	Represents the MetaModel.

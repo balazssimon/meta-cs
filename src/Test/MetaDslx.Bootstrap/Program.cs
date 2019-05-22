@@ -37,8 +37,15 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(MetaLanguage.Instance);
             Console.WriteLine(tree.Language);
             Console.WriteLine(tree.Options);
-            Console.WriteLine(tree.GetRoot().Span);
-            Console.WriteLine(tree.GetCompilationUnitRoot().Span);
+            Console.WriteLine(tree.GetRoot());
+            var root = tree.GetCompilationUnitRoot();
+            Console.WriteLine(root.NamespaceDeclaration.KNamespace.SyntaxTree);
+
+            var formatter = new DiagnosticFormatter();
+            foreach (var diag in tree.GetDiagnostics())
+            {
+                Console.WriteLine(formatter.Format(diag));
+            }
             //*/
         }
 

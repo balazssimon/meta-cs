@@ -1061,11 +1061,15 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 				this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
                 this.lastTokenOrTrivia = null;
             }
+			
+            private GreenNode VisitTerminal(ITerminalNode node, [Properties.LanguageName]SyntaxKind kind)
+            {
+                return this.syntaxParser.VisitTerminal(node, kind, ref this.lastTokenOrTrivia);
+            }
 
             public override GreenNode VisitTerminal(ITerminalNode node)
             {
-                GreenNode result = this.syntaxParser.VisitTerminal(node, ref this.lastTokenOrTrivia);
-                return result;
+                return this.VisitTerminal(node, null);
             }
 			[loop(rule:Instances.ParserRules)]
 			[GenerateAntlr4ToRoslynVisitorRule(rule, null)]
@@ -1077,18 +1081,19 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 end template
 
 template GenerateAntlr4ToRoslynVisitorRule(Antlr4ParserRule rule, Antlr4ParserRule superRule)
+[var lang = Properties.LanguageName]
 [if (rule.Alternatives.Count > 0)]
 	[loop(alt:rule.Alternatives)]
 [GenerateAntlr4ToRoslynVisitorRule(alt, rule)]
 	[end loop]
 [else]
 ^
-public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parser.[rule.PlainName()]Context context)
+public override GreenNode Visit[rule.PlainName()]([lang]Parser.[rule.PlainName()]Context context)
 {
-	if (context == null) return null;
+	if (context == null) return [rule.GreenName()].__Missing;
 	[if (rule.IsSimpleAlt)]
 		[loop(elem:rule.Elements)]
-	[Properties.LanguageName]Parser.[elem.PlainType(false)]Context [elem.FieldName()]Context = context.[elem.GetAccessorName()];
+	[lang]Parser.[elem.PlainType(false)]Context [elem.FieldName()]Context = context.[elem.GetAccessorName()];
 			[if (elem.IsSimplified && elem.IsList && elem.IsSeparated)]
 	if ([elem.FieldName()]Context != null) 
 	{
@@ -1101,15 +1106,19 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 	}
 			[end if]
 		[end loop]
-	return null;
+	return [rule.GreenName()].__Missing;
 	[else]
 	[loop(elem:rule.AllElements)]
 		[if(elem.IsSimplified)]
-	[Properties.LanguageName]Parser.[elem.PlainType(false)]Context [elem.FieldName()]Context = context.[elem.GetAccessorName()];
+	[lang]Parser.[elem.PlainType(false)]Context [elem.FieldName()]Context = context.[elem.GetAccessorName()];
 	[elem.GreenType(TypeKind.Public, false)] [elem.FieldName()] = null;
 	if ([elem.FieldName()]Context != null)
 	{
 		[elem.FieldName()] = ([elem.GreenType(TypeKind.Public, false)])this.Visit([elem.FieldName()]Context);
+	}
+	else
+	{
+		[elem.FieldName()] = [elem.GreenType(TypeKind.Public, false)].__Missing;
 	}
 		[else]
 		[if(elem.IsBlock)]
@@ -1122,13 +1131,23 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 	}
 	[delim]\
 				[end loop]
+				[if (!elem.IsOptional)]
+					[if (hasloop(item:elem.BlockItems))]
+	else
+	{
+		[elem.FieldName()] = this.factory.MissingToken(SyntaxKind.MissingToken);
+	}
+					[else]
+	[elem.FieldName()] = this.factory.MissingToken(SyntaxKind.MissingToken);
+					[end if]
+				[end if]
 			[else]
-	// ERROR, unhandled element: [elem.GreenType(TypeKind.Field)] [elem.FieldName()]
+	// throw new NotImplementedException("Error in Antlr4Roslyn compiler. Unhandled element: [elem.GreenType(TypeKind.Field)] [elem.FieldName()]");
 			[end if]
 		[else]
 			[if(elem.IsList)]
 				[if(elem.IsSeparated)]
-    [Properties.LanguageName]Parser.[elem.PlainType()]Context["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
+    [lang]Parser.[elem.PlainType()]Context["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
     ITerminalNode["[]"] [elem.Separator.FieldName()]Context = context.[elem.Separator.GetAccessorName()];
     var [elem.FieldName()]Builder = _pool.AllocateSeparated<[elem.GreenInnerType()]>();
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
@@ -1136,7 +1155,7 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
         [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.Visit([elem.FieldName()]Context["[i]"]));
         if (i < [elem.Separator.FieldName()]Context.Length)
         {
-            [elem.FieldName()]Builder.AddSeparator((InternalSyntaxToken)this.VisitTerminal([elem.Separator.FieldName()]Context["[i]"]));
+            [elem.FieldName()]Builder.AddSeparator((InternalSyntaxToken)this.VisitTerminal([elem.Separator.FieldName()]Context["[i]"], [lang]SyntaxKind.[elem.Separator.SyntaxKind()]));
         }
     }
 	var [elem.FieldName()] = [elem.FieldName()]Builder.ToList();
@@ -1147,12 +1166,12 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
     var [elem.FieldName()]Builder = _pool.Allocate<[elem.GreenInnerType()]>();
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
     {
-        [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.VisitTerminal([elem.FieldName()]Context["[i]"]));
+        [elem.FieldName()]Builder.Add(([elem.GreenInnerType()])this.VisitTerminal([elem.FieldName()]Context["[i]"], [lang]SyntaxKind.[elem.SyntaxKind()]));
     }
 	var [elem.FieldName()] = [elem.FieldName()]Builder.ToList();
 	_pool.Free([elem.FieldName()]Builder);
 					[else]
-    [Properties.LanguageName]Parser.[elem.PlainType()]Context["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
+    [lang]Parser.[elem.PlainType()]Context["[]"] [elem.FieldName()]Context = context.[elem.GetAccessorName()];
     var [elem.FieldName()]Builder = _pool.Allocate<[elem.GreenInnerType()]>();
     for (int i = 0; i < [elem.FieldName()]Context.Length; i++)
     {
@@ -1164,13 +1183,21 @@ public override GreenNode Visit[rule.PlainName()]([Properties.LanguageName]Parse
 				[end if]
 			[else]
 				[if(elem.IsToken)]
+					[if (elem.IsOptional)]
 	InternalSyntaxToken [elem.FieldName()] = (InternalSyntaxToken)this.VisitTerminal(context.[elem.Antlr4Name()]);
+					[else]
+	InternalSyntaxToken [elem.FieldName()] = (InternalSyntaxToken)this.VisitTerminal(context.[elem.Antlr4Name()], [lang]SyntaxKind.[elem.SyntaxKind()]);
+					[end if]
 				[else]
-	[Properties.LanguageName]Parser.[elem.PlainType()]Context [elem.FieldName()]Context = context.[elem.GetAccessorName()];
+	[lang]Parser.[elem.PlainType()]Context [elem.FieldName()]Context = context.[elem.GetAccessorName()];
 	[elem.GreenType(TypeKind.Field)] [elem.FieldName()] = null;
 	if ([elem.FieldName()]Context != null)
 	{
 		[elem.FieldName()] = ([elem.GreenType(TypeKind.Field)])this.Visit([elem.FieldName()]Context);
+	}
+	else
+	{
+		[elem.FieldName()] = [elem.GreenType(TypeKind.Field)].__Missing;
 	}
 				[end if]
 			[end if]
@@ -1469,7 +1496,7 @@ namespace [Properties.DefaultNamespace]
 
             public DummySyntaxTree()
             {
-                _node = this.CloneNodeAsRoot(([Instances.MainRule().RedName()])[lang]Language.Instance.InternalSyntaxFactory.[Instances.MainRule().PlainName()]ForDummySyntaxTree().CreateRed());
+                _node = this.CloneNodeAsRoot(([Instances.MainRule().RedName()])[Instances.MainRule().GreenName()].__Missing.CreateRed());
             }
 
             public override string ToString()
@@ -2095,6 +2122,8 @@ internal class [rule.GreenName()] : [superRule.GreenName()][GetCompilationUnitIn
 internal class [rule.GreenName()] : GreenSyntaxNode[GetCompilationUnitInternal(rule)]
 	[end if]
 {
+    internal static readonly [rule.GreenName()] __Missing = new [rule.GreenName()]([Properties.LanguageName]SyntaxKind.[rule.PlainName()][GetElemDefaultParamList(rule, true, false)]);
+
 	[loop(elem:rule.AllElements)]
     private [elem.GreenType(TypeKind.Field)] [elem.FieldName()];
 	[end loop]
@@ -2339,14 +2368,6 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory
         return Token(null, [lang]SyntaxKind.[rule.PlainName()], text, value, null);
     }
 [end loop]
-[var mainRule = Instances.MainRule()]
-[if (mainRule != null)]
-^
-    internal [mainRule.GreenName()] [mainRule.PlainName()]ForDummySyntaxTree()
-    {
-        return new [mainRule.GreenName()]([lang]SyntaxKind.[mainRule.PlainName()][GetElemDefaultParamList(mainRule, true, false)]);
-    }
-[end if]
 [loop(rule:Instances.ParserRules)]
 	[if (rule.Alternatives.Count > 0)]
 		[loop(alt:rule.Alternatives)]
@@ -2583,6 +2604,11 @@ namespace [Properties.DefaultNamespace].Syntax
         protected override Language LanguageCore => this.Language;
         public new [lang]SyntaxKind Kind => ([lang]SyntaxKind)this.RawKind;
         protected override SyntaxKind KindCore => this.Kind;
+^
+        protected override SyntaxTree CreateSyntaxTreeForRoot()
+        {
+            return [lang]SyntaxTree.CreateWithoutClone(this);
+        }
 ^
         public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
         {
