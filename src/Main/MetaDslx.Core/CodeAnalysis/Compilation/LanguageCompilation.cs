@@ -1754,7 +1754,7 @@ namespace MetaDslx.CodeAnalysis
                         TextSpan infoSpan = info.Span;
                         if (!this.IsImportDirectiveUsed(infoTree, infoSpan.Start))
                         {
-                            InternalErrorCode code = info.Kind == SyntaxKind.ExternAliasDirective
+                            InternalErrorCode code = info.Kind == _language.SyntaxFacts.ExternAliasDirectiveKind
                                 ? InternalErrorCode.HDN_UnusedExternAlias
                                 : InternalErrorCode.HDN_UnusedUsingDirective;
                             diagnostics.Add(code, infoTree.GetLocation(infoSpan));

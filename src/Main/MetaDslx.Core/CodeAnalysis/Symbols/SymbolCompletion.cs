@@ -250,7 +250,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public CompletionPart NextIncompletePart(int completeParts)
         {
             if (completeParts + 1 < _parts.Length) return _parts[completeParts + 1];
-            else return CompletionPart.All;
+            else return null;
         }
     }
 

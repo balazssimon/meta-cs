@@ -63,19 +63,19 @@ channels
 // -------------------------
 // Comments
 
-$Token(kind=DocComment)
+$Token(kind=DocumentationComment)
 DOC_COMMENT_START
 	:	'/**' -> more, pushMode(DOC_COMMENT_MODE)
 	;
 
 
-$Token(kind=Comment)
+$Token(kind=GeneralComment)
 COMMENT_START 
    : '/*' -> more, pushMode(BLOCK_COMMENT_MODE)
    ;
 
 
-$Token(kind=Comment)
+$Token(kind=GeneralComment)
 LINE_COMMENT
    : LineComment -> channel (OFF_CHANNEL)
    ;
@@ -246,7 +246,7 @@ COLONCOLON
    : DColon
    ;
 
-
+$Token(defaultSeparator=true)
 COMMA
    : Comma
    ;
@@ -354,7 +354,7 @@ NOT
 // -------------------------
 // Identifiers - allows unicode rule/token names
 
-$Token(kind=Identifier)
+$Token(kind=Identifier,defaultIdentifier=true)
 ID
    : Id
    ;
@@ -362,6 +362,7 @@ ID
 // -------------------------
 // Whitespace
 
+$Token(kind=Whitespace, defaultWhitespace=true, defaultEndOfLine=true)
 WS
    : Ws + -> channel (OFF_CHANNEL)
    ;

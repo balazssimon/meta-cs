@@ -51,6 +51,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _state = SymbolCompletionState.Create(containingSymbol.Language);
         }
 
+        public override Language Language => _containingSymbol.Language;
+
         public MergedDeclaration MergedDeclaration => _declaration;
 
         public virtual bool IsPartial => _declaration.CanMerge;

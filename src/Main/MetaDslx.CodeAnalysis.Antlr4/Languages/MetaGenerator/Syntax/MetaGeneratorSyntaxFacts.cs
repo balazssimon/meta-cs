@@ -38,6 +38,14 @@ namespace MetaDslx.Languages.MetaGenerator.Syntax
         {
         }
 
+        public override SyntaxKind DefaultWhitespaceKind => (MetaGeneratorSyntaxKind)MetaGeneratorSyntaxKind.LWhitespace;
+        public override SyntaxKind DefaultEndOfLineKind => (MetaGeneratorSyntaxKind)MetaGeneratorSyntaxKind.LCrLf;
+        public override SyntaxKind DefaultSeparatorKind => (MetaGeneratorSyntaxKind)MetaGeneratorSyntaxKind.TComma;
+        public override SyntaxKind DefaultIdentifierKind => (MetaGeneratorSyntaxKind)MetaGeneratorSyntaxKind.IdentifierNormal;
+        public override SyntaxKind EndOfDirectiveTokenKind => SyntaxKind.None;
+        public override SyntaxKind CompilationUnitKind => SyntaxKind.None;
+        public override SyntaxKind ExternAliasDirectiveKind => SyntaxKind.None;
+
         public override bool IsToken(SyntaxKind kind)
 		{
 			switch (kind.Switch())

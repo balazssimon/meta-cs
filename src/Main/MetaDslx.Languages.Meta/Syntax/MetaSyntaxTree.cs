@@ -90,7 +90,7 @@ namespace MetaDslx.Languages.Meta
             {
                 throw new ArgumentNullException(nameof(root));
             }
-            var directives = root.Kind == SyntaxKind.CompilationUnit ?
+            var directives = root.Kind == MetaSyntaxKind.Main ?
                 ((ICompilationUnitRootSyntax)root).GetConditionalDirectivesStack() :
                 DirectiveStack.Empty;
             return new ParsedSyntaxTree(
@@ -326,7 +326,7 @@ namespace MetaDslx.Languages.Meta
                 _options = options;
                 _path = path ?? string.Empty;
                 _root = cloneRoot ? this.CloneNodeAsRoot(root) : root;
-                _hasCompilationUnitRoot = root.Kind == SyntaxKind.CompilationUnit;
+                _hasCompilationUnitRoot = root.Kind == MetaSyntaxKind.Main;
                 this.SetDirectiveStack(directives);
             }
             public override string FilePath

@@ -552,7 +552,7 @@ namespace MetaDslx.Modeling
                         {
                             throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefined property cannot be found.");
                         }
-                        if ((propSymbol == this.declaringSymbol || this.declaringSymbol.AllBaseSymbols.Contains(propSymbol)))
+                        if ((propSymbol == this.declaringSymbol || this.declaringSymbol.AllBaseSymbols != null && this.declaringSymbol.AllBaseSymbols.Contains(propSymbol)))
                         {
                             if (this.IsCollection ^ prop.IsCollection) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must be of the same kind: either a single value or a collection.");
                             if (this.IsCollection && prop.IsCollection)
@@ -1087,7 +1087,7 @@ namespace MetaDslx.Modeling
                     }
                     finally
                     {
-                        ImmutableInterlocked.InterlockedCompareExchange(ref lazyAllBaseSymbols, builder.ToImmutableAndFree(), ImmutableArray<ModelSymbolInfo>.Empty);
+                        ImmutableInterlocked.InterlockedCompareExchange(ref lazyAllBaseSymbols, builder.ToImmutableAndFree(), default);
                     }
                 }
                 return lazyAllBaseSymbols;

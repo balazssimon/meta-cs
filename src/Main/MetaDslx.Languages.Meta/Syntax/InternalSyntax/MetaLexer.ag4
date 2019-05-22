@@ -65,6 +65,7 @@ KStatic : 'static';
 TSemicolon : ';';
 TColon : ':';
 TDot : '.';
+$Token(defaultSeparator=true)
 TComma : ',';
 TAssign : '=';
 TOpenParen : '(';
@@ -110,7 +111,7 @@ TBarAssign : '|=';
 IUri : 'Uri';
 
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
-$Token(kind=Identifier)
+$Token(kind=Identifier, defaultIdentifier=true)
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;
 IdentifierVerbatim : '@' IdentifierBegin IdentifierCharacter*;
 //IdentifierVerbatimStart : '@[' -> more, mode(VERBATIM_IDENTIFIER);

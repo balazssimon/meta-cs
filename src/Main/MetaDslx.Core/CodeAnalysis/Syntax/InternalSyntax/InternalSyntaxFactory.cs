@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
         private Type _syntaxKind;
         private SyntaxKind DefaultSeparatorKind;
         private SyntaxKind DefaultEndOfLineKind;
-        private SyntaxKind DefaultWhiteSpaceKind;
+        private SyntaxKind DefaultWhitespaceKind;
         private SyntaxKind EofKind;
 
 
@@ -34,12 +34,12 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public readonly InternalSyntaxTrivia ElasticZeroSpace;
 
-        protected InternalSyntaxFactory(Type syntaxKind)
+        protected InternalSyntaxFactory(SyntaxFacts syntaxFacts)
         {
-            _syntaxKind = syntaxKind;
-            DefaultSeparatorKind = ToLanguageSyntaxKind(SyntaxKind.DefaultSeparator);
-            DefaultEndOfLineKind = ToLanguageSyntaxKind(SyntaxKind.DefaultEndOfLine); 
-            DefaultWhiteSpaceKind = ToLanguageSyntaxKind(SyntaxKind.DefaultWhitespace);
+            _syntaxKind = syntaxFacts.SyntaxKindType;
+            DefaultSeparatorKind = ToLanguageSyntaxKind(syntaxFacts.DefaultSeparatorKind);
+            DefaultEndOfLineKind = ToLanguageSyntaxKind(syntaxFacts.DefaultEndOfLineKind); 
+            DefaultWhitespaceKind = ToLanguageSyntaxKind(syntaxFacts.DefaultWhitespaceKind);
             EofKind = ToLanguageSyntaxKind(SyntaxKind.Eof);
 
             CarriageReturnLineFeed = EndOfLine(CrLf);
@@ -115,7 +115,7 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
 
         public InternalSyntaxTrivia Whitespace(string text, bool elastic = false)
         {
-            var trivia = this.Trivia(DefaultWhiteSpaceKind, text);
+            var trivia = this.Trivia(DefaultWhitespaceKind, text);
             if (!elastic)
             {
                 return trivia;

@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.Languages.Meta.Binding;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace MetaDslx.Languages.Meta
 
         public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
-            throw new NotImplementedException();
+            return MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)syntaxTree, scriptClassName, isSubmission);
         }
     }
 }

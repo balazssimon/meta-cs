@@ -17,7 +17,7 @@ channels
 }
 
 // Keywords
-$Token(first=KNamespace,last=KDefault,kind=Keyword)
+$Token(first=KNamespace,last=KDefault,kind=ReservedKeyword)
 KNamespace : 'namespace';
 KGenerator : 'generator';
 KUsing : 'using';
@@ -76,6 +76,7 @@ $Token(kind=Operator, first=TSemicolon, last=TQuestionQuestion)
 TSemicolon : ';';
 TColon : ':';
 TDot : '.';
+$Token(defaultSeparator=true)
 TComma : ',';
 TAssign : '=';
 TAssignPlus : '+=';
@@ -122,7 +123,7 @@ TOr : '||';
 TQuestionQuestion : '??';
 
 
-$Token(kind=Identifier)
+$Token(kind=Identifier, defaultIdentifier=true)
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
 //IdentifierVerbatimStart : '@[' -> more, mode(VERBATIM_IDENTIFIER);
@@ -222,21 +223,23 @@ GuidLiteral : '#[' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigi
 
 // Whitespace and comments
 LUtf8Bom : [\u00EF][\u00BB][\u00BF] -> channel(WHITESPACE);
+$Token(kind=Whitespace, defaultWhitespace=true)
 LWhitespace : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(WHITESPACE);
+$Token(kind=Whitespace, endOfLine=true, defaultEndOfLine=true)
 LCrLf : '\r'? '\n' -> channel(WHITESPACE);
 LLineBreak : [\u0085\u2028\u2029] -> channel(WHITESPACE);
-$Token(kind=Comment)
+$Token(kind=GeneralComment, endOfLine=true)
 LLineComment : '//' ~[\r\n]* -> channel(COMMENT);
-$Token(kind=Comment)
+$Token(kind=GeneralComment)
 COMMENT_START : '/*' -> more, mode(MULTILINE_COMMENT);
 
-$Token(kind=Comment)
+$Token(kind=GeneralComment)
 mode MULTILINE_COMMENT;
 
 COMMENT_CRLF : '\r'? '\n' -> more;
 COMMENT_LINEBREAK : [\u0085\u2028\u2029] -> more;
 COMMENT_TEXT : ~[\u002A\r\n\u0085\u2028\u2029]+ -> more;
-$Token(kind=Comment)
+$Token(kind=GeneralComment)
 LMultiLineComment : '*/' -> mode(DEFAULT_MODE), channel(COMMENT);
 COMMENT_STAR : '*' -> more;
 
@@ -245,18 +248,6 @@ mode DOUBLEQUOTE_VERBATIM_STRING;
 
 DoubleQuoteVerbatimStringText : DoubleQuoteTextVerbatimCharacter -> more;
 DoubleQuoteVerbatimStringLiteral : '"' -> mode(DEFAULT_MODE);
-
-/*
-mode SINGLEQUOTE_VERBATIM_STRING;
-
-SingleQuoteVerbatimStringText : SingleQuoteTextVerbatimCharacter -> more;
-SingleQuoteVerbatimStringLiteral : '"' -> mode(DEFAULT_MODE);
-
-mode VERBATIM_IDENTIFIER;
-
-IdentifierVerbatimText : IdentifierVerbatimCharacter -> more;
-IdentifierVerbatim : ']' -> mode(DEFAULT_MODE);
-*/
 
 
 mode TEMPLATE_HEADER;
@@ -497,7 +488,7 @@ TS_CharLiteral : CharLiteral -> type(CharLiteral);
 TS_RegularStringLiteral : RegularStringLiteral -> type(RegularStringLiteral);
 TS_GuidLiteral : GuidLiteral -> type(GuidLiteral);
 
-$Token(kind=Comment)
+$Token(kind=GeneralComment)
 mode TEMPLATE_STATEMENT_COMMENT;
 
 TemplateStatement_COMMENT_CRLF : '\r'? '\n' -> mode(TEMPLATE_OUTPUT), channel(COMMENT), type(LMultiLineComment);

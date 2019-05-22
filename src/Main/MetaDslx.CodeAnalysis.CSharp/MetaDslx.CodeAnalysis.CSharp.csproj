@@ -46,9 +46,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="CSharpResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharpResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="CSharpResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CSharpResources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Microsoft.CodeAnalysis.CSharp</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  
   <ItemGroup>
     <None Include="..\..\CodeAnalysisRules.ruleset">
       <SubType>Designer</SubType>

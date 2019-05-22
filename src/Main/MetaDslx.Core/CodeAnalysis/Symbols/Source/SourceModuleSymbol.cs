@@ -75,6 +75,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        public override Language Language => _assemblySymbol.Language;
+
         public override int Ordinal => 0;
 
         public override ImmutableArray<Location> Locations

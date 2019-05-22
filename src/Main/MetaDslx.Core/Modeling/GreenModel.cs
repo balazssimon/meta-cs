@@ -132,6 +132,11 @@ namespace MetaDslx.Modeling
         {
             return new Version(version.Major, version.Minor, version.Build, version.Revision);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}.{1}.{2}.{3}", _major, _minor, _build, _revision);
+        }
     }
 
 

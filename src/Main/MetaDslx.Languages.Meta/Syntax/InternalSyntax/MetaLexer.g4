@@ -65,6 +65,7 @@ KStatic : 'static';
 TSemicolon : ';';
 TColon : ':';
 TDot : '.';
+                             
 TComma : ',';
 TAssign : '=';
 TOpenParen : '(';
@@ -110,7 +111,7 @@ TBarAssign : '|=';
 IUri : 'Uri';
 
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
-                       
+                                               
 IdentifierNormal : IdentifierBegin IdentifierCharacter*;
 IdentifierVerbatim : '@' IdentifierBegin IdentifierCharacter*;
 //IdentifierVerbatimStart : '@[' -> more, mode(VERBATIM_IDENTIFIER);

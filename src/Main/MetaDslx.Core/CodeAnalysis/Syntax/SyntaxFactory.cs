@@ -439,12 +439,17 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return new SeparatedSyntaxList<TNode>(new SyntaxNodeOrTokenList(node, index: 0));
         }
 
+        public SeparatedSyntaxList<TNode> SeparatedList<TNode>(IEnumerable<TNode> nodes) where TNode : SyntaxNode
+        {
+            return this.SeparatedList<TNode>(nodes, Language.SyntaxFacts.DefaultSeparatorKind);
+        }
+
         /// <summary>
         /// Creates a separated list of nodes from a sequence of nodes, synthesizing comma separators in between.
         /// </summary>
         /// <typeparam name="TNode">The specific type of the element nodes.</typeparam>
         /// <param name="nodes">A sequence of syntax nodes.</param>
-        public virtual SeparatedSyntaxList<TNode> SeparatedList<TNode>(IEnumerable<TNode> nodes) where TNode : SyntaxNode
+        public virtual SeparatedSyntaxList<TNode> SeparatedList<TNode>(IEnumerable<TNode> nodes, SyntaxKind separatorKind) where TNode : SyntaxNode
         {
             if (nodes == null)
             {
@@ -476,7 +481,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
                 builder.Add(firstNode);
 
-                var commaToken = Token(SyntaxKind.DefaultSeparator);
+                var commaToken = Token(separatorKind);
 
                 do
                 {

@@ -26,7 +26,7 @@ namespace MetaDslx.Languages.Meta
 		private MetaLanguage()
 		{
 			_syntaxFacts = new MetaSyntaxFacts();
-			_internalSyntaxFactory = new MetaInternalSyntaxFactory();
+			_internalSyntaxFactory = new MetaInternalSyntaxFactory(_syntaxFacts);
 			_syntaxFactory = new MetaSyntaxFactory(_internalSyntaxFactory);
 			_lookupPosition = new MetaLookupPosition();
 			_symbolFacts = new MetaSymbolFacts();

@@ -45,6 +45,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
         {
         }
 
+        public override SyntaxKind DefaultWhitespaceKind => (Antlr4RoslynSyntaxKind)Antlr4RoslynSyntaxKind.WS;
+        public override SyntaxKind DefaultEndOfLineKind => (Antlr4RoslynSyntaxKind)Antlr4RoslynSyntaxKind.WS;
+        public override SyntaxKind DefaultSeparatorKind => (Antlr4RoslynSyntaxKind)Antlr4RoslynSyntaxKind.COMMA;
+        public override SyntaxKind DefaultIdentifierKind => (Antlr4RoslynSyntaxKind)Antlr4RoslynSyntaxKind.ID;
+        public override SyntaxKind EndOfDirectiveTokenKind => SyntaxKind.None;
+        public override SyntaxKind CompilationUnitKind => SyntaxKind.None;
+        public override SyntaxKind ExternAliasDirectiveKind => SyntaxKind.None;
+
         public override bool IsToken(SyntaxKind kind)
 		{
 			switch (kind.Switch())

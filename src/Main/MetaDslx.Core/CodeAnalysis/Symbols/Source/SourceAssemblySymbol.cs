@@ -90,9 +90,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
 
             _modules = moduleBuilder.ToImmutableAndFree();
+
+            _state = SymbolCompletionState.Create(compilation.Language);
         }
 
         public override string Name => _assemblySimpleName;
+
+        public override Language Language => _compilation.Language;
 
         /// <remarks>
         /// This override is essential - it's a base case of the recursive definition.

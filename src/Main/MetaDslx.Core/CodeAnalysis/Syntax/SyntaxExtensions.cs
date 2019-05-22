@@ -33,26 +33,31 @@ namespace MetaDslx.CodeAnalysis
 
         public static SyntaxKind GetKind(this SyntaxNode node)
         {
+            if (node == null || (object)node.Green == null) return SyntaxKind.None;
             return ((Syntax.InternalSyntax.InternalSyntaxNode)node.Green).Kind;
         }
 
         public static SyntaxKind GetKind(this SyntaxToken token)
         {
+            if ((object)token.Node == null) return SyntaxKind.None;
             return ((Syntax.InternalSyntax.InternalSyntaxNode)token.Node).Kind;
         }
 
         public static SyntaxKind GetKind(this SyntaxNodeOrToken token)
         {
+            if ((object)token.UnderlyingNode == null) return SyntaxKind.None;
             return ((Syntax.InternalSyntax.InternalSyntaxNode)token.UnderlyingNode).Kind;
         }
 
         public static SyntaxKind GetKind(this SyntaxTrivia trivia)
         {
+            if ((object)trivia.UnderlyingNode == null) return SyntaxKind.None;
             return ((Syntax.InternalSyntax.InternalSyntaxNode)trivia.UnderlyingNode).Kind;
         }
 
         public static SyntaxKind GetKind(this GreenNode node)
         {
+            if ((object)node == null) return SyntaxKind.None;
             return ((Syntax.InternalSyntax.InternalSyntaxNode)node).Kind;
         }
 

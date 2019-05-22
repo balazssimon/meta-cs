@@ -37,7 +37,7 @@ namespace [Properties.DefaultNamespace]
 		private [lang]Language()
 		{
 			_syntaxFacts = new [lang]SyntaxFacts();
-			_internalSyntaxFactory = new [lang]InternalSyntaxFactory(typeof([lang]SyntaxKind));
+			_internalSyntaxFactory = new [lang]InternalSyntaxFactory(_syntaxFacts);
 			_syntaxFactory = new [lang]SyntaxFactory(_internalSyntaxFactory);
 			_lookupPosition = new [lang]LookupPosition();
 			_symbolFacts = new [lang]SymbolFacts();
@@ -1313,7 +1313,7 @@ namespace [Properties.DefaultNamespace]
                 throw new ArgumentNullException(nameof(root));
             }
 
-            var directives = root.Kind == SyntaxKind.CompilationUnit ?
+            var directives = root.Kind == [lang]SyntaxKind.[Instances.MainRule().PlainName()] ?
                 ((ICompilationUnitRootSyntax)root).GetConditionalDirectivesStack() :
                 DirectiveStack.Empty;
 
@@ -1594,7 +1594,7 @@ namespace [Properties.DefaultNamespace]
                 _options = options;
                 _path = path ?? string.Empty;
                 _root = cloneRoot ? this.CloneNodeAsRoot(root) : root;
-                _hasCompilationUnitRoot = root.Kind == SyntaxKind.CompilationUnit;
+                _hasCompilationUnitRoot = root.Kind == [lang]SyntaxKind.[Instances.MainRule().PlainName()];
                 this.SetDirectiveStack(directives);
             }
 
@@ -1819,7 +1819,7 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
         public new [lang]SyntaxKind Kind => EnumObject.FromIntUnsafe<[lang]SyntaxKind>(this.RawKind);
         protected override SyntaxKind KindCore => this.Kind;
 ^
-        protected override bool ShouldReuseInSerialization => this.Kind == SyntaxKind.DefaultWhitespace &&
+        protected override bool ShouldReuseInSerialization => this.Kind == Language.SyntaxFacts.DefaultWhitespaceKind &&
                                                              FullWidth < Language.SyntaxFacts.MaxCachedTokenSize;
 ^
         protected override void WriteTo(ObjectWriter writer)
@@ -2264,10 +2264,10 @@ template GenerateInternalSyntaxFactory()
 [var lang = Properties.LanguageName]
 internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory
 {
-    public [lang]InternalSyntaxFactory() 
-        : base(typeof([lang]SyntaxKind))
-    {
-    }
+	public [lang]InternalSyntaxFactory([lang]SyntaxFacts syntaxFacts) 
+	    : base(syntaxFacts)
+	{
+	}
 ^
     public override Language Language => [lang]Language.Instance;
 ^
@@ -2716,7 +2716,7 @@ public sealed class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCo
 			return default;
 			[else]
 			var red = this.GetRed(ref this.[elem.FieldName()], [rule.IndexOf(elem)]);
-			if (red != null) new [elem.RedType()](red);
+			if (red != null) return new [elem.RedType()](red);
 			return default;
 			[end if]
 		} 
@@ -2829,7 +2829,7 @@ public sealed class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCo
 [end if]
 end template
 
-template GenerateSyntaxFacts()
+template GenerateTokenSyntaxFacts()
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -2838,9 +2838,10 @@ using Roslyn.Utilities;
 ^
 [string className = Properties.LanguageName+"SyntaxFacts"]
 [string syntaxKind = Properties.LanguageName+"SyntaxKind"]
+[var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace].Syntax
 {
-	public enum [Properties.LanguageName]TokenKind : int
+	public enum [lang]TokenKind : int
 	{
 		None = 0,
 		[loop (kind:Instances.LexerTokenKinds.Keys.OrderBy(k => k); separator sep=",")]
@@ -2848,7 +2849,7 @@ namespace [Properties.DefaultNamespace].Syntax
 		[end loop]
 	}
 ^
-	public enum [Properties.LanguageName]LexerMode : int
+	public enum [lang]LexerMode : int
 	{
 		None = 0,
 		[loop (mode:Instances.LexerModes; separator sep=",")]
@@ -2856,12 +2857,17 @@ namespace [Properties.DefaultNamespace].Syntax
 		[end loop]
 	}
 ^
-	public class [className] : SyntaxFacts
+	public partial class [className] : SyntaxFacts
 	{
         public [className]() 
-            : base(typeof([Properties.LanguageName]SyntaxKind))
+            : base(typeof([lang]SyntaxKind))
         {
         }
+^
+        public override SyntaxKind DefaultWhitespaceKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.DefaultWhitespaceKind.PlainName()];
+        public override SyntaxKind DefaultEndOfLineKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.DefaultEndOfLineKind.PlainName()];
+        public override SyntaxKind DefaultSeparatorKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.DefaultSeparatorKind.PlainName()];
+        public override SyntaxKind DefaultIdentifierKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.DefaultIdentifierKind.PlainName()];
 ^
 		public override bool IsToken(SyntaxKind kind)
 		{
@@ -2896,10 +2902,10 @@ namespace [Properties.DefaultNamespace].Syntax
 			{
 				[loop(literal:Instances.FixedTokens where literal.Kind > 0)]
 				case [literal.FixedToken.FixedTokenToCSharpString()]:
-					return [Properties.LanguageName]SyntaxKind.[literal.PlainName()];
+					return [lang]SyntaxKind.[literal.PlainName()];
 				[end loop]
 				default:
-					return [Properties.LanguageName]SyntaxKind.None;
+					return [lang]SyntaxKind.None;
 			}
 		}
 ^
@@ -2916,48 +2922,50 @@ namespace [Properties.DefaultNamespace].Syntax
 			}
 		}
 ^
-		public [Properties.LanguageName]TokenKind GetTokenKind(int rawKind)
+		public [lang]TokenKind GetTokenKind(int rawKind)
 		{
 			return this.GetTokenKind(EnumObject.FromIntUnsafe<[syntaxKind]>(rawKind));
 		}
 ^
-		public [Properties.LanguageName]TokenKind GetTokenKind(SyntaxKind kind)
+		public [lang]TokenKind GetTokenKind(SyntaxKind kind)
 		{
 			switch(kind.Switch())
 			{
 			[loop (rule:Instances.LexerRules where rule.Kind > 0 && rule.Annotations.HasAnnotation("Token"))]
 				[MetaCompilerAnnotation annot = rule.Annotations.GetAnnotation("Token")]
-				[if (annot.HasProperty("first") && annot.HasProperty("last"))]
-					[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
+				[if (annot.GetValue("kind") != null)]
+					[if (annot.HasProperty("first") && annot.HasProperty("last"))]
+						[loop (child:Instances.LexerRulesBetween(annot.GetValue("first"), annot.GetValue("last")) where child.Kind > 0)]
 				case [syntaxKind].[child.PlainName()]:
-					[end loop]
-					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
-				[else]
+						[end loop]
+					return [lang]TokenKind.[annot.GetValue("kind")];
+					[else]
 				case [syntaxKind].[rule.PlainName()]:
-					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
+					return [lang]TokenKind.[annot.GetValue("kind")];
+					[end if]
 				[end if]
 			[end loop]
 				default:
-					return [Properties.LanguageName]TokenKind.None;
+					return [lang]TokenKind.None;
 			}
 		}
 ^
-		public [Properties.LanguageName]TokenKind GetModeTokenKind(int rawKind)
+		public [lang]TokenKind GetModeTokenKind(int rawKind)
 		{
-			return this.GetModeTokenKind(([Properties.LanguageName]LexerMode)rawKind);
+			return this.GetModeTokenKind(([lang]LexerMode)rawKind);
 		}
 ^
-		public [Properties.LanguageName]TokenKind GetModeTokenKind([Properties.LanguageName]LexerMode kind)
+		public [lang]TokenKind GetModeTokenKind([lang]LexerMode kind)
 		{
 			switch(kind)
 			{
 			[loop (mode:Instances.LexerModes where mode.Annotations.HasAnnotation("Token"))]
 				[MetaCompilerAnnotation annot = mode.Annotations.GetAnnotation("Token")]
-				case [Properties.LanguageName]LexerMode.[mode.PlainName()]:
-					return [Properties.LanguageName]TokenKind.[annot.GetValue("kind")];
+				case [lang]LexerMode.[mode.PlainName()]:
+					return [lang]TokenKind.[annot.GetValue("kind")];
 			[end loop]
 				default:
-					return [Properties.LanguageName]TokenKind.None;
+					return [lang]TokenKind.None;
 			}
 		}
 ^
@@ -3047,6 +3055,27 @@ namespace [Properties.DefaultNamespace].Syntax
         }
 		[end if]
 	[end loop]
+	}
+}
+end template
+
+template GenerateNodeSyntaxFacts()
+using System.Collections.Generic;
+using System.Threading;
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Syntax;
+using Roslyn.Utilities;
+^
+[string className = Properties.LanguageName+"SyntaxFacts"]
+[string syntaxKind = Properties.LanguageName+"SyntaxKind"]
+[var lang = Properties.LanguageName]
+namespace [Properties.DefaultNamespace].Syntax
+{
+	public partial class [className]
+	{
+		[if (Instances.MainRule() != null)]
+        public override SyntaxKind CompilationUnitKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.MainRule().PlainName()];
+		[end if]
 ^
         public override bool IsInNamespaceOrTypeContext(SyntaxNode node)
         {
@@ -3062,7 +3091,7 @@ namespace [Properties.DefaultNamespace].Syntax
         {
             return false;
         }
-}
+	}
 }
 end template
 

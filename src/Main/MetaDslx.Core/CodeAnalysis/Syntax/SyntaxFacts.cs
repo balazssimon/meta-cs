@@ -29,6 +29,15 @@ namespace MetaDslx.CodeAnalysis.Syntax
         {
             return (SyntaxKind)kind.CastUnsafe(_syntaxKindType);
         }
+
+        public abstract SyntaxKind DefaultWhitespaceKind { get; }
+        public abstract SyntaxKind DefaultEndOfLineKind { get; }
+        public abstract SyntaxKind DefaultSeparatorKind { get; }
+        public abstract SyntaxKind DefaultIdentifierKind { get; }
+        public virtual SyntaxKind EndOfDirectiveTokenKind => SyntaxKind.None;
+        public virtual SyntaxKind ExternAliasDirectiveKind => SyntaxKind.None;
+        public virtual SyntaxKind CompilationUnitKind => SyntaxKind.None;
+
         public abstract bool IsToken(SyntaxKind kind);
         public abstract bool IsFixedToken(SyntaxKind kind);
         public abstract bool IsTrivia(SyntaxKind kind);
@@ -115,7 +124,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
                 }
                 else if (node.Parent != null)
                 {
-                    if (node.Parent.GetKind() == SyntaxKind.CompilationUnit)
+                    if (node.Parent.GetKind() == CompilationUnitKind)
                     {
                         return 0;
                     }
@@ -130,7 +139,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
         public virtual string ExtractName(LanguageSyntaxNode node)
         {
-            return null;
+            return node.ToString();
         }
         public virtual string ExtractName(SyntaxToken token)
         {
@@ -138,7 +147,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         }
         public virtual string ExtractMetadataName(LanguageSyntaxNode node)
         {
-            return null;
+            return node.ToString();
         }
         public virtual string ExtractMetadataName(SyntaxToken token)
         {
@@ -178,8 +187,19 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return false;
         }
 
-        public abstract bool IsInNamespaceOrTypeContext(SyntaxNode node);
-        public abstract bool IsStatement(SyntaxNode syntax);
-        public abstract bool IsExpression(SyntaxNode node);
+        public virtual bool IsInNamespaceOrTypeContext(SyntaxNode node)
+        {
+            return false;
+        }
+
+        public virtual bool IsStatement(SyntaxNode syntax)
+        {
+            return false;
+        }
+
+        public virtual bool IsExpression(SyntaxNode node)
+        {
+            return false;
+        }
     }
 }

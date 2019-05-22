@@ -52,6 +52,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _state = SymbolCompletionState.Create(module.Language);
         }
 
+        public override Language Language => _module.Language;
+
         public override ModelSymbolInfo ModelSymbolInfo => _mergedDeclaration.Kind;
 
         public MergedDeclaration MergedDeclaration => _mergedDeclaration;

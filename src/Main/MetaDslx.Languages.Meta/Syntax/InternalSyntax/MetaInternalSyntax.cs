@@ -99,7 +99,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
         public new MetaSyntaxKind Kind => EnumObject.FromIntUnsafe<MetaSyntaxKind>(this.RawKind);
         protected override SyntaxKind KindCore => this.Kind;
 
-        protected override bool ShouldReuseInSerialization => this.Kind == SyntaxKind.DefaultWhitespace &&
+        protected override bool ShouldReuseInSerialization => this.Kind == Language.SyntaxFacts.DefaultWhitespaceKind &&
                                                              FullWidth < Language.SyntaxFacts.MaxCachedTokenSize;
 
         protected override void WriteTo(ObjectWriter writer)
@@ -6590,10 +6590,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	}
 	internal class MetaInternalSyntaxFactory : InternalSyntaxFactory
 	{
-	    public MetaInternalSyntaxFactory() 
-	        : base(typeof(MetaSyntaxKind))
-	    {
-	    }
+		public MetaInternalSyntaxFactory(MetaSyntaxFacts syntaxFacts) 
+		    : base(syntaxFacts)
+		{
+		}
 	
 	    public override Language Language => MetaLanguage.Instance;
 	

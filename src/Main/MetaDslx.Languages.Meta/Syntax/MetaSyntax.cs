@@ -463,7 +463,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) new SyntaxList<AnnotationSyntax>(red);
+				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
 				return default;
 			} 
 		}
@@ -592,7 +592,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.declaration, 2);
-				if (red != null) new SyntaxList<DeclarationSyntax>(red);
+				if (red != null) return new SyntaxList<DeclarationSyntax>(red);
 				return default;
 			} 
 		}
@@ -699,7 +699,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) new SyntaxList<AnnotationSyntax>(red);
+				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
 				return default;
 			} 
 		}
@@ -1268,7 +1268,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) new SyntaxList<AnnotationSyntax>(red);
+				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
 				return default;
 			} 
 		}
@@ -1406,7 +1406,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.enumMemberDeclaration, 3);
-				if (red != null) new SyntaxList<EnumMemberDeclarationSyntax>(red);
+				if (red != null) return new SyntaxList<EnumMemberDeclarationSyntax>(red);
 				return default;
 			} 
 		}
@@ -1597,7 +1597,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) new SyntaxList<AnnotationSyntax>(red);
+				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
 				return default;
 			} 
 		}
@@ -1754,7 +1754,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) new SyntaxList<AnnotationSyntax>(red);
+				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
 				return default;
 			} 
 		}
@@ -1920,7 +1920,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.classMemberDeclaration, 1);
-				if (red != null) new SyntaxList<ClassMemberDeclarationSyntax>(red);
+				if (red != null) return new SyntaxList<ClassMemberDeclarationSyntax>(red);
 				return default;
 			} 
 		}
@@ -2257,7 +2257,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) new SyntaxList<AnnotationSyntax>(red);
+				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
 				return default;
 			} 
 		}
@@ -4164,7 +4164,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) new SyntaxList<AnnotationSyntax>(red);
+				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
 				return default;
 			} 
 		}
@@ -4417,7 +4417,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) new SyntaxList<AnnotationSyntax>(red);
+				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
 				return default;
 			} 
 		}
@@ -4519,7 +4519,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			get
 			{
 				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) new SyntaxList<AnnotationSyntax>(red);
+				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
 				return default;
 			} 
 		}

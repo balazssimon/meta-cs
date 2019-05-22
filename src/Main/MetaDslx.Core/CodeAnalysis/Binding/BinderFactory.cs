@@ -74,21 +74,11 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected abstract BinderFactoryVisitor CreateBinderFactoryVisitor();
 
-        public SyntaxTree SyntaxTree
-        {
-            get
-            {
-                return _syntaxTree;
-            }
-        }
+        public Language Language => _compilation.Language;
 
-        private bool InScript
-        {
-            get
-            {
-                return _syntaxTree.Options.Kind == SourceCodeKind.Script;
-            }
-        }
+        public SyntaxTree SyntaxTree => _syntaxTree;
+
+        private bool InScript => _syntaxTree.Options.Kind == SourceCodeKind.Script;
 
         /// <summary>
         /// Return binder for binding at node.
@@ -108,7 +98,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // Unless this is interactive retrieving a binder for global statements
             // at the very top-level (i.e. in a completely empty file) use
             // node.Parent to maintain existing behavior.
-            if ((!InScript || node.GetKind() != SyntaxKind.CompilationUnit) && node.Parent != null)
+            if ((!InScript || node.GetKind() != Language.SyntaxFacts.CompilationUnitKind) && node.Parent != null)
             {
                 node = node.Parent;
             }

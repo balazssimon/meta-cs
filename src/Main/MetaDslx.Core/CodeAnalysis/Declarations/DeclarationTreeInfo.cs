@@ -96,7 +96,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public void RegisterIdentifier(SyntaxToken token)
         {
-            this.RegisterIdentifier(new Identifier(token.ValueText, new SourceLocation(token)));
+            this.RegisterIdentifier(new Identifier(token.Text, new SourceLocation(token)));
         }
 
         public void RegisterIdentifier(LanguageSyntaxNode node)

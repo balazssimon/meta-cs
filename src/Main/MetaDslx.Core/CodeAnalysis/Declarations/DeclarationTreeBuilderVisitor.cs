@@ -10,8 +10,7 @@ using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
-    public class DeclarationTreeBuilderVisitor<TNode> : SyntaxVisitor<TNode>
-        where TNode: LanguageSyntaxNode
+    public class DeclarationTreeBuilderVisitor : SyntaxVisitor
     {
         private readonly LanguageSyntaxTree _syntaxTree;
         private readonly string _scriptClassName;
@@ -64,7 +63,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             _rootDeclarationInfo = this.BeginDeclaration(type, node);
             try
             {
-                this.Visit(node);
+                node.Accept(this);
             }
             finally
             {
@@ -190,6 +189,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                         decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), identifier.Location, declaration.CanMerge, parentProperty, ImmutableArray.Create(decl), ImmutableArray<Diagnostic>.Empty);
                     }
                     parent.Members.Add(decl);
+                    return decl;
                 }
             }
             return null;

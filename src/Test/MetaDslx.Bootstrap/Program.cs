@@ -1,4 +1,7 @@
 ﻿using MetaDslx.Languages.Meta;
+using MetaDslx.Languages.Meta.Binding;
+using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
 using System.IO;
@@ -30,19 +33,35 @@ namespace MetaDslx.Bootstrap
             //*/
 
             //*/
+            ImmutableModel model = MetaInstance.Model;
+            Console.WriteLine(model);
+
             string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+
             var tree = MetaSyntaxTree.ParseText(text);
-            //Console.WriteLine(MetaSyntaxTree.Dummy);
-            Console.WriteLine(tree);
-            Console.WriteLine(MetaLanguage.Instance);
-            Console.WriteLine(tree.Language);
-            Console.WriteLine(tree.Options);
-            Console.WriteLine(tree.GetRoot());
-            var root = tree.GetCompilationUnitRoot();
-            Console.WriteLine(root.NamespaceDeclaration.KNamespace.SyntaxTree);
+            var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
+
+            Console.WriteLine(declarations.Dump());
 
             var formatter = new DiagnosticFormatter();
             foreach (var diag in tree.GetDiagnostics())
+            {
+                Console.WriteLine(formatter.Format(diag));
+            }
+            foreach (var diag in declarations.Diagnostics)
+            {
+                Console.WriteLine(formatter.Format(diag));
+            }
+            //*/
+
+            /*/
+            var compilation = MetaCompilation.Create("MetaTest").AddSyntaxTrees(tree);
+            //var formatter = new DiagnosticFormatter();
+            foreach (var diag in compilation.GetParseDiagnostics())
+            {
+                Console.WriteLine(formatter.Format(diag));
+            }
+            foreach (var diag in compilation.GetDeclarationDiagnostics())
             {
                 Console.WriteLine(formatter.Format(diag));
             }

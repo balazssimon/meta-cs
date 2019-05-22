@@ -3,6 +3,7 @@
 using MetaDslx.Modeling;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
@@ -125,5 +126,33 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             get { return DeclarationModifiers.Public; } // TODO:MetaDslx
         }*/
+#if DEBUG
+        private class DeclarationTreeDumper
+        {
+            private DeclarationTreeDumper() : base() { }
+
+            public static string Dump(Declaration declaration)
+            {
+                StringBuilder sb = new StringBuilder();
+                Dump(sb, string.Empty, declaration);
+                return sb.ToString();
+            }
+
+            private static void Dump(StringBuilder sb, string indent, Declaration declaration)
+            {
+                if (declaration == null) return;
+                System.Console.WriteLine("{0}{1}: {2}", indent, declaration.Name, declaration.Kind?.ImmutableType.Name ?? "<root>");
+                foreach (var child in declaration.GetDeclarationChildren())
+                {
+                    Dump(sb, indent + "  ", child);
+                }
+            }
+        }
+
+        public virtual string Dump()
+        {
+            return DeclarationTreeDumper.Dump(this);
+        }
+#endif
     }
 }

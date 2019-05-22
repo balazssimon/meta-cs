@@ -129,11 +129,12 @@ namespace MetaDslx.CodeAnalysis.Syntax
             /// <summary>
             /// Returns the first end of line found in a <see cref="SyntaxTriviaList"/>.
             /// </summary>
-            private static SyntaxTrivia? GetEndOfLine(SyntaxTriviaList list)
+            private SyntaxTrivia? GetEndOfLine(SyntaxTriviaList list)
             {
+                var eolKind = Language.SyntaxFacts.DefaultEndOfLineKind;
                 foreach (var trivia in list)
                 {
-                    if (trivia.GetKind() == SyntaxKind.DefaultEndOfLine)
+                    if (trivia.GetKind() == eolKind)
                     {
                         return trivia;
                     }
@@ -201,6 +202,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
             // deal with separated lists and removal of associated separators
             public override SeparatedSyntaxList<TNode> VisitList<TNode>(SeparatedSyntaxList<TNode> list)
             {
+                var eolKind = Language.SyntaxFacts.DefaultEndOfLineKind;
                 var withSeps = list.GetWithSeparators();
                 bool removeNextSeparator = false;
 
@@ -235,7 +237,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
                             }
 
                             CommonSyntaxNodeRemover.GetSeparatorInfo(
-                                withSeps, i, ((SyntaxKind)SyntaxKind.DefaultEndOfLine).GetValue(),
+                                withSeps, i, eolKind.GetValue(),
                                 out bool nextTokenIsSeparator, out bool nextSeparatorBelongsToNode);
 
                             if (!nextSeparatorBelongsToNode &&
