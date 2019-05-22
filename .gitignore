@@ -42,7 +42,7 @@ dlldata.c
 *_p.c
 *_i.h
 *.ilk
-*.meta
+#*.meta
 *.obj
 *.pch
 *.pdb
@@ -194,4 +194,3 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
-

@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis
     /// </summary>
     public abstract partial class LanguageSyntaxTree : SyntaxTree
     {
-        public abstract Language Language { get; }
+        public Language Language => ((LanguageParseOptions)this.Options).Language;
 
         /// <summary>
         /// Determines if two trees are the same, disregarding trivia differences.

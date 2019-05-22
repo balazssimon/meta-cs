@@ -22,7 +22,6 @@ namespace MetaDslx.Languages.Meta
     public abstract partial class MetaSyntaxTree : LanguageSyntaxTree
     {
         internal static readonly MetaSyntaxTree Dummy = new DummySyntaxTree();
-        public override Language Language => MetaLanguage.Instance;
         /// <summary>
         /// The options used by the parser to produce the syntax tree.
         /// </summary>
@@ -217,24 +216,15 @@ namespace MetaDslx.Languages.Meta
         }
         #endregion
         #region SyntaxTree
-        protected override ParseOptions OptionsCore
-        {
-            get
-            {
-                return this.Options;
-            }
-        }
-
+        protected override ParseOptions OptionsCore => this.Options;
         protected override SyntaxNode GetRootCore(CancellationToken cancellationToken)
         {
             return this.GetRoot(cancellationToken);
         }
-
         protected override async Task<SyntaxNode> GetRootAsyncCore(CancellationToken cancellationToken)
         {
             return await this.GetRootAsync(cancellationToken).ConfigureAwait(false);
         }
-
         protected override bool TryGetRootCore(out SyntaxNode root)
         {
             MetaSyntaxNode node;
@@ -249,14 +239,13 @@ namespace MetaDslx.Languages.Meta
                 return false;
             }
         }
-
         #endregion
         internal sealed class DummySyntaxTree : MetaSyntaxTree
         {
             private readonly MetaSyntaxNode _node;
             public DummySyntaxTree()
             {
-                _node = this.CloneNodeAsRoot(MetaLanguage.Instance.SyntaxFactory.ParseMain(string.Empty));
+                _node = this.CloneNodeAsRoot((MainSyntax)MetaLanguage.Instance.InternalSyntaxFactory.MainForDummySyntaxTree().CreateRed());
             }
             public override string ToString()
             {

@@ -16,21 +16,21 @@ namespace MetaDslx.Languages.Meta
     {
         public static readonly MetaLanguage Instance = new MetaLanguage();
 
-		private MetaSyntaxFacts _syntaxFacts;
-		//private MetaSymbolFacts _symbolFacts;
-		//private MetaLookupPosition _lookupPosition;
+        private MetaSyntaxFacts _syntaxFacts;
+		private MetaSymbolFacts _symbolFacts;
+		private MetaLookupPosition _lookupPosition;
 		private MetaInternalSyntaxFactory _internalSyntaxFactory;
 		private MetaSyntaxFactory _syntaxFactory;
-		//private MetaCompilationFactory _compilationFactory;
+		private MetaCompilationFactory _compilationFactory;
 
 		private MetaLanguage()
 		{
 			_syntaxFacts = new MetaSyntaxFacts();
 			_internalSyntaxFactory = new MetaInternalSyntaxFactory();
 			_syntaxFactory = new MetaSyntaxFactory(_internalSyntaxFactory);
-			//_lookupPosition = new MetaLookupPosition();
-			//_symbolFacts = new MetaSymbolFacts();
-			//_compilationFactory = new MetaCompilationFactory();
+			_lookupPosition = new MetaLookupPosition();
+			_symbolFacts = new MetaSymbolFacts();
+			_compilationFactory = new MetaCompilationFactory();
 		}
 
         public override string Name => "Meta";
@@ -38,10 +38,10 @@ namespace MetaDslx.Languages.Meta
         public new MetaSyntaxFacts SyntaxFacts => _syntaxFacts;
         protected override SyntaxFacts SyntaxFactsCore => this.SyntaxFacts;
 
-        //public new MetaSymbolFacts SymbolFacts => _symbolFacts;
+        public new MetaSymbolFacts SymbolFacts => _symbolFacts;
         protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
 
-        //public new MetaLookupPosition LookupPosition => _lookupPosition;
+        public new MetaLookupPosition LookupPosition => _lookupPosition;
         protected override LookupPosition LookupPositionCore => this.LookupPosition;
 
         internal new MetaInternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
@@ -50,7 +50,7 @@ namespace MetaDslx.Languages.Meta
         public new MetaSyntaxFactory SyntaxFactory => _syntaxFactory;
         protected override SyntaxFactory SyntaxFactoryCore => this.SyntaxFactory;
 
-        //public new MetaCompilationFactory CompilationFactory => _compilationFactory;
+        public new MetaCompilationFactory CompilationFactory => _compilationFactory;
         protected override CompilationFactory CompilationFactoryCore => this.CompilationFactory;
     }
 }

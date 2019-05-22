@@ -49,8 +49,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{
 			switch (kind.Switch())
 			{
-                case MetaSyntaxKind.Eof:
-                case MetaSyntaxKind.KNamespace:
+				case MetaSyntaxKind.Eof:
+				case MetaSyntaxKind.KNamespace:
 				case MetaSyntaxKind.KUsing:
 				case MetaSyntaxKind.KMetamodel:
 				case MetaSyntaxKind.KExtern:
@@ -173,7 +173,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{
 			switch (kind.Switch())
 			{
-                case MetaSyntaxKind.KNamespace:
+				case MetaSyntaxKind.KNamespace:
 				case MetaSyntaxKind.KUsing:
 				case MetaSyntaxKind.KMetamodel:
 				case MetaSyntaxKind.KExtern:

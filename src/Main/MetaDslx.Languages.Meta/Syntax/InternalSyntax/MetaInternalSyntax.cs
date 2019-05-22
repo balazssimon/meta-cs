@@ -6808,6 +6808,11 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        return Token(null, MetaSyntaxKind.LComment, text, value, null);
 	    }
 	
+	    internal MainGreen MainForDummySyntaxTree()
+	    {
+	        return new MainGreen(MetaSyntaxKind.Main, default, default);
+	    }
+	
 		public MainGreen Main(NamespaceDeclarationGreen namespaceDeclaration, InternalSyntaxToken eof)
 	    {
 	#if DEBUG

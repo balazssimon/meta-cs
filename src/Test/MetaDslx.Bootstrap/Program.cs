@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Languages.Meta;
+using Microsoft.CodeAnalysis;
 using System;
 using System.IO;
 
@@ -31,7 +32,13 @@ namespace MetaDslx.Bootstrap
             //*/
             string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
             var tree = MetaSyntaxTree.ParseText(text);
+            //Console.WriteLine(MetaSyntaxTree.Dummy);
             Console.WriteLine(tree);
+            Console.WriteLine(MetaLanguage.Instance);
+            Console.WriteLine(tree.Language);
+            Console.WriteLine(tree.Options);
+            Console.WriteLine(tree.GetRoot().Span);
+            Console.WriteLine(tree.GetCompilationUnitRoot().Span);
             //*/
         }
 

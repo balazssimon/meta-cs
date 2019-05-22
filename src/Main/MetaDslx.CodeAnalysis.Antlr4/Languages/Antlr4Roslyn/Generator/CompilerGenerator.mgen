@@ -1209,8 +1209,6 @@ namespace [Properties.DefaultNamespace]
     {
         internal static readonly [lang]SyntaxTree Dummy = new DummySyntaxTree();
 
-        public override Language Language => [lang]Language.Instance;
-
         /// <summary>
         /// The options used by the parser to produce the syntax tree.
         /// </summary>
@@ -1436,13 +1434,7 @@ namespace [Properties.DefaultNamespace]
 
         #region SyntaxTree
 
-        protected override ParseOptions OptionsCore
-        {
-            get
-            {
-                return this.Options;
-            }
-        }
+        protected override ParseOptions OptionsCore => this.Options;
 
         protected override SyntaxNode GetRootCore(CancellationToken cancellationToken)
         {
@@ -1477,7 +1469,7 @@ namespace [Properties.DefaultNamespace]
 
             public DummySyntaxTree()
             {
-                _node = this.CloneNodeAsRoot([lang]Language.Instance.SyntaxFactory.Parse[Instances.MainRule().PlainName()](string.Empty));
+                _node = this.CloneNodeAsRoot(([Instances.MainRule().RedName()])[lang]Language.Instance.InternalSyntaxFactory.[Instances.MainRule().PlainName()]ForDummySyntaxTree().CreateRed());
             }
 
             public override string ToString()
@@ -1937,7 +1929,7 @@ function string GetInternalElemParamList(Antlr4ParserRule rule, bool listAsNode 
 	return result;
 end function
 
-function string GetElemNullParamList(Antlr4ParserRule rule, bool leadingComma = false, bool trailingComma = false)
+function string GetElemDefaultParamList(Antlr4ParserRule rule, bool leadingComma = false, bool trailingComma = false)
 	string result = "";
 	if (rule.AllElements.Count == 0)
 		return result;
@@ -1946,7 +1938,7 @@ function string GetElemNullParamList(Antlr4ParserRule rule, bool leadingComma = 
 		result = ", ";
 	end if
 	loop(elem:rule.AllElements; separator delim = ", ")
-		result += "null"+delim;
+		result += "default"+delim;
 	end loop
 	if (trailingComma)
 		result += ", ";
@@ -2347,6 +2339,14 @@ internal class [lang]InternalSyntaxFactory : InternalSyntaxFactory
         return Token(null, [lang]SyntaxKind.[rule.PlainName()], text, value, null);
     }
 [end loop]
+[var mainRule = Instances.MainRule()]
+[if (mainRule != null)]
+^
+    internal [mainRule.GreenName()] [mainRule.PlainName()]ForDummySyntaxTree()
+    {
+        return new [mainRule.GreenName()]([lang]SyntaxKind.[mainRule.PlainName()][GetElemDefaultParamList(mainRule, true, false)]);
+    }
+[end if]
 [loop(rule:Instances.ParserRules)]
 	[if (rule.Alternatives.Count > 0)]
 		[loop(alt:rule.Alternatives)]

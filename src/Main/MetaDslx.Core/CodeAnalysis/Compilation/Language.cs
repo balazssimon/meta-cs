@@ -25,11 +25,6 @@ namespace MetaDslx.CodeAnalysis
         internal protected abstract CompilationFactory CompilationFactoryCore { get; }
         public SymbolFacts SymbolFacts => this.SymbolFactsCore;
         internal protected abstract SymbolFacts SymbolFactsCore { get; }
-        //CompilationFactory
-        /*public SymbolDisplay SymbolDisplay => this.SymbolDisplayCore;
-        internal protected virtual SymbolDisplay SymbolDisplayCore { get; } = new SymbolDisplay();
-        public SymbolFacts SymbolFacts => this.SymbolFactsCore;
-        internal protected abstract SymbolFacts SymbolFactsCore { get; }*/
     }
 
     internal class NoLanguage : Language
@@ -48,6 +43,5 @@ namespace MetaDslx.CodeAnalysis
 
         protected internal override SymbolFacts SymbolFactsCore => throw new NotImplementedException();
 
-        //protected internal override SymbolFacts SymbolFactsCore => throw new NotImplementedException();
     }
 }
