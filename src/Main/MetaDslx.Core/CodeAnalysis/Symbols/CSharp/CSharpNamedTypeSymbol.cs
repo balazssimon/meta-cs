@@ -17,16 +17,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         private CSharpSymbols.NamedTypeSymbol _csharpSymbol;
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
 
-        private CSharpNamedTypeSymbol(CSharpModuleSymbol module, CSharpSymbols.NamedTypeSymbol csharpSymbol)
+        internal CSharpNamedTypeSymbol(CSharpModuleSymbol module, CSharpSymbols.NamedTypeSymbol csharpSymbol)
         {
             _module = module;
             _csharpSymbol = csharpSymbol;
         }
 
-        internal static CSharpNamedTypeSymbol FromCSharp(CSharpSymbols.NamedTypeSymbol csharpSymbol)
-        {
-            return new CSharpNamedTypeSymbol((CSharpModuleSymbol)CSharpSymbolMap.GetModuleSymbol(csharpSymbol.ContainingModule), csharpSymbol);
-        }
+        internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
 
         public override ImmutableArray<Symbol> GetMembers()
         {

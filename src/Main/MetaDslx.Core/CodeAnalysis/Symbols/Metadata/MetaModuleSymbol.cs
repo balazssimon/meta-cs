@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.Source;
@@ -10,22 +12,25 @@ using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
-    public class MetaModuleSymbol : ModuleSymbol, IMetaMetadataSymbol
+    public class MetaModuleSymbol : NonMissingModuleSymbol, IMetaMetadataSymbol
     {
         private MetaGlobalNamespaceSymbol _globalNamespace;
+        private AssemblySymbol _owningAssembly;
         private ImmutableArray<IModel> _models;
         private readonly int _ordinal;
         private readonly MetaSymbolMap _symbolMap;
 
-        public MetaModuleSymbol(ImmutableArray<IModel> models, int ordinal)
+        public MetaModuleSymbol(AssemblySymbol owningAssembly, ImmutableArray<IModel> models, int ordinal)
         {
+            _owningAssembly = owningAssembly;
             _models = models;
             _ordinal = ordinal;
             _symbolMap = new MetaSymbolMap(this);
         }
 
-        public MetaModuleSymbol(IModelGroup modelGroup, int ordinal)
+        public MetaModuleSymbol(AssemblySymbol owningAssembly, IModelGroup modelGroup, int ordinal)
         {
+            _owningAssembly = owningAssembly;
             _models = modelGroup.Models.ToImmutableArray();
             _ordinal = ordinal;
         }
@@ -50,36 +55,29 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             }
         }
 
-        public override ImmutableArray<AssemblyIdentity> ReferencedAssemblies => ImmutableArray<AssemblyIdentity>.Empty;
+        public override ICollection<string> TypeNames => _globalNamespace.TypeNames;
 
-        public override ImmutableArray<AssemblySymbol> ReferencedAssemblySymbols => ImmutableArray<AssemblySymbol>.Empty;
-
-        public override ImmutableArray<string> TypeNames => _globalNamespace.TypeNames;
-
-        public override ImmutableArray<string> NamespaceNames => _globalNamespace.NamespaceNames;
+        public override ICollection<string> NamespaceNames => _globalNamespace.NamespaceNames;
 
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
+        public override Machine Machine => Machine.Unknown;
+
+        public override bool Bit32Required => false;
+
+        internal override bool HasAssemblyCompilationRelaxationsAttribute => false;
+
+        internal override bool HasAssemblyRuntimeCompatibilityAttribute => false;
+
+        internal override CharSet? DefaultMarshallingCharSet => null;
+
+        public override Symbol ContainingSymbol => _owningAssembly;
+
         public override ModuleMetadata GetMetadata()
         {
             return null;
-        }
-
-        public override bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, Symbol dependentType)
-        {
-            return false;
-        }
-
-        internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
-        {
-            return _globalNamespace.LookupMetadataType(ref emittedName);
         }
     }
 }

@@ -61,18 +61,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 AssertReferencesInitialized();
-                return ImmutableArray<AssemblySymbol>.Empty;
-                // TODO:MetaDslx
-                //return _moduleReferences.Symbols;
+                return _moduleReferences.Symbols;
             }
         }
 
         internal ImmutableArray<UnifiedAssembly<AssemblySymbol>> GetUnifiedAssemblies()
         {
             AssertReferencesInitialized();
-            return ImmutableArray<UnifiedAssembly<AssemblySymbol>>.Empty;
-            // TODO:MetaDslx
-            //return _moduleReferences.UnifiedAssemblies;
+            return _moduleReferences.UnifiedAssemblies;
         }
 
         public override bool HasUnifiedReferences
@@ -80,7 +76,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get { return GetUnifiedAssemblies().Length > 0; }
         }
 
-        public override bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, Symbol dependentType)
+        public override bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, TypeSymbol dependentType)
         {
             AssertReferencesInitialized();
 
@@ -175,8 +171,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         [Conditional("DEBUG")]
         internal void AssertReferencesInitialized()
         {
-            // TODO:MetaDslx
-            // Debug.Assert(_moduleReferences != null);
+            Debug.Assert(_moduleReferences != null);
         }
 
         /// <summary>

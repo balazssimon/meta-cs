@@ -394,6 +394,25 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return ImmutableArray<AttributeData>.Empty;
         }
 
+
+        /// <summary>
+        /// Returns data decoded from <see cref="ObsoleteAttribute"/> attribute or null if there is no <see cref="ObsoleteAttribute"/> attribute.
+        /// This property returns <see cref="Microsoft.CodeAnalysis.ObsoleteAttributeData.Uninitialized"/> if attribute arguments haven't been decoded yet.
+        /// </summary>
+        public virtual ObsoleteAttributeData ObsoleteAttributeData => null; // TODO:MetaDslx
+
+        /// <summary>
+        /// Returns true and a <see cref="string"/> from the first <see cref="GuidAttribute"/> on the symbol, 
+        /// the string might be null or an invalid guid representation. False, 
+        /// if there is no <see cref="GuidAttribute"/> with string argument.
+        /// </summary>
+        public virtual bool GetGuidStringDefaultImplementation(out string guidString)
+        {
+            // TODO:MetaDslx
+            guidString = null;
+            return false;
+        }
+
         // Note: This is no public "IsNew". This is intentional, because new has no syntactic meaning.
         // It serves only to remove a warning. Furthermore, it can not be inferred from 
         // metadata. For symbols defined in source, the modifiers in the syntax tree

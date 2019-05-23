@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// A <see cref="MissingModuleSymbol"/> is a special kind of <see cref="ModuleSymbol"/> that represents
     /// a module that couldn't be found.
     /// </summary>
-    public class MissingModuleSymbol : ModuleSymbol
+    internal class MissingModuleSymbol : ModuleSymbol
     {
         protected readonly AssemblySymbol assembly;
         protected readonly int ordinal;
@@ -38,6 +38,22 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 return ordinal;
+            }
+        }
+
+        public override Machine Machine
+        {
+            get
+            {
+                return Machine.I386;
+            }
+        }
+
+        public override bool Bit32Required
+        {
+            get
+            {
+                return false;
             }
         }
 
@@ -107,46 +123,62 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override ImmutableArray<string> NamespaceNames
+        public override ICollection<string> NamespaceNames
         {
             get
             {
-                return ImmutableArray<string>.Empty;
+                return SpecializedCollections.EmptyCollection<string>();
             }
         }
 
-        public override ImmutableArray<string> TypeNames
+        public override ICollection<string> TypeNames
         {
             get
             {
-                return ImmutableArray<string>.Empty;
+                return SpecializedCollections.EmptyCollection<string>();
             }
+        }
+
+        public override NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
+        {
+            return new MissingMetadataTypeSymbol.TopLevel(this, ref emittedName);
         }
 
         public override ImmutableArray<AssemblyIdentity> ReferencedAssemblies => ImmutableArray<AssemblyIdentity>.Empty;
 
         public override ImmutableArray<AssemblySymbol> ReferencedAssemblySymbols => ImmutableArray<AssemblySymbol>.Empty;
 
-        public override bool HasUnifiedReferences => false;
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-
-        public override bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, Symbol dependentType)
-        {
-            throw ExceptionUtilities.Unreachable;
-        }
-
         internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly)
         {
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override ModuleMetadata GetMetadata() => null;
-
-        public override NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
+        public override bool HasUnifiedReferences
         {
-            return null;
+            get { return false; }
         }
+
+        public override bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, TypeSymbol dependentType)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        internal override bool HasAssemblyCompilationRelaxationsAttribute
+        {
+            get { return false; }
+        }
+
+        internal override bool HasAssemblyRuntimeCompatibilityAttribute
+        {
+            get { return false; }
+        }
+
+        internal override CharSet? DefaultMarshallingCharSet
+        {
+            get { return null; }
+        }
+
+        public override ModuleMetadata GetMetadata() => null;
     }
 
     internal sealed class MissingModuleSymbolWithName : MissingModuleSymbol

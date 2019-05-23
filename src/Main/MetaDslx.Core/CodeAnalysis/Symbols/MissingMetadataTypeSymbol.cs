@@ -18,30 +18,41 @@ namespace MetaDslx.CodeAnalysis.Symbols
     ///   c) The metadata file was referenced, contained the correct outer type, but
     ///      didn't contains a nested type in that outer type.
     /// </summary>
-    public abstract class MissingMetadataTypeSymbol : ErrorTypeSymbol
+    internal abstract class MissingMetadataTypeSymbol : ErrorTypeSymbol
     {
         protected readonly string name;
-        protected readonly string metadataName;
+        protected readonly int arity;
         protected readonly bool mangleName;
 
-        private MissingMetadataTypeSymbol(string name, string metadataName, bool mangleName)
+        private MissingMetadataTypeSymbol(string name, int arity, bool mangleName)
         {
             Debug.Assert(name != null);
 
             this.name = name;
-            this.metadataName = metadataName;
-            this.mangleName = (mangleName && name != metadataName);
+            this.arity = arity;
+            this.mangleName = (mangleName && arity > 0);
         }
 
-        public override string Name => name;
+        public override string Name
+        {
+            get { return name; }
+        }
 
-        public override bool MangleName => mangleName;
-
+        public override bool MangleName
+        {
+            get
+            {
+                return mangleName;
+            }
+        }
         /// <summary>
         /// Get the arity of the missing type.
         /// </summary>
-        public override string MetadataName => metadataName;
-        
+        public override int Arity
+        {
+            get { return arity; }
+        }
+
         public override DiagnosticInfo ErrorInfo
         {
             get
@@ -119,8 +130,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             /// </summary>
             private int _lazyTypeId = -1;
 
-            public TopLevel(ModuleSymbol module, string @namespace, string name, string metadataName, bool mangleName)
-                : base(name, metadataName, mangleName)
+            public TopLevel(ModuleSymbol module, string @namespace, string name, int arity, bool mangleName)
+                : base(name, arity, mangleName)
             {
                 Debug.Assert((object)module != null);
                 Debug.Assert(@namespace != null);
@@ -154,7 +165,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, bool mangleName)
                 : this(module, fullName.NamespaceName,
                        mangleName ? fullName.UnmangledTypeName : fullName.TypeName,
-                       mangleName ? fullName.UnmangledTypeName : fullName.TypeName,
+                       mangleName ? fullName.InferredArity : fullName.ForcedArity,
                        mangleName)
             {
             }
@@ -286,7 +297,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     return (int)Microsoft.CodeAnalysis.SpecialType.System_Object;
                 }
 
-                return Hash.Combine(MetadataName, Hash.Combine(_containingModule, Hash.Combine(_namespaceName, metadataName.GetHashCode())));
+                return Hash.Combine(MetadataName, Hash.Combine(_containingModule, Hash.Combine(_namespaceName, arity)));
             }
 
             public override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
@@ -309,6 +320,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                 return (object)other != null &&
                     string.Equals(MetadataName, other.MetadataName, StringComparison.Ordinal) &&
+                    arity == other.arity &&
                     string.Equals(_namespaceName, other.NamespaceName, StringComparison.Ordinal) &&
                     _containingModule.Equals(other._containingModule);
             }
@@ -355,8 +367,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             private readonly NamedTypeSymbol _containingType;
 
-            public Nested(NamedTypeSymbol containingType, string name, string metadataName, bool mangleName)
-                : base(name, metadataName, mangleName)
+            public Nested(NamedTypeSymbol containingType, string name, int arity, bool mangleName)
+                : base(name, arity, mangleName)
             {
                 Debug.Assert((object)containingType != null);
 
@@ -371,7 +383,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             private Nested(NamedTypeSymbol containingType, ref MetadataTypeName emittedName, bool mangleName)
                 : this(containingType,
                        mangleName ? emittedName.UnmangledTypeName : emittedName.TypeName,
-                       mangleName ? emittedName.TypeName : emittedName.TypeName,
+                       mangleName ? emittedName.InferredArity : emittedName.ForcedArity,
                        mangleName)
             {
             }
@@ -395,7 +407,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             public override int GetHashCode()
             {
-                return Hash.Combine(_containingType, MetadataName.GetHashCode());
+                return Hash.Combine(_containingType, Hash.Combine(MetadataName, arity));
             }
 
             public override bool Equals(TypeSymbol t2, TypeCompareKind comparison)
@@ -407,6 +419,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
                 var other = t2 as Nested;
                 return (object)other != null && string.Equals(MetadataName, other.MetadataName, StringComparison.Ordinal) &&
+                    arity == other.arity &&
                     _containingType.Equals(other._containingType, comparison);
             }
         }

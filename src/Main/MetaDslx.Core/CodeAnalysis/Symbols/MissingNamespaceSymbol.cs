@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// A <see cref="MissingNamespaceSymbol"/> is a special kind of <see cref="NamespaceSymbol"/> that represents
     /// a namespace that couldn't be found.
     /// </summary>
-    public class MissingNamespaceSymbol : NamespaceSymbol
+    internal class MissingNamespaceSymbol : NamespaceSymbol
     {
         private readonly string _name;
         private readonly Symbol _containingSymbol;
@@ -126,6 +126,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public override ImmutableArray<Symbol> GetMembers(string name)
+        {
+            return ImmutableArray<Symbol>.Empty;
+        }
+
+        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
         {
             return ImmutableArray<Symbol>.Empty;
         }

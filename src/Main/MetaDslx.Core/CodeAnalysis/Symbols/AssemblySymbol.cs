@@ -9,6 +9,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Reflection.PortableExecutable;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -16,9 +17,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
     public abstract class AssemblySymbol : Symbol, IAssemblySymbolInternal
     {
-        protected AssemblySymbol()
-        {
-        }
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Changes to the public interface of this class should remain synchronized with the VB version.
+        // Do not make any changes to the public interface without making the corresponding change
+        // to the VB version.
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         /// <summary>
         /// The system assembly, which provides primitive types like Object, String, etc., e.g. mscorlib.dll. 
@@ -54,171 +57,67 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
-        /// Return an array of assemblies involved in canonical type resolution of
-        /// NoPia local types defined within this assembly. In other words, all 
-        /// references used by previous compilation referencing this assembly.
+        /// Simple name the assembly.
         /// </summary>
-        /// <returns></returns>
-        public abstract ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies();
-        internal abstract void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies);
-
-        /// <summary>
-        /// Return an array of assemblies referenced by this assembly, which are linked (/l-ed) by 
-        /// each compilation that is using this AssemblySymbol as a reference. 
-        /// If this AssemblySymbol is linked too, it will be in this array too.
-        /// </summary>
-        public abstract ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies();
-        internal abstract void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies);
-
-        public abstract IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName);
-        public abstract bool AreInternalsVisibleToThisAssembly(AssemblySymbol other);
-
-        /// <summary>
-        /// Assembly is /l-ed by compilation that is using it as a reference.
-        /// </summary>
-        public abstract bool IsLinked { get; }
-
-        public virtual bool IsMissing => false;
-
-        /// <summary>
-        /// Gets the symbol for the pre-defined type from core library associated with this assembly.
-        /// </summary>
-        /// <returns>The symbol for the pre-defined type or an error type if the type is not defined in the core library.</returns>
-        public NamedTypeSymbol GetSpecialType(SpecialType type)
-        {
-            return CorLibrary.GetDeclaredSpecialType(type);
-        }
-
-        public static TypeSymbol DynamicType
+        /// <remarks>
+        /// This is equivalent to <see cref="Identity"/>.<see cref="AssemblyIdentity.Name"/>, but may be 
+        /// much faster to retrieve for source code assemblies, since it does not require binding
+        /// the assembly-level attributes that contain the version number and other assembly
+        /// information.
+        /// </remarks>
+        public override string Name
         {
             get
             {
-                return DynamicTypeSymbol.Instance;
+                return Identity.Name;
             }
         }
 
         /// <summary>
-        /// The NamedTypeSymbol for the .NET System.Object type, which could have a TypeKind of
-        /// Error if there was no COR Library in a compilation using the assembly.
+        /// Gets the identity of this assembly.
         /// </summary>
-        public NamedTypeSymbol ObjectType
+        public abstract AssemblyIdentity Identity { get; }
+
+        /// <summary>
+        /// Assembly version pattern with wildcards represented by <see cref="ushort.MaxValue"/>,
+        /// or null if the version string specified in the <see cref="AssemblyVersionAttribute"/> doesn't contain a wildcard.
+        /// 
+        /// For example, 
+        ///   AssemblyVersion("1.2.*") is represented as 1.2.65535.65535,
+        ///   AssemblyVersion("1.2.3.*") is represented as 1.2.3.65535.
+        /// </summary>
+        public abstract Version AssemblyVersionPattern { get; }
+
+        /// <summary>
+        /// Target architecture of the machine.
+        /// </summary>
+        internal Machine Machine
         {
             get
             {
-                return GetSpecialType(SpecialType.System_Object);
+                return Modules[0].Machine;
             }
         }
 
         /// <summary>
-        /// Get symbol for predefined type from Cor Library used by this assembly.
+        /// Indicates that this PE file makes Win32 calls. See CorPEKind.pe32BitRequired for more information (http://msdn.microsoft.com/en-us/library/ms230275.aspx).
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        internal NamedTypeSymbol GetPrimitiveType(Microsoft.Cci.PrimitiveTypeCode type)
-        {
-            return GetSpecialType(SpecialTypes.GetTypeFromMetadataName(type));
-        }
-
-        /// <summary>
-        /// Lookup declaration for predefined CorLib type in this Assembly.
-        /// </summary>
-        /// <returns>The symbol for the pre-defined type or an error type if the type is not defined in the core library.</returns>
-        public abstract NamedTypeSymbol GetDeclaredSpecialType(SpecialType type);
-
-        /// <summary>
-        /// Register declaration of predefined CorLib type in this Assembly.
-        /// </summary>
-        /// <param name="corType"></param>
-        internal virtual void RegisterDeclaredSpecialType(NamedTypeSymbol corType)
-        {
-            throw ExceptionUtilities.Unreachable;
-        }
-
-        /// <summary>
-        /// Continue looking for declaration of predefined CorLib type in this Assembly
-        /// while symbols for new type declarations are constructed.
-        /// </summary>
-        public virtual bool KeepLookingForDeclaredSpecialTypes
+        internal bool Bit32Required
         {
             get
             {
-                throw ExceptionUtilities.Unreachable;
+                return Modules[0].Bit32Required;
             }
         }
 
         /// <summary>
-        /// Lookup a top level type referenced from metadata, names should be
-        /// compared case-sensitively.
+        /// Gets the merged root namespace that contains all namespaces and types defined in the modules
+        /// of this assembly. If there is just one module in this assembly, this property just returns the 
+        /// GlobalNamespace of that module.
         /// </summary>
-        /// <param name="emittedName">
-        /// Full type name with generic name mangling.
-        /// </param>
-        /// <param name="digThroughForwardedTypes">
-        /// Take forwarded types into account.
-        /// </param>
-        /// <remarks></remarks>
-        public NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName, bool digThroughForwardedTypes)
+        public abstract NamespaceSymbol GlobalNamespace
         {
-            return LookupTopLevelMetadataTypeWithCycleDetection(ref emittedName, visitedAssemblies: null, digThroughForwardedTypes: digThroughForwardedTypes);
-        }
-
-        /// <summary>
-        /// Lookup a top level type referenced from metadata, names should be
-        /// compared case-sensitively.  Detect cycles during lookup.
-        /// </summary>
-        /// <param name="emittedName">
-        /// Full type name, possibly with generic name mangling.
-        /// </param>
-        /// <param name="visitedAssemblies">
-        /// List of assemblies lookup has already visited (since type forwarding can introduce cycles).
-        /// </param>
-        /// <param name="digThroughForwardedTypes">
-        /// Take forwarded types into account.
-        /// </param>
-        internal abstract NamedTypeSymbol LookupTopLevelMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies, bool digThroughForwardedTypes);
-
-        /// <summary>
-        /// Returns the type symbol for a forwarded type based its canonical CLR metadata name.
-        /// The name should refer to a non-nested type. If type with this name is not forwarded,
-        /// null is returned.
-        /// </summary>
-        public NamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName)
-        {
-            if (fullyQualifiedMetadataName == null)
-            {
-                throw new ArgumentNullException(nameof(fullyQualifiedMetadataName));
-            }
-
-            var emittedName = MetadataTypeName.FromFullName(fullyQualifiedMetadataName);
-            return TryLookupForwardedMetadataType(ref emittedName);
-        }
-
-        /// <summary>
-        /// Look up the given metadata type, if it is forwarded.
-        /// </summary>
-        public NamedTypeSymbol TryLookupForwardedMetadataType(ref MetadataTypeName emittedName)
-        {
-            return TryLookupForwardedMetadataTypeWithCycleDetection(ref emittedName, visitedAssemblies: null);
-        }
-
-        /// <summary>
-        /// Look up the given metadata type, if it is forwarded.
-        /// </summary>
-        internal virtual NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
-        {
-            return null;
-        }
-
-        internal ErrorTypeSymbol CreateCycleInTypeForwarderErrorTypeSymbol(ref MetadataTypeName emittedName)
-        {
-            DiagnosticInfo diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_CycleInTypeForwarder, emittedName.FullName, this.Name);
-            return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(this.Modules[0], ref emittedName, diagnosticInfo);
-        }
-
-        internal ErrorTypeSymbol CreateMultipleForwardingErrorTypeSymbol(ref MetadataTypeName emittedName, ModuleSymbol forwardingModule, AssemblySymbol destination1, AssemblySymbol destination2)
-        {
-            var diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_TypeForwardedToMultipleAssemblies, forwardingModule, this, emittedName.FullName, destination1, destination2);
-            return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(forwardingModule, ref emittedName, diagnosticInfo);
+            get;
         }
 
         /// <summary>
@@ -261,20 +160,333 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
-        /// Lookup member declaration in predefined CorLib type in this Assembly. Only valid if this 
-        /// assembly is the Cor Library
+        /// Gets a read-only list of all the modules in this assembly. (There must be at least one.) The first one is the main module
+        /// that holds the assembly manifest.
         /// </summary>
-        public virtual Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
+        public abstract ImmutableArray<ModuleSymbol> Modules { get; }
+
+        public sealed override SymbolKind Kind
+        {
+            get
+            {
+                return SymbolKind.Assembly;
+            }
+        }
+
+        public sealed override AssemblySymbol ContainingAssembly
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        // Only the compiler can create AssemblySymbols.
+        internal AssemblySymbol()
+        {
+        }
+
+        /// <summary>
+        /// Does this symbol represent a missing assembly.
+        /// </summary>
+        public abstract bool IsMissing
+        {
+            get;
+        }
+
+        public sealed override Accessibility DeclaredAccessibility
+        {
+            get
+            {
+                return Accessibility.NotApplicable;
+            }
+        }
+
+        public sealed override bool IsStatic
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public sealed override bool IsVirtual
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public sealed override bool IsOverride
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public sealed override bool IsAbstract
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public sealed override bool IsSealed
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public sealed override bool IsExtern
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
+        {
+            get
+            {
+                return ImmutableArray<SyntaxReference>.Empty;
+            }
+        }
+
+        /// <summary>
+        /// True if the assembly contains interactive code.
+        /// </summary>
+        public virtual bool IsInteractive
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public sealed override Symbol ContainingSymbol
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Lookup a top level type referenced from metadata, names should be
+        /// compared case-sensitively.
+        /// </summary>
+        /// <param name="emittedName">
+        /// Full type name with generic name mangling.
+        /// </param>
+        /// <param name="digThroughForwardedTypes">
+        /// Take forwarded types into account.
+        /// </param>
+        /// <remarks></remarks>
+        internal NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName, bool digThroughForwardedTypes)
+        {
+            return LookupTopLevelMetadataTypeWithCycleDetection(ref emittedName, visitedAssemblies: null, digThroughForwardedTypes: digThroughForwardedTypes);
+        }
+
+        /// <summary>
+        /// Lookup a top level type referenced from metadata, names should be
+        /// compared case-sensitively.  Detect cycles during lookup.
+        /// </summary>
+        /// <param name="emittedName">
+        /// Full type name, possibly with generic name mangling.
+        /// </param>
+        /// <param name="visitedAssemblies">
+        /// List of assemblies lookup has already visited (since type forwarding can introduce cycles).
+        /// </param>
+        /// <param name="digThroughForwardedTypes">
+        /// Take forwarded types into account.
+        /// </param>
+        internal abstract NamedTypeSymbol LookupTopLevelMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies, bool digThroughForwardedTypes);
+
+        /// <summary>
+        /// Returns the type symbol for a forwarded type based its canonical CLR metadata name.
+        /// The name should refer to a non-nested type. If type with this name is not forwarded,
+        /// null is returned.
+        /// </summary>
+        public NamedTypeSymbol ResolveForwardedType(string fullyQualifiedMetadataName)
+        {
+            if (fullyQualifiedMetadataName == null)
+            {
+                throw new ArgumentNullException(nameof(fullyQualifiedMetadataName));
+            }
+
+            var emittedName = MetadataTypeName.FromFullName(fullyQualifiedMetadataName);
+            return TryLookupForwardedMetadataType(ref emittedName);
+        }
+
+        /// <summary>
+        /// Look up the given metadata type, if it is forwarded.
+        /// </summary>
+        internal NamedTypeSymbol TryLookupForwardedMetadataType(ref MetadataTypeName emittedName)
+        {
+            return TryLookupForwardedMetadataTypeWithCycleDetection(ref emittedName, visitedAssemblies: null);
+        }
+
+        /// <summary>
+        /// Look up the given metadata type, if it is forwarded.
+        /// </summary>
+        internal virtual NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
         {
             return null;
         }
 
-        /// <summary>
-        /// Lookup member declaration in predefined CorLib type used by this Assembly.
-        /// </summary>
-        public virtual Symbol GetSpecialTypeMember(SpecialMember member)
+        internal ErrorTypeSymbol CreateCycleInTypeForwarderErrorTypeSymbol(ref MetadataTypeName emittedName)
         {
-            return CorLibrary.GetDeclaredSpecialTypeMember(member);
+            DiagnosticInfo diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_CycleInTypeForwarder, emittedName.FullName, this.Name);
+            return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(this.Modules[0], ref emittedName, diagnosticInfo);
+        }
+
+        internal ErrorTypeSymbol CreateMultipleForwardingErrorTypeSymbol(ref MetadataTypeName emittedName, ModuleSymbol forwardingModule, AssemblySymbol destination1, AssemblySymbol destination2)
+        {
+            var diagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_TypeForwardedToMultipleAssemblies, forwardingModule, this, emittedName.FullName, destination1, destination2);
+            return new MissingMetadataTypeSymbol.TopLevelWithCustomErrorInfo(forwardingModule, ref emittedName, diagnosticInfo);
+        }
+
+        /// <summary>
+        /// Lookup declaration for predefined CorLib type in this Assembly.
+        /// </summary>
+        /// <returns>The symbol for the pre-defined type or an error type if the type is not defined in the core library.</returns>
+        internal abstract NamedTypeSymbol GetDeclaredSpecialType(SpecialType type);
+
+        /// <summary>
+        /// Register declaration of predefined CorLib type in this Assembly.
+        /// </summary>
+        /// <param name="corType"></param>
+        internal virtual void RegisterDeclaredSpecialType(NamedTypeSymbol corType)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        /// <summary>
+        /// Continue looking for declaration of predefined CorLib type in this Assembly
+        /// while symbols for new type declarations are constructed.
+        /// </summary>
+        internal virtual bool KeepLookingForDeclaredSpecialTypes
+        {
+            get
+            {
+                throw ExceptionUtilities.Unreachable;
+            }
+        }
+
+        /// <summary>
+        /// Figure out if the target runtime supports default interface implementation.
+        /// </summary>
+        internal bool RuntimeSupportsDefaultInterfaceImplementation
+        {
+            get => !(GetSpecialTypeMember(SpecialMember.System_Runtime_CompilerServices_RuntimeFeature__DefaultImplementationsOfInterfaces) is null);
+        }
+
+        /// <summary>
+        /// Return an array of assemblies involved in canonical type resolution of
+        /// NoPia local types defined within this assembly. In other words, all 
+        /// references used by previous compilation referencing this assembly.
+        /// </summary>
+        /// <returns></returns>
+        internal abstract ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies();
+        internal abstract void SetNoPiaResolutionAssemblies(ImmutableArray<AssemblySymbol> assemblies);
+
+        /// <summary>
+        /// Return an array of assemblies referenced by this assembly, which are linked (/l-ed) by 
+        /// each compilation that is using this AssemblySymbol as a reference. 
+        /// If this AssemblySymbol is linked too, it will be in this array too.
+        /// </summary>
+        internal abstract ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies();
+        internal abstract void SetLinkedReferencedAssemblies(ImmutableArray<AssemblySymbol> assemblies);
+
+        internal abstract IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName);
+        internal abstract bool AreInternalsVisibleToThisAssembly(AssemblySymbol other);
+
+        /// <summary>
+        /// Assembly is /l-ed by compilation that is using it as a reference.
+        /// </summary>
+        public abstract bool IsLinked { get; }
+
+        /// <summary>
+        /// Returns true and a string from the first GuidAttribute on the assembly, 
+        /// the string might be null or an invalid guid representation. False, 
+        /// if there is no GuidAttribute with string argument.
+        /// </summary>
+        internal virtual bool GetGuidString(out string guidString)
+        {
+            return GetGuidStringDefaultImplementation(out guidString);
+        }
+
+        /// <summary>
+        /// Gets the set of type identifiers from this assembly.
+        /// </summary>
+        /// <remarks>
+        /// These names are the simple identifiers for the type, and do not include namespaces,
+        /// outer type names, or type parameters.
+        /// 
+        /// This functionality can be used for features that want to quickly know if a name could be
+        /// a type for performance reasons.  For example, classification does not want to incur an
+        /// expensive binding call cost if it knows that there is no type with the name that they
+        /// are looking at.
+        /// </remarks>
+        public abstract ICollection<string> TypeNames { get; }
+
+        /// <summary>
+        /// Gets the set of namespace names from this assembly.
+        /// </summary>
+        public abstract ICollection<string> NamespaceNames { get; }
+
+        /// <summary>
+        /// Returns true if this assembly might contain extension methods. If this property
+        /// returns false, there are no extension methods in this assembly.
+        /// </summary>
+        /// <remarks>
+        /// This property allows the search for extension methods to be narrowed quickly.
+        /// </remarks>
+        public abstract bool MightContainExtensionMethods { get; }
+
+        /// <summary>
+        /// Gets the symbol for the pre-defined type from core library associated with this assembly.
+        /// </summary>
+        /// <returns>The symbol for the pre-defined type or an error type if the type is not defined in the core library.</returns>
+        internal NamedTypeSymbol GetSpecialType(SpecialType type)
+        {
+            return CorLibrary.GetDeclaredSpecialType(type);
+        }
+
+        internal static TypeSymbol DynamicType
+        {
+            get
+            {
+                return DynamicTypeSymbol.Instance;
+            }
+        }
+
+        /// <summary>
+        /// The NamedTypeSymbol for the .NET System.Object type, which could have a TypeKind of
+        /// Error if there was no COR Library in a compilation using the assembly.
+        /// </summary>
+        internal NamedTypeSymbol ObjectType
+        {
+            get
+            {
+                return GetSpecialType(SpecialType.System_Object);
+            }
+        }
+
+        /// <summary>
+        /// Get symbol for predefined type from Cor Library used by this assembly.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        internal NamedTypeSymbol GetPrimitiveType(Microsoft.Cci.PrimitiveTypeCode type)
+        {
+            return GetSpecialType(SpecialTypes.GetTypeFromMetadataName(type));
         }
 
         /// <summary>
@@ -375,11 +587,27 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             if (typeInfo.IsArray)
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("TODO:MetaDslx");
+                /*TypeSymbol symbol = GetTypeByReflectionType(typeInfo.GetElementType(), includeReferences);
+                if ((object)symbol == null)
+                {
+                    return null;
+                }
+
+                int rank = typeInfo.GetArrayRank();
+
+                return ArrayTypeSymbol.CreateCSharpArray(this, TypeWithAnnotations.Create(symbol), rank);*/
             }
             else if (typeInfo.IsPointer)
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("TODO:MetaDslx");
+                /*TypeSymbol symbol = GetTypeByReflectionType(typeInfo.GetElementType(), includeReferences);
+                if ((object)symbol == null)
+                {
+                    return null;
+                }
+
+                return new PointerTypeSymbol(TypeWithAnnotations.Create(symbol));*/
             }
             else if (typeInfo.DeclaringType != null)
             {
@@ -421,6 +649,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     {
                         return null;
                     }
+
+                    symbol = ApplyGenericArguments(symbol, genericArguments, ref typeArgumentIndex, includeReferences);
+                    if ((object)symbol == null)
+                    {
+                        return null;
+                    }
                 }
 
                 nestedTypes.Free();
@@ -443,8 +677,40 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     return null;
                 }
 
+                int typeArgumentIndex = 0;
+                Type[] genericArguments = typeInfo.GenericTypeArguments;
+                symbol = ApplyGenericArguments(symbol, genericArguments, ref typeArgumentIndex, includeReferences);
+                Debug.Assert(typeArgumentIndex == genericArguments.Length);
                 return symbol;
             }
+        }
+
+        private NamedTypeSymbol ApplyGenericArguments(NamedTypeSymbol symbol, Type[] typeArguments, ref int currentTypeArgument, bool includeReferences)
+        {
+            int remainingTypeArguments = typeArguments.Length - currentTypeArgument;
+
+            // in case we are specializing a nested generic definition we might have more arguments than the current symbol:
+            Debug.Assert(remainingTypeArguments >= symbol.Arity);
+
+            if (remainingTypeArguments == 0)
+            {
+                return symbol;
+            }
+
+            throw new NotImplementedException("TODO:MetaDslx");
+            /*var length = symbol.TypeArgumentsWithAnnotationsNoUseSiteDiagnostics.Length;
+            var typeArgumentSymbols = ArrayBuilder<TypeWithAnnotations>.GetInstance(length);
+            for (int i = 0; i < length; i++)
+            {
+                var argSymbol = GetTypeByReflectionType(typeArguments[currentTypeArgument++], includeReferences);
+                if ((object)argSymbol == null)
+                {
+                    return null;
+                }
+                typeArgumentSymbols.Add(TypeWithAnnotations.Create(argSymbol));
+            }
+
+            return symbol.ConstructIfGeneric(typeArgumentSymbols.ToImmutableAndFree());*/
         }
 
         internal NamedTypeSymbol GetTopLevelTypeByMetadataName(
@@ -561,7 +827,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             Debug.Assert((object)result.ContainingType == null || IsValidWellKnownType(result.ContainingType),
                 "Checking the containing type is the caller's responsibility.");
 
-            return result.DeclaredAccessibility == Accessibility.Public; // TODO:MetaDslx || IsSymbolAccessible(result, this);
+            return result.DeclaredAccessibility == Accessibility.Public || IsSymbolAccessible(result, this);
         }
 
         private static NamedTypeSymbol GetTopLevelTypeByMetadataName(AssemblySymbol assembly, ref MetadataTypeName metadataName, AssemblyIdentity assemblyOpt)
@@ -585,59 +851,93 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return candidate.Kind != SymbolKind.ErrorType || !(candidate is MissingMetadataTypeSymbol);
         }
 
+        /// <summary>
+        /// Lookup member declaration in predefined CorLib type in this Assembly. Only valid if this 
+        /// assembly is the Cor Library
+        /// </summary>
+        internal virtual Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
+        {
+            return null;
+        }
 
-        public override AssemblySymbol ContainingAssembly => null;
+        /// <summary>
+        /// Lookup member declaration in predefined CorLib type used by this Assembly.
+        /// </summary>
+        internal virtual Symbol GetSpecialTypeMember(SpecialMember member)
+        {
+            return CorLibrary.GetDeclaredSpecialTypeMember(member);
+        }
 
-        public override ModuleSymbol ContainingModule => null;
+        internal abstract ImmutableArray<byte> PublicKey { get; }
 
-        public override Symbol ContainingSymbol => null;
+        #region IAssemblySymbol Members
 
-        public override NamespaceSymbol ContainingNamespace => null;
+        INamespaceSymbol IAssemblySymbol.GlobalNamespace
+        {
+            get
+            {
+                return this.GlobalNamespace;
+            }
+        }
 
-        public override NamedTypeSymbol ContainingType => null;
+        IEnumerable<IModuleSymbol> IAssemblySymbol.Modules
+        {
+            get
+            {
+                return this.Modules;
+            }
+        }
 
-        public abstract NamespaceSymbol GlobalNamespace { get; }
-
-        public abstract ImmutableArray<ModuleSymbol> Modules { get; }
-
-        public virtual bool IsInteractive => false;
-
-        public abstract AssemblyIdentity Identity { get; }
-
-        INamespaceSymbol IAssemblySymbol.GlobalNamespace => this.GlobalNamespace;
-
-        IEnumerable<IModuleSymbol> IAssemblySymbol.Modules => this.Modules;
-
-        public abstract ICollection<string> TypeNames { get; }
-
-        public abstract ICollection<string> NamespaceNames { get; }
-
-        public virtual bool MightContainExtensionMethods => false;
-
+        /// <summary>
+        /// If this symbol represents a metadata assembly returns the underlying <see cref="AssemblyMetadata"/>.
+        /// 
+        /// Otherwise, this returns <see langword="null"/>.
+        /// </summary>
         public abstract AssemblyMetadata GetMetadata();
-
-        public virtual bool GivesAccessTo(IAssemblySymbol toAssembly)
-        {
-            return false;
-        }
-
-        INamedTypeSymbol IAssemblySymbol.GetTypeByMetadataName(string fullyQualifiedMetadataName)
-        {
-            return this.GetTypeByMetadataName(fullyQualifiedMetadataName);
-        }
 
         INamedTypeSymbol IAssemblySymbol.ResolveForwardedType(string fullyQualifiedMetadataName)
         {
-            return this.ResolveForwardedType(fullyQualifiedMetadataName);
+            return ResolveForwardedType(fullyQualifiedMetadataName);
         }
 
-        public sealed override SymbolKind Kind => SymbolKind.Assembly;
+        bool IAssemblySymbol.GivesAccessTo(IAssemblySymbol assemblyWantingAccess)
+        {
+            if (Equals(this, assemblyWantingAccess))
+            {
+                return true;
+            }
 
-        public override bool IsStatic => false;
+            var myKeys = GetInternalsVisibleToPublicKeys(assemblyWantingAccess.Name);
 
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
+            // We have an easy out here. Suppose the assembly wanting access is 
+            // being compiled as a module. You can only strong-name an assembly. So we are going to optimistically 
+            // assume that it is going to be compiled into an assembly with a matching strong name, if necessary.
+            if (myKeys.Any() && assemblyWantingAccess.IsNetModule())
+            {
+                return true;
+            }
 
-        public virtual Version AssemblyVersionPattern => new Version();
+            foreach (var key in myKeys)
+            {
+                IVTConclusion conclusion = this.Identity.PerformIVTCheck(assemblyWantingAccess.Identity.PublicKey, key);
+                Debug.Assert(conclusion != IVTConclusion.NoRelationshipClaimed);
+                if (conclusion == IVTConclusion.Match || conclusion == IVTConclusion.OneSignedOneNot)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        INamedTypeSymbol IAssemblySymbol.GetTypeByMetadataName(string metadataName)
+        {
+            return this.GetTypeByMetadataName(metadataName);
+        }
+
+        #endregion
+
+        #region ISymbol Members
 
         public override void Accept(SymbolVisitor visitor)
         {
@@ -648,5 +948,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             return visitor.VisitAssembly(this);
         }
+
+        #endregion
     }
 }

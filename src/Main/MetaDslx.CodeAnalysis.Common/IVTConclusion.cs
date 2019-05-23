@@ -7,7 +7,7 @@ namespace Microsoft.CodeAnalysis
     /// <summary>
     /// The result of <see cref="ISymbolExtensions.PerformIVTCheck(AssemblyIdentity, ImmutableArray{byte}, ImmutableArray{byte})"/>
     /// </summary>
-    internal enum IVTConclusion
+    public enum IVTConclusion
     {
         /// <summary>
         /// This indicates that friend access should be granted.

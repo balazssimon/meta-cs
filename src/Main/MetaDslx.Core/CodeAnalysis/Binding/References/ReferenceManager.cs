@@ -271,7 +271,7 @@ namespace MetaDslx.CodeAnalysis
 
                 assemblyReferenceIdentityMap = GetAssemblyReferenceIdentityBaselineMap(peReferences, assembly.AssemblyReferences);
 
-                var assemblySymbol = MetaDslx.CodeAnalysis.Symbols.CSharp.CSharpAssemblySymbol.FromCSharp(new PEAssemblySymbol(assembly, DocumentationProvider.Default, isLinked: false, importOptions: importOptions));
+                var assemblySymbol = new CSharpAssemblySymbol(new PEAssemblySymbol(assembly, DocumentationProvider.Default, isLinked: false, importOptions: importOptions));
 
                 var unifiedAssemblies = this.UnifiedAssemblies.WhereAsArray(unified => referencedAssembliesByIdentity.Contains(unified.OriginalReference, allowHigherVersion: false));
                 InitializeAssemblyReuseData(assemblySymbol, peReferences, unifiedAssemblies);
@@ -961,7 +961,7 @@ namespace MetaDslx.CodeAnalysis
 
                 internal override AssemblySymbol CreateAssemblySymbol()
                 {
-                    return CSharpSymbolMap.GetAssemblySymbol(new PEAssemblySymbol(Assembly, DocumentationProvider, this.IsLinked, this.EffectiveImportOptions));
+                    return new CSharpAssemblySymbol(new PEAssemblySymbol(Assembly, DocumentationProvider, this.IsLinked, this.EffectiveImportOptions));
                 }
 
                 internal bool InternalsMayBeVisibleToCompilation

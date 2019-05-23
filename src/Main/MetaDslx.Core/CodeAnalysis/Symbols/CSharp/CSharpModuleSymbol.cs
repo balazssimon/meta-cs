@@ -5,132 +5,332 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 {
+    using MetaDslx.CodeAnalysis.Symbols.Retargeting;
     using MetaDslx.CodeAnalysis.Symbols.Source;
+    using System.Collections.Concurrent;
     using System.Collections.Immutable;
+    using System.Diagnostics;
+    using System.Globalization;
     using System.Linq;
+    using System.Reflection.PortableExecutable;
+    using System.Runtime.InteropServices;
     using System.Threading;
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
 
-    public class CSharpModuleSymbol : ModuleSymbol
+    public class CSharpModuleSymbol : NonMissingModuleSymbol
     {
-        private AssemblySymbol _lazyAssemblySymbol;
-        private CSharpSymbols.ModuleSymbol _csharpModule;
-        private ImmutableArray<AssemblySymbol> _lazyReferencedAssemblySymbols;
-        private ImmutableArray<string> _lazyTypeNames;
-        private ImmutableArray<string> _lazyNamespaceNames;
-
-        private CSharpModuleSymbol(CSharpSymbols.ModuleSymbol csharpModule)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="assembly">
+        /// Owning assembly.
+        /// </param>
+        /// <param name="underlyingModule">
+        /// The underlying ModuleSymbol, cannot be another CSharpModuleSymbol.
+        /// </param>
+        /// <param name="ordinal">
+        /// The index of the ModuleSymbol within the owning assembly.
+        /// </param>
+        internal CSharpModuleSymbol(AssemblySymbol assembly, CSharpSymbols.ModuleSymbol underlyingModule, int ordinal)
         {
-            _csharpModule = csharpModule;
+            Debug.Assert((object)assembly != null);
+            Debug.Assert((object)underlyingModule != null);
+
+            _csharpAssembly = assembly;
+            _underlyingModule = underlyingModule;
+            _ordinal = ordinal;
+            this.CSharpSymbolMap = new CSharpSymbolMap(this);
         }
 
-        private CSharpModuleSymbol(AssemblySymbol assembly, CSharpSymbols.ModuleSymbol module)
+        internal CSharpSymbols.ModuleSymbol CSharpModule => _underlyingModule;
+
+        internal readonly CSharpSymbolMap CSharpSymbolMap;
+
+        /// <summary>
+        /// Owning <see cref="AssemblySymbol"/>.
+        /// </summary>
+        private AssemblySymbol _csharpAssembly;
+
+        /// <summary>
+        /// The underlying <see cref="ModuleSymbol"/>, cannot be another <see cref="CSharpModuleSymbol"/>.
+        /// </summary>
+        private readonly CSharpSymbols.ModuleSymbol _underlyingModule;
+
+        /// <summary>
+        /// The map that captures information about what assembly should be retargeted 
+        /// to what assembly. Key is the <see cref="AssemblySymbol"/> referenced by the underlying module,
+        /// value is the corresponding <see cref="AssemblySymbol"/> referenced by this module, and corresponding
+        /// retargeting map for symbols.
+        /// </summary>
+        private readonly Dictionary<AssemblySymbol, DestinationData> _retargetingAssemblyMap =
+            new Dictionary<AssemblySymbol, DestinationData>();
+
+        private struct DestinationData
         {
-            _lazyAssemblySymbol = assembly;
-            _csharpModule = module;
+            public AssemblySymbol To;
+            private ConcurrentDictionary<NamedTypeSymbol, NamedTypeSymbol> _symbolMap;
+
+            public ConcurrentDictionary<NamedTypeSymbol, NamedTypeSymbol> SymbolMap => LazyInitializer.EnsureInitialized(ref _symbolMap);
         }
 
-        internal static CSharpModuleSymbol FromCSharp(CSharpSymbols.ModuleSymbol csharpModule)
+        /// <summary>
+        /// Retargeted custom attributes
+        /// </summary>
+        private ImmutableArray<AttributeData> _lazyCustomAttributes;
+
+        private int _ordinal;
+
+        public override int Ordinal
         {
-            return new CSharpModuleSymbol(csharpModule);
+            get
+            {
+                return _ordinal;
+            }
         }
 
-        internal static CSharpModuleSymbol FromCSharp(AssemblySymbol assembly, CSharpSymbols.ModuleSymbol module)
+        public override Machine Machine
         {
-            return new CSharpModuleSymbol(assembly, module);
+            get
+            {
+                return _underlyingModule.Machine;
+            }
         }
 
-        internal CSharpSymbols.ModuleSymbol CSharpModule => _csharpModule;
-
-        public override bool HasUnifiedReferences => _csharpModule.HasUnifiedReferences;
-
-        public override bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, Symbol dependentType)
+        public override bool Bit32Required
         {
-            if (dependentType is CSharpNamedTypeSymbol csharpNamedType) return _csharpModule.GetUnificationUseSiteDiagnostic(ref result, csharpNamedType.CSharpSymbol);
-            if (dependentType is UnsupportedSymbol unsupported && unsupported.Symbol is CSharpSymbols.TypeSymbol csharpType) return _csharpModule.GetUnificationUseSiteDiagnostic(ref result, csharpType);
-            return false;
+            get
+            {
+                return _underlyingModule.Bit32Required;
+            }
+        }
+
+        /// <summary>
+        /// The underlying ModuleSymbol, cannot be another CSharpModuleSymbol.
+        /// </summary>
+        internal CSharpSymbols.ModuleSymbol UnderlyingModule
+        {
+            get
+            {
+                return _underlyingModule;
+            }
+        }
+
+        public override NamespaceSymbol GlobalNamespace
+        {
+            get
+            {
+                return CSharpSymbolMap.GetNamespaceSymbol(_underlyingModule.GlobalNamespace);
+            }
+        }
+
+        public override bool IsImplicitlyDeclared
+        {
+            get { return _underlyingModule.IsImplicitlyDeclared; }
+        }
+
+        public override string Name
+        {
+            get
+            {
+                return _underlyingModule.Name;
+            }
+        }
+
+        public override string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _underlyingModule.GetDocumentationCommentXml(preferredCulture, expandIncludes, cancellationToken);
+        }
+
+        public override Symbol ContainingSymbol
+        {
+            get
+            {
+                return _csharpAssembly;
+            }
         }
 
         public override AssemblySymbol ContainingAssembly
         {
             get
             {
-                if (_csharpModule.ContainingAssembly == null) return null;
-                if (_lazyAssemblySymbol == null)
-                {
-                    Interlocked.CompareExchange(ref _lazyAssemblySymbol, CSharpSymbolMap.GetAssemblySymbol(_csharpModule.ContainingAssembly), null);
-                }
-                return _lazyAssemblySymbol;
+                return _csharpAssembly;
             }
         }
 
-        public override ModuleSymbol ContainingModule => null;
-
-        public override Symbol ContainingSymbol => this.ContainingAssembly;
-
-        public override NamespaceSymbol ContainingNamespace => null;
-
-        public override NamedTypeSymbol ContainingType => null;
-
-        public override NamespaceSymbol GlobalNamespace => CSharpSymbolMap.GetNamespaceSymbol(_csharpModule.GlobalNamespace);
-
-        public override ImmutableArray<AssemblyIdentity> ReferencedAssemblies => _csharpModule.ReferencedAssemblies;
-
-        public override ImmutableArray<AssemblySymbol> ReferencedAssemblySymbols
+        public override ImmutableArray<Location> Locations
         {
             get
             {
-                if (_lazyReferencedAssemblySymbols.IsDefault)
-                {
-                    var assemblies = CSharpSymbolMap.GetAssemblySymbols(_csharpModule.ReferencedAssemblySymbols);
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyReferencedAssemblySymbols, assemblies);
-                }
-                return _lazyReferencedAssemblySymbols;
+                return _underlyingModule.Locations;
             }
         }
 
-        public override ModuleMetadata GetMetadata()
+        /// <summary>
+        /// A helper method for ReferenceManager to set AssemblySymbols for assemblies 
+        /// referenced by this module.
+        /// </summary>
+        internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly)
         {
-            return _csharpModule.GetMetadata();
+            base.SetReferences(moduleReferences, originatingSourceAssemblyDebugOnly);
+
+            // Build the retargeting map
+            _retargetingAssemblyMap.Clear();
+
+            ImmutableArray<AssemblySymbol> underlyingBoundReferences = CSharpSymbolMap.GetAssemblySymbols(_underlyingModule.ReferencedAssemblySymbols);
+            ImmutableArray<AssemblySymbol> referencedAssemblySymbols = moduleReferences.Symbols;
+
+            Debug.Assert(referencedAssemblySymbols.Length == moduleReferences.Identities.Length);
+            Debug.Assert(referencedAssemblySymbols.Length <= underlyingBoundReferences.Length); // Linked references are filtered out.
+
+            int i, j;
+            for (i = 0, j = 0; i < referencedAssemblySymbols.Length; i++, j++)
+            {
+                // Skip linked assemblies for source module
+                while (underlyingBoundReferences[j].IsLinked)
+                {
+                    j++;
+                }
+
+#if DEBUG
+                var identityComparer = _underlyingModule.DeclaringCompilation.Options.AssemblyIdentityComparer;
+                var definitionIdentity = ReferenceEquals(referencedAssemblySymbols[i], originatingSourceAssemblyDebugOnly) ?
+                        new AssemblyIdentity(name: originatingSourceAssemblyDebugOnly.Name) :
+                        referencedAssemblySymbols[i].Identity;
+
+                Debug.Assert(identityComparer.Compare(moduleReferences.Identities[i], definitionIdentity) != AssemblyIdentityComparer.ComparisonResult.NotEquivalent);
+                Debug.Assert(identityComparer.Compare(moduleReferences.Identities[i], underlyingBoundReferences[j].Identity) != AssemblyIdentityComparer.ComparisonResult.NotEquivalent);
+#endif
+
+                if (!ReferenceEquals(referencedAssemblySymbols[i], underlyingBoundReferences[j]))
+                {
+                    DestinationData destinationData;
+
+                    if (!_retargetingAssemblyMap.TryGetValue(underlyingBoundReferences[j], out destinationData))
+                    {
+                        _retargetingAssemblyMap.Add(underlyingBoundReferences[j],
+                            new DestinationData { To = referencedAssemblySymbols[i] });
+                    }
+                    else
+                    {
+                        Debug.Assert(ReferenceEquals(destinationData.To, referencedAssemblySymbols[i]));
+                    }
+                }
+            }
+
+#if DEBUG
+            while (j < underlyingBoundReferences.Length && underlyingBoundReferences[j].IsLinked)
+            {
+                j++;
+            }
+
+            Debug.Assert(j == underlyingBoundReferences.Length);
+#endif
         }
 
-        internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName)
-        {
-            return CSharpSymbolMap.GetNamedTypeSymbol(_csharpModule.LookupTopLevelMetadataType(ref emittedName));
-        }
-
-        public override ImmutableArray<Location> Locations => _csharpModule.Locations;
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _csharpModule.DeclaringSyntaxReferences;
-
-        public override int Ordinal => _csharpModule.Ordinal;
-
-        public override ImmutableArray<string> TypeNames
+        public override ICollection<string> TypeNames
         {
             get
             {
-                if (_lazyTypeNames.IsDefault)
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeNames, _csharpModule.TypeNames.ToImmutableArray());
-                }
-                return _lazyTypeNames;
+                return _underlyingModule.TypeNames;
             }
         }
 
-        public override ImmutableArray<string> NamespaceNames 
+        public override ICollection<string> NamespaceNames
         {
             get
             {
-                if (_lazyNamespaceNames.IsDefault)
+                return _underlyingModule.NamespaceNames;
+            }
+        }
+
+        public override ImmutableArray<AttributeData> GetAttributes()
+        {
+            return CSharpSymbolMap.GetAttributes(_underlyingModule.GetAttributes(), ref _lazyCustomAttributes);
+        }
+
+        internal override bool HasAssemblyCompilationRelaxationsAttribute
+        {
+            get
+            {
+                return _underlyingModule.HasAssemblyCompilationRelaxationsAttribute;
+            }
+        }
+
+        internal override bool HasAssemblyRuntimeCompatibilityAttribute
+        {
+            get
+            {
+                return _underlyingModule.HasAssemblyRuntimeCompatibilityAttribute;
+            }
+        }
+
+        internal override CharSet? DefaultMarshallingCharSet
+        {
+            get
+            {
+                return _underlyingModule.DefaultMarshallingCharSet;
+            }
+        }
+
+        internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness
+        {
+            get { return null; }
+        }
+
+        public override ModuleMetadata GetMetadata() => _underlyingModule.GetMetadata();
+
+        /// <summary>
+        /// Returns a tuple of the assemblies this module forwards the given type to.
+        /// </summary>
+        /// <param name="fullName">Type to look up.</param>
+        /// <returns>A tuple of the forwarded to assemblies.</returns>
+        /// <remarks>
+        /// The returned assemblies may also forward the type.
+        /// </remarks>
+        internal (AssemblySymbol FirstSymbol, AssemblySymbol SecondSymbol) GetAssembliesForForwardedType(ref MetadataTypeName fullName)
+        {
+            string matchedName;
+            var peModuleSymbol = this.UnderlyingModule as CSharpSymbols.Metadata.PE.PEModuleSymbol;
+            if (peModuleSymbol == null) return (null, null);
+            (int firstIndex, int secondIndex) = peModuleSymbol.Module.GetAssemblyRefsForForwardedType(fullName.FullName, ignoreCase: false, matchedName: out matchedName);
+
+            if (firstIndex < 0)
+            {
+                return (null, null);
+            }
+
+            AssemblySymbol firstSymbol = GetReferencedAssemblySymbol(firstIndex);
+
+            if (secondIndex < 0)
+            {
+                return (firstSymbol, null);
+            }
+
+            AssemblySymbol secondSymbol = GetReferencedAssemblySymbol(secondIndex);
+            return (firstSymbol, secondSymbol);
+        }
+
+        internal IEnumerable<NamedTypeSymbol> GetForwardedTypes()
+        {
+            foreach (KeyValuePair<string, (int FirstIndex, int SecondIndex)> forwarder in ((CSharpSymbols.Metadata.PE.PEModuleSymbol)this.UnderlyingModule).Module.GetForwardedTypes())
+            {
+                var name = MetadataTypeName.FromFullName(forwarder.Key);
+
+                Debug.Assert(forwarder.Value.FirstIndex >= 0, "First index should never be negative");
+                AssemblySymbol firstSymbol = this.GetReferencedAssemblySymbol(forwarder.Value.FirstIndex);
+                Debug.Assert((object)firstSymbol != null, "Invalid indexes (out of bound) are discarded during reading metadata in PEModule.EnsureForwardTypeToAssemblyMap()");
+
+                if (forwarder.Value.SecondIndex >= 0)
                 {
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyNamespaceNames, _csharpModule.NamespaceNames.ToImmutableArray());
+                    var secondSymbol = this.GetReferencedAssemblySymbol(forwarder.Value.SecondIndex);
+                    Debug.Assert((object)secondSymbol != null, "Invalid indexes (out of bound) are discarded during reading metadata in PEModule.EnsureForwardTypeToAssemblyMap()");
+
+                    yield return ContainingAssembly.CreateMultipleForwardingErrorTypeSymbol(ref name, this, firstSymbol, secondSymbol);
                 }
-                return _lazyNamespaceNames;
+                else
+                {
+                    yield return firstSymbol.LookupTopLevelMetadataType(ref name, digThroughForwardedTypes: true);
+                }
             }
         }
     }

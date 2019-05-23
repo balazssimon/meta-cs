@@ -365,7 +365,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             AddDeclarationDiagnostics(diagnostics);
             diagnostics.Free();
 
-            return membersAndInitializers;
+            return _lazyMembers;
         }
 
         protected Dictionary<string, ImmutableArray<Symbol>> GetMembersByName()
@@ -715,6 +715,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         #endregion
 
+        public override ImmutableArray<AttributeData> GetAttributes()
+        {
+            // TODO:MetaDslx
+            _state.NotePartComplete(CompletionPart.Attributes);
+            return ImmutableArray<AttributeData>.Empty;
+        }
+
         #region Completion
 
         public sealed override bool RequiresCompletion
@@ -832,5 +839,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         #endregion
 
+        public virtual void EnsureSymbolDefinitionsNoted()
+        {
+            // TODO:MetaDslx
+        }
     }
 }

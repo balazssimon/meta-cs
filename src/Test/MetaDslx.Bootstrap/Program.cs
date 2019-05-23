@@ -54,9 +54,8 @@ namespace MetaDslx.Bootstrap
             }
             //*/
 
-            /*/
+            //*/
             var compilation = MetaCompilation.Create("MetaTest").AddSyntaxTrees(tree);
-            //var formatter = new DiagnosticFormatter();
             foreach (var diag in compilation.GetParseDiagnostics())
             {
                 Console.WriteLine(formatter.Format(diag));

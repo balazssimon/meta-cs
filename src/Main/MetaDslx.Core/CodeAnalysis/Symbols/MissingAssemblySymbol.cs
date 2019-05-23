@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// A <see cref="MissingAssemblySymbol"/> is a special kind of <see cref="AssemblySymbol"/> that represents
     /// an assembly that couldn't be found.
     /// </summary>
-    public class MissingAssemblySymbol : AssemblySymbol
+    internal class MissingAssemblySymbol : AssemblySymbol
     {
         protected readonly AssemblyIdentity identity;
         protected readonly MissingModuleSymbol moduleSymbol;
@@ -46,12 +46,24 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        internal override Symbol GetDeclaredSpecialTypeMember(SpecialMember member)
+        {
+            return null;
+        }
+
         public override AssemblyIdentity Identity
         {
             get
             {
                 return identity;
             }
+        }
+
+        public override Version AssemblyVersionPattern => null;
+
+        internal override ImmutableArray<byte> PublicKey
+        {
+            get { return Identity.PublicKey; }
         }
 
         public override ImmutableArray<ModuleSymbol> Modules
@@ -105,7 +117,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
+        internal override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
         {
             return ImmutableArray<AssemblySymbol>.Empty;
         }
@@ -115,7 +127,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
+        internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
         {
             return ImmutableArray<AssemblySymbol>.Empty;
         }
@@ -144,6 +156,28 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
+        internal override NamedTypeSymbol LookupTopLevelMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies, bool digThroughForwardedTypes)
+        {
+            var result = this.moduleSymbol.LookupTopLevelMetadataType(ref emittedName);
+            Debug.Assert(result is MissingMetadataTypeSymbol);
+            return result;
+        }
+
+        internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        internal override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
+        {
+            return false;
+        }
+
+        internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
+        {
+            return SpecializedCollections.EmptyEnumerable<ImmutableArray<byte>>();
+        }
+
         public override bool MightContainExtensionMethods
         {
             get
@@ -152,29 +186,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-
         public override AssemblyMetadata GetMetadata() => null;
-
-        public override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
-        {
-            return null;
-        }
-
-        public override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
-        {
-            return false;
-        }
-
-        public override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
-        {
-            return SpecializedCollections.EmptyEnumerable<ImmutableArray<byte>>();
-        }
-
-
-        internal override NamedTypeSymbol LookupTopLevelMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies, bool digThroughForwardedTypes)
-        {
-            return null;
-        }
     }
 }

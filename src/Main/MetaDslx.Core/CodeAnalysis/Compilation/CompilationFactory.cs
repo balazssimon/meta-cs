@@ -34,6 +34,8 @@ namespace MetaDslx.CodeAnalysis
         {
             CompletionGraphBuilder builder = new CompletionGraphBuilder();
             builder.AddLast(CompletionPart.Attributes);
+            builder.AddLast(CompletionPart.StartAttributeChecks);
+            builder.AddLast(CompletionPart.FinishAttributeChecks);
             builder.AddLast(CompletionPart.StartBaseTypes);
             builder.AddLast(CompletionPart.FinishBaseTypes);
             builder.AddLast(CompletionPart.Members);

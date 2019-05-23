@@ -15,16 +15,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         private CSharpModuleSymbol _module;
         private CSharpSymbols.NamespaceSymbol _csharpSymbol;
 
-        private CSharpNamespaceSymbol(CSharpModuleSymbol module, CSharpSymbols.NamespaceSymbol csharpSymbol)
+        internal CSharpNamespaceSymbol(CSharpModuleSymbol module, CSharpSymbols.NamespaceSymbol csharpSymbol)
         {
             _module = module;
             _csharpSymbol = csharpSymbol;
         }
 
-        internal static CSharpNamespaceSymbol FromCSharp(CSharpSymbols.NamespaceSymbol csharpSymbol)
-        {
-            return new CSharpNamespaceSymbol((CSharpModuleSymbol)CSharpSymbolMap.GetModuleSymbol(csharpSymbol.ContainingModule), csharpSymbol);
-        }
+        internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
 
         internal CSharpSymbols.NamespaceSymbol CSharpSymbol => _csharpSymbol;
 

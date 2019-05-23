@@ -71,5 +71,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         {
             return metaSymbols.Select(symbol => GetNamedTypeSymbol(symbol)).ToImmutableArray();
         }
+
+        public ImmutableArray<AttributeData> GetAttributes(ImmutableArray<AttributeData> attributes, ref ImmutableArray<AttributeData> cachedAttributes)
+        {
+            if (!cachedAttributes.IsDefault) return cachedAttributes;
+            else return ImmutableArray<AttributeData>.Empty; // TODO:MetaDslx
+        }
     }
 }

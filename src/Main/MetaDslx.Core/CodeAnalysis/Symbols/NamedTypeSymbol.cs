@@ -395,7 +395,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         bool INamedTypeSymbol.IsComImport => false;
 
-        bool INamedTypeSymbol.MightContainExtensionMethods => false;
+        public virtual bool MightContainExtensionMethods => false;
 
         bool INamedTypeSymbol.IsSerializable => false;
 

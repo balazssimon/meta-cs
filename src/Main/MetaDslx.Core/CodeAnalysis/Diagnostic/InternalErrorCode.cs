@@ -4,10 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis
 {
+    using ErrorFacts = Microsoft.CodeAnalysis.CSharp.ErrorFacts;
+
     internal sealed class InternalErrorCode : ErrorCode
     {
         private static ImmutableDictionary<int, InternalErrorCode> s_errorCodeToDescriptorMap = ImmutableDictionary<int, InternalErrorCode>.Empty;

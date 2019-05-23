@@ -32,6 +32,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart StartValidatingAddedModules = new CompletionPart(nameof(StartValidatingAddedModules));
         public static readonly CompletionPart FinishValidatingAddedModules = new CompletionPart(nameof(FinishValidatingAddedModules));
 
+        public static readonly CompletionPart StartAttributeChecks = new CompletionPart(nameof(StartAttributeChecks));
+        public static readonly CompletionPart FinishAttributeChecks = new CompletionPart(nameof(FinishAttributeChecks));
+
         public static readonly CompletionPart StartBaseTypes = new CompletionPart(nameof(StartBaseTypes));
         public static readonly CompletionPart FinishBaseTypes = new CompletionPart(nameof(FinishBaseTypes));
 
@@ -47,7 +50,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart AliasTarget = new CompletionPart(nameof(AliasTarget));
 
         public static readonly ImmutableHashSet<CompletionPart> AssemblySymbolAll =
-            Combine(Attributes, Module, StartValidatingAddedModules, FinishValidatingAddedModules);
+            Combine(Attributes, StartAttributeChecks, FinishAttributeChecks, Module, StartValidatingAddedModules, FinishValidatingAddedModules);
         public static readonly ImmutableHashSet<CompletionPart> ModuleSymbolAll =
             Combine(Attributes, StartValidatingReferencedAssemblies, FinishValidatingReferencedAssemblies, MembersCompleted);
 
@@ -64,6 +67,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static ImmutableHashSet<CompletionPart> Combine(params CompletionPart[] parts)
         {
             return ImmutableHashSet.CreateRange<CompletionPart>(parts);
+        }
+
+        public override string ToString()
+        {
+            return _name;
         }
     }
 
@@ -84,6 +92,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal SymbolCompletionState(CompletionGraph graph)
         {
+            _completeParts = -1;
             _graph = graph;
         }
 
@@ -340,7 +349,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 throw new InvalidOperationException("Circular dependency in the completion graph: " + sb.ToString());
             }
             if (!visited.Add(node)) return;
-            if (!_edges.TryGetValue(node, out var sources)) return;
+            if (!_edges.TryGetValue(node, out var sources))
+            {
+                result.Add(node);
+                return;
+            }
             stack.Push(node);
             try
             {

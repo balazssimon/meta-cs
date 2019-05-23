@@ -11,6 +11,8 @@
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
     <IsPackable>false</IsPackable>
+    <ApplicationIcon />
+    <Win32Resource />
   </PropertyGroup>
   <ItemGroup>
     <Content Include="$(NuGetPackageRoot)\microsoft.diasymreader.native\$(MicrosoftDiaSymReaderNativeVersion)\runtimes\win\native\Microsoft.DiaSymReader.Native.x86.dll">
@@ -59,7 +61,7 @@
   <ItemGroup>
     <EmbeddedResource Update="CSharpResources.resx">
       <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CSharpResources.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Microsoft.CodeAnalysis.CSharp</CustomToolNamespace>
     </EmbeddedResource>

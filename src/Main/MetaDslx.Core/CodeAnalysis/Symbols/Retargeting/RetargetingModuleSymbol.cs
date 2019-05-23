@@ -89,6 +89,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
+        public override Machine Machine
+        {
+            get
+            {
+                return _underlyingModule.Machine;
+            }
+        }
+
+        public override bool Bit32Required
+        {
+            get
+            {
+                return _underlyingModule.Bit32Required;
+            }
+        }
+
         /// <summary>
         /// The underlying ModuleSymbol, cannot be another RetargetingModuleSymbol.
         /// </summary>
@@ -212,7 +228,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 #endif
         }
 
-        public override ImmutableArray<string> TypeNames
+        public override ICollection<string> TypeNames
         {
             get
             {
@@ -220,11 +236,40 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        public override ImmutableArray<string> NamespaceNames
+        public override ICollection<string> NamespaceNames
         {
             get
             {
                 return _underlyingModule.NamespaceNames;
+            }
+        }
+
+        public override ImmutableArray<AttributeData> GetAttributes()
+        {
+            return RetargetingSymbolMap.GetAttributes(_underlyingModule.GetAttributes(), ref _lazyCustomAttributes);
+        }
+
+        internal override bool HasAssemblyCompilationRelaxationsAttribute
+        {
+            get
+            {
+                return _underlyingModule.HasAssemblyCompilationRelaxationsAttribute;
+            }
+        }
+
+        internal override bool HasAssemblyRuntimeCompatibilityAttribute
+        {
+            get
+            {
+                return _underlyingModule.HasAssemblyRuntimeCompatibilityAttribute;
+            }
+        }
+
+        internal override CharSet? DefaultMarshallingCharSet
+        {
+            get
+            {
+                return _underlyingModule.DefaultMarshallingCharSet;
             }
         }
 

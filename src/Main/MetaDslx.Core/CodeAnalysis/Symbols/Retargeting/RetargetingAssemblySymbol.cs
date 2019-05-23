@@ -1,18 +1,17 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.Source;
+using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 {
@@ -105,10 +104,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 
             modules[0] = new RetargetingModuleSymbol(this, (SourceModuleSymbol)underlyingAssembly.Modules[0]);
 
-            for (int i = 0; i < underlyingAssembly.Modules.Length; i++)
+            for (int i = 1; i < underlyingAssembly.Modules.Length; i++)
             {
                 CSharpModuleSymbol under = (CSharpModuleSymbol)underlyingAssembly.Modules[i];
-                modules[i] = CSharpModuleSymbol.FromCSharp(this, under.CSharpModule);
+                modules[i] = new CSharpModuleSymbol(this, under.CSharpModule, i);
             }
 
             _modules = modules.AsImmutableOrNull();
@@ -150,6 +149,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 
         public override Version AssemblyVersionPattern => _underlyingAssembly.AssemblyVersionPattern;
 
+        internal override ImmutableArray<byte> PublicKey
+        {
+            get { return _underlyingAssembly.PublicKey; }
+        }
+
         public override string GetDocumentationCommentXml(CultureInfo preferredCulture = null, bool expandIncludes = false, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _underlyingAssembly.GetDocumentationCommentXml(preferredCulture, expandIncludes, cancellationToken);
@@ -163,7 +167,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        public override bool KeepLookingForDeclaredSpecialTypes
+        internal override bool KeepLookingForDeclaredSpecialTypes
         {
             get
             {
@@ -180,14 +184,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        public override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
+        internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)
         {
             return _underlyingAssembly.GetInternalsVisibleToPublicKeys(simpleName);
         }
 
-        public override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
+        internal override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
         {
             return _underlyingAssembly.AreInternalsVisibleToThisAssembly(other);
+        }
+
+        public override ImmutableArray<AttributeData> GetAttributes()
+        {
+            return RetargetingSymbolMap.GetAttributes(_underlyingAssembly.GetAttributes(), ref _lazyCustomAttributes);
         }
 
         /// <summary>
@@ -196,14 +205,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         /// <param name="type"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
+        internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
         {
             // Cor library should not have any references and, therefore, should never be
             // wrapped by a RetargetingAssemblySymbol.
             throw ExceptionUtilities.Unreachable;
         }
 
-        public override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
+        internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
         {
             return _noPiaResolutionAssemblies;
         }
@@ -218,7 +227,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             _linkedReferencedAssemblies = assemblies;
         }
 
-        public override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
+        internal override ImmutableArray<AssemblySymbol> GetLinkedReferencedAssemblies()
         {
             return _linkedReferencedAssemblies;
         }
@@ -260,16 +269,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             get { return null; }
         }
 
+        internal override bool GetGuidString(out string guidString)
+        {
+            return _underlyingAssembly.GetGuidString(out guidString);
+        }
+
         internal override NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
         {
-            NamedTypeSymbol underlying = _underlyingAssembly.TryLookupForwardedMetadataType(ref emittedName);
-
-            if ((object)underlying == null)
-            {
-                return null;
-            }
-
-            return this.RetargetingSymbolMap.GetNamedTypeSymbol(underlying);
+            return RetargetingSymbolMap.GetNamedTypeSymbol(_underlyingAssembly.TryLookupForwardedMetadataType(ref emittedName));
         }
 
         public override AssemblyMetadata GetMetadata() => _underlyingAssembly.GetMetadata();

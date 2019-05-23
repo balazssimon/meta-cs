@@ -276,7 +276,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var builder = new NameToSymbolMapBuilder(_mergedDeclaration.Children.Length);
             foreach (var declaration in _mergedDeclaration.Children)
             {
-                builder.Add(BuildSymbol(declaration, diagnostics));
+                if (declaration.IsNamespace || declaration.IsType)
+                {
+                    builder.Add(BuildSymbol(declaration, diagnostics));
+                }
             }
 
             var result = builder.CreateMap();
@@ -302,7 +305,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 foreach (var symbol in result[name])
                 {
                     var nts = symbol as NamedTypeSymbol;
-                    var metadataName = ((object)nts != null) ? nts.MetadataName : null;
+                    var metadataName = ((object)nts != null) ? nts.MetadataName : string.Empty;
 
                     if (memberOfMetadataName.TryGetValue(metadataName, out Symbol other))
                     {
@@ -363,7 +366,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             else if (declaration.IsName)
             {
                 // TODO:MetaDslx - allow names in a namespace
-                //return new SourceMemberSymbol(this, declaration, diagnostics);
+               // return new SourceMemberSymbol(this, declaration, diagnostics);
             }
             throw ExceptionUtilities.UnexpectedValue(declaration.Kind);
         }
@@ -501,6 +504,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        public override ImmutableArray<AttributeData> GetAttributes()
+        {
+            // TODO:MetaDslx
+            _state.NotePartComplete(CompletionPart.Attributes);
+            return ImmutableArray<AttributeData>.Empty;
+        }
+
         #region completion
 
         public sealed override bool RequiresCompletion
@@ -514,7 +524,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var incompletePart = _state.NextIncompletePart;
-                if (incompletePart == CompletionPart.NameToMembersMap)
+                if (incompletePart == CompletionPart.Attributes)
+                {
+                    GetAttributes();
+                }
+                else if (incompletePart == CompletionPart.NameToMembersMap)
                 {
                     GetNameToMembersMap();
                 }

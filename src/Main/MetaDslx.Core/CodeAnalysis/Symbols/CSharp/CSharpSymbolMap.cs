@@ -13,9 +13,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
     internal class CSharpSymbolMap
     {
-        private static ConditionalWeakTable<CSharpSymbol, Symbol> map = new ConditionalWeakTable<CSharpSymbol, Symbol>();
+        private ConditionalWeakTable<CSharpSymbol, Symbol> map = new ConditionalWeakTable<CSharpSymbol, Symbol>();
 
-        private static T GetSymbol<TCSharp, T>(TCSharp csharpSymbol, Func<TCSharp, T> createSymbol)
+        private CSharpModuleSymbol _module;
+
+        public CSharpSymbolMap(CSharpModuleSymbol module)
+        {
+            if (module == null) throw new ArgumentNullException(nameof(module));
+            _module = module;
+        }
+
+        private T GetSymbol<TCSharp, T>(TCSharp csharpSymbol, Func<TCSharp, T> createSymbol)
             where TCSharp : CSharpSymbol
             where T : Symbol
         {
@@ -28,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             return (T)symbol;
         }
 
-        public static Symbol GetSymbol(CSharpSymbol csharpSymbol)
+        public Symbol GetSymbol(CSharpSymbol csharpSymbol)
         {
             if (csharpSymbol is CSharpSymbols.AssemblySymbol assembly) return GetAssemblySymbol(assembly);
             if (csharpSymbol is CSharpSymbols.ModuleSymbol module) return GetModuleSymbol(module);
@@ -37,49 +45,56 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             return new UnsupportedSymbol(csharpSymbol);
         }
 
-        public static ImmutableArray<Symbol> GetSymbols(ImmutableArray<CSharpSymbol> csharpSymbols)
+        public ImmutableArray<Symbol> GetSymbols(ImmutableArray<CSharpSymbol> csharpSymbols)
         {
             return csharpSymbols.Select(symbol => GetSymbol(symbol)).ToImmutableArray();
         }
 
-        public static AssemblySymbol GetAssemblySymbol(CSharpSymbols.AssemblySymbol csharpSymbol)
+        public AssemblySymbol GetAssemblySymbol(CSharpSymbols.AssemblySymbol csharpSymbol)
         {
-            return GetSymbol(csharpSymbol, cs => CSharpAssemblySymbol.FromCSharp(cs));
+            return GetSymbol(csharpSymbol, cs => new CSharpAssemblySymbol(cs));
         }
 
-        public static ImmutableArray<AssemblySymbol> GetAssemblySymbols(ImmutableArray<CSharpSymbols.AssemblySymbol> csharpSymbols)
+        public ImmutableArray<AssemblySymbol> GetAssemblySymbols(ImmutableArray<CSharpSymbols.AssemblySymbol> csharpSymbols)
         {
             return csharpSymbols.Select(symbol => GetAssemblySymbol(symbol)).ToImmutableArray();
         }
 
-        public static ModuleSymbol GetModuleSymbol(CSharpSymbols.ModuleSymbol csharpSymbol)
+        public ModuleSymbol GetModuleSymbol(CSharpSymbols.ModuleSymbol csharpSymbol)
         {
-            return GetSymbol(csharpSymbol, cs => CSharpModuleSymbol.FromCSharp(cs));
+            var assembly = (CSharpAssemblySymbol)GetAssemblySymbol(csharpSymbol.ContainingAssembly);
+            return GetSymbol<CSharpSymbols.ModuleSymbol, ModuleSymbol>(csharpSymbol, cs => throw new InvalidOperationException("Module symbol should have been created by the assembly."));
         }
 
-        public static ImmutableArray<ModuleSymbol> GetModuleSymbols(ImmutableArray<CSharpSymbols.ModuleSymbol> csharpSymbols)
+        public ImmutableArray<ModuleSymbol> GetModuleSymbols(ImmutableArray<CSharpSymbols.ModuleSymbol> csharpSymbols)
         {
             return csharpSymbols.Select(symbol => GetModuleSymbol(symbol)).ToImmutableArray();
         }
 
-        public static NamespaceSymbol GetNamespaceSymbol(CSharpSymbols.NamespaceSymbol csharpSymbol)
+        public NamespaceSymbol GetNamespaceSymbol(CSharpSymbols.NamespaceSymbol csharpSymbol)
         {
-            return GetSymbol(csharpSymbol, cs => CSharpNamespaceSymbol.FromCSharp(cs));
+            return GetSymbol(csharpSymbol, cs => new CSharpNamespaceSymbol(_module, cs));
         }
 
-        public static ImmutableArray<NamespaceSymbol> GetNamespaceSymbols(ImmutableArray<CSharpSymbols.NamespaceSymbol> csharpSymbols)
+        public ImmutableArray<NamespaceSymbol> GetNamespaceSymbols(ImmutableArray<CSharpSymbols.NamespaceSymbol> csharpSymbols)
         {
             return csharpSymbols.Select(symbol => GetNamespaceSymbol(symbol)).ToImmutableArray();
         }
 
-        public static NamedTypeSymbol GetNamedTypeSymbol(CSharpSymbols.NamedTypeSymbol csharpSymbol)
+        public NamedTypeSymbol GetNamedTypeSymbol(CSharpSymbols.NamedTypeSymbol csharpSymbol)
         {
-            return GetSymbol(csharpSymbol, cs => CSharpNamedTypeSymbol.FromCSharp(cs));
+            return GetSymbol(csharpSymbol, cs => new CSharpNamedTypeSymbol(_module, cs));
         }
 
-        public static ImmutableArray<NamedTypeSymbol> GetNamedTypeSymbols(ImmutableArray<CSharpSymbols.NamedTypeSymbol> csharpSymbols)
+        public ImmutableArray<NamedTypeSymbol> GetNamedTypeSymbols(ImmutableArray<CSharpSymbols.NamedTypeSymbol> csharpSymbols)
         {
             return csharpSymbols.Select(symbol => GetNamedTypeSymbol(symbol)).ToImmutableArray();
+        }
+
+        public ImmutableArray<AttributeData> GetAttributes(ImmutableArray<CSharpSymbols.CSharpAttributeData> attributes, ref ImmutableArray<AttributeData> cachedAttributes)
+        {
+            if (!cachedAttributes.IsDefault) return cachedAttributes;
+            else return ImmutableArray<AttributeData>.Empty; // TODO:MetaDslx
         }
     }
 }

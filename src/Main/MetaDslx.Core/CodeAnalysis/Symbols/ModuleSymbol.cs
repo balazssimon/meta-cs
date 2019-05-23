@@ -1,102 +1,202 @@
-﻿using Microsoft.CodeAnalysis;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
+using System.Reflection;
+using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
 using MetaDslx.CodeAnalysis.Symbols.Source;
+using Microsoft.CodeAnalysis;
+using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-
+    /// <summary>
+    /// Represents a module within an assembly. Every assembly contains one or more modules.
+    /// </summary>
     public abstract class ModuleSymbol : Symbol, IModuleSymbol
     {
-        protected ModuleSymbol()
-        {
-        }
-
-        public abstract int Ordinal { get; }
-
-        public virtual bool IsMissing => false;
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Changes to the public interface of this class should remain synchronized with the VB version.
+        // Do not make any changes to the public interface without making the corresponding change
+        // to the VB version.
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         /// <summary>
-        /// True if this module has any unified references.
+        /// Returns a NamespaceSymbol representing the global (root) namespace, with
+        /// module extent, that can be used to browse all of the symbols defined in this module.
         /// </summary>
-        public abstract bool HasUnifiedReferences { get; }
-
-        public override ModuleSymbol ContainingModule => null;
-
-        public override Symbol ContainingSymbol => this.ContainingAssembly;
-
-        public override NamespaceSymbol ContainingNamespace => null;
-
-        public override NamedTypeSymbol ContainingType => null;
-
         public abstract NamespaceSymbol GlobalNamespace { get; }
 
-        public abstract ImmutableArray<AssemblyIdentity> ReferencedAssemblies { get; }
-
-        public abstract ImmutableArray<AssemblySymbol> ReferencedAssemblySymbols { get; }
-
-        public abstract ModuleMetadata GetMetadata();
-
         /// <summary>
-        /// Given a namespace symbol, returns the corresponding module specific namespace symbol
+        /// Returns the containing assembly. Modules are always directly contained by an assembly,
+        /// so this property always returns the same as ContainingSymbol.
         /// </summary>
-        public NamespaceSymbol GetModuleNamespace(INamespaceSymbol namespaceSymbol)
+        public override AssemblySymbol ContainingAssembly
         {
-            if (namespaceSymbol == null)
+            get
             {
-                throw new ArgumentNullException(nameof(namespaceSymbol));
+                return (AssemblySymbol)ContainingSymbol;
             }
+        }
 
-            var moduleNs = namespaceSymbol as NamespaceSymbol;
-            if ((object)moduleNs != null && moduleNs.Extent.Kind == NamespaceKind.Module && moduleNs.ContainingModule == this)
+        public sealed override ModuleSymbol ContainingModule
+        {
+            get
             {
-                // this is already the correct module namespace
-                return moduleNs;
-            }
-
-            if (namespaceSymbol.IsGlobalNamespace || (object)namespaceSymbol.ContainingNamespace == null)
-            {
-                return this.GlobalNamespace;
-            }
-            else
-            {
-                var cns = GetModuleNamespace(namespaceSymbol.ContainingNamespace);
-                if ((object)cns != null)
-                {
-                    return cns.GetNestedNamespace(namespaceSymbol.Name);
-                }
                 return null;
             }
         }
 
-        INamespaceSymbol IModuleSymbol.GlobalNamespace => this.GlobalNamespace;
-
-        ImmutableArray<IAssemblySymbol> IModuleSymbol.ReferencedAssemblySymbols => StaticCast<IAssemblySymbol>.From(this.ReferencedAssemblySymbols);
-
-        INamespaceSymbol IModuleSymbol.GetModuleNamespace(INamespaceSymbol namespaceSymbol)
+        /// <summary>
+        /// Returns value 'NetModule' of the <see cref="SymbolKind"/>
+        /// </summary>
+        public sealed override SymbolKind Kind
         {
-            return this.GetModuleNamespace(namespaceSymbol);
+            get
+            {
+                return SymbolKind.NetModule;
+            }
         }
 
-        public sealed override SymbolKind Kind => SymbolKind.NetModule;
-
-        public override bool IsStatic => false;
-
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
-
-        public override void Accept(SymbolVisitor visitor)
+        // Only the compiler can create ModuleSymbols.
+        internal ModuleSymbol()
         {
-            visitor.VisitModule(this);
         }
 
-        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        /// <summary>
+        /// Module's ordinal within containing assembly's Modules array.
+        /// 0 - for a source module, etc.
+        /// -1 - for a module that doesn't have containing assembly, or has it, but is not part of Modules array. 
+        /// </summary>
+        public abstract int Ordinal { get; }
+
+        /// <summary>
+        /// Target architecture of the machine.
+        /// </summary>
+        public abstract Machine Machine { get; }
+
+        /// <summary>
+        /// Indicates that this PE file makes Win32 calls. See CorPEKind.pe32BitRequired for more information (http://msdn.microsoft.com/en-us/library/ms230275.aspx).
+        /// </summary>
+        public abstract bool Bit32Required { get; }
+
+        /// <summary>
+        /// Does this symbol represent a missing module.
+        /// </summary>
+        public abstract bool IsMissing
         {
-            return visitor.VisitModule(this);
+            get;
         }
+
+        /// <summary>
+        /// Returns 'NotApplicable'
+        /// </summary>
+        public sealed override Accessibility DeclaredAccessibility
+        {
+            get
+            {
+                return Accessibility.NotApplicable;
+            }
+        }
+
+        /// <summary>
+        /// Returns false because module can't be declared as 'static'.
+        /// </summary>
+        public sealed override bool IsStatic
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns false because module can't be virtual.
+        /// </summary>
+        public sealed override bool IsVirtual
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns false because module can't be overridden.
+        /// </summary>
+        public sealed override bool IsOverride
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns false because module can't be abstract.
+        /// </summary>
+        public sealed override bool IsAbstract
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns false because module can't be sealed.
+        /// </summary>
+        public sealed override bool IsSealed
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns false because module can't be defined externally.
+        /// </summary>
+        public sealed override bool IsExtern
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns data decoded from Obsolete attribute or null if there is no Obsolete attribute.
+        /// This property returns ObsoleteAttributeData.Uninitialized if attribute arguments haven't been decoded yet.
+        /// </summary>
+        public sealed override ObsoleteAttributeData ObsoleteAttributeData
+        {
+            get { return null; }
+        }
+
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences
+        {
+            get
+            {
+                return ImmutableArray<SyntaxReference>.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Returns an array of assembly identities for assemblies referenced by this module.
+        /// Items at the same position from ReferencedAssemblies and from ReferencedAssemblySymbols 
+        /// correspond to each other.
+        /// </summary>
+        public abstract ImmutableArray<AssemblyIdentity> ReferencedAssemblies { get; }
+
+        /// <summary>
+        /// Returns an array of AssemblySymbol objects corresponding to assemblies referenced 
+        /// by this module. Items at the same position from ReferencedAssemblies and 
+        /// from ReferencedAssemblySymbols correspond to each other.
+        /// </summary>
+        public abstract ImmutableArray<AssemblySymbol> ReferencedAssemblySymbols { get; }
 
         internal AssemblySymbol GetReferencedAssemblySymbol(int referencedAssemblyIndex)
         {
@@ -130,6 +230,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </param>
         internal abstract void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly = null);
 
+        /// <summary>
+        /// True if this module has any unified references.
+        /// </summary>
+        public abstract bool HasUnifiedReferences { get; }
+
         /// <summary> 
         /// Returns a unification use-site error (if any) for a symbol contained in this module 
         /// that is referring to a specified <paramref name="dependentType"/>.
@@ -139,7 +244,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// the Assembly Manager might decide to use another reference if it matches except for version 
         /// (it unifies the version with the existing reference).  
         /// </remarks>
-        public abstract bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, Symbol dependentType);
+        public abstract bool GetUnificationUseSiteDiagnostic(ref DiagnosticInfo result, TypeSymbol dependentType);
 
         /// <summary>
         /// Lookup a top level type referenced from metadata, names should be
@@ -154,9 +259,103 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <remarks></remarks>
         public abstract NamedTypeSymbol LookupTopLevelMetadataType(ref MetadataTypeName emittedName);
 
-        public abstract ImmutableArray<string> TypeNames { get; }
+        public abstract ICollection<string> TypeNames { get; }
 
-        public abstract ImmutableArray<string> NamespaceNames { get; }
+        public abstract ICollection<string> NamespaceNames { get; }
 
+        /// <summary>
+        /// Returns true if there is any applied CompilationRelaxationsAttribute assembly attribute for this module.
+        /// </summary>
+        internal abstract bool HasAssemblyCompilationRelaxationsAttribute { get; }
+
+        /// <summary>
+        /// Returns true if there is any applied RuntimeCompatibilityAttribute assembly attribute for this module.
+        /// </summary>
+        internal abstract bool HasAssemblyRuntimeCompatibilityAttribute { get; }
+
+        /// <summary>
+        /// Default char set for contained types, or null if not specified.
+        /// </summary>
+        internal abstract CharSet? DefaultMarshallingCharSet { get; }
+
+        internal virtual ImmutableArray<byte> GetHash(AssemblyHashAlgorithm algorithmId)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        /// <summary>
+        /// Given a namespace symbol, returns the corresponding module specific namespace symbol
+        /// </summary>
+        public NamespaceSymbol GetModuleNamespace(INamespaceSymbol namespaceSymbol)
+        {
+            if (namespaceSymbol == null)
+            {
+                throw new ArgumentNullException(nameof(namespaceSymbol));
+            }
+
+            var moduleNs = namespaceSymbol as NamespaceSymbol;
+            if ((object)moduleNs != null && moduleNs.Extent.Kind == NamespaceKind.Module && moduleNs.ContainingModule == this)
+            {
+                // this is already the correct module namespace
+                return moduleNs;
+            }
+
+            if (namespaceSymbol.IsGlobalNamespace || (object)namespaceSymbol.ContainingNamespace == null)
+            {
+                return this.GlobalNamespace;
+            }
+            else
+            {
+                var cns = GetModuleNamespace(namespaceSymbol.ContainingNamespace);
+                if ((object)cns != null)
+                {
+                    return cns.GetNestedNamespace(namespaceSymbol.Name);
+                }
+                return null;
+            }
+        }
+
+        #region IModuleSymbol Members
+
+        INamespaceSymbol IModuleSymbol.GlobalNamespace
+        {
+            get { return this.GlobalNamespace; }
+        }
+
+        INamespaceSymbol IModuleSymbol.GetModuleNamespace(INamespaceSymbol namespaceSymbol)
+        {
+            return this.GetModuleNamespace(namespaceSymbol);
+        }
+
+        ImmutableArray<IAssemblySymbol> IModuleSymbol.ReferencedAssemblySymbols
+        {
+            get
+            {
+                return ImmutableArray<IAssemblySymbol>.CastUp(ReferencedAssemblySymbols);
+            }
+        }
+
+        #endregion
+
+        #region ISymbol Members
+
+        public override void Accept(SymbolVisitor visitor)
+        {
+            visitor.VisitModule(this);
+        }
+
+        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitModule(this);
+        }
+
+        /// <summary>
+        /// If this symbol represents a metadata module returns the underlying <see cref="ModuleMetadata"/>.
+        /// 
+        /// Otherwise, this returns <see langword="null"/>.
+        /// </summary>
+        public abstract ModuleMetadata GetMetadata();
+
+        #endregion
     }
 }

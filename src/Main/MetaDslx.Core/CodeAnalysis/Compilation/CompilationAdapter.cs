@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis
 
         internal abstract Microsoft.CodeAnalysis.CSharp.CSharpCompilation CSharpCompilationForReferencedModules { get; }
 
-        internal Microsoft.CodeAnalysis.CSharp.Symbols.AssemblySymbol CSharpAssemblySymbolForReferencedModules => CSharpCompilationForReferencedModules.Assembly;
+        internal Microsoft.CodeAnalysis.CSharp.Symbols.SourceAssemblySymbol CSharpAssemblySymbolForReferencedModules => CSharpCompilationForReferencedModules.SourceAssembly;
 
         internal override IEnumerable<Microsoft.CodeAnalysis.ReferenceDirective> ReferenceDirectives
         {
