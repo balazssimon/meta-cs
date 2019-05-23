@@ -10,9 +10,9 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    internal sealed partial class DynamicTypeSymbol : TypeSymbol, IDynamicTypeSymbol
+    public sealed partial class DynamicTypeSymbol : TypeSymbol, IDynamicTypeSymbol
     {
-        internal static readonly DynamicTypeSymbol Instance = new DynamicTypeSymbol();
+        public static readonly DynamicTypeSymbol Instance = new DynamicTypeSymbol();
 
         private DynamicTypeSymbol()
         {
@@ -196,6 +196,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitDynamicType(this);
+        }
+
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return visitor.VisitDynamicType(this, argument);
+        }
+
+        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            visitor.VisitDynamicType(this);
+        }
+
+        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return visitor.VisitDynamicType(this);
         }

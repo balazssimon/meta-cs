@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -15,11 +17,30 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         protected readonly MergedDeclaration _declaration;
         private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
 
+        private MutableSymbolBase _modelObject;
+
         public SourceMemberSymbol(NamespaceOrTypeSymbol containingSymbol, MergedDeclaration declaration, DiagnosticBag diagnostics)
         {
             _containingSymbol = containingSymbol;
             _declaration = declaration;
+
+            _modelObject = declaration.Kind.CreateMutable(containingSymbol.ModelBuilder);
+            Debug.Assert(_modelObject != null);
+            if (_modelObject != null)
+            {
+                _modelObject.MName = declaration.Name;
+                var parentObject = containingSymbol?.ModelObject;
+                if (parentObject != null && !string.IsNullOrEmpty(declaration.ParentPropertyToAddTo))
+                {
+                    var property = parentObject.MGetProperty(declaration.ParentPropertyToAddTo);
+                    parentObject.MAdd(property, _modelObject);
+                }
+            }
         }
+
+        internal protected override MutableModel ModelBuilder => this.ContainingModule.ModelBuilder;
+
+        internal protected override MutableSymbolBase ModelObject => _modelObject;
 
         public sealed override NamedTypeSymbol ContainingType => _containingSymbol as NamedTypeSymbol;
 

@@ -10,6 +10,8 @@ using Roslyn.Utilities;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
+using Microsoft.Cci;
+using MetaDslx.CodeAnalysis.Binding;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 {
@@ -18,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
     /// another NamespaceSymbol that is responsible for retargeting symbols from one assembly to another. 
     /// It can retarget symbols for multiple assemblies at the same time.
     /// </summary>
-    public sealed class RetargetingNamespaceSymbol
+    internal sealed class RetargetingNamespaceSymbol
         : NamespaceSymbol
     {
         /// <summary>
@@ -41,11 +43,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             _underlyingNamespace = underlyingNamespace;
         }
 
-        private RetargetingSymbolMap RetargetingSymbolMap
+        private RetargetingModuleSymbol.RetargetingSymbolTranslator RetargetingTranslator
         {
             get
             {
-                return _retargetingModule.RetargetingSymbolMap;
+                return _retargetingModule.RetargetingTranslator;
             }
         }
 
@@ -82,7 +84,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                     continue;
                 }
 
-                builder.Add(this.RetargetingSymbolMap.GetSymbol(s));
+                builder.Add(this.RetargetingTranslator.Retarget(s));
             }
 
             return builder.ToImmutableAndFree();
@@ -125,8 +127,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                     continue;
                 }
 
-                Debug.Assert(t.PrimitiveTypeCode == Microsoft.Cci.PrimitiveTypeCode.NotPrimitive);
-                builder.Add(this.RetargetingSymbolMap.GetNamedTypeSymbol(t));
+                Debug.Assert(t.PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
+                builder.Add(this.RetargetingTranslator.Retarget(t, RetargetOptions.RetargetPrimitiveTypesByName));
             }
 
             return builder.ToImmutableAndFree();
@@ -146,7 +148,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         {
             get
             {
-                return this.RetargetingSymbolMap.GetSymbol(_underlyingNamespace.ContainingSymbol);
+                return this.RetargetingTranslator.Retarget(_underlyingNamespace.ContainingSymbol);
             }
         }
 
@@ -218,7 +220,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                 return new MissingMetadataTypeSymbol.TopLevel(_retargetingModule, ref typeName);
             }
 
-            return this.RetargetingSymbolMap.GetNamedTypeSymbol(underlying);
+            return this.RetargetingTranslator.Retarget(underlying, RetargetOptions.RetargetPrimitiveTypesByName);
         }
 
         internal sealed override LanguageCompilation DeclaringCompilation // perf, not correctness

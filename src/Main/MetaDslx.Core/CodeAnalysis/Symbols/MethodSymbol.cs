@@ -118,5 +118,30 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             throw new NotImplementedException();
         }
+
+        public override void Accept(SymbolVisitor visitor)
+        {
+            visitor.VisitMethod(this);
+        }
+
+        public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitMethod(this);
+        }
+
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return visitor.VisitMethod(this, argument);
+        }
+
+        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            visitor.VisitMethod(this);
+        }
+
+        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitMethod(this);
+        }
     }
 }

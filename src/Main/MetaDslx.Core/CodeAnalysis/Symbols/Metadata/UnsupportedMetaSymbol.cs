@@ -37,5 +37,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             return default;
         }
+
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return default;
+        }
+
+        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            // nop
+        }
+
+        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        {
+            return default;
+        }
     }
 }

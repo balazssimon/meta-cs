@@ -1,17 +1,18 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 {
@@ -94,7 +95,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         /// <param name="isLinked">
         /// Assembly is /l-ed by compilation that is using it as a reference.
         /// </param>
-        public RetargetingAssemblySymbol(SourceAssemblySymbol underlyingAssembly, bool isLinked)
+        internal RetargetingAssemblySymbol(SourceAssemblySymbol underlyingAssembly, bool isLinked)
         {
             Debug.Assert((object)underlyingAssembly != null);
 
@@ -107,18 +108,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             for (int i = 1; i < underlyingAssembly.Modules.Length; i++)
             {
                 CSharpModuleSymbol under = (CSharpModuleSymbol)underlyingAssembly.Modules[i];
-                modules[i] = new CSharpModuleSymbol(this, under.CSharpModule, i);
+                modules[i] = new CSharpModuleSymbol(this, under.UnderlyingModule, i);
             }
 
             _modules = modules.AsImmutableOrNull();
             _isLinked = isLinked;
         }
 
-        private RetargetingSymbolMap RetargetingSymbolMap
+        private RetargetingModuleSymbol.RetargetingSymbolTranslator RetargetingTranslator
         {
             get
             {
-                return ((RetargetingModuleSymbol)_modules[0]).RetargetingSymbolMap;
+                return ((RetargetingModuleSymbol)_modules[0]).RetargetingTranslator;
             }
         }
 
@@ -196,7 +197,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 
         public override ImmutableArray<AttributeData> GetAttributes()
         {
-            return RetargetingSymbolMap.GetAttributes(_underlyingAssembly.GetAttributes(), ref _lazyCustomAttributes);
+            return RetargetingTranslator.GetRetargetedAttributes(_underlyingAssembly.GetAttributes(), ref _lazyCustomAttributes);
         }
 
         /// <summary>
@@ -276,7 +277,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 
         internal override NamedTypeSymbol TryLookupForwardedMetadataTypeWithCycleDetection(ref MetadataTypeName emittedName, ConsList<AssemblySymbol> visitedAssemblies)
         {
-            return RetargetingSymbolMap.GetNamedTypeSymbol(_underlyingAssembly.TryLookupForwardedMetadataType(ref emittedName));
+            NamedTypeSymbol underlying = _underlyingAssembly.TryLookupForwardedMetadataType(ref emittedName);
+
+            if ((object)underlying == null)
+            {
+                return null;
+            }
+
+            return this.RetargetingTranslator.Retarget(underlying, RetargetOptions.RetargetPrimitiveTypesByName);
         }
 
         public override AssemblyMetadata GetMetadata() => _underlyingAssembly.GetMetadata();

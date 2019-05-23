@@ -242,8 +242,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        bool INamespaceSymbol.IsGlobalNamespace => throw new NotImplementedException();
-
         #endregion
 
         #region ISymbol Members
@@ -258,6 +256,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitNamespace(this);
         }
 
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return visitor.VisitNamespace(this, argument);
+        }
+
+        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            visitor.VisitNamespace(this);
+        }
+
+        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitNamespace(this);
+        }
         #endregion
     }
 }

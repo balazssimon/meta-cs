@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Wrapped
     /// That behavior should be carefully reviewed and derived type
     /// should override behavior as appropriate.
     /// </summary>
-    public abstract class WrappedNamedTypeSymbol : NamedTypeSymbol
+    internal abstract class WrappedNamedTypeSymbol : NamedTypeSymbol
     {
         /// <summary>
         /// The underlying NamedTypeSymbol.
@@ -48,6 +48,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Wrapped
             get
             {
                 return _underlyingType.Arity;
+            }
+        }
+
+        public override bool MightContainExtensionMethods
+        {
+            get
+            {
+                return _underlyingType.MightContainExtensionMethods;
             }
         }
 
@@ -134,6 +142,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Wrapped
             {
                 return _underlyingType.IsSealed;
             }
+        }
+
+        public override ObsoleteAttributeData ObsoleteAttributeData
+        {
+            get { return _underlyingType.ObsoleteAttributeData; }
         }
 
         public override bool IsRefLikeType

@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using MetaDslx.CodeAnalysis.Symbols.Source;
-using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,6 +9,9 @@ using System.Globalization;
 using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using System.Threading;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using Microsoft.CodeAnalysis;
+
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 {
@@ -54,7 +55,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             public ConcurrentDictionary<NamedTypeSymbol, NamedTypeSymbol> SymbolMap => LazyInitializer.EnsureInitialized(ref _symbolMap);
         }
 
-        internal readonly RetargetingSymbolMap RetargetingSymbolMap;
+        internal readonly RetargetingSymbolTranslator RetargetingTranslator;
 
         /// <summary>
         /// Retargeted custom attributes
@@ -70,14 +71,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         /// <param name="underlyingModule">
         /// The underlying ModuleSymbol, cannot be another RetargetingModuleSymbol.
         /// </param>
-        public RetargetingModuleSymbol(RetargetingAssemblySymbol retargetingAssembly, SourceModuleSymbol underlyingModule)
+        internal RetargetingModuleSymbol(RetargetingAssemblySymbol retargetingAssembly, SourceModuleSymbol underlyingModule)
         {
             Debug.Assert((object)retargetingAssembly != null);
             Debug.Assert((object)underlyingModule != null);
 
             _retargetingAssembly = retargetingAssembly;
             _underlyingModule = underlyingModule;
-            this.RetargetingSymbolMap = new RetargetingSymbolMap(this);
+            this.RetargetingTranslator = new RetargetingSymbolTranslator(this);
+
+            _createRetargetingNamespace = CreateRetargetingNamespace;
+            _createRetargetingNamedType = CreateRetargetingNamedType;
+            _createRetargetingMember = CreateRetargetingMember;
         }
 
         public override int Ordinal
@@ -120,7 +125,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         {
             get
             {
-                return RetargetingSymbolMap.GetNamespaceSymbol(_underlyingModule.GlobalNamespace);
+                return RetargetingTranslator.Retarget(_underlyingModule.GlobalNamespace);
             }
         }
 
@@ -246,7 +251,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 
         public override ImmutableArray<AttributeData> GetAttributes()
         {
-            return RetargetingSymbolMap.GetAttributes(_underlyingModule.GetAttributes(), ref _lazyCustomAttributes);
+            return RetargetingTranslator.GetRetargetedAttributes(_underlyingModule.GetAttributes(), ref _lazyCustomAttributes);
         }
 
         internal override bool HasAssemblyCompilationRelaxationsAttribute

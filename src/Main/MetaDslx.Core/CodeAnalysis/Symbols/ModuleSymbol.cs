@@ -349,6 +349,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitModule(this);
         }
 
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return visitor.VisitModule(this, argument);
+        }
+
+        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            visitor.VisitModule(this);
+        }
+
+        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitModule(this);
+        }
+
         /// <summary>
         /// If this symbol represents a metadata module returns the underlying <see cref="ModuleMetadata"/>.
         /// 

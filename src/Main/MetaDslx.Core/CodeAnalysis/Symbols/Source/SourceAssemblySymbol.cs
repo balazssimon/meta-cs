@@ -11,6 +11,7 @@ using System.Reflection;
 using Roslyn.Utilities;
 using System.Collections.Concurrent;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
+using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
@@ -106,6 +107,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// </summary>
         private ImmutableArray<Diagnostic> _unusedFieldWarnings;
 
+        private MutableModelGroup _modelGroupBuilder;
+
         internal SourceAssemblySymbol(
             LanguageCompilation compilation,
             string assemblySimpleName,
@@ -120,10 +123,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _compilation = compilation;
             _language = _compilation.Language;
             _assemblySimpleName = assemblySimpleName;
+            _modelGroupBuilder = new MutableModelGroup();
+            var modelBuilder = _modelGroupBuilder.CreateModel(moduleName);
 
             ArrayBuilder<ModuleSymbol> moduleBuilder = new ArrayBuilder<ModuleSymbol>(1 + netModules.Length);
 
-            moduleBuilder.Add(new SourceModuleSymbol(this, compilation.Declarations, moduleName));
+            moduleBuilder.Add(new SourceModuleSymbol(this, modelBuilder, compilation.Declarations, moduleName));
 
             var importOptions = (compilation.Options.MetadataImportOptions == MetadataImportOptions.All) ?
                 MetadataImportOptions.All : MetadataImportOptions.Internal;
@@ -155,6 +160,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override Language Language => _language;
+
+        internal protected MutableModelGroup ModelGroupBuilder => _modelGroupBuilder;
+
+        internal protected override MutableModel ModelBuilder => this.SourceModule.ModelBuilder;
 
         /// <remarks>
         /// This override is essential - it's a base case of the recursive definition.

@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
     /// another NamedTypeSymbol that is responsible for retargeting referenced symbols from one assembly to another. 
     /// It can retarget symbols for multiple assemblies at the same time.
     /// </summary>
-    public sealed class RetargetingNamedTypeSymbol : WrappedNamedTypeSymbol
+    internal sealed class RetargetingNamedTypeSymbol : WrappedNamedTypeSymbol
     {
         /// <summary>
         /// Owning RetargetingModuleSymbol.
@@ -28,6 +28,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         private readonly RetargetingModuleSymbol _retargetingModule;
 
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes = default(ImmutableArray<NamedTypeSymbol>);
+
         private ImmutableArray<NamedTypeSymbol> _lazyDeclaredBaseTypes;
 
         private ImmutableArray<AttributeData> _lazyCustomAttributes;
@@ -43,11 +44,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             _retargetingModule = retargetingModule;
         }
 
-        private RetargetingSymbolMap RetargetingSymbolMap
+        private RetargetingModuleSymbol.RetargetingSymbolTranslator RetargetingTranslator
         {
             get
             {
-                return _retargetingModule.RetargetingSymbolMap;
+                return _retargetingModule.RetargetingTranslator;
             }
         }
 
@@ -56,7 +57,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             get
             {
                 var underlying = _underlyingType.EnumUnderlyingType;
-                return (object)underlying == null ? null : this.RetargetingSymbolMap.GetNamedTypeSymbol(underlying);
+                return (object)underlying == null ? null : this.RetargetingTranslator.Retarget(underlying, RetargetOptions.RetargetPrimitiveTypesByTypeCode); // comes from field's signature.
             }
         }
 
@@ -70,50 +71,55 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 
         public override ImmutableArray<Symbol> GetMembers()
         {
-            return this.RetargetingSymbolMap.GetSymbols(_underlyingType.GetMembers());
+            return this.RetargetingTranslator.Retarget(_underlyingType.GetMembers());
         }
 
         internal override ImmutableArray<Symbol> GetMembersUnordered()
         {
-            return this.RetargetingSymbolMap.GetSymbols(_underlyingType.GetMembersUnordered());
+            return this.RetargetingTranslator.Retarget(_underlyingType.GetMembersUnordered());
         }
 
         public override ImmutableArray<Symbol> GetMembers(string name)
         {
-            return this.RetargetingSymbolMap.GetSymbols(_underlyingType.GetMembers(name));
+            return this.RetargetingTranslator.Retarget(_underlyingType.GetMembers(name));
         }
 
         public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
         {
-            return this.RetargetingSymbolMap.GetSymbols(_underlyingType.GetMembers(name, metadataName));
+            return this.RetargetingTranslator.Retarget(_underlyingType.GetMembers(name, metadataName));
         }
 
         internal override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
         {
-            return this.RetargetingSymbolMap.GetNamedTypeSymbols(_underlyingType.GetTypeMembersUnordered());
+            return this.RetargetingTranslator.Retarget(_underlyingType.GetTypeMembersUnordered());
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
         {
-            return this.RetargetingSymbolMap.GetNamedTypeSymbols(_underlyingType.GetTypeMembers());
+            return this.RetargetingTranslator.Retarget(_underlyingType.GetTypeMembers());
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
         {
-            return this.RetargetingSymbolMap.GetNamedTypeSymbols(_underlyingType.GetTypeMembers(name));
+            return this.RetargetingTranslator.Retarget(_underlyingType.GetTypeMembers(name));
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
         {
-            return this.RetargetingSymbolMap.GetNamedTypeSymbols(_underlyingType.GetTypeMembers(name, metadataName));
+            return this.RetargetingTranslator.Retarget(_underlyingType.GetTypeMembers(name, metadataName));
         }
 
         public override Symbol ContainingSymbol
         {
             get
             {
-                return this.RetargetingSymbolMap.GetSymbol(_underlyingType.ContainingSymbol);
+                return this.RetargetingTranslator.Retarget(_underlyingType.ContainingSymbol);
             }
+        }
+
+        public override ImmutableArray<AttributeData> GetAttributes()
+        {
+            return this.RetargetingTranslator.GetRetargetedAttributes(_underlyingType.GetAttributes(), ref _lazyCustomAttributes);
         }
 
         public override AssemblySymbol ContainingAssembly
@@ -134,7 +140,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 
         internal override NamedTypeSymbol LookupMetadataType(ref MetadataTypeName typeName)
         {
-            return this.RetargetingSymbolMap.GetNamedTypeSymbol(_underlyingType.LookupMetadataType(ref typeName));
+            return this.RetargetingTranslator.Retarget(_underlyingType.LookupMetadataType(ref typeName), RetargetOptions.RetargetPrimitiveTypesByName);
         }
 
         private static ExtendedErrorTypeSymbol CyclicInheritanceError(RetargetingNamedTypeSymbol type, TypeSymbol declaredBase)
@@ -147,9 +153,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         {
             if (_lazyBaseTypes.IsDefault)
             {
-                var declaredBaseTypes = GetDeclaredBaseTypes(basesBeingResolved);
+                var declaredInterfaces = GetDeclaredBaseTypes(basesBeingResolved);
 
-                ImmutableArray<NamedTypeSymbol> result = declaredBaseTypes
+                ImmutableArray<NamedTypeSymbol> result = declaredInterfaces
                     .SelectAsArray(t => BaseTypeAnalysis.TypeDependsOn(t, this) ? CyclicInheritanceError(this, t) : t);
 
                 ImmutableInterlocked.InterlockedCompareExchange(ref _lazyBaseTypes, result, default(ImmutableArray<NamedTypeSymbol>));
@@ -163,7 +169,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             if (_lazyDeclaredBaseTypes.IsDefault)
             {
                 var underlyingBaseTypes = _underlyingType.GetDeclaredBaseTypes(basesBeingResolved);
-                var result = this.RetargetingSymbolMap.GetNamedTypeSymbols(underlyingBaseTypes);
+                var result = this.RetargetingTranslator.Retarget(underlyingBaseTypes);
                 ImmutableInterlocked.InterlockedCompareExchange(ref _lazyDeclaredBaseTypes, result, default(ImmutableArray<NamedTypeSymbol>));
             }
 
@@ -174,7 +180,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         {
             if (ReferenceEquals(_lazyUseSiteDiagnostic, LanguageDiagnosticInfo.EmptyErrorInfo))
             {
-                _lazyUseSiteDiagnostic = base.GetUseSiteDiagnostic();
+                _lazyUseSiteDiagnostic = CalculateUseSiteDiagnostic();
             }
 
             return _lazyUseSiteDiagnostic;

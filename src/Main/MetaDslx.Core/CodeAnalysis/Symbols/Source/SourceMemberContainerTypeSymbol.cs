@@ -37,6 +37,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private int _flattenedMembersIsSorted = 0;
         private SymbolCompletionState _state;
 
+        private MutableSymbolBase _modelObject;
+
         public SourceMemberContainerTypeSymbol(
             NamespaceOrTypeSymbol containingSymbol,
             MergedDeclaration declaration,
@@ -44,6 +46,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             _containingSymbol = containingSymbol;
             _declaration = declaration;
+
+            _modelObject = declaration.Kind.CreateMutable(this.ModelBuilder);
+            Debug.Assert(_modelObject != null);
+            if (_modelObject != null)
+            {
+                _modelObject.MName = declaration.Name;
+                var parentObject = containingSymbol?.ModelObject;
+                if (parentObject != null && !string.IsNullOrEmpty(declaration.ParentPropertyToAddTo))
+                {
+                    var property = parentObject.MGetProperty(declaration.ParentPropertyToAddTo);
+                    parentObject.MAdd(property, _modelObject);
+                }
+            }
+
             foreach (var singleDeclaration in declaration.Declarations)
             {
                 diagnostics.AddRange(singleDeclaration.Diagnostics);
@@ -52,6 +68,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override Language Language => _containingSymbol.Language;
+
+        internal protected override MutableModel ModelBuilder => this.ContainingModule.ModelBuilder;
+
+        internal protected override MutableSymbolBase ModelObject => _modelObject;
 
         public MergedDeclaration MergedDeclaration => _declaration;
 

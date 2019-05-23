@@ -16,6 +16,7 @@ using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeGen;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -929,6 +930,8 @@ namespace MetaDslx.CodeAnalysis
         #endregion
 
         #region Symbols
+
+        public ImmutableModel Model => this.SourceAssembly.SourceModule.ModelBuilder.ToImmutable();
 
         /// <summary>
         /// The AssemblySymbol that represents the assembly being created.

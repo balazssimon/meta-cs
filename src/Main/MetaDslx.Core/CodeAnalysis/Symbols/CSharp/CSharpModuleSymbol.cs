@@ -80,6 +80,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         private int _ordinal;
 
+        public PEModule Module => (_underlyingModule as CSharpSymbols.Metadata.PE.PEModuleSymbol)?.Module;
+
         public override int Ordinal
         {
             get

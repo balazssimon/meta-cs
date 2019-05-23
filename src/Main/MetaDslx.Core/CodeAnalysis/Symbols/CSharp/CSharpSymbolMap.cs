@@ -23,6 +23,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             _module = module;
         }
 
+        public bool TryGetSymbol<TCSharp, T>(TCSharp csharpSymbol, out T symbol)
+            where TCSharp : CSharpSymbol
+            where T : Symbol
+        {
+            if (csharpSymbol == null || !map.TryGetValue(csharpSymbol, out Symbol cachedSymbol))
+            {
+                symbol = null;
+                return false;
+            }
+            symbol = (T)cachedSymbol;
+            return (object)symbol != null;
+        }
+
         private T GetSymbol<TCSharp, T>(TCSharp csharpSymbol, Func<TCSharp, T> createSymbol)
             where TCSharp : CSharpSymbol
             where T : Symbol
@@ -31,7 +44,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             if (!map.TryGetValue(csharpSymbol, out Symbol symbol))
             {
                 symbol = createSymbol(csharpSymbol);
-                map.Add(csharpSymbol, symbol);
+                if ((object)symbol != null)
+                {
+                    map.Add(csharpSymbol, symbol);
+                }
             }
             return (T)symbol;
         }

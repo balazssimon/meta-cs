@@ -34,6 +34,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
 
+        private MutableSymbolBase _modelObject;
+
         public SourceNamespaceSymbol(
             SourceModuleSymbol module, 
             Symbol container,
@@ -44,6 +46,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _module = module;
             _container = container;
             _mergedDeclaration = mergedDeclaration;
+            
+            _modelObject = mergedDeclaration.Kind.CreateMutable(module.ModelBuilder);
+            Debug.Assert(_modelObject != null);
+            if (_modelObject != null)
+            {
+                _modelObject.MName = mergedDeclaration.Name;
+                var parentObject = container?.ModelObject;
+                if (parentObject != null && !string.IsNullOrEmpty(mergedDeclaration.ParentPropertyToAddTo))
+                {
+                    var property = parentObject.MGetProperty(mergedDeclaration.ParentPropertyToAddTo);
+                    if (property != null)
+                    {
+                        parentObject.MAdd(property, _modelObject);
+                    }
+                }
+            }
 
             foreach (var singleDeclaration in mergedDeclaration.Declarations)
             {
@@ -53,6 +71,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override Language Language => _module.Language;
+
+        internal protected override MutableModel ModelBuilder => _module.ModelBuilder;
+
+        internal protected override MutableSymbolBase ModelObject => _modelObject;
 
         public override ModelSymbolInfo ModelSymbolInfo => _mergedDeclaration.Kind;
 

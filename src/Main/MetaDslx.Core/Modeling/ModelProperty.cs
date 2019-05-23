@@ -23,14 +23,16 @@ namespace MetaDslx.Modeling
             this.BaseSymbolDescriptors = EmptyTypeArray;
         }
 
-        public ModelSymbolDescriptorAttribute(Type immutableType, Type mutableType)
+        public ModelSymbolDescriptorAttribute(Type idType, Type immutableType, Type mutableType)
         {
+            this.IdType = idType;
             this.ImmutableType = immutableType;
             this.MutableType = mutableType;
             this.BaseSymbolDescriptors = EmptyTypeArray;
         }
 
         public Type[] BaseSymbolDescriptors { get; set; }
+        public Type IdType { get; }
         public Type ImmutableType { get; }
         public Type MutableType { get; }
     }
@@ -866,6 +868,9 @@ namespace MetaDslx.Modeling
 
     public sealed class ModelSymbolInfo
     {
+        private static Type[] EmptyTypeArray = new Type[0];
+        private static object[] EmptyObjectArray = new object[0];
+
         private static ImmutableDictionary<Type, ModelSymbolInfo> descriptors = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
         private static ImmutableDictionary<Type, ModelSymbolInfo> immutableTypes = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
         private static ImmutableDictionary<Type, ModelSymbolInfo> mutableTypes = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
@@ -875,6 +880,9 @@ namespace MetaDslx.Modeling
         private Type symbolDescriptorType;
         private GreenSymbol emptyGreenSymbol;
         private MetaModelSymbolFlags metaFlags;
+        private ModelSymbolDescriptorAttribute descriptor;
+        private ConstructorInfo _idConstructor;
+        private Type idType;
         private Type immutableType;
         private Type mutableType;
         private ModelProperty nameProperty;
@@ -897,6 +905,7 @@ namespace MetaDslx.Modeling
                 if (annot is ModelSymbolDescriptorAttribute)
                 {
                     ModelSymbolDescriptorAttribute da = (ModelSymbolDescriptorAttribute)annot;
+                    this.idType = da.IdType;
                     this.immutableType = da.ImmutableType;
                     this.mutableType = da.MutableType;
                 }
@@ -1056,14 +1065,36 @@ namespace MetaDslx.Modeling
         internal bool Initialized { get { return this.initialized; } }
         internal Type SymbolDescriptorType { get { return this.symbolDescriptorType; } }
         public ImmutableArray<Attribute> Annotations { get { return this.annotations; } }
+
         public Type ImmutableType
         {
             get { return this.immutableType; }
         }
+
         public Type MutableType
         {
             get { return this.mutableType; }
         }
+
+        public SymbolId CreateSymbolId()
+        {
+            if (_idConstructor == null)
+            {
+                Interlocked.CompareExchange(ref _idConstructor, idType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,null, EmptyTypeArray, null), null);
+            }
+            return (SymbolId)_idConstructor.Invoke(EmptyObjectArray);
+        }
+
+        public MutableSymbolBase CreateMutable(MutableModel model, bool weakReference = false)
+        {
+            return model.CreateSymbol(this.CreateSymbolId(), false);
+        }
+
+        internal ImmutableSymbolBase CreateImmutable(ImmutableModel model)
+        {
+            return this.CreateSymbolId().CreateImmutable(model);
+        }
+
         public ImmutableList<ModelSymbolInfo> BaseSymbols 
         {
             get

@@ -949,6 +949,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return visitor.VisitAssembly(this);
         }
 
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return visitor.VisitAssembly(this, argument);
+        }
+
+        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            visitor.VisitAssembly(this);
+        }
+
+        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitAssembly(this);
+        }
+
         #endregion
     }
 }

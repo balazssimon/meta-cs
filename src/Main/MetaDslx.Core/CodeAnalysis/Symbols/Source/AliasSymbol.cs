@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     ///     IList&lt;Symbol&gt; SemanticModel.LookupSymbols(CSharpSyntaxNode location, NamespaceOrTypeSymbol container = null, string name = null, int? arity = null, LookupOptions options = LookupOptions.Default, List&lt;Symbol> results = null);
     /// </pre>
     /// </summary>
-    internal sealed class AliasSymbol : Symbol, IAliasSymbol
+    public sealed class AliasSymbol : Symbol, IAliasSymbol
     {
         private readonly string _aliasName;
         private readonly Binder _binder;
@@ -330,6 +330,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitAlias(this);
+        }
+
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return visitor.VisitAlias(this, argument);
+        }
+
+        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            visitor.VisitAlias(this);
+        }
+
+        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return visitor.VisitAlias(this);
         }

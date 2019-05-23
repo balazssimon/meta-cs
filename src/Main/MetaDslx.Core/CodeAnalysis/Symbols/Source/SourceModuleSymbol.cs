@@ -37,14 +37,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private bool _hasBadAttributes;
 
+        private MutableModel _modelBuilder;
+
         internal SourceModuleSymbol(
             SourceAssemblySymbol assemblySymbol,
+            MutableModel modelBuilder,
             DeclarationTable declarations,
             string moduleName)
         {
             Debug.Assert((object)assemblySymbol != null);
 
             _assemblySymbol = assemblySymbol;
+            _modelBuilder = modelBuilder;
             _sources = declarations;
             _name = moduleName;
 
@@ -52,6 +56,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override Language Language => _assemblySymbol.Language;
+
+        internal protected override MutableModel ModelBuilder => _modelBuilder;
 
         internal void RecordPresenceOfBadAttributes()
         {

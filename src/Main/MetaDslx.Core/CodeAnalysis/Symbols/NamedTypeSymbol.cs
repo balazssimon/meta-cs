@@ -294,6 +294,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         #region Use-Site Diagnostics
 
+        internal DiagnosticInfo CalculateUseSiteDiagnostic()
+        {
+            // TODO:MetaDslx
+            return null;
+        }
+
+
         public override DiagnosticInfo GetUseSiteDiagnostic()
         {
             if (this.IsDefinition)
@@ -450,6 +457,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitNamedType(this);
+        }
+
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return visitor.VisitNamedType(this, argument);
+        }
+
+        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            visitor.VisitNamedType(this);
+        }
+
+        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
         {
             return visitor.VisitNamedType(this);
         }

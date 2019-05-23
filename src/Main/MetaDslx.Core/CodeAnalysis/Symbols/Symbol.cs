@@ -40,6 +40,10 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual Language Language => Language.None;
 
+        internal protected virtual MutableModel ModelBuilder => null;
+
+        internal protected virtual MutableSymbolBase ModelObject => null;
+
         /// <summary>
         /// True if this Symbol should be completed by calling ForceComplete.
         /// Intuitively, true for source entities (from any compilation).
@@ -908,9 +912,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         ISymbol ISymbol.OriginalDefinition => this.OriginalDefinition;
 
+        public abstract void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor);
+
+        public abstract TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor);
+
         public abstract void Accept(SymbolVisitor visitor);
 
         public abstract TResult Accept<TResult>(SymbolVisitor<TResult> visitor);
+
+        public abstract TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument);
 
         #endregion
 

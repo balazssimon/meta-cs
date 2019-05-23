@@ -37,6 +37,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override void Accept(SymbolVisitor visitor) => visitor.VisitDiscard(this);
         public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor) => visitor.VisitDiscard(this);
 
+        public override TResult Accept<TArgument, TResult>(SymbolVisitor<TArgument, TResult> visitor, TArgument argument)
+        {
+            return visitor.VisitDiscard(this, argument);
+        }
+
+        public override void Accept(Microsoft.CodeAnalysis.SymbolVisitor visitor)
+        {
+            visitor.VisitDiscard(this);
+        }
+
+        public override TResult Accept<TResult>(Microsoft.CodeAnalysis.SymbolVisitor<TResult> visitor)
+        {
+            return visitor.VisitDiscard(this);
+        }
+
         public override bool Equals(object obj) => obj is DiscardSymbol other && this.Type.Equals(other.Type);
         public override int GetHashCode() => this.Type.GetHashCode();
     }

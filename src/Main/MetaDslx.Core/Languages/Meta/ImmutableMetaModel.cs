@@ -910,7 +910,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		public const string Uri = "http://metadslx.core/1.0";
 	
 		[global::MetaDslx.Modeling.ScopeAttribute]
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaRootNamespace), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaRootNamespaceBuilder))]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaRootNamespaceId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaRootNamespace), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaRootNamespaceBuilder))]
 		public static class MetaRootNamespace
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -942,7 +942,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaRootNamespace_Symbols);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaErrorSymbol), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaErrorSymbolBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaErrorSymbolId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaErrorSymbol), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaErrorSymbolBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaErrorSymbol
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -967,7 +967,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 			}
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAnnotatedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAnnotatedElementBuilder))]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaAnnotatedElementId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAnnotatedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAnnotatedElementBuilder))]
 		public static class MetaAnnotatedElement
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -999,7 +999,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaAnnotatedElement_Annotations);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDocumentedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDocumentedElementBuilder))]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaDocumentedElementId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDocumentedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDocumentedElementBuilder))]
 		public static class MetaDocumentedElement
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1030,7 +1030,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaDocumentedElement_Documentation);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedElementBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDocumentedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaNamedElementId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedElementBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDocumentedElement) })]
 		public static class MetaNamedElement
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1062,7 +1062,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaNamedElement_Name);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaTypedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaTypedElementBuilder))]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaTypedElementId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaTypedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaTypedElementBuilder))]
 		public static class MetaTypedElement
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1095,7 +1095,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		}
 	
 		[global::MetaDslx.Modeling.TypeAttribute]
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaTypeBuilder))]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaTypeBuilder))]
 		public static class MetaType
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1120,7 +1120,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 			}
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaNamedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaNamedTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaNamedType
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1145,7 +1145,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 			}
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAnnotation), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaAnnotationId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAnnotation), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAnnotationBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaAnnotation
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1170,7 +1170,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 			}
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDeclaration), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDeclarationBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaDeclarationId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDeclaration), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDeclarationBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaDeclaration
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1210,7 +1210,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		}
 	
 		[global::MetaDslx.Modeling.ScopeAttribute]
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamespace), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamespaceBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaNamespaceId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamespace), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamespaceBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaNamespace
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1258,7 +1258,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaNamespace_Declarations);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaModel), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaModelBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaModelId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaModel), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaModelBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaModel
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1296,7 +1296,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaModel_Namespace);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaCollectionType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaCollectionTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaCollectionType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaCollectionType
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1333,7 +1333,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaCollectionType_InnerType);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNullableType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNullableTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaNullableTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNullableType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNullableTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaNullableType
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1364,7 +1364,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaNullableType_InnerType);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaPrimitiveType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaPrimitiveTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaPrimitiveTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaPrimitiveType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaPrimitiveTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
 		public static class MetaPrimitiveType
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1389,7 +1389,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 			}
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaExternalType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaExternalTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaPrimitiveType) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaExternalTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaExternalType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaExternalTypeBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaPrimitiveType) })]
 		public static class MetaExternalType
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1427,7 +1427,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		}
 	
 		[global::MetaDslx.Modeling.ScopeAttribute]
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnum), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaEnumId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnum), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
 		public static class MetaEnum
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1468,7 +1468,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaEnum_Operations);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteral), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaEnumLiteralId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteral), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaEnumLiteral
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1501,7 +1501,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaEnumLiteral_Enum);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaConstant), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaConstantBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaTypedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaConstantId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaConstant), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaConstantBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaConstant
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1527,7 +1527,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		}
 	
 		[global::MetaDslx.Modeling.ScopeAttribute]
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaClass), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaClassId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaClass), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
 		public static class MetaClass
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1582,7 +1582,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 		}
 	
 		[global::MetaDslx.Modeling.LocalScopeAttribute]
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaOperation), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaOperationBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaOperationId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaOperation), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaOperationBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaOperation
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1629,7 +1629,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaOperation_ReturnType);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaParameter), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaParameterBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaParameterId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaParameter), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaParameterBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaParameter
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;
@@ -1661,7 +1661,7 @@ namespace MetaDslx.Languages.Meta.Symbols
 					() => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaParameter_Operation);
 		}
 	
-		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.MetaProperty), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
+		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaPropertyId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaProperty), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaAnnotatedElement) })]
 		public static class MetaProperty
 		{
 			private static global::MetaDslx.Modeling.ModelSymbolInfo modelSymbolInfo;

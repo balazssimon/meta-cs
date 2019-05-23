@@ -21,15 +21,13 @@ namespace MetaDslx.Modeling
         private ModelErrorCode(int code, string title, string messageFormat, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault = true, string description = null, string helpLinkUri = null, params string[] customTags) 
             : base(code, Prefix, title, messageFormat, ModelCategory, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
         {
-            ModelErrorCode old = ImmutableInterlocked.GetOrAdd(ref s_errorCodeToDescriptorMap, code, c => this);
-            Debug.Assert(old == null);
+            ImmutableInterlocked.GetOrAdd(ref s_errorCodeToDescriptorMap, code, c => this);
         }
 
         private ModelErrorCode(int code, LocalizableString title, LocalizableString messageFormat, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault, LocalizableString description = null, string helpLinkUri = null, params string[] customTags)
             : base(code, Prefix, title, messageFormat, ModelCategory, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)
         {
-            ModelErrorCode old = ImmutableInterlocked.GetOrAdd(ref s_errorCodeToDescriptorMap, code, c => this);
-            Debug.Assert(old == null);
+            ImmutableInterlocked.GetOrAdd(ref s_errorCodeToDescriptorMap, code, c => this);
         }
 
         static ModelErrorCode()

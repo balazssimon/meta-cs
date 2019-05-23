@@ -1,4 +1,5 @@
-﻿using MetaDslx.Languages.Meta;
+﻿using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Modeling;
@@ -63,6 +64,12 @@ namespace MetaDslx.Bootstrap
             foreach (var diag in compilation.GetDeclarationDiagnostics())
             {
                 Console.WriteLine(formatter.Format(diag));
+            }
+            var compiledModel = compilation.Model;
+            Console.WriteLine(compiledModel);
+            foreach (var symbol in compiledModel.Symbols)
+            {
+                Console.WriteLine(symbol);
             }
             //*/
         }
