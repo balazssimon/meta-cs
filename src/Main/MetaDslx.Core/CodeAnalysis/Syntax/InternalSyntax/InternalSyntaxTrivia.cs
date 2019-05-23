@@ -15,11 +15,6 @@ namespace MetaDslx.CodeAnalysis.Syntax.InternalSyntax
             : base(kind, diagnostics, annotations, text.Length)
         {
             this.Text = text;
-            /* TODO:MetaDslx
-            if (kind == SyntaxKind.PreprocessingMessageTrivia)
-            {
-                this.flags |= NodeFlags.ContainsSkippedText;
-            }*/
         }
 
         protected InternalSyntaxTrivia(ObjectReader reader)

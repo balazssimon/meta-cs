@@ -141,7 +141,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
             private static void Dump(StringBuilder sb, string indent, Declaration declaration)
             {
                 if (declaration == null) return;
-                System.Console.WriteLine("{0}{1}: {2}", indent, declaration.Name, declaration.Kind?.ImmutableType.Name ?? "<root>");
+                string kind;
+                if (declaration.IsNamespace) kind = "namespace";
+                else if (declaration.IsType) kind = "type";
+                else if (declaration.IsName) kind = "name";
+                else kind = "unknown";
+                System.Console.WriteLine("{0}{1} ({2}): {3}", indent, declaration.Name, kind, declaration.Kind?.ImmutableType.Name ?? "<root>");
                 foreach (var child in declaration.GetDeclarationChildren())
                 {
                     Dump(sb, indent + "  ", child);

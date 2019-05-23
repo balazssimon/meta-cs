@@ -944,7 +944,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class MainGreen : GreenSyntaxNode
 	{
-	    internal static readonly MainGreen __Missing = new MainGreen(MetaSyntaxKind.Main, default, default);
+	    internal static readonly MainGreen __Missing = new MainGreen();
 	    private NamespaceDeclarationGreen namespaceDeclaration;
 	    private InternalSyntaxToken eof;
 	
@@ -979,6 +979,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.eof = eof;
 			}
 	    }
+	
+		private MainGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Main, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public NamespaceDeclarationGreen NamespaceDeclaration { get { return this.namespaceDeclaration; } }
 	    public InternalSyntaxToken EndOfFileToken { get { return this.eof; } }
@@ -1032,7 +1038,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class NameGreen : GreenSyntaxNode
 	{
-	    internal static readonly NameGreen __Missing = new NameGreen(MetaSyntaxKind.Name, default);
+	    internal static readonly NameGreen __Missing = new NameGreen();
 	    private IdentifierGreen identifier;
 	
 	    public NameGreen(MetaSyntaxKind kind, IdentifierGreen identifier)
@@ -1056,6 +1062,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.identifier = identifier;
 			}
 	    }
+	
+		private NameGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Name, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public IdentifierGreen Identifier { get { return this.identifier; } }
 	
@@ -1106,7 +1118,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class QualifiedNameGreen : GreenSyntaxNode
 	{
-	    internal static readonly QualifiedNameGreen __Missing = new QualifiedNameGreen(MetaSyntaxKind.QualifiedName, default);
+	    internal static readonly QualifiedNameGreen __Missing = new QualifiedNameGreen();
 	    private QualifierGreen qualifier;
 	
 	    public QualifiedNameGreen(MetaSyntaxKind kind, QualifierGreen qualifier)
@@ -1130,6 +1142,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.qualifier = qualifier;
 			}
 	    }
+	
+		private QualifiedNameGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.QualifiedName, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public QualifierGreen Qualifier { get { return this.qualifier; } }
 	
@@ -1180,7 +1198,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class QualifierGreen : GreenSyntaxNode
 	{
-	    internal static readonly QualifierGreen __Missing = new QualifierGreen(MetaSyntaxKind.Qualifier, default);
+	    internal static readonly QualifierGreen __Missing = new QualifierGreen();
 	    private GreenNode identifier;
 	
 	    public QualifierGreen(MetaSyntaxKind kind, GreenNode identifier)
@@ -1204,6 +1222,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.identifier = identifier;
 			}
 	    }
+	
+		private QualifierGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Qualifier, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen> Identifier { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<IdentifierGreen>(this.identifier); } }
 	
@@ -1254,7 +1278,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class AnnotationGreen : GreenSyntaxNode
 	{
-	    internal static readonly AnnotationGreen __Missing = new AnnotationGreen(MetaSyntaxKind.Annotation, default, default, default);
+	    internal static readonly AnnotationGreen __Missing = new AnnotationGreen();
 	    private InternalSyntaxToken tOpenBracket;
 	    private NameGreen name;
 	    private InternalSyntaxToken tCloseBracket;
@@ -1300,6 +1324,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.tCloseBracket = tCloseBracket;
 			}
 	    }
+	
+		private AnnotationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Annotation, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken TOpenBracket { get { return this.tOpenBracket; } }
 	    public NameGreen Name { get { return this.name; } }
@@ -1356,7 +1386,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class NamespaceDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly NamespaceDeclarationGreen __Missing = new NamespaceDeclarationGreen(MetaSyntaxKind.NamespaceDeclaration, default, default, default, default);
+	    internal static readonly NamespaceDeclarationGreen __Missing = new NamespaceDeclarationGreen();
 	    private GreenNode annotation;
 	    private InternalSyntaxToken kNamespace;
 	    private QualifiedNameGreen qualifiedName;
@@ -1413,6 +1443,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.namespaceBody = namespaceBody;
 			}
 	    }
+	
+		private NamespaceDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.NamespaceDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen> Annotation { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen>(this.annotation); } }
 	    public InternalSyntaxToken KNamespace { get { return this.kNamespace; } }
@@ -1472,7 +1508,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class NamespaceBodyGreen : GreenSyntaxNode
 	{
-	    internal static readonly NamespaceBodyGreen __Missing = new NamespaceBodyGreen(MetaSyntaxKind.NamespaceBody, default, default, default, default);
+	    internal static readonly NamespaceBodyGreen __Missing = new NamespaceBodyGreen();
 	    private InternalSyntaxToken tOpenBrace;
 	    private MetamodelDeclarationGreen metamodelDeclaration;
 	    private GreenNode declaration;
@@ -1529,6 +1565,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.tCloseBrace = tCloseBrace;
 			}
 	    }
+	
+		private NamespaceBodyGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.NamespaceBody, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken TOpenBrace { get { return this.tOpenBrace; } }
 	    public MetamodelDeclarationGreen MetamodelDeclaration { get { return this.metamodelDeclaration; } }
@@ -1588,7 +1630,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class MetamodelDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly MetamodelDeclarationGreen __Missing = new MetamodelDeclarationGreen(MetaSyntaxKind.MetamodelDeclaration, default, default, default, default, default, default, default);
+	    internal static readonly MetamodelDeclarationGreen __Missing = new MetamodelDeclarationGreen();
 	    private GreenNode annotation;
 	    private InternalSyntaxToken kMetamodel;
 	    private NameGreen name;
@@ -1679,6 +1721,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
+		private MetamodelDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.MetamodelDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen> Annotation { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen>(this.annotation); } }
 	    public InternalSyntaxToken KMetamodel { get { return this.kMetamodel; } }
 	    public NameGreen Name { get { return this.name; } }
@@ -1746,7 +1794,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class MetamodelPropertyListGreen : GreenSyntaxNode
 	{
-	    internal static readonly MetamodelPropertyListGreen __Missing = new MetamodelPropertyListGreen(MetaSyntaxKind.MetamodelPropertyList, default);
+	    internal static readonly MetamodelPropertyListGreen __Missing = new MetamodelPropertyListGreen();
 	    private GreenNode metamodelProperty;
 	
 	    public MetamodelPropertyListGreen(MetaSyntaxKind kind, GreenNode metamodelProperty)
@@ -1770,6 +1818,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.metamodelProperty = metamodelProperty;
 			}
 	    }
+	
+		private MetamodelPropertyListGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.MetamodelPropertyList, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen> MetamodelProperty { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<MetamodelPropertyGreen>(this.metamodelProperty); } }
 	
@@ -1820,7 +1874,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class MetamodelPropertyGreen : GreenSyntaxNode
 	{
-	    internal static readonly MetamodelPropertyGreen __Missing = new MetamodelPropertyGreen(MetaSyntaxKind.MetamodelProperty, default);
+	    internal static readonly MetamodelPropertyGreen __Missing = new MetamodelPropertyGreen();
 	    private MetamodelUriPropertyGreen metamodelUriProperty;
 	
 	    public MetamodelPropertyGreen(MetaSyntaxKind kind, MetamodelUriPropertyGreen metamodelUriProperty)
@@ -1844,6 +1898,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.metamodelUriProperty = metamodelUriProperty;
 			}
 	    }
+	
+		private MetamodelPropertyGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.MetamodelProperty, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public MetamodelUriPropertyGreen MetamodelUriProperty { get { return this.metamodelUriProperty; } }
 	
@@ -1894,7 +1954,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class MetamodelUriPropertyGreen : GreenSyntaxNode
 	{
-	    internal static readonly MetamodelUriPropertyGreen __Missing = new MetamodelUriPropertyGreen(MetaSyntaxKind.MetamodelUriProperty, default, default, default);
+	    internal static readonly MetamodelUriPropertyGreen __Missing = new MetamodelUriPropertyGreen();
 	    private InternalSyntaxToken iUri;
 	    private InternalSyntaxToken tAssign;
 	    private StringLiteralGreen stringLiteral;
@@ -1940,6 +2000,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.stringLiteral = stringLiteral;
 			}
 	    }
+	
+		private MetamodelUriPropertyGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.MetamodelUriProperty, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken IUri { get { return this.iUri; } }
 	    public InternalSyntaxToken TAssign { get { return this.tAssign; } }
@@ -1996,7 +2062,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class DeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly DeclarationGreen __Missing = new DeclarationGreen(MetaSyntaxKind.Declaration, default, default, default, default, default);
+	    internal static readonly DeclarationGreen __Missing = new DeclarationGreen();
 	    private EnumDeclarationGreen enumDeclaration;
 	    private ClassDeclarationGreen classDeclaration;
 	    private AssociationDeclarationGreen associationDeclaration;
@@ -2064,6 +2130,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.externTypeDeclaration = externTypeDeclaration;
 			}
 	    }
+	
+		private DeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Declaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public EnumDeclarationGreen EnumDeclaration { get { return this.enumDeclaration; } }
 	    public ClassDeclarationGreen ClassDeclaration { get { return this.classDeclaration; } }
@@ -2186,7 +2258,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class EnumDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly EnumDeclarationGreen __Missing = new EnumDeclarationGreen(MetaSyntaxKind.EnumDeclaration, default, default, default, default);
+	    internal static readonly EnumDeclarationGreen __Missing = new EnumDeclarationGreen();
 	    private GreenNode annotation;
 	    private InternalSyntaxToken kEnum;
 	    private NameGreen name;
@@ -2243,6 +2315,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.enumBody = enumBody;
 			}
 	    }
+	
+		private EnumDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.EnumDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen> Annotation { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen>(this.annotation); } }
 	    public InternalSyntaxToken KEnum { get { return this.kEnum; } }
@@ -2302,7 +2380,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class EnumBodyGreen : GreenSyntaxNode
 	{
-	    internal static readonly EnumBodyGreen __Missing = new EnumBodyGreen(MetaSyntaxKind.EnumBody, default, default, default, default, default);
+	    internal static readonly EnumBodyGreen __Missing = new EnumBodyGreen();
 	    private InternalSyntaxToken tOpenBrace;
 	    private EnumValuesGreen enumValues;
 	    private InternalSyntaxToken tSemicolon;
@@ -2371,6 +2449,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
+		private EnumBodyGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.EnumBody, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
 	    public InternalSyntaxToken TOpenBrace { get { return this.tOpenBrace; } }
 	    public EnumValuesGreen EnumValues { get { return this.enumValues; } }
 	    public InternalSyntaxToken TSemicolon { get { return this.tSemicolon; } }
@@ -2432,7 +2516,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class EnumValuesGreen : GreenSyntaxNode
 	{
-	    internal static readonly EnumValuesGreen __Missing = new EnumValuesGreen(MetaSyntaxKind.EnumValues, default);
+	    internal static readonly EnumValuesGreen __Missing = new EnumValuesGreen();
 	    private GreenNode enumValue;
 	
 	    public EnumValuesGreen(MetaSyntaxKind kind, GreenNode enumValue)
@@ -2456,6 +2540,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.enumValue = enumValue;
 			}
 	    }
+	
+		private EnumValuesGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.EnumValues, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen> EnumValue { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<EnumValueGreen>(this.enumValue); } }
 	
@@ -2506,7 +2596,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class EnumValueGreen : GreenSyntaxNode
 	{
-	    internal static readonly EnumValueGreen __Missing = new EnumValueGreen(MetaSyntaxKind.EnumValue, default, default);
+	    internal static readonly EnumValueGreen __Missing = new EnumValueGreen();
 	    private GreenNode annotation;
 	    private NameGreen name;
 	
@@ -2541,6 +2631,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.name = name;
 			}
 	    }
+	
+		private EnumValueGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.EnumValue, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen> Annotation { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen>(this.annotation); } }
 	    public NameGreen Name { get { return this.name; } }
@@ -2594,7 +2690,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class EnumMemberDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly EnumMemberDeclarationGreen __Missing = new EnumMemberDeclarationGreen(MetaSyntaxKind.EnumMemberDeclaration, default);
+	    internal static readonly EnumMemberDeclarationGreen __Missing = new EnumMemberDeclarationGreen();
 	    private OperationDeclarationGreen operationDeclaration;
 	
 	    public EnumMemberDeclarationGreen(MetaSyntaxKind kind, OperationDeclarationGreen operationDeclaration)
@@ -2618,6 +2714,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.operationDeclaration = operationDeclaration;
 			}
 	    }
+	
+		private EnumMemberDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.EnumMemberDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public OperationDeclarationGreen OperationDeclaration { get { return this.operationDeclaration; } }
 	
@@ -2668,7 +2770,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ClassDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly ClassDeclarationGreen __Missing = new ClassDeclarationGreen(MetaSyntaxKind.ClassDeclaration, default, default, default, default, default, default, default);
+	    internal static readonly ClassDeclarationGreen __Missing = new ClassDeclarationGreen();
 	    private GreenNode annotation;
 	    private InternalSyntaxToken kAbstract;
 	    private InternalSyntaxToken kClass;
@@ -2759,6 +2861,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
+		private ClassDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ClassDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen> Annotation { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen>(this.annotation); } }
 	    public InternalSyntaxToken KAbstract { get { return this.kAbstract; } }
 	    public InternalSyntaxToken KClass { get { return this.kClass; } }
@@ -2826,7 +2934,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ClassBodyGreen : GreenSyntaxNode
 	{
-	    internal static readonly ClassBodyGreen __Missing = new ClassBodyGreen(MetaSyntaxKind.ClassBody, default, default, default);
+	    internal static readonly ClassBodyGreen __Missing = new ClassBodyGreen();
 	    private InternalSyntaxToken tOpenBrace;
 	    private GreenNode classMemberDeclaration;
 	    private InternalSyntaxToken tCloseBrace;
@@ -2872,6 +2980,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.tCloseBrace = tCloseBrace;
 			}
 	    }
+	
+		private ClassBodyGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ClassBody, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken TOpenBrace { get { return this.tOpenBrace; } }
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen> ClassMemberDeclaration { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<ClassMemberDeclarationGreen>(this.classMemberDeclaration); } }
@@ -2928,7 +3042,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ClassAncestorsGreen : GreenSyntaxNode
 	{
-	    internal static readonly ClassAncestorsGreen __Missing = new ClassAncestorsGreen(MetaSyntaxKind.ClassAncestors, default);
+	    internal static readonly ClassAncestorsGreen __Missing = new ClassAncestorsGreen();
 	    private GreenNode classAncestor;
 	
 	    public ClassAncestorsGreen(MetaSyntaxKind kind, GreenNode classAncestor)
@@ -2952,6 +3066,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.classAncestor = classAncestor;
 			}
 	    }
+	
+		private ClassAncestorsGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ClassAncestors, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen> ClassAncestor { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ClassAncestorGreen>(this.classAncestor); } }
 	
@@ -3002,7 +3122,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ClassAncestorGreen : GreenSyntaxNode
 	{
-	    internal static readonly ClassAncestorGreen __Missing = new ClassAncestorGreen(MetaSyntaxKind.ClassAncestor, default);
+	    internal static readonly ClassAncestorGreen __Missing = new ClassAncestorGreen();
 	    private QualifierGreen qualifier;
 	
 	    public ClassAncestorGreen(MetaSyntaxKind kind, QualifierGreen qualifier)
@@ -3026,6 +3146,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.qualifier = qualifier;
 			}
 	    }
+	
+		private ClassAncestorGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ClassAncestor, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public QualifierGreen Qualifier { get { return this.qualifier; } }
 	
@@ -3076,7 +3202,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ClassMemberDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly ClassMemberDeclarationGreen __Missing = new ClassMemberDeclarationGreen(MetaSyntaxKind.ClassMemberDeclaration, default, default);
+	    internal static readonly ClassMemberDeclarationGreen __Missing = new ClassMemberDeclarationGreen();
 	    private FieldDeclarationGreen fieldDeclaration;
 	    private OperationDeclarationGreen operationDeclaration;
 	
@@ -3111,6 +3237,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.operationDeclaration = operationDeclaration;
 			}
 	    }
+	
+		private ClassMemberDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ClassMemberDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public FieldDeclarationGreen FieldDeclaration { get { return this.fieldDeclaration; } }
 	    public OperationDeclarationGreen OperationDeclaration { get { return this.operationDeclaration; } }
@@ -3179,7 +3311,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class FieldDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly FieldDeclarationGreen __Missing = new FieldDeclarationGreen(MetaSyntaxKind.FieldDeclaration, default, default, default, default, default, default);
+	    internal static readonly FieldDeclarationGreen __Missing = new FieldDeclarationGreen();
 	    private GreenNode annotation;
 	    private FieldModifierGreen fieldModifier;
 	    private TypeReferenceGreen typeReference;
@@ -3259,6 +3391,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
+		private FieldDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.FieldDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen> Annotation { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen>(this.annotation); } }
 	    public FieldModifierGreen FieldModifier { get { return this.fieldModifier; } }
 	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
@@ -3323,7 +3461,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class FieldModifierGreen : GreenSyntaxNode
 	{
-	    internal static readonly FieldModifierGreen __Missing = new FieldModifierGreen(MetaSyntaxKind.FieldModifier, default);
+	    internal static readonly FieldModifierGreen __Missing = new FieldModifierGreen();
 	    private InternalSyntaxToken fieldModifier;
 	
 	    public FieldModifierGreen(MetaSyntaxKind kind, InternalSyntaxToken fieldModifier)
@@ -3347,6 +3485,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.fieldModifier = fieldModifier;
 			}
 	    }
+	
+		private FieldModifierGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.FieldModifier, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken FieldModifier { get { return this.fieldModifier; } }
 	
@@ -3397,7 +3541,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class RedefinitionsOrSubsettingsGreen : GreenSyntaxNode
 	{
-	    internal static readonly RedefinitionsOrSubsettingsGreen __Missing = new RedefinitionsOrSubsettingsGreen(MetaSyntaxKind.RedefinitionsOrSubsettings, default, default);
+	    internal static readonly RedefinitionsOrSubsettingsGreen __Missing = new RedefinitionsOrSubsettingsGreen();
 	    private RedefinitionsGreen redefinitions;
 	    private SubsettingsGreen subsettings;
 	
@@ -3432,6 +3576,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.subsettings = subsettings;
 			}
 	    }
+	
+		private RedefinitionsOrSubsettingsGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.RedefinitionsOrSubsettings, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public RedefinitionsGreen Redefinitions { get { return this.redefinitions; } }
 	    public SubsettingsGreen Subsettings { get { return this.subsettings; } }
@@ -3500,7 +3650,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class RedefinitionsGreen : GreenSyntaxNode
 	{
-	    internal static readonly RedefinitionsGreen __Missing = new RedefinitionsGreen(MetaSyntaxKind.Redefinitions, default, default);
+	    internal static readonly RedefinitionsGreen __Missing = new RedefinitionsGreen();
 	    private InternalSyntaxToken kRedefines;
 	    private NameUseListGreen nameUseList;
 	
@@ -3535,6 +3685,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.nameUseList = nameUseList;
 			}
 	    }
+	
+		private RedefinitionsGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Redefinitions, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken KRedefines { get { return this.kRedefines; } }
 	    public NameUseListGreen NameUseList { get { return this.nameUseList; } }
@@ -3588,7 +3744,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class SubsettingsGreen : GreenSyntaxNode
 	{
-	    internal static readonly SubsettingsGreen __Missing = new SubsettingsGreen(MetaSyntaxKind.Subsettings, default, default);
+	    internal static readonly SubsettingsGreen __Missing = new SubsettingsGreen();
 	    private InternalSyntaxToken kSubsets;
 	    private NameUseListGreen nameUseList;
 	
@@ -3623,6 +3779,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.nameUseList = nameUseList;
 			}
 	    }
+	
+		private SubsettingsGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Subsettings, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken KSubsets { get { return this.kSubsets; } }
 	    public NameUseListGreen NameUseList { get { return this.nameUseList; } }
@@ -3676,7 +3838,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class NameUseListGreen : GreenSyntaxNode
 	{
-	    internal static readonly NameUseListGreen __Missing = new NameUseListGreen(MetaSyntaxKind.NameUseList, default);
+	    internal static readonly NameUseListGreen __Missing = new NameUseListGreen();
 	    private GreenNode qualifier;
 	
 	    public NameUseListGreen(MetaSyntaxKind kind, GreenNode qualifier)
@@ -3700,6 +3862,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.qualifier = qualifier;
 			}
 	    }
+	
+		private NameUseListGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.NameUseList, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen> Qualifier { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<QualifierGreen>(this.qualifier); } }
 	
@@ -3750,7 +3918,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ConstDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly ConstDeclarationGreen __Missing = new ConstDeclarationGreen(MetaSyntaxKind.ConstDeclaration, default, default, default, default);
+	    internal static readonly ConstDeclarationGreen __Missing = new ConstDeclarationGreen();
 	    private InternalSyntaxToken kConst;
 	    private TypeReferenceGreen typeReference;
 	    private NameGreen name;
@@ -3807,6 +3975,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.tSemicolon = tSemicolon;
 			}
 	    }
+	
+		private ConstDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ConstDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken KConst { get { return this.kConst; } }
 	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
@@ -3866,7 +4040,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ExternTypeDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly ExternTypeDeclarationGreen __Missing = new ExternTypeDeclarationGreen(MetaSyntaxKind.ExternTypeDeclaration, default, default);
+	    internal static readonly ExternTypeDeclarationGreen __Missing = new ExternTypeDeclarationGreen();
 	    private ExternClassTypeDeclarationGreen externClassTypeDeclaration;
 	    private ExternStructTypeDeclarationGreen externStructTypeDeclaration;
 	
@@ -3901,6 +4075,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.externStructTypeDeclaration = externStructTypeDeclaration;
 			}
 	    }
+	
+		private ExternTypeDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ExternTypeDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public ExternClassTypeDeclarationGreen ExternClassTypeDeclaration { get { return this.externClassTypeDeclaration; } }
 	    public ExternStructTypeDeclarationGreen ExternStructTypeDeclaration { get { return this.externStructTypeDeclaration; } }
@@ -3969,7 +4149,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ExternClassTypeDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly ExternClassTypeDeclarationGreen __Missing = new ExternClassTypeDeclarationGreen(MetaSyntaxKind.ExternClassTypeDeclaration, default, default, default, default, default);
+	    internal static readonly ExternClassTypeDeclarationGreen __Missing = new ExternClassTypeDeclarationGreen();
 	    private InternalSyntaxToken kExtern;
 	    private InternalSyntaxToken kClass;
 	    private QualifierGreen qualifier;
@@ -4038,6 +4218,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
+		private ExternClassTypeDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ExternClassTypeDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
 	    public InternalSyntaxToken KExtern { get { return this.kExtern; } }
 	    public InternalSyntaxToken KClass { get { return this.kClass; } }
 	    public QualifierGreen Qualifier { get { return this.qualifier; } }
@@ -4099,7 +4285,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ExternStructTypeDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly ExternStructTypeDeclarationGreen __Missing = new ExternStructTypeDeclarationGreen(MetaSyntaxKind.ExternStructTypeDeclaration, default, default, default, default, default);
+	    internal static readonly ExternStructTypeDeclarationGreen __Missing = new ExternStructTypeDeclarationGreen();
 	    private InternalSyntaxToken kExtern;
 	    private InternalSyntaxToken kStruct;
 	    private QualifierGreen qualifier;
@@ -4168,6 +4354,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
+		private ExternStructTypeDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ExternStructTypeDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
 	    public InternalSyntaxToken KExtern { get { return this.kExtern; } }
 	    public InternalSyntaxToken KStruct { get { return this.kStruct; } }
 	    public QualifierGreen Qualifier { get { return this.qualifier; } }
@@ -4229,7 +4421,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ReturnTypeGreen : GreenSyntaxNode
 	{
-	    internal static readonly ReturnTypeGreen __Missing = new ReturnTypeGreen(MetaSyntaxKind.ReturnType, default, default);
+	    internal static readonly ReturnTypeGreen __Missing = new ReturnTypeGreen();
 	    private TypeReferenceGreen typeReference;
 	    private VoidTypeGreen voidType;
 	
@@ -4264,6 +4456,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.voidType = voidType;
 			}
 	    }
+	
+		private ReturnTypeGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ReturnType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
 	    public VoidTypeGreen VoidType { get { return this.voidType; } }
@@ -4332,7 +4530,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class TypeOfReferenceGreen : GreenSyntaxNode
 	{
-	    internal static readonly TypeOfReferenceGreen __Missing = new TypeOfReferenceGreen(MetaSyntaxKind.TypeOfReference, default);
+	    internal static readonly TypeOfReferenceGreen __Missing = new TypeOfReferenceGreen();
 	    private TypeReferenceGreen typeReference;
 	
 	    public TypeOfReferenceGreen(MetaSyntaxKind kind, TypeReferenceGreen typeReference)
@@ -4356,6 +4554,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.typeReference = typeReference;
 			}
 	    }
+	
+		private TypeOfReferenceGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.TypeOfReference, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
 	
@@ -4406,7 +4610,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class TypeReferenceGreen : GreenSyntaxNode
 	{
-	    internal static readonly TypeReferenceGreen __Missing = new TypeReferenceGreen(MetaSyntaxKind.TypeReference, default, default);
+	    internal static readonly TypeReferenceGreen __Missing = new TypeReferenceGreen();
 	    private CollectionTypeGreen collectionType;
 	    private SimpleTypeGreen simpleType;
 	
@@ -4441,6 +4645,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.simpleType = simpleType;
 			}
 	    }
+	
+		private TypeReferenceGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.TypeReference, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public CollectionTypeGreen CollectionType { get { return this.collectionType; } }
 	    public SimpleTypeGreen SimpleType { get { return this.simpleType; } }
@@ -4509,7 +4719,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class SimpleTypeGreen : GreenSyntaxNode
 	{
-	    internal static readonly SimpleTypeGreen __Missing = new SimpleTypeGreen(MetaSyntaxKind.SimpleType, default, default, default, default);
+	    internal static readonly SimpleTypeGreen __Missing = new SimpleTypeGreen();
 	    private PrimitiveTypeGreen primitiveType;
 	    private ObjectTypeGreen objectType;
 	    private NullableTypeGreen nullableType;
@@ -4566,6 +4776,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.classType = classType;
 			}
 	    }
+	
+		private SimpleTypeGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.SimpleType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public PrimitiveTypeGreen PrimitiveType { get { return this.primitiveType; } }
 	    public ObjectTypeGreen ObjectType { get { return this.objectType; } }
@@ -4670,7 +4886,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ClassTypeGreen : GreenSyntaxNode
 	{
-	    internal static readonly ClassTypeGreen __Missing = new ClassTypeGreen(MetaSyntaxKind.ClassType, default);
+	    internal static readonly ClassTypeGreen __Missing = new ClassTypeGreen();
 	    private QualifierGreen qualifier;
 	
 	    public ClassTypeGreen(MetaSyntaxKind kind, QualifierGreen qualifier)
@@ -4694,6 +4910,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.qualifier = qualifier;
 			}
 	    }
+	
+		private ClassTypeGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ClassType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public QualifierGreen Qualifier { get { return this.qualifier; } }
 	
@@ -4744,7 +4966,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ObjectTypeGreen : GreenSyntaxNode
 	{
-	    internal static readonly ObjectTypeGreen __Missing = new ObjectTypeGreen(MetaSyntaxKind.ObjectType, default);
+	    internal static readonly ObjectTypeGreen __Missing = new ObjectTypeGreen();
 	    private InternalSyntaxToken objectType;
 	
 	    public ObjectTypeGreen(MetaSyntaxKind kind, InternalSyntaxToken objectType)
@@ -4768,6 +4990,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.objectType = objectType;
 			}
 	    }
+	
+		private ObjectTypeGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ObjectType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken ObjectType { get { return this.objectType; } }
 	
@@ -4818,7 +5046,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class PrimitiveTypeGreen : GreenSyntaxNode
 	{
-	    internal static readonly PrimitiveTypeGreen __Missing = new PrimitiveTypeGreen(MetaSyntaxKind.PrimitiveType, default);
+	    internal static readonly PrimitiveTypeGreen __Missing = new PrimitiveTypeGreen();
 	    private InternalSyntaxToken primitiveType;
 	
 	    public PrimitiveTypeGreen(MetaSyntaxKind kind, InternalSyntaxToken primitiveType)
@@ -4842,6 +5070,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.primitiveType = primitiveType;
 			}
 	    }
+	
+		private PrimitiveTypeGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.PrimitiveType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken PrimitiveType { get { return this.primitiveType; } }
 	
@@ -4892,7 +5126,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class VoidTypeGreen : GreenSyntaxNode
 	{
-	    internal static readonly VoidTypeGreen __Missing = new VoidTypeGreen(MetaSyntaxKind.VoidType, default);
+	    internal static readonly VoidTypeGreen __Missing = new VoidTypeGreen();
 	    private InternalSyntaxToken kVoid;
 	
 	    public VoidTypeGreen(MetaSyntaxKind kind, InternalSyntaxToken kVoid)
@@ -4916,6 +5150,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.kVoid = kVoid;
 			}
 	    }
+	
+		private VoidTypeGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.VoidType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken KVoid { get { return this.kVoid; } }
 	
@@ -4966,7 +5206,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class NullableTypeGreen : GreenSyntaxNode
 	{
-	    internal static readonly NullableTypeGreen __Missing = new NullableTypeGreen(MetaSyntaxKind.NullableType, default, default);
+	    internal static readonly NullableTypeGreen __Missing = new NullableTypeGreen();
 	    private PrimitiveTypeGreen primitiveType;
 	    private InternalSyntaxToken tQuestion;
 	
@@ -5001,6 +5241,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.tQuestion = tQuestion;
 			}
 	    }
+	
+		private NullableTypeGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.NullableType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public PrimitiveTypeGreen PrimitiveType { get { return this.primitiveType; } }
 	    public InternalSyntaxToken TQuestion { get { return this.tQuestion; } }
@@ -5054,7 +5300,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class CollectionTypeGreen : GreenSyntaxNode
 	{
-	    internal static readonly CollectionTypeGreen __Missing = new CollectionTypeGreen(MetaSyntaxKind.CollectionType, default, default, default, default);
+	    internal static readonly CollectionTypeGreen __Missing = new CollectionTypeGreen();
 	    private CollectionKindGreen collectionKind;
 	    private InternalSyntaxToken tLessThan;
 	    private SimpleTypeGreen simpleType;
@@ -5111,6 +5357,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.tGreaterThan = tGreaterThan;
 			}
 	    }
+	
+		private CollectionTypeGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.CollectionType, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public CollectionKindGreen CollectionKind { get { return this.collectionKind; } }
 	    public InternalSyntaxToken TLessThan { get { return this.tLessThan; } }
@@ -5170,7 +5422,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class CollectionKindGreen : GreenSyntaxNode
 	{
-	    internal static readonly CollectionKindGreen __Missing = new CollectionKindGreen(MetaSyntaxKind.CollectionKind, default);
+	    internal static readonly CollectionKindGreen __Missing = new CollectionKindGreen();
 	    private InternalSyntaxToken collectionKind;
 	
 	    public CollectionKindGreen(MetaSyntaxKind kind, InternalSyntaxToken collectionKind)
@@ -5194,6 +5446,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.collectionKind = collectionKind;
 			}
 	    }
+	
+		private CollectionKindGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.CollectionKind, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken CollectionKind { get { return this.collectionKind; } }
 	
@@ -5244,7 +5502,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class OperationDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly OperationDeclarationGreen __Missing = new OperationDeclarationGreen(MetaSyntaxKind.OperationDeclaration, default, default, default, default, default, default, default, default);
+	    internal static readonly OperationDeclarationGreen __Missing = new OperationDeclarationGreen();
 	    private GreenNode annotation;
 	    private InternalSyntaxToken kStatic;
 	    private ReturnTypeGreen returnType;
@@ -5346,6 +5604,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
+		private OperationDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.OperationDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen> Annotation { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen>(this.annotation); } }
 	    public InternalSyntaxToken KStatic { get { return this.kStatic; } }
 	    public ReturnTypeGreen ReturnType { get { return this.returnType; } }
@@ -5416,7 +5680,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ParameterListGreen : GreenSyntaxNode
 	{
-	    internal static readonly ParameterListGreen __Missing = new ParameterListGreen(MetaSyntaxKind.ParameterList, default);
+	    internal static readonly ParameterListGreen __Missing = new ParameterListGreen();
 	    private GreenNode parameter;
 	
 	    public ParameterListGreen(MetaSyntaxKind kind, GreenNode parameter)
@@ -5440,6 +5704,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.parameter = parameter;
 			}
 	    }
+	
+		private ParameterListGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ParameterList, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen> Parameter { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen>(this.parameter); } }
 	
@@ -5490,7 +5760,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ParameterGreen : GreenSyntaxNode
 	{
-	    internal static readonly ParameterGreen __Missing = new ParameterGreen(MetaSyntaxKind.Parameter, default, default, default);
+	    internal static readonly ParameterGreen __Missing = new ParameterGreen();
 	    private GreenNode annotation;
 	    private TypeReferenceGreen typeReference;
 	    private NameGreen name;
@@ -5536,6 +5806,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.name = name;
 			}
 	    }
+	
+		private ParameterGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Parameter, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen> Annotation { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen>(this.annotation); } }
 	    public TypeReferenceGreen TypeReference { get { return this.typeReference; } }
@@ -5592,7 +5868,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class AssociationDeclarationGreen : GreenSyntaxNode
 	{
-	    internal static readonly AssociationDeclarationGreen __Missing = new AssociationDeclarationGreen(MetaSyntaxKind.AssociationDeclaration, default, default, default, default, default, default);
+	    internal static readonly AssociationDeclarationGreen __Missing = new AssociationDeclarationGreen();
 	    private GreenNode annotation;
 	    private InternalSyntaxToken kAssociation;
 	    private QualifierGreen source;
@@ -5672,6 +5948,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
+		private AssociationDeclarationGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.AssociationDeclaration, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen> Annotation { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AnnotationGreen>(this.annotation); } }
 	    public InternalSyntaxToken KAssociation { get { return this.kAssociation; } }
 	    public QualifierGreen Source { get { return this.source; } }
@@ -5736,7 +6018,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class IdentifierGreen : GreenSyntaxNode
 	{
-	    internal static readonly IdentifierGreen __Missing = new IdentifierGreen(MetaSyntaxKind.Identifier, default);
+	    internal static readonly IdentifierGreen __Missing = new IdentifierGreen();
 	    private InternalSyntaxToken identifier;
 	
 	    public IdentifierGreen(MetaSyntaxKind kind, InternalSyntaxToken identifier)
@@ -5760,6 +6042,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.identifier = identifier;
 			}
 	    }
+	
+		private IdentifierGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Identifier, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken Identifier { get { return this.identifier; } }
 	
@@ -5810,7 +6098,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class LiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly LiteralGreen __Missing = new LiteralGreen(MetaSyntaxKind.Literal, default, default, default, default, default, default);
+	    internal static readonly LiteralGreen __Missing = new LiteralGreen();
 	    private NullLiteralGreen nullLiteral;
 	    private BooleanLiteralGreen booleanLiteral;
 	    private IntegerLiteralGreen integerLiteral;
@@ -5889,6 +6177,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.stringLiteral = stringLiteral;
 			}
 	    }
+	
+		private LiteralGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.Literal, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public NullLiteralGreen NullLiteral { get { return this.nullLiteral; } }
 	    public BooleanLiteralGreen BooleanLiteral { get { return this.booleanLiteral; } }
@@ -6029,7 +6323,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class NullLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly NullLiteralGreen __Missing = new NullLiteralGreen(MetaSyntaxKind.NullLiteral, default);
+	    internal static readonly NullLiteralGreen __Missing = new NullLiteralGreen();
 	    private InternalSyntaxToken kNull;
 	
 	    public NullLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken kNull)
@@ -6053,6 +6347,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.kNull = kNull;
 			}
 	    }
+	
+		private NullLiteralGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.NullLiteral, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken KNull { get { return this.kNull; } }
 	
@@ -6103,7 +6403,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class BooleanLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly BooleanLiteralGreen __Missing = new BooleanLiteralGreen(MetaSyntaxKind.BooleanLiteral, default);
+	    internal static readonly BooleanLiteralGreen __Missing = new BooleanLiteralGreen();
 	    private InternalSyntaxToken booleanLiteral;
 	
 	    public BooleanLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken booleanLiteral)
@@ -6127,6 +6427,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.booleanLiteral = booleanLiteral;
 			}
 	    }
+	
+		private BooleanLiteralGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.BooleanLiteral, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken BooleanLiteral { get { return this.booleanLiteral; } }
 	
@@ -6177,7 +6483,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class IntegerLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly IntegerLiteralGreen __Missing = new IntegerLiteralGreen(MetaSyntaxKind.IntegerLiteral, default);
+	    internal static readonly IntegerLiteralGreen __Missing = new IntegerLiteralGreen();
 	    private InternalSyntaxToken lInteger;
 	
 	    public IntegerLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken lInteger)
@@ -6201,6 +6507,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.lInteger = lInteger;
 			}
 	    }
+	
+		private IntegerLiteralGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.IntegerLiteral, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken LInteger { get { return this.lInteger; } }
 	
@@ -6251,7 +6563,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class DecimalLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly DecimalLiteralGreen __Missing = new DecimalLiteralGreen(MetaSyntaxKind.DecimalLiteral, default);
+	    internal static readonly DecimalLiteralGreen __Missing = new DecimalLiteralGreen();
 	    private InternalSyntaxToken lDecimal;
 	
 	    public DecimalLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken lDecimal)
@@ -6275,6 +6587,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.lDecimal = lDecimal;
 			}
 	    }
+	
+		private DecimalLiteralGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.DecimalLiteral, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken LDecimal { get { return this.lDecimal; } }
 	
@@ -6325,7 +6643,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class ScientificLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly ScientificLiteralGreen __Missing = new ScientificLiteralGreen(MetaSyntaxKind.ScientificLiteral, default);
+	    internal static readonly ScientificLiteralGreen __Missing = new ScientificLiteralGreen();
 	    private InternalSyntaxToken lScientific;
 	
 	    public ScientificLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken lScientific)
@@ -6349,6 +6667,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.lScientific = lScientific;
 			}
 	    }
+	
+		private ScientificLiteralGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.ScientificLiteral, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken LScientific { get { return this.lScientific; } }
 	
@@ -6399,7 +6723,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	internal class StringLiteralGreen : GreenSyntaxNode
 	{
-	    internal static readonly StringLiteralGreen __Missing = new StringLiteralGreen(MetaSyntaxKind.StringLiteral, default);
+	    internal static readonly StringLiteralGreen __Missing = new StringLiteralGreen();
 	    private InternalSyntaxToken lRegularString;
 	
 	    public StringLiteralGreen(MetaSyntaxKind kind, InternalSyntaxToken lRegularString)
@@ -6423,6 +6747,12 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.lRegularString = lRegularString;
 			}
 	    }
+	
+		private StringLiteralGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.StringLiteral, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
 	
 	    public InternalSyntaxToken LRegularString { get { return this.lRegularString; } }
 	

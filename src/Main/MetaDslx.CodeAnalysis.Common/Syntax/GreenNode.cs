@@ -283,7 +283,7 @@ namespace Microsoft.CodeAnalysis
             this.flags &= ~flags;
         }
 
-        internal bool IsMissing
+        public bool IsMissing
         {
             get
             {

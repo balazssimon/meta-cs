@@ -2122,7 +2122,7 @@ internal class [rule.GreenName()] : [superRule.GreenName()][GetCompilationUnitIn
 internal class [rule.GreenName()] : GreenSyntaxNode[GetCompilationUnitInternal(rule)]
 	[end if]
 {
-    internal static readonly [rule.GreenName()] __Missing = new [rule.GreenName()]([Properties.LanguageName]SyntaxKind.[rule.PlainName()][GetElemDefaultParamList(rule, true, false)]);
+    internal static readonly [rule.GreenName()] __Missing = new [rule.GreenName()]();
 
 	[loop(elem:rule.AllElements)]
     private [elem.GreenType(TypeKind.Field)] [elem.FieldName()];
@@ -2153,6 +2153,12 @@ internal class [rule.GreenName()] : GreenSyntaxNode[GetCompilationUnitInternal(r
 		}
 		[end loop]
     }
+^
+	private [rule.GreenName()]()
+		: base(([Properties.LanguageName]SyntaxKind)[Properties.LanguageName]SyntaxKind.[rule.PlainName()], null, null)
+	{
+		this.flags &= ~NodeFlags.IsNotMissing;
+	}
 ^
 	[loop(elem:rule.AllElements)]
 		[if (elem.IsList)]
