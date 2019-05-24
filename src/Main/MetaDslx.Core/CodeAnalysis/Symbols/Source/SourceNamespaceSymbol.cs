@@ -46,19 +46,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _module = module;
             _container = container;
             _mergedDeclaration = mergedDeclaration;
-            
-            _modelObject = mergedDeclaration.Kind.CreateMutable(module.ModelBuilder);
-            Debug.Assert(_modelObject != null);
-            if (_modelObject != null)
+
+            if (mergedDeclaration.Kind != null)
             {
-                _modelObject.MName = mergedDeclaration.Name;
-                var parentObject = container?.ModelObject;
-                if (parentObject != null && !string.IsNullOrEmpty(mergedDeclaration.ParentPropertyToAddTo))
+                _modelObject = mergedDeclaration.Kind.CreateMutable(module.ModelBuilder);
+                Debug.Assert(_modelObject != null);
+                if (_modelObject != null)
                 {
-                    var property = parentObject.MGetProperty(mergedDeclaration.ParentPropertyToAddTo);
-                    if (property != null)
+                    _modelObject.MName = mergedDeclaration.Name;
+                    var parentObject = container?.ModelObject;
+                    if (parentObject != null && !string.IsNullOrEmpty(mergedDeclaration.ParentPropertyToAddTo))
                     {
-                        parentObject.MAdd(property, _modelObject);
+                        var property = parentObject.MGetProperty(mergedDeclaration.ParentPropertyToAddTo);
+                        if (property != null)
+                        {
+                            parentObject.MAdd(property, _modelObject);
+                        }
                     }
                 }
             }

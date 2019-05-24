@@ -28,10 +28,6 @@ namespace MetaDslx.CodeAnalysis
 
         public abstract DeclarationTable Declarations { get; }
 
-        internal abstract Microsoft.CodeAnalysis.CSharp.CSharpCompilation CSharpCompilationForReferencedModules { get; }
-
-        internal Microsoft.CodeAnalysis.CSharp.Symbols.SourceAssemblySymbol CSharpAssemblySymbolForReferencedModules => CSharpCompilationForReferencedModules.SourceAssembly;
-
         internal override IEnumerable<Microsoft.CodeAnalysis.ReferenceDirective> ReferenceDirectives
         {
             get { return this.ReferenceDirectivesCore.Select(d => d.ToMicrosoft()); }

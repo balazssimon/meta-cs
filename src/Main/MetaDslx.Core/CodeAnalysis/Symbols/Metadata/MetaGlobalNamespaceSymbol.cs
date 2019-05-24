@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                         {
                             foreach (var ms in model.Symbols)
                             {
-                                if (ms.MParent == null && ms.MId.SymbolInfo.IsNamespace) // TODO:MetaDslx - include non-root namespaces?
+                                if (ms.MParent == null && ms.MId.SymbolInfo.IsNamespace)
                                 {
                                     names.Add(ms.MName);
                                 }
@@ -73,7 +73,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                         {
                             foreach (var ms in model.Symbols)
                             {
-                                if (ms.MParent == null && ms.MId.SymbolInfo.IsType) // TODO:MetaDslx - include non-root types?
+                                if (ms.MParent == null && ms.MId.SymbolInfo.IsType) 
                                 {
                                     names.Add(ms.MName);
                                 }
@@ -118,12 +118,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<Symbol> GetMembers(string name)
         {
-            return _lazyMembers.WhereAsArray(m => m.Name == name);
+            return GetMembers().WhereAsArray(m => m.Name == name);
         }
 
         public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
         {
-            return _lazyMembers.WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
+            return GetMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
@@ -155,12 +155,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
         {
-            return _lazyTypeMembers.WhereAsArray(m => m.Name == name);
+            return GetTypeMembers().WhereAsArray(m => m.Name == name);
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
         {
-            return _lazyTypeMembers.WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
+            return GetTypeMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }
 
 

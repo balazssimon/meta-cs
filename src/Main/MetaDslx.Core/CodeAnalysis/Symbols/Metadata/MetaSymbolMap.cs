@@ -21,6 +21,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _module = module;
         }
 
+        public bool TryGetSymbol<TMeta, T>(TMeta metaSymbol, out T symbol)
+            where TMeta : IMetaSymbol
+            where T : Symbol
+        {
+            if (metaSymbol == null || !map.TryGetValue(metaSymbol, out Symbol cachedSymbol))
+            {
+                symbol = null;
+                return false;
+            }
+            symbol = (T)cachedSymbol;
+            return (object)symbol != null;
+        }
+
         private T GetSymbol<TMeta, T>(TMeta metaSymbol, Func<TMeta, T> createSymbol)
             where TMeta : IMetaSymbol
             where T : Symbol
@@ -38,6 +51,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             if (metaSymbol.MId.SymbolInfo.IsNamespace) return GetNamespaceSymbol(metaSymbol);
             if (metaSymbol.MId.SymbolInfo.IsNamedType) return GetNamedTypeSymbol(metaSymbol);
+            if (metaSymbol.MId.SymbolInfo.IsName) return GetNameSymbol(metaSymbol);
             return new UnsupportedMetaSymbol(metaSymbol);
         }
 
@@ -72,6 +86,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public ImmutableArray<NamedTypeSymbol> GetNamedTypeSymbols(IEnumerable<IMetaSymbol> metaSymbols)
         {
             return metaSymbols.Select(symbol => GetNamedTypeSymbol(symbol)).ToImmutableArray();
+        }
+
+        public MetaMemberSymbol GetNameSymbol(IMetaSymbol metaSymbol)
+        {
+            Debug.Assert(metaSymbol.MId.SymbolInfo.IsNamedType, "Symbol must be a name.");
+            return GetSymbol(metaSymbol, ms => new MetaMemberSymbol(ms, GetContainerSymbol(ms)));
+        }
+
+        public ImmutableArray<MetaMemberSymbol> GetNameSymbols(IEnumerable<IMetaSymbol> metaSymbols)
+        {
+            return metaSymbols.Select(symbol => GetNameSymbol(symbol)).ToImmutableArray();
         }
     }
 }

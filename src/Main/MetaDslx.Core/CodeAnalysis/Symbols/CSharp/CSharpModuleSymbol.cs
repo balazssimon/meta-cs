@@ -173,6 +173,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         /// </summary>
         internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly)
         {
+            originatingSourceAssemblyDebugOnly.GetCSharpAssemblyForPEModules();
             base.SetReferences(moduleReferences, originatingSourceAssemblyDebugOnly);
 
             // Build the retargeting map

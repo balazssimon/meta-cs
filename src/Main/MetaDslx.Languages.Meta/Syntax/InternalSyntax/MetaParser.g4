@@ -6,8 +6,7 @@ options
 	                      
 }
 
-                    
-main:                    namespaceDeclaration EOF;
+main: namespaceDeclaration EOF;
 
      
 name : identifier;

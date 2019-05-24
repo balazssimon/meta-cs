@@ -24,20 +24,12 @@ namespace MetaDslx.Languages.Meta.Binding
             bool isSubmission)
         {
             var builder = new MetaDeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
-            return builder.CreateRoot(syntaxTree.GetRoot(), typeof(Symbols.MetaNamespace));
+            return builder.CreateRoot(syntaxTree.GetRoot(), null);
         }
 		
 		public virtual void VisitMain(MainSyntax node)
 		{
-			this.BeginProperty("Symbols");
-			try
-			{
-				this.Visit(node.NamespaceDeclaration);
-			}
-			finally
-			{
-				this.EndProperty();
-			}
+			this.Visit(node.NamespaceDeclaration);
 		}
 		
 		public virtual void VisitName(NameSyntax node)

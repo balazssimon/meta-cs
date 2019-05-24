@@ -16,11 +16,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     {
         private MetaGlobalNamespaceSymbol _globalNamespace;
         private AssemblySymbol _owningAssembly;
-        private ImmutableArray<IModel> _models;
+        private ImmutableArray<ImmutableModel> _models;
         private readonly int _ordinal;
         private readonly MetaSymbolMap _symbolMap;
 
-        public MetaModuleSymbol(AssemblySymbol owningAssembly, ImmutableArray<IModel> models, int ordinal)
+        public MetaModuleSymbol(AssemblySymbol owningAssembly, ImmutableArray<ImmutableModel> models, int ordinal)
         {
             _owningAssembly = owningAssembly;
             _models = models;
@@ -28,14 +28,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _symbolMap = new MetaSymbolMap(this);
         }
 
-        public MetaModuleSymbol(AssemblySymbol owningAssembly, IModelGroup modelGroup, int ordinal)
+        public MetaModuleSymbol(AssemblySymbol owningAssembly, ImmutableModelGroup modelGroup, int ordinal)
         {
             _owningAssembly = owningAssembly;
             _models = modelGroup.Models.ToImmutableArray();
             _ordinal = ordinal;
         }
 
-        public ImmutableArray<IModel> Models => _models;
+        public ImmutableArray<ImmutableModel> Models => _models;
 
         public MetaSymbolMap MetaSymbolMap => _symbolMap;
 

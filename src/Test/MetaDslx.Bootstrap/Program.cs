@@ -1,4 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Symbols.Source;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Symbols;
@@ -34,8 +35,8 @@ namespace MetaDslx.Bootstrap
             //*/
 
             //*/
-            ImmutableModel model = MetaInstance.Model;
-            Console.WriteLine(model);
+            ImmutableModel coreModel = MetaInstance.Model;
+            Console.WriteLine(coreModel);
 
             string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
 
@@ -56,7 +57,12 @@ namespace MetaDslx.Bootstrap
             //*/
 
             //*/
-            var compilation = MetaCompilation.Create("MetaTest").AddSyntaxTrees(tree);
+            var compilation = MetaCompilation.
+                Create("MetaTest").
+                AddSyntaxTrees(tree).
+                AddReferences(
+                    ModelReference.CreateFromModel(coreModel),
+                    MetadataReference.CreateFromFile(typeof(string).Assembly.Location));
             foreach (var diag in compilation.GetParseDiagnostics())
             {
                 Console.WriteLine(formatter.Format(diag));
@@ -70,6 +76,17 @@ namespace MetaDslx.Bootstrap
             foreach (var symbol in compiledModel.Symbols)
             {
                 Console.WriteLine(symbol);
+            }
+            var modules = compilation.Assembly.Modules.AsImmutable();
+            int index = 0;
+            foreach (var module in modules)
+            {
+                Console.WriteLine("Module[{0}]: {1}", index, module.GetType());
+                foreach (var member in module.GlobalNamespace.GetMembers())
+                {
+                    Console.WriteLine("  {0}: {1}", member.Name, member.GetType());
+                }
+                ++index;
             }
             //*/
         }

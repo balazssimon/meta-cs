@@ -6,8 +6,7 @@ options
 	generateCompiler=true;
 }
 
-$Root(MetaNamespace)
-main: $Property(Symbols) namespaceDeclaration EOF;
+main: namespaceDeclaration EOF;
 
 $Name
 name : identifier;

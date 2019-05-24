@@ -58,8 +58,6 @@ namespace MetaDslx.CodeAnalysis
 
         private readonly Language _language;
 
-        private readonly CSharpCompilation _csharpCompilationForReferencedModules;
-
         private readonly LanguageCompilationOptions _options;
         private readonly Lazy<Imports> _globalImports;
         private readonly Lazy<Imports> _previousSubmissionImports;
@@ -110,6 +108,8 @@ namespace MetaDslx.CodeAnalysis
         /// We do so by creating a new reference manager for such compilation.
         /// </summary>
         private ReferenceManager _referenceManager;
+
+        private ImmutableArray<ModelReference> _externalModelReferences;
 
         private readonly SyntaxAndDeclarationManager _syntaxAndDeclarations;
 
@@ -170,8 +170,6 @@ namespace MetaDslx.CodeAnalysis
             get;
         }
 
-        internal override CSharpCompilation CSharpCompilationForReferencedModules => _csharpCompilationForReferencedModules;
-
         protected override INamedTypeSymbol CommonCreateErrorTypeSymbol(INamespaceOrTypeSymbol container, string name, int arity)
         {
             return new ExtendedErrorTypeSymbol(
@@ -200,7 +198,7 @@ namespace MetaDslx.CodeAnalysis
             bool reuseReferenceManager,
             SyntaxAndDeclarationManager syntaxAndDeclarations,
             AsyncQueue<CompilationEvent> eventQueue = null)
-            : base(assemblyName, ValidateReferences<LanguageCompilationReference>(references), SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
+            : base(assemblyName, CSharpReferences(references), SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
         {
             _options = options;
             _language = _options.Language;
@@ -223,7 +221,7 @@ namespace MetaDslx.CodeAnalysis
                 Debug.Assert(previousSubmission == null && submissionReturnType == null && hostObjectType == null);
             }
 
-            _csharpCompilationForReferencedModules = CSharpCompilation.Create(assemblyName, references: references, options: options.ToCSharp());
+            _externalModelReferences = ModelReferences(references);
 
             if (reuseReferenceManager)
             {
@@ -244,6 +242,20 @@ namespace MetaDslx.CodeAnalysis
             Debug.Assert((object)_lazyAssemblySymbol == null);
             if (EventQueue != null) EventQueue.TryEnqueue(new CompilationStartedEvent(this));
         }
+
+        protected static ImmutableArray<MetadataReference> CSharpReferences(IEnumerable<MetadataReference> references)
+        {
+            var result = references?.Where(r => !(r is ModelReference))?.AsImmutable() ?? ImmutableArray<MetadataReference>.Empty;
+            return result;
+        }
+
+        protected static ImmutableArray<ModelReference> ModelReferences(IEnumerable<MetadataReference> references)
+        {
+            var result = references?.OfType<ModelReference>()?.AsImmutable() ?? ImmutableArray<ModelReference>.Empty;
+            return result;
+        }
+
+        public ImmutableArray<ModelReference> ExternalModelReferences => _externalModelReferences;
 
         internal override void ValidateDebugEntryPoint(IMethodSymbol debugEntryPoint, DiagnosticBag diagnostics)
         {

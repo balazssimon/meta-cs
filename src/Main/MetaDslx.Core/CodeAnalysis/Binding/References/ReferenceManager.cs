@@ -750,7 +750,7 @@ namespace MetaDslx.CodeAnalysis
                 ref Dictionary<AssemblyIdentity, MissingAssemblySymbol> missingAssemblies,
                 out ImmutableArray<ModuleReferences<AssemblySymbol>> moduleReferences)
             {
-                var moduleSymbols = sourceAssembly.Modules;
+                var moduleSymbols = sourceAssembly.PEModules;
                 Debug.Assert(moduleSymbols.Length == 1 + modules.Length);
 
                 var moduleReferencesBuilder = (moduleSymbols.Length > 1) ? ArrayBuilder<ModuleReferences<AssemblySymbol>>.GetInstance() : null;

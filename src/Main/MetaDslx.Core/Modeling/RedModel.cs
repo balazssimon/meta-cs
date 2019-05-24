@@ -2742,6 +2742,19 @@ namespace MetaDslx.Modeling
             }
         }
 
+        public void AddReference(ImmutableModelGroup reference)
+        {
+            GreenModelGroup gmg = reference.Green;
+            foreach (var greenReference in gmg.References)
+            {
+                this.AddReference(greenReference.Value);
+            }
+            foreach (var greenModel in gmg.Models)
+            {
+                this.AddReference(greenModel.Value);
+            }
+        }
+
         public void AddReference(ImmutableModel reference)
         {
             if (reference.ModelGroup != null)
@@ -2759,6 +2772,19 @@ namespace MetaDslx.Modeling
             else
             {
                 this.AddReference(reference.Green);
+            }
+        }
+
+        public void AddReference(MutableModelGroup reference)
+        {
+            GreenModelGroup gmg = reference.Green;
+            foreach (var greenReference in gmg.References)
+            {
+                this.AddReference(greenReference.Value);
+            }
+            foreach (var greenModel in gmg.Models)
+            {
+                this.AddReference(greenModel.Value);
             }
         }
 

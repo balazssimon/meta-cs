@@ -27,6 +27,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public MetaSymbolMap MetaSymbolMap => ((IMetaMetadataSymbol)_container).MetaSymbolMap;
 
+        public override string Name => _metaObject.MName;
+
         public override IEnumerable<string> MemberNames
         {
             get
@@ -66,12 +68,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<Symbol> GetMembers(string name)
         {
-            return _lazyMembers.WhereAsArray(m => m.Name == name);
+            return GetMembers().WhereAsArray(m => m.Name == name);
         }
 
         public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
         {
-            return _lazyMembers.WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
+            return GetMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
@@ -85,12 +87,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
         {
-            return _lazyTypeMembers.WhereAsArray(m => m.Name == name);
+            return GetTypeMembers().WhereAsArray(m => m.Name == name);
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
         {
-            return _lazyTypeMembers.WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
+            return GetTypeMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
         }
     }
 }

@@ -12,10 +12,12 @@ using Roslyn.Utilities;
 using System.Collections.Concurrent;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.Modeling;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
     using CSharpSymbols = Microsoft.CodeAnalysis.CSharp.Symbols;
+    using CSharpCompilation = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
     using MessageProvider = Microsoft.CodeAnalysis.CSharp.MessageProvider;
     using CommonAssemblyWellKnownAttributeData = Microsoft.CodeAnalysis.CommonAssemblyWellKnownAttributeData<MetaDslx.CodeAnalysis.Symbols.NamedTypeSymbol>;
 
@@ -25,6 +27,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// A Compilation the assembly is created for.
         /// </summary>
         private readonly LanguageCompilation _compilation;
+
+        private readonly CSharpCompilation _csharpCompilationForPEModules;
 
         /// <summary>
         /// The source language of this assembly.
@@ -57,6 +61,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// The first (index=0) module is a SourceModuleSymbol, which is a primary module, the rest are net-modules.
         /// </summary>
         private readonly ImmutableArray<ModuleSymbol> _modules;
+
+        private readonly ImmutableArray<ModuleSymbol> _peModules;
 
         /// <summary>
         /// Bag of assembly's custom attributes and decoded well-known attribute data from source.
@@ -133,13 +139,37 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var importOptions = (compilation.Options.MetadataImportOptions == MetadataImportOptions.All) ?
                 MetadataImportOptions.All : MetadataImportOptions.Internal;
 
-            foreach (PEModule netModule in netModules)
+            _csharpCompilationForPEModules = CSharpCompilation.Create(assemblySimpleName, null, compilation.ExternalReferences, compilation.Options.ToCSharp());
+            if (netModules.Length > 0)
             {
-                moduleBuilder.Add(new CSharpModuleSymbol(this, new CSharpSymbols.Metadata.PE.PEModuleSymbol(compilation.CSharpAssemblySymbolForReferencedModules, netModule, importOptions, moduleBuilder.Count), moduleBuilder.Count));
-                // SetReferences will be called later by the ReferenceManager (in CreateSourceAssemblyFullBind for 
-                // a fresh manager, in CreateSourceAssemblyReuseData for a reused one).
+                foreach (PEModule netModule in netModules)
+                {
+                    moduleBuilder.Add(new CSharpModuleSymbol(this, new CSharpSymbols.Metadata.PE.PEModuleSymbol(_csharpCompilationForPEModules.SourceAssembly, netModule, importOptions, moduleBuilder.Count), moduleBuilder.Count));
+                    // SetReferences will be called later by the ReferenceManager (in CreateSourceAssemblyFullBind for 
+                    // a fresh manager, in CreateSourceAssemblyReuseData for a reused one).
+                }
             }
+            _peModules = moduleBuilder.ToImmutable();
 
+            if (compilation.ExternalModelReferences.Length > 0)
+            {
+                foreach (var reference in compilation.ExternalModelReferences)
+                {
+                    var metadata = reference.GetMetadata();
+                    if (metadata is ModelMetadata modelMetadata)
+                    {
+                        var model = modelMetadata.Model;
+                        moduleBuilder.Add(new MetaModuleSymbol(this, ImmutableArray.Create(model), moduleBuilder.Count));
+                        _modelGroupBuilder.AddReference(model);
+                    }
+                    if (metadata is ModelGroupMetadata modelGroupMetadata)
+                    {
+                        var modelGroup = modelGroupMetadata.ModelGroup;
+                        moduleBuilder.Add(new MetaModuleSymbol(this, modelGroup, moduleBuilder.Count));
+                        _modelGroupBuilder.AddReference(modelGroup);
+                    }
+                }
+            }
             _modules = moduleBuilder.ToImmutableAndFree();
 
             if (!compilation.Options.CryptoPublicKey.IsEmpty)
@@ -165,6 +195,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         internal protected override MutableModel ModelBuilder => this.SourceModule.ModelBuilder;
 
+        internal CSharpCompilation CSharpCompilationForPEModules => _csharpCompilationForPEModules;
+        internal CSharpSymbols.SourceAssemblySymbol CSharpAssemblyForPEModules => _csharpCompilationForPEModules.SourceAssembly;
+
+        internal CSharpSymbols.SourceAssemblySymbol GetCSharpAssemblyForPEModules()
+        {
+            return this.CSharpAssemblyForPEModules;
+        }
+
         /// <remarks>
         /// This override is essential - it's a base case of the recursive definition.
         /// </remarks>
@@ -186,9 +224,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         internal bool MightContainNoPiaLocalTypes()
         {
-            for (int i = 1; i < _modules.Length; i++)
+            for (int i = 1; i < _peModules.Length; i++)
             {
-                var csharpModuleSymbol = (CSharpModuleSymbol)_modules[i];
+                var csharpModuleSymbol = (CSharpModuleSymbol)_peModules[i];
                 var peModuleSymbol = (CSharpSymbols.Metadata.PE.PEModuleSymbol)csharpModuleSymbol.UnderlyingModule;
                 if (peModuleSymbol.Module.ContainsNoPiaLocalTypes())
                 {
@@ -564,6 +602,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        internal ImmutableArray<ModuleSymbol> PEModules => _peModules;
+
         //TODO: cache
         public override ImmutableArray<Location> Locations
         {
@@ -789,7 +829,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if ((object)fileRef != null && (object)fileRef.FilePath != null)
                 {
                     string fileName = FileNameUtilities.GetFileName(fileRef.FilePath);
-                    string moduleName = _modules[pair.Value].Name;
+                    string moduleName = _peModules[pair.Value].Name;
 
                     if (!string.Equals(fileName, moduleName, StringComparison.OrdinalIgnoreCase))
                     {
@@ -800,15 +840,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
 
             // Alink performed these checks only when emitting an assembly.
-            if (_modules.Length > 1 && !_compilation.Options.OutputKind.IsNetModule())
+            if (_peModules.Length > 1 && !_compilation.Options.OutputKind.IsNetModule())
             {
                 var assemblyMachine = this.Machine;
                 bool isPlatformAgnostic = (assemblyMachine == System.Reflection.PortableExecutable.Machine.I386 && !this.Bit32Required);
                 var knownModuleNames = new HashSet<String>(StringComparer.OrdinalIgnoreCase);
 
-                for (int i = 1; i < _modules.Length; i++)
+                for (int i = 1; i < _peModules.Length; i++)
                 {
-                    var m = (CSharpModuleSymbol)_modules[i];
+                    var m = (CSharpModuleSymbol)_peModules[i];
                     var pem = ((CSharpSymbols.Metadata.PE.PEModuleSymbol)m.UnderlyingModule);
                     if (!knownModuleNames.Add(m.Name))
                     {
@@ -839,9 +879,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 // Assembly main module must explicitly reference all the modules referenced by other assembly 
                 // modules, i.e. all modules from transitive closure must be referenced explicitly here
-                for (int i = 1; i < _modules.Length; i++)
+                for (int i = 1; i < _peModules.Length; i++)
                 {
-                    var m = (CSharpModuleSymbol)_modules[i];
+                    var m = (CSharpModuleSymbol)_peModules[i];
                     var pem = ((CSharpSymbols.Metadata.PE.PEModuleSymbol)m.UnderlyingModule);
                     try
                     {
@@ -1041,9 +1081,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             ArrayBuilder<AttributeData> moduleAssemblyAttributesBuilder = null;
             ArrayBuilder<string> netModuleNameBuilder = null;
 
-            for (int i = 1; i < _modules.Length; i++)
+            for (int i = 1; i < _peModules.Length; i++)
             {
-                var m = (CSharpModuleSymbol)_modules[i];
+                var m = (CSharpModuleSymbol)_peModules[i];
                 var peModuleSymbol = ((CSharpSymbols.Metadata.PE.PEModuleSymbol)m.UnderlyingModule);
                 string netModuleName = peModuleSymbol.Name;
                 foreach (var attributeData in peModuleSymbol.GetAssemblyAttributes())
@@ -1058,6 +1098,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     moduleAssemblyAttributesBuilder.Add(attributeData);
                 }
             }
+            // TODO:MetaDslx - non-CSharp modules
 
             if (netModuleNameBuilder == null)
             {
@@ -1111,9 +1152,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 // Similar to attributes, type forwarders from the second added module should override type forwarders from the first added module, etc. 
                 // This affects only diagnostics.
-                for (int i = _modules.Length - 1; i > 0; i--)
+                for (int i = _peModules.Length - 1; i > 0; i--)
                 {
-                    var csharpModuleSymbol = (CSharpModuleSymbol)_modules[i];
+                    var csharpModuleSymbol = (CSharpModuleSymbol)_peModules[i];
 
                     foreach (NamedTypeSymbol forwarded in csharpModuleSymbol.GetForwardedTypes())
                     {
@@ -1146,6 +1187,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         }
                     }
                 }
+                // TODO:MetaDslx - non-CSharp modules
 
                 CustomAttributesBag<AttributeData> netModuleAttributesBag;
 
@@ -1728,9 +1770,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 // See if any of added modules forward the type.
 
                 // Similar to attributes, type forwarders from the second added module should override type forwarders from the first added module, etc. 
-                for (int i = _modules.Length - 1; i > 0; i--)
+                for (int i = _peModules.Length - 1; i > 0; i--)
                 {
-                    var cSharpModuleSymbol = (CSharpModuleSymbol)_modules[i];
+                    var cSharpModuleSymbol = (CSharpModuleSymbol)_peModules[i];
 
                     (AssemblySymbol firstSymbol, AssemblySymbol secondSymbol) = cSharpModuleSymbol.GetAssembliesForForwardedType(ref emittedName);
 
@@ -1752,6 +1794,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             return firstSymbol.LookupTopLevelMetadataTypeWithCycleDetection(ref emittedName, visitedAssemblies, digThroughForwardedTypes: true);
                         }
                     }
+                    // TODO:MetaDslx - non-CSharp modules
                 }
             }
 
