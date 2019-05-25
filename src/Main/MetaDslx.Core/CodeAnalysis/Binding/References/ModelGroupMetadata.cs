@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
+using System.Text;
+using System.Threading;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
@@ -20,6 +22,7 @@ namespace MetaDslx.CodeAnalysis
     public sealed partial class ModelGroupMetadata : Metadata
     {
         private readonly ImmutableModelGroup _modelGroup;
+        private string _lazyName;
 
         private ModelGroupMetadata(ImmutableModelGroup modelGroup)
             : base(isImageOwner: true, id: MetadataId.CreateNewId())
@@ -83,6 +86,24 @@ namespace MetaDslx.CodeAnalysis
         public override MetadataImageKind Kind
         {
             get { return MetadataImageKind.Module; }
+        }
+
+        public string Name
+        {
+            get
+            {
+                if (_lazyName == null)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var model in _modelGroup.Models)
+                    {
+                        if (sb.Length > 0) sb.Append(", ");
+                        sb.Append(model.ToString());
+                    }
+                    Interlocked.CompareExchange(ref _lazyName, sb.ToString(), null);
+                }
+                return _lazyName;
+            }
         }
 
         /// <summary>

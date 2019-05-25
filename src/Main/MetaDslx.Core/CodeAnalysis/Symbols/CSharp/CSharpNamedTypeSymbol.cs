@@ -13,17 +13,31 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
     public class CSharpNamedTypeSymbol : NamedTypeSymbol
     {
-        private CSharpModuleSymbol _module;
+        private NonMissingModuleSymbol _module;
         private CSharpSymbols.NamedTypeSymbol _csharpSymbol;
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
 
-        internal CSharpNamedTypeSymbol(CSharpModuleSymbol module, CSharpSymbols.NamedTypeSymbol csharpSymbol)
+        internal CSharpNamedTypeSymbol(NonMissingModuleSymbol module, CSharpSymbols.NamedTypeSymbol csharpSymbol)
         {
             _module = module;
             _csharpSymbol = csharpSymbol;
         }
 
         internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
+
+        public override SymbolKind Kind => _csharpSymbol.Kind;
+
+        public override string Name => _csharpSymbol.Name;
+
+        public override string MetadataName => _csharpSymbol.MetadataName;
+
+        public override int Arity => _csharpSymbol.Arity;
+
+        public override bool MangleName => _csharpSymbol.MangleName;
+
+        public override SpecialType SpecialType => _csharpSymbol.SpecialType;
+
+        public override TypeKind TypeKind => _csharpSymbol.TypeKind;
 
         public override ImmutableArray<Symbol> GetMembers()
         {
@@ -73,7 +87,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _csharpSymbol.DeclaringSyntaxReferences;
 
-        public override IEnumerable<string> MemberNames => throw new NotImplementedException();
+        public override IEnumerable<string> MemberNames => _csharpSymbol.MemberNames;
 
         public override ImmutableArray<NamedTypeSymbol> BaseTypesNoUseSiteDiagnostics
         {

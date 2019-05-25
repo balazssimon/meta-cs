@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
             _underlyingAssembly = underlyingAssembly;
 
-            ModuleSymbol[] modules = new ModuleSymbol[underlyingAssembly.Modules.Length];
+            ModuleSymbol[] modules = new CSharpModuleSymbol[underlyingAssembly.Modules.Length];
 
             modules[0] = new CSharpModuleSymbol(this, underlyingAssembly.Modules[0], 0);
 
@@ -46,9 +46,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
 
             _modules = modules.AsImmutableOrNull();
+
+            foreach (var module in _modules)
+            {
+                CSharpSymbolMap.RegisterModuleSymbol((CSharpModuleSymbol)module);
+            }
         }
 
-        private CSharpSymbolMap CSharpSymbolMap
+        internal override CSharpSymbolMap CSharpSymbolMap
         {
             get
             {
@@ -139,8 +144,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         {
             get
             {
-                // RetargetingAssemblySymbol never represents Core library. 
-                return false;
+                return _underlyingAssembly.KeepLookingForDeclaredSpecialTypes;
             }
         }
 
@@ -176,9 +180,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         /// <remarks></remarks>
         internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
         {
-            // Cor library should not have any references and, therefore, should never be
-            // wrapped by a RetargetingAssemblySymbol.
-            throw ExceptionUtilities.Unreachable;
+            return CSharpSymbolMap.GetNamedTypeSymbol(_underlyingAssembly.GetDeclaredSpecialType(type));
         }
 
         internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()

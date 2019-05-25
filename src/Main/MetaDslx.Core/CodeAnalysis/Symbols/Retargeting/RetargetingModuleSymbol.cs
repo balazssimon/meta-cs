@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using System.Threading;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 
@@ -84,6 +85,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             _createRetargetingNamedType = CreateRetargetingNamedType;
             _createRetargetingMember = CreateRetargetingMember;
         }
+
+        internal override CSharpSymbolMap CSharpSymbolMap => _underlyingModule.CSharpSymbolMap;
 
         public override int Ordinal
         {

@@ -19,6 +19,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
     public class CSharpModuleSymbol : NonMissingModuleSymbol
     {
+        private CSharpSymbolMap _csharpSymbolMap;
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -39,12 +41,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             _csharpAssembly = assembly;
             _underlyingModule = underlyingModule;
             _ordinal = ordinal;
-            this.CSharpSymbolMap = new CSharpSymbolMap(this);
+            _csharpSymbolMap = new CSharpSymbolMap(this);
         }
 
         internal CSharpSymbols.ModuleSymbol CSharpModule => _underlyingModule;
 
-        internal readonly CSharpSymbolMap CSharpSymbolMap;
+        internal override CSharpSymbolMap CSharpSymbolMap => _csharpSymbolMap;
 
         /// <summary>
         /// Owning <see cref="AssemblySymbol"/>.
@@ -173,7 +175,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         /// </summary>
         internal override void SetReferences(ModuleReferences<AssemblySymbol> moduleReferences, SourceAssemblySymbol originatingSourceAssemblyDebugOnly)
         {
-            originatingSourceAssemblyDebugOnly.GetCSharpAssemblyForPEModules();
             base.SetReferences(moduleReferences, originatingSourceAssemblyDebugOnly);
 
             // Build the retargeting map

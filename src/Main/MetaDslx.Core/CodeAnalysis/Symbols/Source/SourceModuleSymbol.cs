@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -39,6 +40,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private MutableModel _modelBuilder;
 
+        private CSharpSymbolMap _csharpSymbolMap;
+
         internal SourceModuleSymbol(
             SourceAssemblySymbol assemblySymbol,
             MutableModel modelBuilder,
@@ -52,10 +55,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _sources = declarations;
             _name = moduleName;
 
+            _csharpSymbolMap = new CSharpSymbolMap(this);
+
             _state = SymbolCompletionState.Create(assemblySymbol.Language);
         }
 
         public override Language Language => _assemblySymbol.Language;
+
+        internal override CSharpSymbolMap CSharpSymbolMap => _csharpSymbolMap;
 
         internal protected override MutableModel ModelBuilder => _modelBuilder;
 

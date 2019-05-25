@@ -6,9 +6,11 @@ using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
+using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
@@ -38,6 +40,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public ImmutableArray<ImmutableModel> Models => _models;
 
         public MetaSymbolMap MetaSymbolMap => _symbolMap;
+
+        internal override CSharpSymbolMap CSharpSymbolMap => throw ExceptionUtilities.Unreachable;
 
         public override int Ordinal => _ordinal;
 

@@ -12,10 +12,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
     public class CSharpNamespaceSymbol : NamespaceSymbol
     {
-        private CSharpModuleSymbol _module;
+        private NonMissingModuleSymbol _module;
         private CSharpSymbols.NamespaceSymbol _csharpSymbol;
 
-        internal CSharpNamespaceSymbol(CSharpModuleSymbol module, CSharpSymbols.NamespaceSymbol csharpSymbol)
+        internal CSharpNamespaceSymbol(NonMissingModuleSymbol module, CSharpSymbols.NamespaceSymbol csharpSymbol)
         {
             _module = module;
             _csharpSymbol = csharpSymbol;
@@ -24,6 +24,10 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
 
         internal CSharpSymbols.NamespaceSymbol CSharpSymbol => _csharpSymbol;
+
+        public override string Name => _csharpSymbol.Name;
+
+        public override string MetadataName => _csharpSymbol.MetadataName;
 
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 

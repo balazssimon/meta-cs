@@ -8,18 +8,20 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public sealed class UnsupportedSymbol : Symbol, IMetaErrorSymbol
     {
+        private Symbol _containingSymbol;
         private ISymbol _symbol;
 
-        internal UnsupportedSymbol(ISymbol symbol)
+        internal UnsupportedSymbol(ISymbol symbol, Symbol containingSymbol)
         {
+            _containingSymbol = containingSymbol;
             _symbol = symbol;
         }
 
         public ISymbol Symbol => _symbol;
 
-        public override SymbolKind Kind => _symbol.Kind;
+        public override SymbolKind Kind => SymbolKind.Unknown;
 
-        public override Symbol ContainingSymbol => null;
+        public override Symbol ContainingSymbol => _containingSymbol;
 
         public override ImmutableArray<Location> Locations => _symbol.Locations;
 

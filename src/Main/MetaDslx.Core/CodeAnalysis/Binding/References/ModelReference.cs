@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
@@ -10,19 +11,16 @@ using Roslyn.Utilities;
 namespace MetaDslx.CodeAnalysis
 {
     /// <summary>
-    /// Represents an in-memory Portable-Executable image.
+    /// Represents an in-memory MetaDslx model image.
     /// </summary>
-    [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
-    public sealed class ModelReference : PortableExecutableReference
+    public sealed class ModelReference : CustomReference
     {
-        private readonly string _display;
         private readonly Metadata _metadata;
 
         internal ModelReference(Metadata metadata, MetadataReferenceProperties properties, DocumentationProvider documentation, string filePath, string display)
-            : base(properties, filePath, documentation ?? DocumentationProvider.Default)
+            : base(properties, documentation ?? DocumentationProvider.Default, filePath, display)
         {
             Debug.Assert(metadata is ModelMetadata || metadata is ModelGroupMetadata);
-            _display = display;
             _metadata = metadata;
         }
 
@@ -61,61 +59,28 @@ namespace MetaDslx.CodeAnalysis
             return _metadata;
         }
 
-        protected override DocumentationProvider CreateDocumentationProvider()
-        {
-            // documentation provider is initialized in the constructor
-            throw ExceptionUtilities.Unreachable;
-        }
-
-        protected override PortableExecutableReference WithPropertiesImpl(MetadataReferenceProperties properties)
+        protected override CustomReference WithPropertiesImpl(MetadataReferenceProperties properties)
         {
             return new ModelReference(
                 _metadata,
                 properties,
                 this.DocumentationProvider,
                 this.FilePath,
-                _display);
+                this.Display);
         }
 
         public override string Display
         {
             get
             {
-                return _display ?? FilePath ?? (_metadata as ModelMetadata)?.Model?.ToString() ?? "ModelReference";
+                string result = base.Display;
+                if (result == null)
+                {
+                    if (_metadata is ModelMetadata modelMetadata) return "ModelReference: " + modelMetadata.Model.ToString();
+                    if (_metadata is ModelGroupMetadata modelGroupMetadata) return "ModelGroupReference: " + modelGroupMetadata.Name;
+                }
+                return result;
             }
-        }
-
-        private string GetDebuggerDisplay()
-        {
-            var sb = new StringBuilder();
-            sb.Append(Properties.Kind == MetadataImageKind.Module ? "Module" : "Assembly");
-            if (!Properties.Aliases.IsEmpty)
-            {
-                sb.Append(" Aliases={");
-                sb.Append(string.Join(", ", Properties.Aliases));
-                sb.Append("}");
-            }
-
-            if (Properties.EmbedInteropTypes)
-            {
-                sb.Append(" Embed");
-            }
-
-            if (FilePath != null)
-            {
-                sb.Append(" Path='");
-                sb.Append(FilePath);
-                sb.Append("'");
-            }
-
-            if (_display != null)
-            {
-                sb.Append(" Display='");
-                sb.Append(_display);
-                sb.Append("'");
-            }
-
-            return sb.ToString();
         }
     }
 }

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -16,6 +17,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
     /// </summary>
     public abstract class NonMissingModuleSymbol : ModuleSymbol
     {
+        internal abstract CSharpSymbolMap CSharpSymbolMap { get; }
+
         /// <summary>
         /// An array of <see cref="AssemblySymbol"/> objects corresponding to assemblies directly referenced by this module.
         /// </summary>

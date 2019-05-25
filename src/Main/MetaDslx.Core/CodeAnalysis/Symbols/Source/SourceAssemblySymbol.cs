@@ -27,9 +27,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         /// A Compilation the assembly is created for.
         /// </summary>
         private readonly LanguageCompilation _compilation;
-
-        private readonly CSharpCompilation _csharpCompilationForPEModules;
-
+        
         /// <summary>
         /// The source language of this assembly.
         /// </summary>
@@ -119,7 +117,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             LanguageCompilation compilation,
             string assemblySimpleName,
             string moduleName,
-            ImmutableArray<PEModule> netModules)
+            ImmutableArray<PEModule> netModules,
+            ImmutableArray<CustomReference> customReferences)
         {
             Debug.Assert(compilation != null);
             Debug.Assert(assemblySimpleName != null);
@@ -139,21 +138,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var importOptions = (compilation.Options.MetadataImportOptions == MetadataImportOptions.All) ?
                 MetadataImportOptions.All : MetadataImportOptions.Internal;
 
-            _csharpCompilationForPEModules = CSharpCompilation.Create(assemblySimpleName, null, compilation.ExternalReferences, compilation.Options.ToCSharp());
             if (netModules.Length > 0)
             {
                 foreach (PEModule netModule in netModules)
                 {
-                    moduleBuilder.Add(new CSharpModuleSymbol(this, new CSharpSymbols.Metadata.PE.PEModuleSymbol(_csharpCompilationForPEModules.SourceAssembly, netModule, importOptions, moduleBuilder.Count), moduleBuilder.Count));
+                    var moduleSymbol = new CSharpModuleSymbol(this, new CSharpSymbols.Metadata.PE.PEModuleSymbol(compilation.CSharpCompilationForReferenceManager.SourceAssembly, netModule, importOptions, moduleBuilder.Count), moduleBuilder.Count);
+                    moduleBuilder.Add(CSharpSymbolMap.RegisterModuleSymbol(moduleSymbol));
                     // SetReferences will be called later by the ReferenceManager (in CreateSourceAssemblyFullBind for 
                     // a fresh manager, in CreateSourceAssemblyReuseData for a reused one).
                 }
             }
             _peModules = moduleBuilder.ToImmutable();
 
-            if (compilation.ExternalModelReferences.Length > 0)
+            if (customReferences.Length > 0)
             {
-                foreach (var reference in compilation.ExternalModelReferences)
+                foreach (var reference in customReferences.OfType<ModelReference>())
                 {
                     var metadata = reference.GetMetadata();
                     if (metadata is ModelMetadata modelMetadata)
@@ -195,12 +194,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         internal protected override MutableModel ModelBuilder => this.SourceModule.ModelBuilder;
 
-        internal CSharpCompilation CSharpCompilationForPEModules => _csharpCompilationForPEModules;
-        internal CSharpSymbols.SourceAssemblySymbol CSharpAssemblyForPEModules => _csharpCompilationForPEModules.SourceAssembly;
-
-        internal CSharpSymbols.SourceAssemblySymbol GetCSharpAssemblyForPEModules()
+        internal override CSharpSymbolMap CSharpSymbolMap
         {
-            return this.CSharpAssemblyForPEModules;
+            get
+            {
+                return this.SourceModule.CSharpSymbolMap;
+            }
         }
 
         /// <remarks>

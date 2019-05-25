@@ -62,7 +62,8 @@ namespace MetaDslx.Bootstrap
                 AddSyntaxTrees(tree).
                 AddReferences(
                     ModelReference.CreateFromModel(coreModel),
-                    MetadataReference.CreateFromFile(typeof(string).Assembly.Location));
+                    MetadataReference.CreateFromFile(typeof(string).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(Program).Assembly.Location));
             foreach (var diag in compilation.GetParseDiagnostics())
             {
                 Console.WriteLine(formatter.Format(diag));
@@ -78,10 +79,20 @@ namespace MetaDslx.Bootstrap
                 Console.WriteLine(symbol);
             }
             var modules = compilation.Assembly.Modules.AsImmutable();
+            var objectType = compilation.ObjectType;
+            Console.WriteLine(objectType);
+            foreach (var member in objectType.MemberNames)
+            {
+                Console.WriteLine("  "+member);
+            }
             int index = 0;
             foreach (var module in modules)
             {
                 Console.WriteLine("Module[{0}]: {1}", index, module.GetType());
+                foreach (var assembly in module.ReferencedAssemblies)
+                {
+                    Console.WriteLine("  ReferencedAssembly: " + assembly);
+                }
                 foreach (var member in module.GlobalNamespace.GetMembers())
                 {
                     Console.WriteLine("  {0}: {1}", member.Name, member.GetType());

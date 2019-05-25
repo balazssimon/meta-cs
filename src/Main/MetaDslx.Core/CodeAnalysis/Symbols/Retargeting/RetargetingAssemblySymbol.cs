@@ -115,6 +115,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             _isLinked = isLinked;
         }
 
+        internal override CSharpSymbolMap CSharpSymbolMap => _underlyingAssembly.CSharpSymbolMap;
+
         private RetargetingModuleSymbol.RetargetingSymbolTranslator RetargetingTranslator
         {
             get

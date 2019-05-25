@@ -108,8 +108,7 @@ namespace MetaDslx.CodeAnalysis
         /// We do so by creating a new reference manager for such compilation.
         /// </summary>
         private ReferenceManager _referenceManager;
-
-        private ImmutableArray<ModelReference> _externalModelReferences;
+        internal readonly CSharpCompilation CSharpCompilationForReferenceManager;
 
         private readonly SyntaxAndDeclarationManager _syntaxAndDeclarations;
 
@@ -198,7 +197,7 @@ namespace MetaDslx.CodeAnalysis
             bool reuseReferenceManager,
             SyntaxAndDeclarationManager syntaxAndDeclarations,
             AsyncQueue<CompilationEvent> eventQueue = null)
-            : base(assemblyName, CSharpReferences(references), SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
+            : base(assemblyName, ValidateReferences<LanguageCompilationReference>(references), SyntaxTreeCommonFeatures(syntaxAndDeclarations.ExternalSyntaxTrees), isSubmission, eventQueue)
         {
             _options = options;
             _language = _options.Language;
@@ -221,7 +220,8 @@ namespace MetaDslx.CodeAnalysis
                 Debug.Assert(previousSubmission == null && submissionReturnType == null && hostObjectType == null);
             }
 
-            _externalModelReferences = ModelReferences(references);
+            var csharpReferences = ReferenceManager.CSharpReferences(references);
+            CSharpCompilationForReferenceManager = CSharpCompilation.Create(assemblyName, null, csharpReferences, options.ToCSharp());
 
             if (reuseReferenceManager)
             {
@@ -230,11 +230,7 @@ namespace MetaDslx.CodeAnalysis
             }
             else
             {
-                _referenceManager = new ReferenceManager(
-                    this.Language,
-                    MakeSourceAssemblySimpleName(),
-                    this.Options.AssemblyIdentityComparer,
-                    observedMetadata: referenceManager?.ObservedMetadata);
+                _referenceManager = new ReferenceManager(MakeSourceAssemblySimpleName());
             }
 
             _syntaxAndDeclarations = syntaxAndDeclarations;
@@ -243,19 +239,6 @@ namespace MetaDslx.CodeAnalysis
             if (EventQueue != null) EventQueue.TryEnqueue(new CompilationStartedEvent(this));
         }
 
-        protected static ImmutableArray<MetadataReference> CSharpReferences(IEnumerable<MetadataReference> references)
-        {
-            var result = references?.Where(r => !(r is ModelReference))?.AsImmutable() ?? ImmutableArray<MetadataReference>.Empty;
-            return result;
-        }
-
-        protected static ImmutableArray<ModelReference> ModelReferences(IEnumerable<MetadataReference> references)
-        {
-            var result = references?.OfType<ModelReference>()?.AsImmutable() ?? ImmutableArray<ModelReference>.Empty;
-            return result;
-        }
-
-        public ImmutableArray<ModelReference> ExternalModelReferences => _externalModelReferences;
 
         internal override void ValidateDebugEntryPoint(IMethodSymbol debugEntryPoint, DiagnosticBag diagnostics)
         {
@@ -735,10 +718,34 @@ namespace MetaDslx.CodeAnalysis
         #endregion
 
         #region References
+        protected new static ImmutableArray<MetadataReference> ValidateReferences<T>(IEnumerable<MetadataReference> references)
+            where T : CompilationReference
+        {
+            var result = references.AsImmutableOrEmpty();
+            for (int i = 0; i < result.Length; i++)
+            {
+                var reference = result[i];
+                if (reference == null)
+                {
+                    throw new ArgumentNullException($"{nameof(references)}[{i}]");
+                }
+
+                var peReference = reference as PortableExecutableReference;
+                var customReference = reference as CustomReference;
+                if (peReference == null && customReference == null && !(reference is T))
+                {
+                    Debug.Assert(reference is UnresolvedMetadataReference || reference is CompilationReference);
+                    throw new ArgumentException(string.Format(CodeAnalysisResources.ReferenceOfTypeIsInvalid1, reference.GetType()),
+                                    $"{nameof(references)}[{i}]");
+                }
+            }
+
+            return result;
+        }
 
         internal override CommonReferenceManager CommonGetBoundReferenceManager()
         {
-            return GetBoundReferenceManager();
+            return CSharpCompilationForReferenceManager.GetBoundReferenceManager();
         }
 
         internal new ReferenceManager GetBoundReferenceManager()
@@ -1282,7 +1289,7 @@ namespace MetaDslx.CodeAnalysis
         /// The NamedTypeSymbol for the .NET System.Object type, which could have a TypeKind of
         /// Error if there was no COR Library in this Compilation.
         /// </summary>
-        internal new NamedTypeSymbol ObjectType
+        public new NamedTypeSymbol ObjectType
         {
             get
             {
