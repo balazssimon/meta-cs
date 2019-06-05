@@ -819,10 +819,10 @@ namespace MetaDslx.CodeAnalysis
 
         private void AppendSymbolsWithName(ArrayBuilder<Symbol> results, string name, Binder binder, NamespaceOrTypeSymbol container, LookupOptions options, LookupSymbolsInfo info)
         {
-            LookupSymbolsInfo.IArityEnumerable arities;
+            IEnumerable<string> metadataNames;
             Symbol uniqueSymbol;
 
-            if (info.TryGetAritiesAndUniqueSymbol(name, out arities, out uniqueSymbol))
+            if (info.TryGetMultipleNamesAndUniqueSymbol(name, out metadataNames, out uniqueSymbol))
             {
                 if ((object)uniqueSymbol != null)
                 {
@@ -834,26 +834,26 @@ namespace MetaDslx.CodeAnalysis
                 {
                     // The name maps to multiple symbols. Actually do a real lookup so 
                     // that we will properly figure out hiding and whatnot.
-                    if (arities != null)
+                    if (metadataNames != null)
                     {
-                        foreach (var arity in arities)
+                        foreach (var metadataName in metadataNames)
                         {
-                            this.AppendSymbolsWithNameAndArity(results, name, arity, binder, container, options);
+                            this.AppendSymbolsWithMetadataName(results, name, metadataName, binder, container, options);
                         }
                     }
                     else
                     {
                         //non-unique symbol with non-zero arity doesn't seem possible.
-                        this.AppendSymbolsWithNameAndArity(results, name, 0, binder, container, options);
+                        this.AppendSymbolsWithMetadataName(results, name, name, binder, container, options);
                     }
                 }
             }
         }
 
-        private void AppendSymbolsWithNameAndArity(
+        private void AppendSymbolsWithMetadataName(
             ArrayBuilder<Symbol> results,
             string name,
-            int arity,
+            string metadataName,
             Binder binder,
             NamespaceOrTypeSymbol container,
             LookupOptions options)
@@ -870,7 +870,7 @@ namespace MetaDslx.CodeAnalysis
                 lookupResult,
                 container,
                 name,
-                arity,
+                metadataName,
                 basesBeingResolved: null,
                 options: options & ~LookupOptions.IncludeExtensionMethods,
                 diagnose: false,
@@ -883,7 +883,7 @@ namespace MetaDslx.CodeAnalysis
                     // binder.ResultSymbol is defined only for type/namespace lookups
                     bool wasError;
                     var diagnostics = DiagnosticBag.GetInstance();  // client code never expects a null diagnostic bag.
-                    Symbol singleSymbol = binder.ResultSymbol(lookupResult, name, arity, this.Root, diagnostics, true, out wasError, container, options);
+                    Symbol singleSymbol = binder.ResultSymbol(lookupResult, name, metadataName, this.Root, diagnostics, true, out wasError, container, options);
                     diagnostics.Free();
 
                     if (!wasError)
@@ -1482,7 +1482,7 @@ namespace MetaDslx.CodeAnalysis
         internal BinderFlags GetSemanticModelBinderFlags()
         {
             return this.IgnoresAccessibility
-                ? BinderFlags.SemanticModel | BinderFlags.IgnoreAccessibility
+                ? FlagsObject.Union<BinderFlags>(BinderFlags.SemanticModel, BinderFlags.IgnoreAccessibility)
                 : BinderFlags.SemanticModel;
         }
 

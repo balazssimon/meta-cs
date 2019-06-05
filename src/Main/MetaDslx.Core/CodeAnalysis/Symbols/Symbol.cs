@@ -398,13 +398,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return ImmutableArray<AttributeData>.Empty;
         }
 
-
-        /// <summary>
-        /// Returns data decoded from <see cref="ObsoleteAttribute"/> attribute or null if there is no <see cref="ObsoleteAttribute"/> attribute.
-        /// This property returns <see cref="Microsoft.CodeAnalysis.ObsoleteAttributeData.Uninitialized"/> if attribute arguments haven't been decoded yet.
-        /// </summary>
-        public virtual ObsoleteAttributeData ObsoleteAttributeData => null; // TODO:MetaDslx
-
         /// <summary>
         /// Returns true and a <see cref="string"/> from the first <see cref="GuidAttribute"/> on the symbol, 
         /// the string might be null or an invalid guid representation. False, 
@@ -927,6 +920,92 @@ namespace MetaDslx.CodeAnalysis.Symbols
         string IFormattable.ToString(string format, IFormatProvider formatProvider)
         {
             return ToString();
+        }
+
+        #region Obsolete checks
+
+        /// <summary>
+        /// True if this symbol has been marked with the <see cref="ObsoleteAttribute"/> attribute. 
+        /// This property returns <see cref="ThreeState.Unknown"/> if the <see cref="ObsoleteAttribute"/> attribute hasn't been cracked yet.
+        /// </summary>
+        public ThreeState ObsoleteState
+        {
+            get
+            {
+                switch (ObsoleteKind)
+                {
+                    case ObsoleteAttributeKind.None:
+                    case ObsoleteAttributeKind.Experimental:
+                        return ThreeState.False;
+                    case ObsoleteAttributeKind.Uninitialized:
+                        return ThreeState.Unknown;
+                    default:
+                        return ThreeState.True;
+                }
+            }
+        }
+
+        public ObsoleteAttributeKind ObsoleteKind
+        {
+            get
+            {
+                var data = this.ObsoleteAttributeData;
+                return (data == null) ? ObsoleteAttributeKind.None : data.Kind;
+            }
+        }
+
+
+        /// <summary>
+        /// Returns data decoded from <see cref="ObsoleteAttribute"/> attribute or null if there is no <see cref="ObsoleteAttribute"/> attribute.
+        /// This property returns <see cref="Microsoft.CodeAnalysis.ObsoleteAttributeData.Uninitialized"/> if attribute arguments haven't been decoded yet.
+        /// </summary>
+        public virtual ObsoleteAttributeData ObsoleteAttributeData => null; // TODO:MetaDslx
+
+        /// <summary>
+        /// Ensure that attributes are bound and the ObsoleteState of this symbol is known.
+        /// </summary>
+        public void ForceCompleteObsoleteAttribute()
+        {
+            if (this.ObsoleteState == ThreeState.Unknown)
+            {
+                this.GetAttributes();
+            }
+            Debug.Assert(this.ObsoleteState != ThreeState.Unknown, "ObsoleteState should be true or false now.");
+        }
+
+        #endregion
+
+        public virtual Symbol ConstructedFrom => this;
+
+        public virtual Symbol AsMember(NamedTypeSymbol newOwner)
+        {
+            Debug.Assert(this.IsDefinition);
+            Debug.Assert(ReferenceEquals(newOwner.OriginalDefinition, this.ContainingSymbol.OriginalDefinition));
+            return this; // TODO:MetaDslx
+            //return newOwner.IsDefinition ? this : new SubstitutedNestedTypeSymbol((SubstitutedNamedTypeSymbol)newOwner, this);
+        }
+
+        /// <summary>
+        /// Returns the original virtual or abstract method which a given method symbol overrides,
+        /// ignoring any other overriding methods in base classes.
+        /// </summary>
+        /// <param name="accessingTypeOpt">The search must respect accessibility from this type.</param>
+        public virtual Symbol GetLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the original virtual or abstract method which a given method symbol overrides,
+        /// ignoring any other overriding methods in base classes.
+        /// Also, if the given method symbol is generic then the resulting virtual or abstract method is constructed with the
+        /// same type arguments as the given method.
+        /// </summary>
+        public virtual Symbol GetConstructedLeastOverriddenMember(NamedTypeSymbol accessingTypeOpt)
+        {
+            var m = this.ConstructedFrom.GetLeastOverriddenMember(accessingTypeOpt);
+            return m; // TODO:MetaDslx
+            //return m.IsGenericMethod ? m.Construct(this.TypeArgumentsWithAnnotations) : m;
         }
     }
 }

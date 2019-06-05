@@ -44,6 +44,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart StartMemberChecks = new CompletionPart(nameof(StartMemberChecks));
         public static readonly CompletionPart FinishMemberChecks = new CompletionPart(nameof(FinishMemberChecks));
 
+        public static readonly CompletionPart StartValidatingImports = new CompletionPart(nameof(StartValidatingImports));
+        public static readonly CompletionPart FinishValidatingImports = new CompletionPart(nameof(FinishValidatingImports));
+
         public static readonly CompletionPart NameToMembersMap = new CompletionPart(nameof(NameToMembersMap));
         public static readonly CompletionPart MembersCompleted = new CompletionPart(nameof(MembersCompleted));
 
@@ -59,6 +62,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolAll = 
             Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers, StartMemberChecks, FinishMemberChecks, MembersCompleted);
 
+        public static readonly ImmutableHashSet<CompletionPart> ImportsAll =
+            Combine(StartValidatingImports, FinishValidatingImports);
+
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolWithLocationAll =
             Combine(Attributes, NameToMembersMap);
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolAll =
@@ -72,6 +78,31 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override string ToString()
         {
             return _name;
+        }
+
+        internal static CompletionGraphBuilder ConstructDefaultCompletionGraph()
+        {
+            CompletionGraphBuilder builder = new CompletionGraphBuilder();
+            builder.AddLast(CompletionPart.Attributes);
+            builder.AddLast(CompletionPart.StartAttributeChecks);
+            builder.AddLast(CompletionPart.FinishAttributeChecks);
+            builder.AddLast(CompletionPart.StartBaseTypes);
+            builder.AddLast(CompletionPart.FinishBaseTypes);
+            builder.AddLast(CompletionPart.Members);
+            builder.AddLast(CompletionPart.TypeMembers);
+            builder.AddLast(CompletionPart.StartMemberChecks);
+            builder.AddLast(CompletionPart.FinishMemberChecks);
+            builder.AddLast(CompletionPart.MembersCompleted);
+            builder.AddLast(CompletionPart.StartValidatingImports);
+            builder.AddLast(CompletionPart.FinishValidatingImports);
+            builder.AddLast(CompletionPart.NameToMembersMap);
+            builder.AddLast(CompletionPart.AliasTarget);
+            builder.AddLast(CompletionPart.Module);
+            builder.AddLast(CompletionPart.StartValidatingAddedModules);
+            builder.AddLast(CompletionPart.FinishValidatingAddedModules);
+            builder.AddLast(CompletionPart.StartValidatingReferencedAssemblies);
+            builder.AddLast(CompletionPart.FinishValidatingReferencedAssemblies);
+            return builder;
         }
     }
 

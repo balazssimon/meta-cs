@@ -299,7 +299,7 @@ namespace MetaDslx.CodeAnalysis
                     var diagnostics = DiagnosticBag.GetInstance();
                     try
                     {
-                        return binder.BindNamespaceOrTypeOrAliasSymbol(node, diagnostics, basesBeingResolved, basesBeingResolved != null).Symbol;
+                        return binder.BindNamespaceOrTypeOrAliasSymbol(node, diagnostics, basesBeingResolved, basesBeingResolved != null, null);
                     }
                     finally
                     {

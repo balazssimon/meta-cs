@@ -17,8 +17,8 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// </summary>
     public class InContainerBinder : Binder
     {
-        private readonly INamespaceOrTypeSymbol _container;
-        private readonly Func<ConsList<ITypeSymbol>, Imports> _computeImports;
+        private readonly NamespaceOrTypeSymbol _container;
+        private readonly Func<ConsList<TypeSymbol>, Imports> _computeImports;
         private Imports _lazyImports;
         private ImportChain _lazyImportChain;
 
@@ -26,7 +26,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Creates a binder for a container with imports (usings and extern aliases) that can be
         /// retrieved from <paramref name="declarationSyntax"/>.
         /// </summary>
-        internal InContainerBinder(INamespaceOrTypeSymbol container, Binder next, LanguageSyntaxNode declarationSyntax, bool inUsing)
+        public InContainerBinder(NamespaceOrTypeSymbol container, Binder next, LanguageSyntaxNode declarationSyntax, bool inUsing)
             : base(next)
         {
             Debug.Assert((object)container != null);
@@ -39,7 +39,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Creates a binder with given imports.
         /// </summary>
-        internal InContainerBinder(INamespaceOrTypeSymbol container, Binder next, Imports imports = null)
+        public InContainerBinder(NamespaceOrTypeSymbol container, Binder next, Imports imports = null)
             : base(next)
         {
             Debug.Assert((object)container != null || imports != null);
@@ -51,7 +51,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Creates a binder with given import computation function.
         /// </summary>
-        internal InContainerBinder(Binder next, Func<ConsList<ITypeSymbol>, Imports> computeImports)
+        public InContainerBinder(Binder next, Func<ConsList<TypeSymbol>, Imports> computeImports)
             : base(next)
         {
             Debug.Assert(computeImports != null);
@@ -60,7 +60,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _computeImports = computeImports;
         }
 
-        internal INamespaceOrTypeSymbol Container
+        public NamespaceOrTypeSymbol Container
         {
             get
             {
@@ -68,7 +68,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        internal override Imports GetImports(ConsList<ITypeSymbol> basesBeingResolved)
+        public override Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
         {
             Debug.Assert(_lazyImports != null || _computeImports != null, "Have neither imports nor a way to compute them.");
 

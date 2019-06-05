@@ -2,18 +2,20 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    internal struct AliasAndExternAliasDirective
+    public struct AliasAndExternAliasDirective
     {
-        public readonly IAliasSymbol Alias;
-        public readonly SyntaxNode ExternAliasDirective;
+        public readonly AliasSymbol Alias;
+        public readonly ExternAliasDirective ExternAliasDirective;
 
-        public AliasAndExternAliasDirective(IAliasSymbol alias, SyntaxNode externAliasDirective)
+        public AliasAndExternAliasDirective(AliasSymbol alias, ExternAliasDirective externAliasDirective)
         {
             this.Alias = alias;
             this.ExternAliasDirective = externAliasDirective;

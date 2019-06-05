@@ -769,11 +769,11 @@ namespace MetaDslx.CodeAnalysis
         /// NOTE: any member overridden by this binder should follow the BuckStopsHereBinder pattern.
         /// Otherwise, a subsequent binder in the chain could suppress the caching behavior.
         /// </remarks>
-        internal class IncrementalBinder : Binder
+        public class IncrementalBinder : Binder
         {
             private readonly MemberSemanticModel _semanticModel;
 
-            internal IncrementalBinder(MemberSemanticModel semanticModel, Binder next)
+            public IncrementalBinder(MemberSemanticModel semanticModel, Binder next)
                 : base(next)
             {
                 _semanticModel = semanticModel;
@@ -783,7 +783,7 @@ namespace MetaDslx.CodeAnalysis
             /// We override GetBinder so that the BindStatement override is still
             /// in effect on nested binders.
             /// </summary>
-            internal override Binder GetBinder(SyntaxNode node)
+            public override Binder GetBinder(SyntaxNode node)
             {
                 Binder binder = this.Next.GetBinder(node);
 

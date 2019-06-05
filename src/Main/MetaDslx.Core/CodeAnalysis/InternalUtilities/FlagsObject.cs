@@ -77,7 +77,28 @@ namespace Roslyn.Utilities
             }
         }
 
-        public bool TryGetValue(out int enumValue)
+        public static bool TryParse<T>(string name, out T enumValue)
+            where T : FlagsObject
+        {
+            var descriptor = GetDescriptor(typeof(T));
+            if (descriptor.TryGetValue(name, out var result))
+            {
+                enumValue = (T)result;
+                return true;
+            }
+            else
+            {
+                enumValue = null;
+                return false;
+            }
+        }
+
+        public int GetEnumValue()
+        {
+            return TryGetEnumValue(out int enumValue) ? enumValue : 0;
+        }
+
+        public bool TryGetEnumValue(out int enumValue)
         {
             enumValue = 0;
             ExtensibleBitVector flags;
@@ -98,24 +119,19 @@ namespace Roslyn.Utilities
             {
                 return false;
             }
-            enumValue = flags.TrueBits().FirstOrDefault();
-            return enumValue != 0;
+            return flags.TryGetSingleBit(out enumValue);
         }
 
-        public static bool TryParse<T>(string name, out T enumValue)
-            where T : FlagsObject
+        public static IEnumerable<FlagsObject> GetEnumValues(Type flagsType)
         {
-            var descriptor = GetDescriptor(typeof(T));
-            if (descriptor.TryGetValue(name, out var result))
-            {
-                enumValue = (T)result;
-                return true;
-            }
-            else
-            {
-                enumValue = null;
-                return false;
-            }
+            var descriptor = GetDescriptor(flagsType);
+            return descriptor.AllEnumValues;
+        }
+
+        public static IEnumerable<FlagsObject> GetFlagValues(Type enumType)
+        {
+            var descriptor = GetDescriptor(enumType);
+            return descriptor.AllFlagValues;
         }
 
         protected static Func<T> Create<T>(params object[] flags)
@@ -133,23 +149,6 @@ namespace Roslyn.Utilities
             return (T)descriptor.CreateValue(flags);
         }
 
-        public static IEnumerable<FlagsObject> EnumValues(Type enumType)
-        {
-            var descriptor = GetDescriptor(enumType);
-            return descriptor.AllEnumValues;
-        }
-
-        public static IEnumerable<FlagsObject> FlagValues(Type enumType)
-        {
-            var descriptor = GetDescriptor(enumType);
-            return descriptor.AllFlagValues;
-        }
-
-        public override int GetHashCode()
-        {
-            return Hash.Combine(_name.GetHashCode(), _flags.GetHashCode());
-        }
-
         public override bool Equals(object obj)
         {
             return this.Equals(obj as FlagsObject);
@@ -161,16 +160,6 @@ namespace Roslyn.Utilities
             if (_flags.IsNull) return other._flags.IsNull;
             if (!other.IsAssignableFrom(this.GetType())) return false;
             return other._flags == _flags;
-        }
-
-        public static implicit operator FlagsObject(string name)
-        {
-            return new FlagsObject(name, default(ExtensibleBitVector));
-        }
-
-        public static explicit operator string(FlagsObject value)
-        {
-            return value.GetName();
         }
 
         public static bool operator ==(FlagsObject left, FlagsObject right)
@@ -215,12 +204,33 @@ namespace Roslyn.Utilities
 
         public static FlagsObject operator &(FlagsObject left, FlagsObject right)
         {
-            return left.Intersect(right);
+            return left.IntersectWith(right);
         }
 
         public static FlagsObject operator |(FlagsObject left, FlagsObject right)
         {
-            return left.Union(right);
+            return left.UnionWith(right);
+        }
+
+        public static implicit operator FlagsObject(string name)
+        {
+            if (FlagsObject.TryParse<FlagsObject>(name, out var result)) return result;
+            else return null;
+        }
+
+        public static explicit operator int(FlagsObject value)
+        {
+            return value.GetEnumValue();
+        }
+
+        public static explicit operator string(FlagsObject value)
+        {
+            return value.GetName();
+        }
+
+        public override int GetHashCode()
+        {
+            return Hash.Combine(_name.GetHashCode(), _flags.GetHashCode());
         }
 
         public bool HasAnyFlags
@@ -228,20 +238,39 @@ namespace Roslyn.Utilities
             get { return _flags.IsNonZero; }
         }
 
+        public bool IsEnumValue
+        {
+            get { return _flags.HasSingleBit(); }
+        }
+
         public bool HasNoFlags
         {
             get { return _flags.IsZero; }
         }
 
-        public bool HasFlags(params FlagsObject[] flags)
+        public bool Includes(FlagsObject flags)
+        {
+            return _flags.IncludesAll(flags._flags);
+        }
+
+        public bool IncludesAll(params FlagsObject[] flags)
         {
             if (flags.Length == 0) return true;
-            ExtensibleBitVector union = _flags;
             foreach (var flag in flags)
             {
-                if (union.IntersectWith(flag._flags)) return false;
+                if (!_flags.IncludesAll(flag._flags)) return false;
             }
             return true;
+        }
+
+        public bool IncludesAny(params FlagsObject[] flags)
+        {
+            if (flags.Length == 0) return false;
+            foreach (var flag in flags)
+            {
+                if (_flags.IncludesAll(flag._flags)) return true;
+            }
+            return false;
         }
 
         public int GetFlagCount()
@@ -250,9 +279,11 @@ namespace Roslyn.Utilities
             return _flags.TrueBits().Count();
         }
 
-        private Type RetargetParametersToThisType(FlagsObject[] flags)
+        private Type RetargetParametersToThisType(Type minimumType, FlagsObject[] flags)
         {
-            Type resultType = this.GetType();
+            Type resultType = minimumType;
+            Type thisType = this.GetType();
+            if (resultType == null || resultType.IsAssignableFrom(thisType)) resultType = thisType;
             for (int i = 0; i < flags.Length; i++)
             {
                 var flag = flags[i];
@@ -268,47 +299,82 @@ namespace Roslyn.Utilities
             return resultType;
         }
 
-        public FlagsObject Union(params FlagsObject[] flags)
+        public TFlags UnionWith<TFlags>(params FlagsObject[] flags)
+            where TFlags : FlagsObject
         {
-            if (flags.Length == 0) return this;
-            Type resultType = RetargetParametersToThisType(flags);
-            ExtensibleBitVector union = _flags;
+            if (flags.Length == 0)
+            {
+                if (typeof(TFlags).IsAssignableFrom(this.GetType())) return (TFlags)this;
+                else return (TFlags)CreateValue(typeof(TFlags), this._flags);
+            }
+            Type resultType = RetargetParametersToThisType(typeof(TFlags), flags);
+            ExtensibleBitVector union = _flags.Clone();
             bool changed = false;
             foreach (var flag in flags)
             {
                 changed = union.UnionWith(flag._flags) || changed;
             }
-            if (changed) return CreateValue(resultType, union);
-            else return this;
-
+            if (changed) return (TFlags)CreateValue(resultType, union);
+            else if (typeof(TFlags).IsAssignableFrom(this.GetType())) return (TFlags)this;
+            else return (TFlags)CreateValue(typeof(TFlags), this._flags);
         }
 
-        public FlagsObject Intersect(params FlagsObject[] flags)
+        public TFlags UnionWith<TFlags>(params TFlags[] flags)
+            where TFlags: FlagsObject
         {
-            if (flags.Length == 0) return this;
-            Type resultType = RetargetParametersToThisType(flags);
-            ExtensibleBitVector union = _flags;
+            return this.UnionWith<TFlags>((FlagsObject[])flags);
+        }
+
+        public TFlags IntersectWith<TFlags>(params FlagsObject[] flags)
+            where TFlags : FlagsObject
+        {
+            if (flags.Length == 0)
+            {
+                if (typeof(TFlags).IsAssignableFrom(this.GetType())) return (TFlags)this;
+                else return (TFlags)CreateValue(typeof(TFlags), this._flags);
+            }
+            Type resultType = RetargetParametersToThisType(typeof(TFlags), flags);
+            ExtensibleBitVector union = _flags.Clone();
             bool changed = false;
             foreach (var flag in flags)
             {
                 changed = union.IntersectWith(flag._flags) || changed;
             }
-            if (changed) return CreateValue(resultType, union);
-            else return this;
+            if (changed) return (TFlags)CreateValue(resultType, union);
+            else if (typeof(TFlags).IsAssignableFrom(this.GetType())) return (TFlags)this;
+            else return (TFlags)CreateValue(typeof(TFlags), this._flags);
         }
 
-        public FlagsObject Unset(params FlagsObject[] flags)
+        public TFlags IntersectWith<TFlags>(params TFlags[] flags)
+            where TFlags : FlagsObject
         {
-            if (flags.Length == 0) return this;
-            Type resultType = RetargetParametersToThisType(flags);
-            ExtensibleBitVector union = _flags;
+            return this.IntersectWith<TFlags>((FlagsObject[])flags);
+        }
+
+        public TFlags UnsetWith<TFlags>(params FlagsObject[] flags)
+            where TFlags : FlagsObject
+        {
+            if (flags.Length == 0)
+            {
+                if (typeof(TFlags).IsAssignableFrom(this.GetType())) return (TFlags)this;
+                else return (TFlags)CreateValue(typeof(TFlags), this._flags);
+            }
+            Type resultType = RetargetParametersToThisType(typeof(TFlags), flags);
+            ExtensibleBitVector union = _flags.Clone();
             bool changed = false;
             foreach (var flag in flags)
             {
                 changed = union.UnsetWith(flag._flags) || changed;
             }
-            if (changed) return CreateValue(resultType, union);
-            else return this;
+            if (changed) return (TFlags)CreateValue(resultType, union);
+            else if (typeof(TFlags).IsAssignableFrom(this.GetType())) return (TFlags)this;
+            else return (TFlags)CreateValue(typeof(TFlags), this._flags);
+        }
+
+        public TFlags UnsetWith<TFlags>(params TFlags[] flags)
+            where TFlags : FlagsObject
+        {
+            return this.UnsetWith<TFlags>((FlagsObject[])flags);
         }
 
         public IEnumerator<FlagsObject> GetEnumerator()
@@ -410,6 +476,15 @@ namespace Roslyn.Utilities
             descriptor.RegisterLazyValue(name, lazyValue);
         }
 
+        protected static void RegisterDefault<T>(string name)
+            where T : FlagsObject
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            var descriptor = EnsureInit<T>();
+            Debug.Assert(!descriptor.IsClosed);
+            descriptor.RegisterDefaultValue(name);
+        }
+
         protected static void RegisterAlias<T>(string name)
             where T : FlagsObject
         {
@@ -427,48 +502,123 @@ namespace Roslyn.Utilities
             descriptor.Close();
         }
 
-        public T UpCast<T>()
-            where T : FlagsObject
+        public FlagsObject Cast(Type enumType)
         {
-            if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException($"{typeof(T)} is not assignable from {this.GetType()}.");
-            var descriptor = GetDescriptor(typeof(T));
-            if (descriptor.TryGetValue(_name, out FlagsObject result)) return (T)result;
-            else throw new InvalidOperationException($"{typeof(T)} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
+            if (enumType.IsAssignableFrom(this.GetType())) return this;
+            if (!this.IsAssignableFrom(enumType)) throw new InvalidOperationException($"{enumType} is not a descendant of {this.GetType()}.");
+            var descriptor = GetDescriptor(enumType);
+            if (descriptor.TryGetValue(_name, out FlagsObject result)) return result;
+            else throw new InvalidOperationException($"{enumType} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
         }
 
-        public T DownCast<T>()
+        public T Cast<T>()
             where T : FlagsObject
         {
-            if (!this.IsAssignableFrom(typeof(T))) throw new InvalidOperationException(typeof(T) + " is not assignable from " + this.GetType() + ".");
+            return (T)Cast(typeof(T));
+        }
+
+        public FlagsObject CastUnsafe(Type enumType)
+        {
+            if (enumType.IsAssignableFrom(this.GetType())) return this;
+            else return FromIntUnsafe(enumType, this.GetEnumValue());
+        }
+
+        public T CastUnsafe<T>()
+            where T : FlagsObject
+        {
+            return (T)CastUnsafe(typeof(T));
+        }
+
+        public FlagsObject As(Type enumType)
+        {
+            if (enumType.IsAssignableFrom(this.GetType())) return this;
+            if (!this.IsAssignableFrom(enumType)) throw new InvalidOperationException($"{enumType} is not a descendant of {this.GetType()}.");
             var descriptor = GetDescriptor(this.GetType());
-            if (descriptor.TryGetValue(_name, out FlagsObject result)) return (T)result;
-            else throw new InvalidOperationException($"{typeof(T)} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
+            if (descriptor.TryGetValue(_name, out FlagsObject result)) return result;
+            else throw new InvalidOperationException($"{enumType} does not contain the enum literal '{_name}' declared in {this.GetType()}.");
+        }
+
+        public T As<T>()
+            where T : FlagsObject
+        {
+            return (T)As(typeof(T));
+        }
+
+        public static FlagsObject ByValue(Type enumType, int value)
+        {
+            if (value < 1) return null;
+            var descriptor = GetDescriptor(enumType);
+            if (descriptor.TryGetValue(value, out FlagsObject result)) return result;
+            return null;
         }
 
         public static T ByValue<T>(int value)
             where T : FlagsObject
         {
-            if (value < 1) return null;
-            Type enumType = typeof(T);
-            var descriptor = GetDescriptor(typeof(T));
-            if (descriptor.TryGetValue(value, out FlagsObject result)) return (T)result;
+            return (T)ByValue(typeof(T), value);
+        }
+
+        public static FlagsObject ByName(Type enumType, string name)
+        {
+            if (name == null) return null;
+            var descriptor = GetDescriptor(enumType);
+            if (descriptor.TryGetValue(name, out FlagsObject result)) return result;
             return null;
         }
 
         public static T ByName<T>(string name)
             where T : FlagsObject
         {
-            if (name == null) return null;
-            Type enumType = typeof(T);
-            var descriptor = GetDescriptor(typeof(T));
-            if (descriptor.TryGetValue(name, out FlagsObject result)) return (T)result;
-            return null;
+            return (T)ByName(typeof(T), name);
+        }
+
+        public static FlagsObject FromString(Type enumType, string name)
+        {
+            return ByName(enumType, name) ?? throw new ArgumentException($"Enum literal '{name}' does not exist in {enumType}.", nameof(name));
         }
 
         public static T FromString<T>(string name)
             where T : FlagsObject
         {
-            return ByName<T>(name) ?? throw new ArgumentException($"Enum literal '{name}' does not exist in {typeof(T)}.", nameof(name));
+            return (T)FromString(typeof(T), name);
+        }
+
+        public static FlagsObject FromInt(Type enumType, int value)
+        {
+            return ByValue(enumType, value) ?? throw new ArgumentException($"Enum literal of value '{value}' does not exist in {enumType}.", nameof(value));
+        }
+
+        public static T FromInt<T>(int value)
+            where T : FlagsObject
+        {
+            return (T)FromInt(typeof(T), value);
+        }
+
+        public static FlagsObject FromIntUnsafe(Type enumType, int value)
+        {
+            FlagsObject result = ByValue(enumType, value);
+            if ((object)result != null) return result;
+            var descriptor = GetDescriptor(enumType);
+            if (descriptor.TryGetValue(value, out FlagsObject stored)) return stored;
+            else return descriptor.CreateValue(new FlagsObject(null, ExtensibleBitVector.Create(value)));
+        }
+
+        public static T FromIntUnsafe<T>(int value)
+            where T : FlagsObject
+        {
+            return (T)FromIntUnsafe(typeof(T), value);
+        }
+
+        public static FlagsObject GetDefault(Type flagsType)
+        {
+            var descriptor = GetDescriptor(flagsType);
+            return descriptor.DefaultValue ?? new FlagsObject(null, default);
+        }
+
+        public static T GetDefault<T>()
+            where T : FlagsObject
+        {
+            return (T)GetDefault(typeof(T));
         }
 
         public override string ToString()
@@ -503,6 +653,26 @@ namespace Roslyn.Utilities
             throw new ArgumentException("Invalid FlagsObject type: "+type);
         }
 
+        internal static FlagsObjectDescriptor GetDescriptor(params Type[] type)
+        {
+            if (type.Length == 0) return GetDescriptor(typeof(FlagsObject));
+            if (type.Length == 1) return GetDescriptor(type[0]);
+            if (type.Length == 2)
+            {
+                if (type[0] == type[1]) return GetDescriptor(type[0]);
+                if (type[0].IsAssignableFrom(type[1])) GetDescriptor(type[1]);
+                if (type[1].IsAssignableFrom(type[0])) GetDescriptor(type[0]);
+            }
+            Type resultType = type[0];
+            for (int i = 1; i < type.Length; i++)
+            {
+                var current = type[i];
+                Type currentType = current.GetType();
+                if (resultType != currentType && resultType.IsAssignableFrom(currentType)) resultType = currentType;
+            }
+            return GetDescriptor(resultType);
+        }
+
         private FlagsObject CreateValue(Type type, ExtensibleBitVector value)
         {
             var descriptor = GetDescriptor(type);
@@ -517,6 +687,8 @@ namespace Roslyn.Utilities
             private List<FlagsObjectDescriptor> _baseDescriptors;
             private int _maxValue;
             private bool _closed;
+            private string _defaultName;
+            private FlagsObject _defaultValue;
             private HashSet<string> _aliases = new HashSet<string>();
             private List<FlagsObject> _values = new List<FlagsObject>();
             private List<LazyInfo> _lazyValues = new List<LazyInfo>();
@@ -539,6 +711,7 @@ namespace Roslyn.Utilities
                         _baseDescriptors.AddRange(baseDescriptor._baseDescriptors);
                         _baseDescriptors.Add(baseDescriptor);
                         _maxValue = baseDescriptor._maxValue;
+                        _defaultName = baseDescriptor._defaultName;
                     }
                     else
                     {
@@ -552,6 +725,7 @@ namespace Roslyn.Utilities
                 _type = typeof(FlagsObject);
                 _baseDescriptors = new List<FlagsObjectDescriptor>();
                 _maxValue = 0;
+                _defaultName = null;
                 _cachedByValue = new FlagsObject[0];
                 _cachedByBitVector = new Dictionary<ExtensibleBitVector, FlagsObject>();
                 _closed = true;
@@ -571,6 +745,11 @@ namespace Roslyn.Utilities
 
             public void Close()
             {
+                if (_defaultName != null && (object)_defaultValue == null)
+                {
+                    Interlocked.CompareExchange(ref _defaultValue, CreateValue(new FlagsObject(_defaultName, default)), null);
+                    _cachedByName[_defaultName] = _defaultValue;
+                }
                 if (_lazyValues != null)
                 {
                     foreach (var lazy in _lazyValues)
@@ -631,13 +810,18 @@ namespace Roslyn.Utilities
                 _closed = true;
             }
 
-            public bool TryGetValue(int value, out FlagsObject FlagsObject)
+            public bool TryGetValue(int value, out FlagsObject flagsObject)
             {
-                FlagsObject = null;
+                flagsObject = null;
+                if (value == 0)
+                {
+                    flagsObject = this.DefaultValue;
+                    return (object)flagsObject != null;
+                }
                 if (value < 1 || value > _maxValue) return false;
                 if (_closed)
                 {
-                    FlagsObject = _cachedByValue[value - 1];
+                    flagsObject = _cachedByValue[value - 1];
                     return true;
                 }
                 else
@@ -645,14 +829,27 @@ namespace Roslyn.Utilities
                     int valuesCount = _values.Count;
                     if (value >= _maxValue - valuesCount + 1)
                     {
-                        FlagsObject = _values[value - 1];
+                        flagsObject = _values[value - 1];
                         return true;
                     }
                     else
                     {
-                        FlagsObject = this.BaseDescriptor?.GetValue(value);
-                        return FlagsObject != null;
+                        flagsObject = this.BaseDescriptor?.GetValue(value);
+                        return flagsObject != null;
                     }
+                }
+            }
+
+            public FlagsObject DefaultValue
+            {
+                get
+                {
+                    if (_defaultName != null && (object)_defaultValue == null)
+                    {
+                        Interlocked.CompareExchange(ref _defaultValue, CreateValue(new FlagsObject(_defaultName, default)), null);
+                        _cachedByName[_defaultName] = _defaultValue;
+                    }
+                    return _defaultValue;
                 }
             }
 
@@ -684,7 +881,23 @@ namespace Roslyn.Utilities
             {
                 flagsObject = null;
                 if (name == null) return false;
-                return _cachedByName.TryGetValue(name, out flagsObject);
+                if (_closed)
+                {
+                    return _cachedByName.TryGetValue(name, out flagsObject);
+                }
+                else
+                {
+                    foreach (var value in _values)
+                    {
+                        if (value._name == name)
+                        {
+                            flagsObject = value;
+                            return true;
+                        }
+                    }
+                    flagsObject = this.BaseDescriptor?.GetValue(name);
+                    return flagsObject != null;
+                }
             }
 
             public FlagsObject GetValue(string name)
@@ -692,6 +905,42 @@ namespace Roslyn.Utilities
                 if (name == null) throw new ArgumentNullException(nameof(name));
                 if (TryGetValue(name, out FlagsObject result)) return result;
                 else throw new ArgumentException($"Enum literal '{name}' does not exist in {_type}.", nameof(name));
+            }
+
+            public bool TryGetName(int value, out string name)
+            {
+                name = null;
+                if (value == 0)
+                {
+                    name = _defaultName;
+                    return _defaultName != null;
+                }
+                if (value < 1 || value > _maxValue) return false;
+                if (_closed)
+                {
+                    name = _cachedByValue[value - 1]._name;
+                    return true;
+                }
+                else
+                {
+                    int valuesCount = _values.Count;
+                    if (value >= _maxValue - valuesCount + 1)
+                    {
+                        name = _values[value - 1]._name;
+                        return true;
+                    }
+                    else
+                    {
+                        name = this.BaseDescriptor?.GetName(value);
+                        return name != null;
+                    }
+                }
+            }
+
+            public string GetName(int value)
+            {
+                if (TryGetName(value, out string result)) return result;
+                else throw new ArgumentOutOfRangeException(nameof(value));
             }
 
             private FlagsObjectDescriptor BaseDescriptor => _baseDescriptors.Count == 0 ? null : _baseDescriptors[_baseDescriptors.Count - 1];
@@ -745,6 +994,23 @@ namespace Roslyn.Utilities
                 if (!_cachedByName.ContainsKey(name))
                 {
                     _lazyValues.Add(LazyInfo.Unique(name));
+                    _cachedByName.Add(name, null);
+                }
+            }
+
+            public void RegisterDefaultValue(string name)
+            {
+                if (_cachedByName.ContainsKey(name))
+                {
+                    throw new InvalidOperationException($"Duplicate enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
+                }
+                else if (_defaultName != null)
+                {
+                    throw new InvalidOperationException($"Duplicate default enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
+                }
+                else
+                {
+                    _defaultName = name;
                     _cachedByName.Add(name, null);
                 }
             }
@@ -907,19 +1173,21 @@ namespace Roslyn.Utilities
         {
             return FromString<BindingFlags>(name);
         }
+        
+        public static explicit operator BindingFlags(int value)
+        {
+            return FromIntUnsafe<BindingFlags>(value);
+        }
 
         public static BindingFlags operator &(BindingFlags left, FlagsObject right)
         {
-            return (BindingFlags)left.Intersect(right);
+            return right?.IntersectWith(left) ?? GetDefault<BindingFlags>();
         }
 
         public static BindingFlags operator |(BindingFlags left, FlagsObject right)
         {
-            return (BindingFlags)left.Union(right);
+            return right?.UnionWith(left) ?? left;
         }
-
-        public new static IEnumerable<FlagsObject> EnumValues => FlagsObject.EnumValues(typeof(BindingFlags));
-        public new static IEnumerable<FlagsObject> FlagValues => FlagsObject.FlagValues(typeof(BindingFlags));
     }
     */
 }

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
@@ -85,6 +86,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         internal static AliasSymbol CreateCustomDebugInfoAlias(NamespaceOrTypeSymbol targetSymbol, SyntaxToken aliasToken, Binder binder)
         {
             return new AliasSymbol(binder, targetSymbol, aliasToken.ValueText, ImmutableArray.Create(aliasToken.GetLocation()));
+        }
+
+        internal static AliasSymbol CreateUsing(string aliasName, UsingDirective directive, Binder binder)
+        {
+            return new AliasSymbol(binder, aliasName, directive.TargetName, directive.Location, false);
+        }
+
+        internal static AliasSymbol CreateExternAlias(string aliasName, ExternAliasDirective directive, Binder binder)
+        {
+            return new AliasSymbol(binder, aliasName, null, directive.Location, true);
         }
 
         internal AliasSymbol ToNewSubmission(LanguageCompilation compilation)
@@ -263,6 +274,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
+        internal void CheckConstraints(DiagnosticBag diagnostics)
+        {
+            var target = this.Target as TypeSymbol;
+            if ((object)target != null && _locations.Length > 0)
+            {
+                var corLibrary = this.ContainingAssembly.CorLibrary;
+                var conversions = new TypeConversions(corLibrary);
+                target.CheckAllConstraints(DeclaringCompilation, conversions, _locations[0], diagnostics);
+            }
+        }
+
         private NamespaceSymbol ResolveExternAliasTarget(DiagnosticBag diagnostics)
         {
             NamespaceSymbol target;
@@ -278,7 +300,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private static NamespaceOrTypeSymbol ResolveAliasTarget(Binder binder, SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
-            return (NamespaceOrTypeSymbol)binder.BindNamespaceOrTypeSymbol(syntax, diagnostics, basesBeingResolved).Symbol;
+            return (NamespaceOrTypeSymbol)binder.BindNamespaceOrTypeSymbol(syntax, diagnostics, basesBeingResolved);
         }
 
         public override bool Equals(object obj)

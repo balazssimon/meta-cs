@@ -33,25 +33,7 @@ namespace MetaDslx.CodeAnalysis
 
         protected virtual CompletionGraphBuilder ConstructCompletionGraph()
         {
-            CompletionGraphBuilder builder = new CompletionGraphBuilder();
-            builder.AddLast(CompletionPart.Attributes);
-            builder.AddLast(CompletionPart.StartAttributeChecks);
-            builder.AddLast(CompletionPart.FinishAttributeChecks);
-            builder.AddLast(CompletionPart.StartBaseTypes);
-            builder.AddLast(CompletionPart.FinishBaseTypes);
-            builder.AddLast(CompletionPart.Members);
-            builder.AddLast(CompletionPart.TypeMembers);
-            builder.AddLast(CompletionPart.StartMemberChecks);
-            builder.AddLast(CompletionPart.FinishMemberChecks);
-            builder.AddLast(CompletionPart.MembersCompleted);
-            builder.AddLast(CompletionPart.NameToMembersMap);
-            builder.AddLast(CompletionPart.AliasTarget);
-            builder.AddLast(CompletionPart.Module);
-            builder.AddLast(CompletionPart.StartValidatingAddedModules);
-            builder.AddLast(CompletionPart.FinishValidatingAddedModules);
-            builder.AddLast(CompletionPart.StartValidatingReferencedAssemblies);
-            builder.AddLast(CompletionPart.FinishValidatingReferencedAssemblies);
-            return builder;
+            return CompletionPart.ConstructDefaultCompletionGraph();
         }
 
         public abstract RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission);

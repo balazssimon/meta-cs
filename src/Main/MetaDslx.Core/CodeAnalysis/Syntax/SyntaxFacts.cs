@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Syntax
@@ -80,6 +81,16 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return IsGeneralCommentTrivia(rawKind) || IsDocumentationCommentTrivia(rawKind);
         }
 
+        public virtual ImmutableArray<ExternAliasDirective> GetExternAliasDirectives(LanguageSyntaxNode declarationSyntax)
+        {
+            return ImmutableArray<ExternAliasDirective>.Empty;
+        }
+
+        public virtual ImmutableArray<UsingDirective> GetUsingDirectives(LanguageSyntaxNode declarationSyntax)
+        {
+            return ImmutableArray<UsingDirective>.Empty;
+        }
+
         public bool IsKeyword(SyntaxKind kind)
         {
             return IsReservedKeyword(kind) || IsContextualKeyword(kind);
@@ -137,30 +148,46 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return 0;
         }
 
-        public virtual string ExtractName(LanguageSyntaxNode node)
+        public virtual bool IsGlobalAlias(SyntaxNodeOrToken nodeOrToken)
         {
-            return node.ToString();
+            return ExtractName(nodeOrToken) == "global";
         }
-        public virtual string ExtractName(SyntaxToken token)
+
+        public virtual string ExtractName(SyntaxNodeOrToken nodeOrToken)
         {
-            return token.Text;
+            if (nodeOrToken.IsToken) return nodeOrToken.AsToken().ValueText;
+            else return nodeOrToken.AsNode().ToString();
         }
-        public virtual string ExtractMetadataName(LanguageSyntaxNode node)
-        {
-            return node.ToString();
-        }
-        public virtual string ExtractMetadataName(SyntaxToken token)
-        {
-            return token.Text;
-        }
-        public virtual object ExtractValue(LanguageSyntaxNode node)
+
+        public virtual string ExtractErrorDisplayName(SyntaxNodeOrToken nodeOrToken)
         {
             return null;
         }
-        public virtual object ExtractValue(SyntaxToken token)
+
+        public virtual ImmutableArray<string> ExtractQualifiedName(SyntaxNodeOrToken nodeOrToken)
         {
-            return token.Value;
+            string name = this.ExtractName(nodeOrToken);
+            return ExtractQualifiedName(name);
         }
+
+        public virtual ImmutableArray<string> ExtractQualifiedName(string qualifiedNameAsString)
+        {
+            if (string.IsNullOrWhiteSpace(qualifiedNameAsString)) return ImmutableArray<string>.Empty;
+            else return qualifiedNameAsString.Split('.').ToImmutableArray();
+        }
+
+        public virtual string ExtractMetadataName(SyntaxNodeOrToken nodeOrToken)
+        {
+            if (nodeOrToken.IsToken) return nodeOrToken.AsToken().ValueText;
+            else return nodeOrToken.AsNode().ToString();
+        }
+
+        public virtual object ExtractValue(SyntaxNodeOrToken nodeOrToken)
+        {
+            if (nodeOrToken.IsToken) return nodeOrToken.AsToken().Value;
+            else return null;
+        }
+
         public virtual TypeKind ToTypeKind(ModelSymbolInfo info)
         {
             return TypeKind.Class;
@@ -187,7 +214,22 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return false;
         }
 
-        public virtual bool IsInNamespaceOrTypeContext(SyntaxNode node)
+        public virtual bool IsDynamicTypeDeclaration(SyntaxNodeOrToken syntax)
+        {
+            return ExtractName(syntax) == "global";
+        }
+
+        public virtual bool IsVarTypeDeclaration(SyntaxNodeOrToken syntax)
+        {
+            return ExtractName(syntax) == "var";
+        }
+
+        public virtual bool IsInTypeOnlyContext(SyntaxNodeOrToken node)
+        {
+            return false;
+        }
+
+        public virtual bool IsInNamespaceOrTypeContext(SyntaxNodeOrToken node)
         {
             return false;
         }

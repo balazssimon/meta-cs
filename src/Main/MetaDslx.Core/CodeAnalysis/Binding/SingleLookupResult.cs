@@ -12,18 +12,18 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// 
     /// For more explanation of Kind, Symbol, Error - see LookupResult.
     /// </summary>
-    internal struct SingleLookupResult
+    public struct SingleLookupResult
     {
         // the kind of result.
-        internal readonly LookupResultKind Kind;
+        public readonly LookupResultKind Kind;
 
         // the symbol or null.
-        internal readonly Symbol Symbol;
+        public readonly Symbol Symbol;
 
         // the error of the result, if it is NonViable or Inaccessible
-        internal readonly DiagnosticInfo Error;
+        public readonly DiagnosticInfo Error;
 
-        internal SingleLookupResult(LookupResultKind kind, Symbol symbol, DiagnosticInfo error)
+        public SingleLookupResult(LookupResultKind kind, Symbol symbol, DiagnosticInfo error)
         {
             this.Kind = kind;
             this.Symbol = symbol;

@@ -1,15 +1,17 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    internal struct AliasAndUsingDirective
+    public struct AliasAndUsingDirective
     {
-        public readonly IAliasSymbol Alias;
-        public readonly SyntaxNode UsingDirective;
+        public readonly AliasSymbol Alias;
+        public readonly UsingDirective UsingDirective;
 
-        public AliasAndUsingDirective(IAliasSymbol alias, SyntaxNode usingDirective)
+        public AliasAndUsingDirective(AliasSymbol alias, UsingDirective usingDirective)
         {
             this.Alias = alias;
             this.UsingDirective = usingDirective;

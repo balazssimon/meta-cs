@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Binding;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
@@ -476,5 +477,39 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     x.Equals(y, _comparison);
             }
         }
+
+        #region Check generic constraints
+
+
+        /// <summary>
+        /// Check all generic constraints on the given type and any containing types
+        /// (such as A&lt;T&gt; in A&lt;T&gt;.B&lt;U&gt;). This includes checking constraints
+        /// on generic types within the type (such as B&lt;T&gt; in A&lt;B&lt;T&gt;[]&gt;).
+        /// </summary>
+        public virtual void CheckAllConstraints(
+            LanguageCompilation compilation,
+            ConversionsBase conversions,
+            Location location,
+            DiagnosticBag diagnostics)
+        {
+            // TODO:MetaDslx
+        }
+
+        public bool CheckAllConstraints(
+            LanguageCompilation compilation,
+            ConversionsBase conversions)
+        {
+            var diagnostics = DiagnosticBag.GetInstance();
+
+            // Nullability checks can only add warnings here so skip them for this check as we are only
+            // concerned with errors.
+            CheckAllConstraints(compilation, conversions, NoLocation.Singleton, diagnostics);
+            bool ok = !diagnostics.HasAnyErrors();
+            diagnostics.Free();
+            return ok;
+        }
+
+
+        #endregion
     }
 }

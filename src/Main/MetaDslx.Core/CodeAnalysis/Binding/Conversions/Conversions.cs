@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace MetaDslx.CodeAnalysis.Binding
 {
     // TODO:MetaDslx
-    internal sealed class Conversions : ConversionsBase
+    public sealed class Conversions : ConversionsBase
     {
         private readonly Binder _binder;
 
@@ -33,17 +33,17 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private LanguageCompilation Compilation { get { return _binder.Compilation; } }
 
-        internal Conversion ClassifyConversionFromType(ITypeSymbol source, ITypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public Conversion ClassifyConversionFromType(ITypeSymbol source, ITypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             throw new NotImplementedException();
         }
 
-        internal Conversion ClassifyConversionFromExpression(object bnode, TypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics, bool forCast)
+        public Conversion ClassifyConversionFromExpression(object bnode, TypeSymbol destination, ref HashSet<DiagnosticInfo> useSiteDiagnostics, bool forCast)
         {
             throw new NotImplementedException();
         }
 
-        internal Conversion ClassifyConversionFromExpression(object bnode, TypeSymbol cdestination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public Conversion ClassifyConversionFromExpression(object bnode, TypeSymbol cdestination, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             throw new NotImplementedException();
         }

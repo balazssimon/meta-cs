@@ -1809,7 +1809,17 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        private void RecordImport(LanguageSyntaxNode syntax)
+        internal void RecordImport(UsingDirective directive)
+        {
+            RecordImportInternal(directive.SyntaxNode);
+        }
+
+        internal void RecordImport(ExternAliasDirective directive)
+        {
+            RecordImportInternal(directive.SyntaxNode);
+        }
+
+        private void RecordImportInternal(LanguageSyntaxNode syntax)
         {
             LazyInitializer.EnsureInitialized(ref _lazyImportInfos).
                 Add(new ImportInfo(syntax.SyntaxTree, syntax.Kind, syntax.Span));

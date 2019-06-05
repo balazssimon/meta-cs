@@ -13,14 +13,14 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// <summary>
     /// A binder that knows no symbols and will not delegate further.
     /// </summary>
-    internal class BuckStopsHereBinder : Binder
+    public class BuckStopsHereBinder : Binder
     {
-        internal BuckStopsHereBinder(LanguageCompilation compilation)
+        public BuckStopsHereBinder(LanguageCompilation compilation)
             : base(compilation)
         {
         }
 
-        internal override ImportChain ImportChain
+        public override ImportChain ImportChain
         {
             get
             {
@@ -28,19 +28,18 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        internal override Imports GetImports(ConsList<ITypeSymbol> basesBeingResolved)
+        public override Imports GetImports(ConsList<TypeSymbol> basesBeingResolved)
         {
             return Imports.Empty;
         }
 
-        internal override bool IsAccessibleHelper(ISymbol symbol, ITypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<ITypeSymbol> basesBeingResolved)
+        public override bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
             failedThroughTypeCheck = false;
-            throw new NotImplementedException("TODO:MetaDslx");
-            //return IsSymbolAccessibleConditional(symbol, Compilation.Assembly, ref useSiteDiagnostics);
+            return IsSymbolAccessibleConditional(symbol, Compilation.Assembly, ref useSiteDiagnostics);
         }
 
-        internal override Symbol ContainingSymbol
+        public override Symbol ContainingSymbol
         {
             get
             {
@@ -48,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        internal override Binder GetBinder(SyntaxNode node)
+        public override Binder GetBinder(SyntaxNode node)
         {
             return null;
         }

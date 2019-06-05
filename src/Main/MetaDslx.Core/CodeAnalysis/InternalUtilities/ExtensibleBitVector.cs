@@ -185,14 +185,46 @@ namespace Roslyn.Utilities
             }
         }
 
+        public bool HasSingleBit()
+        {
+            var trueBits = TrueBits().GetEnumerator();
+            int index = 0;
+            while (index < 2)
+            {
+                if (trueBits.MoveNext()) ++index;
+                else break;
+            }
+            return index == 1;
+        }
+
+        public bool TryGetSingleBit(out int bit)
+        {
+            var trueBits = TrueBits().GetEnumerator();
+            bit = 0;
+            int index = 0;
+            while (index < 2)
+            {
+                if (trueBits.MoveNext())
+                {
+                    bit = trueBits.Current;
+                    ++index;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return index == 1;
+        }
+
         /// <summary>
         /// Create BitArray with at least the specified number of bits.
         /// </summary>
-        public static ExtensibleBitVector Create(int capacity)
+        public static ExtensibleBitVector Create(int bit)
         {
-            int requiredWords = WordsForCapacity(capacity);
-            Word[] bits = (requiredWords == 0) ? s_emptyArray : new Word[requiredWords];
-            return new ExtensibleBitVector(0, bits, capacity);
+            var result = new ExtensibleBitVector();
+            result[bit] = true;
+            return result;
         }
 
         /// <summary>
@@ -384,6 +416,18 @@ namespace Roslyn.Utilities
             Check();
 
             return anyChanged;
+        }
+
+        public bool IncludesAll(ExtensibleBitVector bits)
+        {
+            foreach (var index in bits.TrueBits())
+            {
+                if (index >= _capacity) return false;
+                int i = (index >> Log2BitsPerWord) - 1;
+                var word = (i < 0) ? _bits0 : _bits[i];
+                if (!IsTrue(word, index)) return false;
+            }
+            return true;
         }
 
         public bool this[int index]

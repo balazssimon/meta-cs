@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     ///   3) Viable isn't used in CandidateReason, but we need it in LookupResultKind, and there isn't a 
     ///      a way to have internal enumeration values.
     /// </remarks>
-    internal enum LookupResultKind : byte
+    public enum LookupResultKind : byte
     {
         // Note: order is important! High values take precedences over lower values. 
 

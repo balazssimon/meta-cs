@@ -66,5 +66,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     return false;
             }
         }
+
+        /// <summary>
+        /// Return true if the type contains any dynamic type reference.
+        /// </summary>
+        public static bool ContainsDynamic(this TypeSymbol type)
+        {
+            return false; // TODO:MetaDslx
+            /*
+            var result type.VisitType(s_containsDynamicPredicate, null, canDigThroughNullable: true);
+            return (object)result != null;*/
+        }
+
+        private static readonly Func<TypeSymbol, object, bool, bool> s_containsDynamicPredicate = (type, unused1, unused2) => type.TypeKind == TypeKind.Dynamic;
     }
 }

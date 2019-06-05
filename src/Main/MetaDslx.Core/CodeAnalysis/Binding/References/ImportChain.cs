@@ -3,17 +3,16 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
     using Cci = Microsoft.Cci;
-    using Emit = Microsoft.CodeAnalysis.CSharp.Emit;
 
     [DebuggerDisplay("{GetDebuggerDisplay(),nq}")]
-    internal sealed class ImportChain : Cci.IImportScope
+    public sealed class ImportChain : Cci.IImportScope
     {
         public readonly Imports Imports;
         public readonly ImportChain ParentOpt;
@@ -40,6 +39,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return _lazyTranslatedImports;
         }
 
+        /*
         public Cci.IImportScope Translate(Emit.PEModuleBuilder moduleBuilder, DiagnosticBag diagnostics)
         {
             for (var scope = this; scope != null; scope = scope.ParentOpt)
@@ -75,13 +75,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 foreach (var nsOrType in usings)
                 {
-                    NamespaceOrTypeSymbol namespaceOrType = (NamespaceOrTypeSymbol)nsOrType.NamespaceOrType;
+                    NamespaceOrTypeSymbol namespaceOrType = nsOrType.NamespaceOrType;
                     if (namespaceOrType.IsNamespace)
                     {
                         var ns = (NamespaceSymbol)namespaceOrType;
                         var assemblyRef = TryGetAssemblyScope(ns, moduleBuilder, diagnostics);
-                        throw new NotImplementedException("TODO:MetaDslx");
-                        //usedNamespaces.Add(Cci.UsedNamespaceOrType.CreateNamespace(ns, assemblyRef));
+                        usedNamespaces.Add(Cci.UsedNamespaceOrType.CreateNamespace(ns, assemblyRef));
                     }
                     else if (!namespaceOrType.ContainingAssembly.IsLinked)
                     {
@@ -106,13 +105,12 @@ namespace MetaDslx.CodeAnalysis.Binding
                     var syntax = aliasAndUsingDirective.UsingDirective;
                     Debug.Assert(!symbol.IsExtern);
 
-                    NamespaceOrTypeSymbol target = (NamespaceOrTypeSymbol)symbol.Target;
+                    NamespaceOrTypeSymbol target = symbol.Target;
                     if (target.Kind == SymbolKind.Namespace)
                     {
                         var ns = (NamespaceSymbol)target;
                         var assemblyRef = TryGetAssemblyScope(ns, moduleBuilder, diagnostics);
-                        throw new NotImplementedException("TODO:MetaDslx");
-                        //usedNamespaces.Add(Cci.UsedNamespaceOrType.CreateNamespace(ns, assemblyRef, alias));
+                        usedNamespaces.Add(Cci.UsedNamespaceOrType.CreateNamespace(ns, assemblyRef, alias));
                     }
                     else if (!target.ContainingAssembly.IsLinked)
                     {
@@ -128,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             return usedNamespaces.ToImmutableAndFree();
         }
-
+        
         private static Cci.ITypeReference GetTypeReference(TypeSymbol type, SyntaxNode syntaxNode, Emit.PEModuleBuilder moduleBuilder, DiagnosticBag diagnostics)
         {
             return moduleBuilder.Translate(type, syntaxNode, diagnostics);
@@ -155,7 +153,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             return null;
         }
-
+        */
         Cci.IImportScope Cci.IImportScope.Parent => ParentOpt;
     }
 }

@@ -20,6 +20,9 @@ namespace MetaDslx.CodeAnalysis
     public class LanguageDiagnosticInfo : DiagnosticInfo, IFormattable, IObjectWritable
     {
         public static readonly LanguageDiagnosticInfo EmptyErrorInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_InvalidErrorCode);
+        public static readonly LanguageDiagnosticInfo UnknownDiagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.Unknown);
+        public static readonly LanguageDiagnosticInfo VoidDiagnosticInfo = new LanguageDiagnosticInfo(InternalErrorCode.Void);
+
 
         private readonly ErrorCode _errorCode;
         private readonly object[] _arguments;

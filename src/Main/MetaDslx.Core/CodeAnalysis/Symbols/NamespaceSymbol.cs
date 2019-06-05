@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using Microsoft.Cci;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class NamespaceSymbol : NamespaceOrTypeSymbol, IMetaNamespaceSymbol
+    public abstract class NamespaceSymbol : NamespaceOrTypeSymbol, IMetaNamespaceSymbol, Microsoft.Cci.INamespace
     {
         // PERF: initialization of the following fields will allocate, so we make them lazy
         private string _lazyQualifiedName;
@@ -241,6 +242,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     (_lazyQualifiedName = this.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat));
             }
         }
+
+        INamespace INamespace.ContainingNamespace => this.ContainingNamespace;
 
         #endregion
 

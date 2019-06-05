@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace Roslyn.Utilities
 {
@@ -98,6 +99,7 @@ namespace Roslyn.Utilities
             else
             {
                 var descriptor = GetDescriptor(this.GetType());
+                if (ReferenceEquals(this, descriptor.DefaultValue)) return 0;
                 return descriptor.GetValue(_name)?._value ?? 0;
             }
         }
@@ -324,6 +326,15 @@ namespace Roslyn.Utilities
             }
         }
 
+        protected static void RegisterDefault<T>(string name)
+            where T : EnumObject
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            var descriptor = EnsureInit<T>();
+            Debug.Assert(!descriptor.IsClosed);
+            descriptor.RegisterDefaultValue(name);
+        }
+
         protected static void RegisterAlias<T>(string name)
             where T : EnumObject
         {
@@ -385,7 +396,7 @@ namespace Roslyn.Utilities
 
         public static EnumObject ByValue(Type enumType, int value)
         {
-            if (value < 1) return null;
+            if (value < 0) return null;
             var descriptor = GetDescriptor(enumType);
             if (descriptor.TryGetValue(value, out EnumObject result)) return result;
             return null;
@@ -502,6 +513,8 @@ namespace Roslyn.Utilities
             private List<EnumObjectDescriptor> _baseDescriptors;
             private int _maxValue;
             private bool _closed;
+            private string _defaultName;
+            private EnumObject _defaultValue;
             private HashSet<string> _aliases = new HashSet<string>();
             private List<EnumObject> _values = new List<EnumObject>();
             private List<string> _lazyValues = new List<string>();
@@ -523,6 +536,7 @@ namespace Roslyn.Utilities
                         _baseDescriptors.AddRange(baseDescriptor._baseDescriptors);
                         _baseDescriptors.Add(baseDescriptor);
                         _maxValue = baseDescriptor._maxValue;
+                        _defaultName = baseDescriptor._defaultName;
                     }
                     else
                     {
@@ -536,6 +550,7 @@ namespace Roslyn.Utilities
                 _type = typeof(EnumObject);
                 _baseDescriptors = new List<EnumObjectDescriptor>();
                 _maxValue = 0;
+                _defaultName = null;
                 _cachedByValue = new EnumObject[0];
                 _closed = true;
             }
@@ -554,6 +569,11 @@ namespace Roslyn.Utilities
 
             public void Close()
             {
+                if (_defaultName != null && (object)_defaultValue == null)
+                {
+                    Interlocked.CompareExchange(ref _defaultValue, CreateValue(new EnumObject(_defaultName, 0)), null);
+                    _cachedByName[_defaultName] = _defaultValue;
+                }
                 if (_lazyValues != null)
                 {
                     foreach (var lazy in _lazyValues)
@@ -595,6 +615,11 @@ namespace Roslyn.Utilities
             public bool TryGetValue(int value, out EnumObject enumObject)
             {
                 enumObject = null;
+                if (value == 0)
+                {
+                    enumObject = this.DefaultValue;
+                    return (object)enumObject != null;
+                }
                 if (value < 1 || value > _maxValue) return false;
                 if (_closed)
                 {
@@ -614,6 +639,19 @@ namespace Roslyn.Utilities
                         enumObject = this.BaseDescriptor?.GetValue(value);
                         return enumObject != null;
                     }
+                }
+            }
+
+            public EnumObject DefaultValue
+            {
+                get
+                {
+                    if (_defaultName != null && (object)_defaultValue == null)
+                    {
+                        Interlocked.CompareExchange(ref _defaultValue, CreateValue(new EnumObject(_defaultName, 0)), null);
+                        _cachedByName[_defaultName] = _defaultValue;
+                    }
+                    return _defaultValue;
                 }
             }
 
@@ -650,12 +688,17 @@ namespace Roslyn.Utilities
             {
                 if (name == null) throw new ArgumentNullException(nameof(name));
                 if (TryGetValue(name, out EnumObject result)) return result;
-                else throw new ArgumentException($"Enum value '{name}' does not exist in {_type}.", nameof(name));
+                else throw new ArgumentException($"Enum literal '{name}' does not exist in {_type}.", nameof(name));
             }
 
             public bool TryGetName(int value, out string name)
             {
                 name = null;
+                if (value == 0)
+                {
+                    name = _defaultName;
+                    return _defaultName != null;
+                }
                 if (value < 1 || value > _maxValue) return false;
                 if (_closed)
                 {
@@ -718,6 +761,23 @@ namespace Roslyn.Utilities
                 if (!_cachedByName.ContainsKey(name))
                 {
                     _lazyValues.Add(name);
+                    _cachedByName.Add(name, null);
+                }
+            }
+
+            public void RegisterDefaultValue(string name)
+            {
+                if (_cachedByName.ContainsKey(name))
+                {
+                    throw new InvalidOperationException($"Duplicate enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
+                }
+                else if (_defaultName != null)
+                {
+                    throw new InvalidOperationException($"Duplicate default enum literal '{name}' in {_type}. If you want to create an alias, use RegisterAlias() in the static initializer.");
+                }
+                else
+                {
+                    _defaultName = name;
                     _cachedByName.Add(name, null);
                 }
             }

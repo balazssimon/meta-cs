@@ -69,6 +69,16 @@ namespace MetaDslx.CodeAnalysis
 
         public static readonly InternalErrorCode ERR_InvalidErrorCode = new InternalErrorCode();
 
+        /// <summary>
+        /// The code has yet to be determined.
+        /// </summary>
+        public static readonly InternalErrorCode Unknown = new InternalErrorCode(Microsoft.CodeAnalysis.InternalErrorCode.Unknown, (DiagnosticSeverity)Microsoft.CodeAnalysis.InternalErrorCode.Unknown);
+
+        /// <summary>
+        /// The code was lazily determined and does not need to be reported.
+        /// </summary>
+        public static readonly InternalErrorCode Void = new InternalErrorCode(Microsoft.CodeAnalysis.InternalErrorCode.Void, (DiagnosticSeverity)Microsoft.CodeAnalysis.InternalErrorCode.Void);
+
         #region diagnostics introduced in C# 4 and earlier
         //public static readonly InternalErrorCode FTL_InternalError = new InternalErrorCode(1, DiagnosticSeverity.Error);
         //public static readonly InternalErrorCode FTL_FailedToLoadResource = new InternalErrorCode(2, DiagnosticSeverity.Error);

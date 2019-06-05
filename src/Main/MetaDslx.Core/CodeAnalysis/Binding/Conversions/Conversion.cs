@@ -65,5 +65,8 @@ namespace MetaDslx.CodeAnalysis.Binding
                 throw new NotImplementedException("TODO:MetaDslx");
             }
         }
+
+        public MethodSymbol Method => throw new NotImplementedException("TODO:MetaDslx");
+        public bool IsValid => throw new NotImplementedException("TODO:MetaDslx");
     }
 }

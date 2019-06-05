@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Syntax
@@ -25,6 +26,8 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public LanguageSyntaxNode SyntaxNode => _node;
 
         public Microsoft.CodeAnalysis.SyntaxTree SyntaxTree => _node.SyntaxTree;
+
+        public Microsoft.CodeAnalysis.Location Location => _node.Location;
 
         public virtual bool IncrementallyEquivalent(Directive other)
         {
@@ -282,12 +285,40 @@ namespace MetaDslx.CodeAnalysis.Syntax
 
     public class ExternAliasDirective : Directive
     {
-        public ExternAliasDirective(LanguageSyntaxNode node)
+        private SyntaxNodeOrToken _aliasName;
+
+        public ExternAliasDirective(LanguageSyntaxNode node, SyntaxNodeOrToken aliasName)
             : base(node, true)
         {
+            _aliasName = aliasName;
         }
 
         public override DirectiveKind Kind => DirectiveKind.ExternAlias;
+
+        public SyntaxNodeOrToken AliasName => _aliasName;
+    }
+
+    public class UsingDirective : Directive
+    {
+        private SyntaxNodeOrToken _aliasName;
+        private SyntaxNodeOrToken _targetName;
+        private bool _isStatic;
+        private bool _isGlobal;
+
+        public UsingDirective(LanguageSyntaxNode node, SyntaxNodeOrToken aliasName, SyntaxNodeOrToken targetName, bool isStatic, bool isGlobal)
+            : base(node, true)
+        {
+            _aliasName = aliasName;
+            _targetName = targetName;
+            _isStatic = isStatic;
+            _isGlobal = isGlobal;
+        }
+
+        public override DirectiveKind Kind => DirectiveKind.Using;
+        public SyntaxNodeOrToken AliasName => _aliasName;
+        public SyntaxNodeOrToken TargetName => _targetName;
+        public bool IsStatic => _isStatic;
+        public bool IsGlobal => _isGlobal;
     }
 
     public enum LineDirectiveKind

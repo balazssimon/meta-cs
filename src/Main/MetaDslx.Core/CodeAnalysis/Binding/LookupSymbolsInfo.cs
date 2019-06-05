@@ -9,7 +9,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    internal sealed class LookupSymbolsInfo : AbstractLookupSymbolsInfo<Symbol>
+    public sealed class LookupSymbolsInfo : MultipleNamesLookupSymbolsInfo<Symbol>
     {
         // TODO: tune pool size.
         private const int poolSize = 64;

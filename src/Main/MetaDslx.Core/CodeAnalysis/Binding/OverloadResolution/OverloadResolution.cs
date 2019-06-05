@@ -10,8 +10,8 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-	// TODO:MetaDslx
-    internal sealed partial class OverloadResolution
+    // TODO:MetaDslx
+    public sealed partial class OverloadResolution
     {
         private readonly Binder _binder;
 

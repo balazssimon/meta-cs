@@ -11,7 +11,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    internal abstract partial class ConversionsBase
+    public abstract partial class ConversionsBase
     {
         private const int MaximumRecursionDepth = 50;
 
@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             this.currentRecursionDepth = currentRecursionDepth;
         }
 
-        internal AssemblySymbol CorLibrary { get { return corLibrary; } }
+        public AssemblySymbol CorLibrary { get { return corLibrary; } }
 
         protected abstract ConversionsBase CreateInstance(int currentRecursionDepth);
     }

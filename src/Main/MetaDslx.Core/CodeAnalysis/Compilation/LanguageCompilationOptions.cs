@@ -73,7 +73,7 @@ namespace MetaDslx.CodeAnalysis
             bool publicSign = false,
             MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public,
             bool referencesSupersedeLowerVersions = false,
-            BinderFlags topLevelBinderFlags = BinderFlags.None)
+            BinderFlags topLevelBinderFlags = null)
             : base(outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName,
                    cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, publicSign, optimizationLevel, checkOverflow,
                    platform, generalDiagnosticOption, warningLevel, specificDiagnosticOptions.ToImmutableDictionaryOrEmpty(),
@@ -84,7 +84,7 @@ namespace MetaDslx.CodeAnalysis
             _language = language;
             this.Usings = usings.AsImmutableOrEmpty();
             this.AllowUnsafe = allowUnsafe;
-            this.TopLevelBinderFlags = topLevelBinderFlags;
+            this.TopLevelBinderFlags = topLevelBinderFlags ?? BinderFlags.None;
         }
 
         public Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions ToCSharp()

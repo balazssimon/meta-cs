@@ -7,14 +7,14 @@ namespace Microsoft.CodeAnalysis
     /// <summary>
     /// Represents an optional bool as a single byte.
     /// </summary>
-    internal enum ThreeState : byte
+    public enum ThreeState : byte
     {
         Unknown = 0,
         False = 1,
         True = 2,
     }
 
-    internal static class ThreeStateHelpers
+    public static class ThreeStateHelpers
     {
         public static ThreeState ToThreeState(this bool value)
         {
