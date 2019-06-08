@@ -16,14 +16,16 @@ using System.Threading.Tasks;
 namespace MetaDslx.CodeAnalysis.Binding
 {
     using CSharp = Microsoft.CodeAnalysis.CSharp;
+
     /// <summary>
     /// A Binder converts names in to symbols and syntax nodes into bound trees. It is context
     /// dependent, relative to a location in source code.
     /// </summary>
     public partial class Binder
     {
-        public LanguageCompilation Compilation { get; }
+        private readonly LanguageCompilation _compilation;
         private readonly Binder _next;
+        private readonly SyntaxNodeOrToken _syntax;
 
         public readonly BinderFlags Flags;
 
@@ -34,15 +36,15 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             Debug.Assert(compilation != null);
             this.Flags = compilation.Options.TopLevelBinderFlags;
-            this.Compilation = compilation;
+            _compilation = compilation;
         }
 
-        public Binder(Binder next, Conversions conversions = null)
+        public Binder(Binder next, SyntaxNodeOrToken syntax, Conversions conversions = null)
         {
             Debug.Assert(next != null);
             _next = next;
             this.Flags = next.Flags;
-            this.Compilation = next.Compilation;
+            _compilation = next._compilation;
             _lazyConversions = conversions;
         }
 
@@ -51,10 +53,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             Debug.Assert(next != null);
             _next = next;
             this.Flags = flags;
-            this.Compilation = next.Compilation;
+            _compilation = next._compilation;
         }
 
-        public Language Language => this.Compilation.Language;
+        public LanguageCompilation Compilation => _compilation;
+
+        public Language Language => _compilation.Language;
+
+        public SyntaxNodeOrToken Syntax => _syntax;
 
         public Binder WithFlags(params BinderFlags[] flags)
         {
@@ -474,10 +480,26 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public virtual BoundNode Bind(LanguageSyntaxNode node, DiagnosticBag diagnostics)
         {
+            if (Language.SyntaxFacts.IsExpression(node))
+            {
+                return BindExpression(node, diagnostics);
+            }
+            else if (Language.SyntaxFacts.IsStatement(node))
+            {
+                return BindStatement(node, diagnostics);
+            }
+            else
+            {
+                return BindSymbol(node, diagnostics);
+            }
+        }
+
+        public BoundSymbol BindSymbol(LanguageSyntaxNode node, DiagnosticBag diagnostics)
+        {
             throw new NotImplementedException();
         }
 
-        public virtual BoundExpression BindExpression(LanguageSyntaxNode expression, DiagnosticBag diagnostics)
+        public virtual BoundExpression BindExpression(LanguageSyntaxNode node, DiagnosticBag diagnostics)
         {
             throw new NotImplementedException();
         }

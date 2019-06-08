@@ -12,6 +12,7 @@ using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
@@ -1706,7 +1707,7 @@ namespace MetaDslx.CodeAnalysis
 
         private BinderFactory AddNewFactory(SyntaxTree syntaxTree, ref WeakReference<BinderFactory> slot)
         {
-            var newFactory = Language.CompilationFactory.CreateBinderFactory(this, syntaxTree);
+            var newFactory = new CachingBinderFactory(this, syntaxTree);
             var newWeakReference = new WeakReference<BinderFactory>(newFactory);
 
             while (true)
@@ -1776,7 +1777,7 @@ namespace MetaDslx.CodeAnalysis
                         TextSpan infoSpan = info.Span;
                         if (!this.IsImportDirectiveUsed(infoTree, infoSpan.Start))
                         {
-                            InternalErrorCode code = info.Kind == _language.SyntaxFacts.ExternAliasDirectiveKind
+                            InternalErrorCode code = _language.SyntaxFacts.IsExternAliasDirective(info.Kind)
                                 ? InternalErrorCode.HDN_UnusedExternAlias
                                 : InternalErrorCode.HDN_UnusedUsingDirective;
                             diagnostics.Add(code, infoTree.GetLocation(infoSpan));

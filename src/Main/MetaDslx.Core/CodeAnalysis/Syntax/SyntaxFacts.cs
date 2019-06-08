@@ -36,7 +36,6 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public abstract SyntaxKind DefaultSeparatorKind { get; }
         public abstract SyntaxKind DefaultIdentifierKind { get; }
         public virtual SyntaxKind EndOfDirectiveTokenKind => SyntaxKind.None;
-        public virtual SyntaxKind ExternAliasDirectiveKind => SyntaxKind.None;
         public virtual SyntaxKind CompilationUnitKind => SyntaxKind.None;
 
         public abstract bool IsToken(SyntaxKind kind);
@@ -61,12 +60,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public virtual object GetValue(SyntaxKind kind)
         {
             string text = GetText(kind);
-            if (text == "null") return null;
-            if (text == "true") return true;
-            if (text == "false") return false;
-            if (int.TryParse(text, out int i)) return i;
-            if (double.TryParse(text, out double d)) return d;
-            return text;
+            return ExtractValue(text);
         }
 
         public abstract SyntaxKind GetReservedKeywordKind(string text);
@@ -188,6 +182,53 @@ namespace MetaDslx.CodeAnalysis.Syntax
             else return null;
         }
 
+        public virtual object ExtractValue(string value)
+        {
+            if (value == "null") return null;
+            if (value.Length >= 3 && value.StartsWith("@\'") && value.EndsWith("\'"))
+            {
+                return value.Substring(2, value.Length - 3).Replace("\'\'", "\'");
+            }
+            else if (value.Length >= 2 && value.StartsWith("\'") && value.EndsWith("\'"))
+            {
+                return StringUtilities.UnescapeCharLiteralValue(value.Substring(1, value.Length - 2));
+            }
+            else if (value.Length >= 3 && value.StartsWith("@\"") && value.EndsWith("\""))
+            {
+                return value.Substring(2, value.Length - 3).Replace("\"\"", "\"");
+            }
+            else if (value.Length >= 2 && value.StartsWith("\"") && value.EndsWith("\""))
+            {
+                return StringUtilities.UnescapeStringLiteralValue(value.Substring(1, value.Length - 2));
+            }
+            bool boolValue;
+            if (bool.TryParse(value, out boolValue))
+            {
+                return boolValue;
+            }
+            int intValue;
+            if (int.TryParse(value, out intValue))
+            {
+                return intValue;
+            }
+            long longValue;
+            if (long.TryParse(value, out longValue))
+            {
+                return longValue;
+            }
+            float floatValue;
+            if (float.TryParse(value, out floatValue))
+            {
+                return floatValue;
+            }
+            double doubleValue;
+            if (double.TryParse(value, out doubleValue))
+            {
+                return doubleValue;
+            }
+            return value;
+        }
+
         public virtual TypeKind ToTypeKind(ModelSymbolInfo info)
         {
             return TypeKind.Class;
@@ -224,12 +265,22 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return ExtractName(syntax) == "var";
         }
 
-        public virtual bool IsInTypeOnlyContext(SyntaxNodeOrToken node)
+        public virtual bool IsExternAliasDirective(SyntaxKind syntax)
         {
             return false;
         }
 
-        public virtual bool IsInNamespaceOrTypeContext(SyntaxNodeOrToken node)
+        public virtual bool IsUsingDirective(SyntaxNodeOrToken syntax)
+        {
+            return false;
+        }
+
+        public virtual bool IsInTypeOnlyContext(SyntaxNodeOrToken syntax)
+        {
+            return false;
+        }
+
+        public virtual bool IsInNamespaceOrTypeContext(SyntaxNodeOrToken syntax)
         {
             return false;
         }
@@ -239,7 +290,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return false;
         }
 
-        public virtual bool IsExpression(SyntaxNode node)
+        public virtual bool IsExpression(SyntaxNode syntax)
         {
             return false;
         }

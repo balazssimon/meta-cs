@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Binding
+namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     /// <summary>
     /// A binder that places the members of a symbol in scope.  If there is a container declaration
@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// retrieved from <paramref name="declarationSyntax"/>.
         /// </summary>
         public InContainerBinder(NamespaceOrTypeSymbol container, Binder next, LanguageSyntaxNode declarationSyntax, bool inUsing)
-            : base(next)
+            : base(next, declarationSyntax)
         {
             Debug.Assert((object)container != null);
             Debug.Assert(declarationSyntax != null);
@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Creates a binder with given imports.
         /// </summary>
         public InContainerBinder(NamespaceOrTypeSymbol container, Binder next, Imports imports = null)
-            : base(next)
+            : base(next, null)
         {
             Debug.Assert((object)container != null || imports != null);
 
@@ -52,7 +52,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// Creates a binder with given import computation function.
         /// </summary>
         public InContainerBinder(Binder next, Func<ConsList<TypeSymbol>, Imports> computeImports)
-            : base(next)
+            : base(next, null)
         {
             Debug.Assert(computeImports != null);
 

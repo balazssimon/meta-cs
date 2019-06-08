@@ -6,7 +6,7 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal partial class ConstantValue
+    public partial class ConstantValue
     {
         /// <summary>
         /// The IEEE floating-point spec doesn't specify which bit pattern an implementation

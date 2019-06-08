@@ -774,7 +774,7 @@ namespace MetaDslx.CodeAnalysis
             private readonly MemberSemanticModel _semanticModel;
 
             public IncrementalBinder(MemberSemanticModel semanticModel, Binder next)
-                : base(next)
+                : base(next, null)
             {
                 _semanticModel = semanticModel;
             }

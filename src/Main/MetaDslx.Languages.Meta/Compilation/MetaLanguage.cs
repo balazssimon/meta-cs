@@ -18,7 +18,6 @@ namespace MetaDslx.Languages.Meta
 
         private MetaSyntaxFacts _syntaxFacts;
 		private MetaSymbolFacts _symbolFacts;
-		private MetaLookupPosition _lookupPosition;
 		private MetaInternalSyntaxFactory _internalSyntaxFactory;
 		private MetaSyntaxFactory _syntaxFactory;
 		private MetaCompilationFactory _compilationFactory;
@@ -28,7 +27,6 @@ namespace MetaDslx.Languages.Meta
 			_syntaxFacts = new MetaSyntaxFacts();
 			_internalSyntaxFactory = new MetaInternalSyntaxFactory(_syntaxFacts);
 			_syntaxFactory = new MetaSyntaxFactory(_internalSyntaxFactory);
-			_lookupPosition = new MetaLookupPosition();
 			_symbolFacts = new MetaSymbolFacts();
 			_compilationFactory = new MetaCompilationFactory();
 		}
@@ -40,9 +38,6 @@ namespace MetaDslx.Languages.Meta
 
         public new MetaSymbolFacts SymbolFacts => _symbolFacts;
         protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
-
-        public new MetaLookupPosition LookupPosition => _lookupPosition;
-        protected override LookupPosition LookupPositionCore => this.LookupPosition;
 
         internal new MetaInternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
         protected override InternalSyntaxFactory InternalSyntaxFactoryCore => this.InternalSyntaxFactory;

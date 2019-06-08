@@ -13,6 +13,7 @@ using Roslyn.Utilities;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {

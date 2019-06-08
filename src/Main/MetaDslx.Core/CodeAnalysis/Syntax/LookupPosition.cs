@@ -13,9 +13,9 @@ namespace MetaDslx.CodeAnalysis.Syntax
     /// the last token. For example, the open brace of a block is within the scope
     /// of the block, but the close brace is not.
     /// </summary>
-    public class LookupPosition
+    public static class LookupPosition
     {
-        public bool IsBetweenTokens(int position, SyntaxToken firstIncluded, SyntaxToken firstExcluded)
+        public static bool IsBetweenTokens(int position, SyntaxToken firstIncluded, SyntaxToken firstExcluded)
         {
             return position >= firstIncluded.SpanStart && IsBeforeToken(position, firstExcluded);
         }
@@ -23,14 +23,20 @@ namespace MetaDslx.CodeAnalysis.Syntax
         /// <summary>
         /// Returns true if position is within the given node and before the first excluded token.
         /// </summary>
-        protected bool IsBeforeToken(int position, LanguageSyntaxNode node, SyntaxToken firstExcluded)
+        private static bool IsBeforeToken(int position, LanguageSyntaxNode node, SyntaxToken firstExcluded)
         {
             return IsBeforeToken(position, firstExcluded) && position >= node.SpanStart;
         }
 
-        protected bool IsBeforeToken(int position, SyntaxToken firstExcluded)
+        private static bool IsBeforeToken(int position, SyntaxToken firstExcluded)
         {
             return firstExcluded.GetKind() == SyntaxKind.None || position < firstExcluded.SpanStart;
         }
+
+        public static bool IsInNode(int position, SyntaxNodeOrToken node)
+        {
+            return node.FullSpan.Contains(position);
+        }
+
     }
 }

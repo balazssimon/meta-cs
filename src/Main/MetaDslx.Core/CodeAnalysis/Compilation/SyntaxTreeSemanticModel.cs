@@ -16,6 +16,7 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.FlowAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.BoundTree;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -228,7 +229,7 @@ namespace MetaDslx.CodeAnalysis
                     {
                         // Wrap the binder in a LocalScopeBinder because Binder.BindExpression assumes there
                         // will be one in the binder chain and one isn't necessarily required for the batch case.
-                        binder = new LocalScopeBinder(binder);
+                        binder = new LocalScopeBinder(binder, node);
 
                         var diagnostics = DiagnosticBag.GetInstance();
                         BoundExpression bound = binder.BindExpression(node, diagnostics);

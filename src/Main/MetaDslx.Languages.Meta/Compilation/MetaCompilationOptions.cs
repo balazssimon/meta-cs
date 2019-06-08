@@ -43,13 +43,13 @@ namespace MetaDslx.Languages.Meta
             bool publicSign = false,
             MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public,
             bool referencesSupersedeLowerVersions = false,
-            BinderFlags topLevelBinderFlags = BinderFlags.None)
+            BinderFlags topLevelBinderFlags = null)
             : base(language, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings,
                    optimizationLevel, checkOverflow, allowUnsafe, cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, platform, 
                    generalDiagnosticOption, warningLevel, specificDiagnosticOptions,
                    concurrentBuild, deterministic, currentLocalTime, debugPlusMode, xmlReferenceResolver,
                    sourceReferenceResolver, metadataReferenceResolver, assemblyIdentityComparer,
-                   strongNameProvider, publicSign, metadataImportOptions, referencesSupersedeLowerVersions)
+                   strongNameProvider, publicSign, metadataImportOptions, referencesSupersedeLowerVersions, topLevelBinderFlags)
         {
         }
         protected override LanguageCompilationOptions Clone()
@@ -84,7 +84,8 @@ namespace MetaDslx.Languages.Meta
                 strongNameProvider: this.StrongNameProvider,
                 publicSign: this.PublicSign,
                 metadataImportOptions: this.MetadataImportOptions,
-                referencesSupersedeLowerVersions: this.ReferencesSupersedeLowerVersions);
+                referencesSupersedeLowerVersions: this.ReferencesSupersedeLowerVersions,
+                topLevelBinderFlags: this.TopLevelBinderFlags);
         }
         public new MetaCompilationOptions WithTopLevelBinderFlags(BinderFlags flags) => (MetaCompilationOptions)base.WithTopLevelBinderFlags(flags);
         public new MetaCompilationOptions WithOutputKind(OutputKind kind) => (MetaCompilationOptions)base.WithOutputKind(kind);

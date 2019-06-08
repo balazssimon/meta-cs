@@ -13,27 +13,27 @@ namespace MetaDslx.Languages.Meta
     {
         public const string Id = "MetaDslx.MetaAnnotations";
 
-        public const string Identifier = "Identifier";
-        public const string Qualifier = "Qualifier";
-        public const string Value = "Value";
-        public const string EnumValue = "EnumValue";
+        public const string Identifier = nameof(Identifier);
+        public const string Qualifier = nameof(Qualifier);
+        public const string Value = nameof(Value);
+        public const string EnumValue = nameof(EnumValue);
 
-        public const string Property = "Property";
-        public const string Name = "Name";
-        public const string Body = "Body";
+        public const string Property = nameof(Property);
+        public const string Name = nameof(Name);
+        public const string Scope = nameof(Scope);
 
-        public const string Root = "Root";
-        public const string SymbolDef = "SymbolDef";
-        public const string SymbolUse = "SymbolUse";
-        public const string SymbolCtr = "SymbolCtr";
+        public const string Root = nameof(Root);
+        public const string SymbolDef = nameof(SymbolDef);
+        public const string SymbolUse = nameof(SymbolUse);
+        public const string SymbolCtr = nameof(SymbolCtr);
 
-        public const string Token = "Token";
+        public const string Token = nameof(Token);
 
 
         public static readonly string[] SemanticAnnotations =
             {
                 Identifier, Qualifier, Value, EnumValue,
-                Property, Name, Body,
+                Property, Name, Scope,
                 Root, SymbolDef, SymbolUse, SymbolCtr,
                 Token
             };
@@ -41,7 +41,7 @@ namespace MetaDslx.Languages.Meta
         public static readonly string[] WellKnownAnnotations = 
             {
                 Identifier, Qualifier, Value, EnumValue, 
-                Property, Name, Body,
+                Property, Name, Scope,
                 Root, SymbolDef, SymbolUse, SymbolCtr,
                 Token
             };

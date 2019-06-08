@@ -15,8 +15,6 @@ namespace MetaDslx.CodeAnalysis
 
         public SyntaxFacts SyntaxFacts => this.SyntaxFactsCore;
         internal protected abstract SyntaxFacts SyntaxFactsCore { get; }
-        public LookupPosition LookupPosition => this.LookupPositionCore;
-        internal protected abstract LookupPosition LookupPositionCore { get; }
         public InternalSyntaxFactory InternalSyntaxFactory => this.InternalSyntaxFactoryCore;
         internal protected abstract InternalSyntaxFactory InternalSyntaxFactoryCore { get; }
         public SyntaxFactory SyntaxFactory => this.SyntaxFactoryCore;
@@ -32,8 +30,6 @@ namespace MetaDslx.CodeAnalysis
         public override string Name => string.Empty;
 
         protected internal override SyntaxFacts SyntaxFactsCore => throw new NotImplementedException();
-
-        protected internal override LookupPosition LookupPositionCore => throw new NotImplementedException();
 
         protected internal override InternalSyntaxFactory InternalSyntaxFactoryCore => throw new NotImplementedException();
 

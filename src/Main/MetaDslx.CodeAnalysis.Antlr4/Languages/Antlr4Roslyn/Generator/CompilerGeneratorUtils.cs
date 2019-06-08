@@ -372,7 +372,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
 
         public static bool IsBody(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Body);
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.Scope);
         }
 
         public static string GetCanMerge(this MetaCompilerAnnotations annots)

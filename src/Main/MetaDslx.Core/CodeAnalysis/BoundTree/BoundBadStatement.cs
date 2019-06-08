@@ -8,6 +8,7 @@ namespace MetaDslx.CodeAnalysis.BoundTree
     public class BoundBadStatement : BoundNode
     {
         public BoundBadStatement(LanguageSyntaxNode expression, ImmutableArray<BoundNode> empty, bool hasErrors)
+            : base(BoundKind.BadStatement, expression)
         {
         }
     }

@@ -29,7 +29,6 @@ namespace [Properties.DefaultNamespace]
 ^
 		private [lang]SyntaxFacts _syntaxFacts;
 		private [lang]SymbolFacts _symbolFacts;
-		private [lang]LookupPosition _lookupPosition;
 		private [lang]InternalSyntaxFactory _internalSyntaxFactory;
 		private [lang]SyntaxFactory _syntaxFactory;
 		private [lang]CompilationFactory _compilationFactory;
@@ -51,9 +50,6 @@ namespace [Properties.DefaultNamespace]
 ^
         public new [lang]SymbolFacts SymbolFacts => _symbolFacts;
         protected override SymbolFacts SymbolFactsCore => this.SymbolFacts;
-^
-        public new [lang]LookupPosition LookupPosition => _lookupPosition;
-        protected override LookupPosition LookupPositionCore => this.LookupPosition;
 ^
         internal new [lang]InternalSyntaxFactory InternalSyntaxFactory => _internalSyntaxFactory;
         protected override InternalSyntaxFactory InternalSyntaxFactoryCore => this.InternalSyntaxFactory;
@@ -715,27 +711,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
-using MetaDslx.Compiler;
-using MetaDslx.Compiler.Binding;
-using MetaDslx.Compiler.Binding.Binders;
-using MetaDslx.Compiler.Declarations;
-using MetaDslx.Compiler.Syntax;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Declarations;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Binding;
 ^
 namespace [Properties.DefaultNamespace]
 {
-    internal class [Properties.LanguageName]CompilationFactory : CompilationFactory
+    public class [Properties.LanguageName]CompilationFactory : CompilationFactory
     {
-        internal static readonly [Properties.LanguageName]CompilationFactory Instance = new [Properties.LanguageName]CompilationFactory();
-^
-        private [Properties.LanguageName]CompilationFactory()
+        internal [Properties.LanguageName]CompilationFactory()
         {
-        }
-^
-        public override RootSingleDeclaration CreateDeclarationTree(SyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
-        {
-            return [Properties.LanguageName]DeclarationTreeBuilderVisitor.ForTree(([Properties.LanguageName]SyntaxTree)syntaxTree, scriptClassName, isSubmission);
         }
 ^
         public override BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory)
@@ -743,7 +730,12 @@ namespace [Properties.DefaultNamespace]
             return new [Properties.LanguageName]BinderFactoryVisitor(binderFactory);
         }
 ^
-        public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)
+        public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
+        {
+            return [Properties.LanguageName]DeclarationTreeBuilderVisitor.ForTree(([Properties.LanguageName]SyntaxTree)syntaxTree, scriptClassName, isSubmission);
+        }
+^
+        /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)
         {
             return new [Properties.LanguageName]ScriptCompilationInfo(([Properties.LanguageName]Compilation)previousSubmission, submissionReturnType, hostObjectType);
         }
@@ -751,7 +743,7 @@ namespace [Properties.DefaultNamespace]
         public override SymbolBuilder CreateSymbolBuilder(CompilationBase compilation)
         {
             return new [Properties.LanguageName]SymbolBuilder(([Properties.LanguageName]Compilation)compilation);
-        }
+        }*/
     }
 }
 end template
@@ -784,7 +776,7 @@ namespace [Properties.DefaultNamespace]
             bool allowUnsafe = false,
             string cryptoKeyContainer = null,
             string cryptoKeyFile = null,
-            ImmutableArray<byte> cryptoPublicKey = default(ImmutableArray<byte>),
+            ImmutableArray<byte> cryptoPublicKey = default,
             bool? delaySign = null,
             Platform platform = Platform.AnyCpu,
             ReportDiagnostic generalDiagnosticOption = ReportDiagnostic.Default,
@@ -792,7 +784,7 @@ namespace [Properties.DefaultNamespace]
             IEnumerable<KeyValuePair<string, ReportDiagnostic>> specificDiagnosticOptions = null,
             bool concurrentBuild = true,
             bool deterministic = false,
-            DateTime currentLocalTime = default(DateTime),
+            DateTime currentLocalTime = default,
             bool debugPlusMode = false,
             XmlReferenceResolver xmlReferenceResolver = null,
             SourceReferenceResolver sourceReferenceResolver = null,
@@ -802,13 +794,13 @@ namespace [Properties.DefaultNamespace]
             bool publicSign = false,
             MetadataImportOptions metadataImportOptions = MetadataImportOptions.Public,
             bool referencesSupersedeLowerVersions = false,
-            BinderFlags topLevelBinderFlags = BinderFlags.None)
+            BinderFlags topLevelBinderFlags = null)
             : base(language, outputKind, reportSuppressedDiagnostics, moduleName, mainTypeName, scriptClassName, usings,
                    optimizationLevel, checkOverflow, allowUnsafe, cryptoKeyContainer, cryptoKeyFile, cryptoPublicKey, delaySign, platform, 
                    generalDiagnosticOption, warningLevel, specificDiagnosticOptions,
                    concurrentBuild, deterministic, currentLocalTime, debugPlusMode, xmlReferenceResolver,
                    sourceReferenceResolver, metadataReferenceResolver, assemblyIdentityComparer,
-                   strongNameProvider, publicSign, metadataImportOptions, referencesSupersedeLowerVersions)
+                   strongNameProvider, publicSign, metadataImportOptions, referencesSupersedeLowerVersions, topLevelBinderFlags)
         {
         }
 
@@ -844,7 +836,8 @@ namespace [Properties.DefaultNamespace]
                 strongNameProvider: this.StrongNameProvider,
                 publicSign: this.PublicSign,
                 metadataImportOptions: this.MetadataImportOptions,
-                referencesSupersedeLowerVersions: this.ReferencesSupersedeLowerVersions);
+                referencesSupersedeLowerVersions: this.ReferencesSupersedeLowerVersions,
+                topLevelBinderFlags: this.TopLevelBinderFlags);
         }
 
         public new [lang]CompilationOptions WithTopLevelBinderFlags(BinderFlags flags) => ([lang]CompilationOptions)base.WithTopLevelBinderFlags(flags);
@@ -2616,6 +2609,14 @@ namespace [Properties.DefaultNamespace].Syntax
             return [lang]SyntaxTree.CreateWithoutClone(this);
         }
 ^
+        public override TResult Accept<TArg, TResult>(SyntaxVisitor<TResult> visitor, TArg argument)
+        {
+            if (visitor is I[lang]SyntaxVisitor<TArg, TResult> typedVisitor) return this.Accept(typedVisitor, argument);
+            else return visitor.DefaultVisit(this);
+        }
+^
+        public abstract TResult Accept<TArg, TResult>(I[lang]SyntaxVisitor<TResult> visitor, TArg argument);
+^
         public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
         {
             if (visitor is I[lang]SyntaxVisitor<TResult> typedVisitor) return this.Accept(typedVisitor);
@@ -2648,6 +2649,8 @@ namespace [Properties.DefaultNamespace]
 	[GenerateSyntaxVisitor()]
 ^
 	//GenerateDetailedSyntaxVisitor()
+^
+	[GenerateSyntaxTypedArgVisitor()]
 ^
 	[GenerateSyntaxTypedVisitor()]
 ^
@@ -3082,21 +3085,6 @@ namespace [Properties.DefaultNamespace].Syntax
 		[if (Instances.MainRule() != null)]
         public override SyntaxKind CompilationUnitKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.MainRule().PlainName()];
 		[end if]
-^
-        public override bool IsInNamespaceOrTypeContext(SyntaxNode node)
-        {
-            return false;
-        }
-^
-        public override bool IsStatement(SyntaxNode syntax)
-        {
-            return false;
-        }
-^
-        public override bool IsExpression(SyntaxNode node)
-        {
-            return false;
-        }
 	}
 }
 end template
@@ -3181,6 +3169,46 @@ template GenerateSyntaxTypedVisitorVisit(Antlr4ParserRule rule, bool intf)
 TResult Visit[rule.PlainName()]([rule.RedName()] node);
 [else]
 public virtual TResult Visit[rule.PlainName()]([rule.RedName()] node)
+{
+    return this.DefaultVisit(node);
+}
+[end if]
+end template
+
+template GenerateSyntaxTypedArgVisitor()
+public interface I[Properties.LanguageName]SyntaxVisitor<TArg, TResult> 
+{
+   	[loop(rule:Instances.ParserRules)]
+		[if (rule.Alternatives.Count > 0)]
+			[loop(alt:rule.Alternatives)]
+	[GenerateSyntaxTypedArgVisitorVisit(alt, true)]
+			[end loop]
+		[else]
+	[GenerateSyntaxTypedArgVisitorVisit(rule, true)]
+		[end if]
+	[end loop]
+}
+^
+public class [Properties.LanguageName]SyntaxVisitor<TResult> : SyntaxVisitor<TArg, TResult>, I[Properties.LanguageName]SyntaxVisitor<TArg, TResult>
+{
+   	[loop(rule:Instances.ParserRules)]
+		[if (rule.Alternatives.Count > 0)]
+			[loop(alt:rule.Alternatives)]
+	[GenerateSyntaxTypedArgVisitorVisit(alt, false)]
+			[end loop]
+		[else]
+	[GenerateSyntaxTypedArgVisitorVisit(rule, false)]
+		[end if]
+	[end loop]
+}
+end template
+
+template GenerateSyntaxTypedArgVisitorVisit(Antlr4ParserRule rule, bool intf)
+^
+[if (intf)]
+TResult Visit[rule.PlainName()]([rule.RedName()] node);
+[else]
+public virtual TResult Visit[rule.PlainName()]([rule.RedName()] node, TArg argument)
 {
     return this.DefaultVisit(node);
 }
@@ -4629,11 +4657,9 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MetaDslx.Compiler.Binding;
-using MetaDslx.Compiler.Binding.Binders;
-using MetaDslx.Compiler.Declarations;
-using MetaDslx.Compiler.Syntax;
-using MetaDslx.Compiler.Utilities;
+using MetaDslx.CodeAnalyisis.Binding;
+using MetaDslx.CodeAnalyisis.Declarations;
+using MetaDslx.CodeAnalyisis.Syntax;
 using MetaDslx.Core;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
@@ -4653,17 +4679,39 @@ namespace [Properties.DefaultNamespace].Binding
         }
 		[loop(annot:Instances.CustomAnnotations)]
 ^
-        protected virtual Binder Create[annot.Name]Binder(Binder parentBinder, RedNode node)
+        protected virtual Binder Create[annot.Name]Binder(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
-            return this.Create[annot.Name]BinderCore(parentBinder, node);
+            return this.Create[annot.Name]BinderCore(parentBinder, syntax);
         }
 ^
-        protected virtual Binder Create[annot.Name]BinderCore(Binder parentBinder, RedNode node)
+        protected virtual Binder Create[annot.Name]BinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
-            return new [annot.Name]Binder(parentBinder, node);
+            return new [annot.Name]Binder(parentBinder, syntax);
         }
 		[end loop]
-   		[loop(rule:Instances.ParserRules)]
+^
+        /// <summary>
+        /// Returns binder that binds usings and aliases 
+        /// </summary>
+        /// <param name="unit">
+        /// Specify <see cref="LanguageSyntaxNode"/> imports in the corresponding syntax node, or
+        /// <see cref="CompilationUnitSyntax"/> for top-level imports.
+        /// </param>
+        /// <param name="inUsing">True if the binder will be used to bind a using directive.</param>
+        public override Binder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing)
+        {
+            if (unit.Kind == SyntaxKind.[Instances.MainRule().PlainName()])
+            {
+                return this.GetCompilationUnitBinder(unit, inUsing: inUsing, inScript: InScript);
+            }
+            else
+            {
+                // TODO:MetaDslx - non-compilation-unit imports
+                return null;
+            }
+        }
+^		
+		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]
 				[loop(alt:rule.Alternatives)]
 		[GenerateBinderFactoryVisit(alt)]
@@ -4679,26 +4727,29 @@ end template
 
 template GenerateBinderFactoryVisit(Antlr4ParserRule rule)
 ^
-public Binder Visit[rule.PlainName()]([rule.RedName()] node)
+public Binder Visit[rule.PlainName()]([rule.RedName()] parent)
 {
-    Debug.Assert(node.SyntaxTree == this.SyntaxTree);
-    if (!node.FullSpan.Contains(this.Position))
+    [if (rule == Instances.MainRule())]
+	return this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
+	[else]
+    if (!parent.FullSpan.Contains(this.Position))
     {
-        return this.GetParentBinder(node);
+        return VisitCore(parent.Parent);
     }
 	object use = null;
 	[GenerateBinderFactoryVisitElemUses(rule)]
 	Binder resultBinder = null;
-	if (!this.BinderFactory.TryGetBinder(node, use, out resultBinder))
+	if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 	{
-		resultBinder = this.GetParentBinder(node);
+		resultBinder = VisitCore(parent.Parent);
 		[loop (annot:rule.Annotations.Annotations)]
-		resultBinder = this.Create[annot.Name]Binder(resultBinder, node[GetAnnotationParams(annot)]);
+		resultBinder = this.Create[annot.Name]Binder(resultBinder, parent[GetAnnotationParams(annot)]);
 		[end loop]
-		this.BinderFactory.TryAddBinder(node, null, ref resultBinder);
+		this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 		[GenerateBinderFactoryVisitBody(rule)]
 	}
 	return resultBinder;
+	[end if]
 }
 end template
 
@@ -4758,12 +4809,12 @@ if (use == Use[elem.RedName()])
 {
     [loop (annot:elem.Annotations.Annotations)]
 		[if (elem.IsList)]
-	resultBinder = this.Create[annot.Name]Binder(resultBinder, node.[elem.RedName()].Node[GetAnnotationParams(annot)]);
+	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()].Node[GetAnnotationParams(annot)]);
 		[else]
-	resultBinder = this.Create[annot.Name]Binder(resultBinder, node.[elem.RedName()][GetAnnotationParams(annot)]);
+	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][GetAnnotationParams(annot)]);
 		[end if]
 	[end loop]
-	this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
+	this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 }
 	[end if]
 end template
@@ -4772,45 +4823,42 @@ template GenerateBinderFactoryVisitTokenAltBody(Antlr4ParserRule rule, Antlr4Par
 	[if (elem.HasAnnotations)]
 if (use == Use[elem.RedName()])
 {
-	switch (((SyntaxToken)node.[elem.RedName()]).Kind)
+	switch (parent.[elem.RedName()].GetKind().Switch())
 	{
 			[loop (alt:elem.BlockItems)]
 		case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
 				[loop (annot:alt.Annotations.Annotations)]
-			resultBinder = this.Create[annot.Name]Binder(resultBinder, node.[elem.RedName()][GetAnnotationParams(annot)]);
+			resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][GetAnnotationParams(annot)]);
 				[end loop]
 			break;
 			[end loop]
 		default:
 			break;
 	}
-	this.BinderFactory.TryAddBinder(node, use, ref resultBinder);
+	this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 }
 	[end if]
 end template
 
 template GenerateBinderFactoryVisitElemUses(Antlr4ParserRule rule)
 [if (rule.ContainsAnnotations && hasloop(elem:rule.Elements where elem.HasAnnotations))]
-if (this.ForChild)
-{
 [if (rule.IsSimpleAlt)]
 	[loop(elem:rule.Elements where elem.HasAnnotations)]
 		[if (elem.IsList)]
-	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node)) use = Use[elem.RedName()];
+if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()].Node)) use = Use[elem.RedName()];
 		[else]
-	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()])) use = Use[elem.RedName()];
+if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()])) use = Use[elem.RedName()];
 		[end if]
 	[end loop] 
 [else]
 	[loop(elem:rule.AllElements where elem.HasAnnotations)]
 		[if (elem.IsList)]
-	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node)) use = Use[elem.RedName()];
+if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()].Node)) use = Use[elem.RedName()];
 		[else]
-	if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()])) use = Use[elem.RedName()];
+if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()])) use = Use[elem.RedName()];
 		[end if]
 	[end loop]    
 [end if]
-}
 [end if]
 end template
 

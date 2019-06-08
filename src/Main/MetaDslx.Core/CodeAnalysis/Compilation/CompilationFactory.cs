@@ -37,7 +37,6 @@ namespace MetaDslx.CodeAnalysis
         }
 
         public abstract RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
-        public abstract BinderFactory CreateBinderFactory(LanguageCompilation compilation, SyntaxTree syntaxTree);
-
+        public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
     }
 }

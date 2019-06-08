@@ -12,21 +12,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 	public partial class MetaSyntaxFacts
 	{
         public override SyntaxKind CompilationUnitKind => (MetaSyntaxKind)MetaSyntaxKind.Main;
-
-        public override bool IsInNamespaceOrTypeContext(SyntaxNode node)
-        {
-            return false;
-        }
-
-        public override bool IsStatement(SyntaxNode syntax)
-        {
-            return false;
-        }
-
-        public override bool IsExpression(SyntaxNode node)
-        {
-            return false;
-        }
 	}
 }
 

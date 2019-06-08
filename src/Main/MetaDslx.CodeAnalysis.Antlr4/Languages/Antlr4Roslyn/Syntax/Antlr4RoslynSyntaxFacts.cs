@@ -51,7 +51,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
         public override SyntaxKind DefaultIdentifierKind => (Antlr4RoslynSyntaxKind)Antlr4RoslynSyntaxKind.ID;
         public override SyntaxKind EndOfDirectiveTokenKind => SyntaxKind.None;
         public override SyntaxKind CompilationUnitKind => SyntaxKind.None;
-        public override SyntaxKind ExternAliasDirectiveKind => SyntaxKind.None;
 
         public override bool IsToken(SyntaxKind kind)
 		{
@@ -601,21 +600,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Syntax
 					return Antlr4RoslynTokenKind.None;
 			}
 		}
-
-        public override bool IsInNamespaceOrTypeContext(SyntaxNode node)
-        {
-            return false;
-        }
-
-        public override bool IsStatement(SyntaxNode syntax)
-        {
-            return false;
-        }
-
-        public override bool IsExpression(SyntaxNode node)
-        {
-            return false;
-        }
     }
 }
 

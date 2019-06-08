@@ -26,9 +26,5 @@
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Binding\" />
-  </ItemGroup>
 
 </Project>

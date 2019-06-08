@@ -146,7 +146,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 else if (declaration.IsType) kind = "type";
                 else if (declaration.IsName) kind = "name";
                 else kind = "unknown";
-                System.Console.WriteLine("{0}{1} ({2}): {3}", indent, declaration.Name, kind, declaration.Kind?.ImmutableType.Name ?? "<root>");
+                sb.AppendFormat("{0}{1} ({2}): {3}", indent, declaration.Name, kind, declaration.Kind?.ImmutableType.Name ?? "<root>");
+                sb.AppendLine();
                 foreach (var child in declaration.GetDeclarationChildren())
                 {
                     Dump(sb, indent + "  ", child);

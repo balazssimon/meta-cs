@@ -78,7 +78,7 @@ namespace MetaDslx.CodeAnalysis
                             //   1) Field initializers aren't cached because they're not in statements.
                             //   2) Single local declarations (e.g. "int x = 1;" vs "int x = 1, y = 2;") aren't found in the cache
                             //      since nothing is cached for the statement syntax.
-                            if (existing[i].RawKind != added[i].RawKind)
+                            if (existing[i].Kind != added[i].Kind)
                             {
                                 Debug.Assert(!key.IsStatement(), "!key.IsStatement()");
                                 Debug.Assert(false, "New bound node does not match existing bound node");

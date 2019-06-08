@@ -7,7 +7,7 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal enum ConstantValueTypeDiscriminator : byte
+    public enum ConstantValueTypeDiscriminator : byte
     {
         Nothing,
         Null = Nothing,
@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis
         DateTime,
     }
 
-    internal abstract partial class ConstantValue : IEquatable<ConstantValue>
+    public abstract partial class ConstantValue : IEquatable<ConstantValue>
     {
         public abstract ConstantValueTypeDiscriminator Discriminator { get; }
         internal abstract SpecialType SpecialType { get; }

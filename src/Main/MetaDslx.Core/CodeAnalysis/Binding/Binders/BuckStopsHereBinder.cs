@@ -8,7 +8,7 @@ using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Binding
+namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     /// <summary>
     /// A binder that knows no symbols and will not delegate further.
