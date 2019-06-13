@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.BoundTree;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Operations;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
@@ -25,12 +25,8 @@ namespace MetaDslx.CodeAnalysis
     internal abstract partial class MemberSemanticModel : LanguageSemanticModel
     {
         private readonly Symbol _memberSymbol;
-        private readonly LanguageSyntaxNode _root;
+        private readonly BoundTree _boundTree;
         private readonly DiagnosticBag _ignoredDiagnostics = new DiagnosticBag();
-        private readonly ReaderWriterLockSlim _nodeMapLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
-        // The bound nodes associated with a syntax node, from highest in the tree to lowest.
-        private readonly Dictionary<SyntaxNode, ImmutableArray<BoundNode>> _guardedNodeMap = new Dictionary<SyntaxNode, ImmutableArray<BoundNode>>();
-        private Dictionary<SyntaxNode, BoundStatement> _lazyGuardedSynthesizedStatementsMap;
 
         internal readonly Binder RootBinder;
 
@@ -59,13 +55,14 @@ namespace MetaDslx.CodeAnalysis
             Debug.Assert(containingSemanticModelOpt == null || !containingSemanticModelOpt.IsSpeculativeSemanticModel);
             Debug.Assert(parentSemanticModelOpt == null || !parentSemanticModelOpt.IsSpeculativeSemanticModel, CSharpResources.ChainingSpeculativeModelIsNotSupported);
 
-            _root = root;
             _memberSymbol = memberSymbol;
 
             this.RootBinder = rootBinder.WithAdditionalFlags(GetSemanticModelBinderFlags());
             _containingSemanticModelOpt = containingSemanticModelOpt;
             _parentSemanticModelOpt = parentSemanticModelOpt;
             _speculatedPosition = speculatedPosition;
+
+            _boundTree = new BoundTree(this.Compilation, (LanguageSyntaxTree)root.SyntaxTree, rootBinder, _ignoredDiagnostics);
 
             _operationFactory = new Lazy<LanguageOperationFactory>(() => new LanguageOperationFactory(this));
         }
@@ -82,9 +79,11 @@ namespace MetaDslx.CodeAnalysis
         {
             get
             {
-                return _root;
+                return _boundTree.Root;
             }
         }
+
+        public override BoundTree BoundTree => _boundTree;
 
         /// <summary>
         /// The member symbol 
@@ -154,33 +153,7 @@ namespace MetaDslx.CodeAnalysis
         private Binder GetEnclosingBinderInternalWithinRoot(SyntaxNode node, int position)
         {
             AssertPositionAdjusted(position);
-            return GetEnclosingBinderInternalWithinRoot(node, position, RootBinder, _root).WithAdditionalFlags(GetSemanticModelBinderFlags());
-        }
-
-        private static Binder GetEnclosingBinderInternalWithinRoot(SyntaxNode node, int position, Binder rootBinder, SyntaxNode root)
-        {
-            if (node == root)
-            {
-                return rootBinder.GetBinder(node) ?? rootBinder;
-            }
-
-            Debug.Assert(root.Contains(node));
-
-            Binder binder = null;
-            for (var current = node; binder == null; current = current.ParentOrStructuredTriviaParent)
-            {
-                Debug.Assert(current != null); // Why were we asked for an enclosing binder for a node outside our root?
-                binder = rootBinder.GetBinder(current);
-                if (current == root)
-                {
-                    break;
-                }
-            }
-
-            binder = binder ?? rootBinder.GetBinder(root) ?? rootBinder;
-            Debug.Assert(binder != null);
-
-            return binder;
+            return BoundTree.GetEnclosingBinderInternalWithinRoot(node, position, RootBinder, _boundTree.Root).WithAdditionalFlags(GetSemanticModelBinderFlags());
         }
 
         public override Conversion ClassifyConversion(
@@ -246,7 +219,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary> 
         internal virtual BoundNode GetBoundRoot()
         {
-            return GetUpperBoundNode(GetBindableSyntaxNode(this.Root));
+            return _boundTree.GetBoundRoot();
         }
 
         /// <summary>
@@ -254,26 +227,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal BoundNode GetUpperBoundNode(LanguageSyntaxNode node, bool promoteToBindable = false)
         {
-            if (promoteToBindable)
-            {
-                node = GetBindableSyntaxNode(node);
-            }
-            else
-            {
-                Debug.Assert(node == GetBindableSyntaxNode(node));
-            }
-
-            // The bound nodes are stored in the map from highest to lowest, so the first bound node is the highest.
-            var boundNodes = GetBoundNodes(node);
-
-            if (boundNodes.Length == 0)
-            {
-                return null;
-            }
-            else
-            {
-                return boundNodes[0];
-            }
+            return _boundTree.GetUpperBoundNode(node, promoteToBindable);
         }
 
         /// <summary>
@@ -282,24 +236,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal BoundNode GetLowerBoundNode(LanguageSyntaxNode node)
         {
-            Debug.Assert(node == GetBindableSyntaxNode(node));
-
-            // The bound nodes are stored in the map from highest to lowest, so the last bound node is the lowest.
-            var boundNodes = GetBoundNodes(node);
-
-            if (boundNodes.Length == 0)
-            {
-                return null;
-            }
-            else
-            {
-                return GetLowerBoundNode(boundNodes);
-            }
-        }
-
-        private static BoundNode GetLowerBoundNode(ImmutableArray<BoundNode> boundNodes)
-        {
-            return boundNodes[boundNodes.Length - 1];
+            return _boundTree.GetLowerBoundNode(node);
         }
 
         public override ImmutableArray<Diagnostic> GetSyntaxDiagnostics(TextSpan? span = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -324,7 +261,7 @@ namespace MetaDslx.CodeAnalysis
 
         public override ISymbol GetDeclaredSymbol(LanguageSyntaxNode declarationSyntax, CancellationToken cancellationToken = default(CancellationToken))
         {
-            // Can't defined namespace inside a member.
+            // Can't define namespace inside a member.
             return null;
         }
 
@@ -338,7 +275,7 @@ namespace MetaDslx.CodeAnalysis
         {
             get
             {
-                return _root.SyntaxTree;
+                return _boundTree.SyntaxTree;
             }
         }
 
@@ -422,144 +359,7 @@ namespace MetaDslx.CodeAnalysis
 
         private void GetBoundNodes(LanguageSyntaxNode node, out LanguageSyntaxNode bindableNode, out BoundNode lowestBoundNode, out BoundNode highestBoundNode, out BoundNode boundParent)
         {
-            bindableNode = this.GetBindableSyntaxNode(node);
-
-            LanguageSyntaxNode bindableParent = this.GetBindableParentNode(bindableNode);
-
-            // Special handling for the Color Color case.
-            //
-            // Suppose we have:
-            // public class Color {
-            //   public void M(int x) {}
-            //   public static void M(params int[] x) {}
-            // }
-            // public class C {
-            //   public void Test() {
-            //     Color Color = new Color();
-            //     System.Action<int> d = Color.M;
-            //   }
-            // }
-            //
-            // We actually don't know how to interpret the "Color" in "Color.M" until we
-            // perform overload resolution on the method group.  Now, if we were getting
-            // the semantic info for the method group, then bindableParent would be the
-            // variable declarator "d = Color.M" and so we would be able to pull the result
-            // of overload resolution out of the bound (method group) conversion.  However,
-            // if we are getting the semantic info for just the "Color" part, then
-            // bindableParent will be the member access, which doesn't have enough information
-            // to determine which "Color" to use (since no overload resolution has been
-            // performed).  We resolve this problem by detecting the case where we're looking
-            // up the LHS of a member access and calling GetBindableParentNode one more time.
-            // This gets us up to the level where the method group conversion occurs.
-            /* TODO:MetaDslx
-            if (bindableParent != null && bindableParent.Kind() == SyntaxKind.SimpleMemberAccessExpression && ((MemberAccessExpressionSyntax)bindableParent).Expression == bindableNode)
-            {
-                bindableParent = this.GetBindableParentNode(bindableParent);
-            }*/
-
-            boundParent = bindableParent == null ? null : this.GetLowerBoundNode(bindableParent);
-
-            lowestBoundNode = this.GetLowerBoundNode(bindableNode);
-            highestBoundNode = this.GetUpperBoundNode(bindableNode);
-        }
-
-        private void GuardedAddSynthesizedStatementToMap(LanguageSyntaxNode node, BoundStatement statement)
-        {
-            if (_lazyGuardedSynthesizedStatementsMap == null)
-            {
-                _lazyGuardedSynthesizedStatementsMap = new Dictionary<SyntaxNode, BoundStatement>();
-            }
-
-            _lazyGuardedSynthesizedStatementsMap.Add(node, statement);
-        }
-
-        private BoundStatement GuardedGetSynthesizedStatementFromMap(LanguageSyntaxNode node)
-        {
-            if (_lazyGuardedSynthesizedStatementsMap != null &&
-                _lazyGuardedSynthesizedStatementsMap.TryGetValue(node, out BoundStatement result))
-            {
-                return result;
-            }
-
-            return null;
-        }
-
-        private ImmutableArray<BoundNode> GuardedGetBoundNodesFromMap(LanguageSyntaxNode node)
-        {
-            Debug.Assert(_nodeMapLock.IsWriteLockHeld || _nodeMapLock.IsReadLockHeld);
-            ImmutableArray<BoundNode> result;
-            return _guardedNodeMap.TryGetValue(node, out result) ? result : default(ImmutableArray<BoundNode>);
-        }
-
-        /// <summary>
-        /// Internal for test purposes only
-        /// </summary>
-        internal ImmutableArray<BoundNode> TestOnlyTryGetBoundNodesFromMap(LanguageSyntaxNode node)
-        {
-            ImmutableArray<BoundNode> result;
-            return _guardedNodeMap.TryGetValue(node, out result) ? result : default(ImmutableArray<BoundNode>);
-        }
-
-        // Adds every syntax/bound pair in a tree rooted at the given bound node to the map, and the
-        // performs a lookup of the given syntax node in the map. 
-        private ImmutableArray<BoundNode> GuardedAddBoundTreeAndGetBoundNodeFromMap(LanguageSyntaxNode syntax, BoundNode bound)
-        {
-            Debug.Assert(_nodeMapLock.IsWriteLockHeld);
-
-            bool alreadyInTree = false;
-
-            if (bound != null)
-            {
-                alreadyInTree = _guardedNodeMap.ContainsKey(bound.Syntax);
-            }
-
-            // check if we already have node in the cache.
-            // this may happen if we have races and in such case we are no longer interested in adding
-            if (!alreadyInTree)
-            {
-                NodeMapBuilder.AddToMap(bound, _guardedNodeMap);
-            }
-
-            ImmutableArray<BoundNode> result;
-            return _guardedNodeMap.TryGetValue(syntax, out result) ? result : default(ImmutableArray<BoundNode>);
-        }
-
-        protected void UnguardedAddBoundTreeForStandaloneSyntax(SyntaxNode syntax, BoundNode bound)
-        {
-            using (_nodeMapLock.DisposableWrite())
-            {
-                GuardedAddBoundTreeForStandaloneSyntax(syntax, bound);
-            }
-        }
-
-        protected void GuardedAddBoundTreeForStandaloneSyntax(SyntaxNode syntax, BoundNode bound)
-        {
-            Debug.Assert(_nodeMapLock.IsWriteLockHeld);
-            bool alreadyInTree = false;
-
-            // check if we already have node in the cache.
-            // this may happen if we have races and in such case we are no longer interested in adding
-            if (bound != null)
-            {
-                alreadyInTree = _guardedNodeMap.ContainsKey(bound.Syntax);
-            }
-
-            if (!alreadyInTree)
-            {
-                if (syntax == _root || SyntaxFacts.IsStatement(syntax))
-                {
-                    // Note: For speculative model we want to always cache the entire bound tree.
-                    // If syntax is a statement, we need to add all its children.
-                    // Node cache assumes that if statement is cached, then all 
-                    // its children are cached too.
-                    NodeMapBuilder.AddToMap(bound, _guardedNodeMap);
-                }
-                else
-                {
-                    // expressions can be added individually.
-                    NodeMapBuilder.AddToMap(bound, _guardedNodeMap, syntax);
-                }
-            }
+            _boundTree.GetBoundNodes(node, out bindableNode, out lowestBoundNode, out highestBoundNode, out boundParent);
         }
 
         // We might not have actually been given a bindable expression or statement; the caller can
@@ -567,25 +367,7 @@ namespace MetaDslx.CodeAnalysis
         // statement, back up until we find one.
         private LanguageSyntaxNode GetBindingRoot(LanguageSyntaxNode node)
         {
-            Debug.Assert(node != null);
-
-#if DEBUG
-            for (LanguageSyntaxNode current = node; current != this.Root; current = current.ParentOrStructuredTriviaParent)
-            {
-                // make sure we never go out of Root
-                Debug.Assert(current != null, "How did we get outside the root?");
-            }
-#endif
-
-            for (LanguageSyntaxNode current = node; current != this.Root; current = current.ParentOrStructuredTriviaParent)
-            {
-                if (SyntaxFacts.IsStatement(current))
-                {
-                    return current;
-                }
-            }
-
-            return this.Root;
+            return _boundTree.GetBindingRoot(node);
         }
 
         // We want the binder in which this syntax node is going to be bound, NOT the binder which
@@ -628,96 +410,13 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal ImmutableArray<BoundNode> GetBoundNodes(LanguageSyntaxNode node)
         {
-            // If this method is called with a null parameter, that implies that the Root should be
-            // bound, but make sure that the Root is bindable.
-            if (node == null)
-            {
-                node = GetBindableSyntaxNode(Root);
-            }
-            Debug.Assert(node == GetBindableSyntaxNode(node));
-
-            // We have one SemanticModel for each method.
-            //
-            // The SemanticModel contains a lazily-built immutable map from scope-introducing 
-            // syntactic statements (such as blocks) to binders, but not from lambdas to binders.
-            //
-            // The SemanticModel also contains a mutable map from syntax to bound nodes; that is 
-            // declared here. Since the map is not thread-safe we ensure that it is guarded with a
-            // reader-writer lock.
-            //
-            // Have we already got the desired bound node in the mutable map? If so, return it.
-            ImmutableArray<BoundNode> results;
-
-            using (_nodeMapLock.DisposableRead())
-            {
-                results = GuardedGetBoundNodesFromMap(node);
-            }
-
-            if (!results.IsDefaultOrEmpty)
-            {
-                return results;
-            }
-
-            // We might not actually have been given an expression or statement even though we were
-            // allegedly given something that is "bindable".
-
-            // If we didn't find in the cached bound nodes, find a binding root and bind it.
-            // This will cache bound nodes under the binding root.
-            LanguageSyntaxNode nodeToBind = GetBindingRoot(node);
-            var statementBinder = GetEnclosingBinder(GetAdjustedNodePosition(nodeToBind));
-            Binder incrementalBinder = new IncrementalBinder(this, statementBinder);
-
-            using (_nodeMapLock.DisposableWrite())
-            {
-                BoundNode boundStatement = this.Bind(incrementalBinder, nodeToBind, _ignoredDiagnostics);
-                results = GuardedAddBoundTreeAndGetBoundNodeFromMap(node, boundStatement);
-            }
-
-            if (!results.IsDefaultOrEmpty)
-            {
-                return results;
-            }
-
-            // If we still didn't find it, its still possible we could bind it directly.
-            // For example, types are usually not represented by bound nodes, and some error conditions and
-            // not yet implemented features do not create bound nodes for everything underneath them.
-            //
-            // In this case, however, we only add the single bound node we found to the map, not any child bound nodes,
-            // to avoid duplicates in the map if a parent of this node comes through this code path also.
-
-            var binder = GetEnclosingBinder(GetAdjustedNodePosition(node));
-
-            using (_nodeMapLock.DisposableRead())
-            {
-                results = GuardedGetBoundNodesFromMap(node);
-            }
-
-            if (results.IsDefaultOrEmpty)
-            {
-                using (_nodeMapLock.DisposableWrite())
-                {
-                    var boundNode = this.Bind(binder, node, _ignoredDiagnostics);
-                    GuardedAddBoundTreeForStandaloneSyntax(node, boundNode);
-                    results = GuardedGetBoundNodesFromMap(node);
-                }
-
-                if (!results.IsDefaultOrEmpty)
-                {
-                    return results;
-                }
-            }
-            else
-            {
-                return results;
-            }
-
-            return ImmutableArray<BoundNode>.Empty;
+            return _boundTree.GetBoundNodes(node);
         }
 
         // some nodes don't have direct semantic meaning by themselves and so we need to bind a different node that does
         internal protected virtual LanguageSyntaxNode GetBindableSyntaxNode(LanguageSyntaxNode node)
         {
-            return node;
+            return _boundTree.GetBindableSyntaxNode(node);
         }
 
         /// <summary>
@@ -726,123 +425,8 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         protected LanguageSyntaxNode GetBindableParentNode(LanguageSyntaxNode node)
         {
-            if (!SyntaxFacts.IsExpression(node))
-            {
-                return null;
-            }
-
-            // The node is an expression, but its parent is null
-            LanguageSyntaxNode parent = node.Parent;
-            if (parent == null)
-            {
-                // For speculative model, expression might be the root of the syntax tree, in which case it can have a null parent.
-                if (this.IsSpeculativeSemanticModel && this.Root == node)
-                {
-                    return null;
-                }
-
-                throw new ArgumentException($"The parent of {nameof(node)} must not be null unless this is a speculative semantic model.", nameof(node));
-            }
-
-            var bindableParent = this.GetBindableSyntaxNode(parent);
-            Debug.Assert(bindableParent != null);
-            return bindableParent;
+            return _boundTree.GetBindableParentNode(node, this.IsSpeculativeSemanticModel);
         }
 
-        /// <summary>
-        /// The incremental binder is used when binding statements. Whenever a statement
-        /// is bound, it checks the bound node cache to see if that statement was bound, 
-        /// and returns it instead of rebinding it. 
-        /// 
-        /// For example, we might have:
-        ///    while (x > goo())
-        ///    {
-        ///      y = y * x;
-        ///      z = z + y;
-        ///    }
-        /// 
-        /// We might first get semantic info about "z", and thus bind just the statement
-        /// "z = z + y". Later, we might bind the entire While block. While binding the while
-        /// block, we can reuse the binding we did of "z = z + y".
-        /// </summary>
-        /// <remarks>
-        /// NOTE: any member overridden by this binder should follow the BuckStopsHereBinder pattern.
-        /// Otherwise, a subsequent binder in the chain could suppress the caching behavior.
-        /// </remarks>
-        public class IncrementalBinder : Binder
-        {
-            private readonly MemberSemanticModel _semanticModel;
-
-            public IncrementalBinder(MemberSemanticModel semanticModel, Binder next)
-                : base(next, null)
-            {
-                _semanticModel = semanticModel;
-            }
-
-            /// <summary>
-            /// We override GetBinder so that the BindStatement override is still
-            /// in effect on nested binders.
-            /// </summary>
-            public override Binder GetBinder(SyntaxNode node)
-            {
-                Binder binder = this.Next.GetBinder(node);
-
-                if (binder != null)
-                {
-                    Debug.Assert(!(binder is IncrementalBinder));
-                    return new IncrementalBinder(_semanticModel, binder.WithAdditionalFlags(BinderFlags.SemanticModel));
-                }
-
-                return null;
-            }
-
-            public override BoundStatement BindStatement(LanguageSyntaxNode node, DiagnosticBag diagnostics)
-            {
-                // Check the bound node cache to see if the statement was already bound.
-                BoundStatement synthesizedStatement = _semanticModel.GuardedGetSynthesizedStatementFromMap(node);
-
-                if (synthesizedStatement != null)
-                {
-                    return synthesizedStatement;
-                }
-
-                BoundNode boundNode = TryGetBoundNodeFromMap(node);
-
-                if (boundNode == null)
-                {
-                    // Not bound already. Bind it. It will get added to the cache later by a MemberSemanticModel.NodeMapBuilder.
-                    var statement = base.BindStatement(node, diagnostics);
-
-                    // Synthesized statements are not added to the _guardedNodeMap, we cache them explicitly here in  
-                    // _lazyGuardedSynthesizedStatementsMap
-                    if (statement.WasCompilerGenerated)
-                    {
-                        _semanticModel.GuardedAddSynthesizedStatementToMap(node, statement);
-                    }
-
-                    return statement;
-                }
-
-                return (BoundStatement)boundNode;
-            }
-
-            private BoundNode TryGetBoundNodeFromMap(LanguageSyntaxNode node)
-            {
-                ImmutableArray<BoundNode> boundNodes = _semanticModel.GuardedGetBoundNodesFromMap(node);
-
-                if (!boundNodes.IsDefaultOrEmpty)
-                {
-                    // Already bound. Return the top-most bound node associated with the statement. 
-                    return boundNodes[0];
-                }
-
-                return null;
-            }
-
-            public override BoundNode Bind(LanguageSyntaxNode node, DiagnosticBag diagnostics)
-            {
-                return TryGetBoundNodeFromMap(node) ?? base.Bind(node, diagnostics);
-            }
-        }
     }
 }

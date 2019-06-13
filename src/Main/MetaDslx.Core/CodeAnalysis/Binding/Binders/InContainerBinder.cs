@@ -27,7 +27,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         /// retrieved from <paramref name="declarationSyntax"/>.
         /// </summary>
         public InContainerBinder(NamespaceOrTypeSymbol container, Binder next, LanguageSyntaxNode declarationSyntax, bool inUsing)
-            : base(next, declarationSyntax)
+            : base(next)
         {
             Debug.Assert((object)container != null);
             Debug.Assert(declarationSyntax != null);

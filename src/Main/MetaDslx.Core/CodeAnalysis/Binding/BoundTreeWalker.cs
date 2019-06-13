@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
 
-namespace MetaDslx.CodeAnalysis.BoundTree
+namespace MetaDslx.CodeAnalysis.Binding
 {
-    internal abstract partial class BoundTreeWalker : BoundTreeVisitor
+    public abstract partial class BoundTreeWalker : BoundTreeVisitor
     {
         protected BoundTreeWalker()
         {
@@ -27,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.BoundTree
     /// <summary>
     /// Note: do not use a static/singleton instance of this type, as it holds state.
     /// </summary>
-    internal abstract class BoundTreeWalkerWithStackGuard : BoundTreeWalker
+    public abstract class BoundTreeWalkerWithStackGuard : BoundTreeWalker
     {
         private int _recursionDepth;
 

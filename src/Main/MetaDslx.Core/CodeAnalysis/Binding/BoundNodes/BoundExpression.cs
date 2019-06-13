@@ -4,7 +4,7 @@ using System.Text;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 
-namespace MetaDslx.CodeAnalysis.BoundTree
+namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
     public class BoundExpression : BoundNode
     {

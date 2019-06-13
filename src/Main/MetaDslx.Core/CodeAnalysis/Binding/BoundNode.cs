@@ -1,17 +1,20 @@
-﻿using MetaDslx.CodeAnalysis.Symbols;
+﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
+using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.BoundTree
+namespace MetaDslx.CodeAnalysis.Binding
 {
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public abstract class BoundNode
     {
         private readonly BoundKind _kind;
         private BoundNodeAttributes _attributes;
+        private readonly LanguageCompilation _compilation;
+        private readonly BoundNodeFlags _flags;
 
         public readonly LanguageSyntaxNode Syntax;
 

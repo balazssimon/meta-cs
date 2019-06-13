@@ -1,4 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.BoundTree;
+﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -25,7 +25,6 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         private readonly LanguageCompilation _compilation;
         private readonly Binder _next;
-        private readonly SyntaxNodeOrToken _syntax;
 
         public readonly BinderFlags Flags;
 
@@ -39,7 +38,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _compilation = compilation;
         }
 
-        public Binder(Binder next, SyntaxNodeOrToken syntax, Conversions conversions = null)
+        public Binder(Binder next, Conversions conversions = null)
         {
             Debug.Assert(next != null);
             _next = next;
@@ -48,7 +47,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _lazyConversions = conversions;
         }
 
-        protected Binder(Binder next, BinderFlags flags)
+        private Binder(Binder next, BinderFlags flags)
         {
             Debug.Assert(next != null);
             _next = next;
@@ -59,8 +58,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         public LanguageCompilation Compilation => _compilation;
 
         public Language Language => _compilation.Language;
-
-        public SyntaxNodeOrToken Syntax => _syntax;
 
         public Binder WithFlags(params BinderFlags[] flags)
         {
@@ -478,28 +475,28 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public virtual BoundNode Bind(LanguageSyntaxNode node, DiagnosticBag diagnostics)
+        public virtual BoundNode Bind(LanguageSyntaxNode syntax, DiagnosticBag diagnostics)
         {
-            if (Language.SyntaxFacts.IsExpression(node))
+            if (Language.SyntaxFacts.IsExpression(syntax))
             {
-                return BindExpression(node, diagnostics);
+                return BindExpression(syntax, diagnostics);
             }
-            else if (Language.SyntaxFacts.IsStatement(node))
+            else if (Language.SyntaxFacts.IsStatement(syntax))
             {
-                return BindStatement(node, diagnostics);
+                return BindStatement(syntax, diagnostics);
             }
             else
             {
-                return BindSymbol(node, diagnostics);
+                return BindSymbol(syntax, diagnostics);
             }
         }
 
-        public BoundSymbol BindSymbol(LanguageSyntaxNode node, DiagnosticBag diagnostics)
+        public BoundSymbol BindSymbol(LanguageSyntaxNode syntax, DiagnosticBag diagnostics)
         {
             throw new NotImplementedException();
         }
 
-        public virtual BoundExpression BindExpression(LanguageSyntaxNode node, DiagnosticBag diagnostics)
+        public virtual BoundExpression BindExpression(LanguageSyntaxNode syntax, DiagnosticBag diagnostics)
         {
             throw new NotImplementedException();
         }

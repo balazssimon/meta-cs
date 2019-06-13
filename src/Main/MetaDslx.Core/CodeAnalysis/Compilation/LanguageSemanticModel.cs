@@ -16,7 +16,7 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis.BoundTree;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -65,6 +65,8 @@ namespace MetaDslx.CodeAnalysis
         public SyntaxFactory SyntaxFactory => this.Language.SyntaxFactory;
 
         public SyntaxFacts SyntaxFacts => this.Language.SyntaxFacts;
+
+        public abstract BoundTree BoundTree { get; }
 
         // Is this node one that could be successfully interrogated by GetSymbolInfo/GetTypeInfo/GetMemberGroup/GetConstantValue?
         // WARN: If isSpeculative is true, then don't look at .Parent - there might not be one.
@@ -437,42 +439,12 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         protected int CheckAndAdjustPosition(int position)
         {
-            SyntaxToken unused;
-            return CheckAndAdjustPosition(position, out unused);
+            return BoundTree.CheckAndAdjustPosition(position);
         }
 
         protected int CheckAndAdjustPosition(int position, out SyntaxToken token)
         {
-            int fullStart = this.Root.Position;
-            int fullEnd = this.Root.FullSpan.End;
-            bool atEOF = position == fullEnd && position == this.SyntaxTree.GetRoot().FullSpan.End;
-
-            if ((fullStart <= position && position < fullEnd) || atEOF) // allow for EOF
-            {
-                token = (atEOF ? (LanguageSyntaxNode)this.SyntaxTree.GetRoot() : Root).FindToken(position);
-
-                if (position < token.SpanStart) // NB: Span, not FullSpan
-                {
-                    // If this is already the first token, then the result will be default(SyntaxToken)
-                    token = token.GetPreviousToken();
-                }
-
-                // If the first token in the root is missing, it's possible to step backwards
-                // past the start of the root.  All sorts of bad things will happen in that case,
-                // so just use the start of the root span.
-                // CONSIDER: this should only happen when we step past the first token found, so
-                // the start of that token would be another possible return value.
-                return Math.Max(token.SpanStart, fullStart);
-            }
-            else if (fullStart == fullEnd && position == fullEnd)
-            {
-                // The root is an empty span and isn't the full compilation unit. No other choice here.
-                token = default(SyntaxToken);
-                return fullStart;
-            }
-
-            throw new ArgumentOutOfRangeException(nameof(position), position,
-                string.Format(CSharpResources.PositionIsNotWithinSyntax, Root.FullSpan));
+            return BoundTree.CheckAndAdjustPosition(position, out token);
         }
 
         /// <summary>
@@ -481,42 +453,7 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         protected int GetAdjustedNodePosition(SyntaxNode node)
         {
-            Debug.Assert(IsInTree(node));
-
-            var fullSpan = this.Root.FullSpan;
-            var position = node.SpanStart;
-
-            // skip zero-width tokens to get the position, but never get past the end of the node
-            int betterPosition = node.GetFirstToken(includeZeroWidth: false).SpanStart;
-            if (betterPosition < node.Span.End)
-            {
-                position = betterPosition;
-            }
-
-            if (fullSpan.IsEmpty)
-            {
-                Debug.Assert(position == fullSpan.Start);
-                // At end of zero-width full span. No need to call
-                // CheckAndAdjustPosition since that will simply 
-                // return the original position.
-                return position;
-            }
-            else if (position == fullSpan.End)
-            {
-                Debug.Assert(node.Width == 0);
-                // For zero-width node at the end of the full span,
-                // check and adjust the preceding position.
-                return CheckAndAdjustPosition(position - 1);
-            }
-            else if (node.IsMissing || node.HasErrors || node.Width == 0 || node.IsPartOfStructuredTrivia())
-            {
-                return CheckAndAdjustPosition(position);
-            }
-            else
-            {
-                // No need to adjust position.
-                return position;
-            }
+            return BoundTree.GetAdjustedNodePosition(node);
         }
 
         [Conditional("DEBUG")]
@@ -527,15 +464,7 @@ namespace MetaDslx.CodeAnalysis
 
         protected void CheckSyntaxNode(LanguageSyntaxNode syntax)
         {
-            if (syntax == null)
-            {
-                throw new ArgumentNullException(nameof(syntax));
-            }
-
-            if (!IsInTree(syntax))
-            {
-                throw new ArgumentException(CSharpResources.SyntaxNodeIsNotWithinSynt);
-            }
+            BoundTree.CheckSyntaxNode(syntax);
         }
 
         // This method ensures that the given syntax node to speculate is non-null and doesn't belong to a SyntaxTree of any model in the chain.

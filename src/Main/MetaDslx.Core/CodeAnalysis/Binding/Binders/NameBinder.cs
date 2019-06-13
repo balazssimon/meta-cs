@@ -7,8 +7,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class NameBinder : Binder
     {
-        public NameBinder(Binder next, SyntaxNodeOrToken syntax) 
-            : base(next, syntax)
+        public NameBinder(Binder next) 
+            : base(next)
         {
         }
     }

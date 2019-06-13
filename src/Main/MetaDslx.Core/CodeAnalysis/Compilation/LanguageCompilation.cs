@@ -1673,15 +1673,15 @@ namespace MetaDslx.CodeAnalysis
                 throw new ArgumentException(CSharpResources.SyntaxTreeNotFound, nameof(syntaxTree));
             }
 
-            return new SyntaxTreeSemanticModel(this, (SyntaxTree)syntaxTree, ignoreAccessibility);
+            return new SyntaxTreeSemanticModel(this, (LanguageSyntaxTree)syntaxTree, ignoreAccessibility);
         }
 
         // When building symbols from the declaration table (lazily), or inside a type, or when
-        // compiling a method body, we may not have a BinderContext in hand for the enclosing
-        // scopes.  Therefore, we build them when needed (and cache them) using a ContextBuilder.
-        // Since a ContextBuilder is only a cache, and the identity of the ContextBuilders and
-        // BinderContexts have no semantic meaning, we can reuse them or rebuild them, whichever is
-        // most convenient.  We store them using weak references so that GC pressure will cause them
+        // compiling a method body, we may not have a Binder in hand for the enclosing
+        // scopes.  Therefore, we build them when needed (and cache them) using a BinderFactory.
+        // Since a BinderFactory is only a cache, and the identity of the BinderFactories and
+        // Binder have no semantic meaning, we can reuse them or rebuild them, whichever is
+        // most convenient. We store them using weak references so that GC pressure will cause them
         // to be recycled.
         private WeakReference<BinderFactory>[] _binderFactories;
 
@@ -1729,6 +1729,56 @@ namespace MetaDslx.CodeAnalysis
         internal Binder GetBinder(LanguageSyntaxNode syntax)
         {
             return GetBinderFactory(syntax.SyntaxTree).GetBinder(syntax);
+        }
+
+        // Bound trees containing computed semantic information.
+        // We store them using weak references so that GC pressure will cause them to be recycled.
+        private WeakReference<BoundTree>[] _boundTrees;
+
+        internal BoundTree GetBoundTree(SyntaxTree syntaxTree)
+        {
+            var treeNum = GetSyntaxTreeOrdinal(syntaxTree);
+            var boundTrees = _boundTrees;
+            if (boundTrees == null)
+            {
+                boundTrees = new WeakReference<BoundTree>[this.SyntaxTrees.Length];
+                boundTrees = Interlocked.CompareExchange(ref _boundTrees, boundTrees, null) ?? boundTrees;
+            }
+
+            BoundTree previousBoundTree;
+            var previousWeakReference = boundTrees[treeNum];
+            if (previousWeakReference != null && previousWeakReference.TryGetTarget(out previousBoundTree))
+            {
+                return previousBoundTree;
+            }
+
+            return AddNewBoundTree((LanguageSyntaxTree)syntaxTree, ref boundTrees[treeNum]);
+        }
+
+        private BoundTree AddNewBoundTree(LanguageSyntaxTree syntaxTree, ref WeakReference<BoundTree> slot)
+        {
+            var newBoundTree = new BoundTree(this, syntaxTree, GetBinder(syntaxTree.GetRootNode()), new DiagnosticBag());
+            var newWeakReference = new WeakReference<BoundTree>(newBoundTree);
+
+            while (true)
+            {
+                BoundTree previousBoundTree;
+                WeakReference<BoundTree> previousWeakReference = slot;
+                if (previousWeakReference != null && previousWeakReference.TryGetTarget(out previousBoundTree))
+                {
+                    return previousBoundTree;
+                }
+
+                if (Interlocked.CompareExchange(ref slot, newWeakReference, previousWeakReference) == previousWeakReference)
+                {
+                    return newBoundTree;
+                }
+            }
+        }
+
+        internal ImmutableArray<BoundNode> GetBoundNodes(LanguageSyntaxNode syntax)
+        {
+            return GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree).GetBoundNodes(syntax);
         }
 
         /// <summary>
@@ -2030,9 +2080,9 @@ namespace MetaDslx.CodeAnalysis
 
             if (stage == CompilationStage.Compile || stage > CompilationStage.Compile && includeEarlierStages)
             {
-                var methodBodyDiagnostics = DiagnosticBag.GetInstance();
-                GetDiagnosticsForAllSymbols(methodBodyDiagnostics, cancellationToken);
-                builder.AddRangeAndFree(methodBodyDiagnostics);
+                var symbolDiagnostics = DiagnosticBag.GetInstance();
+                GetDiagnosticsForAllSymbols(symbolDiagnostics, cancellationToken);
+                builder.AddRangeAndFree(symbolDiagnostics);
             }
 
             // Before returning diagnostics, we filter warnings
@@ -2062,8 +2112,13 @@ namespace MetaDslx.CodeAnalysis
         // IL or emit an assembly.
         private void GetDiagnosticsForAllSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException("TODO:MetaDslx");
-            //this.ReportUnusedImports(null, diagnostics, cancellationToken);
+            foreach (var syntaxTree in this.SyntaxTrees)
+            {
+                var boundTree = GetBoundTree(syntaxTree);
+                boundTree.Complete(cancellationToken);
+                diagnostics.AddRange(boundTree.DiagnosticBag);
+            }
+            this.ReportUnusedImports(null, diagnostics, cancellationToken);
         }
 
         private static bool IsDefinedOrImplementedInSourceTree(Symbol symbol, SyntaxTree tree, TextSpan? span)

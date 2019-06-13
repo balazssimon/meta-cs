@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,23 +11,23 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private Lazy<object> _lazyValue;
 
-        public ValueBinder(Binder next, SyntaxNodeOrToken syntax, object value)
-            : base(next, syntax)
+        public ValueBinder(Binder next, object value)
+            : base(next)
         {
             _lazyValue = new Lazy<object>(() => value);
         }
 
-        protected ValueBinder(Binder next, SyntaxNodeOrToken syntax)
-            : base(next, syntax)
+        protected ValueBinder(Binder next)
+            : base(next)
         {
-            _lazyValue = new Lazy<object>(this.CalculateValue, true);
+            _lazyValue = new Lazy<object>(this.ComputeValue, true);
         }
 
         public object Value => _lazyValue.Value;
 
-        protected virtual object CalculateValue()
+        protected virtual object ComputeValue()
         {
-            return null;
+            throw ExceptionUtilities.Unreachable;
         }
     }
 }

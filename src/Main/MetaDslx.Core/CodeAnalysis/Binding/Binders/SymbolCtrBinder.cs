@@ -9,8 +9,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private readonly Type _symbolType;
 
-        public SymbolCtrBinder(Binder next, SyntaxNodeOrToken syntax, Type symbolType)
-            : base(next, syntax)
+        public SymbolCtrBinder(Binder next, Type symbolType)
+            : base(next)
         {
             _symbolType = symbolType;
         }

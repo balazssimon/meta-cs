@@ -15,8 +15,8 @@ using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.FlowAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
-using MetaDslx.CodeAnalysis.BoundTree;
 using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
 namespace MetaDslx.CodeAnalysis
 {
@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis
     internal partial class SyntaxTreeSemanticModel : LanguageSemanticModel
     {
         private readonly LanguageCompilation _compilation;
-        private readonly SyntaxTree _syntaxTree;
+        private readonly BoundTree _boundTree;
 
         /// <summary>
         /// Note, the name of this field could be somewhat confusing because it is also 
@@ -40,11 +40,11 @@ namespace MetaDslx.CodeAnalysis
         private readonly BinderFactory _binderFactory;
         private Func<LanguageSyntaxNode, MemberSemanticModel> _createMemberModelFunction;
         private readonly bool _ignoresAccessibility;
+        private readonly DiagnosticBag _ignoredDiagnostics = new DiagnosticBag();
 
-        internal SyntaxTreeSemanticModel(LanguageCompilation compilation, SyntaxTree syntaxTree, bool ignoreAccessibility = false)
+        internal SyntaxTreeSemanticModel(LanguageCompilation compilation, LanguageSyntaxTree syntaxTree, bool ignoreAccessibility = false)
         {
             _compilation = compilation;
-            _syntaxTree = syntaxTree;
             _ignoresAccessibility = ignoreAccessibility;
 
             if (!this.Compilation.SyntaxTrees.Contains(syntaxTree))
@@ -52,13 +52,15 @@ namespace MetaDslx.CodeAnalysis
                 throw new ArgumentOutOfRangeException(nameof(syntaxTree), CSharpResources.TreeNotPartOfCompilation);
             }
 
+            _boundTree = new BoundTree(compilation, syntaxTree, compilation.GetBinder(syntaxTree.GetRootNode()), _ignoredDiagnostics);
+
             _binderFactory = compilation.GetBinderFactory(SyntaxTree);
         }
 
-        internal SyntaxTreeSemanticModel(LanguageCompilation parentCompilation, SyntaxTree parentSyntaxTree, SyntaxTree speculatedSyntaxTree)
+        internal SyntaxTreeSemanticModel(LanguageCompilation parentCompilation, LanguageSyntaxTree parentSyntaxTree, LanguageSyntaxTree speculatedSyntaxTree)
         {
             _compilation = parentCompilation;
-            _syntaxTree = speculatedSyntaxTree;
+            _boundTree = new BoundTree(parentCompilation, speculatedSyntaxTree, parentCompilation.GetBinder(speculatedSyntaxTree.GetRootNode()), _ignoredDiagnostics);
             _binderFactory = _compilation.GetBinderFactory(parentSyntaxTree);
         }
 
@@ -73,6 +75,8 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
+        public override BoundTree BoundTree => _boundTree;
+
         /// <summary>
         /// The root node of the syntax tree that this object is associated with.
         /// </summary>
@@ -80,7 +84,7 @@ namespace MetaDslx.CodeAnalysis
         {
             get
             {
-                return (LanguageSyntaxNode)_syntaxTree.GetRoot();
+                return _boundTree.Root;
             }
         }
 
@@ -91,7 +95,7 @@ namespace MetaDslx.CodeAnalysis
         {
             get
             {
-                return _syntaxTree;
+                return _boundTree.SyntaxTree;
             }
         }
 
@@ -229,7 +233,7 @@ namespace MetaDslx.CodeAnalysis
                     {
                         // Wrap the binder in a LocalScopeBinder because Binder.BindExpression assumes there
                         // will be one in the binder chain and one isn't necessarily required for the batch case.
-                        binder = new LocalScopeBinder(binder, node);
+                        binder = new LocalScopeBinder(binder);
 
                         var diagnostics = DiagnosticBag.GetInstance();
                         BoundExpression bound = binder.BindExpression(node, diagnostics);

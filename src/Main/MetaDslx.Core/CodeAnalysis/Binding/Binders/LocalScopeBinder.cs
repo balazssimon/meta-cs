@@ -6,8 +6,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class LocalScopeBinder : Binder
     {
-        public LocalScopeBinder(Binder next, LanguageSyntaxNode syntax)
-            : base(next, syntax)
+        public LocalScopeBinder(Binder next)
+            : base(next)
         {
 
         }

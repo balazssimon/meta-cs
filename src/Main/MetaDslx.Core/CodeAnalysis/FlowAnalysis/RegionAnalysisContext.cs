@@ -3,7 +3,6 @@
 using System;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.BoundTree;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis.CSharp.Symbols;
 using Microsoft.CodeAnalysis.CSharp.Syntax;

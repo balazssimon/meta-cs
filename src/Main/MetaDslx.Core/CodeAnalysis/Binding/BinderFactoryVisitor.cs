@@ -86,7 +86,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateSymbolDefBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, Type symbolType)
         {
-            return new SymbolDefBinder(parentBinder, syntax, symbolType, symbolType);
+            return new SymbolDefBinder(parentBinder, symbolType, symbolType);
         }
 
         protected virtual Binder CreateSymbolCtrBinder(Binder parentBinder, SyntaxNodeOrToken syntax, Type symbolType)
@@ -96,7 +96,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateSymbolCtrBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, Type symbolType)
         {
-            return new SymbolCtrBinder(parentBinder, syntax, symbolType);
+            return new SymbolCtrBinder(parentBinder, symbolType);
         }
 
         protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> symbolTypes)
@@ -106,7 +106,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateSymbolUseBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes)
         {
-            return new SymbolUseBinder(parentBinder, syntax, symbolTypes, nestingSymbolTypes);
+            return new SymbolUseBinder(parentBinder, symbolTypes, nestingSymbolTypes);
         }
 
         protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name)
@@ -121,7 +121,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreatePropertyBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, string name, Optional<object> valueOpt)
         {
-            return new PropertyBinder(parentBinder, syntax, name, valueOpt);
+            return new PropertyBinder(parentBinder, name, valueOpt);
         }
 
         protected virtual Binder CreateIdentifierBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
@@ -134,12 +134,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new IdentifierBinder(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateQualifierBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
+        protected virtual Binder CreateQualifierBinder(Binder parentBinder, LanguageSyntaxNode syntax)
         {
             return this.CreateQualifierBinderCore(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateQualifierBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
+        protected virtual Binder CreateQualifierBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
         {
             return new QualifierBinder(parentBinder, syntax);
         }
@@ -151,7 +151,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateNameBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax)
         {
-            return new NameBinder(parentBinder, syntax);
+            return new NameBinder(parentBinder);
         }
 
         protected virtual Binder CreateValueBinder(Binder parentBinder, SyntaxNodeOrToken syntax)
@@ -166,7 +166,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateValueBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, object value)
         {
-            return new ValueBinder(parentBinder, syntax, value);
+            return new ValueBinder(parentBinder, value);
         }
 
         protected virtual Binder CreateEnumValueBinder(Binder parentBinder, SyntaxNodeOrToken syntax, Type enumType)
@@ -176,7 +176,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateEnumValueBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, Type enumType)
         {
-            return new EnumValueBinder(parentBinder, syntax, enumType);
+            return new EnumValueBinder(parentBinder, Language.SyntaxFacts.ExtractName(syntax), enumType);
         }
 
         protected Binder GetParentBinder(LanguageSyntaxNode node)

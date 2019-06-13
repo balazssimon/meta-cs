@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.BoundTree;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 
@@ -39,7 +38,7 @@ namespace MetaDslx.CodeAnalysis
         }
 
         private SpeculativeSyntaxTreeSemanticModel(SyntaxTreeSemanticModel parentSemanticModel, LanguageSyntaxNode root, Binder rootBinder, int position, SpeculativeBindingOption bindingOption)
-            : base(parentSemanticModel.Compilation, parentSemanticModel.SyntaxTree, root.SyntaxTree)
+            : base(parentSemanticModel.Compilation, (LanguageSyntaxTree)parentSemanticModel.SyntaxTree, (LanguageSyntaxTree)root.SyntaxTree)
         {
             _parentSemanticModel = parentSemanticModel;
             _root = root;

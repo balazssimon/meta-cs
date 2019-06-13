@@ -6,8 +6,9 @@ using System;
 using Roslyn.Utilities;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 
-namespace MetaDslx.CodeAnalysis.BoundTree
+namespace MetaDslx.CodeAnalysis.Binding
 {
     public abstract class BoundTreeVisitor<A, R>
     {

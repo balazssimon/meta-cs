@@ -12,8 +12,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private readonly Optional<object> _propertyValueOpt;
         private ImmutableArray<object> _lazyValues;
 
-        public PropertyBinder(Binder next, SyntaxNodeOrToken syntax, string propertyName, Optional<object> propertyValueOpt)
-            : base(next, syntax)
+        public PropertyBinder(Binder next, string propertyName, Optional<object> propertyValueOpt)
+            : base(next)
         {
             _propertyName = propertyName;
             _propertyValueOpt = propertyValueOpt;

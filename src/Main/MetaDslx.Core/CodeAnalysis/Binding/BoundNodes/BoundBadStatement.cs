@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.BoundTree
+namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
     public class BoundBadStatement : BoundNode
     {

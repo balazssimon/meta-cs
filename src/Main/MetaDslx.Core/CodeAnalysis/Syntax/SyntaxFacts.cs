@@ -285,12 +285,12 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return false;
         }
 
-        public virtual bool IsStatement(SyntaxNode syntax)
+        public virtual bool IsStatement(SyntaxNodeOrToken syntax)
         {
             return false;
         }
 
-        public virtual bool IsExpression(SyntaxNode syntax)
+        public virtual bool IsExpression(SyntaxNodeOrToken syntax)
         {
             return false;
         }

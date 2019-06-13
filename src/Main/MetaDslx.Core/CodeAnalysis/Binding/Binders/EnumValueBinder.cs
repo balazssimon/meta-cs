@@ -9,11 +9,13 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     public class EnumValueBinder : ValueBinder
     {
         private readonly Type _enumType;
+        private readonly string _enumLiteral;
 
-        public EnumValueBinder(Binder next, SyntaxNodeOrToken syntax, Type enumType)
-            : base(next, syntax)
+        public EnumValueBinder(Binder next, string enumLiteral, Type enumType)
+            : base(next)
         {
             _enumType = enumType;
+            _enumLiteral = enumLiteral;
         }
 
         public Type EnumType
@@ -21,16 +23,15 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             get { return _enumType; }
         }
 
-        protected override object CalculateValue()
+        protected override object ComputeValue()
         {
-            string valueText = Language.SyntaxFacts.ExtractName(this.Syntax);
             if (typeof(EnumObject).IsAssignableFrom(_enumType))
             {
-                return EnumObject.FromString(_enumType, valueText);
+                return EnumObject.FromString(_enumType, _enumLiteral);
             }
             else
             {
-                return Enum.Parse(_enumType, valueText);
+                return Enum.Parse(_enumType, _enumLiteral);
             }
         }
 

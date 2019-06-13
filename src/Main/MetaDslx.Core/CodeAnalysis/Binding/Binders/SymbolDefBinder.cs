@@ -10,8 +10,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private readonly Type _symbolType;
         private readonly Type _nestingSymbolType;
 
-        public SymbolDefBinder(Binder next, SyntaxNodeOrToken syntax, Type symbolType, Type nestingSymbolType) 
-            : base(next, syntax)
+        public SymbolDefBinder(Binder next, Type symbolType, Type nestingSymbolType) 
+            : base(next)
         {
             _symbolType = symbolType;
             _nestingSymbolType = nestingSymbolType;

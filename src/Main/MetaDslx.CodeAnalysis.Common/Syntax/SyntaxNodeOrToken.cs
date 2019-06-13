@@ -126,6 +126,8 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public SyntaxNode Parent => _token != null ? _nodeOrParent : _nodeOrParent?.Parent;
 
+        public SyntaxNode NodeOrParent => _nodeOrParent;
+
         internal GreenNode UnderlyingNode => _token ?? _nodeOrParent?.Green;
 
         internal int Position => _position;
