@@ -475,36 +475,24 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public virtual BoundNode Bind(LanguageSyntaxNode syntax, DiagnosticBag diagnostics)
+        public virtual BoundNode Bind(LanguageSyntaxNode node)
         {
-            if (Language.SyntaxFacts.IsExpression(syntax))
-            {
-                return BindExpression(syntax, diagnostics);
-            }
-            else if (Language.SyntaxFacts.IsStatement(syntax))
-            {
-                return BindStatement(syntax, diagnostics);
-            }
-            else
-            {
-                return BindSymbol(syntax, diagnostics);
-            }
+            var boundTree = this.Compilation.GetBoundTree(node);
+            return boundTree.GetUpperBoundNode(node);
         }
 
-        public BoundSymbol BindSymbol(LanguageSyntaxNode syntax, DiagnosticBag diagnostics)
+        public virtual BoundExpression BindExpression(LanguageSyntaxNode node)
         {
-            throw new NotImplementedException();
+            Debug.Assert(Language.SyntaxFacts.IsExpression(node));
+            var boundTree = this.Compilation.GetBoundTree(node);
+            return (BoundExpression)boundTree.GetUpperBoundNode(node);
         }
 
-        public virtual BoundExpression BindExpression(LanguageSyntaxNode syntax, DiagnosticBag diagnostics)
+        public virtual BoundStatement BindStatement(LanguageSyntaxNode node)
         {
-            throw new NotImplementedException();
+            Debug.Assert(Language.SyntaxFacts.IsStatement(node));
+            var boundTree = this.Compilation.GetBoundTree(node);
+            return (BoundStatement)boundTree.GetUpperBoundNode(node);
         }
-
-        public virtual BoundStatement BindStatement(LanguageSyntaxNode node, DiagnosticBag diagnostics)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

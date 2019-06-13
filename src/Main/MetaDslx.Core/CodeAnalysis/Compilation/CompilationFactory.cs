@@ -38,5 +38,8 @@ namespace MetaDslx.CodeAnalysis
 
         public abstract RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission);
         public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
+        public abstract BoundNodeFactoryVisitor CreateBoundNodeFactoryVisitor(BoundTree boundTree);
+        public abstract IsBindableNodeVisitor CreateIsBindableNodeVisitor(BoundTree boundTree);
+        public abstract IsBindableNodeVisitor CreateIsBindableRootVisitor(BoundTree boundTree);
     }
 }

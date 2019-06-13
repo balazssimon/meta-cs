@@ -8,17 +8,8 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
-    public sealed class BoundNodeMapBuilder : BoundTreeWalkerWithStackGuard
+    public sealed class BoundNodeMapBuilder
     {
-        private BoundNodeMapBuilder(OrderPreservingMultiDictionary<SyntaxNode, BoundNode> map, SyntaxNode thisSyntaxNodeOnly)
-        {
-            _map = map;
-            _thisSyntaxNodeOnly = thisSyntaxNodeOnly;
-        }
-
-        private readonly OrderPreservingMultiDictionary<SyntaxNode, BoundNode> _map;
-        private readonly SyntaxNode _thisSyntaxNodeOnly;
-
         /// <summary>
         /// Walks the bound tree and adds all non compiler generated bound nodes whose syntax matches the given one
         /// to the cache.
@@ -28,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <param name="node">The syntax node where to add bound nodes for.</param>
         public static void AddToMap(BoundNode root, Dictionary<SyntaxNode, ImmutableArray<BoundNode>> map, SyntaxNode node = null)
         {
-            Debug.Assert(node == null || root == null || !root.Syntax.IsStatement(), "individually added nodes are not supposed to be statements.");
+            Debug.Assert(node == null || root == null);
 
             if (root == null || map.ContainsKey(root.Syntax))
             {
@@ -37,8 +28,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
 
             var additionMap = OrderPreservingMultiDictionary<SyntaxNode, BoundNode>.GetInstance();
-            var builder = new BoundNodeMapBuilder(additionMap, node);
-            builder.Visit(root);
+            CacheSubTree(additionMap, node, root);
 
             foreach (LanguageSyntaxNode key in additionMap.Keys)
             {
@@ -65,24 +55,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     Debug.Assert(existing.Length == added.Length, "existing.Length == added.Length");
                     for (int i = 0; i < existing.Length; i++)
                     {
-                        // TODO: it would be great if we could check !ReferenceEquals(existing[i], added[i]) (DevDiv #11584).
-                        // Known impediments include:
-                        //   1) Field initializers aren't cached because they're not in statements.
-                        //   2) Single local declarations (e.g. "int x = 1;" vs "int x = 1, y = 2;") aren't found in the cache
-                        //      since nothing is cached for the statement syntax.
-                        if (existing[i].Kind != added[i].Kind)
-                        {
-                            Debug.Assert(!key.IsStatement(), "!key.IsStatement()");
-                            Debug.Assert(false, "New bound node does not match existing bound node");
-                        }
-                        else
-                        {
-                            Debug.Assert(
-                                (object)existing[i] == added[i] || !key.IsStatement(),
-                                string.Format(
-                                    System.Globalization.CultureInfo.InvariantCulture,
-                                    "(object)existing[{0}] == added[{0}] || !key.IsStatement()", i));
-                        }
+                        Debug.Assert((object)existing[i] == added[i], string.Format("(object)existing[{0}] == added[{0}]", i));
                     }
 #endif
                 }
@@ -95,14 +68,26 @@ namespace MetaDslx.CodeAnalysis.Binding
             additionMap.Free();
         }
 
-        public override BoundNode Visit(BoundNode node)
+        private static void CacheSubTree(OrderPreservingMultiDictionary<SyntaxNode, BoundNode> map, SyntaxNode thisSyntaxNodeOnly, BoundNode node)
         {
-            if (node == null)
+            if (node == null) return;
+            Stack<BoundNode> nodeStack = new Stack<BoundNode>();
+            nodeStack.Push(node);
+            while (nodeStack.Count > 0)
             {
-                return null;
+                BoundNode current = nodeStack.Pop();
+                AddNode(map, thisSyntaxNodeOnly, current);
+                var currentChildren = current.Children;
+                for (int i = currentChildren.Length - 1; i >= 0; --i)
+                {
+                    nodeStack.Push(currentChildren[i]);
+                }
             }
+        }
 
-            BoundNode current = node;
+        private static void AddNode(OrderPreservingMultiDictionary<SyntaxNode, BoundNode> map, SyntaxNode thisSyntaxNodeOnly, BoundNode node)
+        {
+            if (node == null) return;
 
             // It is possible for there to be multiple bound nodes with the same syntax tree,
             // and that is by design. For example, in
@@ -115,21 +100,17 @@ namespace MetaDslx.CodeAnalysis.Binding
             //
             // We want to add all bound nodes associated with the same syntax node to the cache, so we first add the 
             // bound node, then we dive deeper into the bound tree.
-            if (ShouldAddNode(current))
+            if (ShouldAddNode(node, thisSyntaxNodeOnly))
             {
-                _map.Add(current.Syntax, current);
+                map.Add(node.Syntax, node);
             }
-
-            base.Visit(current);
-
-            return null;
         }
 
         /// <summary>
         /// Decides whether to the add the bound node to the cache or not.
         /// </summary>
         /// <param name="currentBoundNode">The bound node.</param>
-        private bool ShouldAddNode(BoundNode currentBoundNode)
+        private static bool ShouldAddNode(BoundNode currentBoundNode, SyntaxNode thisSyntaxNodeOnly)
         {
             // Do not add compiler generated nodes.
             if (currentBoundNode.WasCompilerGenerated)
@@ -138,7 +119,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
 
             // Do not add if only a specific syntax node should be added.
-            if (_thisSyntaxNodeOnly != null && currentBoundNode.Syntax != _thisSyntaxNodeOnly)
+            if (thisSyntaxNodeOnly != null && currentBoundNode.Syntax != thisSyntaxNodeOnly)
             {
                 return false;
             }
@@ -146,10 +127,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             return true;
         }
 
-        protected override bool ConvertInsufficientExecutionStackExceptionToCancelledByStackGuardException()
-        {
-            return false;
-        }
     }
 
 }

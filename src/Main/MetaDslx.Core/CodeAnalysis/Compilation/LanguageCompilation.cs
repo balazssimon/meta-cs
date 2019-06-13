@@ -1755,6 +1755,12 @@ namespace MetaDslx.CodeAnalysis
             return AddNewBoundTree((LanguageSyntaxTree)syntaxTree, ref boundTrees[treeNum]);
         }
 
+        internal BoundTree GetBoundTree(SyntaxNodeOrToken syntax)
+        {
+            var boundTree = GetBoundTree(syntax.SyntaxTree);
+            return boundTree.GetEnclosingBoundTree(syntax);
+        }
+
         private BoundTree AddNewBoundTree(LanguageSyntaxTree syntaxTree, ref WeakReference<BoundTree> slot)
         {
             var newBoundTree = new BoundTree(this, syntaxTree, GetBinder(syntaxTree.GetRootNode()), new DiagnosticBag());
@@ -2115,7 +2121,7 @@ namespace MetaDslx.CodeAnalysis
             foreach (var syntaxTree in this.SyntaxTrees)
             {
                 var boundTree = GetBoundTree(syntaxTree);
-                boundTree.Complete(cancellationToken);
+                boundTree.ForceComplete(cancellationToken);
                 diagnostics.AddRange(boundTree.DiagnosticBag);
             }
             this.ReportUnusedImports(null, diagnostics, cancellationToken);

@@ -9,8 +9,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private readonly IOperation _statement;
 
-        protected BoundStatement(BoundKind kind, LanguageSyntaxNode syntax, IOperation statement, bool hasErrors = false)
-            : base(kind, syntax)
+        protected BoundStatement(BoundKind kind, BoundTree boundTree, BoundNodeFlags nodeFlags, IOperation statement, LanguageSyntaxNode syntax, bool hasErrors = false)
+            : base(kind, boundTree, nodeFlags, syntax, hasErrors)
         {
             _statement = statement;
         }

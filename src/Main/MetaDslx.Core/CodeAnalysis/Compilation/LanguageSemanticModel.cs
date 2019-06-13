@@ -1294,9 +1294,7 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var diagnostics = DiagnosticBag.GetInstance();
-                var bnode = binder.BindExpression(expression, diagnostics);
-                diagnostics.Free();
+                var bnode = binder.BindExpression(expression);
 
                 if (bnode != null && !cdestination.IsErrorType())
                 {
@@ -1347,9 +1345,7 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var diagnostics = DiagnosticBag.GetInstance();
-                var bnode = binder.BindExpression(expression, diagnostics);
-                diagnostics.Free();
+                var bnode = binder.BindExpression(expression);
 
                 if (bnode != null && !destination.IsErrorType())
                 {

@@ -3,8 +3,11 @@ using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
@@ -13,10 +16,11 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         private readonly BoundKind _kind;
         private BoundNodeAttributes _attributes;
-        private readonly LanguageCompilation _compilation;
-        private readonly BoundNodeFlags _flags;
-
-        public readonly LanguageSyntaxNode Syntax;
+        private readonly BoundNodeFlags _nodeFlags;
+        private readonly BoundTree _boundTree;
+        private BoundNodeFlags _lazyChildFlags;
+        private ImmutableArray<BoundNode> _lazyChildren;
+        private readonly LanguageSyntaxNode _syntax;
 
         [Flags()]
         private enum BoundNodeAttributes : byte
@@ -33,24 +37,28 @@ namespace MetaDslx.CodeAnalysis.Binding
             IsSuppressed = 1 << 4,
         }
 
-        protected BoundNode(BoundKind kind, LanguageSyntaxNode syntax)
+        protected BoundNode(BoundKind kind, BoundTree boundTree, BoundNodeFlags nodeFlags, LanguageSyntaxNode syntax, bool hasErrors)
         {
             Debug.Assert(syntax != null);
 
             _kind = kind;
-            this.Syntax = syntax;
-        }
+            _boundTree = boundTree;
+            _nodeFlags = nodeFlags;
+            _syntax = syntax;
 
-        protected BoundNode(BoundKind kind, LanguageSyntaxNode syntax, bool hasErrors)
-            : this(kind, syntax)
-        {
             if (hasErrors)
             {
                 _attributes = BoundNodeAttributes.HasErrors;
             }
         }
 
-        public Language Language => this.Syntax.Language;
+        public Language Language => _syntax.Language;
+
+        public BoundTree BoundTree => _boundTree;
+
+        protected LanguageCompilation Compilation => _boundTree.Compilation;
+
+        public LanguageSyntaxNode Syntax => _syntax;
 
         /// <summary>
         /// Determines if a bound node, or associated syntax or type has an error (not a warning) 
@@ -64,7 +72,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             get
             {
                 // NOTE: check Syntax rather than WasCompilerGenerated because sequence points can have null syntax.
-                if (this.HasErrors || this.Syntax != null && this.Syntax.HasErrors)
+                if (this.HasErrors || _syntax != null && _syntax.HasErrors)
                 {
                     return true;
                 }
@@ -83,21 +91,9 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// NOTE: not having HasErrors does not guarantee that we do not have any diagnostic associated
         ///       with corresponding syntax or type.
         /// </summary>
-        public bool HasErrors
-        {
-            get
-            {
-                return (_attributes & BoundNodeAttributes.HasErrors) != 0;
-            }
-        }
+        public bool HasErrors => (_attributes & BoundNodeAttributes.HasErrors) != 0;
 
-        public SyntaxTree SyntaxTree
-        {
-            get
-            {
-                return Syntax?.SyntaxTree;
-            }
-        }
+        public SyntaxTree SyntaxTree => _syntax?.SyntaxTree;
 
         protected void CopyAttributes(BoundNode original)
         {
@@ -173,12 +169,54 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public BoundKind Kind
+        public BoundKind Kind => _kind;
+
+        public BoundNodeFlags NodeFlags => _nodeFlags;
+
+        public BoundNodeFlags ChildFlags
         {
             get
             {
-                return _kind;
+                if (_lazyChildFlags == null)
+                {
+                    Interlocked.CompareExchange(ref _lazyChildFlags, this.ComputeChildFlags(), null);
+                }
+                return _lazyChildFlags;
             }
+        }
+
+        public BoundNodeFlags Flags
+        {
+            get
+            {
+                if (_nodeFlags == null || _nodeFlags == BoundNodeFlags.None) return this.ChildFlags;
+                else if (this.ChildFlags == null || this.ChildFlags == BoundNodeFlags.None) return _nodeFlags;
+                else return _nodeFlags.UnionWith(this.ChildFlags);
+            }
+        }
+
+        public ImmutableArray<BoundNode> Children
+        {
+            get
+            {
+                if (_lazyChildren.IsDefault)
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _lazyChildren, this.ComputeChildren());
+                }
+                return _lazyChildren;
+            }
+        }
+
+        protected virtual ImmutableArray<BoundNode> ComputeChildren()
+        {
+            return _boundTree.ComputeChildren(_syntax);
+        }
+
+        protected virtual BoundNodeFlags ComputeChildFlags()
+        {
+            BoundNodeFlags result = _nodeFlags ?? BoundNodeFlags.None;
+            result = result.UnionWith(this.Children.Select(c => c.Flags).ToArray());
+            return result;
         }
 
         public virtual BoundNode Accept(BoundTreeVisitor visitor)
@@ -186,9 +224,18 @@ namespace MetaDslx.CodeAnalysis.Binding
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BoundNode> GetChildren()
+        public void ForceComplete(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException("TODO:MetaDslx");
+            foreach (var child in this.Children)
+            {
+                child.ForceComplete(cancellationToken);
+            }
+            this.ForceCompleteNode(cancellationToken);
+        }
+
+        protected virtual void ForceCompleteNode(CancellationToken cancellationToken)
+        {
+
         }
 
 #if DEBUG
@@ -222,7 +269,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     sb.AppendFormat("{0} ({1}) -> {2}: {3}", indent, node.Syntax.Kind, node.Kind, obj);
                 }
                 sb.AppendLine();
-                foreach (var child in node.GetChildren())
+                foreach (var child in node.Children)
                 {
                     Dump(sb, indent + "  ", child);
                 }

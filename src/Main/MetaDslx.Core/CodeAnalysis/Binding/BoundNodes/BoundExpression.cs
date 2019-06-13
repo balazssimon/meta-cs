@@ -10,8 +10,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private readonly IOperation _expression;
 
-        protected BoundExpression(BoundKind kind, LanguageSyntaxNode syntax, IOperation expression, bool hasErrors = false)
-            : base(kind, syntax)
+        protected BoundExpression(BoundKind kind, BoundTree boundTree, BoundNodeFlags nodeFlags, IOperation expression, LanguageSyntaxNode syntax, bool hasErrors = false)
+            : base(kind, boundTree, nodeFlags, syntax, hasErrors)
         {
             _expression = expression;
         }

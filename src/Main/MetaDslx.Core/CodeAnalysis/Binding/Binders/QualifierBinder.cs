@@ -24,7 +24,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             if (_identifiers.IsDefault)
             {
                 DiagnosticBag diagnostics = DiagnosticBag.GetInstance();
-                var boundNode = this.BindSymbol(_syntax, diagnostics);
+                var boundNode = this.Bind(_syntax);
                 throw new NotImplementedException("TODO:MetaDslx");
                 //ImmutableInterlocked.InterlockedInitialize(ref _identifiers, boundNode.CollectIdentifiers());
             }

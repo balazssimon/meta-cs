@@ -55,7 +55,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return null;
         }
 
-        public override BoundNode Bind(LanguageSyntaxNode node, DiagnosticBag diagnostics)
+        public override BoundNode Bind(LanguageSyntaxNode node)
         {
             // Check the bound node cache to see if the statement was already bound.
             BoundNode synthesizedNode = _boundTree.GuardedGetSynthesizedNodeFromMap(node);
@@ -70,7 +70,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             if (boundNode == null)
             {
                 // Not bound yet. Bind it. It will get added to the cache later by a BoundNodeMapBuilder.
-                boundNode = base.Bind(node, diagnostics);
+                boundNode = base.Bind(node);
 
                 // Synthesized statements are not added to the _guardedNodeMap, we cache them explicitly here in  
                 // _lazyGuardedSynthesizedStatementsMap
