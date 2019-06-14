@@ -8,11 +8,12 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis;
-using MetaDslx.CodeAnalysis.Syntax;
 
 namespace MetaDslx.Languages.Meta.Binding
 {
@@ -46,14 +47,14 @@ namespace MetaDslx.Languages.Meta.Binding
 
         }
 
-        protected virtual Binder CreateOppositeBinder(Binder parentBinder, LanguageSyntaxNode node)
+        protected virtual Binder CreateOppositeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
         {
-            return this.CreateOppositeBinderCore(parentBinder, node);
+            return this.CreateOppositeBinderCore(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateOppositeBinderCore(Binder parentBinder, LanguageSyntaxNode node)
+        protected virtual Binder CreateOppositeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
         {
-            return new OppositeBinder(parentBinder, node);
+            return new OppositeBinder(parentBinder, syntax);
         }
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace MetaDslx.Languages.Meta.Binding
         /// <param name="inUsing">True if the binder will be used to bind a using directive.</param>
         public override Binder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing)
         {
-            if (unit.Kind == Language.SyntaxFacts.CompilationUnitKind)
+            if (unit.Kind == MetaSyntaxKind.Main)
             {
                 return this.GetCompilationUnitBinder(unit, inUsing: inUsing, inScript: InScript);
             }
@@ -77,7 +78,8 @@ namespace MetaDslx.Languages.Meta.Binding
             }
         }
 
-        public Binder VisitMain(MainSyntax parent)
+		
+		public Binder VisitMain(MainSyntax parent)
 		{
 			return this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);
 		}
@@ -525,33 +527,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitCore(parent.Parent);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, parent.FieldModifier)) use = UseFieldModifier;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitCore(parent.Parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseFieldModifier)
-				{
-					switch (parent.FieldModifier.GetKind().Switch())
-					{
-						case MetaSyntaxKind.KContainment:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, MetaPropertyKind.Containment);
-							break;
-						case MetaSyntaxKind.KReadonly:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, MetaPropertyKind.Readonly);
-							break;
-						case MetaSyntaxKind.KLazy:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, MetaPropertyKind.Lazy);
-							break;
-						case MetaSyntaxKind.KDerived:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.FieldModifier, MetaPropertyKind.Derived);
-							break;
-						default:
-							break;
-					}
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}
@@ -821,30 +801,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitCore(parent.Parent);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, parent.ObjectType)) use = UseObjectType;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitCore(parent.Parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseObjectType)
-				{
-					switch (parent.ObjectType.GetKind().Switch())
-					{
-						case MetaSyntaxKind.KObject:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.ObjectType, MetaInstance.Object);
-							break;
-						case MetaSyntaxKind.KSymbol:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.ObjectType, MetaInstance.Symbol);
-							break;
-						case MetaSyntaxKind.KString:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.ObjectType, MetaInstance.String);
-							break;
-						default:
-							break;
-					}
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}
@@ -856,39 +817,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitCore(parent.Parent);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, parent.PrimitiveType)) use = UsePrimitiveType;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitCore(parent.Parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UsePrimitiveType)
-				{
-					switch (parent.PrimitiveType.GetKind().Switch())
-					{
-						case MetaSyntaxKind.KInt:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, MetaInstance.Int);
-							break;
-						case MetaSyntaxKind.KLong:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, MetaInstance.Long);
-							break;
-						case MetaSyntaxKind.KFloat:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, MetaInstance.Float);
-							break;
-						case MetaSyntaxKind.KDouble:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, MetaInstance.Double);
-							break;
-						case MetaSyntaxKind.KByte:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, MetaInstance.Byte);
-							break;
-						case MetaSyntaxKind.KBool:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.PrimitiveType, MetaInstance.Bool);
-							break;
-						default:
-							break;
-					}
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}
@@ -974,33 +907,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		        return VisitCore(parent.Parent);
 		    }
 			object use = null;
-			if (LookupPosition.IsInNode(this.Position, parent.CollectionKind)) use = UseCollectionKind;
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitCore(parent.Parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseCollectionKind)
-				{
-					switch (parent.CollectionKind.GetKind().Switch())
-					{
-						case MetaSyntaxKind.KSet:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, MetaCollectionKind.Set);
-							break;
-						case MetaSyntaxKind.KList:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, MetaCollectionKind.List);
-							break;
-						case MetaSyntaxKind.KMultiSet:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, MetaCollectionKind.MultiSet);
-							break;
-						case MetaSyntaxKind.KMultiList:
-							resultBinder = this.CreateValueBinder(resultBinder, parent.CollectionKind, MetaCollectionKind.MultiList);
-							break;
-						default:
-							break;
-					}
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 			}
 			return resultBinder;
 		}

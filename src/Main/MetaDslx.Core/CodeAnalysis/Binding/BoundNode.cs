@@ -16,10 +16,8 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         private readonly BoundKind _kind;
         private BoundNodeAttributes _attributes;
-        private readonly BoundNodeFlags _nodeFlags;
         private readonly BoundTree _boundTree;
-        private BoundNodeFlags _lazyChildFlags;
-        private ImmutableArray<BoundNode> _lazyChildren;
+        private ImmutableArray<BoundNode> _childBoundNodes;
         private readonly LanguageSyntaxNode _syntax;
 
         [Flags()]
@@ -37,13 +35,13 @@ namespace MetaDslx.CodeAnalysis.Binding
             IsSuppressed = 1 << 4,
         }
 
-        protected BoundNode(BoundKind kind, BoundTree boundTree, BoundNodeFlags nodeFlags, LanguageSyntaxNode syntax, bool hasErrors)
+        protected BoundNode(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
         {
             Debug.Assert(syntax != null);
 
             _kind = kind;
             _boundTree = boundTree;
-            _nodeFlags = nodeFlags;
+            _childBoundNodes = childBoundNodes;
             _syntax = syntax;
 
             if (hasErrors)
@@ -171,32 +169,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public BoundKind Kind => _kind;
 
-        public BoundNodeFlags NodeFlags => _nodeFlags;
-
-        public BoundNodeFlags ChildFlags
-        {
-            get
-            {
-                if (_lazyChildFlags == null)
-                {
-                    Interlocked.CompareExchange(ref _lazyChildFlags, this.ComputeChildFlags(), null);
-                }
-                return _lazyChildFlags;
-            }
-        }
-
-        public BoundNodeFlags Flags
-        {
-            get
-            {
-                if (_nodeFlags == null || _nodeFlags == BoundNodeFlags.None) return this.ChildFlags;
-                else if (this.ChildFlags == null || this.ChildFlags == BoundNodeFlags.None) return _nodeFlags;
-                else return _nodeFlags.UnionWith(this.ChildFlags);
-            }
-        }
-
-        public ImmutableArray<BoundNode> Children
-        {
+        public ImmutableArray<BoundNode> ChildBoundNodes => _childBoundNodes;
+        /*{
             get
             {
                 if (_lazyChildren.IsDefault)
@@ -205,18 +179,11 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
                 return _lazyChildren;
             }
-        }
+        }*/
 
         protected virtual ImmutableArray<BoundNode> ComputeChildren()
         {
             return _boundTree.ComputeChildren(_syntax);
-        }
-
-        protected virtual BoundNodeFlags ComputeChildFlags()
-        {
-            BoundNodeFlags result = _nodeFlags ?? BoundNodeFlags.None;
-            result = result.UnionWith(this.Children.Select(c => c.Flags).ToArray());
-            return result;
         }
 
         public virtual BoundNode Accept(BoundTreeVisitor visitor)
@@ -226,7 +193,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public void ForceComplete(CancellationToken cancellationToken)
         {
-            foreach (var child in this.Children)
+            foreach (var child in this.ChildBoundNodes)
             {
                 child.ForceComplete(cancellationToken);
             }
@@ -256,20 +223,21 @@ namespace MetaDslx.CodeAnalysis.Binding
                 string kind = node.Kind.GetName();
                 object obj = null;
                 TypeSymbol type = null;
-                if (node is BoundSymbol boundSymbol) obj = boundSymbol.Symbol;
-                if (node is BoundStatement boundStatement) obj = boundStatement.Statement;
-                if (node is BoundExpression boundExpression)
+                if (node is BoundValue boundValue) obj = boundValue.Value;
+                else if (node is BoundSymbol boundSymbol) obj = boundSymbol.Symbol;
+                else if (node is BoundStatement boundStatement) obj = boundStatement.Statement;
+                else if (node is BoundExpression boundExpression)
                 {
                     obj = boundExpression.Expression;
                     type = boundExpression.Type;
-                    sb.AppendFormat("{0} ({1}) -> {2}: {3}", indent, node.Syntax.Kind, node.Kind, obj, type);
+                    sb.AppendFormat("{0}{1} ({2}) -> {3}: {4}", indent, node.Syntax.Kind, node.Kind, obj, type);
                 }
                 else
                 {
-                    sb.AppendFormat("{0} ({1}) -> {2}: {3}", indent, node.Syntax.Kind, node.Kind, obj);
+                    sb.AppendFormat("{0}{1} ({2}) -> {3}", indent, node.Syntax.Kind, node.Kind, obj);
                 }
                 sb.AppendLine();
-                foreach (var child in node.Children)
+                foreach (var child in node.ChildBoundNodes)
                 {
                     Dump(sb, indent + "  ", child);
                 }

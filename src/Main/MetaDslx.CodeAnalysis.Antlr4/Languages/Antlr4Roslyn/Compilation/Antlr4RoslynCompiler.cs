@@ -62,6 +62,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public string GeneratedDeclarationTreeBuilder { get; private set; }
         public string GeneratedBinderFactoryVisitor { get; private set; }
+        public string GeneratedBoundNodeFactoryVisitor { get; private set; }
         public string GeneratedSymbolBuilder { get; private set; }
 
         //public string GeneratedLanguageService { get; private set; }
@@ -373,6 +374,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
+            this.GeneratedBoundNodeFactoryVisitor = generator.GenerateBoundNodeFactoryVisitor();
             this.GeneratedSymbolBuilder = generator.GenerateSymbolBuilder();
 
             if (this.OutputDirectory == null) return;
@@ -397,6 +399,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Compilation.cs"), this.GeneratedCompilation);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs"), this.GeneratedDeclarationTreeBuilder);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs"), this.GeneratedBinderFactoryVisitor);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BoundNodeFactoryVisitor.cs"), this.GeneratedBoundNodeFactoryVisitor);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs"), this.GeneratedCompilationFactory);
                 /*this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs"), this.GeneratedScriptCompilationInfo);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);
@@ -580,7 +583,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                             {
                                 this.Grammar.ParserRuleElemUses.Add(elem.RedName());
                                 item.HasAnnotations = true;
-                                elem.HasAnnotations = true;
+                                //elem.HasAnnotations = true;
                                 elem.ContainsAnnotations = true;
                                 foundElemFlag = true;
                             }
@@ -1760,6 +1763,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 if (elem.Annotations.Annotations.Count > 0) return true;
             }
             return false;
+        }
+
+        public bool IsBindableNode()
+        {
+            return HasAnnotations || HasElementAnnotations();
         }
     }
     public class Antlr4ParserRuleElement : Antlr4AnnotatedObject

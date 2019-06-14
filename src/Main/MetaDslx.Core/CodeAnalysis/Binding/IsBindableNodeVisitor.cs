@@ -8,18 +8,22 @@ namespace MetaDslx.CodeAnalysis.Binding
     {
         private readonly BoundTree _boundTree;
         private int _position;
+        private bool _isBindableRoot;
 
         public IsBindableNodeVisitor(BoundTree boundTree)
         {
             _boundTree = boundTree;
         }
 
-        public void Initialize(int position)
+        public void Initialize(int position, bool isBindableRoot)
         {
             _position = position;
+            _isBindableRoot = isBindableRoot;
         }
 
         protected int Position => _position;
+
+        protected bool IsBindableRoot => _isBindableRoot;
 
         protected BoundTree BoundTree => _boundTree;
 

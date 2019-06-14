@@ -122,6 +122,8 @@ namespace MetaDslx.CodeAnalysis
         protected override SyntaxTree SyntaxTreeCore => this.SyntaxTree;
 
 
+        public abstract TResult Accept<TArg, TResult>(SyntaxVisitor<TArg, TResult> visitor, TArg argument);
+
         public abstract TResult Accept<TResult>(SyntaxVisitor<TResult> visitor);
 
         public abstract void Accept(SyntaxVisitor visitor);

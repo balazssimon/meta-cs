@@ -1294,7 +1294,7 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.BindExpression(expression);
+                var bnode = binder.BindExpression(expression, BoundTree);
 
                 if (bnode != null && !cdestination.IsErrorType())
                 {
@@ -1345,7 +1345,7 @@ namespace MetaDslx.CodeAnalysis
             var binder = this.GetEnclosingBinder(position);
             if (binder != null)
             {
-                var bnode = binder.BindExpression(expression);
+                var bnode = binder.BindExpression(expression, BoundTree);
 
                 if (bnode != null && !destination.IsErrorType())
                 {

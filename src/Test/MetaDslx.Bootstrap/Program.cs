@@ -1,8 +1,8 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-using MetaDslx.Languages.Meta;
+/*using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
-using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.Meta.Symbols;*/
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -19,7 +19,7 @@ namespace MetaDslx.Bootstrap
             MetaGeneratorBootstrap mg = new MetaGeneratorBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Generator\CompilerGenerator.mgen");
             mg.Compile();
             //*/
-
+            
             //*/
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorLexer.ag4", "MetaDslx.Bootstrap.MetaGenerator");
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorParser.ag4", "MetaDslx.Bootstrap.MetaGenerator");

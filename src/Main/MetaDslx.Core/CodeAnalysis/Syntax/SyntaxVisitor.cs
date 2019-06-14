@@ -12,6 +12,33 @@ namespace MetaDslx.CodeAnalysis
     /// <typeparam name="TResult">
     /// The type of the return value this visitor's Visit method.
     /// </typeparam>
+    public abstract partial class SyntaxVisitor<TArg, TResult>
+    {
+        public virtual TResult Visit(SyntaxNode node, TArg argument)
+        {
+            if (node != null)
+            {
+                return ((LanguageSyntaxNode)node).Accept(this, argument);
+            }
+
+            // should not come here too often so we will put this at the end of the method.
+            return default(TResult);
+        }
+
+        public virtual TResult DefaultVisit(SyntaxNode node, TArg argument)
+        {
+            return default(TResult);
+        }
+    }
+
+    /// <summary>
+    /// Represents a <see cref="LanguageSyntaxNode"/> visitor that visits only the single SyntaxNode
+    /// passed into its Visit method and produces 
+    /// a value of the type specified by the <typeparamref name="TResult"/> parameter.
+    /// </summary>
+    /// <typeparam name="TResult">
+    /// The type of the return value this visitor's Visit method.
+    /// </typeparam>
     public abstract partial class SyntaxVisitor<TResult>
     {
         public virtual TResult Visit(SyntaxNode node)

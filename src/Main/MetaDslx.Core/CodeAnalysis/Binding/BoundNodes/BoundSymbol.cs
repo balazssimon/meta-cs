@@ -1,30 +1,20 @@
-﻿using MetaDslx.CodeAnalysis.Binding;
-using MetaDslx.CodeAnalysis.Symbols;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.PooledObjects;
+﻿using MetaDslx.CodeAnalysis.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
-using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundSymbol : BoundNode
+    public class BoundSymbol : BoundValue
     {
-        private readonly Symbol _symbol;
-
-        protected BoundSymbol(BoundKind kind, BoundTree boundTree, BoundNodeFlags nodeFlags, LanguageSyntaxNode syntax, bool hasErrors = false)
-            : base(kind, boundTree, nodeFlags, syntax, hasErrors)
+        public BoundSymbol(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
+            : base(kind, boundTree, childBoundNodes, null, syntax, hasErrors)
         {
         }
 
-        public Symbol Symbol => _symbol;
+        public virtual Symbol Symbol { get; }
 
-        protected override void ForceCompleteNode(CancellationToken cancellationToken)
-        {
-            _symbol.ForceComplete(null, cancellationToken);
-        }
-
+        public override object Value => this.Symbol;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
@@ -10,8 +11,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private readonly IOperation _expression;
 
-        protected BoundExpression(BoundKind kind, BoundTree boundTree, BoundNodeFlags nodeFlags, IOperation expression, LanguageSyntaxNode syntax, bool hasErrors = false)
-            : base(kind, boundTree, nodeFlags, syntax, hasErrors)
+        protected BoundExpression(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, IOperation expression, LanguageSyntaxNode syntax, bool hasErrors = false)
+            : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
             _expression = expression;
         }

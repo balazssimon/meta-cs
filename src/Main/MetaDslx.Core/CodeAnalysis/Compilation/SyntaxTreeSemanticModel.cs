@@ -235,7 +235,7 @@ namespace MetaDslx.CodeAnalysis
                         // will be one in the binder chain and one isn't necessarily required for the batch case.
                         binder = new LocalScopeBinder(binder);
 
-                        BoundExpression bound = binder.BindExpression(node);
+                        BoundExpression bound = binder.BindExpression(node, _boundTree);
 
                         SymbolInfo info = GetSymbolInfoForNode(options, bound, bound, boundNodeForSyntacticParent: null, binderOpt: null);
                         if ((object)info.Symbol != null)
@@ -782,7 +782,7 @@ namespace MetaDslx.CodeAnalysis
             if (memberModel == null)
             {
                 // Recover from error cases
-                var node = new BoundBadStatement(expression, ImmutableArray<BoundNode>.Empty, hasErrors: true);
+                var node = new BoundBadStatement(BoundTree, ImmutableArray<BoundNode>.Empty, expression, hasErrors: true);
                 return new RegionAnalysisContext(Compilation, null, node, node, node);
             }
 
@@ -799,7 +799,7 @@ namespace MetaDslx.CodeAnalysis
             if (memberModel == null)
             {
                 // Recover from error cases
-                var node = new BoundBadStatement(firstStatement, ImmutableArray<BoundNode>.Empty, hasErrors: true);
+                var node = new BoundBadStatement(BoundTree, ImmutableArray<BoundNode>.Empty, firstStatement, hasErrors: true);
                 return new RegionAnalysisContext(Compilation, null, node, node, node);
             }
 

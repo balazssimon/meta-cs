@@ -14,6 +14,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		None = 0,
 		ContextualKeyword,
 		DocumentationCommentTrivia,
+		ExternAliasDirective,
 		FixedToken,
 		GeneralComment,
 		GeneralCommentTrivia,
@@ -1116,6 +1117,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return true;
 				case MetaSyntaxKind.LTime:
 					return true;
+				default:
+					return false;
+			}
+		}
+		public override bool IsExternAliasDirective(SyntaxKind kind)
+		{
+			switch(kind.Switch())
+			{
 				default:
 					return false;
 			}

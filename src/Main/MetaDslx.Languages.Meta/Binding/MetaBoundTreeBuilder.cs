@@ -1,4 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.BoundTree;
+﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.Languages.Meta.Syntax;
 using System;
 using System.Collections.Generic;

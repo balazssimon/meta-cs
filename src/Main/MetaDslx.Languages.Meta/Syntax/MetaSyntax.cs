@@ -37,6 +37,14 @@ namespace MetaDslx.Languages.Meta.Syntax
             return MetaSyntaxTree.CreateWithoutClone(this);
         }
 
+        public override TResult Accept<TArg, TResult>(SyntaxVisitor<TArg, TResult> visitor, TArg argument)
+        {
+            if (visitor is IMetaSyntaxVisitor<TArg, TResult> typedVisitor) return this.Accept(typedVisitor, argument);
+            else return visitor.DefaultVisit(this, argument);
+        }
+
+        public abstract TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument);
+
         public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
         {
             if (visitor is IMetaSyntaxVisitor<TResult> typedVisitor) return this.Accept(typedVisitor);
@@ -124,6 +132,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitMain(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitMain(this);
@@ -190,6 +203,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitName(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitName(this);
@@ -254,6 +272,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (QualifiedNameSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitQualifiedName(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -333,6 +356,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (QualifierSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitQualifier(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -429,6 +457,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (AnnotationSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitAnnotation(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -548,6 +581,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitNamespaceDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitNamespaceDeclaration(this);
@@ -665,6 +703,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (NamespaceBodySyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitNamespaceBody(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -829,6 +872,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitMetamodelDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitMetamodelDeclaration(this);
@@ -908,6 +956,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitMetamodelPropertyList(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitMetamodelPropertyList(this);
@@ -972,6 +1025,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (MetamodelPropertySyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitMetamodelProperty(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -1068,6 +1126,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (MetamodelUriPropertySyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitMetamodelUriProperty(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -1236,6 +1299,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitDeclaration(this);
@@ -1351,6 +1419,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (EnumDeclarationSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitEnumDeclaration(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -1487,6 +1560,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitEnumBody(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitEnumBody(this);
@@ -1564,6 +1642,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (EnumValuesSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitEnumValues(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -1655,6 +1738,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitEnumValue(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitEnumValue(this);
@@ -1719,6 +1807,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (EnumMemberDeclarationSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitEnumMemberDeclaration(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -1881,6 +1974,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitClassDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitClassDeclaration(this);
@@ -1987,6 +2085,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitClassBody(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitClassBody(this);
@@ -2066,6 +2169,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitClassAncestors(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitClassAncestors(this);
@@ -2130,6 +2238,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (ClassAncestorSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitClassAncestor(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -2221,6 +2334,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (ClassMemberDeclarationSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitClassMemberDeclaration(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -2366,6 +2484,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitFieldDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitFieldDeclaration(this);
@@ -2432,6 +2555,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (FieldModifierSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitFieldModifier(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -2525,6 +2653,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitRedefinitionsOrSubsettings(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitRedefinitionsOrSubsettings(this);
@@ -2604,6 +2737,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (RedefinitionsSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitRedefinitions(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -2687,6 +2825,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitSubsettings(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitSubsettings(this);
@@ -2764,6 +2907,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (NameUseListSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitNameUseList(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -2875,6 +3023,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitConstDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitConstDeclaration(this);
@@ -2964,6 +3117,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (ExternTypeDeclarationSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitExternTypeDeclaration(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -3090,6 +3248,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitExternClassTypeDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitExternClassTypeDeclaration(this);
@@ -3214,6 +3377,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitExternStructTypeDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitExternStructTypeDeclaration(this);
@@ -3305,6 +3473,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitReturnType(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitReturnType(this);
@@ -3369,6 +3542,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (TypeOfReferenceSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitTypeOfReference(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -3460,6 +3638,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (TypeReferenceSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitTypeReference(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -3603,6 +3786,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitSimpleType(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitSimpleType(this);
@@ -3667,6 +3855,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (ClassTypeSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitClassType(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -3737,6 +3930,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitObjectType(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitObjectType(this);
@@ -3805,6 +4003,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitPrimitiveType(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitPrimitiveType(this);
@@ -3871,6 +4074,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (VoidTypeSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitVoidType(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -3952,6 +4160,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (NullableTypeSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitNullableType(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -4063,6 +4276,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitCollectionType(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitCollectionType(this);
@@ -4129,6 +4347,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (CollectionKindSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitCollectionKind(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -4306,6 +4529,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitOperationDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitOperationDeclaration(this);
@@ -4383,6 +4611,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (ParameterListSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitParameterList(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -4485,6 +4718,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (ParameterSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitParameter(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -4634,6 +4872,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitAssociationDeclaration(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitAssociationDeclaration(this);
@@ -4700,6 +4943,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (IdentifierSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitIdentifier(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -4893,6 +5141,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitLiteral(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitLiteral(this);
@@ -4959,6 +5212,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (NullLiteralSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitNullLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -5029,6 +5287,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitBooleanLiteral(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitBooleanLiteral(this);
@@ -5095,6 +5358,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (IntegerLiteralSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitIntegerLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -5165,6 +5433,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitDecimalLiteral(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitDecimalLiteral(this);
@@ -5233,6 +5506,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitScientificLiteral(this, argument);
+	    }
+	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
 	        return visitor.VisitScientificLiteral(this);
@@ -5299,6 +5577,11 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return (StringLiteralSyntax)newNode;
 	        }
 	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitStringLiteral(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
@@ -5714,6 +5997,399 @@ namespace MetaDslx.Languages.Meta
 	}
 
 	//GenerateDetailedSyntaxVisitor()
+
+	public interface IMetaSyntaxVisitor<TArg, TResult> 
+	{
+		
+		TResult VisitMain(MainSyntax node, TArg argument);
+		
+		TResult VisitName(NameSyntax node, TArg argument);
+		
+		TResult VisitQualifiedName(QualifiedNameSyntax node, TArg argument);
+		
+		TResult VisitQualifier(QualifierSyntax node, TArg argument);
+		
+		TResult VisitAnnotation(AnnotationSyntax node, TArg argument);
+		
+		TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node, TArg argument);
+		
+		TResult VisitNamespaceBody(NamespaceBodySyntax node, TArg argument);
+		
+		TResult VisitMetamodelDeclaration(MetamodelDeclarationSyntax node, TArg argument);
+		
+		TResult VisitMetamodelPropertyList(MetamodelPropertyListSyntax node, TArg argument);
+		
+		TResult VisitMetamodelProperty(MetamodelPropertySyntax node, TArg argument);
+		
+		TResult VisitMetamodelUriProperty(MetamodelUriPropertySyntax node, TArg argument);
+		
+		TResult VisitDeclaration(DeclarationSyntax node, TArg argument);
+		
+		TResult VisitEnumDeclaration(EnumDeclarationSyntax node, TArg argument);
+		
+		TResult VisitEnumBody(EnumBodySyntax node, TArg argument);
+		
+		TResult VisitEnumValues(EnumValuesSyntax node, TArg argument);
+		
+		TResult VisitEnumValue(EnumValueSyntax node, TArg argument);
+		
+		TResult VisitEnumMemberDeclaration(EnumMemberDeclarationSyntax node, TArg argument);
+		
+		TResult VisitClassDeclaration(ClassDeclarationSyntax node, TArg argument);
+		
+		TResult VisitClassBody(ClassBodySyntax node, TArg argument);
+		
+		TResult VisitClassAncestors(ClassAncestorsSyntax node, TArg argument);
+		
+		TResult VisitClassAncestor(ClassAncestorSyntax node, TArg argument);
+		
+		TResult VisitClassMemberDeclaration(ClassMemberDeclarationSyntax node, TArg argument);
+		
+		TResult VisitFieldDeclaration(FieldDeclarationSyntax node, TArg argument);
+		
+		TResult VisitFieldModifier(FieldModifierSyntax node, TArg argument);
+		
+		TResult VisitRedefinitionsOrSubsettings(RedefinitionsOrSubsettingsSyntax node, TArg argument);
+		
+		TResult VisitRedefinitions(RedefinitionsSyntax node, TArg argument);
+		
+		TResult VisitSubsettings(SubsettingsSyntax node, TArg argument);
+		
+		TResult VisitNameUseList(NameUseListSyntax node, TArg argument);
+		
+		TResult VisitConstDeclaration(ConstDeclarationSyntax node, TArg argument);
+		
+		TResult VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node, TArg argument);
+		
+		TResult VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node, TArg argument);
+		
+		TResult VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node, TArg argument);
+		
+		TResult VisitReturnType(ReturnTypeSyntax node, TArg argument);
+		
+		TResult VisitTypeOfReference(TypeOfReferenceSyntax node, TArg argument);
+		
+		TResult VisitTypeReference(TypeReferenceSyntax node, TArg argument);
+		
+		TResult VisitSimpleType(SimpleTypeSyntax node, TArg argument);
+		
+		TResult VisitClassType(ClassTypeSyntax node, TArg argument);
+		
+		TResult VisitObjectType(ObjectTypeSyntax node, TArg argument);
+		
+		TResult VisitPrimitiveType(PrimitiveTypeSyntax node, TArg argument);
+		
+		TResult VisitVoidType(VoidTypeSyntax node, TArg argument);
+		
+		TResult VisitNullableType(NullableTypeSyntax node, TArg argument);
+		
+		TResult VisitCollectionType(CollectionTypeSyntax node, TArg argument);
+		
+		TResult VisitCollectionKind(CollectionKindSyntax node, TArg argument);
+		
+		TResult VisitOperationDeclaration(OperationDeclarationSyntax node, TArg argument);
+		
+		TResult VisitParameterList(ParameterListSyntax node, TArg argument);
+		
+		TResult VisitParameter(ParameterSyntax node, TArg argument);
+		
+		TResult VisitAssociationDeclaration(AssociationDeclarationSyntax node, TArg argument);
+		
+		TResult VisitIdentifier(IdentifierSyntax node, TArg argument);
+		
+		TResult VisitLiteral(LiteralSyntax node, TArg argument);
+		
+		TResult VisitNullLiteral(NullLiteralSyntax node, TArg argument);
+		
+		TResult VisitBooleanLiteral(BooleanLiteralSyntax node, TArg argument);
+		
+		TResult VisitIntegerLiteral(IntegerLiteralSyntax node, TArg argument);
+		
+		TResult VisitDecimalLiteral(DecimalLiteralSyntax node, TArg argument);
+		
+		TResult VisitScientificLiteral(ScientificLiteralSyntax node, TArg argument);
+		
+		TResult VisitStringLiteral(StringLiteralSyntax node, TArg argument);
+	}
+	
+	public class MetaSyntaxVisitor<TArg, TResult> : SyntaxVisitor<TArg, TResult>, IMetaSyntaxVisitor<TArg, TResult>
+	{
+		
+		public virtual TResult VisitMain(MainSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitName(NameSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitQualifiedName(QualifiedNameSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitQualifier(QualifierSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitAnnotation(AnnotationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitNamespaceBody(NamespaceBodySyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitMetamodelDeclaration(MetamodelDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitMetamodelPropertyList(MetamodelPropertyListSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitMetamodelProperty(MetamodelPropertySyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitMetamodelUriProperty(MetamodelUriPropertySyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitDeclaration(DeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitEnumDeclaration(EnumDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitEnumBody(EnumBodySyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitEnumValues(EnumValuesSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitEnumValue(EnumValueSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitEnumMemberDeclaration(EnumMemberDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitClassDeclaration(ClassDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitClassBody(ClassBodySyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitClassAncestors(ClassAncestorsSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitClassAncestor(ClassAncestorSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitClassMemberDeclaration(ClassMemberDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitFieldDeclaration(FieldDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitFieldModifier(FieldModifierSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitRedefinitionsOrSubsettings(RedefinitionsOrSubsettingsSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitRedefinitions(RedefinitionsSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitSubsettings(SubsettingsSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitNameUseList(NameUseListSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitConstDeclaration(ConstDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitReturnType(ReturnTypeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitTypeOfReference(TypeOfReferenceSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitTypeReference(TypeReferenceSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitSimpleType(SimpleTypeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitClassType(ClassTypeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitObjectType(ObjectTypeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitPrimitiveType(PrimitiveTypeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitVoidType(VoidTypeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitNullableType(NullableTypeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitCollectionType(CollectionTypeSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitCollectionKind(CollectionKindSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitOperationDeclaration(OperationDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitParameterList(ParameterListSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitParameter(ParameterSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitAssociationDeclaration(AssociationDeclarationSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitIdentifier(IdentifierSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitLiteral(LiteralSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitNullLiteral(NullLiteralSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitBooleanLiteral(BooleanLiteralSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitIntegerLiteral(IntegerLiteralSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitDecimalLiteral(DecimalLiteralSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitScientificLiteral(ScientificLiteralSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitStringLiteral(StringLiteralSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+	}
 
 	public interface IMetaSyntaxVisitor<TResult> 
 	{

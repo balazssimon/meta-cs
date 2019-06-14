@@ -77,7 +77,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 BoundNode current = nodeStack.Pop();
                 AddNode(map, thisSyntaxNodeOnly, current);
-                var currentChildren = current.Children;
+                var currentChildren = current.ChildBoundNodes;
                 for (int i = currentChildren.Length - 1; i >= 0; --i)
                 {
                     nodeStack.Push(currentChildren[i]);
@@ -113,10 +113,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         private static bool ShouldAddNode(BoundNode currentBoundNode, SyntaxNode thisSyntaxNodeOnly)
         {
             // Do not add compiler generated nodes.
+            /* TODO:MetaDslx - enable this condition?
             if (currentBoundNode.WasCompilerGenerated)
             {
                 return false;
-            }
+            }*/
 
             // Do not add if only a specific syntax node should be added.
             if (thisSyntaxNodeOnly != null && currentBoundNode.Syntax != thisSyntaxNodeOnly)

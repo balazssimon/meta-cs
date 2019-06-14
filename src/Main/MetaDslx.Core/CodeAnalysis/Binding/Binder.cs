@@ -475,24 +475,57 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public virtual BoundNode Bind(LanguageSyntaxNode node)
+        public BoundNode Bind(LanguageSyntaxNode node, BoundTree boundTree)
         {
-            var boundTree = this.Compilation.GetBoundTree(node);
+            if (boundTree == null) boundTree = this.Compilation.GetBoundTree(node);
             return boundTree.GetUpperBoundNode(node);
         }
 
-        public virtual BoundExpression BindExpression(LanguageSyntaxNode node)
+        public BoundExpression BindExpression(LanguageSyntaxNode node, BoundTree boundTree)
         {
             Debug.Assert(Language.SyntaxFacts.IsExpression(node));
-            var boundTree = this.Compilation.GetBoundTree(node);
-            return (BoundExpression)boundTree.GetUpperBoundNode(node);
+            return (BoundExpression)this.Bind(node, boundTree);
         }
 
-        public virtual BoundStatement BindStatement(LanguageSyntaxNode node)
+        public BoundStatement BindStatement(LanguageSyntaxNode node, BoundTree boundTree)
         {
             Debug.Assert(Language.SyntaxFacts.IsStatement(node));
-            var boundTree = this.Compilation.GetBoundTree(node);
-            return (BoundStatement)boundTree.GetUpperBoundNode(node);
+            return (BoundStatement)this.Bind(node, boundTree);
         }
+
+        protected virtual BoundNode BindCore(LanguageSyntaxNode node, BoundTree boundTree)
+        {
+            if (boundTree == null) boundTree = this.Compilation.GetBoundTree(node);
+            return boundTree.CreateBoundNode(node, this);
+        }
+
+        protected virtual BoundExpression BindExpressionCore(LanguageSyntaxNode node, BoundTree boundTree)
+        {
+            Debug.Assert(Language.SyntaxFacts.IsExpression(node));
+            return (BoundExpression)this.BindCore(node, boundTree);
+        }
+
+        protected virtual BoundStatement BindStatementCore(LanguageSyntaxNode node, BoundTree boundTree)
+        {
+            Debug.Assert(Language.SyntaxFacts.IsStatement(node));
+            return (BoundStatement)this.BindCore(node, boundTree);
+        }
+
+        internal protected virtual BoundNode CreateBoundNodeForBoundTree(LanguageSyntaxNode node, BoundTree boundTree)
+        {
+            if (Language.SyntaxFacts.IsExpression(node))
+            {
+                return this.BindExpressionCore(node, boundTree);
+            }
+            else if (Language.SyntaxFacts.IsStatement(node))
+            {
+                return this.BindStatementCore(node, boundTree);
+            }
+            else
+            {
+                return this.BindCore(node, boundTree);
+            }
+        }
+
     }
 }

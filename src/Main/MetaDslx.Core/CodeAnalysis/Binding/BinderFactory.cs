@@ -130,5 +130,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public abstract bool TryGetBinder(LanguageSyntaxNode node, object usage, out Binder binder);
         public abstract bool TryAddBinder(LanguageSyntaxNode node, object usage, ref Binder binder);
+
+
     }
 }
