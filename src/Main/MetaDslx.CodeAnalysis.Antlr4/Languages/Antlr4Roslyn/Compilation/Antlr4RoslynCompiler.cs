@@ -62,7 +62,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public string GeneratedDeclarationTreeBuilder { get; private set; }
         public string GeneratedBinderFactoryVisitor { get; private set; }
+        public string GeneratedBoundKind { get; private set; }
         public string GeneratedBoundNodeFactoryVisitor { get; private set; }
+        public string GeneratedIsBindableNodeVisitor { get; private set; }
         public string GeneratedSymbolBuilder { get; private set; }
 
         //public string GeneratedLanguageService { get; private set; }
@@ -374,7 +376,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
             this.GeneratedDeclarationTreeBuilder = generator.GenerateDeclarationTreeBuilder();
             this.GeneratedBinderFactoryVisitor = generator.GenerateBinderFactoryVisitor();
+            this.GeneratedBoundKind = generator.GenerateBoundKind();
             this.GeneratedBoundNodeFactoryVisitor = generator.GenerateBoundNodeFactoryVisitor();
+            this.GeneratedIsBindableNodeVisitor = generator.GenerateIsBindableNodeVisitor();
             this.GeneratedSymbolBuilder = generator.GenerateSymbolBuilder();
 
             if (this.OutputDirectory == null) return;
@@ -399,7 +403,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Compilation.cs"), this.GeneratedCompilation);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"DeclarationTreeBuilderVisitor.cs"), this.GeneratedDeclarationTreeBuilder);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BinderFactoryVisitor.cs"), this.GeneratedBinderFactoryVisitor);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BoundKind.cs"), this.GeneratedBoundKind);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BoundNodeFactoryVisitor.cs"), this.GeneratedBoundNodeFactoryVisitor);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"IsBindableNodeVisitor.cs"), this.GeneratedIsBindableNodeVisitor);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs"), this.GeneratedCompilationFactory);
                 /*this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs"), this.GeneratedScriptCompilationInfo);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);
@@ -525,38 +531,34 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         private void CollectHasAnnotationFlags()
         {
             if (this.DiagnosticBag.HasAnyErrors()) return;
+            foreach (var rule in this.Grammar.ParserRules)
+            {
+                this.SetAnnotationFlags(rule);
+                foreach (var alt in rule.Alternatives)
+                {
+                    this.SetAnnotationFlags(alt);
+                }
+            }
             bool foundNewFlag = true;
             while (foundNewFlag)
             {
                 foundNewFlag = false;
                 foreach (var rule in this.Grammar.ParserRules)
                 {
-                    bool foundRuleFlag = this.CollectHasAnnotationFlags(rule);
-                    if (rule.Annotations.Annotations.Count > 0)
-                    {
-                        if (!rule.ContainsAnnotations) foundRuleFlag = true;
-                        rule.HasAnnotations = true;
-                    }
-                    if (foundRuleFlag)
-                    {
-                        rule.ContainsAnnotations = true;
-                        foundNewFlag = true;
-                    }
+                    bool oldContainsAnnotations = rule.ContainsAnnotations;
+                    bool oldContainsBinderAnnotations = rule.ContainsBinderAnnotations;
+                    bool oldContainsBoundNodeAnnotations = rule.ContainsBoundNodeAnnotations;
+                    foundNewFlag = this.CollectHasAnnotationFlags(rule) | foundNewFlag;
                     foreach (var alt in rule.Alternatives)
                     {
-                        foundRuleFlag = this.CollectHasAnnotationFlags(alt);
-                        if (alt.Annotations.Annotations.Count > 0)
-                        {
-                            if (!alt.ContainsAnnotations) foundRuleFlag = true;
-                            alt.HasAnnotations = true;
-                        }
-                        if (foundRuleFlag)
-                        {
-                            alt.ContainsAnnotations = true;
-                            rule.ContainsAnnotations = true;
-                            foundNewFlag = true;
-                        }
+                        foundNewFlag = this.CollectHasAnnotationFlags(alt) | foundNewFlag;
+                        MergeContainsAnnotationsFrom(rule, alt);
                     }
+                    foundNewFlag = 
+                        (rule.ContainsAnnotations && !oldContainsAnnotations) |
+                        (rule.ContainsBinderAnnotations && !oldContainsBinderAnnotations) |
+                        (rule.ContainsBoundNodeAnnotations && !oldContainsBoundNodeAnnotations) |
+                        foundNewFlag;
                 }
             }
         }
@@ -566,41 +568,70 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             bool foundElemFlag = false;
             foreach (var elem in rule.AllElements)
             {
-                if (!elem.ContainsAnnotations)
+                bool oldContainsAnnotations = elem.ContainsAnnotations;
+                bool oldContainsBinderAnnotations = elem.ContainsBinderAnnotations;
+                bool oldContainsBoundNodeAnnotations = elem.ContainsBoundNodeAnnotations;
+                this.SetAnnotationFlags(elem);
+                if (elem.ContainsAnnotations)
                 {
-                    if (elem.Annotations.Annotations.Count > 0)
+                    this.Grammar.ParserRuleElemUses.Add(elem.RedName());
+                }
+                if (elem.BlockItems.Count > 0)
+                {
+                    foreach (var item in elem.BlockItems)
                     {
-                        this.Grammar.ParserRuleElemUses.Add(elem.RedName());
-                        elem.ContainsAnnotations = true;
-                        elem.HasAnnotations = true;
-                        foundElemFlag = true;
-                    }
-                    if (elem.BlockItems.Count > 0)
-                    {
-                        foreach (var item in elem.BlockItems)
+                        bool oldItemContainsAnnotations = item.ContainsAnnotations;
+                        bool oldItemContainsBinderAnnotations = item.ContainsBinderAnnotations;
+                        bool oldItemContainsBoundNodeAnnotations = item.ContainsBoundNodeAnnotations;
+                        this.SetAnnotationFlags(item);
+                        if (item.ContainsAnnotations)
                         {
-                            if (item.Annotations.Annotations.Count > 0)
-                            {
-                                this.Grammar.ParserRuleElemUses.Add(elem.RedName());
-                                item.HasAnnotations = true;
-                                //elem.HasAnnotations = true;
-                                elem.ContainsAnnotations = true;
-                                foundElemFlag = true;
-                            }
+                            this.Grammar.ParserRuleElemUses.Add(elem.RedName());
                         }
+                        Antlr4ParserRule itemTypeRule = this.Grammar.FindParserRule(item.Type);
+                        if (itemTypeRule != null)
+                        {
+                            MergeContainsAnnotationsFrom(item, itemTypeRule);
+                        }
+                        MergeContainsAnnotationsFrom(elem, item);
+                        foundElemFlag =
+                            (item.ContainsAnnotations && !oldItemContainsAnnotations) |
+                            (item.ContainsBinderAnnotations && !oldItemContainsBinderAnnotations) |
+                            (item.ContainsBoundNodeAnnotations && !oldItemContainsBoundNodeAnnotations) |
+                            foundElemFlag;
                     }
                 }
-                if (!elem.ContainsAnnotations)
+                Antlr4ParserRule elemTypeRule = this.Grammar.FindParserRule(elem.Type);
+                if (elemTypeRule != null)
                 {
-                    Antlr4ParserRule elemTypeRule = this.Grammar.FindParserRule(elem.Type);
-                    if (elemTypeRule != null && elemTypeRule.ContainsAnnotations)
-                    {
-                        elem.ContainsAnnotations = true;
-                        foundElemFlag = true;
-                    }
+                    MergeContainsAnnotationsFrom(elem, elemTypeRule);
                 }
+                MergeContainsAnnotationsFrom(rule, elem);
+                foundElemFlag =
+                        (elem.ContainsAnnotations && !oldContainsAnnotations) |
+                        (elem.ContainsBinderAnnotations && !oldContainsBinderAnnotations) |
+                        (elem.ContainsBoundNodeAnnotations && !oldContainsBoundNodeAnnotations) |
+                        foundElemFlag;
             }
             return foundElemFlag;
+        }
+
+        private void SetAnnotationFlags(Antlr4AnnotatedObject obj)
+        {
+            obj.HasAnnotations = obj.Annotations.Annotations.Count > 0;
+            obj.ContainsAnnotations |= obj.HasAnnotations;
+            int binderAnnotationCount = obj.Annotations.Annotations.Count(a => MetaCompilerAnnotationInfo.BinderAnnotations.Contains(a.Name));
+            obj.HasBinderAnnotations = binderAnnotationCount > 0;
+            obj.ContainsBinderAnnotations |= obj.HasBinderAnnotations;
+            obj.HasBoundNodeAnnotations = obj.Annotations.Annotations.Count - binderAnnotationCount > 0;
+            obj.ContainsBoundNodeAnnotations |= obj.HasBoundNodeAnnotations;
+        }
+
+        private void MergeContainsAnnotationsFrom(Antlr4AnnotatedObject target, Antlr4AnnotatedObject source)
+        {
+            target.ContainsAnnotations |= source.ContainsAnnotations;
+            target.ContainsBinderAnnotations |= source.ContainsBinderAnnotations;
+            target.ContainsBoundNodeAnnotations |= source.ContainsBoundNodeAnnotations;
         }
 
         public static string FixedTokenToCSharpString(string value)
@@ -1675,6 +1706,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public bool ContainsDeclarationTreeAnnotations { get; internal set; }
         public bool ContainsAnnotations { get; internal set; }
         public bool HasAnnotations { get; internal set; }
+        public bool ContainsBinderAnnotations { get; internal set; }
+        public bool HasBinderAnnotations { get; internal set; }
+        public bool ContainsBoundNodeAnnotations { get; internal set; }
+        public bool HasBoundNodeAnnotations { get; internal set; }
     }
     public class Antlr4Grammar : Antlr4AnnotatedObject
     {
@@ -1756,18 +1791,29 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
-        public bool HasElementAnnotations()
+        public bool HasElementAnnotations(string name = null)
         {
             foreach (var elem in this.Elements)
             {
-                if (elem.Annotations.Annotations.Count > 0) return true;
+                if (name == null)
+                {
+                    if (elem.Annotations.Annotations.Count > 0) return true;
+                }
+                else
+                {
+                    if (elem.Annotations.Annotations.Any(a => a.Name == name)) return true;
+                }
             }
             return false;
         }
 
-        public bool IsBindableNode()
+        public bool HasElementAnnotationsExcept(string name)
         {
-            return HasAnnotations || HasElementAnnotations();
+            foreach (var elem in this.Elements)
+            {
+                if (elem.Annotations.Annotations.Any(a => a.Name != name)) return true;
+            }
+            return false;
         }
     }
     public class Antlr4ParserRuleElement : Antlr4AnnotatedObject

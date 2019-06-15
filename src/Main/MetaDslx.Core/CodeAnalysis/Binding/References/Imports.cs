@@ -56,6 +56,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             this.Usings = usings;
             _diagnostics = diagnostics;
             this.ExternAliases = externs;
+
+            if (_compilation != null) _state = SymbolCompletionState.Create(_compilation.Language);
+            else _state = null;
         }
 
         internal string GetDebuggerDisplay()
@@ -503,6 +506,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         internal void Complete(CancellationToken cancellationToken)
         {
+            if (_state == null) return;
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();

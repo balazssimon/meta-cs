@@ -325,7 +325,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return (InContainerBinder)result;
         }
 
-        protected NamespaceOrTypeSymbol GetContainerSymbol(Binder binder, SyntaxNodeOrToken syntax)
+        protected NamespaceOrTypeSymbol GetContainerSymbol(Binder binder, LanguageSyntaxNode syntax)
         {
             var container = binder.ContainingSymbol as NamespaceOrTypeSymbol;
             if ((object)container == null)
@@ -336,28 +336,27 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
                 else
                 {
-                    container = null; // TODO:MetaDslx - non-null result?
+                    container = Compilation.GlobalNamespace;
                 }
             }
-            return container;
+            return container.GetSourceMember(syntax);
         }
 
-        protected NamedTypeSymbol GetContainerType(Binder binder, LanguageSyntaxNode node)
+        protected NamedTypeSymbol GetContainerType(Binder binder, LanguageSyntaxNode syntax)
         {
-            var container = binder.ContainingSymbol as NamedTypeSymbol;
+            var container = binder.ContainingSymbol as NamespaceOrTypeSymbol;
             if ((object)container == null)
             {
-                Debug.Assert(binder.ContainingSymbol is NamespaceSymbol);
-                if (node.Parent.Kind == Language.SyntaxFacts.CompilationUnitKind && SyntaxTree.Options.Kind != SourceCodeKind.Regular)
+                if (syntax.Parent.Kind == Language.SyntaxFacts.CompilationUnitKind && SyntaxTree.Options.Kind != SourceCodeKind.Regular)
                 {
                     container = Compilation.ScriptClass;
                 }
                 else
                 {
-                    container = ((NamespaceSymbol)binder.ContainingSymbol).ImplicitType;
+                    container = Compilation.GlobalNamespace;
                 }
             }
-            return container;
+            return container.GetSourceTypeMember(syntax);
         }
     }
 }

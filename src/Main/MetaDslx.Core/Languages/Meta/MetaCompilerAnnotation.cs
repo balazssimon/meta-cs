@@ -13,6 +13,10 @@ namespace MetaDslx.Languages.Meta
     {
         public const string Id = "MetaDslx.MetaAnnotations";
 
+        public const string Binder = nameof(Binder);
+
+        public const string Root = nameof(Root);
+
         public const string Identifier = nameof(Identifier);
         public const string Qualifier = nameof(Qualifier);
         public const string Value = nameof(Value);
@@ -20,9 +24,8 @@ namespace MetaDslx.Languages.Meta
 
         public const string Property = nameof(Property);
         public const string Name = nameof(Name);
-        public const string Scope = nameof(Scope);
+        //public const string Scope = nameof(Scope);
 
-        public const string Root = nameof(Root);
         public const string SymbolDef = nameof(SymbolDef);
         public const string SymbolUse = nameof(SymbolUse);
         public const string SymbolCtr = nameof(SymbolCtr);
@@ -30,19 +33,27 @@ namespace MetaDslx.Languages.Meta
         public const string Token = nameof(Token);
 
 
-        public static readonly string[] SemanticAnnotations =
+        public static readonly string[] WellKnownAnnotations = 
             {
-                Identifier, Qualifier, Value, EnumValue,
-                Property, Name, Scope,
-                Root, SymbolDef, SymbolUse, SymbolCtr,
+                Binder,
+                Root,
+                Identifier, Qualifier, Value, EnumValue, 
+                Property, Name, //Scope,
+                SymbolDef, SymbolUse, SymbolCtr,
                 Token
             };
 
-        public static readonly string[] WellKnownAnnotations = 
+        public static readonly string[] BinderAnnotations =
             {
-                Identifier, Qualifier, Value, EnumValue, 
-                Property, Name, Scope,
-                Root, SymbolDef, SymbolUse, SymbolCtr,
+                Binder
+            };
+
+        public static readonly string[] BoundNodeAnnotations =
+            {
+                Root,
+                Identifier, Qualifier, Value, EnumValue,
+                Property, Name, 
+                SymbolDef, SymbolUse, SymbolCtr,
                 Token
             };
 
@@ -69,6 +80,7 @@ namespace MetaDslx.Languages.Meta
 
         static MetaCompilerAnnotationInfo()
         {
+            DefaultProperties.Add(Binder, "name");
             DefaultProperties.Add(Root, "symbolType");
             DefaultProperties.Add(SymbolDef, "symbolType");
             DefaultProperties.Add(SymbolUse, "symbolType");
@@ -91,6 +103,22 @@ namespace MetaDslx.Languages.Meta
         }
 
         public IReadOnlyList<MetaCompilerAnnotation> Annotations { get; }
+
+        public IEnumerable<MetaCompilerAnnotation> BinderAnnotations
+        {
+            get
+            {
+                return this.Annotations.Where(a => MetaCompilerAnnotationInfo.BinderAnnotations.Contains(a.Name));
+            }
+        }
+
+        public IEnumerable<MetaCompilerAnnotation> BoundNodeAnnotations
+        {
+            get
+            {
+                return this.Annotations.Where(a => !MetaCompilerAnnotationInfo.BinderAnnotations.Contains(a.Name));
+            }
+        }
 
         public ImmutableArray<MetaCompilerAnnotation> GetCustomAnnotations()
         {

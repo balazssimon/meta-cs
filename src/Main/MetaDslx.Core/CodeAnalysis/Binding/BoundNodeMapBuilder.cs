@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Collections;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -17,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <param name="root">The root of the bound tree.</param>
         /// <param name="map">The cache.</param>
         /// <param name="node">The syntax node where to add bound nodes for.</param>
-        public static void AddToMap(BoundNode root, Dictionary<SyntaxNode, ImmutableArray<BoundNode>> map, SyntaxNode node = null)
+        public static void AddToMap(BoundNode root, ConcurrentDictionary<SyntaxNode, ImmutableArray<BoundNode>> map, SyntaxNode node = null)
         {
             Debug.Assert(node == null || root == null);
 

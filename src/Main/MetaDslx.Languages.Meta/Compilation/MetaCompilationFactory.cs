@@ -31,19 +31,14 @@ namespace MetaDslx.Languages.Meta
             return new MetaBoundNodeFactoryVisitor(boundTree);
         }
 
+		public override IsBindableNodeVisitor CreateIsBindableNodeVisitor(BoundTree boundTree)
+        {
+            return new MetaIsBindableNodeVisitor(boundTree);
+        }
+
         public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             return MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)syntaxTree, scriptClassName, isSubmission);
-        }
-
-        public override IsBindableNodeVisitor CreateIsBindableNodeVisitor(BoundTree boundTree)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IsBindableNodeVisitor CreateIsBindableRootVisitor(BoundTree boundTree)
-        {
-            throw new NotImplementedException();
         }
 
         /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)

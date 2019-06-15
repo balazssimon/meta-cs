@@ -1,8 +1,8 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols.Source;
-/*using MetaDslx.Languages.Meta;
+using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
-using MetaDslx.Languages.Meta.Symbols;*/
+using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -20,7 +20,7 @@ namespace MetaDslx.Bootstrap
             mg.Compile();
             //*/
             
-            //*/
+            /*/
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorLexer.ag4", "MetaDslx.Bootstrap.MetaGenerator");
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorParser.ag4", "MetaDslx.Bootstrap.MetaGenerator");
             Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.Languages.Meta\Syntax\InternalSyntax\MetaLexer.ag4", "MetaDslx.Languages.Meta");
@@ -34,7 +34,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
@@ -56,7 +56,7 @@ namespace MetaDslx.Bootstrap
             }
             //*/
 
-            /*/
+            //*/
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
@@ -99,6 +99,13 @@ namespace MetaDslx.Bootstrap
                 }
                 ++index;
             }
+            //*/
+
+            //*/
+            var boundTree = compilation.GetBoundTree(tree);
+            Console.WriteLine(boundTree);
+            var boundRoot = boundTree.GetBoundRoot();
+            File.WriteAllText("BountTree.txt", boundRoot.Dump());
             //*/
         }
 

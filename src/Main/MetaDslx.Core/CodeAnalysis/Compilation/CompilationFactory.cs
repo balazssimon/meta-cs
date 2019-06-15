@@ -40,6 +40,5 @@ namespace MetaDslx.CodeAnalysis
         public abstract BinderFactoryVisitor CreateBinderFactoryVisitor(BinderFactory binderFactory);
         public abstract BoundNodeFactoryVisitor CreateBoundNodeFactoryVisitor(BoundTree boundTree);
         public abstract IsBindableNodeVisitor CreateIsBindableNodeVisitor(BoundTree boundTree);
-        public abstract IsBindableNodeVisitor CreateIsBindableRootVisitor(BoundTree boundTree);
     }
 }

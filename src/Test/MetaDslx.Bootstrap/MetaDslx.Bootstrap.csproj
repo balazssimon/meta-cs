@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.BuildTasks\MetaDslx.BuildTasks.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
     <!--
     -->
   </ItemGroup>

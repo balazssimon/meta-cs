@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Symbols.Source;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,72 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // experience is that it won't be.
             return GetTypeMembers(name).WhereAsArray(t => t.MetadataName == metadataName);
         }
+
+        /// <summary>
+        /// Get a source symbol for the given declaration syntax.
+        /// </summary>
+        /// <returns>Null if there is no matching declaration.</returns>
+        public NamespaceOrTypeSymbol GetSourceMember(LanguageSyntaxNode syntax)
+        {
+            foreach (var member in GetMembers())
+            {
+                var memberT = member as NamespaceOrTypeSymbol;
+                if ((object)memberT != null)
+                {
+                    if (syntax != null)
+                    {
+                        foreach (var loc in memberT.Locations)
+                        {
+                            if (loc.IsInSource && loc.SourceTree == syntax.SyntaxTree && syntax.Span.Contains(loc.SourceSpan))
+                            {
+                                return memberT;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return memberT;
+                    }
+                }
+            }
+
+            // None found.
+            return null;
+        }
+
+        /// <summary>
+        /// Get a source type symbol for the given declaration syntax.
+        /// </summary>
+        /// <returns>Null if there is no matching declaration.</returns>
+        public SourceNamedTypeSymbol GetSourceTypeMember(LanguageSyntaxNode syntax)
+        {
+            foreach (var member in GetTypeMembers())
+            {
+                var memberT = member as SourceNamedTypeSymbol;
+                if ((object)memberT != null)
+                {
+                    if (syntax != null)
+                    {
+                        foreach (var loc in memberT.Locations)
+                        {
+                            if (loc.IsInSource && loc.SourceTree == syntax.SyntaxTree && syntax.Span.Contains(loc.SourceSpan))
+                            {
+                                return memberT;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return memberT;
+                    }
+                }
+            }
+
+            // None found.
+            return null;
+        }
+
+
 
         ImmutableArray<ISymbol> INamespaceOrTypeSymbol.GetMembers()
         {

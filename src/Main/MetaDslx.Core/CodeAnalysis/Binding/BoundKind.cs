@@ -19,6 +19,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public const string Name = nameof(Name);
         public const string Property = nameof(Property);
         public const string Qualifier = nameof(Qualifier);
+        public const string Root = nameof(Root);
         public const string Scope = nameof(Scope);
         public const string Statement = nameof(Statement);
         public const string SymbolCtr = nameof(SymbolCtr);

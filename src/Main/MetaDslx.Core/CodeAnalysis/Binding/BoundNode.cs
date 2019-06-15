@@ -226,17 +226,18 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if (node is BoundValue boundValue) obj = boundValue.Value;
                 else if (node is BoundSymbol boundSymbol) obj = boundSymbol.Symbol;
                 else if (node is BoundStatement boundStatement) obj = boundStatement.Statement;
-                else if (node is BoundExpression boundExpression)
+                if (node is BoundExpression boundExpression)
                 {
                     obj = boundExpression.Expression;
                     type = boundExpression.Type;
                     sb.AppendFormat("{0}{1} ({2}) -> {3}: {4}", indent, node.Syntax.Kind, node.Kind, obj, type);
+                    sb.AppendLine();
                 }
                 else
                 {
                     sb.AppendFormat("{0}{1} ({2}) -> {3}", indent, node.Syntax.Kind, node.Kind, obj);
+                    sb.AppendLine();
                 }
-                sb.AppendLine();
                 foreach (var child in node.ChildBoundNodes)
                 {
                     Dump(sb, indent + "  ", child);

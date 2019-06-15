@@ -1735,7 +1735,7 @@ namespace MetaDslx.CodeAnalysis
         // We store them using weak references so that GC pressure will cause them to be recycled.
         private WeakReference<BoundTree>[] _boundTrees;
 
-        internal BoundTree GetBoundTree(SyntaxTree syntaxTree)
+        public BoundTree GetBoundTree(SyntaxTree syntaxTree)
         {
             var treeNum = GetSyntaxTreeOrdinal(syntaxTree);
             var boundTrees = _boundTrees;
@@ -1782,7 +1782,7 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        internal ImmutableArray<BoundNode> GetBoundNodes(LanguageSyntaxNode syntax)
+        public ImmutableArray<BoundNode> GetBoundNodes(LanguageSyntaxNode syntax)
         {
             return GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree).GetBoundNodes(syntax);
         }

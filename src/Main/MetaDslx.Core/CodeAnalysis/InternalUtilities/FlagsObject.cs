@@ -747,7 +747,7 @@ namespace Roslyn.Utilities
             {
                 if (_defaultName != null && (object)_defaultValue == null)
                 {
-                    Interlocked.CompareExchange(ref _defaultValue, CreateValue(new FlagsObject(_defaultName, default)), null);
+                    Interlocked.CompareExchange(ref _defaultValue, CreateValue(_defaultName), null);
                     _cachedByName[_defaultName] = _defaultValue;
                 }
                 if (_lazyValues != null)
@@ -846,7 +846,7 @@ namespace Roslyn.Utilities
                 {
                     if (_defaultName != null && (object)_defaultValue == null)
                     {
-                        Interlocked.CompareExchange(ref _defaultValue, CreateValue(new FlagsObject(_defaultName, default)), null);
+                        Interlocked.CompareExchange(ref _defaultValue, CreateValue(_defaultName), null);
                         _cachedByName[_defaultName] = _defaultValue;
                     }
                     return _defaultValue;

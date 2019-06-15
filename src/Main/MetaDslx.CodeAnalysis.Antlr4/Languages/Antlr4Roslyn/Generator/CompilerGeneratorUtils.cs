@@ -370,10 +370,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Value);
         }
 
-        public static bool IsBody(this MetaCompilerAnnotations annots)
+        /*public static bool IsBody(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Scope);
-        }
+        }*/
 
         public static string GetCanMerge(this MetaCompilerAnnotations annots)
         {

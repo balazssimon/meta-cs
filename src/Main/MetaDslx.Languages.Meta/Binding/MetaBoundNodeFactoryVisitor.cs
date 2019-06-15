@@ -13,42 +13,13 @@ using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
+using Roslyn.Utilities;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Symbols;
-using Roslyn.Utilities;
 
 namespace MetaDslx.Languages.Meta.Binding
 {
-    public class MetaBoundKind : BoundKind
-    {
-        public const string Opposite = nameof(Opposite);
-
-        protected MetaBoundKind(string name)
-            : base(name)
-        {
-        }
-
-        protected MetaBoundKind(EnumObject retargetedValue)
-            : base(retargetedValue)
-        {
-        }
-
-        static MetaBoundKind()
-        {
-            EnumObject.AutoInit<MetaBoundKind>();
-        }
-
-        public static implicit operator MetaBoundKind(string name)
-        {
-            return FromString<MetaBoundKind>(name);
-        }
-
-        public static explicit operator MetaBoundKind(int value)
-        {
-            return FromIntUnsafe<MetaBoundKind>(value);
-        }
-    }
-
+	// Make sure to keep this in sync with MetaIsBindableNodeVisitor
     public class MetaBoundNodeFactoryVisitor : BoundNodeFactoryVisitor, IMetaSyntaxVisitor<ArrayBuilder<BoundNode>, BoundNode>
     {
         public MetaBoundNodeFactoryVisitor(BoundTree boundTree)
@@ -70,6 +41,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitMain(MainSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.NamespaceDeclaration != null)
 			{
 				this.Visit(node.NamespaceDeclaration, childBoundNodesForParent);
@@ -151,8 +127,8 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodes.Add(boundName);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), "Annotations", node, false);
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create(resultNode), typeof(Symbols.MetaAnnotation), node, false);
+			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaAnnotation), node, false);
+			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Annotations", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}
@@ -193,22 +169,18 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
 			if (node.MetamodelDeclaration != null)
 			{
-				this.Visit(node.MetamodelDeclaration, childBoundNodes);
+				this.Visit(node.MetamodelDeclaration, childBoundNodesForParent);
 			}
 			if (node.Declaration != null)
 			{
 				foreach (var item in node.Declaration)
 				{
-					this.Visit(item, childBoundNodes);
+					this.Visit(item, childBoundNodesForParent);
 				}
 			}
-			BoundNode resultNode;
-			resultNode = this.CreateBoundScope(this.BoundTree, childBoundNodes.ToImmutableAndFree(), node, false);
-			childBoundNodesForParent.Add(resultNode);
-			return resultNode;
+			return null;
 		}
 		
 		public BoundNode VisitMetamodelDeclaration(MetamodelDeclarationSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
@@ -235,14 +207,19 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.MetamodelPropertyList, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), "MetaModel", node, false);
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create(resultNode), typeof(Symbols.MetaModel), node, false);
+			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaModel), node, false);
+			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "MetaModel", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}
 		
 		public BoundNode VisitMetamodelPropertyList(MetamodelPropertyListSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.MetamodelProperty != null)
 			{
 				foreach (var item in node.MetamodelProperty)
@@ -255,6 +232,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitMetamodelProperty(MetamodelPropertySyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.MetamodelUriProperty != null)
 			{
 				this.Visit(node.MetamodelUriProperty, childBoundNodesForParent);
@@ -286,6 +268,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitDeclaration(DeclarationSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.EnumDeclaration != null)
 			{
 				this.Visit(node.EnumDeclaration, childBoundNodesForParent);
@@ -333,8 +320,8 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.EnumBody, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), "Declarations", node, false);
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create(resultNode), typeof(Symbols.MetaEnum), node, false);
+			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaEnum), node, false);
+			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Declarations", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}
@@ -346,30 +333,31 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
 			if (node.EnumValues != null)
 			{
 				var childBoundNodesOfEnumValues = ArrayBuilder<BoundNode>.GetInstance();
 				this.Visit(node.EnumValues, childBoundNodesOfEnumValues);
 				BoundNode boundEnumValues;
 				boundEnumValues = this.CreateBoundProperty(this.BoundTree, childBoundNodesOfEnumValues.ToImmutableAndFree(), "EnumLiterals", node.EnumValues, false);
-				childBoundNodes.Add(boundEnumValues);
+				childBoundNodesForParent.Add(boundEnumValues);
 			}
 			if (node.EnumMemberDeclaration != null)
 			{
 				foreach (var item in node.EnumMemberDeclaration)
 				{
-					this.Visit(item, childBoundNodes);
+					this.Visit(item, childBoundNodesForParent);
 				}
 			}
-			BoundNode resultNode;
-			resultNode = this.CreateBoundScope(this.BoundTree, childBoundNodes.ToImmutableAndFree(), node, false);
-			childBoundNodesForParent.Add(resultNode);
-			return resultNode;
+			return null;
 		}
 		
 		public BoundNode VisitEnumValues(EnumValuesSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.EnumValue != null)
 			{
 				foreach (var item in node.EnumValue)
@@ -461,8 +449,8 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.ClassBody, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), "Declarations", node, false);
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create(resultNode), typeof(Symbols.MetaClass), node, false);
+			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaClass), node, false);
+			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Declarations", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}
@@ -474,22 +462,23 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
 			if (node.ClassMemberDeclaration != null)
 			{
 				foreach (var item in node.ClassMemberDeclaration)
 				{
-					this.Visit(item, childBoundNodes);
+					this.Visit(item, childBoundNodesForParent);
 				}
 			}
-			BoundNode resultNode;
-			resultNode = this.CreateBoundScope(this.BoundTree, childBoundNodes.ToImmutableAndFree(), node, false);
-			childBoundNodesForParent.Add(resultNode);
-			return resultNode;
+			return null;
 		}
 		
 		public BoundNode VisitClassAncestors(ClassAncestorsSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.ClassAncestor != null)
 			{
 				foreach (var item in node.ClassAncestor)
@@ -591,6 +580,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitFieldModifier(FieldModifierSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.FieldModifier != null)
 			{
 				switch (node.FieldModifier.GetKind().Switch())
@@ -624,6 +618,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitRedefinitionsOrSubsettings(RedefinitionsOrSubsettingsSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.Redefinitions != null)
 			{
 				this.Visit(node.Redefinitions, childBoundNodesForParent);
@@ -713,14 +712,19 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.Name, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), "Declarations", node, false);
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create(resultNode), typeof(Symbols.MetaConstant), node, false);
+			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaConstant), node, false);
+			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Declarations", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}
 		
 		public BoundNode VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.ExternClassTypeDeclaration != null)
 			{
 				this.Visit(node.ExternClassTypeDeclaration, childBoundNodesForParent);
@@ -745,8 +749,8 @@ namespace MetaDslx.Languages.Meta.Binding
 				var childBoundNodesOfQualifier = ArrayBuilder<BoundNode>.GetInstance();
 				this.Visit(node.Qualifier, childBoundNodesOfQualifier);
 				BoundNode boundQualifier;
-				boundQualifier = this.CreateBoundProperty(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), "ExternalName", node.Qualifier, false);
-				boundQualifier = this.CreateBoundValue(this.BoundTree, ImmutableArray.Create(boundQualifier), node.Qualifier, false);
+				boundQualifier = this.CreateBoundValue(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), node.Qualifier, false);
+				boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(boundQualifier), "ExternalName", node.Qualifier, false);
 				childBoundNodes.Add(boundQualifier);
 			}
 			if (node.Name != null)
@@ -754,8 +758,8 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.Name, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), "Declarations", node, false);
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create(resultNode), typeof(Symbols.MetaExternalType), node, false);
+			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaExternalType), node, false);
+			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Declarations", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}
@@ -772,15 +776,15 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				BoundNode boundKStruct;
 				boundKStruct = this.CreateBoundProperty(this.BoundTree, ImmutableArray<BoundNode>.Empty, "IsValueType", true, node, false);
-                childBoundNodes.Add(boundKStruct);
+				childBoundNodes.Add(boundKStruct);
 			}
 			if (node.Qualifier != null)
 			{
 				var childBoundNodesOfQualifier = ArrayBuilder<BoundNode>.GetInstance();
 				this.Visit(node.Qualifier, childBoundNodesOfQualifier);
 				BoundNode boundQualifier;
-				boundQualifier = this.CreateBoundProperty(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), "ExternalName", node.Qualifier, false);
-				boundQualifier = this.CreateBoundValue(this.BoundTree, ImmutableArray.Create(boundQualifier), node.Qualifier, false);
+				boundQualifier = this.CreateBoundValue(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), node.Qualifier, false);
+				boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(boundQualifier), "ExternalName", node.Qualifier, false);
 				childBoundNodes.Add(boundQualifier);
 			}
 			if (node.Name != null)
@@ -788,8 +792,8 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.Name, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), "Declarations", node, false);
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create(resultNode), typeof(Symbols.MetaExternalType), node, false);
+			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaExternalType), node, false);
+			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Declarations", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}
@@ -906,6 +910,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitObjectType(ObjectTypeSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.ObjectType != null)
 			{
 				switch (node.ObjectType.GetKind().Switch())
@@ -934,6 +943,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitPrimitiveType(PrimitiveTypeSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.PrimitiveType != null)
 			{
 				switch (node.PrimitiveType.GetKind().Switch())
@@ -985,7 +999,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (node.KVoid != null)
 			{
 				BoundNode boundKVoid;
-				boundKVoid = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, node, false);
+				boundKVoid = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Void, node, false);
 				childBoundNodesForParent.Add(boundKVoid);
 			}
 			return null;
@@ -1045,6 +1059,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitCollectionKind(CollectionKindSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.CollectionKind != null)
 			{
 				switch (node.CollectionKind.GetKind().Switch())
@@ -1119,6 +1138,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitParameterList(ParameterListSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.Parameter != null)
 			{
 				foreach (var item in node.Parameter)
@@ -1215,6 +1239,11 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public BoundNode VisitLiteral(LiteralSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
+			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+			{
+				childBoundNodesForParent.Add(cachedBoundNode);
+				return cachedBoundNode;
+			}
 			if (node.NullLiteral != null)
 			{
 				this.Visit(node.NullLiteral, childBoundNodesForParent);

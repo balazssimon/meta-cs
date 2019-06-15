@@ -32,6 +32,16 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected DiagnosticBag DiagnosticBag => _boundTree.DiagnosticBag;
 
+        protected virtual BoundNode CreateBoundRoot(BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
+        {
+            return this.CreateBoundRootCore(boundTree, childBoundNodes, syntax, hasErrors);
+        }
+
+        protected virtual BoundNode CreateBoundRootCore(BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
+        {
+            return new BoundRoot(BoundKind.Root, boundTree, childBoundNodes, syntax, hasErrors);
+        }
+
         protected virtual BoundNode CreateBoundScope(BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
         {
             return this.CreateBoundScopeCore(boundTree, childBoundNodes, syntax, hasErrors);

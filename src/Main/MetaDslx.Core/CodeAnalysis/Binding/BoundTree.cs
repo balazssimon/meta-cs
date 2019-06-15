@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -22,10 +23,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         private readonly DiagnosticBag _diagnostics;
         private readonly Binder _rootBinder;
 
-        private readonly ReaderWriterLockSlim _nodeMapLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         // The bound nodes associated with a syntax node, from highest in the tree to lowest.
-        private readonly Dictionary<SyntaxNode, ImmutableArray<BoundNode>> _guardedNodeMap = new Dictionary<SyntaxNode, ImmutableArray<BoundNode>>();
-        //private Dictionary<SyntaxNode, BoundNode> _lazyGuardedSynthesizedNodesMap;
+        private ConcurrentDictionary<SyntaxNode, ImmutableArray<BoundNode>> _map = new ConcurrentDictionary<SyntaxNode, ImmutableArray<BoundNode>>();
 
         // In a typing scenario, GetBoundNode is regularly called with a non-zero position.
         // This results in a lot of allocations of BoundNodeFactoryVisitors. Pooling them
@@ -216,7 +215,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Get the bound node corresponding to the root.
         /// </summary> 
-        internal virtual BoundNode GetBoundRoot()
+        public virtual BoundNode GetBoundRoot()
         {
             return GetUpperBoundNode(GetBindableSyntaxNode(this.Root));
         }
@@ -274,64 +273,43 @@ namespace MetaDslx.CodeAnalysis.Binding
             return boundNodes[boundNodes.Length - 1];
         }
 
-        internal ImmutableArray<BoundNode> GuardedGetBoundNodesFromMap(LanguageSyntaxNode node)
-        {
-            Debug.Assert(_nodeMapLock.IsWriteLockHeld || _nodeMapLock.IsReadLockHeld);
-            ImmutableArray<BoundNode> result;
-            return _guardedNodeMap.TryGetValue(node, out result) ? result : default(ImmutableArray<BoundNode>);
-        }
-
-        /// <summary>
-        /// Internal for test purposes only
-        /// </summary>
-        internal ImmutableArray<BoundNode> TestOnlyTryGetBoundNodesFromMap(LanguageSyntaxNode node)
+        private ImmutableArray<BoundNode> GetBoundNodesFromMap(LanguageSyntaxNode node)
         {
             ImmutableArray<BoundNode> result;
-            return _guardedNodeMap.TryGetValue(node, out result) ? result : default(ImmutableArray<BoundNode>);
+            return _map.TryGetValue(node, out result) ? result : default(ImmutableArray<BoundNode>);
         }
 
         // Adds every syntax/bound pair in a tree rooted at the given bound node to the map, and the
         // performs a lookup of the given syntax node in the map. 
-        private ImmutableArray<BoundNode> GuardedAddBoundTreeAndGetBoundNodeFromMap(LanguageSyntaxNode syntax, BoundNode bound)
+        private ImmutableArray<BoundNode> AddBoundTreeAndGetBoundNodeFromMap(LanguageSyntaxNode syntax, BoundNode bound)
         {
-            Debug.Assert(_nodeMapLock.IsWriteLockHeld);
-
             bool alreadyInTree = false;
 
             if (bound != null)
             {
-                alreadyInTree = _guardedNodeMap.ContainsKey(bound.Syntax);
+                alreadyInTree = _map.ContainsKey(bound.Syntax);
             }
 
             // check if we already have node in the cache.
             // this may happen if we have races and in such case we are no longer interested in adding
             if (!alreadyInTree)
             {
-                BoundNodeMapBuilder.AddToMap(bound, _guardedNodeMap);
+                BoundNodeMapBuilder.AddToMap(bound, _map);
             }
 
             ImmutableArray<BoundNode> result;
-            return _guardedNodeMap.TryGetValue(syntax, out result) ? result : default(ImmutableArray<BoundNode>);
+            return _map.TryGetValue(syntax, out result) ? result : default(ImmutableArray<BoundNode>);
         }
 
-        protected void UnguardedAddBoundTreeForStandaloneSyntax(SyntaxNode syntax, BoundNode bound)
+        private void AddBoundTreeForStandaloneSyntax(SyntaxNode syntax, BoundNode bound)
         {
-            using (_nodeMapLock.DisposableWrite())
-            {
-                GuardedAddBoundTreeForStandaloneSyntax(syntax, bound);
-            }
-        }
-
-        protected void GuardedAddBoundTreeForStandaloneSyntax(SyntaxNode syntax, BoundNode bound)
-        {
-            Debug.Assert(_nodeMapLock.IsWriteLockHeld);
             bool alreadyInTree = false;
 
             // check if we already have node in the cache.
             // this may happen if we have races and in such case we are no longer interested in adding
             if (bound != null)
             {
-                alreadyInTree = _guardedNodeMap.ContainsKey(bound.Syntax);
+                alreadyInTree = _map.ContainsKey(bound.Syntax);
             }
 
             if (!alreadyInTree)
@@ -342,12 +320,12 @@ namespace MetaDslx.CodeAnalysis.Binding
                     // If syntax is a statement, we need to add all its children.
                     // Node cache assumes that if statement is cached, then all 
                     // its children are cached too.
-                    BoundNodeMapBuilder.AddToMap(bound, _guardedNodeMap);
+                    BoundNodeMapBuilder.AddToMap(bound, _map);
                 }
                 else
                 {
                     // expressions can be added individually.
-                    BoundNodeMapBuilder.AddToMap(bound, _guardedNodeMap, syntax);
+                    BoundNodeMapBuilder.AddToMap(bound, _map, syntax);
                 }
             }
         }
@@ -508,12 +486,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // reader-writer lock.
             //
             // Have we already got the desired bound node in the mutable map? If so, return it.
-            ImmutableArray<BoundNode> results;
-
-            using (_nodeMapLock.DisposableRead())
-            {
-                results = GuardedGetBoundNodesFromMap(node);
-            }
+            ImmutableArray<BoundNode> results = GetBoundNodesFromMap(node);
 
             if (!results.IsDefaultOrEmpty)
             {
@@ -528,11 +501,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             LanguageSyntaxNode nodeToBind = GetBindingRoot(node);
             var nodeBinder = GetEnclosingBinder(GetAdjustedNodePosition(nodeToBind));
 
-            using (_nodeMapLock.DisposableWrite())
-            {
-                BoundNode boundNode = this.CreateBoundNode(nodeToBind, nodeBinder); 
-                results = GuardedAddBoundTreeAndGetBoundNodeFromMap(node, boundNode);
-            }
+            BoundNode boundNode = nodeBinder.CreateBoundNodeForBoundTree(nodeToBind, this); 
+            results = AddBoundTreeAndGetBoundNodeFromMap(node, boundNode);
 
             if (!results.IsDefaultOrEmpty)
             {
@@ -548,19 +518,13 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             var binder = GetEnclosingBinder(GetAdjustedNodePosition(node));
 
-            using (_nodeMapLock.DisposableRead())
-            {
-                results = GuardedGetBoundNodesFromMap(node);
-            }
+            results = GetBoundNodesFromMap(node);
 
             if (results.IsDefaultOrEmpty)
             {
-                using (_nodeMapLock.DisposableWrite())
-                {
-                    var boundNode = this.CreateBoundNode(node, binder);
-                    GuardedAddBoundTreeForStandaloneSyntax(node, boundNode);
-                    results = GuardedGetBoundNodesFromMap(node);
-                }
+                var directlyBoundNode = binder.CreateBoundNodeForBoundTree(node, this);
+                AddBoundTreeForStandaloneSyntax(node, directlyBoundNode);
+                results = GetBoundNodesFromMap(node);
 
                 if (!results.IsDefaultOrEmpty)
                 {
@@ -618,11 +582,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             highestBoundNode = this.GetUpperBoundNode(bindableNode);
         }
 
-        protected BoundNode CreateBoundNode(LanguageSyntaxNode syntax, Binder binder)
-        {
-            return binder.CreateBoundNodeForBoundTree(syntax, this);
-        }
-
         public ImmutableArray<BoundNode> ComputeChildren(LanguageSyntaxNode node)
         {
             var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
@@ -644,7 +603,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Return bound node for a syntax node.
         /// </summary>
-        public BoundNode CreateBoundNode(SyntaxNode node, Binder binder)
+        public BoundNode CreateBoundNode(LanguageSyntaxNode node, Binder binder)
         {
             Debug.Assert(node != null);
 
@@ -661,6 +620,18 @@ namespace MetaDslx.CodeAnalysis.Binding
             visitor.Initialize();
             BoundNode result = visitor.Visit(node, ignoredChildBoundNodes);
             _boundNodeFactoryVisitorPool.Free(visitor);
+            if (node == this.Root && !(result is BoundRoot))
+            {
+                Debug.Assert(result == null || ignoredChildBoundNodes.Count == 0);
+                if (result != null)
+                {
+                    result = new BoundRoot(BoundKind.Root, this, ImmutableArray.Create(result), node);
+                }
+                else
+                {
+                    result = new BoundRoot(BoundKind.Root, this, ignoredChildBoundNodes.ToImmutable(), node);
+                }
+            }
             ignoredChildBoundNodes.Free();
 
             return result;
@@ -670,13 +641,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             Debug.Assert(node != null);
 
-            ImmutableArray<BoundNode> results;
-
-            using (_nodeMapLock.DisposableRead())
-            {
-                results = GuardedGetBoundNodesFromMap(node);
-            }
-
+            ImmutableArray<BoundNode> results = GetBoundNodesFromMap(node);
             if (results.IsDefaultOrEmpty)
             {
                 boundNode = null;

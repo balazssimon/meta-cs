@@ -33,7 +33,7 @@ annotationParam : $Property(Name) name;
                                                                             
 namespaceDeclaration: annotation* KNamespace qualifiedName namespaceBody;
 
-      
+              
 namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
                     
@@ -52,7 +52,7 @@ declaration : enumDeclaration | classDeclaration | associationDeclaration | cons
                         
                     
 enumDeclaration : annotation* KEnum name enumBody;
-      
+              
 enumBody : TOpenBrace                         enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
                            
@@ -62,7 +62,7 @@ enumMemberDeclaration :                       operationDeclaration;
                         
                      
 classDeclaration : annotation*                                       KAbstract? KClass name (TColon                         classAncestors)? classBody;
-      
+              
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor :                                                                     qualifier;
