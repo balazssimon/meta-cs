@@ -24,7 +24,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public MetaSymbolMap MetaSymbolMap => ((IMetaMetadataSymbol)_container).MetaSymbolMap;
 
-        public override NamespaceExtent Extent => (_container as MetaNamespaceSymbol)?.Extent ?? new NamespaceExtent(_container.ContainingModule);
+        public override NamespaceExtent Extent
+        {
+            get
+            {
+                if (_container is MetaNamespaceSymbol containingNamespace) return containingNamespace.Extent;
+                if (_container is ModuleSymbol containingModule) return new NamespaceExtent(containingModule);
+                return new NamespaceExtent(_container.ContainingModule);
+            }
+        }
 
         public override Symbol ContainingSymbol => _container;
 

@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -170,21 +171,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         public BoundKind Kind => _kind;
 
         public ImmutableArray<BoundNode> ChildBoundNodes => _childBoundNodes;
-        /*{
-            get
-            {
-                if (_lazyChildren.IsDefault)
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazyChildren, this.ComputeChildren());
-                }
-                return _lazyChildren;
-            }
-        }*/
-
-        protected virtual ImmutableArray<BoundNode> ComputeChildren()
-        {
-            return _boundTree.ComputeChildren(_syntax);
-        }
 
         public virtual BoundNode Accept(BoundTreeVisitor visitor)
         {
@@ -197,15 +183,79 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 child.ForceComplete(cancellationToken);
             }
-            this.ForceCompleteNode(cancellationToken);
+            this.ForceCompleteCore(cancellationToken);
         }
 
-        protected virtual void ForceCompleteNode(CancellationToken cancellationToken)
+        protected virtual void ForceCompleteCore(CancellationToken cancellationToken)
         {
 
         }
 
-#if DEBUG
+        public Binder GetBinder()
+        {
+            return this.Compilation.GetBinder(_syntax);
+        }
+
+        public Binder GetEnclosingBinder()
+        {
+            return this.BoundTree.GetEnclosingBinder(_syntax);
+        }
+
+        public ImmutableArray<Identifier> GetIdentifiers()
+        {
+            ArrayBuilder<Identifier> identifiers = ArrayBuilder<Identifier>.GetInstance();
+            foreach (var child in _childBoundNodes)
+            {
+                child.AddIdentifiers(identifiers);
+            }
+            return identifiers.ToImmutableAndFree();
+        }
+
+        public ImmutableArray<Qualifier> GetQualifiers()
+        {
+            ArrayBuilder<Qualifier> qualifiers = ArrayBuilder<Qualifier>.GetInstance();
+            foreach (var child in _childBoundNodes)
+            {
+                child.AddQualifiers(qualifiers);
+            }
+            return qualifiers.ToImmutableAndFree();
+        }
+
+        public ImmutableArray<Qualifier> GetNames()
+        {
+            ArrayBuilder<Qualifier> names = ArrayBuilder<Qualifier>.GetInstance();
+            foreach (var child in _childBoundNodes)
+            {
+                child.AddNames(names);
+            }
+            return names.ToImmutableAndFree();
+        }
+
+        protected virtual void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        {
+            foreach (var child in _childBoundNodes)
+            {
+                child.AddIdentifiers(identifiers);
+            }
+        }
+
+        protected virtual void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        {
+            foreach (var child in _childBoundNodes)
+            {
+                child.AddQualifiers(qualifiers);
+            }
+        }
+
+        protected virtual void AddNames(ArrayBuilder<Qualifier> names)
+        {
+            foreach (var child in _childBoundNodes)
+            {
+                child.AddNames(names);
+            }
+        }
+
+#if true //DEBUG
         private class BoundTreeDumper
         {
             private BoundTreeDumper() : base() { }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.PooledObjects;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
@@ -16,5 +17,17 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         }
 
         public virtual object Value => _value;
+
+        protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        {
+        }
+
+        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        {
+        }
+
+        protected override void AddNames(ArrayBuilder<Qualifier> names)
+        {
+        }
     }
 }

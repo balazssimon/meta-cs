@@ -13,9 +13,9 @@ namespace MetaDslx.Languages.Meta
     {
         public const string Id = "MetaDslx.MetaAnnotations";
 
-        public const string Binder = nameof(Binder);
-
         public const string Root = nameof(Root);
+
+        public const string Binder = nameof(Binder);
 
         public const string Identifier = nameof(Identifier);
         public const string Qualifier = nameof(Qualifier);
@@ -24,7 +24,7 @@ namespace MetaDslx.Languages.Meta
 
         public const string Property = nameof(Property);
         public const string Name = nameof(Name);
-        //public const string Scope = nameof(Scope);
+        public const string Scope = nameof(Scope);
 
         public const string SymbolDef = nameof(SymbolDef);
         public const string SymbolUse = nameof(SymbolUse);
@@ -35,17 +35,19 @@ namespace MetaDslx.Languages.Meta
 
         public static readonly string[] WellKnownAnnotations = 
             {
-                Binder,
                 Root,
+                Binder,
                 Identifier, Qualifier, Value, EnumValue, 
-                Property, Name, //Scope,
+                Property, Name, Scope,
                 SymbolDef, SymbolUse, SymbolCtr,
                 Token
             };
 
         public static readonly string[] BinderAnnotations =
             {
-                Binder
+                Binder,
+                SymbolDef,
+                Scope
             };
 
         public static readonly string[] BoundNodeAnnotations =
@@ -108,7 +110,7 @@ namespace MetaDslx.Languages.Meta
         {
             get
             {
-                return this.Annotations.Where(a => MetaCompilerAnnotationInfo.BinderAnnotations.Contains(a.Name));
+                return this.Annotations.Where(a => MetaCompilerAnnotationInfo.BinderAnnotations.Contains(a.Name) || !MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name));
             }
         }
 
@@ -116,7 +118,7 @@ namespace MetaDslx.Languages.Meta
         {
             get
             {
-                return this.Annotations.Where(a => !MetaCompilerAnnotationInfo.BinderAnnotations.Contains(a.Name));
+                return this.Annotations.Where(a => MetaCompilerAnnotationInfo.BoundNodeAnnotations.Contains(a.Name) || !MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name));
             }
         }
 

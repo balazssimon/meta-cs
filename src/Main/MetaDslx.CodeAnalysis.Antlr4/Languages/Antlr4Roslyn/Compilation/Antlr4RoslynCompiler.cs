@@ -618,12 +618,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         private void SetAnnotationFlags(Antlr4AnnotatedObject obj)
         {
-            obj.HasAnnotations = obj.Annotations.Annotations.Count > 0;
-            obj.ContainsAnnotations |= obj.HasAnnotations;
             int binderAnnotationCount = obj.Annotations.Annotations.Count(a => MetaCompilerAnnotationInfo.BinderAnnotations.Contains(a.Name));
-            obj.HasBinderAnnotations = binderAnnotationCount > 0;
+            int boundNodeAnnotationCount = obj.Annotations.Annotations.Count(a => MetaCompilerAnnotationInfo.BoundNodeAnnotations.Contains(a.Name));
+            int customAnnotationCount = obj.Annotations.Annotations.Count(a => !MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name));
+
+            obj.HasAnnotations = obj.Annotations.Annotations.Count > 0;
+            obj.HasBinderAnnotations = binderAnnotationCount + customAnnotationCount > 0;
+            obj.HasBoundNodeAnnotations = boundNodeAnnotationCount + customAnnotationCount > 0;
+
+            obj.ContainsAnnotations |= obj.HasAnnotations;
             obj.ContainsBinderAnnotations |= obj.HasBinderAnnotations;
-            obj.HasBoundNodeAnnotations = obj.Annotations.Annotations.Count - binderAnnotationCount > 0;
             obj.ContainsBoundNodeAnnotations |= obj.HasBoundNodeAnnotations;
         }
 
@@ -1791,30 +1795,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
-        public bool HasElementAnnotations(string name = null)
-        {
-            foreach (var elem in this.Elements)
-            {
-                if (name == null)
-                {
-                    if (elem.Annotations.Annotations.Count > 0) return true;
-                }
-                else
-                {
-                    if (elem.Annotations.Annotations.Any(a => a.Name == name)) return true;
-                }
-            }
-            return false;
-        }
-
-        public bool HasElementAnnotationsExcept(string name)
-        {
-            foreach (var elem in this.Elements)
-            {
-                if (elem.Annotations.Annotations.Any(a => a.Name != name)) return true;
-            }
-            return false;
-        }
     }
     public class Antlr4ParserRuleElement : Antlr4AnnotatedObject
     {

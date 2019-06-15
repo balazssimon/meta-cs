@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -16,5 +17,6 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         public virtual Symbol Symbol { get; }
 
         public override object Value => this.Symbol;
+
     }
 }

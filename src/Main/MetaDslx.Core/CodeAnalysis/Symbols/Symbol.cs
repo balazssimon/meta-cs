@@ -200,6 +200,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 // Default implementation gets the containers module.
                 var container = this.ContainingSymbol;
+                if (container is ModuleSymbol moduleSymbol) return moduleSymbol;
                 return (object)container != null ? container.ContainingModule : null;
             }
         }
@@ -800,7 +801,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public string ToDisplayString(SymbolDisplayFormat format = null)
         {
-            return SymbolDisplay.ToDisplayString(this, format);
+            try
+            {
+                return SymbolDisplay.ToDisplayString(this, format);
+            }
+            catch (Exception ex)
+            {
+                return "Error: " + ex.Message;
+            }
         }
 
         public ImmutableArray<SymbolDisplayPart> ToDisplayParts(SymbolDisplayFormat format = null)

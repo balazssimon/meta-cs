@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -16,6 +17,18 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
             _name = name;
             _valueOpt = valueOpt;
+        }
+
+        protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        {
+        }
+
+        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        {
+        }
+
+        protected override void AddNames(ArrayBuilder<Qualifier> names)
+        {
         }
     }
 

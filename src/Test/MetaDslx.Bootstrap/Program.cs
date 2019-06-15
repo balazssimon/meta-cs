@@ -43,7 +43,7 @@ namespace MetaDslx.Bootstrap
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
 
-            Console.WriteLine(declarations.Dump());
+            //Console.WriteLine(declarations.Dump());
 
             var formatter = new DiagnosticFormatter();
             foreach (var diag in tree.GetDiagnostics())

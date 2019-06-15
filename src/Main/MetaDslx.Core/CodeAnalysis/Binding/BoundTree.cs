@@ -452,6 +452,16 @@ namespace MetaDslx.CodeAnalysis.Binding
             return GetEnclosingBinderInternal(node, position);
         }
 
+        public Binder GetEnclosingBinder(SyntaxNode node)
+        {
+            return GetEnclosingBinder(GetAdjustedNodePosition(node));
+        }
+
+        public Binder GetEnclosingBinder(SyntaxToken token)
+        {
+            return GetEnclosingBinder(GetAdjustedNodePosition(token.Parent));
+        }
+
         /// <summary>
         /// This overload exists for callers who already have a node in hand 
         /// and don't want to search through the tree.

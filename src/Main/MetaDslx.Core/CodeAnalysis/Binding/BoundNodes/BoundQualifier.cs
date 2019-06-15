@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
@@ -9,6 +10,15 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         public BoundQualifier(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
+        {
+        }
+
+        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        {
+            qualifiers.Add(new Qualifier(this.GetIdentifiers()));
+        }
+
+        protected override void AddNames(ArrayBuilder<Qualifier> names)
         {
         }
     }

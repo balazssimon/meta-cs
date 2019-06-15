@@ -50,6 +50,8 @@ namespace Microsoft.CodeAnalysis
                     return 17;
                 case SymbolKind.Preprocessing:
                     return 18;
+                case SymbolKind.Unknown:
+                    return 19;
                 default:
                     throw ExceptionUtilities.UnexpectedValue(kind);
             }

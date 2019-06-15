@@ -33,7 +33,7 @@ annotationParam : $Property(Name) name;
 $SymbolDef(symbolType=MetaNamespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: annotation* KNamespace qualifiedName namespaceBody;
 
-$Binder(Scope)
+$Scope
 namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
 $Property(MetaModel)
@@ -52,7 +52,7 @@ declaration : enumDeclaration | classDeclaration | associationDeclaration | cons
 $Property(Declarations) 
 $SymbolDef(MetaEnum)
 enumDeclaration : annotation* KEnum name enumBody;
-$Binder(Scope)
+$Scope
 enumBody : TOpenBrace $Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
 $SymbolDef(MetaEnumLiteral)
@@ -62,7 +62,7 @@ enumMemberDeclaration : $Property(Operations) operationDeclaration;
 $Property(Declarations) 
 $SymbolDef(MetaClass)
 classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
-$Binder(Scope)
+$Scope
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
 classAncestor : $SymbolUse(symbolType=MetaClass,location=ResolutionLocation.Parent) qualifier;

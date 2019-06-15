@@ -76,17 +76,17 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateScopeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
         {
-            return new ScopeBinder(this.GetContainerSymbol(parentBinder, syntax), parentBinder, syntax);
+            return new ScopeBinder(parentBinder.GetContainerSymbol(syntax), parentBinder, syntax);
         }
 
-        protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, SyntaxNodeOrToken syntax, Type symbolType)
+        protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType)
         {
             return this.CreateSymbolDefBinderCore(parentBinder, syntax, symbolType);
         }
 
-        protected virtual Binder CreateSymbolDefBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, Type symbolType)
+        protected virtual Binder CreateSymbolDefBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType)
         {
-            return new SymbolDefBinder(parentBinder, symbolType, symbolType);
+            return new SymbolDefBinder(parentBinder, syntax, symbolType, symbolType);
         }
 
         protected virtual Binder CreateSymbolCtrBinder(Binder parentBinder, SyntaxNodeOrToken syntax, Type symbolType)
@@ -325,38 +325,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             return (InContainerBinder)result;
         }
 
-        protected NamespaceOrTypeSymbol GetContainerSymbol(Binder binder, LanguageSyntaxNode syntax)
-        {
-            var container = binder.ContainingSymbol as NamespaceOrTypeSymbol;
-            if ((object)container == null)
-            {
-                if (syntax.Parent.GetKind() == Language.SyntaxFacts.CompilationUnitKind && SyntaxTree.Options.Kind != SourceCodeKind.Regular)
-                {
-                    container = Compilation.ScriptClass;
-                }
-                else
-                {
-                    container = Compilation.GlobalNamespace;
-                }
-            }
-            return container.GetSourceMember(syntax);
-        }
 
-        protected NamedTypeSymbol GetContainerType(Binder binder, LanguageSyntaxNode syntax)
-        {
-            var container = binder.ContainingSymbol as NamespaceOrTypeSymbol;
-            if ((object)container == null)
-            {
-                if (syntax.Parent.Kind == Language.SyntaxFacts.CompilationUnitKind && SyntaxTree.Options.Kind != SourceCodeKind.Regular)
-                {
-                    container = Compilation.ScriptClass;
-                }
-                else
-                {
-                    container = Compilation.GlobalNamespace;
-                }
-            }
-            return container.GetSourceTypeMember(syntax);
-        }
     }
 }

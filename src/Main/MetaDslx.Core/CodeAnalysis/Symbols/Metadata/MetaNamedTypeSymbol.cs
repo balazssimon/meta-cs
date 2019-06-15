@@ -29,6 +29,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override string Name => _metaObject.MName;
 
+        public override SymbolKind Kind => SymbolKind.NamedType;
+
         public override IEnumerable<string> MemberNames
         {
             get

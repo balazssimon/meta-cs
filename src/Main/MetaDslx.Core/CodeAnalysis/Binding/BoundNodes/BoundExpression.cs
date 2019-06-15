@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Text;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
@@ -20,5 +21,17 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         public IOperation Expression => _expression;
         public ConstantValue ConstantValue => throw new NotImplementedException("TODO:MetaDslx");
         public TypeSymbol Type => throw new NotImplementedException("TODO:MetaDslx");
+
+        protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        {
+        }
+
+        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        {
+        }
+
+        protected override void AddNames(ArrayBuilder<Qualifier> names)
+        {
+        }
     }
 }

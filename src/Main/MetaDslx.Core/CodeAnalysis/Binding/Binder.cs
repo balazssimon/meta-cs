@@ -527,5 +527,39 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
+        public NamespaceOrTypeSymbol GetContainerSymbol(LanguageSyntaxNode syntax)
+        {
+            var container = this.ContainingSymbol as NamespaceOrTypeSymbol;
+            if ((object)container == null)
+            {
+                if (syntax.Parent.GetKind() == Language.SyntaxFacts.CompilationUnitKind && syntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
+                {
+                    container = Compilation.ScriptClass;
+                }
+                else
+                {
+                    container = Compilation.GlobalNamespace;
+                }
+            }
+            return container;
+        }
+
+        public NamedTypeSymbol GetContainerType(LanguageSyntaxNode syntax)
+        {
+            var container = this.ContainingSymbol as NamespaceOrTypeSymbol;
+            if ((object)container == null)
+            {
+                if (syntax.Parent.Kind == Language.SyntaxFacts.CompilationUnitKind && syntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
+                {
+                    container = Compilation.ScriptClass;
+                }
+                else
+                {
+                    container = Compilation.GlobalNamespace;
+                }
+            }
+            if (container is NamedTypeSymbol namedTypeSymbol) return namedTypeSymbol;
+            else return container.GetSourceTypeMember(syntax);
+        }
     }
 }

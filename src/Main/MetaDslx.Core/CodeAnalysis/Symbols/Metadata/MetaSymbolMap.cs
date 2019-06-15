@@ -90,7 +90,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public MetaMemberSymbol GetNameSymbol(IMetaSymbol metaSymbol)
         {
-            Debug.Assert(metaSymbol.MId.SymbolInfo.IsNamedType, "Symbol must be a name.");
+            Debug.Assert(metaSymbol.MId.SymbolInfo.IsName, "Symbol must be a name.");
             return GetSymbol(metaSymbol, ms => new MetaMemberSymbol(ms, GetContainerSymbol(ms)));
         }
 

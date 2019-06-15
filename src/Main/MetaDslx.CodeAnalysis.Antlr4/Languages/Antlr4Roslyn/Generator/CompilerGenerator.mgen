@@ -4758,7 +4758,7 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] parent)
 	{
 		resultBinder = VisitCore(parent.Parent);
 		[loop (annot:rule.Annotations.BinderAnnotations)]
-		resultBinder = this.Create[annot.GetValue("name")]Binder(resultBinder, parent[GetAnnotationParams(annot)]);
+		resultBinder = this.Create[annot.Name]Binder(resultBinder, parent[GetAnnotationParams(annot)]);
 		[end loop]
 		this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 		[GenerateBinderFactoryVisitBody(rule)]
@@ -4827,9 +4827,9 @@ if (use == Use[elem.RedName()])
 {
     [loop (annot:elem.Annotations.BinderAnnotations)]
 		[if (elem.IsList)]
-	resultBinder = this.Create[annot.GetValue("name")]Binder(resultBinder, parent.[elem.RedName()].Node[GetAnnotationParams(annot)]);
+	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()].Node[GetAnnotationParams(annot)]);
 		[else]
-	resultBinder = this.Create[annot.GetValue("name")]Binder(resultBinder, parent.[elem.RedName()][GetAnnotationParams(annot)]);
+	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][GetAnnotationParams(annot)]);
 		[end if]
 	[end loop]
 	this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
@@ -4846,7 +4846,7 @@ if (use == Use[elem.RedName()])
 			[loop (alt:elem.BlockItems)]
 		case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
 				[loop (annot:alt.Annotations.BinderAnnotations)]
-			resultBinder = this.Create[annot.GetValue("name")]Binder(resultBinder, parent.[elem.RedName()][GetAnnotationParams(annot)]);
+			resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][GetAnnotationParams(annot)]);
 				[end loop]
 			break;
 			[end loop]
