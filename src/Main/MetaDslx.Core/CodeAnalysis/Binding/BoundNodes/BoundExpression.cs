@@ -33,5 +33,18 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         protected override void AddNames(ArrayBuilder<Qualifier> names)
         {
         }
+
+        protected override void AddProperties(ArrayBuilder<string> properties)
+        {
+        }
+
+        protected override void AddValues(string property, ArrayBuilder<object> values)
+        {
+        }
+
+        public override string ToString()
+        {
+            return this.Expression + ": " + this.Type;
+        }
     }
 }

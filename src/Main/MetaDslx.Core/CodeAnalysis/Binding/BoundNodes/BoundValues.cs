@@ -6,12 +6,14 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundScope : BoundNode
+    public abstract class BoundValues : BoundNode
     {
-        public BoundScope(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundValues(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
         }
+
+        public abstract ImmutableArray<object> Values { get; }
 
         protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
         {
@@ -31,6 +33,21 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         protected override void AddValues(string property, ArrayBuilder<object> values)
         {
+            values.AddRange(this.Values);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[");
+            var values = this.Values;
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (i > 0) sb.Append(", ");
+                sb.Append(values[i]);
+            }
+            sb.Append("]");
+            return sb.ToString();
         }
     }
 }

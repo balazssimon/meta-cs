@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 using System.Threading;
+using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
@@ -41,6 +42,14 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
+        public Symbol Symbol
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
         {
             identifiers.Add(new Identifier(this.Syntax, this.Name, this.MetadataName));
@@ -53,6 +62,19 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         protected override void AddNames(ArrayBuilder<Qualifier> names)
         {
+        }
+
+        protected override void AddProperties(ArrayBuilder<string> properties)
+        {
+        }
+
+        protected override void AddValues(string property, ArrayBuilder<object> values)
+        {
+        }
+
+        public override string ToString()
+        {
+            return this.Name + " = " + this.Symbol;
         }
     }
 

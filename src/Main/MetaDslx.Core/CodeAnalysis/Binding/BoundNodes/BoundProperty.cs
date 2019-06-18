@@ -19,6 +19,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             _valueOpt = valueOpt;
         }
 
+        public string Name => _name;
+
         protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
         {
         }
@@ -29,6 +31,44 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         protected override void AddNames(ArrayBuilder<Qualifier> names)
         {
+        }
+
+        protected override void AddProperties(ArrayBuilder<string> properties)
+        {
+            properties.Add(_name);
+            if (_valueOpt.HasValue)
+            {
+                base.AddProperties(properties);
+            }
+        }
+
+        protected override void AddValues(string property, ArrayBuilder<object> values)
+        {
+            if (_valueOpt.HasValue)
+            {
+                if (property == _name)
+                {
+                    values.Add(_valueOpt.Value);
+                }
+            }
+            else
+            {
+                base.AddValues(property, values);
+            }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.Name + " = [");
+            var values = this.GetValues(this.Name);
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (i > 0) sb.Append(", ");
+                sb.Append(values[i]);
+            }
+            sb.Append("]");
+            return sb.ToString();
         }
     }
 

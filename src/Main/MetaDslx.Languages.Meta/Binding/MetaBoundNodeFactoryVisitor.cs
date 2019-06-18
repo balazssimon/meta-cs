@@ -426,7 +426,7 @@ namespace MetaDslx.Languages.Meta.Binding
 					this.Visit(item, childBoundNodes);
 				}
 			}
-			if (node.KAbstract != null)
+			if (node.KAbstract.GetKind() == MetaSyntaxKind.KAbstract)
 			{
 				BoundNode boundKAbstract;
 				boundKAbstract = this.CreateBoundProperty(this.BoundTree, ImmutableArray<BoundNode>.Empty, "IsAbstract", true, node, false);
@@ -585,33 +585,30 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			if (node.FieldModifier != null)
+			switch (node.FieldModifier.GetKind().Switch())
 			{
-				switch (node.FieldModifier.GetKind().Switch())
-				{
-					case MetaSyntaxKind.KContainment:
-						BoundNode boundKContainment;
-						boundKContainment = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaPropertyKind.Containment, node, false);
-						childBoundNodesForParent.Add(boundKContainment);
-						break;
-					case MetaSyntaxKind.KReadonly:
-						BoundNode boundKReadonly;
-						boundKReadonly = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaPropertyKind.Readonly, node, false);
-						childBoundNodesForParent.Add(boundKReadonly);
-						break;
-					case MetaSyntaxKind.KLazy:
-						BoundNode boundKLazy;
-						boundKLazy = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaPropertyKind.Lazy, node, false);
-						childBoundNodesForParent.Add(boundKLazy);
-						break;
-					case MetaSyntaxKind.KDerived:
-						BoundNode boundKDerived;
-						boundKDerived = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaPropertyKind.Derived, node, false);
-						childBoundNodesForParent.Add(boundKDerived);
-						break;
-					default:
-						break;
-				}
+				case MetaSyntaxKind.KContainment:
+					BoundNode boundKContainment;
+					boundKContainment = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaPropertyKind.Containment, node, false);
+					childBoundNodesForParent.Add(boundKContainment);
+					break;
+				case MetaSyntaxKind.KReadonly:
+					BoundNode boundKReadonly;
+					boundKReadonly = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaPropertyKind.Readonly, node, false);
+					childBoundNodesForParent.Add(boundKReadonly);
+					break;
+				case MetaSyntaxKind.KLazy:
+					BoundNode boundKLazy;
+					boundKLazy = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaPropertyKind.Lazy, node, false);
+					childBoundNodesForParent.Add(boundKLazy);
+					break;
+				case MetaSyntaxKind.KDerived:
+					BoundNode boundKDerived;
+					boundKDerived = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaPropertyKind.Derived, node, false);
+					childBoundNodesForParent.Add(boundKDerived);
+					break;
+				default:
+					break;
 			}
 			return null;
 		}
@@ -772,7 +769,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.KStruct != null)
+			if (node.KStruct.GetKind() == MetaSyntaxKind.KStruct)
 			{
 				BoundNode boundKStruct;
 				boundKStruct = this.CreateBoundProperty(this.BoundTree, ImmutableArray<BoundNode>.Empty, "IsValueType", true, node, false);
@@ -915,28 +912,25 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			if (node.ObjectType != null)
+			switch (node.ObjectType.GetKind().Switch())
 			{
-				switch (node.ObjectType.GetKind().Switch())
-				{
-					case MetaSyntaxKind.KObject:
-						BoundNode boundKObject;
-						boundKObject = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Object, node, false);
-						childBoundNodesForParent.Add(boundKObject);
-						break;
-					case MetaSyntaxKind.KSymbol:
-						BoundNode boundKSymbol;
-						boundKSymbol = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Symbol, node, false);
-						childBoundNodesForParent.Add(boundKSymbol);
-						break;
-					case MetaSyntaxKind.KString:
-						BoundNode boundKString;
-						boundKString = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.String, node, false);
-						childBoundNodesForParent.Add(boundKString);
-						break;
-					default:
-						break;
-				}
+				case MetaSyntaxKind.KObject:
+					BoundNode boundKObject;
+					boundKObject = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Object, node, false);
+					childBoundNodesForParent.Add(boundKObject);
+					break;
+				case MetaSyntaxKind.KSymbol:
+					BoundNode boundKSymbol;
+					boundKSymbol = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Symbol, node, false);
+					childBoundNodesForParent.Add(boundKSymbol);
+					break;
+				case MetaSyntaxKind.KString:
+					BoundNode boundKString;
+					boundKString = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.String, node, false);
+					childBoundNodesForParent.Add(boundKString);
+					break;
+				default:
+					break;
 			}
 			return null;
 		}
@@ -948,43 +942,40 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			if (node.PrimitiveType != null)
+			switch (node.PrimitiveType.GetKind().Switch())
 			{
-				switch (node.PrimitiveType.GetKind().Switch())
-				{
-					case MetaSyntaxKind.KInt:
-						BoundNode boundKInt;
-						boundKInt = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Int, node, false);
-						childBoundNodesForParent.Add(boundKInt);
-						break;
-					case MetaSyntaxKind.KLong:
-						BoundNode boundKLong;
-						boundKLong = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Long, node, false);
-						childBoundNodesForParent.Add(boundKLong);
-						break;
-					case MetaSyntaxKind.KFloat:
-						BoundNode boundKFloat;
-						boundKFloat = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Float, node, false);
-						childBoundNodesForParent.Add(boundKFloat);
-						break;
-					case MetaSyntaxKind.KDouble:
-						BoundNode boundKDouble;
-						boundKDouble = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Double, node, false);
-						childBoundNodesForParent.Add(boundKDouble);
-						break;
-					case MetaSyntaxKind.KByte:
-						BoundNode boundKByte;
-						boundKByte = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Byte, node, false);
-						childBoundNodesForParent.Add(boundKByte);
-						break;
-					case MetaSyntaxKind.KBool:
-						BoundNode boundKBool;
-						boundKBool = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Bool, node, false);
-						childBoundNodesForParent.Add(boundKBool);
-						break;
-					default:
-						break;
-				}
+				case MetaSyntaxKind.KInt:
+					BoundNode boundKInt;
+					boundKInt = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Int, node, false);
+					childBoundNodesForParent.Add(boundKInt);
+					break;
+				case MetaSyntaxKind.KLong:
+					BoundNode boundKLong;
+					boundKLong = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Long, node, false);
+					childBoundNodesForParent.Add(boundKLong);
+					break;
+				case MetaSyntaxKind.KFloat:
+					BoundNode boundKFloat;
+					boundKFloat = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Float, node, false);
+					childBoundNodesForParent.Add(boundKFloat);
+					break;
+				case MetaSyntaxKind.KDouble:
+					BoundNode boundKDouble;
+					boundKDouble = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Double, node, false);
+					childBoundNodesForParent.Add(boundKDouble);
+					break;
+				case MetaSyntaxKind.KByte:
+					BoundNode boundKByte;
+					boundKByte = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Byte, node, false);
+					childBoundNodesForParent.Add(boundKByte);
+					break;
+				case MetaSyntaxKind.KBool:
+					BoundNode boundKBool;
+					boundKBool = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Bool, node, false);
+					childBoundNodesForParent.Add(boundKBool);
+					break;
+				default:
+					break;
 			}
 			return null;
 		}
@@ -996,7 +987,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			if (node.KVoid != null)
+			if (node.KVoid.GetKind() == MetaSyntaxKind.KVoid)
 			{
 				BoundNode boundKVoid;
 				boundKVoid = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Void, node, false);
@@ -1064,33 +1055,30 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			if (node.CollectionKind != null)
+			switch (node.CollectionKind.GetKind().Switch())
 			{
-				switch (node.CollectionKind.GetKind().Switch())
-				{
-					case MetaSyntaxKind.KSet:
-						BoundNode boundKSet;
-						boundKSet = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaCollectionKind.Set, node, false);
-						childBoundNodesForParent.Add(boundKSet);
-						break;
-					case MetaSyntaxKind.KList:
-						BoundNode boundKList;
-						boundKList = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaCollectionKind.List, node, false);
-						childBoundNodesForParent.Add(boundKList);
-						break;
-					case MetaSyntaxKind.KMultiSet:
-						BoundNode boundKMultiSet;
-						boundKMultiSet = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaCollectionKind.MultiSet, node, false);
-						childBoundNodesForParent.Add(boundKMultiSet);
-						break;
-					case MetaSyntaxKind.KMultiList:
-						BoundNode boundKMultiList;
-						boundKMultiList = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaCollectionKind.MultiList, node, false);
-						childBoundNodesForParent.Add(boundKMultiList);
-						break;
-					default:
-						break;
-				}
+				case MetaSyntaxKind.KSet:
+					BoundNode boundKSet;
+					boundKSet = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaCollectionKind.Set, node, false);
+					childBoundNodesForParent.Add(boundKSet);
+					break;
+				case MetaSyntaxKind.KList:
+					BoundNode boundKList;
+					boundKList = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaCollectionKind.List, node, false);
+					childBoundNodesForParent.Add(boundKList);
+					break;
+				case MetaSyntaxKind.KMultiSet:
+					BoundNode boundKMultiSet;
+					boundKMultiSet = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaCollectionKind.MultiSet, node, false);
+					childBoundNodesForParent.Add(boundKMultiSet);
+					break;
+				case MetaSyntaxKind.KMultiList:
+					BoundNode boundKMultiList;
+					boundKMultiList = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaCollectionKind.MultiList, node, false);
+					childBoundNodesForParent.Add(boundKMultiList);
+					break;
+				default:
+					break;
 			}
 			return null;
 		}

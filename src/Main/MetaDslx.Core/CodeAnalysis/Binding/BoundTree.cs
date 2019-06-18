@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -56,6 +57,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         protected SyntaxFacts SyntaxFacts => _compilation.Language.SyntaxFacts;
 
         public DiagnosticBag DiagnosticBag => _diagnostics;
+
+        internal MutableModel ModelBuilder => _compilation.ModelBuilder;
 
         internal bool IsInTree(SyntaxNode node)
         {

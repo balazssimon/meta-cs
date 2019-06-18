@@ -4646,18 +4646,15 @@ end function
 
 template GenerateDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem)
 	[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-if (node.[elem.RedName()] != null)
+switch (node.[elem.RedName()].GetKind().Switch())
 {
-	switch (node.[elem.RedName()].GetKind().Switch())
-	{
-		[loop (alt:elem.BlockItems)]
-		case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
-			[GetDeclarationTreeBuilderVisitElement(rule, alt)]
-			break;
-		[end loop]
-		default:
-			break;
-	}
+	[loop (alt:elem.BlockItems)]
+	case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
+		[GetDeclarationTreeBuilderVisitElement(rule, alt)]
+		break;
+	[end loop]
+	default:
+		break;
 }
 	[else]
 [GetDeclarationTreeBuilderVisitElement(rule, elem)]
@@ -5037,11 +5034,13 @@ template GenerateBoundNodeFactoryVisitChildren(Antlr4ParserRule rule)
 end template
 
 template GenerateBoundNodeFactoryVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem, string childBoundNodesName)
-[if (elem.ContainsBoundNodeAnnotations)]
+[if (elem.ContainsBoundNodeAnnotations && !elem.IsToken  && !elem.IsFixedTokenAltBlock)]
 if (node.[elem.RedName()] != null)
 {
 	[GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName)]
 }
+[else]
+[GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName)]
 [end if]
 end template
 
@@ -5077,9 +5076,10 @@ this.Visit(node.[elem.RedName()], [childBoundNodesName]);
 end template
 
 template GenerateBoundNodeFactoryVisitTokenAltBody(Antlr4ParserRuleElement elem, string childBoundNodesName)
+[if (elem.ContainsBoundNodeAnnotations)]
 switch (node.[elem.RedName()].GetKind().Switch())
 {
-		[loop (alt:elem.BlockItems)]
+		[loop (alt:elem.BlockItems where alt.HasBoundNodeAnnotations)]
 	case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
 		BoundNode bound[alt.RedName()];
 			[string children = "ImmutableArray<BoundNode>.Empty"]
@@ -5093,16 +5093,22 @@ switch (node.[elem.RedName()].GetKind().Switch())
 	default:
 		break;
 }
+[end if]
 end template
 
 template GenerateBoundNodeFactoryVisitTokenBody(Antlr4ParserRuleElement elem, string childBoundNodesName)
-BoundNode bound[elem.RedName()];
+[if (elem.HasBoundNodeAnnotations)]
+if (node.[elem.RedName()].GetKind() == [Properties.LanguageName]SyntaxKind.[elem.Type])
+{
+	BoundNode bound[elem.RedName()];
 	[string children = "ImmutableArray<BoundNode>.Empty"]
 	[loop (annot:elem.Annotations.BoundNodeAnnotations.Reverse())]
-bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][GetAnnotationParams(annot)], node, false);
+	bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][GetAnnotationParams(annot)], node, false);
 	[children = "ImmutableArray.Create(bound"+elem.RedName()+")"]
 	[end loop]
-[childBoundNodesName].Add(bound[elem.RedName()]);
+	[childBoundNodesName].Add(bound[elem.RedName()]);
+}
+[end if]
 end template
 
 

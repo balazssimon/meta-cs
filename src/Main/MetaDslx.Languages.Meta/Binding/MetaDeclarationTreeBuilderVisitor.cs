@@ -315,13 +315,10 @@ namespace MetaDslx.Languages.Meta.Binding
 							this.Visit(child);
 						}
 					}
-					if (node.KAbstract != null)
+					switch (node.KAbstract.GetKind().Switch())
 					{
-						switch (node.KAbstract.GetKind().Switch())
-						{
-							default:
-								break;
-						}
+						default:
+							break;
 					}
 					this.Visit(node.Name);
 					this.BeginProperty("SuperClasses");
@@ -435,21 +432,18 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitFieldModifier(FieldModifierSyntax node)
 		{
-			if (node.FieldModifier != null)
+			switch (node.FieldModifier.GetKind().Switch())
 			{
-				switch (node.FieldModifier.GetKind().Switch())
-				{
-					case MetaSyntaxKind.KContainment:
-						break;
-					case MetaSyntaxKind.KReadonly:
-						break;
-					case MetaSyntaxKind.KLazy:
-						break;
-					case MetaSyntaxKind.KDerived:
-						break;
-					default:
-						break;
-				}
+				case MetaSyntaxKind.KContainment:
+					break;
+				case MetaSyntaxKind.KReadonly:
+					break;
+				case MetaSyntaxKind.KLazy:
+					break;
+				case MetaSyntaxKind.KDerived:
+					break;
+				default:
+					break;
 			}
 		}
 		
@@ -554,13 +548,10 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.BeginDeclaration(typeof(Symbols.MetaExternalType), node);
 				try
 				{
-					if (node.KStruct != null)
+					switch (node.KStruct.GetKind().Switch())
 					{
-						switch (node.KStruct.GetKind().Switch())
-						{
-							default:
-								break;
-						}
+						default:
+							break;
 					}
 					this.Visit(node.Name);
 				}
@@ -597,43 +588,37 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitObjectType(ObjectTypeSyntax node)
 		{
-			if (node.ObjectType != null)
+			switch (node.ObjectType.GetKind().Switch())
 			{
-				switch (node.ObjectType.GetKind().Switch())
-				{
-					case MetaSyntaxKind.KObject:
-						break;
-					case MetaSyntaxKind.KSymbol:
-						break;
-					case MetaSyntaxKind.KString:
-						break;
-					default:
-						break;
-				}
+				case MetaSyntaxKind.KObject:
+					break;
+				case MetaSyntaxKind.KSymbol:
+					break;
+				case MetaSyntaxKind.KString:
+					break;
+				default:
+					break;
 			}
 		}
 		
 		public virtual void VisitPrimitiveType(PrimitiveTypeSyntax node)
 		{
-			if (node.PrimitiveType != null)
+			switch (node.PrimitiveType.GetKind().Switch())
 			{
-				switch (node.PrimitiveType.GetKind().Switch())
-				{
-					case MetaSyntaxKind.KInt:
-						break;
-					case MetaSyntaxKind.KLong:
-						break;
-					case MetaSyntaxKind.KFloat:
-						break;
-					case MetaSyntaxKind.KDouble:
-						break;
-					case MetaSyntaxKind.KByte:
-						break;
-					case MetaSyntaxKind.KBool:
-						break;
-					default:
-						break;
-				}
+				case MetaSyntaxKind.KInt:
+					break;
+				case MetaSyntaxKind.KLong:
+					break;
+				case MetaSyntaxKind.KFloat:
+					break;
+				case MetaSyntaxKind.KDouble:
+					break;
+				case MetaSyntaxKind.KByte:
+					break;
+				case MetaSyntaxKind.KBool:
+					break;
+				default:
+					break;
 			}
 		}
 		
@@ -651,21 +636,18 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitCollectionKind(CollectionKindSyntax node)
 		{
-			if (node.CollectionKind != null)
+			switch (node.CollectionKind.GetKind().Switch())
 			{
-				switch (node.CollectionKind.GetKind().Switch())
-				{
-					case MetaSyntaxKind.KSet:
-						break;
-					case MetaSyntaxKind.KList:
-						break;
-					case MetaSyntaxKind.KMultiSet:
-						break;
-					case MetaSyntaxKind.KMultiList:
-						break;
-					default:
-						break;
-				}
+				case MetaSyntaxKind.KSet:
+					break;
+				case MetaSyntaxKind.KList:
+					break;
+				case MetaSyntaxKind.KMultiSet:
+					break;
+				case MetaSyntaxKind.KMultiList:
+					break;
+				default:
+					break;
 			}
 		}
 		

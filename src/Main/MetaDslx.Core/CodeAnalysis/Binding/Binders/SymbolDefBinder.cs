@@ -24,17 +24,12 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             _syntax = syntax;
         }
 
-        public override Symbol ContainingSymbol
+        public Symbol DefinedSymbol
         {
             get
             {
                 if (_definedSymbol == null)
                 {
-                    /*var boundNode = this.Compilation.GetBoundNodes(_syntax).OfType<BoundSymbolDef>().FirstOrDefault();
-                    if (boundNode != null)
-                    {
-                        Interlocked.CompareExchange(ref _definedSymbol, boundNode.Symbol, null);
-                    }*/
                     var containingSymbol = this.Next.ContainingSymbol as NamespaceOrTypeSymbol;
                     var symbol = containingSymbol?.GetSourceMember(_syntax);
                     Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
@@ -42,5 +37,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 return _definedSymbol;
             }
         }
+
+        public override Symbol ContainingSymbol => this.DefinedSymbol;
     }
 }

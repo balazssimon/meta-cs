@@ -6,28 +6,17 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundValue : BoundNode
+    public class BoundValue : BoundValues
     {
-        private object _value;
+        private ImmutableArray<object> _values;
 
         public BoundValue(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, object value, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
-            _value = value;
+            _values = ImmutableArray.Create(value);
         }
 
-        public virtual object Value => _value;
+        public override ImmutableArray<object> Values => _values;
 
-        protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
-        {
-        }
-
-        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
-        {
-        }
-
-        protected override void AddNames(ArrayBuilder<Qualifier> names)
-        {
-        }
     }
 }

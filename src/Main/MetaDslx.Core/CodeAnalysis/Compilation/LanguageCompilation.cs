@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
@@ -953,6 +954,8 @@ namespace MetaDslx.CodeAnalysis
 
         public ImmutableModel Model => this.SourceAssembly.SourceModule.ModelBuilder.ToImmutable();
 
+        internal MutableModel ModelBuilder => this.SourceAssembly.SourceModule.ModelBuilder;
+
         /// <summary>
         /// The AssemblySymbol that represents the assembly being created.
         /// </summary>
@@ -1637,6 +1640,14 @@ namespace MetaDslx.CodeAnalysis
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Returns a new Symbol representing a constructed symbol.
+        /// </summary>
+        internal Symbol CreateConstructedSymbol(SyntaxReference syntaxReference, ModelSymbolInfo symbolInfo, ImmutableDictionary<string, ImmutableArray<object>> propertyValues)
+        {
+            return Language.CompilationFactory.CreateConstructedSymbol(this, this.ModelBuilder, syntaxReference, symbolInfo, propertyValues);
         }
 
         private protected override bool IsSymbolAccessibleWithinCore(

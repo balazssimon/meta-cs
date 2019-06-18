@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
@@ -56,6 +57,8 @@ namespace MetaDslx.CodeAnalysis.Binding
         public BoundTree BoundTree => _boundTree;
 
         protected LanguageCompilation Compilation => _boundTree.Compilation;
+
+        protected MutableModel ModelBuilder => _boundTree.ModelBuilder;
 
         public LanguageSyntaxNode Syntax => _syntax;
 
@@ -204,31 +207,36 @@ namespace MetaDslx.CodeAnalysis.Binding
         public ImmutableArray<Identifier> GetIdentifiers()
         {
             ArrayBuilder<Identifier> identifiers = ArrayBuilder<Identifier>.GetInstance();
-            foreach (var child in _childBoundNodes)
-            {
-                child.AddIdentifiers(identifiers);
-            }
+            this.AddIdentifiers(identifiers);
             return identifiers.ToImmutableAndFree();
         }
 
         public ImmutableArray<Qualifier> GetQualifiers()
         {
             ArrayBuilder<Qualifier> qualifiers = ArrayBuilder<Qualifier>.GetInstance();
-            foreach (var child in _childBoundNodes)
-            {
-                child.AddQualifiers(qualifiers);
-            }
+            this.AddQualifiers(qualifiers);
             return qualifiers.ToImmutableAndFree();
         }
 
         public ImmutableArray<Qualifier> GetNames()
         {
             ArrayBuilder<Qualifier> names = ArrayBuilder<Qualifier>.GetInstance();
-            foreach (var child in _childBoundNodes)
-            {
-                child.AddNames(names);
-            }
+            this.AddNames(names);
             return names.ToImmutableAndFree();
+        }
+
+        public ImmutableArray<string> GetProperties()
+        {
+            ArrayBuilder<string> properties = ArrayBuilder<string>.GetInstance();
+            this.AddProperties(properties);
+            return properties.ToImmutableAndFree();
+        }
+
+        public ImmutableArray<object> GetValues(string property = null)
+        {
+            ArrayBuilder<object> values = ArrayBuilder<object>.GetInstance();
+            this.AddValues(property, values);
+            return values.ToImmutableAndFree();
         }
 
         protected virtual void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
@@ -255,6 +263,22 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
+        protected virtual void AddProperties(ArrayBuilder<string> properties)
+        {
+            foreach (var child in _childBoundNodes)
+            {
+                child.AddProperties(properties);
+            }
+        }
+
+        protected virtual void AddValues(string property, ArrayBuilder<object> values)
+        {
+            foreach (var child in _childBoundNodes)
+            {
+                child.AddValues(property, values);
+            }
+        }
+
 #if true //DEBUG
         private class BoundTreeDumper
         {
@@ -270,24 +294,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             private static void Dump(StringBuilder sb, string indent, BoundNode node)
             {
                 if (node == null) return;
-                string kind = node.Kind.GetName();
-                object obj = null;
-                TypeSymbol type = null;
-                if (node is BoundValue boundValue) obj = boundValue.Value;
-                else if (node is BoundSymbol boundSymbol) obj = boundSymbol.Symbol;
-                else if (node is BoundStatement boundStatement) obj = boundStatement.Statement;
-                if (node is BoundExpression boundExpression)
-                {
-                    obj = boundExpression.Expression;
-                    type = boundExpression.Type;
-                    sb.AppendFormat("{0}{1} ({2}) -> {3}: {4}", indent, node.Syntax.Kind, node.Kind, obj, type);
-                    sb.AppendLine();
-                }
-                else
-                {
-                    sb.AppendFormat("{0}{1} ({2}) -> {3}", indent, node.Syntax.Kind, node.Kind, obj);
-                    sb.AppendLine();
-                }
+                sb.AppendFormat("{0}{1} ({2}) -> {3}", indent, node.Syntax.Kind, node.Kind, node);
+                sb.AppendLine();
                 foreach (var child in node.ChildBoundNodes)
                 {
                     Dump(sb, indent + "  ", child);
