@@ -30,11 +30,14 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 if (_definedSymbol == null)
                 {
-                    var boundNode = this.Compilation.GetBoundNodes(_syntax).OfType<BoundSymbolDef>().FirstOrDefault();
+                    /*var boundNode = this.Compilation.GetBoundNodes(_syntax).OfType<BoundSymbolDef>().FirstOrDefault();
                     if (boundNode != null)
                     {
                         Interlocked.CompareExchange(ref _definedSymbol, boundNode.Symbol, null);
-                    }
+                    }*/
+                    var containingSymbol = this.Next.ContainingSymbol as NamespaceOrTypeSymbol;
+                    var symbol = containingSymbol?.GetSourceMember(_syntax);
+                    Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
                 }
                 return _definedSymbol;
             }

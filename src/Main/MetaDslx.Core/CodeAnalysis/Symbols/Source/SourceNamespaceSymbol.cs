@@ -24,7 +24,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private SymbolCompletionState _state;
         private ImmutableArray<Location> _locations;
-        private Dictionary<string, ImmutableArray<NamespaceOrTypeSymbol>> _nameToMembersMap;
+        private Dictionary<string, ImmutableArray<Symbol>> _nameToMembersMap;
         private Dictionary<string, ImmutableArray<NamedTypeSymbol>> _nameToTypeMembersMap;
         private ImmutableArray<Symbol> _lazyAllMembers;
         private ImmutableArray<NamedTypeSymbol> _lazyTypeMembersUnordered;
@@ -165,9 +165,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override ImmutableArray<Symbol> GetMembers(string name)
         {
-            ImmutableArray<NamespaceOrTypeSymbol> members;
+            ImmutableArray<Symbol> members;
             return this.GetNameToMembersMap().TryGetValue(name, out members)
-                ? members.Cast<NamespaceOrTypeSymbol, Symbol>()
+                ? members
                 : ImmutableArray<Symbol>.Empty;
         }
 
@@ -204,7 +204,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 
-        private Dictionary<string, ImmutableArray<NamespaceOrTypeSymbol>> GetNameToMembersMap()
+        private Dictionary<string, ImmutableArray<Symbol>> GetNameToMembersMap()
         {
             if (_nameToMembersMap == null)
             {
@@ -239,13 +239,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return _nameToTypeMembersMap;
         }
 
-        private static Dictionary<string, ImmutableArray<NamedTypeSymbol>> GetTypesFromMemberMap(Dictionary<string, ImmutableArray<NamespaceOrTypeSymbol>> map)
+        private static Dictionary<string, ImmutableArray<NamedTypeSymbol>> GetTypesFromMemberMap(Dictionary<string, ImmutableArray<Symbol>> map)
         {
             var dictionary = new Dictionary<string, ImmutableArray<NamedTypeSymbol>>(StringOrdinalComparer.Instance);
 
             foreach (var kvp in map)
             {
-                ImmutableArray<NamespaceOrTypeSymbol> members = kvp.Value;
+                ImmutableArray<Symbol> members = kvp.Value;
 
                 bool hasType = false;
                 bool hasNamespace = false;
@@ -287,7 +287,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return dictionary;
         }
 
-        private Dictionary<string, ImmutableArray<NamespaceOrTypeSymbol>> MakeNameToMembersMap(DiagnosticBag diagnostics)
+        private Dictionary<string, ImmutableArray<Symbol>> MakeNameToMembersMap(DiagnosticBag diagnostics)
         {
             // NOTE: Even though the resulting map stores ImmutableArray<NamespaceOrTypeSymbol> as 
             // NOTE: values if the name is mapped into an array of named types, which is frequently 
@@ -301,7 +301,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var builder = new NameToSymbolMapBuilder(_mergedDeclaration.Children.Length);
             foreach (var declaration in _mergedDeclaration.Children)
             {
-                if (declaration.IsNamespace || declaration.IsType)
+                //if (declaration.IsNamespace || declaration.IsType)
                 {
                     builder.Add(BuildSymbol(declaration, diagnostics));
                 }
@@ -314,7 +314,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return result;
         }
 
-        private static void CheckMembers(NamespaceSymbol @namespace, Dictionary<string, ImmutableArray<NamespaceOrTypeSymbol>> result, DiagnosticBag diagnostics)
+        private static void CheckMembers(NamespaceSymbol @namespace, Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
         {
             var memberOfMetadataName = new Dictionary<string, Symbol>();
             MergedNamespaceSymbol mergedAssemblyNamespace = null;
@@ -376,7 +376,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        protected virtual NamespaceOrTypeSymbol BuildSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
+        protected virtual Symbol BuildSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
         {
             if (declaration.IsNamespace)
             {
@@ -391,7 +391,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             else if (declaration.IsName)
             {
                 // TODO:MetaDslx - allow names in a namespace
-               // return new SourceMemberSymbol(this, declaration, diagnostics);
+                 return new SourceMemberSymbol(this, declaration, diagnostics);
             }
             throw ExceptionUtilities.UnexpectedValue(declaration.Kind);
         }
@@ -468,17 +468,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 _dictionary = new Dictionary<string, object>(capacity, StringOrdinalComparer.Instance);
             }
 
-            public void Add(NamespaceOrTypeSymbol symbol)
+            public void Add(Symbol symbol)
             {
                 string name = symbol.Name;
                 object item;
                 if (_dictionary.TryGetValue(name, out item))
                 {
-                    var builder = item as ArrayBuilder<NamespaceOrTypeSymbol>;
+                    var builder = item as ArrayBuilder<Symbol>;
                     if (builder == null)
                     {
-                        builder = ArrayBuilder<NamespaceOrTypeSymbol>.GetInstance();
-                        builder.Add((NamespaceOrTypeSymbol)item);
+                        builder = ArrayBuilder<Symbol>.GetInstance();
+                        builder.Add((Symbol)item);
                         _dictionary[name] = builder;
                     }
                     builder.Add(symbol);
@@ -489,16 +489,16 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
             }
 
-            public Dictionary<String, ImmutableArray<NamespaceOrTypeSymbol>> CreateMap()
+            public Dictionary<String, ImmutableArray<Symbol>> CreateMap()
             {
-                var result = new Dictionary<String, ImmutableArray<NamespaceOrTypeSymbol>>(_dictionary.Count, StringOrdinalComparer.Instance);
+                var result = new Dictionary<String, ImmutableArray<Symbol>>(_dictionary.Count, StringOrdinalComparer.Instance);
 
                 foreach (var kvp in _dictionary)
                 {
                     object value = kvp.Value;
-                    ImmutableArray<NamespaceOrTypeSymbol> members;
+                    ImmutableArray<Symbol> members;
 
-                    var builder = value as ArrayBuilder<NamespaceOrTypeSymbol>;
+                    var builder = value as ArrayBuilder<Symbol>;
                     if (builder != null)
                     {
                         Debug.Assert(builder.Count > 1);
@@ -508,18 +508,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                             hasNamespaces |= (builder[i].Kind == SymbolKind.Namespace);
                         }
 
-                        members = hasNamespaces
-                            ? builder.ToImmutable()
-                            : StaticCast<NamespaceOrTypeSymbol>.From(builder.ToDowncastedImmutable<NamedTypeSymbol>());
+                        members = builder.ToImmutable();
 
                         builder.Free();
                     }
                     else
                     {
-                        NamespaceOrTypeSymbol symbol = (NamespaceOrTypeSymbol)value;
-                        members = symbol.Kind == SymbolKind.Namespace
-                            ? ImmutableArray.Create<NamespaceOrTypeSymbol>(symbol)
-                            : StaticCast<NamespaceOrTypeSymbol>.From(ImmutableArray.Create<NamedTypeSymbol>((NamedTypeSymbol)symbol));
+                        var symbol = (Symbol)value;
+                        members = ImmutableArray.Create<Symbol>(symbol);
                     }
 
                     result.Add(kvp.Key, members);

@@ -801,14 +801,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public string ToDisplayString(SymbolDisplayFormat format = null)
         {
-            try
-            {
-                return SymbolDisplay.ToDisplayString(this, format);
-            }
-            catch (Exception ex)
-            {
-                return "Error: " + ex.Message;
-            }
+            // TODO:MetaDslx
+            //return SymbolDisplay.ToDisplayString(this, format);
+            return this.MetadataName + " (" + this.Kind + ")";
         }
 
         public ImmutableArray<SymbolDisplayPart> ToDisplayParts(SymbolDisplayFormat format = null)

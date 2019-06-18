@@ -112,11 +112,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Get a source symbol for the given declaration syntax.
         /// </summary>
         /// <returns>Null if there is no matching declaration.</returns>
-        public NamespaceOrTypeSymbol GetSourceMember(SyntaxNodeOrToken syntax)
+        public Symbol GetSourceMember(SyntaxNodeOrToken syntax)
         {
             foreach (var member in GetMembers())
             {
-                var memberT = member as NamespaceOrTypeSymbol;
+                var memberT = member as Symbol;
                 if ((object)memberT != null)
                 {
                     if (syntax != null)

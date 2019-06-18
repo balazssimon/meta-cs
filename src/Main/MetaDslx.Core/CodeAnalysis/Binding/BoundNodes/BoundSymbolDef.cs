@@ -27,19 +27,23 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 if (_lazySymbol == null)
                 {
                     var binder = this.GetBinder();
-                    var containerSymbol = binder?.GetContainerSymbol(this.Syntax);
-                    var names = this.GetNames();
+                    var containingSymbol = binder?.ContainingSymbol;
+                    var container = containingSymbol as NamespaceOrTypeSymbol;
+                    var symbol = container?.GetSourceMember(this.Syntax);
+                    /*var names = this.GetNames();
                     // Debug.Assert(names.Length == 1);
                     Symbol symbol = null;
                     if (names.Length == 1)
                     {
                         var qualifier = names[0].Identifiers;
+                        var binder = this.GetBinder();
+                        var containerSymbol = binder?.ContainingSymbol as NamespaceOrTypeSymbol;
                         foreach (var identifier in qualifier)
                         {
                             symbol = containerSymbol?.GetSourceMember(identifier.Syntax);
                             containerSymbol = symbol as NamespaceOrTypeSymbol;
                         }
-                    }
+                    }*/
                     Interlocked.CompareExchange(ref _lazySymbol, symbol, null);
                 }
                 return _lazySymbol;

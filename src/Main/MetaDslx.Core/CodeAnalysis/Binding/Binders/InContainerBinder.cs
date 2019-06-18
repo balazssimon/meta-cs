@@ -79,5 +79,113 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
             return _lazyImports;
         }
+
+        public override ImportChain ImportChain
+        {
+            get
+            {
+                if (_lazyImportChain == null)
+                {
+                    ImportChain importChain = this.Next.ImportChain;
+                    if ((object)_container == null || _container.Kind == SymbolKind.Namespace)
+                    {
+                        importChain = new ImportChain(GetImports(basesBeingResolved: null), importChain);
+                    }
+
+                    Interlocked.CompareExchange(ref _lazyImportChain, importChain, null);
+                }
+
+                Debug.Assert(_lazyImportChain != null);
+
+                return _lazyImportChain;
+            }
+        }
+
+        public override Symbol ContainingSymbol
+        {
+            get
+            {
+                var merged = _container as MergedNamespaceSymbol;
+                return ((object)merged != null) ? merged.GetConstituentForCompilation(this.Compilation) : _container;
+            }
+        }
+
+        private bool IsSubmission
+        {
+            get { return (_container?.Kind == SymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsSubmission; }
+        }
+
+        private bool IsScript
+        {
+            get { return (_container?.Kind == SymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsScript; }
+        }
+
+        public override bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
+        {
+            var type = _container as NamedTypeSymbol;
+            if ((object)type != null)
+            {
+                return this.IsSymbolAccessibleConditional(symbol, type, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics);
+            }
+            else
+            {
+                return Next.IsAccessibleHelper(symbol, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics, basesBeingResolved);  // delegate to containing Binder, eventually checking assembly.
+            }
+        }
+
+
+        public override void LookupSymbolsInSingleBinder(
+            LookupResult result, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            Debug.Assert(result.IsClear);
+
+            if (IsSubmission)
+            {
+                this.LookupMembersInternal(result, _container, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                return;
+            }
+
+            var imports = GetImports(basesBeingResolved);
+
+            // first lookup members of the namespace
+            if ((options & LookupOptions.NamespaceAliasesOnly) == 0 && _container != null)
+            {
+                this.LookupMembersInternal(result, _container, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+
+                if (result.IsMultiViable)
+                {
+                    // symbols cannot conflict with using alias names
+                    if (metadataName == name && imports.IsUsingAlias(name, originalBinder.IsSemanticModelBinder))
+                    {
+                        LanguageDiagnosticInfo diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictAliasAndMember, name, _container);
+                        var error = new ExtendedErrorTypeSymbol((NamespaceOrTypeSymbol)null, name, metadataName, diagInfo, unreported: true);
+                        result.SetFrom(LookupResult.Good(error)); // force lookup to be done w/ error symbol as result
+                    }
+
+                    return;
+                }
+            }
+
+            // next try using aliases or symbols in imported namespaces
+            imports.LookupSymbol(originalBinder, result, name, metadataName, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+        }
+
+        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupOptions options, Binder originalBinder)
+        {
+            if (_container != null)
+            {
+                this.AddMemberLookupSymbolsInfo(result, _container, options, originalBinder);
+            }
+
+            // If we are looking only for labels we do not need to search through the imports.
+            // Submission imports are handled by AddMemberLookupSymbolsInfo (above).
+            if (!IsSubmission && ((options & LookupOptions.LabelsOnly) == 0))
+            {
+                var imports = GetImports(basesBeingResolved: null);
+                imports.AddLookupSymbolsInfo(result, options, originalBinder);
+            }
+        }
+
+        
     }
 }

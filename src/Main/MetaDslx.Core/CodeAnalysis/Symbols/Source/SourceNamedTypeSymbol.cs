@@ -22,6 +22,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Debug.Assert(!declaration.IsImplicit && !declaration.IsSubmission && !declaration.IsScript);
         }
 
+        public override SymbolKind Kind => SymbolKind.NamedType;
+
         /// <summary>
         /// Gets the set of interfaces that this type directly implements. This set does not include
         /// interfaces that are base interfaces of directly implemented interfaces.
