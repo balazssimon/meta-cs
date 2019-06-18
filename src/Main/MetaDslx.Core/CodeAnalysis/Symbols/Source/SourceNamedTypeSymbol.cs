@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -92,7 +93,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         protected ImmutableArray<NamedTypeSymbol> GetDeclaredBases(ConsList<TypeSymbol> basesBeingResolved)
         {
-            if (ReferenceEquals(_lazyDeclaredBases, null))
+            if (_lazyDeclaredBases.IsDefault)
             {
                 var diagnostics = DiagnosticBag.GetInstance();
                 if (ImmutableInterlocked.InterlockedInitialize(ref _lazyDeclaredBases, MakeDeclaredBases(basesBeingResolved, diagnostics)))

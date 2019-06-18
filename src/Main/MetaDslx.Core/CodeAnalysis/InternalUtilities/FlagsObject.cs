@@ -250,6 +250,7 @@ namespace Roslyn.Utilities
 
         public bool Includes(FlagsObject flags)
         {
+            if (flags == null) return this.HasNoFlags;
             return _flags.IncludesAll(flags._flags);
         }
 
@@ -649,6 +650,10 @@ namespace Roslyn.Utilities
             if (_descriptors.TryGetValue(type, out descriptor))
             {
                 return descriptor;
+            }
+            if (type == typeof(FlagsObject))
+            {
+                return FlagsObjectDescriptor.Root;
             }
             throw new ArgumentException("Invalid FlagsObject type: "+type);
         }

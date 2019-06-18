@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
@@ -11,12 +12,22 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     {
         private Symbol _containingSymbol;
         private SyntaxReference _syntaxReference;
+        private IMetaSymbol _modelObject;
 
-        public SourceTypeSymbol(Symbol containingSymbol, SyntaxReference syntaxReference)
+        public SourceTypeSymbol(Symbol containingSymbol, SyntaxReference syntaxReference, IMetaSymbol modelObject)
         {
             _containingSymbol = containingSymbol;
             _syntaxReference = syntaxReference;
+            _modelObject = modelObject;
         }
+
+        public override SymbolKind Kind => SymbolKind.ArrayType;
+
+        public override TypeKind TypeKind => TypeKind.Array;
+
+        protected internal override MutableSymbolBase ModelObject => _modelObject as MutableSymbolBase;
+
+        public override ModelSymbolInfo ModelSymbolInfo => _modelObject.MId.SymbolInfo;
 
         public override Symbol ContainingSymbol => _containingSymbol;
 

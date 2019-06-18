@@ -23,6 +23,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public MetaSymbolMap MetaSymbolMap => ((IMetaMetadataSymbol)_container).MetaSymbolMap;
 
+        public override ModelSymbolInfo ModelSymbolInfo => _metaObject.MId.SymbolInfo;
+
         public override Symbol ContainingSymbol => _container;
 
         public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;

@@ -69,9 +69,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override Language Language => _containingSymbol.Language;
 
+        public override TypeKind TypeKind => TypeKind.Class;
+
         internal protected override MutableModel ModelBuilder => this.ContainingModule.ModelBuilder;
 
         internal protected override MutableSymbolBase ModelObject => _modelObject;
+
+        public override ModelSymbolInfo ModelSymbolInfo => _declaration.Kind;
 
         public MergedDeclaration MergedDeclaration => _declaration;
 

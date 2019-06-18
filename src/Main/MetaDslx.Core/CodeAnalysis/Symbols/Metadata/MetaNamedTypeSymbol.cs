@@ -31,6 +31,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override SymbolKind Kind => SymbolKind.NamedType;
 
+        public override ModelSymbolInfo ModelSymbolInfo => _metaObject.MId.SymbolInfo;
+
         public override IEnumerable<string> MemberNames
         {
             get

@@ -239,44 +239,74 @@ namespace MetaDslx.CodeAnalysis.Binding
             return values.ToImmutableAndFree();
         }
 
-        protected virtual void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        public ImmutableArray<Identifier> GetChildIdentifiers()
         {
+            ArrayBuilder<Identifier> identifiers = ArrayBuilder<Identifier>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
                 child.AddIdentifiers(identifiers);
             }
+            return identifiers.ToImmutableAndFree();
         }
 
-        protected virtual void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        public ImmutableArray<Qualifier> GetChildQualifiers()
         {
+            ArrayBuilder<Qualifier> qualifiers = ArrayBuilder<Qualifier>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
                 child.AddQualifiers(qualifiers);
             }
+            return qualifiers.ToImmutableAndFree();
         }
 
-        protected virtual void AddNames(ArrayBuilder<Qualifier> names)
+        public ImmutableArray<Qualifier> GetChildNames()
         {
+            ArrayBuilder<Qualifier> names = ArrayBuilder<Qualifier>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
                 child.AddNames(names);
             }
+            return names.ToImmutableAndFree();
         }
 
-        protected virtual void AddProperties(ArrayBuilder<string> properties)
+        public ImmutableArray<string> GetChildProperties()
         {
+            ArrayBuilder<string> properties = ArrayBuilder<string>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
                 child.AddProperties(properties);
             }
+            return properties.ToImmutableAndFree();
         }
 
-        protected virtual void AddValues(string property, ArrayBuilder<object> values)
+        public ImmutableArray<object> GetChildValues(string property = null)
         {
+            ArrayBuilder<object> values = ArrayBuilder<object>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
                 child.AddValues(property, values);
             }
+            return values.ToImmutableAndFree();
+        }
+
+        public virtual void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        {
+        }
+
+        public virtual void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        {
+        }
+
+        public virtual void AddNames(ArrayBuilder<Qualifier> names)
+        {
+        }
+
+        public virtual void AddProperties(ArrayBuilder<string> properties)
+        {
+        }
+
+        public virtual void AddValues(string property, ArrayBuilder<object> values)
+        {
         }
 
 #if true //DEBUG

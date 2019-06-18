@@ -20,6 +20,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override SymbolKind Kind => SymbolKind.Unknown;
 
+        public override ModelSymbolInfo ModelSymbolInfo => _symbol.MId.SymbolInfo;
+
         public override Symbol ContainingSymbol => null;
 
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;

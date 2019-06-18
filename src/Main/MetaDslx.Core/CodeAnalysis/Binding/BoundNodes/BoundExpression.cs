@@ -22,26 +22,6 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         public ConstantValue ConstantValue => throw new NotImplementedException("TODO:MetaDslx");
         public TypeSymbol Type => throw new NotImplementedException("TODO:MetaDslx");
 
-        protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
-        {
-        }
-
-        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
-        {
-        }
-
-        protected override void AddNames(ArrayBuilder<Qualifier> names)
-        {
-        }
-
-        protected override void AddProperties(ArrayBuilder<string> properties)
-        {
-        }
-
-        protected override void AddValues(string property, ArrayBuilder<object> values)
-        {
-        }
-
         public override string ToString()
         {
             return this.Expression + ": " + this.Type;

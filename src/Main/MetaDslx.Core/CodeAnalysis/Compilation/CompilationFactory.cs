@@ -55,9 +55,14 @@ namespace MetaDslx.CodeAnalysis
         public virtual Symbol CreateConstructedSymbol(LanguageCompilation compilation, MutableModel modelBuilder, SyntaxReference syntaxReference, ModelSymbolInfo symbolInfo, ImmutableDictionary<string, ImmutableArray<object>> propertyValues)
         {
             var modelObject = symbolInfo.CreateMutable(modelBuilder, true);
-            if (symbolInfo.IsType)
+            return ModelObjectToSourceSymbol(compilation, syntaxReference, modelObject);
+        }
+
+        public virtual Symbol ModelObjectToSourceSymbol(LanguageCompilation compilation, SyntaxReference syntaxReference, IMetaSymbol modelObject)
+        {
+            if (modelObject.MId.SymbolInfo.IsType)
             {
-                return new SourceTypeSymbol(compilation.SourceModule, syntaxReference);
+                return new SourceTypeSymbol(compilation.SourceModule, syntaxReference, modelObject);
             }
             else
             {

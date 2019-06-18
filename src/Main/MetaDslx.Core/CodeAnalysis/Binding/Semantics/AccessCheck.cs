@@ -145,6 +145,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                     return IsMemberAccessible(symbol.ContainingType, symbol.DeclaredAccessibility, within, throughTypeOpt, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics);
 
+                case SymbolKind.Unknown:
+                    return false;
                 default:
                     throw ExceptionUtilities.UnexpectedValue(symbol.Kind);
             }

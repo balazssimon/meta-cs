@@ -22,25 +22,9 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
-        protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        public override void AddNames(ArrayBuilder<Qualifier> names)
         {
-        }
-
-        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
-        {
-        }
-
-        protected override void AddNames(ArrayBuilder<Qualifier> names)
-        {
-            names.AddRange(this.GetQualifiers());
-        }
-
-        protected override void AddProperties(ArrayBuilder<string> properties)
-        {
-        }
-
-        protected override void AddValues(string property, ArrayBuilder<object> values)
-        {
+            names.AddRange(this.GetChildQualifiers());
         }
 
         public override string ToString()

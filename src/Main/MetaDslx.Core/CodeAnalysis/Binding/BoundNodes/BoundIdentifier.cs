@@ -50,26 +50,14 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
-        protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        public override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
         {
             identifiers.Add(new Identifier(this.Syntax, this.Name, this.MetadataName));
         }
 
-        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        public override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
         {
             qualifiers.Add(new Qualifier(ImmutableArray.Create(new Identifier(this.Syntax, this.Name, this.MetadataName))));
-        }
-
-        protected override void AddNames(ArrayBuilder<Qualifier> names)
-        {
-        }
-
-        protected override void AddProperties(ArrayBuilder<string> properties)
-        {
-        }
-
-        protected override void AddValues(string property, ArrayBuilder<object> values)
-        {
         }
 
         public override string ToString()

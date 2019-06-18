@@ -471,6 +471,10 @@ namespace Roslyn.Utilities
             {
                 return descriptor;
             }
+            if (type == typeof(EnumObject))
+            {
+                return EnumObjectDescriptor.Root;
+            }
             throw new ArgumentException("Invalid EnumObject type: " + type);
         }
 

@@ -42,6 +42,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override string Name => _metaObject.MName;
 
+        public override ModelSymbolInfo ModelSymbolInfo => _metaObject.MId.SymbolInfo;
+
         public override ImmutableArray<Symbol> GetMembers()
         {
             if (_lazyMembers.IsDefault)

@@ -21,5 +21,10 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         public bool IsDefault => Syntax == null;
+
+        public override string ToString()
+        {
+            return this.MetadataName;
+        }
     }
 }

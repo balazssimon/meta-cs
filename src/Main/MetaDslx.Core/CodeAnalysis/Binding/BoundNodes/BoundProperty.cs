@@ -21,28 +21,19 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public string Name => _name;
 
-        protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
-        {
-        }
-
-        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
-        {
-        }
-
-        protected override void AddNames(ArrayBuilder<Qualifier> names)
-        {
-        }
-
-        protected override void AddProperties(ArrayBuilder<string> properties)
+        public override void AddProperties(ArrayBuilder<string> properties)
         {
             properties.Add(_name);
             if (_valueOpt.HasValue)
             {
-                base.AddProperties(properties);
+                foreach (var child in ChildBoundNodes)
+                {
+                    child.AddProperties(properties);
+                }
             }
         }
 
-        protected override void AddValues(string property, ArrayBuilder<object> values)
+        public override void AddValues(string property, ArrayBuilder<object> values)
         {
             if (_valueOpt.HasValue)
             {
@@ -51,9 +42,9 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                     values.Add(_valueOpt.Value);
                 }
             }
-            else
+            foreach (var child in ChildBoundNodes)
             {
-                base.AddValues(property, values);
+                child.AddValues(property, values);
             }
         }
 

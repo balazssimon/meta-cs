@@ -22,9 +22,9 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         public ImmutableDictionary<string, ImmutableArray<object>> GetPropertyValues()
         {
             var result = ImmutableDictionary.CreateBuilder<string, ImmutableArray<object>>();
-            foreach (var property in this.GetProperties())
+            foreach (var property in this.GetChildProperties())
             {
-                result.Add(property, this.GetValues(property));
+                result.Add(property, this.GetChildValues(property));
             }
             return result.ToImmutable();
         }

@@ -15,23 +15,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public abstract ImmutableArray<object> Values { get; }
 
-        protected override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
-        {
-        }
-
-        protected override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
-        {
-        }
-
-        protected override void AddNames(ArrayBuilder<Qualifier> names)
-        {
-        }
-
-        protected override void AddProperties(ArrayBuilder<string> properties)
-        {
-        }
-
-        protected override void AddValues(string property, ArrayBuilder<object> values)
+        public override void AddValues(string property, ArrayBuilder<object> values)
         {
             values.AddRange(this.Values);
         }

@@ -177,7 +177,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return childNames;
         }
 
-        public override ModelSymbolInfo ModelSymbolInfo => null;
+        public override ModelSymbolInfo ModelSymbolInfo => _namespacesToMerge[0].ModelSymbolInfo;
 
         public override string Name
         {

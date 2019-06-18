@@ -168,7 +168,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 case TypeKind.Delegate:
                 case TypeKind.Array:
                 case TypeKind.Dynamic:
-                    this.LookupMembersInTypeCore(result, type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                    this.LookupMembersInTypeCore(result, (NamedTypeSymbol)type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
                     break;
 
                 case TypeKind.Submission:
@@ -612,7 +612,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         // Lookup member in a class, struct, enum, delegate.
         private void LookupMembersInTypeCore(
             LookupResult result,
-            TypeSymbol type,
+            NamedTypeSymbol type,
             string name,
             string metadataName,
             ConsList<TypeSymbol> basesBeingResolved,
@@ -621,11 +621,72 @@ namespace MetaDslx.CodeAnalysis.Binding
             bool diagnose,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            LookupMembersInType(result, type, name, metadataName, basesBeingResolved, options, originalBinder, type, diagnose, ref useSiteDiagnostics);
+            LookupMembersInTypeAndBaseTypes(result, type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+        }
+
+        // Lookup member in interface, and any base interfaces.
+        private static void LookupMembersInCurrentType(
+            LookupResult current,
+            NamedTypeSymbol type,
+            string name,
+            string metadataName,
+            ConsList<TypeSymbol> basesBeingResolved,
+            LookupOptions options,
+            Binder originalBinder,
+            TypeSymbol accessThroughType,
+            bool diagnose,
+            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            Debug.Assert((object)type != null);
+
+            LookupMembersWithoutInheritance(current, type, name, metadataName, options, originalBinder, accessThroughType, diagnose, ref useSiteDiagnostics, basesBeingResolved);
+            if ((options & (LookupOptions.NamespaceAliasesOnly | LookupOptions.NamespacesOrTypesOnly)) == 0)
+            {
+                LookupMembersInTypesWithoutInheritance(current, type.AllBaseTypesWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics), name, metadataName, basesBeingResolved, options, originalBinder, accessThroughType, diagnose, ref useSiteDiagnostics);
+            }
+        }
+
+        private static void LookupMembersInTypesWithoutInheritance(
+            LookupResult current,
+            ImmutableArray<NamedTypeSymbol> interfaces,
+            string name,
+            string metadataName,
+            ConsList<TypeSymbol> basesBeingResolved,
+            LookupOptions options,
+            Binder originalBinder,
+            TypeSymbol accessThroughType,
+            bool diagnose,
+            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            if (interfaces.Length > 0)
+            {
+                var tmp = LookupResult.GetInstance();
+                foreach (TypeSymbol baseInterface in interfaces)
+                {
+                    LookupMembersWithoutInheritance(tmp, baseInterface, name, metadataName, options, originalBinder, accessThroughType, diagnose, ref useSiteDiagnostics, basesBeingResolved);
+                    MergeHidingLookupResults(current, tmp, ref useSiteDiagnostics);
+                    tmp.Clear();
+                }
+                tmp.Free();
+            }
+        }
+
+        // Lookup member in interface, and any base interfaces, and System.Object.
+        private void LookupMembersInTypeAndBaseTypes(LookupResult current, NamedTypeSymbol type, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        {
+            Debug.Assert((object)type != null);
+
+            LookupMembersInCurrentType(current, type, name, metadataName, basesBeingResolved, options, originalBinder, type, diagnose, ref useSiteDiagnostics);
+
+            var tmp = LookupResult.GetInstance();
+            // NB: we assume use-site-errors on System.Object, if any, have been reported earlier.
+            this.LookupMembersInBaseTypes(tmp, this.Compilation.GetSpecialType(SpecialType.System_Object), name, metadataName, basesBeingResolved, options, originalBinder, type, diagnose, ref useSiteDiagnostics);
+            MergeHidingLookupResults(current, tmp, ref useSiteDiagnostics);
+            tmp.Free();
         }
 
         // Lookup member in a class, struct, enum, delegate.
-        private void LookupMembersInType(
+        private void LookupMembersInBaseTypes(
             LookupResult result,
             TypeSymbol type,
             string name,

@@ -106,6 +106,10 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(boundTree);
             var boundRoot = boundTree.GetBoundRoot();
             File.WriteAllText("BountTree.txt", boundRoot.Dump());
+            foreach (var diag in boundTree.DiagnosticBag.ToReadOnly())
+            {
+                Console.WriteLine(formatter.Format(diag));
+            }
             //*/
         }
 
