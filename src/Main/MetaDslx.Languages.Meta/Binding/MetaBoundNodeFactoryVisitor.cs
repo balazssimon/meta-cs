@@ -911,27 +911,11 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			switch (node.ObjectType.GetKind().Switch())
-			{
-				case MetaSyntaxKind.KObject:
-					BoundNode boundKObject;
-					boundKObject = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Object, node, false);
-					childBoundNodesForParent.Add(boundKObject);
-					break;
-				case MetaSyntaxKind.KSymbol:
-					BoundNode boundKSymbol;
-					boundKSymbol = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Symbol, node, false);
-					childBoundNodesForParent.Add(boundKSymbol);
-					break;
-				case MetaSyntaxKind.KString:
-					BoundNode boundKString;
-					boundKString = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.String, node, false);
-					childBoundNodesForParent.Add(boundKString);
-					break;
-				default:
-					break;
-			}
-			return null;
+			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
+			BoundNode resultNode;
+			resultNode = this.CreateBoundIdentifier(this.BoundTree, childBoundNodes.ToImmutableAndFree(), node, false);
+			childBoundNodesForParent.Add(resultNode);
+			return resultNode;
 		}
 		
 		public BoundNode VisitPrimitiveType(PrimitiveTypeSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
@@ -941,42 +925,11 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			switch (node.PrimitiveType.GetKind().Switch())
-			{
-				case MetaSyntaxKind.KInt:
-					BoundNode boundKInt;
-					boundKInt = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Int, node, false);
-					childBoundNodesForParent.Add(boundKInt);
-					break;
-				case MetaSyntaxKind.KLong:
-					BoundNode boundKLong;
-					boundKLong = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Long, node, false);
-					childBoundNodesForParent.Add(boundKLong);
-					break;
-				case MetaSyntaxKind.KFloat:
-					BoundNode boundKFloat;
-					boundKFloat = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Float, node, false);
-					childBoundNodesForParent.Add(boundKFloat);
-					break;
-				case MetaSyntaxKind.KDouble:
-					BoundNode boundKDouble;
-					boundKDouble = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Double, node, false);
-					childBoundNodesForParent.Add(boundKDouble);
-					break;
-				case MetaSyntaxKind.KByte:
-					BoundNode boundKByte;
-					boundKByte = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Byte, node, false);
-					childBoundNodesForParent.Add(boundKByte);
-					break;
-				case MetaSyntaxKind.KBool:
-					BoundNode boundKBool;
-					boundKBool = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Bool, node, false);
-					childBoundNodesForParent.Add(boundKBool);
-					break;
-				default:
-					break;
-			}
-			return null;
+			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
+			BoundNode resultNode;
+			resultNode = this.CreateBoundIdentifier(this.BoundTree, childBoundNodes.ToImmutableAndFree(), node, false);
+			childBoundNodesForParent.Add(resultNode);
+			return resultNode;
 		}
 		
 		public BoundNode VisitVoidType(VoidTypeSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
@@ -986,13 +939,11 @@ namespace MetaDslx.Languages.Meta.Binding
 				childBoundNodesForParent.Add(cachedBoundNode);
 				return cachedBoundNode;
 			}
-			if (node.KVoid.GetKind() == MetaSyntaxKind.KVoid)
-			{
-				BoundNode boundKVoid;
-				boundKVoid = this.CreateBoundValue(this.BoundTree, ImmutableArray<BoundNode>.Empty, MetaInstance.Void, node, false);
-				childBoundNodesForParent.Add(boundKVoid);
-			}
-			return null;
+			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
+			BoundNode resultNode;
+			resultNode = this.CreateBoundIdentifier(this.BoundTree, childBoundNodes.ToImmutableAndFree(), node, false);
+			childBoundNodesForParent.Add(resultNode);
+			return resultNode;
 		}
 		
 		public BoundNode VisitNullableType(NullableTypeSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)

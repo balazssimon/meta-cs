@@ -745,6 +745,17 @@ namespace [Properties.DefaultNamespace]
             return [Properties.LanguageName]DeclarationTreeBuilderVisitor.ForTree(([Properties.LanguageName]SyntaxTree)syntaxTree, scriptClassName, isSubmission);
         }
 ^
+		public override ImmutableDictionary<string, Symbol> CreateSpecialSymbols(SourceAssemblySymbol assembly)
+        {
+            var result = ImmutableDictionary.CreateBuilder<string, Symbol>();
+            foreach (var specialType in [Properties.LanguageName]Constants.Types)
+            {
+                var symbol = new MetaNamedTypeSymbol(specialType, assembly);
+                result.Add(specialType.Name, symbol);
+            }
+            return result.ToImmutable();
+        }
+^
         /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)
         {
             return new [Properties.LanguageName]ScriptCompilationInfo(([Properties.LanguageName]Compilation)previousSubmission, submissionReturnType, hostObjectType);

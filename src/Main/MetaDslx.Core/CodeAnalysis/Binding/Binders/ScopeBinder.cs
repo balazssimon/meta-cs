@@ -20,15 +20,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 if (binder is SymbolDefBinder symbolDefBinder)
                 {
-                    var definedSymbols = symbolDefBinder.DefinedSymbols;
-                    if (definedSymbols.Length == 1)
-                    {
-                        return definedSymbols[0] as NamespaceOrTypeSymbol;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return symbolDefBinder.DefinedSymbol as NamespaceOrTypeSymbol;
                 }
                 current = current.Next;
             }

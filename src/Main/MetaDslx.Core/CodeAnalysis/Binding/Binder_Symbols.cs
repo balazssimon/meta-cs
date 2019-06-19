@@ -1053,9 +1053,9 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
 
-        public virtual NamespaceOrTypeSymbol GetContainerSymbol(SyntaxNodeOrToken syntax)
+        public virtual ISourceDeclarationSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
         {
-            var container = this.ContainingSymbol as NamespaceOrTypeSymbol;
+            var container = this.ContainingSymbol;
             if ((object)container == null)
             {
                 if (syntax.Parent.GetKind() == Language.SyntaxFacts.CompilationUnitKind && syntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
@@ -1067,17 +1067,17 @@ namespace MetaDslx.CodeAnalysis.Binding
                     container = Compilation.GlobalNamespace;
                 }
             }
-            return container;
+            return container as ISourceDeclarationSymbol;
         }
 
-        public virtual Symbol GetDefinedSymbol(SyntaxNodeOrToken syntax)
+        public virtual Symbol GetIdentifierDeclaredSymbol(SyntaxNodeOrToken syntax)
         {
-            var container = this.GetContainerSymbol(syntax);
-            Symbol symbol = container.GetSourceMember(syntax);
+            var container = this.Next.GetEnclosingDeclarationSymbol(syntax) as ISourceDeclarationSymbol;
+            Symbol symbol = container?.GetSourceMember(syntax);
             return symbol;
         }
 
-        public virtual Symbol GetUsedSymbol(SyntaxNodeOrToken syntax, string name, string metadataName, DiagnosticBag diagnostics)
+        public virtual Symbol GetIdentifierReferencedSymbol(SyntaxNodeOrToken syntax, string name, string metadataName, DiagnosticBag diagnostics)
         {
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             var qualifierOpt = this.GetQualifierOpt(syntax);

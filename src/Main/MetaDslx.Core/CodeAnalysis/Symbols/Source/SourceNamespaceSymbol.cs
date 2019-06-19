@@ -16,7 +16,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceNamespaceSymbol : NamespaceSymbol
+    public class SourceNamespaceSymbol : NamespaceSymbol, ISourceDeclarationSymbol
     {
         private readonly SourceModuleSymbol _module;
         private readonly Symbol _container;
@@ -126,6 +126,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _mergedDeclaration.SyntaxReferences;
+
+        public virtual ImmutableArray<Symbol> GetDeclaredChildren()
+        {
+            return GetMembers();
+        }
 
         internal override ImmutableArray<Symbol> GetMembersUnordered()
         {

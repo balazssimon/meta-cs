@@ -31,9 +31,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseTypeReference = new object();
 		public static object UseNameUseList = new object();
 		public static object UseKStruct = new object();
-		public static object UseObjectType = new object();
 		public static object UsePrimitiveType = new object();
-		public static object UseKVoid = new object();
 		public static object UseCollectionKind = new object();
 		public static object UseSimpleType = new object();
 		public static object UseReturnType = new object();
@@ -57,7 +55,9 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseClassBody = new object();
 		public static object UseExternClassTypeDeclaration = new object();
 		public static object UseExternStructTypeDeclaration = new object();
+		public static object UseVoidType = new object();
 		public static object UseCollectionType = new object();
+		public static object UseObjectType = new object();
 		public static object UseNullableType = new object();
 		public static object UseClassType = new object();
 		public static object UseParameter = new object();
@@ -73,7 +73,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseClassAncestor = new object();
 		public static object UseRedefinitions = new object();
 		public static object UseSubsettings = new object();
-		public static object UseVoidType = new object();
 		public static object UseMetamodelPropertyList = new object();
 		public static object UseRedefinitionsOrSubsettings = new object();
 

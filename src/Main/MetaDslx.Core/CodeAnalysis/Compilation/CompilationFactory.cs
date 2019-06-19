@@ -33,6 +33,11 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
+        public virtual ImmutableDictionary<string, Symbol> CreateSpecialSymbols(SourceAssemblySymbol assembly)
+        {
+            return ImmutableDictionary<string, Symbol>.Empty;
+        }
+
         protected virtual CompletionGraphBuilder ConstructCompletionGraph()
         {
             return CompletionPart.ConstructDefaultCompletionGraph();

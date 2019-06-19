@@ -55,9 +55,7 @@ namespace MetaDslx.Bootstrap
             {
                 Console.WriteLine(formatter.Format(diag));
             }
-            //*/
 
-            //*/
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
@@ -105,9 +103,7 @@ namespace MetaDslx.Bootstrap
                 }
                 ++index;
             }
-            //*/
 
-            //*/
             var boundTree = compilation.GetBoundTree(tree);
             Console.WriteLine(boundTree);
             var boundRoot = boundTree.GetBoundRoot();

@@ -215,12 +215,12 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public bool VisitObjectType(ObjectTypeSyntax node)
 		{
-			return false;
+			return true;
 		}
 		
 		public bool VisitPrimitiveType(PrimitiveTypeSyntax node)
 		{
-			return false;
+			return true;
 		}
 		
 		public bool VisitVoidType(VoidTypeSyntax node)

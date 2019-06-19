@@ -109,23 +109,26 @@ simpleType : primitiveType | objectType | nullableType | classType;
 $SymbolUse(symbolTypes=(MetaClass,MetaEnum))
 classType : qualifier;
 
+$Identifier
 objectType 
-	: $Value(MetaInstance.Object) KObject 
-	| $Value(MetaInstance.Symbol) KSymbol
-	| $Value(MetaInstance.String) KString
+	: KObject 
+	| KSymbol
+	| KString
 	;
 
+$Identifier
 primitiveType 
-	: $Value(MetaInstance.Int) KInt 
-	| $Value(MetaInstance.Long) KLong 
-	| $Value(MetaInstance.Float) KFloat 
-	| $Value(MetaInstance.Double) KDouble 
-	| $Value(MetaInstance.Byte) KByte 
-	| $Value(MetaInstance.Bool) KBool
+	: KInt 
+	| KLong 
+	| KFloat 
+	| KDouble 
+	| KByte 
+	| KBool
 	;
 
+$Identifier
 voidType 
-	: $Value(MetaInstance.Void) KVoid
+	: KVoid
 	;
 
 $SymbolCtr(MetaNullableType)

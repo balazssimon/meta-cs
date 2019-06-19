@@ -51,8 +51,11 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 if (_lazySymbol == null)
                 {
                     var binder = this.GetBinder();
-                    var symbol = binder.GetDefinedSymbol(this.Syntax);
-                    if (symbol == null) symbol = binder.GetUsedSymbol(this.Syntax, this.Name, this.MetadataName, this.DiagnosticBag);
+                    var symbol = binder.GetIdentifierDeclaredSymbol(this.Syntax);
+                    if (symbol == null)
+                    {
+                        symbol = binder.GetIdentifierReferencedSymbol(this.Syntax, this.Name, this.MetadataName, this.DiagnosticBag);
+                    }
                     Interlocked.CompareExchange(ref _lazySymbol, symbol, null);
                 }
                 return _lazySymbol;

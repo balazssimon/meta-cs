@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     /// <summary>
     /// Represents a named type symbol whose members are declared in source.
     /// </summary>
-    public abstract class SourceMemberContainerTypeSymbol : NamedTypeSymbol
+    public abstract class SourceMemberContainerTypeSymbol : NamedTypeSymbol, ISourceDeclarationSymbol
     {
         private readonly NamespaceOrTypeSymbol _containingSymbol;
         protected readonly MergedDeclaration _declaration;
@@ -317,6 +317,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
 
             return result.ConditionallyDeOrder();
+        }
+
+        public virtual ImmutableArray<Symbol> GetDeclaredChildren()
+        {
+            return GetMembers();
         }
 
         public override ImmutableArray<Symbol> GetMembers()

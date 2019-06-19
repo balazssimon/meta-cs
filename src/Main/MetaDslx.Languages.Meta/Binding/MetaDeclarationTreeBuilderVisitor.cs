@@ -556,42 +556,17 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitObjectType(ObjectTypeSyntax node)
 		{
-			switch (node.ObjectType.GetKind().Switch())
-			{
-				case MetaSyntaxKind.KObject:
-					break;
-				case MetaSyntaxKind.KSymbol:
-					break;
-				case MetaSyntaxKind.KString:
-					break;
-				default:
-					break;
-			}
+			if (node != null) this.RegisterIdentifier(node);
 		}
 		
 		public virtual void VisitPrimitiveType(PrimitiveTypeSyntax node)
 		{
-			switch (node.PrimitiveType.GetKind().Switch())
-			{
-				case MetaSyntaxKind.KInt:
-					break;
-				case MetaSyntaxKind.KLong:
-					break;
-				case MetaSyntaxKind.KFloat:
-					break;
-				case MetaSyntaxKind.KDouble:
-					break;
-				case MetaSyntaxKind.KByte:
-					break;
-				case MetaSyntaxKind.KBool:
-					break;
-				default:
-					break;
-			}
+			if (node != null) this.RegisterIdentifier(node);
 		}
 		
 		public virtual void VisitVoidType(VoidTypeSyntax node)
 		{
+			if (node != null) this.RegisterIdentifier(node);
 		}
 		
 		public virtual void VisitNullableType(NullableTypeSyntax node)
