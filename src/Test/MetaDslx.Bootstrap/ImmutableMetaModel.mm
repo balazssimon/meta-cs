@@ -5,7 +5,7 @@
 	*/
 	metamodel Meta(Uri="http://metadslx.core/1.0"); 
 
-	/*const MetaPrimitiveType Object;
+	const MetaPrimitiveType Object;
 	const MetaPrimitiveType String;
 	const MetaPrimitiveType Int;
 	const MetaPrimitiveType Long;
@@ -14,7 +14,7 @@
 	const MetaPrimitiveType Byte;
 	const MetaPrimitiveType Bool;
 	const MetaPrimitiveType Void;
-	const MetaPrimitiveType Symbol;*/
+	const MetaPrimitiveType Symbol;
 
 	[Scope]
 	class MetaRootNamespace
