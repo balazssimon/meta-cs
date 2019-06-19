@@ -25,6 +25,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ModelSymbolInfo ModelSymbolInfo => _metaObject.MId.SymbolInfo;
 
+        public override LanguageSymbolKind Kind => LanguageSymbolKind.Name;
+
         public override Symbol ContainingSymbol => _container;
 
         public override ImmutableArray<Location> Locations => this.ContainingModule.Locations;

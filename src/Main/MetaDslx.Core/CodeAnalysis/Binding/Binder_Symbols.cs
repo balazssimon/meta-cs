@@ -61,11 +61,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             return UnwrapAlias(result, diagnostics, syntax, basesBeingResolved);
         }
 
-        public virtual NamespaceOrTypeSymbol GetQualifierOpt(SyntaxNodeOrToken syntax)
-        {
-            return null;
-        }
-
         private static Symbol UnwrapAliasNoDiagnostics(Symbol symbol, ConsList<TypeSymbol> basesBeingResolved = null)
         {
             if (symbol.Kind == LanguageSymbolKind.Alias)
@@ -297,6 +292,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     symbols.Sort(ConsistentSymbolOrder.Instance);
 
                     var originalSymbols = symbols.ToImmutable();
+                    var errorSymbols = StaticCast<ISymbol>.From(originalSymbols);
 
                     for (int i = 0; i < symbols.Count; i++)
                     {
@@ -401,19 +397,17 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 reportError = true;
 
                                 // '{0}' is an ambiguous reference between '{1}' and '{2}'
-                                info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_AmbigContext, originalSymbols,
-                                    new object[] {
+                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext, 
                                         syntaxFacts.ExtractErrorDisplayName(where) ?? simpleName,
                                         new FormattedSymbol(first, SymbolDisplayFormat.CSharpErrorMessageFormat),
-                                        new FormattedSymbol(second, SymbolDisplayFormat.CSharpErrorMessageFormat) });
+                                        new FormattedSymbol(second, SymbolDisplayFormat.CSharpErrorMessageFormat));
                             }
                             else
                             {
                                 Debug.Assert(!best.IsFromCorLibrary);
 
                                 // InternalErrorCode.ERR_SameFullNameAggAgg: The type '{1}' exists in both '{0}' and '{2}'
-                                info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_SameFullNameAggAgg, originalSymbols,
-                                    new object[] { first.ContainingAssembly, first, second.ContainingAssembly });
+                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_SameFullNameAggAgg, first.ContainingAssembly, first, second.ContainingAssembly);
 
                                 // Do not report this error if the first is declared in source and the second is declared in added module,
                                 // we already reported declaration error about this name collision.
@@ -437,8 +431,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                         else if (first.Kind == LanguageSymbolKind.Namespace && second.Kind == LanguageSymbolKind.NamedType)
                         {
                             // InternalErrorCode.ERR_SameFullNameNsAgg: The namespace '{1}' in '{0}' conflicts with the type '{3}' in '{2}'
-                            info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_SameFullNameNsAgg, originalSymbols,
-                                new object[] { GetContainingAssembly(first), first, second.ContainingAssembly, second });
+                            info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_SameFullNameNsAgg, GetContainingAssembly(first), first, second.ContainingAssembly, second);
 
                             // Do not report this error if namespace is declared in source and the type is declared in added module,
                             // we already reported declaration error about this name collision.
@@ -452,8 +445,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             if (!secondBest.IsFromCompilation || secondBest.IsFromSourceModule)
                             {
                                 // InternalErrorCode.ERR_SameFullNameNsAgg: The namespace '{1}' in '{0}' conflicts with the type '{3}' in '{2}'
-                                info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_SameFullNameNsAgg, originalSymbols,
-                                    new object[] { GetContainingAssembly(second), second, first.ContainingAssembly, first });
+                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_SameFullNameNsAgg, GetContainingAssembly(second), second, first.ContainingAssembly, first);
                             }
                             else
                             {
@@ -494,8 +486,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                                 Debug.Assert(arg2.ContainingAssembly == Compilation.Assembly);
 
-                                info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_SameFullNameThisAggThisNs, originalSymbols,
-                                    new object[] { arg0, first, arg2, second });
+                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_SameFullNameThisAggThisNs, arg0, first, arg2, second);
                             }
                         }
                         /*else if (first.Kind == SymbolKind.RangeVariable && second.Kind == SymbolKind.RangeVariable)
@@ -515,8 +506,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             //    second);
 
                             // CS0229: Ambiguity between '{0}' and '{1}'
-                            info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_AmbigMember, originalSymbols,
-                                new object[] { first, second });
+                            info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigMember, first, second);
 
                             reportError = true;
                         }
@@ -541,24 +531,22 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 //  SPEC:   If an attribute class is found both with and without Attribute suffix, an ambiguity 
                                 //  SPEC:   is present, and a compile-time error results.
 
-                                info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_AmbiguousAttribute, originalSymbols,
-                                    new object[] { syntaxFacts.ExtractErrorDisplayName(where) ?? simpleName, first, second });
+                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbiguousAttribute, 
+                                    syntaxFacts.ExtractErrorDisplayName(where) ?? simpleName, first, second);
                             }
                             else
                             {
                                 // '{0}' is an ambiguous reference between '{1}' and '{2}'
-                                info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_AmbigContext, originalSymbols,
-                                    new object[] {
+                                info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigContext, 
                                         syntaxFacts.ExtractErrorDisplayName(where) ?? simpleName,
                                         new FormattedSymbol(first, SymbolDisplayFormat.CSharpErrorMessageFormat),
-                                        new FormattedSymbol(second, SymbolDisplayFormat.CSharpErrorMessageFormat) });
+                                        new FormattedSymbol(second, SymbolDisplayFormat.CSharpErrorMessageFormat));
                             }
                         }
                         else
                         {
                             // CS0229: Ambiguity between '{0}' and '{1}'
-                            info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_AmbigMember, originalSymbols,
-                                new object[] { first, second });
+                            info = new SymbolDiagnosticInfo(errorSymbols, InternalErrorCode.ERR_AmbigMember, first, second);
                         }
                     }
 
@@ -1064,5 +1052,45 @@ namespace MetaDslx.CodeAnalysis.Binding
             return info != null && Symbol.ReportUseSiteDiagnostic(info, diagnostics, location);
         }
 
+
+        public virtual NamespaceOrTypeSymbol GetContainerSymbol(SyntaxNodeOrToken syntax)
+        {
+            var container = this.ContainingSymbol as NamespaceOrTypeSymbol;
+            if ((object)container == null)
+            {
+                if (syntax.Parent.GetKind() == Language.SyntaxFacts.CompilationUnitKind && syntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
+                {
+                    container = Compilation.ScriptClass;
+                }
+                else
+                {
+                    container = Compilation.GlobalNamespace;
+                }
+            }
+            return container;
+        }
+
+        public virtual Symbol GetDefinedSymbol(SyntaxNodeOrToken syntax)
+        {
+            var container = this.GetContainerSymbol(syntax);
+            Symbol symbol = container.GetSourceMember(syntax);
+            return symbol;
+        }
+
+        public virtual Symbol GetUsedSymbol(SyntaxNodeOrToken syntax, string name, string metadataName, DiagnosticBag diagnostics)
+        {
+            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+            var qualifierOpt = this.GetQualifierOpt(syntax);
+            LookupResult lookupResult = LookupResult.GetInstance();
+            this.LookupSymbolsSimpleName(lookupResult, qualifierOpt, name, metadataName, null, LookupOptions.Default, false, ref useSiteDiagnostics);
+            var symbol = this.ResultSymbol(lookupResult, name, metadataName, syntax, diagnostics, false, out bool wasError, qualifierOpt, LookupOptions.Default);
+            lookupResult.Free();
+            return symbol;
+        }
+
+        public virtual NamespaceOrTypeSymbol GetQualifierOpt(SyntaxNodeOrToken syntax)
+        {
+            return null;
+        }
     }
 }

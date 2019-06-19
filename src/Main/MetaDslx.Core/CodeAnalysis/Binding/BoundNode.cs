@@ -60,7 +60,10 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected MutableModel ModelBuilder => _boundTree.ModelBuilder;
 
+        protected DiagnosticBag DiagnosticBag => _boundTree.DiagnosticBag;
+
         public LanguageSyntaxNode Syntax => _syntax;
+
 
         /// <summary>
         /// Determines if a bound node, or associated syntax or type has an error (not a warning) 

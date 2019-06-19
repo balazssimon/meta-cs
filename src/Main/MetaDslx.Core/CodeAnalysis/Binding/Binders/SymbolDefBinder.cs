@@ -3,6 +3,7 @@ using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private readonly Type _symbolType;
         private readonly Type _nestingSymbolType;
-        private Symbol _definedSymbol;
+        private ImmutableArray<Symbol> _definedSymbols;
         private readonly LanguageSyntaxNode _syntax;
 
         public SymbolDefBinder(Binder next, LanguageSyntaxNode syntax, Type symbolType, Type nestingSymbolType) 
@@ -24,20 +25,18 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             _syntax = syntax;
         }
 
-        public Symbol DefinedSymbol
+        public ImmutableArray<Symbol> DefinedSymbols
         {
             get
             {
-                if (_definedSymbol == null)
+                if (_definedSymbols.IsDefault)
                 {
-                    var containingSymbol = this.Next.ContainingSymbol as NamespaceOrTypeSymbol;
-                    var symbol = containingSymbol?.GetSourceMember(_syntax);
-                    Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
+                    var boundNode = this.Compilation.GetBoundNodes(_syntax).OfType<BoundSymbolDef>().FirstOrDefault();
+                    var symbols = boundNode?.Symbols ?? ImmutableArray<Symbol>.Empty;
+                    ImmutableInterlocked.InterlockedInitialize(ref _definedSymbols, symbols);
                 }
-                return _definedSymbol;
+                return _definedSymbols;
             }
         }
-
-        public override Symbol ContainingSymbol => this.DefinedSymbol;
     }
 }

@@ -42,6 +42,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         internal protected override MutableSymbolBase ModelObject => _modelObject;
 
+        public override LanguageSymbolKind Kind => LanguageSymbolKind.Name;
+
         public override ModelSymbolInfo ModelSymbolInfo => _declaration.Kind;
 
         public sealed override NamedTypeSymbol ContainingType => _containingSymbol as NamedTypeSymbol;

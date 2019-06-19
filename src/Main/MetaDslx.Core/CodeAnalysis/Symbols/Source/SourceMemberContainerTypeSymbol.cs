@@ -256,31 +256,34 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 foreach (var childDeclaration in _declaration.Children)
                 {
-                    var t = new SourceNamedTypeSymbol(this, childDeclaration, diagnostics);
-                    this.CheckMemberNameDistinctFromType(t, diagnostics);
-
-                    var key = (t.Name, t.MetadataName);
-                    SourceNamedTypeSymbol other;
-                    if (conflictDict.TryGetValue(key, out other))
+                    if (childDeclaration.IsType)
                     {
-                        if (Locations.Length == 1 || IsPartial)
+                        var t = new SourceNamedTypeSymbol(this, childDeclaration, diagnostics);
+                        this.CheckMemberNameDistinctFromType(t, diagnostics);
+
+                        var key = (t.Name, t.MetadataName);
+                        SourceNamedTypeSymbol other;
+                        if (conflictDict.TryGetValue(key, out other))
                         {
-                            if (t.IsPartial && other.IsPartial)
+                            if (Locations.Length == 1 || IsPartial)
                             {
-                                diagnostics.Add(InternalErrorCode.ERR_PartialTypeKindConflict, t.Locations[0], t);
-                            }
-                            else
-                            {
-                                diagnostics.Add(InternalErrorCode.ERR_DuplicateNameInClass, t.Locations[0], this, t.Name);
+                                if (t.IsPartial && other.IsPartial)
+                                {
+                                    diagnostics.Add(InternalErrorCode.ERR_PartialTypeKindConflict, t.Locations[0], t);
+                                }
+                                else
+                                {
+                                    diagnostics.Add(InternalErrorCode.ERR_DuplicateNameInClass, t.Locations[0], this, t.Name);
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        conflictDict.Add(key, t);
-                    }
+                        else
+                        {
+                            conflictDict.Add(key, t);
+                        }
 
-                    symbols.Add(t);
+                        symbols.Add(t);
+                    }
                 }
 
                 Debug.Assert(s_emptyTypeMembers.Count == 0);

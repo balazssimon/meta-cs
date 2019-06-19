@@ -76,7 +76,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected virtual Binder CreateScopeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
         {
-            return new ScopeBinder(parentBinder.GetContainerSymbol(syntax), parentBinder, syntax);
+            return new ScopeBinder(parentBinder, syntax);
         }
 
         protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType)

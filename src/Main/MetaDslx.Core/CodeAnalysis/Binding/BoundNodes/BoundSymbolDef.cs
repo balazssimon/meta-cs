@@ -4,15 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundSymbolDef : BoundSymbol
+    public class BoundSymbolDef : BoundSymbols
     {
         private Type _symbolType;
-        private Symbol _lazySymbol;
+        private ImmutableArray<Symbol> _lazySymbols;
 
         public BoundSymbolDef(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, Type symbolType, LanguageSyntaxNode syntax, bool hasErrors = false) 
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
@@ -20,19 +21,21 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             _symbolType = symbolType;
         }
 
-        public override Symbol Symbol
+        public override ImmutableArray<Symbol> Symbols
         {
             get
             {
-                if (_lazySymbol == null)
+                if (_lazySymbols.IsDefault)
                 {
-                    var binder = this.GetBinder();
-                    var containingSymbol = binder?.ContainingSymbol;
-                    var container = containingSymbol as NamespaceOrTypeSymbol;
-                    var symbol = container?.GetSourceMember(this.Syntax);
-                    Interlocked.CompareExchange(ref _lazySymbol, symbol, null);
+                    var names = this.GetChildNames();
+                    var symbols = ArrayBuilder<Symbol>.GetInstance();
+                    foreach (var name in names)
+                    {
+                        symbols.AddRange(name.Symbols);
+                    }
+                    ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, symbols.ToImmutableAndFree());
                 }
-                return _lazySymbol;
+                return _lazySymbols;
             }
         }
     }

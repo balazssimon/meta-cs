@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundSymbolUse : BoundValues
+    public class BoundSymbolUse : BoundSymbols
     {
         private ImmutableArray<Type> _symbolTypes;
         private ImmutableArray<Type> _nestingSymbolTypes;
@@ -24,7 +24,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             _nestingSymbolTypes = nestingSymbolTypes;
         }
 
-        public ImmutableArray<Symbol> Symbols
+        public override ImmutableArray<Symbol> Symbols
         {
             get
             {
@@ -48,7 +48,5 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 return _lazySymbols;
             }
         }
-
-        public override ImmutableArray<object> Values => StaticCast<object>.From(this.Symbols);
     }
 }

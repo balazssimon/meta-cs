@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Collections;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
@@ -8,16 +9,16 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundSymbol : BoundValues
+    public class BoundSymbols : BoundValues
     {
-        public BoundSymbol(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundSymbols(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
         }
 
-        public virtual Symbol Symbol { get; }
+        public virtual ImmutableArray<Symbol> Symbols { get; }
 
-        public override ImmutableArray<object> Values => ImmutableArray.Create<object>(this.Symbol);
+        public override ImmutableArray<object> Values => StaticCast<object>.From(this.Symbols);
 
         public ImmutableDictionary<string, ImmutableArray<object>> GetPropertyValues()
         {

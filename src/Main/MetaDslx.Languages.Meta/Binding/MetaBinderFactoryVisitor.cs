@@ -46,6 +46,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseQualifiedName = new object();
 		public static object UseNamespaceBody = new object();
 		public static object UseMetamodelDeclaration = new object();
+		public static object UseDeclaration = new object();
 		public static object UseMetamodelUriProperty = new object();
 		public static object UseEnumDeclaration = new object();
 		public static object UseClassDeclaration = new object();
@@ -65,7 +66,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseIntegerLiteral = new object();
 		public static object UseDecimalLiteral = new object();
 		public static object UseScientificLiteral = new object();
-		public static object UseDeclaration = new object();
 		public static object UseMetamodelProperty = new object();
 		public static object UseExternTypeDeclaration = new object();
 		public static object UseEnumMemberDeclaration = new object();

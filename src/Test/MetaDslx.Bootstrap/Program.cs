@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
@@ -61,9 +62,10 @@ namespace MetaDslx.Bootstrap
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
                 AddReferences(
-                    ModelReference.CreateFromModel(coreModel),
-                    MetadataReference.CreateFromFile(typeof(string).Assembly.Location),
-                    MetadataReference.CreateFromFile(typeof(Program).Assembly.Location));
+                    //ModelReference.CreateFromModel(coreModel)//,
+                    //MetadataReference.CreateFromFile(typeof(string).Assembly.Location),
+                    //MetadataReference.CreateFromFile(typeof(Program).Assembly.Location)
+                    );
             foreach (var diag in compilation.GetParseDiagnostics())
             {
                 Console.WriteLine(formatter.Format(diag));
@@ -73,26 +75,30 @@ namespace MetaDslx.Bootstrap
                 Console.WriteLine(formatter.Format(diag));
             }
             var compiledModel = compilation.Model;
-            Console.WriteLine(compiledModel);
-            foreach (var symbol in compiledModel.Symbols)
-            {
-                Console.WriteLine(symbol);
-            }
-            var modules = compilation.Assembly.Modules.AsImmutable();
-            var objectType = compilation.ObjectType;
-            Console.WriteLine(objectType);
-            foreach (var member in objectType.MemberNames)
-            {
-                Console.WriteLine("  "+member);
-            }
+            //Console.WriteLine(compiledModel);
+            //foreach (var symbol in compiledModel.Symbols)
+            //{
+            //    Console.WriteLine(symbol);
+            //}
+            var modules = compilation.SourceModule.ContainingAssembly.Modules.AsImmutable();
+            //var objectType = compilation.ObjectType;
+            //Console.WriteLine(objectType);
+            //foreach (var member in objectType.MemberNames)
+            //{
+            //    Console.WriteLine("  "+member);
+            //}
             int index = 0;
             foreach (var module in modules)
             {
-                Console.WriteLine("Module[{0}]: {1}", index, module.GetType());
-                foreach (var assembly in module.ReferencedAssemblies)
+                foreach (var assembly in module.ReferencedAssemblySymbols)
                 {
                     Console.WriteLine("  ReferencedAssembly: " + assembly);
+                    foreach (var member in assembly.GlobalNamespace.GetMembers())
+                    {
+                        Console.WriteLine("    {0}: {1}", member.Name, member.GetType());
+                    }
                 }
+                Console.WriteLine("Module[{0}]: {1}", index, module.GetType());
                 foreach (var member in module.GlobalNamespace.GetMembers())
                 {
                     Console.WriteLine("  {0}: {1}", member.Name, member.GetType());

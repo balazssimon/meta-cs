@@ -50,14 +50,9 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 if (_lazySymbol == null)
                 {
-                    HashSet<DiagnosticInfo> useSiteDiagnostics = null;
                     var binder = this.GetBinder();
-                    var qualifierOpt = binder.GetQualifierOpt(this.Syntax);
-                    LookupResult lookupResult = LookupResult.GetInstance();
-                    binder.LookupSymbolsSimpleName(lookupResult, qualifierOpt, this.Name, this.MetadataName, null, LookupOptions.Default, true, ref useSiteDiagnostics);
-                    //this.BoundTree.DiagnosticBag.AddRange(useSiteDiagnostics);
-                    var symbol = binder.ResultSymbol(lookupResult, this.Name, this.MetadataName, this.Syntax, this.BoundTree.DiagnosticBag, false, out bool wasError, qualifierOpt, LookupOptions.Default);
-                    lookupResult.Free();
+                    var symbol = binder.GetDefinedSymbol(this.Syntax);
+                    if (symbol == null) symbol = binder.GetUsedSymbol(this.Syntax, this.Name, this.MetadataName, this.DiagnosticBag);
                     Interlocked.CompareExchange(ref _lazySymbol, symbol, null);
                 }
                 return _lazySymbol;

@@ -123,7 +123,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                     {
                         foreach (var loc in memberT.Locations)
                         {
-                            if (loc.IsInSource && loc.SourceTree == syntax.SyntaxTree && syntax.Span.Contains(loc.SourceSpan))
+                            if (loc.IsInSource && loc.SourceTree == syntax.SyntaxTree && syntax.Span.Equals(loc.SourceSpan))
                             {
                                 return memberT;
                             }

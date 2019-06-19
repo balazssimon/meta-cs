@@ -96,12 +96,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public void RegisterIdentifier(SyntaxToken token)
         {
-            this.RegisterIdentifier(new Identifier(token.Text, new SourceLocation(token)));
+            this.RegisterIdentifier(new Identifier(token.Text, token));
         }
 
         public void RegisterIdentifier(LanguageSyntaxNode node)
         {
-            this.RegisterIdentifier(new Identifier(node.Language.SyntaxFacts.ExtractName(node), new SourceLocation(node)));
+            this.RegisterIdentifier(new Identifier(node.Language.SyntaxFacts.ExtractName(node), node));
         }
 
         private void RegisterIdentifier(in Identifier identifier)
@@ -146,12 +146,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public struct Identifier
         {
             public readonly string Text;
-            public readonly SourceLocation Location;
+            public readonly SyntaxNodeOrToken Syntax;
 
-            public Identifier(string text, SourceLocation location)
+            public Identifier(string text, SyntaxNodeOrToken syntax)
             {
                 Text = text;
-                Location = location;
+                Syntax = syntax;
             }
         }
     }

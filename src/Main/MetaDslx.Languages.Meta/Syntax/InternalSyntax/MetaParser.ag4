@@ -47,9 +47,9 @@ metamodelProperty : metamodelUriProperty;
 $Property(Uri)
 metamodelUriProperty : IUri TAssign $Value stringLiteral;
 
+$Property(Declarations) 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | externTypeDeclaration;
 
-$Property(Declarations) 
 $SymbolDef(MetaEnum)
 enumDeclaration : annotation* KEnum name enumBody;
 $Scope
@@ -59,7 +59,6 @@ $SymbolDef(MetaEnumLiteral)
 enumValue : annotation* name;
 enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
-$Property(Declarations) 
 $SymbolDef(MetaClass)
 classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
 $Scope
@@ -87,17 +86,14 @@ subsettings : KSubsets $Property(SubsettedProperties) nameUseList?;
 $SymbolUse(MetaProperty)
 nameUseList : qualifier (TComma qualifier)*;
 
-$Property(Declarations) 
 $SymbolDef(MetaConstant)
 constDeclaration : KConst $Property(Type) typeReference name TSemicolon;
 
 externTypeDeclaration : externClassTypeDeclaration | externStructTypeDeclaration;
 
-$Property(Declarations) 
 $SymbolDef(MetaExternalType)
 externClassTypeDeclaration : KExtern KClass $Property(ExternalName) $Value qualifier name TSemicolon;
 
-$Property(Declarations) 
 $SymbolDef(MetaExternalType)
 externStructTypeDeclaration : KExtern $Property(name=IsValueType,value=true) KStruct $Property(ExternalName) $Value qualifier name TSemicolon;
 

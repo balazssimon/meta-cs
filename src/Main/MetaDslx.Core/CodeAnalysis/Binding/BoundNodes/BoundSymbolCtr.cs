@@ -8,10 +8,10 @@ using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundSymbolCtr : BoundSymbol
+    public class BoundSymbolCtr : BoundSymbols
     {
         private ModelSymbolInfo _symbolInfo;
-        private Symbol _lazySymbol;
+        private ImmutableArray<Symbol> _lazySymbols;
 
         public BoundSymbolCtr(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, Type symbolType, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
@@ -21,16 +21,17 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public ModelSymbolInfo SymbolInfo => _symbolInfo;
 
-        public override Symbol Symbol
+        public override ImmutableArray<Symbol> Symbols
         {
             get
             {
-                if (_lazySymbol == null)
+                if (_lazySymbols.IsDefault)
                 {
                     var propertyValues = this.GetPropertyValues();
-                    Interlocked.CompareExchange(ref _lazySymbol, this.Compilation.CreateConstructedSymbol(this.Syntax.GetReference(), _symbolInfo, propertyValues), null);
+                    var symbol = this.Compilation.CreateConstructedSymbol(this.Syntax.GetReference(), _symbolInfo, propertyValues);
+                    ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray.Create(symbol));
                 }
-                return _lazySymbol;
+                return _lazySymbols;
             }
         }
 

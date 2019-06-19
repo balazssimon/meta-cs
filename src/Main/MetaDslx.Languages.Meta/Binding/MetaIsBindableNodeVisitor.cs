@@ -85,7 +85,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public bool VisitDeclaration(DeclarationSyntax node)
 		{
-			return false;
+			return true;
 		}
 		
 		public bool VisitEnumDeclaration(EnumDeclarationSyntax node)

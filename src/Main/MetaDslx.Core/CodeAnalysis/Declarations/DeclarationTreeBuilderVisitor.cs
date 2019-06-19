@@ -181,16 +181,16 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 {
                     var parentProperty = count == 1 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
                     var identifier = qualifier[count - 1];
-                    var decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), identifier.Location, declaration.CanMerge, parentProperty, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
+                    var decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.CanMerge, parentProperty, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
                     var deepestDecl = decl;
                     for (int i = count - 2; i >= 0; i--)
                     {
                         parentProperty = i == 0 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
                         identifier = qualifier[i];
-                        decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), identifier.Location, declaration.CanMerge, parentProperty, ImmutableArray.Create(decl), ImmutableArray<Diagnostic>.Empty);
+                        decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.CanMerge, parentProperty, ImmutableArray.Create(decl), ImmutableArray<Diagnostic>.Empty);
                     }
-                    parent.Members.Add(deepestDecl);
-                    return decl;
+                    parent.Members.Add(decl);
+                    return deepestDecl;
                 }
             }
             return null;
