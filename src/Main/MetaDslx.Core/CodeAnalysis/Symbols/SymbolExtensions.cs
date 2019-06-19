@@ -37,11 +37,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             var containingSymbol = symbol.ContainingSymbol;
             if ((object)containingSymbol != null)
             {
-                switch (containingSymbol.Kind)
+                switch (containingSymbol.Kind.Switch())
                 {
-                    case SymbolKind.Namespace:
-                    case SymbolKind.NamedType:
-                    case SymbolKind.ErrorType:
+                    case LanguageSymbolKind.Namespace:
+                    case LanguageSymbolKind.NamedType:
+                    case LanguageSymbolKind.ErrorType:
                         return (NamespaceOrTypeSymbol)containingSymbol;
                 }
             }
@@ -50,16 +50,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public static bool IsTypeOrTypeAlias(this Symbol symbol)
         {
-            switch (symbol.Kind)
+            switch (symbol.Kind.Switch())
             {
-                case SymbolKind.ArrayType:
-                case SymbolKind.DynamicType:
-                case SymbolKind.ErrorType:
-                case SymbolKind.NamedType:
-                case SymbolKind.PointerType:
-                case SymbolKind.TypeParameter:
+                case LanguageSymbolKind.ConstructedType:
+                case LanguageSymbolKind.DynamicType:
+                case LanguageSymbolKind.ErrorType:
+                case LanguageSymbolKind.NamedType:
                     return true;
-                case SymbolKind.Alias:
+                case LanguageSymbolKind.Alias:
                     return IsTypeOrTypeAlias(((AliasSymbol)symbol).Target);
                 default:
                     Debug.Assert(!(symbol is TypeSymbol));
@@ -78,6 +76,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return (object)result != null;*/
         }
 
-        private static readonly Func<TypeSymbol, object, bool, bool> s_containsDynamicPredicate = (type, unused1, unused2) => type.TypeKind == TypeKind.Dynamic;
+        private static readonly Func<TypeSymbol, object, bool, bool> s_containsDynamicPredicate = (type, unused1, unused2) => type.TypeKind == LanguageTypeKind.Dynamic;
     }
 }

@@ -575,7 +575,7 @@ namespace Roslyn.Utilities
             {
                 if (_defaultName != null && (object)_defaultValue == null)
                 {
-                    Interlocked.CompareExchange(ref _defaultValue, CreateValue(new EnumObject(_defaultName, 0)), null);
+                    Interlocked.CompareExchange(ref _defaultValue, CreateValue(_defaultName), null);
                     _cachedByName[_defaultName] = _defaultValue;
                 }
                 if (_lazyValues != null)
@@ -739,7 +739,10 @@ namespace Roslyn.Utilities
                 if (nameConstructor != null)
                 {
                     var result = (EnumObject)nameConstructor.Invoke(new object[] { name });
-                    result._value = ++_maxValue;
+                    if (name != _defaultName)
+                    {
+                        result._value = ++_maxValue;
+                    }
                     return result;
                 }
                 throw new InvalidOperationException(_type + " must have a string constructor.");

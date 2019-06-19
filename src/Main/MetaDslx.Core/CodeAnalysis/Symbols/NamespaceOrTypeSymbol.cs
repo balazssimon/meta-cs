@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Returns true if this symbol is a namespace. If it is not a namespace, it must be a type.
         /// </summary>
-        public bool IsNamespace => Kind == SymbolKind.Namespace;
+        public bool IsNamespace => Kind == LanguageSymbolKind.Namespace;
 
         /// <summary>
         /// Returns true if this symbols is a type. Equivalent to !IsNamespace.
@@ -225,7 +225,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             NamespaceOrTypeSymbol scope = this;
 
-            if (scope.Kind == SymbolKind.ErrorType)
+            if (scope.Kind == LanguageSymbolKind.ErrorType)
             {
                 return new MissingMetadataTypeSymbol.Nested((NamedTypeSymbol)scope, ref emittedTypeName);
             }

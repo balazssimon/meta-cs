@@ -208,16 +208,6 @@ namespace MetaDslx.CodeAnalysis
             return this.GetSymbolInfoWorker(node, SymbolInfoOptions.DefaultOptions, cancellationToken);
         }
 
-        private static SymbolInfo GetSymbolInfoFromSymbolOrNone(ITypeSymbol type)
-        {
-            if (type?.Kind != SymbolKind.ErrorType)
-            {
-                return new SymbolInfo(type);
-            }
-
-            return SymbolInfo.None;
-        }
-
         /// <summary>
         /// Binds the expression in the context of the specified location and gets symbol information.
         /// This method is used to get symbol information about an expression that did not actually
@@ -671,7 +661,7 @@ namespace MetaDslx.CodeAnalysis
             SyntaxToken token;
             position = CheckAndAdjustPosition(position, out token);
 
-            if ((object)container == null || container.Kind == SymbolKind.Namespace)
+            if ((object)container == null || container.Kind == LanguageSymbolKind.Namespace)
             {
                 options &= ~LookupOptions.IncludeExtensionMethods;
             }
@@ -689,7 +679,7 @@ namespace MetaDslx.CodeAnalysis
                 TypeSymbol baseType = null;
 
                 // For a script class or a submission class base should have no members.
-                if ((object)containingType != null && containingType.Kind == SymbolKind.NamedType && ((NamedTypeSymbol)containingType).IsScript)
+                if ((object)containingType != null && containingType.Kind == LanguageSymbolKind.NamedType && ((NamedTypeSymbol)containingType).IsScript)
                 {
                     return ImmutableArray<Symbol>.Empty;
                 }
@@ -807,7 +797,7 @@ namespace MetaDslx.CodeAnalysis
 
             if (lookupResult.IsMultiViable)
             {
-                if (lookupResult.Symbols.Any(t => t.Kind == SymbolKind.NamedType || t.Kind == SymbolKind.Namespace || t.Kind == SymbolKind.ErrorType))
+                if (lookupResult.Symbols.Any(t => t.Kind == LanguageSymbolKind.NamedType || t.Kind == LanguageSymbolKind.Namespace || t.Kind == LanguageSymbolKind.ErrorType))
                 {
                     // binder.ResultSymbol is defined only for type/namespace lookups
                     bool wasError;
@@ -1108,7 +1098,7 @@ namespace MetaDslx.CodeAnalysis
 
             foreach (Symbol symbol in symbols)
             {
-                if (symbol.Kind == SymbolKind.Alias)
+                if (symbol.Kind == LanguageSymbolKind.Alias)
                     anyAliases = true;
             }
 
@@ -1732,8 +1722,8 @@ namespace MetaDslx.CodeAnalysis
             /* TODO:MetaDslx
             switch (symbol.Kind)
             {
-                case SymbolKind.Event:  // for field-like events
-                case SymbolKind.Field:
+                case LanguageSymbolKind.Event:  // for field-like events
+                case LanguageSymbolKind.Field:
                     var fieldDecl = declaringSyntax.FirstAncestorOrSelf<BaseFieldDeclarationSyntax>();
                     if (fieldDecl != null)
                     {

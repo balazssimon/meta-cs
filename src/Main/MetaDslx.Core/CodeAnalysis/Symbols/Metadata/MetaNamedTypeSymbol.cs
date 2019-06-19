@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override string Name => _metaObject.MName;
 
-        public override SymbolKind Kind => SymbolKind.NamedType;
+        public override LanguageSymbolKind Kind => LanguageSymbolKind.NamedType;
 
         public override ModelSymbolInfo ModelSymbolInfo => _metaObject.MId.SymbolInfo;
 

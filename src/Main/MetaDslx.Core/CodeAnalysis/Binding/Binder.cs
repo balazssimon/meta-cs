@@ -141,10 +141,10 @@ namespace MetaDslx.CodeAnalysis.Binding
             get
             {
                 var member = this.ContainingSymbol;
-                Debug.Assert((object)member == null || member.Kind != SymbolKind.ErrorType);
+                Debug.Assert((object)member == null || member.Kind != LanguageSymbolKind.ErrorType);
                 return (object)member == null
                     ? null
-                    : member.Kind == SymbolKind.NamedType
+                    : member.Kind == LanguageSymbolKind.NamedType
                         ? (NamedTypeSymbol)member
                         : member.ContainingType;
             }
@@ -158,13 +158,13 @@ namespace MetaDslx.CodeAnalysis.Binding
             get
             {
                 var containingMember = this.ContainingSymbol;
-                switch (containingMember?.Kind)
+                switch (containingMember?.Kind.Switch())
                 {
-                    case SymbolKind.Method:
+                    case LanguageSymbolKind.Operation:
                         // global statements
                         return ((MethodSymbol)containingMember).IsScriptInitializer;
 
-                    case SymbolKind.NamedType:
+                    case LanguageSymbolKind.NamedType:
                         // script variable initializers
                         return ((NamedTypeSymbol)containingMember).IsScript;
 
@@ -259,13 +259,12 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         public void ReportDiagnosticsIfObsolete(DiagnosticBag diagnostics, Symbol symbol, SyntaxNodeOrToken node, bool hasBaseReceiver)
         {
-            switch (symbol.Kind)
+            switch (symbol.Kind.Switch())
             {
-                case SymbolKind.NamedType:
-                case SymbolKind.Field:
-                case SymbolKind.Method:
-                case SymbolKind.Event:
-                case SymbolKind.Property:
+                case LanguageSymbolKind.NamedType:
+                case LanguageSymbolKind.Name:
+                case LanguageSymbolKind.Operation:
+                case LanguageSymbolKind.Property:
                     ReportDiagnosticsIfObsolete(diagnostics, symbol, node, hasBaseReceiver, this.ContainingSymbol, this.ContainingType, this.Flags);
                     break;
             }

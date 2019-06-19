@@ -63,7 +63,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                if (_containingSymbol.Kind == SymbolKind.NetModule)
+                if (_containingSymbol.Kind == LanguageSymbolKind.NetModule)
                 {
                     return new NamespaceExtent((ModuleSymbol)_containingSymbol);
                 }

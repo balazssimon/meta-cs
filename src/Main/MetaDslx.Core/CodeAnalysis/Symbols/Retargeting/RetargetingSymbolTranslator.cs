@@ -114,7 +114,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 
             public Symbol Retarget(Symbol symbol)
             {
-                Debug.Assert(symbol.Kind != SymbolKind.NamedType || ((NamedTypeSymbol)symbol).PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
+                Debug.Assert(symbol.Kind != LanguageSymbolKind.NamedType || ((NamedTypeSymbol)symbol).PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
                 return symbol.Accept(this, RetargetOptions.RetargetPrimitiveTypesByName);
             }
 
@@ -151,7 +151,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                     }
                 }
 
-                if (type.Kind == SymbolKind.ErrorType)
+                if (type.Kind == LanguageSymbolKind.ErrorType)
                 {
                     return Retarget((ErrorTypeSymbol)type);
                 }
@@ -340,7 +340,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                     return newDefinition;
                 }
 
-                if (newDefinition.Kind == SymbolKind.ErrorType)
+                if (newDefinition.Kind == LanguageSymbolKind.ErrorType)
                 {
                     return newDefinition;
                 }
@@ -388,7 +388,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                     // If there is an error type in the base type list, it will end up in the interface list (rather
                     // than as the base class), so it might end up passing through here.  If it is specified using
                     // a primitive type keyword, then it will have a primitive type code, even if corlib is missing.
-                    Debug.Assert(nts.TypeKind == TypeKind.Error || nts.PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
+                    Debug.Assert(nts.TypeKind == LanguageTypeKind.Error || nts.PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
                     result.Add(Retarget(nts, RetargetOptions.RetargetPrimitiveTypesByName));
                 }
 
@@ -402,7 +402,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
                 foreach (var ts in sequence)
                 {
                     // In incorrect code, a type parameter constraint list can contain primitive types.
-                    Debug.Assert(ts.TypeKind == TypeKind.Error || ts.PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
+                    Debug.Assert(ts.TypeKind == LanguageTypeKind.Error || ts.PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
                     result.Add(Retarget(ts, RetargetOptions.RetargetPrimitiveTypesByName));
                 }
 

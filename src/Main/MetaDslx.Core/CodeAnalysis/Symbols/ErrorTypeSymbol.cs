@@ -134,12 +134,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public sealed override SymbolKind Kind => SymbolKind.ErrorType;
+        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.ErrorType;
 
         /// <summary>
         /// Gets the kind of this type.
         /// </summary>
-        public sealed override TypeKind TypeKind => TypeKind.Error;
+        public sealed override LanguageTypeKind TypeKind => LanguageTypeKind.Error;
 
         /// <summary>
         /// Get the symbol that logically contains this symbol. 

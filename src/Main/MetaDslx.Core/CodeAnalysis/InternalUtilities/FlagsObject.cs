@@ -956,7 +956,10 @@ namespace Roslyn.Utilities
                 if (nameConstructor != null)
                 {
                     var result = (FlagsObject)nameConstructor.Invoke(new object[] { name });
-                    result._flags[++_maxValue] = true;
+                    if (name != _defaultName)
+                    {
+                        result._flags[++_maxValue] = true;
+                    }
                     return result;
                 }
                 throw new InvalidOperationException(_type + " must have a string constructor.");

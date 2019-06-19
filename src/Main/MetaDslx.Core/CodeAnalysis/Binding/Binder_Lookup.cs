@@ -160,30 +160,27 @@ namespace MetaDslx.CodeAnalysis.Binding
         // Looks up a member of given name and metadataName in a particular type.
         protected void LookupMembersInType(LookupResult result, TypeSymbol type, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            switch (type.TypeKind)
+            switch (type.TypeKind.Switch())
             {
-                case TypeKind.Class:
-                case TypeKind.Struct:
-                case TypeKind.Enum:
-                case TypeKind.Delegate:
-                case TypeKind.Array:
-                case TypeKind.Dynamic:
+                case LanguageTypeKind.NamedType:
+                case LanguageTypeKind.Enum:
+                case LanguageTypeKind.Dynamic:
                     this.LookupMembersInTypeCore(result, (NamedTypeSymbol)type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
                     break;
 
-                case TypeKind.Submission:
+                case LanguageTypeKind.Submission:
                     this.LookupMembersInSubmissions(result, type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
                     break;
 
-                case TypeKind.Error:
+                case LanguageTypeKind.Error:
                     LookupMembersInErrorType(result, (ErrorTypeSymbol)type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
                     break;
 
-                case TypeKind.Pointer:
+                case LanguageTypeKind.Constructed:
                     result.Clear();
                     break;
 
-                case TypeKind.Unknown:
+                case LanguageTypeKind.None:
                 default:
                     throw ExceptionUtilities.UnexpectedValue(type.TypeKind);
             }
@@ -231,7 +228,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             LookupResult submissionSymbols = LookupResult.GetInstance();
             LookupResult nonViable = LookupResult.GetInstance();
-            SymbolKind? lookingForOverloadsOfKind = null;
+            LanguageSymbolKind lookingForOverloadsOfKind = null;
 
             // TODO: optimize lookup (there might be many interactions in the chain)
             for (LanguageCompilation submission = Compilation; submission != null; submission = submission.PreviousSubmission)
@@ -272,7 +269,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     {
                         // using alias is ambiguous with another definition within the same submission iff the other definition is a 0-ary type or a non-type:
                         Symbol existingDefinition = submissionSymbols.Symbols.First();
-                        if (existingDefinition.Kind != SymbolKind.NamedType || name == metadataName)
+                        if (existingDefinition.Kind != LanguageSymbolKind.NamedType || name == metadataName)
                         {
                             var diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictingAliasAndDefinition, name, existingDefinition.GetKindText());
                             var error = new ExtendedErrorTypeSymbol((NamespaceOrTypeSymbol)null, name, metadataName, diagInfo, unreported: true);
@@ -318,7 +315,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 else
                 {
                     // found a non-method - the overload set is final now
-                    if (submissionSymbols.Symbols.Count > 0 && submissionSymbols.Symbols.First().Kind != lookingForOverloadsOfKind.Value)
+                    if (submissionSymbols.Symbols.Count > 0 && submissionSymbols.Symbols.First().Kind != lookingForOverloadsOfKind)
                     {
                         break;
                     }
@@ -553,7 +550,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             Debug.Assert((object)symbol != null);
 
-            if (symbol.Kind == SymbolKind.NamedType)
+            if (symbol.Kind == LanguageSymbolKind.NamedType)
             {
                 var namedType = (NamedTypeSymbol)symbol;
                 if (namedType.IsAbstract)
@@ -699,7 +696,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             Debug.Assert((object)type != null);
-            Debug.Assert(type.TypeKind != TypeKind.TypeParameter);
+            //Debug.Assert(type.TypeKind != LanguageTypeKind.TypeParameter);
 
             var tmp = LookupResult.GetInstance();
             PooledHashSet<NamedTypeSymbol> visited = null;
@@ -803,7 +800,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </remarks>
         private static bool IsMethodOrIndexer(Symbol symbol)
         {
-            return symbol.Kind == SymbolKind.Method; // TODO:MetaDslx || symbol.IsIndexer();
+            return symbol.Kind == LanguageSymbolKind.Operation; // TODO:MetaDslx || symbol.IsIndexer();
         }
 
         public static ImmutableArray<Symbol> GetCandidateMembers(NamespaceOrTypeSymbol nsOrType, string name, LookupOptions options, Binder originalBinder)
@@ -812,7 +809,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 return nsOrType.GetTypeMembers(name).Cast<NamedTypeSymbol, Symbol>();
             }
-            /* TODO:MetaDslx - else if (nsOrType.Kind == SymbolKind.NamedType && originalBinder.IsEarlyAttributeBinder)
+            /* TODO:MetaDslx - else if (nsOrType.Kind == LanguageSymbolKind.NamedType && originalBinder.IsEarlyAttributeBinder)
             {
                 return ((NamedTypeSymbol)nsOrType).GetEarlyAttributeDecodingMembers(name);
             }*/
@@ -832,7 +829,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 return StaticCast<Symbol>.From(nsOrType.GetTypeMembersUnordered());
             }
-            /* TODO:MetaDslx - else if (nsOrType.Kind == SymbolKind.NamedType && originalBinder.IsEarlyAttributeBinder)
+            /* TODO:MetaDslx - else if (nsOrType.Kind == LanguageSymbolKind.NamedType && originalBinder.IsEarlyAttributeBinder)
             {
                 return ((NamedTypeSymbol)nsOrType).GetEarlyAttributeDecodingMembers();
             }*/
@@ -857,7 +854,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // General pattern: checks and diagnostics refer to unwrapped symbol,
             // but lookup results refer to symbol.
 
-            var unwrappedSymbol = symbol.Kind == SymbolKind.Alias
+            var unwrappedSymbol = symbol.Kind == LanguageSymbolKind.Alias
                 ? ((AliasSymbol)symbol).GetAliasTarget(basesBeingResolved)
                 : symbol;
 
@@ -914,16 +911,16 @@ namespace MetaDslx.CodeAnalysis.Binding
                 diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_ObjectProhibited, unwrappedSymbol) : null;
                 return LookupResult.StaticInstanceMismatch(symbol, diagInfo);
             }
-            else if ((options & LookupOptions.MustNotBeNamespace) != 0 && unwrappedSymbol.Kind == SymbolKind.Namespace)
+            else if ((options & LookupOptions.MustNotBeNamespace) != 0 && unwrappedSymbol.Kind == LanguageSymbolKind.Namespace)
             {
                 diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKunknown, unwrappedSymbol, unwrappedSymbol.GetKindText()) : null;
                 return LookupResult.NotTypeOrNamespace(symbol, diagInfo);
             }
-            else if ((options & LookupOptions.LabelsOnly) != 0 && unwrappedSymbol.Kind != SymbolKind.Label)
+            /*else if ((options & LookupOptions.LabelsOnly) != 0 && unwrappedSymbol.Kind != LanguageSymbolKind.Label)
             {
                 diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_LabelNotFound, unwrappedSymbol.Name) : null;
                 return LookupResult.NotLabel(symbol, diagInfo);
-            }
+            }*/
             else
             {
                 return LookupResult.Good(symbol);
@@ -979,7 +976,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </remarks>
         public bool CanAddLookupSymbolInfo(Symbol symbol, LookupOptions options, LookupSymbolsInfo info, TypeSymbol accessThroughType, AliasSymbol aliasSymbol = null)
         {
-            Debug.Assert(symbol.Kind != SymbolKind.Alias, "It is the caller's responsibility to unwrap aliased symbols.");
+            Debug.Assert(symbol.Kind != LanguageSymbolKind.Alias, "It is the caller's responsibility to unwrap aliased symbols.");
             Debug.Assert(aliasSymbol == null || aliasSymbol.GetAliasTarget(basesBeingResolved: null) == symbol);
             Debug.Assert(options.AreValid());
 
@@ -1006,7 +1003,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 return false;
             }
-            else if ((options & LookupOptions.MustNotBeNamespace) != 0 && (symbol.Kind == SymbolKind.Namespace))
+            else if ((options & LookupOptions.MustNotBeNamespace) != 0 && (symbol.Kind == LanguageSymbolKind.Namespace))
             {
                 return false;
             }
@@ -1089,13 +1086,11 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public bool IsNonInvocableMember(Symbol symbol)
         {
-            switch (symbol.Kind)
+            switch (symbol.Kind.Switch())
             {
-                case SymbolKind.Method:
-                case SymbolKind.Field:
-                case SymbolKind.Property:
-                case SymbolKind.NamedType:
-                case SymbolKind.Event:
+                case LanguageSymbolKind.Operation:
+                case LanguageSymbolKind.Property:
+                case LanguageSymbolKind.NamedType:
                     return !IsInvocableMember(symbol);
 
                 default:
@@ -1110,10 +1105,9 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             TypeSymbol type = null;
 
-            switch (symbol.Kind)
+            switch (symbol.Kind.Switch())
             {
-                case SymbolKind.Method:
-                case SymbolKind.Event: // Spec says it doesn't matter whether it is field-like
+                case LanguageSymbolKind.Operation:
                     return true;
             }
 
@@ -1124,12 +1118,11 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private static bool IsInstance(Symbol symbol)
         {
-            switch (symbol.Kind)
+            switch (symbol.Kind.Switch())
             {
-                case SymbolKind.Field:
-                case SymbolKind.Property:
-                case SymbolKind.Method:
-                case SymbolKind.Event:
+                case LanguageSymbolKind.Name:
+                case LanguageSymbolKind.Property:
+                case LanguageSymbolKind.Operation:
                     return !symbol.IsStatic;
                 default:
                     return false;
@@ -1183,22 +1176,16 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private void AddMemberLookupSymbolsInfoInType(LookupSymbolsInfo result, TypeSymbol type, LookupOptions options, Binder originalBinder)
         {
-            switch (type.TypeKind)
+            switch (type.TypeKind.Switch())
             {
-                case TypeKind.Interface:
+                case LanguageTypeKind.NamedType:
+                case LanguageTypeKind.Enum:
+                case LanguageTypeKind.Dynamic:
+                case LanguageTypeKind.Constructed:
                     this.AddMemberLookupSymbolsInfoInTypeCore(result, type, options, originalBinder, type);
                     break;
 
-                case TypeKind.Class:
-                case TypeKind.Struct:
-                case TypeKind.Enum:
-                case TypeKind.Delegate:
-                case TypeKind.Array:
-                case TypeKind.Dynamic:
-                    this.AddMemberLookupSymbolsInfoInTypeCore(result, type, options, originalBinder, type);
-                    break;
-
-                case TypeKind.Submission:
+                case LanguageTypeKind.Submission:
                     this.AddMemberLookupSymbolsInfoInSubmissions(result, type, options, originalBinder);
                     break;
             }

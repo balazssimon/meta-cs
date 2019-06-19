@@ -87,7 +87,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 if (_lazyImportChain == null)
                 {
                     ImportChain importChain = this.Next.ImportChain;
-                    if ((object)_container == null || _container.Kind == SymbolKind.Namespace)
+                    if ((object)_container == null || _container.Kind == LanguageSymbolKind.Namespace)
                     {
                         importChain = new ImportChain(GetImports(basesBeingResolved: null), importChain);
                     }
@@ -112,12 +112,12 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         private bool IsSubmission
         {
-            get { return (_container?.Kind == SymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsSubmission; }
+            get { return (_container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsSubmission; }
         }
 
         private bool IsScript
         {
-            get { return (_container?.Kind == SymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsScript; }
+            get { return (_container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)_container).IsScript; }
         }
 
         public override bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)

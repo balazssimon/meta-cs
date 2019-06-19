@@ -50,13 +50,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
-        /// Returns value 'NetModule' of the <see cref="SymbolKind"/>
+        /// Returns value 'NetModule' of the <see cref="LanguageSymbolKind"/>
         /// </summary>
-        public sealed override SymbolKind Kind
+        public sealed override LanguageSymbolKind Kind
         {
             get
             {
-                return SymbolKind.NetModule;
+                return LanguageSymbolKind.NetModule;
             }
         }
 

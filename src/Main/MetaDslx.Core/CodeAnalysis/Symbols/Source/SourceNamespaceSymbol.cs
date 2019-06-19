@@ -252,7 +252,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                 foreach (var symbol in members)
                 {
-                    if (symbol.Kind == SymbolKind.NamedType)
+                    if (symbol.Kind == LanguageSymbolKind.NamedType)
                     {
                         hasType = true;
                         if (hasNamespace)
@@ -262,7 +262,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     }
                     else
                     {
-                        Debug.Assert(symbol.Kind == SymbolKind.Namespace);
+                        Debug.Assert(symbol.Kind == LanguageSymbolKind.Namespace);
                         hasNamespace = true;
                         if (hasType)
                         {
@@ -505,7 +505,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         bool hasNamespaces = false;
                         for (int i = 0; (i < builder.Count) && !hasNamespaces; i++)
                         {
-                            hasNamespaces |= (builder[i].Kind == SymbolKind.Namespace);
+                            hasNamespaces |= (builder[i].Kind == LanguageSymbolKind.Namespace);
                         }
 
                         members = builder.ToImmutable();

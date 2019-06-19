@@ -40,38 +40,26 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
 
-        public static bool IsClassType(this TypeSymbol type)
+        public static bool IsNamedType(this TypeSymbol type)
         {
             Debug.Assert((object)type != null);
-            return type.TypeKind == TypeKind.Class;
-        }
-
-        public static bool IsStructType(this TypeSymbol type)
-        {
-            Debug.Assert((object)type != null);
-            return type.TypeKind == TypeKind.Struct;
+            return type.TypeKind == LanguageTypeKind.NamedType;
         }
 
         public static bool IsErrorType(this TypeSymbol type)
         {
             Debug.Assert((object)type != null);
-            return type.Kind == SymbolKind.ErrorType;
+            return type.Kind == LanguageSymbolKind.ErrorType;
         }
         public static bool IsDynamic(this TypeSymbol type)
         {
-            return type.TypeKind == TypeKind.Dynamic;
+            return type.TypeKind == LanguageTypeKind.Dynamic;
         }
 
-        public static bool IsTypeParameter(this TypeSymbol type)
+        public static bool IsConstructed(this TypeSymbol type)
         {
             Debug.Assert((object)type != null);
-            return type.TypeKind == TypeKind.TypeParameter;
-        }
-
-        public static bool IsArray(this TypeSymbol type)
-        {
-            Debug.Assert((object)type != null);
-            return type.TypeKind == TypeKind.Array;
+            return type.TypeKind == LanguageTypeKind.Constructed;
         }
 
 

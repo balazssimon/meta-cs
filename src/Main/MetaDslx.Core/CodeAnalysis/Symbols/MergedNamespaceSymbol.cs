@@ -138,7 +138,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 foreach (Symbol childSymbol in namespaceSymbol.GetMembers(name))
                 {
-                    if (childSymbol.Kind == SymbolKind.Namespace)
+                    if (childSymbol.Kind == LanguageSymbolKind.Namespace)
                     {
                         namespaceSymbols = namespaceSymbols ?? ArrayBuilder<NamespaceSymbol>.GetInstance();
                         namespaceSymbols.Add((NamespaceSymbol)childSymbol);

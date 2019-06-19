@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override Language Language => _containingSymbol.Language;
 
-        public override TypeKind TypeKind => TypeKind.Class;
+        public override LanguageTypeKind TypeKind => LanguageTypeKind.NamedType;
 
         internal protected override MutableModel ModelBuilder => this.ContainingModule.ModelBuilder;
 
@@ -84,7 +84,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private SpecialType MakeSpecialType()
         {
             // check if this is one of the COR library types
-            if (ContainingSymbol.Kind == SymbolKind.Namespace &&
+            if (ContainingSymbol.Kind == LanguageSymbolKind.Namespace &&
                 ContainingSymbol.ContainingAssembly.KeepLookingForDeclaredSpecialTypes)
             {
                 //for a namespace, the emitted name is a dot-separated list of containing namespaces

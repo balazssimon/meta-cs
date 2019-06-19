@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public abstract class NamedTypeSymbol : TypeSymbol, INamedTypeSymbol
     {
-        public override SymbolKind Kind => SymbolKind.NamedType;
+        public override LanguageSymbolKind Kind => LanguageSymbolKind.NamedType;
 
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             ArrayBuilder<TMethodSymbol> constructors = ArrayBuilder<TMethodSymbol>.GetInstance();
             foreach (Symbol candidate in instanceCandidates)
             {
-                if (candidate.Kind == SymbolKind.Method)
+                if (candidate.Kind == LanguageSymbolKind.Operation)
                 {
                     TMethodSymbol method = candidate as TMethodSymbol;
                     Debug.Assert((object)method != null);
@@ -174,7 +174,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
             foreach (Symbol candidate in staticCandidates)
             {
-                if (candidate.Kind == SymbolKind.Method)
+                if (candidate.Kind == LanguageSymbolKind.Operation)
                 {
                     TMethodSymbol method = candidate as TMethodSymbol;
                     Debug.Assert((object)method != null);
@@ -238,7 +238,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
-                if (t2.TypeKind == TypeKind.Dynamic)
+                if (t2.TypeKind == LanguageTypeKind.Dynamic)
                 {
                     // if ignoring dynamic, then treat dynamic the same as the type 'object'
                     if (this.SpecialType == SpecialType.System_Object)
@@ -365,7 +365,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 var kind = TypeKind;
-                return kind != TypeKind.Enum && kind != TypeKind.Struct && kind != TypeKind.Error;
+                return kind != LanguageTypeKind.Enum && kind != LanguageTypeKind.Value && kind != LanguageTypeKind.Error;
             }
         }
 
@@ -379,7 +379,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             get
             {
                 var kind = TypeKind;
-                return kind == TypeKind.Struct || kind == TypeKind.Enum;
+                return kind == LanguageTypeKind.Value || kind == LanguageTypeKind.Enum;
             }
         }
 
@@ -396,7 +396,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public virtual bool IsScript => false;
 
-        public virtual bool IsSubmission => TypeKind == TypeKind.Submission;
+        public virtual bool IsSubmission => TypeKind == LanguageTypeKind.Submission;
 
         public virtual bool IsImplicit => false;
 

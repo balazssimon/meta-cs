@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public IMetaSymbol Symbol => _symbol;
 
-        public override SymbolKind Kind => SymbolKind.Unknown;
+        public override LanguageSymbolKind Kind => LanguageSymbolKind.ErrorType;
 
         public override ModelSymbolInfo ModelSymbolInfo => _symbol.MId.SymbolInfo;
 

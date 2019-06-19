@@ -50,19 +50,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override SymbolKind Kind
+        public override LanguageSymbolKind Kind
         {
             get
             {
-                return SymbolKind.DynamicType;
+                return LanguageSymbolKind.DynamicType;
             }
         }
 
-        public override TypeKind TypeKind
+        public override LanguageTypeKind TypeKind
         {
             get
             {
-                return TypeKind.Dynamic;
+                return LanguageTypeKind.Dynamic;
             }
         }
 
@@ -174,7 +174,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 return false;
             }
 
-            if (ReferenceEquals(this, t2) || t2.TypeKind == TypeKind.Dynamic)
+            if (ReferenceEquals(this, t2) || t2.TypeKind == LanguageTypeKind.Dynamic)
             {
                 return true;
             }

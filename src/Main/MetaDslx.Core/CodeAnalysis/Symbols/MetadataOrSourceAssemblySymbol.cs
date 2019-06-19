@@ -50,7 +50,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 MetadataTypeName emittedName = MetadataTypeName.FromFullName(type.GetMetadataName(), useCLSCompliantNameArityEncoding: true);
                 ModuleSymbol module = this.Modules[0];
                 NamedTypeSymbol result = module.LookupTopLevelMetadataType(ref emittedName);
-                if (result.Kind != SymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public)
+                if (result.Kind != LanguageSymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public)
                 {
                     result = new MissingMetadataTypeSymbol.TopLevel(module, ref emittedName, type);
                 }
@@ -81,8 +81,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             if ((object)Interlocked.CompareExchange(ref _lazySpecialTypes[(int)typeId], corType, null) != null)
             {
                 Debug.Assert(ReferenceEquals(corType, _lazySpecialTypes[(int)typeId]) ||
-                                        (corType.Kind == SymbolKind.ErrorType &&
-                                        _lazySpecialTypes[(int)typeId].Kind == SymbolKind.ErrorType));
+                                        (corType.Kind == LanguageSymbolKind.ErrorType &&
+                                        _lazySpecialTypes[(int)typeId].Kind == LanguageSymbolKind.ErrorType));
             }
             else
             {

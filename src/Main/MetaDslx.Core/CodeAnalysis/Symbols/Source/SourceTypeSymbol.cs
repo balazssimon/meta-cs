@@ -8,7 +8,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceTypeSymbol : TypeSymbol
+    public abstract class SourceTypeSymbol : TypeSymbol
     {
         private Symbol _containingSymbol;
         private SyntaxReference _syntaxReference;
@@ -20,10 +20,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _syntaxReference = syntaxReference;
             _modelObject = modelObject;
         }
-
-        public override SymbolKind Kind => SymbolKind.ArrayType;
-
-        public override TypeKind TypeKind => TypeKind.Array;
 
         protected internal override MutableSymbolBase ModelObject => _modelObject as MutableSymbolBase;
 

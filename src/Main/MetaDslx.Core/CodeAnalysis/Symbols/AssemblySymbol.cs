@@ -165,11 +165,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </summary>
         public abstract ImmutableArray<ModuleSymbol> Modules { get; }
 
-        public sealed override SymbolKind Kind
+        public sealed override LanguageSymbolKind Kind
         {
             get
             {
-                return SymbolKind.Assembly;
+                return LanguageSymbolKind.Assembly;
             }
         }
 
@@ -819,7 +819,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private bool IsValidWellKnownType(NamedTypeSymbol result)
         {
-            if ((object)result == null || result.TypeKind == TypeKind.Error)
+            if ((object)result == null || result.TypeKind == LanguageTypeKind.Error)
             {
                 return false;
             }
@@ -848,7 +848,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         private static bool IsAcceptableMatchForGetTypeByMetadataName(NamedTypeSymbol candidate)
         {
-            return candidate.Kind != SymbolKind.ErrorType || !(candidate is MissingMetadataTypeSymbol);
+            return candidate.Kind != LanguageSymbolKind.ErrorType || !(candidate is MissingMetadataTypeSymbol);
         }
 
         /// <summary>

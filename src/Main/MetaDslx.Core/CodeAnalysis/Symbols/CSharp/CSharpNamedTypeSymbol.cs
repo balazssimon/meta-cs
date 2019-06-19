@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         internal CSharpSymbolMap CSharpSymbolMap => _module.CSharpSymbolMap;
 
-        public override SymbolKind Kind => _csharpSymbol.Kind;
+        public override LanguageSymbolKind Kind => Language.SymbolFacts.FromCSharpKind(_csharpSymbol.Kind);
 
         public override string Name => _csharpSymbol.Name;
 
@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
 
         public override SpecialType SpecialType => _csharpSymbol.SpecialType;
 
-        public override TypeKind TypeKind => _csharpSymbol.TypeKind;
+        public override LanguageTypeKind TypeKind => Language.SymbolFacts.FromCSharpKind(_csharpSymbol.TypeKind);
 
         public override ImmutableArray<Symbol> GetMembers()
         {

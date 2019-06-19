@@ -83,7 +83,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public virtual SymbolKind Kind => SymbolKind.Unknown;
+        public virtual LanguageSymbolKind Kind => LanguageSymbolKind.None;
 
         /// <summary>
         /// Get the symbol that logically contains this symbol. 
@@ -173,14 +173,14 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                switch (this.Kind)
+                switch (this.Kind.Switch())
                 {
-                    case SymbolKind.ErrorType:
+                    case LanguageSymbolKind.ErrorType:
                         return null;
-                    case SymbolKind.Assembly:
+                    case LanguageSymbolKind.Assembly:
                         Debug.Assert(!(this is SourceAssemblySymbol), "SourceAssemblySymbol must override DeclaringCompilation");
                         return null;
-                    case SymbolKind.NetModule:
+                    case LanguageSymbolKind.NetModule:
                         Debug.Assert(!(this is SourceModuleSymbol), "SourceModuleSymbol must override DeclaringCompilation");
                         return null;
                 }
@@ -742,12 +742,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             {
                 if (info.HasErrorCode(InternalErrorCode.ERR_BogusType))
                 {
-                    switch (this.Kind)
+                    switch (this.Kind.Switch())
                     {
-                        case SymbolKind.Field:
-                        case SymbolKind.Method:
-                        case SymbolKind.Property:
-                        case SymbolKind.Event:
+                        case LanguageSymbolKind.Name:
+                        case LanguageSymbolKind.Operation:
+                        case LanguageSymbolKind.Property:
                             info = new LanguageDiagnosticInfo(InternalErrorCode.ERR_BindToBogus, this);
                             break;
                     }
@@ -803,7 +802,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             // TODO:MetaDslx
             //return SymbolDisplay.ToDisplayString(this, format);
-            return this.MetadataName + " (" + this.Kind + ")";
+            return this.MetadataName + " (" + this.Kind.ToString() + ")";
         }
 
         public ImmutableArray<SymbolDisplayPart> ToDisplayParts(SymbolDisplayFormat format = null)
@@ -874,6 +873,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
         bool ISymbol.IsImplicitlyDeclared => this.IsImplicitlyDeclared;
 
         ISymbol ISymbol.ContainingSymbol => this.ContainingSymbol;
+
+        Microsoft.CodeAnalysis.SymbolKind ISymbol.Kind => Language.SymbolFacts.ToCSharpKind(this.Kind);
 
         IAssemblySymbol ISymbol.ContainingAssembly => this.ContainingAssembly;
 

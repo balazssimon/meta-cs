@@ -1369,7 +1369,7 @@ namespace MetaDslx.CodeAnalysis
                     }
 
                     mainType = mainTypeOrNamespace as NamedTypeSymbol;
-                    if ((object)mainType == null || (mainType.TypeKind != TypeKind.Class && mainType.TypeKind != TypeKind.Struct))
+                    if ((object)mainType == null || (mainType.TypeKind != LanguageTypeKind.NamedType))
                     {
                         diagnostics.Add(InternalErrorCode.ERR_MainClassNotClass, mainTypeOrNamespace.Locations.First(), mainTypeOrNamespace);
                         return null;
@@ -1647,7 +1647,8 @@ namespace MetaDslx.CodeAnalysis
         /// </summary>
         internal Symbol CreateConstructedSymbol(SyntaxReference syntaxReference, ModelSymbolInfo symbolInfo, ImmutableDictionary<string, ImmutableArray<object>> propertyValues)
         {
-            return Language.CompilationFactory.CreateConstructedSymbol(this, this.ModelBuilder, syntaxReference, symbolInfo, propertyValues);
+            var modelObject = symbolInfo.CreateMutable(this.ModelBuilder, true);
+            return new SourceConstructedTypeSymbol(this.SourceAssembly, syntaxReference, modelObject);
         }
 
         private protected override bool IsSymbolAccessibleWithinCore(
@@ -1660,7 +1661,7 @@ namespace MetaDslx.CodeAnalysis
             var throughType0 = throughType.EnsureLanguageSymbolOrNull<ITypeSymbol, TypeSymbol>(nameof(throughType));
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             return
-                within0.Kind == SymbolKind.Assembly ?
+                within0.Kind == LanguageSymbolKind.Assembly ?
                 AccessCheck.IsSymbolAccessible(symbol0, (AssemblySymbol)within0, ref useSiteDiagnostics) :
                 AccessCheck.IsSymbolAccessible(symbol0, (NamedTypeSymbol)within0, ref useSiteDiagnostics, throughType0);
         }
@@ -2145,7 +2146,7 @@ namespace MetaDslx.CodeAnalysis
                 return true;
             }
 
-            if (symbol.Kind == SymbolKind.Method && symbol.IsImplicitlyDeclared && ((MethodSymbol)symbol).MethodKind == MethodKind.Constructor)
+            if (symbol.Kind == LanguageSymbolKind.Operation && symbol.IsImplicitlyDeclared && ((MethodSymbol)symbol).MethodKind == MethodKind.Constructor)
             {
                 // Include implicitly declared constructor if containing type is included
                 return IsDefinedOrImplementedInSourceTree(symbol.ContainingType, tree, span);

@@ -27,6 +27,13 @@ namespace MetaDslx.CodeAnalysis
 
     internal class NoLanguage : Language
     {
+        private SymbolFacts _symbolFacts;
+
+        public NoLanguage()
+        {
+            _symbolFacts = new SymbolFacts();
+        }
+
         public override string Name => string.Empty;
 
         protected internal override SyntaxFacts SyntaxFactsCore => throw new NotImplementedException();
@@ -37,7 +44,7 @@ namespace MetaDslx.CodeAnalysis
 
         protected internal override CompilationFactory CompilationFactoryCore => throw new NotImplementedException();
 
-        protected internal override SymbolFacts SymbolFactsCore => throw new NotImplementedException();
+        protected internal override SymbolFacts SymbolFactsCore => _symbolFacts;
 
     }
 }

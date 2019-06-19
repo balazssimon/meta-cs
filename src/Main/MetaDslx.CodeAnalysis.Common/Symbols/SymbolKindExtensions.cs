@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis
                     return 7;
                 case SymbolKind.Assembly:
                     return 8;
-#if false
+#if true
                 case SymbolKind.ErrorType:
                     return 9;
 #endif
@@ -50,8 +50,6 @@ namespace Microsoft.CodeAnalysis
                     return 17;
                 case SymbolKind.Preprocessing:
                     return 18;
-                case SymbolKind.Unknown:
-                    return 19;
                 default:
                     throw ExceptionUtilities.UnexpectedValue(kind);
             }

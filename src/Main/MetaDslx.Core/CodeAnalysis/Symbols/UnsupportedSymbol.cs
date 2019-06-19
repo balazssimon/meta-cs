@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         public ISymbol Symbol => _symbol;
 
-        public override SymbolKind Kind => SymbolKind.Unknown;
+        public override LanguageSymbolKind Kind => LanguageSymbolKind.None;
 
         public override Symbol ContainingSymbol => _containingSymbol;
 

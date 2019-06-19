@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             LookupResult result, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             var hostObjectType = GetHostObjectType();
-            if (hostObjectType.Kind == SymbolKind.ErrorType)
+            if (hostObjectType.Kind == LanguageSymbolKind.ErrorType)
             {
                 // The name '{0}' does not exist in the current context (are you missing a reference to assembly '{1}'?)
                 result.SetFrom(new LanguageDiagnosticInfo(
@@ -49,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupOptions options, Binder originalBinder)
         {
             var hostObjectType = GetHostObjectType();
-            if (hostObjectType.Kind != SymbolKind.ErrorType)
+            if (hostObjectType.Kind != LanguageSymbolKind.ErrorType)
             {
                 AddMemberLookupSymbolsInfo(result, hostObjectType, options, originalBinder);
             }

@@ -106,7 +106,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             // We can pass basesBeingResolved: null because base type cycles can't cross
             // submission boundaries - there's no way to depend on a subsequent submission.
             var previousTarget = GetAliasTarget(basesBeingResolved: null);
-            if (previousTarget.Kind != SymbolKind.Namespace)
+            if (previousTarget.Kind != LanguageSymbolKind.Namespace)
             {
                 return this;
             }
@@ -125,11 +125,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override SymbolKind Kind
+        public override LanguageSymbolKind Kind
         {
             get
             {
-                return SymbolKind.Alias;
+                return LanguageSymbolKind.Alias;
             }
         }
 

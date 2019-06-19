@@ -38,9 +38,9 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                         {
                             symbols.Add(symbol);
                         }
-                        else if (value is IMetaSymbol modelObject)
+                        else 
                         {
-                            symbols.Add(Language.CompilationFactory.ModelObjectToSourceSymbol(Compilation, this.Syntax.GetReference(), modelObject));
+                            this.BoundTree.DiagnosticBag.Add(ModelErrorCode.ERR_ValueIsNotSymbol, this.Syntax.Location, value);
                         }
                     }
                     ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, symbols.ToImmutableAndFree());

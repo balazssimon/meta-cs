@@ -34,9 +34,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal ExtendedErrorTypeSymbol(NamespaceOrTypeSymbol containingSymbol, string name, string metadataName, DiagnosticInfo errorInfo, bool unreported = false, bool variableUsedBeforeDeclaration = false)
         {
             Debug.Assert(((object)containingSymbol == null) ||
-                (containingSymbol.Kind == SymbolKind.Namespace) ||
-                (containingSymbol.Kind == SymbolKind.NamedType) ||
-                (containingSymbol.Kind == SymbolKind.ErrorType));
+                (containingSymbol.Kind == LanguageSymbolKind.Namespace) ||
+                (containingSymbol.Kind == LanguageSymbolKind.NamedType) ||
+                (containingSymbol.Kind == LanguageSymbolKind.ErrorType));
 
             Debug.Assert(name != null);
             Debug.Assert(unreported == false || errorInfo != null);
@@ -164,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// </remarks>
         internal static TypeSymbol ExtractNonErrorType(TypeSymbol oldSymbol)
         {
-            if ((object)oldSymbol == null || oldSymbol.TypeKind != TypeKind.Error)
+            if ((object)oldSymbol == null || oldSymbol.TypeKind != LanguageTypeKind.Error)
             {
                 return oldSymbol;
             }
@@ -190,9 +190,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         // Get the type kind of a symbol, going to candidates if possible.
-        internal static TypeKind ExtractNonErrorTypeKind(TypeSymbol oldSymbol)
+        internal static LanguageTypeKind ExtractNonErrorTypeKind(TypeSymbol oldSymbol)
         {
-            if (oldSymbol.TypeKind != TypeKind.Error)
+            if (oldSymbol.TypeKind != LanguageTypeKind.Error)
             {
                 return oldSymbol.TypeKind;
             }
@@ -207,18 +207,18 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // If the original definition isn't a CSErrorTypeSymbol, then we don't know how to
             // pull out a non-error type.  If it is, then if there is a unambiguous type inside it,
             // use that.
-            TypeKind commonTypeKind = TypeKind.Error;
+            LanguageTypeKind commonTypeKind = LanguageTypeKind.Error;
             if ((object)oldError != null && !oldError._candidateSymbols.IsDefault && oldError._candidateSymbols.Length > 0)
             {
                 foreach (Symbol sym in oldError._candidateSymbols)
                 {
                     TypeSymbol type = sym as TypeSymbol;
-                    if ((object)type != null && type.TypeKind != TypeKind.Error)
+                    if ((object)type != null && type.TypeKind != LanguageTypeKind.Error)
                     {
-                        if (commonTypeKind == TypeKind.Error)
+                        if (commonTypeKind == LanguageTypeKind.Error)
                             commonTypeKind = type.TypeKind;
                         else if (commonTypeKind != type.TypeKind)
-                            return TypeKind.Error;  // no common kind.
+                            return LanguageTypeKind.Error;  // no common kind.
                     }
                 }
             }

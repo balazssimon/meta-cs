@@ -23,7 +23,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Debug.Assert(!declaration.IsImplicit && !declaration.IsSubmission && !declaration.IsScript);
         }
 
-        public override SymbolKind Kind => SymbolKind.NamedType;
+        public override LanguageSymbolKind Kind => LanguageSymbolKind.NamedType;
 
         /// <summary>
         /// Gets the set of interfaces that this type directly implements. This set does not include

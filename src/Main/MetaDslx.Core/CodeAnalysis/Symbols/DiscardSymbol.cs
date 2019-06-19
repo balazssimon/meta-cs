@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public override bool IsSealed => false;
         public override bool IsStatic => false;
         public override bool IsVirtual => false;
-        public override SymbolKind Kind => SymbolKind.Discard;
+        public override LanguageSymbolKind Kind => LanguageSymbolKind.Discard;
         public override ImmutableArray<Location> Locations => ImmutableArray<Location>.Empty;
         public override void Accept(SymbolVisitor visitor) => visitor.VisitDiscard(this);
         public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor) => visitor.VisitDiscard(this);

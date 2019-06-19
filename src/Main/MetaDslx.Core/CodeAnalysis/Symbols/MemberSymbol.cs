@@ -237,7 +237,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             hiddenBuilder = null;
 
             bool currTypeHasExactMatch = false;
-            SymbolKind memberKind = member.Kind;
+            LanguageSymbolKind memberKind = member.Kind;
 
             foreach (Symbol otherMember in currType.GetMembers(member.Name))
             {
@@ -273,7 +273,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         private static void FindRelatedMembers(
             bool isOverride,
             bool overridingMemberIsFromSomeCompilation,
-            SymbolKind overridingMemberKind,
+            LanguageSymbolKind overridingMemberKind,
             Symbol representativeMember,
             out ImmutableArray<Symbol> overriddenMembers,
             out ImmutableArray<Symbol> runtimeOverriddenMembers,
@@ -324,7 +324,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Specifically, methods, properties, and types cannot hide constructors, destructors,
         /// operators, conversions, or accessors.
         /// </summary>
-        private static void AddHiddenMemberIfApplicable(ref ArrayBuilder<Symbol> hiddenBuilder, SymbolKind hidingMemberKind, Symbol hiddenMember)
+        private static void AddHiddenMemberIfApplicable(ref ArrayBuilder<Symbol> hiddenBuilder, LanguageSymbolKind hidingMemberKind, Symbol hiddenMember)
         {
             Debug.Assert((object)hiddenMember != null);
             AccessOrGetInstance(ref hiddenBuilder).Add(hiddenMember);
@@ -400,7 +400,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// Will have all other members with the same signature (including custom modifiers) as 
         /// representativeMember added.
         /// </param>
-        private static void FindOtherHiddenMembersInContainingType(SymbolKind hidingMemberKind, Symbol representativeMember, ref ArrayBuilder<Symbol> hiddenBuilder)
+        private static void FindOtherHiddenMembersInContainingType(LanguageSymbolKind hidingMemberKind, Symbol representativeMember, ref ArrayBuilder<Symbol> hiddenBuilder)
         {
             Debug.Assert((object)representativeMember != null);
         }

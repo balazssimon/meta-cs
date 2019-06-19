@@ -181,7 +181,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                         var declarationBinder = usingsBinder.WithAdditionalFlags(BinderFlags.SuppressConstraintChecks);
                         var imported = declarationBinder.BindNamespaceOrTypeSymbol(usingDirective.TargetName, diagnostics, basesBeingResolved);
-                        if (imported.Kind == SymbolKind.Namespace)
+                        if (imported.Kind == LanguageSymbolKind.Namespace)
                         {
                             if (usingDirective.IsStatic)
                             {
@@ -197,7 +197,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 usings.Add(new NamespaceOrTypeAndUsingDirective(imported, usingDirective));
                             }
                         }
-                        else if (imported.Kind == SymbolKind.NamedType)
+                        else if (imported.Kind == LanguageSymbolKind.NamedType)
                         {
                             if (usingDirective.IsStatic)
                             {
@@ -219,7 +219,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 }
                             }
                         }
-                        else if (imported.Kind != SymbolKind.ErrorType)
+                        else if (imported.Kind != LanguageSymbolKind.ErrorType)
                         {
                             // Do not report additional error if the symbol itself is erroneous.
 
@@ -711,14 +711,14 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         private static bool IsValidLookupCandidateInUsings(Symbol symbol)
         {
-            switch (symbol.Kind)
+            switch (symbol.Kind.Switch())
             {
                 // lookup via "using namespace" ignores namespaces inside
-                case SymbolKind.Namespace:
+                case LanguageSymbolKind.Namespace:
                     return false;
 
                 // lookup via "using static" ignores extension methods and non-static methods
-                case SymbolKind.Method:
+                case LanguageSymbolKind.Operation:
                     if (!symbol.IsStatic)
                     {
                         return false;
@@ -728,7 +728,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 // types are considered static members for purposes of "using static" feature
                 // regardless of whether they are declared with "static" modifier or not
-                case SymbolKind.NamedType:
+                case LanguageSymbolKind.NamedType:
                     break;
 
                 // lookup via "using static" ignores non-static members

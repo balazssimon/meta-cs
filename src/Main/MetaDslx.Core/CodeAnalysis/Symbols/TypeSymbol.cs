@@ -358,7 +358,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this type.
         /// </summary>
-        public virtual TypeKind TypeKind => TypeKind.Unknown;
+        public virtual LanguageTypeKind TypeKind => LanguageTypeKind.None;
 
         /// <summary>
         /// Gets corresponding special TypeId of this type.
@@ -406,13 +406,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         ImmutableArray<INamedTypeSymbol> IMetaTypeSymbol.AllBaseTypes => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics);
 
-        TypeKind ITypeSymbol.TypeKind => this.TypeKind;
+        TypeKind ITypeSymbol.TypeKind => Language.SymbolFacts.ToCSharpKind(this.TypeKind);
 
-        INamedTypeSymbol ITypeSymbol.BaseType => this.BaseTypesNoUseSiteDiagnostics.Where(t => t.TypeKind == TypeKind.Class).FirstOrDefault();
+        INamedTypeSymbol ITypeSymbol.BaseType => this.BaseTypesNoUseSiteDiagnostics.Where(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Class).FirstOrDefault();
 
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.Interfaces => StaticCast<INamedTypeSymbol>.From(this.BaseTypesNoUseSiteDiagnostics.WhereAsArray(t => t.TypeKind == TypeKind.Interface));
+        ImmutableArray<INamedTypeSymbol> ITypeSymbol.Interfaces => StaticCast<INamedTypeSymbol>.From(this.BaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Interface));
 
-        ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics.WhereAsArray(t => t.TypeKind == TypeKind.Interface));
+        ImmutableArray<INamedTypeSymbol> ITypeSymbol.AllInterfaces => StaticCast<INamedTypeSymbol>.From(this.AllBaseTypesNoUseSiteDiagnostics.WhereAsArray(t => ((ITypeSymbol)t).TypeKind == Microsoft.CodeAnalysis.TypeKind.Interface));
 
         public virtual bool IsReferenceType => false;
 

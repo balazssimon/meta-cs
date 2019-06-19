@@ -966,7 +966,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 // Descent into child namespaces.
                 foreach (Symbol member in mergedNs.GetMembers())
                 {
-                    if (member.Kind == SymbolKind.Namespace)
+                    if (member.Kind == LanguageSymbolKind.Namespace)
                     {
                         ReportNameCollisionDiagnosticsForAddedModules((NamespaceSymbol)member, diagnostics);
                     }
@@ -1447,15 +1447,15 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             foreach (var member in ns.GetMembersUnordered())
             {
-                switch (member.Kind)
+                switch (member.Kind.Switch())
                 {
-                    case SymbolKind.Namespace:
+                    case LanguageSymbolKind.Namespace:
                         if (ContainsExtensionMethods((NamespaceSymbol)member))
                         {
                             return true;
                         }
                         break;
-                    case SymbolKind.NamedType:
+                    case LanguageSymbolKind.NamedType:
                         if (((NamedTypeSymbol)member).MightContainExtensionMethods)
                         {
                             return true;

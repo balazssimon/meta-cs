@@ -73,7 +73,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <summary>
         /// Gets the kind of this symbol.
         /// </summary>
-        public sealed override SymbolKind Kind => SymbolKind.Namespace;
+        public sealed override LanguageSymbolKind Kind => LanguageSymbolKind.Namespace;
 
         public override bool IsImplicitlyDeclared => this.IsGlobalNamespace;
 
@@ -157,7 +157,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             foreach (var sym in this.GetMembers(name))
             {
-                if (sym.Kind == SymbolKind.Namespace)
+                if (sym.Kind == LanguageSymbolKind.Namespace)
                 {
                     return (NamespaceSymbol)sym;
                 }

@@ -171,9 +171,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             foreach (Symbol s in ns.GetMembersUnordered())
             {
-                switch (s.Kind)
+                switch (s.Kind.Switch())
                 {
-                    case SymbolKind.Namespace:
+                    case LanguageSymbolKind.Namespace:
                         if (NamespaceContainsExplicitDefinitionOfNoPiaLocalTypes((NamespaceSymbol)s))
                         {
                             return true;
@@ -181,7 +181,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
                         break;
 
-                    case SymbolKind.NamedType:
+                    case LanguageSymbolKind.NamedType:
                         if (((NamedTypeSymbol)s).IsExplicitDefinitionOfNoPiaLocalType)
                         {
                             return true;

@@ -96,45 +96,35 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             failedThroughTypeCheck = false;
 
-            switch (symbol.Kind)
+            switch (symbol.Kind.Switch())
             {
-                case SymbolKind.ArrayType:
+                case LanguageSymbolKind.ConstructedType:
                     throw new NotImplementedException("TODO:MetaDslx");
                     //return IsSymbolAccessibleCore(((ArrayTypeSymbol)symbol).ElementType, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
 
-                case SymbolKind.PointerType:
-                    throw new NotImplementedException("TODO:MetaDslx");
-                    //return IsSymbolAccessibleCore(((PointerTypeSymbol)symbol).PointedAtType, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
-
-                case SymbolKind.NamedType:
+                case LanguageSymbolKind.NamedType:
                     return IsNamedTypeAccessible((NamedTypeSymbol)symbol, within, ref useSiteDiagnostics, basesBeingResolved);
 
-                case SymbolKind.Alias:
+                case LanguageSymbolKind.Alias:
                     return IsSymbolAccessibleCore(((AliasSymbol)symbol).Target, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
 
-                case SymbolKind.Discard:
+                case LanguageSymbolKind.Discard:
                     return IsSymbolAccessibleCore(((DiscardSymbol)symbol).Type, within, null, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics, basesBeingResolved);
 
-                case SymbolKind.ErrorType:
+                case LanguageSymbolKind.ErrorType:
                     // Always assume that error types are accessible.
                     return true;
 
-                case SymbolKind.TypeParameter:
-                case SymbolKind.Parameter:
-                case SymbolKind.Local:
-                case SymbolKind.Label:
-                case SymbolKind.Namespace:
-                case SymbolKind.DynamicType:
-                case SymbolKind.Assembly:
-                case SymbolKind.NetModule:
-                case SymbolKind.RangeVariable:
+                case LanguageSymbolKind.Name:
+                case LanguageSymbolKind.Namespace:
+                case LanguageSymbolKind.DynamicType:
+                case LanguageSymbolKind.Assembly:
+                case LanguageSymbolKind.NetModule:
                     // These types of symbols are always accessible (if visible).
                     return true;
 
-                case SymbolKind.Method:
-                case SymbolKind.Property:
-                case SymbolKind.Event:
-                case SymbolKind.Field:
+                case LanguageSymbolKind.Operation:
+                case LanguageSymbolKind.Property:
                     if (symbol.IsStatic)
                     {
                         // static members aren't accessed "through" an "instance" of any type.  So we
@@ -145,7 +135,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                     return IsMemberAccessible(symbol.ContainingType, symbol.DeclaredAccessibility, within, throughTypeOpt, out failedThroughTypeCheck, compilation, ref useSiteDiagnostics);
 
-                case SymbolKind.Unknown:
+                case LanguageSymbolKind.None:
                     return false;
                 default:
                     throw ExceptionUtilities.UnexpectedValue(symbol.Kind);
@@ -290,7 +280,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     // type) can access previous submission's private top-level members. Previous
                     // submissions are treated like outer classes for the current submission - the
                     // inner class can access private members of the outer class.
-                    if (containingType.TypeKind == TypeKind.Submission)
+                    if (containingType.TypeKind == LanguageTypeKind.Submission)
                     {
                         return true;
                     }
@@ -353,7 +343,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             // It is not an error to define protected member in a sealed Script class, it's just a
             // warning. The member behaves like a private one - it is visible in all subsequent
             // submissions.
-            if (originalContainingType.TypeKind == TypeKind.Submission)
+            if (originalContainingType.TypeKind == LanguageTypeKind.Submission)
             {
                 return true;
             }
@@ -611,7 +601,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         internal static ErrorCode GetProtectedMemberInSealedTypeError(NamedTypeSymbol containingType)
         {
-            return containingType.TypeKind == TypeKind.Struct ? InternalErrorCode.ERR_ProtectedInStruct : InternalErrorCode.WRN_ProtectedInSealed;
+            return InternalErrorCode.WRN_ProtectedInSealed;
         }
     }
 }
