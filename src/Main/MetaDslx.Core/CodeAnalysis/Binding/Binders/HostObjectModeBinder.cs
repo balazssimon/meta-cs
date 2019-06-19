@@ -7,7 +7,7 @@ using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
-namespace MetaDslx.CodeAnalysis.Binding
+namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     internal sealed class HostObjectModelBinder : Binder
     {
