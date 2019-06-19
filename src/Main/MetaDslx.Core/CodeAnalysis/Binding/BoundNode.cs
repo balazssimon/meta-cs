@@ -204,23 +204,23 @@ namespace MetaDslx.CodeAnalysis.Binding
             return this.BoundTree.GetEnclosingBinder(_syntax);
         }
 
-        public ImmutableArray<Identifier> GetIdentifiers()
+        public ImmutableArray<BoundIdentifier> GetIdentifiers()
         {
-            ArrayBuilder<Identifier> identifiers = ArrayBuilder<Identifier>.GetInstance();
+            ArrayBuilder<BoundIdentifier> identifiers = ArrayBuilder<BoundIdentifier>.GetInstance();
             this.AddIdentifiers(identifiers);
             return identifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<Qualifier> GetQualifiers()
+        public ImmutableArray<BoundQualifierOrIdentifier> GetQualifiers()
         {
-            ArrayBuilder<Qualifier> qualifiers = ArrayBuilder<Qualifier>.GetInstance();
+            ArrayBuilder<BoundQualifierOrIdentifier> qualifiers = ArrayBuilder<BoundQualifierOrIdentifier>.GetInstance();
             this.AddQualifiers(qualifiers);
             return qualifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<Qualifier> GetNames()
+        public ImmutableArray<BoundName> GetNames()
         {
-            ArrayBuilder<Qualifier> names = ArrayBuilder<Qualifier>.GetInstance();
+            ArrayBuilder<BoundName> names = ArrayBuilder<BoundName>.GetInstance();
             this.AddNames(names);
             return names.ToImmutableAndFree();
         }
@@ -239,9 +239,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             return values.ToImmutableAndFree();
         }
 
-        public ImmutableArray<Identifier> GetChildIdentifiers()
+        public ImmutableArray<BoundIdentifier> GetChildIdentifiers()
         {
-            ArrayBuilder<Identifier> identifiers = ArrayBuilder<Identifier>.GetInstance();
+            ArrayBuilder<BoundIdentifier> identifiers = ArrayBuilder<BoundIdentifier>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
                 child.AddIdentifiers(identifiers);
@@ -249,9 +249,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             return identifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<Qualifier> GetChildQualifiers()
+        public ImmutableArray<BoundQualifierOrIdentifier> GetChildQualifiers()
         {
-            ArrayBuilder<Qualifier> qualifiers = ArrayBuilder<Qualifier>.GetInstance();
+            ArrayBuilder<BoundQualifierOrIdentifier> qualifiers = ArrayBuilder<BoundQualifierOrIdentifier>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
                 child.AddQualifiers(qualifiers);
@@ -259,9 +259,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             return qualifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<Qualifier> GetChildNames()
+        public ImmutableArray<BoundName> GetChildNames()
         {
-            ArrayBuilder<Qualifier> names = ArrayBuilder<Qualifier>.GetInstance();
+            ArrayBuilder<BoundName> names = ArrayBuilder<BoundName>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
                 child.AddNames(names);
@@ -289,15 +289,15 @@ namespace MetaDslx.CodeAnalysis.Binding
             return values.ToImmutableAndFree();
         }
 
-        public virtual void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        public virtual void AddIdentifiers(ArrayBuilder<BoundIdentifier> identifiers)
         {
         }
 
-        public virtual void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        public virtual void AddQualifiers(ArrayBuilder<BoundQualifierOrIdentifier> qualifiers)
         {
         }
 
-        public virtual void AddNames(ArrayBuilder<Qualifier> names)
+        public virtual void AddNames(ArrayBuilder<BoundName> names)
         {
         }
 

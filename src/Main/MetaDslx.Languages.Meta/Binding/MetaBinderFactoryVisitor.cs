@@ -163,6 +163,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitCore(parent.Parent);
+				resultBinder = this.CreateQualifierBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

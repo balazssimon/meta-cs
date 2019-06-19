@@ -46,6 +46,7 @@ namespace MetaDslx.Languages.Meta
         public static readonly string[] BinderAnnotations =
             {
                 Binder,
+                Qualifier,
                 SymbolDef,
                 Scope
             };

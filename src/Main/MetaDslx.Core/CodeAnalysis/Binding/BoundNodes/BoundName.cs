@@ -1,37 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundName : BoundNode
+    public class BoundName : BoundValues
     {
+        private ImmutableArray<Symbol> _lazySymbols;
+
         public BoundName(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
         }
 
-        public Symbol Symbol
+        public ImmutableArray<Symbol> Symbols
         {
             get
             {
-                return null;
+                if (_lazySymbols.IsDefault)
+                {
+                    var qualifiers = this.GetChildQualifiers();
+                    var symbols = qualifiers.Select(q => q.Symbol).ToImmutableArray();
+                    ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, symbols);
+                }
+                return _lazySymbols;
             }
         }
 
-        public override void AddNames(ArrayBuilder<Qualifier> names)
+        public override ImmutableArray<object> Values => StaticCast<object>.From(this.Symbols);
+
+        public override void AddNames(ArrayBuilder<BoundName> names)
         {
-            names.AddRange(this.GetChildQualifiers());
+            names.AddRange(this);
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("[");
-            var values = this.GetQualifiers();
+            var values = this.Symbols;
             for (int i = 0; i < values.Length; i++)
             {
                 if (i > 0) sb.Append(", ");

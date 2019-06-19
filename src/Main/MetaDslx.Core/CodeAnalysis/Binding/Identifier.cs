@@ -1,4 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+﻿using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;

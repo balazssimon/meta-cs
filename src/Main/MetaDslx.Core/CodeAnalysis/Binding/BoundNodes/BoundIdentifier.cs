@@ -4,14 +4,16 @@ using System.Collections.Immutable;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundIdentifier : BoundNode
+    public class BoundIdentifier : BoundQualifierOrIdentifier
     {
         private string _lazyName;
         private string _lazyMetadataName;
+        private Symbol _lazySymbol;
 
         public BoundIdentifier(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
@@ -42,22 +44,36 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
-        public Symbol Symbol
+        public override Symbol Symbol
         {
             get
             {
-                return null;
+                if (_lazySymbol == null)
+                {
+                    HashSet<DiagnosticInfo> useSiteDiagnostics = null;
+                    var binder = this.GetBinder();
+                    var qualifierOpt = binder.GetQualifierOpt(this.Syntax);
+                    LookupResult lookupResult = LookupResult.GetInstance();
+                    binder.LookupSymbolsSimpleName(lookupResult, qualifierOpt, this.Name, this.MetadataName, null, LookupOptions.Default, true, ref useSiteDiagnostics);
+                    //this.BoundTree.DiagnosticBag.AddRange(useSiteDiagnostics);
+                    var symbol = binder.ResultSymbol(lookupResult, this.Name, this.MetadataName, this.Syntax, this.BoundTree.DiagnosticBag, false, out bool wasError, qualifierOpt, LookupOptions.Default);
+                    lookupResult.Free();
+                    Interlocked.CompareExchange(ref _lazySymbol, symbol, null);
+                }
+                return _lazySymbol;
             }
         }
 
-        public override void AddIdentifiers(ArrayBuilder<Identifier> identifiers)
+        public override ImmutableArray<BoundIdentifier> Identifiers => ImmutableArray.Create(this);
+
+        public override void AddIdentifiers(ArrayBuilder<BoundIdentifier> identifiers)
         {
-            identifiers.Add(new Identifier(this.Syntax, this.Name, this.MetadataName));
+            identifiers.Add(this);
         }
 
-        public override void AddQualifiers(ArrayBuilder<Qualifier> qualifiers)
+        public override void AddQualifiers(ArrayBuilder<BoundQualifierOrIdentifier> qualifiers)
         {
-            qualifiers.Add(new Qualifier(ImmutableArray.Create(new Identifier(this.Syntax, this.Name, this.MetadataName))));
+            qualifiers.Add(this);
         }
 
         public override string ToString()

@@ -46,8 +46,24 @@ namespace MetaDslx.CodeAnalysis.Binding
         [MethodImpl(MethodImplOptions.NoInlining)]
         public NamespaceOrTypeSymbol BindNamespaceOrTypeSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics)
         {
-            var result = BindNamespaceOrTypeOrAliasSymbol(syntax, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, qualifierOpt: null);
+            var result = BindNamespaceOrTypeOrAliasSymbol(syntax, false, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, qualifierOpt: null);
             return (NamespaceOrTypeSymbol)UnwrapAlias(result, diagnostics, syntax, basesBeingResolved);
+        }
+
+        /// <summary>
+        /// This method is used in deeply recursive parts of the compiler and requires a non-trivial amount of stack
+        /// space to execute. Preventing inlining here to keep recursive frames small.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public Symbol BindNamespaceOrTypeOrNameSymbol(SyntaxNodeOrToken syntax, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics)
+        {
+            var result = BindNamespaceOrTypeOrAliasSymbol(syntax, true, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, qualifierOpt: null);
+            return UnwrapAlias(result, diagnostics, syntax, basesBeingResolved);
+        }
+
+        public virtual NamespaceOrTypeSymbol GetQualifierOpt(SyntaxNodeOrToken syntax)
+        {
+            return null;
         }
 
         private static Symbol UnwrapAliasNoDiagnostics(Symbol symbol, ConsList<TypeSymbol> basesBeingResolved = null)
@@ -110,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// enough they should be disqualified from inlining. In the future when attributes are allowed on 
         /// local functions we should explicitly mark them as <see cref="MethodImplOptions.NoInlining"/>
         /// </remarks>
-        public Symbol BindNamespaceOrTypeOrAliasSymbol(SyntaxNodeOrToken node, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics, NamespaceOrTypeSymbol qualifierOpt)
+        public Symbol BindNamespaceOrTypeOrAliasSymbol(SyntaxNodeOrToken node, bool allowMembers, DiagnosticBag diagnostics, ConsList<TypeSymbol> basesBeingResolved, bool suppressUseSiteDiagnostics, NamespaceOrTypeSymbol qualifierOpt)
         {
             var syntaxFacts = Compilation.Language.SyntaxFacts;
             var identifierValueText = syntaxFacts.ExtractName(node);
@@ -126,7 +142,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
 
             var result = LookupResult.GetInstance();
-            LookupOptions options = LookupOptions.NamespacesOrTypesOnly;
+            LookupOptions options = allowMembers ? LookupOptions.Default : LookupOptions.NamespacesOrTypesOnly;
 
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             this.LookupSymbolsSimpleName(result, qualifierOpt, identifierValueText, identifierValueText, basesBeingResolved, options, diagnose: true, useSiteDiagnostics: ref useSiteDiagnostics);
@@ -180,7 +196,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 if (last == null) break;
                 // since the name is qualified, it cannot result in a using alias symbol, only a type or namespace
-                result[i] = this.BindNamespaceOrTypeOrAliasSymbol(qualifiedName[i], diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, (NamespaceOrTypeSymbol)last);
+                result[i] = this.BindNamespaceOrTypeOrAliasSymbol(qualifiedName[i], true, diagnostics, basesBeingResolved, suppressUseSiteDiagnostics, (NamespaceOrTypeSymbol)last);
                 last = result[i];
             }
 

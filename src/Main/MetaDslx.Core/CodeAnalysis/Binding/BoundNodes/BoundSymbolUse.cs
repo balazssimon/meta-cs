@@ -30,35 +30,18 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 if (_lazySymbols == null)
                 {
-                    HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                    var binder = this.GetBinder();
-                    var qualifiers = this.GetChildQualifiers();
                     ArrayBuilder<Symbol> symbols = ArrayBuilder<Symbol>.GetInstance();
-                    foreach (var qualifier in qualifiers)
+                    ImmutableArray<object> values = this.GetChildValues();
+                    foreach (var value in values)
                     {
-                        NamespaceOrTypeSymbol qualifierOpt = null;
-                        Symbol symbol = null;
-                        foreach (var identifier in qualifier.Identifiers)
-                        {
-                            LookupResult lookupResult = LookupResult.GetInstance();
-                            binder.LookupSymbolsSimpleName(lookupResult, qualifierOpt, identifier.Name, identifier.MetadataName, null, LookupOptions.Default, true, ref useSiteDiagnostics);
-                            //this.BoundTree.DiagnosticBag.AddRange(useSiteDiagnostics);
-                            symbol = binder.ResultSymbol(lookupResult, identifier.Name, identifier.MetadataName, identifier.Syntax, this.BoundTree.DiagnosticBag, false, out bool wasError, qualifierOpt, LookupOptions.Default);
-                            qualifierOpt = symbol as NamespaceOrTypeSymbol;
-                            lookupResult.Free();
-                        }
-                        if (symbol != null)
+                        if (value is Symbol symbol)
                         {
                             symbols.Add(symbol);
                         }
-                    }
-                    ImmutableArray<object> values = this.GetChildValues();
-                    if (values.Length > 0)
-                    {
-                        var modelObjects = values.OfType<IMetaSymbol>().ToImmutableArray();
-                        symbols.AddRange(modelObjects.Select(mo => Language.CompilationFactory.ModelObjectToSourceSymbol(Compilation, this.Syntax.GetReference(), mo)));
-                        var valueSymbols = values.OfType<Symbol>().ToImmutableArray();
-                        symbols.AddRange(valueSymbols);
+                        else if (value is IMetaSymbol modelObject)
+                        {
+                            symbols.Add(Language.CompilationFactory.ModelObjectToSourceSymbol(Compilation, this.Syntax.GetReference(), modelObject));
+                        }
                     }
                     ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, symbols.ToImmutableAndFree());
                 }
