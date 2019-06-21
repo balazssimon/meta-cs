@@ -129,7 +129,7 @@
 
 	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement, MetaAnnotatedElement
 	{
-		MetaEnum Enum redefines MetaTypedElement.Type;
+		MetaEnum Enum redefines Type;
 	}
 
 	association MetaEnumLiteral.Enum with MetaEnum.EnumLiterals;

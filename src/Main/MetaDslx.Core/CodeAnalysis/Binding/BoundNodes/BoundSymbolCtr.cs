@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -27,8 +28,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 if (_lazySymbols.IsDefault)
                 {
-                    var propertyValues = this.GetPropertyValues();
-                    var symbol = this.Compilation.CreateConstructedSymbol(this.Syntax.GetReference(), _symbolInfo, propertyValues);
+                    var properties = this.GetProperties();
+                    var symbol = this.Compilation.CreateConstructedSymbol(this.Syntax.GetReference(), _symbolInfo, properties);
                     ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray.Create(symbol));
                 }
                 return _lazySymbols;

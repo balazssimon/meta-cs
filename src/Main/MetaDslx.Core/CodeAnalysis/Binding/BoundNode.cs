@@ -228,17 +228,17 @@ namespace MetaDslx.CodeAnalysis.Binding
             return names.ToImmutableAndFree();
         }
 
-        public ImmutableArray<string> GetProperties()
+        public ImmutableArray<BoundProperty> GetProperties(string property = null)
         {
-            ArrayBuilder<string> properties = ArrayBuilder<string>.GetInstance();
-            this.AddProperties(properties);
+            ArrayBuilder<BoundProperty> properties = ArrayBuilder<BoundProperty>.GetInstance();
+            this.AddProperties(properties, property);
             return properties.ToImmutableAndFree();
         }
 
-        public ImmutableArray<object> GetValues(string property = null)
+        public ImmutableArray<BoundValues> GetValues(string currentProperty = null, string rootProperty = null)
         {
-            ArrayBuilder<object> values = ArrayBuilder<object>.GetInstance();
-            this.AddValues(property, values);
+            ArrayBuilder<BoundValues> values = ArrayBuilder<BoundValues>.GetInstance();
+            this.AddValues(values, currentProperty, rootProperty);
             return values.ToImmutableAndFree();
         }
 
@@ -272,22 +272,22 @@ namespace MetaDslx.CodeAnalysis.Binding
             return names.ToImmutableAndFree();
         }
 
-        public ImmutableArray<string> GetChildProperties()
+        public ImmutableArray<BoundProperty> GetChildProperties(string property = null)
         {
-            ArrayBuilder<string> properties = ArrayBuilder<string>.GetInstance();
+            ArrayBuilder<BoundProperty> properties = ArrayBuilder<BoundProperty>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
-                child.AddProperties(properties);
+                child.AddProperties(properties, property);
             }
             return properties.ToImmutableAndFree();
         }
 
-        public ImmutableArray<object> GetChildValues(string property = null)
+        public ImmutableArray<BoundValues> GetChildValues(string currentProperty = null, string rootProperty = null)
         {
-            ArrayBuilder<object> values = ArrayBuilder<object>.GetInstance();
+            ArrayBuilder<BoundValues> values = ArrayBuilder<BoundValues>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
-                child.AddValues(property, values);
+                child.AddValues(values, currentProperty, rootProperty);
             }
             return values.ToImmutableAndFree();
         }
@@ -304,11 +304,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
         }
 
-        public virtual void AddProperties(ArrayBuilder<string> properties)
+        public virtual void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null)
         {
         }
 
-        public virtual void AddValues(string property, ArrayBuilder<object> values)
+        public virtual void AddValues(ArrayBuilder<BoundValues> values, string currentProperty = null, string rootProperty = null)
         {
         }
 
@@ -327,7 +327,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             private static void Dump(StringBuilder sb, string indent, BoundNode node)
             {
                 if (node == null) return;
-                sb.AppendFormat("{0}{1} ({2}) -> {3}", indent, node.Syntax.Kind, node.Kind, node);
+                sb.AppendFormat("{0}{1}Syntax (Bound{2}) -> {3}", indent, node.Syntax.Kind, node.Kind, node);
                 sb.AppendLine();
                 foreach (var child in node.ChildBoundNodes)
                 {

@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
@@ -150,7 +152,35 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         // process the base list for one part of a partial class, or for the only part of any other type declaration.
         protected virtual ImmutableArray<NamedTypeSymbol> ResolveBaseTypes(ConsList<TypeSymbol> newBasesBeingResolved, SingleDeclaration decl, DiagnosticBag diagnostics)
         {
-            return ImmutableArray<NamedTypeSymbol>.Empty;
+            var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
+            var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(decl.SyntaxReference.GetSyntax());
+            Debug.Assert(boundNode != null);
+            foreach (var prop in this.ModelSymbolInfo.Properties)
+            {
+                if (prop.IsBaseScope)
+                {
+                    var boundProperties = boundNode.GetChildProperties(prop.Name);
+                    foreach (var boundProperty in boundProperties)
+                    {
+                        foreach (var boundValue in boundProperty.BoundValues)
+                        {
+                            foreach (var value in boundValue.Values)
+                            {
+                                var symbol = value as NamedTypeSymbol;
+                                if (symbol != null)
+                                {
+                                    result.Add(symbol);
+                                }
+                                else
+                                {
+                                    diagnostics.Add(ModelErrorCode.ERR_InvalidBaseType, boundValue.Syntax.Location, value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result.ToImmutableAndFree();
         }
 
         protected override void CheckBaseTypes(DiagnosticBag diagnostics)

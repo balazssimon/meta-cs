@@ -31,16 +31,19 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 if (_lazySymbols == null)
                 {
                     ArrayBuilder<Symbol> symbols = ArrayBuilder<Symbol>.GetInstance();
-                    ImmutableArray<object> values = this.GetChildValues();
-                    foreach (var value in values)
+                    ImmutableArray<BoundValues> boundValues = this.GetChildValues();
+                    foreach (var boundValue in boundValues)
                     {
-                        if (value is Symbol symbol)
+                        foreach (var value in boundValue.Values)
                         {
-                            symbols.Add(symbol);
-                        }
-                        else 
-                        {
-                            this.BoundTree.DiagnosticBag.Add(ModelErrorCode.ERR_ValueIsNotSymbol, this.Syntax.Location, value);
+                            if (value is Symbol symbol)
+                            {
+                                symbols.Add(symbol);
+                            }
+                            else
+                            {
+                                this.BoundTree.DiagnosticBag.Add(ModelErrorCode.ERR_ValueIsNotSymbol, this.Syntax.Location, value);
+                            }
                         }
                     }
                     ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, symbols.ToImmutableAndFree());

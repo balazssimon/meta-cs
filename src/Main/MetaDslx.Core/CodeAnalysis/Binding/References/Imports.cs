@@ -14,6 +14,8 @@ using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
+using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
@@ -230,6 +232,39 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
 
                 uniqueUsings.Free();
+            }
+
+            var boundSymbolDef = compilation.GetBoundNode<BoundSymbolDef>(declarationSyntax);
+            if (boundSymbolDef != null)
+            {
+                foreach (var symbol in boundSymbolDef.Symbols)
+                {
+                    var importProps = symbol.ModelSymbolInfo.Properties.Where(p => p.IsImport).ToImmutableArray();
+                    foreach (var prop in importProps)
+                    {
+                        var boundProps = boundSymbolDef.GetChildProperties(prop.Name);
+                        foreach (var boundProp in boundProps)
+                        {
+                            foreach (var boundValue in boundProp.BoundValues)
+                            {
+                                foreach (var value in boundValue.Values)
+                                {
+                                    var importedSymbol = value as NamespaceOrTypeSymbol;
+                                    if (symbol != null)
+                                    {
+                                        bool isStaticImport = importedSymbol is NamedTypeSymbol;
+                                        usings.Add(new NamespaceOrTypeAndUsingDirective(importedSymbol, new UsingDirective(declarationSyntax, null, boundValue.Syntax, isStaticImport, false)));
+                                    }
+                                    else
+                                    {
+                                        diagnostics.Add(ModelErrorCode.ERR_InvalidImport, boundValue.Syntax.Location, value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
             }
 
             if (diagnostics.IsEmptyWithoutResolution)

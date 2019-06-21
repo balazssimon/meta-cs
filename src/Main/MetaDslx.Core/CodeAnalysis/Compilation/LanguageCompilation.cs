@@ -1645,7 +1645,7 @@ namespace MetaDslx.CodeAnalysis
         /// <summary>
         /// Returns a new Symbol representing a constructed symbol.
         /// </summary>
-        internal Symbol CreateConstructedSymbol(SyntaxReference syntaxReference, ModelSymbolInfo symbolInfo, ImmutableDictionary<string, ImmutableArray<object>> propertyValues)
+        internal Symbol CreateConstructedSymbol(SyntaxReference syntaxReference, ModelSymbolInfo symbolInfo, ImmutableArray<BoundProperty> properties)
         {
             var modelObject = symbolInfo.CreateMutable(this.ModelBuilder, true);
             return new SourceConstructedTypeSymbol(this.SourceAssembly, syntaxReference, modelObject);
@@ -1794,9 +1794,15 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        public ImmutableArray<BoundNode> GetBoundNodes(LanguageSyntaxNode syntax)
+        public T GetBoundNode<T>(SyntaxNode syntax)
+            where T: BoundNode
         {
-            return GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree).GetBoundNodes(syntax);
+            return GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree).GetBoundNodes((LanguageSyntaxNode)syntax).OfType<T>().FirstOrDefault();
+        }
+
+        public ImmutableArray<BoundNode> GetBoundNodes(SyntaxNode syntax)
+        {
+            return GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree).GetBoundNodes((LanguageSyntaxNode)syntax);
         }
 
         /// <summary>

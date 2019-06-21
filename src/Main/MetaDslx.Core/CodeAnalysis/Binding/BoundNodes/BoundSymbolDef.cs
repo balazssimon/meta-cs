@@ -38,5 +38,6 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 return _lazySymbols;
             }
         }
+
     }
 }

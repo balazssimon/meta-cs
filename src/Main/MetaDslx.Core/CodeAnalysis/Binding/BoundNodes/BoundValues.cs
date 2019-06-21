@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.PooledObjects;
+﻿using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -15,9 +16,12 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public abstract ImmutableArray<object> Values { get; }
 
-        public override void AddValues(string property, ArrayBuilder<object> values)
+        public override void AddValues(ArrayBuilder<BoundValues> values, string currentProperty = null, string rootProperty = null)
         {
-            values.AddRange(this.Values);
+            if (rootProperty == null || currentProperty == rootProperty)
+            {
+                values.Add(this);
+            }
         }
 
         public override string ToString()
@@ -28,7 +32,24 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             for (int i = 0; i < values.Length; i++)
             {
                 if (i > 0) sb.Append(", ");
-                sb.Append(values[i]);
+                var symbol = values[i] as Symbol;
+                if (symbol != null)
+                {
+                    string text = symbol.MetadataName;
+                    while (symbol != null)
+                    {
+                        symbol = symbol.ContainingNamespaceOrType();
+                        if (symbol != null)
+                        {
+                            text = symbol.Name + "." + text;
+                        }
+                    }
+                    sb.Append(text);
+                }
+                else
+                {
+                    sb.Append(values[i]);
+                }
             }
             sb.Append("]");
             return sb.ToString();
