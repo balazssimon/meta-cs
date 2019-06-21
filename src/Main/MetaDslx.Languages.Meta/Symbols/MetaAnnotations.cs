@@ -12,11 +12,24 @@ namespace MetaDslx.Languages.Meta.Symbols
     public class MetaAnnotations
     {
         private Symbol _container;
+        private static ImmutableModel _annotationModel;
         private ImmutableDictionary<string, Symbol> _annotations;
 
         public MetaAnnotations(Symbol container)
         {
             _container = container;
+        }
+
+        public static ImmutableModel Model
+        {
+            get
+            {
+                if (_annotationModel == null)
+                {
+                    Interlocked.CompareExchange(ref _annotationModel, CreateModel(), null);
+                }
+                return _annotationModel;
+            }
         }
 
         public ImmutableDictionary<string, Symbol> Annotations
@@ -25,32 +38,36 @@ namespace MetaDslx.Languages.Meta.Symbols
             {
                 if (_annotations == null)
                 {
-                    Interlocked.CompareExchange(ref _annotations, this.CreateAnnotations(), null);
+                    var builder = ImmutableDictionary.CreateBuilder<string, Symbol>();
+                    foreach (var annot in Model.Symbols)
+                    {
+                        var symbol = new MetaNamedTypeSymbol(annot, _container);
+                        builder.Add(annot.MName, symbol);
+                    }
+                    Interlocked.CompareExchange(ref _annotations, builder.ToImmutable(), null);
                 }
                 return _annotations;
             }
         }
 
-        private ImmutableDictionary<string, Symbol> CreateAnnotations()
+        private static ImmutableModel CreateModel()
         {
-            var builder = ImmutableDictionary.CreateBuilder<string, Symbol>();
             MutableModel model = new MutableModel();
             MetaFactory factory = new MetaFactory(model);
-            this.CreateAnnotation("Import", factory, builder);
-            this.CreateAnnotation("Type", factory, builder);
-            this.CreateAnnotation("Scope", factory, builder);
-            this.CreateAnnotation("BaseScope", factory, builder);
-            this.CreateAnnotation("LocalScope", factory, builder);
-            return builder.ToImmutable();
+            CreateAnnotation("Import", factory);
+            CreateAnnotation("Type", factory);
+            CreateAnnotation("Name", factory);
+            CreateAnnotation("Scope", factory);
+            CreateAnnotation("BaseScope", factory);
+            CreateAnnotation("LocalScope", factory);
+            return model.ToImmutable();
         }
 
-        private Symbol CreateAnnotation(string name, MetaFactory factory, ImmutableDictionary<string, Symbol>.Builder annotations)
+        private static IMetaSymbol CreateAnnotation(string name, MetaFactory factory)
         {
-            var annot = factory.MetaClass();
+            var annot = factory.MetaAnnotation();
             annot.Name = name;
-            var symbol = new MetaNamedTypeSymbol(annot, _container);
-            annotations.Add(name, symbol);
-            return symbol;
+            return annot;
         }
     }
 }

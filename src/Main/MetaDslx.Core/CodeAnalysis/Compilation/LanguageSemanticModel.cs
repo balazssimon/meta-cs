@@ -698,11 +698,11 @@ namespace MetaDslx.CodeAnalysis
 
             if ((object)container == null)
             {
-                binder.AddLookupSymbolsInfo(info, options);
+                binder.AddLookupSymbolsInfo(info, new LookupConstraints(options: options));
             }
             else
             {
-                binder.AddMemberLookupSymbolsInfo(info, container, options, binder);
+                binder.AddMemberLookupSymbolsInfo(info, new LookupConstraints(qualifierOpt: container, options: options, originalBinder: binder));
             }
 
             var results = ArrayBuilder<Symbol>.GetInstance(info.Count);
@@ -784,16 +784,15 @@ namespace MetaDslx.CodeAnalysis
 
             var lookupResult = LookupResult.GetInstance();
 
-            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             binder.LookupSymbolsSimpleName(
                 lookupResult,
-                container,
+                new LookupConstraints(
                 name,
                 metadataName,
+                qualifierOpt: container,
                 basesBeingResolved: null,
                 options: options & ~LookupOptions.IncludeExtensionMethods,
-                diagnose: false,
-                useSiteDiagnostics: ref useSiteDiagnostics);
+                diagnose: false));
 
             if (lookupResult.IsMultiViable)
             {

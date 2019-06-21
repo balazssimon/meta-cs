@@ -19,6 +19,12 @@ namespace MetaDslx.CodeAnalysis.Binding
 
     public class BoundTree
     {
+        private const int NotCompleted = 0;
+        private const int Completing = 1;
+        private const int Completed = 2;
+
+        private int _completionState;
+
         private readonly LanguageCompilation _compilation;
         private readonly LanguageSyntaxTree _syntaxTree;
         private readonly DiagnosticBag _diagnostics;
@@ -608,8 +614,12 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public void ForceComplete(CancellationToken cancellationToken)
         {
-            var boundRoot = this.GetBoundRoot();
-            boundRoot.ForceComplete(cancellationToken);
+            if (Interlocked.CompareExchange(ref _completionState, Completing, NotCompleted) == NotCompleted)
+            {
+                var boundRoot = this.GetBoundRoot();
+                boundRoot.ForceComplete(cancellationToken);
+                Interlocked.CompareExchange(ref _completionState, Completed, Completing);
+            }
         }
 
 

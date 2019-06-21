@@ -23,21 +23,15 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         public void LookupSymbolsSimpleName(
             LookupResult result,
-            NamespaceOrTypeSymbol qualifierOpt,
-            string plainName,
-            string metadataName,
-            ConsList<TypeSymbol> basesBeingResolved,
-            LookupOptions options,
-            bool diagnose,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+            LookupConstraints constraints)
         {
-            if (options.IsAttributeTypeLookup())
+            if (constraints.Options.IsAttributeTypeLookup())
             {
-                this.LookupAttributeType(result, qualifierOpt, plainName, metadataName, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+                this.LookupAttributeType(result, constraints.WithOriginalBinder(this));
             }
             else
             {
-                this.LookupSymbolsOrMembersInternal(result, qualifierOpt, plainName, metadataName, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+                this.LookupSymbolsOrMembersInternal(result, constraints.WithOriginalBinder(this));
             }
         }
 
@@ -47,19 +41,19 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <remarks>
         /// Makes a second attempt if the results are not viable, in order to produce more detailed failure information (symbols and diagnostics).
         /// </remarks>
-        private Binder LookupSymbolsWithFallback(LookupResult result, string name, string metadataName, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved = null, LookupOptions options = LookupOptions.Default)
+        private Binder LookupSymbolsWithFallback(LookupResult result, LookupConstraints constraints)
         {
-            Debug.Assert(options.AreValid());
+            Debug.Assert(constraints.AreValid());
 
             // don't create diagnosis instances unless lookup fails
-            var binder = this.LookupSymbolsInternal(result, name, metadataName, basesBeingResolved, options, diagnose: false, useSiteDiagnostics: ref useSiteDiagnostics);
+            var binder = this.LookupSymbolsInternal(result, constraints.WithDiagnose(false));
             Debug.Assert((binder != null) || result.IsClear);
 
             if (result.Kind != LookupResultKind.Viable && result.Kind != LookupResultKind.Empty)
             {
                 result.Clear();
                 // retry to get diagnosis
-                var otherBinder = this.LookupSymbolsInternal(result, name, metadataName, basesBeingResolved, options, diagnose: true, useSiteDiagnostics: ref useSiteDiagnostics);
+                var otherBinder = this.LookupSymbolsInternal(result, constraints.WithDiagnose(true));
                 Debug.Assert(binder == otherBinder);
             }
 
@@ -67,11 +61,10 @@ namespace MetaDslx.CodeAnalysis.Binding
             return binder;
         }
 
-        private Binder LookupSymbolsInternal(
-            LookupResult result, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private Binder LookupSymbolsInternal(LookupResult result, LookupConstraints constraints)
         {
             Debug.Assert(result.IsClear);
-            Debug.Assert(options.AreValid());
+            Debug.Assert(constraints.AreValid());
 
             Binder binder = null;
             for (var scope = this; scope != null && !result.IsMultiViable; scope = scope.Next)
@@ -79,13 +72,13 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if (binder != null)
                 {
                     var tmp = LookupResult.GetInstance();
-                    scope.LookupSymbolsInSingleBinder(tmp, name, metadataName, basesBeingResolved, options, this, diagnose, ref useSiteDiagnostics);
+                    scope.LookupSymbolsInSingleBinder(tmp, constraints);
                     result.MergeEqual(tmp);
                     tmp.Free();
                 }
                 else
                 {
-                    scope.LookupSymbolsInSingleBinder(result, name, metadataName, basesBeingResolved, options, this, diagnose, ref useSiteDiagnostics);
+                    scope.LookupSymbolsInSingleBinder(result, constraints);
                     if (!result.IsClear)
                     {
                         binder = scope;
@@ -95,8 +88,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return binder;
         }
 
-        public virtual void LookupSymbolsInSingleBinder(
-            LookupResult result, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public virtual void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
         {
         }
 
@@ -107,73 +99,68 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         private void LookupSymbolsOrMembersInternal(
             LookupResult result,
-            NamespaceOrTypeSymbol qualifierOpt,
-            string name,
-            string metadataName,
-            ConsList<TypeSymbol> basesBeingResolved,
-            LookupOptions options,
-            bool diagnose,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+            LookupConstraints constraints)
         {
-            if ((object)qualifierOpt == null)
+            if ((object)constraints.QualifierOpt == null)
             {
-                this.LookupSymbolsInternal(result, name, metadataName, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+                this.LookupSymbolsInternal(result, constraints);
             }
             else
             {
-                this.LookupMembersInternal(result, qualifierOpt, name, metadataName, basesBeingResolved, options, this, diagnose, ref useSiteDiagnostics);
+                this.LookupMembersInternal(result, constraints);
             }
         }
 
         /// <summary>
         /// Look for symbols that are members of the specified namespace or type.
         /// </summary>
-        private void LookupMembersWithFallback(LookupResult result, NamespaceOrTypeSymbol nsOrType, string name, string metadataName, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved = null, LookupOptions options = LookupOptions.Default)
+        private void LookupMembersWithFallback(LookupResult result, LookupConstraints constraints)
         {
-            Debug.Assert(options.AreValid());
+            Debug.Assert(constraints.AreValid());
 
             // don't create diagnosis unless lookup fails
-            this.LookupMembersInternal(result, nsOrType, name, metadataName, basesBeingResolved, options, originalBinder: this, diagnose: false, useSiteDiagnostics: ref useSiteDiagnostics);
+            this.LookupMembersInternal(result, constraints.WithDiagnoseAndOriginalBinder(false, this));
             if (!result.IsMultiViable && !result.IsClear)
             {
                 result.Clear();
                 // retry to get diagnosis
-                this.LookupMembersInternal(result, nsOrType, name, metadataName, basesBeingResolved, options, originalBinder: this, diagnose: true, useSiteDiagnostics: ref useSiteDiagnostics);
+                this.LookupMembersInternal(result, constraints.WithDiagnoseAndOriginalBinder(true, this));
             }
 
             Debug.Assert(result.IsMultiViable || result.IsClear || result.Error != null);
         }
 
-        protected void LookupMembersInternal(LookupResult result, NamespaceOrTypeSymbol nsOrType, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        protected void LookupMembersInternal(LookupResult result, LookupConstraints constraints)
         {
-            Debug.Assert(options.AreValid());
-            if (nsOrType.IsNamespace)
+            Debug.Assert(constraints.AreValid());
+            if (constraints.QualifierOpt.IsNamespace)
             {
-                LookupMembersInNamespace(result, (NamespaceSymbol)nsOrType, name, metadataName, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                LookupMembersInNamespace(result, constraints);
             }
             else
             {
-                this.LookupMembersInType(result, (TypeSymbol)nsOrType, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                this.LookupMembersInType(result, constraints);
             }
         }
 
         // Looks up a member of given name and metadataName in a particular type.
-        protected void LookupMembersInType(LookupResult result, TypeSymbol type, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        protected void LookupMembersInType(LookupResult result, LookupConstraints constraints)
         {
+            TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
             switch (type.TypeKind.Switch())
             {
                 case LanguageTypeKind.NamedType:
                 case LanguageTypeKind.Enum:
                 case LanguageTypeKind.Dynamic:
-                    this.LookupMembersInTypeCore(result, (NamedTypeSymbol)type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                    this.LookupMembersInTypeCore(result, constraints);
                     break;
 
                 case LanguageTypeKind.Submission:
-                    this.LookupMembersInSubmissions(result, type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                    this.LookupMembersInSubmissions(result, constraints);
                     break;
 
                 case LanguageTypeKind.Error:
-                    LookupMembersInErrorType(result, (ErrorTypeSymbol)type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                    LookupMembersInErrorType(result, constraints);
                     break;
 
                 case LanguageTypeKind.Constructed:
@@ -189,8 +176,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             // done in the caller?
         }
 
-        private void LookupMembersInErrorType(LookupResult result, ErrorTypeSymbol errorType, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private void LookupMembersInErrorType(LookupResult result, LookupConstraints constraints)
         {
+            ErrorTypeSymbol errorType = (ErrorTypeSymbol)constraints.QualifierOpt;
             if (!errorType.CandidateSymbols.IsDefault && errorType.CandidateSymbols.Length == 1)
             {
                 // The dev11 IDE experience provided meaningful information about members of inaccessible types,
@@ -201,7 +189,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     TypeSymbol candidateType = errorType.CandidateSymbols.First() as TypeSymbol;
                     if ((object)candidateType != null)
                     {
-                        LookupMembersInType(result, candidateType, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                        LookupMembersInType(result, constraints.WithQualifier(candidateType));
                         return; // Bypass call to Clear()
                     }
                 }
@@ -224,8 +212,9 @@ namespace MetaDslx.CodeAnalysis.Binding
         ///    
         /// Note that indexers are not supported in script but we deal with them here to handle errors.
         /// </remarks>
-        private void LookupMembersInSubmissions(LookupResult result, TypeSymbol submissionClass, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private void LookupMembersInSubmissions(LookupResult result, LookupConstraints constraints)
         {
+            TypeSymbol submissionClass = (TypeSymbol)constraints.QualifierOpt;
             LookupResult submissionSymbols = LookupResult.GetInstance();
             LookupResult nonViable = LookupResult.GetInstance();
             LanguageSymbolKind lookingForOverloadsOfKind = null;
@@ -249,7 +238,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
                 else if (isCurrentSubmission)
                 {
-                    submissionImports = this.GetImports(basesBeingResolved);
+                    submissionImports = this.GetImports(constraints.BasesBeingResolved);
                 }
                 else
                 {
@@ -258,21 +247,21 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 // If a viable using alias and a matching member are both defined in the submission an error is reported elsewhere.
                 // Ignore the member in such case.
-                if ((options & LookupOptions.NamespaceAliasesOnly) == 0 && (object)submission.ScriptClass != null)
+                if ((constraints.Options & LookupOptions.NamespaceAliasesOnly) == 0 && (object)submission.ScriptClass != null)
                 {
-                    LookupMembersWithoutInheritance(submissionSymbols, submission.ScriptClass, name, metadataName, options, originalBinder, submissionClass, diagnose, ref useSiteDiagnostics, basesBeingResolved);
+                    LookupMembersWithoutInheritance(submissionSymbols, constraints.WithQualifierAndAccessThroughType(submission.ScriptClass, submissionClass));
 
                     // NB: It doesn't matter that submissionImports hasn't been expanded since we're not actually using the alias target. 
                     if (submissionSymbols.IsMultiViable &&
                         considerUsings &&
-                        submissionImports.IsUsingAlias(name, originalBinder.IsSemanticModelBinder))
+                        submissionImports.IsUsingAlias(constraints.Name, constraints.OriginalBinder.IsSemanticModelBinder))
                     {
                         // using alias is ambiguous with another definition within the same submission iff the other definition is a 0-ary type or a non-type:
                         Symbol existingDefinition = submissionSymbols.Symbols.First();
-                        if (existingDefinition.Kind != LanguageSymbolKind.NamedType || name == metadataName)
+                        if (existingDefinition.Kind != LanguageSymbolKind.NamedType || constraints.Name == constraints.MetadataName)
                         {
-                            var diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictingAliasAndDefinition, name, existingDefinition.GetKindText());
-                            var error = new ExtendedErrorTypeSymbol((NamespaceOrTypeSymbol)null, name, metadataName, diagInfo, unreported: true);
+                            var diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictingAliasAndDefinition, constraints.Name, existingDefinition.GetKindText());
+                            var error = new ExtendedErrorTypeSymbol((NamespaceOrTypeSymbol)null, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
                             result.SetFrom(LookupResult.Good(error)); // force lookup to be done w/ error symbol as result
                             break;
                         }
@@ -288,7 +277,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                     // NB: We diverge from InContainerBinder here and only look in aliases.
                     // In submissions, regular usings are bubbled up to the outermost scope.
-                    submissionImports.LookupSymbolInAliases(originalBinder, submissionSymbols, name, metadataName, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+                    submissionImports.LookupSymbolInAliases(submissionSymbols, constraints);
                 }
 
                 if (lookingForOverloadsOfKind == null)
@@ -309,7 +298,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     }
 
                     // we are now looking for any kind of member regardless of the original binding restrictions:
-                    options = options & ~(LookupOptions.MustBeInvocableIfMember | LookupOptions.NamespacesOrTypesOnly);
+                    constraints = constraints.WithOptions(constraints.Options & ~(LookupOptions.MustBeInvocableIfMember | LookupOptions.NamespacesOrTypesOnly));
                     lookingForOverloadsOfKind = firstSymbol.Kind;
                 }
                 else
@@ -339,13 +328,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             nonViable.Free();
         }
 
-        private static void LookupMembersInNamespace(LookupResult result, NamespaceSymbol ns, string name, string metadataName, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private static void LookupMembersInNamespace(LookupResult result, LookupConstraints constraints)
         {
-            var members = GetCandidateMembers(ns, name, options, originalBinder);
+            var members = GetCandidateMembers(constraints);
 
+            Binder originalBinder = constraints.OriginalBinder;
             foreach (Symbol member in members)
             {
-                SingleLookupResult resultOfThisMember = originalBinder.CheckViability(member, metadataName, options, null, diagnose, ref useSiteDiagnostics);
+                SingleLookupResult resultOfThisMember = originalBinder.CheckViability(member, constraints);
                 result.MergeEqual(resultOfThisMember);
             }
         }
@@ -364,17 +354,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         private void LookupAttributeType(
             LookupResult result,
-            NamespaceOrTypeSymbol qualifierOpt,
-            string name,
-            string metadataName,
-            ConsList<TypeSymbol> basesBeingResolved,
-            LookupOptions options,
-            bool diagnose,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+            LookupConstraints constraints)
         {
             Debug.Assert(result.IsClear);
-            Debug.Assert(options.AreValid());
-            Debug.Assert(options.IsAttributeTypeLookup());
+            Debug.Assert(constraints.AreValid());
+            Debug.Assert(constraints.Options.IsAttributeTypeLookup());
 
             //  SPEC:   By convention, attribute classes are named with a suffix of Attribute. 
             //  SPEC:   An attribute-name of the form type-name may either include or omit this suffix.
@@ -393,27 +377,27 @@ namespace MetaDslx.CodeAnalysis.Binding
             // Note: if both are single and attribute types, we still report ambiguity.
 
             // Lookup symbols without attribute suffix.
-            LookupSymbolsOrMembersInternal(result, qualifierOpt, name, metadataName, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+            LookupSymbolsOrMembersInternal(result, constraints);
 
             // Result without 'Attribute' suffix added.
             Symbol symbolWithoutSuffix;
             bool resultWithoutSuffixIsViable = IsSingleViableAttributeType(result, out symbolWithoutSuffix);
 
             // Generic types are not allowed.
-            Debug.Assert(metadataName == name || !result.IsMultiViable);
+            Debug.Assert(constraints.MetadataName == constraints.Name || !result.IsMultiViable);
 
             // Result with 'Attribute' suffix added.
             LookupResult resultWithSuffix = null;
             Symbol symbolWithSuffix = null;
             bool resultWithSuffixIsViable = false;
-            if (!options.IsVerbatimNameAttributeTypeLookup())
+            if (!constraints.Options.IsVerbatimNameAttributeTypeLookup())
             {
                 resultWithSuffix = LookupResult.GetInstance();
-                this.LookupSymbolsOrMembersInternal(resultWithSuffix, qualifierOpt, name + "Attribute", metadataName, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+                this.LookupSymbolsOrMembersInternal(resultWithSuffix, constraints.WithName(constraints.Name + "Attribute"));
                 resultWithSuffixIsViable = IsSingleViableAttributeType(resultWithSuffix, out symbolWithSuffix);
 
                 // Generic types are not allowed.
-                Debug.Assert(metadataName == name || !result.IsMultiViable);
+                Debug.Assert(constraints.MetadataName == constraints.Name || !result.IsMultiViable);
             }
 
             if (resultWithoutSuffixIsViable && resultWithSuffixIsViable)
@@ -441,7 +425,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     if ((object)symbolWithoutSuffix != null) // was not ambiguous, but not viable
                     {
-                        result.SetFrom(GenerateNonViableAttributeTypeResult(symbolWithoutSuffix, result.Error, diagnose));
+                        result.SetFrom(GenerateNonViableAttributeTypeResult(symbolWithoutSuffix, result.Error, constraints.Diagnose));
                     }
                 }
 
@@ -451,7 +435,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                     {
                         if ((object)symbolWithSuffix != null)
                         {
-                            resultWithSuffix.SetFrom(GenerateNonViableAttributeTypeResult(symbolWithSuffix, resultWithSuffix.Error, diagnose));
+                            resultWithSuffix.SetFrom(GenerateNonViableAttributeTypeResult(symbolWithSuffix, resultWithSuffix.Error, constraints.Diagnose));
                         }
                     }
 
@@ -592,76 +576,47 @@ namespace MetaDslx.CodeAnalysis.Binding
         #endregion
 
         // Does a member lookup in a single type, without considering inheritance.
-        protected static void LookupMembersWithoutInheritance(LookupResult result, TypeSymbol type, string name, string metadataName,
-            LookupOptions options, Binder originalBinder, TypeSymbol accessThroughType, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
+        protected static void LookupMembersWithoutInheritance(LookupResult result, LookupConstraints constraints)
         {
-            var members = GetCandidateMembers(type, name, options, originalBinder);
+            var members = GetCandidateMembers(constraints);
 
             foreach (Symbol member in members)
             {
                 // Do we need to exclude override members, or is that done later by overload resolution. It seems like
                 // not excluding them here can't lead to problems, because we will always find the overridden method as well.
-                SingleLookupResult resultOfThisMember = originalBinder.CheckViability(member, metadataName, options, accessThroughType, diagnose, ref useSiteDiagnostics, basesBeingResolved);
+                SingleLookupResult resultOfThisMember = constraints.OriginalBinder.CheckViability(member, constraints);
                 result.MergeEqual(resultOfThisMember);
             }
         }
 
         // Lookup member in a class, struct, enum, delegate.
-        private void LookupMembersInTypeCore(
-            LookupResult result,
-            NamedTypeSymbol type,
-            string name,
-            string metadataName,
-            ConsList<TypeSymbol> basesBeingResolved,
-            LookupOptions options,
-            Binder originalBinder,
-            bool diagnose,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private void LookupMembersInTypeCore(LookupResult result, LookupConstraints constraints)
         {
-            LookupMembersInTypeAndBaseTypes(result, type, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+            LookupMembersInTypeAndBaseTypes(result, constraints);
         }
 
         // Lookup member in interface, and any base interfaces.
-        private static void LookupMembersInCurrentType(
-            LookupResult current,
-            NamedTypeSymbol type,
-            string name,
-            string metadataName,
-            ConsList<TypeSymbol> basesBeingResolved,
-            LookupOptions options,
-            Binder originalBinder,
-            TypeSymbol accessThroughType,
-            bool diagnose,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private static void LookupMembersInCurrentType(LookupResult current, LookupConstraints constraints)
         {
-            Debug.Assert((object)type != null);
+            Debug.Assert((object)constraints.QualifierOpt != null);
 
-            LookupMembersWithoutInheritance(current, type, name, metadataName, options, originalBinder, accessThroughType, diagnose, ref useSiteDiagnostics, basesBeingResolved);
-            if ((options & (LookupOptions.NamespaceAliasesOnly | LookupOptions.NamespacesOrTypesOnly)) == 0)
+            LookupMembersWithoutInheritance(current, constraints);
+            if ((constraints.Options & (LookupOptions.NamespaceAliasesOnly | LookupOptions.NamespacesOrTypesOnly)) == 0)
             {
-                LookupMembersInTypesWithoutInheritance(current, type.AllBaseTypesWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics), name, metadataName, basesBeingResolved, options, originalBinder, accessThroughType, diagnose, ref useSiteDiagnostics);
+                TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
+                LookupMembersInTypesWithoutInheritance(current, type.AllBaseTypesWithDefinitionUseSiteDiagnostics(ref constraints.UseSiteDiagnostics), constraints);
             }
         }
 
-        private static void LookupMembersInTypesWithoutInheritance(
-            LookupResult current,
-            ImmutableArray<NamedTypeSymbol> interfaces,
-            string name,
-            string metadataName,
-            ConsList<TypeSymbol> basesBeingResolved,
-            LookupOptions options,
-            Binder originalBinder,
-            TypeSymbol accessThroughType,
-            bool diagnose,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private static void LookupMembersInTypesWithoutInheritance(LookupResult current, ImmutableArray<NamedTypeSymbol> baseTypes, LookupConstraints constraints)
         {
-            if (interfaces.Length > 0)
+            if (baseTypes.Length > 0)
             {
                 var tmp = LookupResult.GetInstance();
-                foreach (TypeSymbol baseInterface in interfaces)
+                foreach (TypeSymbol baseType in baseTypes)
                 {
-                    LookupMembersWithoutInheritance(tmp, baseInterface, name, metadataName, options, originalBinder, accessThroughType, diagnose, ref useSiteDiagnostics, basesBeingResolved);
-                    MergeHidingLookupResults(current, tmp, ref useSiteDiagnostics);
+                    LookupMembersWithoutInheritance(tmp, constraints.WithQualifier(baseType));
+                    MergeHidingLookupResults(current, tmp, constraints);
                     tmp.Clear();
                 }
                 tmp.Free();
@@ -669,32 +624,23 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
         // Lookup member in interface, and any base interfaces, and System.Object.
-        private void LookupMembersInTypeAndBaseTypes(LookupResult current, NamedTypeSymbol type, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private void LookupMembersInTypeAndBaseTypes(LookupResult current, LookupConstraints constraints)
         {
-            Debug.Assert((object)type != null);
+            Debug.Assert((object)constraints.QualifierOpt != null);
 
-            LookupMembersInCurrentType(current, type, name, metadataName, basesBeingResolved, options, originalBinder, type, diagnose, ref useSiteDiagnostics);
+            LookupMembersInCurrentType(current, constraints);
 
             var tmp = LookupResult.GetInstance();
             // NB: we assume use-site-errors on System.Object, if any, have been reported earlier.
-            this.LookupMembersInBaseTypes(tmp, this.Compilation.GetSpecialType(SpecialType.System_Object), name, metadataName, basesBeingResolved, options, originalBinder, type, diagnose, ref useSiteDiagnostics);
-            MergeHidingLookupResults(current, tmp, ref useSiteDiagnostics);
+            this.LookupMembersInBaseTypes(tmp, constraints.WithQualifier(this.Compilation.GetSpecialType(SpecialType.System_Object)));
+            MergeHidingLookupResults(current, tmp, constraints);
             tmp.Free();
         }
 
         // Lookup member in a class, struct, enum, delegate.
-        private void LookupMembersInBaseTypes(
-            LookupResult result,
-            TypeSymbol type,
-            string name,
-            string metadataName,
-            ConsList<TypeSymbol> basesBeingResolved,
-            LookupOptions options,
-            Binder originalBinder,
-            TypeSymbol accessThroughType,
-            bool diagnose,
-            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private void LookupMembersInBaseTypes(LookupResult result, LookupConstraints constraints)
         {
+            TypeSymbol type = constraints.QualifierOpt as TypeSymbol;
             Debug.Assert((object)type != null);
             //Debug.Assert(type.TypeKind != LanguageTypeKind.TypeParameter);
 
@@ -703,9 +649,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             foreach (var currentType in type.AllBaseTypesNoUseSiteDiagnostics)
             {
                 tmp.Clear();
-                LookupMembersWithoutInheritance(tmp, currentType, name, metadataName, options, originalBinder, accessThroughType, diagnose, ref useSiteDiagnostics, basesBeingResolved);
+                LookupMembersWithoutInheritance(tmp, constraints.WithQualifier(currentType));
 
-                MergeHidingLookupResults(result, tmp, ref useSiteDiagnostics);
+                MergeHidingLookupResults(result, tmp, constraints);
 
                 NamedTypeSymbol namedType = currentType as NamedTypeSymbol;
 
@@ -718,11 +664,11 @@ namespace MetaDslx.CodeAnalysis.Binding
                     break;
                 }
 
-                if (basesBeingResolved != null && basesBeingResolved.ContainsReference(type.OriginalDefinition))
+                if (constraints.BasesBeingResolved != null && constraints.BasesBeingResolved.ContainsReference(type.OriginalDefinition))
                 {
-                    var other = GetNearestOtherSymbol(basesBeingResolved, type);
+                    var other = GetNearestOtherSymbol(constraints.BasesBeingResolved, type);
                     var diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_CircularBase, type, other);
-                    var error = new ExtendedErrorTypeSymbol(this.Compilation, name, metadataName, diagInfo, unreported: true);
+                    var error = new ExtendedErrorTypeSymbol(this.Compilation, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
                     result.SetFrom(LookupResult.Good(error)); // force lookup to be done w/ error symbol as result
                 }
             }
@@ -764,7 +710,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         // Merge resultHidden into resultHiding, whereby viable results in resultHiding should hide results
         // in resultHidden if the owner of the symbol in resultHiding is a subtype of the owner of the symbol
         // in resultHidden. We merge together methods [indexers], but non-methods [non-indexers] hide everything and methods [indexers] hide non-methods [non-indexers].
-        private static void MergeHidingLookupResults(LookupResult resultHiding, LookupResult resultHidden, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        private static void MergeHidingLookupResults(LookupResult resultHiding, LookupResult resultHidden, LookupConstraints constraints)
         {
             // Methods hide non-methods, non-methods hide everything.
 
@@ -803,50 +749,31 @@ namespace MetaDslx.CodeAnalysis.Binding
             return symbol.Kind == LanguageSymbolKind.Operation; // TODO:MetaDslx || symbol.IsIndexer();
         }
 
-        public static ImmutableArray<Symbol> GetCandidateMembers(NamespaceOrTypeSymbol nsOrType, string name, LookupOptions options, Binder originalBinder)
+        public static ImmutableArray<Symbol> GetCandidateMembers(LookupConstraints constraints)
         {
-            if ((options & LookupOptions.NamespacesOrTypesOnly) != 0 && nsOrType is TypeSymbol)
+            if ((constraints.Options & LookupOptions.NamespacesOrTypesOnly) != 0 && constraints.QualifierOpt is TypeSymbol)
             {
-                return nsOrType.GetTypeMembers(name).Cast<NamedTypeSymbol, Symbol>();
+                return constraints.QualifierOpt.GetTypeMembers(constraints.Name).Cast<NamedTypeSymbol, Symbol>();
             }
             /* TODO:MetaDslx - else if (nsOrType.Kind == LanguageSymbolKind.NamedType && originalBinder.IsEarlyAttributeBinder)
             {
                 return ((NamedTypeSymbol)nsOrType).GetEarlyAttributeDecodingMembers(name);
             }*/
-            else if ((options & LookupOptions.LabelsOnly) != 0)
+            else if ((constraints.Options & LookupOptions.LabelsOnly) != 0)
             {
                 return ImmutableArray<Symbol>.Empty;
             }
             else
             {
-                return nsOrType.GetMembers(name);
-            }
-        }
-
-        public static ImmutableArray<Symbol> GetCandidateMembers(NamespaceOrTypeSymbol nsOrType, LookupOptions options, Binder originalBinder)
-        {
-            if ((options & LookupOptions.NamespacesOrTypesOnly) != 0 && nsOrType is TypeSymbol)
-            {
-                return StaticCast<Symbol>.From(nsOrType.GetTypeMembersUnordered());
-            }
-            /* TODO:MetaDslx - else if (nsOrType.Kind == LanguageSymbolKind.NamedType && originalBinder.IsEarlyAttributeBinder)
-            {
-                return ((NamedTypeSymbol)nsOrType).GetEarlyAttributeDecodingMembers();
-            }*/
-            else if ((options & LookupOptions.LabelsOnly) != 0)
-            {
-                return ImmutableArray<Symbol>.Empty;
-            }
-            else
-            {
-                return nsOrType.GetMembersUnordered();
+                if (constraints.Name != null) return constraints.QualifierOpt.GetMembers(constraints.Name);
+                else return constraints.QualifierOpt.GetMembersUnordered();
             }
         }
 
         /// <remarks>
         /// Distinguish from <see cref="CanAddLookupSymbolInfo"/>, which performs an analogous task for Add*LookupSymbolsInfo*.
         /// </remarks>
-        public SingleLookupResult CheckViability(Symbol symbol, string metadataName, LookupOptions options, TypeSymbol accessThroughType, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved = null)
+        public SingleLookupResult CheckViability(Symbol symbol, LookupConstraints constraints)
         {
             bool inaccessibleViaQualifier;
             DiagnosticInfo diagInfo;
@@ -855,40 +782,40 @@ namespace MetaDslx.CodeAnalysis.Binding
             // but lookup results refer to symbol.
 
             var unwrappedSymbol = symbol.Kind == LanguageSymbolKind.Alias
-                ? ((AliasSymbol)symbol).GetAliasTarget(basesBeingResolved)
+                ? ((AliasSymbol)symbol).GetAliasTarget(constraints.BasesBeingResolved)
                 : symbol;
 
-            if (WrongArity(symbol, metadataName, diagnose, options, out diagInfo))
+            if (WrongArity(symbol, constraints.MetadataName, constraints.Diagnose, constraints.Options, out diagInfo))
             {
                 return LookupResult.WrongArity(symbol, diagInfo);
             }
             else if (!unwrappedSymbol.CanBeReferencedByName)
             {
-                diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_CantCallSpecialMethod, unwrappedSymbol) : null;
+                diagInfo = constraints.Diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_CantCallSpecialMethod, unwrappedSymbol) : null;
                 return LookupResult.NotReferencable(symbol, diagInfo);
             }
-            else if ((options & LookupOptions.NamespacesOrTypesOnly) != 0 && !(unwrappedSymbol is NamespaceOrTypeSymbol))
+            else if ((constraints.Options & LookupOptions.NamespacesOrTypesOnly) != 0 && !(unwrappedSymbol is NamespaceOrTypeSymbol))
             {
-                return LookupResult.NotTypeOrNamespace(unwrappedSymbol, symbol, diagnose);
+                return LookupResult.NotTypeOrNamespace(unwrappedSymbol, symbol, constraints.Diagnose);
             }
-            else if ((options & LookupOptions.MustBeInvocableIfMember) != 0
+            else if ((constraints.Options & LookupOptions.MustBeInvocableIfMember) != 0
                 && IsNonInvocableMember(unwrappedSymbol))
             {
-                return LookupResult.NotInvocable(unwrappedSymbol, symbol, diagnose);
+                return LookupResult.NotInvocable(unwrappedSymbol, symbol, constraints.Diagnose);
             }
             else if (!this.IsAccessible(unwrappedSymbol,
-                                        RefineAccessThroughType(options, accessThroughType),
+                                        RefineAccessThroughType(constraints.Options, constraints.AccessThroughType),
                                         out inaccessibleViaQualifier,
-                                        ref useSiteDiagnostics,
-                                        basesBeingResolved))
+                                        ref constraints.UseSiteDiagnostics,
+                                        constraints.BasesBeingResolved))
             {
-                if (!diagnose)
+                if (!constraints.Diagnose)
                 {
                     diagInfo = null;
                 }
                 else if (inaccessibleViaQualifier)
                 {
-                    diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadProtectedAccess, unwrappedSymbol, accessThroughType, this.ContainingType);
+                    diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadProtectedAccess, unwrappedSymbol, constraints.AccessThroughType, this.ContainingType);
                 }
                 else if (IsBadIvtSpecification())
                 {
@@ -901,19 +828,19 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                 return LookupResult.Inaccessible(symbol, diagInfo);
             }
-            else if ((options & LookupOptions.MustBeInstance) != 0 && !IsInstance(unwrappedSymbol))
+            else if ((constraints.Options & LookupOptions.MustBeInstance) != 0 && !IsInstance(unwrappedSymbol))
             {
-                diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_ObjectRequired, unwrappedSymbol) : null;
+                diagInfo = constraints.Diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_ObjectRequired, unwrappedSymbol) : null;
                 return LookupResult.StaticInstanceMismatch(symbol, diagInfo);
             }
-            else if ((options & LookupOptions.MustNotBeInstance) != 0 && IsInstance(unwrappedSymbol))
+            else if ((constraints.Options & LookupOptions.MustNotBeInstance) != 0 && IsInstance(unwrappedSymbol))
             {
-                diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_ObjectProhibited, unwrappedSymbol) : null;
+                diagInfo = constraints.Diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_ObjectProhibited, unwrappedSymbol) : null;
                 return LookupResult.StaticInstanceMismatch(symbol, diagInfo);
             }
-            else if ((options & LookupOptions.MustNotBeNamespace) != 0 && unwrappedSymbol.Kind == LanguageSymbolKind.Namespace)
+            else if ((constraints.Options & LookupOptions.MustNotBeNamespace) != 0 && unwrappedSymbol.Kind == LanguageSymbolKind.Namespace)
             {
-                diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKunknown, unwrappedSymbol, unwrappedSymbol.GetKindText()) : null;
+                diagInfo = constraints.Diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKunknown, unwrappedSymbol, unwrappedSymbol.GetKindText()) : null;
                 return LookupResult.NotTypeOrNamespace(symbol, diagInfo);
             }
             /*else if ((options & LookupOptions.LabelsOnly) != 0 && unwrappedSymbol.Kind != LanguageSymbolKind.Label)
@@ -921,6 +848,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                 diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_LabelNotFound, unwrappedSymbol.Name) : null;
                 return LookupResult.NotLabel(symbol, diagInfo);
             }*/
+            else if (constraints.SymbolTypes.Length > 0 && !constraints.SymbolTypes.Any(st => st.ImmutableType.IsAssignableFrom(symbol.ModelSymbolInfo.ImmutableType)))
+            {
+                return LookupResult.WrongSymbol(symbol, symbol, constraints.SymbolTypes, true);
+            }
             else
             {
                 return LookupResult.Good(symbol);
@@ -933,7 +864,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if ((unwrappedSymbol.DeclaredAccessibility == Accessibility.Internal ||
                     unwrappedSymbol.DeclaredAccessibility == Accessibility.ProtectedAndInternal ||
                     unwrappedSymbol.DeclaredAccessibility == Accessibility.ProtectedOrInternal)
-                    && !options.IsAttributeTypeLookup())
+                    && !constraints.Options.IsAttributeTypeLookup())
                 {
                     var assemblyName = this.Compilation.AssemblyName;
                     if (assemblyName == null)
@@ -958,11 +889,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public void CheckViability<TSymbol>(LookupResult result, ImmutableArray<TSymbol> symbols, string metadataName, LookupOptions options, TypeSymbol accessThroughType, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved) where TSymbol : Symbol
+        public void CheckViability<TSymbol>(LookupResult result, ImmutableArray<TSymbol> symbols, LookupConstraints constraints) where TSymbol : Symbol
         {
             foreach (var symbol in symbols)
             {
-                var res = this.CheckViability(symbol, metadataName, options, accessThroughType, diagnose, ref useSiteDiagnostics, basesBeingResolved);
+                var res = this.CheckViability(symbol, constraints);
                 result.MergeEqual(res);
             }
         }
@@ -974,11 +905,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <remarks>
         /// Does not consider <see cref="Symbol.CanBeReferencedByName"/> - that is left to the caller.
         /// </remarks>
-        public bool CanAddLookupSymbolInfo(Symbol symbol, LookupOptions options, LookupSymbolsInfo info, TypeSymbol accessThroughType, AliasSymbol aliasSymbol = null)
+        public bool CanAddLookupSymbolInfo(Symbol symbol, LookupSymbolsInfo info, LookupConstraints constraints, AliasSymbol aliasSymbol = null)
         {
             Debug.Assert(symbol.Kind != LanguageSymbolKind.Alias, "It is the caller's responsibility to unwrap aliased symbols.");
             Debug.Assert(aliasSymbol == null || aliasSymbol.GetAliasTarget(basesBeingResolved: null) == symbol);
-            Debug.Assert(options.AreValid());
+            Debug.Assert(constraints.AreValid());
 
             var name = aliasSymbol != null ? aliasSymbol.Name : symbol.Name;
             if (!info.CanBeAdded(name))
@@ -986,24 +917,24 @@ namespace MetaDslx.CodeAnalysis.Binding
                 return false;
             }
 
-            if ((options & LookupOptions.NamespacesOrTypesOnly) != 0 && !(symbol is NamespaceOrTypeSymbol))
+            if ((constraints.Options & LookupOptions.NamespacesOrTypesOnly) != 0 && !(symbol is NamespaceOrTypeSymbol))
             {
                 return false;
             }
-            else if ((options & LookupOptions.MustBeInvocableIfMember) != 0
+            else if ((constraints.Options & LookupOptions.MustBeInvocableIfMember) != 0
                 && IsNonInvocableMember(symbol))
             {
                 return false;
             }
-            else if ((options & LookupOptions.MustBeInstance) != 0 && !IsInstance(symbol))
+            else if ((constraints.Options & LookupOptions.MustBeInstance) != 0 && !IsInstance(symbol))
             {
                 return false;
             }
-            else if ((options & LookupOptions.MustNotBeInstance) != 0 && IsInstance(symbol))
+            else if ((constraints.Options & LookupOptions.MustNotBeInstance) != 0 && IsInstance(symbol))
             {
                 return false;
             }
-            else if ((options & LookupOptions.MustNotBeNamespace) != 0 && (symbol.Kind == LanguageSymbolKind.Namespace))
+            else if ((constraints.Options & LookupOptions.MustNotBeNamespace) != 0 && (symbol.Kind == LanguageSymbolKind.Namespace))
             {
                 return false;
             }
@@ -1146,15 +1077,15 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Look for names in scope
         /// </summary>
-        public void AddLookupSymbolsInfo(LookupSymbolsInfo result, LookupOptions options = LookupOptions.Default)
+        public void AddLookupSymbolsInfo(LookupSymbolsInfo result, LookupConstraints constraints)
         {
             for (var scope = this; scope != null; scope = scope.Next)
             {
-                scope.AddLookupSymbolsInfoInSingleBinder(result, options, originalBinder: this);
+                scope.AddLookupSymbolsInfoInSingleBinder(result, constraints.WithOriginalBinder(this));
             }
         }
 
-        protected virtual void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo info, LookupOptions options, Binder originalBinder)
+        protected virtual void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo info, LookupConstraints constraints)
         {
             // overridden in other binders
         }
@@ -1162,36 +1093,37 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Look for names of members
         /// </summary>
-        public void AddMemberLookupSymbolsInfo(LookupSymbolsInfo result, NamespaceOrTypeSymbol nsOrType, LookupOptions options, Binder originalBinder)
+        public void AddMemberLookupSymbolsInfo(LookupSymbolsInfo result, LookupConstraints constraints)
         {
-            if (nsOrType.IsNamespace)
+            if (constraints.QualifierOpt.IsNamespace)
             {
-                AddMemberLookupSymbolsInfoInNamespace(result, (NamespaceSymbol)nsOrType, options, originalBinder);
+                AddMemberLookupSymbolsInfoInNamespace(result, constraints);
             }
             else
             {
-                this.AddMemberLookupSymbolsInfoInType(result, (TypeSymbol)nsOrType, options, originalBinder);
+                this.AddMemberLookupSymbolsInfoInType(result, constraints);
             }
         }
 
-        private void AddMemberLookupSymbolsInfoInType(LookupSymbolsInfo result, TypeSymbol type, LookupOptions options, Binder originalBinder)
+        private void AddMemberLookupSymbolsInfoInType(LookupSymbolsInfo result, LookupConstraints constraints)
         {
+            TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
             switch (type.TypeKind.Switch())
             {
                 case LanguageTypeKind.NamedType:
                 case LanguageTypeKind.Enum:
                 case LanguageTypeKind.Dynamic:
                 case LanguageTypeKind.Constructed:
-                    this.AddMemberLookupSymbolsInfoInTypeCore(result, type, options, originalBinder, type);
+                    this.AddMemberLookupSymbolsInfoInTypeCore(result, constraints.WithAccessThroughType(type));
                     break;
 
                 case LanguageTypeKind.Submission:
-                    this.AddMemberLookupSymbolsInfoInSubmissions(result, type, options, originalBinder);
+                    this.AddMemberLookupSymbolsInfoInSubmissions(result, constraints);
                     break;
             }
         }
 
-        private void AddMemberLookupSymbolsInfoInSubmissions(LookupSymbolsInfo result, TypeSymbol scriptClass, LookupOptions options, Binder originalBinder)
+        private void AddMemberLookupSymbolsInfoInSubmissions(LookupSymbolsInfo result, LookupConstraints constraints)
         {
             // TODO: we need tests
             // TODO: optimize lookup (there might be many interactions in the chain)
@@ -1199,13 +1131,13 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 if ((object)submission.ScriptClass != null)
                 {
-                    AddMemberLookupSymbolsInfoWithoutInheritance(result, submission.ScriptClass, options, originalBinder, scriptClass);
+                    AddMemberLookupSymbolsInfoWithoutInheritance(result, constraints.WithQualifier(submission.ScriptClass));
                 }
 
                 bool isCurrentSubmission = submission == Compilation;
 
                 // If we are looking only for labels we do not need to search through the imports.
-                if ((options & LookupOptions.LabelsOnly) == 0 && !(isCurrentSubmission && this.Flags.Includes(BinderFlags.InScriptUsing)))
+                if ((constraints.Options & LookupOptions.LabelsOnly) == 0 && !(isCurrentSubmission && this.Flags.Includes(BinderFlags.InScriptUsing)))
                 {
                     var submissionImports = submission.GetSubmissionImports();
                     if (!isCurrentSubmission)
@@ -1215,45 +1147,46 @@ namespace MetaDslx.CodeAnalysis.Binding
 
                     // NB: We diverge from InContainerBinder here and only look in aliases.
                     // In submissions, regular usings are bubbled up to the outermost scope.
-                    submissionImports.AddLookupSymbolsInfoInAliases(result, options, originalBinder);
+                    submissionImports.AddLookupSymbolsInfoInAliases(result, constraints);
                 }
             }
         }
 
-        private static void AddMemberLookupSymbolsInfoInNamespace(LookupSymbolsInfo result, NamespaceSymbol ns, LookupOptions options, Binder originalBinder)
+        private static void AddMemberLookupSymbolsInfoInNamespace(LookupSymbolsInfo result, LookupConstraints constraints)
         {
-            var candidateMembers = result.FilterName != null ? GetCandidateMembers(ns, result.FilterName, options, originalBinder) : GetCandidateMembers(ns, options, originalBinder);
+            var candidateMembers = GetCandidateMembers(constraints.WithName(result.FilterName));
             foreach (var symbol in candidateMembers)
             {
-                if (originalBinder.CanAddLookupSymbolInfo(symbol, options, result, null))
+                if (constraints.OriginalBinder.CanAddLookupSymbolInfo(symbol, result, constraints.WithAccessThroughType(null))) 
                 {
                     result.AddSymbol(symbol, symbol.Name, symbol.MetadataName);
                 }
             }
         }
 
-        private static void AddMemberLookupSymbolsInfoWithoutInheritance(LookupSymbolsInfo result, TypeSymbol type, LookupOptions options, Binder originalBinder, TypeSymbol accessThroughType)
+        private static void AddMemberLookupSymbolsInfoWithoutInheritance(LookupSymbolsInfo result, LookupConstraints constraints)
         {
-            var candidateMembers = result.FilterName != null ? GetCandidateMembers(type, result.FilterName, options, originalBinder) : GetCandidateMembers(type, options, originalBinder);
+            var candidateMembers = GetCandidateMembers(constraints.WithName(result.FilterName));
             foreach (var symbol in candidateMembers)
             {
-                if (originalBinder.CanAddLookupSymbolInfo(symbol, options, result, accessThroughType))
+                if (constraints.OriginalBinder.CanAddLookupSymbolInfo(symbol, result, constraints))
                 {
                     result.AddSymbol(symbol, symbol.Name, symbol.MetadataName);
                 }
             }
         }
 
-        private void AddMemberLookupSymbolsInfoInTypeCore(LookupSymbolsInfo result, TypeSymbol type, LookupOptions options, Binder originalBinder, TypeSymbol accessThroughType)
+        private void AddMemberLookupSymbolsInfoInTypeCore(LookupSymbolsInfo result, LookupConstraints constraints)
         {
-            AddMemberLookupSymbolsInfoWithoutInheritance(result, type, options, originalBinder, accessThroughType);
+            AddMemberLookupSymbolsInfoWithoutInheritance(result, constraints);
 
+            TypeSymbol type = (TypeSymbol)constraints.QualifierOpt;
             foreach (var baseInterface in type.AllBaseTypesNoUseSiteDiagnostics)
             {
-                AddMemberLookupSymbolsInfoWithoutInheritance(result, baseInterface, options, originalBinder, accessThroughType);
+                AddMemberLookupSymbolsInfoWithoutInheritance(result, constraints.WithQualifier(baseInterface));
             }
 
-            this.AddMemberLookupSymbolsInfoInTypeCore(result, Compilation.GetSpecialType(SpecialType.System_Object), options, originalBinder, accessThroughType);
+            this.AddMemberLookupSymbolsInfoInTypeCore(result, constraints.WithQualifier(Compilation.GetSpecialType(SpecialType.System_Object)));
         }
     }
 }

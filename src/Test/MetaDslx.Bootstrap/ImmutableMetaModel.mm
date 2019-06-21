@@ -69,7 +69,7 @@
 	abstract class MetaDeclaration : MetaNamedElement, MetaAnnotatedElement
 	{
 		MetaNamespace Namespace;
-		derived MetaModel MetaModel;
+		//derived MetaModel MetaModel;
 	}
 
 	[Scope]

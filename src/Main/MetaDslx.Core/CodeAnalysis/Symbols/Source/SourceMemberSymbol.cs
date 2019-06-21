@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -49,7 +50,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if (_modelObject != null)
                 {
                     _modelObject.MName = declaration.Name;
-                    var parentObject = container?.ModelObject;
+                    var parentObject = container?.ModelObject as MutableSymbolBase;
                     if (parentObject != null && !string.IsNullOrEmpty(declaration.ParentPropertyToAddTo))
                     {
                         var property = parentObject.MGetProperty(declaration.ParentPropertyToAddTo);
@@ -72,7 +73,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         internal protected override MutableModel ModelBuilder => _container.ModelBuilder;
 
-        internal protected override MutableSymbolBase ModelObject => _modelObject;
+        public override IMetaSymbol ModelObject => _modelObject;
 
         public override ModelSymbolInfo ModelSymbolInfo => _declaration.Kind;
 
@@ -553,6 +554,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     GetNameToMembersMap();
                 }
+                else if (incompletePart == CompletionPart.StartProperties || incompletePart == CompletionPart.FinishProperties)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartProperties))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        SetPropertyValues(diagnostics, cancellationToken);
+                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishProperties);
+                        Debug.Assert(thisThreadCompleted);
+                        diagnostics.Free();
+                    }
+                }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
                     // ensure relevant imports are complete.
@@ -612,6 +624,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         goto done;
                     }
                 }
+                else if (incompletePart == CompletionPart.StartBoundNode || incompletePart == CompletionPart.FinishBoundNode)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartBoundNode))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        CompleteBoundNode(diagnostics, cancellationToken);
+                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishBoundNode);
+                        Debug.Assert(thisThreadCompleted);
+                        diagnostics.Free();
+                    }
+                }
                 else if (incompletePart == null)
                 {
                     return;
@@ -639,5 +662,25 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         #endregion
+
+        protected void SetPropertyValues(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            foreach (var syntaxRef in _declaration.SyntaxReferences)
+            {
+                if (cancellationToken.IsCancellationRequested) return;
+                var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(syntaxRef.GetSyntax());
+                boundNode?.SetPropertyValues(_modelObject, diagnostics, cancellationToken);
+            }
+        }
+
+        protected void CompleteBoundNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            foreach (var syntaxRef in _declaration.SyntaxReferences)
+            {
+                if (cancellationToken.IsCancellationRequested) return;
+                var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(syntaxRef.GetSyntax());
+                boundNode?.ForceComplete(cancellationToken);
+            }
+        }
     }
 }

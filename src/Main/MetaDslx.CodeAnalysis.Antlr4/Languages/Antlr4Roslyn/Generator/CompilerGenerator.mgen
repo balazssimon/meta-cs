@@ -4770,7 +4770,7 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] parent)
 	{
 		resultBinder = VisitCore(parent.Parent);
 		[loop (annot:rule.Annotations.BinderAnnotations)]
-		resultBinder = this.Create[annot.Name]Binder(resultBinder, parent[GetAnnotationParams(annot)]);
+		resultBinder = this.Create[annot.Name]Binder(resultBinder, parent[annot.GetAnnotationParams()]);
 		[end loop]
 		this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 		[GenerateBinderFactoryVisitBody(rule)]
@@ -4779,44 +4779,6 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] parent)
 	[end if]
 }
 end template
-
-function string GetAnnotationParams(MetaCompilerAnnotation annot)
-    string result = "";
-	if (annot.Name == MetaCompilerAnnotationInfo.Binder)
-		// empty
-	end if
-	if (annot.Name == MetaCompilerAnnotationInfo.SymbolDef || annot.Name == MetaCompilerAnnotationInfo.SymbolCtr)
-		if (annot.HasProperty("symbolType"))
-			result = ", typeof(Symbols." + annot.GetValue("symbolType") + ")";
-		else
-			result = ", null";
-		end if
-	end if
-	if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse)
-		if (annot.HasProperty("symbolType"))
-			result = ", ImmutableArray.Create(typeof(Symbols." + annot.GetValue("symbolType") + "))";
-		else
-			result = ", ImmutableArray<Type>.Empty";
-		end if
-	end if
-	if (annot.Name == MetaCompilerAnnotationInfo.Property)
-	    result = ", \"" + annot.GetValue("name") + "\"";
-		if (annot.HasProperty("value"))
-		    result = result + ", " + annot.GetValue("value");
-		end if
-	end if
-	if (annot.Name == MetaCompilerAnnotationInfo.Value && annot.HasProperty("value"))
-	    result = ", "+annot.GetValue("value");
-	end if
-	if (annot.Name == MetaCompilerAnnotationInfo.EnumValue)
-		if (annot.HasProperty("enumType"))
-			result = ", typeof(Symbols." + annot.GetValue("enumType") + ")";
-		else
-			result = ", null";
-		end if
-	end if
-	return result;
-end function
 
 
 template GenerateBinderFactoryVisitBody(Antlr4ParserRule rule)
@@ -4839,9 +4801,9 @@ if (use == Use[elem.RedName()])
 {
     [loop (annot:elem.Annotations.BinderAnnotations)]
 		[if (elem.IsList)]
-	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()].Node[GetAnnotationParams(annot)]);
+	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()].Node[annot.GetAnnotationParams()]);
 		[else]
-	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][GetAnnotationParams(annot)]);
+	resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][annot.GetAnnotationParams()]);
 		[end if]
 	[end loop]
 	this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
@@ -4858,7 +4820,7 @@ if (use == Use[elem.RedName()])
 			[loop (alt:elem.BlockItems)]
 		case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
 				[loop (annot:alt.Annotations.BinderAnnotations)]
-			resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][GetAnnotationParams(annot)]);
+			resultBinder = this.Create[annot.Name]Binder(resultBinder, parent.[elem.RedName()][annot.GetAnnotationParams()]);
 				[end loop]
 			break;
 			[end loop]
@@ -5019,7 +4981,7 @@ public BoundNode Visit[rule.PlainName()]([rule.RedName()] node, ArrayBuilder<Bou
 	BoundNode resultNode;
 			[string children = "childBoundNodes.ToImmutableAndFree()"]
 			[loop (annot:rule.Annotations.BoundNodeAnnotations.Reverse())]
-	resultNode = this.CreateBound[annot.Name](this.BoundTree, [children][GetAnnotationParams(annot)], node, false);
+	resultNode = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], node, false);
 			[children = "ImmutableArray.Create(resultNode)"]
 			[end loop]
 	childBoundNodesForParent.Add(resultNode);
@@ -5066,7 +5028,7 @@ var childBoundNodesOf[elem.RedName()] = ArrayBuilder<BoundNode>.GetInstance();
 BoundNode bound[elem.RedName()];
 	[string children = "childBoundNodesOf"+elem.RedName()+".ToImmutableAndFree()"]
 	[loop (annot:elem.Annotations.BoundNodeAnnotations.Reverse())]
-bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][GetAnnotationParams(annot)], node.[elem.RedName()], false);
+bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], node.[elem.RedName()], false);
 	[children = "ImmutableArray.Create(bound"+elem.RedName()+")"]
 	[end loop]
 [childBoundNodesName].Add(bound[elem.RedName()]);
@@ -5099,7 +5061,7 @@ switch (node.[elem.RedName()].GetKind().Switch())
 		BoundNode bound[alt.RedName()];
 			[string children = "ImmutableArray<BoundNode>.Empty"]
 			[loop (annot:alt.Annotations.BoundNodeAnnotations.Reverse())]
-		bound[alt.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][GetAnnotationParams(annot)], node, false);
+		bound[alt.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], node, false);
 			[children = "ImmutableArray.Create(bound"+alt.RedName()+")"]
 			[end loop]
 		[childBoundNodesName].Add(bound[alt.RedName()]);
@@ -5118,7 +5080,7 @@ if (node.[elem.RedName()].GetKind() == [Properties.LanguageName]SyntaxKind.[elem
 	BoundNode bound[elem.RedName()];
 	[string children = "ImmutableArray<BoundNode>.Empty"]
 	[loop (annot:elem.Annotations.BoundNodeAnnotations.Reverse())]
-	bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][GetAnnotationParams(annot)], node, false);
+	bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], node, false);
 	[children = "ImmutableArray.Create(bound"+elem.RedName()+")"]
 	[end loop]
 	[childBoundNodesName].Add(bound[elem.RedName()]);

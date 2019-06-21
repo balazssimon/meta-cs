@@ -25,6 +25,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ModelSymbolInfo ModelSymbolInfo => _metaObject.MId.SymbolInfo;
 
+        public override IMetaSymbol ModelObject => _metaObject;
+
         public override LanguageSymbolKind Kind => LanguageSymbolKind.Name;
 
         public override Symbol ContainingSymbol => _container;

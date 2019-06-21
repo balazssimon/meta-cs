@@ -179,7 +179,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
         public virtual object ExtractValue(SyntaxNodeOrToken nodeOrToken)
         {
             if (nodeOrToken.IsToken) return nodeOrToken.AsToken().Value;
-            else return null;
+            else return ExtractValue(nodeOrToken.AsNode().ToString());
         }
 
         public virtual object ExtractValue(string value)

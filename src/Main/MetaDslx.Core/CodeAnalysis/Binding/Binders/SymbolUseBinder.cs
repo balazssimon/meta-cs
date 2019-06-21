@@ -35,7 +35,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 if (child.Syntax.Span.Contains(qualifier.Syntax.Span))
                 {
-                    this.InitializeFullQualifierSymbol(qualifier);
+                    this.InitializeFullQualifierSymbol(child);
                     return;
                 }
             }
@@ -43,44 +43,17 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
         {
+            if (qualifier.IsInitialized()) return;
             var result = ArrayBuilder<Symbol>.GetInstance();
             var identifiers = qualifier.Identifiers;
             NamespaceOrTypeSymbol qualifierOpt = null;
             for (int i = 0; i < identifiers.Length; i++)
             {
                 bool last = i == identifiers.Length - 1;
+                var symbolTypes = last ? _symbolTypes : _nestingSymbolTypes;
                 var identifier = identifiers[i];
-                HashSet<DiagnosticInfo> useSiteDiagnostics = null;
                 LookupResult lookupResult = LookupResult.GetInstance();
-                LookupResult viableResult = LookupResult.GetInstance();
-                this.LookupSymbolsSimpleName(lookupResult, qualifierOpt, identifier.Name, identifier.MetadataName, null, LookupOptions.Default, false, ref useSiteDiagnostics);
-                if (last)
-                {
-                    if (_symbolTypes.Length > 0)
-                    {
-                        foreach (var s in lookupResult.Symbols)
-                        {
-                            if (_symbolTypes.Any(st => st.ImmutableType.IsAssignableFrom(s.ModelSymbolInfo.ImmutableType)))
-                            {
-                                viableResult.MergeEqual(LookupResult.Good(s));
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if (_nestingSymbolTypes.Length > 0)
-                    {
-                        foreach (var s in lookupResult.Symbols)
-                        {
-                            if (_nestingSymbolTypes.Any(st => st.ImmutableType.IsAssignableFrom(s.ModelSymbolInfo.ImmutableType)))
-                            {
-                                viableResult.MergeEqual(LookupResult.Good(s));
-                            }
-                        }
-                    }
-                }
-                viableResult.MergePrioritized(lookupResult);
+                this.LookupSymbolsSimpleName(lookupResult, new LookupConstraints(identifier.Name, identifier.MetadataName, symbolTypes, qualifierOpt));
                 var symbol = this.ResultSymbol(lookupResult, identifier.Name, identifier.MetadataName, identifier.Syntax, identifier.BoundTree.DiagnosticBag, false, out bool wasError, qualifierOpt, LookupOptions.Default);
                 result.Add(symbol);
                 lookupResult.Free();

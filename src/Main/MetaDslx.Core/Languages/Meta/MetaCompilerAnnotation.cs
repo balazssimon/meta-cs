@@ -33,11 +33,11 @@ namespace MetaDslx.Languages.Meta
         public const string Token = nameof(Token);
 
 
-        public static readonly string[] WellKnownAnnotations = 
+        public static readonly string[] WellKnownAnnotations =
             {
                 Root,
                 Binder,
-                Identifier, Qualifier, Value, EnumValue, 
+                Identifier, Qualifier, Value, EnumValue,
                 Property, Name, Scope,
                 SymbolDef, SymbolUse, SymbolCtr,
                 Token
@@ -55,7 +55,7 @@ namespace MetaDslx.Languages.Meta
             {
                 Root,
                 Identifier, Qualifier, Value, EnumValue,
-                Property, Name, 
+                Property, Name,
                 SymbolDef, SymbolUse, SymbolCtr,
                 Token
             };
@@ -276,9 +276,88 @@ namespace MetaDslx.Languages.Meta
             return null;
         }
 
+        public IEnumerable<string> GetValues(string propertyName)
+        {
+            foreach (var prop in this.Properties)
+            {
+                if (prop.Name == propertyName)
+                {
+                    return prop.Values;
+                }
+            }
+            return null;
+        }
+
         public override string ToString()
         {
             return this.Name;
+        }
+
+        public string GetAnnotationParams()
+        {
+            string result = "";
+            if (this.Name == MetaCompilerAnnotationInfo.Binder)
+            {
+                // empty
+            }
+            if (this.Name == MetaCompilerAnnotationInfo.SymbolDef || this.Name == MetaCompilerAnnotationInfo.SymbolCtr)
+            {
+                if (this.HasProperty("symbolType"))
+                {
+                    result = ", typeof(Symbols." + this.GetValue("symbolType") + ")";
+                }
+                else
+                {
+                    result = ", null";
+                }
+            }
+            if (this.Name == MetaCompilerAnnotationInfo.SymbolUse)
+            {
+                if (this.HasProperty("symbolType"))
+                {
+                    result = ", ImmutableArray.Create(typeof(Symbols." + this.GetValue("symbolType") + "))";
+                }
+                else if (this.HasProperty("symbolTypes"))
+                {
+                    result = ", ImmutableArray.Create(";
+                    string comma = "";
+                    foreach (var type in this.GetValues("symbolTypes"))
+                    {
+                        result += comma + "typeof(Symbols." + type + ")";
+                        comma = ", ";
+                    }
+                    result += ")";
+                }
+                else
+                {
+                    result = ", ImmutableArray<Type>.Empty";
+                }
+            }
+            if (this.Name == MetaCompilerAnnotationInfo.Property)
+            {
+                result = ", \"" + this.GetValue("name") + "\"";
+                if (this.HasProperty("value"))
+                {
+                    result = result + ", " + this.GetValue("value");
+                }
+
+            }
+            if (this.Name == MetaCompilerAnnotationInfo.Value && this.HasProperty("value"))
+            {
+                result = ", " + this.GetValue("value");
+            }
+            if (this.Name == MetaCompilerAnnotationInfo.EnumValue)
+            {
+                if (this.HasProperty("enumType"))
+                {
+                    result = ", typeof(Symbols." + this.GetValue("enumType") + ")";
+                }
+                else
+                {
+                    result = ", null";
+                }
+            }
+            return result;
         }
     }
 

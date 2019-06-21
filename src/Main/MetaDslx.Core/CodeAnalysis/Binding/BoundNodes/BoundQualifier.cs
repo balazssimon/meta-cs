@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 if (_lazySymbol == null)
                 {
                     this.GetBinder().InitializeQualifierSymbol(this);
-                    //Debug.Assert(_lazySymbol != null);
+                    Debug.Assert(_lazySymbol != null);
                 }
                 return _lazySymbol;
             }
@@ -69,7 +69,11 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         protected void InitializeSymbol(Symbol symbol)
         {
             Debug.Assert(symbol != null);
-            if (_lazySymbol != null) Debug.Assert(_lazySymbol == symbol);
+            if (_lazySymbol != null)
+            {
+                Debug.Assert(_lazySymbol == symbol);
+                return;
+            }
             Interlocked.CompareExchange(ref _lazySymbol, symbol, null);
         }
 

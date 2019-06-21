@@ -905,7 +905,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.Qualifier, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodes.ToImmutableAndFree(), ImmutableArray<Type>.Empty, node, false);
+			resultNode = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodes.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.MetaClass), typeof(Symbols.MetaEnum)), node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}

@@ -207,7 +207,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Parser
                     GreenNode leadingTrivia = this.GetLeadingTrivia(token, previousTokenOrTrivia);
                     previousTokenOrTrivia = token;
                     GreenNode trailingTrivia = this.GetTrailingTrivia(token, ref previousTokenOrTrivia);
-                    result = this.factory.Token(leadingTrivia, kind, text, text, trailingTrivia);
+                    var value = this.Language.SyntaxFacts.ExtractValue(text);
+                    result = this.factory.Token(leadingTrivia, kind, text, value, trailingTrivia);
                     addTrivia = false;
                     updatePreviousTokenOrTrivia = false;
                 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
@@ -24,6 +25,11 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
+        protected override void ForceCompleteNode(CancellationToken cancellationToken)
+        {
+            GC.KeepAlive(this.Values);
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -35,7 +41,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 var symbol = values[i] as Symbol;
                 if (symbol != null)
                 {
-                    string text = symbol.MetadataName;
+                    string text = symbol.ToString();
                     while (symbol != null)
                     {
                         symbol = symbol.ContainingNamespaceOrType();

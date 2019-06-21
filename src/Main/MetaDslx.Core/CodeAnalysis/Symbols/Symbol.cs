@@ -42,7 +42,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
         internal protected virtual MutableModel ModelBuilder => null;
 
-        internal protected virtual MutableSymbolBase ModelObject => null;
+        public virtual IMetaSymbol ModelObject => null;
 
         /// <summary>
         /// True if this Symbol should be completed by calling ForceComplete.

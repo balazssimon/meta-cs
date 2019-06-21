@@ -97,6 +97,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
         {
+            if (qualifier.IsInitialized()) return;
             var containerSymbol = this.Next.GetEnclosingDeclarationSymbol(qualifier.Syntax);
             var result = ArrayBuilder<Symbol>.GetInstance();
             var identifiers = qualifier.Identifiers;

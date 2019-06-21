@@ -15,18 +15,17 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
         }
 
-        public override void LookupSymbolsInSingleBinder(
-            LookupResult result, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
         {
             Debug.Assert(result.IsClear);
 
-            if (Compilation.SourceAssembly.SpecialSymbolMap.TryGetValue(metadataName, out Symbol specialSymbol))
+            if (Compilation.SourceAssembly.SpecialSymbolMap.TryGetValue(constraints.MetadataName, out Symbol specialSymbol))
             {
                 result.SetFrom(LookupResult.Good(specialSymbol));
             }
         }
 
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupOptions options, Binder originalBinder)
+        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
         {
             foreach (var symbol in Compilation.SourceAssembly.SpecialSymbolMap.Values)
             {

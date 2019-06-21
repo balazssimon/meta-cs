@@ -40,6 +40,8 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(coreModel);
 
             string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
+            //string text = File.ReadAllText(@"..\..\..\Soal.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -56,28 +58,16 @@ namespace MetaDslx.Bootstrap
                 Console.WriteLine(formatter.Format(diag));
             }
 
+            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true);
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
                 AddReferences(
-                    //ModelReference.CreateFromModel(coreModel)//,
-                    //MetadataReference.CreateFromFile(typeof(string).Assembly.Location),
-                    //MetadataReference.CreateFromFile(typeof(Program).Assembly.Location)
-                    );
-            foreach (var diag in compilation.GetParseDiagnostics())
-            {
-                Console.WriteLine(formatter.Format(diag));
-            }
-            foreach (var diag in compilation.GetDeclarationDiagnostics())
-            {
-                Console.WriteLine(formatter.Format(diag));
-            }
-            var compiledModel = compilation.Model;
-            //Console.WriteLine(compiledModel);
-            //foreach (var symbol in compiledModel.Symbols)
-            //{
-            //    Console.WriteLine(symbol);
-            //}
+                    ModelReference.CreateFromModel(coreModel),
+                    ModelReference.CreateFromModel(MetaAnnotations.Model)
+                    ).
+                WithOptions(options);
+
             var modules = compilation.SourceModule.ContainingAssembly.Modules.AsImmutable();
             //var objectType = compilation.ObjectType;
             //Console.WriteLine(objectType);
@@ -104,14 +94,23 @@ namespace MetaDslx.Bootstrap
                 ++index;
             }
 
+            var compiledModel = compilation.Model;
+            Console.WriteLine(compiledModel);
+            foreach (var symbol in compiledModel.Symbols)
+            {
+                Console.WriteLine(symbol);
+            }
+
+            foreach (var diag in compilation.GetDiagnostics())
+            {
+                Console.WriteLine(formatter.Format(diag));
+            }
+
             var boundTree = compilation.GetBoundTree(tree);
             Console.WriteLine(boundTree);
             var boundRoot = boundTree.GetBoundRoot();
             File.WriteAllText("BountTree.txt", boundRoot.Dump());
-            foreach (var diag in boundTree.DiagnosticBag.ToReadOnly())
-            {
-                Console.WriteLine(formatter.Format(diag));
-            }
+
             //*/
         }
 

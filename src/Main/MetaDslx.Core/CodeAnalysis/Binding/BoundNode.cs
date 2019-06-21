@@ -16,6 +16,12 @@ namespace MetaDslx.CodeAnalysis.Binding
     [DebuggerDisplay("{GetDebuggerDisplay(), nq}")]
     public abstract class BoundNode
     {
+        private const int NotCompleted = 0;
+        private const int Completing = 1;
+        private const int Completed = 2;
+
+        private int _completionState;
+
         private readonly BoundKind _kind;
         private BoundNodeAttributes _attributes;
         private readonly BoundTree _boundTree;
@@ -185,14 +191,19 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public void ForceComplete(CancellationToken cancellationToken)
         {
-            foreach (var child in this.ChildBoundNodes)
+            if (cancellationToken.IsCancellationRequested) return;
+            if (Interlocked.CompareExchange(ref _completionState, Completing, NotCompleted) == NotCompleted)
             {
-                child.ForceComplete(cancellationToken);
+                foreach (var child in this.ChildBoundNodes)
+                {
+                    child.ForceComplete(cancellationToken);
+                }
+                this.ForceCompleteNode(cancellationToken);
+                Interlocked.CompareExchange(ref _completionState, Completed, Completing);
             }
-            this.ForceCompleteCore(cancellationToken);
         }
 
-        protected virtual void ForceCompleteCore(CancellationToken cancellationToken)
+        protected virtual void ForceCompleteNode(CancellationToken cancellationToken)
         {
 
         }

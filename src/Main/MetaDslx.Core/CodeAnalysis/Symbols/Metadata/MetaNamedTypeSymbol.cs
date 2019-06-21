@@ -1,5 +1,6 @@
 ﻿using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ModelSymbolInfo ModelSymbolInfo => _metaObject.MId.SymbolInfo;
 
+        public override IMetaSymbol ModelObject => _metaObject;
+
         public override IEnumerable<string> MemberNames
         {
             get
@@ -53,12 +56,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override ImmutableArray<NamedTypeSymbol> GetBaseTypesNoUseSiteDiagnostics(ConsList<TypeSymbol> basesBeingResolved = null)
         {
-            throw new NotImplementedException();
+            return this.GetDeclaredBaseTypes(basesBeingResolved);
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetDeclaredBaseTypes(ConsList<TypeSymbol> basesBeingResolved)
         {
-            throw new NotImplementedException();
+            var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
+            foreach (var prop in _metaObject.MProperties.Where(p => p.IsBaseScope))
+            {
+                foreach (var baseType in (IEnumerable<IMetaSymbol>)_metaObject.MGet(prop))
+                {
+                    result.Add(MetaSymbolMap.GetNamedTypeSymbol(baseType));
+                }
+            }
+            return result.ToImmutableAndFree();
         }
 
         public override ImmutableArray<Symbol> GetMembers()

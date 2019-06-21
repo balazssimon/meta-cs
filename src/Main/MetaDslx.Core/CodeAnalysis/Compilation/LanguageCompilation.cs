@@ -175,7 +175,7 @@ namespace MetaDslx.CodeAnalysis
         {
             return new ExtendedErrorTypeSymbol(
                        container.EnsureLanguageSymbolOrNull<INamespaceOrTypeSymbol, NamespaceOrTypeSymbol>(nameof(container)),
-                       name, arity > 0 ? name+"`"+arity : name, errorInfo: null);
+                       name, arity > 0 ? name + "`" + arity : name, errorInfo: null);
         }
 
         protected override INamespaceSymbol CommonCreateErrorNamespaceSymbol(INamespaceSymbol container, string name)
@@ -952,7 +952,14 @@ namespace MetaDslx.CodeAnalysis
 
         #region Symbols
 
-        public ImmutableModel Model => this.SourceAssembly.SourceModule.ModelBuilder.ToImmutable();
+        public ImmutableModel Model
+        {
+            get
+            {
+                this.ForceComplete();
+                return this.ModelBuilder.ToImmutable();
+            }
+        }
 
         internal MutableModel ModelBuilder => this.SourceAssembly.SourceModule.ModelBuilder;
 
@@ -1648,6 +1655,25 @@ namespace MetaDslx.CodeAnalysis
         internal Symbol CreateConstructedSymbol(SyntaxReference syntaxReference, ModelSymbolInfo symbolInfo, ImmutableArray<BoundProperty> properties)
         {
             var modelObject = symbolInfo.CreateMutable(this.ModelBuilder, true);
+            foreach (var boundProperty in properties)
+            {
+                var prop = modelObject.MGetProperty(boundProperty.Name);
+                foreach (var value in boundProperty.Values)
+                {
+                    var symbol = value as Symbol;
+                    if (symbol != null)
+                    {
+                        if (symbol.ModelObject != null)
+                        {
+                            modelObject.MAdd(prop, symbol.ModelObject);
+                        }
+                    }
+                    else
+                    {
+                        modelObject.MAdd(prop, value);
+                    }
+                }
+            }
             return new SourceConstructedTypeSymbol(this.SourceAssembly, syntaxReference, modelObject);
         }
 
@@ -2136,13 +2162,22 @@ namespace MetaDslx.CodeAnalysis
         // IL or emit an assembly.
         private void GetDiagnosticsForAllSymbols(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            this.ForceComplete(cancellationToken);
+            foreach (var syntaxTree in this.SyntaxTrees)
+            {
+                var boundTree = GetBoundTree(syntaxTree);
+                diagnostics.AddRange(boundTree.DiagnosticBag);
+            }
+            this.ReportUnusedImports(null, diagnostics, cancellationToken);
+        }
+
+        public void ForceComplete(CancellationToken cancellationToken = default)
+        {
             foreach (var syntaxTree in this.SyntaxTrees)
             {
                 var boundTree = GetBoundTree(syntaxTree);
                 boundTree.ForceComplete(cancellationToken);
-                diagnostics.AddRange(boundTree.DiagnosticBag);
             }
-            this.ReportUnusedImports(null, diagnostics, cancellationToken);
         }
 
         private static bool IsDefinedOrImplementedInSourceTree(Symbol symbol, SyntaxTree tree, TextSpan? span)

@@ -140,9 +140,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             var result = LookupResult.GetInstance();
             LookupOptions options = allowMembers ? LookupOptions.Default : LookupOptions.NamespacesOrTypesOnly;
 
-            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            this.LookupSymbolsSimpleName(result, qualifierOpt, identifierValueText, identifierValueText, basesBeingResolved, options, diagnose: true, useSiteDiagnostics: ref useSiteDiagnostics);
-            diagnostics.Add(node.GetLocation(), useSiteDiagnostics);
+            var constraints = new LookupConstraints(identifierValueText, identifierValueText, qualifierOpt: qualifierOpt, basesBeingResolved: basesBeingResolved, options: options, diagnose: true);
+            this.LookupSymbolsSimpleName(result, constraints);
+            diagnostics.Add(node.GetLocation(), constraints.UseSiteDiagnostics);
 
             Symbol bindingResult;
             // If we were looking up the identifier "dynamic" at the topmost level and didn't find anything good,

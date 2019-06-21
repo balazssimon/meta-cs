@@ -26,8 +26,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return result;
         }
 
-        public override void LookupSymbolsInSingleBinder(
-            LookupResult result, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
         {
             var hostObjectType = GetHostObjectType();
             if (hostObjectType.Kind == LanguageSymbolKind.ErrorType)
@@ -35,23 +34,23 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 // The name '{0}' does not exist in the current context (are you missing a reference to assembly '{1}'?)
                 result.SetFrom(new LanguageDiagnosticInfo(
                     InternalErrorCode.ERR_NameNotInContextPossibleMissingReference,
-                    new object[] { name, ((MissingMetadataTypeSymbol)hostObjectType).ContainingAssembly.Identity },
+                    new object[] { constraints.Name, ((MissingMetadataTypeSymbol)hostObjectType).ContainingAssembly.Identity },
                     ImmutableArray<Symbol>.Empty,
                     ImmutableArray<Location>.Empty
                 ));
             }
             else
             {
-                LookupMembersInternal(result, hostObjectType, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                LookupMembersInternal(result, constraints.WithQualifier(hostObjectType));
             }
         }
 
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupOptions options, Binder originalBinder)
+        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
         {
             var hostObjectType = GetHostObjectType();
             if (hostObjectType.Kind != LanguageSymbolKind.ErrorType)
             {
-                AddMemberLookupSymbolsInfo(result, hostObjectType, options, originalBinder);
+                AddMemberLookupSymbolsInfo(result, constraints.WithQualifier(hostObjectType));
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -20,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     {
         private readonly SourceModuleSymbol _module;
         private readonly Symbol _container;
-        private readonly MergedDeclaration _mergedDeclaration;
+        private readonly MergedDeclaration _declaration;
 
         private SymbolCompletionState _state;
         private ImmutableArray<Location> _locations;
@@ -39,25 +40,25 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public SourceNamespaceSymbol(
             SourceModuleSymbol module, 
             Symbol container,
-            MergedDeclaration mergedDeclaration,
+            MergedDeclaration declaration,
             DiagnosticBag diagnostics)
         {
-            Debug.Assert(mergedDeclaration != null);
+            Debug.Assert(declaration != null);
             _module = module;
             _container = container;
-            _mergedDeclaration = mergedDeclaration;
+            _declaration = declaration;
 
-            if (mergedDeclaration.Kind != null)
+            if (declaration.Kind != null)
             {
-                _modelObject = mergedDeclaration.Kind.CreateMutable(module.ModelBuilder);
+                _modelObject = declaration.Kind.CreateMutable(module.ModelBuilder);
                 Debug.Assert(_modelObject != null);
                 if (_modelObject != null)
                 {
-                    _modelObject.MName = mergedDeclaration.Name;
-                    var parentObject = container?.ModelObject;
-                    if (parentObject != null && !string.IsNullOrEmpty(mergedDeclaration.ParentPropertyToAddTo))
+                    _modelObject.MName = declaration.Name;
+                    var parentObject = container?.ModelObject as MutableSymbolBase;
+                    if (parentObject != null && !string.IsNullOrEmpty(declaration.ParentPropertyToAddTo))
                     {
-                        var property = parentObject.MGetProperty(mergedDeclaration.ParentPropertyToAddTo);
+                        var property = parentObject.MGetProperty(declaration.ParentPropertyToAddTo);
                         if (property != null)
                         {
                             parentObject.MAdd(property, _modelObject);
@@ -66,7 +67,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 }
             }
 
-            foreach (var singleDeclaration in mergedDeclaration.Declarations)
+            foreach (var singleDeclaration in declaration.Declarations)
             {
                 diagnostics.AddRange(singleDeclaration.Diagnostics);
             }
@@ -77,11 +78,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         internal protected override MutableModel ModelBuilder => _module.ModelBuilder;
 
-        internal protected override MutableSymbolBase ModelObject => _modelObject;
+        public override IMetaSymbol ModelObject => _modelObject;
 
-        public override ModelSymbolInfo ModelSymbolInfo => _mergedDeclaration.Kind;
+        public override ModelSymbolInfo ModelSymbolInfo => _declaration.Kind;
 
-        public MergedDeclaration MergedDeclaration => _mergedDeclaration;
+        public MergedDeclaration MergedDeclaration => _declaration;
 
         public override Symbol ContainingSymbol => _container;
 
@@ -90,7 +91,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         internal IEnumerable<Imports> GetBoundImportsMerged()
         {
             var compilation = this.DeclaringCompilation;
-            foreach (var declaration in _mergedDeclaration.Declarations)
+            foreach (var declaration in _declaration.Declarations)
             {
                 if (declaration.HasUsings || declaration.HasExternAliases)
                 {
@@ -99,13 +100,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override string Name => _mergedDeclaration.Name;
+        public override string Name => _declaration.Name;
 
         public override LexicalSortKey GetLexicalSortKey()
         {
             if (!_lazyLexicalSortKey.IsInitialized)
             {
-                _lazyLexicalSortKey.SetFrom(_mergedDeclaration.GetLexicalSortKey(this.DeclaringCompilation));
+                _lazyLexicalSortKey.SetFrom(_declaration.GetLexicalSortKey(this.DeclaringCompilation));
             }
             return _lazyLexicalSortKey;
         }
@@ -117,7 +118,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 if (_locations.IsDefault)
                 {
                     ImmutableInterlocked.InterlockedCompareExchange(ref _locations,
-                        _mergedDeclaration.NameLocations,
+                        _declaration.NameLocations,
                         default);
                 }
 
@@ -125,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _mergedDeclaration.SyntaxReferences;
+        public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
 
         public virtual ImmutableArray<Symbol> GetDeclaredChildren()
         {
@@ -303,8 +304,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             // NOTE: a name maps into values collection containing types only instead of allocating another 
             // NOTE: array of NamedTypeSymbol[] we downcast the array to ImmutableArray<NamedTypeSymbol>
 
-            var builder = new NameToSymbolMapBuilder(_mergedDeclaration.Children.Length);
-            foreach (var declaration in _mergedDeclaration.Children)
+            var builder = new NameToSymbolMapBuilder(_declaration.Children.Length);
+            foreach (var declaration in _declaration.Children)
             {
                 if (declaration.Name != null)
                 {
@@ -439,7 +440,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
 
             // Check if any namespace declaration block intersects with the given tree/span.
-            foreach (var declaration in _mergedDeclaration.Declarations)
+            foreach (var declaration in _declaration.Declarations)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -558,10 +559,21 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     GetNameToMembersMap();
                 }
+                else if (incompletePart == CompletionPart.StartProperties || incompletePart == CompletionPart.FinishProperties)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartProperties))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        SetPropertyValues(diagnostics, cancellationToken);
+                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishProperties);
+                        Debug.Assert(thisThreadCompleted);
+                        diagnostics.Free();
+                    }
+                }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
                     // ensure relevant imports are complete.
-                    foreach (var declaration in _mergedDeclaration.Declarations)
+                    foreach (var declaration in _declaration.Declarations)
                     {
                         if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
                         {
@@ -617,6 +629,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         goto done;
                     }
                 }
+                else if (incompletePart == CompletionPart.StartBoundNode || incompletePart == CompletionPart.FinishBoundNode)
+                {
+                    if (_state.NotePartComplete(CompletionPart.StartBoundNode))
+                    {
+                        var diagnostics = DiagnosticBag.GetInstance();
+                        CompleteBoundNode(diagnostics, cancellationToken);
+                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishBoundNode);
+                        Debug.Assert(thisThreadCompleted);
+                        diagnostics.Free();
+                    }
+                }
                 else if (incompletePart == null)
                 {
                     return;
@@ -644,5 +667,26 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         #endregion
+
+
+        protected void SetPropertyValues(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            foreach (var syntaxRef in _declaration.SyntaxReferences)
+            {
+                if (cancellationToken.IsCancellationRequested) return;
+                var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(syntaxRef.GetSyntax());
+                boundNode?.SetPropertyValues(_modelObject, diagnostics, cancellationToken);
+            }
+        }
+
+        protected void CompleteBoundNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            foreach (var syntaxRef in _declaration.SyntaxReferences)
+            {
+                if (cancellationToken.IsCancellationRequested) return;
+                var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(syntaxRef.GetSyntax());
+                boundNode?.ForceComplete(cancellationToken);
+            }
+        }
     }
 }

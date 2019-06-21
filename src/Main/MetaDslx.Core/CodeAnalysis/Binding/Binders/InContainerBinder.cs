@@ -134,31 +134,30 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         }
 
 
-        public override void LookupSymbolsInSingleBinder(
-            LookupResult result, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
         {
             Debug.Assert(result.IsClear);
 
             if (IsSubmission)
             {
-                this.LookupMembersInternal(result, _container, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                this.LookupMembersInternal(result, constraints.WithQualifier(_container));
                 return;
             }
 
-            var imports = GetImports(basesBeingResolved);
+            var imports = GetImports(constraints.BasesBeingResolved);
 
             // first lookup members of the namespace
-            if ((options & LookupOptions.NamespaceAliasesOnly) == 0 && _container != null)
+            if ((constraints.Options & LookupOptions.NamespaceAliasesOnly) == 0 && _container != null)
             {
-                this.LookupMembersInternal(result, _container, name, metadataName, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
+                this.LookupMembersInternal(result, constraints.WithQualifier(_container));
 
                 if (result.IsMultiViable)
                 {
                     // symbols cannot conflict with using alias names
-                    if (metadataName == name && imports.IsUsingAlias(name, originalBinder.IsSemanticModelBinder))
+                    if (constraints.MetadataName == constraints.Name && imports.IsUsingAlias(constraints.Name, constraints.OriginalBinder.IsSemanticModelBinder))
                     {
-                        LanguageDiagnosticInfo diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictAliasAndMember, name, _container);
-                        var error = new ExtendedErrorTypeSymbol((NamespaceOrTypeSymbol)null, name, metadataName, diagInfo, unreported: true);
+                        LanguageDiagnosticInfo diagInfo = new LanguageDiagnosticInfo(InternalErrorCode.ERR_ConflictAliasAndMember, constraints.Name, _container);
+                        var error = new ExtendedErrorTypeSymbol((NamespaceOrTypeSymbol)null, constraints.Name, constraints.MetadataName, diagInfo, unreported: true);
                         result.SetFrom(LookupResult.Good(error)); // force lookup to be done w/ error symbol as result
                     }
 
@@ -167,22 +166,22 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
 
             // next try using aliases or symbols in imported namespaces
-            imports.LookupSymbol(originalBinder, result, name, metadataName, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
+            imports.LookupSymbol(result, constraints);
         }
 
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupOptions options, Binder originalBinder)
+        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
         {
             if (_container != null)
             {
-                this.AddMemberLookupSymbolsInfo(result, _container, options, originalBinder);
+                this.AddMemberLookupSymbolsInfo(result, constraints.WithQualifier(_container));
             }
 
             // If we are looking only for labels we do not need to search through the imports.
             // Submission imports are handled by AddMemberLookupSymbolsInfo (above).
-            if (!IsSubmission && ((options & LookupOptions.LabelsOnly) == 0))
+            if (!IsSubmission && ((constraints.Options & LookupOptions.LabelsOnly) == 0))
             {
                 var imports = GetImports(basesBeingResolved: null);
-                imports.AddLookupSymbolsInfo(result, options, originalBinder);
+                imports.AddLookupSymbolsInfo(result, constraints);
             }
         }
 

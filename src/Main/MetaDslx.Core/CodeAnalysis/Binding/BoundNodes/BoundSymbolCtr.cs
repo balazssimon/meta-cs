@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 if (_lazySymbols.IsDefault)
                 {
-                    var properties = this.GetProperties();
+                    var properties = this.GetChildProperties();
                     var symbol = this.Compilation.CreateConstructedSymbol(this.Syntax.GetReference(), _symbolInfo, properties);
                     ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray.Create(symbol));
                 }

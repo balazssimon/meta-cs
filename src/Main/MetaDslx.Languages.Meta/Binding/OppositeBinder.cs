@@ -12,5 +12,6 @@ namespace MetaDslx.Languages.Meta.Binding
             : base(next)
         {
         }
+
     }
 }

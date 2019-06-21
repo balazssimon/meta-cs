@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _modelObject = modelObject;
         }
 
-        protected internal override MutableSymbolBase ModelObject => _modelObject as MutableSymbolBase;
+        public override IMetaSymbol ModelObject => _modelObject;
 
         public override ModelSymbolInfo ModelSymbolInfo => _modelObject.MId.SymbolInfo;
 

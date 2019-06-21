@@ -23,18 +23,17 @@ namespace MetaDslx.Languages.Meta.Binding
         {
         }
 
-        public override void LookupSymbolsInSingleBinder(
-            LookupResult result, string name, string metadataName, ConsList<TypeSymbol> basesBeingResolved, LookupOptions options, Binder originalBinder, bool diagnose, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
+        public override void LookupSymbolsInSingleBinder(LookupResult result, LookupConstraints constraints)
         {
             Debug.Assert(result.IsClear);
 
-            if (Annotations.TryGetValue(metadataName, out Symbol specialSymbol))
+            if (Annotations.TryGetValue(constraints.MetadataName, out Symbol specialSymbol))
             {
                 result.SetFrom(LookupResult.Good(specialSymbol));
             }
         }
 
-        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupOptions options, Binder originalBinder)
+        protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
         {
             foreach (var symbol in Annotations.Values)
             {
@@ -46,12 +45,15 @@ namespace MetaDslx.Languages.Meta.Binding
         {
             get
             {
-                if (!_metaAnnotations.TryGetValue(this.Compilation, out MetaAnnotations result))
+                lock (_metaAnnotations)
                 {
-                    result = new MetaAnnotations((Symbol)this.Compilation.Assembly);
-                    _metaAnnotations.Add(this.Compilation, result);
+                    if (!_metaAnnotations.TryGetValue(this.Compilation, out MetaAnnotations result))
+                    {
+                        result = new MetaAnnotations((Symbol)this.Compilation.Assembly);
+                        _metaAnnotations.Add(this.Compilation, result);
+                    }
+                    return result.Annotations;
                 }
-                return result.Annotations;
             }
         }
 
