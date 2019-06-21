@@ -2,6 +2,7 @@
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -75,6 +76,39 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
             // None found.
             return null;
+        }
+
+        public override void InitializeQualifierSymbol(BoundQualifier qualifier)
+        {
+            if (qualifier.IsInitialized()) return;
+            var boundNode = this.Compilation.GetBoundNode<BoundSymbolDef>(_syntax);
+            var boundNames = boundNode.GetChildNames();
+            foreach (var boundName in boundNames)
+            {
+                foreach (var child in boundName.GetChildQualifiers())
+                {
+                    if (child.Syntax.Span.Contains(qualifier.Syntax.Span))
+                    {
+                        this.InitializeFullQualifierSymbol(child);
+                    }
+                }
+            }
+        }
+
+        private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
+        {
+            var containerSymbol = this.Next.GetEnclosingDeclarationSymbol(qualifier.Syntax);
+            var result = ArrayBuilder<Symbol>.GetInstance();
+            var identifiers = qualifier.Identifiers;
+            for (int i = 0; i < identifiers.Length; i++)
+            {
+                bool last = i == identifiers.Length - 1;
+                var identifier = identifiers[i];
+                var symbol = containerSymbol.GetSourceMember(identifier.Syntax);
+                result.Add(symbol);
+                containerSymbol = symbol as ISourceDeclarationSymbol;
+            }
+            qualifier.InitializeSymbols(identifiers, result.ToImmutableAndFree());
         }
     }
 }

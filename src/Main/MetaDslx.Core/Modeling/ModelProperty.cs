@@ -1066,6 +1066,8 @@ namespace MetaDslx.Modeling
         internal Type SymbolDescriptorType { get { return this.symbolDescriptorType; } }
         public ImmutableArray<Attribute> Annotations { get { return this.annotations; } }
 
+        public string Name => this.ImmutableType.Name;
+
         public Type ImmutableType
         {
             get { return this.immutableType; }

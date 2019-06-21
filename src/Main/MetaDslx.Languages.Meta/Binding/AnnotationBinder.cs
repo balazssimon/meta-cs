@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Languages.Meta.Symbols;
 using Microsoft.CodeAnalysis;
@@ -13,12 +14,12 @@ using System.Text;
 
 namespace MetaDslx.Languages.Meta.Binding
 {
-    public class AnnotationBinder : Binder
+    public class AnnotationBinder : SymbolUseBinder
     {
         private static ConditionalWeakTable<Compilation, MetaAnnotations> _metaAnnotations = new ConditionalWeakTable<Compilation, MetaAnnotations>();
 
         public AnnotationBinder(Binder next, LanguageSyntaxNode syntax) 
-            : base(next)
+            : base(next, syntax, ImmutableArray<Type>.Empty, ImmutableArray<Type>.Empty)
         {
         }
 

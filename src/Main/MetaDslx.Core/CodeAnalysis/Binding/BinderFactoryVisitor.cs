@@ -99,14 +99,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new SymbolCtrBinder(parentBinder, symbolType);
         }
 
-        protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> symbolTypes)
+        protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes)
         {
             return this.CreateSymbolUseBinderCore(parentBinder, syntax, symbolTypes, ImmutableArray<Type>.Empty);
         }
 
-        protected virtual Binder CreateSymbolUseBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes)
+        protected virtual Binder CreateSymbolUseBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes)
         {
-            return new SymbolUseBinder(parentBinder, symbolTypes, nestingSymbolTypes);
+            return new SymbolUseBinder(parentBinder, syntax, symbolTypes, nestingSymbolTypes);
         }
 
         protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name)

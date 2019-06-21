@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols;
@@ -9,11 +10,10 @@ using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundIdentifier : BoundQualifierOrIdentifier
+    public class BoundIdentifier : BoundQualifier
     {
         private string _lazyName;
         private string _lazyMetadataName;
-        private Symbol _lazySymbol;
 
         public BoundIdentifier(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
@@ -44,34 +44,11 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
-        public override Symbol Symbol
-        {
-            get
-            {
-                if (_lazySymbol == null)
-                {
-                    var binder = this.GetBinder();
-                    var symbol = binder.GetIdentifierDeclaredSymbol(this.Syntax);
-                    if (symbol == null)
-                    {
-                        symbol = binder.GetIdentifierReferencedSymbol(this.Syntax, this.Name, this.MetadataName, this.DiagnosticBag);
-                    }
-                    Interlocked.CompareExchange(ref _lazySymbol, symbol, null);
-                }
-                return _lazySymbol;
-            }
-        }
-
         public override ImmutableArray<BoundIdentifier> Identifiers => ImmutableArray.Create(this);
 
         public override void AddIdentifiers(ArrayBuilder<BoundIdentifier> identifiers)
         {
             identifiers.Add(this);
-        }
-
-        public override void AddQualifiers(ArrayBuilder<BoundQualifierOrIdentifier> qualifiers)
-        {
-            qualifiers.Add(this);
         }
 
         public override string ToString()

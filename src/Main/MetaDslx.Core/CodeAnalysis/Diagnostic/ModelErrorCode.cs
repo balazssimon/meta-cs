@@ -75,7 +75,8 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode ERR_FileReadError = new ModelErrorCode(30, "Cannot read file", "File read error: {0}", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_ValueIsNotSymbol = new ModelErrorCode(31, "Value is not a symbol", "Value '{0}' cannot be used as a symbol", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_DeclarationHasNoName = new ModelErrorCode(32, "Declaration has no name", "Declaration has no name", DiagnosticSeverity.Error);
-        public static readonly ModelErrorCode ERR_InvalidBaseType = new ModelErrorCode(32, "Invalid base type", "Invalid base type: '{0}'. A base type symbol must be a NamedTypeSymbol.", DiagnosticSeverity.Error);
-        public static readonly ModelErrorCode ERR_InvalidImport = new ModelErrorCode(32, "Invalid import", "Invalid import: '{0}'. An import symbol must be a NamespaceOrTypeSymbol.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_InvalidBaseType = new ModelErrorCode(33, "Invalid base type", "Invalid base type: '{0}'. A base type symbol must be a NamedTypeSymbol.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_InvalidImport = new ModelErrorCode(34, "Invalid import", "Invalid import: '{0}'. An import symbol must be a NamespaceOrTypeSymbol.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_BadSymbol = new ModelErrorCode(35, "Invalid symbol", "Unexpected {1} '{0}'. Expected symbols are: {2}", DiagnosticSeverity.Error);
     }
 }

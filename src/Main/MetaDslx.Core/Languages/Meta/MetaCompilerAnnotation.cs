@@ -47,7 +47,7 @@ namespace MetaDslx.Languages.Meta
             {
                 Binder,
                 Qualifier,
-                SymbolDef,
+                SymbolDef, SymbolUse, SymbolCtr,
                 Scope
             };
 

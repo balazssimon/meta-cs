@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols;
@@ -8,7 +9,7 @@ using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
-    public class BoundQualifier : BoundQualifierOrIdentifier
+    public class BoundQualifier : BoundValues
     {
         private ImmutableArray<BoundIdentifier> _lazyIdentifiers;
         private Symbol _lazySymbol;
@@ -18,24 +19,22 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
         }
 
+        public override ImmutableArray<object> Values => ImmutableArray.Create<object>(this.Symbol);
 
-        public override Symbol Symbol
+        public Symbol Symbol
         {
             get
             {
                 if (_lazySymbol == null)
                 {
-                    var identifiers = this.Identifiers;
-                    if (identifiers.Length > 0)
-                    {
-                        Interlocked.CompareExchange(ref _lazySymbol, identifiers[identifiers.Length - 1].Symbol, null);
-                    }
+                    this.GetBinder().InitializeQualifierSymbol(this);
+                    //Debug.Assert(_lazySymbol != null);
                 }
                 return _lazySymbol;
             }
         }
 
-        public override ImmutableArray<BoundIdentifier> Identifiers
+        public virtual ImmutableArray<BoundIdentifier> Identifiers
         {
             get
             {
@@ -47,9 +46,31 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
-        public override void AddQualifiers(ArrayBuilder<BoundQualifierOrIdentifier> qualifiers)
+        public override void AddQualifiers(ArrayBuilder<BoundQualifier> qualifiers)
         {
             qualifiers.Add(this);
+        }
+
+        internal void InitializeSymbols(ImmutableArray<BoundIdentifier> identifiers, ImmutableArray<Symbol> symbols)
+        {
+            Debug.Assert(identifiers.Length == symbols.Length);
+            for (int i = 0; i < identifiers.Length; i++)
+            {
+                identifiers[i].InitializeSymbol(symbols[i]);
+            }
+            this.InitializeSymbol(symbols[symbols.Length - 1]);
+        }
+
+        internal bool IsInitialized()
+        {
+            return _lazySymbol != null;
+        }
+
+        protected void InitializeSymbol(Symbol symbol)
+        {
+            Debug.Assert(symbol != null);
+            if (_lazySymbol != null) Debug.Assert(_lazySymbol == symbol);
+            Interlocked.CompareExchange(ref _lazySymbol, symbol, null);
         }
 
         public override string ToString()

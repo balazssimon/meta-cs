@@ -214,9 +214,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             return identifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundQualifierOrIdentifier> GetQualifiers()
+        public ImmutableArray<BoundQualifier> GetQualifiers()
         {
-            ArrayBuilder<BoundQualifierOrIdentifier> qualifiers = ArrayBuilder<BoundQualifierOrIdentifier>.GetInstance();
+            ArrayBuilder<BoundQualifier> qualifiers = ArrayBuilder<BoundQualifier>.GetInstance();
             this.AddQualifiers(qualifiers);
             return qualifiers.ToImmutableAndFree();
         }
@@ -252,9 +252,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             return identifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundQualifierOrIdentifier> GetChildQualifiers()
+        public ImmutableArray<BoundQualifier> GetChildQualifiers()
         {
-            ArrayBuilder<BoundQualifierOrIdentifier> qualifiers = ArrayBuilder<BoundQualifierOrIdentifier>.GetInstance();
+            ArrayBuilder<BoundQualifier> qualifiers = ArrayBuilder<BoundQualifier>.GetInstance();
             foreach (var child in _childBoundNodes)
             {
                 child.AddQualifiers(qualifiers);
@@ -296,7 +296,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
         }
 
-        public virtual void AddQualifiers(ArrayBuilder<BoundQualifierOrIdentifier> qualifiers)
+        public virtual void AddQualifiers(ArrayBuilder<BoundQualifier> qualifiers)
         {
         }
 

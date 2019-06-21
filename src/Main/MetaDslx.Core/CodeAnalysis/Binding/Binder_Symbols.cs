@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
@@ -1070,27 +1071,9 @@ namespace MetaDslx.CodeAnalysis.Binding
             return container as ISourceDeclarationSymbol;
         }
 
-        public virtual Symbol GetIdentifierDeclaredSymbol(SyntaxNodeOrToken syntax)
+        public virtual void InitializeQualifierSymbol(BoundQualifier qualifier)
         {
-            var container = this.Next.GetEnclosingDeclarationSymbol(syntax) as ISourceDeclarationSymbol;
-            Symbol symbol = container?.GetSourceMember(syntax);
-            return symbol;
-        }
-
-        public virtual Symbol GetIdentifierReferencedSymbol(SyntaxNodeOrToken syntax, string name, string metadataName, DiagnosticBag diagnostics)
-        {
-            HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            var qualifierOpt = this.GetQualifierOpt(syntax);
-            LookupResult lookupResult = LookupResult.GetInstance();
-            this.LookupSymbolsSimpleName(lookupResult, qualifierOpt, name, metadataName, null, LookupOptions.Default, false, ref useSiteDiagnostics);
-            var symbol = this.ResultSymbol(lookupResult, name, metadataName, syntax, diagnostics, false, out bool wasError, qualifierOpt, LookupOptions.Default);
-            lookupResult.Free();
-            return symbol;
-        }
-
-        public virtual NamespaceOrTypeSymbol GetQualifierOpt(SyntaxNodeOrToken syntax)
-        {
-            return null;
+            this.Next.InitializeQualifierSymbol(qualifier);
         }
     }
 }

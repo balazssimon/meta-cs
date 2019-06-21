@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -208,6 +210,20 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             return new SingleLookupResult(LookupResultKind.NotAnAttributeType, symbol, error);
         }
+
+        public static SingleLookupResult WrongSymbol(Symbol unwrappedSymbol, Symbol symbol, ImmutableArray<ModelSymbolInfo> expectedKinds, bool diagnose)
+        {
+            var psb = PooledStringBuilder.GetInstance();
+            var sb = psb.Builder;
+            foreach (var kind in expectedKinds)
+            {
+                if (sb.Length > 0) sb.Append(", ");
+                sb.Append(kind.Name);
+            }
+            var diagInfo = diagnose ? new LanguageDiagnosticInfo(ModelErrorCode.ERR_BadSymbol, unwrappedSymbol.Name, unwrappedSymbol.ModelSymbolInfo.Name) : null;
+            return new SingleLookupResult(LookupResultKind.WrongSymbol, symbol, diagInfo);
+        }
+
 
         /// <summary>
         /// Set current result according to another.

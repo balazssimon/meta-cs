@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     public class QualifierBinder : Binder
     {
         private LanguageSyntaxNode _syntax;
-        private BoundQualifierOrIdentifier _lazyBoundNode;
+        private BoundQualifier _lazyBoundNode;
 
         public QualifierBinder(Binder next, LanguageSyntaxNode syntax) 
             : base(next)
@@ -21,30 +21,17 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             _syntax = syntax;
         }
 
-        public BoundQualifierOrIdentifier BoundNode
+        public BoundQualifier BoundNode
         {
             get
             {
                 if (_lazyBoundNode == null)
                 {
-                    var boundNodes = this.Compilation.GetBoundNodes(_syntax).OfType<BoundQualifierOrIdentifier>();
+                    var boundNodes = this.Compilation.GetBoundNodes(_syntax).OfType<BoundQualifier>();
                     Interlocked.CompareExchange(ref _lazyBoundNode, boundNodes.FirstOrDefault(), null);
                 }
                 return _lazyBoundNode;
             }
-        }
-
-        public override NamespaceOrTypeSymbol GetQualifierOpt(SyntaxNodeOrToken syntax)
-        {
-            var identifiers = this.BoundNode.Identifiers;
-            Symbol symbol = null;
-            foreach (var identifier in identifiers)
-            {
-                var previousSymbol = symbol as NamespaceOrTypeSymbol;
-                if (identifier.Syntax == syntax) return previousSymbol;
-                symbol = identifier.Symbol;
-            }
-            return null;
         }
 
     }

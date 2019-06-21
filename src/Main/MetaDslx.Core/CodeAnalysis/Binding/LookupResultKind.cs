@@ -34,6 +34,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         // Note: order is important! High values take precedences over lower values. 
 
         Empty,
+        WrongSymbol,
         NotATypeOrNamespace,
         NotAnAttributeType,
         WrongArity,
@@ -70,6 +71,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             switch (resultKind)
             {
                 case LookupResultKind.Empty: return CandidateReason.None;
+                case LookupResultKind.WrongSymbol: return CandidateReason.None;
                 case LookupResultKind.NotATypeOrNamespace: return CandidateReason.NotATypeOrNamespace;
                 case LookupResultKind.NotAnAttributeType: return CandidateReason.NotAnAttributeType;
                 case LookupResultKind.WrongArity: return CandidateReason.WrongArity;

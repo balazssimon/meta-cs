@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
@@ -50,6 +51,11 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         public override Binder GetBinder(SyntaxNode node)
         {
             return null;
+        }
+
+        public override void InitializeQualifierSymbol(BoundQualifier qualifier)
+        {
+            
         }
 
     }

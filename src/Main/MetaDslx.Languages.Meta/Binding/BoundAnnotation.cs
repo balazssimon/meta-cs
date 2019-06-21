@@ -9,10 +9,10 @@ using System.Text;
 
 namespace MetaDslx.Languages.Meta.Binding
 {
-    public class BoundAnnotation : BoundNode
+    public class BoundAnnotation : BoundSymbolUse
     {
         public BoundAnnotation(MetaBoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false) 
-            : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
+            : base(kind, boundTree, childBoundNodes, ImmutableArray<Type>.Empty, ImmutableArray<Type>.Empty, syntax, hasErrors)
         {
         }
 
