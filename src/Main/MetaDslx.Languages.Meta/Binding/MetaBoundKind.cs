@@ -15,6 +15,7 @@ namespace MetaDslx.Languages.Meta.Binding
 {
     public class MetaBoundKind : BoundKind
     {
+        public const string Annotation = nameof(Annotation);
         public const string Opposite = nameof(Opposite);
 
         protected MetaBoundKind(string name)

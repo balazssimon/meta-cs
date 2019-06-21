@@ -10,11 +10,11 @@ using System.Collections.Immutable;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
-using MetaDslx.Languages.Meta.Syntax;
-using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.Languages.Meta.Syntax;
+using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Symbols;
 
 namespace MetaDslx.Languages.Meta
@@ -45,7 +45,7 @@ namespace MetaDslx.Languages.Meta
             return MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)syntaxTree, scriptClassName, isSubmission);
         }
 
-        public override ImmutableDictionary<string, Symbol> CreateSpecialSymbols(SourceAssemblySymbol assembly)
+		public override ImmutableDictionary<string, Symbol> CreateSpecialSymbols(SourceAssemblySymbol assembly)
         {
             var result = ImmutableDictionary.CreateBuilder<string, Symbol>();
             foreach (var specialType in MetaConstants.Types)

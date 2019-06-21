@@ -28,6 +28,16 @@ namespace MetaDslx.Languages.Meta.Binding
 
         }
 
+        protected virtual BoundNode CreateBoundAnnotation(BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
+        {
+            return this.CreateBoundAnnotationCore(boundTree, childBoundNodes, syntax, hasErrors);
+        }
+
+        protected virtual BoundNode CreateBoundAnnotationCore(BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
+        {
+            return new BoundAnnotation(MetaBoundKind.Annotation, boundTree, childBoundNodes, syntax, hasErrors);
+        }
+
         protected virtual BoundNode CreateBoundOpposite(BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
         {
             return this.CreateBoundOppositeCore(boundTree, childBoundNodes, syntax, hasErrors);
@@ -118,16 +128,12 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Name != null)
+			if (node.Qualifier != null)
 			{
-				var childBoundNodesOfName = ArrayBuilder<BoundNode>.GetInstance();
-				this.Visit(node.Name, childBoundNodesOfName);
-				BoundNode boundName;
-				boundName = this.CreateBoundProperty(this.BoundTree, childBoundNodesOfName.ToImmutableAndFree(), "Name", node.Name, false);
-				childBoundNodes.Add(boundName);
+				this.Visit(node.Qualifier, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaAnnotation), node, false);
+			resultNode = this.CreateBoundAnnotation(this.BoundTree, childBoundNodes.ToImmutableAndFree(), node, false);
 			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Annotations", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;

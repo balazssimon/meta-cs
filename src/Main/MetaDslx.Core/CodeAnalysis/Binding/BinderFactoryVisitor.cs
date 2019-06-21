@@ -256,7 +256,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             Binder result;
             if (!this.BinderFactory.TryGetBinder(compilationUnit, extraInfo, out result))
             {
-                result = this.BuckStopsHereBinder;
+                result = new SpecialSymbolBinder(this.BuckStopsHereBinder);
 
                 if (inScript)
                 {

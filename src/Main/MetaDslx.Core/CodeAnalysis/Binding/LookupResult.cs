@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding
     /// <summary>
     /// represents one-to-one symbol -> SingleLookupResult filter.
     /// </summary>
-    internal delegate SingleLookupResult LookupFilter(Symbol sym);
+    public delegate SingleLookupResult LookupFilter(Symbol sym);
 
     /// <summary>
     /// A LookupResult summarizes the result of a name lookup within a scope It also allows
@@ -78,7 +78,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _error = null;
         }
 
-        internal bool IsClear
+        public bool IsClear
         {
             get
             {
@@ -86,14 +86,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        internal void Clear()
+        public void Clear()
         {
             _kind = LookupResultKind.Empty;
             _symbolList.Clear();
             _error = null;
         }
 
-        internal LookupResultKind Kind
+        public LookupResultKind Kind
         {
             get
             {
@@ -104,7 +104,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Return the single symbol if there is exactly one, otherwise null.
         /// </summary>
-        internal Symbol SingleSymbolOrDefault
+        public Symbol SingleSymbolOrDefault
         {
             get
             {
@@ -112,7 +112,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        internal ArrayBuilder<Symbol> Symbols
+        public ArrayBuilder<Symbol> Symbols
         {
             get
             {
@@ -120,7 +120,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        internal DiagnosticInfo Error
+        public DiagnosticInfo Error
         {
             get
             {
@@ -131,7 +131,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Is the result viable with one or more symbols?
         /// </summary>
-        internal bool IsMultiViable
+        public bool IsMultiViable
         {
             get
             {
@@ -142,7 +142,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// NOTE: Even there is a single viable symbol, it may be an error type symbol.
         /// </summary>
-        internal bool IsSingleViable
+        public bool IsSingleViable
         {
             get
             {
@@ -150,61 +150,61 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        internal static SingleLookupResult Good(Symbol symbol)
+        public static SingleLookupResult Good(Symbol symbol)
         {
             return new SingleLookupResult(LookupResultKind.Viable, symbol, null);
         }
 
-        internal static SingleLookupResult WrongArity(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult WrongArity(Symbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.WrongArity, symbol, error);
         }
 
-        internal static SingleLookupResult Empty()
+        public static SingleLookupResult Empty()
         {
             return new SingleLookupResult(LookupResultKind.Empty, null, null);
         }
 
-        internal static SingleLookupResult NotReferencable(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult NotReferencable(Symbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.NotReferencable, symbol, error);
         }
 
-        internal static SingleLookupResult StaticInstanceMismatch(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult StaticInstanceMismatch(Symbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.StaticInstanceMismatch, symbol, error);
         }
 
-        internal static SingleLookupResult Inaccessible(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult Inaccessible(Symbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.Inaccessible, symbol, error);
         }
 
-        internal static SingleLookupResult NotInvocable(Symbol unwrappedSymbol, Symbol symbol, bool diagnose)
+        public static SingleLookupResult NotInvocable(Symbol unwrappedSymbol, Symbol symbol, bool diagnose)
         {
             /*var diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_NonInvocableMemberCalled, unwrappedSymbol) : null;
             return new SingleLookupResult(LookupResultKind.NotInvocable, symbol, diagInfo);*/
             throw new NotImplementedException("TODO:MetaDslx");
         }
 
-        internal static SingleLookupResult NotLabel(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult NotLabel(Symbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.NotLabel, symbol, error);
         }
 
-        internal static SingleLookupResult NotTypeOrNamespace(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult NotTypeOrNamespace(Symbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.NotATypeOrNamespace, symbol, error);
         }
 
-        internal static SingleLookupResult NotTypeOrNamespace(Symbol unwrappedSymbol, Symbol symbol, bool diagnose)
+        public static SingleLookupResult NotTypeOrNamespace(Symbol unwrappedSymbol, Symbol symbol, bool diagnose)
         {
             // TODO: determine correct diagnosis 
             var diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKknown, unwrappedSymbol.Name, unwrappedSymbol.GetKindText()) : null;
             return new SingleLookupResult(LookupResultKind.NotATypeOrNamespace, symbol, diagInfo);
         }
 
-        internal static SingleLookupResult NotAnAttributeType(Symbol symbol, DiagnosticInfo error)
+        public static SingleLookupResult NotAnAttributeType(Symbol symbol, DiagnosticInfo error)
         {
             return new SingleLookupResult(LookupResultKind.NotAnAttributeType, symbol, error);
         }
@@ -212,7 +212,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Set current result according to another.
         /// </summary>
-        internal void SetFrom(SingleLookupResult other)
+        public void SetFrom(SingleLookupResult other)
         {
             _kind = other.Kind;
             _symbolList.Clear();
@@ -223,7 +223,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <summary>
         /// Set current result according to another.
         /// </summary>
-        internal void SetFrom(LookupResult other)
+        public void SetFrom(LookupResult other)
         {
             _kind = other._kind;
             _symbolList.Clear();
@@ -231,7 +231,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             _error = other._error;
         }
 
-        internal void SetFrom(DiagnosticInfo error)
+        public void SetFrom(DiagnosticInfo error)
         {
             this.Clear();
             _error = error;
@@ -239,7 +239,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         // Merge another result with this one, with the current result being prioritized
         // over the other if they are of equal "goodness". Mutates the current result.
-        internal void MergePrioritized(LookupResult other)
+        public void MergePrioritized(LookupResult other)
         {
             if (other.Kind > Kind)
             {
@@ -252,7 +252,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// this and other are viable. Otherwise the highest priority result wins (this if equal 
         /// priority and non-viable.)
         /// </summary>
-        internal void MergeEqual(LookupResult other)
+        public void MergeEqual(LookupResult other)
         {
             if (Kind > other.Kind)
             {
@@ -275,7 +275,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        internal void MergeEqual(SingleLookupResult result)
+        public void MergeEqual(SingleLookupResult result)
         {
             if (Kind > result.Kind)
             {
@@ -297,21 +297,21 @@ namespace MetaDslx.CodeAnalysis.Binding
         private static readonly ObjectPool<LookupResult> s_poolInstance = CreatePool();
 
         // if someone needs to create a pool
-        internal static ObjectPool<LookupResult> CreatePool()
+        public static ObjectPool<LookupResult> CreatePool()
         {
             ObjectPool<LookupResult> pool = null;
             pool = new ObjectPool<LookupResult>(() => new LookupResult(pool), 128); // we rarely need more than 10
             return pool;
         }
 
-        internal static LookupResult GetInstance()
+        public static LookupResult GetInstance()
         {
             var instance = s_poolInstance.Allocate();
             Debug.Assert(instance.IsClear);
             return instance;
         }
 
-        internal void Free()
+        public void Free()
         {
             this.Clear();
             if (_pool != null)

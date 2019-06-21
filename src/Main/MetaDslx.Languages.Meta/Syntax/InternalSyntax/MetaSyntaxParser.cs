@@ -151,18 +151,18 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				if (context == null) return AnnotationGreen.__Missing;
 				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), MetaSyntaxKind.TOpenBracket);
-				MetaParser.NameContext nameContext = context.name();
-				NameGreen name = null;
-				if (nameContext != null)
+				MetaParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
 				{
-					name = (NameGreen)this.Visit(nameContext);
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
 				}
 				else
 				{
-					name = NameGreen.__Missing;
+					qualifier = QualifierGreen.__Missing;
 				}
 				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), MetaSyntaxKind.TCloseBracket);
-				return this.factory.Annotation(tOpenBracket, name, tCloseBracket);
+				return this.factory.Annotation(tOpenBracket, qualifier, tCloseBracket);
 			}
 			
 			public override GreenNode VisitNamespaceDeclaration(MetaParser.NamespaceDeclarationContext context)

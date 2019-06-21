@@ -82,23 +82,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginProperty("Annotations");
 			try
 			{
-				this.BeginDeclaration(typeof(Symbols.MetaAnnotation), node);
-				try
-				{
-					this.BeginProperty("Name");
-					try
-					{
-						this.Visit(node.Name);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
-				}
-				finally
-				{
-					this.EndDeclaration();
-				}
+				this.Visit(node.Qualifier);
 			}
 			finally
 			{

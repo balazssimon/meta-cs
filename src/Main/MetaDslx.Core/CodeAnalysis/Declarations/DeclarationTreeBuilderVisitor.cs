@@ -103,13 +103,21 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         protected void BeginName()
         {
-            if (_currentDeclarationInfo == null) return;
+            if (_currentDeclarationInfo == null)
+            {
+                Debug.Assert(false, "BeginName can only be used inside a declaration.");
+                return;
+            }
             _currentDeclarationInfo.BeginName();
         }
 
         protected void EndName()
         {
-            if (_currentDeclarationInfo == null) return;
+            if (_currentDeclarationInfo == null)
+            {
+                Debug.Assert(false, "EndName can only be used inside a declaration.");
+                return;
+            }
             _currentDeclarationInfo.EndName();
         }
 
@@ -170,7 +178,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
             if (declaration.Names.Count == 0)
             {
-                SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, declaration.Kind, _syntaxTree.GetReference(declaration.Node), null, false, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
+                var diagnostics = ImmutableArray.Create<Diagnostic>(new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_DeclarationHasNoName), declaration.Node.Location));
+                SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, declaration.Kind, _syntaxTree.GetReference(declaration.Node), null, false, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable(), diagnostics);
                 parent.Members.Add(anonymousDeclaration);
                 return anonymousDeclaration;
             }

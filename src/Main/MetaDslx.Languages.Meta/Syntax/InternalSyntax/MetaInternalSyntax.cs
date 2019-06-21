@@ -1280,10 +1280,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	{
 	    internal static readonly AnnotationGreen __Missing = new AnnotationGreen();
 	    private InternalSyntaxToken tOpenBracket;
-	    private NameGreen name;
+	    private QualifierGreen qualifier;
 	    private InternalSyntaxToken tCloseBracket;
 	
-	    public AnnotationGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, NameGreen name, InternalSyntaxToken tCloseBracket)
+	    public AnnotationGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, QualifierGreen qualifier, InternalSyntaxToken tCloseBracket)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 3;
@@ -1292,10 +1292,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tOpenBracket);
 				this.tOpenBracket = tOpenBracket;
 			}
-			if (name != null)
+			if (qualifier != null)
 			{
-				this.AdjustFlagsAndWidth(name);
-				this.name = name;
+				this.AdjustFlagsAndWidth(qualifier);
+				this.qualifier = qualifier;
 			}
 			if (tCloseBracket != null)
 			{
@@ -1304,7 +1304,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public AnnotationGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, NameGreen name, InternalSyntaxToken tCloseBracket, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public AnnotationGreen(MetaSyntaxKind kind, InternalSyntaxToken tOpenBracket, QualifierGreen qualifier, InternalSyntaxToken tCloseBracket, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 3;
@@ -1313,10 +1313,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tOpenBracket);
 				this.tOpenBracket = tOpenBracket;
 			}
-			if (name != null)
+			if (qualifier != null)
 			{
-				this.AdjustFlagsAndWidth(name);
-				this.name = name;
+				this.AdjustFlagsAndWidth(qualifier);
+				this.qualifier = qualifier;
 			}
 			if (tCloseBracket != null)
 			{
@@ -1332,7 +1332,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		}
 	
 	    public InternalSyntaxToken TOpenBracket { get { return this.tOpenBracket; } }
-	    public NameGreen Name { get { return this.name; } }
+	    public QualifierGreen Qualifier { get { return this.qualifier; } }
 	    public InternalSyntaxToken TCloseBracket { get { return this.tCloseBracket; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -1345,7 +1345,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.tOpenBracket;
-	            case 1: return this.name;
+	            case 1: return this.qualifier;
 	            case 2: return this.tCloseBracket;
 	            default: return null;
 	        }
@@ -1357,21 +1357,21 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new AnnotationGreen(this.Kind, this.tOpenBracket, this.name, this.tCloseBracket, diagnostics, this.GetAnnotations());
+	        return new AnnotationGreen(this.Kind, this.tOpenBracket, this.qualifier, this.tCloseBracket, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new AnnotationGreen(this.Kind, this.tOpenBracket, this.name, this.tCloseBracket, this.GetDiagnostics(), annotations);
+	        return new AnnotationGreen(this.Kind, this.tOpenBracket, this.qualifier, this.tCloseBracket, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public AnnotationGreen Update(InternalSyntaxToken tOpenBracket, NameGreen name, InternalSyntaxToken tCloseBracket)
+	    public AnnotationGreen Update(InternalSyntaxToken tOpenBracket, QualifierGreen qualifier, InternalSyntaxToken tCloseBracket)
 	    {
 	        if (this.TOpenBracket != tOpenBracket ||
-				this.Name != name ||
+				this.Qualifier != qualifier ||
 				this.TCloseBracket != tCloseBracket)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.Annotation(tOpenBracket, name, tCloseBracket);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.Annotation(tOpenBracket, qualifier, tCloseBracket);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -7258,19 +7258,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public AnnotationGreen Annotation(InternalSyntaxToken tOpenBracket, NameGreen name, InternalSyntaxToken tCloseBracket)
+		public AnnotationGreen Annotation(InternalSyntaxToken tOpenBracket, QualifierGreen qualifier, InternalSyntaxToken tCloseBracket)
 	    {
 	#if DEBUG
 			if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
 			if (tOpenBracket.Kind != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
-			if (name == null) throw new ArgumentNullException(nameof(name));
+			if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
 			if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
 			if (tCloseBracket.Kind != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.Annotation, tOpenBracket, name, tCloseBracket, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.Annotation, tOpenBracket, qualifier, tCloseBracket, out hash);
 			if (cached != null) return (AnnotationGreen)cached;
-			var result = new AnnotationGreen(MetaSyntaxKind.Annotation, tOpenBracket, name, tCloseBracket);
+			var result = new AnnotationGreen(MetaSyntaxKind.Annotation, tOpenBracket, qualifier, tCloseBracket);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);

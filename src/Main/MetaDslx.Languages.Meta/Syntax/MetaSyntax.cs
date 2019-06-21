@@ -376,7 +376,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class AnnotationSyntax : MetaSyntaxNode
 	{
-	    private NameSyntax name;
+	    private QualifierSyntax qualifier;
 	
 	    public AnnotationSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -397,9 +397,9 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
-	    public NameSyntax Name 
+	    public QualifierSyntax Qualifier 
 		{ 
-			get { return this.GetRed(ref this.name, 1); } 
+			get { return this.GetRed(ref this.qualifier, 1); } 
 		}
 	    public SyntaxToken TCloseBracket 
 		{ 
@@ -415,7 +415,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 1: return this.GetRed(ref this.name, 1);
+				case 1: return this.GetRed(ref this.qualifier, 1);
 				default: return null;
 	        }
 	    }
@@ -424,33 +424,33 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 1: return this.name;
+				case 1: return this.qualifier;
 				default: return null;
 	        }
 	    }
 	
 	    public AnnotationSyntax WithTOpenBracket(SyntaxToken tOpenBracket)
 		{
-			return this.Update(TOpenBracket, this.Name, this.TCloseBracket);
+			return this.Update(TOpenBracket, this.Qualifier, this.TCloseBracket);
 		}
 	
-	    public AnnotationSyntax WithName(NameSyntax name)
+	    public AnnotationSyntax WithQualifier(QualifierSyntax qualifier)
 		{
-			return this.Update(this.TOpenBracket, Name, this.TCloseBracket);
+			return this.Update(this.TOpenBracket, Qualifier, this.TCloseBracket);
 		}
 	
 	    public AnnotationSyntax WithTCloseBracket(SyntaxToken tCloseBracket)
 		{
-			return this.Update(this.TOpenBracket, this.Name, TCloseBracket);
+			return this.Update(this.TOpenBracket, this.Qualifier, TCloseBracket);
 		}
 	
-	    public AnnotationSyntax Update(SyntaxToken tOpenBracket, NameSyntax name, SyntaxToken tCloseBracket)
+	    public AnnotationSyntax Update(SyntaxToken tOpenBracket, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
 	    {
 	        if (this.TOpenBracket != tOpenBracket ||
-				this.Name != name ||
+				this.Qualifier != qualifier ||
 				this.TCloseBracket != tCloseBracket)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.Annotation(tOpenBracket, name, tCloseBracket);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.Annotation(tOpenBracket, qualifier, tCloseBracket);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -6819,9 +6819,9 @@ namespace MetaDslx.Languages.Meta
 		public virtual SyntaxNode VisitAnnotation(AnnotationSyntax node)
 		{
 		    var tOpenBracket = this.VisitToken(node.TOpenBracket);
-		    var name = (NameSyntax)this.Visit(node.Name);
+		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
 		    var tCloseBracket = this.VisitToken(node.TCloseBracket);
-			return node.Update(tOpenBracket, name, tCloseBracket);
+			return node.Update(tOpenBracket, qualifier, tCloseBracket);
 		}
 		
 		public virtual SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
@@ -7621,19 +7621,19 @@ namespace MetaDslx.Languages.Meta
 		    return (QualifierSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Qualifier(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<IdentifierGreen>(identifier.Node)).CreateRed();
 		}
 		
-		public AnnotationSyntax Annotation(SyntaxToken tOpenBracket, NameSyntax name, SyntaxToken tCloseBracket)
+		public AnnotationSyntax Annotation(SyntaxToken tOpenBracket, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
 		{
 		    if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
 		    if (tOpenBracket.GetKind() != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
-		    if (name == null) throw new ArgumentNullException(nameof(name));
+		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
 		    if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
 		    if (tCloseBracket.GetKind() != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
-		    return (AnnotationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Annotation((InternalSyntaxToken)tOpenBracket.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
+		    return (AnnotationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Annotation((InternalSyntaxToken)tOpenBracket.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
 		}
 		
-		public AnnotationSyntax Annotation(NameSyntax name)
+		public AnnotationSyntax Annotation(QualifierSyntax qualifier)
 		{
-			return this.Annotation(this.Token(MetaSyntaxKind.TOpenBracket), name, this.Token(MetaSyntaxKind.TCloseBracket));
+			return this.Annotation(this.Token(MetaSyntaxKind.TOpenBracket), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
 		}
 		
 		public NamespaceDeclarationSyntax NamespaceDeclaration(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)

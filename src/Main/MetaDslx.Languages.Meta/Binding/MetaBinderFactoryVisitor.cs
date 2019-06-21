@@ -19,7 +19,6 @@ namespace MetaDslx.Languages.Meta.Binding
 {
     public class MetaBinderFactoryVisitor : BinderFactoryVisitor, IMetaSyntaxVisitor<Binder>
     {
-		public static object UseName = new object();
 		public static object UseStringLiteral = new object();
 		public static object UseEnumValues = new object();
 		public static object UseOperationDeclaration = new object();
@@ -45,6 +44,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseNamespaceBody = new object();
 		public static object UseMetamodelDeclaration = new object();
 		public static object UseDeclaration = new object();
+		public static object UseName = new object();
 		public static object UseMetamodelUriProperty = new object();
 		public static object UseEnumDeclaration = new object();
 		public static object UseClassDeclaration = new object();
@@ -80,6 +80,16 @@ namespace MetaDslx.Languages.Meta.Binding
 			: base(symbolBuilder)
         {
 
+        }
+
+        protected virtual Binder CreateAnnotationBinder(Binder parentBinder, LanguageSyntaxNode syntax)
+        {
+            return this.CreateAnnotationBinderCore(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateAnnotationBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        {
+            return new AnnotationBinder(parentBinder, syntax);
         }
 
         protected virtual Binder CreateOppositeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
@@ -179,7 +189,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitCore(parent.Parent);
-				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, typeof(Symbols.MetaAnnotation));
+				resultBinder = this.CreateAnnotationBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

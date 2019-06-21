@@ -63,6 +63,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
             Debug.Assert(this.collectNameStack >= 0);
             Debug.Assert(this.qualifierStack == 0);
             ++this.collectNameStack;
+            if (this.collectNameStack == 1)
+            {
+                this.currentName = new ArrayBuilder<Identifier>();
+                this.Names.Add(this.currentName);
+            }
         }
 
         public void EndName()
@@ -80,18 +85,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             Debug.Assert(this.qualifierStack >= 0);
             ++this.qualifierStack;
-            this.currentName = new ArrayBuilder<Identifier>();
-            this.Names.Add(this.currentName);
         }
 
         public void EndQualifier()
         {
             --this.qualifierStack;
             Debug.Assert(this.qualifierStack >= 0);
-            if (this.qualifierStack <= 0)
-            {
-                this.currentName = null;
-            }
         }
 
         public void RegisterIdentifier(SyntaxToken token)
@@ -109,12 +108,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
             if (this.currentName != null)
             {
                 this.currentName.Add(identifier);
-            }
-            else
-            {
-                var singleName = new ArrayBuilder<Identifier>();
-                singleName.Add(identifier);
-                this.Names.Add(singleName);
             }
         }
 

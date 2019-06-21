@@ -714,8 +714,12 @@ using System.Collections.Immutable;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Declarations;
+using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Binding;
+using [Properties.DefaultNamespace].Symbols;
 ^
 namespace [Properties.DefaultNamespace]
 {

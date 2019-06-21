@@ -168,12 +168,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
             // next try using aliases or symbols in imported namespaces
             imports.LookupSymbol(originalBinder, result, name, metadataName, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
-
-            // finally, try resolving the special symbols
-            if (Compilation.SourceAssembly.SpecialSymbolMap.TryGetValue(metadataName, out Symbol specialSymbol))
-            {
-                result.SetFrom(LookupResult.Good(specialSymbol));
-            }
         }
 
         protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupOptions options, Binder originalBinder)
@@ -189,15 +183,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 var imports = GetImports(basesBeingResolved: null);
                 imports.AddLookupSymbolsInfo(result, options, originalBinder);
-            }
-
-            // add special symbols
-            if (_container == null)
-            {
-                foreach (var symbol in Compilation.SourceAssembly.SpecialSymbolMap.Values)
-                {
-                    result.AddSymbol(symbol, symbol.Name, symbol.MetadataName);
-                }
             }
         }
 

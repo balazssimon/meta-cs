@@ -306,7 +306,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var builder = new NameToSymbolMapBuilder(_mergedDeclaration.Children.Length);
             foreach (var declaration in _mergedDeclaration.Children)
             {
-                //if (declaration.IsNamespace || declaration.IsType)
+                if (declaration.Name != null)
                 {
                     builder.Add(BuildSymbol(declaration, diagnostics));
                 }

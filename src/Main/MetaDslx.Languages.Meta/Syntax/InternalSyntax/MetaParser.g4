@@ -18,8 +18,8 @@ qualifiedName : qualifier;
 qualifier : identifier (TDot identifier)*;
 
                       
-                          
-annotation : TOpenBracket                 name /*annotationParams?*/ TCloseBracket;
+           
+annotation : TOpenBracket qualifier /*annotationParams?*/ TCloseBracket;
 
 /*
 annotationParams : TOpenParen annotationParamList? TCloseParen;

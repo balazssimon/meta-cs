@@ -18,8 +18,8 @@ $Qualifier
 qualifier : identifier (TDot identifier)*;
 
 $Property(Annotations)
-$SymbolDef(MetaAnnotation)
-annotation : TOpenBracket $Property(Name) name /*annotationParams?*/ TCloseBracket;
+$Annotation
+annotation : TOpenBracket qualifier /*annotationParams?*/ TCloseBracket;
 
 /*
 annotationParams : TOpenParen annotationParamList? TCloseParen;
