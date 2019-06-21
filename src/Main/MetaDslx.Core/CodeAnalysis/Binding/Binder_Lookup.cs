@@ -1097,11 +1097,11 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             if (constraints.QualifierOpt.IsNamespace)
             {
-                AddMemberLookupSymbolsInfoInNamespace(result, constraints);
+                AddMemberLookupSymbolsInfoInNamespace(result, constraints.WithOriginalBinder(this));
             }
             else
             {
-                this.AddMemberLookupSymbolsInfoInType(result, constraints);
+                this.AddMemberLookupSymbolsInfoInType(result, constraints.WithOriginalBinder(this));
             }
         }
 

@@ -702,7 +702,7 @@ namespace MetaDslx.CodeAnalysis
             }
             else
             {
-                binder.AddMemberLookupSymbolsInfo(info, new LookupConstraints(qualifierOpt: container, options: options, originalBinder: binder));
+                binder.AddMemberLookupSymbolsInfo(info, new LookupConstraints(qualifierOpt: container, options: options));
             }
 
             var results = ArrayBuilder<Symbol>.GetInstance(info.Count);
