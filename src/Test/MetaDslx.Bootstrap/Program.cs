@@ -3,11 +3,14 @@ using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
+using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace MetaDslx.Bootstrap
 {
@@ -17,10 +20,11 @@ namespace MetaDslx.Bootstrap
         {
             /*/
             //MetaGeneratorBootstrap mg = new MetaGeneratorBootstrap(@"..\..\..\MGenTest.mgen");
-            MetaGeneratorBootstrap mg = new MetaGeneratorBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Generator\CompilerGenerator.mgen");
+            //MetaGeneratorBootstrap mg = new MetaGeneratorBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Generator\CompilerGenerator.mgen");
+            MetaGeneratorBootstrap mg = new MetaGeneratorBootstrap(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Generator\ImmutableMetaModelGenerator.mgen");
             mg.Compile();
             //*/
-            
+
             /*/
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorLexer.ag4", "MetaDslx.Bootstrap.MetaGenerator");
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorParser.ag4", "MetaDslx.Bootstrap.MetaGenerator");
@@ -39,7 +43,8 @@ namespace MetaDslx.Bootstrap
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
-            string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\Soal.mm");
 
@@ -58,7 +63,8 @@ namespace MetaDslx.Bootstrap
                 Console.WriteLine(formatter.Format(diag));
             }
 
-            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true);
+            //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: false, concurrentBuild: true);
+            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false);
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
@@ -68,37 +74,56 @@ namespace MetaDslx.Bootstrap
                     ).
                 WithOptions(options);
 
-            var modules = compilation.SourceModule.ContainingAssembly.Modules.AsImmutable();
+            //var modules = compilation.SourceModule.ContainingAssembly.Modules.AsImmutable();
             //var objectType = compilation.ObjectType;
             //Console.WriteLine(objectType);
             //foreach (var member in objectType.MemberNames)
             //{
             //    Console.WriteLine("  "+member);
             //}
-            int index = 0;
-            foreach (var module in modules)
-            {
-                foreach (var assembly in module.ReferencedAssemblySymbols)
-                {
-                    Console.WriteLine("  ReferencedAssembly: " + assembly);
-                    foreach (var member in assembly.GlobalNamespace.GetMembers())
-                    {
-                        Console.WriteLine("    {0}: {1}", member.Name, member.GetType());
-                    }
-                }
-                Console.WriteLine("Module[{0}]: {1}", index, module.GetType());
-                foreach (var member in module.GlobalNamespace.GetMembers())
-                {
-                    Console.WriteLine("  {0}: {1}", member.Name, member.GetType());
-                }
-                ++index;
-            }
+            //int index = 0;
+            //foreach (var module in modules)
+            //{
+            //    foreach (var assembly in module.ReferencedAssemblySymbols)
+            //    {
+            //        Console.WriteLine("  ReferencedAssembly: " + assembly);
+            //        foreach (var member in assembly.GlobalNamespace.GetMembers())
+            //        {
+            //            Console.WriteLine("    {0}: {1}", member.Name, member.GetType());
+            //        }
+            //    }
+            //    Console.WriteLine("Module[{0}]: {1}", index, module.GetType());
+            //    foreach (var member in module.GlobalNamespace.GetMembers())
+            //    {
+            //        Console.WriteLine("  {0}: {1}", member.Name, member.GetType());
+            //    }
+            //    ++index;
+            //}
 
             var compiledModel = compilation.Model;
             Console.WriteLine(compiledModel);
-            foreach (var symbol in compiledModel.Symbols)
+            using (StreamWriter writer = new StreamWriter("Model.txt"))
             {
-                Console.WriteLine(symbol);
+                foreach (var symbol in compiledModel.Symbols)
+                {
+                    writer.WriteLine(symbol);
+                    foreach (var prop in symbol.MProperties)
+                    {
+                        object value = symbol.MGet(prop);
+                        if (value is IEnumerable<object> collection)
+                        {
+                            writer.WriteLine("  {0} = ({1})", prop.Name, collection.Count());
+                            foreach (var item in collection)
+                            {
+                                writer.WriteLine("    {0}", item);
+                            }
+                        }
+                        else
+                        {
+                            writer.WriteLine("  {0} = {1}", prop.Name, value);
+                        }
+                    }
+                }
             }
 
             foreach (var diag in compilation.GetDiagnostics())
@@ -109,8 +134,17 @@ namespace MetaDslx.Bootstrap
             var boundTree = compilation.GetBoundTree(tree);
             Console.WriteLine(boundTree);
             var boundRoot = boundTree.GetBoundRoot();
-            File.WriteAllText("BountTree.txt", boundRoot.Dump());
+            File.WriteAllText("BoundTree.txt", boundRoot.Dump());
 
+            //*/
+
+            /*/
+            ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Symbols);
+            string generatedCsharpModel = mmgen.Generate();
+            //File.WriteAllText("Soal.txt", generatedCsharpModel);
+            //File.WriteAllText("../../../Soal.cs", generatedCsharpModel);
+            //File.WriteAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.cs", generatedCsharpModel);
+            File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
             //*/
         }
 

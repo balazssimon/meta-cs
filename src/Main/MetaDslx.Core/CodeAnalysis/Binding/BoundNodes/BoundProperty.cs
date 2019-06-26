@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 if (_boundValues.IsDefault)
                 {
-                    var valueNodes = this.GetChildValues(_name, _name);
+                    var valueNodes = this.GetValues(_name, _name);
                     ImmutableInterlocked.InterlockedInitialize(ref _boundValues, valueNodes);
                 }
                 return _boundValues;

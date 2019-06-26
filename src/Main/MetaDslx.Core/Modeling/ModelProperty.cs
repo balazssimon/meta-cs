@@ -1089,7 +1089,10 @@ namespace MetaDslx.Modeling
 
         public MutableSymbolBase CreateMutable(MutableModel model, bool weakReference = false)
         {
-            return model.CreateSymbol(this.CreateSymbolId(), false);
+            var symbol = model.CreateSymbol(this.CreateSymbolId(), false);
+            symbol.MCallInit();
+            symbol.MMakeCreated();
+            return symbol;
         }
 
         internal ImmutableSymbolBase CreateImmutable(ImmutableModel model)

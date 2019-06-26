@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
@@ -313,6 +314,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
                 }
                 return null;
             }
+        }
+
+        public virtual bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        {
+            symbol = null;
+            return false;
         }
 
         #region IModuleSymbol Members

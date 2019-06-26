@@ -9,8 +9,8 @@ using MetaDslx.Languages.Antlr4Roslyn.Compilation; //5:1
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
 {
-    using __Hidden_CompilerGenerator_75253085;
-    namespace __Hidden_CompilerGenerator_75253085
+    using __Hidden_CompilerGenerator;
+    namespace __Hidden_CompilerGenerator
     {
         internal static class __Extensions
         {

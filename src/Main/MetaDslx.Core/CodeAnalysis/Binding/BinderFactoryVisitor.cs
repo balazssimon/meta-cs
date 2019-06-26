@@ -109,6 +109,16 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new SymbolUseBinder(parentBinder, syntax, symbolTypes, nestingSymbolTypes);
         }
 
+        protected virtual Binder CreateAttributeBinder(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes)
+        {
+            return this.CreateAttributeBinderCore(parentBinder, syntax, symbolTypes, ImmutableArray<Type>.Empty);
+        }
+
+        protected virtual Binder CreateAttributeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes)
+        {
+            return new AttributeBinder(parentBinder, syntax, symbolTypes, nestingSymbolTypes);
+        }
+
         protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name)
         {
             return this.CreatePropertyBinderCore(parentBinder, syntax, name, default);

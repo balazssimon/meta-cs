@@ -202,7 +202,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public static SingleLookupResult NotTypeOrNamespace(Symbol unwrappedSymbol, Symbol symbol, bool diagnose)
         {
             // TODO: determine correct diagnosis 
-            var diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKknown, unwrappedSymbol.Name, unwrappedSymbol.GetKindText()) : null;
+            var diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_BadSKknown, unwrappedSymbol.Name, unwrappedSymbol.GetKindText(), "type or namespace") : null;
             return new SingleLookupResult(LookupResultKind.NotATypeOrNamespace, symbol, diagInfo);
         }
 

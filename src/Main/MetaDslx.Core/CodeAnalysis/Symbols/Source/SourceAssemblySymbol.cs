@@ -1816,6 +1816,33 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override AssemblyMetadata GetMetadata() => null;
 
+        public bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        {
+            if (modelObject == null)
+            {
+                symbol = null;
+                return false;
+            }
+            foreach (var module in _modules)
+            {
+                if (module.TryGetSymbol(modelObject, out symbol))
+                {
+                    return true;
+                }
+            }
+            symbol = null;
+            return false;
+        }
+
+        public Symbol GetSymbol(IMetaSymbol modelObject)
+        {
+            if (this.TryGetSymbol(modelObject, out Symbol symbol))
+            {
+                return symbol;
+            }
+            return null;
+        }
+
         Compilation ISourceAssemblySymbol.Compilation => _compilation;
     }
 }

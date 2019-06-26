@@ -18,7 +18,7 @@ qualifiedName : qualifier;
 qualifier : identifier (TDot identifier)*;
 
                       
-           
+                          
 annotation : TOpenBracket qualifier /*annotationParams?*/ TCloseBracket;
 
 /*

@@ -54,6 +54,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 Debug.Assert(_modelObject != null);
                 if (_modelObject != null)
                 {
+                    module.MetaSymbolMap.RegisterSymbol(_modelObject, this);
                     _modelObject.MName = declaration.Name;
                     var parentObject = container?.ModelObject as MutableSymbolBase;
                     if (parentObject != null && !string.IsNullOrEmpty(declaration.ParentPropertyToAddTo))

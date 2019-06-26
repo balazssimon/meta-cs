@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Languages.Meta.Symbols;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
@@ -32,5 +33,6 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 result.AddSymbol(symbol, symbol.Name, symbol.MetadataName);
             }
         }
+
     }
 }

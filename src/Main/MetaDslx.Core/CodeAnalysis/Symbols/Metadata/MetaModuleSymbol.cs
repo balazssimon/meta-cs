@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
@@ -35,6 +36,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             _owningAssembly = owningAssembly;
             _models = modelGroup.Models.ToImmutableArray();
             _ordinal = ordinal;
+            _symbolMap = new MetaSymbolMap(this);
         }
 
         public ImmutableArray<ImmutableModel> Models => _models;
@@ -82,6 +84,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public override ModuleMetadata GetMetadata()
         {
             return null;
+        }
+
+        public override bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        {
+            Debug.Assert(modelObject != null);
+            if (_models.Contains(modelObject.MModel))
+            {
+                return this.MetaSymbolMap.TryGetSymbol(modelObject, out symbol);
+            }
+            symbol = null;
+            return false;
         }
     }
 }

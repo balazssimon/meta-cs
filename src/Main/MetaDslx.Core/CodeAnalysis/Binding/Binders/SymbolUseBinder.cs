@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -17,6 +18,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private readonly ImmutableArray<ModelSymbolInfo> _symbolTypes;
         private readonly ImmutableArray<ModelSymbolInfo> _nestingSymbolTypes;
         private readonly LanguageSyntaxNode _syntax;
+        private readonly bool _attributeTypeOnly;
 
         public SymbolUseBinder(Binder next, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes)
             : base(next)
@@ -24,6 +26,18 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             _syntax = syntax;
             _symbolTypes = symbolTypes.Select(type => ModelSymbolInfo.GetSymbolInfo(type)).ToImmutableArray();
             _nestingSymbolTypes = nestingSymbolTypes.Select(type => ModelSymbolInfo.GetSymbolInfo(type)).ToImmutableArray();
+            if (symbolTypes.Length > 0)
+            {
+                _attributeTypeOnly = true;
+                foreach (var symbolType in symbolTypes)
+                {
+                    if (!typeof(MetaAnnotation).IsAssignableFrom(symbolType))
+                    {
+                        _attributeTypeOnly = false;
+                        break;
+                    }
+                }
+            }
         }
 
         public override void InitializeQualifierSymbol(BoundQualifier qualifier)
@@ -62,5 +76,14 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             qualifier.InitializeSymbols(identifiers, result.ToImmutableAndFree());
         }
 
+        protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)
+        {
+            LookupConstraints result = base.AdjustConstraints(constraints);
+            if (!result.IsMemberLookup && _attributeTypeOnly)
+            {
+                result = result.WithOptions(result.Options | LookupOptions.AttributeTypeOnly);
+            }
+            return result;
+        }
     }
 }

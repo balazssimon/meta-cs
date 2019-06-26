@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
+using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -41,6 +42,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private MutableModel _modelBuilder;
 
         private CSharpSymbolMap _csharpSymbolMap;
+        private readonly MetaSymbolMap _symbolMap;
 
         internal SourceModuleSymbol(
             SourceAssemblySymbol assemblySymbol,
@@ -56,6 +58,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _name = moduleName;
 
             _csharpSymbolMap = new CSharpSymbolMap(this);
+            _symbolMap = new MetaSymbolMap(this);
 
             _state = SymbolCompletionState.Create(assemblySymbol.Language);
         }
@@ -63,6 +66,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         public override Language Language => _assemblySymbol.Language;
 
         internal override CSharpSymbolMap CSharpSymbolMap => _csharpSymbolMap;
+
+        internal MetaSymbolMap MetaSymbolMap => _symbolMap;
 
         internal protected override MutableModel ModelBuilder => _modelBuilder;
 
@@ -457,6 +462,20 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public override ModuleMetadata GetMetadata() => null;
+        public override ModuleMetadata GetMetadata()
+        {
+            return null;
+        }
+
+        public override bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        {
+            Debug.Assert(modelObject != null);
+            if (this._modelBuilder.ContainsSymbol(modelObject.MId))
+            {
+                return _symbolMap.TryGetSymbol(modelObject, out symbol);
+            }
+            symbol = null;
+            return false;
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace MetaDslx.Languages.Meta
 
         public const string Root = nameof(Root);
 
-        public const string Binder = nameof(Binder);
+        public const string Attribute = nameof(Attribute);
 
         public const string Identifier = nameof(Identifier);
         public const string Qualifier = nameof(Qualifier);
@@ -36,7 +36,7 @@ namespace MetaDslx.Languages.Meta
         public static readonly string[] WellKnownAnnotations =
             {
                 Root,
-                Binder,
+                Attribute,
                 Identifier, Qualifier, Value, EnumValue,
                 Property, Name, Scope,
                 SymbolDef, SymbolUse, SymbolCtr,
@@ -45,7 +45,7 @@ namespace MetaDslx.Languages.Meta
 
         public static readonly string[] BinderAnnotations =
             {
-                Binder,
+                Attribute,
                 Qualifier,
                 SymbolDef, SymbolUse, SymbolCtr,
                 Scope
@@ -54,6 +54,7 @@ namespace MetaDslx.Languages.Meta
         public static readonly string[] BoundNodeAnnotations =
             {
                 Root,
+                Attribute,
                 Identifier, Qualifier, Value, EnumValue,
                 Property, Name,
                 SymbolDef, SymbolUse, SymbolCtr,
@@ -83,7 +84,7 @@ namespace MetaDslx.Languages.Meta
 
         static MetaCompilerAnnotationInfo()
         {
-            DefaultProperties.Add(Binder, "name");
+            DefaultProperties.Add(Attribute, "symbolType");
             DefaultProperties.Add(Root, "symbolType");
             DefaultProperties.Add(SymbolDef, "symbolType");
             DefaultProperties.Add(SymbolUse, "symbolType");
@@ -296,10 +297,6 @@ namespace MetaDslx.Languages.Meta
         public string GetAnnotationParams()
         {
             string result = "";
-            if (this.Name == MetaCompilerAnnotationInfo.Binder)
-            {
-                // empty
-            }
             if (this.Name == MetaCompilerAnnotationInfo.SymbolDef || this.Name == MetaCompilerAnnotationInfo.SymbolCtr)
             {
                 if (this.HasProperty("symbolType"))
@@ -311,7 +308,7 @@ namespace MetaDslx.Languages.Meta
                     result = ", null";
                 }
             }
-            if (this.Name == MetaCompilerAnnotationInfo.SymbolUse)
+            if (this.Name == MetaCompilerAnnotationInfo.SymbolUse || this.Name == MetaCompilerAnnotationInfo.Attribute)
             {
                 if (this.HasProperty("symbolType"))
                 {

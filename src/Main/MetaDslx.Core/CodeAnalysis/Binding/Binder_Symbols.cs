@@ -62,13 +62,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             return UnwrapAlias(result, diagnostics, syntax, basesBeingResolved);
         }
 
-        private static Symbol UnwrapAliasNoDiagnostics(Symbol symbol, ConsList<TypeSymbol> basesBeingResolved = null)
+        private Symbol UnwrapAliasNoDiagnostics(Symbol symbol, ConsList<TypeSymbol> basesBeingResolved = null)
         {
             if (symbol.Kind == LanguageSymbolKind.Alias)
             {
                 return ((AliasSymbol)symbol).GetAliasTarget(basesBeingResolved);
             }
-
             return symbol;
         }
 
@@ -106,6 +105,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             alias = null;
             return symbol;
         }
+
 
 
         /// <summary>

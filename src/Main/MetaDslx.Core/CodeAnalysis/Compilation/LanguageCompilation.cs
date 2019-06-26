@@ -961,7 +961,7 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        internal MutableModel ModelBuilder => this.SourceAssembly.SourceModule.ModelBuilder;
+        public MutableModel ModelBuilder => this.SourceAssembly.SourceModule.ModelBuilder;
 
         /// <summary>
         /// The AssemblySymbol that represents the assembly being created.
@@ -2173,11 +2173,13 @@ namespace MetaDslx.CodeAnalysis
 
         public void ForceComplete(CancellationToken cancellationToken = default)
         {
+            this.GlobalNamespace.ForceComplete(null, cancellationToken);
             foreach (var syntaxTree in this.SyntaxTrees)
             {
                 var boundTree = GetBoundTree(syntaxTree);
                 boundTree.ForceComplete(cancellationToken);
             }
+            this.ModelBuilder.EvaluateLazyValues(cancellationToken);
         }
 
         private static bool IsDefinedOrImplementedInSourceTree(Symbol symbol, SyntaxTree tree, TextSpan? span)

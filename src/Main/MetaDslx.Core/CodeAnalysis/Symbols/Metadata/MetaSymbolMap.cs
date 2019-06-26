@@ -1,4 +1,5 @@
-﻿using MetaDslx.Modeling;
+﻿using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,17 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
     public class MetaSymbolMap
     {
         private ConditionalWeakTable<IMetaSymbol, Symbol> map = new ConditionalWeakTable<IMetaSymbol, Symbol>();
-        private MetaModuleSymbol _module;
+        private ModuleSymbol _module;
+        private bool _autoCreateSymbols;
 
         public MetaSymbolMap(MetaModuleSymbol module)
+        {
+            if (module == null) throw new ArgumentNullException(nameof(module));
+            _module = module;
+            _autoCreateSymbols = true;
+        }
+
+        public MetaSymbolMap(SourceModuleSymbol module)
         {
             if (module == null) throw new ArgumentNullException(nameof(module));
             _module = module;
@@ -41,8 +50,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             if (metaSymbol == null) return null;
             if (!map.TryGetValue(metaSymbol, out Symbol symbol))
             {
-                symbol = createSymbol(metaSymbol);
-                map.Add(metaSymbol, symbol);
+                if (_autoCreateSymbols)
+                {
+                    symbol = createSymbol(metaSymbol);
+                    map.Add(metaSymbol, symbol);
+                }
             }
             return (T)symbol;
         }
@@ -59,6 +71,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             if (metaSymbol.MParent == null) return _module;
             else return GetSymbol(metaSymbol.MParent);
+        }
+
+        public void RegisterSymbol(IMetaSymbol modelObject, Symbol symbol)
+        {
+            map.Add(modelObject, symbol);
         }
 
         public ImmutableArray<Symbol> GetSymbols(IEnumerable<IMetaSymbol> csharpSymbols)

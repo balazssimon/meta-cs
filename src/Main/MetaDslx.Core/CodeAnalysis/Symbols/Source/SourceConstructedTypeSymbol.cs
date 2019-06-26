@@ -8,8 +8,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
     public class SourceConstructedTypeSymbol : SourceTypeSymbol
     {
-        public SourceConstructedTypeSymbol(Symbol containingSymbol, SyntaxReference syntaxReference, IMetaSymbol modelObject) 
-            : base(containingSymbol, syntaxReference, modelObject)
+        public SourceConstructedTypeSymbol(SourceAssemblySymbol containingAssembly, SyntaxReference syntaxReference, IMetaSymbol modelObject) 
+            : base(containingAssembly, syntaxReference, modelObject)
         {
         }
 

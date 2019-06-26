@@ -18,7 +18,7 @@ $Qualifier
 qualifier : identifier (TDot identifier)*;
 
 $Property(Annotations)
-$Annotation
+$SymbolUse(MetaAnnotation)
 annotation : TOpenBracket qualifier /*annotationParams?*/ TCloseBracket;
 
 /*
@@ -86,16 +86,8 @@ subsettings : KSubsets $Property(SubsettedProperties) nameUseList?;
 $SymbolUse(MetaProperty)
 nameUseList : qualifier (TComma qualifier)*;
 
-$SymbolDef(MetaConstant)
-constDeclaration : KConst $Property(Type) typeReference name TSemicolon;
-
-externTypeDeclaration : externClassTypeDeclaration | externStructTypeDeclaration;
-
-$SymbolDef(MetaExternalType)
-externClassTypeDeclaration : KExtern KClass $Property(ExternalName) $Value qualifier name TSemicolon;
-
-$SymbolDef(MetaExternalType)
-externStructTypeDeclaration : KExtern $Property(name=IsValueType,value=true) KStruct $Property(ExternalName) $Value qualifier name TSemicolon;
+$SymbolDef(MetaExternAlias)
+externAliasDeclaration : KExtern KAlias name TSemicolon;
 
 $SymbolUse(MetaType)
 returnType : typeReference | voidType;

@@ -10,6 +10,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 
     public class SymbolFacts
     {
+        public virtual string AttributeNameSuffix => "Attribute";
+
         public virtual bool IsEntryPointCandidate(MethodSymbol method)
         {
             return false;

@@ -14,25 +14,21 @@
 	const MetaPrimitiveType Byte;
 	const MetaPrimitiveType Bool;
 	const MetaPrimitiveType Void;
-	const MetaPrimitiveType Symbol;
+	const MetaPrimitiveType ModelObject;
 
-	[Scope]
-	class MetaRootNamespace
-	{
-		containment list<symbol> Symbols;
-	}
-
-	class MetaErrorSymbol : MetaNamedElement
-	{
-	}
+	const MetaAttribute NameAttribute;
+	const MetaAttribute TypeAttribute;
+	const MetaAttribute ScopeAttribute;
+	const MetaAttribute BaseScopeAttribute;
+	const MetaAttribute LocalScopeAttribute;
 
 	/*
-	Represents an annotated element.
+	Represents an element with attributes.
 	*/
-	abstract class MetaAnnotatedElement
+	abstract class MetaElementWithAttributes
 	{
-		// List of annotations
-		containment list<MetaAnnotation> Annotations; 
+		// List of attributes
+		containment list<MetaAttribute> Attributes; 
 	}
 
 	abstract class MetaDocumentedElement
@@ -62,11 +58,11 @@
 	{
 	}
 
-	class MetaAnnotation : MetaNamedElement
+	class MetaAttribute : MetaNamedElement
 	{
 	}
 
-	abstract class MetaDeclaration : MetaNamedElement, MetaAnnotatedElement
+	abstract class MetaDeclaration : MetaNamedElement, MetaElementWithAttributes
 	{
 		MetaNamespace Namespace;
 		derived MetaModel MetaModel;
@@ -75,21 +71,19 @@
 	[Scope]
 	class MetaNamespace : MetaDeclaration
 	{
-		[Import]
-		list<MetaNamespace> Usings;
-		containment MetaModel MetaModel;
+		containment MetaModel DefinedMetaModel;
 		containment list<MetaDeclaration> Declarations;
 	}
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
 
-	class MetaModel : MetaNamedElement, MetaAnnotatedElement
+	class MetaModel : MetaNamedElement, MetaElementWithAttributes
 	{
 		string Uri;
 		MetaNamespace Namespace;
 	}
 
-	association MetaNamespace.MetaModel with MetaModel.Namespace;
+	association MetaNamespace.DefinedMetaModel with MetaModel.Namespace;
 
 	enum MetaCollectionKind
 	{
@@ -114,12 +108,6 @@
 	{
 	}
 
-	class MetaExternalType : MetaPrimitiveType
-	{
-		string ExternalName;
-		bool IsValueType;
-	}
-
 	[Scope]
 	class MetaEnum : MetaDeclaration, MetaType
 	{
@@ -127,7 +115,7 @@
 		containment list<MetaOperation> Operations;
 	}
 
-	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement, MetaAnnotatedElement
+	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement, MetaElementWithAttributes
 	{
 		MetaEnum Enum redefines MetaTypedElement.Type;
 	}
@@ -156,7 +144,7 @@
 	}
 	
 	[LocalScope]
-	class MetaOperation : MetaNamedElement, MetaAnnotatedElement
+	class MetaOperation : MetaNamedElement, MetaElementWithAttributes
 	{
 		MetaType Parent;
 		containment list<MetaParameter> Parameters;
@@ -166,7 +154,7 @@
 	association MetaOperation.Parent with MetaClass.Operations;
 	association MetaOperation.Parent with MetaEnum.Operations;
 
-	class MetaParameter : MetaNamedElement, MetaTypedElement, MetaAnnotatedElement
+	class MetaParameter : MetaNamedElement, MetaTypedElement, MetaElementWithAttributes
 	{
 		MetaOperation Operation;
 	}
@@ -183,7 +171,7 @@
 		Containment
 	}
 
-	class MetaProperty : MetaNamedElement, MetaTypedElement, MetaAnnotatedElement
+	class MetaProperty : MetaNamedElement, MetaTypedElement, MetaElementWithAttributes
 	{
 		MetaPropertyKind Kind;
 		MetaClass Class;

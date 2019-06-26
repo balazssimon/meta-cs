@@ -82,16 +82,6 @@ namespace MetaDslx.Languages.Meta.Binding
 
         }
 
-        protected virtual Binder CreateAnnotationBinder(Binder parentBinder, LanguageSyntaxNode syntax)
-        {
-            return this.CreateAnnotationBinderCore(parentBinder, syntax);
-        }
-
-        protected virtual Binder CreateAnnotationBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
-        {
-            return new AnnotationBinder(parentBinder, syntax);
-        }
-
         protected virtual Binder CreateOppositeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
         {
             return this.CreateOppositeBinderCore(parentBinder, syntax);
@@ -189,7 +179,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitCore(parent.Parent);
-				resultBinder = this.CreateAnnotationBinder(resultBinder, parent);
+				resultBinder = this.CreateAttributeBinder(resultBinder, parent, ImmutableArray.Create(typeof(Symbols.MetaAnnotation)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

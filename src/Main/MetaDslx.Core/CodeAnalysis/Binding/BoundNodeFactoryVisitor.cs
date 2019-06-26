@@ -82,6 +82,16 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new BoundSymbolUse(BoundKind.SymbolUse, boundTree, childBoundNodes, symbolTypes, nestingSymbolTypes, syntax, hasErrors);
         }
 
+        protected virtual BoundNode CreateBoundAttribute(BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, ImmutableArray<Type> symbolTypes, LanguageSyntaxNode syntax, bool hasErrors)
+        {
+            return this.CreateBoundAttributeCore(boundTree, childBoundNodes, symbolTypes, ImmutableArray<Type>.Empty, syntax, hasErrors);
+        }
+
+        protected virtual BoundNode CreateBoundAttributeCore(BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes, LanguageSyntaxNode syntax, bool hasErrors)
+        {
+            return new BoundAttribute(BoundKind.SymbolUse, boundTree, childBoundNodes, symbolTypes, nestingSymbolTypes, syntax, hasErrors);
+        }
+
         protected virtual BoundNode CreateBoundProperty(BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, string name, LanguageSyntaxNode syntax, bool hasErrors)
         {
             return this.CreateBoundPropertyCore(boundTree, childBoundNodes, name, default, syntax, hasErrors);

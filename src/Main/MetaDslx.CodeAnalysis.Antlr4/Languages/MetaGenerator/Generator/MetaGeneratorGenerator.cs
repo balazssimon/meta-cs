@@ -450,10 +450,8 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
         public override object VisitGeneratorDeclaration(MetaGeneratorParser.GeneratorDeclarationContext context)
         {
             string name = context.identifier().GetText();
-            Random rnd = new Random();
-            int randomInt = rnd.Next(int.MaxValue);
-            WriteLine("using __Hidden_{0}_{1};", name, randomInt);
-            WriteLine("namespace __Hidden_{0}_{1}", name, randomInt);
+            WriteLine("using __Hidden_{0};", name);
+            WriteLine("namespace __Hidden_{0}", name);
             WriteLine("{");
             IncIndent();
             WriteLine("internal static class __Extensions");

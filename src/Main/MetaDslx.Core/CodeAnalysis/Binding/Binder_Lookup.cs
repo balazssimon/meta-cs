@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.Languages.Meta.Symbols;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -25,13 +26,14 @@ namespace MetaDslx.CodeAnalysis.Binding
             LookupResult result,
             LookupConstraints constraints)
         {
+            constraints = this.AdjustConstraints(constraints);
             if (constraints.Options.IsAttributeTypeLookup())
             {
-                this.LookupAttributeType(result, constraints.WithOriginalBinder(this));
+                this.LookupAttributeType(result, constraints);
             }
             else
             {
-                this.LookupSymbolsOrMembersInternal(result, constraints.WithOriginalBinder(this));
+                this.LookupSymbolsOrMembersInternal(result, constraints);
             }
         }
 
@@ -393,7 +395,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             if (!constraints.Options.IsVerbatimNameAttributeTypeLookup())
             {
                 resultWithSuffix = LookupResult.GetInstance();
-                this.LookupSymbolsOrMembersInternal(resultWithSuffix, constraints.WithName(constraints.Name + "Attribute"));
+                this.LookupSymbolsOrMembersInternal(resultWithSuffix, constraints.WithName(constraints.Name + Language.SymbolFacts.AttributeNameSuffix));
                 resultWithSuffixIsViable = IsSingleViableAttributeType(resultWithSuffix, out symbolWithSuffix);
 
                 // Generic types are not allowed.
@@ -530,7 +532,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return LookupResult.NotAnAttributeType(symbol, diagInfo);
         }
 
-        private bool CheckAttributeTypeViability(Symbol symbol, bool diagnose, ref DiagnosticInfo diagInfo)
+        public virtual bool CheckAttributeTypeViability(Symbol symbol, bool diagnose, ref DiagnosticInfo diagInfo)
         {
             Debug.Assert((object)symbol != null);
 
@@ -569,8 +571,11 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
             }
 
+            /* TODO:MetaDslx
             diagInfo = diagnose ? new LanguageDiagnosticInfo(InternalErrorCode.ERR_NotAnAttributeClass, symbol) : null;
             return false;
+            */
+            return true;
         }
 
         #endregion
@@ -773,7 +778,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <remarks>
         /// Distinguish from <see cref="CanAddLookupSymbolInfo"/>, which performs an analogous task for Add*LookupSymbolsInfo*.
         /// </remarks>
-        public SingleLookupResult CheckViability(Symbol symbol, LookupConstraints constraints)
+        public virtual SingleLookupResult CheckViability(Symbol symbol, LookupConstraints constraints)
         {
             bool inaccessibleViaQualifier;
             DiagnosticInfo diagInfo;
@@ -1079,9 +1084,10 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         public void AddLookupSymbolsInfo(LookupSymbolsInfo result, LookupConstraints constraints)
         {
+            constraints = this.AdjustConstraints(constraints);
             for (var scope = this; scope != null; scope = scope.Next)
             {
-                scope.AddLookupSymbolsInfoInSingleBinder(result, constraints.WithOriginalBinder(this));
+                scope.AddLookupSymbolsInfoInSingleBinder(result, constraints);
             }
         }
 
@@ -1095,13 +1101,14 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// </summary>
         public void AddMemberLookupSymbolsInfo(LookupSymbolsInfo result, LookupConstraints constraints)
         {
+            constraints = this.AdjustConstraints(constraints);
             if (constraints.QualifierOpt.IsNamespace)
             {
-                AddMemberLookupSymbolsInfoInNamespace(result, constraints.WithOriginalBinder(this));
+                AddMemberLookupSymbolsInfoInNamespace(result, constraints);
             }
             else
             {
-                this.AddMemberLookupSymbolsInfoInType(result, constraints.WithOriginalBinder(this));
+                this.AddMemberLookupSymbolsInfoInType(result, constraints);
             }
         }
 
@@ -1187,6 +1194,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
 
             this.AddMemberLookupSymbolsInfoInTypeCore(result, constraints.WithQualifier(Compilation.GetSpecialType(SpecialType.System_Object)));
+        }
+
+        protected virtual LookupConstraints AdjustConstraints(LookupConstraints constraints)
+        {
+            return constraints.WithOriginalBinder(this);
         }
     }
 }

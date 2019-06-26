@@ -14,11 +14,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private SyntaxReference _syntaxReference;
         private IMetaSymbol _modelObject;
 
-        public SourceTypeSymbol(Symbol containingSymbol, SyntaxReference syntaxReference, IMetaSymbol modelObject)
+        public SourceTypeSymbol(SourceAssemblySymbol containingAssembly, SyntaxReference syntaxReference, IMetaSymbol modelObject)
         {
-            _containingSymbol = containingSymbol;
+            _containingSymbol = containingAssembly;
             _syntaxReference = syntaxReference;
             _modelObject = modelObject;
+            containingAssembly.SourceModule.MetaSymbolMap.RegisterSymbol(_modelObject, this);
         }
 
         public override IMetaSymbol ModelObject => _modelObject;

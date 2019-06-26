@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 
 
@@ -286,6 +287,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             get { return null; }
         }
 
-        public override ModuleMetadata GetMetadata() => _underlyingModule.GetMetadata();
+        public override ModuleMetadata GetMetadata()
+        {
+            return _underlyingModule.GetMetadata();
+        }
+
+        public override bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        {
+            return _underlyingModule.TryGetSymbol(modelObject, out symbol);
+        }
     }
 }

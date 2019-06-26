@@ -29,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             foreach (var boundProp in boundProperties)
             {
                 var prop = modelObject.MGetProperty(boundProp.Name);
-                if (prop.IsBaseScope) continue;
+                //if (prop.IsBaseScope) continue;
                 foreach (var boundValue in boundProp.BoundValues)
                 {
                     if (boundValue is BoundSymbolDef) continue;

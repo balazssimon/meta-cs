@@ -117,5 +117,40 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             return this.Options.AreValid();
         }
+
+        public bool IsMemberLookup
+        {
+            get { return (object)this.QualifierOpt != null; }
+        }
+
+        public bool CanConsiderMembers()
+        {
+            return this.Options.CanConsiderMembers();
+        }
+
+        public bool CanConsiderLocals()
+        {
+            return this.Options.CanConsiderLocals();
+        }
+
+        public bool CanConsiderTypes()
+        {
+            return this.Options.CanConsiderTypes();
+        }
+
+        public bool CanConsiderNamespaces()
+        {
+            return this.Options.CanConsiderNamespaces();
+        }
+
+        public bool IsAttributeTypeLookup()
+        {
+            return this.Options.IsAttributeTypeLookup();
+        }
+
+        public bool IsVerbatimNameAttributeTypeLookup()
+        {
+            return this.Options.IsVerbatimNameAttributeTypeLookup();
+        }
     }
 }
