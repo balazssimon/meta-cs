@@ -79,5 +79,6 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode ERR_InvalidImport = new ModelErrorCode(34, "Invalid import", "Invalid import: '{0}'. An import symbol must be a NamespaceOrTypeSymbol.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_BadSymbol = new ModelErrorCode(35, "Invalid symbol", "Unexpected {1} '{0}'. Expected symbols are: {2}", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotSetOppositeProperty = new ModelErrorCode(36, "Cannot set opposite property", "Cannot set opposite property between '{0}' and '{1}'", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_PropertyDoesNotExist = new ModelErrorCode(37, "Invalid property", "Symbol '{0}' has no property with name '{1}'.", DiagnosticSeverity.Error);
     }
 }

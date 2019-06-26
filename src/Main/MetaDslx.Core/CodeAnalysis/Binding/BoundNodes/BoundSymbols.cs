@@ -29,6 +29,11 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             foreach (var boundProp in boundProperties)
             {
                 var prop = modelObject.MGetProperty(boundProp.Name);
+                if (prop == null)
+                {
+                    diagnostics.Add(ModelErrorCode.ERR_PropertyDoesNotExist, modelObject, boundProp.Name);
+                    continue;
+                }
                 //if (prop.IsBaseScope) continue;
                 foreach (var boundValue in boundProp.BoundValues)
                 {

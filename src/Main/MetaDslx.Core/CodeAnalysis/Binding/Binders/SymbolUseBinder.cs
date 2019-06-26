@@ -13,6 +13,8 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
+    using MetaAnnotation = MetaAttribute;
+
     public class SymbolUseBinder : Binder
     {
         private readonly ImmutableArray<ModelSymbolInfo> _symbolTypes;

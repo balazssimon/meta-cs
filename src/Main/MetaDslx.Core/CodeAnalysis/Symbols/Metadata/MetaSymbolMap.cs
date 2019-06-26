@@ -59,6 +59,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return (T)symbol;
         }
 
+        public IEnumerable<Symbol> GetAllSymbols()
+        {
+            if (_module?.ModelBuilder == null)
+            {
+                yield break;
+            }
+            foreach (var modelObject in _module.ModelBuilder.Symbols)
+            {
+                yield return this.GetSymbol(modelObject);
+            }
+        }
+
         public Symbol GetSymbol(IMetaSymbol metaSymbol)
         {
             if (metaSymbol.MId.SymbolInfo.IsNamespace) return GetNamespaceSymbol(metaSymbol);

@@ -123,8 +123,8 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.Qualifier, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundAttribute(this.BoundTree, childBoundNodes.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.MetaAnnotation)), node, false);
-			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Annotations", node, false);
+			resultNode = this.CreateBoundAttribute(this.BoundTree, childBoundNodes.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.MetaAttribute)), node, false);
+			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Attributes", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}
@@ -204,7 +204,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			BoundNode resultNode;
 			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaModel), node, false);
-			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "MetaModel", node, false);
+			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "DefinedMetaModel", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
 		}
@@ -751,10 +751,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				this.Visit(node.Name, childBoundNodes);
 			}
-			BoundNode resultNode;
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaExternalType), node, false);
-			childBoundNodesForParent.Add(resultNode);
-			return resultNode;
+			return null;
 		}
 		
 		public BoundNode VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
@@ -784,10 +781,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				this.Visit(node.Name, childBoundNodes);
 			}
-			BoundNode resultNode;
-			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaExternalType), node, false);
-			childBoundNodesForParent.Add(resultNode);
-			return resultNode;
+			return null;
 		}
 		
 		public BoundNode VisitReturnType(ReturnTypeSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)

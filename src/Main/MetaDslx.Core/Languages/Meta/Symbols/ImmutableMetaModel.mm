@@ -23,15 +23,15 @@
 	const MetaAttribute LocalScopeAttribute;
 
 	/*
-	Represents an element with attributes.
+	Represents an element.
 	*/
-	abstract class MetaElementWithAttributes
+	abstract class MetaElement
 	{
 		// List of attributes
-		containment list<MetaAttribute> Attributes; 
+		list<MetaAttribute> Attributes; 
 	}
 
-	abstract class MetaDocumentedElement
+	abstract class MetaDocumentedElement : MetaElement
 	{
 		string Documentation;
 		list<string> GetDocumentationLines();
@@ -43,7 +43,7 @@
 		string Name;
 	}
 
-	abstract class MetaTypedElement
+	abstract class MetaTypedElement : MetaElement
 	{
 		[Type]
 		MetaType Type;
@@ -62,7 +62,7 @@
 	{
 	}
 
-	abstract class MetaDeclaration : MetaNamedElement, MetaElementWithAttributes
+	abstract class MetaDeclaration : MetaNamedElement
 	{
 		MetaNamespace Namespace;
 		derived MetaModel MetaModel;
@@ -77,7 +77,7 @@
 
 	association MetaNamespace.Declarations with MetaDeclaration.Namespace;
 
-	class MetaModel : MetaNamedElement, MetaElementWithAttributes
+	class MetaModel : MetaNamedElement
 	{
 		string Uri;
 		MetaNamespace Namespace;
@@ -115,7 +115,7 @@
 		containment list<MetaOperation> Operations;
 	}
 
-	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement, MetaElementWithAttributes
+	class MetaEnumLiteral : MetaNamedElement, MetaTypedElement
 	{
 		MetaEnum Enum redefines MetaTypedElement.Type;
 	}
@@ -144,7 +144,7 @@
 	}
 	
 	[LocalScope]
-	class MetaOperation : MetaNamedElement, MetaElementWithAttributes
+	class MetaOperation : MetaNamedElement
 	{
 		MetaType Parent;
 		containment list<MetaParameter> Parameters;
@@ -154,7 +154,7 @@
 	association MetaOperation.Parent with MetaClass.Operations;
 	association MetaOperation.Parent with MetaEnum.Operations;
 
-	class MetaParameter : MetaNamedElement, MetaTypedElement, MetaElementWithAttributes
+	class MetaParameter : MetaNamedElement, MetaTypedElement
 	{
 		MetaOperation Operation;
 	}
@@ -171,7 +171,7 @@
 		Containment
 	}
 
-	class MetaProperty : MetaNamedElement, MetaTypedElement, MetaElementWithAttributes
+	class MetaProperty : MetaNamedElement, MetaTypedElement
 	{
 		MetaPropertyKind Kind;
 		MetaClass Class;

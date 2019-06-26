@@ -30,7 +30,7 @@ namespace MetaDslx.Languages.Meta.Symbols
                     typesBuilder.Add(MetaInstance.Byte);
                     typesBuilder.Add(MetaInstance.Bool);
                     typesBuilder.Add(MetaInstance.Void);
-                    typesBuilder.Add(MetaInstance.Symbol);
+                    typesBuilder.Add(MetaInstance.ModelObject);
                     Interlocked.Exchange(ref MetaConstants.types, typesBuilder.ToImmutable());
                 }
                 return MetaConstants.types;
@@ -64,14 +64,24 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
             _this.Bool.Name = "bool";
             _this.Void = f.MetaPrimitiveType();
             _this.Void.Name = "void";
-            _this.Symbol = f.MetaPrimitiveType();
-            _this.Symbol.Name = "symbol";
+            _this.ModelObject = f.MetaPrimitiveType();
+            _this.ModelObject.Name = "symbol";
+            _this.NameAttribute = f.MetaAttribute();
+            _this.NameAttribute.Name = "NameAttribute";
+            _this.TypeAttribute = f.MetaAttribute();
+            _this.TypeAttribute.Name = "TypeAttribute";
+            _this.ScopeAttribute = f.MetaAttribute();
+            _this.ScopeAttribute.Name = "ScopeAttribute";
+            _this.BaseScopeAttribute = f.MetaAttribute();
+            _this.BaseScopeAttribute.Name = "BaseScopeAttribute";
+            _this.LocalScopeAttribute = f.MetaAttribute();
+            _this.LocalScopeAttribute.Name = "LocalScopeAttribute";
         }
 
         public override void MetaDeclaration(MetaDeclarationBuilder _this)
         {
             base.MetaDeclaration(_this);
-            _this.MetaModelLazy = () => _this.Namespace?.MetaModel;
+            _this.MetaModelLazy = () => _this.Namespace?.DefinedMetaModel;
         }
         /*
         public override void MetaFunction(MetaFunctionBuilder _this)

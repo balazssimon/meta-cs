@@ -17,7 +17,7 @@ qualifiedName : qualifier;
 $Qualifier
 qualifier : identifier (TDot identifier)*;
 
-$Property(Annotations)
+$Property(Attributes)
 $SymbolUse(MetaAnnotation)
 annotation : TOpenBracket qualifier /*annotationParams?*/ TCloseBracket;
 
@@ -36,7 +36,7 @@ namespaceDeclaration: annotation* KNamespace qualifiedName namespaceBody;
 $Scope
 namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
-$Property(MetaModel)
+$Property(DefinedMetaModel)
 $SymbolDef(MetaModel)
 metamodelDeclaration: annotation* KMetamodel name (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
 

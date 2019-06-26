@@ -65,7 +65,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 
         private static IMetaSymbol CreateAnnotation(string name, MetaFactory factory)
         {
-            var annot = factory.MetaAnnotation();
+            //var annot = factory.MetaAnnotation();
+            var annot = factory.MetaAttribute();
             annot.Name = name;
             return annot;
         }

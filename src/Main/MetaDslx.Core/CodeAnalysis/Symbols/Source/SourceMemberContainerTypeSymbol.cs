@@ -906,7 +906,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             {
                 if (cancellationToken.IsCancellationRequested) return;
                 var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(syntaxRef.GetSyntax());
-                boundNode?.SetPropertyValues(_modelObject, diagnostics, cancellationToken);
+                boundNode?.SetPropertyValues(_modelObject, boundNode.BoundTree.DiagnosticBag, cancellationToken);
             }
         }
 

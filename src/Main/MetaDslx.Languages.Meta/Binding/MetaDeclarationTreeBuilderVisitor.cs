@@ -79,7 +79,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitAnnotation(AnnotationSyntax node)
 		{
-			this.BeginProperty("Annotations");
+			this.BeginProperty("Attributes");
 			try
 			{
 				this.Visit(node.Qualifier);
@@ -127,7 +127,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitMetamodelDeclaration(MetamodelDeclarationSyntax node)
 		{
-			this.BeginProperty("MetaModel");
+			this.BeginProperty("DefinedMetaModel");
 			try
 			{
 				this.BeginDeclaration(typeof(Symbols.MetaModel), node);
@@ -489,33 +489,12 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaExternalType), node);
-			try
-			{
-				this.Visit(node.Name);
-			}
-			finally
-			{
-				this.EndDeclaration();
-			}
+
 		}
 		
 		public virtual void VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaExternalType), node);
-			try
-			{
-				switch (node.KStruct.GetKind().Switch())
-				{
-					default:
-						break;
-				}
-				this.Visit(node.Name);
-			}
-			finally
-			{
-				this.EndDeclaration();
-			}
+
 		}
 		
 		public virtual void VisitReturnType(ReturnTypeSyntax node)

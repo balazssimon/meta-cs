@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Languages.Meta.Generator
 {
+    using MetaAnnotation = MetaAttribute;
+
     internal enum ModelKind
     {
         None,
@@ -51,6 +53,17 @@ namespace MetaDslx.Languages.Meta.Generator
         Descriptor,
         ImmutableInstance,
         BuilderInstance
+    }
+
+    interface MetaExternalType : MetaDeclaration
+    {
+        bool IsValueType { get; }
+        string ExternalName { get; }
+    }
+
+    interface MetaRootNamespace : MetaNamespace
+    {
+
     }
 
     //*
@@ -608,7 +621,7 @@ namespace MetaDslx.Languages.Meta.Generator
 
         public string GetAttributeValueOf(MetaAnnotation mannot)
         {
-            string result = mannot.Name;
+            string result = GetAttributeName(mannot);
             return result;
         }
 
@@ -650,6 +663,12 @@ namespace MetaDslx.Languages.Meta.Generator
             }
             if (mtype is MetaClass) return true;
             return false;
+        }
+
+        public string GetAttributeName(MetaAnnotation mannot)
+        {
+            if (mannot.Name.EndsWith("Attribute")) return mannot.Name;
+            else return mannot.Name + "Attribute";
         }
     }
     //*/

@@ -31,6 +31,7 @@ extern function string EscapeText(string text)
 extern function bool IsMetaMetaModel(MetaModel mmodel)
 extern function string GetEnumValueOf(Enum menum)
 extern function string GetAttributeValueOf(MetaAnnotation mannot)
+extern function string GetAttributeName(MetaAnnotation mannot)
 extern function string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false)
 extern function string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
 extern function string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
@@ -56,7 +57,7 @@ end template
 
 template GenerateAnnotations(MetaAnnotatedElement elem)
 [loop(elem->annot:Annotations)]
-["["][Properties.CoreNs].[annot.Name]Attribute["]"]
+["["][Properties.CoreNs].[GetAttributeName(annot)]["]"]
 [end loop]
 end template
 
@@ -352,6 +353,8 @@ template GenerateSymbolInstancePropertyCollectionValue(MetaModel model, bool met
 [name].[prop.Name].Add([value.ToString().ToLower()]);
 [else if (value.GetType().IsPrimitive)]
 [name].[prop.Name].Add([value.ToString()]);
+[else if (value is MetaAnnotation)]
+[name].[prop.Name].Add([GetAttributeValueOf((MetaAnnotation)value)]);
 [else if (value is Enum)]
 [name].[prop.Name].Add([GetEnumValueOf((Enum)value)]);
 [else if (value is MetaExternalType)]
