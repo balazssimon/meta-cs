@@ -5,6 +5,7 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -44,9 +45,9 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(coreModel);
 
             //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
-            //string text = File.ReadAllText(@"..\..\..\Soal.mm");
+            string text = File.ReadAllText(@"..\..\..\Soal.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -141,10 +142,19 @@ namespace MetaDslx.Bootstrap
             /*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Symbols);
             string generatedCsharpModel = mmgen.Generate();
-            //File.WriteAllText("Soal.txt", generatedCsharpModel);
+            File.WriteAllText("Soal.txt", generatedCsharpModel);
             //File.WriteAllText("../../../Soal.cs", generatedCsharpModel);
             //File.WriteAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.cs", generatedCsharpModel);
-            File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
+            //File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
+            //*/
+
+            //*/
+            ImmutableModel soalModel = SoalInstance.Model;
+            Console.WriteLine(soalModel);
+            foreach (var symbol in soalModel.Symbols)
+            {
+                Console.WriteLine(symbol.MName);
+            }
             //*/
         }
 

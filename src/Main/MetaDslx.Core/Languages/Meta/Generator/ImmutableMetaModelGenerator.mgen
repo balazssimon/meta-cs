@@ -29,9 +29,9 @@ extern function string ToCamelCase(string identifier)
 extern function string ToPascalCase(string identifier)
 extern function string EscapeText(string text)
 extern function bool IsMetaMetaModel(MetaModel mmodel)
-extern function string GetEnumValueOf(Enum menum)
-extern function string GetAttributeValueOf(MetaAnnotation mannot)
-extern function string GetAttributeName(MetaAnnotation mannot)
+extern function string GetEnumValueOf(MetaModel mmodel, Enum menum)
+extern function string GetAttributeValueOf(MetaModel mmodel, MetaAttribute mattr)
+extern function string GetAttributeName(MetaAttribute mattr)
 extern function string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false)
 extern function string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
 extern function string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
@@ -55,9 +55,9 @@ template GenerateDocumentation(MetaDocumentedElement elem)
 [end if]
 end template
 
-template GenerateAnnotations(MetaAnnotatedElement elem)
-[loop(elem->annot:Annotations)]
-["["][Properties.CoreNs].[GetAttributeName(annot)]["]"]
+template GenerateAttributes(MetaElement elem)
+[loop(elem->attr:Attributes)]
+["["][Properties.CoreNs].[GetAttributeName(attr)]["]"]
 [end loop]
 end template
 
@@ -309,10 +309,10 @@ template GenerateSymbolInstancePropertyValue(MetaModel model, bool metaMetaModel
 [name].[prop.Name] = [value.ToString().ToLower()];
 [else if (value.GetType().IsPrimitive)]
 [name].[prop.Name] = [value.ToString()];
-[else if (value is MetaAnnotation)]
-[name].[prop.Name] = [GetAttributeValueOf((MetaAnnotation)value)];
+[else if (value is MetaAttribute)]
+[name].[prop.Name] = [GetAttributeValueOf(model, (MetaAttribute)value)];
 [else if (value is Enum)]
-[name].[prop.Name] = [GetEnumValueOf((Enum)value)];
+[name].[prop.Name] = [GetEnumValueOf(model, (Enum)value)];
 [else if (value is MetaExternalType)]
 [name].[prop.Name]Lazy = () => [((MetaExternalType)value).Name.ToPascalCase()];
 [else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
@@ -353,10 +353,10 @@ template GenerateSymbolInstancePropertyCollectionValue(MetaModel model, bool met
 [name].[prop.Name].Add([value.ToString().ToLower()]);
 [else if (value.GetType().IsPrimitive)]
 [name].[prop.Name].Add([value.ToString()]);
-[else if (value is MetaAnnotation)]
-[name].[prop.Name].Add([GetAttributeValueOf((MetaAnnotation)value)]);
+[else if (value is MetaAttribute)]
+[name].[prop.Name].Add([GetAttributeValueOf(model, (MetaAttribute)value)]);
 [else if (value is Enum)]
-[name].[prop.Name].Add([GetEnumValueOf((Enum)value)]);
+[name].[prop.Name].Add([GetEnumValueOf(model, (Enum)value)]);
 [else if (value is MetaExternalType)]
 [name].[prop.Name].AddLazy(() => [((MetaExternalType)value).Name.ToPascalCase()]);
 [else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
@@ -450,7 +450,7 @@ end template
 
 template GenerateDescriptorClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
-[GenerateAnnotations(cls)]
+[GenerateAttributes(cls)]
 ["["+Properties.CoreNs].ModelSymbolDescriptorAttribute(typeof([cls.CSharpName(null, ClassKind.Id, true)]), typeof([cls.CSharpName(null, ClassKind.Immutable, true)]), typeof([cls.CSharpName(null, ClassKind.Builder, true)])[GetDescriptorAncestors(model, cls)])["]"]
 public static class [cls.CSharpName(model, ClassKind.Descriptor)]
 {
@@ -498,8 +498,8 @@ end function
 template GenerateDescriptorProperty(MetaModel model, MetaClass cls, MetaProperty prop)
 ^
 [GenerateDocumentation(prop)]
-[GenerateAnnotations(prop)]
-[GenerateDescriptorPropertyAnnotations(model, cls, prop)]
+[GenerateAttributes(prop)]
+[GenerateDescriptorPropertyAttributes(model, cls, prop)]
 public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model, PropertyKind.Descriptor)] =
     [Properties.CoreNs].ModelProperty.Register(typeof([cls.CSharpName(model, ClassKind.Descriptor)]), "[prop.CSharpName(model)]",
 [if (prop.Type is MetaCollectionType)]
@@ -513,7 +513,7 @@ public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model,
 		() => [prop.CSharpName(null, PropertyKind.ImmutableInstance, true)]);
 end template
 
-template GenerateDescriptorPropertyAnnotations(MetaModel model, MetaClass cls, MetaProperty prop)
+template GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, MetaProperty prop)
 [if(prop.Kind == MetaPropertyKind.Containment)]
 ["["+Properties.CoreNs+".ContainmentAttribute]"]
 [end if]

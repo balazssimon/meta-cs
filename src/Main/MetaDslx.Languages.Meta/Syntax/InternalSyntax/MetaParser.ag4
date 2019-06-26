@@ -18,27 +18,18 @@ $Qualifier
 qualifier : identifier (TDot identifier)*;
 
 $Property(Attributes)
-$SymbolUse(MetaAnnotation)
-annotation : TOpenBracket qualifier /*annotationParams?*/ TCloseBracket;
-
-/*
-annotationParams : TOpenParen annotationParamList? TCloseParen;
-annotationParamList : annotationParam (TComma annotationParam)*;
-
-$Property(Properties)
-$SymbolDef(MetaAnnotationProperty)
-annotationParam : $Property(Name) name;
-*/
+$SymbolUse(MetaAttribute)
+attribute : TOpenBracket qualifier TCloseBracket;
 
 $SymbolDef(symbolType=MetaNamespace,nestingProperty=Declarations,merge=true)
-namespaceDeclaration: annotation* KNamespace qualifiedName namespaceBody;
+namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
 
 $Scope
 namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
 $Property(DefinedMetaModel)
 $SymbolDef(MetaModel)
-metamodelDeclaration: annotation* KMetamodel name (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
+metamodelDeclaration: attribute* KMetamodel name (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
 
@@ -48,19 +39,19 @@ $Property(Uri)
 metamodelUriProperty : IUri TAssign $Value stringLiteral;
 
 $Property(Declarations) 
-declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | externTypeDeclaration;
+declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
 $SymbolDef(MetaEnum)
-enumDeclaration : annotation* KEnum name enumBody;
+enumDeclaration : attribute* KEnum name enumBody;
 $Scope
 enumBody : TOpenBrace $Property(EnumLiterals) enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
 $SymbolDef(MetaEnumLiteral)
-enumValue : annotation* name;
+enumValue : attribute* name;
 enumMemberDeclaration : $Property(Operations) operationDeclaration;
 
 $SymbolDef(MetaClass)
-classDeclaration : annotation* $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
+classDeclaration : attribute* $Property(name=IsAbstract,value=true) KAbstract? KClass name (TColon $Property(SuperClasses) classAncestors)? classBody;
 $Scope
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
@@ -71,7 +62,7 @@ classMemberDeclaration
 	;
 
 $SymbolDef(MetaProperty)
-fieldDeclaration : annotation* $Property(Kind) fieldModifier? $Property(Type) typeReference name redefinitionsOrSubsettings? TSemicolon;
+fieldDeclaration : attribute* $Property(Kind) fieldModifier? $Property(Type) typeReference name redefinitionsOrSubsettings? TSemicolon;
 fieldModifier 
 	: $Value(MetaPropertyKind.Containment) KContainment 
 	| $Value(MetaPropertyKind.Readonly) KReadonly 
@@ -86,8 +77,8 @@ subsettings : KSubsets $Property(SubsettedProperties) nameUseList?;
 $SymbolUse(MetaProperty)
 nameUseList : qualifier (TComma qualifier)*;
 
-$SymbolDef(MetaExternAlias)
-externAliasDeclaration : KExtern KAlias name TSemicolon;
+$SymbolDef(MetaConstant)
+constDeclaration : KConst $Property(Type) typeReference name TSemicolon;
 
 $SymbolUse(MetaType)
 returnType : typeReference | voidType;
@@ -136,14 +127,14 @@ collectionKind
 	;
 
 $SymbolDef(MetaOperation)
-operationDeclaration : annotation* KStatic? $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute* KStatic? $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
 $SymbolDef(MetaParameter)
-parameter : annotation* $Property(Type) typeReference name;
+parameter : attribute* $Property(Type) typeReference name;
 
 $Opposite
-associationDeclaration : annotation* KAssociation $SymbolUse(MetaProperty) source=qualifier KWith $SymbolUse(MetaProperty) target=qualifier TSemicolon;
+associationDeclaration : attribute* KAssociation $SymbolUse(MetaProperty) source=qualifier KWith $SymbolUse(MetaProperty) target=qualifier TSemicolon;
 
 
 // Additional rules for lexer:

@@ -29,7 +29,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseFieldModifier = new object();
 		public static object UseTypeReference = new object();
 		public static object UseNameUseList = new object();
-		public static object UseKStruct = new object();
 		public static object UsePrimitiveType = new object();
 		public static object UseCollectionKind = new object();
 		public static object UseSimpleType = new object();
@@ -39,7 +38,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseTarget = new object();
 		public static object UseNamespaceDeclaration = new object();
 		public static object UseIdentifier = new object();
-		public static object UseAnnotation = new object();
+		public static object UseAttribute = new object();
 		public static object UseQualifiedName = new object();
 		public static object UseNamespaceBody = new object();
 		public static object UseMetamodelDeclaration = new object();
@@ -53,8 +52,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseEnumBody = new object();
 		public static object UseEnumValue = new object();
 		public static object UseClassBody = new object();
-		public static object UseExternClassTypeDeclaration = new object();
-		public static object UseExternStructTypeDeclaration = new object();
 		public static object UseVoidType = new object();
 		public static object UseCollectionType = new object();
 		public static object UseObjectType = new object();
@@ -67,7 +64,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseDecimalLiteral = new object();
 		public static object UseScientificLiteral = new object();
 		public static object UseMetamodelProperty = new object();
-		public static object UseExternTypeDeclaration = new object();
 		public static object UseEnumMemberDeclaration = new object();
 		public static object UseClassMemberDeclaration = new object();
 		public static object UseClassAncestor = new object();
@@ -168,7 +164,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
-		public Binder VisitAnnotation(AnnotationSyntax parent)
+		public Binder VisitAttribute(AttributeSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -179,7 +175,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitCore(parent.Parent);
-				resultBinder = this.CreateAttributeBinder(resultBinder, parent, ImmutableArray.Create(typeof(Symbols.MetaAttribute)));
+				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, ImmutableArray.Create(typeof(Symbols.MetaAttribute)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -581,54 +577,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitCore(parent.Parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, typeof(Symbols.MetaConstant));
-				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-			}
-			return resultBinder;
-		}
-		
-		public Binder VisitExternTypeDeclaration(ExternTypeDeclarationSyntax parent)
-		{
-		    if (!parent.FullSpan.Contains(this.Position))
-		    {
-		        return VisitCore(parent.Parent);
-		    }
-			object use = null;
-			Binder resultBinder = null;
-			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
-			{
-				resultBinder = VisitCore(parent.Parent);
-				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-			}
-			return resultBinder;
-		}
-		
-		public Binder VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax parent)
-		{
-		    if (!parent.FullSpan.Contains(this.Position))
-		    {
-		        return VisitCore(parent.Parent);
-		    }
-			object use = null;
-			Binder resultBinder = null;
-			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
-			{
-				resultBinder = VisitCore(parent.Parent);
-				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-			}
-			return resultBinder;
-		}
-		
-		public Binder VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax parent)
-		{
-		    if (!parent.FullSpan.Contains(this.Position))
-		    {
-		        return VisitCore(parent.Parent);
-		    }
-			object use = null;
-			Binder resultBinder = null;
-			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
-			{
-				resultBinder = VisitCore(parent.Parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

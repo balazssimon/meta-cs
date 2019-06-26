@@ -75,8 +75,6 @@
 	{
 		string Uri;
 		string Prefix;
-		[Import]
-		list<Namespace> Usings;
 		containment list<Declaration> Declarations;
 	}
 

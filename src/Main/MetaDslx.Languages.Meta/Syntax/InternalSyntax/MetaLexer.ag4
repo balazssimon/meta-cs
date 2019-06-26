@@ -51,7 +51,7 @@ KTypeof : 'typeof';
 KAs : 'as';
 KIs : 'is';
 KBase : 'base';
-KAlias : 'alias';
+KConst : 'const';
 KRedefines : 'redefines';
 KSubsets : 'subsets';
 KReadonly : 'readonly';

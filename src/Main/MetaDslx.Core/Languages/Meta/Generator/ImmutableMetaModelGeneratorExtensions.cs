@@ -613,16 +613,15 @@ namespace MetaDslx.Languages.Meta.Generator
             return result.ToImmutable();
         }
 
-        public string GetEnumValueOf(Enum menum)
+        public string GetEnumValueOf(MetaModel mmodel, Enum menum)
         {
             string result = "global::" + menum.GetType().FullName.Replace("+", ".") + "." + menum.ToString();
             return result;
         }
 
-        public string GetAttributeValueOf(MetaAnnotation mannot)
+        public string GetAttributeValueOf(MetaModel mmodel, MetaAttribute mattr)
         {
-            string result = GetAttributeName(mannot);
-            return result;
+            return this.CSharpName(mattr.MMetaModel, ModelKind.ImmutableInstance, true) + "." + mattr.Name + ".ToMutable()";
         }
 
         public string EscapeText(string text)

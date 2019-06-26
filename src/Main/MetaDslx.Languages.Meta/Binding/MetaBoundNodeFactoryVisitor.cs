@@ -110,7 +110,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultNode;
 		}
 		
-		public BoundNode VisitAnnotation(AnnotationSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
+		public BoundNode VisitAttribute(AttributeSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
 		{
 			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
 			{
@@ -123,7 +123,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.Qualifier, childBoundNodes);
 			}
 			BoundNode resultNode;
-			resultNode = this.CreateBoundAttribute(this.BoundTree, childBoundNodes.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.MetaAttribute)), node, false);
+			resultNode = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodes.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.MetaAttribute)), node, false);
 			resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(resultNode), "Attributes", node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
@@ -137,9 +137,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var item in node.Annotation)
+				foreach (var item in node.Attribute)
 				{
 					this.Visit(item, childBoundNodes);
 				}
@@ -187,9 +187,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var item in node.Annotation)
+				foreach (var item in node.Attribute)
 				{
 					this.Visit(item, childBoundNodes);
 				}
@@ -286,10 +286,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				this.Visit(node.ConstDeclaration, childBoundNodes);
 			}
-			if (node.ExternTypeDeclaration != null)
-			{
-				this.Visit(node.ExternTypeDeclaration, childBoundNodes);
-			}
 			BoundNode resultNode;
 			resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), "Declarations", node, false);
 			childBoundNodesForParent.Add(resultNode);
@@ -304,9 +300,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var item in node.Annotation)
+				foreach (var item in node.Attribute)
 				{
 					this.Visit(item, childBoundNodes);
 				}
@@ -375,9 +371,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var item in node.Annotation)
+				foreach (var item in node.Attribute)
 				{
 					this.Visit(item, childBoundNodes);
 				}
@@ -418,9 +414,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var item in node.Annotation)
+				foreach (var item in node.Attribute)
 				{
 					this.Visit(item, childBoundNodes);
 				}
@@ -539,9 +535,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var item in node.Annotation)
+				foreach (var item in node.Attribute)
 				{
 					this.Visit(item, childBoundNodes);
 				}
@@ -710,78 +706,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), typeof(Symbols.MetaConstant), node, false);
 			childBoundNodesForParent.Add(resultNode);
 			return resultNode;
-		}
-		
-		public BoundNode VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
-		{
-			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
-			{
-				childBoundNodesForParent.Add(cachedBoundNode);
-				return cachedBoundNode;
-			}
-			if (node.ExternClassTypeDeclaration != null)
-			{
-				this.Visit(node.ExternClassTypeDeclaration, childBoundNodesForParent);
-			}
-			if (node.ExternStructTypeDeclaration != null)
-			{
-				this.Visit(node.ExternStructTypeDeclaration, childBoundNodesForParent);
-			}
-			return null;
-		}
-		
-		public BoundNode VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
-		{
-			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
-			{
-				childBoundNodesForParent.Add(cachedBoundNode);
-				return cachedBoundNode;
-			}
-			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Qualifier != null)
-			{
-				var childBoundNodesOfQualifier = ArrayBuilder<BoundNode>.GetInstance();
-				this.Visit(node.Qualifier, childBoundNodesOfQualifier);
-				BoundNode boundQualifier;
-				boundQualifier = this.CreateBoundValue(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), node.Qualifier, false);
-				boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(boundQualifier), "ExternalName", node.Qualifier, false);
-				childBoundNodes.Add(boundQualifier);
-			}
-			if (node.Name != null)
-			{
-				this.Visit(node.Name, childBoundNodes);
-			}
-			return null;
-		}
-		
-		public BoundNode VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
-		{
-			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
-			{
-				childBoundNodesForParent.Add(cachedBoundNode);
-				return cachedBoundNode;
-			}
-			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.KStruct.GetKind() == MetaSyntaxKind.KStruct)
-			{
-				BoundNode boundKStruct;
-				boundKStruct = this.CreateBoundProperty(this.BoundTree, ImmutableArray<BoundNode>.Empty, "IsValueType", true, node, false);
-				childBoundNodes.Add(boundKStruct);
-			}
-			if (node.Qualifier != null)
-			{
-				var childBoundNodesOfQualifier = ArrayBuilder<BoundNode>.GetInstance();
-				this.Visit(node.Qualifier, childBoundNodesOfQualifier);
-				BoundNode boundQualifier;
-				boundQualifier = this.CreateBoundValue(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), node.Qualifier, false);
-				boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create(boundQualifier), "ExternalName", node.Qualifier, false);
-				childBoundNodes.Add(boundQualifier);
-			}
-			if (node.Name != null)
-			{
-				this.Visit(node.Name, childBoundNodes);
-			}
-			return null;
 		}
 		
 		public BoundNode VisitReturnType(ReturnTypeSyntax node, ArrayBuilder<BoundNode> childBoundNodesForParent)
@@ -1031,9 +955,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var item in node.Annotation)
+				foreach (var item in node.Attribute)
 				{
 					this.Visit(item, childBoundNodes);
 				}
@@ -1089,9 +1013,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var item in node.Annotation)
+				foreach (var item in node.Attribute)
 				{
 					this.Visit(item, childBoundNodes);
 				}
@@ -1122,9 +1046,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				return cachedBoundNode;
 			}
 			var childBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var item in node.Annotation)
+				foreach (var item in node.Attribute)
 				{
 					this.Visit(item, childBoundNodes);
 				}

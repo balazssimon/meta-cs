@@ -147,9 +147,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				return this.factory.Qualifier(identifier);
 			}
 			
-			public override GreenNode VisitAnnotation(MetaParser.AnnotationContext context)
+			public override GreenNode VisitAttribute(MetaParser.AttributeContext context)
 			{
-				if (context == null) return AnnotationGreen.__Missing;
+				if (context == null) return AttributeGreen.__Missing;
 				InternalSyntaxToken tOpenBracket = (InternalSyntaxToken)this.VisitTerminal(context.TOpenBracket(), MetaSyntaxKind.TOpenBracket);
 				MetaParser.QualifierContext qualifierContext = context.qualifier();
 				QualifierGreen qualifier = null;
@@ -162,20 +162,20 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 					qualifier = QualifierGreen.__Missing;
 				}
 				InternalSyntaxToken tCloseBracket = (InternalSyntaxToken)this.VisitTerminal(context.TCloseBracket(), MetaSyntaxKind.TCloseBracket);
-				return this.factory.Annotation(tOpenBracket, qualifier, tCloseBracket);
+				return this.factory.Attribute(tOpenBracket, qualifier, tCloseBracket);
 			}
 			
 			public override GreenNode VisitNamespaceDeclaration(MetaParser.NamespaceDeclarationContext context)
 			{
 				if (context == null) return NamespaceDeclarationGreen.__Missing;
-			    MetaParser.AnnotationContext[] annotationContext = context.annotation();
-			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
-			    for (int i = 0; i < annotationContext.Length; i++)
+			    MetaParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
 			    {
-			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
 			    }
-				var annotation = annotationBuilder.ToList();
-				_pool.Free(annotationBuilder);
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
 				InternalSyntaxToken kNamespace = (InternalSyntaxToken)this.VisitTerminal(context.KNamespace(), MetaSyntaxKind.KNamespace);
 				MetaParser.QualifiedNameContext qualifiedNameContext = context.qualifiedName();
 				QualifiedNameGreen qualifiedName = null;
@@ -197,7 +197,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					namespaceBody = NamespaceBodyGreen.__Missing;
 				}
-				return this.factory.NamespaceDeclaration(annotation, kNamespace, qualifiedName, namespaceBody);
+				return this.factory.NamespaceDeclaration(attribute, kNamespace, qualifiedName, namespaceBody);
 			}
 			
 			public override GreenNode VisitNamespaceBody(MetaParser.NamespaceBodyContext context)
@@ -229,14 +229,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			public override GreenNode VisitMetamodelDeclaration(MetaParser.MetamodelDeclarationContext context)
 			{
 				if (context == null) return MetamodelDeclarationGreen.__Missing;
-			    MetaParser.AnnotationContext[] annotationContext = context.annotation();
-			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
-			    for (int i = 0; i < annotationContext.Length; i++)
+			    MetaParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
 			    {
-			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
 			    }
-				var annotation = annotationBuilder.ToList();
-				_pool.Free(annotationBuilder);
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
 				InternalSyntaxToken kMetamodel = (InternalSyntaxToken)this.VisitTerminal(context.KMetamodel(), MetaSyntaxKind.KMetamodel);
 				MetaParser.NameContext nameContext = context.name();
 				NameGreen name = null;
@@ -261,7 +261,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				}
 				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen());
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.MetamodelDeclaration(annotation, kMetamodel, name, tOpenParen, metamodelPropertyList, tCloseParen, tSemicolon);
+				return this.factory.MetamodelDeclaration(attribute, kMetamodel, name, tOpenParen, metamodelPropertyList, tCloseParen, tSemicolon);
 			}
 			
 			public override GreenNode VisitMetamodelPropertyList(MetaParser.MetamodelPropertyListContext context)
@@ -340,25 +340,20 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					return this.factory.Declaration((ConstDeclarationGreen)this.Visit(constDeclarationContext));
 				}
-				MetaParser.ExternTypeDeclarationContext externTypeDeclarationContext = context.externTypeDeclaration();
-				if (externTypeDeclarationContext != null) 
-				{
-					return this.factory.Declaration((ExternTypeDeclarationGreen)this.Visit(externTypeDeclarationContext));
-				}
 				return DeclarationGreen.__Missing;
 			}
 			
 			public override GreenNode VisitEnumDeclaration(MetaParser.EnumDeclarationContext context)
 			{
 				if (context == null) return EnumDeclarationGreen.__Missing;
-			    MetaParser.AnnotationContext[] annotationContext = context.annotation();
-			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
-			    for (int i = 0; i < annotationContext.Length; i++)
+			    MetaParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
 			    {
-			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
 			    }
-				var annotation = annotationBuilder.ToList();
-				_pool.Free(annotationBuilder);
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
 				InternalSyntaxToken kEnum = (InternalSyntaxToken)this.VisitTerminal(context.KEnum(), MetaSyntaxKind.KEnum);
 				MetaParser.NameContext nameContext = context.name();
 				NameGreen name = null;
@@ -380,7 +375,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					enumBody = EnumBodyGreen.__Missing;
 				}
-				return this.factory.EnumDeclaration(annotation, kEnum, name, enumBody);
+				return this.factory.EnumDeclaration(attribute, kEnum, name, enumBody);
 			}
 			
 			public override GreenNode VisitEnumBody(MetaParser.EnumBodyContext context)
@@ -432,14 +427,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			public override GreenNode VisitEnumValue(MetaParser.EnumValueContext context)
 			{
 				if (context == null) return EnumValueGreen.__Missing;
-			    MetaParser.AnnotationContext[] annotationContext = context.annotation();
-			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
-			    for (int i = 0; i < annotationContext.Length; i++)
+			    MetaParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
 			    {
-			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
 			    }
-				var annotation = annotationBuilder.ToList();
-				_pool.Free(annotationBuilder);
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
 				MetaParser.NameContext nameContext = context.name();
 				NameGreen name = null;
 				if (nameContext != null)
@@ -450,7 +445,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					name = NameGreen.__Missing;
 				}
-				return this.factory.EnumValue(annotation, name);
+				return this.factory.EnumValue(attribute, name);
 			}
 			
 			public override GreenNode VisitEnumMemberDeclaration(MetaParser.EnumMemberDeclarationContext context)
@@ -472,14 +467,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			public override GreenNode VisitClassDeclaration(MetaParser.ClassDeclarationContext context)
 			{
 				if (context == null) return ClassDeclarationGreen.__Missing;
-			    MetaParser.AnnotationContext[] annotationContext = context.annotation();
-			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
-			    for (int i = 0; i < annotationContext.Length; i++)
+			    MetaParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
 			    {
-			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
 			    }
-				var annotation = annotationBuilder.ToList();
-				_pool.Free(annotationBuilder);
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
 				InternalSyntaxToken kAbstract = (InternalSyntaxToken)this.VisitTerminal(context.KAbstract());
 				InternalSyntaxToken kClass = (InternalSyntaxToken)this.VisitTerminal(context.KClass(), MetaSyntaxKind.KClass);
 				MetaParser.NameContext nameContext = context.name();
@@ -513,7 +508,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					classBody = ClassBodyGreen.__Missing;
 				}
-				return this.factory.ClassDeclaration(annotation, kAbstract, kClass, name, tColon, classAncestors, classBody);
+				return this.factory.ClassDeclaration(attribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
 			}
 			
 			public override GreenNode VisitClassBody(MetaParser.ClassBodyContext context)
@@ -586,14 +581,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			public override GreenNode VisitFieldDeclaration(MetaParser.FieldDeclarationContext context)
 			{
 				if (context == null) return FieldDeclarationGreen.__Missing;
-			    MetaParser.AnnotationContext[] annotationContext = context.annotation();
-			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
-			    for (int i = 0; i < annotationContext.Length; i++)
+			    MetaParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
 			    {
-			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
 			    }
-				var annotation = annotationBuilder.ToList();
-				_pool.Free(annotationBuilder);
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
 				MetaParser.FieldModifierContext fieldModifierContext = context.fieldModifier();
 				FieldModifierGreen fieldModifier = null;
 				if (fieldModifierContext != null)
@@ -635,7 +630,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 					redefinitionsOrSubsettings = RedefinitionsOrSubsettingsGreen.__Missing;
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.FieldDeclaration(annotation, fieldModifier, typeReference, name, redefinitionsOrSubsettings, tSemicolon);
+				return this.factory.FieldDeclaration(attribute, fieldModifier, typeReference, name, redefinitionsOrSubsettings, tSemicolon);
 			}
 			
 			public override GreenNode VisitFieldModifier(MetaParser.FieldModifierContext context)
@@ -760,80 +755,6 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
 				return this.factory.ConstDeclaration(kConst, typeReference, name, tSemicolon);
-			}
-			
-			public override GreenNode VisitExternTypeDeclaration(MetaParser.ExternTypeDeclarationContext context)
-			{
-				if (context == null) return ExternTypeDeclarationGreen.__Missing;
-				MetaParser.ExternClassTypeDeclarationContext externClassTypeDeclarationContext = context.externClassTypeDeclaration();
-				if (externClassTypeDeclarationContext != null) 
-				{
-					return this.factory.ExternTypeDeclaration((ExternClassTypeDeclarationGreen)this.Visit(externClassTypeDeclarationContext));
-				}
-				MetaParser.ExternStructTypeDeclarationContext externStructTypeDeclarationContext = context.externStructTypeDeclaration();
-				if (externStructTypeDeclarationContext != null) 
-				{
-					return this.factory.ExternTypeDeclaration((ExternStructTypeDeclarationGreen)this.Visit(externStructTypeDeclarationContext));
-				}
-				return ExternTypeDeclarationGreen.__Missing;
-			}
-			
-			public override GreenNode VisitExternClassTypeDeclaration(MetaParser.ExternClassTypeDeclarationContext context)
-			{
-				if (context == null) return ExternClassTypeDeclarationGreen.__Missing;
-				InternalSyntaxToken kExtern = (InternalSyntaxToken)this.VisitTerminal(context.KExtern(), MetaSyntaxKind.KExtern);
-				InternalSyntaxToken kClass = (InternalSyntaxToken)this.VisitTerminal(context.KClass(), MetaSyntaxKind.KClass);
-				MetaParser.QualifierContext qualifierContext = context.qualifier();
-				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
-				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
-				}
-				else
-				{
-					qualifier = QualifierGreen.__Missing;
-				}
-				MetaParser.NameContext nameContext = context.name();
-				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
-				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.ExternClassTypeDeclaration(kExtern, kClass, qualifier, name, tSemicolon);
-			}
-			
-			public override GreenNode VisitExternStructTypeDeclaration(MetaParser.ExternStructTypeDeclarationContext context)
-			{
-				if (context == null) return ExternStructTypeDeclarationGreen.__Missing;
-				InternalSyntaxToken kExtern = (InternalSyntaxToken)this.VisitTerminal(context.KExtern(), MetaSyntaxKind.KExtern);
-				InternalSyntaxToken kStruct = (InternalSyntaxToken)this.VisitTerminal(context.KStruct(), MetaSyntaxKind.KStruct);
-				MetaParser.QualifierContext qualifierContext = context.qualifier();
-				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
-				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
-				}
-				else
-				{
-					qualifier = QualifierGreen.__Missing;
-				}
-				MetaParser.NameContext nameContext = context.name();
-				NameGreen name = null;
-				if (nameContext != null)
-				{
-					name = (NameGreen)this.Visit(nameContext);
-				}
-				else
-				{
-					name = NameGreen.__Missing;
-				}
-				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.ExternStructTypeDeclaration(kExtern, kStruct, qualifier, name, tSemicolon);
 			}
 			
 			public override GreenNode VisitReturnType(MetaParser.ReturnTypeContext context)
@@ -1066,14 +987,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			public override GreenNode VisitOperationDeclaration(MetaParser.OperationDeclarationContext context)
 			{
 				if (context == null) return OperationDeclarationGreen.__Missing;
-			    MetaParser.AnnotationContext[] annotationContext = context.annotation();
-			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
-			    for (int i = 0; i < annotationContext.Length; i++)
+			    MetaParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
 			    {
-			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
 			    }
-				var annotation = annotationBuilder.ToList();
-				_pool.Free(annotationBuilder);
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
 				InternalSyntaxToken kStatic = (InternalSyntaxToken)this.VisitTerminal(context.KStatic());
 				MetaParser.ReturnTypeContext returnTypeContext = context.returnType();
 				ReturnTypeGreen returnType = null;
@@ -1108,7 +1029,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				}
 				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), MetaSyntaxKind.TCloseParen);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.OperationDeclaration(annotation, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+				return this.factory.OperationDeclaration(attribute, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 			}
 			
 			public override GreenNode VisitParameterList(MetaParser.ParameterListContext context)
@@ -1133,14 +1054,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			public override GreenNode VisitParameter(MetaParser.ParameterContext context)
 			{
 				if (context == null) return ParameterGreen.__Missing;
-			    MetaParser.AnnotationContext[] annotationContext = context.annotation();
-			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
-			    for (int i = 0; i < annotationContext.Length; i++)
+			    MetaParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
 			    {
-			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
 			    }
-				var annotation = annotationBuilder.ToList();
-				_pool.Free(annotationBuilder);
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
 				MetaParser.TypeReferenceContext typeReferenceContext = context.typeReference();
 				TypeReferenceGreen typeReference = null;
 				if (typeReferenceContext != null)
@@ -1161,20 +1082,20 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					name = NameGreen.__Missing;
 				}
-				return this.factory.Parameter(annotation, typeReference, name);
+				return this.factory.Parameter(attribute, typeReference, name);
 			}
 			
 			public override GreenNode VisitAssociationDeclaration(MetaParser.AssociationDeclarationContext context)
 			{
 				if (context == null) return AssociationDeclarationGreen.__Missing;
-			    MetaParser.AnnotationContext[] annotationContext = context.annotation();
-			    var annotationBuilder = _pool.Allocate<AnnotationGreen>();
-			    for (int i = 0; i < annotationContext.Length; i++)
+			    MetaParser.AttributeContext[] attributeContext = context.attribute();
+			    var attributeBuilder = _pool.Allocate<AttributeGreen>();
+			    for (int i = 0; i < attributeContext.Length; i++)
 			    {
-			        annotationBuilder.Add((AnnotationGreen)this.Visit(annotationContext[i]));
+			        attributeBuilder.Add((AttributeGreen)this.Visit(attributeContext[i]));
 			    }
-				var annotation = annotationBuilder.ToList();
-				_pool.Free(annotationBuilder);
+				var attribute = attributeBuilder.ToList();
+				_pool.Free(attributeBuilder);
 				InternalSyntaxToken kAssociation = (InternalSyntaxToken)this.VisitTerminal(context.KAssociation(), MetaSyntaxKind.KAssociation);
 				MetaParser.QualifierContext sourceContext = context.source;
 				QualifierGreen source = null;
@@ -1198,7 +1119,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 					target = QualifierGreen.__Missing;
 				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.AssociationDeclaration(annotation, kAssociation, source, kWith, target, tSemicolon);
+				return this.factory.AssociationDeclaration(attribute, kAssociation, source, kWith, target, tSemicolon);
 			}
 			
 			public override GreenNode VisitIdentifier(MetaParser.IdentifierContext context)

@@ -77,12 +77,11 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
-		public virtual void VisitAnnotation(AnnotationSyntax node)
+		public virtual void VisitAttribute(AttributeSyntax node)
 		{
 			this.BeginProperty("Attributes");
 			try
 			{
-				this.Visit(node.Qualifier);
 			}
 			finally
 			{
@@ -97,9 +96,9 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				this.RegisterNestingProperty("Declarations");
 				this.RegisterCanMerge(true);
-				if (node.Annotation != null)
+				if (node.Attribute != null)
 				{
-					foreach (var child in node.Annotation)
+					foreach (var child in node.Attribute)
 					{
 						this.Visit(child);
 					}
@@ -133,9 +132,9 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.BeginDeclaration(typeof(Symbols.MetaModel), node);
 				try
 				{
-					if (node.Annotation != null)
+					if (node.Attribute != null)
 					{
-						foreach (var child in node.Annotation)
+						foreach (var child in node.Attribute)
 						{
 							this.Visit(child);
 						}
@@ -191,7 +190,6 @@ namespace MetaDslx.Languages.Meta.Binding
 				this.Visit(node.ClassDeclaration);
 				this.Visit(node.AssociationDeclaration);
 				this.Visit(node.ConstDeclaration);
-				this.Visit(node.ExternTypeDeclaration);
 			}
 			finally
 			{
@@ -204,9 +202,9 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginDeclaration(typeof(Symbols.MetaEnum), node);
 			try
 			{
-				if (node.Annotation != null)
+				if (node.Attribute != null)
 				{
-					foreach (var child in node.Annotation)
+					foreach (var child in node.Attribute)
 					{
 						this.Visit(child);
 					}
@@ -256,9 +254,9 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginDeclaration(typeof(Symbols.MetaEnumLiteral), node);
 			try
 			{
-				if (node.Annotation != null)
+				if (node.Attribute != null)
 				{
-					foreach (var child in node.Annotation)
+					foreach (var child in node.Attribute)
 					{
 						this.Visit(child);
 					}
@@ -289,9 +287,9 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginDeclaration(typeof(Symbols.MetaClass), node);
 			try
 			{
-				if (node.Annotation != null)
+				if (node.Attribute != null)
 				{
-					foreach (var child in node.Annotation)
+					foreach (var child in node.Attribute)
 					{
 						this.Visit(child);
 					}
@@ -372,9 +370,9 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginDeclaration(typeof(Symbols.MetaProperty), node);
 			try
 			{
-				if (node.Annotation != null)
+				if (node.Attribute != null)
 				{
-					foreach (var child in node.Annotation)
+					foreach (var child in node.Attribute)
 					{
 						this.Visit(child);
 					}
@@ -481,22 +479,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 		}
 		
-		public virtual void VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
-		{
-			this.Visit(node.ExternClassTypeDeclaration);
-			this.Visit(node.ExternStructTypeDeclaration);
-		}
-		
-		public virtual void VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
-		{
-
-		}
-		
-		public virtual void VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
-		{
-
-		}
-		
 		public virtual void VisitReturnType(ReturnTypeSyntax node)
 		{
 		}
@@ -562,9 +544,9 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginDeclaration(typeof(Symbols.MetaOperation), node);
 			try
 			{
-				if (node.Annotation != null)
+				if (node.Attribute != null)
 				{
-					foreach (var child in node.Annotation)
+					foreach (var child in node.Attribute)
 					{
 						this.Visit(child);
 					}
@@ -611,9 +593,9 @@ namespace MetaDslx.Languages.Meta.Binding
 			this.BeginDeclaration(typeof(Symbols.MetaParameter), node);
 			try
 			{
-				if (node.Annotation != null)
+				if (node.Attribute != null)
 				{
-					foreach (var child in node.Annotation)
+					foreach (var child in node.Attribute)
 					{
 						this.Visit(child);
 					}
@@ -637,9 +619,9 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitAssociationDeclaration(AssociationDeclarationSyntax node)
 		{
-			if (node.Annotation != null)
+			if (node.Attribute != null)
 			{
-				foreach (var child in node.Annotation)
+				foreach (var child in node.Attribute)
 				{
 					this.Visit(child);
 				}

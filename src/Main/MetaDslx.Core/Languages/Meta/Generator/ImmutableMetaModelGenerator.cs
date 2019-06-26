@@ -10,9 +10,6 @@ using System.Collections.Immutable; //6:1
 
 namespace MetaDslx.Languages.Meta.Generator //1:1
 {
-    using MetaAnnotation = MetaAttribute;
-    using MetaAnnotatedElement = MetaElement;
-
     using __Hidden_ImmutableMetaModelGenerator;
     namespace __Hidden_ImmutableMetaModelGenerator
     {
@@ -33,9 +30,9 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
         string ToPascalCase(string identifier); //29:8
         string EscapeText(string text); //30:8
         bool IsMetaMetaModel(MetaModel mmodel); //31:8
-        string GetEnumValueOf(Enum menum); //32:8
-        string GetAttributeValueOf(MetaAnnotation mannot); //33:8
-        string GetAttributeName(MetaAnnotation mannot); //34:8
+        string GetEnumValueOf(MetaModel mmodel, Enum menum); //32:8
+        string GetAttributeValueOf(MetaModel mmodel, MetaAttribute mattr); //33:8
+        string GetAttributeName(MetaAttribute mattr); //34:8
         string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false); //35:8
         string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false); //36:8
         string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false); //37:8
@@ -171,19 +168,19 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             return this.extensionFunctions.IsMetaMetaModel(mmodel); //31:8
         }
 
-        internal string GetEnumValueOf(Enum menum) //32:8
+        internal string GetEnumValueOf(MetaModel mmodel, Enum menum) //32:8
         {
-            return this.extensionFunctions.GetEnumValueOf(menum); //32:8
+            return this.extensionFunctions.GetEnumValueOf(mmodel, menum); //32:8
         }
 
-        internal string GetAttributeValueOf(MetaAnnotation mannot) //33:8
+        internal string GetAttributeValueOf(MetaModel mmodel, MetaAttribute mattr) //33:8
         {
-            return this.extensionFunctions.GetAttributeValueOf(mannot); //33:8
+            return this.extensionFunctions.GetAttributeValueOf(mmodel, mattr); //33:8
         }
 
-        internal string GetAttributeName(MetaAnnotation mannot) //34:8
+        internal string GetAttributeName(MetaAttribute mattr) //34:8
         {
-            return this.extensionFunctions.GetAttributeName(mannot); //34:8
+            return this.extensionFunctions.GetAttributeName(mattr); //34:8
         }
 
         internal string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false) //35:8
@@ -286,19 +283,19 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             return __out.ToString();
         }
 
-        public string GenerateAnnotations(MetaAnnotatedElement elem) //58:1
+        public string GenerateAttributes(MetaElement elem) //58:1
         {
             StringBuilder __out = new StringBuilder();
             var __loop3_results = 
                 (from __loop3_var1 in __Enumerate((elem).GetEnumerator()) //59:7
-                from annot in __Enumerate((__loop3_var1.Attributes).GetEnumerator()) //59:13
-                select new { __loop3_var1 = __loop3_var1, annot = annot}
+                from attr in __Enumerate((__loop3_var1.Attributes).GetEnumerator()) //59:13
+                select new { __loop3_var1 = __loop3_var1, attr = attr}
                 ).ToList(); //59:2
             for (int __loop3_iteration = 0; __loop3_iteration < __loop3_results.Count; ++__loop3_iteration)
             {
                 var __tmp1 = __loop3_results[__loop3_iteration];
                 var __loop3_var1 = __tmp1.__loop3_var1;
-                var annot = __tmp1.annot;
+                var attr = __tmp1.attr;
                 bool __tmp3_outputWritten = false;
                 StringBuilder __tmp4 = new StringBuilder();
                 __tmp4.Append("[");
@@ -341,7 +338,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __tmp3_outputWritten = true;
                 }
                 StringBuilder __tmp7 = new StringBuilder();
-                __tmp7.Append(GetAttributeName(annot));
+                __tmp7.Append(GetAttributeName(attr));
                 using(StreamReader __tmp7Reader = new StreamReader(this.__ToStream(__tmp7.ToString())))
                 {
                     bool __tmp7_last = __tmp7Reader.EndOfStream;
@@ -376,7 +373,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 }
                 if (__tmp3_outputWritten)
                 {
-                    __out.AppendLine(false); //60:56
+                    __out.AppendLine(false); //60:55
                 }
             }
             return __out.ToString();
@@ -3647,7 +3644,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //311:41
                 }
             }
-            else if (value is MetaAnnotation) //312:2
+            else if (value is MetaAttribute) //312:2
             {
                 bool __tmp39_outputWritten = false;
                 StringBuilder __tmp40 = new StringBuilder();
@@ -3697,7 +3694,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __tmp39_outputWritten = true;
                 }
                 StringBuilder __tmp44 = new StringBuilder();
-                __tmp44.Append(GetAttributeValueOf((MetaAnnotation)value));
+                __tmp44.Append(GetAttributeValueOf(model, (MetaAttribute)value));
                 using(StreamReader __tmp44Reader = new StreamReader(this.__ToStream(__tmp44.ToString())))
                 {
                     bool __tmp44_last = __tmp44Reader.EndOfStream;
@@ -3713,7 +3710,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (!__tmp44_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp45_line = ";"; //313:66
+                string __tmp45_line = ";"; //313:72
                 if (!string.IsNullOrEmpty(__tmp45_line))
                 {
                     __out.Append(__tmp45_line);
@@ -3722,7 +3719,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (__tmp39_outputWritten) __out.AppendLine(true);
                 if (__tmp39_outputWritten)
                 {
-                    __out.AppendLine(false); //313:67
+                    __out.AppendLine(false); //313:73
                 }
             }
             else if (value is Enum) //314:2
@@ -3775,7 +3772,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __tmp47_outputWritten = true;
                 }
                 StringBuilder __tmp52 = new StringBuilder();
-                __tmp52.Append(GetEnumValueOf((Enum)value));
+                __tmp52.Append(GetEnumValueOf(model, (Enum)value));
                 using(StreamReader __tmp52Reader = new StreamReader(this.__ToStream(__tmp52.ToString())))
                 {
                     bool __tmp52_last = __tmp52Reader.EndOfStream;
@@ -3791,7 +3788,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (!__tmp52_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp53_line = ";"; //315:51
+                string __tmp53_line = ";"; //315:58
                 if (!string.IsNullOrEmpty(__tmp53_line))
                 {
                     __out.Append(__tmp53_line);
@@ -3800,7 +3797,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (__tmp47_outputWritten) __out.AppendLine(true);
                 if (__tmp47_outputWritten)
                 {
-                    __out.AppendLine(false); //315:52
+                    __out.AppendLine(false); //315:59
                 }
             }
             else if (value is MetaExternalType) //316:2
@@ -4725,7 +4722,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __out.AppendLine(false); //355:44
                 }
             }
-            else if (value is MetaAnnotation) //356:2
+            else if (value is MetaAttribute) //356:2
             {
                 bool __tmp39_outputWritten = false;
                 StringBuilder __tmp40 = new StringBuilder();
@@ -4775,7 +4772,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __tmp39_outputWritten = true;
                 }
                 StringBuilder __tmp44 = new StringBuilder();
-                __tmp44.Append(GetAttributeValueOf((MetaAnnotation)value));
+                __tmp44.Append(GetAttributeValueOf(model, (MetaAttribute)value));
                 using(StreamReader __tmp44Reader = new StreamReader(this.__ToStream(__tmp44.ToString())))
                 {
                     bool __tmp44_last = __tmp44Reader.EndOfStream;
@@ -4791,7 +4788,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (!__tmp44_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp45_line = ");"; //357:68
+                string __tmp45_line = ");"; //357:74
                 if (!string.IsNullOrEmpty(__tmp45_line))
                 {
                     __out.Append(__tmp45_line);
@@ -4800,7 +4797,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (__tmp39_outputWritten) __out.AppendLine(true);
                 if (__tmp39_outputWritten)
                 {
-                    __out.AppendLine(false); //357:70
+                    __out.AppendLine(false); //357:76
                 }
             }
             else if (value is Enum) //358:2
@@ -4853,7 +4850,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                     __tmp47_outputWritten = true;
                 }
                 StringBuilder __tmp52 = new StringBuilder();
-                __tmp52.Append(GetEnumValueOf((Enum)value));
+                __tmp52.Append(GetEnumValueOf(model, (Enum)value));
                 using(StreamReader __tmp52Reader = new StreamReader(this.__ToStream(__tmp52.ToString())))
                 {
                     bool __tmp52_last = __tmp52Reader.EndOfStream;
@@ -4869,7 +4866,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                         if (!__tmp52_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp53_line = ");"; //359:53
+                string __tmp53_line = ");"; //359:60
                 if (!string.IsNullOrEmpty(__tmp53_line))
                 {
                     __out.Append(__tmp53_line);
@@ -4878,7 +4875,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
                 if (__tmp47_outputWritten) __out.AppendLine(true);
                 if (__tmp47_outputWritten)
                 {
-                    __out.AppendLine(false); //359:55
+                    __out.AppendLine(false); //359:62
                 }
             }
             else if (value is MetaExternalType) //360:2
@@ -6370,7 +6367,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             bool __tmp5_outputWritten = false;
             StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append(GenerateAnnotations(cls));
+            __tmp6.Append(GenerateAttributes(cls));
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
             {
                 bool __tmp6_last = __tmp6Reader.EndOfStream;
@@ -6388,7 +6385,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             if (__tmp5_outputWritten)
             {
-                __out.AppendLine(false); //453:27
+                __out.AppendLine(false); //453:26
             }
             bool __tmp8_outputWritten = false;
             StringBuilder __tmp9 = new StringBuilder();
@@ -6952,7 +6949,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             bool __tmp5_outputWritten = false;
             StringBuilder __tmp6 = new StringBuilder();
-            __tmp6.Append(GenerateAnnotations(prop));
+            __tmp6.Append(GenerateAttributes(prop));
             using(StreamReader __tmp6Reader = new StreamReader(this.__ToStream(__tmp6.ToString())))
             {
                 bool __tmp6_last = __tmp6Reader.EndOfStream;
@@ -6970,11 +6967,11 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             if (__tmp5_outputWritten)
             {
-                __out.AppendLine(false); //501:28
+                __out.AppendLine(false); //501:27
             }
             bool __tmp8_outputWritten = false;
             StringBuilder __tmp9 = new StringBuilder();
-            __tmp9.Append(GenerateDescriptorPropertyAnnotations(model, cls, prop));
+            __tmp9.Append(GenerateDescriptorPropertyAttributes(model, cls, prop));
             using(StreamReader __tmp9Reader = new StreamReader(this.__ToStream(__tmp9.ToString())))
             {
                 bool __tmp9_last = __tmp9Reader.EndOfStream;
@@ -6992,7 +6989,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             }
             if (__tmp8_outputWritten)
             {
-                __out.AppendLine(false); //502:58
+                __out.AppendLine(false); //502:57
             }
             bool __tmp11_outputWritten = false;
             string __tmp12_line = "public static readonly "; //503:1
@@ -7456,7 +7453,7 @@ namespace MetaDslx.Languages.Meta.Generator //1:1
             return __out.ToString();
         }
 
-        public string GenerateDescriptorPropertyAnnotations(MetaModel model, MetaClass cls, MetaProperty prop) //516:1
+        public string GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, MetaProperty prop) //516:1
         {
             StringBuilder __out = new StringBuilder();
             if (prop.Kind == MetaPropertyKind.Containment) //517:2

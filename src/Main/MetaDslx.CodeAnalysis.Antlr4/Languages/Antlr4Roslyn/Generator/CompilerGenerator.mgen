@@ -755,7 +755,7 @@ namespace [Properties.DefaultNamespace]
             foreach (var specialType in [Properties.LanguageName]Constants.Types)
             {
                 var symbol = new MetaNamedTypeSymbol(specialType, assembly);
-                result.Add(specialType.Name, symbol);
+                result.Add(specialType.MName, symbol);
             }
             return result.ToImmutable();
         }

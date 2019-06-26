@@ -51,12 +51,7 @@ namespace MetaDslx.Languages.Meta
             foreach (var specialType in MetaConstants.Types)
             {
                 var symbol = new MetaNamedTypeSymbol(specialType, assembly);
-                result.Add(specialType.Name, symbol);
-            }
-            foreach (var annot in MetaAnnotations.Model.Symbols)
-            {
-                var symbol = new MetaNamedTypeSymbol(annot, assembly);
-                result.Add(annot.MName, symbol);
+                result.Add(specialType.MName, symbol);
             }
             return result.ToImmutable();
         }

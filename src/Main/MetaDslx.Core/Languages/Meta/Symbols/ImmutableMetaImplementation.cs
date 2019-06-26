@@ -12,15 +12,15 @@ namespace MetaDslx.Languages.Meta.Symbols
 {
     public static class MetaConstants
     {
-        private static ImmutableList<MetaPrimitiveType> types = ImmutableList<MetaPrimitiveType>.Empty;
+        private static ImmutableList<IMetaSymbol> types = ImmutableList<IMetaSymbol>.Empty;
 
-        public static ImmutableList<MetaPrimitiveType> Types
+        public static ImmutableList<IMetaSymbol> Types
         {
             get
             {
                 if (MetaConstants.types.Count == 0 && MetaInstance.IsInitialized)
                 {
-                    ImmutableList<MetaPrimitiveType>.Builder typesBuilder = ImmutableList.CreateBuilder<MetaPrimitiveType>();
+                    ImmutableList<IMetaSymbol>.Builder typesBuilder = ImmutableList.CreateBuilder<IMetaSymbol>();
                     typesBuilder.Add(MetaInstance.Object);
                     typesBuilder.Add(MetaInstance.String);
                     typesBuilder.Add(MetaInstance.Int);
@@ -31,6 +31,11 @@ namespace MetaDslx.Languages.Meta.Symbols
                     typesBuilder.Add(MetaInstance.Bool);
                     typesBuilder.Add(MetaInstance.Void);
                     typesBuilder.Add(MetaInstance.ModelObject);
+                    typesBuilder.Add(MetaInstance.NameAttribute);
+                    typesBuilder.Add(MetaInstance.TypeAttribute);
+                    typesBuilder.Add(MetaInstance.ScopeAttribute);
+                    typesBuilder.Add(MetaInstance.BaseScopeAttribute);
+                    typesBuilder.Add(MetaInstance.LocalScopeAttribute);
                     Interlocked.Exchange(ref MetaConstants.types, typesBuilder.ToImmutable());
                 }
                 return MetaConstants.types;

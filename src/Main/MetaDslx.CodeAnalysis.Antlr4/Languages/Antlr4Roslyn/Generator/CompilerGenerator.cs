@@ -6556,8 +6556,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             __out.AppendLine(false); //756:14
             __out.Append("                var symbol = new MetaNamedTypeSymbol(specialType, assembly);"); //757:1
             __out.AppendLine(false); //757:77
-            __out.Append("                result.Add(specialType.Name, symbol);"); //758:1
-            __out.AppendLine(false); //758:54
+            __out.Append("                result.Add(specialType.MName, symbol);"); //758:1
+            __out.AppendLine(false); //758:55
             __out.Append("            }"); //759:1
             __out.AppendLine(false); //759:14
             __out.Append("            return result.ToImmutable();"); //760:1

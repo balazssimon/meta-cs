@@ -148,7 +148,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string Name = nameof(Name);
 		public const string QualifiedName = nameof(QualifiedName);
 		public const string Qualifier = nameof(Qualifier);
-		public const string Annotation = nameof(Annotation);
+		public const string Attribute = nameof(Attribute);
 		public const string NamespaceDeclaration = nameof(NamespaceDeclaration);
 		public const string NamespaceBody = nameof(NamespaceBody);
 		public const string MetamodelDeclaration = nameof(MetamodelDeclaration);
@@ -173,9 +173,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string Subsettings = nameof(Subsettings);
 		public const string NameUseList = nameof(NameUseList);
 		public const string ConstDeclaration = nameof(ConstDeclaration);
-		public const string ExternTypeDeclaration = nameof(ExternTypeDeclaration);
-		public const string ExternClassTypeDeclaration = nameof(ExternClassTypeDeclaration);
-		public const string ExternStructTypeDeclaration = nameof(ExternStructTypeDeclaration);
 		public const string ReturnType = nameof(ReturnType);
 		public const string TypeOfReference = nameof(TypeOfReference);
 		public const string TypeReference = nameof(TypeReference);

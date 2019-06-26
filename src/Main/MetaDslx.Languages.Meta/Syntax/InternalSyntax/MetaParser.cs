@@ -53,7 +53,7 @@ public partial class MetaParser : Parser {
 		SingleQuoteVerbatimStringLiteralStart=112, LCommentStart=113;
 	public const int
 		RULE_main = 0, RULE_name = 1, RULE_qualifiedName = 2, RULE_qualifier = 3, 
-		RULE_annotation = 4, RULE_namespaceDeclaration = 5, RULE_namespaceBody = 6, 
+		RULE_attribute = 4, RULE_namespaceDeclaration = 5, RULE_namespaceBody = 6, 
 		RULE_metamodelDeclaration = 7, RULE_metamodelPropertyList = 8, RULE_metamodelProperty = 9, 
 		RULE_metamodelUriProperty = 10, RULE_declaration = 11, RULE_enumDeclaration = 12, 
 		RULE_enumBody = 13, RULE_enumValues = 14, RULE_enumValue = 15, RULE_enumMemberDeclaration = 16, 
@@ -61,28 +61,26 @@ public partial class MetaParser : Parser {
 		RULE_classAncestor = 20, RULE_classMemberDeclaration = 21, RULE_fieldDeclaration = 22, 
 		RULE_fieldModifier = 23, RULE_redefinitionsOrSubsettings = 24, RULE_redefinitions = 25, 
 		RULE_subsettings = 26, RULE_nameUseList = 27, RULE_constDeclaration = 28, 
-		RULE_externTypeDeclaration = 29, RULE_externClassTypeDeclaration = 30, 
-		RULE_externStructTypeDeclaration = 31, RULE_returnType = 32, RULE_typeOfReference = 33, 
-		RULE_typeReference = 34, RULE_simpleType = 35, RULE_classType = 36, RULE_objectType = 37, 
-		RULE_primitiveType = 38, RULE_voidType = 39, RULE_nullableType = 40, RULE_collectionType = 41, 
-		RULE_collectionKind = 42, RULE_operationDeclaration = 43, RULE_parameterList = 44, 
-		RULE_parameter = 45, RULE_associationDeclaration = 46, RULE_identifier = 47, 
-		RULE_literal = 48, RULE_nullLiteral = 49, RULE_booleanLiteral = 50, RULE_integerLiteral = 51, 
-		RULE_decimalLiteral = 52, RULE_scientificLiteral = 53, RULE_stringLiteral = 54;
+		RULE_returnType = 29, RULE_typeOfReference = 30, RULE_typeReference = 31, 
+		RULE_simpleType = 32, RULE_classType = 33, RULE_objectType = 34, RULE_primitiveType = 35, 
+		RULE_voidType = 36, RULE_nullableType = 37, RULE_collectionType = 38, 
+		RULE_collectionKind = 39, RULE_operationDeclaration = 40, RULE_parameterList = 41, 
+		RULE_parameter = 42, RULE_associationDeclaration = 43, RULE_identifier = 44, 
+		RULE_literal = 45, RULE_nullLiteral = 46, RULE_booleanLiteral = 47, RULE_integerLiteral = 48, 
+		RULE_decimalLiteral = 49, RULE_scientificLiteral = 50, RULE_stringLiteral = 51;
 	public static readonly string[] ruleNames = {
-		"main", "name", "qualifiedName", "qualifier", "annotation", "namespaceDeclaration", 
+		"main", "name", "qualifiedName", "qualifier", "attribute", "namespaceDeclaration", 
 		"namespaceBody", "metamodelDeclaration", "metamodelPropertyList", "metamodelProperty", 
 		"metamodelUriProperty", "declaration", "enumDeclaration", "enumBody", 
 		"enumValues", "enumValue", "enumMemberDeclaration", "classDeclaration", 
 		"classBody", "classAncestors", "classAncestor", "classMemberDeclaration", 
 		"fieldDeclaration", "fieldModifier", "redefinitionsOrSubsettings", "redefinitions", 
-		"subsettings", "nameUseList", "constDeclaration", "externTypeDeclaration", 
-		"externClassTypeDeclaration", "externStructTypeDeclaration", "returnType", 
-		"typeOfReference", "typeReference", "simpleType", "classType", "objectType", 
-		"primitiveType", "voidType", "nullableType", "collectionType", "collectionKind", 
-		"operationDeclaration", "parameterList", "parameter", "associationDeclaration", 
-		"identifier", "literal", "nullLiteral", "booleanLiteral", "integerLiteral", 
-		"decimalLiteral", "scientificLiteral", "stringLiteral"
+		"subsettings", "nameUseList", "constDeclaration", "returnType", "typeOfReference", 
+		"typeReference", "simpleType", "classType", "objectType", "primitiveType", 
+		"voidType", "nullableType", "collectionType", "collectionKind", "operationDeclaration", 
+		"parameterList", "parameter", "associationDeclaration", "identifier", 
+		"literal", "nullLiteral", "booleanLiteral", "integerLiteral", "decimalLiteral", 
+		"scientificLiteral", "stringLiteral"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -197,8 +195,8 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 110; namespaceDeclaration();
-			State = 111; Match(Eof);
+			State = 104; namespaceDeclaration();
+			State = 105; Match(Eof);
 			}
 		}
 		catch (RecognitionException re) {
@@ -235,7 +233,7 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 113; identifier();
+			State = 107; identifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -272,7 +270,7 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 115; qualifier();
+			State = 109; qualifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -317,18 +315,18 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 117; identifier();
-			State = 122;
+			State = 111; identifier();
+			State = 116;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TDot) {
 				{
 				{
-				State = 118; Match(TDot);
-				State = 119; identifier();
+				State = 112; Match(TDot);
+				State = 113; identifier();
 				}
 				}
-				State = 124;
+				State = 118;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -345,34 +343,34 @@ public partial class MetaParser : Parser {
 		return _localctx;
 	}
 
-	public partial class AnnotationContext : ParserRuleContext {
+	public partial class AttributeContext : ParserRuleContext {
 		public ITerminalNode TOpenBracket() { return GetToken(MetaParser.TOpenBracket, 0); }
 		public QualifierContext qualifier() {
 			return GetRuleContext<QualifierContext>(0);
 		}
 		public ITerminalNode TCloseBracket() { return GetToken(MetaParser.TCloseBracket, 0); }
-		public AnnotationContext(ParserRuleContext parent, int invokingState)
+		public AttributeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_annotation; } }
+		public override int RuleIndex { get { return RULE_attribute; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitAnnotation(this);
+			if (typedVisitor != null) return typedVisitor.VisitAttribute(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public AnnotationContext annotation() {
-		AnnotationContext _localctx = new AnnotationContext(_ctx, State);
-		EnterRule(_localctx, 8, RULE_annotation);
+	public AttributeContext attribute() {
+		AttributeContext _localctx = new AttributeContext(_ctx, State);
+		EnterRule(_localctx, 8, RULE_attribute);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 125; Match(TOpenBracket);
-			State = 126; qualifier();
-			State = 127; Match(TCloseBracket);
+			State = 119; Match(TOpenBracket);
+			State = 120; qualifier();
+			State = 121; Match(TCloseBracket);
 			}
 		}
 		catch (RecognitionException re) {
@@ -394,11 +392,11 @@ public partial class MetaParser : Parser {
 		public NamespaceBodyContext namespaceBody() {
 			return GetRuleContext<NamespaceBodyContext>(0);
 		}
-		public AnnotationContext[] annotation() {
-			return GetRuleContexts<AnnotationContext>();
+		public AttributeContext[] attribute() {
+			return GetRuleContexts<AttributeContext>();
 		}
-		public AnnotationContext annotation(int i) {
-			return GetRuleContext<AnnotationContext>(i);
+		public AttributeContext attribute(int i) {
+			return GetRuleContext<AttributeContext>(i);
 		}
 		public NamespaceDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -420,22 +418,22 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 132;
+			State = 126;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TOpenBracket) {
 				{
 				{
-				State = 129; annotation();
+				State = 123; attribute();
 				}
 				}
-				State = 134;
+				State = 128;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 135; Match(KNamespace);
-			State = 136; qualifiedName();
-			State = 137; namespaceBody();
+			State = 129; Match(KNamespace);
+			State = 130; qualifiedName();
+			State = 131; namespaceBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -481,22 +479,22 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 139; Match(TOpenBrace);
-			State = 140; metamodelDeclaration();
-			State = 144;
+			State = 133; Match(TOpenBrace);
+			State = 134; metamodelDeclaration();
+			State = 138;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KExtern) | (1L << KAbstract) | (1L << KClass) | (1L << KEnum) | (1L << KAssociation) | (1L << KConst) | (1L << TOpenBracket))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KAbstract) | (1L << KClass) | (1L << KEnum) | (1L << KAssociation) | (1L << KConst) | (1L << TOpenBracket))) != 0)) {
 				{
 				{
-				State = 141; declaration();
+				State = 135; declaration();
 				}
 				}
-				State = 146;
+				State = 140;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 147; Match(TCloseBrace);
+			State = 141; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -516,11 +514,11 @@ public partial class MetaParser : Parser {
 			return GetRuleContext<NameContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
-		public AnnotationContext[] annotation() {
-			return GetRuleContexts<AnnotationContext>();
+		public AttributeContext[] attribute() {
+			return GetRuleContexts<AttributeContext>();
 		}
-		public AnnotationContext annotation(int i) {
-			return GetRuleContext<AnnotationContext>(i);
+		public AttributeContext attribute(int i) {
+			return GetRuleContext<AttributeContext>(i);
 		}
 		public ITerminalNode TOpenParen() { return GetToken(MetaParser.TOpenParen, 0); }
 		public ITerminalNode TCloseParen() { return GetToken(MetaParser.TCloseParen, 0); }
@@ -547,41 +545,41 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 152;
+			State = 146;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TOpenBracket) {
 				{
 				{
-				State = 149; annotation();
+				State = 143; attribute();
 				}
 				}
-				State = 154;
+				State = 148;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 155; Match(KMetamodel);
-			State = 156; name();
-			State = 162;
+			State = 149; Match(KMetamodel);
+			State = 150; name();
+			State = 156;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==TOpenParen) {
 				{
-				State = 157; Match(TOpenParen);
-				State = 159;
+				State = 151; Match(TOpenParen);
+				State = 153;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 				if (_la==IUri) {
 					{
-					State = 158; metamodelPropertyList();
+					State = 152; metamodelPropertyList();
 					}
 				}
 
-				State = 161; Match(TCloseParen);
+				State = 155; Match(TCloseParen);
 				}
 			}
 
-			State = 164; Match(TSemicolon);
+			State = 158; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -626,18 +624,18 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 166; metamodelProperty();
-			State = 171;
+			State = 160; metamodelProperty();
+			State = 165;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 167; Match(TComma);
-				State = 168; metamodelProperty();
+				State = 161; Match(TComma);
+				State = 162; metamodelProperty();
 				}
 				}
-				State = 173;
+				State = 167;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -677,7 +675,7 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 174; metamodelUriProperty();
+			State = 168; metamodelUriProperty();
 			}
 		}
 		catch (RecognitionException re) {
@@ -716,9 +714,9 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 176; Match(IUri);
-			State = 177; Match(TAssign);
-			State = 178; stringLiteral();
+			State = 170; Match(IUri);
+			State = 171; Match(TAssign);
+			State = 172; stringLiteral();
 			}
 		}
 		catch (RecognitionException re) {
@@ -745,9 +743,6 @@ public partial class MetaParser : Parser {
 		public ConstDeclarationContext constDeclaration() {
 			return GetRuleContext<ConstDeclarationContext>(0);
 		}
-		public ExternTypeDeclarationContext externTypeDeclaration() {
-			return GetRuleContext<ExternTypeDeclarationContext>(0);
-		}
 		public DeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -765,41 +760,34 @@ public partial class MetaParser : Parser {
 		DeclarationContext _localctx = new DeclarationContext(_ctx, State);
 		EnterRule(_localctx, 22, RULE_declaration);
 		try {
-			State = 185;
+			State = 178;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,7,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 180; enumDeclaration();
+				State = 174; enumDeclaration();
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 181; classDeclaration();
+				State = 175; classDeclaration();
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 182; associationDeclaration();
+				State = 176; associationDeclaration();
 				}
 				break;
 
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 183; constDeclaration();
-				}
-				break;
-
-			case 5:
-				EnterOuterAlt(_localctx, 5);
-				{
-				State = 184; externTypeDeclaration();
+				State = 177; constDeclaration();
 				}
 				break;
 			}
@@ -823,11 +811,11 @@ public partial class MetaParser : Parser {
 		public EnumBodyContext enumBody() {
 			return GetRuleContext<EnumBodyContext>(0);
 		}
-		public AnnotationContext[] annotation() {
-			return GetRuleContexts<AnnotationContext>();
+		public AttributeContext[] attribute() {
+			return GetRuleContexts<AttributeContext>();
 		}
-		public AnnotationContext annotation(int i) {
-			return GetRuleContext<AnnotationContext>(i);
+		public AttributeContext attribute(int i) {
+			return GetRuleContext<AttributeContext>(i);
 		}
 		public EnumDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -849,22 +837,22 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 190;
+			State = 183;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TOpenBracket) {
 				{
 				{
-				State = 187; annotation();
+				State = 180; attribute();
 				}
 				}
-				State = 192;
+				State = 185;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 193; Match(KEnum);
-			State = 194; name();
-			State = 195; enumBody();
+			State = 186; Match(KEnum);
+			State = 187; name();
+			State = 188; enumBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -911,31 +899,31 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 197; Match(TOpenBrace);
-			State = 198; enumValues();
-			State = 206;
+			State = 190; Match(TOpenBrace);
+			State = 191; enumValues();
+			State = 199;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==TSemicolon) {
 				{
-				State = 199; Match(TSemicolon);
-				State = 203;
+				State = 192; Match(TSemicolon);
+				State = 196;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KVoid) | (1L << KObject) | (1L << KSymbol) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << KStatic) | (1L << TOpenBracket))) != 0) || ((((_la - 91)) & ~0x3f) == 0 && ((1L << (_la - 91)) & ((1L << (IUri - 91)) | (1L << (IdentifierNormal - 91)) | (1L << (IdentifierVerbatim - 91)))) != 0)) {
 					{
 					{
-					State = 200; enumMemberDeclaration();
+					State = 193; enumMemberDeclaration();
 					}
 					}
-					State = 205;
+					State = 198;
 					_errHandler.Sync(this);
 					_la = _input.La(1);
 				}
 				}
 			}
 
-			State = 208; Match(TCloseBrace);
+			State = 201; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -980,18 +968,18 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 210; enumValue();
-			State = 215;
+			State = 203; enumValue();
+			State = 208;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 211; Match(TComma);
-				State = 212; enumValue();
+				State = 204; Match(TComma);
+				State = 205; enumValue();
 				}
 				}
-				State = 217;
+				State = 210;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -1012,11 +1000,11 @@ public partial class MetaParser : Parser {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
-		public AnnotationContext[] annotation() {
-			return GetRuleContexts<AnnotationContext>();
+		public AttributeContext[] attribute() {
+			return GetRuleContexts<AttributeContext>();
 		}
-		public AnnotationContext annotation(int i) {
-			return GetRuleContext<AnnotationContext>(i);
+		public AttributeContext attribute(int i) {
+			return GetRuleContext<AttributeContext>(i);
 		}
 		public EnumValueContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1038,20 +1026,20 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 221;
+			State = 214;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TOpenBracket) {
 				{
 				{
-				State = 218; annotation();
+				State = 211; attribute();
 				}
 				}
-				State = 223;
+				State = 216;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 224; name();
+			State = 217; name();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1088,7 +1076,7 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 226; operationDeclaration();
+			State = 219; operationDeclaration();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1110,11 +1098,11 @@ public partial class MetaParser : Parser {
 		public ClassBodyContext classBody() {
 			return GetRuleContext<ClassBodyContext>(0);
 		}
-		public AnnotationContext[] annotation() {
-			return GetRuleContexts<AnnotationContext>();
+		public AttributeContext[] attribute() {
+			return GetRuleContexts<AttributeContext>();
 		}
-		public AnnotationContext annotation(int i) {
-			return GetRuleContext<AnnotationContext>(i);
+		public AttributeContext attribute(int i) {
+			return GetRuleContext<AttributeContext>(i);
 		}
 		public ITerminalNode KAbstract() { return GetToken(MetaParser.KAbstract, 0); }
 		public ITerminalNode TColon() { return GetToken(MetaParser.TColon, 0); }
@@ -1141,41 +1129,41 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 231;
+			State = 224;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TOpenBracket) {
 				{
 				{
-				State = 228; annotation();
+				State = 221; attribute();
 				}
 				}
-				State = 233;
+				State = 226;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 235;
+			State = 228;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==KAbstract) {
 				{
-				State = 234; Match(KAbstract);
+				State = 227; Match(KAbstract);
 				}
 			}
 
-			State = 237; Match(KClass);
-			State = 238; name();
-			State = 241;
+			State = 230; Match(KClass);
+			State = 231; name();
+			State = 234;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==TColon) {
 				{
-				State = 239; Match(TColon);
-				State = 240; classAncestors();
+				State = 232; Match(TColon);
+				State = 233; classAncestors();
 				}
 			}
 
-			State = 243; classBody();
+			State = 236; classBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1218,21 +1206,21 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 245; Match(TOpenBrace);
-			State = 249;
+			State = 238; Match(TOpenBrace);
+			State = 242;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KVoid) | (1L << KObject) | (1L << KSymbol) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << KReadonly) | (1L << KLazy) | (1L << KDerived) | (1L << KStatic) | (1L << TOpenBracket))) != 0) || ((((_la - 91)) & ~0x3f) == 0 && ((1L << (_la - 91)) & ((1L << (IUri - 91)) | (1L << (IdentifierNormal - 91)) | (1L << (IdentifierVerbatim - 91)))) != 0)) {
 				{
 				{
-				State = 246; classMemberDeclaration();
+				State = 239; classMemberDeclaration();
 				}
 				}
-				State = 251;
+				State = 244;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 252; Match(TCloseBrace);
+			State = 245; Match(TCloseBrace);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1277,18 +1265,18 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 254; classAncestor();
-			State = 259;
+			State = 247; classAncestor();
+			State = 252;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 255; Match(TComma);
-				State = 256; classAncestor();
+				State = 248; Match(TComma);
+				State = 249; classAncestor();
 				}
 				}
-				State = 261;
+				State = 254;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -1328,7 +1316,7 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 262; qualifier();
+			State = 255; qualifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1366,20 +1354,20 @@ public partial class MetaParser : Parser {
 		ClassMemberDeclarationContext _localctx = new ClassMemberDeclarationContext(_ctx, State);
 		EnterRule(_localctx, 42, RULE_classMemberDeclaration);
 		try {
-			State = 266;
+			State = 259;
 			_errHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(_input,18,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 264; fieldDeclaration();
+				State = 257; fieldDeclaration();
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 265; operationDeclaration();
+				State = 258; operationDeclaration();
 				}
 				break;
 			}
@@ -1403,11 +1391,11 @@ public partial class MetaParser : Parser {
 			return GetRuleContext<NameContext>(0);
 		}
 		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
-		public AnnotationContext[] annotation() {
-			return GetRuleContexts<AnnotationContext>();
+		public AttributeContext[] attribute() {
+			return GetRuleContexts<AttributeContext>();
 		}
-		public AnnotationContext annotation(int i) {
-			return GetRuleContext<AnnotationContext>(i);
+		public AttributeContext attribute(int i) {
+			return GetRuleContext<AttributeContext>(i);
 		}
 		public FieldModifierContext fieldModifier() {
 			return GetRuleContext<FieldModifierContext>(0);
@@ -1435,40 +1423,40 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 271;
+			State = 264;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TOpenBracket) {
 				{
 				{
-				State = 268; annotation();
+				State = 261; attribute();
 				}
 				}
-				State = 273;
+				State = 266;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 275;
+			State = 268;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KReadonly) | (1L << KLazy) | (1L << KDerived))) != 0)) {
 				{
-				State = 274; fieldModifier();
+				State = 267; fieldModifier();
 				}
 			}
 
-			State = 277; typeReference();
-			State = 278; name();
-			State = 280;
+			State = 270; typeReference();
+			State = 271; name();
+			State = 273;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==KRedefines || _la==KSubsets) {
 				{
-				State = 279; redefinitionsOrSubsettings();
+				State = 272; redefinitionsOrSubsettings();
 				}
 			}
 
-			State = 282; Match(TSemicolon);
+			State = 275; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1507,7 +1495,7 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 284;
+			State = 277;
 			_la = _input.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KContainment) | (1L << KReadonly) | (1L << KLazy) | (1L << KDerived))) != 0)) ) {
 			_errHandler.RecoverInline(this);
@@ -1556,19 +1544,19 @@ public partial class MetaParser : Parser {
 		RedefinitionsOrSubsettingsContext _localctx = new RedefinitionsOrSubsettingsContext(_ctx, State);
 		EnterRule(_localctx, 48, RULE_redefinitionsOrSubsettings);
 		try {
-			State = 288;
+			State = 281;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case KRedefines:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 286; redefinitions();
+				State = 279; redefinitions();
 				}
 				break;
 			case KSubsets:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 287; subsettings();
+				State = 280; subsettings();
 				}
 				break;
 			default:
@@ -1611,13 +1599,13 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 290; Match(KRedefines);
-			State = 292;
+			State = 283; Match(KRedefines);
+			State = 285;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (((((_la - 91)) & ~0x3f) == 0 && ((1L << (_la - 91)) & ((1L << (IUri - 91)) | (1L << (IdentifierNormal - 91)) | (1L << (IdentifierVerbatim - 91)))) != 0)) {
 				{
-				State = 291; nameUseList();
+				State = 284; nameUseList();
 				}
 			}
 
@@ -1659,13 +1647,13 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 294; Match(KSubsets);
-			State = 296;
+			State = 287; Match(KSubsets);
+			State = 289;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (((((_la - 91)) & ~0x3f) == 0 && ((1L << (_la - 91)) & ((1L << (IUri - 91)) | (1L << (IdentifierNormal - 91)) | (1L << (IdentifierVerbatim - 91)))) != 0)) {
 				{
-				State = 295; nameUseList();
+				State = 288; nameUseList();
 				}
 			}
 
@@ -1713,18 +1701,18 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 298; qualifier();
-			State = 303;
+			State = 291; qualifier();
+			State = 296;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 299; Match(TComma);
-				State = 300; qualifier();
+				State = 292; Match(TComma);
+				State = 293; qualifier();
 				}
 				}
-				State = 305;
+				State = 298;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -1769,157 +1757,10 @@ public partial class MetaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 306; Match(KConst);
-			State = 307; typeReference();
-			State = 308; name();
-			State = 309; Match(TSemicolon);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.ReportError(this, re);
-			_errHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class ExternTypeDeclarationContext : ParserRuleContext {
-		public ExternClassTypeDeclarationContext externClassTypeDeclaration() {
-			return GetRuleContext<ExternClassTypeDeclarationContext>(0);
-		}
-		public ExternStructTypeDeclarationContext externStructTypeDeclaration() {
-			return GetRuleContext<ExternStructTypeDeclarationContext>(0);
-		}
-		public ExternTypeDeclarationContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_externTypeDeclaration; } }
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExternTypeDeclaration(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public ExternTypeDeclarationContext externTypeDeclaration() {
-		ExternTypeDeclarationContext _localctx = new ExternTypeDeclarationContext(_ctx, State);
-		EnterRule(_localctx, 58, RULE_externTypeDeclaration);
-		try {
-			State = 313;
-			_errHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(_input,26,_ctx) ) {
-			case 1:
-				EnterOuterAlt(_localctx, 1);
-				{
-				State = 311; externClassTypeDeclaration();
-				}
-				break;
-
-			case 2:
-				EnterOuterAlt(_localctx, 2);
-				{
-				State = 312; externStructTypeDeclaration();
-				}
-				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.ReportError(this, re);
-			_errHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class ExternClassTypeDeclarationContext : ParserRuleContext {
-		public ITerminalNode KExtern() { return GetToken(MetaParser.KExtern, 0); }
-		public ITerminalNode KClass() { return GetToken(MetaParser.KClass, 0); }
-		public QualifierContext qualifier() {
-			return GetRuleContext<QualifierContext>(0);
-		}
-		public NameContext name() {
-			return GetRuleContext<NameContext>(0);
-		}
-		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
-		public ExternClassTypeDeclarationContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_externClassTypeDeclaration; } }
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExternClassTypeDeclaration(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public ExternClassTypeDeclarationContext externClassTypeDeclaration() {
-		ExternClassTypeDeclarationContext _localctx = new ExternClassTypeDeclarationContext(_ctx, State);
-		EnterRule(_localctx, 60, RULE_externClassTypeDeclaration);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 315; Match(KExtern);
-			State = 316; Match(KClass);
-			State = 317; qualifier();
-			State = 318; name();
-			State = 319; Match(TSemicolon);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.ReportError(this, re);
-			_errHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class ExternStructTypeDeclarationContext : ParserRuleContext {
-		public ITerminalNode KExtern() { return GetToken(MetaParser.KExtern, 0); }
-		public ITerminalNode KStruct() { return GetToken(MetaParser.KStruct, 0); }
-		public QualifierContext qualifier() {
-			return GetRuleContext<QualifierContext>(0);
-		}
-		public NameContext name() {
-			return GetRuleContext<NameContext>(0);
-		}
-		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
-		public ExternStructTypeDeclarationContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_externStructTypeDeclaration; } }
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IMetaParserVisitor<TResult> typedVisitor = visitor as IMetaParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExternStructTypeDeclaration(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public ExternStructTypeDeclarationContext externStructTypeDeclaration() {
-		ExternStructTypeDeclarationContext _localctx = new ExternStructTypeDeclarationContext(_ctx, State);
-		EnterRule(_localctx, 62, RULE_externStructTypeDeclaration);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 321; Match(KExtern);
-			State = 322; Match(KStruct);
-			State = 323; qualifier();
-			State = 324; name();
-			State = 325; Match(TSemicolon);
+			State = 299; Match(KConst);
+			State = 300; typeReference();
+			State = 301; name();
+			State = 302; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1955,9 +1796,9 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public ReturnTypeContext returnType() {
 		ReturnTypeContext _localctx = new ReturnTypeContext(_ctx, State);
-		EnterRule(_localctx, 64, RULE_returnType);
+		EnterRule(_localctx, 58, RULE_returnType);
 		try {
-			State = 329;
+			State = 306;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case KObject:
@@ -1978,13 +1819,13 @@ public partial class MetaParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 327; typeReference();
+				State = 304; typeReference();
 				}
 				break;
 			case KVoid:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 328; voidType();
+				State = 305; voidType();
 				}
 				break;
 			default:
@@ -2021,11 +1862,11 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public TypeOfReferenceContext typeOfReference() {
 		TypeOfReferenceContext _localctx = new TypeOfReferenceContext(_ctx, State);
-		EnterRule(_localctx, 66, RULE_typeOfReference);
+		EnterRule(_localctx, 60, RULE_typeOfReference);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 331; typeReference();
+			State = 308; typeReference();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2061,9 +1902,9 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public TypeReferenceContext typeReference() {
 		TypeReferenceContext _localctx = new TypeReferenceContext(_ctx, State);
-		EnterRule(_localctx, 68, RULE_typeReference);
+		EnterRule(_localctx, 62, RULE_typeReference);
 		try {
-			State = 335;
+			State = 312;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case KList:
@@ -2072,7 +1913,7 @@ public partial class MetaParser : Parser {
 			case KMultiSet:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 333; collectionType();
+				State = 310; collectionType();
 				}
 				break;
 			case KObject:
@@ -2089,7 +1930,7 @@ public partial class MetaParser : Parser {
 			case IdentifierVerbatim:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 334; simpleType();
+				State = 311; simpleType();
 				}
 				break;
 			default:
@@ -2135,36 +1976,36 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public SimpleTypeContext simpleType() {
 		SimpleTypeContext _localctx = new SimpleTypeContext(_ctx, State);
-		EnterRule(_localctx, 70, RULE_simpleType);
+		EnterRule(_localctx, 64, RULE_simpleType);
 		try {
-			State = 341;
+			State = 318;
 			_errHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(_input,29,_ctx) ) {
+			switch ( Interpreter.AdaptivePredict(_input,28,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 337; primitiveType();
+				State = 314; primitiveType();
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 338; objectType();
+				State = 315; objectType();
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 339; nullableType();
+				State = 316; nullableType();
 				}
 				break;
 
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 340; classType();
+				State = 317; classType();
 				}
 				break;
 			}
@@ -2199,11 +2040,11 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public ClassTypeContext classType() {
 		ClassTypeContext _localctx = new ClassTypeContext(_ctx, State);
-		EnterRule(_localctx, 72, RULE_classType);
+		EnterRule(_localctx, 66, RULE_classType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 343; qualifier();
+			State = 320; qualifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2236,12 +2077,12 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public ObjectTypeContext objectType() {
 		ObjectTypeContext _localctx = new ObjectTypeContext(_ctx, State);
-		EnterRule(_localctx, 74, RULE_objectType);
+		EnterRule(_localctx, 68, RULE_objectType);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 345;
+			State = 322;
 			_la = _input.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KObject) | (1L << KSymbol) | (1L << KString))) != 0)) ) {
 			_errHandler.RecoverInline(this);
@@ -2288,12 +2129,12 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public PrimitiveTypeContext primitiveType() {
 		PrimitiveTypeContext _localctx = new PrimitiveTypeContext(_ctx, State);
-		EnterRule(_localctx, 76, RULE_primitiveType);
+		EnterRule(_localctx, 70, RULE_primitiveType);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 347;
+			State = 324;
 			_la = _input.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool))) != 0)) ) {
 			_errHandler.RecoverInline(this);
@@ -2335,11 +2176,11 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public VoidTypeContext voidType() {
 		VoidTypeContext _localctx = new VoidTypeContext(_ctx, State);
-		EnterRule(_localctx, 78, RULE_voidType);
+		EnterRule(_localctx, 72, RULE_voidType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 349; Match(KVoid);
+			State = 326; Match(KVoid);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2373,12 +2214,12 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public NullableTypeContext nullableType() {
 		NullableTypeContext _localctx = new NullableTypeContext(_ctx, State);
-		EnterRule(_localctx, 80, RULE_nullableType);
+		EnterRule(_localctx, 74, RULE_nullableType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 351; primitiveType();
-			State = 352; Match(TQuestion);
+			State = 328; primitiveType();
+			State = 329; Match(TQuestion);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2416,14 +2257,14 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public CollectionTypeContext collectionType() {
 		CollectionTypeContext _localctx = new CollectionTypeContext(_ctx, State);
-		EnterRule(_localctx, 82, RULE_collectionType);
+		EnterRule(_localctx, 76, RULE_collectionType);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 354; collectionKind();
-			State = 355; Match(TLessThan);
-			State = 356; simpleType();
-			State = 357; Match(TGreaterThan);
+			State = 331; collectionKind();
+			State = 332; Match(TLessThan);
+			State = 333; simpleType();
+			State = 334; Match(TGreaterThan);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2457,12 +2298,12 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public CollectionKindContext collectionKind() {
 		CollectionKindContext _localctx = new CollectionKindContext(_ctx, State);
-		EnterRule(_localctx, 84, RULE_collectionKind);
+		EnterRule(_localctx, 78, RULE_collectionKind);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 359;
+			State = 336;
 			_la = _input.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet))) != 0)) ) {
 			_errHandler.RecoverInline(this);
@@ -2497,11 +2338,11 @@ public partial class MetaParser : Parser {
 		public ITerminalNode TOpenParen() { return GetToken(MetaParser.TOpenParen, 0); }
 		public ITerminalNode TCloseParen() { return GetToken(MetaParser.TCloseParen, 0); }
 		public ITerminalNode TSemicolon() { return GetToken(MetaParser.TSemicolon, 0); }
-		public AnnotationContext[] annotation() {
-			return GetRuleContexts<AnnotationContext>();
+		public AttributeContext[] attribute() {
+			return GetRuleContexts<AttributeContext>();
 		}
-		public AnnotationContext annotation(int i) {
-			return GetRuleContext<AnnotationContext>(i);
+		public AttributeContext attribute(int i) {
+			return GetRuleContext<AttributeContext>(i);
 		}
 		public ITerminalNode KStatic() { return GetToken(MetaParser.KStatic, 0); }
 		public ParameterListContext parameterList() {
@@ -2522,47 +2363,47 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public OperationDeclarationContext operationDeclaration() {
 		OperationDeclarationContext _localctx = new OperationDeclarationContext(_ctx, State);
-		EnterRule(_localctx, 86, RULE_operationDeclaration);
+		EnterRule(_localctx, 80, RULE_operationDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 364;
+			State = 341;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TOpenBracket) {
 				{
 				{
-				State = 361; annotation();
+				State = 338; attribute();
 				}
 				}
-				State = 366;
+				State = 343;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 368;
+			State = 345;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==KStatic) {
 				{
-				State = 367; Match(KStatic);
+				State = 344; Match(KStatic);
 				}
 			}
 
-			State = 370; returnType();
-			State = 371; name();
-			State = 372; Match(TOpenParen);
-			State = 374;
+			State = 347; returnType();
+			State = 348; name();
+			State = 349; Match(TOpenParen);
+			State = 351;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KObject) | (1L << KSymbol) | (1L << KString) | (1L << KInt) | (1L << KLong) | (1L << KFloat) | (1L << KDouble) | (1L << KByte) | (1L << KBool) | (1L << KList) | (1L << KSet) | (1L << KMultiList) | (1L << KMultiSet) | (1L << TOpenBracket))) != 0) || ((((_la - 91)) & ~0x3f) == 0 && ((1L << (_la - 91)) & ((1L << (IUri - 91)) | (1L << (IdentifierNormal - 91)) | (1L << (IdentifierVerbatim - 91)))) != 0)) {
 				{
-				State = 373; parameterList();
+				State = 350; parameterList();
 				}
 			}
 
-			State = 376; Match(TCloseParen);
-			State = 377; Match(TSemicolon);
+			State = 353; Match(TCloseParen);
+			State = 354; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2602,23 +2443,23 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public ParameterListContext parameterList() {
 		ParameterListContext _localctx = new ParameterListContext(_ctx, State);
-		EnterRule(_localctx, 88, RULE_parameterList);
+		EnterRule(_localctx, 82, RULE_parameterList);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 379; parameter();
-			State = 384;
+			State = 356; parameter();
+			State = 361;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TComma) {
 				{
 				{
-				State = 380; Match(TComma);
-				State = 381; parameter();
+				State = 357; Match(TComma);
+				State = 358; parameter();
 				}
 				}
-				State = 386;
+				State = 363;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -2642,11 +2483,11 @@ public partial class MetaParser : Parser {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
-		public AnnotationContext[] annotation() {
-			return GetRuleContexts<AnnotationContext>();
+		public AttributeContext[] attribute() {
+			return GetRuleContexts<AttributeContext>();
 		}
-		public AnnotationContext annotation(int i) {
-			return GetRuleContext<AnnotationContext>(i);
+		public AttributeContext attribute(int i) {
+			return GetRuleContext<AttributeContext>(i);
 		}
 		public ParameterContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2663,26 +2504,26 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public ParameterContext parameter() {
 		ParameterContext _localctx = new ParameterContext(_ctx, State);
-		EnterRule(_localctx, 90, RULE_parameter);
+		EnterRule(_localctx, 84, RULE_parameter);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 390;
+			State = 367;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TOpenBracket) {
 				{
 				{
-				State = 387; annotation();
+				State = 364; attribute();
 				}
 				}
-				State = 392;
+				State = 369;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 393; typeReference();
-			State = 394; name();
+			State = 370; typeReference();
+			State = 371; name();
 			}
 		}
 		catch (RecognitionException re) {
@@ -2708,11 +2549,11 @@ public partial class MetaParser : Parser {
 		public QualifierContext qualifier(int i) {
 			return GetRuleContext<QualifierContext>(i);
 		}
-		public AnnotationContext[] annotation() {
-			return GetRuleContexts<AnnotationContext>();
+		public AttributeContext[] attribute() {
+			return GetRuleContexts<AttributeContext>();
 		}
-		public AnnotationContext annotation(int i) {
-			return GetRuleContext<AnnotationContext>(i);
+		public AttributeContext attribute(int i) {
+			return GetRuleContext<AttributeContext>(i);
 		}
 		public AssociationDeclarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -2729,29 +2570,29 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public AssociationDeclarationContext associationDeclaration() {
 		AssociationDeclarationContext _localctx = new AssociationDeclarationContext(_ctx, State);
-		EnterRule(_localctx, 92, RULE_associationDeclaration);
+		EnterRule(_localctx, 86, RULE_associationDeclaration);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 399;
+			State = 376;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==TOpenBracket) {
 				{
 				{
-				State = 396; annotation();
+				State = 373; attribute();
 				}
 				}
-				State = 401;
+				State = 378;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 402; Match(KAssociation);
-			State = 403; _localctx.source = qualifier();
-			State = 404; Match(KWith);
-			State = 405; _localctx.target = qualifier();
-			State = 406; Match(TSemicolon);
+			State = 379; Match(KAssociation);
+			State = 380; _localctx.source = qualifier();
+			State = 381; Match(KWith);
+			State = 382; _localctx.target = qualifier();
+			State = 383; Match(TSemicolon);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2784,12 +2625,12 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public IdentifierContext identifier() {
 		IdentifierContext _localctx = new IdentifierContext(_ctx, State);
-		EnterRule(_localctx, 94, RULE_identifier);
+		EnterRule(_localctx, 88, RULE_identifier);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 408;
+			State = 385;
 			_la = _input.La(1);
 			if ( !(((((_la - 91)) & ~0x3f) == 0 && ((1L << (_la - 91)) & ((1L << (IUri - 91)) | (1L << (IdentifierNormal - 91)) | (1L << (IdentifierVerbatim - 91)))) != 0)) ) {
 			_errHandler.RecoverInline(this);
@@ -2848,46 +2689,46 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public LiteralContext literal() {
 		LiteralContext _localctx = new LiteralContext(_ctx, State);
-		EnterRule(_localctx, 96, RULE_literal);
+		EnterRule(_localctx, 90, RULE_literal);
 		try {
-			State = 416;
+			State = 393;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case KNull:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 410; nullLiteral();
+				State = 387; nullLiteral();
 				}
 				break;
 			case KTrue:
 			case KFalse:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 411; booleanLiteral();
+				State = 388; booleanLiteral();
 				}
 				break;
 			case LInteger:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 412; integerLiteral();
+				State = 389; integerLiteral();
 				}
 				break;
 			case LDecimal:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 413; decimalLiteral();
+				State = 390; decimalLiteral();
 				}
 				break;
 			case LScientific:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 414; scientificLiteral();
+				State = 391; scientificLiteral();
 				}
 				break;
 			case LRegularString:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 415; stringLiteral();
+				State = 392; stringLiteral();
 				}
 				break;
 			default:
@@ -2922,11 +2763,11 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public NullLiteralContext nullLiteral() {
 		NullLiteralContext _localctx = new NullLiteralContext(_ctx, State);
-		EnterRule(_localctx, 98, RULE_nullLiteral);
+		EnterRule(_localctx, 92, RULE_nullLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 418; Match(KNull);
+			State = 395; Match(KNull);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2958,12 +2799,12 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public BooleanLiteralContext booleanLiteral() {
 		BooleanLiteralContext _localctx = new BooleanLiteralContext(_ctx, State);
-		EnterRule(_localctx, 100, RULE_booleanLiteral);
+		EnterRule(_localctx, 94, RULE_booleanLiteral);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 420;
+			State = 397;
 			_la = _input.La(1);
 			if ( !(_la==KTrue || _la==KFalse) ) {
 			_errHandler.RecoverInline(this);
@@ -3005,11 +2846,11 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public IntegerLiteralContext integerLiteral() {
 		IntegerLiteralContext _localctx = new IntegerLiteralContext(_ctx, State);
-		EnterRule(_localctx, 102, RULE_integerLiteral);
+		EnterRule(_localctx, 96, RULE_integerLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 422; Match(LInteger);
+			State = 399; Match(LInteger);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3040,11 +2881,11 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public DecimalLiteralContext decimalLiteral() {
 		DecimalLiteralContext _localctx = new DecimalLiteralContext(_ctx, State);
-		EnterRule(_localctx, 104, RULE_decimalLiteral);
+		EnterRule(_localctx, 98, RULE_decimalLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 424; Match(LDecimal);
+			State = 401; Match(LDecimal);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3075,11 +2916,11 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public ScientificLiteralContext scientificLiteral() {
 		ScientificLiteralContext _localctx = new ScientificLiteralContext(_ctx, State);
-		EnterRule(_localctx, 106, RULE_scientificLiteral);
+		EnterRule(_localctx, 100, RULE_scientificLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 426; Match(LScientific);
+			State = 403; Match(LScientific);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3110,11 +2951,11 @@ public partial class MetaParser : Parser {
 	[RuleVersion(0)]
 	public StringLiteralContext stringLiteral() {
 		StringLiteralContext _localctx = new StringLiteralContext(_ctx, State);
-		EnterRule(_localctx, 108, RULE_stringLiteral);
+		EnterRule(_localctx, 102, RULE_stringLiteral);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 428; Match(LRegularString);
+			State = 405; Match(LRegularString);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3129,7 +2970,7 @@ public partial class MetaParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3s\x1B1\x4\x2\t\x2"+
+		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3s\x19A\x4\x2\t\x2"+
 		"\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t\t"+
 		"\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10\t"+
 		"\x10\x4\x11\t\x11\x4\x12\t\x12\x4\x13\t\x13\x4\x14\t\x14\x4\x15\t\x15"+
@@ -3137,164 +2978,153 @@ public partial class MetaParser : Parser {
 		"\t\x1B\x4\x1C\t\x1C\x4\x1D\t\x1D\x4\x1E\t\x1E\x4\x1F\t\x1F\x4 \t \x4!"+
 		"\t!\x4\"\t\"\x4#\t#\x4$\t$\x4%\t%\x4&\t&\x4\'\t\'\x4(\t(\x4)\t)\x4*\t"+
 		"*\x4+\t+\x4,\t,\x4-\t-\x4.\t.\x4/\t/\x4\x30\t\x30\x4\x31\t\x31\x4\x32"+
-		"\t\x32\x4\x33\t\x33\x4\x34\t\x34\x4\x35\t\x35\x4\x36\t\x36\x4\x37\t\x37"+
-		"\x4\x38\t\x38\x3\x2\x3\x2\x3\x2\x3\x3\x3\x3\x3\x4\x3\x4\x3\x5\x3\x5\x3"+
-		"\x5\a\x5{\n\x5\f\x5\xE\x5~\v\x5\x3\x6\x3\x6\x3\x6\x3\x6\x3\a\a\a\x85\n"+
-		"\a\f\a\xE\a\x88\v\a\x3\a\x3\a\x3\a\x3\a\x3\b\x3\b\x3\b\a\b\x91\n\b\f\b"+
-		"\xE\b\x94\v\b\x3\b\x3\b\x3\t\a\t\x99\n\t\f\t\xE\t\x9C\v\t\x3\t\x3\t\x3"+
-		"\t\x3\t\x5\t\xA2\n\t\x3\t\x5\t\xA5\n\t\x3\t\x3\t\x3\n\x3\n\x3\n\a\n\xAC"+
-		"\n\n\f\n\xE\n\xAF\v\n\x3\v\x3\v\x3\f\x3\f\x3\f\x3\f\x3\r\x3\r\x3\r\x3"+
-		"\r\x3\r\x5\r\xBC\n\r\x3\xE\a\xE\xBF\n\xE\f\xE\xE\xE\xC2\v\xE\x3\xE\x3"+
-		"\xE\x3\xE\x3\xE\x3\xF\x3\xF\x3\xF\x3\xF\a\xF\xCC\n\xF\f\xF\xE\xF\xCF\v"+
-		"\xF\x5\xF\xD1\n\xF\x3\xF\x3\xF\x3\x10\x3\x10\x3\x10\a\x10\xD8\n\x10\f"+
-		"\x10\xE\x10\xDB\v\x10\x3\x11\a\x11\xDE\n\x11\f\x11\xE\x11\xE1\v\x11\x3"+
-		"\x11\x3\x11\x3\x12\x3\x12\x3\x13\a\x13\xE8\n\x13\f\x13\xE\x13\xEB\v\x13"+
-		"\x3\x13\x5\x13\xEE\n\x13\x3\x13\x3\x13\x3\x13\x3\x13\x5\x13\xF4\n\x13"+
-		"\x3\x13\x3\x13\x3\x14\x3\x14\a\x14\xFA\n\x14\f\x14\xE\x14\xFD\v\x14\x3"+
-		"\x14\x3\x14\x3\x15\x3\x15\x3\x15\a\x15\x104\n\x15\f\x15\xE\x15\x107\v"+
-		"\x15\x3\x16\x3\x16\x3\x17\x3\x17\x5\x17\x10D\n\x17\x3\x18\a\x18\x110\n"+
-		"\x18\f\x18\xE\x18\x113\v\x18\x3\x18\x5\x18\x116\n\x18\x3\x18\x3\x18\x3"+
-		"\x18\x5\x18\x11B\n\x18\x3\x18\x3\x18\x3\x19\x3\x19\x3\x1A\x3\x1A\x5\x1A"+
-		"\x123\n\x1A\x3\x1B\x3\x1B\x5\x1B\x127\n\x1B\x3\x1C\x3\x1C\x5\x1C\x12B"+
-		"\n\x1C\x3\x1D\x3\x1D\x3\x1D\a\x1D\x130\n\x1D\f\x1D\xE\x1D\x133\v\x1D\x3"+
-		"\x1E\x3\x1E\x3\x1E\x3\x1E\x3\x1E\x3\x1F\x3\x1F\x5\x1F\x13C\n\x1F\x3 \x3"+
-		" \x3 \x3 \x3 \x3 \x3!\x3!\x3!\x3!\x3!\x3!\x3\"\x3\"\x5\"\x14C\n\"\x3#"+
-		"\x3#\x3$\x3$\x5$\x152\n$\x3%\x3%\x3%\x3%\x5%\x158\n%\x3&\x3&\x3\'\x3\'"+
-		"\x3(\x3(\x3)\x3)\x3*\x3*\x3*\x3+\x3+\x3+\x3+\x3+\x3,\x3,\x3-\a-\x16D\n"+
-		"-\f-\xE-\x170\v-\x3-\x5-\x173\n-\x3-\x3-\x3-\x3-\x5-\x179\n-\x3-\x3-\x3"+
-		"-\x3.\x3.\x3.\a.\x181\n.\f.\xE.\x184\v.\x3/\a/\x187\n/\f/\xE/\x18A\v/"+
-		"\x3/\x3/\x3/\x3\x30\a\x30\x190\n\x30\f\x30\xE\x30\x193\v\x30\x3\x30\x3"+
-		"\x30\x3\x30\x3\x30\x3\x30\x3\x30\x3\x31\x3\x31\x3\x32\x3\x32\x3\x32\x3"+
-		"\x32\x3\x32\x3\x32\x5\x32\x1A3\n\x32\x3\x33\x3\x33\x3\x34\x3\x34\x3\x35"+
-		"\x3\x35\x3\x36\x3\x36\x3\x37\x3\x37\x3\x38\x3\x38\x3\x38\x2\x2\x2\x39"+
-		"\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\xE\x2\x10\x2\x12\x2\x14\x2\x16\x2\x18"+
-		"\x2\x1A\x2\x1C\x2\x1E\x2 \x2\"\x2$\x2&\x2(\x2*\x2,\x2.\x2\x30\x2\x32\x2"+
-		"\x34\x2\x36\x2\x38\x2:\x2<\x2>\x2@\x2\x42\x2\x44\x2\x46\x2H\x2J\x2L\x2"+
-		"N\x2P\x2R\x2T\x2V\x2X\x2Z\x2\\\x2^\x2`\x2\x62\x2\x64\x2\x66\x2h\x2j\x2"+
-		"l\x2n\x2\x2\b\x5\x2\r\r,-\x30\x30\x3\x2\x14\x16\x3\x2\x17\x1C\x4\x2\x1D"+
-		"\x1D!#\x3\x2]_\x3\x2\x11\x12\x1A7\x2p\x3\x2\x2\x2\x4s\x3\x2\x2\x2\x6u"+
-		"\x3\x2\x2\x2\bw\x3\x2\x2\x2\n\x7F\x3\x2\x2\x2\f\x86\x3\x2\x2\x2\xE\x8D"+
-		"\x3\x2\x2\x2\x10\x9A\x3\x2\x2\x2\x12\xA8\x3\x2\x2\x2\x14\xB0\x3\x2\x2"+
-		"\x2\x16\xB2\x3\x2\x2\x2\x18\xBB\x3\x2\x2\x2\x1A\xC0\x3\x2\x2\x2\x1C\xC7"+
-		"\x3\x2\x2\x2\x1E\xD4\x3\x2\x2\x2 \xDF\x3\x2\x2\x2\"\xE4\x3\x2\x2\x2$\xE9"+
-		"\x3\x2\x2\x2&\xF7\x3\x2\x2\x2(\x100\x3\x2\x2\x2*\x108\x3\x2\x2\x2,\x10C"+
-		"\x3\x2\x2\x2.\x111\x3\x2\x2\x2\x30\x11E\x3\x2\x2\x2\x32\x122\x3\x2\x2"+
-		"\x2\x34\x124\x3\x2\x2\x2\x36\x128\x3\x2\x2\x2\x38\x12C\x3\x2\x2\x2:\x134"+
-		"\x3\x2\x2\x2<\x13B\x3\x2\x2\x2>\x13D\x3\x2\x2\x2@\x143\x3\x2\x2\x2\x42"+
-		"\x14B\x3\x2\x2\x2\x44\x14D\x3\x2\x2\x2\x46\x151\x3\x2\x2\x2H\x157\x3\x2"+
-		"\x2\x2J\x159\x3\x2\x2\x2L\x15B\x3\x2\x2\x2N\x15D\x3\x2\x2\x2P\x15F\x3"+
-		"\x2\x2\x2R\x161\x3\x2\x2\x2T\x164\x3\x2\x2\x2V\x169\x3\x2\x2\x2X\x16E"+
-		"\x3\x2\x2\x2Z\x17D\x3\x2\x2\x2\\\x188\x3\x2\x2\x2^\x191\x3\x2\x2\x2`\x19A"+
-		"\x3\x2\x2\x2\x62\x1A2\x3\x2\x2\x2\x64\x1A4\x3\x2\x2\x2\x66\x1A6\x3\x2"+
-		"\x2\x2h\x1A8\x3\x2\x2\x2j\x1AA\x3\x2\x2\x2l\x1AC\x3\x2\x2\x2n\x1AE\x3"+
-		"\x2\x2\x2pq\x5\f\a\x2qr\a\x2\x2\x3r\x3\x3\x2\x2\x2st\x5`\x31\x2t\x5\x3"+
-		"\x2\x2\x2uv\x5\b\x5\x2v\a\x3\x2\x2\x2w|\x5`\x31\x2xy\a\x34\x2\x2y{\x5"+
-		"`\x31\x2zx\x3\x2\x2\x2{~\x3\x2\x2\x2|z\x3\x2\x2\x2|}\x3\x2\x2\x2}\t\x3"+
-		"\x2\x2\x2~|\x3\x2\x2\x2\x7F\x80\a\x39\x2\x2\x80\x81\x5\b\x5\x2\x81\x82"+
-		"\a:\x2\x2\x82\v\x3\x2\x2\x2\x83\x85\x5\n\x6\x2\x84\x83\x3\x2\x2\x2\x85"+
-		"\x88\x3\x2\x2\x2\x86\x84\x3\x2\x2\x2\x86\x87\x3\x2\x2\x2\x87\x89\x3\x2"+
-		"\x2\x2\x88\x86\x3\x2\x2\x2\x89\x8A\a\x3\x2\x2\x8A\x8B\x5\x6\x4\x2\x8B"+
-		"\x8C\x5\xE\b\x2\x8C\r\x3\x2\x2\x2\x8D\x8E\a;\x2\x2\x8E\x92\x5\x10\t\x2"+
-		"\x8F\x91\x5\x18\r\x2\x90\x8F\x3\x2\x2\x2\x91\x94\x3\x2\x2\x2\x92\x90\x3"+
-		"\x2\x2\x2\x92\x93\x3\x2\x2\x2\x93\x95\x3\x2\x2\x2\x94\x92\x3\x2\x2\x2"+
-		"\x95\x96\a<\x2\x2\x96\xF\x3\x2\x2\x2\x97\x99\x5\n\x6\x2\x98\x97\x3\x2"+
-		"\x2\x2\x99\x9C\x3\x2\x2\x2\x9A\x98\x3\x2\x2\x2\x9A\x9B\x3\x2\x2\x2\x9B"+
-		"\x9D\x3\x2\x2\x2\x9C\x9A\x3\x2\x2\x2\x9D\x9E\a\x5\x2\x2\x9E\xA4\x5\x4"+
-		"\x3\x2\x9F\xA1\a\x37\x2\x2\xA0\xA2\x5\x12\n\x2\xA1\xA0\x3\x2\x2\x2\xA1"+
-		"\xA2\x3\x2\x2\x2\xA2\xA3\x3\x2\x2\x2\xA3\xA5\a\x38\x2\x2\xA4\x9F\x3\x2"+
-		"\x2\x2\xA4\xA5\x3\x2\x2\x2\xA5\xA6\x3\x2\x2\x2\xA6\xA7\a\x32\x2\x2\xA7"+
-		"\x11\x3\x2\x2\x2\xA8\xAD\x5\x14\v\x2\xA9\xAA\a\x35\x2\x2\xAA\xAC\x5\x14"+
-		"\v\x2\xAB\xA9\x3\x2\x2\x2\xAC\xAF\x3\x2\x2\x2\xAD\xAB\x3\x2\x2\x2\xAD"+
-		"\xAE\x3\x2\x2\x2\xAE\x13\x3\x2\x2\x2\xAF\xAD\x3\x2\x2\x2\xB0\xB1\x5\x16"+
-		"\f\x2\xB1\x15\x3\x2\x2\x2\xB2\xB3\a]\x2\x2\xB3\xB4\a\x36\x2\x2\xB4\xB5"+
-		"\x5n\x38\x2\xB5\x17\x3\x2\x2\x2\xB6\xBC\x5\x1A\xE\x2\xB7\xBC\x5$\x13\x2"+
-		"\xB8\xBC\x5^\x30\x2\xB9\xBC\x5:\x1E\x2\xBA\xBC\x5<\x1F\x2\xBB\xB6\x3\x2"+
-		"\x2\x2\xBB\xB7\x3\x2\x2\x2\xBB\xB8\x3\x2\x2\x2\xBB\xB9\x3\x2\x2\x2\xBB"+
-		"\xBA\x3\x2\x2\x2\xBC\x19\x3\x2\x2\x2\xBD\xBF\x5\n\x6\x2\xBE\xBD\x3\x2"+
-		"\x2\x2\xBF\xC2\x3\x2\x2\x2\xC0\xBE\x3\x2\x2\x2\xC0\xC1\x3\x2\x2\x2\xC1"+
-		"\xC3\x3\x2\x2\x2\xC2\xC0\x3\x2\x2\x2\xC3\xC4\a\v\x2\x2\xC4\xC5\x5\x4\x3"+
-		"\x2\xC5\xC6\x5\x1C\xF\x2\xC6\x1B\x3\x2\x2\x2\xC7\xC8\a;\x2\x2\xC8\xD0"+
-		"\x5\x1E\x10\x2\xC9\xCD\a\x32\x2\x2\xCA\xCC\x5\"\x12\x2\xCB\xCA\x3\x2\x2"+
-		"\x2\xCC\xCF\x3\x2\x2\x2\xCD\xCB\x3\x2\x2\x2\xCD\xCE\x3\x2\x2\x2\xCE\xD1"+
-		"\x3\x2\x2\x2\xCF\xCD\x3\x2\x2\x2\xD0\xC9\x3\x2\x2\x2\xD0\xD1\x3\x2\x2"+
-		"\x2\xD1\xD2\x3\x2\x2\x2\xD2\xD3\a<\x2\x2\xD3\x1D\x3\x2\x2\x2\xD4\xD9\x5"+
-		" \x11\x2\xD5\xD6\a\x35\x2\x2\xD6\xD8\x5 \x11\x2\xD7\xD5\x3\x2\x2\x2\xD8"+
-		"\xDB\x3\x2\x2\x2\xD9\xD7\x3\x2\x2\x2\xD9\xDA\x3\x2\x2\x2\xDA\x1F\x3\x2"+
-		"\x2\x2\xDB\xD9\x3\x2\x2\x2\xDC\xDE\x5\n\x6\x2\xDD\xDC\x3\x2\x2\x2\xDE"+
-		"\xE1\x3\x2\x2\x2\xDF\xDD\x3\x2\x2\x2\xDF\xE0\x3\x2\x2\x2\xE0\xE2\x3\x2"+
-		"\x2\x2\xE1\xDF\x3\x2\x2\x2\xE2\xE3\x5\x4\x3\x2\xE3!\x3\x2\x2\x2\xE4\xE5"+
-		"\x5X-\x2\xE5#\x3\x2\x2\x2\xE6\xE8\x5\n\x6\x2\xE7\xE6\x3\x2\x2\x2\xE8\xEB"+
-		"\x3\x2\x2\x2\xE9\xE7\x3\x2\x2\x2\xE9\xEA\x3\x2\x2\x2\xEA\xED\x3\x2\x2"+
-		"\x2\xEB\xE9\x3\x2\x2\x2\xEC\xEE\a\b\x2\x2\xED\xEC\x3\x2\x2\x2\xED\xEE"+
-		"\x3\x2\x2\x2\xEE\xEF\x3\x2\x2\x2\xEF\xF0\a\t\x2\x2\xF0\xF3\x5\x4\x3\x2"+
-		"\xF1\xF2\a\x33\x2\x2\xF2\xF4\x5(\x15\x2\xF3\xF1\x3\x2\x2\x2\xF3\xF4\x3"+
-		"\x2\x2\x2\xF4\xF5\x3\x2\x2\x2\xF5\xF6\x5&\x14\x2\xF6%\x3\x2\x2\x2\xF7"+
-		"\xFB\a;\x2\x2\xF8\xFA\x5,\x17\x2\xF9\xF8\x3\x2\x2\x2\xFA\xFD\x3\x2\x2"+
-		"\x2\xFB\xF9\x3\x2\x2\x2\xFB\xFC\x3\x2\x2\x2\xFC\xFE\x3\x2\x2\x2\xFD\xFB"+
-		"\x3\x2\x2\x2\xFE\xFF\a<\x2\x2\xFF\'\x3\x2\x2\x2\x100\x105\x5*\x16\x2\x101"+
-		"\x102\a\x35\x2\x2\x102\x104\x5*\x16\x2\x103\x101\x3\x2\x2\x2\x104\x107"+
-		"\x3\x2\x2\x2\x105\x103\x3\x2\x2\x2\x105\x106\x3\x2\x2\x2\x106)\x3\x2\x2"+
-		"\x2\x107\x105\x3\x2\x2\x2\x108\x109\x5\b\x5\x2\x109+\x3\x2\x2\x2\x10A"+
-		"\x10D\x5.\x18\x2\x10B\x10D\x5X-\x2\x10C\x10A\x3\x2\x2\x2\x10C\x10B\x3"+
-		"\x2\x2\x2\x10D-\x3\x2\x2\x2\x10E\x110\x5\n\x6\x2\x10F\x10E\x3\x2\x2\x2"+
-		"\x110\x113\x3\x2\x2\x2\x111\x10F\x3\x2\x2\x2\x111\x112\x3\x2\x2\x2\x112"+
-		"\x115\x3\x2\x2\x2\x113\x111\x3\x2\x2\x2\x114\x116\x5\x30\x19\x2\x115\x114"+
-		"\x3\x2\x2\x2\x115\x116\x3\x2\x2\x2\x116\x117\x3\x2\x2\x2\x117\x118\x5"+
-		"\x46$\x2\x118\x11A\x5\x4\x3\x2\x119\x11B\x5\x32\x1A\x2\x11A\x119\x3\x2"+
-		"\x2\x2\x11A\x11B\x3\x2\x2\x2\x11B\x11C\x3\x2\x2\x2\x11C\x11D\a\x32\x2"+
-		"\x2\x11D/\x3\x2\x2\x2\x11E\x11F\t\x2\x2\x2\x11F\x31\x3\x2\x2\x2\x120\x123"+
-		"\x5\x34\x1B\x2\x121\x123\x5\x36\x1C\x2\x122\x120\x3\x2\x2\x2\x122\x121"+
-		"\x3\x2\x2\x2\x123\x33\x3\x2\x2\x2\x124\x126\a*\x2\x2\x125\x127\x5\x38"+
-		"\x1D\x2\x126\x125\x3\x2\x2\x2\x126\x127\x3\x2\x2\x2\x127\x35\x3\x2\x2"+
-		"\x2\x128\x12A\a+\x2\x2\x129\x12B\x5\x38\x1D\x2\x12A\x129\x3\x2\x2\x2\x12A"+
-		"\x12B\x3\x2\x2\x2\x12B\x37\x3\x2\x2\x2\x12C\x131\x5\b\x5\x2\x12D\x12E"+
-		"\a\x35\x2\x2\x12E\x130\x5\b\x5\x2\x12F\x12D\x3\x2\x2\x2\x130\x133\x3\x2"+
-		"\x2\x2\x131\x12F\x3\x2\x2\x2\x131\x132\x3\x2\x2\x2\x132\x39\x3\x2\x2\x2"+
-		"\x133\x131\x3\x2\x2\x2\x134\x135\a)\x2\x2\x135\x136\x5\x46$\x2\x136\x137"+
-		"\x5\x4\x3\x2\x137\x138\a\x32\x2\x2\x138;\x3\x2\x2\x2\x139\x13C\x5> \x2"+
-		"\x13A\x13C\x5@!\x2\x13B\x139\x3\x2\x2\x2\x13B\x13A\x3\x2\x2\x2\x13C=\x3"+
-		"\x2\x2\x2\x13D\x13E\a\x6\x2\x2\x13E\x13F\a\t\x2\x2\x13F\x140\x5\b\x5\x2"+
-		"\x140\x141\x5\x4\x3\x2\x141\x142\a\x32\x2\x2\x142?\x3\x2\x2\x2\x143\x144"+
-		"\a\x6\x2\x2\x144\x145\a\n\x2\x2\x145\x146\x5\b\x5\x2\x146\x147\x5\x4\x3"+
-		"\x2\x147\x148\a\x32\x2\x2\x148\x41\x3\x2\x2\x2\x149\x14C\x5\x46$\x2\x14A"+
-		"\x14C\x5P)\x2\x14B\x149\x3\x2\x2\x2\x14B\x14A\x3\x2\x2\x2\x14C\x43\x3"+
-		"\x2\x2\x2\x14D\x14E\x5\x46$\x2\x14E\x45\x3\x2\x2\x2\x14F\x152\x5T+\x2"+
-		"\x150\x152\x5H%\x2\x151\x14F\x3\x2\x2\x2\x151\x150\x3\x2\x2\x2\x152G\x3"+
-		"\x2\x2\x2\x153\x158\x5N(\x2\x154\x158\x5L\'\x2\x155\x158\x5R*\x2\x156"+
-		"\x158\x5J&\x2\x157\x153\x3\x2\x2\x2\x157\x154\x3\x2\x2\x2\x157\x155\x3"+
-		"\x2\x2\x2\x157\x156\x3\x2\x2\x2\x158I\x3\x2\x2\x2\x159\x15A\x5\b\x5\x2"+
-		"\x15AK\x3\x2\x2\x2\x15B\x15C\t\x3\x2\x2\x15CM\x3\x2\x2\x2\x15D\x15E\t"+
-		"\x4\x2\x2\x15EO\x3\x2\x2\x2\x15F\x160\a\x13\x2\x2\x160Q\x3\x2\x2\x2\x161"+
-		"\x162\x5N(\x2\x162\x163\a?\x2\x2\x163S\x3\x2\x2\x2\x164\x165\x5V,\x2\x165"+
-		"\x166\a=\x2\x2\x166\x167\x5H%\x2\x167\x168\a>\x2\x2\x168U\x3\x2\x2\x2"+
-		"\x169\x16A\t\x5\x2\x2\x16AW\x3\x2\x2\x2\x16B\x16D\x5\n\x6\x2\x16C\x16B"+
-		"\x3\x2\x2\x2\x16D\x170\x3\x2\x2\x2\x16E\x16C\x3\x2\x2\x2\x16E\x16F\x3"+
-		"\x2\x2\x2\x16F\x172\x3\x2\x2\x2\x170\x16E\x3\x2\x2\x2\x171\x173\a\x31"+
-		"\x2\x2\x172\x171\x3\x2\x2\x2\x172\x173\x3\x2\x2\x2\x173\x174\x3\x2\x2"+
-		"\x2\x174\x175\x5\x42\"\x2\x175\x176\x5\x4\x3\x2\x176\x178\a\x37\x2\x2"+
-		"\x177\x179\x5Z.\x2\x178\x177\x3\x2\x2\x2\x178\x179\x3\x2\x2\x2\x179\x17A"+
-		"\x3\x2\x2\x2\x17A\x17B\a\x38\x2\x2\x17B\x17C\a\x32\x2\x2\x17CY\x3\x2\x2"+
-		"\x2\x17D\x182\x5\\/\x2\x17E\x17F\a\x35\x2\x2\x17F\x181\x5\\/\x2\x180\x17E"+
-		"\x3\x2\x2\x2\x181\x184\x3\x2\x2\x2\x182\x180\x3\x2\x2\x2\x182\x183\x3"+
-		"\x2\x2\x2\x183[\x3\x2\x2\x2\x184\x182\x3\x2\x2\x2\x185\x187\x5\n\x6\x2"+
-		"\x186\x185\x3\x2\x2\x2\x187\x18A\x3\x2\x2\x2\x188\x186\x3\x2\x2\x2\x188"+
-		"\x189\x3\x2\x2\x2\x189\x18B\x3\x2\x2\x2\x18A\x188\x3\x2\x2\x2\x18B\x18C"+
-		"\x5\x46$\x2\x18C\x18D\x5\x4\x3\x2\x18D]\x3\x2\x2\x2\x18E\x190\x5\n\x6"+
-		"\x2\x18F\x18E\x3\x2\x2\x2\x190\x193\x3\x2\x2\x2\x191\x18F\x3\x2\x2\x2"+
-		"\x191\x192\x3\x2\x2\x2\x192\x194\x3\x2\x2\x2\x193\x191\x3\x2\x2\x2\x194"+
-		"\x195\a\f\x2\x2\x195\x196\x5\b\x5\x2\x196\x197\a\xE\x2\x2\x197\x198\x5"+
-		"\b\x5\x2\x198\x199\a\x32\x2\x2\x199_\x3\x2\x2\x2\x19A\x19B\t\x6\x2\x2"+
-		"\x19B\x61\x3\x2\x2\x2\x19C\x1A3\x5\x64\x33\x2\x19D\x1A3\x5\x66\x34\x2"+
-		"\x19E\x1A3\x5h\x35\x2\x19F\x1A3\x5j\x36\x2\x1A0\x1A3\x5l\x37\x2\x1A1\x1A3"+
-		"\x5n\x38\x2\x1A2\x19C\x3\x2\x2\x2\x1A2\x19D\x3\x2\x2\x2\x1A2\x19E\x3\x2"+
-		"\x2\x2\x1A2\x19F\x3\x2\x2\x2\x1A2\x1A0\x3\x2\x2\x2\x1A2\x1A1\x3\x2\x2"+
-		"\x2\x1A3\x63\x3\x2\x2\x2\x1A4\x1A5\a\x10\x2\x2\x1A5\x65\x3\x2\x2\x2\x1A6"+
-		"\x1A7\t\a\x2\x2\x1A7g\x3\x2\x2\x2\x1A8\x1A9\a`\x2\x2\x1A9i\x3\x2\x2\x2"+
-		"\x1AA\x1AB\a\x61\x2\x2\x1ABk\x3\x2\x2\x2\x1AC\x1AD\a\x62\x2\x2\x1ADm\x3"+
-		"\x2\x2\x2\x1AE\x1AF\ag\x2\x2\x1AFo\x3\x2\x2\x2\'|\x86\x92\x9A\xA1\xA4"+
-		"\xAD\xBB\xC0\xCD\xD0\xD9\xDF\xE9\xED\xF3\xFB\x105\x10C\x111\x115\x11A"+
-		"\x122\x126\x12A\x131\x13B\x14B\x151\x157\x16E\x172\x178\x182\x188\x191"+
-		"\x1A2";
+		"\t\x32\x4\x33\t\x33\x4\x34\t\x34\x4\x35\t\x35\x3\x2\x3\x2\x3\x2\x3\x3"+
+		"\x3\x3\x3\x4\x3\x4\x3\x5\x3\x5\x3\x5\a\x5u\n\x5\f\x5\xE\x5x\v\x5\x3\x6"+
+		"\x3\x6\x3\x6\x3\x6\x3\a\a\a\x7F\n\a\f\a\xE\a\x82\v\a\x3\a\x3\a\x3\a\x3"+
+		"\a\x3\b\x3\b\x3\b\a\b\x8B\n\b\f\b\xE\b\x8E\v\b\x3\b\x3\b\x3\t\a\t\x93"+
+		"\n\t\f\t\xE\t\x96\v\t\x3\t\x3\t\x3\t\x3\t\x5\t\x9C\n\t\x3\t\x5\t\x9F\n"+
+		"\t\x3\t\x3\t\x3\n\x3\n\x3\n\a\n\xA6\n\n\f\n\xE\n\xA9\v\n\x3\v\x3\v\x3"+
+		"\f\x3\f\x3\f\x3\f\x3\r\x3\r\x3\r\x3\r\x5\r\xB5\n\r\x3\xE\a\xE\xB8\n\xE"+
+		"\f\xE\xE\xE\xBB\v\xE\x3\xE\x3\xE\x3\xE\x3\xE\x3\xF\x3\xF\x3\xF\x3\xF\a"+
+		"\xF\xC5\n\xF\f\xF\xE\xF\xC8\v\xF\x5\xF\xCA\n\xF\x3\xF\x3\xF\x3\x10\x3"+
+		"\x10\x3\x10\a\x10\xD1\n\x10\f\x10\xE\x10\xD4\v\x10\x3\x11\a\x11\xD7\n"+
+		"\x11\f\x11\xE\x11\xDA\v\x11\x3\x11\x3\x11\x3\x12\x3\x12\x3\x13\a\x13\xE1"+
+		"\n\x13\f\x13\xE\x13\xE4\v\x13\x3\x13\x5\x13\xE7\n\x13\x3\x13\x3\x13\x3"+
+		"\x13\x3\x13\x5\x13\xED\n\x13\x3\x13\x3\x13\x3\x14\x3\x14\a\x14\xF3\n\x14"+
+		"\f\x14\xE\x14\xF6\v\x14\x3\x14\x3\x14\x3\x15\x3\x15\x3\x15\a\x15\xFD\n"+
+		"\x15\f\x15\xE\x15\x100\v\x15\x3\x16\x3\x16\x3\x17\x3\x17\x5\x17\x106\n"+
+		"\x17\x3\x18\a\x18\x109\n\x18\f\x18\xE\x18\x10C\v\x18\x3\x18\x5\x18\x10F"+
+		"\n\x18\x3\x18\x3\x18\x3\x18\x5\x18\x114\n\x18\x3\x18\x3\x18\x3\x19\x3"+
+		"\x19\x3\x1A\x3\x1A\x5\x1A\x11C\n\x1A\x3\x1B\x3\x1B\x5\x1B\x120\n\x1B\x3"+
+		"\x1C\x3\x1C\x5\x1C\x124\n\x1C\x3\x1D\x3\x1D\x3\x1D\a\x1D\x129\n\x1D\f"+
+		"\x1D\xE\x1D\x12C\v\x1D\x3\x1E\x3\x1E\x3\x1E\x3\x1E\x3\x1E\x3\x1F\x3\x1F"+
+		"\x5\x1F\x135\n\x1F\x3 \x3 \x3!\x3!\x5!\x13B\n!\x3\"\x3\"\x3\"\x3\"\x5"+
+		"\"\x141\n\"\x3#\x3#\x3$\x3$\x3%\x3%\x3&\x3&\x3\'\x3\'\x3\'\x3(\x3(\x3"+
+		"(\x3(\x3(\x3)\x3)\x3*\a*\x156\n*\f*\xE*\x159\v*\x3*\x5*\x15C\n*\x3*\x3"+
+		"*\x3*\x3*\x5*\x162\n*\x3*\x3*\x3*\x3+\x3+\x3+\a+\x16A\n+\f+\xE+\x16D\v"+
+		"+\x3,\a,\x170\n,\f,\xE,\x173\v,\x3,\x3,\x3,\x3-\a-\x179\n-\f-\xE-\x17C"+
+		"\v-\x3-\x3-\x3-\x3-\x3-\x3-\x3.\x3.\x3/\x3/\x3/\x3/\x3/\x3/\x5/\x18C\n"+
+		"/\x3\x30\x3\x30\x3\x31\x3\x31\x3\x32\x3\x32\x3\x33\x3\x33\x3\x34\x3\x34"+
+		"\x3\x35\x3\x35\x3\x35\x2\x2\x2\x36\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\xE"+
+		"\x2\x10\x2\x12\x2\x14\x2\x16\x2\x18\x2\x1A\x2\x1C\x2\x1E\x2 \x2\"\x2$"+
+		"\x2&\x2(\x2*\x2,\x2.\x2\x30\x2\x32\x2\x34\x2\x36\x2\x38\x2:\x2<\x2>\x2"+
+		"@\x2\x42\x2\x44\x2\x46\x2H\x2J\x2L\x2N\x2P\x2R\x2T\x2V\x2X\x2Z\x2\\\x2"+
+		"^\x2`\x2\x62\x2\x64\x2\x66\x2h\x2\x2\b\x5\x2\r\r,-\x30\x30\x3\x2\x14\x16"+
+		"\x3\x2\x17\x1C\x4\x2\x1D\x1D!#\x3\x2]_\x3\x2\x11\x12\x191\x2j\x3\x2\x2"+
+		"\x2\x4m\x3\x2\x2\x2\x6o\x3\x2\x2\x2\bq\x3\x2\x2\x2\ny\x3\x2\x2\x2\f\x80"+
+		"\x3\x2\x2\x2\xE\x87\x3\x2\x2\x2\x10\x94\x3\x2\x2\x2\x12\xA2\x3\x2\x2\x2"+
+		"\x14\xAA\x3\x2\x2\x2\x16\xAC\x3\x2\x2\x2\x18\xB4\x3\x2\x2\x2\x1A\xB9\x3"+
+		"\x2\x2\x2\x1C\xC0\x3\x2\x2\x2\x1E\xCD\x3\x2\x2\x2 \xD8\x3\x2\x2\x2\"\xDD"+
+		"\x3\x2\x2\x2$\xE2\x3\x2\x2\x2&\xF0\x3\x2\x2\x2(\xF9\x3\x2\x2\x2*\x101"+
+		"\x3\x2\x2\x2,\x105\x3\x2\x2\x2.\x10A\x3\x2\x2\x2\x30\x117\x3\x2\x2\x2"+
+		"\x32\x11B\x3\x2\x2\x2\x34\x11D\x3\x2\x2\x2\x36\x121\x3\x2\x2\x2\x38\x125"+
+		"\x3\x2\x2\x2:\x12D\x3\x2\x2\x2<\x134\x3\x2\x2\x2>\x136\x3\x2\x2\x2@\x13A"+
+		"\x3\x2\x2\x2\x42\x140\x3\x2\x2\x2\x44\x142\x3\x2\x2\x2\x46\x144\x3\x2"+
+		"\x2\x2H\x146\x3\x2\x2\x2J\x148\x3\x2\x2\x2L\x14A\x3\x2\x2\x2N\x14D\x3"+
+		"\x2\x2\x2P\x152\x3\x2\x2\x2R\x157\x3\x2\x2\x2T\x166\x3\x2\x2\x2V\x171"+
+		"\x3\x2\x2\x2X\x17A\x3\x2\x2\x2Z\x183\x3\x2\x2\x2\\\x18B\x3\x2\x2\x2^\x18D"+
+		"\x3\x2\x2\x2`\x18F\x3\x2\x2\x2\x62\x191\x3\x2\x2\x2\x64\x193\x3\x2\x2"+
+		"\x2\x66\x195\x3\x2\x2\x2h\x197\x3\x2\x2\x2jk\x5\f\a\x2kl\a\x2\x2\x3l\x3"+
+		"\x3\x2\x2\x2mn\x5Z.\x2n\x5\x3\x2\x2\x2op\x5\b\x5\x2p\a\x3\x2\x2\x2qv\x5"+
+		"Z.\x2rs\a\x34\x2\x2su\x5Z.\x2tr\x3\x2\x2\x2ux\x3\x2\x2\x2vt\x3\x2\x2\x2"+
+		"vw\x3\x2\x2\x2w\t\x3\x2\x2\x2xv\x3\x2\x2\x2yz\a\x39\x2\x2z{\x5\b\x5\x2"+
+		"{|\a:\x2\x2|\v\x3\x2\x2\x2}\x7F\x5\n\x6\x2~}\x3\x2\x2\x2\x7F\x82\x3\x2"+
+		"\x2\x2\x80~\x3\x2\x2\x2\x80\x81\x3\x2\x2\x2\x81\x83\x3\x2\x2\x2\x82\x80"+
+		"\x3\x2\x2\x2\x83\x84\a\x3\x2\x2\x84\x85\x5\x6\x4\x2\x85\x86\x5\xE\b\x2"+
+		"\x86\r\x3\x2\x2\x2\x87\x88\a;\x2\x2\x88\x8C\x5\x10\t\x2\x89\x8B\x5\x18"+
+		"\r\x2\x8A\x89\x3\x2\x2\x2\x8B\x8E\x3\x2\x2\x2\x8C\x8A\x3\x2\x2\x2\x8C"+
+		"\x8D\x3\x2\x2\x2\x8D\x8F\x3\x2\x2\x2\x8E\x8C\x3\x2\x2\x2\x8F\x90\a<\x2"+
+		"\x2\x90\xF\x3\x2\x2\x2\x91\x93\x5\n\x6\x2\x92\x91\x3\x2\x2\x2\x93\x96"+
+		"\x3\x2\x2\x2\x94\x92\x3\x2\x2\x2\x94\x95\x3\x2\x2\x2\x95\x97\x3\x2\x2"+
+		"\x2\x96\x94\x3\x2\x2\x2\x97\x98\a\x5\x2\x2\x98\x9E\x5\x4\x3\x2\x99\x9B"+
+		"\a\x37\x2\x2\x9A\x9C\x5\x12\n\x2\x9B\x9A\x3\x2\x2\x2\x9B\x9C\x3\x2\x2"+
+		"\x2\x9C\x9D\x3\x2\x2\x2\x9D\x9F\a\x38\x2\x2\x9E\x99\x3\x2\x2\x2\x9E\x9F"+
+		"\x3\x2\x2\x2\x9F\xA0\x3\x2\x2\x2\xA0\xA1\a\x32\x2\x2\xA1\x11\x3\x2\x2"+
+		"\x2\xA2\xA7\x5\x14\v\x2\xA3\xA4\a\x35\x2\x2\xA4\xA6\x5\x14\v\x2\xA5\xA3"+
+		"\x3\x2\x2\x2\xA6\xA9\x3\x2\x2\x2\xA7\xA5\x3\x2\x2\x2\xA7\xA8\x3\x2\x2"+
+		"\x2\xA8\x13\x3\x2\x2\x2\xA9\xA7\x3\x2\x2\x2\xAA\xAB\x5\x16\f\x2\xAB\x15"+
+		"\x3\x2\x2\x2\xAC\xAD\a]\x2\x2\xAD\xAE\a\x36\x2\x2\xAE\xAF\x5h\x35\x2\xAF"+
+		"\x17\x3\x2\x2\x2\xB0\xB5\x5\x1A\xE\x2\xB1\xB5\x5$\x13\x2\xB2\xB5\x5X-"+
+		"\x2\xB3\xB5\x5:\x1E\x2\xB4\xB0\x3\x2\x2\x2\xB4\xB1\x3\x2\x2\x2\xB4\xB2"+
+		"\x3\x2\x2\x2\xB4\xB3\x3\x2\x2\x2\xB5\x19\x3\x2\x2\x2\xB6\xB8\x5\n\x6\x2"+
+		"\xB7\xB6\x3\x2\x2\x2\xB8\xBB\x3\x2\x2\x2\xB9\xB7\x3\x2\x2\x2\xB9\xBA\x3"+
+		"\x2\x2\x2\xBA\xBC\x3\x2\x2\x2\xBB\xB9\x3\x2\x2\x2\xBC\xBD\a\v\x2\x2\xBD"+
+		"\xBE\x5\x4\x3\x2\xBE\xBF\x5\x1C\xF\x2\xBF\x1B\x3\x2\x2\x2\xC0\xC1\a;\x2"+
+		"\x2\xC1\xC9\x5\x1E\x10\x2\xC2\xC6\a\x32\x2\x2\xC3\xC5\x5\"\x12\x2\xC4"+
+		"\xC3\x3\x2\x2\x2\xC5\xC8\x3\x2\x2\x2\xC6\xC4\x3\x2\x2\x2\xC6\xC7\x3\x2"+
+		"\x2\x2\xC7\xCA\x3\x2\x2\x2\xC8\xC6\x3\x2\x2\x2\xC9\xC2\x3\x2\x2\x2\xC9"+
+		"\xCA\x3\x2\x2\x2\xCA\xCB\x3\x2\x2\x2\xCB\xCC\a<\x2\x2\xCC\x1D\x3\x2\x2"+
+		"\x2\xCD\xD2\x5 \x11\x2\xCE\xCF\a\x35\x2\x2\xCF\xD1\x5 \x11\x2\xD0\xCE"+
+		"\x3\x2\x2\x2\xD1\xD4\x3\x2\x2\x2\xD2\xD0\x3\x2\x2\x2\xD2\xD3\x3\x2\x2"+
+		"\x2\xD3\x1F\x3\x2\x2\x2\xD4\xD2\x3\x2\x2\x2\xD5\xD7\x5\n\x6\x2\xD6\xD5"+
+		"\x3\x2\x2\x2\xD7\xDA\x3\x2\x2\x2\xD8\xD6\x3\x2\x2\x2\xD8\xD9\x3\x2\x2"+
+		"\x2\xD9\xDB\x3\x2\x2\x2\xDA\xD8\x3\x2\x2\x2\xDB\xDC\x5\x4\x3\x2\xDC!\x3"+
+		"\x2\x2\x2\xDD\xDE\x5R*\x2\xDE#\x3\x2\x2\x2\xDF\xE1\x5\n\x6\x2\xE0\xDF"+
+		"\x3\x2\x2\x2\xE1\xE4\x3\x2\x2\x2\xE2\xE0\x3\x2\x2\x2\xE2\xE3\x3\x2\x2"+
+		"\x2\xE3\xE6\x3\x2\x2\x2\xE4\xE2\x3\x2\x2\x2\xE5\xE7\a\b\x2\x2\xE6\xE5"+
+		"\x3\x2\x2\x2\xE6\xE7\x3\x2\x2\x2\xE7\xE8\x3\x2\x2\x2\xE8\xE9\a\t\x2\x2"+
+		"\xE9\xEC\x5\x4\x3\x2\xEA\xEB\a\x33\x2\x2\xEB\xED\x5(\x15\x2\xEC\xEA\x3"+
+		"\x2\x2\x2\xEC\xED\x3\x2\x2\x2\xED\xEE\x3\x2\x2\x2\xEE\xEF\x5&\x14\x2\xEF"+
+		"%\x3\x2\x2\x2\xF0\xF4\a;\x2\x2\xF1\xF3\x5,\x17\x2\xF2\xF1\x3\x2\x2\x2"+
+		"\xF3\xF6\x3\x2\x2\x2\xF4\xF2\x3\x2\x2\x2\xF4\xF5\x3\x2\x2\x2\xF5\xF7\x3"+
+		"\x2\x2\x2\xF6\xF4\x3\x2\x2\x2\xF7\xF8\a<\x2\x2\xF8\'\x3\x2\x2\x2\xF9\xFE"+
+		"\x5*\x16\x2\xFA\xFB\a\x35\x2\x2\xFB\xFD\x5*\x16\x2\xFC\xFA\x3\x2\x2\x2"+
+		"\xFD\x100\x3\x2\x2\x2\xFE\xFC\x3\x2\x2\x2\xFE\xFF\x3\x2\x2\x2\xFF)\x3"+
+		"\x2\x2\x2\x100\xFE\x3\x2\x2\x2\x101\x102\x5\b\x5\x2\x102+\x3\x2\x2\x2"+
+		"\x103\x106\x5.\x18\x2\x104\x106\x5R*\x2\x105\x103\x3\x2\x2\x2\x105\x104"+
+		"\x3\x2\x2\x2\x106-\x3\x2\x2\x2\x107\x109\x5\n\x6\x2\x108\x107\x3\x2\x2"+
+		"\x2\x109\x10C\x3\x2\x2\x2\x10A\x108\x3\x2\x2\x2\x10A\x10B\x3\x2\x2\x2"+
+		"\x10B\x10E\x3\x2\x2\x2\x10C\x10A\x3\x2\x2\x2\x10D\x10F\x5\x30\x19\x2\x10E"+
+		"\x10D\x3\x2\x2\x2\x10E\x10F\x3\x2\x2\x2\x10F\x110\x3\x2\x2\x2\x110\x111"+
+		"\x5@!\x2\x111\x113\x5\x4\x3\x2\x112\x114\x5\x32\x1A\x2\x113\x112\x3\x2"+
+		"\x2\x2\x113\x114\x3\x2\x2\x2\x114\x115\x3\x2\x2\x2\x115\x116\a\x32\x2"+
+		"\x2\x116/\x3\x2\x2\x2\x117\x118\t\x2\x2\x2\x118\x31\x3\x2\x2\x2\x119\x11C"+
+		"\x5\x34\x1B\x2\x11A\x11C\x5\x36\x1C\x2\x11B\x119\x3\x2\x2\x2\x11B\x11A"+
+		"\x3\x2\x2\x2\x11C\x33\x3\x2\x2\x2\x11D\x11F\a*\x2\x2\x11E\x120\x5\x38"+
+		"\x1D\x2\x11F\x11E\x3\x2\x2\x2\x11F\x120\x3\x2\x2\x2\x120\x35\x3\x2\x2"+
+		"\x2\x121\x123\a+\x2\x2\x122\x124\x5\x38\x1D\x2\x123\x122\x3\x2\x2\x2\x123"+
+		"\x124\x3\x2\x2\x2\x124\x37\x3\x2\x2\x2\x125\x12A\x5\b\x5\x2\x126\x127"+
+		"\a\x35\x2\x2\x127\x129\x5\b\x5\x2\x128\x126\x3\x2\x2\x2\x129\x12C\x3\x2"+
+		"\x2\x2\x12A\x128\x3\x2\x2\x2\x12A\x12B\x3\x2\x2\x2\x12B\x39\x3\x2\x2\x2"+
+		"\x12C\x12A\x3\x2\x2\x2\x12D\x12E\a)\x2\x2\x12E\x12F\x5@!\x2\x12F\x130"+
+		"\x5\x4\x3\x2\x130\x131\a\x32\x2\x2\x131;\x3\x2\x2\x2\x132\x135\x5@!\x2"+
+		"\x133\x135\x5J&\x2\x134\x132\x3\x2\x2\x2\x134\x133\x3\x2\x2\x2\x135=\x3"+
+		"\x2\x2\x2\x136\x137\x5@!\x2\x137?\x3\x2\x2\x2\x138\x13B\x5N(\x2\x139\x13B"+
+		"\x5\x42\"\x2\x13A\x138\x3\x2\x2\x2\x13A\x139\x3\x2\x2\x2\x13B\x41\x3\x2"+
+		"\x2\x2\x13C\x141\x5H%\x2\x13D\x141\x5\x46$\x2\x13E\x141\x5L\'\x2\x13F"+
+		"\x141\x5\x44#\x2\x140\x13C\x3\x2\x2\x2\x140\x13D\x3\x2\x2\x2\x140\x13E"+
+		"\x3\x2\x2\x2\x140\x13F\x3\x2\x2\x2\x141\x43\x3\x2\x2\x2\x142\x143\x5\b"+
+		"\x5\x2\x143\x45\x3\x2\x2\x2\x144\x145\t\x3\x2\x2\x145G\x3\x2\x2\x2\x146"+
+		"\x147\t\x4\x2\x2\x147I\x3\x2\x2\x2\x148\x149\a\x13\x2\x2\x149K\x3\x2\x2"+
+		"\x2\x14A\x14B\x5H%\x2\x14B\x14C\a?\x2\x2\x14CM\x3\x2\x2\x2\x14D\x14E\x5"+
+		"P)\x2\x14E\x14F\a=\x2\x2\x14F\x150\x5\x42\"\x2\x150\x151\a>\x2\x2\x151"+
+		"O\x3\x2\x2\x2\x152\x153\t\x5\x2\x2\x153Q\x3\x2\x2\x2\x154\x156\x5\n\x6"+
+		"\x2\x155\x154\x3\x2\x2\x2\x156\x159\x3\x2\x2\x2\x157\x155\x3\x2\x2\x2"+
+		"\x157\x158\x3\x2\x2\x2\x158\x15B\x3\x2\x2\x2\x159\x157\x3\x2\x2\x2\x15A"+
+		"\x15C\a\x31\x2\x2\x15B\x15A\x3\x2\x2\x2\x15B\x15C\x3\x2\x2\x2\x15C\x15D"+
+		"\x3\x2\x2\x2\x15D\x15E\x5<\x1F\x2\x15E\x15F\x5\x4\x3\x2\x15F\x161\a\x37"+
+		"\x2\x2\x160\x162\x5T+\x2\x161\x160\x3\x2\x2\x2\x161\x162\x3\x2\x2\x2\x162"+
+		"\x163\x3\x2\x2\x2\x163\x164\a\x38\x2\x2\x164\x165\a\x32\x2\x2\x165S\x3"+
+		"\x2\x2\x2\x166\x16B\x5V,\x2\x167\x168\a\x35\x2\x2\x168\x16A\x5V,\x2\x169"+
+		"\x167\x3\x2\x2\x2\x16A\x16D\x3\x2\x2\x2\x16B\x169\x3\x2\x2\x2\x16B\x16C"+
+		"\x3\x2\x2\x2\x16CU\x3\x2\x2\x2\x16D\x16B\x3\x2\x2\x2\x16E\x170\x5\n\x6"+
+		"\x2\x16F\x16E\x3\x2\x2\x2\x170\x173\x3\x2\x2\x2\x171\x16F\x3\x2\x2\x2"+
+		"\x171\x172\x3\x2\x2\x2\x172\x174\x3\x2\x2\x2\x173\x171\x3\x2\x2\x2\x174"+
+		"\x175\x5@!\x2\x175\x176\x5\x4\x3\x2\x176W\x3\x2\x2\x2\x177\x179\x5\n\x6"+
+		"\x2\x178\x177\x3\x2\x2\x2\x179\x17C\x3\x2\x2\x2\x17A\x178\x3\x2\x2\x2"+
+		"\x17A\x17B\x3\x2\x2\x2\x17B\x17D\x3\x2\x2\x2\x17C\x17A\x3\x2\x2\x2\x17D"+
+		"\x17E\a\f\x2\x2\x17E\x17F\x5\b\x5\x2\x17F\x180\a\xE\x2\x2\x180\x181\x5"+
+		"\b\x5\x2\x181\x182\a\x32\x2\x2\x182Y\x3\x2\x2\x2\x183\x184\t\x6\x2\x2"+
+		"\x184[\x3\x2\x2\x2\x185\x18C\x5^\x30\x2\x186\x18C\x5`\x31\x2\x187\x18C"+
+		"\x5\x62\x32\x2\x188\x18C\x5\x64\x33\x2\x189\x18C\x5\x66\x34\x2\x18A\x18C"+
+		"\x5h\x35\x2\x18B\x185\x3\x2\x2\x2\x18B\x186\x3\x2\x2\x2\x18B\x187\x3\x2"+
+		"\x2\x2\x18B\x188\x3\x2\x2\x2\x18B\x189\x3\x2\x2\x2\x18B\x18A\x3\x2\x2"+
+		"\x2\x18C]\x3\x2\x2\x2\x18D\x18E\a\x10\x2\x2\x18E_\x3\x2\x2\x2\x18F\x190"+
+		"\t\a\x2\x2\x190\x61\x3\x2\x2\x2\x191\x192\a`\x2\x2\x192\x63\x3\x2\x2\x2"+
+		"\x193\x194\a\x61\x2\x2\x194\x65\x3\x2\x2\x2\x195\x196\a\x62\x2\x2\x196"+
+		"g\x3\x2\x2\x2\x197\x198\ag\x2\x2\x198i\x3\x2\x2\x2&v\x80\x8C\x94\x9B\x9E"+
+		"\xA7\xB4\xB9\xC6\xC9\xD2\xD8\xE2\xE6\xEC\xF4\xFE\x105\x10A\x10E\x113\x11B"+
+		"\x11F\x123\x12A\x134\x13A\x140\x157\x15B\x161\x16B\x171\x17A\x18B";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }

@@ -17,28 +17,19 @@ qualifiedName : qualifier;
           
 qualifier : identifier (TDot identifier)*;
 
-                      
-                          
-annotation : TOpenBracket qualifier /*annotationParams?*/ TCloseBracket;
-
-/*
-annotationParams : TOpenParen annotationParamList? TCloseParen;
-annotationParamList : annotationParam (TComma annotationParam)*;
-
-$Property(Properties)
-$SymbolDef(MetaAnnotationProperty)
-annotationParam : $Property(Name) name;
-*/
+                     
+                         
+attribute : TOpenBracket qualifier TCloseBracket;
 
                                                                             
-namespaceDeclaration: annotation* KNamespace qualifiedName namespaceBody;
+namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
 
       
 namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
-                    
+                           
                      
-metamodelDeclaration: annotation* KMetamodel name (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
+metamodelDeclaration: attribute* KMetamodel name (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
 
@@ -48,19 +39,19 @@ metamodelProperty : metamodelUriProperty;
 metamodelUriProperty : IUri TAssign        stringLiteral;
 
                         
-declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration | externTypeDeclaration;
+declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
                     
-enumDeclaration : annotation* KEnum name enumBody;
+enumDeclaration : attribute* KEnum name enumBody;
       
 enumBody : TOpenBrace                         enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
                            
-enumValue : annotation* name;
+enumValue : attribute* name;
 enumMemberDeclaration :                       operationDeclaration;
 
                      
-classDeclaration : annotation*                                       KAbstract? KClass name (TColon                         classAncestors)? classBody;
+classDeclaration : attribute*                                       KAbstract? KClass name (TColon                         classAncestors)? classBody;
       
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
@@ -71,7 +62,7 @@ classMemberDeclaration
 	;
 
                         
-fieldDeclaration : annotation*                 fieldModifier?                 typeReference name redefinitionsOrSubsettings? TSemicolon;
+fieldDeclaration : attribute*                 fieldModifier?                 typeReference name redefinitionsOrSubsettings? TSemicolon;
 fieldModifier 
 	:                                      KContainment 
 	|                                   KReadonly 
@@ -88,14 +79,6 @@ nameUseList : qualifier (TComma qualifier)*;
 
                         
 constDeclaration : KConst                 typeReference name TSemicolon;
-
-externTypeDeclaration : externClassTypeDeclaration | externStructTypeDeclaration;
-
-                            
-externClassTypeDeclaration : KExtern KClass                                qualifier name TSemicolon;
-
-                            
-externStructTypeDeclaration : KExtern                                        KStruct                                qualifier name TSemicolon;
 
                     
 returnType : typeReference | voidType;
@@ -144,14 +127,14 @@ collectionKind
 	;
 
                          
-operationDeclaration : annotation* KStatic?                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute* KStatic?                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
 parameterList : parameter (TComma parameter)*;
 
                          
-parameter : annotation*                 typeReference name;
+parameter : attribute*                 typeReference name;
 
          
-associationDeclaration : annotation* KAssociation                          source=qualifier KWith                          target=qualifier TSemicolon;
+associationDeclaration : attribute* KAssociation                          source=qualifier KWith                          target=qualifier TSemicolon;
 
 
 // Additional rules for lexer:

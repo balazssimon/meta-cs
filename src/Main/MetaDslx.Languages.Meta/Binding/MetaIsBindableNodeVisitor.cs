@@ -48,7 +48,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			return true;
 		}
 		
-		public bool VisitAnnotation(AnnotationSyntax node)
+		public bool VisitAttribute(AttributeSyntax node)
 		{
 			return true;
 		}
@@ -169,21 +169,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		}
 		
 		public bool VisitConstDeclaration(ConstDeclarationSyntax node)
-		{
-			return true;
-		}
-		
-		public bool VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
-		{
-			return false;
-		}
-		
-		public bool VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
-		{
-			return true;
-		}
-		
-		public bool VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
 		{
 			return true;
 		}

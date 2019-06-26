@@ -374,16 +374,16 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    }
 	}
 	
-	public sealed class AnnotationSyntax : MetaSyntaxNode
+	public sealed class AttributeSyntax : MetaSyntaxNode
 	{
 	    private QualifierSyntax qualifier;
 	
-	    public AnnotationSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	    public AttributeSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public AnnotationSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	    public AttributeSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
@@ -392,7 +392,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.AnnotationGreen)this.Green;
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.AttributeGreen)this.Green;
 				var greenToken = green.TOpenBracket;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
@@ -405,7 +405,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.AnnotationGreen)this.Green;
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.AttributeGreen)this.Green;
 				var greenToken = green.TCloseBracket;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
@@ -429,55 +429,55 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public AnnotationSyntax WithTOpenBracket(SyntaxToken tOpenBracket)
+	    public AttributeSyntax WithTOpenBracket(SyntaxToken tOpenBracket)
 		{
 			return this.Update(TOpenBracket, this.Qualifier, this.TCloseBracket);
 		}
 	
-	    public AnnotationSyntax WithQualifier(QualifierSyntax qualifier)
+	    public AttributeSyntax WithQualifier(QualifierSyntax qualifier)
 		{
 			return this.Update(this.TOpenBracket, Qualifier, this.TCloseBracket);
 		}
 	
-	    public AnnotationSyntax WithTCloseBracket(SyntaxToken tCloseBracket)
+	    public AttributeSyntax WithTCloseBracket(SyntaxToken tCloseBracket)
 		{
 			return this.Update(this.TOpenBracket, this.Qualifier, TCloseBracket);
 		}
 	
-	    public AnnotationSyntax Update(SyntaxToken tOpenBracket, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+	    public AttributeSyntax Update(SyntaxToken tOpenBracket, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
 	    {
 	        if (this.TOpenBracket != tOpenBracket ||
 				this.Qualifier != qualifier ||
 				this.TCloseBracket != tCloseBracket)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.Annotation(tOpenBracket, qualifier, tCloseBracket);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.Attribute(tOpenBracket, qualifier, tCloseBracket);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (AnnotationSyntax)newNode;
+				return (AttributeSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitAnnotation(this, argument);
+	        return visitor.VisitAttribute(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitAnnotation(this);
+	        return visitor.VisitAttribute(this);
 	    }
 	
 	    public override void Accept(IMetaSyntaxVisitor visitor)
 	    {
-	        visitor.VisitAnnotation(this);
+	        visitor.VisitAttribute(this);
 	    }
 	}
 	
 	public sealed class NamespaceDeclarationSyntax : MetaSyntaxNode
 	{
-	    private SyntaxNode annotation;
+	    private SyntaxNode attribute;
 	    private QualifiedNameSyntax qualifiedName;
 	    private NamespaceBodySyntax namespaceBody;
 	
@@ -491,12 +491,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AnnotationSyntax> Annotation 
+	    public SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -522,7 +522,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.annotation, 0);
+				case 0: return this.GetRed(ref this.attribute, 0);
 				case 2: return this.GetRed(ref this.qualifiedName, 2);
 				case 3: return this.GetRed(ref this.namespaceBody, 3);
 				default: return null;
@@ -533,46 +533,46 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.annotation;
+				case 0: return this.attribute;
 				case 2: return this.qualifiedName;
 				case 3: return this.namespaceBody;
 				default: return null;
 	        }
 	    }
 	
-	    public NamespaceDeclarationSyntax WithAnnotation(SyntaxList<AnnotationSyntax> annotation)
+	    public NamespaceDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Annotation, this.KNamespace, this.QualifiedName, this.NamespaceBody);
+			return this.Update(Attribute, this.KNamespace, this.QualifiedName, this.NamespaceBody);
 		}
 	
-	    public NamespaceDeclarationSyntax AddAnnotation(params AnnotationSyntax[] annotation)
+	    public NamespaceDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
 		{
-			return this.WithAnnotation(this.Annotation.AddRange(annotation));
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
 	    public NamespaceDeclarationSyntax WithKNamespace(SyntaxToken kNamespace)
 		{
-			return this.Update(this.Annotation, KNamespace, this.QualifiedName, this.NamespaceBody);
+			return this.Update(this.Attribute, KNamespace, this.QualifiedName, this.NamespaceBody);
 		}
 	
 	    public NamespaceDeclarationSyntax WithQualifiedName(QualifiedNameSyntax qualifiedName)
 		{
-			return this.Update(this.Annotation, this.KNamespace, QualifiedName, this.NamespaceBody);
+			return this.Update(this.Attribute, this.KNamespace, QualifiedName, this.NamespaceBody);
 		}
 	
 	    public NamespaceDeclarationSyntax WithNamespaceBody(NamespaceBodySyntax namespaceBody)
 		{
-			return this.Update(this.Annotation, this.KNamespace, this.QualifiedName, NamespaceBody);
+			return this.Update(this.Attribute, this.KNamespace, this.QualifiedName, NamespaceBody);
 		}
 	
-	    public NamespaceDeclarationSyntax Update(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
+	    public NamespaceDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
 	    {
-	        if (this.Annotation != annotation ||
+	        if (this.Attribute != attribute ||
 				this.KNamespace != kNamespace ||
 				this.QualifiedName != qualifiedName ||
 				this.NamespaceBody != namespaceBody)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.NamespaceDeclaration(annotation, kNamespace, qualifiedName, namespaceBody);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.NamespaceDeclaration(attribute, kNamespace, qualifiedName, namespaceBody);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -723,7 +723,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class MetamodelDeclarationSyntax : MetaSyntaxNode
 	{
-	    private SyntaxNode annotation;
+	    private SyntaxNode attribute;
 	    private NameSyntax name;
 	    private MetamodelPropertyListSyntax metamodelPropertyList;
 	
@@ -737,12 +737,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AnnotationSyntax> Annotation 
+	    public SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -795,7 +795,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.annotation, 0);
+				case 0: return this.GetRed(ref this.attribute, 0);
 				case 2: return this.GetRed(ref this.name, 2);
 				case 4: return this.GetRed(ref this.metamodelPropertyList, 4);
 				default: return null;
@@ -806,56 +806,56 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.annotation;
+				case 0: return this.attribute;
 				case 2: return this.name;
 				case 4: return this.metamodelPropertyList;
 				default: return null;
 	        }
 	    }
 	
-	    public MetamodelDeclarationSyntax WithAnnotation(SyntaxList<AnnotationSyntax> annotation)
+	    public MetamodelDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Annotation, this.KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
+			return this.Update(Attribute, this.KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
 		}
 	
-	    public MetamodelDeclarationSyntax AddAnnotation(params AnnotationSyntax[] annotation)
+	    public MetamodelDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
 		{
-			return this.WithAnnotation(this.Annotation.AddRange(annotation));
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
 	    public MetamodelDeclarationSyntax WithKMetamodel(SyntaxToken kMetamodel)
 		{
-			return this.Update(this.Annotation, KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public MetamodelDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Annotation, this.KMetamodel, Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KMetamodel, Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public MetamodelDeclarationSyntax WithTOpenParen(SyntaxToken tOpenParen)
 		{
-			return this.Update(this.Annotation, this.KMetamodel, this.Name, TOpenParen, this.MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KMetamodel, this.Name, TOpenParen, this.MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public MetamodelDeclarationSyntax WithMetamodelPropertyList(MetamodelPropertyListSyntax metamodelPropertyList)
 		{
-			return this.Update(this.Annotation, this.KMetamodel, this.Name, this.TOpenParen, MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KMetamodel, this.Name, this.TOpenParen, MetamodelPropertyList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public MetamodelDeclarationSyntax WithTCloseParen(SyntaxToken tCloseParen)
 		{
-			return this.Update(this.Annotation, this.KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, TCloseParen, this.TSemicolon);
 		}
 	
 	    public MetamodelDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.Annotation, this.KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, TSemicolon);
+			return this.Update(this.Attribute, this.KMetamodel, this.Name, this.TOpenParen, this.MetamodelPropertyList, this.TCloseParen, TSemicolon);
 		}
 	
-	    public MetamodelDeclarationSyntax Update(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kMetamodel, NameSyntax name, SyntaxToken tOpenParen, MetamodelPropertyListSyntax metamodelPropertyList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+	    public MetamodelDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kMetamodel, NameSyntax name, SyntaxToken tOpenParen, MetamodelPropertyListSyntax metamodelPropertyList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 	    {
-	        if (this.Annotation != annotation ||
+	        if (this.Attribute != attribute ||
 				this.KMetamodel != kMetamodel ||
 				this.Name != name ||
 				this.TOpenParen != tOpenParen ||
@@ -863,7 +863,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				this.TCloseParen != tCloseParen ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.MetamodelDeclaration(annotation, kMetamodel, name, tOpenParen, metamodelPropertyList, tCloseParen, tSemicolon);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.MetamodelDeclaration(attribute, kMetamodel, name, tOpenParen, metamodelPropertyList, tCloseParen, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1150,7 +1150,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    private ClassDeclarationSyntax classDeclaration;
 	    private AssociationDeclarationSyntax associationDeclaration;
 	    private ConstDeclarationSyntax constDeclaration;
-	    private ExternTypeDeclarationSyntax externTypeDeclaration;
 	
 	    public DeclarationSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -1178,10 +1177,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get { return this.GetRed(ref this.constDeclaration, 3); } 
 		}
-	    public ExternTypeDeclarationSyntax ExternTypeDeclaration 
-		{ 
-			get { return this.GetRed(ref this.externTypeDeclaration, 4); } 
-		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
@@ -1191,7 +1186,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case 1: return this.GetRed(ref this.classDeclaration, 1);
 				case 2: return this.GetRed(ref this.associationDeclaration, 2);
 				case 3: return this.GetRed(ref this.constDeclaration, 3);
-				case 4: return this.GetRed(ref this.externTypeDeclaration, 4);
 				default: return null;
 	        }
 	    }
@@ -1204,7 +1198,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case 1: return this.classDeclaration;
 				case 2: return this.associationDeclaration;
 				case 3: return this.constDeclaration;
-				case 4: return this.externTypeDeclaration;
 				default: return null;
 	        }
 	    }
@@ -1227,11 +1220,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    public DeclarationSyntax WithConstDeclaration(ConstDeclarationSyntax constDeclaration)
 		{
 			return this.Update(constDeclaration);
-		}
-	
-	    public DeclarationSyntax WithExternTypeDeclaration(ExternTypeDeclarationSyntax externTypeDeclaration)
-		{
-			return this.Update(externTypeDeclaration);
 		}
 	
 	    public DeclarationSyntax Update(EnumDeclarationSyntax enumDeclaration)
@@ -1286,19 +1274,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        return this;
 	    }
 	
-	    public DeclarationSyntax Update(ExternTypeDeclarationSyntax externTypeDeclaration)
-	    {
-	        if (this.ExternTypeDeclaration != externTypeDeclaration)
-	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.Declaration(externTypeDeclaration);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (DeclarationSyntax)newNode;
-	        }
-	        return this;
-	    }
-	
 	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
 	        return visitor.VisitDeclaration(this, argument);
@@ -1317,7 +1292,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class EnumDeclarationSyntax : MetaSyntaxNode
 	{
-	    private SyntaxNode annotation;
+	    private SyntaxNode attribute;
 	    private NameSyntax name;
 	    private EnumBodySyntax enumBody;
 	
@@ -1331,12 +1306,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AnnotationSyntax> Annotation 
+	    public SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -1362,7 +1337,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.annotation, 0);
+				case 0: return this.GetRed(ref this.attribute, 0);
 				case 2: return this.GetRed(ref this.name, 2);
 				case 3: return this.GetRed(ref this.enumBody, 3);
 				default: return null;
@@ -1373,46 +1348,46 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.annotation;
+				case 0: return this.attribute;
 				case 2: return this.name;
 				case 3: return this.enumBody;
 				default: return null;
 	        }
 	    }
 	
-	    public EnumDeclarationSyntax WithAnnotation(SyntaxList<AnnotationSyntax> annotation)
+	    public EnumDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Annotation, this.KEnum, this.Name, this.EnumBody);
+			return this.Update(Attribute, this.KEnum, this.Name, this.EnumBody);
 		}
 	
-	    public EnumDeclarationSyntax AddAnnotation(params AnnotationSyntax[] annotation)
+	    public EnumDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
 		{
-			return this.WithAnnotation(this.Annotation.AddRange(annotation));
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
 	    public EnumDeclarationSyntax WithKEnum(SyntaxToken kEnum)
 		{
-			return this.Update(this.Annotation, KEnum, this.Name, this.EnumBody);
+			return this.Update(this.Attribute, KEnum, this.Name, this.EnumBody);
 		}
 	
 	    public EnumDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Annotation, this.KEnum, Name, this.EnumBody);
+			return this.Update(this.Attribute, this.KEnum, Name, this.EnumBody);
 		}
 	
 	    public EnumDeclarationSyntax WithEnumBody(EnumBodySyntax enumBody)
 		{
-			return this.Update(this.Annotation, this.KEnum, this.Name, EnumBody);
+			return this.Update(this.Attribute, this.KEnum, this.Name, EnumBody);
 		}
 	
-	    public EnumDeclarationSyntax Update(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kEnum, NameSyntax name, EnumBodySyntax enumBody)
+	    public EnumDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kEnum, NameSyntax name, EnumBodySyntax enumBody)
 	    {
-	        if (this.Annotation != annotation ||
+	        if (this.Attribute != attribute ||
 				this.KEnum != kEnum ||
 				this.Name != name ||
 				this.EnumBody != enumBody)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.EnumDeclaration(annotation, kEnum, name, enumBody);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.EnumDeclaration(attribute, kEnum, name, enumBody);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1662,7 +1637,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class EnumValueSyntax : MetaSyntaxNode
 	{
-	    private SyntaxNode annotation;
+	    private SyntaxNode attribute;
 	    private NameSyntax name;
 	
 	    public EnumValueSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
@@ -1675,12 +1650,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AnnotationSyntax> Annotation 
+	    public SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -1693,7 +1668,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.annotation, 0);
+				case 0: return this.GetRed(ref this.attribute, 0);
 				case 1: return this.GetRed(ref this.name, 1);
 				default: return null;
 	        }
@@ -1703,33 +1678,33 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.annotation;
+				case 0: return this.attribute;
 				case 1: return this.name;
 				default: return null;
 	        }
 	    }
 	
-	    public EnumValueSyntax WithAnnotation(SyntaxList<AnnotationSyntax> annotation)
+	    public EnumValueSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Annotation, this.Name);
+			return this.Update(Attribute, this.Name);
 		}
 	
-	    public EnumValueSyntax AddAnnotation(params AnnotationSyntax[] annotation)
+	    public EnumValueSyntax AddAttribute(params AttributeSyntax[] attribute)
 		{
-			return this.WithAnnotation(this.Annotation.AddRange(annotation));
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
 	    public EnumValueSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Annotation, Name);
+			return this.Update(this.Attribute, Name);
 		}
 	
-	    public EnumValueSyntax Update(SyntaxList<AnnotationSyntax> annotation, NameSyntax name)
+	    public EnumValueSyntax Update(SyntaxList<AttributeSyntax> attribute, NameSyntax name)
 	    {
-	        if (this.Annotation != annotation ||
+	        if (this.Attribute != attribute ||
 				this.Name != name)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.EnumValue(annotation, name);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.EnumValue(attribute, name);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -1827,7 +1802,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class ClassDeclarationSyntax : MetaSyntaxNode
 	{
-	    private SyntaxNode annotation;
+	    private SyntaxNode attribute;
 	    private NameSyntax name;
 	    private ClassAncestorsSyntax classAncestors;
 	    private ClassBodySyntax classBody;
@@ -1842,12 +1817,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AnnotationSyntax> Annotation 
+	    public SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -1895,7 +1870,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.annotation, 0);
+				case 0: return this.GetRed(ref this.attribute, 0);
 				case 3: return this.GetRed(ref this.name, 3);
 				case 5: return this.GetRed(ref this.classAncestors, 5);
 				case 6: return this.GetRed(ref this.classBody, 6);
@@ -1907,7 +1882,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.annotation;
+				case 0: return this.attribute;
 				case 3: return this.name;
 				case 5: return this.classAncestors;
 				case 6: return this.classBody;
@@ -1915,49 +1890,49 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public ClassDeclarationSyntax WithAnnotation(SyntaxList<AnnotationSyntax> annotation)
+	    public ClassDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Annotation, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(Attribute, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
-	    public ClassDeclarationSyntax AddAnnotation(params AnnotationSyntax[] annotation)
+	    public ClassDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
 		{
-			return this.WithAnnotation(this.Annotation.AddRange(annotation));
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
 	    public ClassDeclarationSyntax WithKAbstract(SyntaxToken kAbstract)
 		{
-			return this.Update(this.Annotation, KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithKClass(SyntaxToken kClass)
 		{
-			return this.Update(this.Annotation, this.KAbstract, KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.KAbstract, KClass, this.Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Annotation, this.KAbstract, this.KClass, Name, this.TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.KAbstract, this.KClass, Name, this.TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithTColon(SyntaxToken tColon)
 		{
-			return this.Update(this.Annotation, this.KAbstract, this.KClass, this.Name, TColon, this.ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.KAbstract, this.KClass, this.Name, TColon, this.ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithClassAncestors(ClassAncestorsSyntax classAncestors)
 		{
-			return this.Update(this.Annotation, this.KAbstract, this.KClass, this.Name, this.TColon, ClassAncestors, this.ClassBody);
+			return this.Update(this.Attribute, this.KAbstract, this.KClass, this.Name, this.TColon, ClassAncestors, this.ClassBody);
 		}
 	
 	    public ClassDeclarationSyntax WithClassBody(ClassBodySyntax classBody)
 		{
-			return this.Update(this.Annotation, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, ClassBody);
+			return this.Update(this.Attribute, this.KAbstract, this.KClass, this.Name, this.TColon, this.ClassAncestors, ClassBody);
 		}
 	
-	    public ClassDeclarationSyntax Update(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+	    public ClassDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
 	    {
-	        if (this.Annotation != annotation ||
+	        if (this.Attribute != attribute ||
 				this.KAbstract != kAbstract ||
 				this.KClass != kClass ||
 				this.Name != name ||
@@ -1965,7 +1940,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				this.ClassAncestors != classAncestors ||
 				this.ClassBody != classBody)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.ClassDeclaration(annotation, kAbstract, kClass, name, tColon, classAncestors, classBody);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.ClassDeclaration(attribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -2354,7 +2329,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class FieldDeclarationSyntax : MetaSyntaxNode
 	{
-	    private SyntaxNode annotation;
+	    private SyntaxNode attribute;
 	    private FieldModifierSyntax fieldModifier;
 	    private TypeReferenceSyntax typeReference;
 	    private NameSyntax name;
@@ -2370,12 +2345,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AnnotationSyntax> Annotation 
+	    public SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -2409,7 +2384,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.annotation, 0);
+				case 0: return this.GetRed(ref this.attribute, 0);
 				case 1: return this.GetRed(ref this.fieldModifier, 1);
 				case 2: return this.GetRed(ref this.typeReference, 2);
 				case 3: return this.GetRed(ref this.name, 3);
@@ -2422,7 +2397,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.annotation;
+				case 0: return this.attribute;
 				case 1: return this.fieldModifier;
 				case 2: return this.typeReference;
 				case 3: return this.name;
@@ -2431,51 +2406,51 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public FieldDeclarationSyntax WithAnnotation(SyntaxList<AnnotationSyntax> annotation)
+	    public FieldDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Annotation, this.FieldModifier, this.TypeReference, this.Name, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(Attribute, this.FieldModifier, this.TypeReference, this.Name, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
-	    public FieldDeclarationSyntax AddAnnotation(params AnnotationSyntax[] annotation)
+	    public FieldDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
 		{
-			return this.WithAnnotation(this.Annotation.AddRange(annotation));
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
 	    public FieldDeclarationSyntax WithFieldModifier(FieldModifierSyntax fieldModifier)
 		{
-			return this.Update(this.Annotation, FieldModifier, this.TypeReference, this.Name, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, FieldModifier, this.TypeReference, this.Name, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax WithTypeReference(TypeReferenceSyntax typeReference)
 		{
-			return this.Update(this.Annotation, this.FieldModifier, TypeReference, this.Name, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, this.FieldModifier, TypeReference, this.Name, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Annotation, this.FieldModifier, this.TypeReference, Name, this.RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, this.FieldModifier, this.TypeReference, Name, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax WithRedefinitionsOrSubsettings(RedefinitionsOrSubsettingsSyntax redefinitionsOrSubsettings)
 		{
-			return this.Update(this.Annotation, this.FieldModifier, this.TypeReference, this.Name, RedefinitionsOrSubsettings, this.TSemicolon);
+			return this.Update(this.Attribute, this.FieldModifier, this.TypeReference, this.Name, RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
 	    public FieldDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.Annotation, this.FieldModifier, this.TypeReference, this.Name, this.RedefinitionsOrSubsettings, TSemicolon);
+			return this.Update(this.Attribute, this.FieldModifier, this.TypeReference, this.Name, this.RedefinitionsOrSubsettings, TSemicolon);
 		}
 	
-	    public FieldDeclarationSyntax Update(SyntaxList<AnnotationSyntax> annotation, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, RedefinitionsOrSubsettingsSyntax redefinitionsOrSubsettings, SyntaxToken tSemicolon)
+	    public FieldDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, RedefinitionsOrSubsettingsSyntax redefinitionsOrSubsettings, SyntaxToken tSemicolon)
 	    {
-	        if (this.Annotation != annotation ||
+	        if (this.Attribute != attribute ||
 				this.FieldModifier != fieldModifier ||
 				this.TypeReference != typeReference ||
 				this.Name != name ||
 				this.RedefinitionsOrSubsettings != redefinitionsOrSubsettings ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.FieldDeclaration(annotation, fieldModifier, typeReference, name, redefinitionsOrSubsettings, tSemicolon);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.FieldDeclaration(attribute, fieldModifier, typeReference, name, redefinitionsOrSubsettings, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -3036,360 +3011,6 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    public override void Accept(IMetaSyntaxVisitor visitor)
 	    {
 	        visitor.VisitConstDeclaration(this);
-	    }
-	}
-	
-	public sealed class ExternTypeDeclarationSyntax : MetaSyntaxNode
-	{
-	    private ExternClassTypeDeclarationSyntax externClassTypeDeclaration;
-	    private ExternStructTypeDeclarationSyntax externStructTypeDeclaration;
-	
-	    public ExternTypeDeclarationSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
-	        : base(green, syntaxTree, position)
-	    {
-	    }
-	
-	    public ExternTypeDeclarationSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
-	        : base(green, parent, position)
-	    {
-	    }
-	
-	    public ExternClassTypeDeclarationSyntax ExternClassTypeDeclaration 
-		{ 
-			get { return this.GetRed(ref this.externClassTypeDeclaration, 0); } 
-		}
-	    public ExternStructTypeDeclarationSyntax ExternStructTypeDeclaration 
-		{ 
-			get { return this.GetRed(ref this.externStructTypeDeclaration, 1); } 
-		}
-	
-	    public override SyntaxNode GetNodeSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 0: return this.GetRed(ref this.externClassTypeDeclaration, 0);
-				case 1: return this.GetRed(ref this.externStructTypeDeclaration, 1);
-				default: return null;
-	        }
-	    }
-	
-	    public override SyntaxNode GetCachedSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 0: return this.externClassTypeDeclaration;
-				case 1: return this.externStructTypeDeclaration;
-				default: return null;
-	        }
-	    }
-	
-	    public ExternTypeDeclarationSyntax WithExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax externClassTypeDeclaration)
-		{
-			return this.Update(externClassTypeDeclaration);
-		}
-	
-	    public ExternTypeDeclarationSyntax WithExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax externStructTypeDeclaration)
-		{
-			return this.Update(externStructTypeDeclaration);
-		}
-	
-	    public ExternTypeDeclarationSyntax Update(ExternClassTypeDeclarationSyntax externClassTypeDeclaration)
-	    {
-	        if (this.ExternClassTypeDeclaration != externClassTypeDeclaration)
-	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.ExternTypeDeclaration(externClassTypeDeclaration);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (ExternTypeDeclarationSyntax)newNode;
-	        }
-	        return this;
-	    }
-	
-	    public ExternTypeDeclarationSyntax Update(ExternStructTypeDeclarationSyntax externStructTypeDeclaration)
-	    {
-	        if (this.ExternStructTypeDeclaration != externStructTypeDeclaration)
-	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.ExternTypeDeclaration(externStructTypeDeclaration);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (ExternTypeDeclarationSyntax)newNode;
-	        }
-	        return this;
-	    }
-	
-	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
-	    {
-	        return visitor.VisitExternTypeDeclaration(this, argument);
-	    }
-	
-	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
-	    {
-	        return visitor.VisitExternTypeDeclaration(this);
-	    }
-	
-	    public override void Accept(IMetaSyntaxVisitor visitor)
-	    {
-	        visitor.VisitExternTypeDeclaration(this);
-	    }
-	}
-	
-	public sealed class ExternClassTypeDeclarationSyntax : MetaSyntaxNode
-	{
-	    private QualifierSyntax qualifier;
-	    private NameSyntax name;
-	
-	    public ExternClassTypeDeclarationSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
-	        : base(green, syntaxTree, position)
-	    {
-	    }
-	
-	    public ExternClassTypeDeclarationSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
-	        : base(green, parent, position)
-	    {
-	    }
-	
-	    public SyntaxToken KExtern 
-		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternClassTypeDeclarationGreen)this.Green;
-				var greenToken = green.KExtern;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
-			}
-		}
-	    public SyntaxToken KClass 
-		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternClassTypeDeclarationGreen)this.Green;
-				var greenToken = green.KClass;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
-			}
-		}
-	    public QualifierSyntax Qualifier 
-		{ 
-			get { return this.GetRed(ref this.qualifier, 2); } 
-		}
-	    public NameSyntax Name 
-		{ 
-			get { return this.GetRed(ref this.name, 3); } 
-		}
-	    public SyntaxToken TSemicolon 
-		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternClassTypeDeclarationGreen)this.Green;
-				var greenToken = green.TSemicolon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
-			}
-		}
-	
-	    public override SyntaxNode GetNodeSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 2: return this.GetRed(ref this.qualifier, 2);
-				case 3: return this.GetRed(ref this.name, 3);
-				default: return null;
-	        }
-	    }
-	
-	    public override SyntaxNode GetCachedSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 2: return this.qualifier;
-				case 3: return this.name;
-				default: return null;
-	        }
-	    }
-	
-	    public ExternClassTypeDeclarationSyntax WithKExtern(SyntaxToken kExtern)
-		{
-			return this.Update(KExtern, this.KClass, this.Qualifier, this.Name, this.TSemicolon);
-		}
-	
-	    public ExternClassTypeDeclarationSyntax WithKClass(SyntaxToken kClass)
-		{
-			return this.Update(this.KExtern, KClass, this.Qualifier, this.Name, this.TSemicolon);
-		}
-	
-	    public ExternClassTypeDeclarationSyntax WithQualifier(QualifierSyntax qualifier)
-		{
-			return this.Update(this.KExtern, this.KClass, Qualifier, this.Name, this.TSemicolon);
-		}
-	
-	    public ExternClassTypeDeclarationSyntax WithName(NameSyntax name)
-		{
-			return this.Update(this.KExtern, this.KClass, this.Qualifier, Name, this.TSemicolon);
-		}
-	
-	    public ExternClassTypeDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
-		{
-			return this.Update(this.KExtern, this.KClass, this.Qualifier, this.Name, TSemicolon);
-		}
-	
-	    public ExternClassTypeDeclarationSyntax Update(SyntaxToken kExtern, SyntaxToken kClass, QualifierSyntax qualifier, NameSyntax name, SyntaxToken tSemicolon)
-	    {
-	        if (this.KExtern != kExtern ||
-				this.KClass != kClass ||
-				this.Qualifier != qualifier ||
-				this.Name != name ||
-				this.TSemicolon != tSemicolon)
-	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.ExternClassTypeDeclaration(kExtern, kClass, qualifier, name, tSemicolon);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (ExternClassTypeDeclarationSyntax)newNode;
-	        }
-	        return this;
-	    }
-	
-	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
-	    {
-	        return visitor.VisitExternClassTypeDeclaration(this, argument);
-	    }
-	
-	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
-	    {
-	        return visitor.VisitExternClassTypeDeclaration(this);
-	    }
-	
-	    public override void Accept(IMetaSyntaxVisitor visitor)
-	    {
-	        visitor.VisitExternClassTypeDeclaration(this);
-	    }
-	}
-	
-	public sealed class ExternStructTypeDeclarationSyntax : MetaSyntaxNode
-	{
-	    private QualifierSyntax qualifier;
-	    private NameSyntax name;
-	
-	    public ExternStructTypeDeclarationSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
-	        : base(green, syntaxTree, position)
-	    {
-	    }
-	
-	    public ExternStructTypeDeclarationSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
-	        : base(green, parent, position)
-	    {
-	    }
-	
-	    public SyntaxToken KExtern 
-		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternStructTypeDeclarationGreen)this.Green;
-				var greenToken = green.KExtern;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
-			}
-		}
-	    public SyntaxToken KStruct 
-		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternStructTypeDeclarationGreen)this.Green;
-				var greenToken = green.KStruct;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
-			}
-		}
-	    public QualifierSyntax Qualifier 
-		{ 
-			get { return this.GetRed(ref this.qualifier, 2); } 
-		}
-	    public NameSyntax Name 
-		{ 
-			get { return this.GetRed(ref this.name, 3); } 
-		}
-	    public SyntaxToken TSemicolon 
-		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.ExternStructTypeDeclarationGreen)this.Green;
-				var greenToken = green.TSemicolon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
-			}
-		}
-	
-	    public override SyntaxNode GetNodeSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 2: return this.GetRed(ref this.qualifier, 2);
-				case 3: return this.GetRed(ref this.name, 3);
-				default: return null;
-	        }
-	    }
-	
-	    public override SyntaxNode GetCachedSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 2: return this.qualifier;
-				case 3: return this.name;
-				default: return null;
-	        }
-	    }
-	
-	    public ExternStructTypeDeclarationSyntax WithKExtern(SyntaxToken kExtern)
-		{
-			return this.Update(KExtern, this.KStruct, this.Qualifier, this.Name, this.TSemicolon);
-		}
-	
-	    public ExternStructTypeDeclarationSyntax WithKStruct(SyntaxToken kStruct)
-		{
-			return this.Update(this.KExtern, KStruct, this.Qualifier, this.Name, this.TSemicolon);
-		}
-	
-	    public ExternStructTypeDeclarationSyntax WithQualifier(QualifierSyntax qualifier)
-		{
-			return this.Update(this.KExtern, this.KStruct, Qualifier, this.Name, this.TSemicolon);
-		}
-	
-	    public ExternStructTypeDeclarationSyntax WithName(NameSyntax name)
-		{
-			return this.Update(this.KExtern, this.KStruct, this.Qualifier, Name, this.TSemicolon);
-		}
-	
-	    public ExternStructTypeDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
-		{
-			return this.Update(this.KExtern, this.KStruct, this.Qualifier, this.Name, TSemicolon);
-		}
-	
-	    public ExternStructTypeDeclarationSyntax Update(SyntaxToken kExtern, SyntaxToken kStruct, QualifierSyntax qualifier, NameSyntax name, SyntaxToken tSemicolon)
-	    {
-	        if (this.KExtern != kExtern ||
-				this.KStruct != kStruct ||
-				this.Qualifier != qualifier ||
-				this.Name != name ||
-				this.TSemicolon != tSemicolon)
-	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.ExternStructTypeDeclaration(kExtern, kStruct, qualifier, name, tSemicolon);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (ExternStructTypeDeclarationSyntax)newNode;
-	        }
-	        return this;
-	    }
-	
-	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
-	    {
-	        return visitor.VisitExternStructTypeDeclaration(this, argument);
-	    }
-	
-	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
-	    {
-	        return visitor.VisitExternStructTypeDeclaration(this);
-	    }
-	
-	    public override void Accept(IMetaSyntaxVisitor visitor)
-	    {
-	        visitor.VisitExternStructTypeDeclaration(this);
 	    }
 	}
 	
@@ -4367,7 +3988,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class OperationDeclarationSyntax : MetaSyntaxNode
 	{
-	    private SyntaxNode annotation;
+	    private SyntaxNode attribute;
 	    private ReturnTypeSyntax returnType;
 	    private NameSyntax name;
 	    private ParameterListSyntax parameterList;
@@ -4382,12 +4003,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AnnotationSyntax> Annotation 
+	    public SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -4444,7 +4065,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.annotation, 0);
+				case 0: return this.GetRed(ref this.attribute, 0);
 				case 2: return this.GetRed(ref this.returnType, 2);
 				case 3: return this.GetRed(ref this.name, 3);
 				case 5: return this.GetRed(ref this.parameterList, 5);
@@ -4456,7 +4077,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.annotation;
+				case 0: return this.attribute;
 				case 2: return this.returnType;
 				case 3: return this.name;
 				case 5: return this.parameterList;
@@ -4464,54 +4085,54 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        }
 	    }
 	
-	    public OperationDeclarationSyntax WithAnnotation(SyntaxList<AnnotationSyntax> annotation)
+	    public OperationDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Annotation, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(Attribute, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
-	    public OperationDeclarationSyntax AddAnnotation(params AnnotationSyntax[] annotation)
+	    public OperationDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
 		{
-			return this.WithAnnotation(this.Annotation.AddRange(annotation));
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
 	    public OperationDeclarationSyntax WithKStatic(SyntaxToken kStatic)
 		{
-			return this.Update(this.Annotation, KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithReturnType(ReturnTypeSyntax returnType)
 		{
-			return this.Update(this.Annotation, this.KStatic, ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KStatic, ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Annotation, this.KStatic, this.ReturnType, Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KStatic, this.ReturnType, Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithTOpenParen(SyntaxToken tOpenParen)
 		{
-			return this.Update(this.Annotation, this.KStatic, this.ReturnType, this.Name, TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KStatic, this.ReturnType, this.Name, TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithParameterList(ParameterListSyntax parameterList)
 		{
-			return this.Update(this.Annotation, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithTCloseParen(SyntaxToken tCloseParen)
 		{
-			return this.Update(this.Annotation, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.Annotation, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, TSemicolon);
+			return this.Update(this.Attribute, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, TSemicolon);
 		}
 	
-	    public OperationDeclarationSyntax Update(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+	    public OperationDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 	    {
-	        if (this.Annotation != annotation ||
+	        if (this.Attribute != attribute ||
 				this.KStatic != kStatic ||
 				this.ReturnType != returnType ||
 				this.Name != name ||
@@ -4520,7 +4141,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				this.TCloseParen != tCloseParen ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationDeclaration(annotation, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationDeclaration(attribute, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -4631,7 +4252,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class ParameterSyntax : MetaSyntaxNode
 	{
-	    private SyntaxNode annotation;
+	    private SyntaxNode attribute;
 	    private TypeReferenceSyntax typeReference;
 	    private NameSyntax name;
 	
@@ -4645,12 +4266,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AnnotationSyntax> Annotation 
+	    public SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -4667,7 +4288,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.annotation, 0);
+				case 0: return this.GetRed(ref this.attribute, 0);
 				case 1: return this.GetRed(ref this.typeReference, 1);
 				case 2: return this.GetRed(ref this.name, 2);
 				default: return null;
@@ -4678,40 +4299,40 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.annotation;
+				case 0: return this.attribute;
 				case 1: return this.typeReference;
 				case 2: return this.name;
 				default: return null;
 	        }
 	    }
 	
-	    public ParameterSyntax WithAnnotation(SyntaxList<AnnotationSyntax> annotation)
+	    public ParameterSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Annotation, this.TypeReference, this.Name);
+			return this.Update(Attribute, this.TypeReference, this.Name);
 		}
 	
-	    public ParameterSyntax AddAnnotation(params AnnotationSyntax[] annotation)
+	    public ParameterSyntax AddAttribute(params AttributeSyntax[] attribute)
 		{
-			return this.WithAnnotation(this.Annotation.AddRange(annotation));
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
 	    public ParameterSyntax WithTypeReference(TypeReferenceSyntax typeReference)
 		{
-			return this.Update(this.Annotation, TypeReference, this.Name);
+			return this.Update(this.Attribute, TypeReference, this.Name);
 		}
 	
 	    public ParameterSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Annotation, this.TypeReference, Name);
+			return this.Update(this.Attribute, this.TypeReference, Name);
 		}
 	
-	    public ParameterSyntax Update(SyntaxList<AnnotationSyntax> annotation, TypeReferenceSyntax typeReference, NameSyntax name)
+	    public ParameterSyntax Update(SyntaxList<AttributeSyntax> attribute, TypeReferenceSyntax typeReference, NameSyntax name)
 	    {
-	        if (this.Annotation != annotation ||
+	        if (this.Attribute != attribute ||
 				this.TypeReference != typeReference ||
 				this.Name != name)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.Parameter(annotation, typeReference, name);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.Parameter(attribute, typeReference, name);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -4738,7 +4359,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	
 	public sealed class AssociationDeclarationSyntax : MetaSyntaxNode
 	{
-	    private SyntaxNode annotation;
+	    private SyntaxNode attribute;
 	    private QualifierSyntax source;
 	    private QualifierSyntax target;
 	
@@ -4752,12 +4373,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	    }
 	
-	    public SyntaxList<AnnotationSyntax> Annotation 
+	    public SyntaxList<AttributeSyntax> Attribute 
 		{ 
 			get
 			{
-				var red = this.GetRed(ref this.annotation, 0);
-				if (red != null) return new SyntaxList<AnnotationSyntax>(red);
+				var red = this.GetRed(ref this.attribute, 0);
+				if (red != null) return new SyntaxList<AttributeSyntax>(red);
 				return default;
 			} 
 		}
@@ -4801,7 +4422,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.annotation, 0);
+				case 0: return this.GetRed(ref this.attribute, 0);
 				case 2: return this.GetRed(ref this.source, 2);
 				case 4: return this.GetRed(ref this.target, 4);
 				default: return null;
@@ -4812,58 +4433,58 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.annotation;
+				case 0: return this.attribute;
 				case 2: return this.source;
 				case 4: return this.target;
 				default: return null;
 	        }
 	    }
 	
-	    public AssociationDeclarationSyntax WithAnnotation(SyntaxList<AnnotationSyntax> annotation)
+	    public AssociationDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Annotation, this.KAssociation, this.Source, this.KWith, this.Target, this.TSemicolon);
+			return this.Update(Attribute, this.KAssociation, this.Source, this.KWith, this.Target, this.TSemicolon);
 		}
 	
-	    public AssociationDeclarationSyntax AddAnnotation(params AnnotationSyntax[] annotation)
+	    public AssociationDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
 		{
-			return this.WithAnnotation(this.Annotation.AddRange(annotation));
+			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
 	    public AssociationDeclarationSyntax WithKAssociation(SyntaxToken kAssociation)
 		{
-			return this.Update(this.Annotation, KAssociation, this.Source, this.KWith, this.Target, this.TSemicolon);
+			return this.Update(this.Attribute, KAssociation, this.Source, this.KWith, this.Target, this.TSemicolon);
 		}
 	
 	    public AssociationDeclarationSyntax WithSource(QualifierSyntax source)
 		{
-			return this.Update(this.Annotation, this.KAssociation, Source, this.KWith, this.Target, this.TSemicolon);
+			return this.Update(this.Attribute, this.KAssociation, Source, this.KWith, this.Target, this.TSemicolon);
 		}
 	
 	    public AssociationDeclarationSyntax WithKWith(SyntaxToken kWith)
 		{
-			return this.Update(this.Annotation, this.KAssociation, this.Source, KWith, this.Target, this.TSemicolon);
+			return this.Update(this.Attribute, this.KAssociation, this.Source, KWith, this.Target, this.TSemicolon);
 		}
 	
 	    public AssociationDeclarationSyntax WithTarget(QualifierSyntax target)
 		{
-			return this.Update(this.Annotation, this.KAssociation, this.Source, this.KWith, Target, this.TSemicolon);
+			return this.Update(this.Attribute, this.KAssociation, this.Source, this.KWith, Target, this.TSemicolon);
 		}
 	
 	    public AssociationDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.Annotation, this.KAssociation, this.Source, this.KWith, this.Target, TSemicolon);
+			return this.Update(this.Attribute, this.KAssociation, this.Source, this.KWith, this.Target, TSemicolon);
 		}
 	
-	    public AssociationDeclarationSyntax Update(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kAssociation, QualifierSyntax source, SyntaxToken kWith, QualifierSyntax target, SyntaxToken tSemicolon)
+	    public AssociationDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kAssociation, QualifierSyntax source, SyntaxToken kWith, QualifierSyntax target, SyntaxToken tSemicolon)
 	    {
-	        if (this.Annotation != annotation ||
+	        if (this.Attribute != attribute ||
 				this.KAssociation != kAssociation ||
 				this.Source != source ||
 				this.KWith != kWith ||
 				this.Target != target ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.AssociationDeclaration(annotation, kAssociation, source, kWith, target, tSemicolon);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.AssociationDeclaration(attribute, kAssociation, source, kWith, target, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -5614,7 +5235,7 @@ namespace MetaDslx.Languages.Meta
 		
 		void VisitQualifier(QualifierSyntax node);
 		
-		void VisitAnnotation(AnnotationSyntax node);
+		void VisitAttribute(AttributeSyntax node);
 		
 		void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node);
 		
@@ -5663,12 +5284,6 @@ namespace MetaDslx.Languages.Meta
 		void VisitNameUseList(NameUseListSyntax node);
 		
 		void VisitConstDeclaration(ConstDeclarationSyntax node);
-		
-		void VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node);
-		
-		void VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node);
-		
-		void VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node);
 		
 		void VisitReturnType(ReturnTypeSyntax node);
 		
@@ -5740,7 +5355,7 @@ namespace MetaDslx.Languages.Meta
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitAnnotation(AnnotationSyntax node)
+		public virtual void VisitAttribute(AttributeSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -5861,21 +5476,6 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual void VisitConstDeclaration(ConstDeclarationSyntax node)
-		{
-		    this.DefaultVisit(node);
-		}
-		
-		public virtual void VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
-		{
-		    this.DefaultVisit(node);
-		}
-		
-		public virtual void VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
-		{
-		    this.DefaultVisit(node);
-		}
-		
-		public virtual void VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -6009,7 +5609,7 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitQualifier(QualifierSyntax node, TArg argument);
 		
-		TResult VisitAnnotation(AnnotationSyntax node, TArg argument);
+		TResult VisitAttribute(AttributeSyntax node, TArg argument);
 		
 		TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node, TArg argument);
 		
@@ -6058,12 +5658,6 @@ namespace MetaDslx.Languages.Meta
 		TResult VisitNameUseList(NameUseListSyntax node, TArg argument);
 		
 		TResult VisitConstDeclaration(ConstDeclarationSyntax node, TArg argument);
-		
-		TResult VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node, TArg argument);
-		
-		TResult VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node, TArg argument);
-		
-		TResult VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node, TArg argument);
 		
 		TResult VisitReturnType(ReturnTypeSyntax node, TArg argument);
 		
@@ -6135,7 +5729,7 @@ namespace MetaDslx.Languages.Meta
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitAnnotation(AnnotationSyntax node, TArg argument)
+		public virtual TResult VisitAttribute(AttributeSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -6256,21 +5850,6 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual TResult VisitConstDeclaration(ConstDeclarationSyntax node, TArg argument)
-		{
-		    return this.DefaultVisit(node, argument);
-		}
-		
-		public virtual TResult VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node, TArg argument)
-		{
-		    return this.DefaultVisit(node, argument);
-		}
-		
-		public virtual TResult VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node, TArg argument)
-		{
-		    return this.DefaultVisit(node, argument);
-		}
-		
-		public virtual TResult VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -6402,7 +5981,7 @@ namespace MetaDslx.Languages.Meta
 		
 		TResult VisitQualifier(QualifierSyntax node);
 		
-		TResult VisitAnnotation(AnnotationSyntax node);
+		TResult VisitAttribute(AttributeSyntax node);
 		
 		TResult VisitNamespaceDeclaration(NamespaceDeclarationSyntax node);
 		
@@ -6451,12 +6030,6 @@ namespace MetaDslx.Languages.Meta
 		TResult VisitNameUseList(NameUseListSyntax node);
 		
 		TResult VisitConstDeclaration(ConstDeclarationSyntax node);
-		
-		TResult VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node);
-		
-		TResult VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node);
-		
-		TResult VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node);
 		
 		TResult VisitReturnType(ReturnTypeSyntax node);
 		
@@ -6528,7 +6101,7 @@ namespace MetaDslx.Languages.Meta
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitAnnotation(AnnotationSyntax node)
+		public virtual TResult VisitAttribute(AttributeSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -6649,21 +6222,6 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual TResult VisitConstDeclaration(ConstDeclarationSyntax node)
-		{
-		    return this.DefaultVisit(node);
-		}
-		
-		public virtual TResult VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
-		{
-		    return this.DefaultVisit(node);
-		}
-		
-		public virtual TResult VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
-		{
-		    return this.DefaultVisit(node);
-		}
-		
-		public virtual TResult VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -6816,7 +6374,7 @@ namespace MetaDslx.Languages.Meta
 			return node.Update(identifier);
 		}
 		
-		public virtual SyntaxNode VisitAnnotation(AnnotationSyntax node)
+		public virtual SyntaxNode VisitAttribute(AttributeSyntax node)
 		{
 		    var tOpenBracket = this.VisitToken(node.TOpenBracket);
 		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
@@ -6826,11 +6384,11 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
 		{
-		    var annotation = this.VisitList(node.Annotation);
+		    var attribute = this.VisitList(node.Attribute);
 		    var kNamespace = this.VisitToken(node.KNamespace);
 		    var qualifiedName = (QualifiedNameSyntax)this.Visit(node.QualifiedName);
 		    var namespaceBody = (NamespaceBodySyntax)this.Visit(node.NamespaceBody);
-			return node.Update(annotation, kNamespace, qualifiedName, namespaceBody);
+			return node.Update(attribute, kNamespace, qualifiedName, namespaceBody);
 		}
 		
 		public virtual SyntaxNode VisitNamespaceBody(NamespaceBodySyntax node)
@@ -6844,14 +6402,14 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual SyntaxNode VisitMetamodelDeclaration(MetamodelDeclarationSyntax node)
 		{
-		    var annotation = this.VisitList(node.Annotation);
+		    var attribute = this.VisitList(node.Attribute);
 		    var kMetamodel = this.VisitToken(node.KMetamodel);
 		    var name = (NameSyntax)this.Visit(node.Name);
 		    var tOpenParen = this.VisitToken(node.TOpenParen);
 		    var metamodelPropertyList = (MetamodelPropertyListSyntax)this.Visit(node.MetamodelPropertyList);
 		    var tCloseParen = this.VisitToken(node.TCloseParen);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(annotation, kMetamodel, name, tOpenParen, metamodelPropertyList, tCloseParen, tSemicolon);
+			return node.Update(attribute, kMetamodel, name, tOpenParen, metamodelPropertyList, tCloseParen, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitMetamodelPropertyList(MetamodelPropertyListSyntax node)
@@ -6900,22 +6458,16 @@ namespace MetaDslx.Languages.Meta
 			    var newConstDeclaration = (ConstDeclarationSyntax)this.Visit(oldConstDeclaration);
 				return node.Update(newConstDeclaration);
 			}
-			var oldExternTypeDeclaration = node.ExternTypeDeclaration;
-			if (oldExternTypeDeclaration != null)
-			{
-			    var newExternTypeDeclaration = (ExternTypeDeclarationSyntax)this.Visit(oldExternTypeDeclaration);
-				return node.Update(newExternTypeDeclaration);
-			}
 			return node;   
 		}
 		
 		public virtual SyntaxNode VisitEnumDeclaration(EnumDeclarationSyntax node)
 		{
-		    var annotation = this.VisitList(node.Annotation);
+		    var attribute = this.VisitList(node.Attribute);
 		    var kEnum = this.VisitToken(node.KEnum);
 		    var name = (NameSyntax)this.Visit(node.Name);
 		    var enumBody = (EnumBodySyntax)this.Visit(node.EnumBody);
-			return node.Update(annotation, kEnum, name, enumBody);
+			return node.Update(attribute, kEnum, name, enumBody);
 		}
 		
 		public virtual SyntaxNode VisitEnumBody(EnumBodySyntax node)
@@ -6936,9 +6488,9 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual SyntaxNode VisitEnumValue(EnumValueSyntax node)
 		{
-		    var annotation = this.VisitList(node.Annotation);
+		    var attribute = this.VisitList(node.Attribute);
 		    var name = (NameSyntax)this.Visit(node.Name);
-			return node.Update(annotation, name);
+			return node.Update(attribute, name);
 		}
 		
 		public virtual SyntaxNode VisitEnumMemberDeclaration(EnumMemberDeclarationSyntax node)
@@ -6949,14 +6501,14 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
 		{
-		    var annotation = this.VisitList(node.Annotation);
+		    var attribute = this.VisitList(node.Attribute);
 		    var kAbstract = this.VisitToken(node.KAbstract);
 		    var kClass = this.VisitToken(node.KClass);
 		    var name = (NameSyntax)this.Visit(node.Name);
 		    var tColon = this.VisitToken(node.TColon);
 		    var classAncestors = (ClassAncestorsSyntax)this.Visit(node.ClassAncestors);
 		    var classBody = (ClassBodySyntax)this.Visit(node.ClassBody);
-			return node.Update(annotation, kAbstract, kClass, name, tColon, classAncestors, classBody);
+			return node.Update(attribute, kAbstract, kClass, name, tColon, classAncestors, classBody);
 		}
 		
 		public virtual SyntaxNode VisitClassBody(ClassBodySyntax node)
@@ -6998,13 +6550,13 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
 		{
-		    var annotation = this.VisitList(node.Annotation);
+		    var attribute = this.VisitList(node.Attribute);
 		    var fieldModifier = (FieldModifierSyntax)this.Visit(node.FieldModifier);
 		    var typeReference = (TypeReferenceSyntax)this.Visit(node.TypeReference);
 		    var name = (NameSyntax)this.Visit(node.Name);
 		    var redefinitionsOrSubsettings = (RedefinitionsOrSubsettingsSyntax)this.Visit(node.RedefinitionsOrSubsettings);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(annotation, fieldModifier, typeReference, name, redefinitionsOrSubsettings, tSemicolon);
+			return node.Update(attribute, fieldModifier, typeReference, name, redefinitionsOrSubsettings, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitFieldModifier(FieldModifierSyntax node)
@@ -7057,43 +6609,6 @@ namespace MetaDslx.Languages.Meta
 		    var name = (NameSyntax)this.Visit(node.Name);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
 			return node.Update(kConst, typeReference, name, tSemicolon);
-		}
-		
-		public virtual SyntaxNode VisitExternTypeDeclaration(ExternTypeDeclarationSyntax node)
-		{
-			var oldExternClassTypeDeclaration = node.ExternClassTypeDeclaration;
-			if (oldExternClassTypeDeclaration != null)
-			{
-			    var newExternClassTypeDeclaration = (ExternClassTypeDeclarationSyntax)this.Visit(oldExternClassTypeDeclaration);
-				return node.Update(newExternClassTypeDeclaration);
-			}
-			var oldExternStructTypeDeclaration = node.ExternStructTypeDeclaration;
-			if (oldExternStructTypeDeclaration != null)
-			{
-			    var newExternStructTypeDeclaration = (ExternStructTypeDeclarationSyntax)this.Visit(oldExternStructTypeDeclaration);
-				return node.Update(newExternStructTypeDeclaration);
-			}
-			return node;   
-		}
-		
-		public virtual SyntaxNode VisitExternClassTypeDeclaration(ExternClassTypeDeclarationSyntax node)
-		{
-		    var kExtern = this.VisitToken(node.KExtern);
-		    var kClass = this.VisitToken(node.KClass);
-		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
-		    var name = (NameSyntax)this.Visit(node.Name);
-		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(kExtern, kClass, qualifier, name, tSemicolon);
-		}
-		
-		public virtual SyntaxNode VisitExternStructTypeDeclaration(ExternStructTypeDeclarationSyntax node)
-		{
-		    var kExtern = this.VisitToken(node.KExtern);
-		    var kStruct = this.VisitToken(node.KStruct);
-		    var qualifier = (QualifierSyntax)this.Visit(node.Qualifier);
-		    var name = (NameSyntax)this.Visit(node.Name);
-		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(kExtern, kStruct, qualifier, name, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitReturnType(ReturnTypeSyntax node)
@@ -7213,7 +6728,7 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual SyntaxNode VisitOperationDeclaration(OperationDeclarationSyntax node)
 		{
-		    var annotation = this.VisitList(node.Annotation);
+		    var attribute = this.VisitList(node.Attribute);
 		    var kStatic = this.VisitToken(node.KStatic);
 		    var returnType = (ReturnTypeSyntax)this.Visit(node.ReturnType);
 		    var name = (NameSyntax)this.Visit(node.Name);
@@ -7221,7 +6736,7 @@ namespace MetaDslx.Languages.Meta
 		    var parameterList = (ParameterListSyntax)this.Visit(node.ParameterList);
 		    var tCloseParen = this.VisitToken(node.TCloseParen);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(annotation, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+			return node.Update(attribute, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitParameterList(ParameterListSyntax node)
@@ -7232,21 +6747,21 @@ namespace MetaDslx.Languages.Meta
 		
 		public virtual SyntaxNode VisitParameter(ParameterSyntax node)
 		{
-		    var annotation = this.VisitList(node.Annotation);
+		    var attribute = this.VisitList(node.Attribute);
 		    var typeReference = (TypeReferenceSyntax)this.Visit(node.TypeReference);
 		    var name = (NameSyntax)this.Visit(node.Name);
-			return node.Update(annotation, typeReference, name);
+			return node.Update(attribute, typeReference, name);
 		}
 		
 		public virtual SyntaxNode VisitAssociationDeclaration(AssociationDeclarationSyntax node)
 		{
-		    var annotation = this.VisitList(node.Annotation);
+		    var attribute = this.VisitList(node.Attribute);
 		    var kAssociation = this.VisitToken(node.KAssociation);
 		    var source = (QualifierSyntax)this.Visit(node.Source);
 		    var kWith = this.VisitToken(node.KWith);
 		    var target = (QualifierSyntax)this.Visit(node.Target);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(annotation, kAssociation, source, kWith, target, tSemicolon);
+			return node.Update(attribute, kAssociation, source, kWith, target, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitIdentifier(IdentifierSyntax node)
@@ -7621,28 +7136,28 @@ namespace MetaDslx.Languages.Meta
 		    return (QualifierSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Qualifier(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<IdentifierGreen>(identifier.Node)).CreateRed();
 		}
 		
-		public AnnotationSyntax Annotation(SyntaxToken tOpenBracket, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
+		public AttributeSyntax Attribute(SyntaxToken tOpenBracket, QualifierSyntax qualifier, SyntaxToken tCloseBracket)
 		{
 		    if (tOpenBracket == null) throw new ArgumentNullException(nameof(tOpenBracket));
 		    if (tOpenBracket.GetKind() != MetaSyntaxKind.TOpenBracket) throw new ArgumentException(nameof(tOpenBracket));
 		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
 		    if (tCloseBracket == null) throw new ArgumentNullException(nameof(tCloseBracket));
 		    if (tCloseBracket.GetKind() != MetaSyntaxKind.TCloseBracket) throw new ArgumentException(nameof(tCloseBracket));
-		    return (AnnotationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Annotation((InternalSyntaxToken)tOpenBracket.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
+		    return (AttributeSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Attribute((InternalSyntaxToken)tOpenBracket.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (InternalSyntaxToken)tCloseBracket.Node).CreateRed();
 		}
 		
-		public AnnotationSyntax Annotation(QualifierSyntax qualifier)
+		public AttributeSyntax Attribute(QualifierSyntax qualifier)
 		{
-			return this.Annotation(this.Token(MetaSyntaxKind.TOpenBracket), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
+			return this.Attribute(this.Token(MetaSyntaxKind.TOpenBracket), qualifier, this.Token(MetaSyntaxKind.TCloseBracket));
 		}
 		
-		public NamespaceDeclarationSyntax NamespaceDeclaration(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
+		public NamespaceDeclarationSyntax NamespaceDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kNamespace, QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
 		{
 		    if (kNamespace == null) throw new ArgumentNullException(nameof(kNamespace));
 		    if (kNamespace.GetKind() != MetaSyntaxKind.KNamespace) throw new ArgumentException(nameof(kNamespace));
 		    if (qualifiedName == null) throw new ArgumentNullException(nameof(qualifiedName));
 		    if (namespaceBody == null) throw new ArgumentNullException(nameof(namespaceBody));
-		    return (NamespaceDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.NamespaceDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AnnotationGreen>(annotation.Node), (InternalSyntaxToken)kNamespace.Node, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, (Syntax.InternalSyntax.NamespaceBodyGreen)namespaceBody.Green).CreateRed();
+		    return (NamespaceDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.NamespaceDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kNamespace.Node, (Syntax.InternalSyntax.QualifiedNameGreen)qualifiedName.Green, (Syntax.InternalSyntax.NamespaceBodyGreen)namespaceBody.Green).CreateRed();
 		}
 		
 		public NamespaceDeclarationSyntax NamespaceDeclaration(QualifiedNameSyntax qualifiedName, NamespaceBodySyntax namespaceBody)
@@ -7665,7 +7180,7 @@ namespace MetaDslx.Languages.Meta
 			return this.NamespaceBody(this.Token(MetaSyntaxKind.TOpenBrace), metamodelDeclaration, default, this.Token(MetaSyntaxKind.TCloseBrace));
 		}
 		
-		public MetamodelDeclarationSyntax MetamodelDeclaration(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kMetamodel, NameSyntax name, SyntaxToken tOpenParen, MetamodelPropertyListSyntax metamodelPropertyList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+		public MetamodelDeclarationSyntax MetamodelDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kMetamodel, NameSyntax name, SyntaxToken tOpenParen, MetamodelPropertyListSyntax metamodelPropertyList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 		{
 		    if (kMetamodel == null) throw new ArgumentNullException(nameof(kMetamodel));
 		    if (kMetamodel.GetKind() != MetaSyntaxKind.KMetamodel) throw new ArgumentException(nameof(kMetamodel));
@@ -7674,7 +7189,7 @@ namespace MetaDslx.Languages.Meta
 		    if (tCloseParen != null && tCloseParen.GetKind() != MetaSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (MetamodelDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AnnotationGreen>(annotation.Node), (InternalSyntaxToken)kMetamodel.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, metamodelPropertyList == null ? null : (Syntax.InternalSyntax.MetamodelPropertyListGreen)metamodelPropertyList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (MetamodelDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.MetamodelDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kMetamodel.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, metamodelPropertyList == null ? null : (Syntax.InternalSyntax.MetamodelPropertyListGreen)metamodelPropertyList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public MetamodelDeclarationSyntax MetamodelDeclaration(NameSyntax name)
@@ -7733,19 +7248,13 @@ namespace MetaDslx.Languages.Meta
 		    return (DeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.ConstDeclarationGreen)constDeclaration.Green).CreateRed();
 		}
 		
-		public DeclarationSyntax Declaration(ExternTypeDeclarationSyntax externTypeDeclaration)
-		{
-		    if (externTypeDeclaration == null) throw new ArgumentNullException(nameof(externTypeDeclaration));
-		    return (DeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.ExternTypeDeclarationGreen)externTypeDeclaration.Green).CreateRed();
-		}
-		
-		public EnumDeclarationSyntax EnumDeclaration(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kEnum, NameSyntax name, EnumBodySyntax enumBody)
+		public EnumDeclarationSyntax EnumDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kEnum, NameSyntax name, EnumBodySyntax enumBody)
 		{
 		    if (kEnum == null) throw new ArgumentNullException(nameof(kEnum));
 		    if (kEnum.GetKind() != MetaSyntaxKind.KEnum) throw new ArgumentException(nameof(kEnum));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (enumBody == null) throw new ArgumentNullException(nameof(enumBody));
-		    return (EnumDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AnnotationGreen>(annotation.Node), (InternalSyntaxToken)kEnum.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (Syntax.InternalSyntax.EnumBodyGreen)enumBody.Green).CreateRed();
+		    return (EnumDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kEnum.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (Syntax.InternalSyntax.EnumBodyGreen)enumBody.Green).CreateRed();
 		}
 		
 		public EnumDeclarationSyntax EnumDeclaration(NameSyntax name, EnumBodySyntax enumBody)
@@ -7775,10 +7284,10 @@ namespace MetaDslx.Languages.Meta
 		    return (EnumValuesSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumValues(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<EnumValueGreen>(enumValue.Node)).CreateRed();
 		}
 		
-		public EnumValueSyntax EnumValue(SyntaxList<AnnotationSyntax> annotation, NameSyntax name)
+		public EnumValueSyntax EnumValue(SyntaxList<AttributeSyntax> attribute, NameSyntax name)
 		{
 		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    return (EnumValueSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumValue(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AnnotationGreen>(annotation.Node), (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
+		    return (EnumValueSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumValue(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
 		}
 		
 		public EnumValueSyntax EnumValue(NameSyntax name)
@@ -7792,7 +7301,7 @@ namespace MetaDslx.Languages.Meta
 		    return (EnumMemberDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.EnumMemberDeclaration((Syntax.InternalSyntax.OperationDeclarationGreen)operationDeclaration.Green).CreateRed();
 		}
 		
-		public ClassDeclarationSyntax ClassDeclaration(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
+		public ClassDeclarationSyntax ClassDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kAbstract, SyntaxToken kClass, NameSyntax name, SyntaxToken tColon, ClassAncestorsSyntax classAncestors, ClassBodySyntax classBody)
 		{
 		    if (kAbstract != null && kAbstract.GetKind() != MetaSyntaxKind.KAbstract) throw new ArgumentException(nameof(kAbstract));
 		    if (kClass == null) throw new ArgumentNullException(nameof(kClass));
@@ -7800,7 +7309,7 @@ namespace MetaDslx.Languages.Meta
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tColon != null && tColon.GetKind() != MetaSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 		    if (classBody == null) throw new ArgumentNullException(nameof(classBody));
-		    return (ClassDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AnnotationGreen>(annotation.Node), (InternalSyntaxToken)kAbstract.Node, (InternalSyntaxToken)kClass.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
+		    return (ClassDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kAbstract.Node, (InternalSyntaxToken)kClass.Node, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tColon.Node, classAncestors == null ? null : (Syntax.InternalSyntax.ClassAncestorsGreen)classAncestors.Green, (Syntax.InternalSyntax.ClassBodyGreen)classBody.Green).CreateRed();
 		}
 		
 		public ClassDeclarationSyntax ClassDeclaration(NameSyntax name, ClassBodySyntax classBody)
@@ -7846,13 +7355,13 @@ namespace MetaDslx.Languages.Meta
 		    return (ClassMemberDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassMemberDeclaration((Syntax.InternalSyntax.OperationDeclarationGreen)operationDeclaration.Green).CreateRed();
 		}
 		
-		public FieldDeclarationSyntax FieldDeclaration(SyntaxList<AnnotationSyntax> annotation, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, RedefinitionsOrSubsettingsSyntax redefinitionsOrSubsettings, SyntaxToken tSemicolon)
+		public FieldDeclarationSyntax FieldDeclaration(SyntaxList<AttributeSyntax> attribute, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, RedefinitionsOrSubsettingsSyntax redefinitionsOrSubsettings, SyntaxToken tSemicolon)
 		{
 		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (FieldDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AnnotationGreen>(annotation.Node), fieldModifier == null ? null : (Syntax.InternalSyntax.FieldModifierGreen)fieldModifier.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, redefinitionsOrSubsettings == null ? null : (Syntax.InternalSyntax.RedefinitionsOrSubsettingsGreen)redefinitionsOrSubsettings.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (FieldDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), fieldModifier == null ? null : (Syntax.InternalSyntax.FieldModifierGreen)fieldModifier.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, redefinitionsOrSubsettings == null ? null : (Syntax.InternalSyntax.RedefinitionsOrSubsettingsGreen)redefinitionsOrSubsettings.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public FieldDeclarationSyntax FieldDeclaration(TypeReferenceSyntax typeReference, NameSyntax name)
@@ -7922,54 +7431,6 @@ namespace MetaDslx.Languages.Meta
 		public ConstDeclarationSyntax ConstDeclaration(TypeReferenceSyntax typeReference, NameSyntax name)
 		{
 			return this.ConstDeclaration(this.Token(MetaSyntaxKind.KConst), typeReference, name, this.Token(MetaSyntaxKind.TSemicolon));
-		}
-		
-		public ExternTypeDeclarationSyntax ExternTypeDeclaration(ExternClassTypeDeclarationSyntax externClassTypeDeclaration)
-		{
-		    if (externClassTypeDeclaration == null) throw new ArgumentNullException(nameof(externClassTypeDeclaration));
-		    return (ExternTypeDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ExternTypeDeclaration((Syntax.InternalSyntax.ExternClassTypeDeclarationGreen)externClassTypeDeclaration.Green).CreateRed();
-		}
-		
-		public ExternTypeDeclarationSyntax ExternTypeDeclaration(ExternStructTypeDeclarationSyntax externStructTypeDeclaration)
-		{
-		    if (externStructTypeDeclaration == null) throw new ArgumentNullException(nameof(externStructTypeDeclaration));
-		    return (ExternTypeDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ExternTypeDeclaration((Syntax.InternalSyntax.ExternStructTypeDeclarationGreen)externStructTypeDeclaration.Green).CreateRed();
-		}
-		
-		public ExternClassTypeDeclarationSyntax ExternClassTypeDeclaration(SyntaxToken kExtern, SyntaxToken kClass, QualifierSyntax qualifier, NameSyntax name, SyntaxToken tSemicolon)
-		{
-		    if (kExtern == null) throw new ArgumentNullException(nameof(kExtern));
-		    if (kExtern.GetKind() != MetaSyntaxKind.KExtern) throw new ArgumentException(nameof(kExtern));
-		    if (kClass == null) throw new ArgumentNullException(nameof(kClass));
-		    if (kClass.GetKind() != MetaSyntaxKind.KClass) throw new ArgumentException(nameof(kClass));
-		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
-		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
-		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (ExternClassTypeDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ExternClassTypeDeclaration((InternalSyntaxToken)kExtern.Node, (InternalSyntaxToken)kClass.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
-		}
-		
-		public ExternClassTypeDeclarationSyntax ExternClassTypeDeclaration(QualifierSyntax qualifier, NameSyntax name)
-		{
-			return this.ExternClassTypeDeclaration(this.Token(MetaSyntaxKind.KExtern), this.Token(MetaSyntaxKind.KClass), qualifier, name, this.Token(MetaSyntaxKind.TSemicolon));
-		}
-		
-		public ExternStructTypeDeclarationSyntax ExternStructTypeDeclaration(SyntaxToken kExtern, SyntaxToken kStruct, QualifierSyntax qualifier, NameSyntax name, SyntaxToken tSemicolon)
-		{
-		    if (kExtern == null) throw new ArgumentNullException(nameof(kExtern));
-		    if (kExtern.GetKind() != MetaSyntaxKind.KExtern) throw new ArgumentException(nameof(kExtern));
-		    if (kStruct == null) throw new ArgumentNullException(nameof(kStruct));
-		    if (kStruct.GetKind() != MetaSyntaxKind.KStruct) throw new ArgumentException(nameof(kStruct));
-		    if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
-		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
-		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (ExternStructTypeDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ExternStructTypeDeclaration((InternalSyntaxToken)kExtern.Node, (InternalSyntaxToken)kStruct.Node, (Syntax.InternalSyntax.QualifierGreen)qualifier.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
-		}
-		
-		public ExternStructTypeDeclarationSyntax ExternStructTypeDeclaration(QualifierSyntax qualifier, NameSyntax name)
-		{
-			return this.ExternStructTypeDeclaration(this.Token(MetaSyntaxKind.KExtern), this.Token(MetaSyntaxKind.KStruct), qualifier, name, this.Token(MetaSyntaxKind.TSemicolon));
 		}
 		
 		public ReturnTypeSyntax ReturnType(TypeReferenceSyntax typeReference)
@@ -8091,7 +7552,7 @@ namespace MetaDslx.Languages.Meta
 		    return (CollectionKindSyntax)MetaLanguage.Instance.InternalSyntaxFactory.CollectionKind((InternalSyntaxToken)collectionKind.Node).CreateRed();
 		}
 		
-		public OperationDeclarationSyntax OperationDeclaration(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+		public OperationDeclarationSyntax OperationDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 		{
 		    if (kStatic != null && kStatic.GetKind() != MetaSyntaxKind.KStatic) throw new ArgumentException(nameof(kStatic));
 		    if (returnType == null) throw new ArgumentNullException(nameof(returnType));
@@ -8102,7 +7563,7 @@ namespace MetaDslx.Languages.Meta
 		    if (tCloseParen.GetKind() != MetaSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (OperationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AnnotationGreen>(annotation.Node), (InternalSyntaxToken)kStatic.Node, (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (OperationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kStatic.Node, (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public OperationDeclarationSyntax OperationDeclaration(ReturnTypeSyntax returnType, NameSyntax name)
@@ -8116,11 +7577,11 @@ namespace MetaDslx.Languages.Meta
 		    return (ParameterListSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ParameterList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenSeparatedList<ParameterGreen>(parameter.Node)).CreateRed();
 		}
 		
-		public ParameterSyntax Parameter(SyntaxList<AnnotationSyntax> annotation, TypeReferenceSyntax typeReference, NameSyntax name)
+		public ParameterSyntax Parameter(SyntaxList<AttributeSyntax> attribute, TypeReferenceSyntax typeReference, NameSyntax name)
 		{
 		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
-		    return (ParameterSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Parameter(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AnnotationGreen>(annotation.Node), (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
+		    return (ParameterSyntax)MetaLanguage.Instance.InternalSyntaxFactory.Parameter(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
 		}
 		
 		public ParameterSyntax Parameter(TypeReferenceSyntax typeReference, NameSyntax name)
@@ -8128,7 +7589,7 @@ namespace MetaDslx.Languages.Meta
 			return this.Parameter(default, typeReference, name);
 		}
 		
-		public AssociationDeclarationSyntax AssociationDeclaration(SyntaxList<AnnotationSyntax> annotation, SyntaxToken kAssociation, QualifierSyntax source, SyntaxToken kWith, QualifierSyntax target, SyntaxToken tSemicolon)
+		public AssociationDeclarationSyntax AssociationDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kAssociation, QualifierSyntax source, SyntaxToken kWith, QualifierSyntax target, SyntaxToken tSemicolon)
 		{
 		    if (kAssociation == null) throw new ArgumentNullException(nameof(kAssociation));
 		    if (kAssociation.GetKind() != MetaSyntaxKind.KAssociation) throw new ArgumentException(nameof(kAssociation));
@@ -8138,7 +7599,7 @@ namespace MetaDslx.Languages.Meta
 		    if (target == null) throw new ArgumentNullException(nameof(target));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (AssociationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.AssociationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AnnotationGreen>(annotation.Node), (InternalSyntaxToken)kAssociation.Node, (Syntax.InternalSyntax.QualifierGreen)source.Green, (InternalSyntaxToken)kWith.Node, (Syntax.InternalSyntax.QualifierGreen)target.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (AssociationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.AssociationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kAssociation.Node, (Syntax.InternalSyntax.QualifierGreen)source.Green, (InternalSyntaxToken)kWith.Node, (Syntax.InternalSyntax.QualifierGreen)target.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public AssociationDeclarationSyntax AssociationDeclaration(QualifierSyntax source, QualifierSyntax target)
@@ -8241,7 +7702,7 @@ namespace MetaDslx.Languages.Meta
 				typeof(NameSyntax),
 				typeof(QualifiedNameSyntax),
 				typeof(QualifierSyntax),
-				typeof(AnnotationSyntax),
+				typeof(AttributeSyntax),
 				typeof(NamespaceDeclarationSyntax),
 				typeof(NamespaceBodySyntax),
 				typeof(MetamodelDeclarationSyntax),
@@ -8266,9 +7727,6 @@ namespace MetaDslx.Languages.Meta
 				typeof(SubsettingsSyntax),
 				typeof(NameUseListSyntax),
 				typeof(ConstDeclarationSyntax),
-				typeof(ExternTypeDeclarationSyntax),
-				typeof(ExternClassTypeDeclarationSyntax),
-				typeof(ExternStructTypeDeclarationSyntax),
 				typeof(ReturnTypeSyntax),
 				typeof(TypeOfReferenceSyntax),
 				typeof(TypeReferenceSyntax),
