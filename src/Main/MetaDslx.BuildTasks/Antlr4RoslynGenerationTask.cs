@@ -1,4 +1,5 @@
-﻿using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using System;
@@ -34,7 +35,7 @@ namespace MetaDslx.BuildTasks
         public string JavaExecutable { get; set; }
         public bool UseCSharpGenerator { get; set; }
 
-        protected override IAntlr4Compiler CreateCompiler(string filePath, string outputPath)
+        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath)
         {
             var antlr4Tool = new Antlr4BuildTool();
             antlr4Tool.TimeoutInSeconds = this.TimeoutInSeconds;

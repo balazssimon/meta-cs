@@ -1,4 +1,5 @@
-﻿using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using MetaDslx.Languages.MetaGenerator.Compilation;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -101,7 +102,7 @@ namespace MetaDslx.BuildTasks
             }
         }
 
-        protected abstract IAntlr4Compiler CreateCompiler(string filePath, string outputPath);
+        protected abstract ICompilerForBuildTask CreateCompiler(string filePath, string outputPath);
 
     }
 }

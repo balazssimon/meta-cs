@@ -16,7 +16,7 @@ namespace MetaDslx.BuildTasks
         {
         }
 
-        protected override IAntlr4Compiler CreateCompiler(string filePath, string outputPath)
+        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath)
         {
             return new MetaGeneratorCompiler(filePath, outputPath);
         }

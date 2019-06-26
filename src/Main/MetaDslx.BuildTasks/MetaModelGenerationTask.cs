@@ -1,4 +1,7 @@
-﻿using Microsoft.Build.Framework;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+using MetaDslx.Languages.Meta;
+using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using System;
 using System.Collections.Generic;
@@ -6,56 +9,16 @@ using System.Text;
 
 namespace MetaDslx.BuildTasks
 {
-    public class MetaModelGenerationTask : Task
+    public class MetaModelGenerationTask : Antlr4CompilerTask
     {
-        private List<ITaskItem> _generatedCodeFiles = new List<ITaskItem>();
-
         public MetaModelGenerationTask()
+            : base("MetaModel")
         {
         }
 
-        [Required]
-        public string OutputPath
+        protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath)
         {
-            get;
-            set;
-        }
-
-        public string Encoding
-        {
-            get;
-            set;
-        }
-
-        public ITaskItem[] SourceCodeFiles
-        {
-            get;
-            set;
-        }
-
-        public string TargetNamespace
-        {
-            get;
-            set;
-        }
-
-        [Output]
-        public ITaskItem[] GeneratedCodeFiles
-        {
-            get
-            {
-                return this._generatedCodeFiles.ToArray();
-            }
-            set
-            {
-                this._generatedCodeFiles = new List<ITaskItem>(value);
-            }
-        }
-
-        public override bool Execute()
-        {
-            AssemblyResolver.Enable();
-            return true;
+            return new MetaCompilerForBuildTask(filePath, outputPath);
         }
     }
 }

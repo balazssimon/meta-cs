@@ -16,16 +16,7 @@ using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
-    public interface IAntlr4Compiler
-    {
-        void Compile();
-        void Generate();
-        bool HasErrors { get; }
-        ImmutableArray<Diagnostic> GetDiagnostics();
-        ImmutableArray<string> GetGeneratedFileList();
-    }
-
-    public abstract class Antlr4Compiler<TLexer, TParser> : IAntlr4Compiler, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
+    public abstract class Antlr4Compiler<TLexer, TParser> : ICompilerForBuildTask, IAntlrErrorListener<int>, IAntlrErrorListener<IToken>
         where TLexer: Antlr4.Runtime.Lexer
         where TParser: Antlr4.Runtime.Parser
     {
