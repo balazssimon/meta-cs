@@ -4,6 +4,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace MetaDslx.BuildTasks
@@ -25,6 +26,9 @@ namespace MetaDslx.BuildTasks
         public string TargetLanguage { get; set; }
         public string TargetNamespace { get; set; }
         public string TargetFrameworkVersion { get; set; }
+        public string BuildTaskPath { get; set; }
+        public ITaskItem[] TokensFiles { get; set; }
+        public ITaskItem[] AbstractGrammarFiles { get; set; }
         public string[] LanguageSourceExtensions { get; set; }
         public bool GenerateListener { get; set; }
         public bool GenerateVisitor { get; set; }
@@ -34,32 +38,79 @@ namespace MetaDslx.BuildTasks
         public string JavaInstallation { get; set; }
         public string JavaExecutable { get; set; }
         public bool UseCSharpGenerator { get; set; }
+        public bool ContinueOnError { get; set; }
 
         protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath)
         {
-            var antlr4Tool = new Antlr4BuildTool();
-            antlr4Tool.TimeoutInSeconds = this.TimeoutInSeconds;
-            antlr4Tool.ToolPath = this.ToolPath;
-            antlr4Tool.TargetLanguage = this.TargetLanguage;
-            antlr4Tool.TargetFrameworkVersion = this.TargetFrameworkVersion;
-            antlr4Tool.OutputPath = this.OutputPath;
-            antlr4Tool.Encoding = this.Encoding;
-            antlr4Tool.TargetNamespace = this.TargetNamespace;
-            antlr4Tool.LanguageSourceExtensions = this.LanguageSourceExtensions;
-            antlr4Tool.GenerateListener = this.GenerateListener;
-            antlr4Tool.GenerateVisitor = this.GenerateVisitor;
-            antlr4Tool.ForceAtn = this.ForceAtn;
-            antlr4Tool.AbstractGrammar = this.AbstractGrammar;
-            antlr4Tool.JavaVendor = this.JavaVendor;
-            antlr4Tool.JavaInstallation = this.JavaInstallation;
-            antlr4Tool.JavaExecutable = this.JavaExecutable;
-            antlr4Tool.UseCSharpGenerator = this.UseCSharpGenerator;
-            if (this.TimeoutInSeconds == 0) antlr4Tool.TimeoutInSeconds = 30;
-            if (string.IsNullOrWhiteSpace(this.Encoding)) antlr4Tool.Encoding = "UTF-8";
-            if (string.IsNullOrWhiteSpace(this.TargetLanguage)) antlr4Tool.TargetLanguage = "CSharp";
-            if (this.LanguageSourceExtensions == null) antlr4Tool.LanguageSourceExtensions = new string[] { ".cs", ".tokens" };
+            var antlr4Tool = this.CreateAntlr4BuildTool();
             return new Antlr4RoslynCompiler(filePath, outputPath, this.TargetNamespace, antlr4Tool);
         }
 
+        private Antlr4BuildTool CreateAntlr4BuildTool()
+        {
+            if (!Path.IsPathRooted(ToolPath))
+                ToolPath = Path.Combine(Path.GetDirectoryName(BuildEngine.ProjectFileOfTaskNode), ToolPath);
+
+            if (!Path.IsPathRooted(BuildTaskPath))
+                BuildTaskPath = Path.Combine(Path.GetDirectoryName(BuildEngine.ProjectFileOfTaskNode), BuildTaskPath);
+
+            Antlr4BuildTool antlr4 = new Antlr4BuildTool();
+
+            if (this.TokensFiles != null && this.TokensFiles.Length > 0)
+            {
+                Directory.CreateDirectory(OutputPath);
+
+                HashSet<string> copied = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (ITaskItem taskItem in TokensFiles)
+                {
+                    string fileName = taskItem.ItemSpec;
+                    if (!File.Exists(fileName))
+                    {
+                        Log.LogError("The tokens file '{0}' does not exist.", fileName);
+                        continue;
+                    }
+
+                    string vocabName = Path.GetFileNameWithoutExtension(fileName);
+                    if (!copied.Add(vocabName))
+                    {
+                        Log.LogWarning("The tokens file '{0}' conflicts with another tokens file in the same project.", fileName);
+                        continue;
+                    }
+
+                    string target = Path.Combine(OutputPath, Path.GetFileName(fileName));
+                    if (!Path.GetExtension(target).Equals(".tokens", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Log.LogError("The destination for the tokens file '{0}' did not have the correct extension '.tokens'.", target);
+                        continue;
+                    }
+
+                    File.Copy(fileName, target, true);
+                    File.SetAttributes(target, File.GetAttributes(target) & ~FileAttributes.ReadOnly);
+                }
+            }
+
+            antlr4.ToolPath = ToolPath;
+            antlr4.TargetLanguage = TargetLanguage;
+            antlr4.TargetFrameworkVersion = TargetFrameworkVersion;
+            antlr4.OutputPath = OutputPath;
+            antlr4.Encoding = Encoding;
+            antlr4.LanguageSourceExtensions = LanguageSourceExtensions;
+            antlr4.TargetNamespace = TargetNamespace;
+            antlr4.GenerateListener = GenerateListener;
+            antlr4.GenerateVisitor = GenerateVisitor;
+            antlr4.ForceAtn = ForceAtn;
+            antlr4.AbstractGrammar = AbstractGrammar;
+            antlr4.JavaVendor = JavaVendor;
+            antlr4.JavaInstallation = JavaInstallation;
+            antlr4.JavaExecutable = JavaExecutable;
+            antlr4.UseCSharpGenerator = UseCSharpGenerator;
+
+            if (this.TimeoutInSeconds == 0) antlr4.TimeoutInSeconds = 30;
+            if (string.IsNullOrWhiteSpace(this.Encoding)) antlr4.Encoding = "UTF-8";
+            if (string.IsNullOrWhiteSpace(this.TargetLanguage)) antlr4.TargetLanguage = "CSharp";
+            if (this.LanguageSourceExtensions == null) antlr4.LanguageSourceExtensions = new string[] { ".cs", ".tokens" };
+
+            return antlr4;
+        }
     }
 }

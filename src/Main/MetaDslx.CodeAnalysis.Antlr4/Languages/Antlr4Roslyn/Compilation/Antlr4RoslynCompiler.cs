@@ -72,7 +72,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public Antlr4RoslynCompiler(string inputFilePath, string outputDirectory, string defaultNamespace, Antlr4Tool antlr4Tool)
             : base(inputFilePath, outputDirectory, defaultNamespace)
         {
-            this._antlr4Tool = antlr4Tool;
+            _antlr4Tool = antlr4Tool;
             this.GenerateAntlr4 = true;
             string languageName = Path.GetFileNameWithoutExtension(this.FileName);
             if (languageName.EndsWith("Parser")) languageName = languageName.Substring(0, languageName.Length - 6);

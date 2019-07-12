@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Antlr4UseCSharpGenerator>true</Antlr4UseCSharpGenerator>
     <!-- Folder containing MetaDslx.BuildTasks.dll -->
     <MetaDslxBuildTaskPath Condition=" '$(MSBuildRuntimeType)' == 'Core' ">..\tools\netstandard2.0</MetaDslxBuildTaskPath>
     <MetaDslxBuildTaskPath Condition=" '$(MSBuildRuntimeType)' != 'Core' ">..\tools\net461</MetaDslxBuildTaskPath>

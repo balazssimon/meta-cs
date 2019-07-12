@@ -25,9 +25,7 @@ namespace MetaDslx.Languages.Meta
         {
             _inputFilePath = inputFilePath;
             _outputDirectory = outputDirectory;
-            //_outputFilePath = Path.ChangeExtension(_inputFilePath, ".cs");
-            string outputFileName = Path.ChangeExtension(Path.GetFileName(_inputFilePath), ".cs");
-            _outputFilePath = Path.Combine(_outputDirectory, outputFileName);
+            _outputFilePath = Path.Combine(_outputDirectory, Path.ChangeExtension(Path.GetFileName(_inputFilePath), ".cs"));
         }
 
         public bool HasErrors

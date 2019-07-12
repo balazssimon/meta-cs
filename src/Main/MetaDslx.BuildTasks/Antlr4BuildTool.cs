@@ -102,10 +102,10 @@ namespace MetaDslx.BuildTasks
                 if (!string.IsNullOrWhiteSpace(ToolPath) && UseCSharpGenerator)
                 {
 #if NETSTANDARD
-                    string framework = "netstandard";
+                    string framework = "netstandard2.0";
                     string extension = ".dll";
 #else
-                    string framework = "net45";
+                    string framework = "net461";
                     string extension = ".exe";
 #endif
                     executable = Path.Combine(Path.Combine(Path.GetDirectoryName(ToolPath), framework), "Antlr4" + extension);

@@ -65,7 +65,7 @@
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.Core.dll" Pack="true" PackagePath="tools\netstandard2.0" />
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="tools\netstandard2.0" />
     <None Include="$(OutputPath)\netstandard2.0\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="tools\netstandard2.0" />
-    <None Include="$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard\**\*.*" Condition="Exists('$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard')" Pack="true" PackagePath="tools\netstandard2.0\%(RecursiveDir)" />
+    <None Include="$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard\**\*.*" Condition="Exists('$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\netstandard')" Pack="true" PackagePath="tools\netstandard2.0" />
     <None Include="$(NuGetPackageRoot)\system.reflection.metadata\$(SystemReflectionMetadataVersion)\lib\netstandard2.0\System.Reflection.Metadata.dll" Pack="true" PackagePath="tools\netstandard2.0" />
 
     <None Include="$(OutputPath)\net461\MetaDslx.BuildTasks.dll" PrivateAssets="all" Pack="true" PackagePath="tools\net461" />
@@ -74,7 +74,7 @@
     <None Include="$(OutputPath)\net461\MetaDslx.Core.dll" Pack="true" PackagePath="tools\net461" />
     <None Include="$(OutputPath)\net461\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="tools\net461" />
     <None Include="$(OutputPath)\net461\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="tools\net461" />
-    <None Include="$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\net45\**\*.*" Pack="true" PackagePath="tools\net461\%(RecursiveDir)" />
+    <None Include="$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\net45\**\*.*" Pack="true" PackagePath="tools\net461" />
     <None Include="$(NuGetPackageRoot)\system.reflection.metadata\$(SystemReflectionMetadataVersion)\lib\netstandard2.0\System.Reflection.Metadata.dll" Pack="true" PackagePath="tools\net461" />
   </ItemGroup>
 </Project>
