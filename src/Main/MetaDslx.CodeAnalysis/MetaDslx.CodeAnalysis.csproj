@@ -14,8 +14,9 @@
     <IsPackable>true</IsPackable>
     <PackageId>MetaDslx.CodeAnalysis</PackageId>
     <PackageDescription>
-      MetaDslx metamodeling platform for creating Roslyn-style ANTLR4 based compilers.
+      MetaDslx metamodeling platform for creating Roslyn-style ANTLR4-based compilers.
     </PackageDescription>
+    <PackageOutputPath>..\..\..\install\</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

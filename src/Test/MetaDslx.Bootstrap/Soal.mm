@@ -15,7 +15,7 @@
 	const PrimitiveType Time;
 	const PrimitiveType DateTime;
 	const PrimitiveType TimeSpan;
-
+	
 	/*
 	Represents an annotated element.
 	*/

@@ -3,8 +3,10 @@ using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using MetaDslx.Languages.MetaGenerator.Compilation;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -57,28 +59,8 @@ namespace MetaDslx.BuildTasks
             try
             {
                 compiler.Compile();
-                foreach (var message in compiler.GetDiagnostics())
-                {
-                    var position = message.Location.GetMappedLineSpan();
-                    string fileName = position.Path;
-                    switch (message.Severity)
-                    {
-                        case Microsoft.CodeAnalysis.DiagnosticSeverity.Hidden:
-                            Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line, position.StartLinePosition.Character, position.EndLinePosition.Line, position.EndLinePosition.Character, MessageImportance.Low, message.GetMessage());
-                            break;
-                        case Microsoft.CodeAnalysis.DiagnosticSeverity.Info:
-                            Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line, position.StartLinePosition.Character, position.EndLinePosition.Line, position.EndLinePosition.Character, MessageImportance.High, message.GetMessage());
-                            break;
-                        case Microsoft.CodeAnalysis.DiagnosticSeverity.Warning:
-                            Log.LogWarning(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line, position.StartLinePosition.Character, position.EndLinePosition.Line, position.EndLinePosition.Character, MessageImportance.High, message.GetMessage());
-                            break;
-                        case Microsoft.CodeAnalysis.DiagnosticSeverity.Error:
-                            Log.LogError(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line, position.StartLinePosition.Character, position.EndLinePosition.Line, position.EndLinePosition.Character, MessageImportance.High, message.GetMessage());
-                            break;
-                        default:
-                            break;
-                    }
-                }
+                compiler.Generate();
+                this.LogDiagnostics(compiler.GetDiagnostics());
                 if (!compiler.HasErrors)
                 {
                     foreach (var file in compiler.GetGeneratedFileList())
@@ -91,7 +73,7 @@ namespace MetaDslx.BuildTasks
                 }
                 else
                 {
-                    Log.LogError("{0}: FAILED to generate code for '{1}'", this.Name, filePath);
+                    Log.LogMessage(MessageImportance.High, "{0}: FAILED to generate code for '{1}'.", this.Name, filePath);
                     return false;
                 }
             }
@@ -104,5 +86,31 @@ namespace MetaDslx.BuildTasks
 
         protected abstract ICompilerForBuildTask CreateCompiler(string filePath, string outputPath);
 
+        private void LogDiagnostics(ImmutableArray<Diagnostic> diagnostics)
+        {
+            foreach (var message in diagnostics)
+            {
+                var position = message.Location.GetMappedLineSpan();
+                string fileName = position.Path;
+                switch (message.Severity)
+                {
+                    case Microsoft.CodeAnalysis.DiagnosticSeverity.Hidden:
+                        Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, MessageImportance.Low, message.GetMessage());
+                        break;
+                    case Microsoft.CodeAnalysis.DiagnosticSeverity.Info:
+                        Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, MessageImportance.High, message.GetMessage());
+                        break;
+                    case Microsoft.CodeAnalysis.DiagnosticSeverity.Warning:
+                        Log.LogWarning(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, message.GetMessage());
+                        break;
+                    case Microsoft.CodeAnalysis.DiagnosticSeverity.Error:
+                        Log.LogError(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, message.GetMessage());
+                        break;
+                    default:
+                        Log.LogError(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, message.GetMessage());
+                        break;
+                }
+            }
+        }
     }
 }

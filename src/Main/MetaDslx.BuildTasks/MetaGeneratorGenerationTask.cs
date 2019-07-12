@@ -1,4 +1,5 @@
-﻿using MetaDslx.Languages.Antlr4Roslyn.Compilation;
+﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using MetaDslx.Languages.MetaGenerator.Compilation;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;

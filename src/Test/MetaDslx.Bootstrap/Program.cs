@@ -2,10 +2,10 @@
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
-using MetaDslx.Languages.Meta.Binding;
+//using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.Languages.Soal.Symbols;
+//using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -35,7 +35,7 @@ namespace MetaDslx.Bootstrap
             a4p.Compile();
             //*/
 
-            /*/
+            //*/
             MGenTest test = new MGenTest();
             Console.WriteLine(test.SayHello("me"));
             //*/
@@ -148,7 +148,7 @@ namespace MetaDslx.Bootstrap
             //File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
             //*/
 
-            //*/
+            /*/
             ImmutableModel soalModel = SoalInstance.Model;
             Console.WriteLine(soalModel);
             foreach (var symbol in soalModel.Symbols)

@@ -25,6 +25,7 @@ namespace MetaDslx.Languages.Meta
         {
             _inputFilePath = inputFilePath;
             _outputDirectory = outputDirectory;
+            //_outputFilePath = Path.ChangeExtension(_inputFilePath, ".cs");
             string outputFileName = Path.ChangeExtension(Path.GetFileName(_inputFilePath), ".cs");
             _outputFilePath = Path.Combine(_outputDirectory, outputFileName);
         }
@@ -66,8 +67,8 @@ namespace MetaDslx.Languages.Meta
             {
                 var compiledModel = _compilation.Model;
                 ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Symbols);
-                string generatedCsharpModel = mmgen.Generate();
-                File.WriteAllText(_outputFilePath, generatedCsharpModel);
+                string generatedCSharpModel = mmgen.Generate();
+                File.WriteAllText(_outputFilePath, generatedCSharpModel);
             }
         }
 
@@ -79,7 +80,7 @@ namespace MetaDslx.Languages.Meta
 
         public ImmutableArray<string> GetGeneratedFileList()
         {
-            return ImmutableArray.Create(_outputFilePath);
+            return this.HasErrors ? ImmutableArray<string>.Empty : ImmutableArray.Create(_outputFilePath);
         }
     }
 }

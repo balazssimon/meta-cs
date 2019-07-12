@@ -33,6 +33,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string DefaultNamespace { get; protected set; }
         public string FileName { get; private set; }
         public string InputDirectory { get; private set; }
+        public string InputFilePath { get; private set; }
         public string OutputDirectory { get; protected set; }
         public bool GenerateOutput { get; set; }
         protected DiagnosticBag DiagnosticBag { get; set; }
@@ -44,6 +45,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public Antlr4Compiler(string inputFilePath, string outputDirectory, string defaultNamespace = null)
         {
+            this.InputFilePath = inputFilePath;
             this.Source = File.ReadAllText(inputFilePath);
             this.DefaultNamespace = defaultNamespace;
             this.InputDirectory = Path.GetDirectoryName(inputFilePath);

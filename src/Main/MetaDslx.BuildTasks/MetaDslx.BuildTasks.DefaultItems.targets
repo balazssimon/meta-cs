@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <EnableDefaultMetaDslxItems Condition="'$(EnableDefaultAntlrItems)' == ''">True</EnableDefaultMetaDslxItems>
+    <EnableDefaultMetaDslxItems Condition="'$(EnableDefaultMetaDslxItems)' == ''">True</EnableDefaultMetaDslxItems>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'True' AND '$(EnableDefaultNoneItems)' == 'True' AND '$(EnableDefaultMetaDslxItems)' == 'True'">
