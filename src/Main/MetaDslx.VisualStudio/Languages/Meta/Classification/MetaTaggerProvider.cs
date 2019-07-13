@@ -25,20 +25,23 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
     [TagType(typeof(IErrorTag))]
     [TagType(typeof(IClassificationTag))]
     [ContentType(MetaDefinition.ContentType)]
-    public class MetaTaggerProvider : CompilationTaggerProvider
+    public class MetaTaggerProvider : LanguageCompilationTaggerProvider
     {
         public readonly IClassificationTag TypeClassificationTag;
 
+        private MetaSyntaxFacts _syntaxFacts;
+
         [ImportingConstructor]
         internal MetaTaggerProvider([Import] ITableManagerProvider provider, [Import] ITextDocumentFactoryService textDocumentFactoryService, [Import] IClassificationTypeRegistryService classificationRegistryService) 
-            : base(provider, textDocumentFactoryService, classificationRegistryService)
+            : base(provider, textDocumentFactoryService, classificationRegistryService, MetaLanguage.Instance)
         {
-            this.TypeClassificationTag = new ClassificationTag(this.ClassificationRegistryService.GetClassificationType(MetaClassificationTypes.Type)); 
+            this.TypeClassificationTag = new ClassificationTag(this.ClassificationRegistryService.GetClassificationType(MetaClassificationTypes.Type));
+            _syntaxFacts = MetaLanguage.Instance.SyntaxFacts;
         }
 
         public override string DisplayName => "MetaModel";
 
-        protected override LanguageCompilation CreateCompilation(string filePath, string sourceText, CancellationToken cancellationToken)
+        protected override ICompilation CreateCompilation(string filePath, string sourceText, CancellationToken cancellationToken)
         {
             var metaModelReference = ModelReference.CreateFromModel(MetaInstance.Model);
             var tree = MetaSyntaxTree.ParseText(sourceText, path: filePath, cancellationToken: cancellationToken);
@@ -46,46 +49,13 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
             return compilation;
         }
 
-        public override IClassificationTag GetTokenClassificationTag(SyntaxToken token, SyntaxTree syntaxTree, Compilation compilation, SemanticModel semanticModel)
+        protected override IClassificationTag GetSymbolClassificationTag(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            MetaTokenKind kind = (MetaTokenKind)token.GetKind().ToAntlr4();
-            if (kind == MetaTokenKind.None || kind == MetaTokenKind.Identifier)
-            {
-                if (this.IsTypeSymbolToken(token, semanticModel))
-                {
-                    return this.TypeClassificationTag;
-                }
-                else if (this.IsAnnotationSymbolToken(token, semanticModel))
-                {
-                    return this.TypeClassificationTag;
-                }
-            }
+            var ti = semanticModel.GetTypeInfo(node, cancellationToken);
+            if (ti.Type != null && !(ti.Type is IErrorTypeSymbol)) return TypeClassificationTag;
+            var si = semanticModel.GetSymbolInfo(node, cancellationToken);
+            if (si.Symbol is MetaAttribute) return TypeClassificationTag;
             return null;
-        }
-
-
-        protected bool IsTypeSymbolToken(SyntaxToken token, SemanticModel semanticModel)
-        {
-            SyntaxNode node = token.Parent;
-            while (node != null && node.SlotCount == 1)
-            {
-                var si = semanticModel.GetTypeInfo(node);
-                if (si.Type != null) return !(si.Type is IErrorTypeSymbol);
-                node = node.Parent;
-            }
-            return false;
-        }
-
-        protected bool IsAnnotationSymbolToken(SyntaxToken token, SemanticModel semanticModel)
-        {
-            SyntaxNode node = token.Parent;
-            while (node != null && node.SlotCount == 1)
-            {
-                var si = semanticModel.GetSymbolInfo(node);
-                if (si.Symbol != null) return si.Symbol is MetaAttribute;
-                node = node.Parent;
-            }
-            return false;
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
@@ -29,7 +30,7 @@ namespace MetaDslx.VisualStudio.Classification
             this.compilationSnapshot = compilationSnapshot;
         }
 
-        private Compilation Compilation
+        private ICompilation Compilation
         {
             get { return this.compilationSnapshot.Compilation; }
         }

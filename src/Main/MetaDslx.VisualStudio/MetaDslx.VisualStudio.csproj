@@ -46,6 +46,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classification\Antlr4CompilationTaggerProvider.cs" />
     <Compile Include="Classification\Antlr4LexerClassifier.cs" />
     <Compile Include="Classification\BackgroundCompilation.cs" />
     <Compile Include="Classification\CompilationErrorsFactory.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Classification\CompilationSymbolTagger.cs" />
     <Compile Include="Classification\CompilationTagger.cs" />
     <Compile Include="Classification\CompilationTaggerProvider.cs" />
+    <Compile Include="Classification\LanguageCompilationTaggerProvider.cs" />
     <Compile Include="Classification\SinkManager.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassificationDefinitions.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassificationProvider.cs" />
@@ -72,8 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-	<Reference Include="System.ComponentModel.Composition" />
-	<Reference Include="PresentationCore" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="PresentationCore" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />

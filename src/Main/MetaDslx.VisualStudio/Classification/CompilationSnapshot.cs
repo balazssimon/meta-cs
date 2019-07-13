@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using System;
@@ -15,10 +16,10 @@ namespace MetaDslx.VisualStudio.Classification
         public static readonly CompilationSnapshot Default = new CompilationSnapshot(null, null, new Dictionary<SyntaxToken, IClassificationTag>());
         
         private ITextSnapshot text;
-        private Compilation compilation;
+        private ICompilation compilation;
         private Dictionary<SyntaxToken, IClassificationTag> symbolTokens;
 
-        public CompilationSnapshot(ITextSnapshot text, Compilation compilation, Dictionary<SyntaxToken, IClassificationTag> symbolTokens)
+        public CompilationSnapshot(ITextSnapshot text, ICompilation compilation, Dictionary<SyntaxToken, IClassificationTag> symbolTokens)
         {
             this.text = text;
             this.compilation = compilation;
@@ -30,7 +31,7 @@ namespace MetaDslx.VisualStudio.Classification
             get { return this.text; }
         }
 
-        public Compilation Compilation
+        public ICompilation Compilation
         {
             get { return this.compilation; }
         }
@@ -45,7 +46,7 @@ namespace MetaDslx.VisualStudio.Classification
             return this.text == null || newText != null && newText.Version != this.text.Version;
         }
 
-        public CompilationSnapshot Update(ITextSnapshot text, Compilation compilation, Dictionary<SyntaxToken, IClassificationTag> symbolTokens)
+        public CompilationSnapshot Update(ITextSnapshot text, ICompilation compilation, Dictionary<SyntaxToken, IClassificationTag> symbolTokens)
         {
             if (this.text != text || this.compilation != compilation)
             {

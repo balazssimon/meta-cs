@@ -156,40 +156,19 @@ namespace MetaDslx.VisualStudio.Classification
                 string filePath = this.FilePath;
                 string sourceText = textSnapshot.GetText();
                 var versionBefore = textSnapshot.Version;
-                var compilation = this.provider.Compile(filePath, sourceText, this.cancellationTokenSource.Token);
+                var cancellationToken = this.cancellationTokenSource.Token;
+                var compilation = this.provider.Compile(filePath, sourceText, cancellationToken);
                 if (this.backgroundCompilationSnapshot == null || compilation != null)
                 {
                     textSnapshot = textBuffer.CurrentSnapshot;
                     var versionAfter = textSnapshot.Version;
                     if (versionAfter == versionBefore)
                     {
-                        Interlocked.Exchange(ref this.backgroundCompilationSnapshot, this.backgroundCompilationSnapshot.Update(textSnapshot, compilation, this.GetSymbolTokens(compilation)));
-                        //Interlocked.Exchange(ref this.compilationSnapshot, this.backgroundCompilationSnapshot);
+                        var symbolTokens = this.provider.GetSymbolTokens(compilation, cancellationToken);
+                        Interlocked.Exchange(ref this.backgroundCompilationSnapshot, this.backgroundCompilationSnapshot.Update(textSnapshot, compilation, symbolTokens));
                     }
                 }
             }
-        }
-
-        private Dictionary<SyntaxToken, IClassificationTag> GetSymbolTokens(Compilation compilation)
-        {
-            Dictionary<SyntaxToken, IClassificationTag> result = new Dictionary<SyntaxToken, IClassificationTag>();
-            SyntaxTree syntaxTree = compilation.SyntaxTrees.FirstOrDefault();
-            if (syntaxTree == null) return result;
-            SyntaxNode root;
-            if (syntaxTree.TryGetRoot(out root))
-            {
-                SemanticModel semanticModel = compilation.GetSemanticModel(syntaxTree);
-                foreach (var token in root.DescendantTokens())
-                {
-                    var tag = this.provider.GetTokenClassificationTag(token, syntaxTree, compilation, semanticModel);
-                    if (tag != null)
-                    {
-                        result.Add(token, tag);
-                    }
-                }
-                return result;
-            }
-            return result;
         }
 
     }

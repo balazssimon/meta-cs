@@ -68,7 +68,7 @@ namespace MetaDslx.VisualStudio.Classification
             this.UpdateAllSinks();
         }
 
-        internal Compilation Compile(string filePath, string sourceText, CancellationToken cancellationToken)
+        internal ICompilation Compile(string filePath, string sourceText, CancellationToken cancellationToken)
         {
             var compilation = this.CreateCompilation(filePath, sourceText, cancellationToken);
             compilation.ForceComplete(cancellationToken);
@@ -82,9 +82,9 @@ namespace MetaDslx.VisualStudio.Classification
             }
         }
 
-        protected abstract LanguageCompilation CreateCompilation(string filePath, string sourceText, CancellationToken cancellationToken);
+        protected abstract ICompilation CreateCompilation(string filePath, string sourceText, CancellationToken cancellationToken);
 
-        public abstract IClassificationTag GetTokenClassificationTag(SyntaxToken token, SyntaxTree syntaxTree, Compilation compilation, SemanticModel semanticModel);
+        public abstract Dictionary<SyntaxToken, IClassificationTag> GetSymbolTokens(ICompilation compilation, CancellationToken cancellationToken);
 
         #region ITableDataSource members
         public abstract string DisplayName

@@ -1503,49 +1503,25 @@ namespace MetaDslx.CodeAnalysis
 
         private SymbolInfo GetSymbolInfoFromNode(SyntaxNode node, CancellationToken cancellationToken)
         {
-            switch (node)
+            if (node == null) throw new ArgumentNullException(nameof(node));
+            var boundNode = this.Compilation.GetBoundNode<BoundIdentifier>(node);
+            if (boundNode != null)
             {
-                case null:
-                    throw new ArgumentNullException(nameof(node));
-                /* TODO:MetaDslx - implement in descendants
-                case ExpressionSyntax expression:
-                    return this.GetSymbolInfo(expression, cancellationToken);
-                case ConstructorInitializerSyntax initializer:
-                    return this.GetSymbolInfo(initializer, cancellationToken);
-                case AttributeSyntax attribute:
-                    return this.GetSymbolInfo(attribute, cancellationToken);
-                case CrefSyntax cref:
-                    return this.GetSymbolInfo(cref, cancellationToken);
-                case SelectOrGroupClauseSyntax selectOrGroupClause:
-                    return this.GetSymbolInfo(selectOrGroupClause, cancellationToken);
-                case OrderingSyntax orderingSyntax:
-                    return this.GetSymbolInfo(orderingSyntax, cancellationToken);
-                case PositionalPatternClauseSyntax ppcSyntax:
-                    return this.GetSymbolInfo(ppcSyntax, cancellationToken);*/
+                var symbol = boundNode.Symbol;
+                return new SymbolInfo(symbol);
             }
-
             return SymbolInfo.None;
         }
 
         private TypeInfo GetTypeInfoFromNode(SyntaxNode node, CancellationToken cancellationToken)
         {
-            switch (node)
+            if (node == null) throw new ArgumentNullException(nameof(node));
+            var boundNode = this.Compilation.GetBoundNode<BoundIdentifier>(node);
+            if (boundNode != null)
             {
-                case null:
-                    throw new ArgumentNullException(nameof(node));
-                /* TODO:MetaDslx - implement in descendants
-                case ExpressionSyntax expression:
-                    return this.GetTypeInfo(expression, cancellationToken);
-                case ConstructorInitializerSyntax initializer:
-                    return this.GetTypeInfo(initializer, cancellationToken);
-                case AttributeSyntax attribute:
-                    return this.GetTypeInfo(attribute, cancellationToken);
-                case SelectOrGroupClauseSyntax selectOrGroupClause:
-                    return this.GetTypeInfo(selectOrGroupClause, cancellationToken);
-                case PatternSyntax pattern:
-                    return this.GetTypeInfo(pattern, cancellationToken);*/
+                var typeSymbol = boundNode.Symbol as TypeSymbol;
+                return new LanguageTypeInfo(typeSymbol, typeSymbol, Conversion.NoConversion);
             }
-
             return LanguageTypeInfo.None;
         }
 

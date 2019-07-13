@@ -44,7 +44,7 @@ namespace MetaDslx.CodeAnalysis
     /// new compilation from scratch, as the new compilation can reuse information from the old
     /// compilation.
     /// </summary>
-    public abstract partial class LanguageCompilation : CompilationAdapter
+    public abstract partial class LanguageCompilation : CompilationAdapter, ICompilation
     {
         protected static readonly SyntaxTree[] NoSyntaxTrees = new SyntaxTree[0];
 
@@ -1823,12 +1823,16 @@ namespace MetaDslx.CodeAnalysis
         public T GetBoundNode<T>(SyntaxNode syntax)
             where T: BoundNode
         {
-            return GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree).GetBoundNodes((LanguageSyntaxNode)syntax).OfType<T>().FirstOrDefault();
+            var boundTree = GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree);
+            var bindableNode = boundTree.GetBindableSyntaxNode((LanguageSyntaxNode)syntax);
+            return boundTree.GetBoundNodes(bindableNode).OfType<T>().FirstOrDefault();
         }
 
         public ImmutableArray<BoundNode> GetBoundNodes(SyntaxNode syntax)
         {
-            return GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree).GetBoundNodes((LanguageSyntaxNode)syntax);
+            var boundTree = GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree);
+            var bindableNode = boundTree.GetBindableSyntaxNode((LanguageSyntaxNode)syntax);
+            return boundTree.GetBoundNodes(bindableNode);
         }
 
         /// <summary>
