@@ -8,9 +8,9 @@
     Roslyn version
   -->
   <PropertyGroup>
-    <VersionPrefix>0.9.2</VersionPrefix>
+    <VersionPrefix>0.10.0</VersionPrefix>
     <VersionSuffix Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">alpha1</VersionSuffix>
-    <BootstrapVersion>0.9.1-alpha1</BootstrapVersion>
+    <BootstrapVersion>0.9.4-alpha1</BootstrapVersion>
     <SemanticVersioningV1>true</SemanticVersioningV1>
     <!-- 
       By default the assembly version in official builds is "$(VersionPrefix).0".

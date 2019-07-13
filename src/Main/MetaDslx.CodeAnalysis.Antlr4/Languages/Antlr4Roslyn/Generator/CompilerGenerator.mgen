@@ -2874,14 +2874,15 @@ public sealed class [rule.RedName()] : [Properties.LanguageName]SyntaxNode[GetCo
 end template
 
 template GenerateTokenSyntaxFacts()
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 ^
-[string className = Properties.LanguageName+"SyntaxFacts"]
-[string syntaxKind = Properties.LanguageName+"SyntaxKind"]
+[string className = Properties.LanguageName+"TokensSyntaxFacts"]
+[string syntaxKind = Properties.LanguageName+"TokensSyntaxKind"]
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace].Syntax
 {
@@ -2901,17 +2902,22 @@ namespace [Properties.DefaultNamespace].Syntax
 		[end loop]
 	}
 ^
-	public partial class [className] : SyntaxFacts
+	public class [className] : SyntaxFacts
 	{
         public [className]() 
-            : base(typeof([lang]SyntaxKind))
+            : base(typeof([syntaxKind]))
         {
         }
 ^
-        public override SyntaxKind DefaultWhitespaceKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.DefaultWhitespaceKind.PlainName()];
-        public override SyntaxKind DefaultEndOfLineKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.DefaultEndOfLineKind.PlainName()];
-        public override SyntaxKind DefaultSeparatorKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.DefaultSeparatorKind.PlainName()];
-        public override SyntaxKind DefaultIdentifierKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.DefaultIdentifierKind.PlainName()];
+        protected [className](Type syntaxKindType) 
+            : base(syntaxKindType)
+        {
+        }
+^
+        public override SyntaxKind DefaultWhitespaceKind => ([syntaxKind])[syntaxKind].[Instances.DefaultWhitespaceKind.PlainName()];
+        public override SyntaxKind DefaultEndOfLineKind => ([syntaxKind])[syntaxKind].[Instances.DefaultEndOfLineKind.PlainName()];
+        public override SyntaxKind DefaultSeparatorKind => ([syntaxKind])[syntaxKind].[Instances.DefaultSeparatorKind.PlainName()];
+        public override SyntaxKind DefaultIdentifierKind => ([syntaxKind])[syntaxKind].[Instances.DefaultIdentifierKind.PlainName()];
 ^
 		public override bool IsToken(SyntaxKind kind)
 		{
@@ -2946,10 +2952,10 @@ namespace [Properties.DefaultNamespace].Syntax
 			{
 				[loop(literal:Instances.FixedTokens where literal.Kind > 0)]
 				case [literal.FixedToken.FixedTokenToCSharpString()]:
-					return [lang]SyntaxKind.[literal.PlainName()];
+					return [syntaxKind].[literal.PlainName()];
 				[end loop]
 				default:
-					return [lang]SyntaxKind.None;
+					return [syntaxKind].None;
 			}
 		}
 ^
@@ -3104,6 +3110,7 @@ namespace [Properties.DefaultNamespace].Syntax
 end template
 
 template GenerateNodeSyntaxFacts()
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -3115,10 +3122,15 @@ using Roslyn.Utilities;
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace].Syntax
 {
-	public partial class [className]
+	public class [className] : [lang]TokensSyntaxFacts
 	{
+        public [className]() 
+            : base(typeof([syntaxKind]))
+        {
+        }
+^
 		[if (Instances.MainRule() != null)]
-        public override SyntaxKind CompilationUnitKind => ([lang]SyntaxKind)[lang]SyntaxKind.[Instances.MainRule().PlainName()];
+        public override SyntaxKind CompilationUnitKind => ([syntaxKind])[syntaxKind].[Instances.MainRule().PlainName()];
 		[end if]
 	}
 }

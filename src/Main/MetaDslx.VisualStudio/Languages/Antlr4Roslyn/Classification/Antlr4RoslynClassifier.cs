@@ -14,17 +14,17 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
 {
     internal class Antlr4RoslynClassifier : Antlr4LexerClassifier
     {
-        private Antlr4RoslynSyntaxFacts _syntaxFacts;
+        private Antlr4RoslynTokensSyntaxFacts _syntaxFacts;
 
         internal Antlr4RoslynClassifier(ITextBuffer textBuffer, IClassificationTypeRegistryService classificationRegistryService)
             : base(textBuffer, classificationRegistryService, new MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4RoslynLexer(Antlr4LexerClassifier.EmptyCharStream))
         {
-            _syntaxFacts = new Antlr4RoslynSyntaxFacts();
+            _syntaxFacts = new Antlr4RoslynTokensSyntaxFacts();
         }
 
         protected override IClassificationType GetClassificationType(int tokenType, int mode)
         {
-            var syntaxKind = (Antlr4RoslynSyntaxKind)tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType);
+            var syntaxKind = (Antlr4RoslynTokensSyntaxKind)tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType);
             var tokenKind = _syntaxFacts.GetTokenKind(syntaxKind);
             if (tokenKind == Antlr4RoslynTokenKind.None)
             {

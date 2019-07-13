@@ -14,17 +14,17 @@ namespace MetaDslx.VisualStudio.Languages.MetaGenerator.Classification
 {
     internal class MetaGeneratorClassifier : Antlr4LexerClassifier
     {
-        private MetaGeneratorSyntaxFacts _syntaxFacts;
+        private MetaGeneratorTokensSyntaxFacts _syntaxFacts;
 
         internal MetaGeneratorClassifier(ITextBuffer textBuffer, IClassificationTypeRegistryService classificationRegistryService)
             : base(textBuffer, classificationRegistryService, new MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax.MetaGeneratorLexer(Antlr4LexerClassifier.EmptyCharStream))
         {
-            _syntaxFacts = new MetaGeneratorSyntaxFacts();
+            _syntaxFacts = new MetaGeneratorTokensSyntaxFacts();
         }
 
         protected override IClassificationType GetClassificationType(int tokenType, int mode)
         {
-            var syntaxKind = (MetaGeneratorSyntaxKind)tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType);
+            var syntaxKind = (MetaGeneratorTokensSyntaxKind)tokenType.FromAntlr4(_syntaxFacts.SyntaxKindType);
             var tokenKind = _syntaxFacts.GetTokenKind(syntaxKind);
             if (tokenKind == MetaGeneratorTokenKind.None)
             {
