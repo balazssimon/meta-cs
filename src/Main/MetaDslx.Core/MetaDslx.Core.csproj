@@ -18,6 +18,7 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
+    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

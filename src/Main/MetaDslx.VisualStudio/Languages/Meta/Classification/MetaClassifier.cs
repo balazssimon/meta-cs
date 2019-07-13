@@ -2,6 +2,7 @@
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
+using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Classification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
@@ -31,7 +32,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
             {
                 tokenKind = _syntaxFacts.GetModeTokenKind(mode);
             }
-            switch ((MetaTokenKind)tokenKind)
+            switch (tokenKind)
             {
                 case MetaTokenKind.GeneralComment:
                 case MetaTokenKind.DocumentationCommentTrivia:

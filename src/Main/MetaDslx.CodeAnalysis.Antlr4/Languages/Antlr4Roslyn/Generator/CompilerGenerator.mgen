@@ -38,7 +38,6 @@ namespace [Properties.DefaultNamespace]
 			_syntaxFacts = new [lang]SyntaxFacts();
 			_internalSyntaxFactory = new [lang]InternalSyntaxFactory(_syntaxFacts);
 			_syntaxFactory = new [lang]SyntaxFactory(_internalSyntaxFactory);
-			_lookupPosition = new [lang]LookupPosition();
 			_symbolFacts = new [lang]SymbolFacts();
 			_compilationFactory = new [lang]CompilationFactory();
 		}
@@ -2498,7 +2497,7 @@ template GenerateInternalSyntaxFactoryCreate(Antlr4ParserRule rule)
 [end if]
 end template
 
-template GenerateSyntaxKind()
+template GenerateSyntaxKind(bool forParser, string className, string baseClassName)
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -2509,12 +2508,12 @@ using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
 ^
-[string className = Properties.LanguageName+"SyntaxKind"]
 namespace [Properties.DefaultNamespace].Syntax
 {
-	public class [className] : SyntaxKind
+	public class [className] : [baseClassName]
 	{
-		[if(hasloop(rule:Instances.LexerRules where rule.Kind > 0))]
+		[if (!forParser)]
+			[if(hasloop(rule:Instances.LexerRules where rule.Kind > 0))]
         public static readonly [className] __FirstToken;
         public static readonly int __FirstTokenValue;
         public static readonly [className] __LastToken;
@@ -2523,32 +2522,34 @@ namespace [Properties.DefaultNamespace].Syntax
         public static readonly int __FirstFixedTokenValue;
         public static readonly [className] __LastFixedToken;
         public static readonly int __LastFixedTokenValue;
-		[end if]
-		[if(hasloop(rule:Instances.ParserRules))]
+^
+		// Tokens:
+			[loop(rule:Instances.LexerRules where rule.Kind > 0)]
+		public const string [rule.PlainName()] = nameof([rule.PlainName()]); // [rule.Kind]
+			[end loop]
+			[end if]
+		[else]
+			[if(hasloop(rule:Instances.ParserRules))]
+        public static new readonly [className] __FirstToken;
+        public static new readonly [className] __LastToken;
+        public static new readonly [className] __FirstFixedToken;
+        public static new readonly [className] __LastFixedToken;
         public static readonly [className] __FirstRule;
         public static readonly int __FirstRuleValue;
         public static readonly [className] __LastRule;
         public static readonly int __LastRuleValue;
-		[end if]
 ^
-		[if(hasloop(rule:Instances.LexerRules where rule.Kind > 0))]
-		// Tokens:
-		[loop(rule:Instances.LexerRules where rule.Kind > 0)]
-		public const string [rule.PlainName()] = nameof([rule.PlainName()]); // [rule.Kind]
-		[end loop]
-		[end if]
-^
-		[if(hasloop(rule:Instances.ParserRules))]
 		// Rules:
-		[loop(rule:Instances.ParserRules)]
-		[if (rule.Alternatives.Count > 0)]
-			[loop(alt:rule.Alternatives)]
+			[loop(rule:Instances.ParserRules)]
+			[if (rule.Alternatives.Count > 0)]
+				[loop(alt:rule.Alternatives)]
 		public const string [alt.PlainName()] = nameof([alt.PlainName()]);
-			[end loop]
-		[else]
+				[end loop]
+			[else]
 		public const string [rule.PlainName()] = nameof([rule.PlainName()]);
-		[end if]
-		[end loop]
+			[end if]
+			[end loop]
+			[end if]
 		[end if]
 ^
 		protected [className](string name)
@@ -2564,7 +2565,7 @@ namespace [Properties.DefaultNamespace].Syntax
         static [className]()
         {
             EnumObject.AutoInit<[className]>();
-			[if(hasloop(rule:Instances.LexerRules where rule.Kind > 0))]
+			[if(!forParser && hasloop(rule:Instances.LexerRules where rule.Kind > 0))]
             __FirstToken = [Instances.FirstTokenSyntaxKind.PlainName()];
 			__FirstTokenValue = (int)__FirstToken;
             __LastToken = [Instances.LastTokenSyntaxKind.PlainName()];
@@ -2574,7 +2575,11 @@ namespace [Properties.DefaultNamespace].Syntax
             __LastFixedToken = [Instances.LastFixedTokenSyntaxKind.PlainName()];
 			__LastFixedTokenValue = (int)__LastFixedToken;
 			[end if]
-			[if(hasloop(rule:Instances.ParserRules))]
+			[if(forParser && hasloop(rule:Instances.ParserRules))]
+            __FirstToken = [Instances.FirstTokenSyntaxKind.PlainName()];
+            __LastToken = [Instances.LastTokenSyntaxKind.PlainName()];
+            __FirstFixedToken = [Instances.FirstFixedTokenSyntaxKind.PlainName()];
+            __LastFixedToken = [Instances.LastFixedTokenSyntaxKind.PlainName()];
             __FirstRule = [Instances.FirstParserRuleSyntaxKind.PlainName()];
 			__FirstRuleValue = (int)__FirstRule;
             __LastRule = [Instances.LastParserRuleSyntaxKind.PlainName()];

@@ -53,6 +53,8 @@
   <UsingTask Condition="'$(MetaDslxBuildTaskPath)'!=''" TaskName="MetaDslx.BuildTasks.MetaModelGenerationTask" AssemblyFile="$(MetaDslxBuildTaskPath)\MetaDslx.BuildTasks.dll" />
   <UsingTask Condition="'$(MetaDslxBuildTaskPath)'==''" TaskName="MetaDslx.BuildTasks.Antlr4RoslynGenerationTask" AssemblyName="$(MetaDslxBuildTaskAssemblyName)" />
   <UsingTask Condition="'$(MetaDslxBuildTaskPath)'!=''" TaskName="MetaDslx.BuildTasks.Antlr4RoslynGenerationTask" AssemblyFile="$(MetaDslxBuildTaskPath)\MetaDslx.BuildTasks.dll" />
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'==''" TaskName="MetaDslx.BuildTasks.NormalizeByMetadata" AssemblyName="$(MetaDslxBuildTaskAssemblyName)" />
+  <UsingTask Condition="'$(MetaDslxBuildTaskPath)'!=''" TaskName="MetaDslx.BuildTasks.NormalizeByMetadata" AssemblyFile="$(MetaDslxBuildTaskPath)\MetaDslx.BuildTasks.dll" />
 
   <PropertyGroup>
     <PrepareResourcesDependsOn>
@@ -197,9 +199,13 @@
       SourceCodeFiles="@(MetaGenerator -> '%(FullPath)')"
       ContinueOnError="$(MetaGeneratorDesignTimeBuild)">
 
-      <Output ItemName="MetaGeneratorGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" Condition="'$(MetaDslxIsSdkProject)' != 'True'"/>
-      <Output ItemName="MetaGeneratorGeneratedCodeFiles" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
+      <Output ItemName="MetaGeneratorGeneratedCodeFilesNonUnique" TaskParameter="GeneratedCodeFiles" Condition="'$(MetaDslxIsSdkProject)' != 'True'"/>
+      <Output ItemName="MetaGeneratorGeneratedCodeFilesNonUnique" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
     </MetaGeneratorGenerationTask>
+
+    <NormalizeByMetadata Items="@(MetaGeneratorGeneratedCodeFilesNonUnique)" MetadataName="Filename">
+      <Output TaskParameter="NormalizedItems" ItemName="MetaGeneratorGeneratedCodeFiles"/>
+    </NormalizeByMetadata>
 
     <WriteLinesToFile
       Condition="'$(MetaGeneratorDesignTimeBuild)' != 'true'"
@@ -237,9 +243,13 @@
       SourceCodeFiles="@(MetaModel -> '%(FullPath)')"
       ContinueOnError="$(MetaModelDesignTimeBuild)">
 
-      <Output ItemName="MetaModelGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" Condition="'$(MetaDslxIsSdkProject)' != 'True'"/>
-      <Output ItemName="MetaModelGeneratedCodeFiles" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
+      <Output ItemName="MetaModelGeneratedCodeFilesNonUnique" TaskParameter="GeneratedCodeFiles" Condition="'$(MetaDslxIsSdkProject)' != 'True'"/>
+      <Output ItemName="MetaModelGeneratedCodeFilesNonUnique" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
     </MetaModelGenerationTask>
+
+    <NormalizeByMetadata Items="@(MetaModelGeneratedCodeFilesNonUnique)" MetadataName="Filename">
+      <Output TaskParameter="NormalizedItems" ItemName="MetaModelGeneratedCodeFiles"/>
+    </NormalizeByMetadata>
 
     <WriteLinesToFile
       Condition="'$(MetaModelDesignTimeBuild)' != 'true'"
@@ -293,10 +303,14 @@
       AbstractGrammar="%(Antlr4Roslyn.Abstract)"
       UseCSharpGenerator="$(Antlr4UseCSharpGenerator)">
 
-      <Output ItemName="Antlr4RoslynGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" Condition="'$(MetaDslxIsSdkProject)' != 'True'"/>
-      <Output ItemName="Antlr4RoslynGeneratedCodeFiles" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
+      <Output ItemName="Antlr4RoslynGeneratedCodeFilesNonUnique" TaskParameter="GeneratedCodeFiles" Condition="'$(MetaDslxIsSdkProject)' != 'True'"/>
+      <Output ItemName="Antlr4RoslynGeneratedCodeFilesNonUnique" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
     </Antlr4RoslynGenerationTask>
 
+    <NormalizeByMetadata Items="@(Antlr4RoslynGeneratedCodeFilesNonUnique)" MetadataName="Filename">
+      <Output TaskParameter="NormalizedItems" ItemName="Antlr4RoslynGeneratedCodeFiles"/>
+    </NormalizeByMetadata>
+    
     <WriteLinesToFile
       Condition="'$(Antlr4RoslynDesignTimeBuild)' != 'true'"
       File="$(IntermediateOutputPath)$(Antlr4RoslynGenCodeFileNames)"
@@ -314,7 +328,7 @@
     <ItemGroup>
       <MetaGeneratorGeneratedCodeFiles Condition="'@(MetaGeneratorGeneratedCodeFiles)' == ''" Include="@(MetaGeneratorOutputCodeFilesList)" />
     </ItemGroup>
-
+    
     <ItemGroup>
       <FileWrites Include="@(MetaGeneratorGeneratedCodeFiles);
                            $(IntermediateOutputPath)$(MetaGeneratorGenCodeFileNames);" />
@@ -335,7 +349,7 @@
     <ItemGroup>
       <MetaModelGeneratedCodeFiles Condition="'@(MetaModelGeneratedCodeFiles)' == ''" Include="@(MetaModelOutputCodeFilesList)" />
     </ItemGroup>
-
+    
     <ItemGroup>
       <FileWrites Include="@(MetaModelGeneratedCodeFiles);
                            $(IntermediateOutputPath)$(MetaModelGenCodeFileNames);" />

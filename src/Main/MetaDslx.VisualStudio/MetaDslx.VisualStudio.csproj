@@ -58,6 +58,16 @@
     <Compile Include="Classification\CompilationTaggerProvider.cs" />
     <Compile Include="Classification\LanguageCompilationTaggerProvider.cs" />
     <Compile Include="Classification\SinkManager.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Antlr4RoslynDefinition.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassificationDefinitions.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassificationProvider.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassificationTypes.cs" />
+    <Compile Include="Languages\Antlr4Roslyn\Classification\Antlr4RoslynClassifier.cs" />
+    <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassificationDefinitions.cs" />
+    <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassificationProvider.cs" />
+    <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassificationTypes.cs" />
+    <Compile Include="Languages\MetaGenerator\Classification\MetaGeneratorClassifier.cs" />
+    <Compile Include="Languages\MetaGenerator\MetaGeneratorDefinition.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassificationDefinitions.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassificationProvider.cs" />
     <Compile Include="Languages\Meta\Classification\MetaClassificationTypes.cs" />

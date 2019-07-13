@@ -361,7 +361,7 @@ TH_GuidLiteral : GuidLiteral -> type(GuidLiteral);
 $Token(kind=TemplateOutput)
 mode TEMPLATE_OUTPUT;
 
-$Token(kind=Keyword)
+$Token(kind=ReservedKeyword)
 KEndTemplate : 'end template' ('\r'? '\n' | [\u0085\u2028\u2029]) -> mode(DEFAULT_MODE);
 
 $Token(kind=TemplateControl)

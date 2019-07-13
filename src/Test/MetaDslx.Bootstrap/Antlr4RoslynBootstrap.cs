@@ -30,6 +30,7 @@ namespace MetaDslx.Bootstrap
             {
                 Antlr4BuildTool antlr4BuildTool = new Antlr4BuildTool();
                 antlr4BuildTool.UseCSharpGenerator = true;
+                antlr4BuildTool.ToolPath = @"c:\Users\balaz\.nuget\packages\metadslx.buildtasks\0.9.0-alpha1\tools\netstandard2.0";
                 Antlr4RoslynCompiler compiler = new Antlr4RoslynCompiler(_mgenFileName, Path.GetDirectoryName(_mgenFileName), _defaultNamespace, antlr4BuildTool);
                 compiler.Compile();
                 if (compiler.HasErrors)

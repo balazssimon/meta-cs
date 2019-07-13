@@ -621,7 +621,14 @@ namespace MetaDslx.Languages.Meta.Generator
 
         public string GetAttributeValueOf(MetaModel mmodel, MetaAttribute mattr)
         {
-            return this.CSharpName(mattr.MMetaModel, ModelKind.ImmutableInstance, true) + "." + mattr.Name + ".ToMutable()";
+            if (IsMetaMetaModel(mmodel))
+            {
+                return mattr.Name;
+            }
+            else
+            {
+                return this.CSharpName(mattr.MMetaModel, ModelKind.ImmutableInstance, true) + "." + mattr.Name + ".ToMutable()";
+            }
         }
 
         public string EscapeText(string text)

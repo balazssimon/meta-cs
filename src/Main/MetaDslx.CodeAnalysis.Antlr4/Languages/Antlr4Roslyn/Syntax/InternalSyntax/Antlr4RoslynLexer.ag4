@@ -40,6 +40,7 @@ lexer grammar Antlr4RoslynLexer;
 options
 {
 	superClass = LexerAdaptor; 
+	generateCompiler = true;
 }
 
 import LexBasic;
@@ -152,7 +153,7 @@ CHANNELS
    ;
 
    
-$Token(first=IMPORT, last=NULL, kind=Keyword)
+$Token(first=IMPORT, last=NULL, kind=ReservedKeyword)
 IMPORT
    : 'import'
    ;

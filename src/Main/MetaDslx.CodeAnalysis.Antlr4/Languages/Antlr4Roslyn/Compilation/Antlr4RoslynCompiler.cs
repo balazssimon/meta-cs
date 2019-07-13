@@ -132,34 +132,37 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (this.Antlr4GrammarSource != null) return true;
             this.InitSyntaxTree();
             if (this.HasErrors) return false;
-            this.remover = new Antlr4AnnotationRemover(this.CommonTokenStream);
-            this.remover.Visit(this.ParseTree);
-            this.Antlr4GrammarSource = remover.GetText();
-            this.GeneratedAntlr4GrammarFile = Path.Combine(this.InternalSyntaxDirectory, Path.ChangeExtension(this.FileName, ".g4"));
-            File.WriteAllText(this.GeneratedAntlr4GrammarFile, this.Antlr4GrammarSource);
-            _antlr4Tool.GenerateVisitor = true;
-            if (!this.GenerateAntlr4)
+            if (_antlr4Tool != null)
             {
-                _antlr4TempPath = Path.GetTempPath();
-                _antlr4Tool.OutputPath = _antlr4TempPath;
-            }
-            else
-            {
-                if (_antlr4Tool.OutputPath == null) _antlr4Tool.OutputPath = this.InternalSyntaxDirectory;
-            }
-            _antlr4Tool.SourceCodeFiles.Add(this.GeneratedAntlr4GrammarFile);
-            bool success = _antlr4Tool.Execute();
-            this.DiagnosticBag.AddRange(_antlr4Tool.Diagnostics);
-            if (!success)
-            {
-                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_Antlr4ToolError, "could not generate C# files");
-                return false;
-            }
-            else
-            {
-                foreach (var filePath in _antlr4Tool.GeneratedCodeFiles)
+                this.remover = new Antlr4AnnotationRemover(this.CommonTokenStream);
+                this.remover.Visit(this.ParseTree);
+                this.Antlr4GrammarSource = remover.GetText();
+                this.GeneratedAntlr4GrammarFile = Path.Combine(this.InternalSyntaxDirectory, Path.ChangeExtension(this.FileName, ".g4"));
+                File.WriteAllText(this.GeneratedAntlr4GrammarFile, this.Antlr4GrammarSource);
+                _antlr4Tool.GenerateVisitor = true;
+                if (!this.GenerateAntlr4)
                 {
-                    this.RegisterGeneratedFile(filePath);
+                    _antlr4TempPath = Path.GetTempPath();
+                    _antlr4Tool.OutputPath = _antlr4TempPath;
+                }
+                else
+                {
+                    if (_antlr4Tool.OutputPath == null) _antlr4Tool.OutputPath = this.InternalSyntaxDirectory;
+                }
+                _antlr4Tool.SourceCodeFiles.Add(this.GeneratedAntlr4GrammarFile);
+                bool success = _antlr4Tool.Execute();
+                if (_antlr4Tool.Diagnostics != null) this.DiagnosticBag.AddRange(_antlr4Tool.Diagnostics);
+                if (!success)
+                {
+                    this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_Antlr4ToolError, "could not generate C# files");
+                    return false;
+                }
+                else
+                {
+                    foreach (var filePath in _antlr4Tool.GeneratedCodeFiles)
+                    {
+                        this.RegisterGeneratedFile(filePath);
+                    }
                 }
             }
             return true;
@@ -323,8 +326,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                             fileContent
                         });
                 }
-                this.RegisterGeneratedFile(filePath);
             }
+            this.RegisterGeneratedFile(filePath);
         }
 
         private void GenerateLexer()
@@ -335,7 +338,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             generator.Properties.DefaultNamespace = this.DefaultNamespace;
             generator.Properties.LanguageName = this.LanguageName;
             this.GeneratedTokenSyntaxFacts = generator.GenerateTokenSyntaxFacts();
-            this.GeneratedSyntaxKind = generator.GenerateSyntaxKind();
+            this.GeneratedSyntaxKind = generator.GenerateSyntaxKind(false, this.LanguageName + "TokensSyntaxKind", "SyntaxKind");
             //this.GeneratedLanguageService = this.GetLanguageService();
 
             if (this.OutputDirectory == null) return;
@@ -343,7 +346,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (this.GenerateCompiler)
             {
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.Tokens.cs"), this.GeneratedTokenSyntaxFacts);
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs"), this.GeneratedSyntaxKind);
+                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.Tokens.cs"), this.GeneratedSyntaxKind);
             }
         }
 
@@ -356,7 +359,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             generator.Properties.DefaultNamespace = this.DefaultNamespace;
             generator.Properties.LanguageName = this.LanguageName;
 
-            this.GeneratedSyntaxKind = generator.GenerateSyntaxKind();
+            this.GeneratedSyntaxKind = generator.GenerateSyntaxKind(true, this.LanguageName + "SyntaxKind", this.LanguageName + "TokensSyntaxKind");
             this.GeneratedNodeSyntaxFacts = generator.GenerateNodeSyntaxFacts();
 
             this.GeneratedInternalSyntax = generator.GenerateInternalSyntax();
@@ -390,7 +393,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Compilation"));
                 Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Binding"));
                 this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "InternalSyntax.cs"), this.GeneratedInternalSyntax);
-                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.cs"), this.GeneratedSyntaxKind);
+                this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.Nodes.cs"), this.GeneratedSyntaxKind);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.Nodes.cs"), this.GeneratedNodeSyntaxFacts);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "Syntax.cs"), this.GeneratedSyntax);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxTree.cs"), this.GeneratedSyntaxTree);
@@ -1579,7 +1582,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                                         var ebnfContext= blockContext.Parent as Antlr4RoslynParser.EbnfContext;
                                         if (ebnfContext != null)
                                         {
-                                            if (IsEbnfOptional(ebnfContext.blockSuffix().ebnfSuffix()))
+                                            if (IsEbnfOptional(ebnfContext?.blockSuffix()?.ebnfSuffix()))
                                             {
                                                 element.IsOptional = true;
                                             }
