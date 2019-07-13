@@ -17,6 +17,8 @@
       Keep the setting conditional. The toolset sets the assembly version to 42.42.42.42 if not set explicitly.
     <AssemblyVersion Condition="'$(OfficialBuild)' == 'true' or '$(DotNetUseShippingVersions)' == 'true'">$(VersionPrefix).0</AssemblyVersion>
     -->
+	<MetaDslxVersion Condition="'$(OfficialBuild)' == 'true' or '$(DotNetUseShippingVersions)' == 'true'">$(VersionPrefix).0</MetaDslxVersion>
+	<MetaDslxVersion Condition="'$(OfficialBuild)' != 'true' and '$(DotNetUseShippingVersions)' != 'true'">$(VersionPrefix)-$(VersionSuffix)</MetaDslxVersion>
   </PropertyGroup>
   <!-- 
     Dependency versions

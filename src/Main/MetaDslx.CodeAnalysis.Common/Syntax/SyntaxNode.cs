@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public TextSpan FullSpan => new TextSpan(this.Position, this.Green.FullWidth);
 
-        internal int SlotCount => this.Green.SlotCount;
+        public int SlotCount => this.Green.SlotCount;
 
         /// <summary>
         /// The absolute span of this node in characters, not including its leading and trailing trivia.

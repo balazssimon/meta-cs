@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis", "Ma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Common", "Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj", "{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio", "Main\MetaDslx.VisualStudio\MetaDslx.VisualStudio.csproj", "{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53C88B8A-A649-4A2B-87ED-75DBD3B5C3BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
