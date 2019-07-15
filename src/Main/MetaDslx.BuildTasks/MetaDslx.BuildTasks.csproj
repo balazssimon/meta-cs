@@ -16,6 +16,8 @@
     <PackageDescription>
       MSBuild tooling for the MetaDslx metamodeling platform.
     </PackageDescription>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageOutputPath>..\..\..\install\</PackageOutputPath>
   </PropertyGroup>
 

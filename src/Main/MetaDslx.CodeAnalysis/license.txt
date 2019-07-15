@@ -1,0 +1,16 @@
+MetaDslx Framework License
+--------------------------
+
+Copyright (c) 2019 Balazs Simon
+
+The MetaDslx Framework is published under the Apache 2.0 license:
+https://spdx.org/licenses/Apache-2.0.html
+
+
+
+Roslyn License
+--------------
+
+The MetaDslx Framework is a generalization of the Roslyn source code, thus, it is based on Roslyn, which is also published under the Apache 2.0 license:
+https://github.com/dotnet/roslyn/blob/master/License.txt
+
