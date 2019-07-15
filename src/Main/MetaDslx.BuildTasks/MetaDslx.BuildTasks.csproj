@@ -12,13 +12,14 @@
 
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
+    <Authors>Balazs Simon</Authors>
     <PackageId>MetaDslx.BuildTasks</PackageId>
     <PackageDescription>
       MSBuild tooling for the MetaDslx metamodeling platform.
     </PackageDescription>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageOutputPath>..\..\..\install\</PackageOutputPath>
+    <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -78,5 +79,9 @@
     <None Include="$(OutputPath)\net461\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="tools\net461" />
     <None Include="$(NuGetPackageRoot)\antlr4.codegenerator\$(Antlr4Version)\tools\net45\**\*.*" Pack="true" PackagePath="tools\net461" />
     <None Include="$(NuGetPackageRoot)\system.reflection.metadata\$(SystemReflectionMetadataVersion)\lib\netstandard2.0\System.Reflection.Metadata.dll" Pack="true" PackagePath="tools\net461" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="license.txt" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>

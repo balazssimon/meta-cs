@@ -12,13 +12,14 @@
 
     <!-- NuGet -->
     <IsPackable>true</IsPackable>
+    <Authors>Balazs Simon</Authors>
     <PackageId>MetaDslx.CodeAnalysis</PackageId>
     <PackageDescription>
       MetaDslx metamodeling platform for creating Roslyn-style ANTLR4-based compilers.
     </PackageDescription>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageOutputPath>..\..\..\install\</PackageOutputPath>
+    <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -60,5 +61,9 @@
     <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Release\net461\MetaDslx.Core.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\net461"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="license.txt" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>
