@@ -13,54 +13,40 @@ MetaDslx supports the following features:
 
 The documentation of the MetaDslx framework can be accessed here: [The MetaDslx Framework](https://github.com/balazssimon/meta-cs/wiki/The-MetaDslx-Framework)
 
-# Installation instructions TODO!!!
-
-## Instructions for developing your own DSL using the MetaDslx plugin
-
-### Installation
+# Instructions for developing your own DSL using the MetaDslx framework
 
 These are the installation instructions if you would like to use the MetaDslx framework for creating your own DSLs. For an example DSL see the [SOAL language](https://github.com/balazssimon/soal-cs).
 
-The MetaDslx plugin requires the following prerequisites:
-* Visual Studio 2015 and .NET Standard
-* Java 8+ for running ANTLR4 (make sure the **java** command is on the PATH environment variable)
+## NuGet dependencies for development
+
+Add the following NuGet dependencies to your project:
+* MetaDslx.CodeAnalysis: these are the MetaDslx libraries required for developing and running your application
+* MetaDslx.BuildTasks: after this package is added, MSBuild automatically compiles .mgen, .mm and .ag4 files
+
+## Installation of the Visual Studio extension
+
+The MetaDslx extension requires the following prerequisites: Visual Studio 2019 and .NET Standard 2.0
 
 Installation steps:
+1. In Visual Studio open the **Extensions / Manage Extensions** menu.
+2. Install the **MetaDslx Extension for Visual Studio** from the Visual Studio Marketplace.
 
-1. Run the **MetaDslx.VisualStudio.vsix** to install the Visual Studio plugin.
+## Uninstallation of the Visual Studio extension
 
-### Uninstallation
+Uninstallation steps:
+1. In Visual Studio open the **Extensions / Manage Extensions** menu.
+2. Look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
+In Visual Studio open the **Extensions / Manage Extensions** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
 
-1. In Visual Studio open the **Tools / Extensions and Updates...** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
+# Instructions for compiling MetaDslx framework from source
 
-## Instructions for running an application with your own DSL depending on the MetaDslx framework
-
-The MetaDslx core runtime (MetaDslx.Core.dll) requires the following prerequisites:
-* .NET Framework 4.6.1
-
-The MetaDslx compiler runtime (MetaDslx.Compiler.Antlr4.dll) requires the following prerequisites:
-* .NET Framework 4.6.1
-* Antlr4.Runtime.Standard.dll
-* MetaDslx.Core.dll
-
-## Instructions for developing the MetaDslx framework
-
-### Installation
-
-These are the installation instructions if you would like to build the MetaDslx framework from source.
+These are the instructions if you would like to build the MetaDslx framework from source.
 
 Building the MetaDslx framework requires Visual Studio 2019 and the Visual Studio 2019 SDK (Visual Studio Extensibility Tools).
 
-Installation steps:
+Steps:
+1. Check out the source from GitHub.
+2. Open the **src\MetaDslx.sln** in Visual Studio.
+3. Right click on the **MetaDslx** solution and choose **Build Solution**.
 
-1. Run the **MetaDslx.VisualStudio.vsix** to install the Visual Studio plugin.
-2. Check out the source from GitHub.
-3. Open the **Src\MetaDslx.sln** in Visual Studio.
-4. Right click the **MetaDslx.VisualStudio** project, and under the **Debug** tab set the following:
- * Start Action / Start external program: **C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe**
- * Start Options / Command line arguments: **/rootsuffix Exp**
-5. Right click on the **MetaDslx** solution and choose **Build Solution**.
-
-### Uninstallation
-
-1. In Visual Studio open the **Tools / Extensions and Updates...** menu, look for the **MetaDslx Extension for Visual Studio** and click on **Uninstall**.
+Note that the MetaDslx framework is required to compile itself. The **BootstrapVersion** property in the **src\Versions.prop** file specifies which version of the framework is used to compile the checked out version of the framework. The **BootstrapVersion** is usually the latest published version, but temporarily it can be an unpublished version.
