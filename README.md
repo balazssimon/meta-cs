@@ -25,7 +25,7 @@ Add the following NuGet dependencies to your project:
 
 ## Installation of the Visual Studio extension
 
-The MetaDslx extension requires the following prerequisites: Visual Studio 2019 and .NET Standard 2.0
+The MetaDslx extension provides syntax highlighting and error reporting for .mgen, .mm and .ag4 files. It requires the following prerequisites: Visual Studio 2019 and .NET Standard 2.0.
 
 Installation steps:
 1. In Visual Studio open the **Extensions / Manage Extensions** menu.
