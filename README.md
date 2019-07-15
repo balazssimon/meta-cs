@@ -1,4 +1,4 @@
-# meta-cs
+# MetaDslx framework
 MetaDslx is a user friendly metamodeling framework for .NET.
 
 MetaDslx supports the following features:
@@ -20,8 +20,8 @@ These are the installation instructions if you would like to use the MetaDslx fr
 ## NuGet dependencies for development
 
 Add the following NuGet dependencies to your project:
-* MetaDslx.CodeAnalysis: these are the MetaDslx libraries required for developing and running your application
-* MetaDslx.BuildTasks: after this package is added, MSBuild automatically compiles .mgen, .mm and .ag4 files
+* **MetaDslx.CodeAnalysis**: these are the MetaDslx libraries required for developing and running your application
+* **MetaDslx.BuildTasks**: after this package is added, MSBuild automatically compiles .mgen, .mm and .ag4 files
 
 ## Installation of the Visual Studio extension
 
