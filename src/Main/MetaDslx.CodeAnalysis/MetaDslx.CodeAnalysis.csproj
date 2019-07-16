@@ -20,6 +20,13 @@
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageOutputPath>..\..\..\install\</PackageOutputPath>
     <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
+    <!-- This is useful if you generate files during the build -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +37,7 @@
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
     <PackageReference Include="Antlr4.Runtime" Version="$(Antlr4Version)" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All"/>
   </ItemGroup>
   
   <ItemGroup>
