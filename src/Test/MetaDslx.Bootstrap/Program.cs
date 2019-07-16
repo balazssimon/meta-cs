@@ -26,17 +26,21 @@ namespace MetaDslx.Bootstrap
             mg.Compile();
             //*/
 
-            /*/
+            //*/
             //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
             //a4l.Compile();
-            Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.ag4", "MetaDslx.Languages.Antlr4Roslyn");
-            a4r.Compile();
+            //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.ag4", "MetaDslx.Languages.Antlr4Roslyn");
+            //a4r.Compile();
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorLexer.ag4", "MetaDslx.Bootstrap.MetaGenerator");
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\MetaGeneratorParser.ag4", "MetaDslx.Bootstrap.MetaGenerator");
             //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.Languages.Meta\Syntax\InternalSyntax\MetaLexer.ag4", "MetaDslx.Languages.Meta");
             //a4l.Compile();
             //Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.Languages.Meta\Syntax\InternalSyntax\MetaParser.ag4", "MetaDslx.Languages.Meta");
             //a4p.Compile();
+            //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\SoalLexer.ag4", "MetaDslx.Languages.Soal");
+            //a4l.Compile();
+            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\SoalParser.ag4", "MetaDslx.Languages.Soal");
+            a4p.Compile();
             //*/
 
             /*/
@@ -44,14 +48,14 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
             //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
-            string text = File.ReadAllText(@"..\..\..\Soal.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Soal.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);

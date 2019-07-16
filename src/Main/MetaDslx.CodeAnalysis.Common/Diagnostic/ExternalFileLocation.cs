@@ -9,12 +9,12 @@ namespace Microsoft.CodeAnalysis
     /// <summary>
     /// A program location in source code.
     /// </summary>
-    internal sealed class ExternalFileLocation : Location, IEquatable<ExternalFileLocation>
+    public sealed class ExternalFileLocation : Location, IEquatable<ExternalFileLocation>
     {
         private readonly TextSpan _sourceSpan;
         private readonly FileLinePositionSpan _lineSpan;
 
-        internal ExternalFileLocation(string filePath, TextSpan sourceSpan, LinePositionSpan lineSpan)
+        public ExternalFileLocation(string filePath, TextSpan sourceSpan, LinePositionSpan lineSpan)
         {
             _sourceSpan = sourceSpan;
             _lineSpan = new FileLinePositionSpan(filePath, lineSpan);

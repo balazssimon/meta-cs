@@ -81,7 +81,12 @@ namespace MetaDslx.CodeAnalysis.Syntax
         // This mapping also contains a global warning option, accumulated of all #pragma up to the current line position.
         private static WarningStateMapEntry[] CreatePragmaWarningStateEntries(ArrayBuilder<IDirectiveTriviaSyntax> directiveList, bool isGeneratedCode)
         {
-            return new WarningStateMapEntry[0];
+            var entries = new WarningStateMapEntry[1];
+            var index = 0;
+            var accumulatedSpecificWarningState = ImmutableDictionary.Create<string, PragmaWarningState>();
+            var current = new WarningStateMapEntry(0, PragmaWarningState.Default, accumulatedSpecificWarningState);
+            entries[index] = current;
+            return entries;
             /* TODO:MetaDslx
             var entries = new WarningStateMapEntry[directiveList.Count + 1];
             var index = 0;

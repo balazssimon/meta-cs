@@ -465,8 +465,8 @@ namespace [Properties.DefaultNamespace]
     {
         #region Constructors and Factories
 
-        private static readonly [lang]CompilationOptions s_defaultOptions = new [lang]CompilationOptions(MetaLanguage.Instance, OutputKind.ConsoleApplication);
-        private static readonly [lang]CompilationOptions s_defaultSubmissionOptions = new [lang]CompilationOptions(MetaLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
+        private static readonly [lang]CompilationOptions s_defaultOptions = new [lang]CompilationOptions([lang]Language.Instance, OutputKind.ConsoleApplication);
+        private static readonly [lang]CompilationOptions s_defaultSubmissionOptions = new [lang]CompilationOptions([lang]Language.Instance, OutputKind.DynamicallyLinkedLibrary).WithReferencesSupersedeLowerVersions(true);
 
         /// <summary>
         /// Creates a new compilation from scratch. Methods such as AddSyntaxTrees or AddReferences
@@ -2121,6 +2121,9 @@ template GenerateInternalSyntaxRule(Antlr4ParserRule rule, Antlr4ParserRule supe
 ^
 internal abstract class [rule.GreenName()] : GreenSyntaxNode
 {
+	[if (rule.FirstNonAbstractAlternative != null)]
+    internal static readonly [rule.GreenName()] __Missing = [rule.FirstNonAbstractAlternative.GreenName()].__Missing;
+	[end if]
 ^
     public [rule.GreenName()]([Properties.LanguageName]SyntaxKind kind, DiagnosticInfo["[]"] diagnostics, SyntaxAnnotation["[]"] annotations)
         : base(kind, diagnostics, annotations)
@@ -2139,8 +2142,12 @@ internal class [rule.GreenName()] : [superRule.GreenName()][GetCompilationUnitIn
 internal class [rule.GreenName()] : GreenSyntaxNode[GetCompilationUnitInternal(rule)]
 	[end if]
 {
+	[if (rule.ParentRule != null && rule.ParentRule.Alternatives.Count > 0)]
+    internal static new readonly [rule.GreenName()] __Missing = new [rule.GreenName()]();
+	[else]
     internal static readonly [rule.GreenName()] __Missing = new [rule.GreenName()]();
-
+	[end if]
+	
 	[loop(elem:rule.AllElements)]
     private [elem.GreenType(TypeKind.Field)] [elem.FieldName()];
 	[end loop]
@@ -3429,7 +3436,7 @@ public class [Properties.LanguageName]SyntaxFactory : SyntaxFactory
 		string path = "",
 		CancellationToken cancellationToken = default(CancellationToken))
 	{
-		return MetaSyntaxTree.ParseText(text, ([lang]ParseOptions)options, path, cancellationToken);
+		return [lang]SyntaxTree.ParseText(text, ([lang]ParseOptions)options, path, cancellationToken);
 	}
 ^
     public [Instances.MainRule().RedName()] Parse[Instances.MainRule().PlainName()](string text)
@@ -5209,6 +5216,22 @@ namespace [Properties.DefaultNamespace].Binding
         {
             return this.Factory.Create(symbolType);
         }
+    }
+}
+end template
+
+template GenerateSymbolFacts()
+using MetaDslx.CodeAnalysis.Symbols;
+using [Properties.DefaultNamespace].Syntax.InternalSyntax;
+using System;
+using System.Collections.Generic;
+using System.Text;
+^
+[var lang = Properties.LanguageName]
+namespace [Properties.DefaultNamespace].Symbols
+{
+    public class [lang]SymbolFacts : SymbolFacts
+    {
     }
 }
 end template

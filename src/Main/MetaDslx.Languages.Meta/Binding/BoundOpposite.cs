@@ -34,6 +34,7 @@ namespace MetaDslx.Languages.Meta.Binding
                     return;
                 }
                 this.DiagnosticBag.Add(LanguageDiagnostic.Create(ModelErrorCode.ERR_CannotSetOppositeProperty, this.Syntax.GetLocation(), values[0], values[1]));
+                return;
             }
             this.DiagnosticBag.Add(LanguageDiagnostic.Create(ModelErrorCode.ERR_CannotSetOppositeProperty, this.Syntax.GetLocation(), (object)null, (object)null));
         }

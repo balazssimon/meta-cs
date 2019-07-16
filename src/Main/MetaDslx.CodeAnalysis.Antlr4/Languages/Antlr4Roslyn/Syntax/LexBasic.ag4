@@ -41,6 +41,11 @@ tokens {
 	DUMMY_TO_FIX_LEX_BASIC_GENERATION_ERROR 
 }
 
+options {
+	generateCompiler=false;
+	ignoreRoslynRules=true;
+}
+
 // ======================================================
 // Lexer fragments
 //

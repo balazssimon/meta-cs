@@ -27,6 +27,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public static readonly Antlr4RoslynErrorCode WRN_Antlr4Warning = new Antlr4RoslynErrorCode(12, DiagnosticSeverity.Warning, "ANTLR4 warning", "ANTLR4 warning: {0}");
         public static readonly Antlr4RoslynErrorCode INF_Antlr4Info = new Antlr4RoslynErrorCode(13, DiagnosticSeverity.Info, "ANTLR4 info", "ANTLR4 info: {0}");
         public static readonly Antlr4RoslynErrorCode ERR_MainRuleMustEndWithEof = new Antlr4RoslynErrorCode(14, DiagnosticSeverity.Error, "Missing EOF", "The first rule (main rule) must end with EOF.");
+        public static readonly Antlr4RoslynErrorCode ERR_MultipleDefaultAnnotation = new Antlr4RoslynErrorCode(15, DiagnosticSeverity.Error, "Multiple default annotation", "Multiple tokens are annotated with '{0}'. The Roslyn API requires exacly one token with this annotation.");
+        public static readonly Antlr4RoslynErrorCode ERR_MissingDefaultAnnotation = new Antlr4RoslynErrorCode(16, DiagnosticSeverity.Error, "Missing default annotation", "There are no tokens annotated with '{0}'. The Roslyn API requires exacly one token with this annotation.");
 
         public Antlr4RoslynErrorCode(int code, DiagnosticSeverity defaultSeverity, string title, string messageFormat, bool isEnabledByDefault = true, string description = null, string helpLinkUri = null, params string[] customTags) 
             : base(code, MessagePrefix, title, messageFormat, Category, defaultSeverity, isEnabledByDefault, description, helpLinkUri, customTags)

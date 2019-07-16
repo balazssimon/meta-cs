@@ -8,7 +8,6 @@ namespace MetaDslx.Languages.Meta.Symbols
 {
     public class MetaSymbolFacts : SymbolFacts
     {
-        GreenSyntaxToken t;
     }
 
 }

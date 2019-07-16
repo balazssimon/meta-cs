@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio", "Main\MetaDslx.VisualStudio\MetaDslx.VisualStudio.csproj", "{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Languages.Soal", "Samples\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj", "{A8CA81D6-C7EE-43D4-ACC8-D9E117CB1114}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8CA81D6-C7EE-43D4-ACC8-D9E117CB1114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8CA81D6-C7EE-43D4-ACC8-D9E117CB1114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8CA81D6-C7EE-43D4-ACC8-D9E117CB1114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8CA81D6-C7EE-43D4-ACC8-D9E117CB1114}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

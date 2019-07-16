@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.MetaGenerator.Syntax;
+using MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Classification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
@@ -17,7 +18,7 @@ namespace MetaDslx.VisualStudio.Languages.MetaGenerator.Classification
         private MetaGeneratorTokensSyntaxFacts _syntaxFacts;
 
         internal MetaGeneratorClassifier(ITextBuffer textBuffer, IClassificationTypeRegistryService classificationRegistryService)
-            : base(textBuffer, classificationRegistryService, new MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax.MetaGeneratorLexer(Antlr4LexerClassifier.EmptyCharStream))
+            : base(textBuffer, classificationRegistryService, new MetaGeneratorLexer(Antlr4LexerClassifier.EmptyCharStream))
         {
             _syntaxFacts = new MetaGeneratorTokensSyntaxFacts();
         }
@@ -68,7 +69,7 @@ namespace MetaDslx.VisualStudio.Languages.MetaGenerator.Classification
             public MetaGeneratorLexerState(Lexer lexer)
                 : base(lexer)
             {
-                var typedLexer = lexer as MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax.MetaGeneratorLexer;
+                var typedLexer = lexer as MetaGeneratorLexer;
                 if (lexer != null)
                 {
                     this.templateBrackets = typedLexer._templateBrackets;
@@ -79,7 +80,7 @@ namespace MetaDslx.VisualStudio.Languages.MetaGenerator.Classification
             public override void Restore(Lexer lexer)
             {
                 base.Restore(lexer);
-                var typedLexer = lexer as MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax.MetaGeneratorLexer;
+                var typedLexer = lexer as MetaGeneratorLexer;
                 if (lexer != null)
                 {
                     typedLexer._templateBrackets = this.templateBrackets;

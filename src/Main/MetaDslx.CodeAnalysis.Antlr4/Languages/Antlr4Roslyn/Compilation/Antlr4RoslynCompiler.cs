@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using System.Diagnostics;
-using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.Languages.Antlr4Roslyn.Generator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Meta;
 using System.Reflection;
+using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
@@ -22,6 +23,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
     {
         private Antlr4Tool _antlr4Tool;
         private string _antlr4TempPath;
+        internal Location _noLocation;
 
         private Antlr4AnnotationRemover remover;
         public string GeneratedAntlr4GrammarFile { get; private set; }
@@ -66,7 +68,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string GeneratedBoundNodeFactoryVisitor { get; private set; }
         public string GeneratedIsBindableNodeVisitor { get; private set; }
         public string GeneratedSymbolBuilder { get; private set; }
-
+        public string GeneratedSymbolFacts { get; private set; }
         //public string GeneratedLanguageService { get; private set; }
 
         public Antlr4RoslynCompiler(string inputFilePath, string outputDirectory, string defaultNamespace, Antlr4Tool antlr4Tool)
@@ -110,6 +112,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
                 this.OutputDirectory = directory;
             }
+
+            _noLocation = new ExternalFileLocation(this.InputFilePath, TextSpan.FromBounds(0, 1), new LinePositionSpan(LinePosition.Zero, LinePosition.Zero));
         }
 
         protected override Antlr4RoslynLexer CreateLexer(AntlrInputStream stream)
@@ -150,6 +154,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     if (_antlr4Tool.OutputPath == null) _antlr4Tool.OutputPath = this.InternalSyntaxDirectory;
                 }
                 _antlr4Tool.SourceCodeFiles.Add(this.GeneratedAntlr4GrammarFile);
+                _antlr4Tool.TargetNamespace = this.DefaultNamespace + ".Syntax.InternalSyntax";
                 bool success = _antlr4Tool.Execute();
                 if (_antlr4Tool.Diagnostics != null) this.DiagnosticBag.AddRange(_antlr4Tool.Diagnostics);
                 if (!success)
@@ -211,6 +216,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
             if (this.IsParser)
             {
+                this.FindFirstNonAbstractAlternatives();
                 this.CollectCustomAnnotations();
                 this.CollectHasAnnotationFlags();
             }
@@ -252,7 +258,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                             Antlr4LexerRule rule = this.Grammar.LexerRules.FirstOrDefault(r => r.Name == tokenName);
                             if (rule == null)
                             {
-                                rule = new Antlr4LexerRule(this.Grammar.LexerModes.FirstOrDefault());
+                                rule = new Antlr4LexerRule(this.Grammar.LexerModes.FirstOrDefault(), _noLocation);
                                 rule.Name = tokenName;
                                 rule.Artificial = true;
                                 this.Grammar.LexerRules.Add(rule);
@@ -366,6 +372,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.GeneratedSyntax = generator.GenerateSyntax();
             this.GeneratedSyntaxTree = generator.GenerateSyntaxTree();
             this.GeneratedErrorCode = generator.GenerateErrorCode();
+            this.GeneratedSymbolFacts = generator.GenerateSymbolFacts();
             this.GeneratedSyntaxParser = generator.GenerateSyntaxParser();
             this.GeneratedLanguage = generator.GenerateLanguage();
             this.GeneratedLanguageVersion = generator.GenerateLanguageVersion();
@@ -401,6 +408,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + @"SyntaxParser.cs"), this.GeneratedSyntaxParser);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"LanguageVersion.cs"), this.GeneratedLanguageVersion, false);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Errors\" + this.LanguageName + @"ErrorCode.cs"), this.GeneratedErrorCode, false);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Symbols\" + this.LanguageName + @"SymbolFacts.cs"), this.GeneratedSymbolFacts);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Language.cs"), this.GeneratedLanguage, false);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationOptions.cs"), this.GeneratedCompilationOptions, false);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Compilation.cs"), this.GeneratedCompilation);
@@ -420,6 +428,33 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             this.DefineCustomAnnotations();
             //this.ReferenceCustomAnnotations();
+        }
+
+        private void FindFirstNonAbstractAlternatives()
+        {
+            foreach (var rule in this.Grammar.ParserRules)
+            {
+                if (rule.Alternatives.Count > 0 && rule.FirstNonAbstractAlternative == null)
+                {
+                    FindFirstNonAbstractAlternative(rule);
+                }
+            }
+        }
+
+        private void FindFirstNonAbstractAlternative(Antlr4ParserRule rule)
+        {
+            rule.FirstNonAbstractAlternative = rule.Alternatives.Where(alt => alt.Alternatives.Count == 0).FirstOrDefault();
+            if (rule.FirstNonAbstractAlternative == null)
+            {
+                foreach (var alt in rule.Alternatives)
+                {
+                    if (alt.Alternatives.Count > 0 && alt.FirstNonAbstractAlternative == null)
+                    {
+                        FindFirstNonAbstractAlternative(alt);
+                    }
+                }
+                rule.FirstNonAbstractAlternative = rule.Alternatives.Where(alt => alt.FirstNonAbstractAlternative != null).FirstOrDefault()?.FirstNonAbstractAlternative;
+            }
         }
 
         private void DefineCustomAnnotations()
@@ -459,6 +494,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             if (this.DiagnosticBag.HasAnyErrors()) return;
             this.CollectVirtualTokenKinds();
+            List<Antlr4LexerRule> defaultWhitespace = new List<Antlr4LexerRule>();
+            List<Antlr4LexerRule> defaultEndOfLine = new List<Antlr4LexerRule>();
+            List<Antlr4LexerRule> defaultSeparator = new List<Antlr4LexerRule>();
+            List<Antlr4LexerRule> defaultIdentifier = new List<Antlr4LexerRule>();
             foreach (var rule in this.Grammar.LexerRules)
             {
                 var tokenAnnot = rule.Annotations.GetAnnotation("Token");
@@ -478,18 +517,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     if (tokenAnnot.GetValue("defaultWhitespace") == "true")
                     {
                         this.Grammar.DefaultWhitespaceKind = rule;
+                        defaultWhitespace.Add(rule);
                     }
                     if (tokenAnnot.GetValue("defaultEndOfLine") == "true")
                     {
                         this.Grammar.DefaultEndOfLineKind = rule;
+                        defaultEndOfLine.Add(rule);
                     }
                     if (tokenAnnot.GetValue("defaultIdentifier") == "true")
                     {
                         this.Grammar.DefaultIdentifierKind = rule;
+                        defaultIdentifier.Add(rule);
                     }
                     if (tokenAnnot.GetValue("defaultSeparator") == "true")
                     {
                         this.Grammar.DefaultSeparatorKind = rule;
+                        defaultSeparator.Add(rule);
                     }
                 }
             }
@@ -508,6 +551,26 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                             this.Grammar.LexerTokenKinds.Add(kind, rules);
                         }
                     }
+                }
+            }
+            this.CheckDefaultAnnotations(defaultWhitespace, "Whitespace");
+            this.CheckDefaultAnnotations(defaultEndOfLine, "EndOfLine");
+            this.CheckDefaultAnnotations(defaultSeparator, "Separator");
+            this.CheckDefaultAnnotations(defaultIdentifier, "Identifier");
+        }
+
+        private void CheckDefaultAnnotations(List<Antlr4LexerRule> rules, string annot)
+        {
+            if (this.IgnoreRoslynRules) return;
+            if (rules.Count == 0)
+            {
+                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_MissingDefaultAnnotation, _noLocation, string.Format("$Token(default{0}=true)", annot));
+            }
+            else if (rules.Count >= 2)
+            {
+                foreach (var rule in rules)
+                {
+                    this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_MultipleDefaultAnnotation, rule.Location, string.Format("$Token(default{0}=true)", annot));
                 }
             }
         }
@@ -882,6 +945,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
+        private Location GetLocation(ParserRuleContext context)
+        {
+            return new ExternalFileLocation(this.compiler.InputFilePath, context.GetTextSpan(), context.GetLinePositionSpan());
+        }
+
+        private Location GetLocation(ITerminalNode terminalNode)
+        {
+            return new ExternalFileLocation(this.compiler.InputFilePath, terminalNode.Symbol.GetTextSpan(), terminalNode.Symbol.GetLinePositionSpan());
+        }
+
         public override object VisitGrammarSpec(Antlr4RoslynParser.GrammarSpecContext context)
         {
             if (context.grammarType().PARSER() != null)
@@ -904,9 +977,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.IsLexer = true;
                 this.IsParser = true;
             }
-            currentGrammar = new Antlr4Grammar();
+            currentGrammar = new Antlr4Grammar(this.compiler._noLocation);
             currentGrammar.Name = context.identifier().GetText();
-            currentMode = new Antlr4LexerMode(this.currentGrammar);
+            currentMode = new Antlr4LexerMode(this.currentGrammar, this.GetLocation(context.identifier()));
             currentMode.Name = "DEFAULT_MODE";
             this.modeCounter = 0;
             currentMode.Kind = this.modeCounter;
@@ -921,7 +994,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             {
                 foreach (var id in context.idList().annotatedIdentifier())
                 {
-                    this.currentLexerRule = new Antlr4LexerRule(this.currentMode);
+                    this.currentLexerRule = new Antlr4LexerRule(this.currentMode, this.GetLocation(id.identifier()));
                     this.currentLexerRule.Name = id.identifier().GetText();
                     //this.currentLexerRule.FixedToken = id.identifier().GetText();
                     if (this.currentLexerRule != null)
@@ -1009,7 +1082,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public override object VisitModeSpec(Antlr4RoslynParser.ModeSpecContext context)
         {
-            currentMode = new Antlr4LexerMode(this.currentGrammar);
+            currentMode = new Antlr4LexerMode(this.currentGrammar, this.GetLocation(context.identifier()));
             if (context.identifier() != null)
             {
                 currentMode.Name = context.identifier().GetText();
@@ -1025,7 +1098,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             if (context.FRAGMENT() == null)
             {
-                this.currentLexerRule = new Antlr4LexerRule(this.currentMode);
+                this.currentLexerRule = new Antlr4LexerRule(this.currentMode, this.GetLocation(context.TOKEN_REF()));
                 this.currentLexerRule.Name = context.TOKEN_REF().GetText();
                 base.VisitLexerRuleSpec(context);
                 if (this.currentLexerRule != null)
@@ -1219,7 +1292,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     break;
                 }
             }
-            rule = new Antlr4ParserRule(this.currentGrammar);
+            rule = new Antlr4ParserRule(this.currentGrammar, this.GetLocation(context));
             possiblyGood = true;
             foreach (var alt in context.ruleAltList().labeledAlt())
             {
@@ -1245,7 +1318,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         private bool IsRoslynRule(Antlr4RoslynParser.LabeledAltContext context, ref bool reportedErrors, out Antlr4ParserRule rule)
         {
             Antlr4RoslynParser.ElementContext[] elems = context.alternative().element().Where(e => !this.IsActionBlock(e)).ToArray();
-            rule = new Antlr4ParserRule(this.Grammar);
+            rule = new Antlr4ParserRule(this.Grammar, this.GetLocation(context.identifier()));
             for (int i = 0; i < elems.Length; ++i)
             {
                 Antlr4ParserRuleElement element;
@@ -1384,13 +1457,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         private bool IsRoslynAltList(Antlr4RoslynParser.RuleBlockContext context, TokenOrRule kind, bool allowEbnf, ref bool reportedErrors, out Antlr4ParserRule rule)
         {
-            rule = new Antlr4ParserRule(this.Grammar);
+            rule = new Antlr4ParserRule(this.Grammar, this.GetLocation(context));
             Antlr4ParserRuleElement blockElem = null;
             if (kind == TokenOrRule.Token)
             {
-                blockElem = new Antlr4ParserRuleElement(context);
+                var ruleRef = ((Antlr4RoslynParser.ParserRuleSpecContext)(context.Parent)).RULE_REF();
+                blockElem = new Antlr4ParserRuleElement(context, this.GetLocation(ruleRef));
                 blockElem.Rule = rule;
-                blockElem.Name = ((Antlr4RoslynParser.ParserRuleSpecContext)(context.Parent)).RULE_REF().GetText();
+                blockElem.Name = ruleRef.GetText();
                 blockElem.IsFixedTokenAltBlock = true;
                 blockElem.IsBlock = true;
                 rule.Elements.Add(blockElem);
@@ -1424,7 +1498,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         
         private bool IsRoslynBlockTokenAlts(Antlr4RoslynParser.BlockContext context, ref bool reportedErrors, out Antlr4ParserRuleElement block)
         {
-            block = new Antlr4ParserRuleElement(context);
+            block = new Antlr4ParserRuleElement(context, this.GetLocation(context));
             block.IsBlock = true;
             block.IsFixedTokenAltBlock = true;
             var alts = context.altList().alternative();
@@ -1449,7 +1523,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             if (context.altList().alternative().Length == 1)
             {
-                block = new Antlr4ParserRuleElement(context);
+                block = new Antlr4ParserRuleElement(context, this.GetLocation(context));
                 block.IsBlock = true;
                 var alt = context.altList().alternative()[0];
                 Antlr4RoslynParser.ElementContext[] elems = alt.element().Where(e => !this.IsActionBlock(e)).ToArray();
@@ -1532,14 +1606,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                     if (atom.terminal() != null)
                     {
                         if (kind == TokenOrRule.Rule) return false;
-                        element = new Antlr4ParserRuleElement(elem);
+                        element = new Antlr4ParserRuleElement(elem, this.GetLocation(atom.terminal()));
                         element.Type = atom.terminal().GetText();
                         this.CollectAnnotations(element, elem.annotation());
                     }
                     else if (atom.ruleref() != null)
                     {
                         if (kind == TokenOrRule.Token) return false;
-                        element = new Antlr4ParserRuleElement(elem);
+                        element = new Antlr4ParserRuleElement(elem, this.GetLocation(atom.ruleref()));
                         element.Type = atom.ruleref().GetText();
                         this.CollectAnnotations(element, elem.annotation());
                     }
@@ -1705,9 +1779,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
     public class Antlr4AnnotatedObject
     {
-        public Antlr4AnnotatedObject()
+        public Antlr4AnnotatedObject(Location location)
         {
             this.Annotations = MetaCompilerAnnotations.Empty;
+            this.Location = location;
         }
         public MetaCompilerAnnotations Annotations { get; internal set; }
         public bool ContainsDeclarationTreeAnnotations { get; internal set; }
@@ -1717,10 +1792,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public bool HasBinderAnnotations { get; internal set; }
         public bool ContainsBoundNodeAnnotations { get; internal set; }
         public bool HasBoundNodeAnnotations { get; internal set; }
+        public Location Location { get; private set; }
     }
     public class Antlr4Grammar : Antlr4AnnotatedObject
     {
-        public Antlr4Grammar()
+        public Antlr4Grammar(Location location)
+            : base(location)
         {
             this.CustomAnnotations = new List<MetaCompilerAnnotation>();
             this.Imports = new HashSet<string>();
@@ -1763,7 +1840,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
     }
     public class Antlr4ParserRule : Antlr4AnnotatedObject
     {
-        public Antlr4ParserRule(Antlr4Grammar grammar)
+        public Antlr4ParserRule(Antlr4Grammar grammar, Location location)
+            : base(location)
         {
             this.Grammar = grammar;
             this.Elements = new List<Antlr4ParserRuleElement>();
@@ -1774,6 +1852,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string Name { get; set; }
         public List<Antlr4ParserRuleElement> Elements { get; private set; }
         public List<Antlr4ParserRule> Alternatives { get; private set; }
+        public Antlr4ParserRule FirstNonAbstractAlternative { get; internal set; }
         public bool IsSimpleAlt { get; internal set; }
         public List<Antlr4ParserRuleElement> AllElements
         {
@@ -1801,7 +1880,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
     }
     public class Antlr4ParserRuleElement : Antlr4AnnotatedObject
     {
-        public Antlr4ParserRuleElement(object node)
+        public Antlr4ParserRuleElement(object node, Location location)
+            : base(location)
         {
             this.Node = node;
             this.BlockItems = new List<Antlr4ParserRuleElement>();
@@ -1862,7 +1942,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
     }
     public class Antlr4LexerMode : Antlr4AnnotatedObject
     {
-        public Antlr4LexerMode(Antlr4Grammar grammar)
+        public Antlr4LexerMode(Antlr4Grammar grammar, Location location)
+            : base(location)
         {
             this.Grammar = grammar;
             this.LexerRules = new List<Antlr4LexerRule>();
@@ -1874,7 +1955,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
     }
     public class Antlr4LexerRule : Antlr4AnnotatedObject
     {
-        public Antlr4LexerRule(Antlr4LexerMode mode)
+        public Antlr4LexerRule(Antlr4LexerMode mode, Location location)
+            : base(location)
         {
             this.Mode = mode;
         }

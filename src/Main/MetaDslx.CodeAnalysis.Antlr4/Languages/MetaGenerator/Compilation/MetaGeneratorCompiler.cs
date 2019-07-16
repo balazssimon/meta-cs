@@ -1,5 +1,4 @@
 ﻿using Antlr4.Runtime;
-using MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax;
 using MetaDslx.Languages.MetaGenerator.Generator;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using System.IO;
+using MetaDslx.Languages.MetaGenerator.Syntax.InternalSyntax;
 
 namespace MetaDslx.Languages.MetaGenerator.Compilation
 {

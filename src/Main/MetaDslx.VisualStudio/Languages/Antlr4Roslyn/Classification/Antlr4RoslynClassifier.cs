@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax;
+using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
 using MetaDslx.VisualStudio.Classification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
@@ -17,7 +18,7 @@ namespace MetaDslx.VisualStudio.Languages.Antlr4Roslyn.Classification
         private Antlr4RoslynTokensSyntaxFacts _syntaxFacts;
 
         internal Antlr4RoslynClassifier(ITextBuffer textBuffer, IClassificationTypeRegistryService classificationRegistryService)
-            : base(textBuffer, classificationRegistryService, new MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax.Antlr4RoslynLexer(Antlr4LexerClassifier.EmptyCharStream))
+            : base(textBuffer, classificationRegistryService, new Antlr4RoslynLexer(Antlr4LexerClassifier.EmptyCharStream))
         {
             _syntaxFacts = new Antlr4RoslynTokensSyntaxFacts();
         }
