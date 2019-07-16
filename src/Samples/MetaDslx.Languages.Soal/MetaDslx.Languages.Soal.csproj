@@ -1,12 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaDslx.BuildTasks" Version="0.10.5-alpha1" />
-    <PackageReference Include="MetaDslx.CodeAnalysis" Version="0.10.5-alpha1" />
+    <PackageReference Include="MetaDslx.BuildTasks" Version="0.10.11-alpha1" />
+    <PackageReference Include="MetaDslx.CodeAnalysis" Version="0.10.11-alpha1" />
   </ItemGroup>
 
 </Project>

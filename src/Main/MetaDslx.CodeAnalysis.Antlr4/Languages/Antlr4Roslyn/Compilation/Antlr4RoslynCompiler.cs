@@ -399,6 +399,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Parser"));
                 Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Compilation"));
                 Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Binding"));
+                Directory.CreateDirectory(Path.Combine(this.OutputDirectory, @"Symbols"));
                 this.GenerateOutputFile(Path.Combine(this.InternalSyntaxDirectory, this.LanguageName + "InternalSyntax.cs"), this.GeneratedInternalSyntax);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxKind.Nodes.cs"), this.GeneratedSyntaxKind);
                 this.GenerateOutputFile(Path.Combine(this.SyntaxDirectory, this.LanguageName + "SyntaxFacts.Nodes.cs"), this.GeneratedNodeSyntaxFacts);
