@@ -1054,21 +1054,9 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
 
-        public virtual ISourceDeclarationSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
+        public virtual NamespaceOrTypeSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
         {
-            var container = this.ContainingSymbol;
-            if ((object)container == null)
-            {
-                if (syntax.Parent.GetKind() == Language.SyntaxFacts.CompilationUnitKind && syntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
-                {
-                    container = Compilation.ScriptClass;
-                }
-                else
-                {
-                    container = Compilation.GlobalNamespace;
-                }
-            }
-            return container as ISourceDeclarationSymbol;
+            return this.Next.GetEnclosingDeclarationSymbol(syntax);
         }
 
         public virtual void InitializeQualifierSymbol(BoundQualifier qualifier)

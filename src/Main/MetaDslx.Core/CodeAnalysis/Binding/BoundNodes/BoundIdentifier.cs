@@ -53,7 +53,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public override string ToString()
         {
-            return this.Name + " = " + this.Symbol;
+            return this.Name + " = " + this.Value;
         }
     }
 

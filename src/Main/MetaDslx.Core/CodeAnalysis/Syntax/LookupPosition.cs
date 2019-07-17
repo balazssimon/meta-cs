@@ -33,10 +33,16 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return firstExcluded.GetKind() == SyntaxKind.None || position < firstExcluded.SpanStart;
         }
 
-        public static bool IsInNode(int position, SyntaxNodeOrToken node)
+        public static bool IsInNode(int position, SyntaxNode node)
         {
+            if (node == null) return false;
             return node.FullSpan.Contains(position);
         }
 
+        public static bool IsInNode(int position, SyntaxToken token)
+        {
+            if (token == null) return false;
+            return token.FullSpan.Contains(position);
+        }
     }
 }

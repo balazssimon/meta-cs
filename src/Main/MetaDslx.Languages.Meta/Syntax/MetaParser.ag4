@@ -125,7 +125,7 @@ collectionKind
 	| $Value(MetaCollectionKind.MultiSet) KMultiSet 
 	| $Value(MetaCollectionKind.MultiList) KMultiList
 	;
-
+	
 $SymbolDef(MetaOperation)
 operationDeclaration : attribute* KStatic? $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 parameterList : parameter (TComma parameter)*;

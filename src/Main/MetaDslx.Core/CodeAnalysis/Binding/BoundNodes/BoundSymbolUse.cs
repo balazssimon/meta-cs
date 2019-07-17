@@ -31,18 +31,21 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 if (_lazySymbols == null)
                 {
                     ArrayBuilder<Symbol> symbols = ArrayBuilder<Symbol>.GetInstance();
-                    ImmutableArray<BoundValues> boundValues = this.GetChildValues();
-                    foreach (var boundValue in boundValues)
+                    if (!this.Syntax.IsMissing)
                     {
-                        foreach (var value in boundValue.Values)
+                        ImmutableArray<BoundValues> boundValues = this.GetChildValues();
+                        foreach (var boundValue in boundValues)
                         {
-                            if (value is Symbol symbol)
+                            foreach (var value in boundValue.Values)
                             {
-                                symbols.Add(symbol);
-                            }
-                            else
-                            {
-                                this.BoundTree.DiagnosticBag.Add(ModelErrorCode.ERR_ValueIsNotSymbol, this.Syntax.Location, value);
+                                if (value is Symbol symbol)
+                                {
+                                    symbols.Add(symbol);
+                                }
+                                else
+                                {
+                                    this.BoundTree.DiagnosticBag.Add(ModelErrorCode.ERR_ValueIsNotSymbol, this.Syntax.Location, value);
+                                }
                             }
                         }
                     }
@@ -51,5 +54,6 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 return _lazySymbols;
             }
         }
+
     }
 }

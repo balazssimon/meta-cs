@@ -164,7 +164,7 @@ namespace MetaDslx.CodeAnalysis
             // the binder for the compilation unit.
             if (position == 0 && position != token.SpanStart)
             {
-                return _binderFactory.GetBinder(this.Root, position).WithAdditionalFlags(GetSemanticModelBinderFlags());
+                return _binderFactory.GetBinder(this.Root, position, true).WithAdditionalFlags(GetSemanticModelBinderFlags());
             }
 
             MemberSemanticModel memberModel = GetMemberModel(position);
@@ -173,7 +173,7 @@ namespace MetaDslx.CodeAnalysis
                 return memberModel.GetEnclosingBinder(position);
             }
 
-            return _binderFactory.GetBinder((LanguageSyntaxNode)token.Parent, position).WithAdditionalFlags(GetSemanticModelBinderFlags());
+            return _binderFactory.GetBinder(token).WithAdditionalFlags(GetSemanticModelBinderFlags());
         }
 
         internal override IOperation GetOperationWorker(LanguageSyntaxNode node, CancellationToken cancellationToken)

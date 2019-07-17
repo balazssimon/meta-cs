@@ -1,0 +1,217 @@
+namespace CinemaNs = cin:"http://www.iit.bme.hu/Cinema"
+{
+	struct CinemaException
+	{
+		int ErrorCode;
+		string ErrorMessage;
+	}
+
+	struct User
+	{
+		string UserName;
+		string Password;
+		Role[] Roles;
+	}
+	
+	struct Role
+	{
+		string RoleName;
+		User[] Users;
+	}
+	
+	struct Movie
+	{
+		string Title;
+		string Director;
+		string Cast;
+		TimeSpan Duration;
+	}
+	
+	struct Screening
+	{
+		Movie Movie;
+		Auditorium Auditorium;
+		DateTime ScreeningStart;
+	}
+	
+	struct Auditorium
+	{
+		string Name;
+		Seat[] Seats;
+	}
+	
+	struct Seat
+	{
+		Auditorium Auditorium;
+		string Row;
+		string Column;
+	}
+	
+	struct ReservedSeat
+	{
+		Screening Screening;
+		Seat Seat;
+		SeatStatus Status;
+	}
+	
+	struct Reservation
+	{
+		Screening Screening;
+		ReservedSeat[] Seats;
+		ReservationStatus Status;
+	}
+	
+	enum ReservationStatus
+	{
+		Reserved,
+		Sold
+	}
+
+	enum SeatStatus
+	{
+		Free,
+		Locked,
+		Reserved,
+		Sold
+	}
+	
+	database CinemaDB
+	{
+		entity Movie;
+		entity Screening;
+		entity Auditorium;
+		entity Seat;
+		entity ReservedSeat;
+		entity Reservation;
+	}
+
+	interface IUserLogic
+	{
+		User[] GetUsers();
+		Role[] GetRoles();
+		string AddUser(string userName, string password);
+		string AddRole(string roleName);
+		void AddUserToRole(string userId, string roleId);
+		void DeleteUser(string userId);
+	}
+	
+	interface ICinemaLogic
+	{
+		Movie[] GetMovies();
+		Auditorium[] GetAuditoriums();
+		Screening[] GetScreeningsForMovie(string movieId);
+		Screening[] GetScreeningsForAuditoriums(string auditoriumId);
+		string AddMovie(Movie movie);
+		string AddScreening(Screening screening);
+		Reservation[] GetReservations(string screeningId);
+		void DeleteReservation(string reservationId);
+	}
+	
+	interface IReservationLogic
+	{
+		Movie[] GetMovies2();
+		Screening[] GetScreenings(string movieId) throws CinemaException;
+		Seat[] GetSeats(string screeningId) throws CinemaException;
+		ReservedSeat[] GetReservedSeats(string screeningId) throws CinemaException;
+		string Lock(string screeningId, Seat seat, int count) throws CinemaException;
+		void Unlock(string lockId) throws CinemaException;
+		void Reserve(string lockId) throws CinemaException;
+		void Buy(string lockId, string creditCardNumber) throws CinemaException;
+	}
+	
+	binding Soap11Binding
+	{
+		transport HTTP;
+		encoding SOAP { Version = Soap11; }
+	}
+	
+	binding RestBinding
+	{
+		transport REST;
+		encoding XML;
+	}
+	
+	binding WebSocketBinding
+	{
+		transport WebSocket;
+		encoding JSON;
+	}
+	
+	component CinemaData
+	{
+		service CinemaDB CinemaDB;
+		implementation JPA; // data EntityFramework;
+	}
+	
+	component UserLogic
+	{
+		reference CinemaDB CinemaDB;
+		service IUserLogic IUserLogic;
+		implementation EJB; // implementation DotNet;
+	}
+
+	component CinemaLogic
+	{
+		reference CinemaDB CinemaDB;
+		service ICinemaLogic ICinemaLogic;
+		implementation EJB; // implementation DotNet;
+	}
+
+	component ReservationLogic
+	{
+		reference CinemaDB CinemaDB;
+		service IReservationLogic IReservationLogic;
+		implementation EJB; // implementation DotNet;
+	}
+	
+	component CinemaWeb
+	{
+		reference IUserLogic IUserLogic;
+		reference ICinemaLogic ICinemaLogic;
+		reference IReservationLogic IReservationLogic;
+		implementation JSF; // implementation AspNet;
+	}
+
+	component ReservationClient
+	{
+		reference IReservationLogic IReservationLogic
+		{
+			binding WebSocketBinding;
+		}
+		implementation JavaScript;
+	}
+	
+	composite CinemaApp
+	{
+		service IReservationLogic SoapReservation
+		{
+			binding Soap11Binding;
+		}
+		service IReservationLogic RestReservation
+		{
+			binding RestBinding;
+		}
+		service IReservationLogic WebSocketReservation
+		{
+			binding WebSocketBinding;
+		}
+		component CinemaData;
+		component UserLogic;
+		component CinemaLogic;
+		component ReservationLogic;
+		component CinemaWeb;
+		component ReservationClient;
+		wire UserLogic.CinemaDB to CinemaData.CinemaDB;
+		wire CinemaLogic.CinemaDB to CinemaData.CinemaDB;
+		wire ReservationLogic.CinemaDB to CinemaData.CinemaDB;
+		wire CinemaWeb.IUserLogic to UserLogic.IUserLogic;
+		wire CinemaWeb.ICinemaLogic to CinemaLogic.ICinemaLogic;
+		wire CinemaWeb.IReservationLogic to ReservationLogic.IReservationLogic;
+		wire SoapReservation to ReservationLogic.IReservationLogic;
+		wire RestReservation to ReservationLogic.IReservationLogic;
+		wire WebSocketReservation to ReservationLogic.IReservationLogic;
+		wire ReservationClient.IReservationLogic to WebSocketReservation;
+	}
+	
+
+}

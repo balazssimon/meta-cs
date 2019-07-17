@@ -1825,7 +1825,18 @@ namespace MetaDslx.CodeAnalysis
         {
             var boundTree = GetBoundTree((LanguageSyntaxTree)syntax.SyntaxTree);
             var bindableNode = boundTree.GetBindableSyntaxNode((LanguageSyntaxNode)syntax);
-            return boundTree.GetBoundNodes(bindableNode).OfType<T>().FirstOrDefault();
+            var boundNodes = boundTree.GetBoundNodes(bindableNode);
+            var current = (LanguageSyntaxNode)syntax;
+            while (current != null)
+            {
+                var currentBoundNodes = boundTree.GetBoundNodes(current);
+                for (int i = currentBoundNodes.Length - 1; i >= 0; i--)
+                {
+                    if (currentBoundNodes[i] is T typedBoundNode) return typedBoundNode;
+                }
+                current = current.Parent;
+            }
+            return null;
         }
 
         public ImmutableArray<BoundNode> GetBoundNodes(SyntaxNode syntax)

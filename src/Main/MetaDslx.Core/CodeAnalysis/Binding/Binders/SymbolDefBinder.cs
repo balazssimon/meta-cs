@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                     {
                         var member = this.GetSourceMember(containerSymbol, _syntax);
                         if (member != null) symbol = member;
-                        containerSymbol = member as ISourceDeclarationSymbol;
+                        containerSymbol = member as NamespaceOrTypeSymbol;
                     }
                     Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
                 }
@@ -47,20 +48,20 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        public override ISourceDeclarationSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
+        public override NamespaceOrTypeSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
         {
-            return this.DefinedSymbol as ISourceDeclarationSymbol;
+            return this.DefinedSymbol as NamespaceOrTypeSymbol;
         }
 
         /// <summary>
         /// Get a source symbol for the given declaration syntax.
         /// </summary>
         /// <returns>Null if there is no matching declaration.</returns>
-        private Symbol GetSourceMember(ISourceDeclarationSymbol containerSymbol, SyntaxNodeOrToken syntax)
+        private Symbol GetSourceMember(NamespaceOrTypeSymbol containerSymbol, SyntaxNodeOrToken syntax)
         {
             if (syntax == null) return null;
             if (containerSymbol == null) return null;
-            foreach (var member in containerSymbol.GetDeclaredChildren())
+            foreach (var member in containerSymbol.GetMembers())
             {
                 var memberT = member as Symbol;
                 if ((object)memberT != null)
@@ -81,7 +82,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         public override void InitializeQualifierSymbol(BoundQualifier qualifier)
         {
             if (qualifier.IsInitialized()) return;
-            var boundNode = this.Compilation.GetBoundNode<BoundSymbolDef>(_syntax);
+            var boundNode = this.Compilation.GetBoundNode<BoundSymbolDef>(qualifier.Syntax);
             var boundNames = boundNode.GetChildNames();
             foreach (var boundName in boundNames)
             {
@@ -99,17 +100,18 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
             if (qualifier.IsInitialized()) return;
             var containerSymbol = this.Next.GetEnclosingDeclarationSymbol(qualifier.Syntax);
-            var result = ArrayBuilder<Symbol>.GetInstance();
+            var result = ArrayBuilder<object>.GetInstance();
             var identifiers = qualifier.Identifiers;
             for (int i = 0; i < identifiers.Length; i++)
             {
                 bool last = i == identifiers.Length - 1;
                 var identifier = identifiers[i];
                 var symbol = containerSymbol.GetSourceMember(identifier.Syntax);
+                Debug.Assert(symbol != null);
                 result.Add(symbol);
-                containerSymbol = symbol as ISourceDeclarationSymbol;
+                containerSymbol = symbol as NamespaceOrTypeSymbol;
             }
-            qualifier.InitializeSymbols(identifiers, result.ToImmutableAndFree());
+            qualifier.InitializeValues(identifiers, result.ToImmutableAndFree());
         }
     }
 }

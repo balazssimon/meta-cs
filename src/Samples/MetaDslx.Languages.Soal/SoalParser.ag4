@@ -47,7 +47,11 @@ annotationPropertyValue
 	;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
-namespaceDeclaration : annotationList? KNamespace qualifiedName TAssign ($Property(Prefix) $Value identifier TColon)? $Property(Uri) $Value stringLiteral namespaceBody;
+namespaceDeclaration : annotationList? KNamespace qualifiedName TAssign (namespacePrefix TColon)? namespaceUri namespaceBody;
+
+namespacePrefix : $Property(Prefix) $Value identifier;
+
+namespaceUri : $Property(Uri) $Value stringLiteral;
 
 $Scope 
 namespaceBody : TOpenBrace declaration* TCloseBrace;
@@ -105,7 +109,7 @@ $Property(Operations)
 $SymbolDef(Operation)
 operationDeclaration : operationHead TSemicolon;
 
-operationHead : annotationList? operationResult name TOpenParen parameterList? TCloseParen (KThrows $Property(Exceptions) $SymbolUse(Struct) qualifierList)?;
+operationHead : annotationList? operationResult name TOpenParen parameterList? TCloseParen throwsList?;
 
 parameterList : parameter (TComma parameter)*;
 
@@ -114,8 +118,10 @@ $SymbolDef(InputParameter)
 parameter : annotationList? $Property(Type) typeReference name;
 
 $Property(Result)
-$SymbolDef(OutputParameter)
-operationResult : returnAnnotationList? operationReturnType;
+$SymbolCtr(OutputParameter)
+operationResult : returnAnnotationList? $Property(Type) operationReturnType;
+
+throwsList : KThrows $Property(Exceptions) $SymbolUse(Struct) qualifierList;
 
 // Component
 
@@ -357,7 +363,7 @@ endpointAddressProperty : KAddress $Property(Address) stringLiteral TSemicolon;
 
 // Types
 
-$SymbolUse
+$SymbolUse(SoalType)
 returnType 
 	: voidType
 	| typeReference
@@ -371,46 +377,49 @@ typeReference
 	| nulledType
 	;
 
-$SymbolUse
+$SymbolUse(SoalType)
 simpleType : valueType | objectType | qualifier;
 
-$SymbolUse
+$SymbolUse(SoalType)
 nulledType : nullableType | nonNullableType;
 
-$SymbolUse
+$SymbolUse(SoalType)
 referenceType : objectType | qualifier;
 
-$SymbolUse
+$SymbolUse(SoalType)
+$Identifier
 objectType 
-	: $Value(SoalInstance.Object) KObject 
-	| $Value(SoalInstance.String) KString
+	: KObject 
+	| KString
 	;
 
-$SymbolUse
+$SymbolUse(SoalType)
+$Identifier
 valueType 
-	: $Value(SoalInstance.Int) KInt 
-	| $Value(SoalInstance.Long) KLong 
-	| $Value(SoalInstance.Float) KFloat 
-	| $Value(SoalInstance.Double) KDouble 
-	| $Value(SoalInstance.Byte) KByte 
-	| $Value(SoalInstance.Bool) KBool
-	| $Value(SoalInstance.Date) IDate
-	| $Value(SoalInstance.Time) ITime
-	| $Value(SoalInstance.DateTime) IDateTime
-	| $Value(SoalInstance.TimeSpan) ITimeSpan
+	: KInt 
+	| KLong 
+	| KFloat 
+	| KDouble 
+	| KByte 
+	| KBool
+	| IDate
+	| ITime
+	| IDateTime
+	| ITimeSpan
 	;
 
-$Value(SoalInstance.Void)
+$SymbolUse(SoalType)
+$Identifier
 voidType 
 	: KVoid
 	;
 
-$Value(SoalInstance.Void)
+$SymbolUse(SoalType)
+$Identifier
 onewayType
 	: KOneway
 	;
 
-$Property(Type)
 operationReturnType
 	: $Property(name=IsOneway,value=true) onewayType
 	| voidType

@@ -493,7 +493,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 node = GetBindableSyntaxNode(Root);
             }
-            Debug.Assert(node == GetBindableSyntaxNode(node));
+            //Debug.Assert(node == GetBindableSyntaxNode(node));
 
             // We have one SemanticModel for each method.
             //
@@ -629,14 +629,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         public BoundNode CreateBoundNode(LanguageSyntaxNode node, Binder binder)
         {
             Debug.Assert(node != null);
-
-            // Unless this is interactive retrieving a binder for global statements
-            // at the very top-level (i.e. in a completely empty file) use
-            // node.Parent to maintain existing behavior.
-            if ((!InScript || node.GetKind() != Language.SyntaxFacts.CompilationUnitKind) && node.Parent != null)
-            {
-                node = node.Parent;
-            }
 
             BoundNodeFactoryVisitor visitor = _boundNodeFactoryVisitorPool.Allocate();
             var ignoredChildBoundNodes = ArrayBuilder<BoundNode>.GetInstance();

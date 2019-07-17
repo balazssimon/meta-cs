@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using MetaDslx.CodeAnalysis.Symbols;
@@ -25,7 +26,8 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 if (_lazySymbols.IsDefault)
                 {
                     var qualifiers = this.GetChildQualifiers();
-                    var symbols = qualifiers.Select(q => q.Symbol).ToImmutableArray();
+                    var symbols = qualifiers.Select(q => q.Value as Symbol).ToImmutableArray();
+                    Debug.Assert(symbols.All(s => s != null));
                     ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, symbols);
                 }
                 return _lazySymbols;

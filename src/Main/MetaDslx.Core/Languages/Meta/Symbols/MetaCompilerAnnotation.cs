@@ -43,23 +43,26 @@ namespace MetaDslx.Languages.Meta
                 Token
             };
 
-        public static readonly string[] BinderAnnotations =
-            {
-                Attribute,
-                Qualifier,
-                SymbolDef, SymbolUse, SymbolCtr,
-                Scope
-            };
+        public static readonly string[] BinderAnnotations = WellKnownAnnotations;
 
-        public static readonly string[] BoundNodeAnnotations =
-            {
-                Root,
-                Attribute,
-                Identifier, Qualifier, Value, EnumValue,
-                Property, Name,
-                SymbolDef, SymbolUse, SymbolCtr,
-                Token
-            };
+        public static readonly string[] BoundNodeAnnotations = WellKnownAnnotations;
+        /*public static readonly string[] BinderAnnotations =
+                    {
+                        Attribute,
+                        Qualifier,
+                        SymbolDef, SymbolUse, SymbolCtr,
+                        Scope
+                    };
+
+                public static readonly string[] BoundNodeAnnotations =
+                    {
+                        Root,
+                        Attribute,
+                        Identifier, Qualifier, Value, EnumValue,
+                        Property, Name,
+                        SymbolDef, SymbolUse, SymbolCtr,
+                        Token
+                    };*/
 
         public static string GetDefaultProperty(string annotationType)
         {
@@ -112,7 +115,8 @@ namespace MetaDslx.Languages.Meta
         {
             get
             {
-                return this.Annotations.Where(a => MetaCompilerAnnotationInfo.BinderAnnotations.Contains(a.Name) || !MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name));
+                return this.Annotations;//.Where(a => MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name)).ToImmutableArray();
+                //return this.Annotations.Where(a => MetaCompilerAnnotationInfo.BinderAnnotations.Contains(a.Name) || !MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name));
             }
         }
 
@@ -120,7 +124,8 @@ namespace MetaDslx.Languages.Meta
         {
             get
             {
-                return this.Annotations.Where(a => MetaCompilerAnnotationInfo.BoundNodeAnnotations.Contains(a.Name) || !MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name));
+                return this.Annotations;//.Where(a => MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name)).ToImmutableArray();
+                //return this.Annotations.Where(a => MetaCompilerAnnotationInfo.BoundNodeAnnotations.Contains(a.Name) || !MetaCompilerAnnotationInfo.WellKnownAnnotations.Contains(a.Name));
             }
         }
 

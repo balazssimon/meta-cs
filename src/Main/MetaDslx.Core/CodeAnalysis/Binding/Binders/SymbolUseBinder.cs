@@ -8,6 +8,7 @@ using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -45,7 +46,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         public override void InitializeQualifierSymbol(BoundQualifier qualifier)
         {
             if (qualifier.IsInitialized()) return;
-            var boundNode = this.Compilation.GetBoundNode<BoundSymbolUse>(_syntax);
+            var boundNode = this.Compilation.GetBoundNode<BoundSymbolUse>(qualifier.Syntax);
+            if (boundNode == null) return;
             var qualifiers = boundNode.GetChildQualifiers();
             foreach (var child in qualifiers)
             {
@@ -55,12 +57,13 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                     return;
                 }
             }
+            Debug.Assert(false);
         }
 
         private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
         {
             if (qualifier.IsInitialized()) return;
-            var result = ArrayBuilder<Symbol>.GetInstance();
+            var result = ArrayBuilder<object>.GetInstance();
             var identifiers = qualifier.Identifiers;
             NamespaceOrTypeSymbol qualifierOpt = null;
             for (int i = 0; i < identifiers.Length; i++)
@@ -71,11 +74,12 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 LookupResult lookupResult = LookupResult.GetInstance();
                 this.LookupSymbolsSimpleName(lookupResult, new LookupConstraints(identifier.Name, identifier.MetadataName, symbolTypes, qualifierOpt));
                 var symbol = this.ResultSymbol(lookupResult, identifier.Name, identifier.MetadataName, identifier.Syntax, identifier.BoundTree.DiagnosticBag, false, out bool wasError, qualifierOpt, LookupOptions.Default);
+                Debug.Assert(symbol != null);
                 result.Add(symbol);
                 lookupResult.Free();
                 qualifierOpt = symbol as NamespaceOrTypeSymbol;
             }
-            qualifier.InitializeSymbols(identifiers, result.ToImmutableAndFree());
+            qualifier.InitializeValues(identifiers, result.ToImmutableAndFree());
         }
 
         protected override LookupConstraints AdjustConstraints(LookupConstraints constraints)

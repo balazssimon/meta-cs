@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             var current = binder;
             while (current != null)
             {
-                if (binder is SymbolDefBinder symbolDefBinder)
+                if (current is SymbolDefBinder symbolDefBinder)
                 {
                     return symbolDefBinder.DefinedSymbol as NamespaceOrTypeSymbol;
                 }

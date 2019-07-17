@@ -2,9 +2,11 @@
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
-using MetaDslx.Languages.Meta.Binding;
+//using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.Soal;
+using MetaDslx.Languages.Soal.Symbols;
 //using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -26,7 +28,7 @@ namespace MetaDslx.Bootstrap
             mg.Compile();
             //*/
 
-            //*/
+            /*/
             //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynLexer.ag4", "MetaDslx.Languages.Antlr4Roslyn");
             //a4l.Compile();
             //Antlr4RoslynBootstrap a4r = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Antlr4\Languages\Antlr4Roslyn\Syntax\InternalSyntax\Antlr4RoslynParser.ag4", "MetaDslx.Languages.Antlr4Roslyn");
@@ -58,16 +60,12 @@ namespace MetaDslx.Bootstrap
             string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Soal.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
-            var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
+            //var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
 
             //Console.WriteLine(declarations.Dump());
 
             var formatter = new DiagnosticFormatter();
             foreach (var diag in tree.GetDiagnostics())
-            {
-                Console.WriteLine(formatter.Format(diag));
-            }
-            foreach (var diag in declarations.Diagnostics)
             {
                 Console.WriteLine(formatter.Format(diag));
             }
@@ -156,12 +154,49 @@ namespace MetaDslx.Bootstrap
             //File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
             //*/
 
-            /*/
+            //*/
             ImmutableModel soalModel = SoalInstance.Model;
-            Console.WriteLine(soalModel);
-            foreach (var symbol in soalModel.Symbols)
+            string soalSource = File.ReadAllText(@"..\..\..\cinema.soal");
+            var syntaxTree = SoalSyntaxTree.ParseText(soalSource);
+            var compilation = SoalCompilation.Create("SoalTest")
+                .AddSyntaxTrees(syntaxTree)
+                .AddReferences(ModelReference.CreateFromModel(soalModel))
+                .WithOptions(new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithConcurrentBuild(false));
+            compilation.ForceComplete();
+            var formatter = new DiagnosticFormatter();
+            foreach (var diag in compilation.GetDiagnostics())
             {
-                Console.WriteLine(symbol.MName);
+                Console.WriteLine(formatter.Format(diag));
+            }
+            var boundTree = compilation.GetBoundTree(syntaxTree);
+            Console.WriteLine(boundTree);
+            var boundRoot = boundTree.GetBoundRoot();
+            File.WriteAllText("BoundTree.txt", boundRoot.Dump());
+
+            var compiledModel = compilation.Model;
+            Console.WriteLine(compiledModel);
+            using (StreamWriter writer = new StreamWriter("Model.txt"))
+            {
+                foreach (var symbol in compiledModel.Symbols)
+                {
+                    writer.WriteLine(symbol);
+                    foreach (var prop in symbol.MProperties)
+                    {
+                        object value = symbol.MGet(prop);
+                        if (value is IEnumerable<object> collection)
+                        {
+                            writer.WriteLine("  {0} = ({1})", prop.Name, collection.Count());
+                            foreach (var item in collection)
+                            {
+                                writer.WriteLine("    {0}", item);
+                            }
+                        }
+                        else
+                        {
+                            writer.WriteLine("  {0} = {1}", prop.Name, value);
+                        }
+                    }
+                }
             }
             //*/
         }

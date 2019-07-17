@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
@@ -12,25 +13,34 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     public class BoundQualifier : BoundValues
     {
         private ImmutableArray<BoundIdentifier> _lazyIdentifiers;
-        private Symbol _lazySymbol;
+        private int _isInitialized;
+        private object _lazyValue;
 
         public BoundQualifier(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
         }
 
-        public override ImmutableArray<object> Values => ImmutableArray.Create<object>(this.Symbol);
+        public override ImmutableArray<object> Values => ImmutableArray.Create(this.Value);
 
-        public Symbol Symbol
+        public object Value
         {
             get
             {
-                if (_lazySymbol == null)
+                if (!this.IsInitialized())
                 {
-                    this.GetBinder().InitializeQualifierSymbol(this);
-                    Debug.Assert(_lazySymbol != null);
+                    var binder = this.GetBinder();
+                    binder.InitializeQualifierSymbol(this);
+                    if (this.Identifiers.Length == 0 && !this.IsInitialized())
+                    {
+                        if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
+                        {
+                            _lazyValue = null;
+                        }
+                    }
+                    Debug.Assert(this.IsInitialized());
                 }
-                return _lazySymbol;
+                return _lazyValue;
             }
         }
 
@@ -51,30 +61,32 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             qualifiers.Add(this);
         }
 
-        internal void InitializeSymbols(ImmutableArray<BoundIdentifier> identifiers, ImmutableArray<Symbol> symbols)
+        internal void InitializeValues(ImmutableArray<BoundIdentifier> identifiers, ImmutableArray<object> values)
         {
-            Debug.Assert(identifiers.Length == symbols.Length);
+            Debug.Assert(identifiers.Length == values.Length);
             for (int i = 0; i < identifiers.Length; i++)
             {
-                identifiers[i].InitializeSymbol(symbols[i]);
+                identifiers[i].InitializeValue(values[i]);
             }
-            this.InitializeSymbol(symbols[symbols.Length - 1]);
+            this.InitializeValue(values[values.Length - 1]);
         }
 
         internal bool IsInitialized()
         {
-            return _lazySymbol != null;
+            return _isInitialized > 0;
         }
 
-        protected void InitializeSymbol(Symbol symbol)
+        protected void InitializeValue(object value)
         {
-            Debug.Assert(symbol != null);
-            if (_lazySymbol != null)
+            if (this.IsInitialized())
             {
-                Debug.Assert(_lazySymbol == symbol);
+                Debug.Assert(object.ReferenceEquals(_lazyValue, value));
                 return;
             }
-            Interlocked.CompareExchange(ref _lazySymbol, symbol, null);
+            if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
+            {
+                _lazyValue = value;
+            }
         }
 
         public override string ToString()
@@ -87,7 +99,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 sb.Append(values[i].MetadataName);
             }
             sb.Append(" = ");
-            sb.Append(this.Symbol);
+            sb.Append(this.Value);
             return sb.ToString();
         }
 

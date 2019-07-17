@@ -1507,7 +1507,7 @@ namespace MetaDslx.CodeAnalysis
             var boundNode = this.Compilation.GetBoundNode<BoundIdentifier>(node);
             if (boundNode != null)
             {
-                var symbol = boundNode.Symbol;
+                var symbol = boundNode.Value as ISymbol;
                 return new SymbolInfo(symbol);
             }
             return SymbolInfo.None;
@@ -1519,7 +1519,7 @@ namespace MetaDslx.CodeAnalysis
             var boundNode = this.Compilation.GetBoundNode<BoundIdentifier>(node);
             if (boundNode != null)
             {
-                var typeSymbol = boundNode.Symbol as TypeSymbol;
+                var typeSymbol = boundNode.Value as TypeSymbol;
                 return new LanguageTypeInfo(typeSymbol, typeSymbol, Conversion.NoConversion);
             }
             return LanguageTypeInfo.None;

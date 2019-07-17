@@ -4785,14 +4785,14 @@ public Binder Visit[rule.PlainName()]([rule.RedName()] parent)
 	[else]
     if (!parent.FullSpan.Contains(this.Position))
     {
-        return VisitCore(parent.Parent);
+        return VisitParent(parent);
     }
 	object use = null;
 	[GenerateBinderFactoryVisitElemUses(rule)]
 	Binder resultBinder = null;
 	if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 	{
-		resultBinder = VisitCore(parent.Parent);
+		resultBinder = VisitParent(parent);
 		[loop (annot:rule.Annotations.BinderAnnotations)]
 		resultBinder = this.Create[annot.Name]Binder(resultBinder, parent[annot.GetAnnotationParams()]);
 		[end loop]
@@ -4858,23 +4858,26 @@ end template
 
 template GenerateBinderFactoryVisitElemUses(Antlr4ParserRule rule)
 [if (rule.ContainsBinderAnnotations && hasloop(elem:rule.Elements where elem.HasBinderAnnotations))]
+if (this.ForChild)
+{
 [if (rule.IsSimpleAlt)]
 	[loop(elem:rule.Elements where elem.HasBinderAnnotations)]
 		[if (elem.IsList)]
-if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()].Node)) use = Use[elem.RedName()];
+	if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()].Node)) use = Use[elem.RedName()];
 		[else]
-if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()])) use = Use[elem.RedName()];
+	if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()])) use = Use[elem.RedName()];
 		[end if]
 	[end loop] 
 [else]
 	[loop(elem:rule.AllElements where elem.HasBinderAnnotations)]
 		[if (elem.IsList)]
-if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()].Node)) use = Use[elem.RedName()];
+	if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()].Node)) use = Use[elem.RedName()];
 		[else]
-if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()])) use = Use[elem.RedName()];
+	if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()])) use = Use[elem.RedName()];
 		[end if]
 	[end loop]    
 [end if]
+}
 [end if]
 end template
 
@@ -5161,18 +5164,8 @@ public bool Visit[rule.PlainName()]([rule.RedName()] node)
 {
 	[if (rule.HasBoundNodeAnnotations)]
 	return true;
-	[else if (rule.IsSimpleAlt)]
-		[if (hasloop(elem:rule.Elements where elem.HasBoundNodeAnnotations))]
-	return true;
-		[else]
-	return false;
-		[end loop] 
 	[else]
-		[if (hasloop(elem:rule.AllElements where elem.HasBoundNodeAnnotations))]
-	return true;
-		[else]
 	return false;
-		[end loop] 
 	[end if]
 }
 end template

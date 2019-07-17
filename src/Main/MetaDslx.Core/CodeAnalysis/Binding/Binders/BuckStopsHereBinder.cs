@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 
@@ -50,7 +51,21 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         public override Binder GetBinder(SyntaxNode node)
         {
-            return null;
+            return Compilation.GetBinder((LanguageSyntaxNode)node);
+        }
+
+        public override NamespaceOrTypeSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
+        {
+            NamespaceOrTypeSymbol container;
+            if (syntax.Parent.GetKind() == Language.SyntaxFacts.CompilationUnitKind && syntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
+            {
+                container = Compilation.ScriptClass;
+            }
+            else
+            {
+                container = Compilation.GlobalNamespace;
+            }
+            return container;
         }
 
         public override void InitializeQualifierSymbol(BoundQualifier qualifier)

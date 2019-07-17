@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.CodeAnalysis.Symbols.Source;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -185,6 +186,14 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        
+        public override NamespaceOrTypeSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
+        {
+            var container = this.Container;
+            if ((object)container == null)
+            {
+                return this.Next.GetEnclosingDeclarationSymbol(syntax);
+            }
+            return container;
+        }
     }
 }

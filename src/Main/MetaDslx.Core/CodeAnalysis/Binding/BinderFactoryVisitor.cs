@@ -19,6 +19,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private static object Normal = new object();
 
         private int _position;
+        private bool _forChild;
         private LanguageSyntaxNode _memberDeclarationOpt;
         private Symbol _memberOpt;
         private readonly BinderFactory _factory;
@@ -28,11 +29,12 @@ namespace MetaDslx.CodeAnalysis.Binding
             _factory = factory;
         }
 
-        internal void Initialize(int position, LanguageSyntaxNode memberDeclarationOpt, Symbol memberOpt)
+        internal void Initialize(int position, bool forChild, LanguageSyntaxNode memberDeclarationOpt, Symbol memberOpt)
         {
             Debug.Assert((memberDeclarationOpt == null) == (memberOpt == null));
 
             _position = position;
+            _forChild = forChild;
             _memberDeclarationOpt = memberDeclarationOpt;
             _memberOpt = memberOpt;
         }
@@ -51,6 +53,8 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         protected int Position => _position;
 
+        protected bool ForChild => _forChild;
+
         public override Binder DefaultVisit(SyntaxNode parent)
         {
             return VisitCore(parent.Parent);
@@ -67,6 +71,12 @@ namespace MetaDslx.CodeAnalysis.Binding
         protected Binder VisitCore(SyntaxNode node)
         {
             return ((LanguageSyntaxNode)node).Accept(this);
+        }
+
+        protected Binder VisitParent(SyntaxNode node)
+        {
+            _forChild = true;
+            return VisitCore(node.Parent);
         }
 
         protected virtual Binder CreateScopeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
