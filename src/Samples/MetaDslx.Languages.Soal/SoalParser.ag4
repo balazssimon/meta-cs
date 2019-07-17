@@ -23,14 +23,14 @@ annotationList : annotation+;
 returnAnnotationList : returnAnnotation+;
 
 $Property(Annotations)
-$SymbolUse(Annotation)
+$SymbolDef(Annotation)
 annotation : TOpenBracket annotationHead TCloseBracket;
 
 $Property(Annotations)
-$SymbolUse(Annotation)
+$SymbolDef(Annotation)
 returnAnnotation : TOpenBracket KReturn TColon annotationHead TCloseBracket;
 
-annotationHead : identifier annotationBody?;
+annotationHead : name annotationBody?;
 
 $Scope
 annotationBody : TOpenParen annotationPropertyList? TCloseParen;
@@ -38,8 +38,8 @@ annotationBody : TOpenParen annotationPropertyList? TCloseParen;
 annotationPropertyList : annotationProperty (TComma annotationProperty)*;
 
 $Property(Properties)
-$SymbolUse(AnnotationProperty)
-annotationProperty : identifier TAssign $Property(Value) annotationPropertyValue;
+$SymbolDef(AnnotationProperty)
+annotationProperty : name TAssign $Property(Value) annotationPropertyValue;
 
 annotationPropertyValue
 	: constantValue

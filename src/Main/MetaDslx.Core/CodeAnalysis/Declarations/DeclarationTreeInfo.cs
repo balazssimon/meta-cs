@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private int qualifierStack;
         private ArrayBuilder<Identifier> currentName;
 
-        public DeclarationTreeInfo(DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node)
+        public DeclarationTreeInfo(DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node, bool isConstructedSymbol)
         {
             this.Parent = parent;
             if (parent != null)
@@ -27,6 +27,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
             this.Type = type;
             this.Node = node;
+            this.IsConstructedSymbol = isConstructedSymbol;
             this.Names = new ArrayBuilder<ArrayBuilder<Identifier>>();
             this.Members = new ArrayBuilder<SingleDeclaration>();
             this.ReferenceDirectives = new ArrayBuilder<ReferenceDirective>();
@@ -36,6 +37,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public DeclarationTreeInfo Parent { get; private set; }
         public LanguageSyntaxNode Node { get; private set; }
         public Type Type { get; private set; }
+        public bool IsConstructedSymbol { get; private set; }
         public ModelSymbolInfo Kind
         {
             get { return ModelSymbolInfo.GetSymbolInfo(this.Type); }

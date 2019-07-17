@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using MetaDslx.Modeling;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
@@ -38,13 +39,14 @@ namespace MetaDslx.CodeAnalysis.Declarations
     public abstract class Declaration
     {
         private readonly string name;
-        private readonly bool canMerge;
+        private readonly DeclarationFlags flags;
         private readonly string parentPropertyToAddTo;
 
-        protected Declaration(string name, bool canMerge, string parentPropertyToAddTo)
+        protected Declaration(string name, bool canMerge, bool isConstructedSymbol, string parentPropertyToAddTo)
         {
             this.name = name;
-            this.canMerge = canMerge;
+            if (canMerge) this.flags |= DeclarationFlags.CanMerge;
+            if (isConstructedSymbol) this.flags |= DeclarationFlags.IsConstructedSymbol;
             this.parentPropertyToAddTo = parentPropertyToAddTo;
         }
 
@@ -60,7 +62,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public bool CanMerge
         {
-            get { return this.canMerge; }
+            get { return this.flags.HasFlag(DeclarationFlags.CanMerge); }
+        }
+
+        public bool IsConstructedSymbol
+        {
+            get { return this.flags.HasFlag(DeclarationFlags.IsConstructedSymbol); }
         }
 
         public string ParentPropertyToAddTo
@@ -126,6 +133,14 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             get { return DeclarationModifiers.Public; } // TODO:MetaDslx
         }*/
+
+        [Flags]
+        private enum DeclarationFlags : byte
+        {
+            CanMerge = 1,
+            IsConstructedSymbol = 2
+        }
+
 #if DEBUG
         private class DeclarationTreeDumper
         {

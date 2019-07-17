@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
+using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
@@ -39,5 +40,12 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
+        protected override void ForceCompleteNode(CancellationToken cancellationToken)
+        {
+            foreach (var symbol in this.Symbols)
+            {
+                this.SetPropertyValues((MutableSymbolBase)symbol.ModelObject, this.DiagnosticBag, cancellationToken);
+            }
+        }
     }
 }

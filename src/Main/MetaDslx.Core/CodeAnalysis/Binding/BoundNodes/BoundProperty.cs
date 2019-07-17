@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private string _name;
         private bool _hasFixedValue;
-        private ImmutableArray<object> _values;
+        private object _value;
         private ImmutableArray<BoundValues> _boundValues;
 
         public BoundProperty(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, string name, Optional<object> valueOpt, LanguageSyntaxNode syntax, bool hasErrors = false)
@@ -20,20 +20,20 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
             _name = name;
             _hasFixedValue = valueOpt.HasValue;
-            _values = valueOpt.HasValue ? ImmutableArray.Create(valueOpt.Value) : default;
+            _value = valueOpt.HasValue ? valueOpt.Value : default;
         }
 
         public string Name => _name;
+
+        public object Value => _value;
+
+        public bool HasFixedValue => _hasFixedValue;
 
         public override ImmutableArray<object> Values
         {
             get
             {
-                if (_hasFixedValue)
-                {
-                    return _values;
-                }
-                return ImmutableArray<object>.Empty;
+                return _hasFixedValue ? ImmutableArray.Create(_value) : ImmutableArray<object>.Empty;
             }
         }
 
@@ -56,7 +56,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 properties.Add(this);
             }
-            if (_hasFixedValue)
+            if (_hasFixedValue || property == _name)
             {
                 foreach (var child in ChildBoundNodes)
                 {
@@ -71,7 +71,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 values.Add(this);
             }
-            if (_hasFixedValue)
+            if (_hasFixedValue || currentProperty == rootProperty)
             {
                 foreach (var child in ChildBoundNodes)
                 {
@@ -84,7 +84,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(this.Name + " = [");
-            var values = this.Values;
+            var values = this.BoundValues.SelectMany(bv => bv.Values).ToArray();
             for (int i = 0; i < values.Length; i++)
             {
                 if (i > 0) sb.Append(", ");

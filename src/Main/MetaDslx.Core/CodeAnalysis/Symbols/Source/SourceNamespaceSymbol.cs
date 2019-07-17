@@ -562,17 +562,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     GetNameToMembersMap();
                 }
-                else if (incompletePart == CompletionPart.StartProperties || incompletePart == CompletionPart.FinishProperties)
-                {
-                    if (_state.NotePartComplete(CompletionPart.StartProperties))
-                    {
-                        var diagnostics = DiagnosticBag.GetInstance();
-                        SetPropertyValues(diagnostics, cancellationToken);
-                        var thisThreadCompleted = _state.NotePartComplete(CompletionPart.FinishProperties);
-                        Debug.Assert(thisThreadCompleted);
-                        diagnostics.Free();
-                    }
-                }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {
                     // ensure relevant imports are complete.
@@ -670,17 +659,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         }
 
         #endregion
-
-
-        protected void SetPropertyValues(DiagnosticBag diagnostics, CancellationToken cancellationToken)
-        {
-            foreach (var syntaxRef in _declaration.SyntaxReferences)
-            {
-                if (cancellationToken.IsCancellationRequested) return;
-                var boundNode = this.DeclaringCompilation.GetBoundNode<BoundSymbolDef>(syntaxRef.GetSyntax());
-                boundNode?.SetPropertyValues(_modelObject, diagnostics, cancellationToken);
-            }
-        }
 
         protected void CompleteBoundNode(DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {

@@ -4587,8 +4587,8 @@ this.Visit(node.[elem.RedName()]);
 	[end if]
 end template
 
-template GenerateDeclarationTreeBuilderDeclaration(MetaCompilerAnnotations annots, string name, string body)
-this.BeginDeclaration([annots.GetSymbolType()], [name]);
+template GenerateDeclarationTreeBuilderDeclaration(MetaCompilerAnnotations annots, string name, string body, bool isConstructedSymbol)
+this.BeginDeclaration([annots.GetSymbolType()], [name], [isConstructedSymbol]);
 try
 {
 	[if (annots.HasProperty("nestingProperty"))]
@@ -4658,7 +4658,10 @@ function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 		body = GenerateDeclarationTreeBuilderName(rule.Annotations, "node", body);
 	end if
 	if (rule.Annotations.IsDeclaration())
-		body = GenerateDeclarationTreeBuilderDeclaration(rule.Annotations, "node", body);
+		body = GenerateDeclarationTreeBuilderDeclaration(rule.Annotations, "node", body, false);
+	end if
+	if (rule.Annotations.IsSymbolCtr())
+		body = GenerateDeclarationTreeBuilderDeclaration(rule.Annotations, "node", body, true);
 	end if
 	if (rule.Annotations.IsPropertyWithNoValue())
 		body = GenerateDeclarationTreeBuilderProperty(rule.Annotations, "node", body);
