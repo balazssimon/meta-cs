@@ -76,7 +76,10 @@ namespace MetaDslx.Bootstrap
             }
 
             //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: false, concurrentBuild: true);
-            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: BinderFlags.IgnoreMetaLibraryDuplicatedTypes);
+            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+            BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+            binderFlags = binderFlags.UnionWith(binderFlags2);
+            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: binderFlags);
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
@@ -160,14 +163,16 @@ namespace MetaDslx.Bootstrap
             //*/
 
             /*/
+            //BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+            BinderFlags binderFlags = BinderFlags.None;
             ImmutableModel soalModel = SoalInstance.Model;
-            string soalSource = File.ReadAllText(@"..\..\..\cinema.soal");
-            //string soalSource = File.ReadAllText(@"..\..\..\Wsdl01.soal");
+            //string soalSource = File.ReadAllText(@"..\..\..\cinema.soal");
+            string soalSource = File.ReadAllText(@"..\..\..\Wsdl01.soal");
             var syntaxTree = SoalSyntaxTree.ParseText(soalSource);
             var compilation = SoalCompilation.Create("SoalTest")
                 .AddSyntaxTrees(syntaxTree)
                 .AddReferences(ModelReference.CreateFromModel(soalModel))
-                .WithOptions(new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithConcurrentBuild(false));
+                .WithOptions(new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithConcurrentBuild(false).WithTopLevelBinderFlags(binderFlags));
             compilation.ForceComplete();
             var formatter = new DiagnosticFormatter();
             foreach (var diag in compilation.GetDiagnostics())
