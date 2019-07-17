@@ -118,7 +118,7 @@ namespace MetaDslx.BuildTasks
             }
             catch (Exception ex)
             {
-                Log.LogError("{0}: FAILED to generate code for '{1}': {2}", this.Name, filePath, ex.StackTrace);
+                Log.LogError("{0}: FAILED to generate code for '{1}': {2}", this.Name, filePath, ex.ToString().Replace("\r\n","|"));
                 return false;
             }
         }

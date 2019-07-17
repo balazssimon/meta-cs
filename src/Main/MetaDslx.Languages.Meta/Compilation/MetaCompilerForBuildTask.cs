@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Modeling;
@@ -18,14 +19,16 @@ namespace MetaDslx.Languages.Meta
         private string _inputFilePath;
         private string _outputDirectory;
         private string _outputFilePath;
+        private bool _compileMetaModelCore;
 
         private MetaCompilation _compilation;
 
-        public MetaCompilerForBuildTask(string inputFilePath, string outputDirectory)
+        public MetaCompilerForBuildTask(string inputFilePath, string outputDirectory, bool compileMetaModelCore)
         {
             _inputFilePath = inputFilePath;
             _outputDirectory = outputDirectory;
             _outputFilePath = Path.Combine(_outputDirectory, Path.ChangeExtension(Path.GetFileName(_inputFilePath), ".cs"));
+            _compileMetaModelCore = compileMetaModelCore;
         }
 
         public bool HasErrors
@@ -45,7 +48,10 @@ namespace MetaDslx.Languages.Meta
                 string text = File.ReadAllText(_inputFilePath);
                 var tree = MetaSyntaxTree.ParseText(text);
 
-                MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: false, concurrentBuild: true);
+                BinderFlags binderFlags = null;
+                if (_compileMetaModelCore) binderFlags = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+                MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: false, concurrentBuild: true,
+                    topLevelBinderFlags: binderFlags);
                 //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false);
                 var compilation = MetaCompilation.
                     Create("MetaModelCompilation").

@@ -1,7 +1,9 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
+using MetaDslx.Languages.Meta.Binding;
 //using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
@@ -50,17 +52,17 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
             //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
-            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Soal.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Soal.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
-            //var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
+            var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
 
             //Console.WriteLine(declarations.Dump());
 
@@ -69,9 +71,13 @@ namespace MetaDslx.Bootstrap
             {
                 Console.WriteLine(formatter.Format(diag));
             }
+            foreach (var diag in declarations.Diagnostics)
+            {
+                Console.WriteLine(formatter.Format(diag));
+            }
 
             //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: false, concurrentBuild: true);
-            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false);
+            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: BinderFlags.IgnoreMetaLibraryDuplicatedTypes);
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
@@ -154,7 +160,7 @@ namespace MetaDslx.Bootstrap
             //File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
             //*/
 
-            //*/
+            /*/
             ImmutableModel soalModel = SoalInstance.Model;
             string soalSource = File.ReadAllText(@"..\..\..\cinema.soal");
             var syntaxTree = SoalSyntaxTree.ParseText(soalSource);

@@ -254,6 +254,13 @@ namespace Roslyn.Utilities
             return _flags.IncludesAll(flags._flags);
         }
 
+        public bool Includes(string name)
+        {
+            var flags = FlagsObject.FromString(this.GetType(), name);
+            if (flags == null) return this.HasNoFlags;
+            return _flags.IncludesAll(flags._flags);
+        }
+
         public bool IncludesAll(params FlagsObject[] flags)
         {
             if (flags.Length == 0) return true;
@@ -264,11 +271,33 @@ namespace Roslyn.Utilities
             return true;
         }
 
+        public bool IncludesAll(params string[] names)
+        {
+            if (names.Length == 0) return true;
+            foreach (var name in names)
+            {
+                var flag = FlagsObject.FromString(this.GetType(), name);
+                if (!_flags.IncludesAll(flag._flags)) return false;
+            }
+            return true;
+        }
+
         public bool IncludesAny(params FlagsObject[] flags)
         {
             if (flags.Length == 0) return false;
             foreach (var flag in flags)
             {
+                if (_flags.IncludesAll(flag._flags)) return true;
+            }
+            return false;
+        }
+
+        public bool IncludesAny(params string[] names)
+        {
+            if (names.Length == 0) return true;
+            foreach (var name in names)
+            {
+                var flag = FlagsObject.FromString(this.GetType(), name);
                 if (_flags.IncludesAll(flag._flags)) return true;
             }
             return false;

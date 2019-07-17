@@ -9,6 +9,7 @@
     <NoStdLib>true</NoStdLib>
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <IsPackable>false</IsPackable>
+    <MetaDslxCompileMetaModelCore>true</MetaDslxCompileMetaModelCore>
   </PropertyGroup>
 
   <ItemGroup>

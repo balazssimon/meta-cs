@@ -10,6 +10,7 @@ using MetaDslx.CodeAnalysis.Binding.BoundNodes;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Syntax;
+using MetaDslx.Languages.Meta.Symbols;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.RuntimeMembers;
@@ -330,7 +331,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             if (srcSymbol.Kind == LanguageSymbolKind.Namespace && mdSymbol.Kind == LanguageSymbolKind.NamedType)
                             {
                                 // InternalErrorCode.WRN_SameFullNameThisNsAgg: The namespace '{1}' in '{0}' conflicts with the imported type '{3}' in '{2}'. Using the namespace defined in '{0}'.
-                                diagnostics.Add(InternalErrorCode.WRN_SameFullNameThisNsAgg, where.GetLocation(), originalSymbols,
+                                diagnostics.Add(errorSymbols, InternalErrorCode.WRN_SameFullNameThisNsAgg, where.GetLocation(), 
                                     arg0,
                                     srcSymbol,
                                     mdSymbol.ContainingAssembly,
@@ -341,7 +342,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             else if (srcSymbol.Kind == LanguageSymbolKind.NamedType && mdSymbol.Kind == LanguageSymbolKind.Namespace)
                             {
                                 // InternalErrorCode.WRN_SameFullNameThisAggNs: The type '{1}' in '{0}' conflicts with the imported namespace '{3}' in '{2}'. Using the type defined in '{0}'.
-                                diagnostics.Add(InternalErrorCode.WRN_SameFullNameThisAggNs, where.GetLocation(), originalSymbols,
+                                diagnostics.Add(errorSymbols, InternalErrorCode.WRN_SameFullNameThisAggNs, where.GetLocation(), 
                                     arg0,
                                     srcSymbol,
                                     GetContainingAssembly(mdSymbol),
@@ -352,7 +353,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                             else if (srcSymbol.Kind == LanguageSymbolKind.NamedType && mdSymbol.Kind == LanguageSymbolKind.NamedType)
                             {
                                 // WRN_SameFullNameThisAggAgg: The type '{1}' in '{0}' conflicts with the imported type '{3}' in '{2}'. Using the type defined in '{0}'.
-                                diagnostics.Add(InternalErrorCode.WRN_SameFullNameThisAggAgg, where.GetLocation(), originalSymbols,
+                                diagnostics.Add(errorSymbols, InternalErrorCode.WRN_SameFullNameThisAggAgg, where.GetLocation(), 
                                     arg0,
                                     srcSymbol,
                                     mdSymbol.ContainingAssembly,
@@ -421,6 +422,14 @@ namespace MetaDslx.CodeAnalysis.Binding
                                 }
                                 else if (this.Flags.Includes(BinderFlags.IgnoreCorLibraryDuplicatedTypes) &&
                                     secondBest.IsFromCorLibrary)
+                                {
+                                    // Ignore duplicate types from the cor library if necessary.
+                                    // (Specifically the framework assemblies loaded at runtime in
+                                    // the EE may contain types also available from mscorlib.dll.)
+                                    return first;
+                                }
+                                else if (this.Flags.Includes(BinderFlags.IgnoreMetaLibraryDuplicatedTypes) &&
+                                    secondBest.IsFromMetaLibrary)
                                 {
                                     // Ignore duplicate types from the cor library if necessary.
                                     // (Specifically the framework assemblies loaded at runtime in
@@ -858,6 +867,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             FromAddedModule,
             FromReferencedAssembly,
             FromCorLibrary,
+            FromMetaLibrary
         }
 
         [DebuggerDisplay("Location = {_location}, Index = {_index}")]
@@ -893,11 +903,19 @@ namespace MetaDslx.CodeAnalysis.Binding
                 }
             }
 
+            public bool IsFromMetaLibrary
+            {
+                get
+                {
+                    return _location == BestSymbolLocation.FromMetaLibrary;
+                }
+            }
+
             public bool IsFromCompilation
             {
                 get
                 {
-                    return (_location == BestSymbolLocation.FromSourceModule) || (_location == BestSymbolLocation.FromAddedModule);
+                    return (_location == BestSymbolLocation.FromSourceModule) || (_location == BestSymbolLocation.FromAddedModule) || (_location == BestSymbolLocation.FromMetaLibrary);
                 }
             }
 
@@ -1007,6 +1025,8 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 return (symbol.ContainingModule == compilation.SourceModule) ?
                     BestSymbolLocation.FromSourceModule :
+                    object.ReferenceEquals(symbol.ModelObject.MModel, MetaInstance.Model) ?
+                    BestSymbolLocation.FromMetaLibrary :
                     BestSymbolLocation.FromAddedModule;
             }
             else

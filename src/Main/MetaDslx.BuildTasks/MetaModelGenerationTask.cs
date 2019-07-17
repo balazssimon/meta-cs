@@ -11,6 +11,8 @@ namespace MetaDslx.BuildTasks
 {
     public class MetaModelGenerationTask : Antlr4CompilerTask
     {
+        public bool CompileMetaModelCore { get; set; }
+
         public MetaModelGenerationTask()
             : base("MetaModel")
         {
@@ -18,7 +20,7 @@ namespace MetaDslx.BuildTasks
 
         protected override ICompilerForBuildTask CreateCompiler(string filePath, string outputPath)
         {
-            return new MetaCompilerForBuildTask(filePath, outputPath);
+            return new MetaCompilerForBuildTask(filePath, outputPath, this.CompileMetaModelCore);
         }
     }
 }

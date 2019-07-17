@@ -175,7 +175,7 @@
 
   <Target Name="MetaGeneratorCompile"
           DependsOnTargets="$(MetaGeneratorCompileDependsOn)"
-          Condition="'@(MetaGenerator)' != ''"
+          Condition="'@(MetaGenerator)' != '' and '$(MetaDslxDisableMetaGeneratorGenerator)' != 'true'"
           Inputs="@(MetaGenerator)"
           Outputs="@(MetaGeneratorOutputCodeFilesList);
                   $(IntermediateOutputPath)$(MetaGeneratorGenCodeFileNames);">
@@ -219,7 +219,7 @@
 
   <Target Name="MetaModelCompile"
           DependsOnTargets="$(MetaModelCompileDependsOn)"
-          Condition="'@(MetaModel)' != ''"
+          Condition="'@(MetaModel)' != '' and '$(MetaDslxDisableMetaModelGenerator)' != 'true'"
           Inputs="@(MetaModel)"
           Outputs="@(MetaModelOutputCodeFilesList);
                   $(IntermediateOutputPath)$(MetaModelGenCodeFileNames);">
@@ -241,7 +241,8 @@
       IntermediateOutputPath="$(IntermediateOutputPath)"
       Encoding="%(MetaModel.Encoding)"
       SourceCodeFiles="@(MetaModel -> '%(FullPath)')"
-      ContinueOnError="$(MetaModelDesignTimeBuild)">
+      ContinueOnError="$(MetaModelDesignTimeBuild)"
+      CompileMetaModelCore="$(MetaDslxCompileMetaModelCore)">
 
       <Output ItemName="MetaModelGeneratedCodeFilesNonUnique" TaskParameter="GeneratedCodeFiles" Condition="'$(MetaDslxIsSdkProject)' != 'True'"/>
       <Output ItemName="MetaModelGeneratedCodeFilesNonUnique" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
@@ -263,7 +264,7 @@
 
   <Target Name="Antlr4RoslynCompile"
           DependsOnTargets="$(Antlr4RoslynCompileDependsOn)"
-          Condition="'@(Antlr4Roslyn)' != ''"
+          Condition="'@(Antlr4Roslyn)' != '' and '$(MetaDslxDisableAntlr4RoslynGenerator)' != 'true'"
           Inputs="@(Antlr4Roslyn)"
           Outputs="@(Antlr4RoslynOutputCodeFilesList);
                   $(IntermediateOutputPath)$(Antlr4RoslynGenCodeFileNames);">

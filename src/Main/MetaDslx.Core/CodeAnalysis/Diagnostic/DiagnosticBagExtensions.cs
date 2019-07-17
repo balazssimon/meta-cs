@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis
 
         public static LanguageDiagnosticInfo Add(this DiagnosticBag diagnostics, ImmutableArray<ISymbol> symbols, ErrorCode code, Location location, params object[] args)
         {
-            var info = new SymbolDiagnosticInfo(code, args, symbols, ImmutableArray<Location>.Empty);
+            var info = new SymbolDiagnosticInfo(symbols, ImmutableArray<Location>.Empty, code, args);
             var diag = new LanguageDiagnostic(info, location);
             diagnostics.Add(diag);
             return info;
