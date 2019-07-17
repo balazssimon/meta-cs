@@ -20,11 +20,13 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 if (current is SymbolDefBinder symbolDefBinder)
                 {
-                    return symbolDefBinder.DefinedSymbol as NamespaceOrTypeSymbol;
+                    var result = symbolDefBinder.DefinedSymbol as NamespaceOrTypeSymbol;
+                    if (result != null) return result;
+                    else break;
                 }
                 current = current.Next;
             }
-            return null;
+            return (NamespaceOrTypeSymbol)binder.Compilation.CreateErrorNamespaceSymbol(binder.Compilation.GlobalNamespace, string.Empty);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 {
     public sealed class MergedDeclaration : Declaration
     {
+        private Symbol _sourceSymbol;
         private readonly ImmutableArray<SingleDeclaration> _declarations;
         private ImmutableArray<MergedDeclaration> _lazyChildren;
         private ImmutableArray<string> _lazyChildNames;
@@ -26,6 +27,8 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             this._declarations = declarations;
         }
+
+        public Symbol SourceSymbol => _sourceSymbol;
 
         public ImmutableArray<SingleDeclaration> Declarations
         {
@@ -164,5 +167,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return new MergedDeclaration(mergedDeclaration._declarations.Add(declaration));
         }
 
+        internal void DangerousSetSourceSymbol(Symbol symbol)
+        {
+            Debug.Assert(_sourceSymbol == null);
+            Interlocked.CompareExchange(ref _sourceSymbol, symbol, null);
+        }
     }
 }

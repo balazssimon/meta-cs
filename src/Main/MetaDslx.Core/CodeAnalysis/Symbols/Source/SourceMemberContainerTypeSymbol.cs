@@ -47,6 +47,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             _containingSymbol = containingSymbol;
             _declaration = declaration;
+            _declaration.DangerousSetSourceSymbol(this);
 
             _modelObject = declaration.Kind.CreateMutable(this.ModelBuilder);
             Debug.Assert(_modelObject != null);
@@ -579,8 +580,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         {
             Debug.Assert(!declaration.IsType, "Use BuildTypeSymbol to create type symbols.");
             Debug.Assert(!declaration.IsNamespace, "Use BuildNamespaceSymbol to create namespace symbols.");
-            //return new SourceMemberSymbol(this, declaration, diagnostics);
-            return new SourceNamespaceSymbol((SourceModuleSymbol)this.ContainingModule, this, declaration, diagnostics);
+            return new SourceMemberSymbol(this, declaration, diagnostics);
+            //return new SourceNamespaceSymbol((SourceModuleSymbol)this.ContainingModule, this, declaration, diagnostics);
         }
 
         private void AddDeclaredTypeMembers(ArrayBuilder<NamedTypeSymbol> builder, DiagnosticBag diagnostics)

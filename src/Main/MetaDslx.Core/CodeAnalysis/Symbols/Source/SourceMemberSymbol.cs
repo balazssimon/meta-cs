@@ -42,6 +42,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Debug.Assert(declaration != null);
             _container = container;
             _declaration = declaration;
+            _declaration.DangerousSetSourceSymbol(this);
 
             if (declaration.Kind != null)
             {
@@ -119,39 +120,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return GetMembers();
         }
 
-        /// <summary>
-        /// Get a source symbol for the given declaration syntax.
-        /// </summary>
-        /// <returns>Null if there is no matching declaration.</returns>
-        public Symbol GetSourceMember(SyntaxNodeOrToken syntax)
-        {
-            foreach (var member in GetMembers())
-            {
-                var memberT = member as Symbol;
-                if ((object)memberT != null)
-                {
-                    if (syntax != null)
-                    {
-                        foreach (var loc in memberT.Locations)
-                        {
-                            if (loc.IsInSource && loc.SourceTree == syntax.SyntaxTree && syntax.Span.Equals(loc.SourceSpan))
-                            {
-                                return memberT;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        return memberT;
-                    }
-                }
-            }
-
-            // None found.
-            return null;
-        }
-
-        internal virtual ImmutableArray<Symbol> GetMembersUnordered()
+        internal override ImmutableArray<Symbol> GetMembersUnordered()
         {
             var result = _lazyAllMembers;
 
@@ -165,7 +134,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return result.ConditionallyDeOrder();
         }
 
-        public virtual ImmutableArray<Symbol> GetMembers()
+        public override ImmutableArray<Symbol> GetMembers()
         {
             if ((_flags & LazyAllMembersIsSorted) != 0)
             {
@@ -187,7 +156,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        public virtual ImmutableArray<Symbol> GetMembers(string name)
+        public override ImmutableArray<Symbol> GetMembers(string name)
         {
             ImmutableArray<Symbol> members;
             return this.GetNameToMembersMap().TryGetValue(name, out members)
@@ -195,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 : ImmutableArray<Symbol>.Empty;
         }
 
-        internal virtual ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
+        internal override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
         {
             if (_lazyTypeMembersUnordered.IsDefault)
             {
@@ -206,12 +175,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return _lazyTypeMembersUnordered;
         }
 
-        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers()
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
         {
             return this.GetNameToTypeMembersMap().Flatten(LexicalOrderSymbolComparer.Instance);
         }
 
-        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
         {
             ImmutableArray<NamedTypeSymbol> members;
             return this.GetNameToTypeMembersMap().TryGetValue(name, out members)
@@ -219,7 +188,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 : ImmutableArray<NamedTypeSymbol>.Empty;
         }
 
-        public virtual ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
         {
             return GetTypeMembers(name).WhereAsArray(s => s.MetadataName == metadataName);
         }
@@ -473,6 +442,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             public void Add(Symbol symbol)
             {
                 string name = symbol.Name;
+                if (name == null) return;
                 object item;
                 if (_dictionary.TryGetValue(name, out item))
                 {

@@ -29,12 +29,11 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
             get
             {
-                if (_values.IsDefault)
+                if (_hasFixedValue)
                 {
-                    var valueNodes = this.BoundValues;
-                    ImmutableInterlocked.InterlockedInitialize(ref _values, valueNodes.SelectMany(node => node.Values).ToImmutableArray());
+                    return _values;
                 }
-                return _values;
+                return ImmutableArray<object>.Empty;
             }
         }
 
@@ -57,9 +56,12 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 properties.Add(this);
             }
-            foreach (var child in ChildBoundNodes)
+            if (_hasFixedValue)
             {
-                child.AddProperties(properties, property);
+                foreach (var child in ChildBoundNodes)
+                {
+                    child.AddProperties(properties, property);
+                }
             }
         }
 
@@ -69,9 +71,12 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 values.Add(this);
             }
-            foreach (var child in ChildBoundNodes)
+            if (_hasFixedValue)
             {
-                child.AddValues(values, _name, rootProperty);
+                foreach (var child in ChildBoundNodes)
+                {
+                    child.AddValues(values, _name, rootProperty);
+                }
             }
         }
 

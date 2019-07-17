@@ -80,5 +80,7 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode ERR_BadSymbol = new ModelErrorCode(35, "Invalid symbol", "Unexpected {1} '{0}'. Expected symbols are: {2}", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotSetOppositeProperty = new ModelErrorCode(36, "Cannot set opposite property", "Cannot set opposite property between '{0}' and '{1}'", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_PropertyDoesNotExist = new ModelErrorCode(37, "Invalid property", "Symbol '{0}' has no property with name '{1}'.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_DefinedSymbolNotFound = new ModelErrorCode(38, "Defined symbol not found", "Internal error in the compiler. {0} '{1}' was not found in {2} '{3}'. Either {2} '{3}' should be defined as a [Scope] or {0} '{1}' should be resolved by $SymbolUse instead of $SymbolDef.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode WRN_QualifierNotFound = new ModelErrorCode(39, "Qualifier not found", "Internal error in the compiler. BoundQualifier '{0}' attached to '{1}' was not found under BoundSymbolUse attached to '{2}'. Make sure the $Qualifier annotation is available directly under the $SymbolUse annotation.", DiagnosticSeverity.Error);
     }
 }

@@ -57,7 +57,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                     return;
                 }
             }
-            Debug.Assert(false);
+            qualifier.BoundTree.DiagnosticBag.Add(ModelErrorCode.WRN_QualifierNotFound, qualifier.Syntax.Location, qualifier.Syntax.ToString(), qualifier.Syntax.GetType().FullName, boundNode.Syntax.GetType().FullName);
+            this.InitializeFullQualifierSymbol(qualifier);
         }
 
         private void InitializeFullQualifierSymbol(BoundQualifier qualifier)

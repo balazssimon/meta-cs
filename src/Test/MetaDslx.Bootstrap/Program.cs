@@ -56,7 +56,6 @@ namespace MetaDslx.Bootstrap
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
-            //string text = File.ReadAllText(@"..\..\..\ImmutableMetaModel.mm");
             string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Soal.mm");
@@ -163,6 +162,7 @@ namespace MetaDslx.Bootstrap
             /*/
             ImmutableModel soalModel = SoalInstance.Model;
             string soalSource = File.ReadAllText(@"..\..\..\cinema.soal");
+            //string soalSource = File.ReadAllText(@"..\..\..\Wsdl01.soal");
             var syntaxTree = SoalSyntaxTree.ParseText(soalSource);
             var compilation = SoalCompilation.Create("SoalTest")
                 .AddSyntaxTrees(syntaxTree)
@@ -205,6 +205,7 @@ namespace MetaDslx.Bootstrap
                 }
             }
             //*/
+
         }
 
 

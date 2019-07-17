@@ -36,9 +36,22 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                         if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
                         {
                             _lazyValue = null;
+                            Interlocked.CompareExchange(ref _isInitialized, 2, 1);
                         }
                     }
                     Debug.Assert(this.IsInitialized());
+                    if (!this.IsInitialized())
+                    {
+                        if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
+                        {
+                            _lazyValue = this.Compilation.CreateErrorTypeSymbol(this.Compilation.GlobalNamespace, this.Syntax.ToString(), 0);
+                            Interlocked.CompareExchange(ref _isInitialized, 2, 1);
+                        }
+                        else
+                        {
+                            SpinWait.SpinUntil(() => _isInitialized == 2);
+                        }
+                    }
                 }
                 return _lazyValue;
             }
@@ -73,7 +86,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         internal bool IsInitialized()
         {
-            return _isInitialized > 0;
+            return _isInitialized == 2;
         }
 
         protected void InitializeValue(object value)
@@ -86,6 +99,11 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             if (Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
             {
                 _lazyValue = value;
+                Interlocked.CompareExchange(ref _isInitialized, 2, 1);
+            }
+            else
+            {
+                SpinWait.SpinUntil(() => _isInitialized == 2);
             }
         }
 

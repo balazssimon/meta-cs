@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Metadata
@@ -36,5 +37,43 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => ImmutableArray<SyntaxReference>.Empty;
 
         public override bool IsStatic => false;
+
+        public override ImmutableArray<Symbol> GetMembers()
+        {
+            if (_lazyMembers.IsDefault)
+            {
+                ImmutableInterlocked.InterlockedInitialize(ref _lazyMembers, MetaSymbolMap.GetSymbols(_metaObject.MChildren));
+            }
+            return _lazyMembers;
+        }
+
+        public override ImmutableArray<Symbol> GetMembers(string name)
+        {
+            return GetMembers().WhereAsArray(m => m.Name == name);
+        }
+
+        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        {
+            return GetMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
+        {
+            if (_lazyTypeMembers.IsDefault)
+            {
+                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, MetaSymbolMap.GetNamedTypeSymbols(_metaObject.MChildren.Where(child => child.MId.SymbolInfo.IsNamedType)));
+            }
+            return _lazyTypeMembers;
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
+        {
+            return GetTypeMembers().WhereAsArray(m => m.Name == name);
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+        {
+            return GetTypeMembers().WhereAsArray(m => m.Name == name && m.MetadataName == metadataName);
+        }
     }
 }

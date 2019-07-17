@@ -136,7 +136,7 @@
 		list<Struct> Entities;
 	}
 
-	[Scope]
+	//[Scope]
 	class Operation : NamedElement, AnnotatedElement
 	{
 		string Action;

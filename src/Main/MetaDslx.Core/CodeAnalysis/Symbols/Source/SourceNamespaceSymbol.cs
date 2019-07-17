@@ -47,6 +47,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _module = module;
             _container = container;
             _declaration = declaration;
+            _declaration.DangerousSetSourceSymbol(this);
 
             if (declaration.Kind != null)
             {
@@ -398,8 +399,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             else if (declaration.IsName)
             {
                 // TODO:MetaDslx - allow names in a namespace
-                //return new SourceMemberSymbol(this, declaration, diagnostics);
-                return new SourceNamespaceSymbol(_module, this, declaration, diagnostics);
+                return new SourceMemberSymbol(this, declaration, diagnostics);
+                //return new SourceNamespaceSymbol(_module, this, declaration, diagnostics);
             }
             throw ExceptionUtilities.UnexpectedValue(declaration.Kind);
         }

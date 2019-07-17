@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
-    public abstract class MemberSymbol : Symbol, IMetaMemberSymbol
+    public abstract class MemberSymbol : NamespaceOrTypeSymbol, IMetaMemberSymbol
     {
         public virtual bool IsImplementableMember => !this.IsStatic;
 

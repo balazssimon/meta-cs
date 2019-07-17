@@ -7,6 +7,8 @@ using System.Diagnostics;
 using Roslyn.Utilities;
 using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols.Wrapped;
+using Microsoft.CodeAnalysis.PooledObjects;
+using Microsoft.Cci;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
 {
@@ -91,6 +93,83 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
 
             return _lazyUseSiteDiagnostic;
+        }
+
+        internal override ImmutableArray<Symbol> GetMembersUnordered()
+        {
+            return RetargetMembers(_underlyingMember.GetMembersUnordered());
+        }
+
+        public override ImmutableArray<Symbol> GetMembers()
+        {
+            return RetargetMembers(_underlyingMember.GetMembers());
+        }
+
+        public override ImmutableArray<Symbol> GetMembers(string name)
+        {
+            return RetargetMembers(_underlyingMember.GetMembers(name));
+        }
+
+        public override ImmutableArray<Symbol> GetMembers(string name, string metadataName)
+        {
+            return RetargetMembers(_underlyingMember.GetMembers(name, metadataName));
+        }
+
+        internal override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
+        {
+            return RetargetTypeMembers(_underlyingMember.GetTypeMembersUnordered());
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
+        {
+            return RetargetTypeMembers(_underlyingMember.GetTypeMembers());
+        }
+
+        private ImmutableArray<NamedTypeSymbol> RetargetTypeMembers(ImmutableArray<NamedTypeSymbol> underlyingMembers)
+        {
+            var builder = ArrayBuilder<NamedTypeSymbol>.GetInstance(underlyingMembers.Length);
+
+            foreach (NamedTypeSymbol t in underlyingMembers)
+            {
+                // Skip explicitly declared local types.
+                if (t.IsExplicitDefinitionOfNoPiaLocalType)
+                {
+                    continue;
+                }
+
+                Debug.Assert(t.PrimitiveTypeCode == PrimitiveTypeCode.NotPrimitive);
+                builder.Add(this.RetargetingTranslator.Retarget(t, RetargetOptions.RetargetPrimitiveTypesByName));
+            }
+
+            return builder.ToImmutableAndFree();
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
+        {
+            return RetargetTypeMembers(_underlyingMember.GetTypeMembers(name));
+        }
+
+        public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
+        {
+            return RetargetTypeMembers(_underlyingMember.GetTypeMembers(name, metadataName));
+        }
+
+        private ImmutableArray<Symbol> RetargetMembers(ImmutableArray<Symbol> underlyingMembers)
+        {
+            var builder = ArrayBuilder<Symbol>.GetInstance(underlyingMembers.Length);
+
+            foreach (Symbol s in underlyingMembers)
+            {
+                // Skip explicitly declared local types.
+                if (s.Kind == LanguageSymbolKind.NamedType && ((NamedTypeSymbol)s).IsExplicitDefinitionOfNoPiaLocalType)
+                {
+                    continue;
+                }
+
+                builder.Add(this.RetargetingTranslator.Retarget(s));
+            }
+
+            return builder.ToImmutableAndFree();
         }
 
         public override void Accept(SymbolVisitor visitor)

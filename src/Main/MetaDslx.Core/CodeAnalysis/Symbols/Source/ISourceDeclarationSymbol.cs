@@ -9,6 +9,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
     public interface ISourceDeclarationSymbol
     {
+        MergedDeclaration MergedDeclaration { get; }
         ImmutableArray<Symbol> GetDeclaredChildren();
         Symbol GetSourceMember(SyntaxNodeOrToken syntax);
     }

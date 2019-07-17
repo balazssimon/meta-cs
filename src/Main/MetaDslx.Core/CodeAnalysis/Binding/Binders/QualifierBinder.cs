@@ -27,8 +27,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 if (_lazyBoundNode == null)
                 {
-                    var boundNodes = this.Compilation.GetBoundNodes(_syntax).OfType<BoundQualifier>();
-                    Interlocked.CompareExchange(ref _lazyBoundNode, boundNodes.FirstOrDefault(), null);
+                    var boundNode = this.Compilation.GetBoundNode<BoundQualifier>(_syntax);
+                    Interlocked.CompareExchange(ref _lazyBoundNode, boundNode, null);
                 }
                 return _lazyBoundNode;
             }
