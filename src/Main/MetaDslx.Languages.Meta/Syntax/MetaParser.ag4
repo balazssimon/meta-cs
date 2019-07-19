@@ -114,10 +114,10 @@ voidType
 	: KVoid
 	;
 
-$SymbolCtr(MetaNullableType)
+$SymbolDef(MetaNullableType)
 nullableType : $Property(InnerType) primitiveType TQuestion;
 
-$SymbolCtr(MetaCollectionType)
+$SymbolDef(MetaCollectionType)
 collectionType : $Property(Kind) collectionKind TLessThan $Property(InnerType) simpleType TGreaterThan;
 collectionKind 
 	: $Value(MetaCollectionKind.Set) KSet 

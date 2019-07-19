@@ -36,11 +36,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
             SyntaxReference syntaxReference,
             SourceLocation nameLocation,
             bool canMerge,
-            bool isConstructedSymbol,
             string parentPropertyToAddTo,
             ImmutableArray<SingleDeclaration> children,
             ImmutableArray<Diagnostic> diagnostics)
-            : base(name, canMerge, isConstructedSymbol, parentPropertyToAddTo)
+            : base(name, canMerge, parentPropertyToAddTo)
         {
             this._kind = kind;
             this._syntaxReference = syntaxReference;

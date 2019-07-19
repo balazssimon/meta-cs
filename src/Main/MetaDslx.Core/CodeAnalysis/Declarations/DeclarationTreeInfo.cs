@@ -14,11 +14,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
 {
     public class DeclarationTreeInfo
     {
+        private int nonDeclarationStack;
         private int collectNameStack;
         private int qualifierStack;
         private ArrayBuilder<Identifier> currentName;
 
-        public DeclarationTreeInfo(DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node, bool isConstructedSymbol)
+        public DeclarationTreeInfo(DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node)
         {
             this.Parent = parent;
             if (parent != null)
@@ -27,7 +28,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
             this.Type = type;
             this.Node = node;
-            this.IsConstructedSymbol = isConstructedSymbol;
             this.Names = new ArrayBuilder<ArrayBuilder<Identifier>>();
             this.Members = new ArrayBuilder<SingleDeclaration>();
             this.ReferenceDirectives = new ArrayBuilder<ReferenceDirective>();
@@ -37,12 +37,12 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public DeclarationTreeInfo Parent { get; private set; }
         public LanguageSyntaxNode Node { get; private set; }
         public Type Type { get; private set; }
-        public bool IsConstructedSymbol { get; private set; }
         public ModelSymbolInfo Kind
         {
             get { return ModelSymbolInfo.GetSymbolInfo(this.Type); }
         }
         public bool CanMerge { get; private set; }
+        public bool Detached { get; private set; }
         public string NestingProperty { get; private set; }
         public string ParentPropertyToAddTo { get; private set; }
         public ArrayBuilder<ArrayBuilder<Identifier>> Names { get; private set; }
@@ -58,6 +58,20 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public ArrayBuilder<Identifier> CurrentName
         {
             get { return this.Names.Count > 0 ? this.Names[this.Names.Count - 1] : null; }
+        }
+
+        public bool IsNonDeclaration => nonDeclarationStack > 0;
+
+        public void BeginNoDeclaration()
+        {
+            Debug.Assert(this.nonDeclarationStack >= 0);
+            ++this.nonDeclarationStack;
+        }
+
+        public void EndNoDeclaration()
+        {
+            --this.nonDeclarationStack;
+            Debug.Assert(this.nonDeclarationStack >= 0);
         }
 
         public void BeginName()

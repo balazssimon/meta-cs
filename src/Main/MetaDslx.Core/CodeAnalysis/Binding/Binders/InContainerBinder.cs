@@ -186,14 +186,5 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        public override NamespaceOrTypeSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
-        {
-            var container = this.Container;
-            if ((object)container == null)
-            {
-                return this.Next.GetEnclosingDeclarationSymbol(syntax);
-            }
-            return container;
-        }
     }
 }

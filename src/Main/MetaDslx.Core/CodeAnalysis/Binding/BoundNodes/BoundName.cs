@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private ImmutableArray<Symbol> _lazySymbols;
 
-        public BoundName(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundName(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
         }

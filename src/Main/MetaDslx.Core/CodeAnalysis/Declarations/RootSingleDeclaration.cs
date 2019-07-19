@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             SyntaxReference treeNode, 
             ImmutableArray<SingleDeclaration> children, 
             ImmutableArray<ReferenceDirective> referenceDirectives) 
-            : base(string.Empty, kind, treeNode, new SourceLocation(treeNode), true, true, null, children, ImmutableArray<Diagnostic>.Empty)
+            : base(string.Empty, kind, treeNode, new SourceLocation(treeNode), true, null, children, ImmutableArray<Diagnostic>.Empty)
         {
             _referenceDirectives = referenceDirectives;
         }

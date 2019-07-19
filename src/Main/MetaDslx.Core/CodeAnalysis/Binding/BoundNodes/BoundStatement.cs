@@ -11,7 +11,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private readonly IOperation _statement;
 
-        protected BoundStatement(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, IOperation statement, LanguageSyntaxNode syntax, bool hasErrors = false)
+        protected BoundStatement(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, IOperation statement, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
             _statement = statement;

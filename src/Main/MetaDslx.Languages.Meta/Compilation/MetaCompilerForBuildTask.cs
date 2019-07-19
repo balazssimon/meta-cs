@@ -50,7 +50,7 @@ namespace MetaDslx.Languages.Meta
 
                 BinderFlags binderFlags = null;
                 if (_compileMetaModelCore) binderFlags = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
-                MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: false, concurrentBuild: true,
+                MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false,
                     topLevelBinderFlags: binderFlags);
                 //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false);
                 var compilation = MetaCompilation.

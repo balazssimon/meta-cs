@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         private readonly BoundKind _kind;
         private BoundNodeAttributes _attributes;
         private readonly BoundTree _boundTree;
-        private ImmutableArray<BoundNode> _childBoundNodes;
+        private object _childBoundNodes;
         private readonly LanguageSyntaxNode _syntax;
 
         [Flags()]
@@ -43,18 +43,25 @@ namespace MetaDslx.CodeAnalysis.Binding
             IsSuppressed = 1 << 4,
         }
 
-        protected BoundNode(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
+        protected BoundNode(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)
         {
             Debug.Assert(syntax != null);
 
             _kind = kind;
             _boundTree = boundTree;
-            _childBoundNodes = childBoundNodes;
+            if (childBoundNodes.All(cbn => cbn is BoundNode))
+            {
+                _childBoundNodes = childBoundNodes.Cast<BoundNode>().ToImmutableArray();
+            }
+            else
+            {
+                _childBoundNodes = childBoundNodes;
+            }
             _syntax = syntax;
-
+            
             if (hasErrors)
             {
-                _attributes = BoundNodeAttributes.HasErrors;
+                _attributes |= BoundNodeAttributes.HasErrors;
             }
         }
 
@@ -182,7 +189,52 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public BoundKind Kind => _kind;
 
-        public ImmutableArray<BoundNode> ChildBoundNodes => _childBoundNodes;
+        public ImmutableArray<BoundNode> ChildBoundNodes
+        {
+            get
+            {
+                var children = _childBoundNodes;
+                if (children is ImmutableArray<object>)
+                {
+                    var resolvedNodes = ArrayBuilder<BoundNode>.GetInstance();
+                    foreach (var node in (ImmutableArray<object>)children)
+                    {
+                        if (node is BoundNode boundNode)
+                        {
+                            resolvedNodes.Add(boundNode);
+                        }
+                        else if (node is LanguageSyntaxNode syntax)
+                        {
+                            var resolvedNode = _boundTree.GetUpperBoundNode(syntax);
+                            resolvedNodes.Add(resolvedNode);
+                        }
+                        else
+                        {
+                            Debug.Assert(false);
+                        }
+                    }
+                    Interlocked.CompareExchange(ref _childBoundNodes, resolvedNodes.ToImmutableAndFree(), children);
+                }
+                return (ImmutableArray<BoundNode>)_childBoundNodes;
+            }
+        }
+
+        internal ImmutableArray<BoundNode> GetChildBoundNodes(SyntaxNode thisSyntaxNodeOnly)
+        {
+            if (thisSyntaxNodeOnly == null) return this.ChildBoundNodes;
+            var childNodes = ArrayBuilder<BoundNode>.GetInstance();
+            foreach (var node in (IEnumerable<object>)_childBoundNodes)
+            {
+                if (node is BoundNode boundNode)
+                {
+                    if (boundNode._syntax == thisSyntaxNodeOnly)
+                    {
+                        childNodes.Add(boundNode);
+                    }
+                }
+            }
+            return childNodes.ToImmutableAndFree();
+        }
 
         public virtual BoundNode Accept(BoundTreeVisitor visitor)
         {
@@ -256,7 +308,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public ImmutableArray<BoundIdentifier> GetChildIdentifiers()
         {
             ArrayBuilder<BoundIdentifier> identifiers = ArrayBuilder<BoundIdentifier>.GetInstance();
-            foreach (var child in _childBoundNodes)
+            foreach (var child in this.ChildBoundNodes)
             {
                 child.AddIdentifiers(identifiers);
             }
@@ -266,7 +318,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public ImmutableArray<BoundQualifier> GetChildQualifiers()
         {
             ArrayBuilder<BoundQualifier> qualifiers = ArrayBuilder<BoundQualifier>.GetInstance();
-            foreach (var child in _childBoundNodes)
+            foreach (var child in this.ChildBoundNodes)
             {
                 child.AddQualifiers(qualifiers);
             }
@@ -276,7 +328,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public ImmutableArray<BoundName> GetChildNames()
         {
             ArrayBuilder<BoundName> names = ArrayBuilder<BoundName>.GetInstance();
-            foreach (var child in _childBoundNodes)
+            foreach (var child in this.ChildBoundNodes)
             {
                 child.AddNames(names);
             }
@@ -286,7 +338,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public ImmutableArray<BoundProperty> GetChildProperties(string property = null)
         {
             ArrayBuilder<BoundProperty> properties = ArrayBuilder<BoundProperty>.GetInstance();
-            foreach (var child in _childBoundNodes)
+            foreach (var child in this.ChildBoundNodes)
             {
                 child.AddProperties(properties, property);
             }
@@ -296,7 +348,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public ImmutableArray<BoundValues> GetChildValues(string currentProperty = null, string rootProperty = null)
         {
             ArrayBuilder<BoundValues> values = ArrayBuilder<BoundValues>.GetInstance();
-            foreach (var child in _childBoundNodes)
+            foreach (var child in this.ChildBoundNodes)
             {
                 child.AddValues(values, currentProperty, rootProperty);
             }

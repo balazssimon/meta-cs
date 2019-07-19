@@ -17,7 +17,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceNamespaceSymbol : NamespaceSymbol, ISourceDeclarationSymbol
+    public class SourceNamespaceSymbol : NamespaceSymbol
     {
         private readonly SourceModuleSymbol _module;
         private readonly Symbol _container;
@@ -309,10 +309,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var builder = new NameToSymbolMapBuilder(_declaration.Children.Length);
             foreach (var declaration in _declaration.Children)
             {
-                if (declaration.Name != null)
-                {
-                    builder.Add(BuildSymbol(declaration, diagnostics));
-                }
+                builder.Add(BuildSymbol(declaration, diagnostics));
             }
 
             var result = builder.CreateMap();
@@ -339,6 +336,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     var nts = symbol as NamedTypeSymbol;
                     var metadataName = ((object)nts != null) ? nts.MetadataName : string.Empty;
+                    if (metadataName == null) metadataName = string.Empty;
 
                     if (memberOfMetadataName.TryGetValue(metadataName, out Symbol other))
                     {
@@ -480,6 +478,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             public void Add(Symbol symbol)
             {
                 string name = symbol.Name;
+                if (name == null) name = string.Empty;
                 object item;
                 if (_dictionary.TryGetValue(name, out item))
                 {

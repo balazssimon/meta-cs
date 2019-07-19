@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
     {
         private readonly Type _symbolType;
         private readonly Type _nestingSymbolType;
-        private Symbol _definedSymbol;
+        private ImmutableArray<DeclaredSymbol> _declaredSymbols;
         private readonly LanguageSyntaxNode _syntax;
 
         public SymbolDefBinder(Binder next, LanguageSyntaxNode syntax, Type symbolType, Type nestingSymbolType) 
@@ -26,57 +26,36 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             _symbolType = symbolType;
             _nestingSymbolType = nestingSymbolType;
             _syntax = syntax;
+            _declaredSymbols = default;
         }
 
-        public Symbol DefinedSymbol
+        public ImmutableArray<DeclaredSymbol> DeclaredSymbols
         {
             get
             {
-                if (_definedSymbol == null)
+                if (_declaredSymbols.IsDefault)
                 {
-                    var containerSymbol = this.Next.GetEnclosingDeclarationSymbol(_syntax);
-                    Symbol symbol = null;
-                    while (containerSymbol != null)
-                    {
-                        var member = this.GetSourceMember(containerSymbol, _syntax);
-                        if (member != null) symbol = member;
-                        containerSymbol = member as NamespaceOrTypeSymbol;
-                    }
-                    Interlocked.CompareExchange(ref _definedSymbol, symbol, null);
+                    var boundNode = this.Compilation.GetBoundNode<BoundSymbolDef>(_syntax);
+                    ImmutableInterlocked.InterlockedInitialize(ref _declaredSymbols, boundNode.Symbols.Cast<DeclaredSymbol>().ToImmutableArray());
                 }
-                return _definedSymbol;
+                return _declaredSymbols;
             }
         }
 
-        public override NamespaceOrTypeSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
+        public DeclaredSymbol LastDeclaredSymbol
         {
-            return this.DefinedSymbol as NamespaceOrTypeSymbol;
-        }
-
-        /// <summary>
-        /// Get a source symbol for the given declaration syntax.
-        /// </summary>
-        /// <returns>Null if there is no matching declaration.</returns>
-        private Symbol GetSourceMember(NamespaceOrTypeSymbol containerSymbol, SyntaxNodeOrToken syntax)
-        {
-            if (syntax == null) return null;
-            if (containerSymbol == null) return null;
-            foreach (var member in containerSymbol.GetMembers())
+            get
             {
-                var memberT = member as Symbol;
-                if ((object)memberT != null)
-                {
-                    foreach (var syntaxRef in memberT.DeclaringSyntaxReferences)
-                    {
-                        if (syntaxRef.SyntaxTree == syntax.SyntaxTree && syntax.Span.Equals(syntaxRef.Span))
-                        {
-                            return memberT;
-                        }
-                    }
-                }
+                var symbols = this.DeclaredSymbols;
+                if (symbols.Length == 0) return null;
+                else if (symbols.Length == 1) return symbols[0];
+                else return symbols[symbols.Length - 1];
             }
-            // None found.
-            return null;
+        }
+
+        public override DeclaredSymbol GetDeclarationSymbol()
+        {
+            return this.LastDeclaredSymbol;
         }
 
         public override void InitializeQualifierSymbol(BoundQualifier qualifier)
@@ -99,17 +78,15 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
         {
             if (qualifier.IsInitialized()) return;
-            var containerSymbol = this.Next.GetEnclosingDeclarationSymbol(qualifier.Syntax);
+            var containerSymbol = this.Next.GetEnclosingDeclarationSymbol();
             var result = ArrayBuilder<object>.GetInstance();
             var identifiers = qualifier.Identifiers;
-            for (int i = 0; i < identifiers.Length; i++)
+            foreach (var identifier in identifiers)
             {
-                bool last = i == identifiers.Length - 1;
-                var identifier = identifiers[i];
                 var symbol = containerSymbol.GetSourceMember(identifier.Syntax);
                 Debug.Assert(symbol != null);
                 result.Add(symbol);
-                containerSymbol = symbol as NamespaceOrTypeSymbol;
+                containerSymbol = symbol;
             }
             qualifier.InitializeValues(identifiers, result.ToImmutableAndFree());
         }

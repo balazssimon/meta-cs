@@ -1075,9 +1075,14 @@ namespace MetaDslx.CodeAnalysis.Binding
         }
 
 
-        public virtual NamespaceOrTypeSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
+        public virtual DeclaredSymbol GetDeclarationSymbol()
         {
-            return this.Next.GetEnclosingDeclarationSymbol(syntax);
+            return this.Next.GetDeclarationSymbol();
+        }
+
+        public DeclaredSymbol GetEnclosingDeclarationSymbol()
+        {
+            return this.Next.GetDeclarationSymbol();
         }
 
         public virtual void InitializeQualifierSymbol(BoundQualifier qualifier)

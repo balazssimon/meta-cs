@@ -23,7 +23,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations.IsEmpty ? string.Empty : declarations[0].Name,
                   declarations.IsEmpty ? false : declarations[0].CanMerge,
-                  declarations.IsEmpty ? false : declarations[0].IsConstructedSymbol,
                   declarations.IsEmpty ? string.Empty : declarations[0].ParentPropertyToAddTo)
         {
             this._declarations = declarations;

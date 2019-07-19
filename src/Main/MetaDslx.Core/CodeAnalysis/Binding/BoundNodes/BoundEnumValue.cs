@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         private Type _enumType;
         private ImmutableArray<object> _lazyValues;
 
-        public BoundEnumValue(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, string name, Type enumType, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundEnumValue(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, Type enumType, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
             _name = name;

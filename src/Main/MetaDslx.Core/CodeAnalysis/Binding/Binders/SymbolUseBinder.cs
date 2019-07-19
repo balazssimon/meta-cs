@@ -14,8 +14,6 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
-    using MetaAnnotation = MetaAttribute;
-
     public class SymbolUseBinder : Binder
     {
         private readonly ImmutableArray<ModelSymbolInfo> _symbolTypes;
@@ -34,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 _attributeTypeOnly = true;
                 foreach (var symbolType in symbolTypes)
                 {
-                    if (!typeof(MetaAnnotation).IsAssignableFrom(symbolType))
+                    if (!typeof(MetaAttribute).IsAssignableFrom(symbolType))
                     {
                         _attributeTypeOnly = false;
                         break;

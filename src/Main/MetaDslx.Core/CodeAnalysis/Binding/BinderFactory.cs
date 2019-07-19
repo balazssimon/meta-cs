@@ -84,7 +84,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <remarks>
         /// Note, there is no guarantee that the factory always gives back the same binder instance for the same node.
         /// </remarks>
-        public Binder GetBinder(SyntaxNode node, LanguageSyntaxNode memberDeclarationOpt = null, Symbol memberOpt = null)
+        public Binder GetBinder(SyntaxNode node)
         {
             int position = node.SpanStart;
 
@@ -96,22 +96,22 @@ namespace MetaDslx.CodeAnalysis.Binding
                 node = node.Parent;
             }*/
 
-            return GetBinder(node, position, false, memberDeclarationOpt, memberOpt);
+            return GetBinder(node, position, false);
         }
 
-        public Binder GetBinder(SyntaxToken token, LanguageSyntaxNode memberDeclarationOpt = null, Symbol memberOpt = null)
+        public Binder GetBinder(SyntaxToken token)
         {
             int position = token.SpanStart;
 
-            return GetBinder(token.Parent, position, true, memberDeclarationOpt, memberOpt);
+            return GetBinder(token.Parent, position, true);
         }
 
-        public Binder GetBinder(SyntaxNode node, int position, bool forChild, LanguageSyntaxNode memberDeclarationOpt = null, Symbol memberOpt = null)
+        public Binder GetBinder(SyntaxNode node, int position, bool forChild)
         {
             Debug.Assert(node != null);
 
             BinderFactoryVisitor visitor = _binderFactoryVisitorPool.Allocate();
-            visitor.Initialize(position, forChild, memberDeclarationOpt, memberOpt);
+            visitor.Initialize(position, forChild);
             Binder result = visitor.Visit(node);
             _binderFactoryVisitorPool.Free(visitor);
 
@@ -129,7 +129,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual Binder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing = false)
         {
             BinderFactoryVisitor visitor = _binderFactoryVisitorPool.Allocate();
-            visitor.Initialize(0, false, null, null);
+            visitor.Initialize(0, false);
             Binder result = visitor.GetImportsBinder(unit, inUsing: inUsing);
             _binderFactoryVisitorPool.Free(visitor);
             return result;

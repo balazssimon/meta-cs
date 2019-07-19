@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// <param name="node">The syntax node where to add bound nodes for.</param>
         public static void AddToMap(BoundNode root, ConcurrentDictionary<SyntaxNode, ImmutableArray<BoundNode>> map, SyntaxNode node = null)
         {
-            Debug.Assert(node == null || root == null);
+            //Debug.Assert(node == null || root == null);
 
             if (root == null || map.ContainsKey(root.Syntax))
             {
@@ -78,7 +78,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 BoundNode current = nodeStack.Pop();
                 AddNode(map, thisSyntaxNodeOnly, current);
-                var currentChildren = current.ChildBoundNodes;
+                var currentChildren = current.GetChildBoundNodes(thisSyntaxNodeOnly);
                 for (int i = currentChildren.Length - 1; i >= 0; --i)
                 {
                     nodeStack.Push(currentChildren[i]);

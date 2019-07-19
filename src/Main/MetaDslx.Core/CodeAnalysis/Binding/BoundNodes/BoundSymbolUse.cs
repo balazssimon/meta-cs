@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         private ImmutableArray<Type> _nestingSymbolTypes;
         private ImmutableArray<Symbol> _lazySymbols;
 
-        public BoundSymbolUse(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundSymbolUse(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
             _symbolTypes = symbolTypes;

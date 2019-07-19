@@ -54,18 +54,16 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return Compilation.GetBinder((LanguageSyntaxNode)node);
         }
 
-        public override NamespaceOrTypeSymbol GetEnclosingDeclarationSymbol(SyntaxNodeOrToken syntax)
+        public override DeclaredSymbol GetDeclarationSymbol()
         {
-            NamespaceOrTypeSymbol container;
-            if (syntax.Parent.GetKind() == Language.SyntaxFacts.CompilationUnitKind && syntax.SyntaxTree.Options.Kind != SourceCodeKind.Regular)
+            if (Compilation.IsSubmission)
             {
-                container = Compilation.ScriptClass;
+                return Compilation.ScriptClass;
             }
             else
             {
-                container = Compilation.GlobalNamespace;
+                return Compilation.GlobalNamespace;
             }
-            return container;
         }
 
         public override void InitializeQualifierSymbol(BoundQualifier qualifier)

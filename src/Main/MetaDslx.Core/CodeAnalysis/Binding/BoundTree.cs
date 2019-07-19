@@ -630,26 +630,48 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             Debug.Assert(node != null);
 
+            var childBoundNodes = ArrayBuilder<object>.GetInstance();
+            int position = node.Position;
+            var state = node.Parent != null ? BoundNodeFactoryVisitor.BoundNodeFactoryState.InParent : BoundNodeFactoryVisitor.BoundNodeFactoryState.InNode;
+            var nodeToVisit = node.Parent != null ? node.Parent : node;
+
             BoundNodeFactoryVisitor visitor = _boundNodeFactoryVisitorPool.Allocate();
-            var ignoredChildBoundNodes = ArrayBuilder<BoundNode>.GetInstance();
-            visitor.Initialize();
-            BoundNode result = visitor.Visit(node, ignoredChildBoundNodes);
+            visitor.Initialize(position, state);
+            BoundNode result = visitor.Visit(nodeToVisit, childBoundNodes);
             _boundNodeFactoryVisitorPool.Free(visitor);
+
             if (node == this.Root && !(result is BoundRoot))
             {
-                Debug.Assert(result == null || ignoredChildBoundNodes.Count == 0);
+                Debug.Assert(result == null || childBoundNodes.Count == 0);
                 if (result != null)
                 {
-                    result = new BoundRoot(BoundKind.Root, this, ImmutableArray.Create(result), node);
+                    result = new BoundRoot(BoundKind.Root, this, ImmutableArray.Create<object>(result), node);
                 }
                 else
                 {
-                    result = new BoundRoot(BoundKind.Root, this, ignoredChildBoundNodes.ToImmutable(), node);
+                    result = new BoundRoot(BoundKind.Root, this, childBoundNodes.ToImmutable(), node);
                 }
             }
-            ignoredChildBoundNodes.Free();
+            else if (result == null)
+            {
+                Debug.Assert(false);
+                result = (BoundNode)childBoundNodes[0];
+            }
 
-            return result;
+            childBoundNodes.Free();
+
+            BoundNodeMapBuilder.AddToMap(result, _map, node);
+
+            ImmutableArray<BoundNode> results = GetBoundNodesFromMap(node);
+            if (results.IsDefaultOrEmpty)
+            {
+                Debug.Assert(false);
+                return null;
+            }
+            else
+            {
+                return results[0];
+            }
         }
 
         public bool TryGetBoundNode(LanguageSyntaxNode node, out BoundNode boundNode)

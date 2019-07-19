@@ -26,7 +26,7 @@
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
-    <ProjectReference Include="..\..\Samples\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj" />
+    <!--ProjectReference Include="..\..\Samples\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj" /-->
   </ItemGroup>
 
   <ItemGroup>

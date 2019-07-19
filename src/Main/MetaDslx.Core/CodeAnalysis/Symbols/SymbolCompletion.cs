@@ -102,11 +102,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
             builder.AddLast(CompletionPart.FinishValidatingImports);
             builder.AddLast(CompletionPart.NameToMembersMap);
             builder.AddLast(CompletionPart.AliasTarget);
+            builder.AddLast(CompletionPart.MembersCompleted);
             builder.AddLast(CompletionPart.StartBoundNode);
             builder.AddLast(CompletionPart.FinishBoundNode);
             //builder.AddLast(CompletionPart.StartProperties);
             //builder.AddLast(CompletionPart.FinishProperties);
-            builder.AddLast(CompletionPart.MembersCompleted);
             builder.AddLast(CompletionPart.Module);
             builder.AddLast(CompletionPart.StartValidatingAddedModules);
             builder.AddLast(CompletionPart.FinishValidatingAddedModules);

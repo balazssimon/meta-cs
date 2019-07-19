@@ -118,7 +118,7 @@ $SymbolDef(InputParameter)
 parameter : annotationList? $Property(Type) typeReference name;
 
 $Property(Result)
-$SymbolCtr(OutputParameter)
+$SymbolDef(OutputParameter)
 operationResult : returnAnnotationList? $Property(Type) operationReturnType;
 
 throwsList : KThrows $Property(Exceptions) $SymbolUse(Struct) qualifierList;
@@ -426,13 +426,13 @@ operationReturnType
 	| typeReference
 	;
 
-$SymbolCtr(NullableType)
+$SymbolDef(NullableType)
 nullableType : $Property(InnerType) valueType TQuestion;
 
-$SymbolCtr(NonNullableType)
+$SymbolDef(NonNullableType)
 nonNullableType : $Property(InnerType) referenceType TExclamation;
 
-$SymbolCtr(NonNullableType)
+$SymbolDef(NonNullableType)
 nonNullableArrayType : $Property(InnerType) arrayType TExclamation;
 
 arrayType
@@ -440,10 +440,10 @@ arrayType
 	| nulledArrayType
 	;
 
-$SymbolCtr(ArrayType)
+$SymbolDef(ArrayType)
 simpleArrayType : $Property(InnerType) simpleType TOpenBracket TCloseBracket;
 
-$SymbolCtr(ArrayType)
+$SymbolDef(ArrayType)
 nulledArrayType : $Property(InnerType) nulledType TOpenBracket TCloseBracket;
 
 constantValue

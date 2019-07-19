@@ -782,7 +782,7 @@ namespace MetaDslx.CodeAnalysis
             if (memberModel == null)
             {
                 // Recover from error cases
-                var node = new BoundBadStatement(BoundTree, ImmutableArray<BoundNode>.Empty, expression, hasErrors: true);
+                var node = new BoundBadStatement(BoundTree, ImmutableArray<object>.Empty, expression, hasErrors: true);
                 return new RegionAnalysisContext(Compilation, null, node, node, node);
             }
 
@@ -799,7 +799,7 @@ namespace MetaDslx.CodeAnalysis
             if (memberModel == null)
             {
                 // Recover from error cases
-                var node = new BoundBadStatement(BoundTree, ImmutableArray<BoundNode>.Empty, firstStatement, hasErrors: true);
+                var node = new BoundBadStatement(BoundTree, ImmutableArray<object>.Empty, firstStatement, hasErrors: true);
                 return new RegionAnalysisContext(Compilation, null, node, node, node);
             }
 

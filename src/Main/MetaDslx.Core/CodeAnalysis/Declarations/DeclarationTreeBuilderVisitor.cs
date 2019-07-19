@@ -82,14 +82,14 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return this.CreateRootDeclaration(node, type);
         }
 
-        protected virtual DeclarationTreeInfo CreateDeclarationInfo(DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node, bool isConstructedSymbol = false)
+        protected virtual DeclarationTreeInfo CreateDeclarationInfo(DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node)
         {
-            return new DeclarationTreeInfo(parent, type, node, isConstructedSymbol);
+            return new DeclarationTreeInfo(parent, type, node);
         }
 
-        protected DeclarationTreeInfo BeginDeclaration(Type type, LanguageSyntaxNode node, bool isConstructedSymbol = false)
+        protected DeclarationTreeInfo BeginDeclaration(Type type, LanguageSyntaxNode node)
         {
-            _currentDeclarationInfo = this.CreateDeclarationInfo(_currentDeclarationInfo, type, node, isConstructedSymbol);
+            _currentDeclarationInfo = this.CreateDeclarationInfo(_currentDeclarationInfo, type, node);
             return _currentDeclarationInfo;
         }
 
@@ -99,6 +99,18 @@ namespace MetaDslx.CodeAnalysis.Declarations
             SingleDeclaration result = this.CreateDeclaration(_currentDeclarationInfo);
             _currentDeclarationInfo = _currentDeclarationInfo.Parent;
             return result;
+        }
+
+        protected void BeginNoDeclaration(Type type, LanguageSyntaxNode node)
+        {
+            if (_currentDeclarationInfo == null) return;
+            _currentDeclarationInfo.BeginNoDeclaration();
+        }
+
+        protected void EndNoDeclaration()
+        {
+            if (_currentDeclarationInfo == null) return;
+            _currentDeclarationInfo.EndNoDeclaration();
         }
 
         protected void BeginName()
@@ -179,7 +191,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             if (declaration.Names.Count == 0)
             {
                 //var diagnostics = ImmutableArray.Create<Diagnostic>(new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_DeclarationHasNoName), declaration.Node.Location));
-                SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, declaration.Kind, _syntaxTree.GetReference(declaration.Node), null, false, declaration.IsConstructedSymbol, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
+                SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(declaration.Node), false, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
                 parent.Members.Add(anonymousDeclaration);
                 return anonymousDeclaration;
             }
@@ -190,13 +202,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 {
                     var parentProperty = count == 1 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
                     var identifier = qualifier[count - 1];
-                    var decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.CanMerge, declaration.IsConstructedSymbol, parentProperty, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
+                    var decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.CanMerge, parentProperty, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
                     var deepestDecl = decl;
                     for (int i = count - 2; i >= 0; i--)
                     {
                         parentProperty = i == 0 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
                         identifier = qualifier[i];
-                        decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.CanMerge, declaration.IsConstructedSymbol, parentProperty, ImmutableArray.Create(decl), ImmutableArray<Diagnostic>.Empty);
+                        decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.CanMerge, parentProperty, ImmutableArray.Create(decl), ImmutableArray<Diagnostic>.Empty);
                     }
                     parent.Members.Add(decl);
                     return deepestDecl;

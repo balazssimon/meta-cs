@@ -18,25 +18,19 @@ namespace MetaDslx.CodeAnalysis.Binding
         private static object CompilationUnitScript = new object();
         private static object Normal = new object();
 
+        private readonly BinderFactory _factory;
         private int _position;
         private bool _forChild;
-        private LanguageSyntaxNode _memberDeclarationOpt;
-        private Symbol _memberOpt;
-        private readonly BinderFactory _factory;
 
         protected BinderFactoryVisitor(BinderFactory factory)
         {
             _factory = factory;
         }
 
-        internal void Initialize(int position, bool forChild, LanguageSyntaxNode memberDeclarationOpt, Symbol memberOpt)
+        internal void Initialize(int position, bool forChild)
         {
-            Debug.Assert((memberDeclarationOpt == null) == (memberOpt == null));
-
             _position = position;
             _forChild = forChild;
-            _memberDeclarationOpt = memberDeclarationOpt;
-            _memberOpt = memberOpt;
         }
 
         protected Language Language => _factory.Language;
@@ -97,16 +91,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         protected virtual Binder CreateSymbolDefBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType)
         {
             return new SymbolDefBinder(parentBinder, syntax, symbolType, symbolType);
-        }
-
-        protected virtual Binder CreateSymbolCtrBinder(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType)
-        {
-            return this.CreateSymbolCtrBinderCore(parentBinder, syntax, symbolType);
-        }
-
-        protected virtual Binder CreateSymbolCtrBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType)
-        {
-            return new SymbolCtrBinder(parentBinder, syntax, symbolType);
         }
 
         protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes)

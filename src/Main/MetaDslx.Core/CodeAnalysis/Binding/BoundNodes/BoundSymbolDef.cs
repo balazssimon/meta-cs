@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         private Type _symbolType;
         private ImmutableArray<Symbol> _lazySymbols;
 
-        public BoundSymbolDef(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, Type symbolType, LanguageSyntaxNode syntax, bool hasErrors = false) 
+        public BoundSymbolDef(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, Type symbolType, LanguageSyntaxNode syntax, bool hasErrors = false) 
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
             _symbolType = symbolType;
@@ -28,13 +28,39 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 if (_lazySymbols.IsDefault)
                 {
-                    var names = this.GetChildNames();
-                    var symbols = ArrayBuilder<Symbol>.GetInstance();
-                    foreach (var name in names)
+                    var binder = this.GetBinder();
+                    var containerSymbol = binder.GetEnclosingDeclarationSymbol();
+                    var boundNames = this.GetChildNames();
+                    if (boundNames.Length == 0)
                     {
-                        symbols.AddRange(name.Symbols);
+                        var symbol = containerSymbol.GetSourceMember(this.Syntax);
+                        Debug.Assert(symbol != null);
+                        if (symbol != null)
+                        {
+                            ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray.Create<Symbol>(symbol));
+                        }
+                        else
+                        {
+                            ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, ImmutableArray<Symbol>.Empty);
+                        }
                     }
-                    ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, symbols.ToImmutableAndFree());
+                    else
+                    {
+                        var symbols = ArrayBuilder<Symbol>.GetInstance();
+                        foreach (var boundName in boundNames)
+                        {
+                            foreach (var qualifier in boundName.GetChildQualifiers())
+                            {
+                                var symbol = qualifier.Value as DeclaredSymbol;
+                                Debug.Assert(symbol != null);
+                                if (symbol != null)
+                                {
+                                    symbols.Add(symbol);
+                                }
+                            }
+                        }
+                        ImmutableInterlocked.InterlockedInitialize(ref _lazySymbols, symbols.ToImmutableAndFree());
+                    }
                 }
                 return _lazySymbols;
             }

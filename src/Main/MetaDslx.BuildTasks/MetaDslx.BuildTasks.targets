@@ -175,7 +175,7 @@
 
   <Target Name="MetaGeneratorCompile"
           DependsOnTargets="$(MetaGeneratorCompileDependsOn)"
-          Condition="'@(MetaGenerator)' != '' and '$(MetaDslxDisableMetaGeneratorGenerator)' != 'true'"
+          Condition="'@(MetaGenerator)' != ''"
           Inputs="@(MetaGenerator)"
           Outputs="@(MetaGeneratorOutputCodeFilesList);
                   $(IntermediateOutputPath)$(MetaGeneratorGenCodeFileNames);">
@@ -192,6 +192,7 @@
     </PropertyGroup>
 
     <MetaGeneratorGenerationTask
+      Condition="'$(MetaDslxDisableMetaGeneratorGenerator)' != 'true'"
       OutputPath="%(MetaGenerator.OutputDirectory)"
       OutputLocation="%(MetaGenerator.OutputLocation)"
       IntermediateOutputPath="$(IntermediateOutputPath)"
@@ -203,12 +204,12 @@
       <Output ItemName="MetaGeneratorGeneratedCodeFilesNonUnique" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
     </MetaGeneratorGenerationTask>
 
-    <NormalizeByMetadata Items="@(MetaGeneratorGeneratedCodeFilesNonUnique)" MetadataName="Filename">
+    <NormalizeByMetadata Items="@(MetaGeneratorGeneratedCodeFilesNonUnique)" MetadataName="Filename" Condition="'$(MetaDslxDisableMetaGeneratorGenerator)' != 'true'">
       <Output TaskParameter="NormalizedItems" ItemName="MetaGeneratorGeneratedCodeFiles"/>
     </NormalizeByMetadata>
 
     <WriteLinesToFile
-      Condition="'$(MetaGeneratorDesignTimeBuild)' != 'true'"
+      Condition="'$(MetaGeneratorDesignTimeBuild)' != 'true' and '$(MetaDslxDisableMetaGeneratorGenerator)' != 'true'"
       File="$(IntermediateOutputPath)$(MetaGeneratorGenCodeFileNames)"
       Lines="@(MetaGeneratorGeneratedCodeFiles)"
       Overwrite="true"/>
@@ -219,7 +220,7 @@
 
   <Target Name="MetaModelCompile"
           DependsOnTargets="$(MetaModelCompileDependsOn)"
-          Condition="'@(MetaModel)' != '' and '$(MetaDslxDisableMetaModelGenerator)' != 'true'"
+          Condition="'@(MetaModel)' != ''"
           Inputs="@(MetaModel)"
           Outputs="@(MetaModelOutputCodeFilesList);
                   $(IntermediateOutputPath)$(MetaModelGenCodeFileNames);">
@@ -236,6 +237,7 @@
     </PropertyGroup>
 
     <MetaModelGenerationTask
+      Condition="'$(MetaDslxDisableMetaModelGenerator)' != 'true'"
       OutputPath="%(MetaModel.OutputDirectory)"
       OutputLocation="%(MetaModel.OutputLocation)"
       IntermediateOutputPath="$(IntermediateOutputPath)"
@@ -248,12 +250,12 @@
       <Output ItemName="MetaModelGeneratedCodeFilesNonUnique" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
     </MetaModelGenerationTask>
 
-    <NormalizeByMetadata Items="@(MetaModelGeneratedCodeFilesNonUnique)" MetadataName="Filename">
+    <NormalizeByMetadata Items="@(MetaModelGeneratedCodeFilesNonUnique)" MetadataName="Filename" Condition="'$(MetaDslxDisableMetaModelGenerator)' != 'true'">
       <Output TaskParameter="NormalizedItems" ItemName="MetaModelGeneratedCodeFiles"/>
     </NormalizeByMetadata>
 
     <WriteLinesToFile
-      Condition="'$(MetaModelDesignTimeBuild)' != 'true'"
+      Condition="'$(MetaModelDesignTimeBuild)' != 'true' and '$(MetaDslxDisableMetaModelGenerator)' != 'true'"
       File="$(IntermediateOutputPath)$(MetaModelGenCodeFileNames)"
       Lines="@(MetaModelGeneratedCodeFiles)"
       Overwrite="true"/>
@@ -264,7 +266,7 @@
 
   <Target Name="Antlr4RoslynCompile"
           DependsOnTargets="$(Antlr4RoslynCompileDependsOn)"
-          Condition="'@(Antlr4Roslyn)' != '' and '$(MetaDslxDisableAntlr4RoslynGenerator)' != 'true'"
+          Condition="'@(Antlr4Roslyn)' != ''"
           Inputs="@(Antlr4Roslyn)"
           Outputs="@(Antlr4RoslynOutputCodeFilesList);
                   $(IntermediateOutputPath)$(Antlr4RoslynGenCodeFileNames);">
@@ -281,6 +283,7 @@
     </PropertyGroup>
 
     <Antlr4RoslynGenerationTask
+      Condition="'$(MetaDslxDisableAntlr4RoslynGenerator)' != 'true'"
       ToolPath="$(Antlr4ToolLocation)"
       JavaVendor="$(Antlr4JavaVendor)"
       JavaInstallation="$(Antlr4JavaInstallation)"
@@ -308,12 +311,12 @@
       <Output ItemName="Antlr4RoslynGeneratedCodeFilesNonUnique" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
     </Antlr4RoslynGenerationTask>
 
-    <NormalizeByMetadata Items="@(Antlr4RoslynGeneratedCodeFilesNonUnique)" MetadataName="Filename">
+    <NormalizeByMetadata Items="@(Antlr4RoslynGeneratedCodeFilesNonUnique)" MetadataName="Filename" Condition="'$(MetaDslxDisableAntlr4RoslynGenerator)' != 'true'">
       <Output TaskParameter="NormalizedItems" ItemName="Antlr4RoslynGeneratedCodeFiles"/>
     </NormalizeByMetadata>
     
     <WriteLinesToFile
-      Condition="'$(Antlr4RoslynDesignTimeBuild)' != 'true'"
+      Condition="'$(Antlr4RoslynDesignTimeBuild)' != 'true' and '$(MetaDslxDisableAntlr4RoslynGenerator)' != 'true'"
       File="$(IntermediateOutputPath)$(Antlr4RoslynGenCodeFileNames)"
       Lines="@(Antlr4RoslynGeneratedCodeFiles)"
       Overwrite="true"/>

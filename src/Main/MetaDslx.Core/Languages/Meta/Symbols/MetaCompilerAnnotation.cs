@@ -28,7 +28,6 @@ namespace MetaDslx.Languages.Meta
 
         public const string SymbolDef = nameof(SymbolDef);
         public const string SymbolUse = nameof(SymbolUse);
-        public const string SymbolCtr = nameof(SymbolCtr);
 
         public const string Token = nameof(Token);
 
@@ -39,7 +38,7 @@ namespace MetaDslx.Languages.Meta
                 Attribute,
                 Identifier, Qualifier, Value, EnumValue,
                 Property, Name, Scope,
-                SymbolDef, SymbolUse, SymbolCtr,
+                SymbolDef, SymbolUse, 
                 Token
             };
 
@@ -91,7 +90,6 @@ namespace MetaDslx.Languages.Meta
             DefaultProperties.Add(Root, "symbolType");
             DefaultProperties.Add(SymbolDef, "symbolType");
             DefaultProperties.Add(SymbolUse, "symbolType");
-            DefaultProperties.Add(SymbolCtr, "symbolType");
             DefaultProperties.Add(Property, "name");
             DefaultProperties.Add(Identifier, "name");
             DefaultProperties.Add(Value, "value");
@@ -302,7 +300,7 @@ namespace MetaDslx.Languages.Meta
         public string GetAnnotationParams()
         {
             string result = "";
-            if (this.Name == MetaCompilerAnnotationInfo.SymbolDef || this.Name == MetaCompilerAnnotationInfo.SymbolCtr)
+            if (this.Name == MetaCompilerAnnotationInfo.SymbolDef)
             {
                 if (this.HasProperty("symbolType"))
                 {

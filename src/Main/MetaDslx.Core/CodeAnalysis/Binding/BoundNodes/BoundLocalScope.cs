@@ -8,7 +8,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
     public class BoundLocalScope : BoundNode
     {
-        public BoundLocalScope(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundLocalScope(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
         }

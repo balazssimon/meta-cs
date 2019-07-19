@@ -295,13 +295,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
         public static bool IsDeclarationBoundary(this MetaCompilerAnnotations annots)
         {
             if (annots.IsDeclaration()) return false;
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolUse) || annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr) ||
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolUse) || 
                 annots.HasAnnotation(MetaCompilerAnnotationInfo.Value);
         }
 
         public static bool IsAnySymbol(this MetaCompilerAnnotations annots)
         {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolDef) || annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr) ||
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolDef) || 
                 annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolDef);
         }
 
@@ -355,14 +355,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Qualifier);
         }
 
+        public static bool IsSymbolDef(this MetaCompilerAnnotations annots)
+        {
+            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolDef);
+        }
+
         public static bool IsSymbolUse(this MetaCompilerAnnotations annots)
         {
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolUse);
-        }
-
-        public static bool IsSymbolCtr(this MetaCompilerAnnotations annots)
-        {
-            return annots.HasAnnotation(MetaCompilerAnnotationInfo.SymbolCtr);
         }
 
         public static bool IsValue(this MetaCompilerAnnotations annots)
@@ -375,26 +375,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Scope);
         }*/
 
-        public static string GetCanMerge(this MetaCompilerAnnotations annots)
+        public static string GetCanMerge(this MetaCompilerAnnotation annot)
         {
-            foreach (var annot in annots.Annotations)
+            foreach (var prop in annot.Properties)
             {
-                foreach (var prop in annot.Properties)
-                {
-                    if (prop.Name == "merge") return prop.Value;
-                }
+                if (prop.Name == "merge") return prop.Value;
             }
             return "false";
         }
 
-        public static string GetNestingProperty(this MetaCompilerAnnotations annots)
+        public static string GetNestingProperty(this MetaCompilerAnnotation annot)
         {
-            foreach (var annot in annots.Annotations)
+            foreach (var prop in annot.Properties)
             {
-                foreach (var prop in annot.Properties)
-                {
-                    if (prop.Name == "nestingProperty") return "\"" + prop.Value + "\"";
-                }
+                if (prop.Name == "nestingProperty") return "\"" + prop.Value + "\"";
             }
             return "null";
         }
@@ -413,14 +407,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             }
             return "null";
         }
-        public static string GetSymbolType(this MetaCompilerAnnotations annots)
+
+        public static string GetSymbolType(this MetaCompilerAnnotation annot)
         {
-            foreach (var annot in annots.Annotations)
+            foreach (var prop in annot.Properties)
             {
-                foreach (var prop in annot.Properties)
-                {
-                    if (prop.Name == "symbolType") return "typeof(Symbols." + prop.Value + ")";
-                }
+                if (prop.Name == "symbolType") return "typeof(Symbols." + prop.Value + ")";
             }
             return "null";
         }

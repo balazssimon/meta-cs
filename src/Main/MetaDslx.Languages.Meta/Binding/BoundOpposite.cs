@@ -15,7 +15,7 @@ namespace MetaDslx.Languages.Meta.Binding
 {
     public class BoundOpposite : BoundNode
     {
-        public BoundOpposite(MetaBoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors) 
+        public BoundOpposite(MetaBoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors) 
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
         }

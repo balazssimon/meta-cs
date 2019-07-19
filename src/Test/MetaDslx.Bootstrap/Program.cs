@@ -4,11 +4,9 @@ using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
-//using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.Languages.Soal;
-using MetaDslx.Languages.Soal.Symbols;
+//using MetaDslx.Languages.Soal;
 //using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -52,13 +50,13 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
-            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
-            //string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Soal.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Soal.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -153,7 +151,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            /*/
+            //*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Symbols);
             string generatedCsharpModel = mmgen.Generate();
             File.WriteAllText("Soal.txt", generatedCsharpModel);
@@ -162,7 +160,7 @@ namespace MetaDslx.Bootstrap
             //File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
             //*/
 
-            //*/
+            /*/
             //BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags = BinderFlags.None;
             ImmutableModel soalModel = SoalInstance.Model;

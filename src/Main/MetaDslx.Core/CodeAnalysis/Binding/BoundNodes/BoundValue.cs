@@ -10,7 +10,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private ImmutableArray<object> _values;
 
-        public BoundValue(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, object value, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundValue(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, object value, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
             _values = ImmutableArray.Create(value);

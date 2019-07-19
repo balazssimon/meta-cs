@@ -1,5 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Modeling;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace MetaDslx.Languages.Meta.Symbols
         public MetaAnnotations(Symbol container)
         {
             _container = container;
+            MetaDeclarationTreeBuilderVisitor m;
         }
 
         public static ImmutableModel Model

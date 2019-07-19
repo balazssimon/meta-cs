@@ -3,6 +3,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
+    <MetaDslxDisableMetaModelGenerator>false</MetaDslxDisableMetaModelGenerator>
   </PropertyGroup>
 
   <ItemGroup>

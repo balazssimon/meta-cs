@@ -15,7 +15,7 @@ using Roslyn.Utilities;
 
 namespace MetaDslx.CodeAnalysis.Symbols.Source
 {
-    public class SourceMemberSymbol : MemberSymbol, ISourceDeclarationSymbol
+    public class SourceMemberSymbol : MemberSymbol
     {
         private readonly Symbol _container;
         protected readonly MergedDeclaration _declaration;

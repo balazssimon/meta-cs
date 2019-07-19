@@ -22,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
     /// <summary>
     /// Represents a named type symbol whose members are declared in source.
     /// </summary>
-    public abstract class SourceMemberContainerTypeSymbol : NamedTypeSymbol, ISourceDeclarationSymbol
+    public abstract class SourceMemberContainerTypeSymbol : NamedTypeSymbol
     {
         private readonly NamespaceOrTypeSymbol _containingSymbol;
         protected readonly MergedDeclaration _declaration;

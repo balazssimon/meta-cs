@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         private string _lazyName;
         private string _lazyMetadataName;
 
-        public BoundIdentifier(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundIdentifier(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
         }

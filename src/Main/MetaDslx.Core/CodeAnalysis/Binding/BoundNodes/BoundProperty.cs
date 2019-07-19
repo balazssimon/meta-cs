@@ -15,7 +15,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         private object _value;
         private ImmutableArray<BoundValues> _boundValues;
 
-        public BoundProperty(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, string name, Optional<object> valueOpt, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundProperty(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, Optional<object> valueOpt, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
             _name = name;

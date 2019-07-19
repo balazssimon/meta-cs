@@ -12,7 +12,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
     {
         private readonly IOperation _expression;
 
-        protected BoundExpression(BoundKind kind, BoundTree boundTree, ImmutableArray<BoundNode> childBoundNodes, IOperation expression, LanguageSyntaxNode syntax, bool hasErrors = false)
+        protected BoundExpression(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, IOperation expression, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
             _expression = expression;
