@@ -5025,6 +5025,7 @@ template GenerateBoundNodeFactoryVisit(Antlr4ParserRule rule)
 ^
 public BoundNode Visit[rule.PlainName()]([rule.RedName()] node, ArrayBuilder<object> childBoundNodesForParent)
 {
+	if (node == null || node.IsMissing) return null;
 	[if (rule.HasBoundNodeAnnotations)]
 	if (this.State != BoundNodeFactoryState.InParent && this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
 	{
@@ -5099,6 +5100,7 @@ if (node.[elem.RedName()] != null)
 end template
 
 template GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(Antlr4ParserRuleElement elem, string childBoundNodesName)
+[if (elem.HasBoundNodeAnnotations && !elem.IsToken)]
 	[if (elem.IsList)]
 if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node))
 {
@@ -5110,6 +5112,9 @@ if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Posi
 	[GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName)]
 }
 	[end if]
+[else]
+[GenerateBoundNodeFactoryVisitChildrenElement(elem, childBoundNodesName)]
+[end if]
 end template
 
 template GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(Antlr4ParserRuleElement elem, string childBoundNodesName)

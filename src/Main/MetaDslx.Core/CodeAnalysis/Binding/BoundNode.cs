@@ -205,8 +205,12 @@ namespace MetaDslx.CodeAnalysis.Binding
                         }
                         else if (node is LanguageSyntaxNode syntax)
                         {
-                            var resolvedNode = _boundTree.GetUpperBoundNode(syntax);
-                            resolvedNodes.Add(resolvedNode);
+                            if (!syntax.IsMissing)
+                            {
+                                var resolvedNode = _boundTree.GetUpperBoundNode(syntax);
+                                Debug.Assert(resolvedNode != null);
+                                resolvedNodes.Add(resolvedNode);
+                            }
                         }
                         else
                         {
@@ -248,6 +252,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 foreach (var child in this.ChildBoundNodes)
                 {
+                    Debug.Assert(child != null);
                     child.ForceComplete(cancellationToken);
                 }
                 this.ForceCompleteNode(cancellationToken);

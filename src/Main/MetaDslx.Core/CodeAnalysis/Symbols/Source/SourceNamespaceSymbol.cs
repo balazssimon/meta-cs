@@ -309,7 +309,8 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var builder = new NameToSymbolMapBuilder(_declaration.Children.Length);
             foreach (var declaration in _declaration.Children)
             {
-                builder.Add(BuildSymbol(declaration, diagnostics));
+                var symbol = BuildSymbol(declaration, diagnostics);
+                if (symbol != null) builder.Add(symbol);
             }
 
             var result = builder.CreateMap();
@@ -394,13 +395,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 /*if (declaration.IsImplicit) return new ImplicitNamedTypeSymbol(this, (MergedTypeDeclaration)declaration, diagnostics);
                 else*/ return new SourceNamedTypeSymbol(this, declaration, diagnostics);
             }
-            else if (declaration.IsName)
+            else //if (declaration.IsName)
             {
                 // TODO:MetaDslx - allow names in a namespace
                 //return new SourceMemberSymbol(this, declaration, diagnostics);
                 return new SourceNamespaceSymbol(_module, this, declaration, diagnostics);
             }
-            throw ExceptionUtilities.UnexpectedValue(declaration.Kind);
+            //throw ExceptionUtilities.UnexpectedValue(declaration.Kind);
         }
 
         /// <summary>

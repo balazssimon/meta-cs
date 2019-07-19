@@ -6,8 +6,8 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
-//using MetaDslx.Languages.Soal;
-//using MetaDslx.Languages.Soal.Symbols;
+using MetaDslx.Languages.Soal;
+using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -50,7 +50,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
@@ -151,7 +151,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            //*/
+            /*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Symbols);
             string generatedCsharpModel = mmgen.Generate();
             File.WriteAllText("Soal.txt", generatedCsharpModel);
@@ -160,7 +160,7 @@ namespace MetaDslx.Bootstrap
             //File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
             //*/
 
-            /*/
+            //*/
             //BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags = BinderFlags.None;
             ImmutableModel soalModel = SoalInstance.Model;

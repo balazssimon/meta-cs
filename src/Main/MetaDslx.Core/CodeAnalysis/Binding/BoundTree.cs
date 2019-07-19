@@ -539,7 +539,11 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             results = GetBoundNodesFromMap(node);
 
-            if (results.IsDefaultOrEmpty)
+            if (!results.IsDefaultOrEmpty)
+            {
+                return results;
+            }
+            /*else
             {
                 var directlyBoundNode = binder.CreateBoundNodeForBoundTree(node, this);
                 AddBoundTreeForStandaloneSyntax(node, directlyBoundNode);
@@ -549,11 +553,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 {
                     return results;
                 }
-            }
-            else
-            {
-                return results;
-            }
+            }*/
 
             return ImmutableArray<BoundNode>.Empty;
         }
@@ -629,6 +629,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public BoundNode CreateBoundNode(LanguageSyntaxNode node, Binder binder)
         {
             Debug.Assert(node != null);
+            if (node.IsMissing) return null;
 
             var childBoundNodes = ArrayBuilder<object>.GetInstance();
             int position = node.Position;
