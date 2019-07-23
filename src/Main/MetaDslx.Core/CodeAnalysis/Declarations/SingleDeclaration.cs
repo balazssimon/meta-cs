@@ -4,6 +4,7 @@ using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -135,6 +136,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 {
                     return true;
                 }
+
+                // cannot merge anonymous symbols
+                if (thisDecl.Name == null) return false;
+                if (otherDecl.Name == null) return false;
 
                 // kind and name must match
                 if ((thisDecl.Kind != otherDecl.Kind) ||

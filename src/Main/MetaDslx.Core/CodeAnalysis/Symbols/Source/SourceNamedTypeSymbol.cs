@@ -20,7 +20,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private ImmutableArray<NamedTypeSymbol> _lazyDeclaredBases;
         private ImmutableArray<NamedTypeSymbol> _lazyBaseTypes;
 
-        public SourceNamedTypeSymbol(NamespaceOrTypeSymbol containingSymbol, MergedDeclaration declaration, DiagnosticBag diagnostics)
+        public SourceNamedTypeSymbol(DeclaredSymbol containingSymbol, MergedDeclaration declaration, DiagnosticBag diagnostics)
             : base(containingSymbol, declaration, diagnostics)
         {
             Debug.Assert(!declaration.IsImplicit && !declaration.IsSubmission && !declaration.IsScript);
@@ -121,7 +121,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             var baseTypes = ArrayBuilder<NamedTypeSymbol>.GetInstance();
             var baseTypeLocations = PooledDictionary<NamedTypeSymbol, Location>.GetInstance();
 
-            foreach (var decl in _declaration.Declarations)
+            foreach (var decl in this.MergedDeclaration.Declarations)
             {
                 ImmutableArray<NamedTypeSymbol> partBaseTypes = ResolveBaseTypes(newBasesBeingResolved, decl, diagnostics);
                 if (partBaseTypes.IsEmpty) continue;

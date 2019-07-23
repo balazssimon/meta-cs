@@ -54,9 +54,9 @@ namespace MetaDslx.Bootstrap
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
-            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
-            //string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Symbols\Soal.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Symbols\Soal.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -161,8 +161,8 @@ namespace MetaDslx.Bootstrap
             //*/
 
             //*/
-            //BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
-            BinderFlags binderFlags = BinderFlags.None;
+            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+            //BinderFlags binderFlags = BinderFlags.None;
             ImmutableModel soalModel = SoalInstance.Model;
             //string soalSource = File.ReadAllText(@"..\..\..\cinema.soal");
             string soalSource = File.ReadAllText(@"..\..\..\Wsdl01.soal");

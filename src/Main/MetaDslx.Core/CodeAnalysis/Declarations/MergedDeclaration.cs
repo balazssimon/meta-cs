@@ -21,7 +21,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private ImmutableArray<string> _lazyChildNames;
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
-            : base(declarations.IsEmpty ? string.Empty : declarations[0].Name,
+            : base(declarations.IsEmpty ? null : declarations[0].Name,
                   declarations.IsEmpty ? false : declarations[0].CanMerge,
                   declarations.IsEmpty ? string.Empty : declarations[0].ParentPropertyToAddTo)
         {
@@ -119,7 +119,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 {
                     var merged = new MergedDeclaration(memberGroup);
                     members.Add(merged);
-                    memberNames.Add(merged.Name);
+                    if (merged.Name != null) memberNames.Add(merged.Name);
                 }
             }
 

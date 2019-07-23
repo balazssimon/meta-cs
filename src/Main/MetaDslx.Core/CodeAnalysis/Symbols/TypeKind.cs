@@ -23,6 +23,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public const string NamedType = nameof(NamedType);
 
         /// <summary>
+        /// Type is an anonymous type.
+        /// </summary>
+        public const string AnonymousType = nameof(AnonymousType);
+
+        /// <summary>
         /// Type is an enum.
         /// </summary>
         public const string Enum = nameof(Enum);

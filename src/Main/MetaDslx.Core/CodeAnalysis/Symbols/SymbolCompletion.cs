@@ -41,13 +41,9 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public static readonly CompletionPart Members = new CompletionPart(nameof(Members));
         public static readonly CompletionPart TypeMembers = new CompletionPart(nameof(TypeMembers));
 
-        public static readonly CompletionPart StartMemberChecks = new CompletionPart(nameof(StartMemberChecks));
-        public static readonly CompletionPart FinishMemberChecks = new CompletionPart(nameof(FinishMemberChecks));
-
         public static readonly CompletionPart StartValidatingImports = new CompletionPart(nameof(StartValidatingImports));
         public static readonly CompletionPart FinishValidatingImports = new CompletionPart(nameof(FinishValidatingImports));
 
-        public static readonly CompletionPart NameToMembersMap = new CompletionPart(nameof(NameToMembersMap));
         public static readonly CompletionPart MembersCompleted = new CompletionPart(nameof(MembersCompleted));
 
         //public static readonly CompletionPart StartProperties = new CompletionPart(nameof(StartProperties));
@@ -64,17 +60,17 @@ namespace MetaDslx.CodeAnalysis.Symbols
             Combine(Attributes, StartValidatingReferencedAssemblies, FinishValidatingReferencedAssemblies, MembersCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolWithLocationAll =
-            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers, StartMemberChecks, FinishMemberChecks/*, StartProperties, FinishProperties*/);
+            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers/*, StartProperties, FinishProperties*/);
         public static readonly ImmutableHashSet<CompletionPart> NamedTypeSymbolAll = 
-            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers, StartMemberChecks, FinishMemberChecks/*, StartProperties, FinishProperties*/, StartBoundNode, FinishBoundNode, MembersCompleted);
+            Combine(Attributes, StartBaseTypes, FinishBaseTypes, Members, TypeMembers/*, StartProperties, FinishProperties*/, StartBoundNode, FinishBoundNode, MembersCompleted);
 
         public static readonly ImmutableHashSet<CompletionPart> ImportsAll =
             Combine(StartValidatingImports, FinishValidatingImports);
 
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolWithLocationAll =
-            Combine(Attributes, NameToMembersMap/*, StartProperties, FinishProperties*/);
+            Combine(Attributes, Members/*, StartProperties, FinishProperties*/);
         public static readonly ImmutableHashSet<CompletionPart> NamespaceSymbolAll =
-            Combine(Attributes, NameToMembersMap, MembersCompleted/*, StartProperties, FinishProperties*/, StartBoundNode, FinishBoundNode);
+            Combine(Attributes, Members, MembersCompleted/*, StartProperties, FinishProperties*/, StartBoundNode, FinishBoundNode);
 
         public static ImmutableHashSet<CompletionPart> Combine(params CompletionPart[] parts)
         {
@@ -96,11 +92,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             builder.AddLast(CompletionPart.FinishBaseTypes);
             builder.AddLast(CompletionPart.Members);
             builder.AddLast(CompletionPart.TypeMembers);
-            builder.AddLast(CompletionPart.StartMemberChecks);
-            builder.AddLast(CompletionPart.FinishMemberChecks);
             builder.AddLast(CompletionPart.StartValidatingImports);
             builder.AddLast(CompletionPart.FinishValidatingImports);
-            builder.AddLast(CompletionPart.NameToMembersMap);
             builder.AddLast(CompletionPart.AliasTarget);
             builder.AddLast(CompletionPart.MembersCompleted);
             builder.AddLast(CompletionPart.StartBoundNode);

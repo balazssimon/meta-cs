@@ -22,20 +22,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly SourceModuleSymbol _module;
         private readonly Symbol _container;
         private readonly MergedDeclaration _declaration;
-
-        private SymbolCompletionState _state;
-        private ImmutableArray<Location> _locations;
-        private Dictionary<string, ImmutableArray<Symbol>> _nameToMembersMap;
-        private Dictionary<string, ImmutableArray<NamedTypeSymbol>> _nameToTypeMembersMap;
-        private ImmutableArray<Symbol> _lazyAllMembers;
-        private ImmutableArray<NamedTypeSymbol> _lazyTypeMembersUnordered;
-
-        private const int LazyAllMembersIsSorted = 0x1;   // Set if "lazyAllMembers" is sorted.
-        private int _flags;
-
-        private LexicalSortKey _lazyLexicalSortKey = LexicalSortKey.NotInitialized;
-
-        private MutableSymbolBase _modelObject;
+        private readonly SymbolCompletionState _state;
+        private readonly MutableSymbolBase _modelObject;
+        private SourceDeclaration _sourceDeclaration;
 
         public SourceNamespaceSymbol(
             SourceModuleSymbol module, 
@@ -104,29 +93,24 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override string Name => _declaration.Name;
 
-        public override LexicalSortKey GetLexicalSortKey()
-        {
-            if (!_lazyLexicalSortKey.IsInitialized)
-            {
-                _lazyLexicalSortKey.SetFrom(_declaration.GetLexicalSortKey(this.DeclaringCompilation));
-            }
-            return _lazyLexicalSortKey;
-        }
-
-        public override ImmutableArray<Location> Locations
+        protected SourceDeclaration SourceDeclaration
         {
             get
             {
-                if (_locations.IsDefault)
+                if (_sourceDeclaration == null)
                 {
-                    ImmutableInterlocked.InterlockedCompareExchange(ref _locations,
-                        _declaration.NameLocations,
-                        default);
+                    Interlocked.CompareExchange(ref _sourceDeclaration, new SourceDeclaration(this, _declaration, _state), null);
                 }
-
-                return _locations;
+                return _sourceDeclaration;
             }
         }
+
+        public override LexicalSortKey GetLexicalSortKey()
+        {
+            return this.SourceDeclaration.GetLexicalSortKey();
+        }
+
+        public override ImmutableArray<Location> Locations => _declaration.NameLocations;
 
         public override ImmutableArray<SyntaxReference> DeclaringSyntaxReferences => _declaration.SyntaxReferences;
 
@@ -137,197 +121,63 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         internal override ImmutableArray<Symbol> GetMembersUnordered()
         {
-            var result = _lazyAllMembers;
-
-            if (result.IsDefault)
-            {
-                var members = StaticCast<Symbol>.From(this.GetNameToMembersMap().Flatten(null));  // don't sort.
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyAllMembers, members);
-                result = _lazyAllMembers;
-            }
-
-            return result.ConditionallyDeOrder();
+            return this.SourceDeclaration.GetMembersUnordered();
         }
 
         public override ImmutableArray<Symbol> GetMembers()
         {
-            if ((_flags & LazyAllMembersIsSorted) != 0)
-            {
-                return _lazyAllMembers;
-            }
-            else
-            {
-                var allMembers = this.GetMembersUnordered();
-
-                if (allMembers.Length >= 2)
-                {
-                    // The array isn't sorted. Sort it and remember that we sorted it.
-                    allMembers = allMembers.Sort(LexicalOrderSymbolComparer.Instance);
-                    ImmutableInterlocked.InterlockedExchange(ref _lazyAllMembers, allMembers);
-                }
-
-                ThreadSafeFlagOperations.Set(ref _flags, LazyAllMembersIsSorted);
-                return allMembers;
-            }
+            return this.SourceDeclaration.GetMembers();
         }
 
         public override ImmutableArray<Symbol> GetMembers(string name)
         {
-            ImmutableArray<Symbol> members;
-            return this.GetNameToMembersMap().TryGetValue(name, out members)
-                ? members
-                : ImmutableArray<Symbol>.Empty;
+            return this.SourceDeclaration.GetMembers(name);
         }
 
         internal override ImmutableArray<NamedTypeSymbol> GetTypeMembersUnordered()
         {
-            if (_lazyTypeMembersUnordered.IsDefault)
-            {
-                var members = this.GetNameToTypeMembersMap().Flatten();
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembersUnordered, members);
-            }
-
-            return _lazyTypeMembersUnordered;
+            return this.SourceDeclaration.GetTypeMembersUnordered();
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers()
         {
-            return this.GetNameToTypeMembersMap().Flatten(LexicalOrderSymbolComparer.Instance);
+            return this.SourceDeclaration.GetTypeMembers();
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name)
         {
-            ImmutableArray<NamedTypeSymbol> members;
-            return this.GetNameToTypeMembersMap().TryGetValue(name, out members)
-                ? members
-                : ImmutableArray<NamedTypeSymbol>.Empty;
+            return this.SourceDeclaration.GetTypeMembers(name);
         }
 
         public override ImmutableArray<NamedTypeSymbol> GetTypeMembers(string name, string metadataName)
         {
-            return GetTypeMembers(name).WhereAsArray(s => s.MetadataName == metadataName);
+            return this.SourceDeclaration.GetTypeMembers(name, metadataName);
+        }
+
+        public override bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return this.SourceDeclaration.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);
+        }
+
+        public override ImmutableArray<AttributeData> GetAttributes()
+        {
+            // TODO:MetaDslx
+            _state.NotePartComplete(CompletionPart.Attributes);
+            return ImmutableArray<AttributeData>.Empty;
         }
 
         public override ModuleSymbol ContainingModule => _module;
 
         public override NamespaceExtent Extent => new NamespaceExtent(_module);
 
-        private Dictionary<string, ImmutableArray<Symbol>> GetNameToMembersMap()
-        {
-            if (_nameToMembersMap == null)
-            {
-                var diagnostics = DiagnosticBag.GetInstance();
-                if (Interlocked.CompareExchange(ref _nameToMembersMap, MakeNameToMembersMap(diagnostics), null) == null)
-                {
-                    // NOTE: the following is not cancellable.  Once we've set the
-                    // members, we *must* do the following to make sure we're in a consistent state.
-                    this.DeclaringCompilation.DeclarationDiagnostics.AddRange(diagnostics);
-                    RegisterDeclaredCorTypes();
-
-                    // We may produce a SymbolDeclaredEvent for the enclosing namespace before events for its contained members
-                    DeclaringCompilation.SymbolDeclaredEvent(this);
-                    var wasSetThisThread = _state.NotePartComplete(CompletionPart.NameToMembersMap);
-                    Debug.Assert(wasSetThisThread);
-                }
-
-                diagnostics.Free();
-            }
-
-            return _nameToMembersMap;
-        }
-
-        private Dictionary<string, ImmutableArray<NamedTypeSymbol>> GetNameToTypeMembersMap()
-        {
-            if (_nameToTypeMembersMap == null)
-            {
-                // NOTE: This method depends on MakeNameToMembersMap() on creating a proper 
-                // NOTE: type of the array, see comments in MakeNameToMembersMap() for details
-                Interlocked.CompareExchange(ref _nameToTypeMembersMap, GetTypesFromMemberMap(GetNameToMembersMap()), null);
-            }
-            return _nameToTypeMembersMap;
-        }
-
-        private static Dictionary<string, ImmutableArray<NamedTypeSymbol>> GetTypesFromMemberMap(Dictionary<string, ImmutableArray<Symbol>> map)
-        {
-            var dictionary = new Dictionary<string, ImmutableArray<NamedTypeSymbol>>(StringOrdinalComparer.Instance);
-
-            foreach (var kvp in map)
-            {
-                ImmutableArray<Symbol> members = kvp.Value;
-
-                bool hasType = false;
-                bool hasNamespace = false;
-
-                foreach (var symbol in members)
-                {
-                    if (symbol.Kind == LanguageSymbolKind.NamedType)
-                    {
-                        hasType = true;
-                        if (hasNamespace)
-                        {
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        Debug.Assert(symbol.Kind == LanguageSymbolKind.Namespace);
-                        hasNamespace = true;
-                        if (hasType)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                if (hasType)
-                {
-                    if (hasNamespace)
-                    {
-                        dictionary.Add(kvp.Key, members.OfType<NamedTypeSymbol>().AsImmutable());
-                    }
-                    else
-                    {
-                        dictionary.Add(kvp.Key, members.As<NamedTypeSymbol>());
-                    }
-                }
-            }
-
-            return dictionary;
-        }
-
-        private Dictionary<string, ImmutableArray<Symbol>> MakeNameToMembersMap(DiagnosticBag diagnostics)
-        {
-            // NOTE: Even though the resulting map stores ImmutableArray<NamespaceOrTypeSymbol> as 
-            // NOTE: values if the name is mapped into an array of named types, which is frequently 
-            // NOTE: the case, we actually create an array of NamedTypeSymbol[] and wrap it in 
-            // NOTE: ImmutableArray<NamespaceOrTypeSymbol>
-            // NOTE: 
-            // NOTE: This way we can save time and memory in GetNameToTypeMembersMap() -- when we see that
-            // NOTE: a name maps into values collection containing types only instead of allocating another 
-            // NOTE: array of NamedTypeSymbol[] we downcast the array to ImmutableArray<NamedTypeSymbol>
-
-            var builder = new NameToSymbolMapBuilder(_declaration.Children.Length);
-            foreach (var declaration in _declaration.Children)
-            {
-                var symbol = BuildSymbol(declaration, diagnostics);
-                if (symbol != null) builder.Add(symbol);
-            }
-
-            var result = builder.CreateMap();
-
-            CheckMembers(this, result, diagnostics);
-
-            return result;
-        }
-
-        private static void CheckMembers(NamespaceSymbol @namespace, Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
+        public override void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
         {
             var memberOfMetadataName = new Dictionary<string, Symbol>();
             MergedNamespaceSymbol mergedAssemblyNamespace = null;
 
-            if (@namespace.ContainingAssembly.Modules.Length > 1)
+            if (this.ContainingAssembly.Modules.Length > 1)
             {
-                mergedAssemblyNamespace = @namespace.ContainingAssembly.GetAssemblyNamespace(@namespace) as MergedNamespaceSymbol;
+                mergedAssemblyNamespace = this.ContainingAssembly.GetAssemblyNamespace(this) as MergedNamespaceSymbol;
             }
 
             foreach (var name in result.Keys)
@@ -347,7 +197,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         }
                         else
                         {
-                            diagnostics.Add(InternalErrorCode.ERR_DuplicateNameInNS, symbol.Locations.FirstOrNone(), name, @namespace);
+                            diagnostics.Add(InternalErrorCode.ERR_DuplicateNameInNS, symbol.Locations.FirstOrNone(), name, this);
                         }
                         memberOfMetadataName[metadataName] = symbol;
                     }
@@ -356,7 +206,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         // Check for collision with declarations from added modules.
                         foreach (NamespaceSymbol constituent in mergedAssemblyNamespace.ConstituentNamespaces)
                         {
-                            if ((object)constituent != (object)@namespace)
+                            if ((object)constituent != (object)this)
                             {
                                 // For whatever reason native compiler only detects conflicts against types.
                                 // It doesn't complain when source declares a type with the same name as 
@@ -383,164 +233,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             }
         }
 
-        protected virtual Symbol BuildSymbol(MergedDeclaration declaration, DiagnosticBag diagnostics)
-        {
-            if (declaration.IsNamespace)
-            {
-                return new SourceNamespaceSymbol(_module, this, declaration, diagnostics);
-            }
-            else if (declaration.IsType)
-            {
-                // TODO:MetaDslx
-                /*if (declaration.IsImplicit) return new ImplicitNamedTypeSymbol(this, (MergedTypeDeclaration)declaration, diagnostics);
-                else*/ return new SourceNamedTypeSymbol(this, declaration, diagnostics);
-            }
-            else //if (declaration.IsName)
-            {
-                // TODO:MetaDslx - allow names in a namespace
-                //return new SourceMemberSymbol(this, declaration, diagnostics);
-                return new SourceNamespaceSymbol(_module, this, declaration, diagnostics);
-            }
-            //throw ExceptionUtilities.UnexpectedValue(declaration.Kind);
-        }
-
-        /// <summary>
-        /// Register COR types declared in this namespace, if any, in the COR types cache.
-        /// </summary>
-        private void RegisterDeclaredCorTypes()
-        {
-            AssemblySymbol containingAssembly = ContainingAssembly;
-
-            if (containingAssembly.KeepLookingForDeclaredSpecialTypes)
-            {
-                // Register newly declared COR types
-                foreach (var array in _nameToMembersMap.Values)
-                {
-                    foreach (var member in array)
-                    {
-                        var type = member as NamedTypeSymbol;
-
-                        if ((object)type != null && type.SpecialType != SpecialType.None)
-                        {
-                            containingAssembly.RegisterDeclaredSpecialType(type);
-
-                            if (!containingAssembly.KeepLookingForDeclaredSpecialTypes)
-                            {
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public override bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (this.IsGlobalNamespace)
-            {
-                return true;
-            }
-
-            // Check if any namespace declaration block intersects with the given tree/span.
-            foreach (var declaration in _declaration.Declarations)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var declarationSyntaxRef = declaration.SyntaxReference;
-                if (declarationSyntaxRef.SyntaxTree != tree)
-                {
-                    continue;
-                }
-
-                if (!definedWithinSpan.HasValue)
-                {
-                    return true;
-                }
-
-                var syntax = declarationSyntaxRef.GetSyntax(cancellationToken);
-                if (syntax.FullSpan.IntersectsWith(definedWithinSpan.Value))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private struct NameToSymbolMapBuilder
-        {
-            private readonly Dictionary<string, object> _dictionary;
-
-            public NameToSymbolMapBuilder(int capacity)
-            {
-                _dictionary = new Dictionary<string, object>(capacity, StringOrdinalComparer.Instance);
-            }
-
-            public void Add(Symbol symbol)
-            {
-                string name = symbol.Name;
-                if (name == null) name = string.Empty;
-                object item;
-                if (_dictionary.TryGetValue(name, out item))
-                {
-                    var builder = item as ArrayBuilder<Symbol>;
-                    if (builder == null)
-                    {
-                        builder = ArrayBuilder<Symbol>.GetInstance();
-                        builder.Add((Symbol)item);
-                        _dictionary[name] = builder;
-                    }
-                    builder.Add(symbol);
-                }
-                else
-                {
-                    _dictionary[name] = symbol;
-                }
-            }
-
-            public Dictionary<String, ImmutableArray<Symbol>> CreateMap()
-            {
-                var result = new Dictionary<String, ImmutableArray<Symbol>>(_dictionary.Count, StringOrdinalComparer.Instance);
-
-                foreach (var kvp in _dictionary)
-                {
-                    object value = kvp.Value;
-                    ImmutableArray<Symbol> members;
-
-                    var builder = value as ArrayBuilder<Symbol>;
-                    if (builder != null)
-                    {
-                        Debug.Assert(builder.Count > 1);
-                        bool hasNamespaces = false;
-                        for (int i = 0; (i < builder.Count) && !hasNamespaces; i++)
-                        {
-                            hasNamespaces |= (builder[i].Kind == LanguageSymbolKind.Namespace);
-                        }
-
-                        members = builder.ToImmutable();
-
-                        builder.Free();
-                    }
-                    else
-                    {
-                        var symbol = (Symbol)value;
-                        members = ImmutableArray.Create<Symbol>(symbol);
-                    }
-
-                    result.Add(kvp.Key, members);
-                }
-
-                return result;
-            }
-        }
-
-        public override ImmutableArray<AttributeData> GetAttributes()
-        {
-            // TODO:MetaDslx
-            _state.NotePartComplete(CompletionPart.Attributes);
-            return ImmutableArray<AttributeData>.Empty;
-        }
-
         #region completion
 
         public sealed override bool RequiresCompletion
@@ -558,9 +250,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                 {
                     GetAttributes();
                 }
-                else if (incompletePart == CompletionPart.NameToMembersMap)
+                else if (incompletePart == CompletionPart.Members)
                 {
-                    GetNameToMembersMap();
+                    this.SourceDeclaration.GetMembersByName();
                 }
                 else if (incompletePart == CompletionPart.MembersCompleted)
                 {

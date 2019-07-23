@@ -55,7 +55,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         public override DeclaredSymbol GetDeclarationSymbol()
         {
-            return this.LastDeclaredSymbol;
+            var result = this.LastDeclaredSymbol;
+            Debug.Assert(result != null);
+            return result;
         }
 
         public override void InitializeQualifierSymbol(BoundQualifier qualifier)

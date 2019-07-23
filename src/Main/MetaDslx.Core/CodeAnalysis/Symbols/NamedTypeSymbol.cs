@@ -94,8 +94,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return GetMembersUnordered().WhereAsArray(IsStaticMember);
         }
 
-        protected static Func<Symbol, bool> IsInstanceMember = symbol => !symbol.IsStatic;
-        protected static Func<Symbol, bool> IsStaticMember = symbol => symbol.IsStatic;
+        internal static Func<Symbol, bool> IsInstanceMember = symbol => !symbol.IsStatic;
+        internal static Func<Symbol, bool> IsStaticMember = symbol => symbol.IsStatic;
 
         public virtual MethodSymbol GetScriptInitializer()
         {

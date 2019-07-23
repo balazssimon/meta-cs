@@ -1649,34 +1649,6 @@ namespace MetaDslx.CodeAnalysis
             return result;
         }
 
-        /// <summary>
-        /// Returns a new Symbol representing a constructed symbol.
-        /// </summary>
-        internal Symbol CreateConstructedSymbol(SyntaxReference syntaxReference, ModelSymbolInfo symbolInfo, ImmutableArray<BoundProperty> properties)
-        {
-            var modelObject = symbolInfo.CreateMutable(this.ModelBuilder, true);
-            foreach (var boundProperty in properties)
-            {
-                var prop = modelObject.MGetProperty(boundProperty.Name);
-                foreach (var value in boundProperty.Values)
-                {
-                    var symbol = value as Symbol;
-                    if (symbol != null)
-                    {
-                        if (symbol.ModelObject != null)
-                        {
-                            modelObject.MAdd(prop, symbol.ModelObject);
-                        }
-                    }
-                    else
-                    {
-                        modelObject.MAdd(prop, value);
-                    }
-                }
-            }
-            return new SourceConstructedTypeSymbol(this.SourceAssembly, syntaxReference, modelObject);
-        }
-
         private protected override bool IsSymbolAccessibleWithinCore(
             ISymbol symbol,
             ISymbol within,

@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.CodeAnalysis.Declarations;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -88,6 +89,16 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // default implementation does a post-filter. We can override this if its a performance burden, but 
             // experience is that it won't be.
             return GetTypeMembers(name).WhereAsArray(t => t.MetadataName == metadataName);
+        }
+
+        public virtual MergedDeclaration GetMergedDeclaration()
+        {
+            return null;
+        }
+
+        public virtual void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
+        {
+
         }
 
         /// <summary>

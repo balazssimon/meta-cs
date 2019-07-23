@@ -166,11 +166,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return null;
         }
 
-        public virtual NamespaceSymbol GetNestedNamespace(LanguageSyntaxNode name)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Get all the members of this symbol that are namespaces.
         /// </summary>
