@@ -18,7 +18,7 @@
       MSBuild tooling for the MetaDslx metamodeling platform.
     </PackageDescription>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageOutputPath>..\..\..\install\</PackageOutputPath>
+    <PackageOutputPath>..\..\..\..\..\nuget\</PackageOutputPath>
     <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>

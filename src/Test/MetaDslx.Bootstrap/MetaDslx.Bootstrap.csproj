@@ -12,13 +12,9 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Antlr4.CodeGenerator" Version="4.6.6">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+  <!--ItemGroup>
     <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
-  </ItemGroup>
+  </ItemGroup-->
 
   <ItemGroup>
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
@@ -26,12 +22,13 @@
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.Core\MetaDslx.Core.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.BuildTasks\MetaDslx.BuildTasks.csproj" />
     <ProjectReference Include="..\..\Samples\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="All"/>
-    <!--PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" /-->
+    <!--PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="All"/-->
+    <!-->PackageReference Include="MetaDslx.CodeAnalysis" Version="$(BootstrapVersion)" /-->
   </ItemGroup>
 
 </Project>

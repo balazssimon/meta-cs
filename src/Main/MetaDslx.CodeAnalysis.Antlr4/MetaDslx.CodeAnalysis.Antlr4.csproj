@@ -5,6 +5,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MetaDslx</RootNamespace>
     <IsPackable>false</IsPackable>
+    <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,30 @@
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4Roslyn Update="Languages\Antlr4Roslyn\Syntax\Antlr4RoslynLexer.ag4">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Languages\Antlr4Roslyn\Syntax\Antlr4RoslynParser.ag4">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Languages\Antlr4Roslyn\Syntax\LexBasic.ag4">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Languages\MetaGenerator\Syntax\MetaGeneratorLexer.ag4">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Languages\MetaGenerator\Syntax\MetaGeneratorParser.ag4">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </Antlr4Roslyn>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MetaGenerator Update="Languages\Antlr4Roslyn\Generator\CompilerGenerator.mgen">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </MetaGenerator>
   </ItemGroup>
 
 </Project>

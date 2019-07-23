@@ -5089,31 +5089,29 @@ else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFacto
 end template
 
 template GenerateBoundNodeFactoryVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem, string childBoundNodesName)
-[if (elem.ContainsBoundNodeAnnotations && !elem.IsToken && !elem.IsFixedTokenAltBlock)]
+[if (elem.ContainsBoundNodeAnnotations)]
+	[if (!elem.IsToken && !elem.IsFixedTokenAltBlock)]
 if (node.[elem.RedName()] != null)
 {
 	[GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(elem, childBoundNodesName)]
 }
-[else]
+	[else]
 [GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(elem, childBoundNodesName)]
+	[end if]
 [end if]
 end template
 
 template GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(Antlr4ParserRuleElement elem, string childBoundNodesName)
-[if (elem.HasBoundNodeAnnotations && !elem.IsToken)]
-	[if (elem.IsList)]
+[if (elem.IsList)]
 if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node))
 {
 	[GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName)]
 }
-	[else]
+[else]
 if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.[elem.RedName()]))
 {
 	[GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName)]
 }
-	[end if]
-[else]
-[GenerateBoundNodeFactoryVisitChildrenElement(elem, childBoundNodesName)]
 [end if]
 end template
 
@@ -5234,14 +5232,101 @@ template GenerateIsBindableNodeVisit(Antlr4ParserRule rule)
 ^
 public bool Visit[rule.PlainName()]([rule.RedName()] node)
 {
+	var state = this.State;
+	if (state == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+	else if (state == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
 	[if (rule.HasBoundNodeAnnotations)]
-	return true;
-	[else]
-	return false;
+	if (state == BoundNodeFactoryState.InNode) 
+	{
+		return true;
+	}
 	[end if]
+	if (state == BoundNodeFactoryState.InParent)
+	{
+		[GenerateIsBindableNodeVisitChildren(rule)]
+	}
+	return false;
 }
 end template
 
+template GenerateIsBindableNodeVisitChildren(Antlr4ParserRule rule)
+[if (rule.IsSimpleAlt)]
+	[loop(elem:rule.Elements where elem.ContainsBoundNodeAnnotations)]
+[GenerateIsBindableNodeVisitChildrenElementWithNullCheck(elem)]
+	[end loop] 
+[else]
+	[loop(elem:rule.AllElements where elem.ContainsBoundNodeAnnotations)]
+[GenerateIsBindableNodeVisitChildrenElementWithNullCheck(elem)]
+	[end loop]    
+[end if]
+end template
+
+template GenerateIsBindableNodeVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem)
+[if (elem.ContainsBoundNodeAnnotations)]
+	[if (!elem.IsToken && !elem.IsFixedTokenAltBlock)]
+if (node.[elem.RedName()] != null)
+{
+	[GenerateIsBindableNodeVisitChildrenElementWithLookupPosition(elem)]
+}
+	[else]
+[GenerateIsBindableNodeVisitChildrenElementWithLookupPosition(elem)]
+	[end if]
+[end if]
+end template
+
+template GenerateIsBindableNodeVisitChildrenElementWithLookupPosition(Antlr4ParserRuleElement elem)
+[if (elem.IsList)]
+if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()].Node))
+[else]
+if (LookupPosition.IsInNode(this.Position, node.[elem.RedName()]))
+[end if]
+{
+	[GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(elem)]
+}
+end template
+
+template GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(Antlr4ParserRuleElement elem)
+[if (elem.HasBoundNodeAnnotations)]
+return true;
+[else]
+	[if (elem.IsList)]
+foreach (var item in node.[elem.RedName()])
+{
+	if (LookupPosition.IsInNode(this.Position, item))
+	{
+		return this.Visit(item);
+	}
+}
+	[else if (elem.IsFixedTokenAltBlock)]
+[GenerateIsBindableNodeVisitTokenAltBody(elem)]
+	[else if (elem.IsToken)]
+[GenerateIsBindableNodeVisitTokenBody(elem)]
+	[else]
+return this.Visit(node.[elem.RedName()]);
+	[end if]
+[end if]
+end template
+
+template GenerateIsBindableNodeVisitTokenAltBody(Antlr4ParserRuleElement elem)
+[if (hasloop(alt:elem.BlockItems where alt.HasBoundNodeAnnotations))]
+switch (node.[elem.RedName()].GetKind().Switch())
+{
+		[loop (alt:elem.BlockItems where alt.HasBoundNodeAnnotations)]
+	case [Properties.LanguageName]SyntaxKind.[alt.RedName()]:
+		[end loop]
+		return true;
+	default:
+		return false;
+}
+[end if]
+end template
+
+template GenerateIsBindableNodeVisitTokenBody(Antlr4ParserRuleElement elem)
+if (node.[elem.RedName()].GetKind() == [Properties.LanguageName]SyntaxKind.[elem.Type])
+{
+	return true;
+}
+end template
 
 template GenerateSymbolBuilder()
 using System;

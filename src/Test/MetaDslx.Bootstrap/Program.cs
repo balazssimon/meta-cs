@@ -39,10 +39,10 @@ namespace MetaDslx.Bootstrap
             //a4l.Compile();
             //Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Main\MetaDslx.Languages.Meta\Syntax\InternalSyntax\MetaParser.ag4", "MetaDslx.Languages.Meta");
             //a4p.Compile();
-            //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\SoalLexer.ag4", "MetaDslx.Languages.Soal");
+            //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Syntax\InternalSyntax\SoalLexer.ag4", "MetaDslx.Languages.Soal");
             //a4l.Compile();
-            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\SoalParser.ag4", "MetaDslx.Languages.Soal");
-            a4p.Compile();
+            //Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Syntax\InternalSyntax\SoalParser.ag4", "MetaDslx.Languages.Soal");
+            //a4p.Compile();
             //*/
 
             /*/
@@ -54,9 +54,9 @@ namespace MetaDslx.Bootstrap
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
-            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Soal.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Symbols\Soal.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);

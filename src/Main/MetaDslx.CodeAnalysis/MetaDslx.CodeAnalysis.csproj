@@ -18,7 +18,7 @@
       MetaDslx metamodeling platform for creating Roslyn-style ANTLR4-based compilers.
     </PackageDescription>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageOutputPath>..\..\..\install\</PackageOutputPath>
+    <PackageOutputPath>..\..\..\..\..\nuget\</PackageOutputPath>
     <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -45,6 +45,7 @@
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -52,11 +53,13 @@
     <None Include="bin\Debug\netstandard2.0\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
     <None Include="bin\Debug\netstandard2.0\MetaDslx.Core.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
     <None Include="bin\Debug\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="bin\Debug\netstandard2.0\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
 
     <None Include="bin\Debug\net461\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Debug\net461\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Debug\net461\MetaDslx.Core.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Debug\net461\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\net461"/>
+    <None Include="bin\Debug\net461\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="lib\net461"/>
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -64,11 +67,13 @@
     <None Include="bin\Release\netstandard2.0\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
     <None Include="bin\Release\netstandard2.0\MetaDslx.Core.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
     <None Include="bin\Release\netstandard2.0\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
+    <None Include="bin\Release\netstandard2.0\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="lib\netstandard2.0"/>
 
     <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.Common.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.CSharp.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Release\net461\MetaDslx.Core.dll" Pack="true" PackagePath="lib\net461"/>
     <None Include="bin\Release\net461\MetaDslx.CodeAnalysis.Antlr4.dll" Pack="true" PackagePath="lib\net461"/>
+    <None Include="bin\Release\net461\MetaDslx.Languages.Meta.dll" Pack="true" PackagePath="lib\net461"/>
   </ItemGroup>
 
   <ItemGroup>

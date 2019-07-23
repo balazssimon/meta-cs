@@ -9,6 +9,13 @@ using System.Text;
 
 namespace MetaDslx.CodeAnalysis.Binding
 {
+    public enum BoundNodeFactoryState
+    {
+        InParent,
+        InNode,
+        InChild
+    }
+
     public abstract class BoundNodeFactoryVisitor : SyntaxVisitor<ArrayBuilder<object>, BoundNode>
     {
         private readonly BoundTree _boundTree;
@@ -24,13 +31,6 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             _position = position;
             _state = state;
-        }
-
-        public enum BoundNodeFactoryState
-        {
-            InParent,
-            InNode,
-            InChild
         }
 
         protected Language Language => _boundTree.Language;

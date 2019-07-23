@@ -29,4 +29,10 @@
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <MetaModel Update="Languages\Meta\Symbols\ImmutableMetaModel.mm">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </MetaModel>
+  </ItemGroup>
+
 </Project>

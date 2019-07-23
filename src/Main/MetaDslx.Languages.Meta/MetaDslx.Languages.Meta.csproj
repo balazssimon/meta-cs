@@ -28,5 +28,14 @@
     <ProjectReference Include="..\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\MetaDslx.Core\MetaDslx.Core.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Antlr4Roslyn Update="Syntax\InternalSyntax\MetaLexer.ag4">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Syntax\InternalSyntax\MetaParser.ag4">
+      <OutputLocation>CurrentDirectory</OutputLocation>
+    </Antlr4Roslyn>
+  </ItemGroup>
 
 </Project>

@@ -310,7 +310,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return _map.TryGetValue(syntax, out result) ? result : default(ImmutableArray<BoundNode>);
         }
 
-        private void AddBoundTreeForStandaloneSyntax(SyntaxNode syntax, BoundNode bound)
+        private void AddBoundTreeForStandaloneSyntax(LanguageSyntaxNode syntax, BoundNode bound)
         {
             bool alreadyInTree = false;
 
@@ -342,12 +342,12 @@ namespace MetaDslx.CodeAnalysis.Binding
         // We might not have actually been given a bindable expression or statement; the caller can
         // give us variable declaration nodes, for example. If we're not at an expression or
         // statement, back up until we find one.
-        public LanguageSyntaxNode GetBindingRoot(LanguageSyntaxNode syntax)
+        public LanguageSyntaxNode GetBindingRoot(LanguageSyntaxNode node)
         {
-            Debug.Assert(syntax != null);
+            Debug.Assert(node != null);
 
 #if DEBUG
-            for (LanguageSyntaxNode current = syntax; current != this.Root; current = current.ParentOrStructuredTriviaParent)
+            for (LanguageSyntaxNode current = node; current != this.Root; current = current.ParentOrStructuredTriviaParent)
             {
                 // make sure we never go out of Root
                 Debug.Assert(current != null, "How did we get outside the root?");
@@ -355,12 +355,14 @@ namespace MetaDslx.CodeAnalysis.Binding
 #endif
 
             IsBindableNodeVisitor visitor = _isBindableNodeVisitorPool.Allocate();
-            visitor.Initialize(syntax.Position, true);
-            var node = syntax;
             bool isBindable = false;
             while ((object)node != null)
             {
-                isBindable = visitor.Visit(node);
+                int position = node.Position;
+                var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
+                var nodeToVisit = node.Parent != null ? node.Parent : node;
+                visitor.Initialize(position, true, state);
+                isBindable = visitor.Visit(nodeToVisit);
                 if (isBindable) break;
                 else node = node.ParentOrStructuredTriviaParent;
             }
@@ -371,17 +373,19 @@ namespace MetaDslx.CodeAnalysis.Binding
 
 
         // some nodes don't have direct semantic meaning by themselves and so we need to bind a different node that does
-        internal protected LanguageSyntaxNode GetBindableSyntaxNode(LanguageSyntaxNode syntax)
+        internal protected LanguageSyntaxNode GetBindableSyntaxNode(LanguageSyntaxNode node)
         {
-            Debug.Assert(syntax != null);
+            Debug.Assert(node != null);
 
             IsBindableNodeVisitor visitor = _isBindableNodeVisitorPool.Allocate();
-            visitor.Initialize(syntax.Position, false);
-            var node = syntax;
             bool isBindable = false;
             while ((object)node != null)
             {
-                isBindable = visitor.Visit(node);
+                int position = node.Position;
+                var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
+                var nodeToVisit = node.Parent != null ? node.Parent : node;
+                visitor.Initialize(position, false, state);
+                isBindable = visitor.Visit(nodeToVisit);
                 if (isBindable) break;
                 else node = node.ParentOrStructuredTriviaParent;
             }
@@ -413,25 +417,31 @@ namespace MetaDslx.CodeAnalysis.Binding
             return bindableParent;
         }
 
-        protected virtual bool IsBindableRoot(SyntaxNodeOrToken syntax)
+        protected virtual bool IsBindableRoot(LanguageSyntaxNode node)
         {
-            Debug.Assert(syntax != null);
+            Debug.Assert(node != null);
 
             IsBindableNodeVisitor visitor = _isBindableNodeVisitorPool.Allocate();
-            visitor.Initialize(syntax.Position, true);
-            bool result = visitor.Visit(syntax.NodeOrParent);
+            int position = node.Position;
+            var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
+            var nodeToVisit = node.Parent != null ? node.Parent : node;
+            visitor.Initialize(position, true, state);
+            bool result = visitor.Visit(nodeToVisit);
             _isBindableNodeVisitorPool.Free(visitor);
 
             return result;
         }
 
-        protected virtual bool IsBindableNode(SyntaxNodeOrToken syntax)
+        protected virtual bool IsBindableNode(LanguageSyntaxNode node)
         {
-            Debug.Assert(syntax != null);
+            Debug.Assert(node != null);
 
             IsBindableNodeVisitor visitor = _isBindableNodeVisitorPool.Allocate();
-            visitor.Initialize(syntax.Position, false);
-            bool result = visitor.Visit(syntax.NodeOrParent);
+            int position = node.Position;
+            var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
+            var nodeToVisit = node.Parent != null ? node.Parent : node;
+            visitor.Initialize(position, true, state);
+            bool result = visitor.Visit(nodeToVisit);
             _isBindableNodeVisitorPool.Free(visitor);
 
             return result;
@@ -633,7 +643,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
             var childBoundNodes = ArrayBuilder<object>.GetInstance();
             int position = node.Position;
-            var state = node.Parent != null ? BoundNodeFactoryVisitor.BoundNodeFactoryState.InParent : BoundNodeFactoryVisitor.BoundNodeFactoryState.InNode;
+            var state = node.Parent != null ? BoundNodeFactoryState.InParent : BoundNodeFactoryState.InNode;
             var nodeToVisit = node.Parent != null ? node.Parent : node;
 
             BoundNodeFactoryVisitor visitor = _boundNodeFactoryVisitorPool.Allocate();

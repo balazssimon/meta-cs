@@ -15,7 +15,7 @@
 	const MetaPrimitiveType Bool;
 	const MetaPrimitiveType Void;
 	const MetaPrimitiveType ModelObject;
-
+	
 	const MetaAttribute NameAttribute;
 	const MetaAttribute TypeAttribute;
 	const MetaAttribute ScopeAttribute;
