@@ -170,15 +170,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             }
         }
 
-        internal override bool KeepLookingForDeclaredSpecialTypes
-        {
-            get
-            {
-                // RetargetingAssemblySymbol never represents Core library. 
-                return false;
-            }
-        }
-
         public override ImmutableArray<Location> Locations
         {
             get
@@ -208,12 +199,14 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
         /// <param name="type"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
+        public override Symbol GetDeclaredSpecialSymbol(object key)
         {
             // Cor library should not have any references and, therefore, should never be
             // wrapped by a RetargetingAssemblySymbol.
             throw ExceptionUtilities.Unreachable;
         }
+
+        public override ImmutableArray<Symbol> DeclaredSpecialSymbols => throw ExceptionUtilities.Unreachable;
 
         internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
         {

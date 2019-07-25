@@ -16,6 +16,7 @@ using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Symbols;
+using System.Diagnostics;
 
 namespace MetaDslx.Languages.Meta
 {
@@ -45,15 +46,18 @@ namespace MetaDslx.Languages.Meta
             return MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)syntaxTree, scriptClassName, isSubmission);
         }
 
-		public override ImmutableDictionary<string, Symbol> CreateSpecialSymbols(SourceAssemblySymbol assembly)
+        public override Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
         {
-            var result = ImmutableDictionary.CreateBuilder<string, Symbol>();
-            foreach (var specialType in MetaConstants.Types)
+            if (module is MetaModuleSymbol metaModule && metaModule.Models.Contains(MetaAnnotations.Model))
             {
-                var symbol = new MetaNamedTypeSymbol(specialType, assembly);
-                result.Add(specialType.MName, symbol);
+                var specialType = MetaConstants.Types.FirstOrDefault(c => c.MName == key.ToString());
+                if (specialType != null)
+                {
+                    var symbol = new MetaNamedTypeSymbol(specialType, module);
+                    return symbol;
+                }
             }
-            return result.ToImmutable();
+            return null;
         }
 
         /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)

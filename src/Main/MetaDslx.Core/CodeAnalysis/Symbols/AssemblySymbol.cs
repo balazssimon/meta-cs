@@ -353,31 +353,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         /// <summary>
-        /// Lookup declaration for predefined CorLib type in this Assembly.
+        /// Lookup declaration for predefined symbol in this Assembly.
         /// </summary>
-        /// <returns>The symbol for the pre-defined type or an error type if the type is not defined in the core library.</returns>
-        internal abstract NamedTypeSymbol GetDeclaredSpecialType(SpecialType type);
+        /// <returns>The symbol for the pre-defined symbol or an error type if the symbol is not defined in the core library.</returns>
+        public abstract Symbol GetDeclaredSpecialSymbol(object key);
 
-        /// <summary>
-        /// Register declaration of predefined CorLib type in this Assembly.
-        /// </summary>
-        /// <param name="corType"></param>
-        internal virtual void RegisterDeclaredSpecialType(NamedTypeSymbol corType)
-        {
-            throw ExceptionUtilities.Unreachable;
-        }
-
-        /// <summary>
-        /// Continue looking for declaration of predefined CorLib type in this Assembly
-        /// while symbols for new type declarations are constructed.
-        /// </summary>
-        internal virtual bool KeepLookingForDeclaredSpecialTypes
-        {
-            get
-            {
-                throw ExceptionUtilities.Unreachable;
-            }
-        }
+        public abstract ImmutableArray<Symbol> DeclaredSpecialSymbols { get; }
 
         /// <summary>
         /// Figure out if the target runtime supports default interface implementation.
@@ -451,13 +432,15 @@ namespace MetaDslx.CodeAnalysis.Symbols
         public abstract bool MightContainExtensionMethods { get; }
 
         /// <summary>
-        /// Gets the symbol for the pre-defined type from core library associated with this assembly.
+        /// Gets the symbol for the pre-defined symbol from this assembly.
         /// </summary>
-        /// <returns>The symbol for the pre-defined type or an error type if the type is not defined in the core library.</returns>
-        internal NamedTypeSymbol GetSpecialType(SpecialType type)
+        /// <returns>The symbol for the pre-defined symbol or an error type if the symbol is not defined.</returns>
+        public Symbol GetSpecialSymbol(object key)
         {
-            return CorLibrary.GetDeclaredSpecialType(type);
+            return GetDeclaredSpecialSymbol(key);
         }
+
+        public ImmutableArray<Symbol> SpecialSymbols => DeclaredSpecialSymbols;
 
         internal static TypeSymbol DynamicType
         {
@@ -475,7 +458,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         {
             get
             {
-                return GetSpecialType(SpecialType.System_Object);
+                return (NamedTypeSymbol)GetSpecialSymbol(SpecialType.System_Object);
             }
         }
 
@@ -486,7 +469,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// <returns></returns>
         internal NamedTypeSymbol GetPrimitiveType(Microsoft.Cci.PrimitiveTypeCode type)
         {
-            return GetSpecialType(SpecialTypes.GetTypeFromMetadataName(type));
+            return (NamedTypeSymbol)GetSpecialSymbol(SpecialTypes.GetTypeFromMetadataName(type));
         }
 
         /// <summary>

@@ -33,9 +33,9 @@ namespace MetaDslx.CodeAnalysis
             }
         }
 
-        public virtual ImmutableDictionary<string, Symbol> CreateSpecialSymbols(SourceAssemblySymbol assembly)
+        public virtual Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
         {
-            return ImmutableDictionary<string, Symbol>.Empty;
+            return null;
         }
 
         protected virtual CompletionGraphBuilder ConstructCompletionGraph()

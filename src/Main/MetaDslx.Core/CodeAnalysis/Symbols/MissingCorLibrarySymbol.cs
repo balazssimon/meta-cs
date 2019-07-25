@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -18,11 +19,11 @@ namespace MetaDslx.CodeAnalysis.Symbols
         internal static readonly MissingCorLibrarySymbol Instance = new MissingCorLibrarySymbol();
 
         /// <summary>
-        /// An array of cached Cor types defined in this assembly.
-        /// Lazily filled by GetDeclaredSpecialType method.
+        /// A dictionary of cached Cor types defined in this assembly.
+        /// Lazily filled by GetSpecialSymbol method.
         /// </summary>
         /// <remarks></remarks>
-        private NamedTypeSymbol[] _lazySpecialTypes;
+        private ConcurrentDictionary<object, Symbol> _lazySpecialSymbols;
 
         private MissingCorLibrarySymbol()
             : base(new AssemblyIdentity("<Missing Core Assembly>"))
@@ -35,7 +36,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
         /// called if it is know that this is the Cor Library (mscorlib).
         /// </summary>
         /// <param name="type"></param>
-        internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
+        public override Symbol GetDeclaredSpecialSymbol(object key)
         {
 #if DEBUG
             foreach (var module in this.Modules)
@@ -44,20 +45,49 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
 #endif
 
-            if (_lazySpecialTypes == null)
+            Symbol result;
+            if (_lazySpecialSymbols == null || !_lazySpecialSymbols.ContainsKey(key))
             {
-                Interlocked.CompareExchange(ref _lazySpecialTypes,
-                    new NamedTypeSymbol[(int)SpecialType.Count + 1], null);
+                ModuleSymbol module = this.Modules[0];
+                if (key is SpecialType type)
+                {
+                    MetadataTypeName emittedName = MetadataTypeName.FromFullName(type.GetMetadataName(), useCLSCompliantNameArityEncoding: true);
+                    result = module.LookupTopLevelMetadataType(ref emittedName);
+                    if (result.Kind != LanguageSymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public)
+                    {
+                        result = new MissingMetadataTypeSymbol.TopLevel(module, ref emittedName, type);
+                    }
+                }
+                else
+                {
+                    result = this.Language.CompilationFactory.CreateSpecialSymbol(module, key);
+                    if (result == null)
+                    {
+                        result = new MissingMetadataTypeSymbol.TopLevel(module, string.Empty, key.ToString(), 0, false);
+                    }
+                }
+                RegisterDeclaredSpecialSymbol(key, ref result);
             }
 
-            if ((object)_lazySpecialTypes[(int)type] == null)
-            {
-                MetadataTypeName emittedFullName = MetadataTypeName.FromFullName(SpecialTypes.GetMetadataName(type), useCLSCompliantNameArityEncoding: true);
-                NamedTypeSymbol corType = new MissingMetadataTypeSymbol.TopLevel(this.moduleSymbol, ref emittedFullName, type);
-                Interlocked.CompareExchange(ref _lazySpecialTypes[(int)type], corType, null);
-            }
+            return _lazySpecialSymbols[key];
+        }
 
-            return _lazySpecialTypes[(int)type];
+        /// <summary>
+        /// Register declaration of predefined symbol in this Assembly.
+        /// </summary>
+        /// <param name="corType"></param>
+        private void RegisterDeclaredSpecialSymbol(object key, ref Symbol symbol)
+        {
+            Debug.Assert(key != null);
+            Debug.Assert(ReferenceEquals(symbol.ContainingAssembly, this));
+            Debug.Assert(symbol.ContainingModule.Ordinal == 0);
+            Debug.Assert(ReferenceEquals(this.CorLibrary, this));
+
+            if (_lazySpecialSymbols == null)
+            {
+                Interlocked.CompareExchange(ref _lazySpecialSymbols, new ConcurrentDictionary<object, Symbol>(), null);
+            }
+            _lazySpecialSymbols.TryAdd(key, symbol);
         }
     }
 }

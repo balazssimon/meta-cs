@@ -140,14 +140,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
             }
         }
 
-        internal override bool KeepLookingForDeclaredSpecialTypes
-        {
-            get
-            {
-                return _underlyingAssembly.KeepLookingForDeclaredSpecialTypes;
-            }
-        }
-
         public override ImmutableArray<Location> Locations
         {
             get
@@ -178,10 +170,19 @@ namespace MetaDslx.CodeAnalysis.Symbols.CSharp
         /// <param name="type"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
+        public override Symbol GetDeclaredSpecialSymbol(object key)
         {
-            return CSharpSymbolMap.GetNamedTypeSymbol(_underlyingAssembly.GetDeclaredSpecialType(type));
+            if (key is SpecialType type)
+            {
+                return CSharpSymbolMap.GetNamedTypeSymbol(_underlyingAssembly.GetDeclaredSpecialType(type));
+            }
+            else
+            {
+                return null;
+            }
         }
+
+        public override ImmutableArray<Symbol> DeclaredSpecialSymbols => ImmutableArray<Symbol>.Empty; // TODO:MetaDslx
 
         internal override ImmutableArray<AssemblySymbol> GetNoPiaResolutionAssemblies()
         {

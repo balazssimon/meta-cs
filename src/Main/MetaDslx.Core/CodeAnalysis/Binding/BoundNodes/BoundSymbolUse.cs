@@ -42,9 +42,17 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                                 {
                                     symbols.Add(symbol);
                                 }
-                                else
+                                else 
                                 {
-                                    this.BoundTree.DiagnosticBag.Add(ModelErrorCode.ERR_ValueIsNotSymbol, this.Syntax.Location, value);
+                                    var specialSymbol = this.Compilation.GetSpecialSymbol(value);
+                                    if (specialSymbol == null || specialSymbol.Kind == LanguageSymbolKind.ErrorType || specialSymbol.DeclaredAccessibility != Accessibility.Public)
+                                    {
+                                        this.BoundTree.DiagnosticBag.Add(ModelErrorCode.ERR_ValueIsNotSymbol, this.Syntax.Location, value);
+                                    }
+                                    else
+                                    {
+                                        symbols.Add(specialSymbol);
+                                    }
                                 }
                             }
                         }

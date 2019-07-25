@@ -418,7 +418,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BoundKind.cs"), this.GeneratedBoundKind);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"BoundNodeFactoryVisitor.cs"), this.GeneratedBoundNodeFactoryVisitor);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"IsBindableNodeVisitor.cs"), this.GeneratedIsBindableNodeVisitor);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs"), this.GeneratedCompilationFactory);
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs"), this.GeneratedCompilationFactory, false);
                 /*this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs"), this.GeneratedScriptCompilationInfo);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"SymbolBuilder.cs"), this.GeneratedSymbolBuilder);*/

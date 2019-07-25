@@ -74,24 +74,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public virtual bool IsPartial => _declaration.CanMerge;
 
-        private SpecialType MakeSpecialType()
-        {
-            // check if this is one of the COR library types
-            if (ContainingSymbol.Kind == LanguageSymbolKind.Namespace &&
-                ContainingSymbol.ContainingAssembly.KeepLookingForDeclaredSpecialTypes)
-            {
-                //for a namespace, the emitted name is a dot-separated list of containing namespaces
-                var emittedName = ContainingSymbol.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat);
-                emittedName = MetadataHelpers.BuildQualifiedName(emittedName, MetadataName);
-
-                return SpecialTypes.GetTypeFromMetadataName(emittedName);
-            }
-            else
-            {
-                return SpecialType.None;
-            }
-        }
-
         #region Containers
 
         public sealed override NamedTypeSymbol ContainingType => _containingSymbol as NamedTypeSymbol;

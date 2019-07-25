@@ -269,8 +269,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     memberNames.Free();
                     _symbol.CheckMembers(membersDictionary, diagnostics);
                     _symbol.AddDeclarationDiagnostics(diagnostics);
-                    RegisterDeclaredCorTypes();
-
                     _symbol.DeclaringCompilation.SymbolDeclaredEvent(_symbol);
                     var wasSetThisThread = _state.NotePartComplete(CompletionPart.Members);
                     Debug.Assert(wasSetThisThread);
@@ -281,36 +279,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
             _state.SpinWaitComplete(CompletionPart.Members, default);
             return _lazyMembersDictionary;
-        }
-
-        /// <summary>
-        /// Register COR types declared in this namespace, if any, in the COR types cache.
-        /// </summary>
-        private void RegisterDeclaredCorTypes()
-        {
-            AssemblySymbol containingAssembly = _symbol.ContainingAssembly;
-
-            if (containingAssembly.KeepLookingForDeclaredSpecialTypes)
-            {
-                // Register newly declared COR types
-                foreach (var array in _lazyMembersDictionary.Values)
-                {
-                    foreach (var member in array)
-                    {
-                        var type = member as NamedTypeSymbol;
-
-                        if ((object)type != null && type.SpecialType != SpecialType.None)
-                        {
-                            containingAssembly.RegisterDeclaredSpecialType(type);
-
-                            if (!containingAssembly.KeepLookingForDeclaredSpecialTypes)
-                            {
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         private Dictionary<string, ImmutableArray<Symbol>> MakeNamedMembers(DiagnosticBag diagnostics)

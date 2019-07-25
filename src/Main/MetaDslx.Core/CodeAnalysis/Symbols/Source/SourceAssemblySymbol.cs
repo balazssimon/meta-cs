@@ -113,8 +113,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         private MutableModelGroup _modelGroupBuilder;
 
-        private ImmutableDictionary<string, Symbol> _specialSymbolMap;
-
         internal SourceAssemblySymbol(
             LanguageCompilation compilation,
             string assemblySimpleName,
@@ -195,18 +193,6 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         internal protected MutableModelGroup ModelGroupBuilder => _modelGroupBuilder;
 
         internal protected override MutableModel ModelBuilder => this.SourceModule.ModelBuilder;
-
-        public ImmutableDictionary<string, Symbol> SpecialSymbolMap
-        {
-            get
-            {
-                if (_specialSymbolMap == null)
-                {
-                    _specialSymbolMap = Language.CompilationFactory.CreateSpecialSymbols(this);
-                }
-                return _specialSymbolMap;
-            }
-        }
 
         internal override CSharpSymbolMap CSharpSymbolMap
         {
@@ -1390,7 +1376,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                     return false;
                 }
 
-                var obj = GetSpecialType(SpecialType.System_Object);
+                var obj = (NamedTypeSymbol)GetSpecialSymbol(SpecialType.System_Object);
 
                 return !obj.IsErrorType() && obj.DeclaredAccessibility == Accessibility.Public;
             }

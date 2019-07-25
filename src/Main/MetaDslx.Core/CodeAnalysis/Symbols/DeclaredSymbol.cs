@@ -9,6 +9,8 @@ namespace MetaDslx.CodeAnalysis.Symbols
 {
     public abstract class DeclaredSymbol : Symbol
     {
+        public override Accessibility DeclaredAccessibility => Accessibility.Public;
+
         /// <summary>
         /// Get all the members of this symbol.
         /// </summary>

@@ -1180,6 +1180,14 @@ namespace MetaDslx.CodeAnalysis
         }
 
         /// <summary>
+        /// Get the predefined symbol from the COR Library referenced by this compilation.
+        /// </summary>
+        public Symbol GetSpecialSymbol(object key)
+        {
+            return Assembly.GetSpecialSymbol(key);
+        }
+
+        /// <summary>
         /// Get the symbol for the predefined type from the COR Library referenced by this compilation.
         /// </summary>
         internal new NamedTypeSymbol GetSpecialType(SpecialType specialType)
@@ -1197,7 +1205,7 @@ namespace MetaDslx.CodeAnalysis
             }
             else
             {
-                result = Assembly.GetSpecialType(specialType);
+                result = (NamedTypeSymbol)Assembly.GetSpecialSymbol(specialType);
             }
 
             Debug.Assert(result.SpecialType == specialType);

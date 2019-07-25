@@ -50,7 +50,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
@@ -160,7 +160,7 @@ namespace MetaDslx.Bootstrap
             //File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
             //*/
 
-            //*/
+            /*/
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             //BinderFlags binderFlags = BinderFlags.None;
             ImmutableModel soalModel = SoalInstance.Model;

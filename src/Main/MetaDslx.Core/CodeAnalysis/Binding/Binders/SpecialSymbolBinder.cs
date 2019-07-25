@@ -20,7 +20,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
             Debug.Assert(result.IsClear);
 
-            if (Compilation.SourceAssembly.SpecialSymbolMap.TryGetValue(constraints.MetadataName, out Symbol specialSymbol))
+            var specialSymbol = Compilation.GetSpecialSymbol(constraints.MetadataName);
+            if (specialSymbol.Kind != LanguageSymbolKind.ErrorType)
             {
                 result.SetFrom(LookupResult.Good(specialSymbol));
             }
@@ -28,7 +29,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 
         protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
         {
-            foreach (var symbol in Compilation.SourceAssembly.SpecialSymbolMap.Values)
+            foreach (var symbol in Compilation.SourceAssembly.SpecialSymbols)
             {
                 result.AddSymbol(symbol, symbol.Name, symbol.MetadataName);
             }

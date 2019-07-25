@@ -163,10 +163,12 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return result;
         }
 
-        internal override NamedTypeSymbol GetDeclaredSpecialType(SpecialType type)
+        public override Symbol GetDeclaredSpecialSymbol(object key)
         {
             throw ExceptionUtilities.Unreachable;
         }
+
+        public override ImmutableArray<Symbol> DeclaredSpecialSymbols => throw ExceptionUtilities.Unreachable;
 
         internal override bool AreInternalsVisibleToThisAssembly(AssemblySymbol other)
         {
