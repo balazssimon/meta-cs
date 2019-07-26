@@ -415,7 +415,7 @@ voidType
 	;
 
                     
-           
+                         
 onewayType
 	: KOneway
 	;

@@ -36,26 +36,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _module = module;
             _container = container;
             _declaration = declaration;
-            _declaration.DangerousSetSourceSymbol(this);
 
             if (declaration.Kind != null)
             {
-                _modelObject = declaration.Kind.CreateMutable(module.ModelBuilder);
+                _modelObject = declaration.GetModelObject(container?.ModelObject as MutableSymbolBase, module.ModelBuilder);
                 Debug.Assert(_modelObject != null);
-                if (_modelObject != null)
-                {
-                    module.MetaSymbolMap.RegisterSymbol(_modelObject, this);
-                    _modelObject.MName = declaration.Name;
-                    var parentObject = container?.ModelObject as MutableSymbolBase;
-                    if (parentObject != null && !string.IsNullOrEmpty(declaration.ParentPropertyToAddTo))
-                    {
-                        var property = parentObject.MGetProperty(declaration.ParentPropertyToAddTo);
-                        if (property != null)
-                        {
-                            parentObject.MAdd(property, _modelObject);
-                        }
-                    }
-                }
             }
 
             foreach (var singleDeclaration in declaration.Declarations)

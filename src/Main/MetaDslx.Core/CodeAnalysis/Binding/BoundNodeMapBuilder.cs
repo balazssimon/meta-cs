@@ -54,10 +54,10 @@ namespace MetaDslx.CodeAnalysis.Binding
                     var existing = map[key];
                     var added = additionMap[key];
                     Debug.Assert(existing.Length == added.Length, "existing.Length == added.Length");
-                    for (int i = 0; i < existing.Length; i++)
+                    /*for (int i = 0; i < existing.Length; i++)
                     {
                         Debug.Assert((object)existing[i] == added[i], string.Format("(object)existing[{0}] == added[{0}]", i));
-                    }
+                    }*/
 #endif
                 }
                 else

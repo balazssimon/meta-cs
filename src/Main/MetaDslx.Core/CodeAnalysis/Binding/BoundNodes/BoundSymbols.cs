@@ -25,17 +25,20 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         internal void SetPropertyValues(MutableSymbolBase modelObject, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
+            if (modelObject == null) return;
             var boundProperties = this.GetChildProperties();
-            foreach (var boundProp in boundProperties)
+            var propertyNames = boundProperties.Select(p => p.Name).Distinct().ToArray();
+            foreach (var boundProp in propertyNames)
             {
-                var prop = modelObject.MGetProperty(boundProp.Name);
+                var prop = modelObject.MGetProperty(boundProp);
                 if (prop == null)
                 {
-                    diagnostics.Add(ModelErrorCode.ERR_PropertyDoesNotExist, modelObject, boundProp.Name);
+                    diagnostics.Add(ModelErrorCode.ERR_PropertyDoesNotExist, modelObject, boundProp);
                     continue;
                 }
                 //if (prop.IsBaseScope) continue;
-                foreach (var boundValue in boundProp.BoundValues)
+                var propValues = this.GetChildValues(null, boundProp);
+                foreach (var boundValue in propValues)
                 {
                     if (boundValue is BoundSymbolDef) continue;
                     if (prop.IsCollection)

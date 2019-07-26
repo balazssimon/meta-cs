@@ -2,6 +2,7 @@
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -46,11 +47,15 @@ namespace MetaDslx.Languages.Meta
             {
                 ImmutableModel coreModel = MetaInstance.Model;
                 string text = File.ReadAllText(_inputFilePath);
-                var tree = MetaSyntaxTree.ParseText(text);
+                var tree = MetaSyntaxTree.ParseText(text, path: _inputFilePath);
 
-                BinderFlags binderFlags = null;
-                if (_compileMetaModelCore) binderFlags = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
-                MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false,
+                BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+                if (_compileMetaModelCore)
+                {
+                    BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+                    binderFlags = binderFlags.UnionWith(binderFlags2);
+                }
+                MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: true,
                     topLevelBinderFlags: binderFlags);
                 //MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false);
                 var compilation = MetaCompilation.

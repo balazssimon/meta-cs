@@ -54,9 +54,9 @@ namespace MetaDslx.Bootstrap
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
-            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Symbols\Soal.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Symbols\Soal.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -77,14 +77,11 @@ namespace MetaDslx.Bootstrap
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
             binderFlags = binderFlags.UnionWith(binderFlags2);
-            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: binderFlags);
+            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: true, topLevelBinderFlags: binderFlags);
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
-                AddReferences(
-                    ModelReference.CreateFromModel(coreModel),
-                    ModelReference.CreateFromModel(MetaAnnotations.Model)
-                    ).
+                AddReferences(ModelReference.CreateFromModel(coreModel)).
                 WithOptions(options);
 
             //var modules = compilation.SourceModule.ContainingAssembly.Modules.AsImmutable();
@@ -165,12 +162,14 @@ namespace MetaDslx.Bootstrap
             //BinderFlags binderFlags = BinderFlags.None;
             ImmutableModel soalModel = SoalInstance.Model;
             //string soalSource = File.ReadAllText(@"..\..\..\cinema.soal");
-            string soalSource = File.ReadAllText(@"..\..\..\Wsdl01.soal");
+            //string soalSource = File.ReadAllText(@"..\..\..\Wsdl01.soal");
+            string soalSource = File.ReadAllText(@"..\..\..\Wsdl02.soal");
+            //string soalSource = File.ReadAllText(@"..\..\..\Wsdl00.soal");
             var syntaxTree = SoalSyntaxTree.ParseText(soalSource);
             var compilation = SoalCompilation.Create("SoalTest")
                 .AddSyntaxTrees(syntaxTree)
                 .AddReferences(ModelReference.CreateFromModel(soalModel))
-                .WithOptions(new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithConcurrentBuild(false).WithTopLevelBinderFlags(binderFlags));
+                .WithOptions(new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.DynamicallyLinkedLibrary).WithConcurrentBuild(true).WithTopLevelBinderFlags(binderFlags));
             compilation.ForceComplete();
             var formatter = new DiagnosticFormatter();
             foreach (var diag in compilation.GetDiagnostics())
@@ -188,7 +187,7 @@ namespace MetaDslx.Bootstrap
             {
                 foreach (var symbol in compiledModel.Symbols)
                 {
-                    writer.WriteLine(symbol);
+                    writer.WriteLine("{0} ({1})", symbol, symbol.MId.Id);
                     foreach (var prop in symbol.MProperties)
                     {
                         object value = symbol.MGet(prop);
@@ -197,12 +196,12 @@ namespace MetaDslx.Bootstrap
                             writer.WriteLine("  {0} = ({1})", prop.Name, collection.Count());
                             foreach (var item in collection)
                             {
-                                writer.WriteLine("    {0}", item);
+                                writer.WriteLine("    {0} ({1})", item, (item as IMetaSymbol)?.MId?.Id);
                             }
                         }
                         else
                         {
-                            writer.WriteLine("  {0} = {1}", prop.Name, value);
+                            writer.WriteLine("  {0} = {1} ({2})", prop.Name, value, (value as IMetaSymbol)?.MId?.Id);
                         }
                     }
                 }

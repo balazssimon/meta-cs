@@ -15,10 +15,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
 {
     public sealed class MergedDeclaration : Declaration
     {
-        private Symbol _sourceSymbol;
         private readonly ImmutableArray<SingleDeclaration> _declarations;
         private ImmutableArray<MergedDeclaration> _lazyChildren;
         private ImmutableArray<string> _lazyChildNames;
+        private MutableSymbolBase _modelObject;
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations.IsEmpty ? null : declarations[0].Name,
@@ -27,8 +27,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             this._declarations = declarations;
         }
-
-        public Symbol SourceSymbol => _sourceSymbol;
 
         public ImmutableArray<SingleDeclaration> Declarations
         {
@@ -167,10 +165,27 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return new MergedDeclaration(mergedDeclaration._declarations.Add(declaration));
         }
 
-        internal void DangerousSetSourceSymbol(Symbol symbol)
+        public MutableSymbolBase GetModelObject(MutableSymbolBase parentObject, MutableModel model)
         {
-            Debug.Assert(_sourceSymbol == null);
-            Interlocked.CompareExchange(ref _sourceSymbol, symbol, null);
+            if (_modelObject == null)
+            {
+                lock (this) // We must lock, we do not want to create multiple symbols for the same declaration
+                {
+                    if (_modelObject != null) return _modelObject;
+                    var modelObject = this.Kind.CreateMutable(model);
+                    modelObject.MName = this.Name;
+                    if (parentObject != null && !string.IsNullOrEmpty(this.ParentPropertyToAddTo))
+                    {
+                        var property = parentObject.MGetProperty(this.ParentPropertyToAddTo);
+                        if (property != null)
+                        {
+                            parentObject.MAdd(property, modelObject);
+                        }
+                    }
+                    Interlocked.CompareExchange(ref _modelObject, modelObject, null);
+                }
+            }
+            return _modelObject;
         }
     }
 }

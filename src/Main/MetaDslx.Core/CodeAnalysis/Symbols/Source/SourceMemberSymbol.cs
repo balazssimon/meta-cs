@@ -31,26 +31,11 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             Debug.Assert(declaration != null);
             _containingSymbol = containingSymbol;
             _declaration = declaration;
-            _declaration.DangerousSetSourceSymbol(this);
 
             if (declaration.Kind != null)
             {
-                _modelObject = declaration.Kind.CreateMutable(containingSymbol.ModelBuilder);
+                _modelObject = declaration.GetModelObject(containingSymbol?.ModelObject as MutableSymbolBase, containingSymbol.ModelBuilder);
                 Debug.Assert(_modelObject != null);
-                if (_modelObject != null)
-                {
-                    ((SourceModuleSymbol)containingSymbol.ContainingModule).MetaSymbolMap.RegisterSymbol(_modelObject, this);
-                    _modelObject.MName = declaration.Name;
-                    var parentObject = containingSymbol?.ModelObject as MutableSymbolBase;
-                    if (parentObject != null && !string.IsNullOrEmpty(declaration.ParentPropertyToAddTo))
-                    {
-                        var property = parentObject.MGetProperty(declaration.ParentPropertyToAddTo);
-                        if (property != null)
-                        {
-                            parentObject.MAdd(property, _modelObject);
-                        }
-                    }
-                }
             }
 
             foreach (var singleDeclaration in declaration.Declarations)

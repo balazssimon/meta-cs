@@ -1,4 +1,6 @@
-// NOTE: This is an auto-generated file. However, it will not be regenerated. If you want it to be regenerated, just delete it.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// WARNING: This is an auto-generated file. Any manual changes will be lost when the file is regenerated.
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,18 +43,6 @@ namespace MetaDslx.Languages.Soal
         public override RootSingleDeclaration CreateDeclarationTree(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
             return SoalDeclarationTreeBuilderVisitor.ForTree((SoalSyntaxTree)syntaxTree, scriptClassName, isSubmission);
-        }
-
-        public override Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
-        {
-            if (module is MetaModuleSymbol metaModule && metaModule.Models.Contains(SoalInstance.Model))
-            {
-                if (key.Equals("oneway"))
-                {
-                    return new MetaNamedTypeSymbol(SoalInstance.Void, module);
-                }
-            }
-            return null;
         }
 
         /*public override ScriptCompilationInfo CreateScriptCompilationInfo(CompilationBase previousSubmission, Type submissionReturnType, Type hostObjectType)

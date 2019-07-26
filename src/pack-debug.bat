@@ -1,5 +1,4 @@
-cd Main\MetaDslx.BuildTasks
-dotnet pack --no-build -c Debug
-cd ..\MetaDslx.CodeAnalysis
-dotnet pack --no-build -c Debug
-cd ..\..
+dotnet build-server shutdown
+dotnet clean -c Debug
+dotnet pack -c Debug
+dotnet build-server shutdown

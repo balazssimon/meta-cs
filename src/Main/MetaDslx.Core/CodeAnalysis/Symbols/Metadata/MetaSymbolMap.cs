@@ -2,6 +2,7 @@
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -13,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
     public class MetaSymbolMap
     {
-        private ConditionalWeakTable<IMetaSymbol, Symbol> map = new ConditionalWeakTable<IMetaSymbol, Symbol>();
+        private ConcurrentDictionary<IMetaSymbol, Symbol> map = new ConcurrentDictionary<IMetaSymbol, Symbol>();
         private ModuleSymbol _module;
         private bool _autoCreateSymbols;
 
@@ -53,7 +54,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 if (_autoCreateSymbols)
                 {
                     symbol = createSymbol(metaSymbol);
-                    map.Add(metaSymbol, symbol);
+                    map.TryAdd(metaSymbol, symbol);
                 }
             }
             return (T)symbol;
@@ -87,7 +88,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public void RegisterSymbol(IMetaSymbol modelObject, Symbol symbol)
         {
-            map.Add(modelObject, symbol);
+            map.TryAdd(modelObject, symbol);
         }
 
         public ImmutableArray<Symbol> GetSymbols(IEnumerable<IMetaSymbol> csharpSymbols)

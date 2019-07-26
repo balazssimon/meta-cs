@@ -13,5 +13,20 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
         }
 
+        public override void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null)
+        {
+            foreach (var child in ChildBoundNodes)
+            {
+                child.AddProperties(properties, property);
+            }
+        }
+
+        public override void AddValues(ArrayBuilder<BoundValues> values, string currentProperty = null, string rootProperty = null)
+        {
+            foreach (var child in ChildBoundNodes)
+            {
+                child.AddValues(values, currentProperty, rootProperty);
+            }
+        }
     }
 }

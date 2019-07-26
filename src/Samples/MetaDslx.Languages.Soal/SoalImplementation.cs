@@ -89,12 +89,6 @@ namespace MetaDslx.Languages.Soal.Symbols
                 };
         }
 
-        public override void Operation(OperationBuilder _this)
-        {
-            base.Operation(_this);
-            SoalFactory f = new SoalFactory(_this.MModel);
-            _this.Result = f.OutputParameter();
-        }
     }
 
     internal static class SoalExtensions

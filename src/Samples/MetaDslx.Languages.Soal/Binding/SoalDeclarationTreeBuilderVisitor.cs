@@ -1732,7 +1732,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			this.BeginNoDeclaration(typeof(Symbols.SoalType), node);
 			try
 			{
-				if (node != null) this.RegisterIdentifier(node);
 			}
 			finally
 			{

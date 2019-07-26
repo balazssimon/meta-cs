@@ -2344,7 +2344,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, ImmutableArray.Create(typeof(Symbols.SoalType)));
-				resultBinder = this.CreateIdentifierBinder(resultBinder, parent);
+				resultBinder = this.CreateValueBinder(resultBinder, parent, SoalInstance.Void);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

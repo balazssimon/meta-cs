@@ -415,7 +415,7 @@ voidType
 	;
 
 $SymbolUse(SoalType)
-$Identifier
+$Value(SoalInstance.Void)
 onewayType
 	: KOneway
 	;

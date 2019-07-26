@@ -139,19 +139,19 @@ namespace MetaDslx.BuildTasks
                 switch (message.Severity)
                 {
                     case Microsoft.CodeAnalysis.DiagnosticSeverity.Hidden:
-                        Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, MessageImportance.Low, message.GetMessage());
+                        Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, MessageImportance.Low, message.GetMessage());
                         break;
                     case Microsoft.CodeAnalysis.DiagnosticSeverity.Info:
-                        Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, MessageImportance.High, message.GetMessage());
+                        Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, MessageImportance.High, message.GetMessage());
                         break;
                     case Microsoft.CodeAnalysis.DiagnosticSeverity.Warning:
-                        Log.LogWarning(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, message.GetMessage());
+                        Log.LogWarning(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, message.GetMessage());
                         break;
                     case Microsoft.CodeAnalysis.DiagnosticSeverity.Error:
-                        Log.LogError(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, message.GetMessage());
+                        Log.LogError(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, message.GetMessage());
                         break;
                     default:
-                        Log.LogError(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character, position.EndLinePosition.Line + 1, position.EndLinePosition.Character, message.GetMessage());
+                        Log.LogError(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, message.GetMessage());
                         break;
                 }
             }
