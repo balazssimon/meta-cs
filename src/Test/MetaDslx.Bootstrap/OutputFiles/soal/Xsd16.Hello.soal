@@ -1,0 +1,27 @@
+namespace  = ""
+{
+}
+
+namespace  = "http://www.hello.org/test"
+{
+	struct NameValues
+	{
+		Names Names;
+	}
+
+	struct Values
+	{
+		[Element(wrapped=true)]
+		int[][] A;
+		NameValues[] B;
+	}
+
+	[All]
+	struct Names
+	{
+		![] item;
+	}
+
+}
+
+

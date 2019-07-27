@@ -3281,19 +3281,6 @@ template GenerateDetailedSyntaxVisitorVisit(Antlr4ParserRule rule)
 ^
 public virtual void Visit[rule.PlainName()]([rule.RedName()] node)
 {
-	[if (rule.IsSimpleAlt)]
-		[loop(elem:rule.Elements)]
-			[if (elem.IsList)]
-	this.VisitList(node.[elem.RedName()]);
-			[else]
-				[if (elem.IsToken || elem.IsFixedTokenAltBlock)]
-	this.Visit(node.[elem.RedName()]);
-				[else]
-	this.Visit(node.[elem.RedName()]);
-				[end if]
-			[end if]
-		[end loop] 
-	[else]
 		[loop(elem:rule.AllElements)]
 			[if (elem.IsList)]
 	this.VisitList(node.[elem.RedName()]);
@@ -3305,7 +3292,6 @@ public virtual void Visit[rule.PlainName()]([rule.RedName()] node)
 				[end if]
 			[end if]
 		[end loop]    
-	[end if]
 }
 end template
 
@@ -4547,15 +4533,9 @@ end template
 
 template GenerateDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 [if (rule.ContainsAnnotations)]
-[if (rule.IsSimpleAlt)]
-	[loop(elem:rule.Elements where elem.ContainsAnnotations)]
-[GenerateDeclarationTreeBuilderVisitElement(rule, elem)]
-	[end loop] 
-[else]
 	[loop(elem:rule.AllElements where elem.ContainsAnnotations)]
 [GenerateDeclarationTreeBuilderVisitElement(rule, elem)]
 	[end loop]    
-[end if]
 [end if]
 end template
 
@@ -4824,16 +4804,10 @@ end template
 
 
 template GenerateBinderFactoryVisitBody(Antlr4ParserRule rule)
-[if (rule.ContainsBinderAnnotations && hasloop(elem:rule.Elements where elem.HasBinderAnnotations))]
-[if (rule.IsSimpleAlt)]
-	[loop(elem:rule.Elements where elem.ContainsBinderAnnotations)]
-[GenerateBinderFactoryVisitElement(rule, elem)]
-	[end loop] 
-[else]
+[if (rule.ContainsBinderAnnotations && hasloop(elem:rule.AllElements where elem.HasBinderAnnotations))]
 	[loop(elem:rule.AllElements where elem.ContainsBinderAnnotations)]
 [GenerateBinderFactoryVisitElement(rule, elem)]
 	[end loop]    
-[end if]
 [end if]
 end template
 
@@ -4875,18 +4849,9 @@ if (use == Use[elem.RedName()])
 end template
 
 template GenerateBinderFactoryVisitElemUses(Antlr4ParserRule rule)
-[if (rule.ContainsBinderAnnotations && hasloop(elem:rule.Elements where elem.HasBinderAnnotations))]
+[if (rule.ContainsBinderAnnotations && hasloop(elem:rule.AllElements where elem.HasBinderAnnotations))]
 if (this.ForChild)
 {
-[if (rule.IsSimpleAlt)]
-	[loop(elem:rule.Elements where elem.HasBinderAnnotations)]
-		[if (elem.IsList)]
-	if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()].Node)) use = Use[elem.RedName()];
-		[else]
-	if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()])) use = Use[elem.RedName()];
-		[end if]
-	[end loop] 
-[else]
 	[loop(elem:rule.AllElements where elem.HasBinderAnnotations)]
 		[if (elem.IsList)]
 	if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()].Node)) use = Use[elem.RedName()];
@@ -4894,7 +4859,6 @@ if (this.ForChild)
 	if (LookupPosition.IsInNode(this.Position, parent.[elem.RedName()])) use = Use[elem.RedName()];
 		[end if]
 	[end loop]    
-[end if]
 }
 [end if]
 end template
@@ -5084,15 +5048,9 @@ end template
 
 template GenerateBoundNodeFactoryVisitChildren(Antlr4ParserRule rule)
 [string childBoundNodesName = rule.HasBoundNodeAnnotations ? "childBoundNodes" : "childBoundNodesForParent"]
-[if (rule.IsSimpleAlt)]
-	[loop(elem:rule.Elements)]
+[loop(elem:rule.AllElements)]
 [GenerateBoundNodeFactoryVisitChildrenElementWithNullCheck(elem, childBoundNodesName)]
-	[end loop] 
-[else]
-	[loop(elem:rule.AllElements)]
-[GenerateBoundNodeFactoryVisitChildrenElementWithNullCheck(elem, childBoundNodesName)]
-	[end loop]    
-[end if]
+[end loop]    
 end template
 
 template GenerateBoundNodeFactoryVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem, string childBoundNodesName)
@@ -5282,15 +5240,9 @@ public bool Visit[rule.PlainName()]([rule.RedName()] node)
 end template
 
 template GenerateIsBindableNodeVisitChildren(Antlr4ParserRule rule)
-[if (rule.IsSimpleAlt)]
-	[loop(elem:rule.Elements where elem.ContainsBoundNodeAnnotations)]
+[loop(elem:rule.AllElements where elem.ContainsBoundNodeAnnotations)]
 [GenerateIsBindableNodeVisitChildrenElementWithNullCheck(elem)]
-	[end loop] 
-[else]
-	[loop(elem:rule.AllElements where elem.ContainsBoundNodeAnnotations)]
-[GenerateIsBindableNodeVisitChildrenElementWithNullCheck(elem)]
-	[end loop]    
-[end if]
+[end loop]    
 end template
 
 template GenerateIsBindableNodeVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem)

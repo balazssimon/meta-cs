@@ -519,6 +519,19 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	public virtual void ExitEnumDeclaration([NotNull] SoalParser.EnumDeclarationContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.enumBase"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEnumBase([NotNull] SoalParser.EnumBaseContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.enumBase"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEnumBase([NotNull] SoalParser.EnumBaseContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.enumBody"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -751,6 +764,19 @@ public partial class SoalParserBaseListener : ISoalParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitComponentDeclaration([NotNull] SoalParser.ComponentDeclarationContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentBase"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterComponentBase([NotNull] SoalParser.ComponentBaseContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentBase"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitComponentBase([NotNull] SoalParser.ComponentBaseContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.componentBody"/>.

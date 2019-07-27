@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis;
+using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Symbols;
@@ -45,7 +46,13 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
         {
             var metaModelReference = ModelReference.CreateFromModel(MetaInstance.Model);
             var tree = MetaSyntaxTree.ParseText(sourceText, path: filePath, cancellationToken: cancellationToken);
-            var compilation = MetaCompilation.Create("Tagger").AddReferences(metaModelReference).AddSyntaxTrees(tree);
+            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+            BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
+            binderFlags = binderFlags.UnionWith(binderFlags2);
+            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, 
+                deterministic: true, concurrentBuild: true,
+                topLevelBinderFlags: binderFlags);
+            var compilation = MetaCompilation.Create("Tagger").AddReferences(metaModelReference).AddSyntaxTrees(tree).WithOptions(options);
             return compilation;
         }
 

@@ -37,7 +37,6 @@ namespace MetaDslx.Languages.Soal.Binding
 		public static object UseAnnotation = new object();
 		public static object UseReturnAnnotation = new object();
 		public static object UseName = new object();
-		public static object UseAnnotationBody = new object();
 		public static object UseAnnotationProperty = new object();
 		public static object UseAnnotationList = new object();
 		public static object UseQualifiedName = new object();
@@ -55,6 +54,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		public static object UseDeploymentDeclaration = new object();
 		public static object UseEnumBody = new object();
 		public static object UseEnumLiteral = new object();
+		public static object Use = new object();
 		public static object UseStructBody = new object();
 		public static object UsePropertyDeclaration = new object();
 		public static object UseDatabaseBody = new object();
@@ -71,6 +71,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		public static object UseComponentImplementation = new object();
 		public static object UseComponentLanguage = new object();
 		public static object UseComponentServiceOrReferenceBody = new object();
+		public static object UseComponentBase = new object();
 		public static object UseCompositeBody = new object();
 		public static object UseCompositeComponent = new object();
 		public static object UseCompositeWire = new object();
@@ -122,6 +123,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		public static object UseTypeofValue = new object();
 		public static object UseNamespacePrefix = new object();
 		public static object UseNamespaceUri = new object();
+		public static object UseEnumBase = new object();
 		public static object UseEnumLiterals = new object();
 		public static object UseOperationHead = new object();
 		public static object UseParameterList = new object();
@@ -140,6 +142,7 @@ namespace MetaDslx.Languages.Soal.Binding
 		public static object UseEndpointBindingProperty = new object();
 		public static object UseEndpointAddressProperty = new object();
 		public static object UseLiteral = new object();
+		public static object UseAnnotationBody = new object();
 		public static object UseComponentElements = new object();
 		public static object UseCompositeElements = new object();
 		public static object UseDeploymentElements = new object();
@@ -357,7 +360,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateScopeBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -542,6 +544,32 @@ namespace MetaDslx.Languages.Soal.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitEnumBase(EnumBaseSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Qualifier)) use = UseQualifier;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseQualifier)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, parent.Qualifier, "BaseType");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, parent.Qualifier, ImmutableArray.Create(typeof(Symbols.Enum)));
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitEnumBody(EnumBodySyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -600,12 +628,22 @@ namespace MetaDslx.Languages.Soal.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Qualifier)) use = UseQualifier;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, typeof(Symbols.Struct));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseQualifier)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, parent.Qualifier, "BaseType");
+					resultBinder = this.CreateSymbolUseBinder(resultBinder, parent.Qualifier, ImmutableArray.Create(typeof(Symbols.Struct)));
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -888,7 +926,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			if (this.ForChild)
 			{
 				if (LookupPosition.IsInNode(this.Position, parent.KAbstract)) use = UseKAbstract;
-				if (LookupPosition.IsInNode(this.Position, parent.Qualifier)) use = UseQualifier;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
@@ -901,6 +938,26 @@ namespace MetaDslx.Languages.Soal.Binding
 					resultBinder = this.CreatePropertyBinder(resultBinder, parent.KAbstract, "IsAbstract", true);
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitComponentBase(ComponentBaseSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Qualifier)) use = UseQualifier;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseQualifier)
 				{
 					resultBinder = this.CreatePropertyBinder(resultBinder, parent.Qualifier, "BaseComponent");

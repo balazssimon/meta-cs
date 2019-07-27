@@ -490,9 +490,23 @@ namespace MetaDslx.Modeling
             return result;
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is IMetaSymbol other)
+            {
+                return this.id.Equals(other.MId);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.id.GetHashCode();
+        }
+
         public override string ToString()
         {
-            string result = this.id.SymbolInfo.ImmutableType?.Name;
+            string result = this.id.DisplayTypeName;
             string name = this.MName;
             if (name != null)
             {
@@ -821,9 +835,23 @@ namespace MetaDslx.Modeling
             return result;
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is IMetaSymbol other)
+            {
+                return this.id.Equals(other.MId);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.id.GetHashCode();
+        }
+
         public override string ToString()
         {
-            string result = this.id.SymbolInfo.ImmutableType?.Name;
+            string result = this.id.DisplayTypeName;
             string name = this.MName;
             if (name != null)
             {

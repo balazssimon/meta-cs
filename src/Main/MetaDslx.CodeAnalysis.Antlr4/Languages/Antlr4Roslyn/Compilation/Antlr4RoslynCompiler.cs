@@ -633,7 +633,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         private bool CollectHasAnnotationFlags(Antlr4ParserRule rule)
         {
             bool foundElemFlag = false;
-            foreach (var elem in rule.AllElements)
+            foreach (var elem in rule.Elements)
             {
                 bool oldContainsAnnotations = elem.ContainsAnnotations;
                 bool oldContainsBinderAnnotations = elem.ContainsBinderAnnotations;
@@ -653,7 +653,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         this.SetAnnotationFlags(item);
                         if (item.ContainsAnnotations)
                         {
-                            this.Grammar.ParserRuleElemUses.Add(elem.RedName());
+                            this.Grammar.ParserRuleElemUses.Add(item.RedName());
                         }
                         Antlr4ParserRule itemTypeRule = this.Grammar.FindParserRule(item.Type);
                         if (itemTypeRule != null)

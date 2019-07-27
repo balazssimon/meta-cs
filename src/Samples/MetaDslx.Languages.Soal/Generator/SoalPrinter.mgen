@@ -1,0 +1,262 @@
+﻿namespace MetaDslx.Languages.Soal.Generator;
+generator SoalPrinter for IEnumerable<IMetaSymbol>;
+
+using MetaDslx.Modeling;
+using MetaDslx.Languages.Soal.Symbols;
+
+template Generate()
+[loop(Instances->ns:typeof(Namespace))]
+[GenerateNamespace(ns)]
+[end loop]
+end template
+
+template GenerateNamespace(Namespace ns)
+[if (ns.Declarations.Where(d => !(d is Namespace)).Count() > 0)]
+[if (ns.Prefix != null)]
+namespace [ns.FullName] = [ns.Prefix]:"[ns.Uri]"
+[else]
+namespace [ns.FullName] = "[ns.Uri]"
+[end if]
+{
+	[loop(ns->Declarations->enm:typeof(Symbols.Enum))]
+	[GenerateEnum(ns, enm)]
+^
+	[end loop]
+	[loop(ns->Declarations->st:typeof(Struct))]
+	[GenerateStruct(ns, st)]
+^
+	[end loop]
+	[loop(ns->Declarations->intf:typeof(Interface))]
+	[GenerateInterface(ns, intf)]
+^
+	[end loop]
+	[loop(ns->Declarations->bnd:typeof(Symbols.Binding))]
+	[GenerateBinding(ns, bnd)]
+^
+	[end loop]
+	[loop(ns->Declarations->endp:typeof(Endpoint))]
+	[GenerateEndpoint(ns, endp)]
+^
+	[end loop]
+}
+^
+[end if]
+end template
+
+function string GetAncestor(Namespace currentNs, SoalType st)
+	switch (st)
+	type as Symbols.Enum:
+		Symbols.Enum baseType = st.BaseType;
+		if (baseType != null)
+			if (baseType.Namespace == currentNs)
+				return " : "+baseType.Name;
+			else
+				return " : "+baseType.FullName;
+			end if
+		end if
+	type as Struct:
+		Struct baseType = st.BaseType;
+		if (baseType != null)
+			if (baseType.Namespace == currentNs)
+				return " : "+baseType.Name;
+			else
+				return " : "+baseType.FullName;
+			end if
+		end if
+	end switch
+	return "";
+end function
+
+template GenerateAnnotations(AnnotatedElement ae, bool isReturn)
+[loop(ae->annot:Annotations)]
+["["][isReturn ? "return: " : ""][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["]"]
+[end loop]
+end template
+
+template GenerateAnnotationsSingleLine(AnnotatedElement ae, bool isReturn)
+[loop(ae->annot:Annotations)]
+["["][isReturn ? "return: " : ""][annot.Name][if(annot.Properties.Count > 0)]([GenerateAnnotationProperties(annot)])[end if]["] "]\
+[end loop]
+end template
+
+template GenerateAnnotationProperties(Annotation annot)
+[loop(annot->prop:Properties; separator comma = ", ")]
+[prop.Name]=[GetAnnotationPropertyValue(prop)][comma]\
+[end loop]
+end template
+
+function string GetAnnotationPropertyValue(AnnotationProperty prop)
+	if (prop.Value == null)
+		return string.Empty;
+	end if
+	if (prop.Value is string)
+		return "\""+prop.Value+"\"";
+	else if (prop.Value is bool)
+		return prop.Value.ToString().ToLower();
+	else
+		return prop.Value.ToString();
+	end if
+end function
+
+template GenerateEnum(Namespace currentNs, Symbols.Enum enm)
+[GenerateAnnotations(enm, false)]
+enum [enm.Name][GetAncestor(currentNs, enm)]
+{
+	[loop(lit:enm.EnumLiterals; separator comma = ",")]
+	[GenerateEnumLiteral(currentNs, lit)][comma]
+	[end loop]
+}
+end template
+
+template GenerateEnumLiteral(Namespace currentNs, EnumLiteral lit)
+[GenerateAnnotations(lit, false)]
+[lit.Name]
+end template
+
+template GenerateStruct(Namespace currentNs, Struct st)
+[GenerateAnnotations(st, false)]
+struct [st.Name][GetAncestor(currentNs, st)]
+{
+	[loop(st->prop:Properties)]
+	[GenerateProperty(currentNs, prop)]
+	[end loop]
+}
+end template
+
+template GenerateProperty(Namespace currentNs, Property prop)
+[GenerateAnnotations(prop, false)]
+[GenerateType(currentNs, prop.Type)] [prop.Name];
+end template
+
+template GenerateRef(Namespace currentNs, Declaration decl)
+[if (decl != null)]
+[if (decl.Namespace != currentNs)]
+[decl.FullName]\
+[else]
+[decl.Name]\
+[end if]
+[end if]
+end template
+
+template GenerateType(Namespace currentNs, SoalType t)
+[if (t is PrimitiveType)]
+[((PrimitiveType)t).Name]\
+[else if (t is NullableType)]
+[GenerateType(currentNs, ((NullableType)t).InnerType)]?\
+[else if (t is NonNullableType)]
+[GenerateType(currentNs, ((NonNullableType)t).InnerType)]!\
+[else if (t is ArrayType)]
+[GenerateType(currentNs, ((ArrayType)t).InnerType)]["[]"]\
+[else if (t is Declaration)]
+[GenerateRef(currentNs, (Declaration)t)]
+[else]
+[t]\
+[end if]
+end template
+
+template GenerateReturnType(Namespace currentNs, Operation op)
+[if (op.Result.IsOneway)]
+oneway\
+[else]
+[GenerateType(currentNs, op.Result.Type)]\
+[end if]
+end template
+
+template GenerateThrows(Namespace currentNs, Operation op)
+[if (hasloop(op->ex:Exceptions))]
+ throws \
+	[loop(op->ex:Exceptions; separator comma = ", ")]
+[GenerateType(currentNs, ex)][comma]\
+	[end loop]
+[end if]
+end template
+
+template GenerateParameters(Namespace currentNs, Operation op)
+[loop(op->p:Parameters; separator comma = ", ")]
+[GenerateAnnotationsSingleLine(p, false)][GenerateType(currentNs, p.Type)] [p.Name][comma]\
+[end loop]
+end template
+
+template GenerateOperation(Namespace currentNs, Operation op)
+[GenerateAnnotations(op, false)]
+[GenerateAnnotations(op.Result, true)]
+[GenerateReturnType(currentNs, op)] [op.Name]([GenerateParameters(currentNs, op)])[GenerateThrows(currentNs, op)];
+end template
+
+template GenerateInterface(Namespace currentNs, Interface intf)
+[GenerateAnnotations(intf, false)]
+interface [intf.Name]
+{
+	[loop(intf->op:Operations)]
+	[GenerateOperation(currentNs, op)]
+	[end loop]
+}
+end template
+
+template GenerateTransportBinding(Namespace currentNs, TransportBindingElement bnd)
+[switch (bnd)]
+[type as HttpTransportBindingElement:]
+	[if (bnd.Ssl)]
+transport HTTP
+{
+	Ssl = true;
+	ClientAuthentication = [bnd.ClientAuthentication.ToString().ToLower()];
+}
+	[else]
+transport HTTP;
+	[end if]
+[type as RestTransportBindingElement:]transport REST;
+[type as WebSocketTransportBindingElement:]transport WebSocket;
+[end switch]
+end template
+
+template GenerateEncodingBinding(Namespace currentNs, EncodingBindingElement bnd)
+[switch (bnd)]
+[type as SoapEncodingBindingElement:]
+[if (bnd.Style != SoapEncodingStyle.DocumentWrapped || bnd.Version != SoapVersion.Soap11 || bnd.Mtom)]
+encoding SOAP
+{
+	[if (bnd.Style != SoapEncodingStyle.DocumentWrapped)]
+	Style = [bnd.Style];
+	[end if]
+	[if (bnd.Version != SoapVersion.Soap11)]
+	Version = [bnd.Version];
+	[end if]
+	[if (bnd.Mtom)]
+	Mtom = true;
+	[end if]
+}
+[else]
+encoding SOAP;
+[end if]
+[type as XmlEncodingBindingElement:]encoding XML;
+[type as JsonEncodingBindingElement:]encoding JSON;
+[end switch]
+end template
+
+template GenerateProtocolBinding(Namespace currentNs, ProtocolBindingElement bnd)
+[switch (bnd)]
+[type as WsAddressingBindingElement:]protocol WsAddressing;
+[end switch]
+end template
+
+template GenerateBinding(Namespace currentNs, Symbols.Binding bnd)
+binding [bnd.Name]
+{
+	[GenerateTransportBinding(currentNs, bnd.Transport)]
+	[loop(bnd->enc:Encodings)]
+	[GenerateEncodingBinding(currentNs, enc)]
+	[end loop]
+	[loop(bnd->prot:Protocols)]
+	[GenerateProtocolBinding(currentNs, prot)]
+	[end loop]
+}
+end template
+
+template GenerateEndpoint(Namespace currentNs, Endpoint endp)
+endpoint [endp.Name] : [GenerateRef(currentNs, endp.Interface)]
+{
+	binding [GenerateRef(currentNs, endp.Binding)];
+	address "[endp.Address]";
+}
+end template

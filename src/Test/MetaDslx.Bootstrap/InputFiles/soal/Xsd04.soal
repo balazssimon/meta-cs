@@ -1,0 +1,9 @@
+﻿namespace Xsd04.Hello = hw:"http://www.hello.org/test"
+{
+	[Type(name="MathException")]
+	struct MathFault
+	{
+		int ErrorCode;
+		string ErrorMessage;
+	}
+}

@@ -1,0 +1,16 @@
+namespace  = ""
+{
+}
+
+namespace  = "http://www.hello.org/test"
+{
+	enum Colors 
+	{
+		Red,
+		Green,
+		Blueish
+	}
+
+}
+
+

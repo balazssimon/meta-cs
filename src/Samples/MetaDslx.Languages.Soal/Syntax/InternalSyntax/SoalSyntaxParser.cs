@@ -543,15 +543,15 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					name = NameGreen.__Missing;
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifierContext qualifierContext = context.qualifier();
-				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
+				SoalParser.EnumBaseContext enumBaseContext = context.enumBase();
+				EnumBaseGreen enumBase = null;
+				if (enumBaseContext != null)
 				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
+					enumBase = (EnumBaseGreen)this.Visit(enumBaseContext);
 				}
 				else
 				{
-					qualifier = QualifierGreen.__Missing;
+					enumBase = EnumBaseGreen.__Missing;
 				}
 				SoalParser.EnumBodyContext enumBodyContext = context.enumBody();
 				EnumBodyGreen enumBody = null;
@@ -563,7 +563,23 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					enumBody = EnumBodyGreen.__Missing;
 				}
-				return this.factory.EnumDeclaration(annotationList, kEnum, name, tColon, qualifier, enumBody);
+				return this.factory.EnumDeclaration(annotationList, kEnum, name, tColon, enumBase, enumBody);
+			}
+			
+			public override GreenNode VisitEnumBase(SoalParser.EnumBaseContext context)
+			{
+				if (context == null) return EnumBaseGreen.__Missing;
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
+				{
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				}
+				else
+				{
+					qualifier = QualifierGreen.__Missing;
+				}
+				return this.factory.EnumBase(qualifier);
 			}
 			
 			public override GreenNode VisitEnumBody(SoalParser.EnumBodyContext context)
@@ -1051,15 +1067,15 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					name = NameGreen.__Missing;
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifierContext qualifierContext = context.qualifier();
-				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
+				SoalParser.ComponentBaseContext componentBaseContext = context.componentBase();
+				ComponentBaseGreen componentBase = null;
+				if (componentBaseContext != null)
 				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
+					componentBase = (ComponentBaseGreen)this.Visit(componentBaseContext);
 				}
 				else
 				{
-					qualifier = QualifierGreen.__Missing;
+					componentBase = ComponentBaseGreen.__Missing;
 				}
 				SoalParser.ComponentBodyContext componentBodyContext = context.componentBody();
 				ComponentBodyGreen componentBody = null;
@@ -1071,7 +1087,23 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					componentBody = ComponentBodyGreen.__Missing;
 				}
-				return this.factory.ComponentDeclaration(kAbstract, kComponent, name, tColon, qualifier, componentBody);
+				return this.factory.ComponentDeclaration(kAbstract, kComponent, name, tColon, componentBase, componentBody);
+			}
+			
+			public override GreenNode VisitComponentBase(SoalParser.ComponentBaseContext context)
+			{
+				if (context == null) return ComponentBaseGreen.__Missing;
+				SoalParser.QualifierContext qualifierContext = context.qualifier();
+				QualifierGreen qualifier = null;
+				if (qualifierContext != null)
+				{
+					qualifier = (QualifierGreen)this.Visit(qualifierContext);
+				}
+				else
+				{
+					qualifier = QualifierGreen.__Missing;
+				}
+				return this.factory.ComponentBase(qualifier);
 			}
 			
 			public override GreenNode VisitComponentBody(SoalParser.ComponentBodyContext context)
@@ -1330,15 +1362,15 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					name = NameGreen.__Missing;
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifierContext qualifierContext = context.qualifier();
-				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
+				SoalParser.ComponentBaseContext componentBaseContext = context.componentBase();
+				ComponentBaseGreen componentBase = null;
+				if (componentBaseContext != null)
 				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
+					componentBase = (ComponentBaseGreen)this.Visit(componentBaseContext);
 				}
 				else
 				{
-					qualifier = QualifierGreen.__Missing;
+					componentBase = ComponentBaseGreen.__Missing;
 				}
 				SoalParser.CompositeBodyContext compositeBodyContext = context.compositeBody();
 				CompositeBodyGreen compositeBody = null;
@@ -1350,7 +1382,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					compositeBody = CompositeBodyGreen.__Missing;
 				}
-				return this.factory.CompositeDeclaration(kComposite, name, tColon, qualifier, compositeBody);
+				return this.factory.CompositeDeclaration(kComposite, name, tColon, componentBase, compositeBody);
 			}
 			
 			public override GreenNode VisitCompositeBody(SoalParser.CompositeBodyContext context)
@@ -1386,15 +1418,15 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 					name = NameGreen.__Missing;
 				}
 				InternalSyntaxToken tColon = (InternalSyntaxToken)this.VisitTerminal(context.TColon());
-				SoalParser.QualifierContext qualifierContext = context.qualifier();
-				QualifierGreen qualifier = null;
-				if (qualifierContext != null)
+				SoalParser.ComponentBaseContext componentBaseContext = context.componentBase();
+				ComponentBaseGreen componentBase = null;
+				if (componentBaseContext != null)
 				{
-					qualifier = (QualifierGreen)this.Visit(qualifierContext);
+					componentBase = (ComponentBaseGreen)this.Visit(componentBaseContext);
 				}
 				else
 				{
-					qualifier = QualifierGreen.__Missing;
+					componentBase = ComponentBaseGreen.__Missing;
 				}
 				SoalParser.CompositeBodyContext compositeBodyContext = context.compositeBody();
 				CompositeBodyGreen compositeBody = null;
@@ -1406,7 +1438,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				{
 					compositeBody = CompositeBodyGreen.__Missing;
 				}
-				return this.factory.AssemblyDeclaration(kAssembly, name, tColon, qualifier, compositeBody);
+				return this.factory.AssemblyDeclaration(kAssembly, name, tColon, componentBase, compositeBody);
 			}
 			
 			public override GreenNode VisitCompositeElements(SoalParser.CompositeElementsContext context)

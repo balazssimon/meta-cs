@@ -1,0 +1,20 @@
+namespace  = ""
+{
+}
+
+namespace  = "http://www.hello.org/test"
+{
+	struct IntList
+	{
+		items items;
+	}
+
+	[All]
+	struct items
+	{
+		![] item;
+	}
+
+}
+
+

@@ -326,7 +326,7 @@ namespace MetaDslx.Languages.Soal.Symbols
             {
                 ArrayType atype = (ArrayType)type;
                 string aname = atype.GetXsdName();
-                if (atype.InnerType != SoalInstance.Byte && !arrayNames.Contains(aname))
+                if (atype.InnerType.MId != SoalInstance.Byte.MId && !arrayNames.Contains(aname))
                 {
                     arrayNames.Add(aname);
                     arrayTypes.Add(atype);
@@ -338,7 +338,7 @@ namespace MetaDslx.Languages.Soal.Symbols
                 if (atype != null)
                 {
                     string aname = atype.GetXsdName();
-                    if (atype.InnerType != SoalInstance.Byte && !arrayNames.Contains(aname))
+                    if (atype.InnerType.MId != SoalInstance.Byte.MId && !arrayNames.Contains(aname))
                     {
                         arrayNames.Add(aname);
                         arrayTypes.Add(atype);
@@ -354,7 +354,7 @@ namespace MetaDslx.Languages.Soal.Symbols
             if (type is NonNullableType) return GetNamespace(((NonNullableType)type).InnerType, currentNamespace);
             if (type is ArrayType)
             {
-                if (((ArrayType)type).InnerType == SoalInstance.Byte) return SoalGenerator.XsdNamespace;
+                if (((ArrayType)type).InnerType.MId == SoalInstance.Byte.MId) return SoalGenerator.XsdNamespace;
                 else return currentNamespace;
             }
             if (type is Enum)
@@ -404,7 +404,7 @@ namespace MetaDslx.Languages.Soal.Symbols
             if (type is NonNullableType) return GetXsdName(((NonNullableType)type).InnerType);
             if (type is ArrayType)
             {
-                if (((ArrayType)type).InnerType == SoalInstance.Byte) return "base64Binary";
+                if (((ArrayType)type).InnerType.MId == SoalInstance.Byte.MId) return "base64Binary";
                 else return (GetXsdName(((ArrayType)type).InnerType) + "List").ToPascalCase();
             }
             if (type is Enum)

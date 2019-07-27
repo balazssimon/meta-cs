@@ -1,0 +1,29 @@
+﻿namespace Xsd10.Hello = hw:"http://www.hello.org/test"
+{
+	struct Complex
+	{
+		double Re;
+		double Im;
+	}
+
+	struct PrimitiveNonNulls
+	{
+		string! NonNullString;
+		int[]! IntNonNullArray;
+		string![]! NonNullStringNonNullArray;
+	}
+
+	struct LongNulls
+	{
+		long? NullLong;
+		long?[] NullLongArray;
+		long?[]! NullLongNonNullArray;
+	}
+
+	struct ComplexNonNulls
+	{
+		Complex! NonNullComplex;
+		Complex[]! ComplexNonNullArray;
+		Complex![]! NonNullComplexNonNullArray;
+	}
+}

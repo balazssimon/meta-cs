@@ -1,0 +1,19 @@
+﻿namespace Xsd13.Hello = hw:"http://www.hello.org/test"
+{
+	struct IntValues
+	{
+		int[] Items;
+	}
+
+	struct NameValues
+	{
+		string[] Names;
+	}
+
+	struct Values
+	{
+		IntValues[] A;
+		NameValues[] B;
+	}
+	
+}

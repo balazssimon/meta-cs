@@ -646,44 +646,29 @@ namespace MetaDslx.Languages.Soal.Binding
 						childBoundNodesForParent.Add(cachedBoundNode);
 						return cachedBoundNode;
 					}
-					else
-					{
-						childBoundNodesForParent.Add(node);
-						return null;
-					}
 				}
-				var childBoundNodes = ArrayBuilder<object>.GetInstance();
 				if (node.AnnotationPropertyList != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
 						if (LookupPosition.IsInNode(this.Position, node.AnnotationPropertyList))
 						{
-							this.Visit(node.AnnotationPropertyList, childBoundNodes);
+							this.Visit(node.AnnotationPropertyList, childBoundNodesForParent);
 						}
 					}
 					else
 					{
-						this.Visit(node.AnnotationPropertyList, childBoundNodes);
+						this.Visit(node.AnnotationPropertyList, childBoundNodesForParent);
 					}
 				}
 				if (state == BoundNodeFactoryState.InParent)
 				{
-					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
-					if (childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode) return (BoundNode)childBoundNodes[0];
+					Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode);
+					if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode) return (BoundNode)childBoundNodesForParent[0];
 					else return null;
-				}
-				else if (state == BoundNodeFactoryState.InNode)
-				{
-					BoundNode resultNode;
-					resultNode = this.CreateBoundScope(this.BoundTree, childBoundNodes.ToImmutableAndFree(), node, false);
-					childBoundNodesForParent.Add(resultNode); 
-					return resultNode;
 				}
 				else
 				{
-					Debug.Assert(false);
-					childBoundNodesForParent.Add(node);
 					return null;
 				}
 			}
@@ -1402,23 +1387,18 @@ namespace MetaDslx.Languages.Soal.Binding
 						this.Visit(node.Name, childBoundNodes);
 					}
 				}
-				if (node.Qualifier != null)
+				if (node.EnumBase != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						if (LookupPosition.IsInNode(this.Position, node.EnumBase))
 						{
-							var childBoundNodesOfQualifier = ArrayBuilder<object>.GetInstance();
-							this.Visit(node.Qualifier, childBoundNodesOfQualifier);
-							BoundNode boundQualifier;
-							boundQualifier = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.Enum)), node.Qualifier, false);
-							boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(boundQualifier), "BaseType", node.Qualifier, false);
-							childBoundNodes.Add(boundQualifier);
+							this.Visit(node.EnumBase, childBoundNodes);
 						}
 					}
 					else
 					{
-						childBoundNodes.Add(node.Qualifier);
+						this.Visit(node.EnumBase, childBoundNodes);
 					}
 				}
 				if (node.EnumBody != null)
@@ -1452,6 +1432,58 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					Debug.Assert(false);
 					childBoundNodesForParent.Add(node);
+					return null;
+				}
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public BoundNode VisitEnumBase(EnumBaseSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			if (node == null || node.IsMissing) return null;
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild)
+				{
+					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+					{
+						childBoundNodesForParent.Add(cachedBoundNode);
+						return cachedBoundNode;
+					}
+				}
+				if (node.Qualifier != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						{
+							var childBoundNodesOfQualifier = ArrayBuilder<object>.GetInstance();
+							this.Visit(node.Qualifier, childBoundNodesOfQualifier);
+							BoundNode boundQualifier;
+							boundQualifier = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.Enum)), node.Qualifier, false);
+							boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(boundQualifier), "BaseType", node.Qualifier, false);
+							childBoundNodesForParent.Add(boundQualifier);
+						}
+					}
+					else
+					{
+						childBoundNodesForParent.Add(node.Qualifier);
+					}
+				}
+				if (state == BoundNodeFactoryState.InParent)
+				{
+					Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode);
+					if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode) return (BoundNode)childBoundNodesForParent[0];
+					else return null;
+				}
+				else
+				{
 					return null;
 				}
 			}
@@ -2777,23 +2809,18 @@ namespace MetaDslx.Languages.Soal.Binding
 						this.Visit(node.Name, childBoundNodes);
 					}
 				}
-				if (node.Qualifier != null)
+				if (node.ComponentBase != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						if (LookupPosition.IsInNode(this.Position, node.ComponentBase))
 						{
-							var childBoundNodesOfQualifier = ArrayBuilder<object>.GetInstance();
-							this.Visit(node.Qualifier, childBoundNodesOfQualifier);
-							BoundNode boundQualifier;
-							boundQualifier = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.Component)), node.Qualifier, false);
-							boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(boundQualifier), "BaseComponent", node.Qualifier, false);
-							childBoundNodes.Add(boundQualifier);
+							this.Visit(node.ComponentBase, childBoundNodes);
 						}
 					}
 					else
 					{
-						childBoundNodes.Add(node.Qualifier);
+						this.Visit(node.ComponentBase, childBoundNodes);
 					}
 				}
 				if (node.ComponentBody != null)
@@ -2827,6 +2854,58 @@ namespace MetaDslx.Languages.Soal.Binding
 				{
 					Debug.Assert(false);
 					childBoundNodesForParent.Add(node);
+					return null;
+				}
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public BoundNode VisitComponentBase(ComponentBaseSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			if (node == null || node.IsMissing) return null;
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild)
+				{
+					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+					{
+						childBoundNodesForParent.Add(cachedBoundNode);
+						return cachedBoundNode;
+					}
+				}
+				if (node.Qualifier != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						{
+							var childBoundNodesOfQualifier = ArrayBuilder<object>.GetInstance();
+							this.Visit(node.Qualifier, childBoundNodesOfQualifier);
+							BoundNode boundQualifier;
+							boundQualifier = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.Component)), node.Qualifier, false);
+							boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(boundQualifier), "BaseComponent", node.Qualifier, false);
+							childBoundNodesForParent.Add(boundQualifier);
+						}
+					}
+					else
+					{
+						childBoundNodesForParent.Add(node.Qualifier);
+					}
+				}
+				if (state == BoundNodeFactoryState.InParent)
+				{
+					Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode);
+					if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode) return (BoundNode)childBoundNodesForParent[0];
+					else return null;
+				}
+				else
+				{
 					return null;
 				}
 			}
@@ -3613,23 +3692,18 @@ namespace MetaDslx.Languages.Soal.Binding
 						this.Visit(node.Name, childBoundNodes);
 					}
 				}
-				if (node.Qualifier != null)
+				if (node.ComponentBase != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						if (LookupPosition.IsInNode(this.Position, node.ComponentBase))
 						{
-							var childBoundNodesOfQualifier = ArrayBuilder<object>.GetInstance();
-							this.Visit(node.Qualifier, childBoundNodesOfQualifier);
-							BoundNode boundQualifier;
-							boundQualifier = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.Component)), node.Qualifier, false);
-							boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(boundQualifier), "BaseComponent", node.Qualifier, false);
-							childBoundNodes.Add(boundQualifier);
+							this.Visit(node.ComponentBase, childBoundNodes);
 						}
 					}
 					else
 					{
-						childBoundNodes.Add(node.Qualifier);
+						this.Visit(node.ComponentBase, childBoundNodes);
 					}
 				}
 				if (node.CompositeBody != null)
@@ -3770,23 +3844,18 @@ namespace MetaDslx.Languages.Soal.Binding
 						this.Visit(node.Name, childBoundNodes);
 					}
 				}
-				if (node.Qualifier != null)
+				if (node.ComponentBase != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						if (LookupPosition.IsInNode(this.Position, node.ComponentBase))
 						{
-							var childBoundNodesOfQualifier = ArrayBuilder<object>.GetInstance();
-							this.Visit(node.Qualifier, childBoundNodesOfQualifier);
-							BoundNode boundQualifier;
-							boundQualifier = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodesOfQualifier.ToImmutableAndFree(), ImmutableArray.Create(typeof(Symbols.Component)), node.Qualifier, false);
-							boundQualifier = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(boundQualifier), "BaseComponent", node.Qualifier, false);
-							childBoundNodes.Add(boundQualifier);
+							this.Visit(node.ComponentBase, childBoundNodes);
 						}
 					}
 					else
 					{
-						childBoundNodes.Add(node.Qualifier);
+						this.Visit(node.ComponentBase, childBoundNodes);
 					}
 				}
 				if (node.CompositeBody != null)

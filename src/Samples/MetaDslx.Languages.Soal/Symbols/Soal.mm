@@ -54,11 +54,7 @@
 	}
 
 	[Type]
-	abstract class SoalType
-	{
-	}
-
-	class NamedType : SoalType, NamedElement
+	abstract class SoalType : NamedElement
 	{
 	}
 
@@ -136,7 +132,6 @@
 		list<Struct> Entities;
 	}
 
-	//[Scope]
 	class Operation : NamedElement, AnnotatedElement
 	{
 		string Action;

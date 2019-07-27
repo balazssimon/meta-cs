@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="http://www.hello.org/HelloNs"  
+	xmlns:hw="http://www.hello.org/HelloNs"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+	xmlns:wsp="http://www.w3.org/ns/ws-policy"
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization"
+	xmlns:wsa="http://www.w3.org/2005/08/addressing" 
+	xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+	xmlns:wsrmp="http://docs.oasis-open.org/ws-rx/wsrmp/200702"
+	xmlns:wsat="http://schemas.xmlsoap.org/ws/2004/10/wsat"
+	xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+	xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512"
+	xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
+>
+	
+	<wsp:Policy wsu:Id="HttpSoap11_Policy">
+		<wsam:Addressing/>
+	</wsp:Policy>
+	
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://www.hello.org/HelloNs" schemaLocation="../xsd/Wsdl02.Hello.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="IHello_SayHello_InputMessage">
+		<wsdl:part name="name" element="hw:SayHelloName"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_SayHello_OutputMessage">
+		<wsdl:part name="result" element="hw:SayHelloResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_SayHello2_InputMessage">
+		<wsdl:part name="cplx1" element="hw:SayHello2Cplx1"/>
+		<wsdl:part name="cplx2" element="hw:SayHello2Cplx2"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_SayHello2_OutputMessage">
+		<wsdl:part name="result" element="hw:SayHello2Response"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_Abc_InputMessage">
+		<wsdl:part name="i1" element="hw:AbcI1"/>
+		<wsdl:part name="i2" element="hw:AbcI2"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_Abc_OutputMessage">
+		<wsdl:part name="result" element="hw:AbcResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_Abc2_InputMessage">
+		<wsdl:part name="i1" element="hw:Abc2I1"/>
+		<wsdl:part name="i2" element="hw:Abc2I2"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_Abc2_OutputMessage">
+		<wsdl:part name="result" element="hw:Abc2Response"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_Abc3_InputMessage">
+		<wsdl:part name="i1" element="hw:Abc3I1"/>
+		<wsdl:part name="i2" element="hw:Abc3I2"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_Abc3_OutputMessage">
+		<wsdl:part name="result" element="hw:Abc3Response"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_Divide_InputMessage">
+		<wsdl:part name="left" element="hw:DivideLeft"/>
+		<wsdl:part name="right" element="hw:DivideRight"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_Divide_OutputMessage">
+		<wsdl:part name="result" element="hw:DivideResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_DivideComplex_InputMessage">
+		<wsdl:part name="left" element="hw:DivideComplexLeft"/>
+		<wsdl:part name="right" element="hw:DivideComplexRight"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_DivideComplex_OutputMessage">
+		<wsdl:part name="result" element="hw:DivideComplexResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_DivideO_InputMessage">
+		<wsdl:part name="left" element="hw:DivideOLeft"/>
+		<wsdl:part name="right" element="hw:DivideORight"/>
+	</wsdl:message>
+	
+	<wsdl:message name="IHello_MathFault_FaultMessage">
+		<wsdl:part name="fault" element="hw:MathFault"/>
+	</wsdl:message>
+	
+	<wsdl:portType name="IHello">
+		<wsdl:operation name="SayHello">
+			<wsdl:input wsaw:action="http://www.hello.org/HelloNs/IHello/SayHello" message="hw:IHello_SayHello_InputMessage"/>
+			<wsdl:output wsaw:action="http://www.hello.org/HelloNs/IHello/SayHelloResponse" message="hw:IHello_SayHello_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="SayHello2">
+			<wsdl:input wsaw:action="http://www.hello.org/HelloNs/IHello/SayHello2" message="hw:IHello_SayHello2_InputMessage"/>
+			<wsdl:output wsaw:action="http://www.hello.org/HelloNs/IHello/SayHello2Response" message="hw:IHello_SayHello2_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="Abc">
+			<wsdl:input wsaw:action="http://www.hello.org/HelloNs/IHello/Abc" message="hw:IHello_Abc_InputMessage"/>
+			<wsdl:output wsaw:action="http://www.hello.org/HelloNs/IHello/AbcResponse" message="hw:IHello_Abc_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="Abc2">
+			<wsdl:input wsaw:action="http://www.hello.org/HelloNs/IHello/Abc2" message="hw:IHello_Abc2_InputMessage"/>
+			<wsdl:output wsaw:action="http://www.hello.org/HelloNs/IHello/Abc2Response" message="hw:IHello_Abc2_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="Abc3">
+			<wsdl:input wsaw:action="http://www.hello.org/HelloNs/IHello/Abc3" message="hw:IHello_Abc3_InputMessage"/>
+			<wsdl:output wsaw:action="http://www.hello.org/HelloNs/IHello/Abc3Response" message="hw:IHello_Abc3_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="Divide">
+			<wsdl:input wsaw:action="http://www.hello.org/HelloNs/IHello/Divide" message="hw:IHello_Divide_InputMessage"/>
+			<wsdl:output wsaw:action="http://www.hello.org/HelloNs/IHello/DivideResponse" message="hw:IHello_Divide_OutputMessage"/>
+			<wsdl:fault wsaw:action="http://www.hello.org/HelloNs/IHello/DivideFault/MathFault" message="hw:IHello_MathFault_FaultMessage" name="MathFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="DivideComplex">
+			<wsdl:input wsaw:action="http://www.hello.org/HelloNs/IHello/DivideComplex" message="hw:IHello_DivideComplex_InputMessage"/>
+			<wsdl:output wsaw:action="http://www.hello.org/HelloNs/IHello/DivideComplexResponse" message="hw:IHello_DivideComplex_OutputMessage"/>
+			<wsdl:fault wsaw:action="http://www.hello.org/HelloNs/IHello/DivideComplexFault/MathFault" message="hw:IHello_MathFault_FaultMessage" name="MathFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="DivideO">
+			<wsdl:input wsaw:action="http://www.hello.org/HelloNs/IHello/DivideO" message="hw:IHello_DivideO_InputMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="IHello_HttpSoap11_Binding" type="hw:IHello">
+		<wsp:PolicyReference URI="#HttpSoap11_Policy"/>
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="SayHello">
+			<soap:operation style="document" soapAction="http://www.hello.org/HelloNs/IHello/SayHello"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SayHello2">
+			<soap:operation style="document" soapAction="http://www.hello.org/HelloNs/IHello/SayHello2"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Abc">
+			<soap:operation style="document" soapAction="http://www.hello.org/HelloNs/IHello/Abc"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Abc2">
+			<soap:operation style="document" soapAction="http://www.hello.org/HelloNs/IHello/Abc2"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Abc3">
+			<soap:operation style="document" soapAction="http://www.hello.org/HelloNs/IHello/Abc3"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Divide">
+			<soap:operation style="document" soapAction="http://www.hello.org/HelloNs/IHello/Divide"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="MathFault">
+				<soap:fault name="MathFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="DivideComplex">
+			<soap:operation style="document" soapAction="http://www.hello.org/HelloNs/IHello/DivideComplex"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="MathFault">
+				<soap:fault name="MathFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="DivideO">
+			<soap:operation style="document" soapAction="http://www.hello.org/HelloNs/IHello/DivideO"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="HelloService">
+		<wsdl:port name="IHello_HttpSoap11_Port" binding="hw:IHello_HttpSoap11_Binding">
+			<soap:address location="http://www.tempuri.org"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
+

@@ -394,10 +394,6 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				if (state == BoundNodeFactoryState.InChild) return false;
-				if (state == BoundNodeFactoryState.InNode) 
-				{
-					return true;
-				}
 				if (node.AnnotationPropertyList != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
@@ -924,18 +920,18 @@ namespace MetaDslx.Languages.Soal.Binding
 						if (this.Visit(node.Name)) return true;
 					}
 				}
-				if (node.Qualifier != null)
+				if (node.EnumBase != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						if (LookupPosition.IsInNode(this.Position, node.EnumBase))
 						{
-							return true;
+							if (this.Visit(node.EnumBase)) return true;
 						}
 					}
 					else
 					{
-						if (this.Visit(node.Qualifier)) return true;
+						if (this.Visit(node.EnumBase)) return true;
 					}
 				}
 				if (node.EnumBody != null)
@@ -950,6 +946,36 @@ namespace MetaDslx.Languages.Soal.Binding
 					else
 					{
 						if (this.Visit(node.EnumBody)) return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitEnumBase(EnumBaseSyntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (node.Qualifier != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						{
+							return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.Qualifier)) return true;
 					}
 				}
 				return false;
@@ -1801,18 +1827,18 @@ namespace MetaDslx.Languages.Soal.Binding
 						if (this.Visit(node.Name)) return true;
 					}
 				}
-				if (node.Qualifier != null)
+				if (node.ComponentBase != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						if (LookupPosition.IsInNode(this.Position, node.ComponentBase))
 						{
-							return true;
+							if (this.Visit(node.ComponentBase)) return true;
 						}
 					}
 					else
 					{
-						if (this.Visit(node.Qualifier)) return true;
+						if (this.Visit(node.ComponentBase)) return true;
 					}
 				}
 				if (node.ComponentBody != null)
@@ -1827,6 +1853,36 @@ namespace MetaDslx.Languages.Soal.Binding
 					else
 					{
 						if (this.Visit(node.ComponentBody)) return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitComponentBase(ComponentBaseSyntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (node.Qualifier != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						{
+							return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.Qualifier)) return true;
 					}
 				}
 				return false;
@@ -2327,18 +2383,18 @@ namespace MetaDslx.Languages.Soal.Binding
 						if (this.Visit(node.Name)) return true;
 					}
 				}
-				if (node.Qualifier != null)
+				if (node.ComponentBase != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						if (LookupPosition.IsInNode(this.Position, node.ComponentBase))
 						{
-							return true;
+							if (this.Visit(node.ComponentBase)) return true;
 						}
 					}
 					else
 					{
-						if (this.Visit(node.Qualifier)) return true;
+						if (this.Visit(node.ComponentBase)) return true;
 					}
 				}
 				if (node.CompositeBody != null)
@@ -2423,18 +2479,18 @@ namespace MetaDslx.Languages.Soal.Binding
 						if (this.Visit(node.Name)) return true;
 					}
 				}
-				if (node.Qualifier != null)
+				if (node.ComponentBase != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Qualifier))
+						if (LookupPosition.IsInNode(this.Position, node.ComponentBase))
 						{
-							return true;
+							if (this.Visit(node.ComponentBase)) return true;
 						}
 					}
 					else
 					{
-						if (this.Visit(node.Qualifier)) return true;
+						if (this.Visit(node.ComponentBase)) return true;
 					}
 				}
 				if (node.CompositeBody != null)

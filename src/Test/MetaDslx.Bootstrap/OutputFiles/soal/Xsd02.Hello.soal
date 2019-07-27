@@ -1,0 +1,16 @@
+namespace  = ""
+{
+}
+
+namespace  = "http://www.hello.org/test"
+{
+	[All]
+	struct MathFault
+	{
+		int ErrorCode;
+		string ErrorMessage;
+	}
+
+}
+
+

@@ -1,0 +1,49 @@
+﻿namespace Wsdl04.Hello = hw:"http://www.hello.org/HelloNs"
+{
+	struct MathFault
+	{
+		int ErrorCode;
+		string ErrorMessage;
+	}
+
+	struct Complex
+	{
+		double Re;
+		double Im;
+	}
+
+	enum SeatStatus
+	{
+		Free,
+		Locked,
+		Reserved
+	}
+
+	[Rpc]
+	interface IHello
+	{
+		string SayHello(string name);
+		string SayHello2(Complex cplx1, Complex cplx2);
+		byte[] Abc(int[] i1, [Element(wrapped=true, items="iiiii")] int[] i2);
+		[return: Element(wrapped=true, items="jjjjj")]
+		int[] Abc2(byte[] i1, byte[] i2);
+		int[] Abc3([Element(wrapped=true)] int[] i1, int[] i2);
+		double Divide(double left, double right) throws MathFault;
+		Complex DivideComplex(Complex left, Complex right) throws MathFault;
+		oneway DivideO(double left, double right) throws MathFault;
+	}
+	
+	binding HttpSoap11
+	{
+		transport HTTP;
+		encoding SOAP { Style = RpcEncoded; } 
+		protocol WsAddressing;
+	}
+
+	endpoint HelloService : IHello
+	{
+		binding HttpSoap11;
+		address "http://www.tempuri.org";
+	}
+}
+

@@ -28,10 +28,18 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseFieldDeclaration = new object();
 		public static object UseFieldModifier = new object();
 		public static object UseTypeReference = new object();
+		public static object UseKContainment = new object();
+		public static object UseKReadonly = new object();
+		public static object UseKLazy = new object();
+		public static object UseKDerived = new object();
 		public static object UseNameUseList = new object();
 		public static object UsePrimitiveType = new object();
 		public static object UseCollectionKind = new object();
 		public static object UseSimpleType = new object();
+		public static object UseKSet = new object();
+		public static object UseKList = new object();
+		public static object UseKMultiSet = new object();
+		public static object UseKMultiList = new object();
 		public static object UseReturnType = new object();
 		public static object UseParameterList = new object();
 		public static object UseSource = new object();
@@ -51,6 +59,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseConstDeclaration = new object();
 		public static object UseEnumBody = new object();
 		public static object UseEnumValue = new object();
+		public static object Use = new object();
 		public static object UseClassBody = new object();
 		public static object UseVoidType = new object();
 		public static object UseCollectionType = new object();

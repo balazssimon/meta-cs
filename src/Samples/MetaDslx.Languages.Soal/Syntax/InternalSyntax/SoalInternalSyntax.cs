@@ -3133,10 +3133,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    private InternalSyntaxToken kEnum;
 	    private NameGreen name;
 	    private InternalSyntaxToken tColon;
-	    private QualifierGreen qualifier;
+	    private EnumBaseGreen enumBase;
 	    private EnumBodyGreen enumBody;
 	
-	    public EnumDeclarationGreen(SoalSyntaxKind kind, AnnotationListGreen annotationList, InternalSyntaxToken kEnum, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, EnumBodyGreen enumBody)
+	    public EnumDeclarationGreen(SoalSyntaxKind kind, AnnotationListGreen annotationList, InternalSyntaxToken kEnum, NameGreen name, InternalSyntaxToken tColon, EnumBaseGreen enumBase, EnumBodyGreen enumBody)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 6;
@@ -3160,10 +3160,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tColon);
 				this.tColon = tColon;
 			}
-			if (qualifier != null)
+			if (enumBase != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(enumBase);
+				this.enumBase = enumBase;
 			}
 			if (enumBody != null)
 			{
@@ -3172,7 +3172,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public EnumDeclarationGreen(SoalSyntaxKind kind, AnnotationListGreen annotationList, InternalSyntaxToken kEnum, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, EnumBodyGreen enumBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public EnumDeclarationGreen(SoalSyntaxKind kind, AnnotationListGreen annotationList, InternalSyntaxToken kEnum, NameGreen name, InternalSyntaxToken tColon, EnumBaseGreen enumBase, EnumBodyGreen enumBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 6;
@@ -3196,10 +3196,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tColon);
 				this.tColon = tColon;
 			}
-			if (qualifier != null)
+			if (enumBase != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(enumBase);
+				this.enumBase = enumBase;
 			}
 			if (enumBody != null)
 			{
@@ -3218,7 +3218,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    public InternalSyntaxToken KEnum { get { return this.kEnum; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public InternalSyntaxToken TColon { get { return this.tColon; } }
-	    public QualifierGreen Qualifier { get { return this.qualifier; } }
+	    public EnumBaseGreen EnumBase { get { return this.enumBase; } }
 	    public EnumBodyGreen EnumBody { get { return this.enumBody; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -3234,7 +3234,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	            case 1: return this.kEnum;
 	            case 2: return this.name;
 	            case 3: return this.tColon;
-	            case 4: return this.qualifier;
+	            case 4: return this.enumBase;
 	            case 5: return this.enumBody;
 	            default: return null;
 	        }
@@ -3246,24 +3246,24 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new EnumDeclarationGreen(this.Kind, this.annotationList, this.kEnum, this.name, this.tColon, this.qualifier, this.enumBody, diagnostics, this.GetAnnotations());
+	        return new EnumDeclarationGreen(this.Kind, this.annotationList, this.kEnum, this.name, this.tColon, this.enumBase, this.enumBody, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new EnumDeclarationGreen(this.Kind, this.annotationList, this.kEnum, this.name, this.tColon, this.qualifier, this.enumBody, this.GetDiagnostics(), annotations);
+	        return new EnumDeclarationGreen(this.Kind, this.annotationList, this.kEnum, this.name, this.tColon, this.enumBase, this.enumBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public EnumDeclarationGreen Update(AnnotationListGreen annotationList, InternalSyntaxToken kEnum, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, EnumBodyGreen enumBody)
+	    public EnumDeclarationGreen Update(AnnotationListGreen annotationList, InternalSyntaxToken kEnum, NameGreen name, InternalSyntaxToken tColon, EnumBaseGreen enumBase, EnumBodyGreen enumBody)
 	    {
 	        if (this.AnnotationList != annotationList ||
 				this.KEnum != kEnum ||
 				this.Name != name ||
 				this.TColon != tColon ||
-				this.Qualifier != qualifier ||
+				this.EnumBase != enumBase ||
 				this.EnumBody != enumBody)
 	        {
-	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.EnumDeclaration(annotationList, kEnum, name, tColon, qualifier, enumBody);
+	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.EnumDeclaration(annotationList, kEnum, name, tColon, enumBase, enumBody);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -3271,6 +3271,86 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (EnumDeclarationGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class EnumBaseGreen : GreenSyntaxNode
+	{
+	    internal static readonly EnumBaseGreen __Missing = new EnumBaseGreen();
+	    private QualifierGreen qualifier;
+	
+	    public EnumBaseGreen(SoalSyntaxKind kind, QualifierGreen qualifier)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (qualifier != null)
+			{
+				this.AdjustFlagsAndWidth(qualifier);
+				this.qualifier = qualifier;
+			}
+	    }
+	
+	    public EnumBaseGreen(SoalSyntaxKind kind, QualifierGreen qualifier, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (qualifier != null)
+			{
+				this.AdjustFlagsAndWidth(qualifier);
+				this.qualifier = qualifier;
+			}
+	    }
+	
+		private EnumBaseGreen()
+			: base((SoalSyntaxKind)SoalSyntaxKind.EnumBase, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public QualifierGreen Qualifier { get { return this.qualifier; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Soal.Syntax.EnumBaseSyntax(this, (SoalSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.qualifier;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(SoalSyntaxVisitor<TResult> visitor) => visitor.VisitEnumBaseGreen(this);
+	
+	    public override void Accept(SoalSyntaxVisitor visitor) => visitor.VisitEnumBaseGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new EnumBaseGreen(this.Kind, this.qualifier, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new EnumBaseGreen(this.Kind, this.qualifier, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public EnumBaseGreen Update(QualifierGreen qualifier)
+	    {
+	        if (this.Qualifier != qualifier)
+	        {
+	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.EnumBase(qualifier);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (EnumBaseGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -5161,10 +5241,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    private InternalSyntaxToken kComponent;
 	    private NameGreen name;
 	    private InternalSyntaxToken tColon;
-	    private QualifierGreen qualifier;
+	    private ComponentBaseGreen componentBase;
 	    private ComponentBodyGreen componentBody;
 	
-	    public ComponentDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kAbstract, InternalSyntaxToken kComponent, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, ComponentBodyGreen componentBody)
+	    public ComponentDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kAbstract, InternalSyntaxToken kComponent, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, ComponentBodyGreen componentBody)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 6;
@@ -5188,10 +5268,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tColon);
 				this.tColon = tColon;
 			}
-			if (qualifier != null)
+			if (componentBase != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(componentBase);
+				this.componentBase = componentBase;
 			}
 			if (componentBody != null)
 			{
@@ -5200,7 +5280,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public ComponentDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kAbstract, InternalSyntaxToken kComponent, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, ComponentBodyGreen componentBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public ComponentDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kAbstract, InternalSyntaxToken kComponent, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, ComponentBodyGreen componentBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 6;
@@ -5224,10 +5304,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tColon);
 				this.tColon = tColon;
 			}
-			if (qualifier != null)
+			if (componentBase != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(componentBase);
+				this.componentBase = componentBase;
 			}
 			if (componentBody != null)
 			{
@@ -5246,7 +5326,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    public InternalSyntaxToken KComponent { get { return this.kComponent; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public InternalSyntaxToken TColon { get { return this.tColon; } }
-	    public QualifierGreen Qualifier { get { return this.qualifier; } }
+	    public ComponentBaseGreen ComponentBase { get { return this.componentBase; } }
 	    public ComponentBodyGreen ComponentBody { get { return this.componentBody; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -5262,7 +5342,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	            case 1: return this.kComponent;
 	            case 2: return this.name;
 	            case 3: return this.tColon;
-	            case 4: return this.qualifier;
+	            case 4: return this.componentBase;
 	            case 5: return this.componentBody;
 	            default: return null;
 	        }
@@ -5274,24 +5354,24 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new ComponentDeclarationGreen(this.Kind, this.kAbstract, this.kComponent, this.name, this.tColon, this.qualifier, this.componentBody, diagnostics, this.GetAnnotations());
+	        return new ComponentDeclarationGreen(this.Kind, this.kAbstract, this.kComponent, this.name, this.tColon, this.componentBase, this.componentBody, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new ComponentDeclarationGreen(this.Kind, this.kAbstract, this.kComponent, this.name, this.tColon, this.qualifier, this.componentBody, this.GetDiagnostics(), annotations);
+	        return new ComponentDeclarationGreen(this.Kind, this.kAbstract, this.kComponent, this.name, this.tColon, this.componentBase, this.componentBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public ComponentDeclarationGreen Update(InternalSyntaxToken kAbstract, InternalSyntaxToken kComponent, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, ComponentBodyGreen componentBody)
+	    public ComponentDeclarationGreen Update(InternalSyntaxToken kAbstract, InternalSyntaxToken kComponent, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, ComponentBodyGreen componentBody)
 	    {
 	        if (this.KAbstract != kAbstract ||
 				this.KComponent != kComponent ||
 				this.Name != name ||
 				this.TColon != tColon ||
-				this.Qualifier != qualifier ||
+				this.ComponentBase != componentBase ||
 				this.ComponentBody != componentBody)
 	        {
-	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ComponentDeclaration(kAbstract, kComponent, name, tColon, qualifier, componentBody);
+	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ComponentDeclaration(kAbstract, kComponent, name, tColon, componentBase, componentBody);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -5299,6 +5379,86 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (ComponentDeclarationGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class ComponentBaseGreen : GreenSyntaxNode
+	{
+	    internal static readonly ComponentBaseGreen __Missing = new ComponentBaseGreen();
+	    private QualifierGreen qualifier;
+	
+	    public ComponentBaseGreen(SoalSyntaxKind kind, QualifierGreen qualifier)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (qualifier != null)
+			{
+				this.AdjustFlagsAndWidth(qualifier);
+				this.qualifier = qualifier;
+			}
+	    }
+	
+	    public ComponentBaseGreen(SoalSyntaxKind kind, QualifierGreen qualifier, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (qualifier != null)
+			{
+				this.AdjustFlagsAndWidth(qualifier);
+				this.qualifier = qualifier;
+			}
+	    }
+	
+		private ComponentBaseGreen()
+			: base((SoalSyntaxKind)SoalSyntaxKind.ComponentBase, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public QualifierGreen Qualifier { get { return this.qualifier; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Soal.Syntax.ComponentBaseSyntax(this, (SoalSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.qualifier;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(SoalSyntaxVisitor<TResult> visitor) => visitor.VisitComponentBaseGreen(this);
+	
+	    public override void Accept(SoalSyntaxVisitor visitor) => visitor.VisitComponentBaseGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new ComponentBaseGreen(this.Kind, this.qualifier, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new ComponentBaseGreen(this.Kind, this.qualifier, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public ComponentBaseGreen Update(QualifierGreen qualifier)
+	    {
+	        if (this.Qualifier != qualifier)
+	        {
+	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.ComponentBase(qualifier);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (ComponentBaseGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -6569,10 +6729,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    private InternalSyntaxToken kComposite;
 	    private NameGreen name;
 	    private InternalSyntaxToken tColon;
-	    private QualifierGreen qualifier;
+	    private ComponentBaseGreen componentBase;
 	    private CompositeBodyGreen compositeBody;
 	
-	    public CompositeDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kComposite, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, CompositeBodyGreen compositeBody)
+	    public CompositeDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kComposite, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, CompositeBodyGreen compositeBody)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 5;
@@ -6591,10 +6751,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tColon);
 				this.tColon = tColon;
 			}
-			if (qualifier != null)
+			if (componentBase != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(componentBase);
+				this.componentBase = componentBase;
 			}
 			if (compositeBody != null)
 			{
@@ -6603,7 +6763,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public CompositeDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kComposite, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, CompositeBodyGreen compositeBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public CompositeDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kComposite, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, CompositeBodyGreen compositeBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 5;
@@ -6622,10 +6782,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tColon);
 				this.tColon = tColon;
 			}
-			if (qualifier != null)
+			if (componentBase != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(componentBase);
+				this.componentBase = componentBase;
 			}
 			if (compositeBody != null)
 			{
@@ -6643,7 +6803,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    public InternalSyntaxToken KComposite { get { return this.kComposite; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public InternalSyntaxToken TColon { get { return this.tColon; } }
-	    public QualifierGreen Qualifier { get { return this.qualifier; } }
+	    public ComponentBaseGreen ComponentBase { get { return this.componentBase; } }
 	    public CompositeBodyGreen CompositeBody { get { return this.compositeBody; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -6658,7 +6818,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	            case 0: return this.kComposite;
 	            case 1: return this.name;
 	            case 2: return this.tColon;
-	            case 3: return this.qualifier;
+	            case 3: return this.componentBase;
 	            case 4: return this.compositeBody;
 	            default: return null;
 	        }
@@ -6670,23 +6830,23 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new CompositeDeclarationGreen(this.Kind, this.kComposite, this.name, this.tColon, this.qualifier, this.compositeBody, diagnostics, this.GetAnnotations());
+	        return new CompositeDeclarationGreen(this.Kind, this.kComposite, this.name, this.tColon, this.componentBase, this.compositeBody, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new CompositeDeclarationGreen(this.Kind, this.kComposite, this.name, this.tColon, this.qualifier, this.compositeBody, this.GetDiagnostics(), annotations);
+	        return new CompositeDeclarationGreen(this.Kind, this.kComposite, this.name, this.tColon, this.componentBase, this.compositeBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public CompositeDeclarationGreen Update(InternalSyntaxToken kComposite, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, CompositeBodyGreen compositeBody)
+	    public CompositeDeclarationGreen Update(InternalSyntaxToken kComposite, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, CompositeBodyGreen compositeBody)
 	    {
 	        if (this.KComposite != kComposite ||
 				this.Name != name ||
 				this.TColon != tColon ||
-				this.Qualifier != qualifier ||
+				this.ComponentBase != componentBase ||
 				this.CompositeBody != compositeBody)
 	        {
-	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.CompositeDeclaration(kComposite, name, tColon, qualifier, compositeBody);
+	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.CompositeDeclaration(kComposite, name, tColon, componentBase, compositeBody);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -6813,10 +6973,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    private InternalSyntaxToken kAssembly;
 	    private NameGreen name;
 	    private InternalSyntaxToken tColon;
-	    private QualifierGreen qualifier;
+	    private ComponentBaseGreen componentBase;
 	    private CompositeBodyGreen compositeBody;
 	
-	    public AssemblyDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kAssembly, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, CompositeBodyGreen compositeBody)
+	    public AssemblyDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kAssembly, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, CompositeBodyGreen compositeBody)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 5;
@@ -6835,10 +6995,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tColon);
 				this.tColon = tColon;
 			}
-			if (qualifier != null)
+			if (componentBase != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(componentBase);
+				this.componentBase = componentBase;
 			}
 			if (compositeBody != null)
 			{
@@ -6847,7 +7007,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public AssemblyDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kAssembly, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, CompositeBodyGreen compositeBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public AssemblyDeclarationGreen(SoalSyntaxKind kind, InternalSyntaxToken kAssembly, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, CompositeBodyGreen compositeBody, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 5;
@@ -6866,10 +7026,10 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(tColon);
 				this.tColon = tColon;
 			}
-			if (qualifier != null)
+			if (componentBase != null)
 			{
-				this.AdjustFlagsAndWidth(qualifier);
-				this.qualifier = qualifier;
+				this.AdjustFlagsAndWidth(componentBase);
+				this.componentBase = componentBase;
 			}
 			if (compositeBody != null)
 			{
@@ -6887,7 +7047,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	    public InternalSyntaxToken KAssembly { get { return this.kAssembly; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public InternalSyntaxToken TColon { get { return this.tColon; } }
-	    public QualifierGreen Qualifier { get { return this.qualifier; } }
+	    public ComponentBaseGreen ComponentBase { get { return this.componentBase; } }
 	    public CompositeBodyGreen CompositeBody { get { return this.compositeBody; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
@@ -6902,7 +7062,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	            case 0: return this.kAssembly;
 	            case 1: return this.name;
 	            case 2: return this.tColon;
-	            case 3: return this.qualifier;
+	            case 3: return this.componentBase;
 	            case 4: return this.compositeBody;
 	            default: return null;
 	        }
@@ -6914,23 +7074,23 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new AssemblyDeclarationGreen(this.Kind, this.kAssembly, this.name, this.tColon, this.qualifier, this.compositeBody, diagnostics, this.GetAnnotations());
+	        return new AssemblyDeclarationGreen(this.Kind, this.kAssembly, this.name, this.tColon, this.componentBase, this.compositeBody, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new AssemblyDeclarationGreen(this.Kind, this.kAssembly, this.name, this.tColon, this.qualifier, this.compositeBody, this.GetDiagnostics(), annotations);
+	        return new AssemblyDeclarationGreen(this.Kind, this.kAssembly, this.name, this.tColon, this.componentBase, this.compositeBody, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public AssemblyDeclarationGreen Update(InternalSyntaxToken kAssembly, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, CompositeBodyGreen compositeBody)
+	    public AssemblyDeclarationGreen Update(InternalSyntaxToken kAssembly, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, CompositeBodyGreen compositeBody)
 	    {
 	        if (this.KAssembly != kAssembly ||
 				this.Name != name ||
 				this.TColon != tColon ||
-				this.Qualifier != qualifier ||
+				this.ComponentBase != componentBase ||
 				this.CompositeBody != compositeBody)
 	        {
-	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.AssemblyDeclaration(kAssembly, name, tColon, qualifier, compositeBody);
+	            InternalSyntaxNode newNode = SoalLanguage.Instance.InternalSyntaxFactory.AssemblyDeclaration(kAssembly, name, tColon, componentBase, compositeBody);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -15834,6 +15994,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 		public virtual void VisitNamespaceBodyGreen(NamespaceBodyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitDeclarationGreen(DeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitEnumDeclarationGreen(EnumDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual void VisitEnumBaseGreen(EnumBaseGreen node) => this.DefaultVisit(node);
 		public virtual void VisitEnumBodyGreen(EnumBodyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitEnumLiteralsGreen(EnumLiteralsGreen node) => this.DefaultVisit(node);
 		public virtual void VisitEnumLiteralGreen(EnumLiteralGreen node) => this.DefaultVisit(node);
@@ -15852,6 +16013,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 		public virtual void VisitOperationResultGreen(OperationResultGreen node) => this.DefaultVisit(node);
 		public virtual void VisitThrowsListGreen(ThrowsListGreen node) => this.DefaultVisit(node);
 		public virtual void VisitComponentDeclarationGreen(ComponentDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual void VisitComponentBaseGreen(ComponentBaseGreen node) => this.DefaultVisit(node);
 		public virtual void VisitComponentBodyGreen(ComponentBodyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitComponentElementsGreen(ComponentElementsGreen node) => this.DefaultVisit(node);
 		public virtual void VisitComponentElementGreen(ComponentElementGreen node) => this.DefaultVisit(node);
@@ -15974,6 +16136,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 		public virtual TResult VisitNamespaceBodyGreen(NamespaceBodyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitDeclarationGreen(DeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitEnumDeclarationGreen(EnumDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitEnumBaseGreen(EnumBaseGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitEnumBodyGreen(EnumBodyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitEnumLiteralsGreen(EnumLiteralsGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitEnumLiteralGreen(EnumLiteralGreen node) => this.DefaultVisit(node);
@@ -15992,6 +16155,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 		public virtual TResult VisitOperationResultGreen(OperationResultGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitThrowsListGreen(ThrowsListGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitComponentDeclarationGreen(ComponentDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitComponentBaseGreen(ComponentBaseGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitComponentBodyGreen(ComponentBodyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitComponentElementsGreen(ComponentElementsGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitComponentElementGreen(ComponentElementGreen node) => this.DefaultVisit(node);
@@ -16772,7 +16936,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			return new DeclarationGreen(SoalSyntaxKind.Declaration, null, null, null, null, null, null, null, null, null, deploymentDeclaration);
 	    }
 	
-		public EnumDeclarationGreen EnumDeclaration(AnnotationListGreen annotationList, InternalSyntaxToken kEnum, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, EnumBodyGreen enumBody)
+		public EnumDeclarationGreen EnumDeclaration(AnnotationListGreen annotationList, InternalSyntaxToken kEnum, NameGreen name, InternalSyntaxToken tColon, EnumBaseGreen enumBase, EnumBodyGreen enumBody)
 	    {
 	#if DEBUG
 			if (kEnum == null) throw new ArgumentNullException(nameof(kEnum));
@@ -16781,7 +16945,23 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			if (tColon != null && tColon.Kind != SoalSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 			if (enumBody == null) throw new ArgumentNullException(nameof(enumBody));
 	#endif
-	        return new EnumDeclarationGreen(SoalSyntaxKind.EnumDeclaration, annotationList, kEnum, name, tColon, qualifier, enumBody);
+	        return new EnumDeclarationGreen(SoalSyntaxKind.EnumDeclaration, annotationList, kEnum, name, tColon, enumBase, enumBody);
+	    }
+	
+		public EnumBaseGreen EnumBase(QualifierGreen qualifier)
+	    {
+	#if DEBUG
+			if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(SoalSyntaxKind)SoalSyntaxKind.EnumBase, qualifier, out hash);
+			if (cached != null) return (EnumBaseGreen)cached;
+			var result = new EnumBaseGreen(SoalSyntaxKind.EnumBase, qualifier);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
 	    }
 	
 		public EnumBodyGreen EnumBody(InternalSyntaxToken tOpenBrace, EnumLiteralsGreen enumLiterals, InternalSyntaxToken tCloseBrace)
@@ -17045,7 +17225,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public ComponentDeclarationGreen ComponentDeclaration(InternalSyntaxToken kAbstract, InternalSyntaxToken kComponent, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, ComponentBodyGreen componentBody)
+		public ComponentDeclarationGreen ComponentDeclaration(InternalSyntaxToken kAbstract, InternalSyntaxToken kComponent, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, ComponentBodyGreen componentBody)
 	    {
 	#if DEBUG
 			if (kAbstract != null && kAbstract.Kind != SoalSyntaxKind.KAbstract) throw new ArgumentException(nameof(kAbstract));
@@ -17055,7 +17235,23 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			if (tColon != null && tColon.Kind != SoalSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 			if (componentBody == null) throw new ArgumentNullException(nameof(componentBody));
 	#endif
-	        return new ComponentDeclarationGreen(SoalSyntaxKind.ComponentDeclaration, kAbstract, kComponent, name, tColon, qualifier, componentBody);
+	        return new ComponentDeclarationGreen(SoalSyntaxKind.ComponentDeclaration, kAbstract, kComponent, name, tColon, componentBase, componentBody);
+	    }
+	
+		public ComponentBaseGreen ComponentBase(QualifierGreen qualifier)
+	    {
+	#if DEBUG
+			if (qualifier == null) throw new ArgumentNullException(nameof(qualifier));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(SoalSyntaxKind)SoalSyntaxKind.ComponentBase, qualifier, out hash);
+			if (cached != null) return (ComponentBaseGreen)cached;
+			var result = new ComponentBaseGreen(SoalSyntaxKind.ComponentBase, qualifier);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
 	    }
 	
 		public ComponentBodyGreen ComponentBody(InternalSyntaxToken tOpenBrace, ComponentElementsGreen componentElements, InternalSyntaxToken tCloseBrace)
@@ -17269,7 +17465,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public CompositeDeclarationGreen CompositeDeclaration(InternalSyntaxToken kComposite, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, CompositeBodyGreen compositeBody)
+		public CompositeDeclarationGreen CompositeDeclaration(InternalSyntaxToken kComposite, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, CompositeBodyGreen compositeBody)
 	    {
 	#if DEBUG
 			if (kComposite == null) throw new ArgumentNullException(nameof(kComposite));
@@ -17278,7 +17474,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			if (tColon != null && tColon.Kind != SoalSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 			if (compositeBody == null) throw new ArgumentNullException(nameof(compositeBody));
 	#endif
-	        return new CompositeDeclarationGreen(SoalSyntaxKind.CompositeDeclaration, kComposite, name, tColon, qualifier, compositeBody);
+	        return new CompositeDeclarationGreen(SoalSyntaxKind.CompositeDeclaration, kComposite, name, tColon, componentBase, compositeBody);
 	    }
 	
 		public CompositeBodyGreen CompositeBody(InternalSyntaxToken tOpenBrace, CompositeElementsGreen compositeElements, InternalSyntaxToken tCloseBrace)
@@ -17300,7 +17496,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public AssemblyDeclarationGreen AssemblyDeclaration(InternalSyntaxToken kAssembly, NameGreen name, InternalSyntaxToken tColon, QualifierGreen qualifier, CompositeBodyGreen compositeBody)
+		public AssemblyDeclarationGreen AssemblyDeclaration(InternalSyntaxToken kAssembly, NameGreen name, InternalSyntaxToken tColon, ComponentBaseGreen componentBase, CompositeBodyGreen compositeBody)
 	    {
 	#if DEBUG
 			if (kAssembly == null) throw new ArgumentNullException(nameof(kAssembly));
@@ -17309,7 +17505,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 			if (tColon != null && tColon.Kind != SoalSyntaxKind.TColon) throw new ArgumentException(nameof(tColon));
 			if (compositeBody == null) throw new ArgumentNullException(nameof(compositeBody));
 	#endif
-	        return new AssemblyDeclarationGreen(SoalSyntaxKind.AssemblyDeclaration, kAssembly, name, tColon, qualifier, compositeBody);
+	        return new AssemblyDeclarationGreen(SoalSyntaxKind.AssemblyDeclaration, kAssembly, name, tColon, componentBase, compositeBody);
 	    }
 	
 		public CompositeElementsGreen CompositeElements(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<CompositeElementGreen> compositeElement)
@@ -19165,6 +19361,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				typeof(NamespaceBodyGreen),
 				typeof(DeclarationGreen),
 				typeof(EnumDeclarationGreen),
+				typeof(EnumBaseGreen),
 				typeof(EnumBodyGreen),
 				typeof(EnumLiteralsGreen),
 				typeof(EnumLiteralGreen),
@@ -19183,6 +19380,7 @@ namespace MetaDslx.Languages.Soal.Syntax.InternalSyntax
 				typeof(OperationResultGreen),
 				typeof(ThrowsListGreen),
 				typeof(ComponentDeclarationGreen),
+				typeof(ComponentBaseGreen),
 				typeof(ComponentBodyGreen),
 				typeof(ComponentElementsGreen),
 				typeof(ComponentElementGreen),

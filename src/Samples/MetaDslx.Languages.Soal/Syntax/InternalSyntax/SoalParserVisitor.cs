@@ -292,6 +292,13 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitEnumDeclaration([NotNull] SoalParser.EnumDeclarationContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.enumBase"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEnumBase([NotNull] SoalParser.EnumBaseContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.enumBody"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -416,6 +423,13 @@ public interface ISoalParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitComponentDeclaration([NotNull] SoalParser.ComponentDeclarationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="SoalParser.componentBase"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComponentBase([NotNull] SoalParser.ComponentBaseContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="SoalParser.componentBody"/>.

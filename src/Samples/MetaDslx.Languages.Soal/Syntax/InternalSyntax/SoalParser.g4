@@ -32,7 +32,6 @@ returnAnnotation : TOpenBracket KReturn TColon annotationHead TCloseBracket;
 
 annotationHead : name annotationBody?;
 
-      
 annotationBody : TOpenParen annotationPropertyList? TCloseParen;
 
 annotationPropertyList : annotationProperty (TComma annotationProperty)*;
@@ -62,7 +61,9 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 // Enums
 
                 
-enumDeclaration : annotationList? KEnum name (TColon                                      qualifier)? enumBody;
+enumDeclaration : annotationList? KEnum name (TColon enumBase)? enumBody;
+
+enumBase :                                      qualifier;
 
       
 enumBody: TOpenBrace enumLiterals? TCloseBrace;
@@ -126,7 +127,9 @@ throwsList : KThrows                                          qualifierList;
 // Component
 
                      
-componentDeclaration :                                       KAbstract? KComponent name (TColon                                                qualifier)? componentBody;
+componentDeclaration :                                       KAbstract? KComponent name (TColon componentBase)? componentBody;
+
+componentBase:                                                qualifier;
 
       
 componentBody : TOpenBrace componentElements? TCloseBrace;
@@ -169,13 +172,13 @@ componentImplementation : KImplementation name TSemicolon;
 componentLanguage : KLanguage name TSemicolon;
 
                      
-compositeDeclaration : KComposite name (TColon                                                qualifier)? compositeBody;
+compositeDeclaration : KComposite name (TColon componentBase)? compositeBody;
 
       
 compositeBody : TOpenBrace compositeElements? TCloseBrace;
 
                     
-assemblyDeclaration : KAssembly name (TColon                                                qualifier)? compositeBody;
+assemblyDeclaration : KAssembly name (TColon componentBase)? compositeBody;
 
 compositeElements : compositeElement+;
 

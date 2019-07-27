@@ -25,6 +25,38 @@ namespace MetaDslx.Modeling
         public abstract ModelSymbolInfo SymbolInfo { get; }
         public abstract ImmutableSymbolBase CreateImmutable(ImmutableModel model);
         public abstract MutableSymbolBase CreateMutable(MutableModel model, bool creating);
+        public string DisplayTypeName => this.SymbolInfo?.ImmutableType?.Name;
+
+        public static bool operator==(SymbolId left, SymbolId right)
+        {
+            if ((object)left == null) return (object)right == null;
+            else return left.Equals(right);
+        }
+
+        public static bool operator !=(SymbolId left, SymbolId right)
+        {
+            if ((object)left == null) return (object)right != null;
+            else return !left.Equals(right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is SymbolId other)
+            {
+                return this.id == other.id && object.ReferenceEquals(this.SymbolInfo, other.SymbolInfo);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Hash.Combine(this.id.GetHashCode(), this.SymbolInfo.GetHashCode());
+        }
+
+        public override string ToString()
+        {
+            return $"{this.DisplayTypeName} {{{this.id}}}";
+        }
     }
 
     public struct ModelVersion : IEquatable<ModelVersion>, IComparable<ModelVersion>
@@ -465,6 +497,9 @@ namespace MetaDslx.Modeling
             ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties,
             ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> references)
         {
+            Debug.Assert(symbols != null);
+            Debug.Assert(lazyProperties != null);
+            Debug.Assert(references != null);
             this.id = id;
             this.name = name;
             this.version = version;
@@ -531,7 +566,7 @@ namespace MetaDslx.Modeling
                                         symbol.Children.RemoveAll(item => item == id),
                                         symbol.Properties.SetItem(prop, list.RemoveAll(id)));
                                 }
-                                else if (value == id)
+                                else if ((SymbolId)value == id)
                                 {
                                     symbol = symbol.Update(
                                         symbol.Parent == id ? null : symbol.Parent,
@@ -594,7 +629,7 @@ namespace MetaDslx.Modeling
                                         symbol.Properties.SetItem(prop, list.Replace(id, targetSid)));
                                     targetProps = targetProps.Add(prop);
                                 }
-                                else if (value == id)
+                                else if ((SymbolId)value == id)
                                 {
                                     symbol = symbol.Update(
                                         symbol.Parent == id ? targetSid : symbol.Parent,
@@ -1488,6 +1523,19 @@ namespace MetaDslx.Modeling
                     GreenModel oldModel = symbolRef.Model;
                     ImmutableHashSet<ModelProperty> oldLazyProperties;
                     bool hasLazy = oldModel.LazyProperties.TryGetValue(sid, out oldLazyProperties) && oldLazyProperties.Contains(property);
+                    var newLazyModelProperties = oldModel.LazyProperties;
+                    if (hasLazy)
+                    {
+                        var newLazyProperties = oldLazyProperties.Remove(property);
+                        if (newLazyProperties.Count > 0)
+                        {
+                            newLazyModelProperties = newLazyModelProperties.SetItem(sid, newLazyProperties);
+                        }
+                        else
+                        {
+                            newLazyModelProperties = newLazyModelProperties.Remove(sid);
+                        }
+                    }
                     GreenSymbol oldSymbol = symbolRef.Symbol;
                     GreenSymbol newSymbol = 
                         oldSymbol.Update(
@@ -1500,7 +1548,7 @@ namespace MetaDslx.Modeling
                             oldModel.Version,
                             oldModel.Symbols.SetItem(sid, newSymbol),
                             oldModel.StrongSymbols,
-                            oldModel.LazyProperties.SetItem(sid, hasLazy ? oldLazyProperties.Remove(property) : oldLazyProperties),
+                            newLazyModelProperties,
                             oldModel.References);
                     this.UpdateModel(newModel);
                 }

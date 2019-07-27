@@ -7,11 +7,13 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Soal;
+using MetaDslx.Languages.Soal.Generator;
 using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -41,8 +43,8 @@ namespace MetaDslx.Bootstrap
             //a4p.Compile();
             //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Syntax\InternalSyntax\SoalLexer.ag4", "MetaDslx.Languages.Soal");
             //a4l.Compile();
-            //Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Syntax\InternalSyntax\SoalParser.ag4", "MetaDslx.Languages.Soal");
-            //a4p.Compile();
+            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Syntax\InternalSyntax\SoalParser.ag4", "MetaDslx.Languages.Soal");
+            a4p.Compile();
             //*/
 
             /*/
@@ -50,7 +52,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
@@ -163,7 +165,9 @@ namespace MetaDslx.Bootstrap
             ImmutableModel soalModel = SoalInstance.Model;
             //string soalSource = File.ReadAllText(@"..\..\..\cinema.soal");
             //string soalSource = File.ReadAllText(@"..\..\..\Wsdl01.soal");
-            string soalSource = File.ReadAllText(@"..\..\..\Wsdl02.soal");
+            //string soalSource = File.ReadAllText(@"..\..\..\Wsdl02.soal");
+            string soalSource = File.ReadAllText(@"..\..\..\Wsdl03.soal");
+            //string soalSource = File.ReadAllText(@"..\..\..\Xsd11.soal");
             //string soalSource = File.ReadAllText(@"..\..\..\Wsdl00.soal");
             var syntaxTree = SoalSyntaxTree.ParseText(soalSource);
             var compilation = SoalCompilation.Create("SoalTest")
@@ -208,8 +212,46 @@ namespace MetaDslx.Bootstrap
             }
             //*/
 
+            //*/
+            Test(4);
+            //*/
         }
 
-
+        private static bool Test(int index)
+        {
+            bool result = false;
+            string inputFileName = string.Format(@"..\..\..\InputFiles\wsdl\Wsdl{0:00}.Hello.wsdl", index);
+            string expectedFileName = string.Format(@"..\..\..\ExpectedFiles\soal\Wsdl{0:00}.soal", index);
+            string outputFileName = string.Format(@"..\..\..\OutputFiles\soal\Wsdl{0:00}.Hello.soal", index);
+            string outputLogFileName = string.Format(@"..\..\..\OutputFiles\soal\Wsdl{0:00}.Hello.log", index);
+            string outputDirectory = string.Format(@"..\..\..\OutputFiles\soal", index);
+            DiagnosticBag diagnostics = new DiagnosticBag();
+            ImmutableModel model = SoalImporter.Import(inputFileName, diagnostics);
+            using (StreamWriter writer = new StreamWriter(outputLogFileName))
+            {
+                foreach (var msg in diagnostics.AsEnumerable())
+                {
+                    writer.WriteLine(msg);
+                }
+            }
+            Debug.Assert(!diagnostics.HasAnyErrors());
+            Directory.CreateDirectory(outputDirectory);
+            string outputSoal = null;
+            SoalPrinter printer = new SoalPrinter(model.Symbols);
+            using (StreamWriter writer = new StreamWriter(outputFileName))
+            {
+                outputSoal = printer.Generate();
+                writer.WriteLine(outputSoal);
+            }
+            string expectedSoal = null;
+            using (StreamReader reader = new StreamReader(expectedFileName))
+            {
+                expectedSoal = reader.ReadToEnd();
+            }
+            File.WriteAllText(@"..\..\..\expected.txt", expectedSoal);
+            File.WriteAllText(@"..\..\..\actual.txt", outputSoal);
+            Debug.Assert(expectedSoal == outputSoal);
+            return result;
+        }
     }
 }

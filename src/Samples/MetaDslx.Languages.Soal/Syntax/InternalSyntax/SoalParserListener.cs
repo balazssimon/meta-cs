@@ -445,6 +445,17 @@ public interface ISoalParserListener : IParseTreeListener {
 	void ExitEnumDeclaration([NotNull] SoalParser.EnumDeclarationContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.enumBase"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEnumBase([NotNull] SoalParser.EnumBaseContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.enumBase"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEnumBase([NotNull] SoalParser.EnumBaseContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.enumBody"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -641,6 +652,17 @@ public interface ISoalParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitComponentDeclaration([NotNull] SoalParser.ComponentDeclarationContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="SoalParser.componentBase"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComponentBase([NotNull] SoalParser.ComponentBaseContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="SoalParser.componentBase"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComponentBase([NotNull] SoalParser.ComponentBaseContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="SoalParser.componentBody"/>.

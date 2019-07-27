@@ -1,0 +1,17 @@
+namespace  = ""
+{
+}
+
+namespace  = "http://www.hello.org/test"
+{
+	struct MathFault
+	{
+		[Restriction(minInclusive=1, maxInclusive=100)]
+		int ErrorCode;
+		[Restriction(pattern="[A-Z]")]
+		string ErrorMessage;
+	}
+
+}
+
+

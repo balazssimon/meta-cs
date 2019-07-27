@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="http://www.hello.org/test"  
+	xmlns:hw="http://www.hello.org/test"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+	xmlns:wsp="http://www.w3.org/ns/ws-policy"
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization"
+	xmlns:wsa="http://www.w3.org/2005/08/addressing" 
+	xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+	xmlns:wsrmp="http://docs.oasis-open.org/ws-rx/wsrmp/200702"
+	xmlns:wsat="http://schemas.xmlsoap.org/ws/2004/10/wsat"
+	xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+	xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512"
+	xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
+>
+	
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://www.hello.org/test" schemaLocation="../xsd/Xsd18.Hello.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+</wsdl:definitions>
+

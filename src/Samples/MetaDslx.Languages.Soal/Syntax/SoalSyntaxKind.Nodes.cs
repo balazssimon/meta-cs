@@ -46,6 +46,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 		public const string NamespaceBody = nameof(NamespaceBody);
 		public const string Declaration = nameof(Declaration);
 		public const string EnumDeclaration = nameof(EnumDeclaration);
+		public const string EnumBase = nameof(EnumBase);
 		public const string EnumBody = nameof(EnumBody);
 		public const string EnumLiterals = nameof(EnumLiterals);
 		public const string EnumLiteral = nameof(EnumLiteral);
@@ -64,6 +65,7 @@ namespace MetaDslx.Languages.Soal.Syntax
 		public const string OperationResult = nameof(OperationResult);
 		public const string ThrowsList = nameof(ThrowsList);
 		public const string ComponentDeclaration = nameof(ComponentDeclaration);
+		public const string ComponentBase = nameof(ComponentBase);
 		public const string ComponentBody = nameof(ComponentBody);
 		public const string ComponentElements = nameof(ComponentElements);
 		public const string ComponentElement = nameof(ComponentElement);

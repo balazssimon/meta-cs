@@ -312,28 +312,33 @@ namespace MetaDslx.Languages.Soal.Binding
 			{
 				this.Visit(node.AnnotationList);
 				this.Visit(node.Name);
-				this.BeginProperty("BaseType");
-				try
-				{
-					this.BeginNoDeclaration(typeof(Symbols.Enum), node.Qualifier);
-					try
-					{
-						this.Visit(node.Qualifier);
-					}
-					finally
-					{
-						this.EndNoDeclaration();
-					}
-				}
-				finally
-				{
-					this.EndProperty();
-				}
+				this.Visit(node.EnumBase);
 				this.Visit(node.EnumBody);
 			}
 			finally
 			{
 				this.EndDeclaration();
+			}
+		}
+		
+		public virtual void VisitEnumBase(EnumBaseSyntax node)
+		{
+			this.BeginProperty("BaseType");
+			try
+			{
+				this.BeginNoDeclaration(typeof(Symbols.Enum), node.Qualifier);
+				try
+				{
+					this.Visit(node.Qualifier);
+				}
+				finally
+				{
+					this.EndNoDeclaration();
+				}
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
@@ -663,28 +668,33 @@ namespace MetaDslx.Languages.Soal.Binding
 						break;
 				}
 				this.Visit(node.Name);
-				this.BeginProperty("BaseComponent");
-				try
-				{
-					this.BeginNoDeclaration(typeof(Symbols.Component), node.Qualifier);
-					try
-					{
-						this.Visit(node.Qualifier);
-					}
-					finally
-					{
-						this.EndNoDeclaration();
-					}
-				}
-				finally
-				{
-					this.EndProperty();
-				}
+				this.Visit(node.ComponentBase);
 				this.Visit(node.ComponentBody);
 			}
 			finally
 			{
 				this.EndDeclaration();
+			}
+		}
+		
+		public virtual void VisitComponentBase(ComponentBaseSyntax node)
+		{
+			this.BeginProperty("BaseComponent");
+			try
+			{
+				this.BeginNoDeclaration(typeof(Symbols.Component), node.Qualifier);
+				try
+				{
+					this.Visit(node.Qualifier);
+				}
+				finally
+				{
+					this.EndNoDeclaration();
+				}
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
@@ -905,23 +915,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.Visit(node.Name);
-				this.BeginProperty("BaseComponent");
-				try
-				{
-					this.BeginNoDeclaration(typeof(Symbols.Component), node.Qualifier);
-					try
-					{
-						this.Visit(node.Qualifier);
-					}
-					finally
-					{
-						this.EndNoDeclaration();
-					}
-				}
-				finally
-				{
-					this.EndProperty();
-				}
+				this.Visit(node.ComponentBase);
 				this.Visit(node.CompositeBody);
 			}
 			finally
@@ -941,23 +935,7 @@ namespace MetaDslx.Languages.Soal.Binding
 			try
 			{
 				this.Visit(node.Name);
-				this.BeginProperty("BaseComponent");
-				try
-				{
-					this.BeginNoDeclaration(typeof(Symbols.Component), node.Qualifier);
-					try
-					{
-						this.Visit(node.Qualifier);
-					}
-					finally
-					{
-						this.EndNoDeclaration();
-					}
-				}
-				finally
-				{
-					this.EndProperty();
-				}
+				this.Visit(node.ComponentBase);
 				this.Visit(node.CompositeBody);
 			}
 			finally

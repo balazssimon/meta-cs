@@ -1,0 +1,29 @@
+namespace  = ""
+{
+}
+
+namespace  = "http://www.hello.org/test"
+{
+	struct Complex
+	{
+		 cc;
+		double Re;
+		double Im;
+		Time Time;
+	}
+
+}
+
+namespace  = "http://www.calc.org/test"
+{
+	struct Complex
+	{
+		 hc;
+		double Re;
+		double Im;
+		Time Time;
+	}
+
+}
+
+

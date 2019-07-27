@@ -32,7 +32,6 @@ returnAnnotation : TOpenBracket KReturn TColon annotationHead TCloseBracket;
 
 annotationHead : name annotationBody?;
 
-$Scope
 annotationBody : TOpenParen annotationPropertyList? TCloseParen;
 
 annotationPropertyList : annotationProperty (TComma annotationProperty)*;
@@ -62,7 +61,9 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 // Enums
 
 $SymbolDef(Enum)
-enumDeclaration : annotationList? KEnum name (TColon $Property(BaseType) $SymbolUse(Enum) qualifier)? enumBody;
+enumDeclaration : annotationList? KEnum name (TColon enumBase)? enumBody;
+
+enumBase : $Property(BaseType) $SymbolUse(Enum) qualifier;
 
 $Scope
 enumBody: TOpenBrace enumLiterals? TCloseBrace;
@@ -126,7 +127,9 @@ throwsList : KThrows $Property(Exceptions) $SymbolUse(Struct) qualifierList;
 // Component
 
 $SymbolDef(Component)
-componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent name (TColon $Property(BaseComponent) $SymbolUse(Component) qualifier)? componentBody;
+componentDeclaration : $Property(name=IsAbstract,value=true) KAbstract? KComponent name (TColon componentBase)? componentBody;
+
+componentBase: $Property(BaseComponent) $SymbolUse(Component) qualifier;
 
 $Scope
 componentBody : TOpenBrace componentElements? TCloseBrace;
@@ -169,13 +172,13 @@ $SymbolDef(ProgrammingLanguage)
 componentLanguage : KLanguage name TSemicolon;
 
 $SymbolDef(Composite)
-compositeDeclaration : KComposite name (TColon $Property(BaseComponent) $SymbolUse(Component) qualifier)? compositeBody;
+compositeDeclaration : KComposite name (TColon componentBase)? compositeBody;
 
 $Scope
 compositeBody : TOpenBrace compositeElements? TCloseBrace;
 
 $SymbolDef(Assembly)
-assemblyDeclaration : KAssembly name (TColon $Property(BaseComponent) $SymbolUse(Component) qualifier)? compositeBody;
+assemblyDeclaration : KAssembly name (TColon componentBase)? compositeBody;
 
 compositeElements : compositeElement+;
 
