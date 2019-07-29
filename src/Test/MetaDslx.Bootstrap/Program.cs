@@ -219,12 +219,13 @@ namespace MetaDslx.Bootstrap
 
         private static bool Test(int index)
         {
+            string testDirectory = @"..\..\..\..\..\..\..\soal-cs\Src\Test\MetaDslx.Languages.Soal.Test\";
             bool result = false;
-            string inputFileName = string.Format(@"..\..\..\InputFiles\wsdl\Wsdl{0:00}.Hello.wsdl", index);
-            string expectedFileName = string.Format(@"..\..\..\ExpectedFiles\soal\Wsdl{0:00}.soal", index);
-            string outputFileName = string.Format(@"..\..\..\OutputFiles\soal\Wsdl{0:00}.Hello.soal", index);
-            string outputLogFileName = string.Format(@"..\..\..\OutputFiles\soal\Wsdl{0:00}.Hello.log", index);
-            string outputDirectory = string.Format(@"..\..\..\OutputFiles\soal", index);
+            string inputFileName = string.Format(testDirectory + @"InputFiles\wsdl\Wsdl{0:00}.Hello.wsdl", index);
+            string expectedFileName = string.Format(testDirectory + @"ExpectedFiles\soal\Wsdl{0:00}.soal", index);
+            string outputFileName = string.Format(testDirectory + @"OutputFiles\soal\Wsdl{0:00}.Hello.soal", index);
+            string outputLogFileName = string.Format(testDirectory + @"OutputFiles\soal\Wsdl{0:00}.Hello.log", index);
+            string outputDirectory = string.Format(testDirectory + @"OutputFiles\soal", index);
             DiagnosticBag diagnostics = new DiagnosticBag();
             ImmutableModel model = SoalImporter.Import(inputFileName, diagnostics);
             using (StreamWriter writer = new StreamWriter(outputLogFileName))
