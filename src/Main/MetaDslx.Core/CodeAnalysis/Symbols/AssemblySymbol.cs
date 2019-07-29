@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Reflection.PortableExecutable;
+using MetaDslx.Modeling;
 
 namespace MetaDslx.CodeAnalysis.Symbols
 {
@@ -948,5 +949,6 @@ namespace MetaDslx.CodeAnalysis.Symbols
         }
 
         #endregion
+
     }
 }

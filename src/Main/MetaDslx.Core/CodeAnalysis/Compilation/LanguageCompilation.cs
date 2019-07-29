@@ -2572,6 +2572,30 @@ namespace MetaDslx.CodeAnalysis
             EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
         }
 
+        public ImmutableDictionary<IMetaSymbol, Symbol> BuildModelObjectToSymbolMap()
+        {
+            var builder = ImmutableDictionary.CreateBuilder<IMetaSymbol, Symbol>();
+            Stack<Symbol> stack = new Stack<Symbol>();
+            stack.Push(this.GlobalNamespace);
+            while (stack.Count > 0)
+            {
+                var currentSymbol = stack.Pop();
+                if (currentSymbol.ModelObject != null)
+                {
+                    builder.Add(currentSymbol.ModelObject, currentSymbol);
+                }
+                if (currentSymbol is DeclaredSymbol currentDeclaredSymbol)
+                {
+                    foreach (var childDeclaredSymbol in currentDeclaredSymbol.GetMembers())
+                    {
+                        stack.Push(childDeclaredSymbol);
+                    }
+                }
+            }
+            return builder.ToImmutable();
+        }
+
+
         private abstract class AbstractSymbolSearcher
         {
             private readonly PooledDictionary<Declaration, NamespaceOrTypeSymbol> _cache;

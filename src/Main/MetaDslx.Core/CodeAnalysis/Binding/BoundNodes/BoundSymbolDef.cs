@@ -1,4 +1,5 @@
-﻿using MetaDslx.CodeAnalysis.Symbols;
+﻿using MetaDslx.CodeAnalysis.Binding.Binders;
+using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
@@ -28,12 +29,12 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 if (_lazySymbols.IsDefault)
                 {
-                    var binder = this.GetBinder();
-                    var containerSymbol = binder.GetEnclosingDeclarationSymbol();
                     var boundNames = this.GetChildNames();
                     if (boundNames.Length == 0)
                     {
-                        var symbol = containerSymbol.GetSourceMember(this.Syntax);
+                        var binder = this.GetBinder<SymbolDefBinder>();
+                        var containerSymbol = binder?.GetEnclosingDeclarationSymbol();
+                        var symbol = containerSymbol?.GetSourceMember(this.Syntax);
                         Debug.Assert(symbol != null);
                         if (symbol != null)
                         {

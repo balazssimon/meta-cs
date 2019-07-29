@@ -213,11 +213,81 @@ namespace MetaDslx.Bootstrap
             //*/
 
             //*/
-            Test(4);
+            GenerateWsdlTest(4);
+            //SoalImportTest(1);
             //*/
         }
 
-        private static bool Test(int index)
+        private static bool GenerateWsdlTest(int index)
+        {
+            string testDirectory = @"..\..\..\..\..\..\..\soal-cs\Src\Test\MetaDslx.Languages.Soal.Test\";
+            bool result = false;
+            string inputFileName = string.Format(testDirectory + @"InputFiles\soal\Wsdl{0:00}.soal", index);
+            string expectedXsdFileName = string.Format(testDirectory + @"ExpectedFiles\xsd\Wsdl{0:00}.Hello.xsd", index);
+            string outputXsdFileName = string.Format(testDirectory + @"OutputFiles\xsd\Wsdl{0:00}.Hello.xsd", index);
+            string expectedWsdlFileName = string.Format(testDirectory + @"ExpectedFiles\wsdl\Wsdl{0:00}.Hello.wsdl", index);
+            string outputWsdlFileName = string.Format(testDirectory + @"OutputFiles\wsdl\Wsdl{0:00}.Hello.wsdl", index);
+            string outputDirectory = string.Format(testDirectory + @"OutputFiles");
+            string inputSoal = null;
+            using (StreamReader reader = new StreamReader(inputFileName))
+            {
+                inputSoal = reader.ReadToEnd();
+            }
+            SoalSyntaxTree syntaxTree = SoalSyntaxTree.ParseText(inputSoal);
+            ModelReference soalReference = ModelReference.CreateFromModel(SoalInstance.Model);
+            BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
+            SoalCompilationOptions options = new SoalCompilationOptions(SoalLanguage.Instance, OutputKind.NetModule, topLevelBinderFlags: binderFlags, concurrentBuild: false);
+            SoalCompilation compilation = SoalCompilation.Create("SoalTest").AddReferences(soalReference).AddSyntaxTrees(syntaxTree).WithOptions(options);
+            compilation.ForceComplete();
+            ImmutableModel model = compilation.Model;
+
+            Debug.Assert(!compilation.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error));
+            DiagnosticFormatter formatter = new DiagnosticFormatter();
+            foreach (var diagnostic in compilation.GetDiagnostics())
+            {
+                Console.WriteLine(formatter.Format(diagnostic));
+            }
+
+            DiagnosticBag generatorDiagnostics = new DiagnosticBag();
+            SoalGenerator generator = new SoalGenerator(model, compilation.BuildModelObjectToSymbolMap(), outputDirectory, generatorDiagnostics, inputFileName);
+            generator.SeparateXsdWsdl = true;
+            generator.SingleFileWsdl = false;
+            generator.Generate();
+
+            var generatorDiagnosticList = generatorDiagnostics.ToReadOnly();
+            Debug.Assert(!generatorDiagnosticList.Any(d => d.Severity == DiagnosticSeverity.Error));
+            foreach (var diagnostic in generatorDiagnosticList)
+            {
+                Console.WriteLine(formatter.Format(diagnostic));
+            }
+
+            string expectedXsd = null;
+            using (StreamReader reader = new StreamReader(expectedXsdFileName))
+            {
+                expectedXsd = reader.ReadToEnd();
+            }
+            string outputXsd = null;
+            using (StreamReader reader = new StreamReader(outputXsdFileName))
+            {
+                outputXsd = reader.ReadToEnd();
+            }
+            Debug.Assert(expectedXsd == outputXsd);
+            string expectedWsdl = null;
+            using (StreamReader reader = new StreamReader(expectedWsdlFileName))
+            {
+                expectedWsdl = reader.ReadToEnd();
+            }
+            string outputWsdl = null;
+            using (StreamReader reader = new StreamReader(outputWsdlFileName))
+            {
+                outputWsdl = reader.ReadToEnd();
+            }
+            Debug.Assert(expectedWsdl == outputWsdl);
+            return result;
+
+        }
+
+        private static bool SoalImportTest(int index)
         {
             string testDirectory = @"..\..\..\..\..\..\..\soal-cs\Src\Test\MetaDslx.Languages.Soal.Test\";
             bool result = false;

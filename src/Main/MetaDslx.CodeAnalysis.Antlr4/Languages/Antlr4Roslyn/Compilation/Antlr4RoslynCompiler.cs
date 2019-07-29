@@ -600,6 +600,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (this.DiagnosticBag.HasAnyErrors()) return;
             foreach (var rule in this.Grammar.ParserRules)
             {
+                foreach (var alt in rule.Alternatives)
+                {
+                    alt.Annotations = rule.Annotations.AddRange(alt.Annotations.Annotations);
+                }
+            }
+            foreach (var rule in this.Grammar.ParserRules)
+            {
                 this.SetAnnotationFlags(rule);
                 foreach (var alt in rule.Alternatives)
                 {

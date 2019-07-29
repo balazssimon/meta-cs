@@ -270,6 +270,17 @@ namespace MetaDslx.CodeAnalysis.Binding
             return this.Compilation.GetBinder(_syntax);
         }
 
+        public TBinder GetBinder<TBinder>()
+            where TBinder : Binder
+        {
+            var binder = this.Compilation.GetBinder(_syntax);
+            while(binder != null && !(binder is TBinder))
+            {
+                binder = binder.Next;
+            }
+            return (TBinder)binder;
+        }
+
         public Binder GetEnclosingBinder()
         {
             return this.BoundTree.GetEnclosingBinder(_syntax);
