@@ -6,9 +6,9 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.Languages.Soal;
-using MetaDslx.Languages.Soal.Generator;
-using MetaDslx.Languages.Soal.Symbols;
+//using MetaDslx.Languages.Soal;
+//using MetaDslx.Languages.Soal.Generator;
+//using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -212,12 +212,13 @@ namespace MetaDslx.Bootstrap
             }
             //*/
 
-            //*/
+            /*/
             GenerateWsdlTest(4);
             //SoalImportTest(1);
             //*/
         }
 
+        /*/
         private static bool GenerateWsdlTest(int index)
         {
             string testDirectory = @"..\..\..\..\..\..\..\soal-cs\Src\Test\MetaDslx.Languages.Soal.Test\";
@@ -324,5 +325,6 @@ namespace MetaDslx.Bootstrap
             Debug.Assert(expectedSoal == outputSoal);
             return result;
         }
+        //*/
     }
 }
