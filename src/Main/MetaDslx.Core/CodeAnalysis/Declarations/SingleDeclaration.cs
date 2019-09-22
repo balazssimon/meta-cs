@@ -149,7 +149,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 }
 
                 // whether merge is allowed:
-                return this._decl.CanMerge;
+                return this._decl.Merge;
             }
 
             public override int GetHashCode()

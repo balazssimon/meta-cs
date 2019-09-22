@@ -143,7 +143,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
                         SourceNamedTypeSymbol other;
                         if (conflictDict.TryGetValue(key, out other))
                         {
-                            if (this.Declaration.NameLocations.Length == 1 || this.Declaration.CanMerge)
+                            if (this.Declaration.NameLocations.Length == 1 || this.Declaration.Merge)
                             {
                                 if (t.IsPartial && other.IsPartial)
                                 {

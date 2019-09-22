@@ -63,7 +63,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public MergedDeclaration MergedDeclaration => _declaration;
 
-        public virtual bool IsPartial => _declaration.CanMerge;
+        public virtual bool IsPartial => _declaration.Merge;
 
         #region Containers
 

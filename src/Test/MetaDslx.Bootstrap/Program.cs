@@ -1,4 +1,5 @@
-﻿using MetaDslx.CodeAnalysis;
+﻿using Antlr4.Runtime;
+using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Symbols.CSharp;
 using MetaDslx.CodeAnalysis.Symbols.Source;
@@ -16,6 +17,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using WebSequenceDiagramsModel;
+using WebSequenceDiagramsModel.Symbols;
+using WebSequenceDiagramsModel.Syntax.InternalSyntax;
 
 namespace MetaDslx.Bootstrap
 {
@@ -43,7 +47,11 @@ namespace MetaDslx.Bootstrap
             //a4p.Compile();
             //Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Syntax\InternalSyntax\SoalLexer.ag4", "MetaDslx.Languages.Soal");
             //a4l.Compile();
-            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Syntax\InternalSyntax\SoalParser.ag4", "MetaDslx.Languages.Soal");
+            //Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Syntax\InternalSyntax\SoalParser.ag4", "MetaDslx.Languages.Soal");
+            //a4p.Compile();
+            Antlr4RoslynBootstrap a4l = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Syntax\InternalSyntax\SequenceLexer.ag4", "WebSequenceDiagramsModel");
+            a4l.Compile();
+            Antlr4RoslynBootstrap a4p = new Antlr4RoslynBootstrap(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Syntax\InternalSyntax\SequenceParser.ag4", "WebSequenceDiagramsModel");
             a4p.Compile();
             //*/
 
@@ -56,9 +64,10 @@ namespace MetaDslx.Bootstrap
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
-            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Samples\MetaDslx.Languages.Soal\Symbols\Soal.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -79,7 +88,7 @@ namespace MetaDslx.Bootstrap
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;
             binderFlags = binderFlags.UnionWith(binderFlags2);
-            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: true, topLevelBinderFlags: binderFlags);
+            MetaCompilationOptions options = new MetaCompilationOptions(MetaLanguage.Instance, OutputKind.NetModule, deterministic: true, concurrentBuild: false, topLevelBinderFlags: binderFlags);
             var compilation = MetaCompilation.
                 Create("MetaTest").
                 AddSyntaxTrees(tree).
@@ -153,10 +162,11 @@ namespace MetaDslx.Bootstrap
             /*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Symbols);
             string generatedCsharpModel = mmgen.Generate();
-            File.WriteAllText("Soal.txt", generatedCsharpModel);
+            //File.WriteAllText("Soal.txt", generatedCsharpModel);
             //File.WriteAllText("../../../Soal.cs", generatedCsharpModel);
             //File.WriteAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.cs", generatedCsharpModel);
             //File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
+            File.WriteAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.cs", generatedCsharpModel);
             //*/
 
             /*/
@@ -215,6 +225,10 @@ namespace MetaDslx.Bootstrap
             /*/
             GenerateWsdlTest(4);
             //SoalImportTest(1);
+            //*/
+
+            //*/
+            WebSequenceDiagramsTest();
             //*/
         }
 
@@ -324,6 +338,38 @@ namespace MetaDslx.Bootstrap
             File.WriteAllText(@"..\..\..\actual.txt", outputSoal);
             Debug.Assert(expectedSoal == outputSoal);
             return result;
+        }
+        //*/
+
+        //*/
+        private static void WebSequenceDiagramsTest()
+        {
+            MetaDescriptor.Initialize();
+            UmlDescriptor.Initialize();
+
+            string text = File.ReadAllText(@"..\..\..\test1.wsd");
+
+            SequenceLexer lexer = new SequenceLexer(new AntlrInputStream(text));
+            while(!lexer._hitEOF)
+            {
+                var token = lexer.NextToken();
+                var tokenType = SequenceLexer.DefaultVocabulary.GetDisplayName(token.Type);
+                Console.WriteLine(tokenType+": "+token.Text);
+            }
+
+            SequenceSyntaxTree st = SequenceSyntaxTree.ParseText(text);
+            //Console.WriteLine(st);
+            DiagnosticFormatter df = new DiagnosticFormatter();
+            foreach (var diag in st.GetDiagnostics())
+            {
+                Console.WriteLine(df.Format(diag));
+            }
+
+            SequenceCompilationOptions options = new SequenceCompilationOptions(SequenceLanguage.Instance, OutputKind.DynamicallyLinkedLibrary, concurrentBuild: false, deterministic: true);
+            SequenceCompilation compilation = SequenceCompilation.Create("Sequence").WithOptions(options).AddSyntaxTrees(st);
+            compilation.ForceComplete();
+            var model = compilation.Model;
+            Console.WriteLine(model);
         }
         //*/
     }

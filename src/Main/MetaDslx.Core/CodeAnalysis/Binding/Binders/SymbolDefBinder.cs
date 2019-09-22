@@ -80,15 +80,15 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
         {
             if (qualifier.IsInitialized()) return;
-            var containerSymbol = this.Next.GetEnclosingDeclarationSymbol();
+            var containerSymbol = this.Next.ContainingSymbol as NamespaceOrTypeSymbol;
             var result = ArrayBuilder<object>.GetInstance();
             var identifiers = qualifier.Identifiers;
             foreach (var identifier in identifiers)
             {
-                var symbol = containerSymbol.GetSourceMember(identifier.Syntax);
+                var symbol = containerSymbol?.GetSourceMember(identifier.Syntax);
                 Debug.Assert(symbol != null);
                 result.Add(symbol);
-                containerSymbol = symbol;
+                containerSymbol = symbol as NamespaceOrTypeSymbol;
             }
             qualifier.InitializeValues(identifiers, result.ToImmutableAndFree());
         }

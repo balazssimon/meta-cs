@@ -34,7 +34,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitName(NameSyntax node)
 		{
-			this.BeginName();
+			this.BeginName(node);
 			try
 			{
 				this.Visit(node.Identifier);
@@ -47,7 +47,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitQualifiedName(QualifiedNameSyntax node)
 		{
-			this.BeginName();
+			this.BeginName(node);
 			try
 			{
 				this.Visit(node.Qualifier);
@@ -60,7 +60,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitQualifier(QualifierSyntax node)
 		{
-			this.BeginQualifier();
+			this.BeginQualifier(node);
 			try
 			{
 				if (node.Identifier != null)
@@ -79,17 +79,17 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitAttribute(AttributeSyntax node)
 		{
-			this.BeginProperty("Attributes");
+			this.BeginProperty(node, name: "Attributes");
 			try
 			{
-				this.BeginNoDeclaration(typeof(Symbols.MetaAttribute), node);
+				this.BeginSymbolUse(node, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaAttribute)));
 				try
 				{
 					this.Visit(node.Qualifier);
 				}
 				finally
 				{
-					this.EndNoDeclaration();
+					this.EndSymbolUse();
 				}
 			}
 			finally
@@ -100,11 +100,9 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaNamespace), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaNamespace), nestingProperty: "Declarations", merge: true);
 			try
 			{
-				this.RegisterNestingProperty("Declarations");
-				this.RegisterCanMerge(true);
 				if (node.Attribute != null)
 				{
 					foreach (var child in node.Attribute)
@@ -117,28 +115,36 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitNamespaceBody(NamespaceBodySyntax node)
 		{
-			this.Visit(node.MetamodelDeclaration);
-			if (node.Declaration != null)
+			this.BeginScope(node);
+			try
 			{
-				foreach (var child in node.Declaration)
+				this.Visit(node.MetamodelDeclaration);
+				if (node.Declaration != null)
 				{
-					this.Visit(child);
+					foreach (var child in node.Declaration)
+					{
+						this.Visit(child);
+					}
 				}
+			}
+			finally
+			{
+				this.EndScope();
 			}
 		}
 		
 		public virtual void VisitMetamodelDeclaration(MetamodelDeclarationSyntax node)
 		{
-			this.BeginProperty("DefinedMetaModel");
+			this.BeginProperty(node, name: "DefinedMetaModel");
 			try
 			{
-				this.BeginDeclaration(typeof(Symbols.MetaModel), node);
+				this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaModel));
 				try
 				{
 					if (node.Attribute != null)
@@ -153,7 +159,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				}
 				finally
 				{
-					this.EndDeclaration();
+					this.EndSymbolDef();
 				}
 			}
 			finally
@@ -180,7 +186,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitMetamodelUriProperty(MetamodelUriPropertySyntax node)
 		{
-			this.BeginProperty("Uri");
+			this.BeginProperty(node, name: "Uri");
 			try
 			{
 				this.Visit(node.StringLiteral);
@@ -193,7 +199,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitDeclaration(DeclarationSyntax node)
 		{
-			this.BeginProperty("Declarations");
+			this.BeginProperty(node, name: "Declarations");
 			try
 			{
 				this.Visit(node.EnumDeclaration);
@@ -209,7 +215,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitEnumDeclaration(EnumDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaEnum), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaEnum));
 			try
 			{
 				if (node.Attribute != null)
@@ -224,27 +230,35 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitEnumBody(EnumBodySyntax node)
 		{
-			this.BeginProperty("EnumLiterals");
+			this.BeginScope(node);
 			try
 			{
-				this.Visit(node.EnumValues);
+				this.BeginProperty(node.EnumValues, name: "EnumLiterals");
+				try
+				{
+					this.Visit(node.EnumValues);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+				if (node.EnumMemberDeclaration != null)
+				{
+					foreach (var child in node.EnumMemberDeclaration)
+					{
+						this.Visit(child);
+					}
+				}
 			}
 			finally
 			{
-				this.EndProperty();
-			}
-			if (node.EnumMemberDeclaration != null)
-			{
-				foreach (var child in node.EnumMemberDeclaration)
-				{
-					this.Visit(child);
-				}
+				this.EndScope();
 			}
 		}
 		
@@ -261,7 +275,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitEnumValue(EnumValueSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaEnumLiteral), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaEnumLiteral));
 			try
 			{
 				if (node.Attribute != null)
@@ -275,13 +289,13 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitEnumMemberDeclaration(EnumMemberDeclarationSyntax node)
 		{
-			this.BeginProperty("Operations");
+			this.BeginProperty(node.OperationDeclaration, name: "Operations");
 			try
 			{
 				this.Visit(node.OperationDeclaration);
@@ -294,7 +308,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitClassDeclaration(ClassDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaClass), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaClass));
 			try
 			{
 				if (node.Attribute != null)
@@ -310,7 +324,7 @@ namespace MetaDslx.Languages.Meta.Binding
 						break;
 				}
 				this.Visit(node.Name);
-				this.BeginProperty("SuperClasses");
+				this.BeginProperty(node.ClassAncestors, name: "SuperClasses");
 				try
 				{
 					this.Visit(node.ClassAncestors);
@@ -323,18 +337,26 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitClassBody(ClassBodySyntax node)
 		{
-			if (node.ClassMemberDeclaration != null)
+			this.BeginScope(node);
+			try
 			{
-				foreach (var child in node.ClassMemberDeclaration)
+				if (node.ClassMemberDeclaration != null)
 				{
-					this.Visit(child);
+					foreach (var child in node.ClassMemberDeclaration)
+					{
+						this.Visit(child);
+					}
 				}
+			}
+			finally
+			{
+				this.EndScope();
 			}
 		}
 		
@@ -351,20 +373,20 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitClassAncestor(ClassAncestorSyntax node)
 		{
-			this.BeginNoDeclaration(typeof(Symbols.MetaClass), node.Qualifier);
+			this.BeginSymbolUse(node.Qualifier, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaClass)));
 			try
 			{
 				this.Visit(node.Qualifier);
 			}
 			finally
 			{
-				this.EndNoDeclaration();
+				this.EndSymbolUse();
 			}
 		}
 		
 		public virtual void VisitClassMemberDeclaration(ClassMemberDeclarationSyntax node)
 		{
-			this.BeginProperty("Properties");
+			this.BeginProperty(node.FieldDeclaration, name: "Properties");
 			try
 			{
 				this.Visit(node.FieldDeclaration);
@@ -373,7 +395,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				this.EndProperty();
 			}
-			this.BeginProperty("Operations");
+			this.BeginProperty(node.OperationDeclaration, name: "Operations");
 			try
 			{
 				this.Visit(node.OperationDeclaration);
@@ -386,7 +408,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitFieldDeclaration(FieldDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaProperty), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaProperty));
 			try
 			{
 				if (node.Attribute != null)
@@ -396,7 +418,7 @@ namespace MetaDslx.Languages.Meta.Binding
 						this.Visit(child);
 					}
 				}
-				this.BeginProperty("Kind");
+				this.BeginProperty(node.FieldModifier, name: "Kind");
 				try
 				{
 					this.Visit(node.FieldModifier);
@@ -405,7 +427,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				{
 					this.EndProperty();
 				}
-				this.BeginProperty("Type");
+				this.BeginProperty(node.TypeReference, name: "Type");
 				try
 				{
 					this.Visit(node.TypeReference);
@@ -419,7 +441,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
@@ -448,7 +470,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitRedefinitions(RedefinitionsSyntax node)
 		{
-			this.BeginProperty("RedefinedProperties");
+			this.BeginProperty(node.NameUseList, name: "RedefinedProperties");
 			try
 			{
 				this.Visit(node.NameUseList);
@@ -461,7 +483,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitSubsettings(SubsettingsSyntax node)
 		{
-			this.BeginProperty("SubsettedProperties");
+			this.BeginProperty(node.NameUseList, name: "SubsettedProperties");
 			try
 			{
 				this.Visit(node.NameUseList);
@@ -474,7 +496,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitNameUseList(NameUseListSyntax node)
 		{
-			this.BeginNoDeclaration(typeof(Symbols.MetaProperty), node);
+			this.BeginSymbolUse(node, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaProperty)));
 			try
 			{
 				if (node.Qualifier != null)
@@ -487,16 +509,16 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndNoDeclaration();
+				this.EndSymbolUse();
 			}
 		}
 		
 		public virtual void VisitConstDeclaration(ConstDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaConstant), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaConstant));
 			try
 			{
-				this.BeginProperty("Type");
+				this.BeginProperty(node.TypeReference, name: "Type");
 				try
 				{
 					this.Visit(node.TypeReference);
@@ -509,13 +531,13 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitReturnType(ReturnTypeSyntax node)
 		{
-			this.BeginNoDeclaration(typeof(Symbols.MetaType), node);
+			this.BeginSymbolUse(node, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaType)));
 			try
 			{
 				this.Visit(node.TypeReference);
@@ -523,26 +545,26 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndNoDeclaration();
+				this.EndSymbolUse();
 			}
 		}
 		
 		public virtual void VisitTypeOfReference(TypeOfReferenceSyntax node)
 		{
-			this.BeginNoDeclaration(typeof(Symbols.MetaType), node);
+			this.BeginSymbolUse(node, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaType)));
 			try
 			{
 				this.Visit(node.TypeReference);
 			}
 			finally
 			{
-				this.EndNoDeclaration();
+				this.EndSymbolUse();
 			}
 		}
 		
 		public virtual void VisitTypeReference(TypeReferenceSyntax node)
 		{
-			this.BeginNoDeclaration(typeof(Symbols.MetaType), node);
+			this.BeginSymbolUse(node, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaType)));
 			try
 			{
 				this.Visit(node.CollectionType);
@@ -550,13 +572,13 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndNoDeclaration();
+				this.EndSymbolUse();
 			}
 		}
 		
 		public virtual void VisitSimpleType(SimpleTypeSyntax node)
 		{
-			this.BeginNoDeclaration(typeof(Symbols.MetaType), node);
+			this.BeginSymbolUse(node, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaType)));
 			try
 			{
 				this.Visit(node.PrimitiveType);
@@ -566,20 +588,20 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndNoDeclaration();
+				this.EndSymbolUse();
 			}
 		}
 		
 		public virtual void VisitClassType(ClassTypeSyntax node)
 		{
-			this.BeginNoDeclaration(null, node);
+			this.BeginSymbolUse(node, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaClass), typeof(Symbols.MetaEnum)));
 			try
 			{
 				this.Visit(node.Qualifier);
 			}
 			finally
 			{
-				this.EndNoDeclaration();
+				this.EndSymbolUse();
 			}
 		}
 		
@@ -600,10 +622,10 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitNullableType(NullableTypeSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaNullableType), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaNullableType));
 			try
 			{
-				this.BeginProperty("InnerType");
+				this.BeginProperty(node.PrimitiveType, name: "InnerType");
 				try
 				{
 					this.Visit(node.PrimitiveType);
@@ -615,16 +637,16 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitCollectionType(CollectionTypeSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaCollectionType), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaCollectionType));
 			try
 			{
-				this.BeginProperty("Kind");
+				this.BeginProperty(node.CollectionKind, name: "Kind");
 				try
 				{
 					this.Visit(node.CollectionKind);
@@ -633,7 +655,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				{
 					this.EndProperty();
 				}
-				this.BeginProperty("InnerType");
+				this.BeginProperty(node.SimpleType, name: "InnerType");
 				try
 				{
 					this.Visit(node.SimpleType);
@@ -645,7 +667,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
@@ -668,7 +690,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitOperationDeclaration(OperationDeclarationSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaOperation), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaOperation));
 			try
 			{
 				if (node.Attribute != null)
@@ -678,7 +700,7 @@ namespace MetaDslx.Languages.Meta.Binding
 						this.Visit(child);
 					}
 				}
-				this.BeginProperty("ReturnType");
+				this.BeginProperty(node.ReturnType, name: "ReturnType");
 				try
 				{
 					this.Visit(node.ReturnType);
@@ -688,7 +710,7 @@ namespace MetaDslx.Languages.Meta.Binding
 					this.EndProperty();
 				}
 				this.Visit(node.Name);
-				this.BeginProperty("Parameters");
+				this.BeginProperty(node.ParameterList, name: "Parameters");
 				try
 				{
 					this.Visit(node.ParameterList);
@@ -700,7 +722,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
@@ -717,7 +739,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitParameter(ParameterSyntax node)
 		{
-			this.BeginDeclaration(typeof(Symbols.MetaParameter), node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaParameter));
 			try
 			{
 				if (node.Attribute != null)
@@ -727,7 +749,7 @@ namespace MetaDslx.Languages.Meta.Binding
 						this.Visit(child);
 					}
 				}
-				this.BeginProperty("Type");
+				this.BeginProperty(node.TypeReference, name: "Type");
 				try
 				{
 					this.Visit(node.TypeReference);
@@ -740,7 +762,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			}
 			finally
 			{
-				this.EndDeclaration();
+				this.EndSymbolDef();
 			}
 		}
 		
@@ -753,23 +775,23 @@ namespace MetaDslx.Languages.Meta.Binding
 					this.Visit(child);
 				}
 			}
-			this.BeginNoDeclaration(typeof(Symbols.MetaProperty), node.Source);
+			this.BeginSymbolUse(node.Source, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaProperty)));
 			try
 			{
 				this.Visit(node.Source);
 			}
 			finally
 			{
-				this.EndNoDeclaration();
+				this.EndSymbolUse();
 			}
-			this.BeginNoDeclaration(typeof(Symbols.MetaProperty), node.Target);
+			this.BeginSymbolUse(node.Target, symbolTypes: ImmutableArray.Create(typeof(Symbols.MetaProperty)));
 			try
 			{
 				this.Visit(node.Target);
 			}
 			finally
 			{
-				this.EndNoDeclaration();
+				this.EndSymbolUse();
 			}
 		}
 		

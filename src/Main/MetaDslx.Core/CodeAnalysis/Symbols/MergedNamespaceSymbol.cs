@@ -177,6 +177,21 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return childNames;
         }
 
+        private ImmutableArray<Symbol> SlowGetAllMembers()
+        {
+            var members = ArrayBuilder<Symbol>.GetInstance();
+
+            foreach (var ns in _namespacesToMerge)
+            {
+                foreach (var child in ns.GetMembersUnordered())
+                {
+                    members.Add(child);
+                }
+            }
+
+            return members.ToImmutableAndFree();
+        }
+
         public override ModelSymbolInfo ModelSymbolInfo => _namespacesToMerge[0].ModelSymbolInfo;
 
         public override string Name
@@ -208,9 +223,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             // Return all the elements from every IGrouping in the ILookup.
             if (_allMembers.IsDefault)
             {
-                var builder = ArrayBuilder<Symbol>.GetInstance();
-                _cachedLookup.AddValues(builder);
-                _allMembers = builder.ToImmutableAndFree();
+                ImmutableInterlocked.InterlockedInitialize(ref _allMembers, SlowGetAllMembers());
             }
 
             return _allMembers;

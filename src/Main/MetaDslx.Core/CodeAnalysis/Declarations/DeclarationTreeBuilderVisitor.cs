@@ -17,6 +17,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly bool _isSubmission;
         private DeclarationTreeInfo _rootDeclarationInfo;
         private DeclarationTreeInfo _currentDeclarationInfo;
+        private DeclarationTreeInfo _currentScopeDeclarationInfo;
 
         protected DeclarationTreeBuilderVisitor(LanguageSyntaxTree syntaxTree, string scriptClassName, bool isSubmission)
         {
@@ -38,6 +39,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
         protected DeclarationTreeInfo CurrentDeclarationInfo
         {
             get { return _currentDeclarationInfo; }
+        }
+
+        protected DeclarationTreeInfo CurrentScopeDeclarationInfo
+        {
+            get { return _currentScopeDeclarationInfo; }
         }
 
         private RootSingleDeclaration CreateRoot(LanguageSyntaxNode node, ModelSymbolInfo kind)
@@ -63,7 +69,15 @@ namespace MetaDslx.CodeAnalysis.Declarations
             _rootDeclarationInfo = this.BeginDeclaration(type, node);
             try
             {
-                node.Accept(this);
+                this.BeginScope(node);
+                try
+                {
+                    node.Accept(this);
+                }
+                finally
+                {
+                    this.EndScope();
+                }
             }
             finally
             {
@@ -82,14 +96,66 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return this.CreateRootDeclaration(node, type);
         }
 
-        protected virtual DeclarationTreeInfo CreateDeclarationInfo(DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node)
+        protected virtual DeclarationTreeInfo CreateDeclarationInfo(DeclarationTreeInfo scope, DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node)
         {
-            return new DeclarationTreeInfo(parent, type, node);
+            return new DeclarationTreeInfo(scope, parent, type, node);
         }
+
+        //***
+        protected DeclarationTreeInfo BeginSymbolDef(LanguageSyntaxNode node, Type symbolType, string nestingProperty = null, bool merge = false)
+        {
+            var result = this.BeginDeclaration(symbolType, node);
+            if (nestingProperty != null) result.RegisterNestingProperty(nestingProperty);
+            if (merge) result.RegisterMerge(merge);
+            return result;
+        }
+
+        protected SingleDeclaration EndSymbolDef()
+        {
+            return this.EndDeclaration();
+        }
+
+        protected void BeginProperty(LanguageSyntaxNode node, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.Current, Type ownerSymbolType = null)
+        {
+            if (_currentDeclarationInfo == null) return;
+            _currentDeclarationInfo.BeginProperty(name);
+        }
+
+        protected void BeginName(LanguageSyntaxNode node)
+        {
+            this.BeginName();
+        }
+
+        protected void BeginScope(LanguageSyntaxNode node, bool local = false)
+        {
+            _currentScopeDeclarationInfo = _currentDeclarationInfo;
+        }
+
+        protected void EndScope()
+        {
+            if (_currentScopeDeclarationInfo == null) throw new InvalidOperationException("No scope declaration is open.");
+            _currentScopeDeclarationInfo = _currentScopeDeclarationInfo.Scope;
+        }
+
+        protected void BeginQualifier(LanguageSyntaxNode node)
+        {
+            this.BeginQualifier();
+        }
+
+        protected void BeginSymbolUse(LanguageSyntaxNode node, ImmutableArray<Type> symbolTypes)
+        {
+            this.BeginNoDeclaration(null, node);
+        }
+
+        protected void EndSymbolUse()
+        {
+            this.EndNoDeclaration();
+        }
+        //***
 
         protected DeclarationTreeInfo BeginDeclaration(Type type, LanguageSyntaxNode node)
         {
-            _currentDeclarationInfo = this.CreateDeclarationInfo(_currentDeclarationInfo, type, node);
+            _currentDeclarationInfo = this.CreateDeclarationInfo(_currentScopeDeclarationInfo, _currentDeclarationInfo, type, node);
             return _currentDeclarationInfo;
         }
 
@@ -178,13 +244,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
         protected void RegisterCanMerge(bool canMerge)
         {
             if (_currentDeclarationInfo == null) return;
-            _currentDeclarationInfo.RegisterCanMerge(canMerge);
+            _currentDeclarationInfo.RegisterMerge(canMerge);
         }
 
         protected virtual SingleDeclaration CreateDeclaration(DeclarationTreeInfo declaration)
         {
-            DeclarationTreeInfo parent = declaration.Parent;
-            if (parent == null)
+            DeclarationTreeInfo scope = declaration.Scope;
+            if (scope == null)
             {
                 return new RootSingleDeclaration(declaration.Kind, _syntaxTree.GetReference(declaration.Node), declaration.Members.ToImmutable(), declaration.ReferenceDirectives.ToImmutable());
             }
@@ -192,7 +258,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             {
                 //var diagnostics = ImmutableArray.Create<Diagnostic>(new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_DeclarationHasNoName), declaration.Node.Location));
                 SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(declaration.Node), false, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
-                parent.Members.Add(anonymousDeclaration);
+                scope.Members.Add(anonymousDeclaration);
                 return anonymousDeclaration;
             }
             foreach (var qualifier in declaration.Names)
@@ -202,15 +268,15 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 {
                     var parentProperty = count == 1 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
                     var identifier = qualifier[count - 1];
-                    var decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.CanMerge, parentProperty, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
+                    var decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.Merge, parentProperty, declaration.Members.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
                     var deepestDecl = decl;
                     for (int i = count - 2; i >= 0; i--)
                     {
                         parentProperty = i == 0 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
                         identifier = qualifier[i];
-                        decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.CanMerge, parentProperty, ImmutableArray.Create(decl), ImmutableArray<Diagnostic>.Empty);
+                        decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.Merge, parentProperty, ImmutableArray.Create(decl), ImmutableArray<Diagnostic>.Empty);
                     }
-                    parent.Members.Add(decl);
+                    scope.Members.Add(decl);
                     return deepestDecl;
                 }
             }

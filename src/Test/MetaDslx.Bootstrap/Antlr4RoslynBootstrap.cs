@@ -1,4 +1,5 @@
 ﻿//using MetaDslx.BuildTasks;
+using MetaDslx.BuildTasks;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using Microsoft.CodeAnalysis;
 using System;
@@ -28,10 +29,10 @@ namespace MetaDslx.Bootstrap
             }
             try
             {
-                throw new NotImplementedException();
-                /*Antlr4BuildTool antlr4BuildTool = new Antlr4BuildTool();
+                //throw new NotImplementedException();
+                Antlr4BuildTool antlr4BuildTool = new Antlr4BuildTool();
                 antlr4BuildTool.UseCSharpGenerator = true;
-                antlr4BuildTool.ToolPath = @"c:\Users\Balazs\.nuget\packages\metadslx.buildtasks\0.10.49-alpha1\tools\netstandard2.0";
+                antlr4BuildTool.ToolPath = @"c:\Users\Balazs\.nuget\packages\metadslx.buildtasks\0.10.91\tools\netstandard2.0";
                 Antlr4RoslynCompiler compiler = new Antlr4RoslynCompiler(_mgenFileName, Path.GetDirectoryName(_mgenFileName), _defaultNamespace, antlr4BuildTool);
                 compiler.Compile();
                 if (compiler.HasErrors)
@@ -41,7 +42,7 @@ namespace MetaDslx.Bootstrap
                     {
                         Console.WriteLine(formatter.Format(message));
                     }
-                }*/
+                }
             }
             catch (Exception ex)
             {

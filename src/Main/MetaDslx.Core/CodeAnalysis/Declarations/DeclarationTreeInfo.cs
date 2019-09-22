@@ -19,12 +19,13 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private int qualifierStack;
         private ArrayBuilder<Identifier> currentName;
 
-        public DeclarationTreeInfo(DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node)
+        public DeclarationTreeInfo(DeclarationTreeInfo scope, DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node)
         {
+            this.Scope = scope;
             this.Parent = parent;
-            if (parent != null)
+            if (scope != null)
             {
-                this.ParentPropertyToAddTo = parent.CurrentProperty;
+                this.ParentPropertyToAddTo = scope.CurrentProperty;
             }
             this.Type = type;
             this.Node = node;
@@ -34,6 +35,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.PropertyStack = new Stack<string>();
         }
 
+        public DeclarationTreeInfo Scope { get; private set; }
         public DeclarationTreeInfo Parent { get; private set; }
         public LanguageSyntaxNode Node { get; private set; }
         public Type Type { get; private set; }
@@ -41,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             get { return ModelSymbolInfo.GetSymbolInfo(this.Type); }
         }
-        public bool CanMerge { get; private set; }
+        public bool Merge { get; private set; }
         public bool Detached { get; private set; }
         public string NestingProperty { get; private set; }
         public string ParentPropertyToAddTo { get; private set; }
@@ -147,9 +149,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.NestingProperty = name;
         }
 
-        public void RegisterCanMerge(bool canMerge)
+        public void RegisterMerge(bool canMerge)
         {
-            this.CanMerge = canMerge;
+            this.Merge = canMerge;
         }
 
         public struct Identifier
@@ -161,6 +163,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
             {
                 Text = text;
                 Syntax = syntax;
+            }
+
+            public override string ToString()
+            {
+                return Text;
             }
         }
     }

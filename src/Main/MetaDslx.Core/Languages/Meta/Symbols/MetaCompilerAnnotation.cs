@@ -304,22 +304,37 @@ namespace MetaDslx.Languages.Meta
             {
                 if (this.HasProperty("symbolType"))
                 {
-                    result = ", typeof(Symbols." + this.GetValue("symbolType") + ")";
+                    result = ", symbolType: typeof(Symbols." + this.GetValue("symbolType") + ")";
                 }
                 else
                 {
-                    result = ", null";
+                    result = ", symbolType: null";
+                }
+                if (this.HasProperty("nestingProperty"))
+                {
+                    result = result + ", nestingProperty: \"" + this.GetValue("nestingProperty") + "\"";
+                }
+                if (this.HasProperty("merge"))
+                {
+                    result = result + ", merge: " + this.GetValue("merge");
+                }
+            }
+            if (this.Name == MetaCompilerAnnotationInfo.Scope)
+            {
+                if (this.HasProperty("local"))
+                {
+                    result = ", local: " + this.GetValue("local");
                 }
             }
             if (this.Name == MetaCompilerAnnotationInfo.SymbolUse || this.Name == MetaCompilerAnnotationInfo.Attribute)
             {
                 if (this.HasProperty("symbolType"))
                 {
-                    result = ", ImmutableArray.Create(typeof(Symbols." + this.GetValue("symbolType") + "))";
+                    result = ", symbolTypes: ImmutableArray.Create(typeof(Symbols." + this.GetValue("symbolType") + "))";
                 }
                 else if (this.HasProperty("symbolTypes"))
                 {
-                    result = ", ImmutableArray.Create(";
+                    result = ", symbolTypes: ImmutableArray.Create(";
                     string comma = "";
                     foreach (var type in this.GetValues("symbolTypes"))
                     {
@@ -330,31 +345,38 @@ namespace MetaDslx.Languages.Meta
                 }
                 else
                 {
-                    result = ", ImmutableArray<Type>.Empty";
+                    result = ", symbolTypes: ImmutableArray<Type>.Empty";
                 }
             }
             if (this.Name == MetaCompilerAnnotationInfo.Property)
             {
-                result = ", \"" + this.GetValue("name") + "\"";
+                result = ", name: \"" + this.GetValue("name") + "\"";
                 if (this.HasProperty("value"))
                 {
-                    result = result + ", " + this.GetValue("value");
+                    result = result + ", value: " + this.GetValue("value");
                 }
-
+                if (this.HasProperty("owner"))
+                {
+                    result = result + ", owner: BoundPropertyOwner." + this.GetValue("owner");
+                }
+                if (this.HasProperty("ownerSymbolType"))
+                {
+                    result = result + ", ownerSymbolType: typeof(Symbols." + this.GetValue("ownerSymbolType") + ")";
+                }
             }
             if (this.Name == MetaCompilerAnnotationInfo.Value && this.HasProperty("value"))
             {
-                result = ", " + this.GetValue("value");
+                result = ", value: " + this.GetValue("value");
             }
             if (this.Name == MetaCompilerAnnotationInfo.EnumValue)
             {
                 if (this.HasProperty("enumType"))
                 {
-                    result = ", typeof(Symbols." + this.GetValue("enumType") + ")";
+                    result = ", enumType: typeof(Symbols." + this.GetValue("enumType") + ")";
                 }
                 else
                 {
-                    result = ", null";
+                    result = ", enumType: null";
                 }
             }
             return result;

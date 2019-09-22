@@ -33,7 +33,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                     if (boundNames.Length == 0)
                     {
                         var binder = this.GetBinder<SymbolDefBinder>();
-                        var containerSymbol = binder?.GetEnclosingDeclarationSymbol();
+                        var containerSymbol = binder?.ContainingSymbol as NamespaceOrTypeSymbol;
                         var symbol = containerSymbol?.GetSourceMember(this.Syntax);
                         Debug.Assert(symbol != null);
                         if (symbol != null)

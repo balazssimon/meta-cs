@@ -375,7 +375,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             return annots.HasAnnotation(MetaCompilerAnnotationInfo.Scope);
         }*/
 
-        public static string GetCanMerge(this MetaCompilerAnnotation annot)
+        public static string GetIsLocalScope(this MetaCompilerAnnotation annot)
+        {
+            foreach (var prop in annot.Properties)
+            {
+                if (prop.Name == "local") return prop.Value;
+            }
+            return "false";
+        }
+
+        public static string GetMerge(this MetaCompilerAnnotation annot)
         {
             foreach (var prop in annot.Properties)
             {

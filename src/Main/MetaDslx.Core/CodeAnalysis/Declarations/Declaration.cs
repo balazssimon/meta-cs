@@ -42,10 +42,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly DeclarationFlags flags;
         private readonly string parentPropertyToAddTo;
 
-        protected Declaration(string name, bool canMerge, string parentPropertyToAddTo)
+        protected Declaration(string name, bool merge, string parentPropertyToAddTo)
         {
             this.name = name;
-            if (canMerge) this.flags |= DeclarationFlags.CanMerge;
+            if (merge) this.flags |= DeclarationFlags.Merge;
             this.parentPropertyToAddTo = parentPropertyToAddTo;
         }
 
@@ -59,9 +59,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.name; } // TODO:MetaDslx
         }
 
-        public bool CanMerge
+        public bool Merge
         {
-            get { return this.flags.HasFlag(DeclarationFlags.CanMerge); }
+            get { return this.flags.HasFlag(DeclarationFlags.Merge); }
         }
 
         public string ParentPropertyToAddTo
@@ -131,7 +131,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         [Flags]
         private enum DeclarationFlags : byte
         {
-            CanMerge = 1,
+            Merge = 1,
         }
 
 #if DEBUG

@@ -40,7 +40,20 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 var propValues = this.GetChildValues(null, boundProp);
                 foreach (var boundValue in propValues)
                 {
-                    if (boundValue is BoundSymbolDef) continue;
+                    if (boundValue is BoundSymbolDef)
+                    {
+                        bool alreadySet = false;
+                        foreach (var value in boundValue.Values)
+                        {
+                            var symbol = value as Symbol;
+                            if (symbol != null && symbol.ModelObject.MParent == modelObject)
+                            {
+                                alreadySet = true;
+                                break;
+                            }
+                        }
+                        if (alreadySet) continue;
+                    }
                     if (prop.IsCollection)
                     {
                         var values = boundValue.Values.Select(v => v is Symbol symbol ? symbol.ModelObject : v).ToArray();

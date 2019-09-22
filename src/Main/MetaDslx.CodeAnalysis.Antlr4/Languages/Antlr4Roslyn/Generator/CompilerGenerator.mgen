@@ -4557,37 +4557,31 @@ this.Visit(node.[elem.RedName()]);
 end template
 
 template GenerateDeclarationTreeBuilderSymbolDef(MetaCompilerAnnotation annot, string name, string body)
-this.BeginDeclaration([annot.GetSymbolType()], [name]);
+this.BeginSymbolDef([name][annot.GetAnnotationParams()]);
 try
 {
-	[if (annot.HasProperty("nestingProperty"))]
-	this.RegisterNestingProperty([annot.GetNestingProperty()]);
-	[end if]
-	[if (annot.HasProperty("merge"))]
-	this.RegisterCanMerge([annot.GetCanMerge()]);
-	[end if]
 	[body]
 }
 finally
 {
-	this.EndDeclaration();
+	this.EndSymbolDef();
 }
 end template
 
 template GenerateDeclarationTreeBuilderSymbolUse(MetaCompilerAnnotation annot, string name, string body)
-this.BeginNoDeclaration([annot.GetSymbolType()], [name]);
+this.BeginSymbolUse([name][annot.GetAnnotationParams()]);
 try
 {
 	[body]
 }
 finally
 {
-	this.EndNoDeclaration();
+	this.EndSymbolUse();
 }
 end template
 
 template GenerateDeclarationTreeBuilderQualifier(MetaCompilerAnnotation annot, string name, string body)
-this.BeginQualifier();
+this.BeginQualifier([name][annot.GetAnnotationParams()]);
 try
 {
 	[body]
@@ -4599,7 +4593,7 @@ finally
 end template
 
 template GenerateDeclarationTreeBuilderName(MetaCompilerAnnotation annot, string name, string body)
-this.BeginName();
+this.BeginName([name][annot.GetAnnotationParams()]);
 try
 {
 	[body]
@@ -4611,7 +4605,7 @@ finally
 end template
 
 template GenerateDeclarationTreeBuilderProperty(MetaCompilerAnnotation annot, string name, string body)
-this.BeginProperty("[annot.GetValue("name")]");
+this.BeginProperty([name][annot.GetAnnotationParams()]);
 try
 {
 	[body]
@@ -4622,8 +4616,20 @@ finally
 }
 end template
 
+template GenerateDeclarationTreeBuilderScope(MetaCompilerAnnotation annot, string name, string body)
+this.BeginScope([name][annot.GetAnnotationParams()]);
+try
+{
+	[body]
+}
+finally
+{
+	this.EndScope();
+}
+end template
+
 template GenerateDeclarationTreeBuilderIdentifier(MetaCompilerAnnotation annot, string name, string body)
-if ([name] != null) this.RegisterIdentifier([name]);
+if ([name] != null) this.RegisterIdentifier([name][annot.GetAnnotationParams()]);
 [body]
 end template
 
@@ -4638,6 +4644,9 @@ function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.Name)
 			body = GenerateDeclarationTreeBuilderName(annot, "node", body);
+		end if
+		if (annot.Name == MetaCompilerAnnotationInfo.Scope)
+			body = GenerateDeclarationTreeBuilderScope(annot, "node", body);
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.SymbolDef)
 			body = GenerateDeclarationTreeBuilderSymbolDef(annot, "node", body);
@@ -5013,7 +5022,7 @@ public BoundNode Visit[rule.PlainName()]([rule.RedName()] node, ArrayBuilder<obj
 			BoundNode resultNode;
 				[string children = "childBoundNodes.ToImmutableAndFree()"]
 				[loop (annot:rule.Annotations.BoundNodeAnnotations.Reverse())]
-			resultNode = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], node, false);
+			resultNode = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node, hasErrors: false);
 				[children = "ImmutableArray.Create<object>(resultNode)"]
 				[end loop]
 			childBoundNodesForParent.Add(resultNode); 
@@ -5143,7 +5152,7 @@ switch (node.[elem.RedName()].GetKind().Switch())
 		BoundNode bound[alt.RedName()];
 			[string children = "ImmutableArray<object>.Empty"]
 			[loop (annot:alt.Annotations.BoundNodeAnnotations.Reverse())]
-		bound[alt.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], node, false);
+		bound[alt.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node, hasErrors: false);
 			[children = "ImmutableArray.Create(bound"+alt.RedName()+")"]
 			[end loop]
 		[childBoundNodesName].Add(bound[alt.RedName()]);
@@ -5162,7 +5171,7 @@ if (node.[elem.RedName()].GetKind() == [Properties.LanguageName]SyntaxKind.[elem
 	BoundNode bound[elem.RedName()];
 	[string children = "ImmutableArray<object>.Empty"]
 	[loop (annot:elem.Annotations.BoundNodeAnnotations.Reverse())]
-	bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], node, false);
+	bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node, hasErrors: false);
 	[children = "ImmutableArray.Create(bound"+elem.RedName()+")"]
 	[end loop]
 	[childBoundNodesName].Add(bound[elem.RedName()]);

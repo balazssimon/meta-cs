@@ -76,6 +76,11 @@ namespace MetaDslx.CodeAnalysis.Binding
             return this.CreateBoundSymbolDefCore(boundTree, childBoundNodes, symbolType, syntax, hasErrors);
         }
 
+        protected virtual BoundNode CreateBoundSymbolDef(BoundTree boundTree, ImmutableArray<object> childBoundNodes, Type symbolType, string nestingProperty = null, bool merge = false, LanguageSyntaxNode syntax = null, bool hasErrors = false)
+        {
+            return this.CreateBoundSymbolDefCore(boundTree, childBoundNodes, symbolType, syntax, hasErrors);
+        }
+
         protected virtual BoundNode CreateBoundSymbolDefCore(BoundTree boundTree, ImmutableArray<object> childBoundNodes, Type symbolType, LanguageSyntaxNode syntax, bool hasErrors)
         {
             return new BoundSymbolDef(BoundKind.SymbolDef, boundTree, childBoundNodes, symbolType, syntax, hasErrors);

@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio", "Main\MetaDslx.VisualStudio\MetaDslx.VisualStudio.csproj", "{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.Languages.Soal", "..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj", "{BC0FAE27-A84D-40FB-8641-75F21872CB87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Soal", "..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\MetaDslx.Languages.Soal.csproj", "{BC0FAE27-A84D-40FB-8641-75F21872CB87}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSequenceDiagramsModel", "Test\WebSequenceDiagramsModel\WebSequenceDiagramsModel.csproj", "{A2C32A1B-F83A-44B7-AB5C-F9E7634FC250}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{BC0FAE27-A84D-40FB-8641-75F21872CB87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC0FAE27-A84D-40FB-8641-75F21872CB87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC0FAE27-A84D-40FB-8641-75F21872CB87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2C32A1B-F83A-44B7-AB5C-F9E7634FC250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2C32A1B-F83A-44B7-AB5C-F9E7634FC250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2C32A1B-F83A-44B7-AB5C-F9E7634FC250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2C32A1B-F83A-44B7-AB5C-F9E7634FC250}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

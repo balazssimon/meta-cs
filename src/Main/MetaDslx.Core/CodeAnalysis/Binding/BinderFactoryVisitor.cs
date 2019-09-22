@@ -83,7 +83,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new ScopeBinder(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType)
+        protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType, string nestingProperty = null, bool merge = false)
         {
             return this.CreateSymbolDefBinderCore(parentBinder, syntax, symbolType);
         }
