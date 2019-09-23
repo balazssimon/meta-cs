@@ -190,7 +190,7 @@
       IntermediateOutputPath="$(IntermediateOutputPath)"
       Encoding="%(MetaGenerator.Encoding)"
       SourceCodeFiles="@(MetaGenerator -> '%(FullPath)')"
-      ContinueOnError="$(MetaGeneratorDesignTimeBuild)">
+      ContinueOnError="false">
 
       <Output ItemName="MetaGeneratorGeneratedCodeFilesNonUnique" TaskParameter="GeneratedCodeFiles" Condition="'$(MetaDslxIsSdkProject)' != 'True'"/>
       <Output ItemName="MetaGeneratorGeneratedCodeFilesNonUnique" TaskParameter="GeneratedIntermediateCodeFiles" Condition="'$(MetaDslxIsSdkProject)' == 'True'"/>
@@ -230,7 +230,7 @@
       IntermediateOutputPath="$(IntermediateOutputPath)"
       Encoding="%(MetaModel.Encoding)"
       SourceCodeFiles="@(MetaModel -> '%(FullPath)')"
-      ContinueOnError="$(MetaModelDesignTimeBuild)"
+      ContinueOnError="false"
       CompileMetaModelCore="$(MetaDslxCompileMetaModelCore)">
 
       <Output ItemName="MetaModelGeneratedCodeFilesNonUnique" TaskParameter="GeneratedCodeFiles" Condition="'$(MetaDslxIsSdkProject)' != 'True'"/>
@@ -279,7 +279,7 @@
       TargetFrameworkVersion="$(TargetFrameworkVersion)"
       TargetNamespace="%(Antlr4Roslyn.CustomToolNamespace)"
       SourceCodeFiles="@(Antlr4Roslyn -> '%(FullPath)')"
-      ContinueOnError="$(Antlr4RoslynDesignTimeBuild)"
+      ContinueOnError="false"
       TokensFiles="@(Antlr4Tokens)"
       AbstractGrammarFiles="@(Antlr4AbstractGrammar)"
       LanguageSourceExtensions="$(DefaultLanguageSourceExtension)"

@@ -60,7 +60,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
@@ -159,7 +159,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            /*/
+            //*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Symbols);
             string generatedCsharpModel = mmgen.Generate();
             //File.WriteAllText("Soal.txt", generatedCsharpModel);
@@ -227,7 +227,7 @@ namespace MetaDslx.Bootstrap
             //SoalImportTest(1);
             //*/
 
-            //*/
+            /*/
             WebSequenceDiagramsTest();
             //*/
         }
