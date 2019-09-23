@@ -39,7 +39,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
             if (declaration.Kind != null)
             {
-                _modelObject = declaration.GetModelObject(container?.ModelObject as MutableSymbolBase, module.ModelBuilder);
+                _modelObject = declaration.GetModelObject(container?.ModelObject as MutableSymbolBase, module.ModelBuilder, diagnostics);
                 Debug.Assert(_modelObject != null);
             }
 

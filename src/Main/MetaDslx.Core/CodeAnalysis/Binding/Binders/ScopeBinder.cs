@@ -24,14 +24,14 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 if (_container == null)
                 {
-                    var container = GetContainerSymbol(this.Next);
+                    var container = GetContainerScope(this.Next);
                     Interlocked.CompareExchange(ref _container, container, null);
                 }
                 return _container;
             }
         }
 
-        public override Symbol ContainingSymbol
+        public override NamespaceOrTypeSymbol ContainingSymbol
         {
             get
             {
@@ -89,9 +89,9 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        private static NamespaceOrTypeSymbol GetContainerSymbol(Binder binder)
+        private static NamespaceOrTypeSymbol GetContainerScope(Binder binder)
         {
-            var current = binder;
+            /*var current = binder;
             while (current != null)
             {
                 if (current is SymbolDefBinder symbolDefBinder)
@@ -101,8 +101,10 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                     else break;
                 }
                 current = current.Next;
-            }
-            return (NamespaceOrTypeSymbol)binder.Compilation.CreateErrorNamespaceSymbol(binder.Compilation.GlobalNamespace, string.Empty);
+            }*/
+            if (binder.ParentDeclarationSymbol is NamespaceOrTypeSymbol namespaceOrTypeSymbol) return namespaceOrTypeSymbol;
+            else return (NamespaceOrTypeSymbol)binder.Compilation.CreateErrorNamespaceSymbol(binder.Compilation.GlobalNamespace, string.Empty);
         }
+
     }
 }

@@ -53,6 +53,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
+        public override DeclaredSymbol ParentDeclarationSymbol => this.LastDeclaredSymbol;
+
         public override DeclaredSymbol GetDeclarationSymbol()
         {
             var result = this.LastDeclaredSymbol;
@@ -80,7 +82,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
         {
             if (qualifier.IsInitialized()) return;
-            var containerSymbol = this.Next.ContainingSymbol as NamespaceOrTypeSymbol;
+            var containerSymbol = this.Next.ParentDeclarationSymbol as DeclaredSymbol;
             var result = ArrayBuilder<object>.GetInstance();
             var identifiers = qualifier.Identifiers;
             foreach (var identifier in identifiers)
@@ -88,7 +90,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
                 var symbol = containerSymbol?.GetSourceMember(identifier.Syntax);
                 Debug.Assert(symbol != null);
                 result.Add(symbol);
-                containerSymbol = symbol as NamespaceOrTypeSymbol;
+                containerSymbol = symbol;
             }
             qualifier.InitializeValues(identifiers, result.ToImmutableAndFree());
         }

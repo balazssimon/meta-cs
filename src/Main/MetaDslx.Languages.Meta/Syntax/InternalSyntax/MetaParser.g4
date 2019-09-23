@@ -114,9 +114,11 @@ voidType
 	: KVoid
 	;
 
+      
                             
 nullableType :                      primitiveType TQuestion;
 
+      
                               
 collectionType :                 collectionKind TLessThan                      simpleType TGreaterThan;
 collectionKind 
@@ -126,8 +128,11 @@ collectionKind
 	|                                      KMultiList
 	;
 	
+      
                          
 operationDeclaration : attribute* KStatic?                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
+
+      
 parameterList : parameter (TComma parameter)*;
 
                          

@@ -41,13 +41,13 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return IsSymbolAccessibleConditional(symbol, Compilation.Assembly, ref useSiteDiagnostics);
         }
 
-        public override Symbol ContainingSymbol
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override NamespaceOrTypeSymbol ContainingSymbol => null;
+
+        public override DeclaredSymbol ParentDeclarationSymbol => null;
+
+        public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
+
+        protected override bool InExecutableBinder => false;
 
         public override Binder GetBinder(SyntaxNode node)
         {

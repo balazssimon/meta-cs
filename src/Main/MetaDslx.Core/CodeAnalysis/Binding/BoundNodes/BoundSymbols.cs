@@ -57,7 +57,14 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                     if (prop.IsCollection)
                     {
                         var values = boundValue.Values.Select(v => v is Symbol symbol ? symbol.ModelObject : v).ToArray();
-                        modelObject.MAddRange(prop, values);
+                        try
+                        {
+                            modelObject.MAddRange(prop, values);
+                        }
+                        catch(ModelException me)
+                        {
+                            diagnostics.Add(ModelErrorCode.ERR_CannotAddValuesToProperty, prop, modelObject, me.ToString());
+                        }
                     }
                     else
                     {
@@ -65,7 +72,14 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                         {
                             var value = boundValue.Values[0];
                             if (value is Symbol symbol) value = symbol.ModelObject;
-                            modelObject.MSet(prop, value);
+                            try
+                            {
+                                modelObject.MSet(prop, value);
+                            }
+                            catch (ModelException me)
+                            {
+                                diagnostics.Add(ModelErrorCode.ERR_CannotSetValueToProperty, prop, modelObject, me.ToString());
+                            }
                         }
                         else if(boundValue.Values.Length > 1)
                         {

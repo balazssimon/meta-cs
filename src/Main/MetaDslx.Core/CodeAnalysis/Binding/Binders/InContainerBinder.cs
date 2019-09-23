@@ -102,7 +102,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             }
         }
 
-        public override Symbol ContainingSymbol
+        public override NamespaceOrTypeSymbol ContainingSymbol
         {
             get
             {

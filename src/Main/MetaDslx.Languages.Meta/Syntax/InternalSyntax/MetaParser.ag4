@@ -114,9 +114,11 @@ voidType
 	: KVoid
 	;
 
+$Scope
 $SymbolDef(MetaNullableType)
 nullableType : $Property(InnerType) primitiveType TQuestion;
 
+$Scope
 $SymbolDef(MetaCollectionType)
 collectionType : $Property(Kind) collectionKind TLessThan $Property(InnerType) simpleType TGreaterThan;
 collectionKind 
@@ -126,8 +128,11 @@ collectionKind
 	| $Value(MetaCollectionKind.MultiList) KMultiList
 	;
 	
+$Scope
 $SymbolDef(MetaOperation)
 operationDeclaration : attribute* KStatic? $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
+
+$Scope
 parameterList : parameter (TComma parameter)*;
 
 $SymbolDef(MetaParameter)

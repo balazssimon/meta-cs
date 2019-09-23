@@ -82,5 +82,7 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode ERR_PropertyDoesNotExist = new ModelErrorCode(37, "Invalid property", "Symbol '{0}' has no property with name '{1}'.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_DefinedSymbolNotFound = new ModelErrorCode(38, "Defined symbol not found", "Internal error in the compiler. {0} '{1}' was not found in {2} '{3}'. Either {2} '{3}' should be defined as a [Scope] or {0} '{1}' should be resolved by $SymbolUse instead of $SymbolDef.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode WRN_QualifierNotFound = new ModelErrorCode(39, "Qualifier not found", "Internal error in the compiler. BoundQualifier '{0}' attached to '{1}' was not found under BoundSymbolUse attached to '{2}'. Make sure the $Qualifier annotation is available directly under the $SymbolUse annotation.", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_CannotSetValueToProperty = new ModelErrorCode(40, "Cannot add value to property", "Cannot set value to property '{0}' in symbol '{1}': {2}", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_CannotAddValuesToProperty = new ModelErrorCode(41, "Cannot add values to property", "Cannot add values to property '{0}' in symbol '{1}': {2}", DiagnosticSeverity.Error);
     }
 }

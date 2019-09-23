@@ -118,7 +118,23 @@ namespace MetaDslx.CodeAnalysis.Declarations
         protected void BeginProperty(LanguageSyntaxNode node, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.Current, Type ownerSymbolType = null)
         {
             if (_currentDeclarationInfo == null) return;
-            _currentDeclarationInfo.BeginProperty(name);
+            switch (owner)
+            {
+                case SymbolPropertyOwner.Current:
+                    _currentDeclarationInfo.BeginProperty(name);
+                    break;
+                case SymbolPropertyOwner.ParentSymbolDef:
+                    break;
+                case SymbolPropertyOwner.ParentScope:
+                    _currentScopeDeclarationInfo.BeginProperty(name);
+                    break;
+                case SymbolPropertyOwner.AncestorSymbolDef:
+                    break;
+                case SymbolPropertyOwner.AncestorScope:
+                    break;
+                default:
+                    break;
+            }
         }
 
         protected void BeginName(LanguageSyntaxNode node)

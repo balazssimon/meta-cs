@@ -111,11 +111,19 @@ namespace MetaDslx.CodeAnalysis.Binding
         /// The member containing the binding context.  Note that for the purposes of the compiler,
         /// a lambda expression is considered a "member" of its enclosing method, field, or lambda.
         /// </summary>
-        public virtual Symbol ContainingSymbol
+        public virtual NamespaceOrTypeSymbol ContainingSymbol
         {
             get
             {
                 return Next.ContainingSymbol;
+            }
+        }
+
+        public virtual DeclaredSymbol ParentDeclarationSymbol
+        {
+            get
+            {
+                return Next.ParentDeclarationSymbol;
             }
         }
 
@@ -158,7 +166,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             get
             {
-                var containingMember = this.ContainingSymbol;
+                var containingMember = this.ParentDeclarationSymbol;
                 switch (containingMember?.Kind.Switch())
                 {
                     case LanguageSymbolKind.Operation:

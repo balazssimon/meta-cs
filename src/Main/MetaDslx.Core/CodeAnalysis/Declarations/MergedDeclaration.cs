@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis.PooledObjects;
 using MetaDslx.CodeAnalysis.Symbols;
-using System.Diagnostics;
 
 namespace MetaDslx.CodeAnalysis.Declarations
 {
@@ -165,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return new MergedDeclaration(mergedDeclaration._declarations.Add(declaration));
         }
 
-        public MutableSymbolBase GetModelObject(MutableSymbolBase parentObject, MutableModel model)
+        public MutableSymbolBase GetModelObject(MutableSymbolBase parentObject, MutableModel model, DiagnosticBag diagnostics)
         {
             if (_modelObject == null)
             {
@@ -179,7 +178,14 @@ namespace MetaDslx.CodeAnalysis.Declarations
                         var property = parentObject.MGetProperty(this.ParentPropertyToAddTo);
                         if (property != null)
                         {
-                            parentObject.MAdd(property, modelObject);
+                            try
+                            {
+                                parentObject.MAdd(property, modelObject);
+                            }
+                            catch (ModelException me)
+                            {
+                                diagnostics.Add(ModelErrorCode.ERR_CannotSetValueToProperty, this.NameLocations[0], property, modelObject, me.ToString());
+                            }
                         }
                     }
                     Interlocked.CompareExchange(ref _modelObject, modelObject, null);
