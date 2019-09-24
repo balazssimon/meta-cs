@@ -61,7 +61,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override ModelSymbolInfo ModelSymbolInfo => _declaration.Kind;
 
-        public MergedDeclaration MergedDeclaration => _declaration;
+        public override MergedDeclaration MergedDeclaration => _declaration;
 
         public virtual bool IsPartial => _declaration.Merge;
 

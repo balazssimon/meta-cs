@@ -106,19 +106,24 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new BoundAttribute(BoundKind.SymbolUse, boundTree, childBoundNodes, symbolTypes, nestingSymbolTypes, syntax, hasErrors);
         }
 
-        protected virtual BoundNode CreateBoundProperty(BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, LanguageSyntaxNode syntax, bool hasErrors)
+        protected virtual BoundNode CreateBoundProperty(BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, LanguageSyntaxNode syntax = null, bool hasErrors = false)
         {
-            return this.CreateBoundPropertyCore(boundTree, childBoundNodes, name, default, syntax, hasErrors);
+            return this.CreateBoundPropertyCore(boundTree, childBoundNodes, name, default, SymbolPropertyOwner.CurrentSymbol, null, syntax, hasErrors);
         }
 
-        protected virtual BoundNode CreateBoundProperty(BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, object value, LanguageSyntaxNode syntax, bool hasErrors)
+        protected virtual BoundNode CreateBoundProperty(BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null, LanguageSyntaxNode syntax = null, bool hasErrors = false)
         {
-            return this.CreateBoundPropertyCore(boundTree, childBoundNodes, name, new Optional<object>(value), syntax, hasErrors);
+            return this.CreateBoundPropertyCore(boundTree, childBoundNodes, name, default, owner, ownerSymbolType, syntax, hasErrors);
         }
 
-        protected virtual BoundNode CreateBoundPropertyCore(BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, Optional<object> valueOpt, LanguageSyntaxNode syntax, bool hasErrors)
+        protected virtual BoundNode CreateBoundProperty(BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, object value, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null, LanguageSyntaxNode syntax = null, bool hasErrors = false)
         {
-            return new BoundProperty(BoundKind.Property, boundTree, childBoundNodes, name, valueOpt, syntax, hasErrors);
+            return this.CreateBoundPropertyCore(boundTree, childBoundNodes, name, new Optional<object>(value), owner, ownerSymbolType, syntax, hasErrors);
+        }
+
+        protected virtual BoundNode CreateBoundPropertyCore(BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, Optional<object> valueOpt, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null, LanguageSyntaxNode syntax = null, bool hasErrors = false)
+        {
+            return new BoundProperty(BoundKind.Property, boundTree, childBoundNodes, name, valueOpt, owner, ownerSymbolType, syntax, hasErrors);
         }
 
         protected virtual BoundNode CreateBoundIdentifier(BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)

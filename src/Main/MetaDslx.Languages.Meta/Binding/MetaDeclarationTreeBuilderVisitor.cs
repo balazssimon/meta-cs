@@ -622,68 +622,52 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitNullableType(NullableTypeSyntax node)
 		{
-			this.BeginScope(node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaNullableType));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaNullableType));
+				this.BeginProperty(node.PrimitiveType, name: "InnerType");
 				try
 				{
-					this.BeginProperty(node.PrimitiveType, name: "InnerType");
-					try
-					{
-						this.Visit(node.PrimitiveType);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
+					this.Visit(node.PrimitiveType);
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndScope();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitCollectionType(CollectionTypeSyntax node)
 		{
-			this.BeginScope(node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaCollectionType));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaCollectionType));
+				this.BeginProperty(node.CollectionKind, name: "Kind");
 				try
 				{
-					this.BeginProperty(node.CollectionKind, name: "Kind");
-					try
-					{
-						this.Visit(node.CollectionKind);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
-					this.BeginProperty(node.SimpleType, name: "InnerType");
-					try
-					{
-						this.Visit(node.SimpleType);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
+					this.Visit(node.CollectionKind);
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
+				}
+				this.BeginProperty(node.SimpleType, name: "InnerType");
+				try
+				{
+					this.Visit(node.SimpleType);
+				}
+				finally
+				{
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndScope();
+				this.EndSymbolDef();
 			}
 		}
 		
@@ -706,66 +690,50 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitOperationDeclaration(OperationDeclarationSyntax node)
 		{
-			this.BeginScope(node);
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaOperation));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.MetaOperation));
+				if (node.Attribute != null)
+				{
+					foreach (var child in node.Attribute)
+					{
+						this.Visit(child);
+					}
+				}
+				this.BeginProperty(node.ReturnType, name: "ReturnType");
 				try
 				{
-					if (node.Attribute != null)
-					{
-						foreach (var child in node.Attribute)
-						{
-							this.Visit(child);
-						}
-					}
-					this.BeginProperty(node.ReturnType, name: "ReturnType");
-					try
-					{
-						this.Visit(node.ReturnType);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
-					this.Visit(node.Name);
-					this.BeginProperty(node.ParameterList, name: "Parameters");
-					try
-					{
-						this.Visit(node.ParameterList);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
+					this.Visit(node.ReturnType);
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
+				}
+				this.Visit(node.Name);
+				this.BeginProperty(node.ParameterList, name: "Parameters");
+				try
+				{
+					this.Visit(node.ParameterList);
+				}
+				finally
+				{
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndScope();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitParameterList(ParameterListSyntax node)
 		{
-			this.BeginScope(node);
-			try
+			if (node.Parameter != null)
 			{
-				if (node.Parameter != null)
+				foreach (var child in node.Parameter)
 				{
-					foreach (var child in node.Parameter)
-					{
-						this.Visit(child);
-					}
+					this.Visit(child);
 				}
-			}
-			finally
-			{
-				this.EndScope();
 			}
 		}
 		

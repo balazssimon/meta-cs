@@ -48,18 +48,13 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             {
                 var symbols = this.DeclaredSymbols;
                 if (symbols.Length == 0) return null;
-                else if (symbols.Length == 1) return symbols[0];
                 else return symbols[symbols.Length - 1];
             }
         }
 
-        public override DeclaredSymbol ParentDeclarationSymbol => this.LastDeclaredSymbol;
-
         public override DeclaredSymbol GetDeclarationSymbol()
         {
-            var result = this.LastDeclaredSymbol;
-            Debug.Assert(result != null);
-            return result;
+            return this.LastDeclaredSymbol;
         }
 
         public override void InitializeQualifierSymbol(BoundQualifier qualifier)
@@ -82,7 +77,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         private void InitializeFullQualifierSymbol(BoundQualifier qualifier)
         {
             if (qualifier.IsInitialized()) return;
-            var containerSymbol = this.Next.ParentDeclarationSymbol as DeclaredSymbol;
+            var containerSymbol = this.GetParentDeclarationSymbol();
             var result = ArrayBuilder<object>.GetInstance();
             var identifiers = qualifier.Identifiers;
             foreach (var identifier in identifiers)

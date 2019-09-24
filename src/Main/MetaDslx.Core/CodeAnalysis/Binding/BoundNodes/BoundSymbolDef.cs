@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.Binders;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Modeling;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                     if (boundNames.Length == 0)
                     {
                         var binder = this.GetBinder<SymbolDefBinder>();
-                        var containerSymbol = binder?.ContainingSymbol as NamespaceOrTypeSymbol;
+                        var containerSymbol = binder?.Next.GetParentDeclarationSymbol();
                         var symbol = containerSymbol?.GetSourceMember(this.Syntax);
                         Debug.Assert(symbol != null);
                         if (symbol != null)
@@ -71,8 +72,89 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
             foreach (var symbol in this.Symbols)
             {
-                this.SetPropertyValues((MutableSymbolBase)symbol.ModelObject, this.DiagnosticBag, cancellationToken);
+                this.SetPropertyValues((DeclaredSymbol)symbol, this.DiagnosticBag, cancellationToken);
             }
         }
+
+        protected virtual void SetPropertyValues(DeclaredSymbol symbol, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            var declaration = symbol.MergedDeclaration;
+            var propertyBoundNodes = ArrayBuilder<BoundProperty>.GetInstance();
+            foreach (var decl in declaration.Declarations)
+            {
+                foreach (var prop in decl.Properties)
+                {
+                    if (prop.SyntaxReference != null)
+                    {
+                        var propNode = prop.SyntaxReference.GetSyntax(cancellationToken);
+                        var propBoundNodes = this.Compilation.GetBoundNodes(propNode);
+                        foreach (var node in propBoundNodes)
+                        {
+                            if (node is BoundProperty boundProperty)
+                            {
+                                if (boundProperty.Name == prop.Name && boundProperty.Owner == prop.Owner && boundProperty.OwnerType == prop.OwnerType)
+                                {
+                                    propertyBoundNodes.Add(boundProperty);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            var modelObject = (MutableSymbolBase)symbol.ModelObject;
+            foreach (var boundProperty in propertyBoundNodes)
+            {
+                string name = boundProperty.Name;
+                var prop = modelObject.MGetProperty(name);
+                if (prop == null)
+                {
+                    diagnostics.Add(ModelErrorCode.ERR_PropertyDoesNotExist, boundProperty.Location, modelObject, name);
+                    continue;
+                }
+                //if (prop.IsBaseScope) continue;
+                var propValues = ArrayBuilder<BoundValues>.GetInstance();
+                boundProperty.AddValues(propValues, name, null);
+                foreach (var boundValue in propValues)
+                {
+                    //if (boundValue is BoundSymbolDef) continue; // TODO:MetaDslx - prevent values to be added multiple times
+                    if (prop.IsCollection)
+                    {
+                        var values = boundValue.Values.Select(v => v is Symbol symbolValue ? symbolValue.ModelObject : v).ToArray();
+                        try
+                        {
+                            modelObject.MAddRange(prop, values);
+                        }
+                        catch (ModelException me)
+                        {
+                            diagnostics.Add(ModelErrorCode.ERR_CannotAddValuesToProperty, this.Location, prop, modelObject, me.ToString());
+                        }
+                    }
+                    else
+                    {
+                        if (boundValue.Values.Length == 1)
+                        {
+                            var value = boundValue.Values[0];
+                            if (value is Symbol symbolValue) value = symbolValue.ModelObject;
+                            try
+                            {
+                                modelObject.MSet(prop, value);
+                            }
+                            catch (ModelException me)
+                            {
+                                diagnostics.Add(ModelErrorCode.ERR_CannotSetValueToProperty, this.Location, prop, modelObject, me.ToString());
+                            }
+                        }
+                        else if (boundValue.Values.Length > 1)
+                        {
+                            diagnostics.Add(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty, this.Location, prop, modelObject);
+                        }
+                    }
+                }
+                propValues.Free();
+            }
+            propertyBoundNodes.Free();
+        }
+
+        
     }
 }

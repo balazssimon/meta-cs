@@ -19,23 +19,23 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private int qualifierStack;
         private ArrayBuilder<Identifier> currentName;
 
-        public DeclarationTreeInfo(DeclarationTreeInfo scope, DeclarationTreeInfo parent, Type type, LanguageSyntaxNode node)
+        public DeclarationTreeInfo(DeclarationTreeInfo parentScope, DeclarationTreeInfo parentDeclaration, DeclarationTreeInfo parent, string parentPropertyToAddTo, Type type, LanguageSyntaxNode node)
         {
-            this.Scope = scope;
+            this.ParentScope = parentScope;
+            this.ParentDeclaration = parentDeclaration;
             this.Parent = parent;
-            if (scope != null)
-            {
-                this.ParentPropertyToAddTo = scope.CurrentProperty;
-            }
+            this.Parent = parent;
+            this.ParentPropertyToAddTo = parentPropertyToAddTo;
             this.Type = type;
             this.Node = node;
             this.Names = new ArrayBuilder<ArrayBuilder<Identifier>>();
             this.Members = new ArrayBuilder<SingleDeclaration>();
             this.ReferenceDirectives = new ArrayBuilder<ReferenceDirective>();
-            this.PropertyStack = new Stack<string>();
+            this.Properties = new ArrayBuilder<Property>();
         }
 
-        public DeclarationTreeInfo Scope { get; private set; }
+        public DeclarationTreeInfo ParentScope { get; private set; }
+        public DeclarationTreeInfo ParentDeclaration { get; private set; }
         public DeclarationTreeInfo Parent { get; private set; }
         public LanguageSyntaxNode Node { get; private set; }
         public Type Type { get; private set; }
@@ -50,12 +50,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public ArrayBuilder<ArrayBuilder<Identifier>> Names { get; private set; }
         public ArrayBuilder<SingleDeclaration> Members { get; private set; }
         public ArrayBuilder<ReferenceDirective> ReferenceDirectives { get; private set; }
-        public Stack<string> PropertyStack { get; private set; }
-
-        public string CurrentProperty
-        {
-            get { return this.PropertyStack.Count > 0 ? this.PropertyStack.Peek() : null; }
-        }
+        public ArrayBuilder<Property> Properties { get; private set; }
 
         public ArrayBuilder<Identifier> CurrentName
         {
@@ -129,16 +124,6 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        public void BeginProperty(string name)
-        {
-            this.PropertyStack.Push(name);
-        }
-
-        public void EndProperty()
-        {
-            this.PropertyStack.Pop();
-        }
-
         public void RegisterReferenceDirective(ReferenceDirective directive)
         {
             this.ReferenceDirectives.Add(directive);
@@ -152,6 +137,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public void RegisterMerge(bool canMerge)
         {
             this.Merge = canMerge;
+        }
+
+        public void RegisterProperty(Property property)
+        {
+            this.Properties.Add(property);
         }
 
         public struct Identifier
@@ -168,6 +158,77 @@ namespace MetaDslx.CodeAnalysis.Declarations
             public override string ToString()
             {
                 return Text;
+            }
+        }
+
+        public struct Property
+        {
+            public readonly SyntaxReference SyntaxReference;
+            public readonly string Name;
+            public readonly SymbolPropertyOwner Owner;
+            public readonly Type OwnerType;
+
+            public Property(LanguageSyntaxNode node, string name, SymbolPropertyOwner owner, Type ownerType)
+            {
+                SyntaxReference = node?.GetReference();
+                Name = name;
+                Owner = owner;
+                OwnerType = ownerType;
+            }
+
+            public DeclarationTreeInfo GetOwnerDeclaration(DeclarationTreeInfo current)
+            {
+                if (current == null) return null;
+                switch (this.Owner)
+                {
+                    case SymbolPropertyOwner.CurrentSymbol:
+                        return current;
+                    case SymbolPropertyOwner.CurrentScope:
+                        return current.ParentScope;
+                    case SymbolPropertyOwner.AncestorSymbol:
+                        var ancestorSymbol = current.ParentDeclaration;
+                        while (ancestorSymbol != null)
+                        {
+                            if (OwnerType == null || OwnerType.IsAssignableFrom(ancestorSymbol.Type)) return ancestorSymbol;
+                            ancestorSymbol = ancestorSymbol.ParentDeclaration;
+                        }
+                        return null;
+                    case SymbolPropertyOwner.AncestorScope:
+                        var ancestorScope = current.Parent;
+                        while (ancestorScope != null)
+                        {
+                            if (OwnerType == null || OwnerType.IsAssignableFrom(ancestorScope.Type)) return ancestorScope;
+                            ancestorScope = ancestorScope.ParentScope;
+                        }
+                        return null;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            public void RegisterToOwner(DeclarationTreeInfo current)
+            {
+                var owner = this.GetOwnerDeclaration(current);
+                owner.RegisterProperty(this);
+            }
+
+            public override string ToString()
+            {
+                return Name;
+            }
+        }
+
+        public class PropertyDepthInfo
+        {
+            public readonly int CurrentScope;
+            public readonly int AncestorSymbol;
+            public readonly int AncestorScope;
+
+            public PropertyDepthInfo(int currentScope, int ancestorSymbol, int ancestorScope)
+            {
+                this.CurrentScope = currentScope;
+                this.AncestorSymbol = ancestorSymbol;
+                this.AncestorScope = ancestorScope;
             }
         }
     }

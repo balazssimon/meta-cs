@@ -1851,6 +1851,7 @@ namespace WebSequenceDiagramsModel.Binding
 				{
 					BoundNode resultNode;
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), symbolType: typeof(Symbols.Lifeline), merge: true, syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Declarations", owner: SymbolPropertyOwner.CurrentScope, syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}

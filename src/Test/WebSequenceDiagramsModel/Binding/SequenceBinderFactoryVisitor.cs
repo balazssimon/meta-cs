@@ -690,6 +690,7 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations", owner: SymbolPropertyOwner.CurrentScope);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.Lifeline), merge: true);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}

@@ -119,14 +119,6 @@ namespace MetaDslx.CodeAnalysis.Binding
             }
         }
 
-        public virtual DeclaredSymbol ParentDeclarationSymbol
-        {
-            get
-            {
-                return Next.ParentDeclarationSymbol;
-            }
-        }
-
         public virtual ImmutableArray<Symbol> ChildSymbols => Next.ChildSymbols;
 
         /// <summary>
@@ -166,7 +158,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         {
             get
             {
-                var containingMember = this.ParentDeclarationSymbol;
+                var containingMember = this.GetParentDeclarationSymbol();
                 switch (containingMember?.Kind.Switch())
                 {
                     case LanguageSymbolKind.Operation:

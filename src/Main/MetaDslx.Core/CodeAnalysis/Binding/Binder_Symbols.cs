@@ -1079,7 +1079,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return this.Next.GetDeclarationSymbol();
         }
 
-        public DeclaredSymbol GetEnclosingDeclarationSymbol()
+        public DeclaredSymbol GetParentDeclarationSymbol()
         {
             return this.Next.GetDeclarationSymbol();
         }

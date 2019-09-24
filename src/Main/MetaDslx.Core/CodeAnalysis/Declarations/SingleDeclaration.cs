@@ -23,6 +23,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly SourceLocation _nameLocation;
         private readonly ImmutableArray<SingleDeclaration> _children;
         private ImmutableArray<string> _lazyChildNames;
+        private readonly ImmutableArray<DeclarationTreeInfo.Property> _properties;
 
         /// <summary>
         /// Any diagnostics reported while converting the Namespace/Type syntax into the Declaration
@@ -39,6 +40,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             bool canMerge,
             string parentPropertyToAddTo,
             ImmutableArray<SingleDeclaration> children,
+            ImmutableArray<DeclarationTreeInfo.Property> properties,
             ImmutableArray<Diagnostic> diagnostics)
             : base(name, canMerge, parentPropertyToAddTo)
         {
@@ -46,6 +48,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this._syntaxReference = syntaxReference;
             this._nameLocation = nameLocation;
             this._children = children;
+            this._properties = properties;
             this.Diagnostics = diagnostics;
         }
 
@@ -67,6 +70,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public Location NameLocation
         {
             get { return this._nameLocation; }
+        }
+
+        public ImmutableArray<DeclarationTreeInfo.Property> Properties
+        {
+            get { return this._properties; }
         }
 
         public override ImmutableArray<string> ChildNames

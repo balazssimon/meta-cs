@@ -77,6 +77,7 @@ namespace MetaDslx.CodeAnalysis.Binding
 
         public LanguageSyntaxNode Syntax => _syntax;
 
+        public Location Location => _syntax.Location;
 
         /// <summary>
         /// Determines if a bound node, or associated syntax or type has an error (not a warning) 

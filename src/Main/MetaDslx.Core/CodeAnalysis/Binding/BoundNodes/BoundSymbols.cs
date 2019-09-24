@@ -33,27 +33,13 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 var prop = modelObject.MGetProperty(boundProp);
                 if (prop == null)
                 {
-                    diagnostics.Add(ModelErrorCode.ERR_PropertyDoesNotExist, modelObject, boundProp);
+                    diagnostics.Add(ModelErrorCode.ERR_PropertyDoesNotExist, this.Location, modelObject, boundProp);
                     continue;
                 }
                 //if (prop.IsBaseScope) continue;
                 var propValues = this.GetChildValues(null, boundProp);
                 foreach (var boundValue in propValues)
                 {
-                    if (boundValue is BoundSymbolDef)
-                    {
-                        bool alreadySet = false;
-                        foreach (var value in boundValue.Values)
-                        {
-                            var symbol = value as Symbol;
-                            if (symbol != null && symbol.ModelObject.MParent == modelObject)
-                            {
-                                alreadySet = true;
-                                break;
-                            }
-                        }
-                        if (alreadySet) continue;
-                    }
                     if (prop.IsCollection)
                     {
                         var values = boundValue.Values.Select(v => v is Symbol symbol ? symbol.ModelObject : v).ToArray();
@@ -63,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                         }
                         catch(ModelException me)
                         {
-                            diagnostics.Add(ModelErrorCode.ERR_CannotAddValuesToProperty, prop, modelObject, me.ToString());
+                            diagnostics.Add(ModelErrorCode.ERR_CannotAddValuesToProperty, this.Location, prop, modelObject, me.ToString());
                         }
                     }
                     else
@@ -78,12 +64,12 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                             }
                             catch (ModelException me)
                             {
-                                diagnostics.Add(ModelErrorCode.ERR_CannotSetValueToProperty, prop, modelObject, me.ToString());
+                                diagnostics.Add(ModelErrorCode.ERR_CannotSetValueToProperty, this.Location, prop, modelObject, me.ToString());
                             }
                         }
                         else if(boundValue.Values.Length > 1)
                         {
-                            diagnostics.Add(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty, prop, modelObject);
+                            diagnostics.Add(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty, this.Location, prop, modelObject);
                         }
                     }
                 }

@@ -113,19 +113,19 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new AttributeBinder(parentBinder, syntax, symbolTypes, nestingSymbolTypes);
         }
 
-        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name)
+        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null)
         {
-            return this.CreatePropertyBinderCore(parentBinder, syntax, name, default);
+            return this.CreatePropertyBinderCore(parentBinder, syntax, name, default, owner, ownerSymbolType);
         }
 
-        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, object value)
+        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, object value, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null)
         {
-            return this.CreatePropertyBinderCore(parentBinder, syntax, name, new Optional<object>(value));
+            return this.CreatePropertyBinderCore(parentBinder, syntax, name, new Optional<object>(value), owner, ownerSymbolType);
         }
 
-        protected virtual Binder CreatePropertyBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, string name, Optional<object> valueOpt)
+        protected virtual Binder CreatePropertyBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, string name, Optional<object> valueOpt, SymbolPropertyOwner owner, Type ownerSymbolType)
         {
-            return new PropertyBinder(parentBinder, name, valueOpt);
+            return new PropertyBinder(parentBinder, name, valueOpt, owner, ownerSymbolType);
         }
 
         protected virtual Binder CreateIdentifierBinder(Binder parentBinder, SyntaxNodeOrToken syntax)

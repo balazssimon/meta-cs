@@ -41,9 +41,7 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             return IsSymbolAccessibleConditional(symbol, Compilation.Assembly, ref useSiteDiagnostics);
         }
 
-        public override NamespaceOrTypeSymbol ContainingSymbol => null;
-
-        public override DeclaredSymbol ParentDeclarationSymbol => null;
+        public override NamespaceOrTypeSymbol ContainingSymbol => this.GetDeclarationSymbol() as NamespaceOrTypeSymbol;
 
         public override ImmutableArray<Symbol> ChildSymbols => ImmutableArray<Symbol>.Empty;
 

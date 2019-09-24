@@ -92,6 +92,7 @@ simpleLine: text LCrLf;
 
 arrowType :                          TSync |                           TAsync |                            TReturn |                            TCreate;
 
+                                                
                                            
 lifeLineName : name;
 

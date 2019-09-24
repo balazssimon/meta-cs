@@ -516,14 +516,22 @@ namespace WebSequenceDiagramsModel.Binding
 		
 		public virtual void VisitLifeLineName(LifeLineNameSyntax node)
 		{
-			this.BeginSymbolDef(node, symbolType: typeof(Symbols.Lifeline), merge: true);
+			this.BeginProperty(node, name: "Declarations", owner: SymbolPropertyOwner.CurrentScope);
 			try
 			{
-				this.Visit(node.Name);
+				this.BeginSymbolDef(node, symbolType: typeof(Symbols.Lifeline), merge: true);
+				try
+				{
+					this.Visit(node.Name);
+				}
+				finally
+				{
+					this.EndSymbolDef();
+				}
 			}
 			finally
 			{
-				this.EndSymbolDef();
+				this.EndProperty();
 			}
 		}
 		

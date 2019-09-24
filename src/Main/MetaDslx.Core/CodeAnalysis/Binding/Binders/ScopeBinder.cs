@@ -11,23 +11,23 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class ScopeBinder : Binder
     {
-        private NamespaceOrTypeSymbol _container;
+        private DeclaredSymbol _declaredSymbol;
 
         public ScopeBinder(Binder next, LanguageSyntaxNode syntax)
             : base(next)
         {
         }
 
-        public NamespaceOrTypeSymbol Container
+        public DeclaredSymbol DeclaredSymbol
         {
             get
             {
-                if (_container == null)
+                if (_declaredSymbol == null)
                 {
-                    var container = GetContainerScope(this.Next);
-                    Interlocked.CompareExchange(ref _container, container, null);
+                    var container = this.GetDeclarationSymbol();
+                    Interlocked.CompareExchange(ref _declaredSymbol, container, null);
                 }
-                return _container;
+                return _declaredSymbol;
             }
         }
 
@@ -35,24 +35,24 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
             get
             {
-                var merged = this.Container as MergedNamespaceSymbol;
-                return ((object)merged != null) ? merged.GetConstituentForCompilation(this.Compilation) : this.Container;
+                var merged = this.DeclaredSymbol as MergedNamespaceSymbol;
+                return ((object)merged != null) ? merged.GetConstituentForCompilation(this.Compilation) : this.DeclaredSymbol as NamespaceOrTypeSymbol;
             }
         }
 
         private bool IsSubmission
         {
-            get { return (this.Container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)this.Container).IsSubmission; }
+            get { return (this.DeclaredSymbol?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)this.DeclaredSymbol).IsSubmission; }
         }
 
         private bool IsScript
         {
-            get { return (this.Container?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)this.Container).IsScript; }
+            get { return (this.DeclaredSymbol?.Kind == LanguageSymbolKind.NamedType) && ((NamedTypeSymbol)this.DeclaredSymbol).IsScript; }
         }
 
         public override bool IsAccessibleHelper(Symbol symbol, TypeSymbol accessThroughType, out bool failedThroughTypeCheck, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<TypeSymbol> basesBeingResolved)
         {
-            var type = this.Container as NamedTypeSymbol;
+            var type = this.DeclaredSymbol as NamedTypeSymbol;
             if ((object)type != null)
             {
                 return this.IsSymbolAccessibleConditional(symbol, type, accessThroughType, out failedThroughTypeCheck, ref useSiteDiagnostics);
@@ -68,42 +68,27 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
         {
             Debug.Assert(result.IsClear);
 
+            if (this.ContainingSymbol == null) return;
+
             if (IsSubmission)
             {
-                this.LookupMembersInternal(result, constraints.WithQualifier(this.Container));
+                this.LookupMembersInternal(result, constraints.WithQualifier(this.ContainingSymbol));
                 return;
             }
 
             // first lookup members of the namespace
-            if ((constraints.Options & LookupOptions.NamespaceAliasesOnly) == 0 && this.Container != null)
+            if ((constraints.Options & LookupOptions.NamespaceAliasesOnly) == 0)
             {
-                this.LookupMembersInternal(result, constraints.WithQualifier(this.Container));
+                this.LookupMembersInternal(result, constraints.WithQualifier(this.ContainingSymbol));
             }
         }
 
         protected override void AddLookupSymbolsInfoInSingleBinder(LookupSymbolsInfo result, LookupConstraints constraints)
         {
-            if (this.Container != null)
+            if (this.ContainingSymbol != null)
             {
-                this.AddMemberLookupSymbolsInfo(result, constraints.WithQualifier(this.Container));
+                this.AddMemberLookupSymbolsInfo(result, constraints.WithQualifier(this.ContainingSymbol));
             }
-        }
-
-        private static NamespaceOrTypeSymbol GetContainerScope(Binder binder)
-        {
-            /*var current = binder;
-            while (current != null)
-            {
-                if (current is SymbolDefBinder symbolDefBinder)
-                {
-                    var result = symbolDefBinder.LastDeclaredSymbol as NamespaceOrTypeSymbol;
-                    if (result != null) return result;
-                    else break;
-                }
-                current = current.Next;
-            }*/
-            if (binder.ParentDeclarationSymbol is NamespaceOrTypeSymbol namespaceOrTypeSymbol) return namespaceOrTypeSymbol;
-            else return (NamespaceOrTypeSymbol)binder.Compilation.CreateErrorNamespaceSymbol(binder.Compilation.GlobalNamespace, string.Empty);
         }
 
     }

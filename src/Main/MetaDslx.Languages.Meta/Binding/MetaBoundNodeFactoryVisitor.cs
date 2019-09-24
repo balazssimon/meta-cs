@@ -2598,7 +2598,6 @@ namespace MetaDslx.Languages.Meta.Binding
 				{
 					BoundNode resultNode;
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), symbolType: typeof(Symbols.MetaNullableType), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundScope(this.BoundTree, ImmutableArray.Create<object>(resultNode), syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -2683,7 +2682,6 @@ namespace MetaDslx.Languages.Meta.Binding
 				{
 					BoundNode resultNode;
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), symbolType: typeof(Symbols.MetaCollectionType), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundScope(this.BoundTree, ImmutableArray.Create<object>(resultNode), syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -2856,7 +2854,6 @@ namespace MetaDslx.Languages.Meta.Binding
 				{
 					BoundNode resultNode;
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), symbolType: typeof(Symbols.MetaOperation), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundScope(this.BoundTree, ImmutableArray.Create<object>(resultNode), syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -2888,13 +2885,7 @@ namespace MetaDslx.Languages.Meta.Binding
 						childBoundNodesForParent.Add(cachedBoundNode);
 						return cachedBoundNode;
 					}
-					else
-					{
-						childBoundNodesForParent.Add(node);
-						return null;
-					}
 				}
-				var childBoundNodes = ArrayBuilder<object>.GetInstance();
 				if (node.Parameter != null)
 				{
 					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.Parameter.Node))
@@ -2903,28 +2894,19 @@ namespace MetaDslx.Languages.Meta.Binding
 						{
 							if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))
 							{
-								this.Visit(item, childBoundNodes);
+								this.Visit(item, childBoundNodesForParent);
 							}
 						}
 					}
 				}
 				if (state == BoundNodeFactoryState.InParent)
 				{
-					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
-					if (childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode) return (BoundNode)childBoundNodes[0];
+					Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode);
+					if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode) return (BoundNode)childBoundNodesForParent[0];
 					else return null;
-				}
-				else if (state == BoundNodeFactoryState.InNode)
-				{
-					BoundNode resultNode;
-					resultNode = this.CreateBoundScope(this.BoundTree, childBoundNodes.ToImmutableAndFree(), syntax: node, hasErrors: false);
-					childBoundNodesForParent.Add(resultNode); 
-					return resultNode;
 				}
 				else
 				{
-					Debug.Assert(false);
-					childBoundNodesForParent.Add(node);
 					return null;
 				}
 			}

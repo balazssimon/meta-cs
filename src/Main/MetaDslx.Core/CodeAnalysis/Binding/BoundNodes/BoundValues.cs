@@ -19,7 +19,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public override void AddValues(ArrayBuilder<BoundValues> values, string currentProperty = null, string rootProperty = null)
         {
-            if (rootProperty == null || currentProperty == rootProperty)
+            if (rootProperty == null || currentProperty == rootProperty) // TODO:MetaDslx - make sure to add the correct values
             {
                 values.Add(this);
             }

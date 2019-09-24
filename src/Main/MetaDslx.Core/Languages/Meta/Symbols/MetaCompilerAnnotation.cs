@@ -357,7 +357,7 @@ namespace MetaDslx.Languages.Meta
                 }
                 if (this.HasProperty("owner"))
                 {
-                    result = result + ", owner: BoundPropertyOwner." + this.GetValue("owner");
+                    result = result + ", owner: SymbolPropertyOwner." + this.GetValue("owner");
                 }
                 if (this.HasProperty("ownerSymbolType"))
                 {

@@ -93,10 +93,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return GetTypeMembers(name).WhereAsArray(t => t.MetadataName == metadataName);
         }
 
-        public virtual MergedDeclaration GetMergedDeclaration()
-        {
-            return null;
-        }
+        public virtual MergedDeclaration MergedDeclaration => null;
 
         public virtual void CheckMembers(Dictionary<string, ImmutableArray<Symbol>> result, DiagnosticBag diagnostics)
         {

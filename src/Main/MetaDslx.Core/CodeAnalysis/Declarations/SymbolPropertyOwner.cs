@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Declarations
+namespace MetaDslx.CodeAnalysis
 {
     public enum SymbolPropertyOwner
     {
-        Current,
-        ParentSymbolDef,
-        ParentScope,
-        AncestorSymbolDef,
+        CurrentSymbol,
+        CurrentScope,
+        AncestorSymbol,
         AncestorScope
     }
 }

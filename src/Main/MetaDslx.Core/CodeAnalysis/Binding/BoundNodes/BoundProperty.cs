@@ -13,19 +13,27 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         private string _name;
         private bool _hasFixedValue;
         private object _value;
+        private SymbolPropertyOwner _owner;
+        private Type _ownerType;
         private ImmutableArray<BoundValues> _boundValues;
 
-        public BoundProperty(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, Optional<object> valueOpt, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundProperty(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, string name, Optional<object> valueOpt, SymbolPropertyOwner owner, Type ownerType, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
             _name = name;
             _hasFixedValue = valueOpt.HasValue;
             _value = valueOpt.HasValue ? valueOpt.Value : default;
+            _owner = owner;
+            _ownerType = ownerType;
         }
 
         public string Name => _name;
 
         public object Value => _value;
+
+        public SymbolPropertyOwner Owner => _owner;
+
+        public Type OwnerType => _ownerType;
 
         public bool HasFixedValue => _hasFixedValue;
 
@@ -52,9 +60,12 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public override void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null)
         {
-            if (property == null || property == _name)
+            if (_owner == SymbolPropertyOwner.CurrentSymbol)
             {
-                properties.Add(this);
+                if (property == null || property == _name)
+                {
+                    properties.Add(this);
+                }
             }
             foreach (var child in ChildBoundNodes)
             {
@@ -68,7 +79,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 values.Add(this);
             }
-            if (_hasFixedValue || currentProperty == rootProperty || currentProperty == null)
+            if (_hasFixedValue || currentProperty == rootProperty || rootProperty == null) // TODO:MetaDslx - make sure to add the correct values
             {
                 foreach (var child in ChildBoundNodes)
                 {

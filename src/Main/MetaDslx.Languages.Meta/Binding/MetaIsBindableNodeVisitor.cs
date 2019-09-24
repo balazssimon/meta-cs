@@ -1756,10 +1756,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			try
 			{
 				if (state == BoundNodeFactoryState.InChild) return false;
-				if (state == BoundNodeFactoryState.InNode) 
-				{
-					return true;
-				}
 				if (node.Parameter != null)
 				{
 					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.Parameter.Node))
