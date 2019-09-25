@@ -34,7 +34,9 @@ public partial class SequenceParser : Parser {
 		KTitle=1, KNote=2, KDestroy=3, KAlt=4, KElse=5, KEnd=6, KOpt=7, KLoop=8, 
 		KRef=9, LSingleLineComment=10, LCommentStart=11, TCreate=12, TSync=13, 
 		TAsync=14, TReturn=15, LUtf8Bom=16, LWhiteSpace=17, LCrLf=18, LLineEnd=19, 
-		LIdentifier=20, KEndNote=21, KEndRef=22, TColon=23, TMinus=24, ArrowEndR=25;
+		LIdentifier=20, NoteWhiteSpace=21, NoteLinesWhiteSpace=22, KEndNote=23, 
+		RefWhiteSpace=24, RefLinesWhiteSpace=25, KEndRef=26, RefEndWhiteSpace=27, 
+		LineEndWhiteSpace=28, ArrowEndWhiteSpace=29, TColon=30, TMinus=31, ArrowEndR=32;
 	public const int
 		RULE_main = 0, RULE_interaction = 1, RULE_line = 2, RULE_declaration = 3, 
 		RULE_title = 4, RULE_arrow = 5, RULE_destroy = 6, RULE_alt = 7, RULE_altFragment = 8, 
@@ -56,13 +58,16 @@ public partial class SequenceParser : Parser {
 	private static readonly string[] _LiteralNames = {
 		null, "'title'", "'note'", "'destroy'", "'alt'", "'else'", "'end'", "'opt'", 
 		"'loop'", "'ref'", null, null, null, "'->'", "'->>'", null, null, null, 
-		null, null, null, "'end note'", "'end ref'", "':'", null, "'r'"
+		null, null, null, null, null, "'end note'", null, null, "'end ref'", null, 
+		null, null, "':'", null, "'r'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "KTitle", "KNote", "KDestroy", "KAlt", "KElse", "KEnd", "KOpt", 
 		"KLoop", "KRef", "LSingleLineComment", "LCommentStart", "TCreate", "TSync", 
 		"TAsync", "TReturn", "LUtf8Bom", "LWhiteSpace", "LCrLf", "LLineEnd", "LIdentifier", 
-		"KEndNote", "KEndRef", "TColon", "TMinus", "ArrowEndR"
+		"NoteWhiteSpace", "NoteLinesWhiteSpace", "KEndNote", "RefWhiteSpace", 
+		"RefLinesWhiteSpace", "KEndRef", "RefEndWhiteSpace", "LineEndWhiteSpace", 
+		"ArrowEndWhiteSpace", "TColon", "TMinus", "ArrowEndR"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -124,6 +129,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_main; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterMain(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitMain(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMain(this);
@@ -165,6 +178,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_interaction; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterInteraction(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitInteraction(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitInteraction(this);
@@ -207,38 +228,26 @@ public partial class SequenceParser : Parser {
 	}
 
 	public partial class LineContext : ParserRuleContext {
+		public ITerminalNode LCrLf() { return GetToken(SequenceParser.LCrLf, 0); }
+		public DeclarationContext declaration() {
+			return GetRuleContext<DeclarationContext>(0);
+		}
 		public LineContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_line; } }
-	 
-		public LineContext() { }
-		public virtual void CopyFrom(LineContext context) {
-			base.CopyFrom(context);
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterLine(this);
 		}
-	}
-	public partial class TitleLineContext : LineContext {
-		public TitleContext title() {
-			return GetRuleContext<TitleContext>(0);
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitLine(this);
 		}
-		public ITerminalNode LCrLf() { return GetToken(SequenceParser.LCrLf, 0); }
-		public TitleLineContext(LineContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitTitleLine(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-	public partial class DeclarationLineContext : LineContext {
-		public ITerminalNode LCrLf() { return GetToken(SequenceParser.LCrLf, 0); }
-		public DeclarationContext declaration() {
-			return GetRuleContext<DeclarationContext>(0);
-		}
-		public DeclarationLineContext(LineContext context) { CopyFrom(context); }
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitDeclarationLine(this);
+			if (typedVisitor != null) return typedVisitor.VisitLine(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -249,42 +258,18 @@ public partial class SequenceParser : Parser {
 		EnterRule(_localctx, 4, RULE_line);
 		int _la;
 		try {
-			State = 80;
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 74;
 			_errHandler.Sync(this);
-			switch (_input.La(1)) {
-			case KTitle:
-				_localctx = new TitleLineContext(_localctx);
-				EnterOuterAlt(_localctx, 1);
+			_la = _input.La(1);
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KTitle) | (1L << KNote) | (1L << KDestroy) | (1L << KAlt) | (1L << KOpt) | (1L << KLoop) | (1L << KRef) | (1L << LIdentifier))) != 0)) {
 				{
-				State = 73; title();
-				State = 74; Match(LCrLf);
+				State = 73; declaration();
 				}
-				break;
-			case KNote:
-			case KDestroy:
-			case KAlt:
-			case KOpt:
-			case KLoop:
-			case KRef:
-			case LCrLf:
-			case LIdentifier:
-				_localctx = new DeclarationLineContext(_localctx);
-				EnterOuterAlt(_localctx, 2);
-				{
-				State = 77;
-				_errHandler.Sync(this);
-				_la = _input.La(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KNote) | (1L << KDestroy) | (1L << KAlt) | (1L << KOpt) | (1L << KLoop) | (1L << KRef) | (1L << LIdentifier))) != 0)) {
-					{
-					State = 76; declaration();
-					}
-				}
+			}
 
-				State = 79; Match(LCrLf);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+			State = 76; Match(LCrLf);
 			}
 		}
 		catch (RecognitionException re) {
@@ -299,6 +284,9 @@ public partial class SequenceParser : Parser {
 	}
 
 	public partial class DeclarationContext : ParserRuleContext {
+		public TitleContext title() {
+			return GetRuleContext<TitleContext>(0);
+		}
 		public DestroyContext destroy() {
 			return GetRuleContext<DestroyContext>(0);
 		}
@@ -325,6 +313,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterDeclaration(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitDeclaration(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDeclaration(this);
@@ -337,55 +333,62 @@ public partial class SequenceParser : Parser {
 		DeclarationContext _localctx = new DeclarationContext(_ctx, State);
 		EnterRule(_localctx, 6, RULE_declaration);
 		try {
-			State = 89;
+			State = 86;
 			_errHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(_input,3,_ctx) ) {
+			switch ( Interpreter.AdaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 82; destroy();
+				State = 78; title();
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 83; arrow();
+				State = 79; destroy();
 				}
 				break;
 
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 84; alt();
+				State = 80; arrow();
 				}
 				break;
 
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 85; opt();
+				State = 81; alt();
 				}
 				break;
 
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 86; loop();
+				State = 82; opt();
 				}
 				break;
 
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 87; @ref();
+				State = 83; loop();
 				}
 				break;
 
 			case 7:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 88; note();
+				State = 84; @ref();
+				}
+				break;
+
+			case 8:
+				EnterOuterAlt(_localctx, 8);
+				{
+				State = 85; note();
 				}
 				break;
 			}
@@ -403,14 +406,22 @@ public partial class SequenceParser : Parser {
 
 	public partial class TitleContext : ParserRuleContext {
 		public ITerminalNode KTitle() { return GetToken(SequenceParser.KTitle, 0); }
-		public NameContext name() {
-			return GetRuleContext<NameContext>(0);
+		public TextContext text() {
+			return GetRuleContext<TextContext>(0);
 		}
 		public TitleContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_title; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterTitle(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitTitle(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitTitle(this);
@@ -426,13 +437,13 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 91; Match(KTitle);
-			State = 93;
+			State = 88; Match(KTitle);
+			State = 90;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 92; name();
+				State = 89; text();
 				}
 			}
 
@@ -471,6 +482,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrow; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterArrow(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitArrow(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrow(this);
@@ -486,16 +505,16 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 95; _localctx.source = lifeLineName();
-			State = 96; _localctx.type = arrowType();
-			State = 97; _localctx.target = lifeLineName();
-			State = 98; Match(TColon);
-			State = 100;
+			State = 92; _localctx.source = lifeLineName();
+			State = 93; _localctx.type = arrowType();
+			State = 94; _localctx.target = lifeLineName();
+			State = 95; Match(TColon);
+			State = 97;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 99; text();
+				State = 96; text();
 				}
 			}
 
@@ -522,6 +541,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_destroy; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterDestroy(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitDestroy(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitDestroy(this);
@@ -537,13 +564,13 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 102; Match(KDestroy);
-			State = 104;
+			State = 99; Match(KDestroy);
+			State = 101;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 103; lifeLineName();
+				State = 100; lifeLineName();
 				}
 			}
 
@@ -578,6 +605,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_alt; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterAlt(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitAlt(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAlt(this);
@@ -593,21 +628,21 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 106; altFragment();
-			State = 110;
+			State = 103; altFragment();
+			State = 107;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==KElse) {
 				{
 				{
-				State = 107; elseFragment();
+				State = 104; elseFragment();
 				}
 				}
-				State = 112;
+				State = 109;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
-			State = 113; end();
+			State = 110; end();
 			}
 		}
 		catch (RecognitionException re) {
@@ -636,6 +671,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_altFragment; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterAltFragment(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitAltFragment(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitAltFragment(this);
@@ -651,18 +694,18 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 115; Match(KAlt);
-			State = 117;
+			State = 112; Match(KAlt);
+			State = 114;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 116; _localctx.condition = text();
+				State = 113; _localctx.condition = text();
 				}
 			}
 
-			State = 119; Match(LCrLf);
-			State = 120; fragmentBody();
+			State = 116; Match(LCrLf);
+			State = 117; fragmentBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -691,6 +734,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_elseFragment; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterElseFragment(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitElseFragment(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitElseFragment(this);
@@ -706,18 +757,18 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 122; Match(KElse);
-			State = 124;
+			State = 119; Match(KElse);
+			State = 121;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 123; _localctx.condition = text();
+				State = 120; _localctx.condition = text();
 				}
 			}
 
-			State = 126; Match(LCrLf);
-			State = 127; fragmentBody();
+			State = 123; Match(LCrLf);
+			State = 124; fragmentBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -743,6 +794,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_loop; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterLoop(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitLoop(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoop(this);
@@ -757,8 +816,8 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 129; loopFragment();
-			State = 130; end();
+			State = 126; loopFragment();
+			State = 127; end();
 			}
 		}
 		catch (RecognitionException re) {
@@ -787,6 +846,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_loopFragment; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterLoopFragment(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitLoopFragment(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLoopFragment(this);
@@ -802,18 +869,18 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 132; Match(KLoop);
-			State = 134;
+			State = 129; Match(KLoop);
+			State = 131;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 133; _localctx.condition = text();
+				State = 130; _localctx.condition = text();
 				}
 			}
 
-			State = 136; Match(LCrLf);
-			State = 137; fragmentBody();
+			State = 133; Match(LCrLf);
+			State = 134; fragmentBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -839,6 +906,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_opt; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterOpt(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitOpt(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitOpt(this);
@@ -853,8 +928,8 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 139; optFragment();
-			State = 140; end();
+			State = 136; optFragment();
+			State = 137; end();
 			}
 		}
 		catch (RecognitionException re) {
@@ -883,6 +958,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_optFragment; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterOptFragment(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitOptFragment(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitOptFragment(this);
@@ -898,18 +981,18 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 142; Match(KOpt);
-			State = 144;
+			State = 139; Match(KOpt);
+			State = 141;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 143; _localctx.condition = text();
+				State = 140; _localctx.condition = text();
 				}
 			}
 
-			State = 146; Match(LCrLf);
-			State = 147; fragmentBody();
+			State = 143; Match(LCrLf);
+			State = 144; fragmentBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -935,6 +1018,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_ref; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterRef(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitRef(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRef(this);
@@ -947,19 +1038,19 @@ public partial class SequenceParser : Parser {
 		RefContext _localctx = new RefContext(_ctx, State);
 		EnterRule(_localctx, 28, RULE_ref);
 		try {
-			State = 151;
+			State = 148;
 			_errHandler.Sync(this);
 			switch (_input.La(1)) {
 			case KRef:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 149; simpleRefFragment();
+				State = 146; simpleRefFragment();
 				}
 				break;
 			case LIdentifier:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 150; messageRefFragment();
+				State = 147; messageRefFragment();
 				}
 				break;
 			default:
@@ -998,6 +1089,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_simpleRefFragment; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterSimpleRefFragment(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitSimpleRefFragment(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSimpleRefFragment(this);
@@ -1013,29 +1112,29 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 153; Match(KRef);
-			State = 157;
+			State = 150; Match(KRef);
+			State = 154;
 			_errHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(_input,13,_ctx) ) {
+			switch ( Interpreter.AdaptivePredict(_input,12,_ctx) ) {
 			case 1:
 				{
-				State = 154; _localctx.over = text();
-				State = 155; Match(TColon);
+				State = 151; _localctx.over = text();
+				State = 152; Match(TColon);
 				}
 				break;
 			}
-			State = 160;
+			State = 157;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 159; _localctx.refText = text();
+				State = 156; _localctx.refText = text();
 				}
 			}
 
-			State = 162; Match(LCrLf);
-			State = 163; simpleBody();
-			State = 164; Match(KEndRef);
+			State = 159; Match(LCrLf);
+			State = 160; simpleBody();
+			State = 161; Match(KEndRef);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1064,6 +1163,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_messageRefFragment; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterMessageRefFragment(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitMessageRefFragment(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMessageRefFragment(this);
@@ -1078,9 +1185,9 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 166; refInput();
-			State = 167; simpleBody();
-			State = 168; refOutput();
+			State = 163; refInput();
+			State = 164; simpleBody();
+			State = 165; refOutput();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1119,6 +1226,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_refInput; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterRefInput(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitRefInput(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRefInput(this);
@@ -1134,29 +1249,29 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 170; _localctx.source = lifeLineName();
-			State = 171; _localctx.sourceType = arrowType();
-			State = 172; Match(KRef);
-			State = 176;
+			State = 167; _localctx.source = lifeLineName();
+			State = 168; _localctx.sourceType = arrowType();
+			State = 169; Match(KRef);
+			State = 173;
 			_errHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(_input,15,_ctx) ) {
+			switch ( Interpreter.AdaptivePredict(_input,14,_ctx) ) {
 			case 1:
 				{
-				State = 173; _localctx.over = text();
-				State = 174; Match(TColon);
+				State = 170; _localctx.over = text();
+				State = 171; Match(TColon);
 				}
 				break;
 			}
-			State = 179;
+			State = 176;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 178; _localctx.message = text();
+				State = 175; _localctx.message = text();
 				}
 			}
 
-			State = 181; Match(LCrLf);
+			State = 178; Match(LCrLf);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1194,6 +1309,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_refOutput; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterRefOutput(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitRefOutput(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitRefOutput(this);
@@ -1209,25 +1332,25 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 183; Match(KEndRef);
-			State = 185;
+			State = 180; Match(KEndRef);
+			State = 182;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 184; _localctx.ignored = text();
+				State = 181; _localctx.ignored = text();
 				}
 			}
 
-			State = 187; _localctx.targetType = arrowType();
-			State = 188; _localctx.target = lifeLineName();
-			State = 189; Match(TColon);
-			State = 191;
+			State = 184; _localctx.targetType = arrowType();
+			State = 185; _localctx.target = lifeLineName();
+			State = 186; Match(TColon);
+			State = 188;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 190; _localctx.message = text();
+				State = 187; _localctx.message = text();
 				}
 			}
 
@@ -1256,6 +1379,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_fragmentBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterFragmentBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitFragmentBody(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitFragmentBody(this);
@@ -1271,16 +1402,16 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 196;
+			State = 193;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KTitle) | (1L << KNote) | (1L << KDestroy) | (1L << KAlt) | (1L << KOpt) | (1L << KLoop) | (1L << KRef) | (1L << LCrLf) | (1L << LIdentifier))) != 0)) {
 				{
 				{
-				State = 193; line();
+				State = 190; line();
 				}
 				}
-				State = 198;
+				State = 195;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -1307,6 +1438,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_end; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterEnd(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitEnd(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitEnd(this);
@@ -1322,13 +1461,13 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 199; Match(KEnd);
-			State = 201;
+			State = 196; Match(KEnd);
+			State = 198;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			if (_la==LIdentifier) {
 				{
-				State = 200; text();
+				State = 197; text();
 				}
 			}
 
@@ -1357,6 +1496,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_note; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterNote(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitNote(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitNote(this);
@@ -1369,20 +1516,20 @@ public partial class SequenceParser : Parser {
 		NoteContext _localctx = new NoteContext(_ctx, State);
 		EnterRule(_localctx, 42, RULE_note);
 		try {
-			State = 205;
+			State = 202;
 			_errHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(_input,21,_ctx) ) {
+			switch ( Interpreter.AdaptivePredict(_input,20,_ctx) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 203; singleLineNote();
+				State = 200; singleLineNote();
 				}
 				break;
 
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 204; multiLineNote();
+				State = 201; multiLineNote();
 				}
 				break;
 			}
@@ -1414,6 +1561,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_singleLineNote; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterSingleLineNote(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitSingleLineNote(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSingleLineNote(this);
@@ -1428,10 +1583,10 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 207; Match(KNote);
-			State = 208; _localctx.position = text();
-			State = 209; Match(TColon);
-			State = 210; _localctx.noteText = text();
+			State = 204; Match(KNote);
+			State = 205; _localctx.position = text();
+			State = 206; Match(TColon);
+			State = 207; _localctx.noteText = text();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1456,6 +1611,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_multiLineNote; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterMultiLineNote(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitMultiLineNote(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMultiLineNote(this);
@@ -1470,9 +1633,9 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 212; Match(KNote);
-			State = 213; simpleBody();
-			State = 214; Match(KEndNote);
+			State = 209; Match(KNote);
+			State = 210; simpleBody();
+			State = 211; Match(KEndNote);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1498,6 +1661,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_simpleBody; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterSimpleBody(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitSimpleBody(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSimpleBody(this);
@@ -1513,16 +1684,16 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 219;
+			State = 216;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			while (_la==LIdentifier) {
 				{
 				{
-				State = 216; simpleLine();
+				State = 213; simpleLine();
 				}
 				}
-				State = 221;
+				State = 218;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			}
@@ -1549,6 +1720,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_simpleLine; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterSimpleLine(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitSimpleLine(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitSimpleLine(this);
@@ -1563,8 +1742,8 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 222; text();
-			State = 223; Match(LCrLf);
+			State = 219; text();
+			State = 220; Match(LCrLf);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1588,6 +1767,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_arrowType; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterArrowType(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitArrowType(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitArrowType(this);
@@ -1603,7 +1790,7 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 225;
+			State = 222;
 			_la = _input.La(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TCreate) | (1L << TSync) | (1L << TAsync) | (1L << TReturn))) != 0)) ) {
 			_errHandler.RecoverInline(this);
@@ -1637,6 +1824,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_lifeLineName; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterLifeLineName(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitLifeLineName(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLifeLineName(this);
@@ -1651,7 +1846,7 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 227; name();
+			State = 224; name();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1674,6 +1869,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_name; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterName(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitName(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitName(this);
@@ -1688,7 +1891,7 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 229; identifier();
+			State = 226; identifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1711,6 +1914,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_identifier; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterIdentifier(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitIdentifier(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifier(this);
@@ -1725,7 +1936,7 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 231; text();
+			State = 228; text();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1751,6 +1962,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_text; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterText(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitText(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitText(this);
@@ -1766,16 +1985,16 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 234;
+			State = 231;
 			_errHandler.Sync(this);
 			_la = _input.La(1);
 			do {
 				{
 				{
-				State = 233; identifierPart();
+				State = 230; identifierPart();
 				}
 				}
-				State = 236;
+				State = 233;
 				_errHandler.Sync(this);
 				_la = _input.La(1);
 			} while ( _la==LIdentifier );
@@ -1799,6 +2018,14 @@ public partial class SequenceParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_identifierPart; } }
+		public override void EnterRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.EnterIdentifierPart(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ISequenceParserListener typedListener = listener as ISequenceParserListener;
+			if (typedListener != null) typedListener.ExitIdentifierPart(this);
+		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ISequenceParserVisitor<TResult> typedVisitor = visitor as ISequenceParserVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitIdentifierPart(this);
@@ -1813,7 +2040,7 @@ public partial class SequenceParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 238; Match(LIdentifier);
+			State = 235; Match(LIdentifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1828,93 +2055,91 @@ public partial class SequenceParser : Parser {
 	}
 
 	public static readonly string _serializedATN =
-		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\x1B\xF3\x4\x2\t"+
-		"\x2\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t"+
-		"\t\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10"+
-		"\t\x10\x4\x11\t\x11\x4\x12\t\x12\x4\x13\t\x13\x4\x14\t\x14\x4\x15\t\x15"+
+		"\x3\xAF6F\x8320\x479D\xB75C\x4880\x1605\x191C\xAB37\x3\"\xF0\x4\x2\t\x2"+
+		"\x4\x3\t\x3\x4\x4\t\x4\x4\x5\t\x5\x4\x6\t\x6\x4\a\t\a\x4\b\t\b\x4\t\t"+
+		"\t\x4\n\t\n\x4\v\t\v\x4\f\t\f\x4\r\t\r\x4\xE\t\xE\x4\xF\t\xF\x4\x10\t"+
+		"\x10\x4\x11\t\x11\x4\x12\t\x12\x4\x13\t\x13\x4\x14\t\x14\x4\x15\t\x15"+
 		"\x4\x16\t\x16\x4\x17\t\x17\x4\x18\t\x18\x4\x19\t\x19\x4\x1A\t\x1A\x4\x1B"+
 		"\t\x1B\x4\x1C\t\x1C\x4\x1D\t\x1D\x4\x1E\t\x1E\x4\x1F\t\x1F\x4 \t \x4!"+
-		"\t!\x3\x2\x3\x2\x3\x2\x3\x3\a\x3G\n\x3\f\x3\xE\x3J\v\x3\x3\x4\x3\x4\x3"+
-		"\x4\x3\x4\x5\x4P\n\x4\x3\x4\x5\x4S\n\x4\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5"+
-		"\x3\x5\x3\x5\x5\x5\\\n\x5\x3\x6\x3\x6\x5\x6`\n\x6\x3\a\x3\a\x3\a\x3\a"+
-		"\x3\a\x5\ag\n\a\x3\b\x3\b\x5\bk\n\b\x3\t\x3\t\a\to\n\t\f\t\xE\tr\v\t\x3"+
-		"\t\x3\t\x3\n\x3\n\x5\nx\n\n\x3\n\x3\n\x3\n\x3\v\x3\v\x5\v\x7F\n\v\x3\v"+
-		"\x3\v\x3\v\x3\f\x3\f\x3\f\x3\r\x3\r\x5\r\x89\n\r\x3\r\x3\r\x3\r\x3\xE"+
-		"\x3\xE\x3\xE\x3\xF\x3\xF\x5\xF\x93\n\xF\x3\xF\x3\xF\x3\xF\x3\x10\x3\x10"+
-		"\x5\x10\x9A\n\x10\x3\x11\x3\x11\x3\x11\x3\x11\x5\x11\xA0\n\x11\x3\x11"+
-		"\x5\x11\xA3\n\x11\x3\x11\x3\x11\x3\x11\x3\x11\x3\x12\x3\x12\x3\x12\x3"+
-		"\x12\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x3\x13\x5\x13\xB3\n\x13\x3\x13"+
-		"\x5\x13\xB6\n\x13\x3\x13\x3\x13\x3\x14\x3\x14\x5\x14\xBC\n\x14\x3\x14"+
-		"\x3\x14\x3\x14\x3\x14\x5\x14\xC2\n\x14\x3\x15\a\x15\xC5\n\x15\f\x15\xE"+
-		"\x15\xC8\v\x15\x3\x16\x3\x16\x5\x16\xCC\n\x16\x3\x17\x3\x17\x5\x17\xD0"+
-		"\n\x17\x3\x18\x3\x18\x3\x18\x3\x18\x3\x18\x3\x19\x3\x19\x3\x19\x3\x19"+
-		"\x3\x1A\a\x1A\xDC\n\x1A\f\x1A\xE\x1A\xDF\v\x1A\x3\x1B\x3\x1B\x3\x1B\x3"+
-		"\x1C\x3\x1C\x3\x1D\x3\x1D\x3\x1E\x3\x1E\x3\x1F\x3\x1F\x3 \x6 \xED\n \r"+
-		" \xE \xEE\x3!\x3!\x3!\x2\x2\x2\"\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\xE\x2"+
-		"\x10\x2\x12\x2\x14\x2\x16\x2\x18\x2\x1A\x2\x1C\x2\x1E\x2 \x2\"\x2$\x2"+
-		"&\x2(\x2*\x2,\x2.\x2\x30\x2\x32\x2\x34\x2\x36\x2\x38\x2:\x2<\x2>\x2@\x2"+
-		"\x2\x3\x3\x2\xE\x11\xEF\x2\x42\x3\x2\x2\x2\x4H\x3\x2\x2\x2\x6R\x3\x2\x2"+
-		"\x2\b[\x3\x2\x2\x2\n]\x3\x2\x2\x2\f\x61\x3\x2\x2\x2\xEh\x3\x2\x2\x2\x10"+
-		"l\x3\x2\x2\x2\x12u\x3\x2\x2\x2\x14|\x3\x2\x2\x2\x16\x83\x3\x2\x2\x2\x18"+
-		"\x86\x3\x2\x2\x2\x1A\x8D\x3\x2\x2\x2\x1C\x90\x3\x2\x2\x2\x1E\x99\x3\x2"+
-		"\x2\x2 \x9B\x3\x2\x2\x2\"\xA8\x3\x2\x2\x2$\xAC\x3\x2\x2\x2&\xB9\x3\x2"+
-		"\x2\x2(\xC6\x3\x2\x2\x2*\xC9\x3\x2\x2\x2,\xCF\x3\x2\x2\x2.\xD1\x3\x2\x2"+
-		"\x2\x30\xD6\x3\x2\x2\x2\x32\xDD\x3\x2\x2\x2\x34\xE0\x3\x2\x2\x2\x36\xE3"+
-		"\x3\x2\x2\x2\x38\xE5\x3\x2\x2\x2:\xE7\x3\x2\x2\x2<\xE9\x3\x2\x2\x2>\xEC"+
-		"\x3\x2\x2\x2@\xF0\x3\x2\x2\x2\x42\x43\x5\x4\x3\x2\x43\x44\a\x2\x2\x3\x44"+
-		"\x3\x3\x2\x2\x2\x45G\x5\x6\x4\x2\x46\x45\x3\x2\x2\x2GJ\x3\x2\x2\x2H\x46"+
-		"\x3\x2\x2\x2HI\x3\x2\x2\x2I\x5\x3\x2\x2\x2JH\x3\x2\x2\x2KL\x5\n\x6\x2"+
-		"LM\a\x14\x2\x2MS\x3\x2\x2\x2NP\x5\b\x5\x2ON\x3\x2\x2\x2OP\x3\x2\x2\x2"+
-		"PQ\x3\x2\x2\x2QS\a\x14\x2\x2RK\x3\x2\x2\x2RO\x3\x2\x2\x2S\a\x3\x2\x2\x2"+
-		"T\\\x5\xE\b\x2U\\\x5\f\a\x2V\\\x5\x10\t\x2W\\\x5\x1A\xE\x2X\\\x5\x16\f"+
-		"\x2Y\\\x5\x1E\x10\x2Z\\\x5,\x17\x2[T\x3\x2\x2\x2[U\x3\x2\x2\x2[V\x3\x2"+
-		"\x2\x2[W\x3\x2\x2\x2[X\x3\x2\x2\x2[Y\x3\x2\x2\x2[Z\x3\x2\x2\x2\\\t\x3"+
-		"\x2\x2\x2]_\a\x3\x2\x2^`\x5:\x1E\x2_^\x3\x2\x2\x2_`\x3\x2\x2\x2`\v\x3"+
-		"\x2\x2\x2\x61\x62\x5\x38\x1D\x2\x62\x63\x5\x36\x1C\x2\x63\x64\x5\x38\x1D"+
-		"\x2\x64\x66\a\x19\x2\x2\x65g\x5> \x2\x66\x65\x3\x2\x2\x2\x66g\x3\x2\x2"+
-		"\x2g\r\x3\x2\x2\x2hj\a\x5\x2\x2ik\x5\x38\x1D\x2ji\x3\x2\x2\x2jk\x3\x2"+
-		"\x2\x2k\xF\x3\x2\x2\x2lp\x5\x12\n\x2mo\x5\x14\v\x2nm\x3\x2\x2\x2or\x3"+
-		"\x2\x2\x2pn\x3\x2\x2\x2pq\x3\x2\x2\x2qs\x3\x2\x2\x2rp\x3\x2\x2\x2st\x5"+
-		"*\x16\x2t\x11\x3\x2\x2\x2uw\a\x6\x2\x2vx\x5> \x2wv\x3\x2\x2\x2wx\x3\x2"+
-		"\x2\x2xy\x3\x2\x2\x2yz\a\x14\x2\x2z{\x5(\x15\x2{\x13\x3\x2\x2\x2|~\a\a"+
-		"\x2\x2}\x7F\x5> \x2~}\x3\x2\x2\x2~\x7F\x3\x2\x2\x2\x7F\x80\x3\x2\x2\x2"+
-		"\x80\x81\a\x14\x2\x2\x81\x82\x5(\x15\x2\x82\x15\x3\x2\x2\x2\x83\x84\x5"+
-		"\x18\r\x2\x84\x85\x5*\x16\x2\x85\x17\x3\x2\x2\x2\x86\x88\a\n\x2\x2\x87"+
-		"\x89\x5> \x2\x88\x87\x3\x2\x2\x2\x88\x89\x3\x2\x2\x2\x89\x8A\x3\x2\x2"+
-		"\x2\x8A\x8B\a\x14\x2\x2\x8B\x8C\x5(\x15\x2\x8C\x19\x3\x2\x2\x2\x8D\x8E"+
-		"\x5\x1C\xF\x2\x8E\x8F\x5*\x16\x2\x8F\x1B\x3\x2\x2\x2\x90\x92\a\t\x2\x2"+
-		"\x91\x93\x5> \x2\x92\x91\x3\x2\x2\x2\x92\x93\x3\x2\x2\x2\x93\x94\x3\x2"+
-		"\x2\x2\x94\x95\a\x14\x2\x2\x95\x96\x5(\x15\x2\x96\x1D\x3\x2\x2\x2\x97"+
-		"\x9A\x5 \x11\x2\x98\x9A\x5\"\x12\x2\x99\x97\x3\x2\x2\x2\x99\x98\x3\x2"+
-		"\x2\x2\x9A\x1F\x3\x2\x2\x2\x9B\x9F\a\v\x2\x2\x9C\x9D\x5> \x2\x9D\x9E\a"+
-		"\x19\x2\x2\x9E\xA0\x3\x2\x2\x2\x9F\x9C\x3\x2\x2\x2\x9F\xA0\x3\x2\x2\x2"+
-		"\xA0\xA2\x3\x2\x2\x2\xA1\xA3\x5> \x2\xA2\xA1\x3\x2\x2\x2\xA2\xA3\x3\x2"+
-		"\x2\x2\xA3\xA4\x3\x2\x2\x2\xA4\xA5\a\x14\x2\x2\xA5\xA6\x5\x32\x1A\x2\xA6"+
-		"\xA7\a\x18\x2\x2\xA7!\x3\x2\x2\x2\xA8\xA9\x5$\x13\x2\xA9\xAA\x5\x32\x1A"+
-		"\x2\xAA\xAB\x5&\x14\x2\xAB#\x3\x2\x2\x2\xAC\xAD\x5\x38\x1D\x2\xAD\xAE"+
-		"\x5\x36\x1C\x2\xAE\xB2\a\v\x2\x2\xAF\xB0\x5> \x2\xB0\xB1\a\x19\x2\x2\xB1"+
-		"\xB3\x3\x2\x2\x2\xB2\xAF\x3\x2\x2\x2\xB2\xB3\x3\x2\x2\x2\xB3\xB5\x3\x2"+
-		"\x2\x2\xB4\xB6\x5> \x2\xB5\xB4\x3\x2\x2\x2\xB5\xB6\x3\x2\x2\x2\xB6\xB7"+
-		"\x3\x2\x2\x2\xB7\xB8\a\x14\x2\x2\xB8%\x3\x2\x2\x2\xB9\xBB\a\x18\x2\x2"+
-		"\xBA\xBC\x5> \x2\xBB\xBA\x3\x2\x2\x2\xBB\xBC\x3\x2\x2\x2\xBC\xBD\x3\x2"+
-		"\x2\x2\xBD\xBE\x5\x36\x1C\x2\xBE\xBF\x5\x38\x1D\x2\xBF\xC1\a\x19\x2\x2"+
-		"\xC0\xC2\x5> \x2\xC1\xC0\x3\x2\x2\x2\xC1\xC2\x3\x2\x2\x2\xC2\'\x3\x2\x2"+
-		"\x2\xC3\xC5\x5\x6\x4\x2\xC4\xC3\x3\x2\x2\x2\xC5\xC8\x3\x2\x2\x2\xC6\xC4"+
-		"\x3\x2\x2\x2\xC6\xC7\x3\x2\x2\x2\xC7)\x3\x2\x2\x2\xC8\xC6\x3\x2\x2\x2"+
-		"\xC9\xCB\a\b\x2\x2\xCA\xCC\x5> \x2\xCB\xCA\x3\x2\x2\x2\xCB\xCC\x3\x2\x2"+
-		"\x2\xCC+\x3\x2\x2\x2\xCD\xD0\x5.\x18\x2\xCE\xD0\x5\x30\x19\x2\xCF\xCD"+
-		"\x3\x2\x2\x2\xCF\xCE\x3\x2\x2\x2\xD0-\x3\x2\x2\x2\xD1\xD2\a\x4\x2\x2\xD2"+
-		"\xD3\x5> \x2\xD3\xD4\a\x19\x2\x2\xD4\xD5\x5> \x2\xD5/\x3\x2\x2\x2\xD6"+
-		"\xD7\a\x4\x2\x2\xD7\xD8\x5\x32\x1A\x2\xD8\xD9\a\x17\x2\x2\xD9\x31\x3\x2"+
-		"\x2\x2\xDA\xDC\x5\x34\x1B\x2\xDB\xDA\x3\x2\x2\x2\xDC\xDF\x3\x2\x2\x2\xDD"+
-		"\xDB\x3\x2\x2\x2\xDD\xDE\x3\x2\x2\x2\xDE\x33\x3\x2\x2\x2\xDF\xDD\x3\x2"+
-		"\x2\x2\xE0\xE1\x5> \x2\xE1\xE2\a\x14\x2\x2\xE2\x35\x3\x2\x2\x2\xE3\xE4"+
-		"\t\x2\x2\x2\xE4\x37\x3\x2\x2\x2\xE5\xE6\x5:\x1E\x2\xE6\x39\x3\x2\x2\x2"+
-		"\xE7\xE8\x5<\x1F\x2\xE8;\x3\x2\x2\x2\xE9\xEA\x5> \x2\xEA=\x3\x2\x2\x2"+
-		"\xEB\xED\x5@!\x2\xEC\xEB\x3\x2\x2\x2\xED\xEE\x3\x2\x2\x2\xEE\xEC\x3\x2"+
-		"\x2\x2\xEE\xEF\x3\x2\x2\x2\xEF?\x3\x2\x2\x2\xF0\xF1\a\x16\x2\x2\xF1\x41"+
-		"\x3\x2\x2\x2\x1AHOR[_\x66jpw~\x88\x92\x99\x9F\xA2\xB2\xB5\xBB\xC1\xC6"+
-		"\xCB\xCF\xDD\xEE";
+		"\t!\x3\x2\x3\x2\x3\x2\x3\x3\a\x3G\n\x3\f\x3\xE\x3J\v\x3\x3\x4\x5\x4M\n"+
+		"\x4\x3\x4\x3\x4\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x3\x5\x5\x5"+
+		"Y\n\x5\x3\x6\x3\x6\x5\x6]\n\x6\x3\a\x3\a\x3\a\x3\a\x3\a\x5\a\x64\n\a\x3"+
+		"\b\x3\b\x5\bh\n\b\x3\t\x3\t\a\tl\n\t\f\t\xE\to\v\t\x3\t\x3\t\x3\n\x3\n"+
+		"\x5\nu\n\n\x3\n\x3\n\x3\n\x3\v\x3\v\x5\v|\n\v\x3\v\x3\v\x3\v\x3\f\x3\f"+
+		"\x3\f\x3\r\x3\r\x5\r\x86\n\r\x3\r\x3\r\x3\r\x3\xE\x3\xE\x3\xE\x3\xF\x3"+
+		"\xF\x5\xF\x90\n\xF\x3\xF\x3\xF\x3\xF\x3\x10\x3\x10\x5\x10\x97\n\x10\x3"+
+		"\x11\x3\x11\x3\x11\x3\x11\x5\x11\x9D\n\x11\x3\x11\x5\x11\xA0\n\x11\x3"+
+		"\x11\x3\x11\x3\x11\x3\x11\x3\x12\x3\x12\x3\x12\x3\x12\x3\x13\x3\x13\x3"+
+		"\x13\x3\x13\x3\x13\x3\x13\x5\x13\xB0\n\x13\x3\x13\x5\x13\xB3\n\x13\x3"+
+		"\x13\x3\x13\x3\x14\x3\x14\x5\x14\xB9\n\x14\x3\x14\x3\x14\x3\x14\x3\x14"+
+		"\x5\x14\xBF\n\x14\x3\x15\a\x15\xC2\n\x15\f\x15\xE\x15\xC5\v\x15\x3\x16"+
+		"\x3\x16\x5\x16\xC9\n\x16\x3\x17\x3\x17\x5\x17\xCD\n\x17\x3\x18\x3\x18"+
+		"\x3\x18\x3\x18\x3\x18\x3\x19\x3\x19\x3\x19\x3\x19\x3\x1A\a\x1A\xD9\n\x1A"+
+		"\f\x1A\xE\x1A\xDC\v\x1A\x3\x1B\x3\x1B\x3\x1B\x3\x1C\x3\x1C\x3\x1D\x3\x1D"+
+		"\x3\x1E\x3\x1E\x3\x1F\x3\x1F\x3 \x6 \xEA\n \r \xE \xEB\x3!\x3!\x3!\x2"+
+		"\x2\x2\"\x2\x2\x4\x2\x6\x2\b\x2\n\x2\f\x2\xE\x2\x10\x2\x12\x2\x14\x2\x16"+
+		"\x2\x18\x2\x1A\x2\x1C\x2\x1E\x2 \x2\"\x2$\x2&\x2(\x2*\x2,\x2.\x2\x30\x2"+
+		"\x32\x2\x34\x2\x36\x2\x38\x2:\x2<\x2>\x2@\x2\x2\x3\x3\x2\xE\x11\xEC\x2"+
+		"\x42\x3\x2\x2\x2\x4H\x3\x2\x2\x2\x6L\x3\x2\x2\x2\bX\x3\x2\x2\x2\nZ\x3"+
+		"\x2\x2\x2\f^\x3\x2\x2\x2\xE\x65\x3\x2\x2\x2\x10i\x3\x2\x2\x2\x12r\x3\x2"+
+		"\x2\x2\x14y\x3\x2\x2\x2\x16\x80\x3\x2\x2\x2\x18\x83\x3\x2\x2\x2\x1A\x8A"+
+		"\x3\x2\x2\x2\x1C\x8D\x3\x2\x2\x2\x1E\x96\x3\x2\x2\x2 \x98\x3\x2\x2\x2"+
+		"\"\xA5\x3\x2\x2\x2$\xA9\x3\x2\x2\x2&\xB6\x3\x2\x2\x2(\xC3\x3\x2\x2\x2"+
+		"*\xC6\x3\x2\x2\x2,\xCC\x3\x2\x2\x2.\xCE\x3\x2\x2\x2\x30\xD3\x3\x2\x2\x2"+
+		"\x32\xDA\x3\x2\x2\x2\x34\xDD\x3\x2\x2\x2\x36\xE0\x3\x2\x2\x2\x38\xE2\x3"+
+		"\x2\x2\x2:\xE4\x3\x2\x2\x2<\xE6\x3\x2\x2\x2>\xE9\x3\x2\x2\x2@\xED\x3\x2"+
+		"\x2\x2\x42\x43\x5\x4\x3\x2\x43\x44\a\x2\x2\x3\x44\x3\x3\x2\x2\x2\x45G"+
+		"\x5\x6\x4\x2\x46\x45\x3\x2\x2\x2GJ\x3\x2\x2\x2H\x46\x3\x2\x2\x2HI\x3\x2"+
+		"\x2\x2I\x5\x3\x2\x2\x2JH\x3\x2\x2\x2KM\x5\b\x5\x2LK\x3\x2\x2\x2LM\x3\x2"+
+		"\x2\x2MN\x3\x2\x2\x2NO\a\x14\x2\x2O\a\x3\x2\x2\x2PY\x5\n\x6\x2QY\x5\xE"+
+		"\b\x2RY\x5\f\a\x2SY\x5\x10\t\x2TY\x5\x1A\xE\x2UY\x5\x16\f\x2VY\x5\x1E"+
+		"\x10\x2WY\x5,\x17\x2XP\x3\x2\x2\x2XQ\x3\x2\x2\x2XR\x3\x2\x2\x2XS\x3\x2"+
+		"\x2\x2XT\x3\x2\x2\x2XU\x3\x2\x2\x2XV\x3\x2\x2\x2XW\x3\x2\x2\x2Y\t\x3\x2"+
+		"\x2\x2Z\\\a\x3\x2\x2[]\x5> \x2\\[\x3\x2\x2\x2\\]\x3\x2\x2\x2]\v\x3\x2"+
+		"\x2\x2^_\x5\x38\x1D\x2_`\x5\x36\x1C\x2`\x61\x5\x38\x1D\x2\x61\x63\a \x2"+
+		"\x2\x62\x64\x5> \x2\x63\x62\x3\x2\x2\x2\x63\x64\x3\x2\x2\x2\x64\r\x3\x2"+
+		"\x2\x2\x65g\a\x5\x2\x2\x66h\x5\x38\x1D\x2g\x66\x3\x2\x2\x2gh\x3\x2\x2"+
+		"\x2h\xF\x3\x2\x2\x2im\x5\x12\n\x2jl\x5\x14\v\x2kj\x3\x2\x2\x2lo\x3\x2"+
+		"\x2\x2mk\x3\x2\x2\x2mn\x3\x2\x2\x2np\x3\x2\x2\x2om\x3\x2\x2\x2pq\x5*\x16"+
+		"\x2q\x11\x3\x2\x2\x2rt\a\x6\x2\x2su\x5> \x2ts\x3\x2\x2\x2tu\x3\x2\x2\x2"+
+		"uv\x3\x2\x2\x2vw\a\x14\x2\x2wx\x5(\x15\x2x\x13\x3\x2\x2\x2y{\a\a\x2\x2"+
+		"z|\x5> \x2{z\x3\x2\x2\x2{|\x3\x2\x2\x2|}\x3\x2\x2\x2}~\a\x14\x2\x2~\x7F"+
+		"\x5(\x15\x2\x7F\x15\x3\x2\x2\x2\x80\x81\x5\x18\r\x2\x81\x82\x5*\x16\x2"+
+		"\x82\x17\x3\x2\x2\x2\x83\x85\a\n\x2\x2\x84\x86\x5> \x2\x85\x84\x3\x2\x2"+
+		"\x2\x85\x86\x3\x2\x2\x2\x86\x87\x3\x2\x2\x2\x87\x88\a\x14\x2\x2\x88\x89"+
+		"\x5(\x15\x2\x89\x19\x3\x2\x2\x2\x8A\x8B\x5\x1C\xF\x2\x8B\x8C\x5*\x16\x2"+
+		"\x8C\x1B\x3\x2\x2\x2\x8D\x8F\a\t\x2\x2\x8E\x90\x5> \x2\x8F\x8E\x3\x2\x2"+
+		"\x2\x8F\x90\x3\x2\x2\x2\x90\x91\x3\x2\x2\x2\x91\x92\a\x14\x2\x2\x92\x93"+
+		"\x5(\x15\x2\x93\x1D\x3\x2\x2\x2\x94\x97\x5 \x11\x2\x95\x97\x5\"\x12\x2"+
+		"\x96\x94\x3\x2\x2\x2\x96\x95\x3\x2\x2\x2\x97\x1F\x3\x2\x2\x2\x98\x9C\a"+
+		"\v\x2\x2\x99\x9A\x5> \x2\x9A\x9B\a \x2\x2\x9B\x9D\x3\x2\x2\x2\x9C\x99"+
+		"\x3\x2\x2\x2\x9C\x9D\x3\x2\x2\x2\x9D\x9F\x3\x2\x2\x2\x9E\xA0\x5> \x2\x9F"+
+		"\x9E\x3\x2\x2\x2\x9F\xA0\x3\x2\x2\x2\xA0\xA1\x3\x2\x2\x2\xA1\xA2\a\x14"+
+		"\x2\x2\xA2\xA3\x5\x32\x1A\x2\xA3\xA4\a\x1C\x2\x2\xA4!\x3\x2\x2\x2\xA5"+
+		"\xA6\x5$\x13\x2\xA6\xA7\x5\x32\x1A\x2\xA7\xA8\x5&\x14\x2\xA8#\x3\x2\x2"+
+		"\x2\xA9\xAA\x5\x38\x1D\x2\xAA\xAB\x5\x36\x1C\x2\xAB\xAF\a\v\x2\x2\xAC"+
+		"\xAD\x5> \x2\xAD\xAE\a \x2\x2\xAE\xB0\x3\x2\x2\x2\xAF\xAC\x3\x2\x2\x2"+
+		"\xAF\xB0\x3\x2\x2\x2\xB0\xB2\x3\x2\x2\x2\xB1\xB3\x5> \x2\xB2\xB1\x3\x2"+
+		"\x2\x2\xB2\xB3\x3\x2\x2\x2\xB3\xB4\x3\x2\x2\x2\xB4\xB5\a\x14\x2\x2\xB5"+
+		"%\x3\x2\x2\x2\xB6\xB8\a\x1C\x2\x2\xB7\xB9\x5> \x2\xB8\xB7\x3\x2\x2\x2"+
+		"\xB8\xB9\x3\x2\x2\x2\xB9\xBA\x3\x2\x2\x2\xBA\xBB\x5\x36\x1C\x2\xBB\xBC"+
+		"\x5\x38\x1D\x2\xBC\xBE\a \x2\x2\xBD\xBF\x5> \x2\xBE\xBD\x3\x2\x2\x2\xBE"+
+		"\xBF\x3\x2\x2\x2\xBF\'\x3\x2\x2\x2\xC0\xC2\x5\x6\x4\x2\xC1\xC0\x3\x2\x2"+
+		"\x2\xC2\xC5\x3\x2\x2\x2\xC3\xC1\x3\x2\x2\x2\xC3\xC4\x3\x2\x2\x2\xC4)\x3"+
+		"\x2\x2\x2\xC5\xC3\x3\x2\x2\x2\xC6\xC8\a\b\x2\x2\xC7\xC9\x5> \x2\xC8\xC7"+
+		"\x3\x2\x2\x2\xC8\xC9\x3\x2\x2\x2\xC9+\x3\x2\x2\x2\xCA\xCD\x5.\x18\x2\xCB"+
+		"\xCD\x5\x30\x19\x2\xCC\xCA\x3\x2\x2\x2\xCC\xCB\x3\x2\x2\x2\xCD-\x3\x2"+
+		"\x2\x2\xCE\xCF\a\x4\x2\x2\xCF\xD0\x5> \x2\xD0\xD1\a \x2\x2\xD1\xD2\x5"+
+		"> \x2\xD2/\x3\x2\x2\x2\xD3\xD4\a\x4\x2\x2\xD4\xD5\x5\x32\x1A\x2\xD5\xD6"+
+		"\a\x19\x2\x2\xD6\x31\x3\x2\x2\x2\xD7\xD9\x5\x34\x1B\x2\xD8\xD7\x3\x2\x2"+
+		"\x2\xD9\xDC\x3\x2\x2\x2\xDA\xD8\x3\x2\x2\x2\xDA\xDB\x3\x2\x2\x2\xDB\x33"+
+		"\x3\x2\x2\x2\xDC\xDA\x3\x2\x2\x2\xDD\xDE\x5> \x2\xDE\xDF\a\x14\x2\x2\xDF"+
+		"\x35\x3\x2\x2\x2\xE0\xE1\t\x2\x2\x2\xE1\x37\x3\x2\x2\x2\xE2\xE3\x5:\x1E"+
+		"\x2\xE3\x39\x3\x2\x2\x2\xE4\xE5\x5<\x1F\x2\xE5;\x3\x2\x2\x2\xE6\xE7\x5"+
+		"> \x2\xE7=\x3\x2\x2\x2\xE8\xEA\x5@!\x2\xE9\xE8\x3\x2\x2\x2\xEA\xEB\x3"+
+		"\x2\x2\x2\xEB\xE9\x3\x2\x2\x2\xEB\xEC\x3\x2\x2\x2\xEC?\x3\x2\x2\x2\xED"+
+		"\xEE\a\x16\x2\x2\xEE\x41\x3\x2\x2\x2\x19HLX\\\x63gmt{\x85\x8F\x96\x9C"+
+		"\x9F\xAF\xB2\xB8\xBE\xC3\xC8\xCC\xDA\xEB";
 	public static readonly ATN _ATN =
 		new ATNDeserializer().Deserialize(_serializedATN.ToCharArray());
 }

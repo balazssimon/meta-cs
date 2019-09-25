@@ -1116,118 +1116,13 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	    }
 	}
 	
-	internal abstract class LineGreen : GreenSyntaxNode
+	internal class LineGreen : GreenSyntaxNode
 	{
-	    internal static readonly LineGreen __Missing = TitleLineGreen.__Missing;
-	
-	    public LineGreen(SequenceSyntaxKind kind, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-	        : base(kind, diagnostics, annotations)
-	    {
-			this.SlotCount = 0;
-	    }
-	}
-	
-	internal class TitleLineGreen : LineGreen
-	{
-	    internal static new readonly TitleLineGreen __Missing = new TitleLineGreen();
-	    private TitleGreen title;
-	    private InternalSyntaxToken lCrLf;
-	
-	    public TitleLineGreen(SequenceSyntaxKind kind, TitleGreen title, InternalSyntaxToken lCrLf)
-	        : base(kind, null, null)
-	    {
-			this.SlotCount = 2;
-			if (title != null)
-			{
-				this.AdjustFlagsAndWidth(title);
-				this.title = title;
-			}
-			if (lCrLf != null)
-			{
-				this.AdjustFlagsAndWidth(lCrLf);
-				this.lCrLf = lCrLf;
-			}
-	    }
-	
-	    public TitleLineGreen(SequenceSyntaxKind kind, TitleGreen title, InternalSyntaxToken lCrLf, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
-	        : base(kind, diagnostics, annotations)
-	    {
-			this.SlotCount = 2;
-			if (title != null)
-			{
-				this.AdjustFlagsAndWidth(title);
-				this.title = title;
-			}
-			if (lCrLf != null)
-			{
-				this.AdjustFlagsAndWidth(lCrLf);
-				this.lCrLf = lCrLf;
-			}
-	    }
-	
-		private TitleLineGreen()
-			: base((SequenceSyntaxKind)SequenceSyntaxKind.TitleLine, null, null)
-		{
-			this.flags &= ~NodeFlags.IsNotMissing;
-		}
-	
-	    public TitleGreen Title { get { return this.title; } }
-	    public InternalSyntaxToken LCrLf { get { return this.lCrLf; } }
-	
-	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
-	    {
-	        return new global::WebSequenceDiagramsModel.Syntax.TitleLineSyntax(this, (SequenceSyntaxNode)parent, position);
-	    }
-	
-	    protected override GreenNode GetSlot(int index)
-	    {
-	        switch (index)
-	        {
-	            case 0: return this.title;
-	            case 1: return this.lCrLf;
-	            default: return null;
-	        }
-	    }
-	
-	    public override TResult Accept<TResult>(SequenceSyntaxVisitor<TResult> visitor) => visitor.VisitTitleLineGreen(this);
-	
-	    public override void Accept(SequenceSyntaxVisitor visitor) => visitor.VisitTitleLineGreen(this);
-	
-	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
-	    {
-	        return new TitleLineGreen(this.Kind, this.title, this.lCrLf, diagnostics, this.GetAnnotations());
-	    }
-	
-	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
-	    {
-	        return new TitleLineGreen(this.Kind, this.title, this.lCrLf, this.GetDiagnostics(), annotations);
-	    }
-	
-	    public TitleLineGreen Update(TitleGreen title, InternalSyntaxToken lCrLf)
-	    {
-	        if (this.Title != title ||
-				this.LCrLf != lCrLf)
-	        {
-	            InternalSyntaxNode newNode = SequenceLanguage.Instance.InternalSyntaxFactory.TitleLine(title, lCrLf);
-	            var diags = this.GetDiagnostics();
-	            if (diags != null && diags.Length > 0)
-	               newNode = newNode.WithDiagnostics(diags);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (TitleLineGreen)newNode;
-	        }
-	        return this;
-	    }
-	}
-	
-	internal class DeclarationLineGreen : LineGreen
-	{
-	    internal static new readonly DeclarationLineGreen __Missing = new DeclarationLineGreen();
+	    internal static readonly LineGreen __Missing = new LineGreen();
 	    private DeclarationGreen declaration;
 	    private InternalSyntaxToken lCrLf;
 	
-	    public DeclarationLineGreen(SequenceSyntaxKind kind, DeclarationGreen declaration, InternalSyntaxToken lCrLf)
+	    public LineGreen(SequenceSyntaxKind kind, DeclarationGreen declaration, InternalSyntaxToken lCrLf)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 2;
@@ -1243,7 +1138,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public DeclarationLineGreen(SequenceSyntaxKind kind, DeclarationGreen declaration, InternalSyntaxToken lCrLf, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public LineGreen(SequenceSyntaxKind kind, DeclarationGreen declaration, InternalSyntaxToken lCrLf, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 2;
@@ -1259,8 +1154,8 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 			}
 	    }
 	
-		private DeclarationLineGreen()
-			: base((SequenceSyntaxKind)SequenceSyntaxKind.DeclarationLine, null, null)
+		private LineGreen()
+			: base((SequenceSyntaxKind)SequenceSyntaxKind.Line, null, null)
 		{
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
@@ -1270,7 +1165,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
-	        return new global::WebSequenceDiagramsModel.Syntax.DeclarationLineSyntax(this, (SequenceSyntaxNode)parent, position);
+	        return new global::WebSequenceDiagramsModel.Syntax.LineSyntax(this, (SequenceSyntaxNode)parent, position);
 	    }
 	
 	    protected override GreenNode GetSlot(int index)
@@ -1283,33 +1178,33 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	        }
 	    }
 	
-	    public override TResult Accept<TResult>(SequenceSyntaxVisitor<TResult> visitor) => visitor.VisitDeclarationLineGreen(this);
+	    public override TResult Accept<TResult>(SequenceSyntaxVisitor<TResult> visitor) => visitor.VisitLineGreen(this);
 	
-	    public override void Accept(SequenceSyntaxVisitor visitor) => visitor.VisitDeclarationLineGreen(this);
+	    public override void Accept(SequenceSyntaxVisitor visitor) => visitor.VisitLineGreen(this);
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new DeclarationLineGreen(this.Kind, this.declaration, this.lCrLf, diagnostics, this.GetAnnotations());
+	        return new LineGreen(this.Kind, this.declaration, this.lCrLf, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new DeclarationLineGreen(this.Kind, this.declaration, this.lCrLf, this.GetDiagnostics(), annotations);
+	        return new LineGreen(this.Kind, this.declaration, this.lCrLf, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public DeclarationLineGreen Update(DeclarationGreen declaration, InternalSyntaxToken lCrLf)
+	    public LineGreen Update(DeclarationGreen declaration, InternalSyntaxToken lCrLf)
 	    {
 	        if (this.Declaration != declaration ||
 				this.LCrLf != lCrLf)
 	        {
-	            InternalSyntaxNode newNode = SequenceLanguage.Instance.InternalSyntaxFactory.DeclarationLine(declaration, lCrLf);
+	            InternalSyntaxNode newNode = SequenceLanguage.Instance.InternalSyntaxFactory.Line(declaration, lCrLf);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DeclarationLineGreen)newNode;
+				return (LineGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -1318,6 +1213,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	internal class DeclarationGreen : GreenSyntaxNode
 	{
 	    internal static readonly DeclarationGreen __Missing = new DeclarationGreen();
+	    private TitleGreen title;
 	    private DestroyGreen destroy;
 	    private ArrowGreen arrow;
 	    private AltGreen alt;
@@ -1326,10 +1222,15 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	    private RefGreen _ref;
 	    private NoteGreen note;
 	
-	    public DeclarationGreen(SequenceSyntaxKind kind, DestroyGreen destroy, ArrowGreen arrow, AltGreen alt, OptGreen opt, LoopGreen loop, RefGreen _ref, NoteGreen note)
+	    public DeclarationGreen(SequenceSyntaxKind kind, TitleGreen title, DestroyGreen destroy, ArrowGreen arrow, AltGreen alt, OptGreen opt, LoopGreen loop, RefGreen _ref, NoteGreen note)
 	        : base(kind, null, null)
 	    {
-			this.SlotCount = 7;
+			this.SlotCount = 8;
+			if (title != null)
+			{
+				this.AdjustFlagsAndWidth(title);
+				this.title = title;
+			}
 			if (destroy != null)
 			{
 				this.AdjustFlagsAndWidth(destroy);
@@ -1367,10 +1268,15 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public DeclarationGreen(SequenceSyntaxKind kind, DestroyGreen destroy, ArrowGreen arrow, AltGreen alt, OptGreen opt, LoopGreen loop, RefGreen _ref, NoteGreen note, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public DeclarationGreen(SequenceSyntaxKind kind, TitleGreen title, DestroyGreen destroy, ArrowGreen arrow, AltGreen alt, OptGreen opt, LoopGreen loop, RefGreen _ref, NoteGreen note, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			this.SlotCount = 7;
+			this.SlotCount = 8;
+			if (title != null)
+			{
+				this.AdjustFlagsAndWidth(title);
+				this.title = title;
+			}
 			if (destroy != null)
 			{
 				this.AdjustFlagsAndWidth(destroy);
@@ -1414,6 +1320,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 			this.flags &= ~NodeFlags.IsNotMissing;
 		}
 	
+	    public TitleGreen Title { get { return this.title; } }
 	    public DestroyGreen Destroy { get { return this.destroy; } }
 	    public ArrowGreen Arrow { get { return this.arrow; } }
 	    public AltGreen Alt { get { return this.alt; } }
@@ -1431,13 +1338,14 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	    {
 	        switch (index)
 	        {
-	            case 0: return this.destroy;
-	            case 1: return this.arrow;
-	            case 2: return this.alt;
-	            case 3: return this.opt;
-	            case 4: return this.loop;
-	            case 5: return this._ref;
-	            case 6: return this.note;
+	            case 0: return this.title;
+	            case 1: return this.destroy;
+	            case 2: return this.arrow;
+	            case 3: return this.alt;
+	            case 4: return this.opt;
+	            case 5: return this.loop;
+	            case 6: return this._ref;
+	            case 7: return this.note;
 	            default: return null;
 	        }
 	    }
@@ -1448,12 +1356,28 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new DeclarationGreen(this.Kind, this.destroy, this.arrow, this.alt, this.opt, this.loop, this._ref, this.note, diagnostics, this.GetAnnotations());
+	        return new DeclarationGreen(this.Kind, this.title, this.destroy, this.arrow, this.alt, this.opt, this.loop, this._ref, this.note, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new DeclarationGreen(this.Kind, this.destroy, this.arrow, this.alt, this.opt, this.loop, this._ref, this.note, this.GetDiagnostics(), annotations);
+	        return new DeclarationGreen(this.Kind, this.title, this.destroy, this.arrow, this.alt, this.opt, this.loop, this._ref, this.note, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public DeclarationGreen Update(TitleGreen title)
+	    {
+	        if (this.title != title)
+	        {
+	            InternalSyntaxNode newNode = SequenceLanguage.Instance.InternalSyntaxFactory.Declaration(title);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (DeclarationGreen)newNode;
+	        }
+	        return this;
 	    }
 	
 	    public DeclarationGreen Update(DestroyGreen destroy)
@@ -1573,9 +1497,9 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	{
 	    internal static readonly TitleGreen __Missing = new TitleGreen();
 	    private InternalSyntaxToken kTitle;
-	    private NameGreen name;
+	    private TextGreen text;
 	
-	    public TitleGreen(SequenceSyntaxKind kind, InternalSyntaxToken kTitle, NameGreen name)
+	    public TitleGreen(SequenceSyntaxKind kind, InternalSyntaxToken kTitle, TextGreen text)
 	        : base(kind, null, null)
 	    {
 			this.SlotCount = 2;
@@ -1584,14 +1508,14 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(kTitle);
 				this.kTitle = kTitle;
 			}
-			if (name != null)
+			if (text != null)
 			{
-				this.AdjustFlagsAndWidth(name);
-				this.name = name;
+				this.AdjustFlagsAndWidth(text);
+				this.text = text;
 			}
 	    }
 	
-	    public TitleGreen(SequenceSyntaxKind kind, InternalSyntaxToken kTitle, NameGreen name, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public TitleGreen(SequenceSyntaxKind kind, InternalSyntaxToken kTitle, TextGreen text, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
 			this.SlotCount = 2;
@@ -1600,10 +1524,10 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 				this.AdjustFlagsAndWidth(kTitle);
 				this.kTitle = kTitle;
 			}
-			if (name != null)
+			if (text != null)
 			{
-				this.AdjustFlagsAndWidth(name);
-				this.name = name;
+				this.AdjustFlagsAndWidth(text);
+				this.text = text;
 			}
 	    }
 	
@@ -1614,7 +1538,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 		}
 	
 	    public InternalSyntaxToken KTitle { get { return this.kTitle; } }
-	    public NameGreen Name { get { return this.name; } }
+	    public TextGreen Text { get { return this.text; } }
 	
 	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
 	    {
@@ -1626,7 +1550,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.kTitle;
-	            case 1: return this.name;
+	            case 1: return this.text;
 	            default: return null;
 	        }
 	    }
@@ -1637,20 +1561,20 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new TitleGreen(this.Kind, this.kTitle, this.name, diagnostics, this.GetAnnotations());
+	        return new TitleGreen(this.Kind, this.kTitle, this.text, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new TitleGreen(this.Kind, this.kTitle, this.name, this.GetDiagnostics(), annotations);
+	        return new TitleGreen(this.Kind, this.kTitle, this.text, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public TitleGreen Update(InternalSyntaxToken kTitle, NameGreen name)
+	    public TitleGreen Update(InternalSyntaxToken kTitle, TextGreen text)
 	    {
 	        if (this.KTitle != kTitle ||
-				this.Name != name)
+				this.Text != text)
 	        {
-	            InternalSyntaxNode newNode = SequenceLanguage.Instance.InternalSyntaxFactory.Title(kTitle, name);
+	            InternalSyntaxNode newNode = SequenceLanguage.Instance.InternalSyntaxFactory.Title(kTitle, text);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -4543,8 +4467,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	{
 		public virtual void VisitMainGreen(MainGreen node) => this.DefaultVisit(node);
 		public virtual void VisitInteractionGreen(InteractionGreen node) => this.DefaultVisit(node);
-		public virtual void VisitTitleLineGreen(TitleLineGreen node) => this.DefaultVisit(node);
-		public virtual void VisitDeclarationLineGreen(DeclarationLineGreen node) => this.DefaultVisit(node);
+		public virtual void VisitLineGreen(LineGreen node) => this.DefaultVisit(node);
 		public virtual void VisitDeclarationGreen(DeclarationGreen node) => this.DefaultVisit(node);
 		public virtual void VisitTitleGreen(TitleGreen node) => this.DefaultVisit(node);
 		public virtual void VisitArrowGreen(ArrowGreen node) => this.DefaultVisit(node);
@@ -4580,8 +4503,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	{
 		public virtual TResult VisitMainGreen(MainGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitInteractionGreen(InteractionGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitTitleLineGreen(TitleLineGreen node) => this.DefaultVisit(node);
-		public virtual TResult VisitDeclarationLineGreen(DeclarationLineGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitLineGreen(LineGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitDeclarationGreen(DeclarationGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitTitleGreen(TitleGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitArrowGreen(ArrowGreen node) => this.DefaultVisit(node);
@@ -4797,6 +4719,76 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	        return Token(null, SequenceSyntaxKind.LIdentifier, text, value, null);
 	    }
 	
+	    internal InternalSyntaxToken NoteWhiteSpace(string text)
+	    {
+	        return Token(null, SequenceSyntaxKind.NoteWhiteSpace, text, null);
+	    }
+	
+	    internal InternalSyntaxToken NoteWhiteSpace(string text, object value)
+	    {
+	        return Token(null, SequenceSyntaxKind.NoteWhiteSpace, text, value, null);
+	    }
+	
+	    internal InternalSyntaxToken NoteLinesWhiteSpace(string text)
+	    {
+	        return Token(null, SequenceSyntaxKind.NoteLinesWhiteSpace, text, null);
+	    }
+	
+	    internal InternalSyntaxToken NoteLinesWhiteSpace(string text, object value)
+	    {
+	        return Token(null, SequenceSyntaxKind.NoteLinesWhiteSpace, text, value, null);
+	    }
+	
+	    internal InternalSyntaxToken RefWhiteSpace(string text)
+	    {
+	        return Token(null, SequenceSyntaxKind.RefWhiteSpace, text, null);
+	    }
+	
+	    internal InternalSyntaxToken RefWhiteSpace(string text, object value)
+	    {
+	        return Token(null, SequenceSyntaxKind.RefWhiteSpace, text, value, null);
+	    }
+	
+	    internal InternalSyntaxToken RefLinesWhiteSpace(string text)
+	    {
+	        return Token(null, SequenceSyntaxKind.RefLinesWhiteSpace, text, null);
+	    }
+	
+	    internal InternalSyntaxToken RefLinesWhiteSpace(string text, object value)
+	    {
+	        return Token(null, SequenceSyntaxKind.RefLinesWhiteSpace, text, value, null);
+	    }
+	
+	    internal InternalSyntaxToken RefEndWhiteSpace(string text)
+	    {
+	        return Token(null, SequenceSyntaxKind.RefEndWhiteSpace, text, null);
+	    }
+	
+	    internal InternalSyntaxToken RefEndWhiteSpace(string text, object value)
+	    {
+	        return Token(null, SequenceSyntaxKind.RefEndWhiteSpace, text, value, null);
+	    }
+	
+	    internal InternalSyntaxToken LineEndWhiteSpace(string text)
+	    {
+	        return Token(null, SequenceSyntaxKind.LineEndWhiteSpace, text, null);
+	    }
+	
+	    internal InternalSyntaxToken LineEndWhiteSpace(string text, object value)
+	    {
+	        return Token(null, SequenceSyntaxKind.LineEndWhiteSpace, text, value, null);
+	    }
+	
+	    internal InternalSyntaxToken ArrowEndWhiteSpace(string text)
+	    {
+	        return Token(null, SequenceSyntaxKind.ArrowEndWhiteSpace, text, null);
+	    }
+	
+	    internal InternalSyntaxToken ArrowEndWhiteSpace(string text, object value)
+	    {
+	        return Token(null, SequenceSyntaxKind.ArrowEndWhiteSpace, text, value, null);
+	    }
+	
 	    internal InternalSyntaxToken TMinus(string text)
 	    {
 	        return Token(null, SequenceSyntaxKind.TMinus, text, null);
@@ -4840,17 +4832,16 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public TitleLineGreen TitleLine(TitleGreen title, InternalSyntaxToken lCrLf)
+		public LineGreen Line(DeclarationGreen declaration, InternalSyntaxToken lCrLf)
 	    {
 	#if DEBUG
-			if (title == null) throw new ArgumentNullException(nameof(title));
 			if (lCrLf == null) throw new ArgumentNullException(nameof(lCrLf));
 			if (lCrLf.Kind != SequenceSyntaxKind.LCrLf) throw new ArgumentException(nameof(lCrLf));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(SequenceSyntaxKind)SequenceSyntaxKind.TitleLine, title, lCrLf, out hash);
-			if (cached != null) return (TitleLineGreen)cached;
-			var result = new TitleLineGreen(SequenceSyntaxKind.TitleLine, title, lCrLf);
+			var cached = SyntaxNodeCache.TryGetNode((int)(SequenceSyntaxKind)SequenceSyntaxKind.Line, declaration, lCrLf, out hash);
+			if (cached != null) return (LineGreen)cached;
+			var result = new LineGreen(SequenceSyntaxKind.Line, declaration, lCrLf);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -4858,21 +4849,12 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public DeclarationLineGreen DeclarationLine(DeclarationGreen declaration, InternalSyntaxToken lCrLf)
+		public DeclarationGreen Declaration(TitleGreen title)
 	    {
 	#if DEBUG
-			if (lCrLf == null) throw new ArgumentNullException(nameof(lCrLf));
-			if (lCrLf.Kind != SequenceSyntaxKind.LCrLf) throw new ArgumentException(nameof(lCrLf));
+		    if (title == null) throw new ArgumentNullException(nameof(title));
 	#endif
-			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(SequenceSyntaxKind)SequenceSyntaxKind.DeclarationLine, declaration, lCrLf, out hash);
-			if (cached != null) return (DeclarationLineGreen)cached;
-			var result = new DeclarationLineGreen(SequenceSyntaxKind.DeclarationLine, declaration, lCrLf);
-			if (hash >= 0)
-			{
-				SyntaxNodeCache.AddNode(result, hash);
-			}
-			return result;
+			return new DeclarationGreen(SequenceSyntaxKind.Declaration, title, null, null, null, null, null, null, null);
 	    }
 	
 		public DeclarationGreen Declaration(DestroyGreen destroy)
@@ -4880,7 +4862,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	#if DEBUG
 		    if (destroy == null) throw new ArgumentNullException(nameof(destroy));
 	#endif
-			return new DeclarationGreen(SequenceSyntaxKind.Declaration, destroy, null, null, null, null, null, null);
+			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, destroy, null, null, null, null, null, null);
 	    }
 	
 		public DeclarationGreen Declaration(ArrowGreen arrow)
@@ -4888,7 +4870,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	#if DEBUG
 		    if (arrow == null) throw new ArgumentNullException(nameof(arrow));
 	#endif
-			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, arrow, null, null, null, null, null);
+			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, arrow, null, null, null, null, null);
 	    }
 	
 		public DeclarationGreen Declaration(AltGreen alt)
@@ -4896,7 +4878,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	#if DEBUG
 		    if (alt == null) throw new ArgumentNullException(nameof(alt));
 	#endif
-			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, alt, null, null, null, null);
+			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, null, alt, null, null, null, null);
 	    }
 	
 		public DeclarationGreen Declaration(OptGreen opt)
@@ -4904,7 +4886,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	#if DEBUG
 		    if (opt == null) throw new ArgumentNullException(nameof(opt));
 	#endif
-			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, null, opt, null, null, null);
+			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, null, null, opt, null, null, null);
 	    }
 	
 		public DeclarationGreen Declaration(LoopGreen loop)
@@ -4912,7 +4894,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	#if DEBUG
 		    if (loop == null) throw new ArgumentNullException(nameof(loop));
 	#endif
-			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, null, null, loop, null, null);
+			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, null, null, null, loop, null, null);
 	    }
 	
 		public DeclarationGreen Declaration(RefGreen _ref)
@@ -4920,7 +4902,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	#if DEBUG
 		    if (_ref == null) throw new ArgumentNullException(nameof(_ref));
 	#endif
-			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, null, null, null, _ref, null);
+			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, null, null, null, null, _ref, null);
 	    }
 	
 		public DeclarationGreen Declaration(NoteGreen note)
@@ -4928,19 +4910,19 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	#if DEBUG
 		    if (note == null) throw new ArgumentNullException(nameof(note));
 	#endif
-			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, null, null, null, null, note);
+			return new DeclarationGreen(SequenceSyntaxKind.Declaration, null, null, null, null, null, null, null, note);
 	    }
 	
-		public TitleGreen Title(InternalSyntaxToken kTitle, NameGreen name)
+		public TitleGreen Title(InternalSyntaxToken kTitle, TextGreen text)
 	    {
 	#if DEBUG
 			if (kTitle == null) throw new ArgumentNullException(nameof(kTitle));
 			if (kTitle.Kind != SequenceSyntaxKind.KTitle) throw new ArgumentException(nameof(kTitle));
 	#endif
 			int hash;
-			var cached = SyntaxNodeCache.TryGetNode((int)(SequenceSyntaxKind)SequenceSyntaxKind.Title, kTitle, name, out hash);
+			var cached = SyntaxNodeCache.TryGetNode((int)(SequenceSyntaxKind)SequenceSyntaxKind.Title, kTitle, text, out hash);
 			if (cached != null) return (TitleGreen)cached;
-			var result = new TitleGreen(SequenceSyntaxKind.Title, kTitle, name);
+			var result = new TitleGreen(SequenceSyntaxKind.Title, kTitle, text);
 			if (hash >= 0)
 			{
 				SyntaxNodeCache.AddNode(result, hash);
@@ -5399,8 +5381,7 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 	        return new Type[] {
 				typeof(MainGreen),
 				typeof(InteractionGreen),
-				typeof(TitleLineGreen),
-				typeof(DeclarationLineGreen),
+				typeof(LineGreen),
 				typeof(DeclarationGreen),
 				typeof(TitleGreen),
 				typeof(ArrowGreen),

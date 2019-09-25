@@ -5,7 +5,6 @@
 	[Scope]
 	class Interaction
 	{
-		[Name]
 		string Name;
 		containment list<Declaration> Declarations;
 	}
@@ -50,6 +49,7 @@
 		Ref
 	}
 
+	[Scope]
 	class Fragment : Declaration
 	{
 		FragmentKind Kind;
@@ -59,12 +59,12 @@
 
 	class MultiFragment : Declaration
 	{
-		containment list<Fragment> Fragment;
+		containment list<Fragment> Fragments;
 	}
 
 	class RefFragment : Fragment, Lifeline
 	{
-		Lifeline Input;
-		Lifeline Output;
+		Message Input;
+		Message Output;
 	}
 }

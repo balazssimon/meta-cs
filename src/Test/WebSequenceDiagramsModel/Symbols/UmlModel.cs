@@ -42,7 +42,7 @@ namespace WebSequenceDiagramsModel.Symbols
 		public static readonly global::MetaDslx.Languages.Meta.Symbols.MetaProperty Fragment_Text;
 		public static readonly global::MetaDslx.Languages.Meta.Symbols.MetaProperty Fragment_Declarations;
 		public static readonly global::MetaDslx.Languages.Meta.Symbols.MetaClass MultiFragment;
-		public static readonly global::MetaDslx.Languages.Meta.Symbols.MetaProperty MultiFragment_Fragment;
+		public static readonly global::MetaDslx.Languages.Meta.Symbols.MetaProperty MultiFragment_Fragments;
 		public static readonly global::MetaDslx.Languages.Meta.Symbols.MetaClass RefFragment;
 		public static readonly global::MetaDslx.Languages.Meta.Symbols.MetaProperty RefFragment_Input;
 		public static readonly global::MetaDslx.Languages.Meta.Symbols.MetaProperty RefFragment_Output;
@@ -73,7 +73,7 @@ namespace WebSequenceDiagramsModel.Symbols
 			Fragment_Text = UmlBuilderInstance.instance.Fragment_Text.ToImmutable(Model);
 			Fragment_Declarations = UmlBuilderInstance.instance.Fragment_Declarations.ToImmutable(Model);
 			MultiFragment = UmlBuilderInstance.instance.MultiFragment.ToImmutable(Model);
-			MultiFragment_Fragment = UmlBuilderInstance.instance.MultiFragment_Fragment.ToImmutable(Model);
+			MultiFragment_Fragments = UmlBuilderInstance.instance.MultiFragment_Fragments.ToImmutable(Model);
 			RefFragment = UmlBuilderInstance.instance.RefFragment.ToImmutable(Model);
 			RefFragment_Input = UmlBuilderInstance.instance.RefFragment_Input.ToImmutable(Model);
 			RefFragment_Output = UmlBuilderInstance.instance.RefFragment_Output.ToImmutable(Model);
@@ -333,7 +333,7 @@ namespace WebSequenceDiagramsModel.Symbols
 	
 	public interface MultiFragment : Declaration
 	{
-		global::MetaDslx.Modeling.ImmutableModelList<Fragment> Fragment { get; }
+		global::MetaDslx.Modeling.ImmutableModelList<Fragment> Fragments { get; }
 	
 	
 		new MultiFragmentBuilder ToMutable();
@@ -342,7 +342,7 @@ namespace WebSequenceDiagramsModel.Symbols
 	
 	public interface MultiFragmentBuilder : DeclarationBuilder
 	{
-		global::MetaDslx.Modeling.MutableModelList<FragmentBuilder> Fragment { get; }
+		global::MetaDslx.Modeling.MutableModelList<FragmentBuilder> Fragments { get; }
 	
 		new MultiFragment ToImmutable();
 		new MultiFragment ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
@@ -350,8 +350,8 @@ namespace WebSequenceDiagramsModel.Symbols
 	
 	public interface RefFragment : Fragment, Lifeline
 	{
-		Lifeline Input { get; }
-		Lifeline Output { get; }
+		Message Input { get; }
+		Message Output { get; }
 	
 	
 		new RefFragmentBuilder ToMutable();
@@ -360,10 +360,10 @@ namespace WebSequenceDiagramsModel.Symbols
 	
 	public interface RefFragmentBuilder : FragmentBuilder, LifelineBuilder
 	{
-		LifelineBuilder Input { get; set; }
-		Func<LifelineBuilder> InputLazy { get; set; }
-		LifelineBuilder Output { get; set; }
-		Func<LifelineBuilder> OutputLazy { get; set; }
+		MessageBuilder Input { get; set; }
+		Func<MessageBuilder> InputLazy { get; set; }
+		MessageBuilder Output { get; set; }
+		Func<MessageBuilder> OutputLazy { get; set; }
 	
 		new RefFragment ToImmutable();
 		new RefFragment ToImmutable(global::MetaDslx.Modeling.ImmutableModel model);
@@ -395,7 +395,7 @@ namespace WebSequenceDiagramsModel.Symbols
 			properties.Add(UmlDescriptor.Fragment.KindProperty);
 			properties.Add(UmlDescriptor.Fragment.TextProperty);
 			properties.Add(UmlDescriptor.Fragment.DeclarationsProperty);
-			properties.Add(UmlDescriptor.MultiFragment.FragmentProperty);
+			properties.Add(UmlDescriptor.MultiFragment.FragmentsProperty);
 			properties.Add(UmlDescriptor.RefFragment.InputProperty);
 			properties.Add(UmlDescriptor.RefFragment.OutputProperty);
 		}
@@ -431,7 +431,6 @@ namespace WebSequenceDiagramsModel.Symbols
 				get { return global::WebSequenceDiagramsModel.Symbols.UmlInstance.Interaction; }
 			}
 			
-			[global::MetaDslx.Modeling.NameAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NameProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(Interaction), "Name",
 			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
@@ -583,6 +582,7 @@ namespace WebSequenceDiagramsModel.Symbols
 					() => global::WebSequenceDiagramsModel.Symbols.UmlInstance.Destroy_Lifeline);
 		}
 	
+		[global::MetaDslx.Modeling.ScopeAttribute]
 		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::WebSequenceDiagramsModel.Symbols.Internal.FragmentId), typeof(global::WebSequenceDiagramsModel.Symbols.Fragment), typeof(global::WebSequenceDiagramsModel.Symbols.FragmentBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(UmlDescriptor.Declaration) })]
 		public static class Fragment
 		{
@@ -652,11 +652,11 @@ namespace WebSequenceDiagramsModel.Symbols
 			}
 			
 			[global::MetaDslx.Modeling.ContainmentAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty FragmentProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MultiFragment), "Fragment",
+			public static readonly global::MetaDslx.Modeling.ModelProperty FragmentsProperty =
+			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MultiFragment), "Fragments",
 			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.Fragment), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::WebSequenceDiagramsModel.Symbols.Fragment>)),
 			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.FragmentBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::WebSequenceDiagramsModel.Symbols.FragmentBuilder>)),
-					() => global::WebSequenceDiagramsModel.Symbols.UmlInstance.MultiFragment_Fragment);
+					() => global::WebSequenceDiagramsModel.Symbols.UmlInstance.MultiFragment_Fragments);
 		}
 	
 		[global::MetaDslx.Modeling.ModelSymbolDescriptorAttribute(typeof(global::WebSequenceDiagramsModel.Symbols.Internal.RefFragmentId), typeof(global::WebSequenceDiagramsModel.Symbols.RefFragment), typeof(global::WebSequenceDiagramsModel.Symbols.RefFragmentBuilder), BaseSymbolDescriptors = new global::System.Type[] { typeof(UmlDescriptor.Fragment), typeof(UmlDescriptor.Lifeline) })]
@@ -685,14 +685,14 @@ namespace WebSequenceDiagramsModel.Symbols
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty InputProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(RefFragment), "Input",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.Lifeline), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.LifelineBuilder), null),
+			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.Message), null),
+			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.MessageBuilder), null),
 					() => global::WebSequenceDiagramsModel.Symbols.UmlInstance.RefFragment_Input);
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty OutputProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(RefFragment), "Output",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.Lifeline), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.LifelineBuilder), null),
+			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.Message), null),
+			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::WebSequenceDiagramsModel.Symbols.MessageBuilder), null),
 					() => global::WebSequenceDiagramsModel.Symbols.UmlInstance.RefFragment_Output);
 		}
 	}
@@ -1486,7 +1486,7 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 	internal class MultiFragmentImpl : global::MetaDslx.Modeling.ImmutableSymbolBase, MultiFragment
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private global::MetaDslx.Modeling.ImmutableModelList<Fragment> fragment0;
+		private global::MetaDslx.Modeling.ImmutableModelList<Fragment> fragments0;
 	
 		internal MultiFragmentImpl(global::MetaDslx.Modeling.SymbolId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -1524,15 +1524,15 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.ImmutableModelList<Fragment> Fragment
+		public global::MetaDslx.Modeling.ImmutableModelList<Fragment> Fragments
 		{
-		    get { return this.GetList<Fragment>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.MultiFragment.FragmentProperty, ref fragment0); }
+		    get { return this.GetList<Fragment>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.MultiFragment.FragmentsProperty, ref fragments0); }
 		}
 	}
 	
 	internal class MultiFragmentBuilderImpl : global::MetaDslx.Modeling.MutableSymbolBase, MultiFragmentBuilder
 	{
-		private global::MetaDslx.Modeling.MutableModelList<FragmentBuilder> fragment0;
+		private global::MetaDslx.Modeling.MutableModelList<FragmentBuilder> fragments0;
 	
 		internal MultiFragmentBuilderImpl(global::MetaDslx.Modeling.SymbolId id, global::MetaDslx.Modeling.MutableModel model, bool creating)
 			: base(id, model, creating)
@@ -1575,9 +1575,9 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 		}
 	
 		
-		public global::MetaDslx.Modeling.MutableModelList<FragmentBuilder> Fragment
+		public global::MetaDslx.Modeling.MutableModelList<FragmentBuilder> Fragments
 		{
-			get { return this.GetList<FragmentBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.MultiFragment.FragmentProperty, ref fragment0); }
+			get { return this.GetList<FragmentBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.MultiFragment.FragmentsProperty, ref fragments0); }
 		}
 	}
 	
@@ -1607,9 +1607,9 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private global::MetaDslx.Modeling.ImmutableModelList<Declaration> declarations0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Lifeline input0;
+		private Message input0;
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private Lifeline output0;
+		private Message output0;
 	
 		internal RefFragmentImpl(global::MetaDslx.Modeling.SymbolId id, global::MetaDslx.Modeling.ImmutableModel model)
 			: base(id, model)
@@ -1691,15 +1691,15 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 		}
 	
 		
-		public Lifeline Input
+		public Message Input
 		{
-		    get { return this.GetReference<Lifeline>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.InputProperty, ref input0); }
+		    get { return this.GetReference<Message>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.InputProperty, ref input0); }
 		}
 	
 		
-		public Lifeline Output
+		public Message Output
 		{
-		    get { return this.GetReference<Lifeline>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.OutputProperty, ref output0); }
+		    get { return this.GetReference<Message>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.OutputProperty, ref output0); }
 		}
 	}
 	
@@ -1813,28 +1813,28 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 		}
 	
 		
-		public LifelineBuilder Input
+		public MessageBuilder Input
 		{
-			get { return this.GetReference<LifelineBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.InputProperty); }
-			set { this.SetReference<LifelineBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.InputProperty, value); }
+			get { return this.GetReference<MessageBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.InputProperty); }
+			set { this.SetReference<MessageBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.InputProperty, value); }
 		}
 		
-		public Func<LifelineBuilder> InputLazy
+		public Func<MessageBuilder> InputLazy
 		{
-			get { return this.GetLazyReference<LifelineBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.InputProperty); }
+			get { return this.GetLazyReference<MessageBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.InputProperty); }
 			set { this.SetLazyReference(UmlDescriptor.RefFragment.InputProperty, value); }
 		}
 	
 		
-		public LifelineBuilder Output
+		public MessageBuilder Output
 		{
-			get { return this.GetReference<LifelineBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.OutputProperty); }
-			set { this.SetReference<LifelineBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.OutputProperty, value); }
+			get { return this.GetReference<MessageBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.OutputProperty); }
+			set { this.SetReference<MessageBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.OutputProperty, value); }
 		}
 		
-		public Func<LifelineBuilder> OutputLazy
+		public Func<MessageBuilder> OutputLazy
 		{
-			get { return this.GetLazyReference<LifelineBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.OutputProperty); }
+			get { return this.GetLazyReference<MessageBuilder>(global::WebSequenceDiagramsModel.Symbols.UmlDescriptor.RefFragment.OutputProperty); }
 			set { this.SetLazyReference(UmlDescriptor.RefFragment.OutputProperty, value); }
 		}
 	}
@@ -1859,10 +1859,10 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder Lifeline;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Lifeline_Name;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaEnumBuilder MessageKind;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp4;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp5;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp6;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp7;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp8;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp11;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp12;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder Message;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Message_Kind;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Message_Text;
@@ -1871,22 +1871,22 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder Destroy;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Destroy_Lifeline;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaEnumBuilder FragmentKind;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp6;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp7;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp8;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp9;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp10;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp11;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp12;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder __tmp13;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder Fragment;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Fragment_Kind;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Fragment_Text;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder Fragment_Declarations;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder MultiFragment;
-		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder MultiFragment_Fragment;
+		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder MultiFragment_Fragments;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder RefFragment;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder RefFragment_Input;
 		internal global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder RefFragment_Output;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaModelBuilder __tmp3;
-		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp4;
+		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp13;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp14;
 		private global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder __tmp15;
 	
@@ -1931,10 +1931,10 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 			Lifeline = factory.MetaClass();
 			Lifeline_Name = factory.MetaProperty();
 			MessageKind = factory.MetaEnum();
+			__tmp4 = factory.MetaEnumLiteral();
 			__tmp5 = factory.MetaEnumLiteral();
-			__tmp6 = factory.MetaEnumLiteral();
-			__tmp7 = factory.MetaEnumLiteral();
-			__tmp8 = factory.MetaEnumLiteral();
+			__tmp11 = factory.MetaEnumLiteral();
+			__tmp12 = factory.MetaEnumLiteral();
 			Message = factory.MetaClass();
 			Message_Kind = factory.MetaProperty();
 			Message_Text = factory.MetaProperty();
@@ -1943,23 +1943,23 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 			Destroy = factory.MetaClass();
 			Destroy_Lifeline = factory.MetaProperty();
 			FragmentKind = factory.MetaEnum();
+			__tmp6 = factory.MetaEnumLiteral();
+			__tmp7 = factory.MetaEnumLiteral();
+			__tmp8 = factory.MetaEnumLiteral();
 			__tmp9 = factory.MetaEnumLiteral();
 			__tmp10 = factory.MetaEnumLiteral();
-			__tmp11 = factory.MetaEnumLiteral();
-			__tmp12 = factory.MetaEnumLiteral();
-			__tmp13 = factory.MetaEnumLiteral();
 			Fragment = factory.MetaClass();
 			Fragment_Kind = factory.MetaProperty();
 			Fragment_Text = factory.MetaProperty();
 			Fragment_Declarations = factory.MetaProperty();
 			MultiFragment = factory.MetaClass();
-			MultiFragment_Fragment = factory.MetaProperty();
+			MultiFragment_Fragments = factory.MetaProperty();
 			RefFragment = factory.MetaClass();
 			RefFragment_Input = factory.MetaProperty();
 			RefFragment_Output = factory.MetaProperty();
 			__tmp3 = factory.MetaModel();
 			MetaModel = __tmp3;
-			__tmp4 = factory.MetaCollectionType();
+			__tmp13 = factory.MetaCollectionType();
 			__tmp14 = factory.MetaCollectionType();
 			__tmp15 = factory.MetaCollectionType();
 	
@@ -1993,12 +1993,11 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 			Interaction.Properties.AddLazy(() => Interaction_Name);
 			Interaction.Properties.AddLazy(() => Interaction_Declarations);
 			Interaction_Name.TypeLazy = () => global::MetaDslx.Languages.Meta.Symbols.MetaInstance.String.ToMutable();
-			Interaction_Name.Attributes.Add(global::MetaDslx.Languages.Meta.Symbols.MetaInstance.NameAttribute.ToMutable());
 			Interaction_Name.Name = "Name";
 			Interaction_Name.Documentation = null;
 			// Interaction_Name.Kind = null;
 			Interaction_Name.ClassLazy = () => Interaction;
-			Interaction_Declarations.TypeLazy = () => __tmp4;
+			Interaction_Declarations.TypeLazy = () => __tmp14;
 			Interaction_Declarations.Name = "Declarations";
 			Interaction_Declarations.Documentation = null;
 			Interaction_Declarations.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -2025,26 +2024,26 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 			MessageKind.NamespaceLazy = () => __tmp2;
 			MessageKind.Documentation = null;
 			MessageKind.Name = "MessageKind";
+			MessageKind.EnumLiterals.AddLazy(() => __tmp4);
 			MessageKind.EnumLiterals.AddLazy(() => __tmp5);
-			MessageKind.EnumLiterals.AddLazy(() => __tmp6);
-			MessageKind.EnumLiterals.AddLazy(() => __tmp7);
-			MessageKind.EnumLiterals.AddLazy(() => __tmp8);
+			MessageKind.EnumLiterals.AddLazy(() => __tmp11);
+			MessageKind.EnumLiterals.AddLazy(() => __tmp12);
+			__tmp4.TypeLazy = () => MessageKind;
+			__tmp4.Name = "Sync";
+			__tmp4.Documentation = null;
+			__tmp4.EnumLazy = () => MessageKind;
 			__tmp5.TypeLazy = () => MessageKind;
-			__tmp5.Name = "Sync";
+			__tmp5.Name = "Async";
 			__tmp5.Documentation = null;
 			__tmp5.EnumLazy = () => MessageKind;
-			__tmp6.TypeLazy = () => MessageKind;
-			__tmp6.Name = "Async";
-			__tmp6.Documentation = null;
-			__tmp6.EnumLazy = () => MessageKind;
-			__tmp7.TypeLazy = () => MessageKind;
-			__tmp7.Name = "Return";
-			__tmp7.Documentation = null;
-			__tmp7.EnumLazy = () => MessageKind;
-			__tmp8.TypeLazy = () => MessageKind;
-			__tmp8.Name = "Create";
-			__tmp8.Documentation = null;
-			__tmp8.EnumLazy = () => MessageKind;
+			__tmp11.TypeLazy = () => MessageKind;
+			__tmp11.Name = "Return";
+			__tmp11.Documentation = null;
+			__tmp11.EnumLazy = () => MessageKind;
+			__tmp12.TypeLazy = () => MessageKind;
+			__tmp12.Name = "Create";
+			__tmp12.Documentation = null;
+			__tmp12.EnumLazy = () => MessageKind;
 			Message.MetaModelLazy = () => __tmp3;
 			Message.NamespaceLazy = () => __tmp2;
 			Message.Documentation = null;
@@ -2091,34 +2090,35 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 			FragmentKind.NamespaceLazy = () => __tmp2;
 			FragmentKind.Documentation = null;
 			FragmentKind.Name = "FragmentKind";
+			FragmentKind.EnumLiterals.AddLazy(() => __tmp6);
+			FragmentKind.EnumLiterals.AddLazy(() => __tmp7);
+			FragmentKind.EnumLiterals.AddLazy(() => __tmp8);
 			FragmentKind.EnumLiterals.AddLazy(() => __tmp9);
 			FragmentKind.EnumLiterals.AddLazy(() => __tmp10);
-			FragmentKind.EnumLiterals.AddLazy(() => __tmp11);
-			FragmentKind.EnumLiterals.AddLazy(() => __tmp12);
-			FragmentKind.EnumLiterals.AddLazy(() => __tmp13);
+			__tmp6.TypeLazy = () => FragmentKind;
+			__tmp6.Name = "Loop";
+			__tmp6.Documentation = null;
+			__tmp6.EnumLazy = () => FragmentKind;
+			__tmp7.TypeLazy = () => FragmentKind;
+			__tmp7.Name = "Opt";
+			__tmp7.Documentation = null;
+			__tmp7.EnumLazy = () => FragmentKind;
+			__tmp8.TypeLazy = () => FragmentKind;
+			__tmp8.Name = "Alt";
+			__tmp8.Documentation = null;
+			__tmp8.EnumLazy = () => FragmentKind;
 			__tmp9.TypeLazy = () => FragmentKind;
-			__tmp9.Name = "Loop";
+			__tmp9.Name = "Else";
 			__tmp9.Documentation = null;
 			__tmp9.EnumLazy = () => FragmentKind;
 			__tmp10.TypeLazy = () => FragmentKind;
-			__tmp10.Name = "Opt";
+			__tmp10.Name = "Ref";
 			__tmp10.Documentation = null;
 			__tmp10.EnumLazy = () => FragmentKind;
-			__tmp11.TypeLazy = () => FragmentKind;
-			__tmp11.Name = "Alt";
-			__tmp11.Documentation = null;
-			__tmp11.EnumLazy = () => FragmentKind;
-			__tmp12.TypeLazy = () => FragmentKind;
-			__tmp12.Name = "Else";
-			__tmp12.Documentation = null;
-			__tmp12.EnumLazy = () => FragmentKind;
-			__tmp13.TypeLazy = () => FragmentKind;
-			__tmp13.Name = "Ref";
-			__tmp13.Documentation = null;
-			__tmp13.EnumLazy = () => FragmentKind;
 			Fragment.MetaModelLazy = () => __tmp3;
 			Fragment.NamespaceLazy = () => __tmp2;
 			Fragment.Documentation = null;
+			Fragment.Attributes.Add(global::MetaDslx.Languages.Meta.Symbols.MetaInstance.ScopeAttribute.ToMutable());
 			Fragment.Name = "Fragment";
 			// Fragment.IsAbstract = null;
 			Fragment.SuperClasses.AddLazy(() => Declaration);
@@ -2135,7 +2135,7 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 			Fragment_Text.Documentation = null;
 			// Fragment_Text.Kind = null;
 			Fragment_Text.ClassLazy = () => Fragment;
-			Fragment_Declarations.TypeLazy = () => __tmp14;
+			Fragment_Declarations.TypeLazy = () => __tmp15;
 			Fragment_Declarations.Name = "Declarations";
 			Fragment_Declarations.Documentation = null;
 			Fragment_Declarations.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -2146,12 +2146,12 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 			MultiFragment.Name = "MultiFragment";
 			// MultiFragment.IsAbstract = null;
 			MultiFragment.SuperClasses.AddLazy(() => Declaration);
-			MultiFragment.Properties.AddLazy(() => MultiFragment_Fragment);
-			MultiFragment_Fragment.TypeLazy = () => __tmp15;
-			MultiFragment_Fragment.Name = "Fragment";
-			MultiFragment_Fragment.Documentation = null;
-			MultiFragment_Fragment.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
-			MultiFragment_Fragment.ClassLazy = () => MultiFragment;
+			MultiFragment.Properties.AddLazy(() => MultiFragment_Fragments);
+			MultiFragment_Fragments.TypeLazy = () => __tmp13;
+			MultiFragment_Fragments.Name = "Fragments";
+			MultiFragment_Fragments.Documentation = null;
+			MultiFragment_Fragments.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
+			MultiFragment_Fragments.ClassLazy = () => MultiFragment;
 			RefFragment.MetaModelLazy = () => __tmp3;
 			RefFragment.NamespaceLazy = () => __tmp2;
 			RefFragment.Documentation = null;
@@ -2161,12 +2161,12 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 			RefFragment.SuperClasses.AddLazy(() => Lifeline);
 			RefFragment.Properties.AddLazy(() => RefFragment_Input);
 			RefFragment.Properties.AddLazy(() => RefFragment_Output);
-			RefFragment_Input.TypeLazy = () => Lifeline;
+			RefFragment_Input.TypeLazy = () => Message;
 			RefFragment_Input.Name = "Input";
 			RefFragment_Input.Documentation = null;
 			// RefFragment_Input.Kind = null;
 			RefFragment_Input.ClassLazy = () => RefFragment;
-			RefFragment_Output.TypeLazy = () => Lifeline;
+			RefFragment_Output.TypeLazy = () => Message;
 			RefFragment_Output.Name = "Output";
 			RefFragment_Output.Documentation = null;
 			// RefFragment_Output.Kind = null;
@@ -2175,12 +2175,12 @@ namespace WebSequenceDiagramsModel.Symbols.Internal
 			__tmp3.Documentation = null;
 			__tmp3.Uri = null;
 			__tmp3.NamespaceLazy = () => __tmp2;
-			__tmp4.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp4.InnerTypeLazy = () => Declaration;
+			__tmp13.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
+			__tmp13.InnerTypeLazy = () => Fragment;
 			__tmp14.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
 			__tmp14.InnerTypeLazy = () => Declaration;
 			__tmp15.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp15.InnerTypeLazy = () => Fragment;
+			__tmp15.InnerTypeLazy = () => Declaration;
 	
 			foreach (global::MetaDslx.Modeling.MutableSymbol symbol in this.Model.Symbols)
 			{

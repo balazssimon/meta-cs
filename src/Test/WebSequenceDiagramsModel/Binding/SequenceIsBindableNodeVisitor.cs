@@ -91,37 +91,7 @@ namespace WebSequenceDiagramsModel.Binding
 			}
 		}
 		
-		public bool VisitTitleLine(TitleLineSyntax node)
-		{
-			var state = this.State;
-			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
-			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
-			try
-			{
-				if (state == BoundNodeFactoryState.InChild) return false;
-				if (node.Title != null)
-				{
-					if (state == BoundNodeFactoryState.InParent)
-					{
-						if (LookupPosition.IsInNode(this.Position, node.Title))
-						{
-							if (this.Visit(node.Title)) return true;
-						}
-					}
-					else
-					{
-						if (this.Visit(node.Title)) return true;
-					}
-				}
-				return false;
-			}
-			finally
-			{
-				this.State = state;
-			}
-		}
-		
-		public bool VisitDeclarationLine(DeclarationLineSyntax node)
+		public bool VisitLine(LineSyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -162,6 +132,20 @@ namespace WebSequenceDiagramsModel.Binding
 				if (state == BoundNodeFactoryState.InNode) 
 				{
 					return true;
+				}
+				if (node.Title != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Title))
+						{
+							if (this.Visit(node.Title)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.Title)) return true;
+					}
 				}
 				if (node.Destroy != null)
 				{
@@ -263,18 +247,18 @@ namespace WebSequenceDiagramsModel.Binding
 			try
 			{
 				if (state == BoundNodeFactoryState.InChild) return false;
-				if (node.Name != null)
+				if (node.Text != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Name))
+						if (LookupPosition.IsInNode(this.Position, node.Text))
 						{
-							if (this.Visit(node.Name)) return true;
+							return true;
 						}
 					}
 					else
 					{
-						if (this.Visit(node.Name)) return true;
+						if (this.Visit(node.Text)) return true;
 					}
 				}
 				return false;
@@ -750,18 +734,18 @@ namespace WebSequenceDiagramsModel.Binding
 			try
 			{
 				if (state == BoundNodeFactoryState.InChild) return false;
-				if (node.RefText != null)
+				if (node.SimpleBody != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.RefText))
+						if (LookupPosition.IsInNode(this.Position, node.SimpleBody))
 						{
 							return true;
 						}
 					}
 					else
 					{
-						if (this.Visit(node.RefText)) return true;
+						if (this.Visit(node.SimpleBody)) return true;
 					}
 				}
 				return false;
@@ -792,6 +776,20 @@ namespace WebSequenceDiagramsModel.Binding
 					else
 					{
 						if (this.Visit(node.RefInput)) return true;
+					}
+				}
+				if (node.SimpleBody != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.SimpleBody))
+						{
+							return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.SimpleBody)) return true;
 					}
 				}
 				if (node.RefOutput != null)

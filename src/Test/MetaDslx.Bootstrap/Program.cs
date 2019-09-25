@@ -347,7 +347,7 @@ namespace MetaDslx.Bootstrap
             MetaDescriptor.Initialize();
             UmlDescriptor.Initialize();
 
-            string text = File.ReadAllText(@"..\..\..\test1.wsd");
+            string text = File.ReadAllText(@"..\..\..\test2.wsd");
 
             SequenceLexer lexer = new SequenceLexer(new AntlrInputStream(text));
             while(!lexer._hitEOF)

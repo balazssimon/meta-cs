@@ -45,11 +45,18 @@ namespace WebSequenceDiagramsModel.Syntax
 		public const string LCrLf = nameof(LCrLf); // 18
 		public const string LLineEnd = nameof(LLineEnd); // 19
 		public const string LIdentifier = nameof(LIdentifier); // 20
-		public const string KEndNote = nameof(KEndNote); // 21
-		public const string KEndRef = nameof(KEndRef); // 22
-		public const string TColon = nameof(TColon); // 23
-		public const string TMinus = nameof(TMinus); // 24
-		public const string ArrowEndR = nameof(ArrowEndR); // 25
+		public const string NoteWhiteSpace = nameof(NoteWhiteSpace); // 21
+		public const string NoteLinesWhiteSpace = nameof(NoteLinesWhiteSpace); // 22
+		public const string KEndNote = nameof(KEndNote); // 23
+		public const string RefWhiteSpace = nameof(RefWhiteSpace); // 24
+		public const string RefLinesWhiteSpace = nameof(RefLinesWhiteSpace); // 25
+		public const string KEndRef = nameof(KEndRef); // 26
+		public const string RefEndWhiteSpace = nameof(RefEndWhiteSpace); // 27
+		public const string LineEndWhiteSpace = nameof(LineEndWhiteSpace); // 28
+		public const string ArrowEndWhiteSpace = nameof(ArrowEndWhiteSpace); // 29
+		public const string TColon = nameof(TColon); // 30
+		public const string TMinus = nameof(TMinus); // 31
+		public const string ArrowEndR = nameof(ArrowEndR); // 32
 
 		protected SequenceTokensSyntaxKind(string name)
             : base(name)

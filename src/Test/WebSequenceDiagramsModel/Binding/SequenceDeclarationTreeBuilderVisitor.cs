@@ -37,12 +37,20 @@ namespace WebSequenceDiagramsModel.Binding
 			this.BeginSymbolDef(node, symbolType: typeof(Symbols.Interaction));
 			try
 			{
-				if (node.Line != null)
+				this.BeginScope(node);
+				try
 				{
-					foreach (var child in node.Line)
+					if (node.Line != null)
 					{
-						this.Visit(child);
+						foreach (var child in node.Line)
+						{
+							this.Visit(child);
+						}
 					}
+				}
+				finally
+				{
+					this.EndScope();
 				}
 			}
 			finally
@@ -51,21 +59,17 @@ namespace WebSequenceDiagramsModel.Binding
 			}
 		}
 		
-		public virtual void VisitTitleLine(TitleLineSyntax node)
-		{
-			this.Visit(node.Title);
-		}
-		
-		public virtual void VisitDeclarationLine(DeclarationLineSyntax node)
+		public virtual void VisitLine(LineSyntax node)
 		{
 			this.Visit(node.Declaration);
 		}
 		
 		public virtual void VisitDeclaration(DeclarationSyntax node)
 		{
-			this.BeginScope(node);
+			this.BeginProperty(node, name: "Declarations");
 			try
 			{
+				this.Visit(node.Title);
 				this.Visit(node.Destroy);
 				this.Visit(node.Arrow);
 				this.Visit(node.Alt);
@@ -75,106 +79,98 @@ namespace WebSequenceDiagramsModel.Binding
 			}
 			finally
 			{
-				this.EndScope();
+				this.EndProperty();
 			}
 		}
 		
 		public virtual void VisitTitle(TitleSyntax node)
 		{
-			this.Visit(node.Name);
-		}
-		
-		public virtual void VisitArrow(ArrowSyntax node)
-		{
-			this.BeginProperty(node, name: "Declarations");
+			this.BeginProperty(node.Text, name: "Name");
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.Message));
-				try
-				{
-					this.BeginProperty(node.Source, name: "Source");
-					try
-					{
-						this.Visit(node.Source);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
-					this.BeginProperty(node.Type, name: "Kind");
-					try
-					{
-						this.Visit(node.Type);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
-					this.BeginProperty(node.Target, name: "Target");
-					try
-					{
-						this.Visit(node.Target);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
-					this.BeginProperty(node.Text, name: "Text");
-					try
-					{
-						this.Visit(node.Text);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
-				}
-				finally
-				{
-					this.EndSymbolDef();
-				}
+				this.Visit(node.Text);
 			}
 			finally
 			{
 				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitArrow(ArrowSyntax node)
+		{
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.Message));
+			try
+			{
+				this.BeginProperty(node.Source, name: "Source");
+				try
+				{
+					this.Visit(node.Source);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+				this.BeginProperty(node.Type, name: "Kind");
+				try
+				{
+					this.Visit(node.Type);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+				this.BeginProperty(node.Target, name: "Target");
+				try
+				{
+					this.Visit(node.Target);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+				this.BeginProperty(node.Text, name: "Text");
+				try
+				{
+					this.Visit(node.Text);
+				}
+				finally
+				{
+					this.EndProperty();
+				}
+			}
+			finally
+			{
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitDestroy(DestroySyntax node)
 		{
-			this.BeginProperty(node, name: "Declarations");
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.Destroy));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.Destroy));
+				this.BeginProperty(node.LifeLineName, name: "Lifeline");
 				try
 				{
-					this.BeginProperty(node.LifeLineName, name: "Lifeline");
-					try
-					{
-						this.Visit(node.LifeLineName);
-					}
-					finally
-					{
-						this.EndProperty();
-					}
+					this.Visit(node.LifeLineName);
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndProperty();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitAlt(AltSyntax node)
 		{
-			this.BeginProperty(node, name: "Declarations");
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.MultiFragment));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.MultiFragment));
+				this.BeginProperty(node, name: "Fragments");
 				try
 				{
 					this.Visit(node.AltFragment);
@@ -188,21 +184,21 @@ namespace WebSequenceDiagramsModel.Binding
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndProperty();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitAltFragment(AltFragmentSyntax node)
 		{
-			this.BeginProperty(node, name: "Fragments");
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.Fragment));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.Fragment));
+				this.BeginProperty(node, name: "Kind", value: Symbols.FragmentKind.Alt);
 				try
 				{
 					this.BeginProperty(node.Condition, name: "Text");
@@ -218,21 +214,21 @@ namespace WebSequenceDiagramsModel.Binding
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndProperty();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitElseFragment(ElseFragmentSyntax node)
 		{
-			this.BeginProperty(node, name: "Fragments");
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.Fragment));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.Fragment));
+				this.BeginProperty(node, name: "Kind", value: Symbols.FragmentKind.Else);
 				try
 				{
 					this.BeginProperty(node.Condition, name: "Text");
@@ -248,33 +244,33 @@ namespace WebSequenceDiagramsModel.Binding
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndProperty();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitLoop(LoopSyntax node)
 		{
-			this.BeginProperty(node, name: "Declarations");
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.Fragment));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.Fragment));
+				this.BeginProperty(node, name: "Kind", value: Symbols.FragmentKind.Loop);
 				try
 				{
 					this.Visit(node.LoopFragment);
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndProperty();
+				this.EndSymbolDef();
 			}
 		}
 		
@@ -294,22 +290,22 @@ namespace WebSequenceDiagramsModel.Binding
 		
 		public virtual void VisitOpt(OptSyntax node)
 		{
-			this.BeginProperty(node, name: "Declarations");
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.Fragment));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.Fragment));
+				this.BeginProperty(node, name: "Kind", value: Symbols.FragmentKind.Opt);
 				try
 				{
 					this.Visit(node.OptFragment);
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndProperty();
+				this.EndSymbolDef();
 			}
 		}
 		
@@ -329,10 +325,10 @@ namespace WebSequenceDiagramsModel.Binding
 		
 		public virtual void VisitRef(RefSyntax node)
 		{
-			this.BeginProperty(node, name: "Declarations");
+			this.BeginSymbolDef(node, symbolType: typeof(Symbols.RefFragment));
 			try
 			{
-				this.BeginSymbolDef(node, symbolType: typeof(Symbols.RefFragment));
+				this.BeginProperty(node, name: "Kind", value: Symbols.FragmentKind.Ref);
 				try
 				{
 					this.Visit(node.SimpleRefFragment);
@@ -340,21 +336,21 @@ namespace WebSequenceDiagramsModel.Binding
 				}
 				finally
 				{
-					this.EndSymbolDef();
+					this.EndProperty();
 				}
 			}
 			finally
 			{
-				this.EndProperty();
+				this.EndSymbolDef();
 			}
 		}
 		
 		public virtual void VisitSimpleRefFragment(SimpleRefFragmentSyntax node)
 		{
-			this.BeginProperty(node.RefText, name: "Text");
+			this.BeginProperty(node.SimpleBody, name: "Text");
 			try
 			{
-				this.Visit(node.RefText);
+				this.Visit(node.SimpleBody);
 			}
 			finally
 			{
@@ -365,6 +361,15 @@ namespace WebSequenceDiagramsModel.Binding
 		public virtual void VisitMessageRefFragment(MessageRefFragmentSyntax node)
 		{
 			this.Visit(node.RefInput);
+			this.BeginProperty(node.SimpleBody, name: "Text");
+			try
+			{
+				this.Visit(node.SimpleBody);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
 			this.Visit(node.RefOutput);
 		}
 		

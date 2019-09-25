@@ -19,13 +19,13 @@ namespace WebSequenceDiagramsModel.Binding
 {
     public class SequenceBinderFactoryVisitor : BinderFactoryVisitor, ISequenceSyntaxVisitor<Binder>
     {
+		public static object UseText = new object();
 		public static object UseSource = new object();
 		public static object UseType = new object();
 		public static object UseTarget = new object();
-		public static object UseText = new object();
 		public static object UseLifeLineName = new object();
 		public static object UseCondition = new object();
-		public static object UseRefText = new object();
+		public static object UseSimpleBody = new object();
 		public static object UseSourceType = new object();
 		public static object UseMessage = new object();
 		public static object UseTargetType = new object();
@@ -41,13 +41,13 @@ namespace WebSequenceDiagramsModel.Binding
 		public static object UseOpt = new object();
 		public static object UseLoop = new object();
 		public static object UseRef = new object();
-		public static object UseName = new object();
 		public static object UseAltFragment = new object();
 		public static object UseElseFragment = new object();
 		public static object UseRefInput = new object();
 		public static object UseRefOutput = new object();
 		public static object UseLine = new object();
 		public static object UseArrowType = new object();
+		public static object UseName = new object();
 		public static object UseIdentifier = new object();
 		public static object UseTitle = new object();
 		public static object UseFragmentBody = new object();
@@ -101,28 +101,13 @@ namespace WebSequenceDiagramsModel.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.Interaction));
+				resultBinder = this.CreateScopeBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
 		}
 		
-		public Binder VisitTitleLine(TitleLineSyntax parent)
-		{
-		    if (!parent.FullSpan.Contains(this.Position))
-		    {
-		        return VisitParent(parent);
-		    }
-			object use = null;
-			Binder resultBinder = null;
-			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
-			{
-				resultBinder = VisitParent(parent);
-				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-			}
-			return resultBinder;
-		}
-		
-		public Binder VisitDeclarationLine(DeclarationLineSyntax parent)
+		public Binder VisitLine(LineSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
 		    {
@@ -149,7 +134,7 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateScopeBinder(resultBinder, parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -162,11 +147,20 @@ namespace WebSequenceDiagramsModel.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.Text)) use = UseText;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseText)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, parent.Text, name: "Name");
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}
@@ -189,7 +183,6 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.Message));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseSource)
@@ -232,7 +225,6 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.Destroy));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseLifeLineName)
@@ -255,8 +247,8 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.MultiFragment));
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Fragments");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -277,9 +269,8 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Fragments");
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.Fragment));
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: FragmentKind.Alt);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: Symbols.FragmentKind.Alt);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseCondition)
 				{
@@ -306,9 +297,8 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Fragments");
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.Fragment));
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: FragmentKind.Else);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: Symbols.FragmentKind.Else);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseCondition)
 				{
@@ -331,9 +321,8 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.Fragment));
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: FragmentKind.Loop);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: Symbols.FragmentKind.Loop);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -376,9 +365,8 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.Fragment));
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: FragmentKind.Opt);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: Symbols.FragmentKind.Opt);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -421,9 +409,8 @@ namespace WebSequenceDiagramsModel.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Declarations");
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, symbolType: typeof(Symbols.RefFragment));
-				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: FragmentKind.Ref);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Kind", value: Symbols.FragmentKind.Ref);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -438,17 +425,17 @@ namespace WebSequenceDiagramsModel.Binding
 			object use = null;
 			if (this.ForChild)
 			{
-				if (LookupPosition.IsInNode(this.Position, parent.RefText)) use = UseRefText;
+				if (LookupPosition.IsInNode(this.Position, parent.SimpleBody)) use = UseSimpleBody;
 			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseRefText)
+				if (use == UseSimpleBody)
 				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, parent.RefText, name: "Text");
-					resultBinder = this.CreateValueBinder(resultBinder, parent.RefText);
+					resultBinder = this.CreatePropertyBinder(resultBinder, parent.SimpleBody, name: "Text");
+					resultBinder = this.CreateValueBinder(resultBinder, parent.SimpleBody);
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
 			}
@@ -462,11 +449,21 @@ namespace WebSequenceDiagramsModel.Binding
 		        return VisitParent(parent);
 		    }
 			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.SimpleBody)) use = UseSimpleBody;
+			}
 			Binder resultBinder = null;
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseSimpleBody)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, parent.SimpleBody, name: "Text");
+					resultBinder = this.CreateValueBinder(resultBinder, parent.SimpleBody);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 			}
 			return resultBinder;
 		}

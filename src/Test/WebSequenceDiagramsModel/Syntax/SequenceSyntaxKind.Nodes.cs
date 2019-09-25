@@ -27,8 +27,7 @@ namespace WebSequenceDiagramsModel.Syntax
 		// Rules:
 		public const string Main = nameof(Main);
 		public const string Interaction = nameof(Interaction);
-		public const string TitleLine = nameof(TitleLine);
-		public const string DeclarationLine = nameof(DeclarationLine);
+		public const string Line = nameof(Line);
 		public const string Declaration = nameof(Declaration);
 		public const string Title = nameof(Title);
 		public const string Arrow = nameof(Arrow);

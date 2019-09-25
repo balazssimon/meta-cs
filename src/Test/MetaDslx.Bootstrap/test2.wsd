@@ -1,33 +1,33 @@
 title Authentication Sequence
 
-Alice a- >g->Bob: Authentication Request->aa:aab
-note right of Bob: Bob thinks about it
-Bob->Alice: Authentication Response
+A->B: Authentication Request
+note right of B: B thinks about it
+B->A: Authentication Response
 
-A->*B: text
-B->A: text
-B-->A: text
-B->>A: text
-B-->>A: text
+A->*B: textACreatesB
+B->A: textASyncB
+B-->A: textAReturnB
+B->>A: textAAsyncB
+B-->>A: textAReturnB
 destroy B
 
-alt text1
-    A->B: "text"
-else text2
-    A->B: text
-else text3
-    A->B: text
+alt textAlt1
+    A->B: textAlt1AB
+else textAlt2
+    A->B: textAlt2AB
+else textAlt3
+    A->B: textAlt3AB
 end
 
-opt text
-    A->B: text
+opt textOpt
+    A->B: textOptAB
 end
 
-loop text
-    A->B: text
+loop textLoop
+    A->B: textLoopAB
 end
 
-A->A: text
+A->A: textAA
 
 note over A,B: text1
 note left of A: text2
@@ -36,10 +36,10 @@ note right of A
     text
 end note
 
-A->ref over B: input
-    text
-end ref -> A: output
+A->ref over B: refInput1
+    refText1
+end ref -->> B: refOutput1
 
-ref over B: input
-    text
+ref over B: refInput2
+    refText2
 end ref

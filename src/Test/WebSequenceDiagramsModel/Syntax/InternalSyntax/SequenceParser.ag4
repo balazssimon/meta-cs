@@ -8,15 +8,15 @@ options {
 main : interaction EOF;
 
 $SymbolDef(Interaction)
+$Scope
 interaction : line*;
 
-line 
-	: title LCrLf #titleLine
-	| declaration? LCrLf #declarationLine;
+line : declaration? LCrLf;
 
-$Scope
+$Property(Declarations)
 declaration
-	: destroy
+	: title
+	| destroy
 	| arrow
 	| alt
 	| opt
@@ -25,49 +25,42 @@ declaration
 	| note
 	;
 
-title: KTitle name?;
+title: KTitle $Property(Name) text?;
 
-$Property(Declarations)
 $SymbolDef(Message)
 arrow: $Property(Source) source=lifeLineName $Property(Kind) type=arrowType $Property(Target) target=lifeLineName TColon $Property(Text) $Value text?;
 
-$Property(Declarations)
 $SymbolDef(Destroy)
 destroy: KDestroy $Property(Lifeline) lifeLineName?;
 
-$Property(Declarations)
 $SymbolDef(MultiFragment)
+$Property(Fragments)
 alt: altFragment elseFragment* end;
 
-$Property(Fragments)
 $SymbolDef(Fragment)
-$Property(name=Kind, value=FragmentKind.Alt)
+$Property(name=Kind, value=Symbols.FragmentKind.Alt)
 altFragment: KAlt $Property(Text) $Value condition=text? LCrLf fragmentBody;
 
-$Property(Fragments)
 $SymbolDef(Fragment)
-$Property(name=Kind, value=FragmentKind.Else)
+$Property(name=Kind, value=Symbols.FragmentKind.Else)
 elseFragment: KElse $Property(Text) $Value condition=text? LCrLf fragmentBody;
 
-$Property(Declarations)
 $SymbolDef(Fragment)
-$Property(name=Kind, value=FragmentKind.Loop)
+$Property(name=Kind, value=Symbols.FragmentKind.Loop)
 loop: loopFragment end;
 loopFragment: KLoop $Property(Text) $Value condition=text? LCrLf fragmentBody;
 
-$Property(Declarations)
 $SymbolDef(Fragment)
-$Property(name=Kind, value=FragmentKind.Opt)
+$Property(name=Kind, value=Symbols.FragmentKind.Opt)
 opt: optFragment end;
 optFragment: KOpt $Property(Text) $Value condition=text? LCrLf fragmentBody;
 
-$Property(Declarations)
 $SymbolDef(RefFragment)
-$Property(name=Kind, value=FragmentKind.Ref)
+$Property(name=Kind, value=Symbols.FragmentKind.Ref)
 ref: simpleRefFragment | messageRefFragment;
 
-simpleRefFragment: KRef (over=text TColon)? $Property(Text) $Value refText=text? LCrLf simpleBody KEndRef;
-messageRefFragment: refInput simpleBody refOutput;
+simpleRefFragment: KRef (over=text TColon)? refText=text? LCrLf $Property(Text) $Value simpleBody KEndRef;
+messageRefFragment: refInput $Property(Text) $Value simpleBody refOutput;
 
 $Property(Input)
 $SymbolDef(Message)

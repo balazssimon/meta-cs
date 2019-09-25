@@ -33,22 +33,6 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface ISequenceParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by the <c>titleLine</c>
-	/// labeled alternative in <see cref="SequenceParser.line"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTitleLine([NotNull] SequenceParser.TitleLineContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by the <c>declarationLine</c>
-	/// labeled alternative in <see cref="SequenceParser.line"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitDeclarationLine([NotNull] SequenceParser.DeclarationLineContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="SequenceParser.main"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

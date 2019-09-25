@@ -229,115 +229,16 @@ namespace WebSequenceDiagramsModel.Syntax
 	    }
 	}
 	
-	public abstract class LineSyntax : SequenceSyntaxNode
-	{
-	    protected LineSyntax(InternalSyntaxNode green, SequenceSyntaxTree syntaxTree, int position)
-	        : base(green, syntaxTree, position)
-	    {
-	    }
-	
-	    protected LineSyntax(InternalSyntaxNode green, SequenceSyntaxNode parent, int position)
-	        : base(green, parent, position)
-	    {
-	    }
-	}
-	
-	public sealed class TitleLineSyntax : LineSyntax
-	{
-	    private TitleSyntax title;
-	
-	    public TitleLineSyntax(InternalSyntaxNode green, SequenceSyntaxTree syntaxTree, int position)
-	        : base(green, syntaxTree, position)
-	    {
-	    }
-	
-	    public TitleLineSyntax(InternalSyntaxNode green, SequenceSyntaxNode parent, int position)
-	        : base(green, parent, position)
-	    {
-	    }
-	
-	    public TitleSyntax Title 
-		{ 
-			get { return this.GetRed(ref this.title, 0); } 
-		}
-	    public SyntaxToken LCrLf 
-		{ 
-			get 
-			{ 
-				var green = (global::WebSequenceDiagramsModel.Syntax.InternalSyntax.TitleLineGreen)this.Green;
-				var greenToken = green.LCrLf;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
-			}
-		}
-	
-	    public override SyntaxNode GetNodeSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 0: return this.GetRed(ref this.title, 0);
-				default: return null;
-	        }
-	    }
-	
-	    public override SyntaxNode GetCachedSlot(int index)
-	    {
-	        switch (index)
-	        {
-				case 0: return this.title;
-				default: return null;
-	        }
-	    }
-	
-	    public TitleLineSyntax WithTitle(TitleSyntax title)
-		{
-			return this.Update(Title, this.LCrLf);
-		}
-	
-	    public TitleLineSyntax WithLCrLf(SyntaxToken lCrLf)
-		{
-			return this.Update(this.Title, LCrLf);
-		}
-	
-	    public TitleLineSyntax Update(TitleSyntax title, SyntaxToken lCrLf)
-	    {
-	        if (this.Title != title ||
-				this.LCrLf != lCrLf)
-	        {
-	            var newNode = SequenceLanguage.Instance.SyntaxFactory.TitleLine(title, lCrLf);
-	            var annotations = this.GetAnnotations();
-	            if (annotations != null && annotations.Length > 0)
-	               newNode = newNode.WithAnnotations(annotations);
-				return (TitleLineSyntax)newNode;
-	        }
-	        return this;
-	    }
-	
-	    public override TResult Accept<TArg, TResult>(ISequenceSyntaxVisitor<TArg, TResult> visitor, TArg argument)
-	    {
-	        return visitor.VisitTitleLine(this, argument);
-	    }
-	
-	    public override TResult Accept<TResult>(ISequenceSyntaxVisitor<TResult> visitor)
-	    {
-	        return visitor.VisitTitleLine(this);
-	    }
-	
-	    public override void Accept(ISequenceSyntaxVisitor visitor)
-	    {
-	        visitor.VisitTitleLine(this);
-	    }
-	}
-	
-	public sealed class DeclarationLineSyntax : LineSyntax
+	public sealed class LineSyntax : SequenceSyntaxNode
 	{
 	    private DeclarationSyntax declaration;
 	
-	    public DeclarationLineSyntax(InternalSyntaxNode green, SequenceSyntaxTree syntaxTree, int position)
+	    public LineSyntax(InternalSyntaxNode green, SequenceSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
 	    {
 	    }
 	
-	    public DeclarationLineSyntax(InternalSyntaxNode green, SequenceSyntaxNode parent, int position)
+	    public LineSyntax(InternalSyntaxNode green, SequenceSyntaxNode parent, int position)
 	        : base(green, parent, position)
 	    {
 	    }
@@ -350,7 +251,7 @@ namespace WebSequenceDiagramsModel.Syntax
 		{ 
 			get 
 			{ 
-				var green = (global::WebSequenceDiagramsModel.Syntax.InternalSyntax.DeclarationLineGreen)this.Green;
+				var green = (global::WebSequenceDiagramsModel.Syntax.InternalSyntax.LineGreen)this.Green;
 				var greenToken = green.LCrLf;
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
 			}
@@ -374,48 +275,49 @@ namespace WebSequenceDiagramsModel.Syntax
 	        }
 	    }
 	
-	    public DeclarationLineSyntax WithDeclaration(DeclarationSyntax declaration)
+	    public LineSyntax WithDeclaration(DeclarationSyntax declaration)
 		{
 			return this.Update(Declaration, this.LCrLf);
 		}
 	
-	    public DeclarationLineSyntax WithLCrLf(SyntaxToken lCrLf)
+	    public LineSyntax WithLCrLf(SyntaxToken lCrLf)
 		{
 			return this.Update(this.Declaration, LCrLf);
 		}
 	
-	    public DeclarationLineSyntax Update(DeclarationSyntax declaration, SyntaxToken lCrLf)
+	    public LineSyntax Update(DeclarationSyntax declaration, SyntaxToken lCrLf)
 	    {
 	        if (this.Declaration != declaration ||
 				this.LCrLf != lCrLf)
 	        {
-	            var newNode = SequenceLanguage.Instance.SyntaxFactory.DeclarationLine(declaration, lCrLf);
+	            var newNode = SequenceLanguage.Instance.SyntaxFactory.Line(declaration, lCrLf);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
-				return (DeclarationLineSyntax)newNode;
+				return (LineSyntax)newNode;
 	        }
 	        return this;
 	    }
 	
 	    public override TResult Accept<TArg, TResult>(ISequenceSyntaxVisitor<TArg, TResult> visitor, TArg argument)
 	    {
-	        return visitor.VisitDeclarationLine(this, argument);
+	        return visitor.VisitLine(this, argument);
 	    }
 	
 	    public override TResult Accept<TResult>(ISequenceSyntaxVisitor<TResult> visitor)
 	    {
-	        return visitor.VisitDeclarationLine(this);
+	        return visitor.VisitLine(this);
 	    }
 	
 	    public override void Accept(ISequenceSyntaxVisitor visitor)
 	    {
-	        visitor.VisitDeclarationLine(this);
+	        visitor.VisitLine(this);
 	    }
 	}
 	
 	public sealed class DeclarationSyntax : SequenceSyntaxNode
 	{
+	    private TitleSyntax title;
 	    private DestroySyntax destroy;
 	    private ArrowSyntax arrow;
 	    private AltSyntax alt;
@@ -434,46 +336,51 @@ namespace WebSequenceDiagramsModel.Syntax
 	    {
 	    }
 	
+	    public TitleSyntax Title 
+		{ 
+			get { return this.GetRed(ref this.title, 0); } 
+		}
 	    public DestroySyntax Destroy 
 		{ 
-			get { return this.GetRed(ref this.destroy, 0); } 
+			get { return this.GetRed(ref this.destroy, 1); } 
 		}
 	    public ArrowSyntax Arrow 
 		{ 
-			get { return this.GetRed(ref this.arrow, 1); } 
+			get { return this.GetRed(ref this.arrow, 2); } 
 		}
 	    public AltSyntax Alt 
 		{ 
-			get { return this.GetRed(ref this.alt, 2); } 
+			get { return this.GetRed(ref this.alt, 3); } 
 		}
 	    public OptSyntax Opt 
 		{ 
-			get { return this.GetRed(ref this.opt, 3); } 
+			get { return this.GetRed(ref this.opt, 4); } 
 		}
 	    public LoopSyntax Loop 
 		{ 
-			get { return this.GetRed(ref this.loop, 4); } 
+			get { return this.GetRed(ref this.loop, 5); } 
 		}
 	    public RefSyntax Ref 
 		{ 
-			get { return this.GetRed(ref this._ref, 5); } 
+			get { return this.GetRed(ref this._ref, 6); } 
 		}
 	    public NoteSyntax Note 
 		{ 
-			get { return this.GetRed(ref this.note, 6); } 
+			get { return this.GetRed(ref this.note, 7); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
 	        switch (index)
 	        {
-				case 0: return this.GetRed(ref this.destroy, 0);
-				case 1: return this.GetRed(ref this.arrow, 1);
-				case 2: return this.GetRed(ref this.alt, 2);
-				case 3: return this.GetRed(ref this.opt, 3);
-				case 4: return this.GetRed(ref this.loop, 4);
-				case 5: return this.GetRed(ref this._ref, 5);
-				case 6: return this.GetRed(ref this.note, 6);
+				case 0: return this.GetRed(ref this.title, 0);
+				case 1: return this.GetRed(ref this.destroy, 1);
+				case 2: return this.GetRed(ref this.arrow, 2);
+				case 3: return this.GetRed(ref this.alt, 3);
+				case 4: return this.GetRed(ref this.opt, 4);
+				case 5: return this.GetRed(ref this.loop, 5);
+				case 6: return this.GetRed(ref this._ref, 6);
+				case 7: return this.GetRed(ref this.note, 7);
 				default: return null;
 	        }
 	    }
@@ -482,16 +389,22 @@ namespace WebSequenceDiagramsModel.Syntax
 	    {
 	        switch (index)
 	        {
-				case 0: return this.destroy;
-				case 1: return this.arrow;
-				case 2: return this.alt;
-				case 3: return this.opt;
-				case 4: return this.loop;
-				case 5: return this._ref;
-				case 6: return this.note;
+				case 0: return this.title;
+				case 1: return this.destroy;
+				case 2: return this.arrow;
+				case 3: return this.alt;
+				case 4: return this.opt;
+				case 5: return this.loop;
+				case 6: return this._ref;
+				case 7: return this.note;
 				default: return null;
 	        }
 	    }
+	
+	    public DeclarationSyntax WithTitle(TitleSyntax title)
+		{
+			return this.Update(title);
+		}
 	
 	    public DeclarationSyntax WithDestroy(DestroySyntax destroy)
 		{
@@ -527,6 +440,19 @@ namespace WebSequenceDiagramsModel.Syntax
 		{
 			return this.Update(note);
 		}
+	
+	    public DeclarationSyntax Update(TitleSyntax title)
+	    {
+	        if (this.Title != title)
+	        {
+	            var newNode = SequenceLanguage.Instance.SyntaxFactory.Declaration(title);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (DeclarationSyntax)newNode;
+	        }
+	        return this;
+	    }
 	
 	    public DeclarationSyntax Update(DestroySyntax destroy)
 	    {
@@ -637,7 +563,7 @@ namespace WebSequenceDiagramsModel.Syntax
 	
 	public sealed class TitleSyntax : SequenceSyntaxNode
 	{
-	    private NameSyntax name;
+	    private TextSyntax text;
 	
 	    public TitleSyntax(InternalSyntaxNode green, SequenceSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -658,16 +584,16 @@ namespace WebSequenceDiagramsModel.Syntax
 				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
 			}
 		}
-	    public NameSyntax Name 
+	    public TextSyntax Text 
 		{ 
-			get { return this.GetRed(ref this.name, 1); } 
+			get { return this.GetRed(ref this.text, 1); } 
 		}
 	
 	    public override SyntaxNode GetNodeSlot(int index)
 	    {
 	        switch (index)
 	        {
-				case 1: return this.GetRed(ref this.name, 1);
+				case 1: return this.GetRed(ref this.text, 1);
 				default: return null;
 	        }
 	    }
@@ -676,27 +602,27 @@ namespace WebSequenceDiagramsModel.Syntax
 	    {
 	        switch (index)
 	        {
-				case 1: return this.name;
+				case 1: return this.text;
 				default: return null;
 	        }
 	    }
 	
 	    public TitleSyntax WithKTitle(SyntaxToken kTitle)
 		{
-			return this.Update(KTitle, this.Name);
+			return this.Update(KTitle, this.Text);
 		}
 	
-	    public TitleSyntax WithName(NameSyntax name)
+	    public TitleSyntax WithText(TextSyntax text)
 		{
-			return this.Update(this.KTitle, Name);
+			return this.Update(this.KTitle, Text);
 		}
 	
-	    public TitleSyntax Update(SyntaxToken kTitle, NameSyntax name)
+	    public TitleSyntax Update(SyntaxToken kTitle, TextSyntax text)
 	    {
 	        if (this.KTitle != kTitle ||
-				this.Name != name)
+				this.Text != text)
 	        {
-	            var newNode = SequenceLanguage.Instance.SyntaxFactory.Title(kTitle, name);
+	            var newNode = SequenceLanguage.Instance.SyntaxFactory.Title(kTitle, text);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -3408,9 +3334,7 @@ namespace WebSequenceDiagramsModel
 		
 		void VisitInteraction(InteractionSyntax node);
 		
-		void VisitTitleLine(TitleLineSyntax node);
-		
-		void VisitDeclarationLine(DeclarationLineSyntax node);
+		void VisitLine(LineSyntax node);
 		
 		void VisitDeclaration(DeclarationSyntax node);
 		
@@ -3484,12 +3408,7 @@ namespace WebSequenceDiagramsModel
 		    this.DefaultVisit(node);
 		}
 		
-		public virtual void VisitTitleLine(TitleLineSyntax node)
-		{
-		    this.DefaultVisit(node);
-		}
-		
-		public virtual void VisitDeclarationLine(DeclarationLineSyntax node)
+		public virtual void VisitLine(LineSyntax node)
 		{
 		    this.DefaultVisit(node);
 		}
@@ -3649,9 +3568,7 @@ namespace WebSequenceDiagramsModel
 		
 		TResult VisitInteraction(InteractionSyntax node, TArg argument);
 		
-		TResult VisitTitleLine(TitleLineSyntax node, TArg argument);
-		
-		TResult VisitDeclarationLine(DeclarationLineSyntax node, TArg argument);
+		TResult VisitLine(LineSyntax node, TArg argument);
 		
 		TResult VisitDeclaration(DeclarationSyntax node, TArg argument);
 		
@@ -3725,12 +3642,7 @@ namespace WebSequenceDiagramsModel
 		    return this.DefaultVisit(node, argument);
 		}
 		
-		public virtual TResult VisitTitleLine(TitleLineSyntax node, TArg argument)
-		{
-		    return this.DefaultVisit(node, argument);
-		}
-		
-		public virtual TResult VisitDeclarationLine(DeclarationLineSyntax node, TArg argument)
+		public virtual TResult VisitLine(LineSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
 		}
@@ -3888,9 +3800,7 @@ namespace WebSequenceDiagramsModel
 		
 		TResult VisitInteraction(InteractionSyntax node);
 		
-		TResult VisitTitleLine(TitleLineSyntax node);
-		
-		TResult VisitDeclarationLine(DeclarationLineSyntax node);
+		TResult VisitLine(LineSyntax node);
 		
 		TResult VisitDeclaration(DeclarationSyntax node);
 		
@@ -3964,12 +3874,7 @@ namespace WebSequenceDiagramsModel
 		    return this.DefaultVisit(node);
 		}
 		
-		public virtual TResult VisitTitleLine(TitleLineSyntax node)
-		{
-		    return this.DefaultVisit(node);
-		}
-		
-		public virtual TResult VisitDeclarationLine(DeclarationLineSyntax node)
+		public virtual TResult VisitLine(LineSyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -4140,14 +4045,7 @@ namespace WebSequenceDiagramsModel
 			return node.Update(line);
 		}
 		
-		public virtual SyntaxNode VisitTitleLine(TitleLineSyntax node)
-		{
-		    var title = (TitleSyntax)this.Visit(node.Title);
-		    var lCrLf = this.VisitToken(node.LCrLf);
-			return node.Update(title, lCrLf);
-		}
-		
-		public virtual SyntaxNode VisitDeclarationLine(DeclarationLineSyntax node)
+		public virtual SyntaxNode VisitLine(LineSyntax node)
 		{
 		    var declaration = (DeclarationSyntax)this.Visit(node.Declaration);
 		    var lCrLf = this.VisitToken(node.LCrLf);
@@ -4156,6 +4054,12 @@ namespace WebSequenceDiagramsModel
 		
 		public virtual SyntaxNode VisitDeclaration(DeclarationSyntax node)
 		{
+			var oldTitle = node.Title;
+			if (oldTitle != null)
+			{
+			    var newTitle = (TitleSyntax)this.Visit(oldTitle);
+				return node.Update(newTitle);
+			}
 			var oldDestroy = node.Destroy;
 			if (oldDestroy != null)
 			{
@@ -4204,8 +4108,8 @@ namespace WebSequenceDiagramsModel
 		public virtual SyntaxNode VisitTitle(TitleSyntax node)
 		{
 		    var kTitle = this.VisitToken(node.KTitle);
-		    var name = (NameSyntax)this.Visit(node.Name);
-			return node.Update(kTitle, name);
+		    var text = (TextSyntax)this.Visit(node.Text);
+			return node.Update(kTitle, text);
 		}
 		
 		public virtual SyntaxNode VisitArrow(ArrowSyntax node)
@@ -4612,6 +4516,76 @@ namespace WebSequenceDiagramsModel
 	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.LIdentifier(text, value));
 	    }
 	
+	    public SyntaxToken NoteWhiteSpace(string text)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.NoteWhiteSpace(text));
+	    }
+	
+	    public SyntaxToken NoteWhiteSpace(string text, object value)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.NoteWhiteSpace(text, value));
+	    }
+	
+	    public SyntaxToken NoteLinesWhiteSpace(string text)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.NoteLinesWhiteSpace(text));
+	    }
+	
+	    public SyntaxToken NoteLinesWhiteSpace(string text, object value)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.NoteLinesWhiteSpace(text, value));
+	    }
+	
+	    public SyntaxToken RefWhiteSpace(string text)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.RefWhiteSpace(text));
+	    }
+	
+	    public SyntaxToken RefWhiteSpace(string text, object value)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.RefWhiteSpace(text, value));
+	    }
+	
+	    public SyntaxToken RefLinesWhiteSpace(string text)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.RefLinesWhiteSpace(text));
+	    }
+	
+	    public SyntaxToken RefLinesWhiteSpace(string text, object value)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.RefLinesWhiteSpace(text, value));
+	    }
+	
+	    public SyntaxToken RefEndWhiteSpace(string text)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.RefEndWhiteSpace(text));
+	    }
+	
+	    public SyntaxToken RefEndWhiteSpace(string text, object value)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.RefEndWhiteSpace(text, value));
+	    }
+	
+	    public SyntaxToken LineEndWhiteSpace(string text)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.LineEndWhiteSpace(text));
+	    }
+	
+	    public SyntaxToken LineEndWhiteSpace(string text, object value)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.LineEndWhiteSpace(text, value));
+	    }
+	
+	    public SyntaxToken ArrowEndWhiteSpace(string text)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.ArrowEndWhiteSpace(text));
+	    }
+	
+	    public SyntaxToken ArrowEndWhiteSpace(string text, object value)
+	    {
+	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.ArrowEndWhiteSpace(text, value));
+	    }
+	
 	    public SyntaxToken TMinus(string text)
 	    {
 	        return new SyntaxToken(SequenceLanguage.Instance.InternalSyntaxFactory.TMinus(text));
@@ -4640,24 +4614,22 @@ namespace WebSequenceDiagramsModel
 			return this.Interaction(default);
 		}
 		
-		public TitleLineSyntax TitleLine(TitleSyntax title, SyntaxToken lCrLf)
+		public LineSyntax Line(DeclarationSyntax declaration, SyntaxToken lCrLf)
+		{
+		    if (lCrLf == null) throw new ArgumentNullException(nameof(lCrLf));
+		    if (lCrLf.GetKind() != SequenceSyntaxKind.LCrLf) throw new ArgumentException(nameof(lCrLf));
+		    return (LineSyntax)SequenceLanguage.Instance.InternalSyntaxFactory.Line(declaration == null ? null : (Syntax.InternalSyntax.DeclarationGreen)declaration.Green, (InternalSyntaxToken)lCrLf.Node).CreateRed();
+		}
+		
+		public LineSyntax Line(SyntaxToken lCrLf)
+		{
+			return this.Line(default, lCrLf);
+		}
+		
+		public DeclarationSyntax Declaration(TitleSyntax title)
 		{
 		    if (title == null) throw new ArgumentNullException(nameof(title));
-		    if (lCrLf == null) throw new ArgumentNullException(nameof(lCrLf));
-		    if (lCrLf.GetKind() != SequenceSyntaxKind.LCrLf) throw new ArgumentException(nameof(lCrLf));
-		    return (TitleLineSyntax)SequenceLanguage.Instance.InternalSyntaxFactory.TitleLine((Syntax.InternalSyntax.TitleGreen)title.Green, (InternalSyntaxToken)lCrLf.Node).CreateRed();
-		}
-		
-		public DeclarationLineSyntax DeclarationLine(DeclarationSyntax declaration, SyntaxToken lCrLf)
-		{
-		    if (lCrLf == null) throw new ArgumentNullException(nameof(lCrLf));
-		    if (lCrLf.GetKind() != SequenceSyntaxKind.LCrLf) throw new ArgumentException(nameof(lCrLf));
-		    return (DeclarationLineSyntax)SequenceLanguage.Instance.InternalSyntaxFactory.DeclarationLine(declaration == null ? null : (Syntax.InternalSyntax.DeclarationGreen)declaration.Green, (InternalSyntaxToken)lCrLf.Node).CreateRed();
-		}
-		
-		public DeclarationLineSyntax DeclarationLine(SyntaxToken lCrLf)
-		{
-			return this.DeclarationLine(default, lCrLf);
+		    return (DeclarationSyntax)SequenceLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.TitleGreen)title.Green).CreateRed();
 		}
 		
 		public DeclarationSyntax Declaration(DestroySyntax destroy)
@@ -4702,11 +4674,11 @@ namespace WebSequenceDiagramsModel
 		    return (DeclarationSyntax)SequenceLanguage.Instance.InternalSyntaxFactory.Declaration((Syntax.InternalSyntax.NoteGreen)note.Green).CreateRed();
 		}
 		
-		public TitleSyntax Title(SyntaxToken kTitle, NameSyntax name)
+		public TitleSyntax Title(SyntaxToken kTitle, TextSyntax text)
 		{
 		    if (kTitle == null) throw new ArgumentNullException(nameof(kTitle));
 		    if (kTitle.GetKind() != SequenceSyntaxKind.KTitle) throw new ArgumentException(nameof(kTitle));
-		    return (TitleSyntax)SequenceLanguage.Instance.InternalSyntaxFactory.Title((InternalSyntaxToken)kTitle.Node, name == null ? null : (Syntax.InternalSyntax.NameGreen)name.Green).CreateRed();
+		    return (TitleSyntax)SequenceLanguage.Instance.InternalSyntaxFactory.Title((InternalSyntaxToken)kTitle.Node, text == null ? null : (Syntax.InternalSyntax.TextGreen)text.Green).CreateRed();
 		}
 		
 		public TitleSyntax Title()
@@ -5023,8 +4995,7 @@ namespace WebSequenceDiagramsModel
 	        return new Type[] {
 				typeof(MainSyntax),
 				typeof(InteractionSyntax),
-				typeof(TitleLineSyntax),
-				typeof(DeclarationLineSyntax),
+				typeof(LineSyntax),
 				typeof(DeclarationSyntax),
 				typeof(TitleSyntax),
 				typeof(ArrowSyntax),

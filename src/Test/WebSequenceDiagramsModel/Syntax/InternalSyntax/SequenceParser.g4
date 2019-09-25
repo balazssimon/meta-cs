@@ -8,15 +8,15 @@ options {
 main : interaction EOF;
 
                        
+      
 interaction : line*;
 
-line 
-	: title LCrLf #titleLine
-	| declaration? LCrLf #declarationLine;
+line : declaration? LCrLf;
 
-      
+                       
 declaration
-	: destroy
+	: title
+	| destroy
 	| arrow
 	| alt
 	| opt
@@ -25,49 +25,42 @@ declaration
 	| note
 	;
 
-title: KTitle name?;
+title: KTitle                 text?;
 
-                       
                    
 arrow:                   source=lifeLineName                 type=arrowType                   target=lifeLineName TColon                        text?;
 
-                       
                    
 destroy: KDestroy                     lifeLineName?;
 
-                       
                          
+                    
 alt: altFragment elseFragment* end;
 
                     
-                    
-                                            
+                                                    
 altFragment: KAlt                        condition=text? LCrLf fragmentBody;
 
                     
-                    
-                                             
+                                                     
 elseFragment: KElse                        condition=text? LCrLf fragmentBody;
 
-                       
                     
-                                             
+                                                     
 loop: loopFragment end;
 loopFragment: KLoop                        condition=text? LCrLf fragmentBody;
 
-                       
                     
-                                            
+                                                    
 opt: optFragment end;
 optFragment: KOpt                        condition=text? LCrLf fragmentBody;
 
                        
-                       
-                                            
+                                                    
 ref: simpleRefFragment | messageRefFragment;
 
-simpleRefFragment: KRef (over=text TColon)?                        refText=text? LCrLf simpleBody KEndRef;
-messageRefFragment: refInput simpleBody refOutput;
+simpleRefFragment: KRef (over=text TColon)? refText=text? LCrLf                        simpleBody KEndRef;
+messageRefFragment: refInput                        simpleBody refOutput;
 
                 
                    

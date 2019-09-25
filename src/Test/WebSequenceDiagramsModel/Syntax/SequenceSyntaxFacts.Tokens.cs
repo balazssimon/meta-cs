@@ -84,8 +84,15 @@ namespace WebSequenceDiagramsModel.Syntax
 				case SequenceTokensSyntaxKind.LCrLf:
 				case SequenceTokensSyntaxKind.LLineEnd:
 				case SequenceTokensSyntaxKind.LIdentifier:
+				case SequenceTokensSyntaxKind.NoteWhiteSpace:
+				case SequenceTokensSyntaxKind.NoteLinesWhiteSpace:
 				case SequenceTokensSyntaxKind.KEndNote:
+				case SequenceTokensSyntaxKind.RefWhiteSpace:
+				case SequenceTokensSyntaxKind.RefLinesWhiteSpace:
 				case SequenceTokensSyntaxKind.KEndRef:
+				case SequenceTokensSyntaxKind.RefEndWhiteSpace:
+				case SequenceTokensSyntaxKind.LineEndWhiteSpace:
+				case SequenceTokensSyntaxKind.ArrowEndWhiteSpace:
 				case SequenceTokensSyntaxKind.TColon:
 				case SequenceTokensSyntaxKind.TMinus:
 				case SequenceTokensSyntaxKind.ArrowEndR:

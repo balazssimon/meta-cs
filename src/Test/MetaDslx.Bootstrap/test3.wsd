@@ -1,0 +1,12 @@
+title Authentication Sequence
+
+A->B: textAB
+
+alt textAlt1
+    A->B: textAlt1AB
+else textAlt2
+    A->B: textAlt2AB
+else textAlt3
+    A->B: textAlt3AB
+end
+

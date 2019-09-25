@@ -120,7 +120,8 @@ namespace WebSequenceDiagramsModel.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), symbolType: typeof(Symbols.Interaction), syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundScope(this.BoundTree, childBoundNodes.ToImmutableAndFree(), syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create<object>(resultNode), symbolType: typeof(Symbols.Interaction), syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -137,54 +138,7 @@ namespace WebSequenceDiagramsModel.Binding
 			}
 		}
 		
-		public BoundNode VisitTitleLine(TitleLineSyntax node, ArrayBuilder<object> childBoundNodesForParent)
-		{
-			if (node == null || node.IsMissing) return null;
-			var state = this.State;
-			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
-			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
-			try
-			{
-				if (state == BoundNodeFactoryState.InChild)
-				{
-					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
-					{
-						childBoundNodesForParent.Add(cachedBoundNode);
-						return cachedBoundNode;
-					}
-				}
-				if (node.Title != null)
-				{
-					if (state == BoundNodeFactoryState.InParent)
-					{
-						if (LookupPosition.IsInNode(this.Position, node.Title))
-						{
-							this.Visit(node.Title, childBoundNodesForParent);
-						}
-					}
-					else
-					{
-						this.Visit(node.Title, childBoundNodesForParent);
-					}
-				}
-				if (state == BoundNodeFactoryState.InParent)
-				{
-					Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode);
-					if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode) return (BoundNode)childBoundNodesForParent[0];
-					else return null;
-				}
-				else
-				{
-					return null;
-				}
-			}
-			finally
-			{
-				this.State = state;
-			}
-		}
-		
-		public BoundNode VisitDeclarationLine(DeclarationLineSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		public BoundNode VisitLine(LineSyntax node, ArrayBuilder<object> childBoundNodesForParent)
 		{
 			if (node == null || node.IsMissing) return null;
 			var state = this.State;
@@ -253,6 +207,20 @@ namespace WebSequenceDiagramsModel.Binding
 					}
 				}
 				var childBoundNodes = ArrayBuilder<object>.GetInstance();
+				if (node.Title != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.Title))
+						{
+							this.Visit(node.Title, childBoundNodes);
+						}
+					}
+					else
+					{
+						this.Visit(node.Title, childBoundNodes);
+					}
+				}
 				if (node.Destroy != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
@@ -346,7 +314,7 @@ namespace WebSequenceDiagramsModel.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundScope(this.BoundTree, childBoundNodes.ToImmutableAndFree(), syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Declarations", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -379,18 +347,22 @@ namespace WebSequenceDiagramsModel.Binding
 						return cachedBoundNode;
 					}
 				}
-				if (node.Name != null)
+				if (node.Text != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.Name))
+						if (LookupPosition.IsInNode(this.Position, node.Text))
 						{
-							this.Visit(node.Name, childBoundNodesForParent);
+							var childBoundNodesOfText = ArrayBuilder<object>.GetInstance();
+							this.Visit(node.Text, childBoundNodesOfText);
+							BoundNode boundText;
+							boundText = this.CreateBoundProperty(this.BoundTree, childBoundNodesOfText.ToImmutableAndFree(), name: "Name", node.Text, false);
+							childBoundNodesForParent.Add(boundText);
 						}
 					}
 					else
 					{
-						this.Visit(node.Name, childBoundNodesForParent);
+						childBoundNodesForParent.Add(node.Text);
 					}
 				}
 				if (state == BoundNodeFactoryState.InParent)
@@ -515,7 +487,6 @@ namespace WebSequenceDiagramsModel.Binding
 				{
 					BoundNode resultNode;
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), symbolType: typeof(Symbols.Message), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Declarations", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -582,7 +553,6 @@ namespace WebSequenceDiagramsModel.Binding
 				{
 					BoundNode resultNode;
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), symbolType: typeof(Symbols.Destroy), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Declarations", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -657,8 +627,8 @@ namespace WebSequenceDiagramsModel.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), symbolType: typeof(Symbols.MultiFragment), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Declarations", syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Fragments", syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create<object>(resultNode), symbolType: typeof(Symbols.MultiFragment), syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -739,9 +709,8 @@ namespace WebSequenceDiagramsModel.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: FragmentKind.Alt, syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: Symbols.FragmentKind.Alt, syntax: node, hasErrors: false);
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create<object>(resultNode), symbolType: typeof(Symbols.Fragment), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Fragments", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -822,9 +791,8 @@ namespace WebSequenceDiagramsModel.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: FragmentKind.Else, syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: Symbols.FragmentKind.Else, syntax: node, hasErrors: false);
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create<object>(resultNode), symbolType: typeof(Symbols.Fragment), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Fragments", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -886,9 +854,8 @@ namespace WebSequenceDiagramsModel.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: FragmentKind.Loop, syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: Symbols.FragmentKind.Loop, syntax: node, hasErrors: false);
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create<object>(resultNode), symbolType: typeof(Symbols.Fragment), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Declarations", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -1016,9 +983,8 @@ namespace WebSequenceDiagramsModel.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: FragmentKind.Opt, syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: Symbols.FragmentKind.Opt, syntax: node, hasErrors: false);
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create<object>(resultNode), symbolType: typeof(Symbols.Fragment), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Declarations", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -1160,9 +1126,8 @@ namespace WebSequenceDiagramsModel.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: FragmentKind.Ref, syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Kind", value: Symbols.FragmentKind.Ref, syntax: node, hasErrors: false);
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, ImmutableArray.Create<object>(resultNode), symbolType: typeof(Symbols.RefFragment), syntax: node, hasErrors: false);
-					resultNode = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(resultNode), name: "Declarations", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -1195,23 +1160,23 @@ namespace WebSequenceDiagramsModel.Binding
 						return cachedBoundNode;
 					}
 				}
-				if (node.RefText != null)
+				if (node.SimpleBody != null)
 				{
 					if (state == BoundNodeFactoryState.InParent)
 					{
-						if (LookupPosition.IsInNode(this.Position, node.RefText))
+						if (LookupPosition.IsInNode(this.Position, node.SimpleBody))
 						{
-							var childBoundNodesOfRefText = ArrayBuilder<object>.GetInstance();
-							this.Visit(node.RefText, childBoundNodesOfRefText);
-							BoundNode boundRefText;
-							boundRefText = this.CreateBoundValue(this.BoundTree, childBoundNodesOfRefText.ToImmutableAndFree(), node.RefText, false);
-							boundRefText = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(boundRefText), name: "Text", node.RefText, false);
-							childBoundNodesForParent.Add(boundRefText);
+							var childBoundNodesOfSimpleBody = ArrayBuilder<object>.GetInstance();
+							this.Visit(node.SimpleBody, childBoundNodesOfSimpleBody);
+							BoundNode boundSimpleBody;
+							boundSimpleBody = this.CreateBoundValue(this.BoundTree, childBoundNodesOfSimpleBody.ToImmutableAndFree(), node.SimpleBody, false);
+							boundSimpleBody = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(boundSimpleBody), name: "Text", node.SimpleBody, false);
+							childBoundNodesForParent.Add(boundSimpleBody);
 						}
 					}
 					else
 					{
-						childBoundNodesForParent.Add(node.RefText);
+						childBoundNodesForParent.Add(node.SimpleBody);
 					}
 				}
 				if (state == BoundNodeFactoryState.InParent)
@@ -1259,6 +1224,25 @@ namespace WebSequenceDiagramsModel.Binding
 					else
 					{
 						this.Visit(node.RefInput, childBoundNodesForParent);
+					}
+				}
+				if (node.SimpleBody != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.SimpleBody))
+						{
+							var childBoundNodesOfSimpleBody = ArrayBuilder<object>.GetInstance();
+							this.Visit(node.SimpleBody, childBoundNodesOfSimpleBody);
+							BoundNode boundSimpleBody;
+							boundSimpleBody = this.CreateBoundValue(this.BoundTree, childBoundNodesOfSimpleBody.ToImmutableAndFree(), node.SimpleBody, false);
+							boundSimpleBody = this.CreateBoundProperty(this.BoundTree, ImmutableArray.Create<object>(boundSimpleBody), name: "Text", node.SimpleBody, false);
+							childBoundNodesForParent.Add(boundSimpleBody);
+						}
+					}
+					else
+					{
+						childBoundNodesForParent.Add(node.SimpleBody);
 					}
 				}
 				if (node.RefOutput != null)

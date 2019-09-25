@@ -110,26 +110,9 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 				return this.factory.Interaction(line);
 			}
 			
-			public override GreenNode VisitTitleLine(SequenceParser.TitleLineContext context)
+			public override GreenNode VisitLine(SequenceParser.LineContext context)
 			{
-				if (context == null) return TitleLineGreen.__Missing;
-				SequenceParser.TitleContext titleContext = context.title();
-				TitleGreen title = null;
-				if (titleContext != null)
-				{
-					title = (TitleGreen)this.Visit(titleContext);
-				}
-				else
-				{
-					title = TitleGreen.__Missing;
-				}
-				InternalSyntaxToken lCrLf = (InternalSyntaxToken)this.VisitTerminal(context.LCrLf(), SequenceSyntaxKind.LCrLf);
-				return this.factory.TitleLine(title, lCrLf);
-			}
-			
-			public override GreenNode VisitDeclarationLine(SequenceParser.DeclarationLineContext context)
-			{
-				if (context == null) return DeclarationLineGreen.__Missing;
+				if (context == null) return LineGreen.__Missing;
 				SequenceParser.DeclarationContext declarationContext = context.declaration();
 				DeclarationGreen declaration = null;
 				if (declarationContext != null)
@@ -141,12 +124,17 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 					declaration = DeclarationGreen.__Missing;
 				}
 				InternalSyntaxToken lCrLf = (InternalSyntaxToken)this.VisitTerminal(context.LCrLf(), SequenceSyntaxKind.LCrLf);
-				return this.factory.DeclarationLine(declaration, lCrLf);
+				return this.factory.Line(declaration, lCrLf);
 			}
 			
 			public override GreenNode VisitDeclaration(SequenceParser.DeclarationContext context)
 			{
 				if (context == null) return DeclarationGreen.__Missing;
+				SequenceParser.TitleContext titleContext = context.title();
+				if (titleContext != null) 
+				{
+					return this.factory.Declaration((TitleGreen)this.Visit(titleContext));
+				}
 				SequenceParser.DestroyContext destroyContext = context.destroy();
 				if (destroyContext != null) 
 				{
@@ -189,17 +177,17 @@ namespace WebSequenceDiagramsModel.Syntax.InternalSyntax
 			{
 				if (context == null) return TitleGreen.__Missing;
 				InternalSyntaxToken kTitle = (InternalSyntaxToken)this.VisitTerminal(context.KTitle(), SequenceSyntaxKind.KTitle);
-				SequenceParser.NameContext nameContext = context.name();
-				NameGreen name = null;
-				if (nameContext != null)
+				SequenceParser.TextContext textContext = context.text();
+				TextGreen text = null;
+				if (textContext != null)
 				{
-					name = (NameGreen)this.Visit(nameContext);
+					text = (TextGreen)this.Visit(textContext);
 				}
 				else
 				{
-					name = NameGreen.__Missing;
+					text = TextGreen.__Missing;
 				}
-				return this.factory.Title(kTitle, name);
+				return this.factory.Title(kTitle, text);
 			}
 			
 			public override GreenNode VisitArrow(SequenceParser.ArrowContext context)
