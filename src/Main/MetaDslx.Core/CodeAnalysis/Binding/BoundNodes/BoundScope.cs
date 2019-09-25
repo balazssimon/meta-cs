@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
@@ -13,19 +14,19 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
         }
 
-        public override void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null)
+        public override void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null, CancellationToken cancellationToken = default)
         {
             foreach (var child in ChildBoundNodes)
             {
-                child.AddProperties(properties, property);
+                child.AddProperties(properties, property, cancellationToken);
             }
         }
 
-        public override void AddValues(ArrayBuilder<BoundValues> values, string currentProperty = null, string rootProperty = null)
+        public override void AddValues(ArrayBuilder<BoundValues> values, BoundProperty currentProperty = null, BoundProperty rootProperty = null, CancellationToken cancellationToken = default)
         {
             foreach (var child in ChildBoundNodes)
             {
-                child.AddValues(values, currentProperty, rootProperty);
+                child.AddValues(values, currentProperty, rootProperty, cancellationToken);
             }
         }
     }

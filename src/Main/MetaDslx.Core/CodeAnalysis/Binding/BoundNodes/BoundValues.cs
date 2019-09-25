@@ -17,9 +17,9 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public abstract ImmutableArray<object> Values { get; }
 
-        public override void AddValues(ArrayBuilder<BoundValues> values, string currentProperty = null, string rootProperty = null)
+        public override void AddValues(ArrayBuilder<BoundValues> values, BoundProperty currentProperty = null, BoundProperty rootProperty = null, CancellationToken cancellationToken = default)
         {
-            if (rootProperty == null || currentProperty == rootProperty) // TODO:MetaDslx - make sure to add the correct values
+            if (rootProperty == null || currentProperty == rootProperty) 
             {
                 values.Add(this);
             }

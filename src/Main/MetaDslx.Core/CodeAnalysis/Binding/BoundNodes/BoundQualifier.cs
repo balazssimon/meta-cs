@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
-        public override void AddQualifiers(ArrayBuilder<BoundQualifier> qualifiers)
+        public override void AddQualifiers(ArrayBuilder<BoundQualifier> qualifiers, CancellationToken cancellationToken = default)
         {
             qualifiers.Add(this);
         }

@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Binding.BoundNodes;
+using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -287,108 +288,113 @@ namespace MetaDslx.CodeAnalysis.Binding
             return this.BoundTree.GetEnclosingBinder(_syntax);
         }
 
-        public ImmutableArray<BoundIdentifier> GetIdentifiers()
+        public ImmutableArray<BoundIdentifier> GetIdentifiers(CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundIdentifier> identifiers = ArrayBuilder<BoundIdentifier>.GetInstance();
-            this.AddIdentifiers(identifiers);
+            this.AddIdentifiers(identifiers, cancellationToken);
             return identifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundQualifier> GetQualifiers()
+        public ImmutableArray<BoundQualifier> GetQualifiers(CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundQualifier> qualifiers = ArrayBuilder<BoundQualifier>.GetInstance();
-            this.AddQualifiers(qualifiers);
+            this.AddQualifiers(qualifiers, cancellationToken);
             return qualifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundName> GetNames()
+        public ImmutableArray<BoundName> GetNames(CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundName> names = ArrayBuilder<BoundName>.GetInstance();
-            this.AddNames(names);
+            this.AddNames(names, cancellationToken);
             return names.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundProperty> GetProperties(string property = null)
+        public ImmutableArray<BoundProperty> GetProperties(string property = null, CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundProperty> properties = ArrayBuilder<BoundProperty>.GetInstance();
-            this.AddProperties(properties, property);
+            this.AddProperties(properties, property, cancellationToken);
             return properties.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundValues> GetValues(string currentProperty = null, string rootProperty = null)
+        public ImmutableArray<BoundValues> GetValues(BoundProperty currentProperty = null, BoundProperty rootProperty = null, CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundValues> values = ArrayBuilder<BoundValues>.GetInstance();
-            this.AddValues(values, currentProperty, rootProperty);
+            this.AddValues(values, currentProperty, rootProperty, cancellationToken);
             return values.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundIdentifier> GetChildIdentifiers()
+        public ImmutableArray<BoundIdentifier> GetChildIdentifiers(CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundIdentifier> identifiers = ArrayBuilder<BoundIdentifier>.GetInstance();
             foreach (var child in this.ChildBoundNodes)
             {
-                child.AddIdentifiers(identifiers);
+                if (cancellationToken.IsCancellationRequested) return ImmutableArray<BoundIdentifier>.Empty;
+                child.AddIdentifiers(identifiers, cancellationToken);
             }
             return identifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundQualifier> GetChildQualifiers()
+        public ImmutableArray<BoundQualifier> GetChildQualifiers(CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundQualifier> qualifiers = ArrayBuilder<BoundQualifier>.GetInstance();
             foreach (var child in this.ChildBoundNodes)
             {
-                child.AddQualifiers(qualifiers);
+                if (cancellationToken.IsCancellationRequested) return ImmutableArray<BoundQualifier>.Empty;
+                child.AddQualifiers(qualifiers, cancellationToken);
             }
             return qualifiers.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundName> GetChildNames()
+        public ImmutableArray<BoundName> GetChildNames(CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundName> names = ArrayBuilder<BoundName>.GetInstance();
             foreach (var child in this.ChildBoundNodes)
             {
-                child.AddNames(names);
+                if (cancellationToken.IsCancellationRequested) return ImmutableArray<BoundName>.Empty;
+                child.AddNames(names, cancellationToken);
             }
             return names.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundProperty> GetChildProperties(string property = null)
+        public ImmutableArray<BoundProperty> GetChildProperties(string property = null, CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundProperty> properties = ArrayBuilder<BoundProperty>.GetInstance();
             foreach (var child in this.ChildBoundNodes)
             {
-                child.AddProperties(properties, property);
+                if (cancellationToken.IsCancellationRequested) return ImmutableArray<BoundProperty>.Empty;
+                child.AddProperties(properties, property, cancellationToken);
             }
             return properties.ToImmutableAndFree();
         }
 
-        public ImmutableArray<BoundValues> GetChildValues(string currentProperty = null, string rootProperty = null)
+        public ImmutableArray<BoundValues> GetChildValues(BoundProperty currentProperty = null, BoundProperty rootProperty = null, CancellationToken cancellationToken = default)
         {
             ArrayBuilder<BoundValues> values = ArrayBuilder<BoundValues>.GetInstance();
             foreach (var child in this.ChildBoundNodes)
             {
-                child.AddValues(values, currentProperty, rootProperty);
+                if (cancellationToken.IsCancellationRequested) return ImmutableArray<BoundValues>.Empty;
+                child.AddValues(values, currentProperty, rootProperty, cancellationToken);
             }
             return values.ToImmutableAndFree();
         }
 
-        public virtual void AddIdentifiers(ArrayBuilder<BoundIdentifier> identifiers)
+        public virtual void AddIdentifiers(ArrayBuilder<BoundIdentifier> identifiers, CancellationToken cancellationToken = default)
         {
         }
 
-        public virtual void AddQualifiers(ArrayBuilder<BoundQualifier> qualifiers)
+        public virtual void AddQualifiers(ArrayBuilder<BoundQualifier> qualifiers, CancellationToken cancellationToken = default)
         {
         }
 
-        public virtual void AddNames(ArrayBuilder<BoundName> names)
+        public virtual void AddNames(ArrayBuilder<BoundName> names, CancellationToken cancellationToken = default)
         {
         }
 
-        public virtual void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null)
+        public virtual void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null, CancellationToken cancellationToken = default)
         {
         }
 
-        public virtual void AddValues(ArrayBuilder<BoundValues> values, string currentProperty = null, string rootProperty = null)
+        public virtual void AddValues(ArrayBuilder<BoundValues> values, BoundProperty currentProperty = null, BoundProperty rootProperty = null, CancellationToken cancellationToken = default)
         {
         }
 

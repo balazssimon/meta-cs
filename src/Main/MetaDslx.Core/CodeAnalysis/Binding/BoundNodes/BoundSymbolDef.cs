@@ -76,33 +76,44 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             }
         }
 
-        protected virtual void SetPropertyValues(DeclaredSymbol symbol, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        public override void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null, CancellationToken cancellationToken = default)
         {
-            var declaration = symbol.MergedDeclaration;
-            var propertyBoundNodes = ArrayBuilder<BoundProperty>.GetInstance();
-            foreach (var decl in declaration.Declarations)
+            foreach (var symbol in this.Symbols)
             {
-                foreach (var prop in decl.Properties)
+                var declaration = ((DeclaredSymbol)symbol).MergedDeclaration;
+                foreach (var decl in declaration.Declarations)
                 {
-                    if (prop.SyntaxReference != null)
+                    if (cancellationToken.IsCancellationRequested) return;
+                    if (decl.SyntaxReference.SyntaxTree == this.SyntaxTree)
                     {
-                        var propNode = prop.SyntaxReference.GetSyntax(cancellationToken);
-                        var propBoundNodes = this.Compilation.GetBoundNodes(propNode);
-                        foreach (var node in propBoundNodes)
+                        foreach (var prop in decl.Properties)
                         {
-                            if (node is BoundProperty boundProperty)
+                            if (prop.SyntaxReference != null)
                             {
-                                if (boundProperty.Name == prop.Name && boundProperty.Owner == prop.Owner && boundProperty.OwnerType == prop.OwnerType)
+                                var propNode = prop.SyntaxReference.GetSyntax();
+                                var propBoundNodes = this.Compilation.GetBoundNodes(propNode);
+                                foreach (var node in propBoundNodes)
                                 {
-                                    propertyBoundNodes.Add(boundProperty);
+                                    if (node is BoundProperty boundProperty)
+                                    {
+                                        if (boundProperty.Name == prop.Name && boundProperty.Owner == prop.Owner && boundProperty.OwnerType == prop.OwnerType)
+                                        {
+                                            properties.Add(boundProperty);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+
+        protected virtual void SetPropertyValues(DeclaredSymbol symbol, DiagnosticBag diagnostics, CancellationToken cancellationToken)
+        {
+            var properties = this.GetProperties(null, cancellationToken);
             var modelObject = (MutableSymbolBase)symbol.ModelObject;
-            foreach (var boundProperty in propertyBoundNodes)
+            foreach (var boundProperty in properties)
             {
                 string name = boundProperty.Name;
                 var prop = modelObject.MGetProperty(name);
@@ -113,7 +124,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 }
                 //if (prop.IsBaseScope) continue;
                 var propValues = ArrayBuilder<BoundValues>.GetInstance();
-                boundProperty.AddValues(propValues, null, name);
+                boundProperty.AddValues(propValues, boundProperty, boundProperty, cancellationToken);
                 foreach (var boundValue in propValues)
                 {
                     //if (boundValue is BoundSymbolDef) continue; // TODO:MetaDslx - prevent values to be added multiple times
@@ -152,7 +163,6 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 }
                 propValues.Free();
             }
-            propertyBoundNodes.Free();
         }
 
         

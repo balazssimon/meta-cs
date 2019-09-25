@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using MetaDslx.CodeAnalysis.Symbols;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
@@ -36,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public override ImmutableArray<object> Values => StaticCast<object>.From(this.Symbols);
 
-        public override void AddNames(ArrayBuilder<BoundName> names)
+        public override void AddNames(ArrayBuilder<BoundName> names, CancellationToken cancellationToken = default)
         {
             names.AddRange(this);
         }

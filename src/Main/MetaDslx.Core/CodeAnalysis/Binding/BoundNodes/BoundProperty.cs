@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
@@ -51,14 +52,14 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 if (_boundValues.IsDefault)
                 {
-                    var valueNodes = this.GetValues(null, _name);
+                    var valueNodes = this.GetValues(null, this);
                     ImmutableInterlocked.InterlockedInitialize(ref _boundValues, valueNodes);
                 }
                 return _boundValues;
             }
         }
 
-        public override void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null)
+        /*public override void AddProperties(ArrayBuilder<BoundProperty> properties, string property = null)
         {
             if (_owner == SymbolPropertyOwner.CurrentSymbol)
             {
@@ -71,19 +72,25 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 child.AddProperties(properties, property);
             }
-        }
+        }*/
 
-        public override void AddValues(ArrayBuilder<BoundValues> values, string currentProperty = null, string rootProperty = null)
+        public override void AddValues(ArrayBuilder<BoundValues> values, BoundProperty currentProperty = null, BoundProperty rootProperty = null, CancellationToken cancellationToken = default)
         {
-            if (_hasFixedValue && rootProperty == _name)
+            if (_hasFixedValue && rootProperty == this)
             {
                 values.Add(this);
+                return;
             }
-            if (_hasFixedValue || currentProperty == rootProperty || currentProperty == null || rootProperty == null) // TODO:MetaDslx - make sure to add the correct values
+            if (currentProperty == rootProperty || currentProperty == null)
             {
+                var nextProperty = currentProperty;
+                if (!_hasFixedValue && (currentProperty == null || (this.Owner == currentProperty.Owner && this.OwnerType == currentProperty.OwnerType)))
+                {
+                    nextProperty = this;
+                }
                 foreach (var child in ChildBoundNodes)
                 {
-                    child.AddValues(values, _hasFixedValue ? currentProperty : _name, rootProperty);
+                    child.AddValues(values, nextProperty, rootProperty);
                 }
             }
         }

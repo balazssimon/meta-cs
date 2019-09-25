@@ -46,7 +46,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 
         public override ImmutableArray<BoundIdentifier> Identifiers => ImmutableArray.Create(this);
 
-        public override void AddIdentifiers(ArrayBuilder<BoundIdentifier> identifiers)
+        public override void AddIdentifiers(ArrayBuilder<BoundIdentifier> identifiers, CancellationToken cancellationToken = default)
         {
             identifiers.Add(this);
         }
