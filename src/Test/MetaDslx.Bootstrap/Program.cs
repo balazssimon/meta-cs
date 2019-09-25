@@ -60,13 +60,13 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
-            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
@@ -169,7 +169,7 @@ namespace MetaDslx.Bootstrap
             //File.WriteAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.cs", generatedCsharpModel);
             //*/
 
-            //*/
+            /*/
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             //BinderFlags binderFlags = BinderFlags.None;
             ImmutableModel soalModel = SoalInstance.Model;
