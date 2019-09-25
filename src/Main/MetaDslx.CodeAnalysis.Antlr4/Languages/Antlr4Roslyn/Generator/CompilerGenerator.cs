@@ -44224,7 +44224,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 {
                     body = GenerateDeclarationTreeBuilderSymbolUse(annot, "node", body); //4655:4
                 }
-                if (annot.Name == MetaCompilerAnnotationInfo.Property && !annot.HasProperty("value")) //4657:3
+                if (annot.Name == MetaCompilerAnnotationInfo.Property) //4657:3
                 {
                     body = GenerateDeclarationTreeBuilderProperty(annot, "node", body); //4658:4
                 }

@@ -4654,7 +4654,7 @@ function string GetDeclarationTreeBuilderVisitBody(Antlr4ParserRule rule)
 		if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse)
 			body = GenerateDeclarationTreeBuilderSymbolUse(annot, "node", body);
 		end if
-		if (annot.Name == MetaCompilerAnnotationInfo.Property && !annot.HasProperty("value"))
+		if (annot.Name == MetaCompilerAnnotationInfo.Property)
 			body = GenerateDeclarationTreeBuilderProperty(annot, "node", body);
 		end if
 	end loop

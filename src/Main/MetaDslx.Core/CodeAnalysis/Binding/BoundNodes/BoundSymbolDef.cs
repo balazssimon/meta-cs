@@ -113,7 +113,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 }
                 //if (prop.IsBaseScope) continue;
                 var propValues = ArrayBuilder<BoundValues>.GetInstance();
-                boundProperty.AddValues(propValues, name, null);
+                boundProperty.AddValues(propValues, null, name);
                 foreach (var boundValue in propValues)
                 {
                     //if (boundValue is BoundSymbolDef) continue; // TODO:MetaDslx - prevent values to be added multiple times

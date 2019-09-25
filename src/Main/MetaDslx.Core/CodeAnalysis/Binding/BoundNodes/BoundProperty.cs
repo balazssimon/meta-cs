@@ -79,7 +79,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
             {
                 values.Add(this);
             }
-            if (_hasFixedValue || currentProperty == rootProperty || rootProperty == null) // TODO:MetaDslx - make sure to add the correct values
+            if (_hasFixedValue || currentProperty == rootProperty || currentProperty == null || rootProperty == null) // TODO:MetaDslx - make sure to add the correct values
             {
                 foreach (var child in ChildBoundNodes)
                 {

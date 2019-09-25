@@ -7,9 +7,9 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
-//using MetaDslx.Languages.Soal;
-//using MetaDslx.Languages.Soal.Generator;
-//using MetaDslx.Languages.Soal.Symbols;
+using MetaDslx.Languages.Soal;
+using MetaDslx.Languages.Soal.Generator;
+using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -60,7 +60,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
@@ -169,16 +169,16 @@ namespace MetaDslx.Bootstrap
             //File.WriteAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.cs", generatedCsharpModel);
             //*/
 
-            /*/
+            //*/
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             //BinderFlags binderFlags = BinderFlags.None;
             ImmutableModel soalModel = SoalInstance.Model;
             //string soalSource = File.ReadAllText(@"..\..\..\cinema.soal");
             //string soalSource = File.ReadAllText(@"..\..\..\Wsdl01.soal");
             //string soalSource = File.ReadAllText(@"..\..\..\Wsdl02.soal");
-            string soalSource = File.ReadAllText(@"..\..\..\Wsdl03.soal");
+            //string soalSource = File.ReadAllText(@"..\..\..\Wsdl03.soal");
             //string soalSource = File.ReadAllText(@"..\..\..\Xsd11.soal");
-            //string soalSource = File.ReadAllText(@"..\..\..\Wsdl00.soal");
+            string soalSource = File.ReadAllText(@"..\..\..\Wsdl00.soal");
             var syntaxTree = SoalSyntaxTree.ParseText(soalSource);
             var compilation = SoalCompilation.Create("SoalTest")
                 .AddSyntaxTrees(syntaxTree)

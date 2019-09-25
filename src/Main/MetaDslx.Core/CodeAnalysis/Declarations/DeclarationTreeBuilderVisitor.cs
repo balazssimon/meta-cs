@@ -126,7 +126,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return this.EndDeclaration();
         }
 
-        protected void BeginProperty(LanguageSyntaxNode node, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null)
+        protected void BeginProperty(LanguageSyntaxNode node, string name, object value = null, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null)
         {
             this.PropertyStack.Push(new Property(node, name, owner, ownerSymbolType));
         }
