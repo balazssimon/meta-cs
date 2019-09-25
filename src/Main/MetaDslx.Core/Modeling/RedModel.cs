@@ -1604,12 +1604,12 @@ namespace MetaDslx.Modeling
             return result;
         }
 
-        public ImmutableModel ToImmutable()
+        public ImmutableModel ToImmutable(bool evaluateLazyValues = true, CancellationToken cancellationToken = default)
         {
             ImmutableModel result;
             if (this.group != null)
             {
-                ImmutableModelGroup immutableGroup = this.group.ToImmutable();
+                ImmutableModelGroup immutableGroup = this.group.ToImmutable(evaluateLazyValues);
                 if (immutableGroup != null)
                 {
                     if (this.readOnly)
@@ -1625,6 +1625,7 @@ namespace MetaDslx.Modeling
             }
             else
             {
+                if (evaluateLazyValues) this.EvaluateLazyValues(cancellationToken);
                 GreenModel currentGreen = this.Green;
                 if (this.immutableModel.TryGetTarget(out result) && result != null && result.Green == currentGreen)
                 {
@@ -1750,7 +1751,7 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void EvaluateLazyValues(CancellationToken cancellationToken = default(CancellationToken))
+        public void EvaluateLazyValues(CancellationToken cancellationToken = default)
         {
             ModelUpdateContext ctx = null;
             try
@@ -2701,7 +2702,24 @@ namespace MetaDslx.Modeling
             return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
         }
 
-        public ImmutableModelGroup ToImmutable()
+        public void EvaluateLazyValues(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ModelUpdateContext ctx = null;
+            try
+            {
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.EvaluateLazyValues(cancellationToken);
+                } while (!this.EndUpdate(ctx));
+            }
+            finally
+            {
+                this.FinalizeUpdate(ctx);
+            }
+        }
+
+        public ImmutableModelGroup ToImmutable(bool evaluateLazyValues = true, CancellationToken cancellationToken = default)
         {
             ImmutableModelGroup result;
             if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
@@ -2710,6 +2728,7 @@ namespace MetaDslx.Modeling
             }
             else
             {
+                if (evaluateLazyValues) this.EvaluateLazyValues(cancellationToken);
                 result = new ImmutableModelGroup(this.Green, this);
                 Interlocked.Exchange(ref this.immutableModelGroup, new WeakReference<ImmutableModelGroup>(result));
                 return result;
