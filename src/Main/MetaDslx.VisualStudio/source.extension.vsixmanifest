@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="MetaDslx.VisualStudio.cf2296b0-4cb6-423a-9130-8a56bfd89938" Version="0.10.91" Language="en-US" Publisher="Balazs Simon" />
+        <Identity Id="MetaDslx.VisualStudio.cf2296b0-4cb6-423a-9130-8a56bfd89938" Version="0.10.93" Language="en-US" Publisher="Balazs Simon" />
         <DisplayName>MetaDslx Extension for Visual Studio</DisplayName>
         <Description xml:space="preserve">Visual Studio extension for the MetaDslx metamodeling platform.</Description>
         <License>license.txt</License>
