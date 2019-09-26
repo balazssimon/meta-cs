@@ -16,6 +16,7 @@ using MetaDslx.Languages.Meta;
 using System.Reflection;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Antlr4Roslyn.Syntax.InternalSyntax;
+using Roslyn.Utilities;
 
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
@@ -905,6 +906,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                         foreach (var attr in annot.annotationBody().annotationAttributeList().annotationAttribute())
                         {
                             string propertyName = attr.annotationIdentifier().GetText();
+                            CheckAnnotationParameters(attr.annotationIdentifier(), annotationName, propertyName);
                             MetaAnnotationProperty property = null;
                             if (attr.expression() != null)
                             {
@@ -953,6 +955,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
+        private void CheckAnnotationParameters(ParserRuleContext context, string annotationName, string parameterName)
+        {
+            int index = MetaCompilerAnnotationInfo.WellKnownAnnotations.IndexOf(annotationName);
+            if (index >= 0)
+            {
+                if (!MetaCompilerAnnotationInfo.WellKnownAnnotationProperties[index].Contains(parameterName))
+                {
+                    this.compiler.AddDiagnostic(context, Antlr4RoslynErrorCode.WRN_InvalidWellKnownAnnotationParameter, annotationName, parameterName);
+                }
+            }
+        }
         private Location GetLocation(ParserRuleContext context)
         {
             return new ExternalFileLocation(this.compiler.InputFilePath, context.GetTextSpan(), context.GetLinePositionSpan());

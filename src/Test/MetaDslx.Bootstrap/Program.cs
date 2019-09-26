@@ -222,7 +222,7 @@ namespace MetaDslx.Bootstrap
             //SoalImportTest(1);
             //*/
 
-            //*/
+            /*/
             WebSequenceDiagramsTest();
             //*/
         }

@@ -45,23 +45,22 @@ namespace MetaDslx.Languages.Meta
         public static readonly string[] BinderAnnotations = WellKnownAnnotations;
 
         public static readonly string[] BoundNodeAnnotations = WellKnownAnnotations;
-        /*public static readonly string[] BinderAnnotations =
-                    {
-                        Attribute,
-                        Qualifier,
-                        SymbolDef, SymbolUse, SymbolCtr,
-                        Scope
-                    };
 
-                public static readonly string[] BoundNodeAnnotations =
-                    {
-                        Root,
-                        Attribute,
-                        Identifier, Qualifier, Value, EnumValue,
-                        Property, Name,
-                        SymbolDef, SymbolUse, SymbolCtr,
-                        Token
-                    };*/
+        public static readonly string[][] WellKnownAnnotationProperties =
+        {
+            new string[] { "symbolType" },
+            new string[] { "symbolType" },
+            new string[] { "name" },
+            new string[] { "symbolType", "symbolTypes" },
+            new string[] { "value" },
+            new string[] { "enumType" },
+            new string[] { "name", "value", "owner", "ownerSymbolType" },
+            new string[] { },
+            new string[] { "local" },
+            new string[] { "symbolType", "nestingProperty", "merge" },
+            new string[] { "symbolType", "symbolTypes" },
+            new string[] { "kind", "first", "last", "defaultSeparator", "defaultIdentifier", "defaultWhitespace", "defaultEndOfLine", "endOfLine" },
+        };
 
         public static string GetDefaultProperty(string annotationType)
         {
