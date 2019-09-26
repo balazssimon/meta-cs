@@ -7,9 +7,6 @@ using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.Languages.Soal;
-using MetaDslx.Languages.Soal.Generator;
-using MetaDslx.Languages.Soal.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -17,12 +14,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using WebSequenceDiagramsModel;
-using WebSequenceDiagramsModel.Symbols;
-using WebSequenceDiagramsModel.Syntax.InternalSyntax;
 
 namespace MetaDslx.Bootstrap
 {
+
     class Program
     {
         static void Main(string[] args)
@@ -341,7 +336,7 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        //*/
+        /*/
         private static void WebSequenceDiagramsTest()
         {
             MetaDescriptor.Initialize();
