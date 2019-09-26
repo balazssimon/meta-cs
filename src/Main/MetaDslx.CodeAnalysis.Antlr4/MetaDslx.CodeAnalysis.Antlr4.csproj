@@ -2,7 +2,7 @@
   <Import Project="..\..\Versions.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>MetaDslx</RootNamespace>
     <IsPackable>false</IsPackable>
     <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
