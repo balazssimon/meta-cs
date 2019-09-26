@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.CSharp", "Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj", "{4AF052DC-20F4-4F5D-8631-10A458AF86FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Core", "Main\MetaDslx.Core\MetaDslx.Core.csproj", "{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Meta", "Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj", "{AA0ECA5D-DBAF-4E3F-A85F-9F18F8A1C03C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Meta", "Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj", "{BA598C0D-DE63-46C5-9FC0-881D918B3088}"
 EndProject
