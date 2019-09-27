@@ -132,29 +132,42 @@ namespace MetaDslx.BuildTasks
 
         private void LogDiagnostics(ImmutableArray<Diagnostic> diagnostics)
         {
+            StringBuilder sb = new StringBuilder();
             foreach (var message in diagnostics)
             {
                 var position = message.Location.GetMappedLineSpan();
-                string fileName = position.Path;
+                sb.Clear();
+                sb.Append(position.Path);
+                sb.Append(string.Format("({0},{1},{2},{3})", position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1));
+                sb.Append(": ");
+                sb.Append(message.Descriptor.Category);
+                sb.Append(" ");
+                MessageImportance importance = MessageImportance.High;
                 switch (message.Severity)
                 {
-                    case Microsoft.CodeAnalysis.DiagnosticSeverity.Hidden:
-                        Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, MessageImportance.Low, message.GetMessage());
+                    case DiagnosticSeverity.Info:
+                        sb.Append("info");
+                        importance = MessageImportance.Normal;
                         break;
-                    case Microsoft.CodeAnalysis.DiagnosticSeverity.Info:
-                        Log.LogMessage(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, MessageImportance.High, message.GetMessage());
+                    case DiagnosticSeverity.Warning:
+                        sb.Append("warning");
                         break;
-                    case Microsoft.CodeAnalysis.DiagnosticSeverity.Warning:
-                        Log.LogWarning(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, message.GetMessage());
+                    case DiagnosticSeverity.Error:
+                        sb.Append("error");
                         break;
-                    case Microsoft.CodeAnalysis.DiagnosticSeverity.Error:
-                        Log.LogError(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, message.GetMessage());
-                        break;
+                    case DiagnosticSeverity.Hidden:
                     default:
-                        Log.LogError(message.Descriptor.Category, message.Descriptor.Id, message.Descriptor.HelpLinkUri, fileName, position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1, message.GetMessage());
+                        sb.Append("hidden");
+                        importance = MessageImportance.Low;
                         break;
                 }
+                sb.Append(" ");
+                sb.Append(message.Descriptor.Id);
+                sb.Append(": ");
+                sb.Append(message.GetMessage());
+                Log.LogMessage(importance, sb.ToString());
             }
         }
+
     }
 }

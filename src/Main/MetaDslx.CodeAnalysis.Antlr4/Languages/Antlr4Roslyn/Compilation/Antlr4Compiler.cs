@@ -168,22 +168,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         internal void AddDiagnostic(Antlr4RoslynErrorCode code, params object[] args)
         {
-            this.DiagnosticBag.Add(code, Location.Create(this.FileName, default, default), args);
+            this.DiagnosticBag.Add(code, Location.Create(this.InputFilePath, default, default), args);
         }
 
         internal void AddDiagnostic(IToken token, Antlr4RoslynErrorCode code, params object[] args)
         {
-            this.DiagnosticBag.Add(code, Location.Create(this.FileName, token.GetTextSpan(), token.GetLinePositionSpan()), args);
+            this.DiagnosticBag.Add(code, Location.Create(this.InputFilePath, token.GetTextSpan(), token.GetLinePositionSpan()), args);
         }
 
         internal void AddDiagnostic(ITerminalNode token, Antlr4RoslynErrorCode code, params object[] args)
         {
-            this.DiagnosticBag.Add(code, Location.Create(this.FileName, token.Symbol.GetTextSpan(), token.Symbol.GetLinePositionSpan()), args);
+            this.DiagnosticBag.Add(code, Location.Create(this.InputFilePath, token.Symbol.GetTextSpan(), token.Symbol.GetLinePositionSpan()), args);
         }
 
         internal void AddDiagnostic(ParserRuleContext rule, Antlr4RoslynErrorCode code, params object[] args)
         {
-            this.DiagnosticBag.Add(code, Location.Create(this.FileName, rule.GetTextSpan(), rule.GetLinePositionSpan()), args);
+            this.DiagnosticBag.Add(code, Location.Create(this.InputFilePath, rule.GetTextSpan(), rule.GetLinePositionSpan()), args);
         }
 
         public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] int offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
@@ -191,11 +191,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             IToken token = e.OffendingToken;
             if (token != null)
             {
-                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.FileName, token.GetTextSpan(), token.GetLinePositionSpan()), msg);
+                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.InputFilePath, token.GetTextSpan(), token.GetLinePositionSpan()), msg);
             }
             else
             {
-                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.FileName, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), msg);
+                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.InputFilePath, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), msg);
             }
         }
 
@@ -203,11 +203,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         {
             if (offendingSymbol != null)
             {
-                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.FileName, offendingSymbol.GetTextSpan(), offendingSymbol.GetLinePositionSpan()), msg);
+                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.InputFilePath, offendingSymbol.GetTextSpan(), offendingSymbol.GetLinePositionSpan()), msg);
             }
             else
             {
-                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.FileName, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), msg);
+                this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_SyntaxError, Location.Create(this.InputFilePath, this.GetTextSpan(recognizer.InputStream.Index), this.GetLinePositionSpan(line, charPositionInLine)), msg);
             }
         }
 
