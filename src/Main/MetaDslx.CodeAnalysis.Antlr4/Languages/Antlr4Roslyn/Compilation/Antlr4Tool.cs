@@ -5,8 +5,10 @@ using System.Text;
 namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 {
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.PooledObjects;
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -23,6 +25,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
     {
         private List<string> _generatedCodeFiles = new List<string>();
         private IList<string> _sourceCodeFiles = new List<string>();
+        private ArrayBuilder<Antlr4Message> _diagnostics = new ArrayBuilder<Antlr4Message>();
 
         public Antlr4Tool()
         {
@@ -31,6 +34,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.Encoding = "UTF-8";
             this.TargetLanguage = "CSharp";
             this.LanguageSourceExtensions = new string[] { ".cs", ".tokens" };
+            this.Diagnostics = ImmutableArray<Antlr4Message>.Empty;
         }
 
         public IList<string> GeneratedCodeFiles
@@ -66,9 +70,42 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             }
         }
 
-        public DiagnosticBag Diagnostics { get; set; }
+        public ImmutableArray<Antlr4Message> Diagnostics { get; private set; }
 
-        public abstract bool Execute();
+        public bool Execute()
+        {
+            bool result = this.DoExecute();
+            this.Diagnostics = _diagnostics.ToImmutable();
+            return result;
+        }
+
+        protected abstract bool DoExecute();
+
+        protected void AddDiagnostic(DiagnosticSeverity severity, int errorCode, string filePath, int line, int column, string message)
+        {
+            var diag = new Antlr4Message(severity, errorCode, filePath, line, column, message);
+            _diagnostics.Add(diag);
+        }
+
+        public class Antlr4Message
+        {
+            public readonly DiagnosticSeverity Severity;
+            public readonly int ErrorCode;
+            public readonly string FilePath;
+            public readonly int Line;
+            public readonly int Column;
+            public readonly string Message;
+
+            public Antlr4Message(DiagnosticSeverity severity, int errorCode, string filePath, int line, int column, string message)
+            {
+                Severity = severity;
+                ErrorCode = errorCode;
+                FilePath = filePath;
+                Line = line;
+                Column = column;
+                Message = message;
+            }
+        }
     }
 
 }

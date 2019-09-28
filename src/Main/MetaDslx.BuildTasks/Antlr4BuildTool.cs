@@ -1,4 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using MetaDslx.Languages.Antlr4Roslyn.Compilation;
 using System;
 using System.Collections.Generic;
@@ -71,7 +72,7 @@ namespace MetaDslx.BuildTasks
         }
 #endif
 
-        public override bool Execute()
+        protected override bool DoExecute()
         {
             try
             {
@@ -161,8 +162,6 @@ namespace MetaDslx.BuildTasks
 
                 arguments.AddRange(SourceCodeFiles);
 
-                if (this.Diagnostics == null) this.Diagnostics = new Microsoft.CodeAnalysis.DiagnosticBag();
-
 #if NETSTANDARD
                 if (UseCSharpGenerator && string.IsNullOrWhiteSpace(ToolPath))
                 {
@@ -204,7 +203,7 @@ namespace MetaDslx.BuildTasks
                     RedirectStandardError = true,
                 };
 
-                this.Diagnostics.Add(LanguageDiagnostic.Create(Antlr4RoslynErrorCode.INF_Antlr4Info, "Executing command: \"" + startInfo.FileName + "\" " + startInfo.Arguments, ""));
+                this.AddDiagnostic(DiagnosticSeverity.Info, -1, null, -1, -1, "Executing command: \"" + startInfo.FileName + "\" " + startInfo.Arguments);
 
                 Process process = new Process();
                 process.StartInfo = startInfo;
@@ -224,7 +223,7 @@ namespace MetaDslx.BuildTasks
                 if (e is TargetInvocationException && e.InnerException != null)
                     e = e.InnerException;
 
-                this.Diagnostics.Add(LanguageDiagnostic.Create(Antlr4RoslynErrorCode.ERR_Antlr4Error, e.Message));
+                this.AddDiagnostic(DiagnosticSeverity.Error, -1, null, -1, -1, e.ToString().Replace('\r', ' ').Replace('\n', ' '));
             }
             return false;
         }
@@ -258,6 +257,7 @@ namespace MetaDslx.BuildTasks
             return builder.ToString();
         }
 
+        private static readonly Regex ErrorMessageFormat = new Regex(@"^(?<SEVERITY>[a-z]+)\((?<ERRORCODE>[0-9]+)\): (?<FILE>.*?):(?<LINE>[0-9]*?):(?<COLUMN>[0-9]*?): (?<MESSAGE>.*?)$", RegexOptions.Compiled);
         private static readonly Regex GeneratedFileMessageFormat = new Regex(@"^Generating file '(?<OUTPUT>.*?)' for grammar '(?<GRAMMAR>.*?)'$", RegexOptions.Compiled);
 
         private void HandleErrorDataReceived(object sender, DataReceivedEventArgs e)
@@ -272,11 +272,39 @@ namespace MetaDslx.BuildTasks
 
             try
             {
-                this.Diagnostics.Add(LanguageDiagnostic.Create(Antlr4RoslynErrorCode.ERR_Antlr4Error, data));
+                Match match = ErrorMessageFormat.Match(data);
+                if (!match.Success)
+                {
+                    this.AddDiagnostic(DiagnosticSeverity.Info, -1, null, -1, -1, data);
+                    return;
+                }
+
+                string severity = match.Groups["SEVERITY"].Value;
+                string fileName = match.Groups["FILE"].Value;
+                int.TryParse(match.Groups["ERRORCODE"].Value, out int errorCode);
+                int.TryParse(match.Groups["COLUMN"].Value, out int column);
+                int.TryParse(match.Groups["LINE"].Value, out int line);
+                string message = match.Groups["MESSAGE"].Value;
+
+                string filePath = SourceCodeFiles.FirstOrDefault(f => f.EndsWith(fileName)) ?? fileName;
+                switch (severity)
+                {
+                    case "error":
+                    case "fatal":
+                        this.AddDiagnostic(DiagnosticSeverity.Error, errorCode, filePath, line, column, message);
+                        break;
+                    case "warning":
+                        this.AddDiagnostic(DiagnosticSeverity.Warning, errorCode, filePath, line, column, message);
+                        break;
+                    case "info":
+                    default:
+                        this.AddDiagnostic(DiagnosticSeverity.Info, errorCode, filePath, line, column, message);
+                        break;
+                }
             }
             catch (Exception ex)
             {
-                this.Diagnostics.Add(LanguageDiagnostic.Create(Antlr4RoslynErrorCode.ERR_Antlr4Error, ex.Message));
+                this.AddDiagnostic(DiagnosticSeverity.Error, -1, null, -1, -1, ex.ToString().Replace('\r', ' ').Replace('\n', ' '));
             }
         }
 
@@ -295,7 +323,7 @@ namespace MetaDslx.BuildTasks
                 Match match = GeneratedFileMessageFormat.Match(data);
                 if (!match.Success)
                 {
-                    this.Diagnostics.Add(LanguageDiagnostic.Create(Antlr4RoslynErrorCode.INF_Antlr4Info, data));
+                    this.AddDiagnostic(DiagnosticSeverity.Info, -1, null, -1, -1, data);
                     return;
                 }
 
@@ -305,7 +333,7 @@ namespace MetaDslx.BuildTasks
             }
             catch (Exception ex)
             {
-                this.Diagnostics.Add(LanguageDiagnostic.Create(Antlr4RoslynErrorCode.ERR_Antlr4Error, ex.Message));
+                this.AddDiagnostic(DiagnosticSeverity.Error, -1, null, -1, -1, ex.ToString().Replace('\r', ' ').Replace('\n', ' '));
             }
         }
     }

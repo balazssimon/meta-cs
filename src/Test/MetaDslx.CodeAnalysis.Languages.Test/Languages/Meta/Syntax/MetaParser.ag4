@@ -55,7 +55,7 @@ classDeclaration : attribute* $Property(name=IsAbstract,value=true) KAbstract? K
 $Scope
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor : $SymbolUse(symbolType=MetaClass,location=ResolutionLocation.Parent) qualifier;
+classAncestor : $SymbolUse(symbolType=MetaClass) qualifier;
 classMemberDeclaration 
 	: $Property(Properties) fieldDeclaration 
 	| $Property(Operations) operationDeclaration

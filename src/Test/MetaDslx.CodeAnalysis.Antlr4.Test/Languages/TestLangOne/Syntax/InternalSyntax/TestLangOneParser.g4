@@ -1,30 +1,30 @@
-﻿parser grammar TestLangOneParser;
+parser grammar TestLangOneParser;
 
 options
 {
     tokenVocab = TestLangOneLexer; 
-	generateCompiler=true;
+	                      
 }
 
 main: namespaceDeclaration EOF;
 
-$Name
+     
 name : identifier;
 
-$Name
+     
 qualifiedName : qualifier;
 
-$Qualifier
+          
 qualifier : identifier (TDot identifier)*;
 
-$SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
+                                                                    
 namespaceDeclaration: KNamespace qualifiedName namespaceBody;
 
-$Scope
+      
 namespaceBody : TOpenBrace /*declaration**/ TCloseBrace;
 
 // Identifiers
-$Identifier
+           
 identifier 
 	: IdentifierNormal 
 	| IdentifierVerbatim
@@ -42,21 +42,21 @@ literal
 	;
 
 // Null literal
-$Value
+      
 nullLiteral : KNull;
 
 // Boolean literals
-$Value
+      
 booleanLiteral : KTrue | KFalse;
 
 // Number literals
-$Value
+      
 integerLiteral : LInteger;
-$Value
+      
 decimalLiteral : LDecimal;
-$Value
+      
 scientificLiteral : LScientific;
 
 // String literals
-$Value
-stringLiteral : LRegularString;
+//$Value
+//stringLiteral : LRegularString;

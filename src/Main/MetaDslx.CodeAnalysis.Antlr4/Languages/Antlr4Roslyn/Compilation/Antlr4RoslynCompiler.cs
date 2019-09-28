@@ -157,7 +157,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 _antlr4Tool.SourceCodeFiles.Add(this.GeneratedAntlr4GrammarFile);
                 _antlr4Tool.TargetNamespace = this.DefaultNamespace + ".Syntax.InternalSyntax";
                 bool success = _antlr4Tool.Execute();
-                if (_antlr4Tool.Diagnostics != null) this.DiagnosticBag.AddRange(_antlr4Tool.Diagnostics);
+                foreach (var diag in _antlr4Tool.Diagnostics)
+                {
+                    this.AddDiagnostic(diag, this.InputFilePath);
+                    if (diag.Severity == DiagnosticSeverity.Error) success = false;
+                }
                 if (!success)
                 {
                     this.DiagnosticBag.Add(Antlr4RoslynErrorCode.ERR_Antlr4ToolError, "could not generate C# files");

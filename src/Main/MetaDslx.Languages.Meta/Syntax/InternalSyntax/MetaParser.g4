@@ -55,7 +55,7 @@ classDeclaration : attribute*                                       KAbstract? K
       
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor :                                                                     qualifier;
+classAncestor :                                  qualifier;
 classMemberDeclaration 
 	:                       fieldDeclaration 
 	|                       operationDeclaration

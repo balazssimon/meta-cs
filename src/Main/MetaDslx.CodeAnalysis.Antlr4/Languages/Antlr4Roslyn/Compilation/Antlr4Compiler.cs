@@ -150,6 +150,72 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             return new LinePositionSpan(new LinePosition(line, charPositionInLine), new LinePosition(line, charPositionInLine));
         }
 
+        protected IToken FindToken(int position)
+        {
+            if (position < 0) return null;
+            var stream = this.CommonTokenStream;
+            int start = 0;
+            int end = stream.Size - 1;
+            while (start <= end)
+            {
+                int index = (start + end) / 2;
+                IToken token = stream.Get(index);
+                if (token == null) return null;
+                if (token.StartIndex >= position && position <= token.StopIndex) return token;
+                else if (position < token.StartIndex) end = index - 1;
+                else start = index + 1;
+            }
+            return null;
+        }
+
+        protected IToken FindToken(int line, int column)
+        {
+            if (line < 0 || column < 0) return null;
+            --line;
+            var stream = this.CommonTokenStream;
+            int start = 0;
+            int end = stream.Size - 1;
+            while (start <= end)
+            {
+                int index = (start + end) / 2;
+                IToken token = stream.Get(index);
+                if (token == null) return null;
+                if (token.Line == line && column >= token.Column && column <= token.Column + token.StopIndex - token.StartIndex + 1) return token;
+                else if (line < token.Line) end = index - 1;
+                else if (line == token.Line && column < token.Column) end = index - 1;
+                else start = index + 1;
+            }
+            return null;
+        }
+
+        protected void AddDiagnostic(Antlr4Tool.Antlr4Message diagnostic, string originalAG4FilePath)
+        {
+            Antlr4RoslynErrorCode errorCode;
+            switch (diagnostic.Severity)
+            {
+                case DiagnosticSeverity.Error:
+                    errorCode = Antlr4RoslynErrorCode.ERR_Antlr4Error;
+                    break;
+                case DiagnosticSeverity.Warning:
+                    errorCode = Antlr4RoslynErrorCode.WRN_Antlr4Warning;
+                    break;
+                default:
+                case DiagnosticSeverity.Info:
+                case DiagnosticSeverity.Hidden:
+                    errorCode = Antlr4RoslynErrorCode.INF_Antlr4Info;
+                    break;
+            }
+            IToken token = this.FindToken(diagnostic.Line, diagnostic.Column);
+            if (diagnostic.ErrorCode > 0 && token != null)
+            {
+                this.DiagnosticBag.Add(errorCode, Location.Create(originalAG4FilePath ?? string.Empty, token.GetTextSpan(), token.GetLinePositionSpan()), diagnostic.Message);
+            }
+            else
+            {
+                this.DiagnosticBag.Add(errorCode, Location.Create(diagnostic.FilePath ?? string.Empty, new TextSpan(0, 1), new LinePositionSpan(new LinePosition(0, 0), new LinePosition(0, 1))), diagnostic.Message);
+            }
+        }
+
         internal void AddDiagnostic(object node, Antlr4RoslynErrorCode code, params object[] args)
         {
             if (node is ParserRuleContext)
