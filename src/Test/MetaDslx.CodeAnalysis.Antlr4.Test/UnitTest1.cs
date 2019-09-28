@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace MetaDslx.CodeAnalysis.Antlr4.Test
+namespace MetaDslx.CodeAnalysis.Antlr4Test
 {
     public class UnitTest1
     {
