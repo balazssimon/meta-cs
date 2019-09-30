@@ -255,14 +255,24 @@ namespace MetaDslx.CodeAnalysis.Declarations
         protected virtual SingleDeclaration CreateDeclaration(DeclarationTreeInfo declaration)
         {
             DeclarationTreeInfo parent = declaration.Parent;
+            ImmutableArray<Diagnostic> diagnostics;
+            if (declaration.Kind == null && declaration.Type != null)
+            {
+                diagnostics = ImmutableArray.Create((Diagnostic)new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_SymbolTypeNotFound, declaration.Type), new SourceLocation(declaration.Node)));
+            }
+            else
+            {
+                diagnostics = ImmutableArray<Diagnostic>.Empty;
+            }
             if (parent == null)
             {
-                return new RootSingleDeclaration(declaration.Kind, _syntaxTree.GetReference(declaration.Node), declaration.Members.ToImmutable(), declaration.ReferenceDirectives.ToImmutable());
+                var rootDeclaration = new RootSingleDeclaration(declaration.Kind, _syntaxTree.GetReference(declaration.Node), declaration.Members.ToImmutable(), declaration.ReferenceDirectives.ToImmutable(), diagnostics);
+                return rootDeclaration;
             }
             if (declaration.Names.Count == 0)
             {
                 //var diagnostics = ImmutableArray.Create<Diagnostic>(new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_DeclarationHasNoName), declaration.Node.Location));
-                SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(declaration.Node), false, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
+                SingleDeclaration anonymousDeclaration = new SingleDeclaration(null, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(declaration.Node), false, declaration.ParentPropertyToAddTo, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
                 parent.Members.Add(anonymousDeclaration);
                 return anonymousDeclaration;
             }
@@ -273,7 +283,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 {
                     var identifier = qualifier[count - 1];
                     var parentProperty = count == 1 ? declaration.ParentPropertyToAddTo : declaration.NestingProperty;
-                    var decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.Merge, parentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), ImmutableArray<Diagnostic>.Empty);
+                    var decl = new SingleDeclaration(identifier.Text, declaration.Kind, _syntaxTree.GetReference(declaration.Node), new SourceLocation(identifier.Syntax), declaration.Merge, parentProperty, declaration.Members.ToImmutable(), declaration.Properties.ToImmutable(), diagnostics);
                     var deepestDecl = decl;
                     for (int i = count - 2; i >= 0; i--)
                     {

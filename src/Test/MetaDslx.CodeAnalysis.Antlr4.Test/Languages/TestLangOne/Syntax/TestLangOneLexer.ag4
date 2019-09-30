@@ -12,7 +12,7 @@ channels
 }
 
 // Keywords
-$Token(first=KNamespace,last=KStatic,kind=ReservedKeyword)
+$Token(first=KNamespace,last=KNull,kind=ReservedKeyword)
 KNamespace : 'namespace';
 KScope : 'scope';
 KMember : 'member';
@@ -23,6 +23,16 @@ KArrow : 'arrow';
 KStatic : 'static';
 KTrue : 'true';
 KFalse : 'false';
+KTest01 : 'test01';
+KTest02 : 'test02';
+KTest03 : 'test03';
+KTest04 : 'test04';
+KTest05 : 'test05';
+KTest06 : 'test06';
+KTest07 : 'test07';
+KTest08 : 'test08';
+KTest09 : 'test09';
+KTest10 : 'test10';
 KNull : 'null';
 
 // Tokens

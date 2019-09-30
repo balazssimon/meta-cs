@@ -84,5 +84,6 @@ namespace MetaDslx.Modeling
         public static readonly ModelErrorCode WRN_QualifierNotFound = new ModelErrorCode(39, "Qualifier not found", "Internal error in the compiler. BoundQualifier '{0}' attached to '{1}' was not found under BoundSymbolUse attached to '{2}'. Make sure the $Qualifier annotation is available directly under the $SymbolUse annotation.", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotSetValueToProperty = new ModelErrorCode(40, "Cannot add value to property", "Cannot set value to property '{0}' in symbol '{1}': {2}", DiagnosticSeverity.Error);
         public static readonly ModelErrorCode ERR_CannotAddValuesToProperty = new ModelErrorCode(41, "Cannot add values to property", "Cannot add values to property '{0}' in symbol '{1}': {2}", DiagnosticSeverity.Error);
+        public static readonly ModelErrorCode ERR_SymbolTypeNotFound = new ModelErrorCode(42, "Symbol type not found", "Could not find model descriptor for symbol type '{0}'. Try initializing the model descriptor by calling [ModelName]Descriptor.Initialize().", DiagnosticSeverity.Error);
     }
 }

@@ -22,10 +22,10 @@
 	class Declaration
 	{
 		Declaration Owner;
-		containment list<Declaration> Members;
+		containment list<Declaration> Declarations;
 	}
 
-	association Declaration.Owner with Declaration.Members;
+	association Declaration.Owner with Declaration.Declarations;
 
 	class NamedDeclaration : Declaration, NamedElement
 	{
@@ -42,7 +42,7 @@
 
 	class Class : Type, NamedDeclaration, Scope
 	{
-		containment list<Property> Properties subsets Declaration.Members;
+		containment list<Property> Properties subsets Declaration.Declarations;
 	}
 
 	class Member : NamedDeclaration
@@ -58,9 +58,9 @@
 	{
 	}
 
-	class Edge : Declaration
+	class Arrow : Declaration
 	{
-		Vertex Start;
-		Vertex End;
+		Vertex Source;
+		Vertex Target;
 	}
 }

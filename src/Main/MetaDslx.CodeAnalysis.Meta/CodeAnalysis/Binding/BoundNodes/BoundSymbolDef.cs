@@ -113,6 +113,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         {
             var properties = this.GetProperties(null, cancellationToken);
             var modelObject = (MutableSymbolBase)symbol.ModelObject;
+            if (modelObject == null) return;
             foreach (var boundProperty in properties)
             {
                 string name = boundProperty.Name;

@@ -19,8 +19,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ModelSymbolInfo kind,
             SyntaxReference treeNode, 
             ImmutableArray<SingleDeclaration> children, 
-            ImmutableArray<ReferenceDirective> referenceDirectives) 
-            : base(string.Empty, kind, treeNode, new SourceLocation(treeNode), true, null, children, ImmutableArray<DeclarationTreeInfo.Property>.Empty, ImmutableArray<Diagnostic>.Empty)
+            ImmutableArray<ReferenceDirective> referenceDirectives,
+            ImmutableArray<Diagnostic> diagnostics) 
+            : base(string.Empty, kind, treeNode, new SourceLocation(treeNode), true, null, children, ImmutableArray<DeclarationTreeInfo.Property>.Empty, diagnostics)
         {
             _referenceDirectives = referenceDirectives;
         }

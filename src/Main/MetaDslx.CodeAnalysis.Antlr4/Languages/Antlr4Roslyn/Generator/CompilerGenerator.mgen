@@ -5117,7 +5117,7 @@ var childBoundNodesOf[elem.RedName()] = ArrayBuilder<object>.GetInstance();
 BoundNode bound[elem.RedName()];
 	[string children = "childBoundNodesOf"+elem.RedName()+".ToImmutableAndFree()"]
 	[loop (annot:elem.Annotations.BoundNodeAnnotations.Reverse())]
-bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], node.[elem.RedName()], false);
+bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node.[elem.RedName()], hasErrors: false);
 	[children = "ImmutableArray.Create<object>(bound"+elem.RedName()+")"]
 	[end loop]
 [childBoundNodesName].Add(bound[elem.RedName()]);

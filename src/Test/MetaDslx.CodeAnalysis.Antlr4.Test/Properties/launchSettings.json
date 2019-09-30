@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "MetaDslx.CodeAnalysis.Antlr4.Test": {
+      "commandName": "Project"
+    }
+  }
+}

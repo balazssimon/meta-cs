@@ -48351,7 +48351,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp23_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp24_line = ", node."; //5120:109
+                    string __tmp24_line = ", syntax: node."; //5120:109
                     if (!string.IsNullOrEmpty(__tmp24_line))
                     {
                         __out.Append(__tmp24_line);
@@ -48374,7 +48374,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp25_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp26_line = ", false);"; //5120:132
+                    string __tmp26_line = ", hasErrors: false);"; //5120:140
                     if (!string.IsNullOrEmpty(__tmp26_line))
                     {
                         __out.Append(__tmp26_line);
@@ -48383,7 +48383,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp16_outputWritten) __out.AppendLine(true);
                     if (__tmp16_outputWritten)
                     {
-                        __out.AppendLine(false); //5120:141
+                        __out.AppendLine(false); //5120:160
                     }
                     children = "ImmutableArray.Create<object>(bound" + elem.RedName() + ")";
                 }
