@@ -4678,6 +4678,9 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 		if (annot.Name == MetaCompilerAnnotationInfo.Name)
 			body = GenerateDeclarationTreeBuilderName(annot, "node."+elem.RedName(), body);
 		end if
+		if (annot.Name == MetaCompilerAnnotationInfo.Scope)
+			body = GenerateDeclarationTreeBuilderScope(annot, "node."+elem.RedName(), body);
+		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.SymbolDef)
 			body = GenerateDeclarationTreeBuilderSymbolDef(annot, "node."+elem.RedName(), body);
 		end if

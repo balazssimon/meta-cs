@@ -28,7 +28,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
             TestLangOneDescriptor.Initialize();
             string text = File.ReadAllText($@"..\..\..\InputFiles\Test{testId}-File{fileId}.txt");
             var st = TestLangOneSyntaxTree.ParseText(text);
-            var options = new TestLangOneCompilationOptions(TestLangOneLanguage.Instance, Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary, topLevelBinderFlags: (BinderFlags)BinderFlags.IgnoreAccessibility);
+            var options = new TestLangOneCompilationOptions(TestLangOneLanguage.Instance, Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary, topLevelBinderFlags: (BinderFlags)BinderFlags.IgnoreAccessibility, concurrentBuild: false);
             var comp = TestLangOneCompilation.Create("Test").WithOptions(options).AddSyntaxTrees(st);
             comp.ForceComplete();
             if (assertEmptyDiagnostics) AssertEmptyDiagnostics(comp);

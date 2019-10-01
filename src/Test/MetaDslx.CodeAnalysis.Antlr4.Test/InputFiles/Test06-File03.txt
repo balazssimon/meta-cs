@@ -1,11 +1,11 @@
 test06 namespace Test06A
 {
-	arrow V1 -> Test06B.V2;
+	arrow V1 -> V2;
 	vertex V1;
 }
 
 test06 namespace Test06B
 {
 	vertex V2;
-	arrow Test06A.V1 -> V2;
+	arrow V1 -> V2;
 }

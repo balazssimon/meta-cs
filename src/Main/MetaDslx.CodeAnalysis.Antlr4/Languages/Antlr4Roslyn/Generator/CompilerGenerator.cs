@@ -44295,29 +44295,33 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 {
                     body = GenerateDeclarationTreeBuilderName(annot, "node." + elem.RedName(), body); //4679:4
                 }
-                if (annot.Name == MetaCompilerAnnotationInfo.SymbolDef) //4681:3
+                if (annot.Name == MetaCompilerAnnotationInfo.Scope) //4681:3
                 {
-                    body = GenerateDeclarationTreeBuilderSymbolDef(annot, "node." + elem.RedName(), body); //4682:4
+                    body = GenerateDeclarationTreeBuilderScope(annot, "node." + elem.RedName(), body); //4682:4
                 }
-                if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse) //4684:3
+                if (annot.Name == MetaCompilerAnnotationInfo.SymbolDef) //4684:3
                 {
-                    body = GenerateDeclarationTreeBuilderSymbolUse(annot, "node." + elem.RedName(), body); //4685:4
+                    body = GenerateDeclarationTreeBuilderSymbolDef(annot, "node." + elem.RedName(), body); //4685:4
                 }
-                if (annot.Name == MetaCompilerAnnotationInfo.Property && !annot.HasProperty("value")) //4687:3
+                if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse) //4687:3
                 {
-                    body = GenerateDeclarationTreeBuilderProperty(annot, "node." + elem.RedName(), body); //4688:4
+                    body = GenerateDeclarationTreeBuilderSymbolUse(annot, "node." + elem.RedName(), body); //4688:4
+                }
+                if (annot.Name == MetaCompilerAnnotationInfo.Property && !annot.HasProperty("value")) //4690:3
+                {
+                    body = GenerateDeclarationTreeBuilderProperty(annot, "node." + elem.RedName(), body); //4691:4
                 }
             }
-            return body; //4691:2
+            return body; //4694:2
         }
 
-        public string GenerateDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //4694:1
+        public string GenerateDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //4697:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.IsToken || elem.IsFixedTokenAltBlock) //4695:3
+            if (elem.IsToken || elem.IsFixedTokenAltBlock) //4698:3
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "switch (node."; //4696:1
+                string __tmp3_line = "switch (node."; //4699:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -44340,7 +44344,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ".GetKind().Switch())"; //4696:30
+                string __tmp5_line = ".GetKind().Switch())"; //4699:30
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -44349,20 +44353,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //4696:50
+                    __out.AppendLine(false); //4699:50
                 }
-                __out.Append("{"); //4697:1
-                __out.AppendLine(false); //4697:2
+                __out.Append("{"); //4700:1
+                __out.AppendLine(false); //4700:2
                 var __loop101_results = 
-                    (from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //4698:9
+                    (from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //4701:9
                     select new { alt = alt}
-                    ).ToList(); //4698:3
+                    ).ToList(); //4701:3
                 for (int __loop101_iteration = 0; __loop101_iteration < __loop101_results.Count; ++__loop101_iteration)
                 {
                     var __tmp6 = __loop101_results[__loop101_iteration];
                     var alt = __tmp6.alt;
                     bool __tmp8_outputWritten = false;
-                    string __tmp9_line = "	case "; //4699:1
+                    string __tmp9_line = "	case "; //4702:1
                     if (!string.IsNullOrEmpty(__tmp9_line))
                     {
                         __out.Append(__tmp9_line);
@@ -44385,7 +44389,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp10_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp11_line = "SyntaxKind."; //4699:32
+                    string __tmp11_line = "SyntaxKind."; //4702:32
                     if (!string.IsNullOrEmpty(__tmp11_line))
                     {
                         __out.Append(__tmp11_line);
@@ -44408,7 +44412,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp12_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp13_line = ":"; //4699:58
+                    string __tmp13_line = ":"; //4702:58
                     if (!string.IsNullOrEmpty(__tmp13_line))
                     {
                         __out.Append(__tmp13_line);
@@ -44417,10 +44421,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp8_outputWritten) __out.AppendLine(true);
                     if (__tmp8_outputWritten)
                     {
-                        __out.AppendLine(false); //4699:59
+                        __out.AppendLine(false); //4702:59
                     }
                     bool __tmp15_outputWritten = false;
-                    string __tmp14Prefix = "		"; //4700:1
+                    string __tmp14Prefix = "		"; //4703:1
                     StringBuilder __tmp16 = new StringBuilder();
                     __tmp16.Append(GetDeclarationTreeBuilderVisitElement(rule, alt));
                     using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
@@ -44445,19 +44449,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     }
                     if (__tmp15_outputWritten)
                     {
-                        __out.AppendLine(false); //4700:53
+                        __out.AppendLine(false); //4703:53
                     }
-                    __out.Append("		break;"); //4701:1
-                    __out.AppendLine(false); //4701:9
+                    __out.Append("		break;"); //4704:1
+                    __out.AppendLine(false); //4704:9
                 }
-                __out.Append("	default:"); //4703:1
-                __out.AppendLine(false); //4703:10
-                __out.Append("		break;"); //4704:1
-                __out.AppendLine(false); //4704:9
-                __out.Append("}"); //4705:1
-                __out.AppendLine(false); //4705:2
+                __out.Append("	default:"); //4706:1
+                __out.AppendLine(false); //4706:10
+                __out.Append("		break;"); //4707:1
+                __out.AppendLine(false); //4707:9
+                __out.Append("}"); //4708:1
+                __out.AppendLine(false); //4708:2
             }
-            else //4706:3
+            else //4709:3
             {
                 bool __tmp18_outputWritten = false;
                 StringBuilder __tmp19 = new StringBuilder();
@@ -44479,39 +44483,39 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp18_outputWritten)
                 {
-                    __out.AppendLine(false); //4707:52
+                    __out.AppendLine(false); //4710:52
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateBinderFactoryVisitor() //4711:1
+        public string GenerateBinderFactoryVisitor() //4714:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.Append("using System;"); //4712:1
-            __out.AppendLine(false); //4712:14
-            __out.Append("using System.Diagnostics;"); //4713:1
-            __out.AppendLine(false); //4713:26
-            __out.Append("using System.Collections.Generic;"); //4714:1
-            __out.AppendLine(false); //4714:34
-            __out.Append("using System.Collections.Immutable;"); //4715:1
-            __out.AppendLine(false); //4715:36
-            __out.Append("using System.Linq;"); //4716:1
-            __out.AppendLine(false); //4716:19
-            __out.Append("using System.Text;"); //4717:1
-            __out.AppendLine(false); //4717:19
-            __out.Append("using System.Threading.Tasks;"); //4718:1
-            __out.AppendLine(false); //4718:30
-            __out.Append("using Microsoft.CodeAnalysis;"); //4719:1
-            __out.AppendLine(false); //4719:30
-            __out.Append("using MetaDslx.CodeAnalysis;"); //4720:1
-            __out.AppendLine(false); //4720:29
-            __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //4721:1
-            __out.AppendLine(false); //4721:37
-            __out.Append("using MetaDslx.CodeAnalysis.Syntax;"); //4722:1
-            __out.AppendLine(false); //4722:36
+            __out.Append("using System;"); //4715:1
+            __out.AppendLine(false); //4715:14
+            __out.Append("using System.Diagnostics;"); //4716:1
+            __out.AppendLine(false); //4716:26
+            __out.Append("using System.Collections.Generic;"); //4717:1
+            __out.AppendLine(false); //4717:34
+            __out.Append("using System.Collections.Immutable;"); //4718:1
+            __out.AppendLine(false); //4718:36
+            __out.Append("using System.Linq;"); //4719:1
+            __out.AppendLine(false); //4719:19
+            __out.Append("using System.Text;"); //4720:1
+            __out.AppendLine(false); //4720:19
+            __out.Append("using System.Threading.Tasks;"); //4721:1
+            __out.AppendLine(false); //4721:30
+            __out.Append("using Microsoft.CodeAnalysis;"); //4722:1
+            __out.AppendLine(false); //4722:30
+            __out.Append("using MetaDslx.CodeAnalysis;"); //4723:1
+            __out.AppendLine(false); //4723:29
+            __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //4724:1
+            __out.AppendLine(false); //4724:37
+            __out.Append("using MetaDslx.CodeAnalysis.Syntax;"); //4725:1
+            __out.AppendLine(false); //4725:36
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "using "; //4723:1
+            string __tmp3_line = "using "; //4726:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -44534,7 +44538,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = ".Syntax;"; //4723:36
+            string __tmp5_line = ".Syntax;"; //4726:36
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -44543,10 +44547,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //4723:44
+                __out.AppendLine(false); //4726:44
             }
             bool __tmp7_outputWritten = false;
-            string __tmp8_line = "using "; //4724:1
+            string __tmp8_line = "using "; //4727:1
             if (!string.IsNullOrEmpty(__tmp8_line))
             {
                 __out.Append(__tmp8_line);
@@ -44569,7 +44573,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp9_last) __out.AppendLine(true);
                 }
             }
-            string __tmp10_line = ".Symbols;"; //4724:36
+            string __tmp10_line = ".Symbols;"; //4727:36
             if (!string.IsNullOrEmpty(__tmp10_line))
             {
                 __out.Append(__tmp10_line);
@@ -44578,11 +44582,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp7_outputWritten) __out.AppendLine(true);
             if (__tmp7_outputWritten)
             {
-                __out.AppendLine(false); //4724:45
+                __out.AppendLine(false); //4727:45
             }
-            __out.AppendLine(true); //4725:1
+            __out.AppendLine(true); //4728:1
             bool __tmp12_outputWritten = false;
-            string __tmp13_line = "namespace "; //4726:1
+            string __tmp13_line = "namespace "; //4729:1
             if (!string.IsNullOrEmpty(__tmp13_line))
             {
                 __out.Append(__tmp13_line);
@@ -44605,7 +44609,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp14_last) __out.AppendLine(true);
                 }
             }
-            string __tmp15_line = ".Binding"; //4726:40
+            string __tmp15_line = ".Binding"; //4729:40
             if (!string.IsNullOrEmpty(__tmp15_line))
             {
                 __out.Append(__tmp15_line);
@@ -44614,12 +44618,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp12_outputWritten) __out.AppendLine(true);
             if (__tmp12_outputWritten)
             {
-                __out.AppendLine(false); //4726:48
+                __out.AppendLine(false); //4729:48
             }
-            __out.Append("{"); //4727:1
-            __out.AppendLine(false); //4727:2
+            __out.Append("{"); //4730:1
+            __out.AppendLine(false); //4730:2
             bool __tmp17_outputWritten = false;
-            string __tmp18_line = "    public class "; //4728:1
+            string __tmp18_line = "    public class "; //4731:1
             if (!string.IsNullOrEmpty(__tmp18_line))
             {
                 __out.Append(__tmp18_line);
@@ -44642,7 +44646,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp19_last) __out.AppendLine(true);
                 }
             }
-            string __tmp20_line = "BinderFactoryVisitor : BinderFactoryVisitor, I"; //4728:43
+            string __tmp20_line = "BinderFactoryVisitor : BinderFactoryVisitor, I"; //4731:43
             if (!string.IsNullOrEmpty(__tmp20_line))
             {
                 __out.Append(__tmp20_line);
@@ -44665,7 +44669,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp21_last) __out.AppendLine(true);
                 }
             }
-            string __tmp22_line = "SyntaxVisitor<Binder>"; //4728:114
+            string __tmp22_line = "SyntaxVisitor<Binder>"; //4731:114
             if (!string.IsNullOrEmpty(__tmp22_line))
             {
                 __out.Append(__tmp22_line);
@@ -44674,20 +44678,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp17_outputWritten) __out.AppendLine(true);
             if (__tmp17_outputWritten)
             {
-                __out.AppendLine(false); //4728:135
+                __out.AppendLine(false); //4731:135
             }
-            __out.Append("    {"); //4729:1
-            __out.AppendLine(false); //4729:6
+            __out.Append("    {"); //4732:1
+            __out.AppendLine(false); //4732:6
             var __loop102_results = 
-                (from use in __Enumerate((Instances.ParserRuleElemUses).GetEnumerator()) //4730:10
+                (from use in __Enumerate((Instances.ParserRuleElemUses).GetEnumerator()) //4733:10
                 select new { use = use}
-                ).ToList(); //4730:4
+                ).ToList(); //4733:4
             for (int __loop102_iteration = 0; __loop102_iteration < __loop102_results.Count; ++__loop102_iteration)
             {
                 var __tmp23 = __loop102_results[__loop102_iteration];
                 var use = __tmp23.use;
                 bool __tmp25_outputWritten = false;
-                string __tmp26_line = "		public static object Use"; //4731:1
+                string __tmp26_line = "		public static object Use"; //4734:1
                 if (!string.IsNullOrEmpty(__tmp26_line))
                 {
                     __out.Append(__tmp26_line);
@@ -44710,7 +44714,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp27_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp28_line = " = new object();"; //4731:32
+                string __tmp28_line = " = new object();"; //4734:32
                 if (!string.IsNullOrEmpty(__tmp28_line))
                 {
                     __out.Append(__tmp28_line);
@@ -44719,12 +44723,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp25_outputWritten) __out.AppendLine(true);
                 if (__tmp25_outputWritten)
                 {
-                    __out.AppendLine(false); //4731:48
+                    __out.AppendLine(false); //4734:48
                 }
             }
-            __out.AppendLine(true); //4733:1
+            __out.AppendLine(true); //4736:1
             bool __tmp30_outputWritten = false;
-            string __tmp31_line = "        public "; //4734:1
+            string __tmp31_line = "        public "; //4737:1
             if (!string.IsNullOrEmpty(__tmp31_line))
             {
                 __out.Append(__tmp31_line);
@@ -44747,7 +44751,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp32_last) __out.AppendLine(true);
                 }
             }
-            string __tmp33_line = "BinderFactoryVisitor(BinderFactory symbolBuilder)"; //4734:41
+            string __tmp33_line = "BinderFactoryVisitor(BinderFactory symbolBuilder)"; //4737:41
             if (!string.IsNullOrEmpty(__tmp33_line))
             {
                 __out.Append(__tmp33_line);
@@ -44756,26 +44760,26 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp30_outputWritten) __out.AppendLine(true);
             if (__tmp30_outputWritten)
             {
-                __out.AppendLine(false); //4734:90
+                __out.AppendLine(false); //4737:90
             }
-            __out.Append("			: base(symbolBuilder)"); //4735:1
-            __out.AppendLine(false); //4735:25
-            __out.Append("        {"); //4736:1
-            __out.AppendLine(false); //4736:10
-            __out.AppendLine(true); //4737:1
-            __out.Append("        }"); //4738:1
-            __out.AppendLine(false); //4738:10
+            __out.Append("			: base(symbolBuilder)"); //4738:1
+            __out.AppendLine(false); //4738:25
+            __out.Append("        {"); //4739:1
+            __out.AppendLine(false); //4739:10
+            __out.AppendLine(true); //4740:1
+            __out.Append("        }"); //4741:1
+            __out.AppendLine(false); //4741:10
             var __loop103_results = 
-                (from annot in __Enumerate((Instances.CustomAnnotations).GetEnumerator()) //4739:9
+                (from annot in __Enumerate((Instances.CustomAnnotations).GetEnumerator()) //4742:9
                 select new { annot = annot}
-                ).ToList(); //4739:4
+                ).ToList(); //4742:4
             for (int __loop103_iteration = 0; __loop103_iteration < __loop103_results.Count; ++__loop103_iteration)
             {
                 var __tmp34 = __loop103_results[__loop103_iteration];
                 var annot = __tmp34.annot;
-                __out.AppendLine(true); //4740:1
+                __out.AppendLine(true); //4743:1
                 bool __tmp36_outputWritten = false;
-                string __tmp37_line = "        protected virtual Binder Create"; //4741:1
+                string __tmp37_line = "        protected virtual Binder Create"; //4744:1
                 if (!string.IsNullOrEmpty(__tmp37_line))
                 {
                     __out.Append(__tmp37_line);
@@ -44798,7 +44802,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp38_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp39_line = "Binder(Binder parentBinder, LanguageSyntaxNode syntax)"; //4741:52
+                string __tmp39_line = "Binder(Binder parentBinder, LanguageSyntaxNode syntax)"; //4744:52
                 if (!string.IsNullOrEmpty(__tmp39_line))
                 {
                     __out.Append(__tmp39_line);
@@ -44807,12 +44811,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp36_outputWritten) __out.AppendLine(true);
                 if (__tmp36_outputWritten)
                 {
-                    __out.AppendLine(false); //4741:106
+                    __out.AppendLine(false); //4744:106
                 }
-                __out.Append("        {"); //4742:1
-                __out.AppendLine(false); //4742:10
+                __out.Append("        {"); //4745:1
+                __out.AppendLine(false); //4745:10
                 bool __tmp41_outputWritten = false;
-                string __tmp42_line = "            return this.Create"; //4743:1
+                string __tmp42_line = "            return this.Create"; //4746:1
                 if (!string.IsNullOrEmpty(__tmp42_line))
                 {
                     __out.Append(__tmp42_line);
@@ -44835,7 +44839,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp43_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp44_line = "BinderCore(parentBinder, syntax);"; //4743:43
+                string __tmp44_line = "BinderCore(parentBinder, syntax);"; //4746:43
                 if (!string.IsNullOrEmpty(__tmp44_line))
                 {
                     __out.Append(__tmp44_line);
@@ -44844,13 +44848,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp41_outputWritten) __out.AppendLine(true);
                 if (__tmp41_outputWritten)
                 {
-                    __out.AppendLine(false); //4743:76
+                    __out.AppendLine(false); //4746:76
                 }
-                __out.Append("        }"); //4744:1
-                __out.AppendLine(false); //4744:10
-                __out.AppendLine(true); //4745:1
+                __out.Append("        }"); //4747:1
+                __out.AppendLine(false); //4747:10
+                __out.AppendLine(true); //4748:1
                 bool __tmp46_outputWritten = false;
-                string __tmp47_line = "        protected virtual Binder Create"; //4746:1
+                string __tmp47_line = "        protected virtual Binder Create"; //4749:1
                 if (!string.IsNullOrEmpty(__tmp47_line))
                 {
                     __out.Append(__tmp47_line);
@@ -44873,7 +44877,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp48_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp49_line = "BinderCore(Binder parentBinder, LanguageSyntaxNode syntax)"; //4746:52
+                string __tmp49_line = "BinderCore(Binder parentBinder, LanguageSyntaxNode syntax)"; //4749:52
                 if (!string.IsNullOrEmpty(__tmp49_line))
                 {
                     __out.Append(__tmp49_line);
@@ -44882,12 +44886,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp46_outputWritten) __out.AppendLine(true);
                 if (__tmp46_outputWritten)
                 {
-                    __out.AppendLine(false); //4746:110
+                    __out.AppendLine(false); //4749:110
                 }
-                __out.Append("        {"); //4747:1
-                __out.AppendLine(false); //4747:10
+                __out.Append("        {"); //4750:1
+                __out.AppendLine(false); //4750:10
                 bool __tmp51_outputWritten = false;
-                string __tmp52_line = "            return new "; //4748:1
+                string __tmp52_line = "            return new "; //4751:1
                 if (!string.IsNullOrEmpty(__tmp52_line))
                 {
                     __out.Append(__tmp52_line);
@@ -44910,7 +44914,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp53_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp54_line = "Binder(parentBinder, syntax);"; //4748:36
+                string __tmp54_line = "Binder(parentBinder, syntax);"; //4751:36
                 if (!string.IsNullOrEmpty(__tmp54_line))
                 {
                     __out.Append(__tmp54_line);
@@ -44919,34 +44923,34 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp51_outputWritten) __out.AppendLine(true);
                 if (__tmp51_outputWritten)
                 {
-                    __out.AppendLine(false); //4748:65
+                    __out.AppendLine(false); //4751:65
                 }
-                __out.Append("        }"); //4749:1
-                __out.AppendLine(false); //4749:10
+                __out.Append("        }"); //4752:1
+                __out.AppendLine(false); //4752:10
             }
-            __out.AppendLine(true); //4751:1
-            __out.Append("        /// <summary>"); //4752:1
-            __out.AppendLine(false); //4752:22
-            __out.Append("        /// Returns binder that binds usings and aliases "); //4753:1
-            __out.AppendLine(false); //4753:58
-            __out.Append("        /// </summary>"); //4754:1
-            __out.AppendLine(false); //4754:23
-            __out.Append("        /// <param name=\"unit\">"); //4755:1
-            __out.AppendLine(false); //4755:32
-            __out.Append("        /// Specify <see cref=\"LanguageSyntaxNode\"/> imports in the corresponding syntax node, or"); //4756:1
-            __out.AppendLine(false); //4756:98
-            __out.Append("        /// <see cref=\"CompilationUnitSyntax\"/> for top-level imports."); //4757:1
-            __out.AppendLine(false); //4757:71
-            __out.Append("        /// </param>"); //4758:1
-            __out.AppendLine(false); //4758:21
-            __out.Append("        /// <param name=\"inUsing\">True if the binder will be used to bind a using directive.</param>"); //4759:1
-            __out.AppendLine(false); //4759:101
-            __out.Append("        public override Binder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing)"); //4760:1
-            __out.AppendLine(false); //4760:87
-            __out.Append("        {"); //4761:1
-            __out.AppendLine(false); //4761:10
+            __out.AppendLine(true); //4754:1
+            __out.Append("        /// <summary>"); //4755:1
+            __out.AppendLine(false); //4755:22
+            __out.Append("        /// Returns binder that binds usings and aliases "); //4756:1
+            __out.AppendLine(false); //4756:58
+            __out.Append("        /// </summary>"); //4757:1
+            __out.AppendLine(false); //4757:23
+            __out.Append("        /// <param name=\"unit\">"); //4758:1
+            __out.AppendLine(false); //4758:32
+            __out.Append("        /// Specify <see cref=\"LanguageSyntaxNode\"/> imports in the corresponding syntax node, or"); //4759:1
+            __out.AppendLine(false); //4759:98
+            __out.Append("        /// <see cref=\"CompilationUnitSyntax\"/> for top-level imports."); //4760:1
+            __out.AppendLine(false); //4760:71
+            __out.Append("        /// </param>"); //4761:1
+            __out.AppendLine(false); //4761:21
+            __out.Append("        /// <param name=\"inUsing\">True if the binder will be used to bind a using directive.</param>"); //4762:1
+            __out.AppendLine(false); //4762:101
+            __out.Append("        public override Binder GetImportsBinder(LanguageSyntaxNode unit, bool inUsing)"); //4763:1
+            __out.AppendLine(false); //4763:87
+            __out.Append("        {"); //4764:1
+            __out.AppendLine(false); //4764:10
             bool __tmp56_outputWritten = false;
-            string __tmp57_line = "            if (unit.Kind == "; //4762:1
+            string __tmp57_line = "            if (unit.Kind == "; //4765:1
             if (!string.IsNullOrEmpty(__tmp57_line))
             {
                 __out.Append(__tmp57_line);
@@ -44969,7 +44973,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp58_last) __out.AppendLine(true);
                 }
             }
-            string __tmp59_line = "SyntaxKind."; //4762:55
+            string __tmp59_line = "SyntaxKind."; //4765:55
             if (!string.IsNullOrEmpty(__tmp59_line))
             {
                 __out.Append(__tmp59_line);
@@ -44992,7 +44996,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp60_last) __out.AppendLine(true);
                 }
             }
-            string __tmp61_line = ")"; //4762:100
+            string __tmp61_line = ")"; //4765:100
             if (!string.IsNullOrEmpty(__tmp61_line))
             {
                 __out.Append(__tmp61_line);
@@ -45001,47 +45005,47 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp56_outputWritten) __out.AppendLine(true);
             if (__tmp56_outputWritten)
             {
-                __out.AppendLine(false); //4762:101
+                __out.AppendLine(false); //4765:101
             }
-            __out.Append("            {"); //4763:1
-            __out.AppendLine(false); //4763:14
-            __out.Append("                return this.GetCompilationUnitBinder(unit, inUsing: inUsing, inScript: InScript);"); //4764:1
-            __out.AppendLine(false); //4764:98
-            __out.Append("            }"); //4765:1
-            __out.AppendLine(false); //4765:14
-            __out.Append("            else"); //4766:1
-            __out.AppendLine(false); //4766:17
-            __out.Append("            {"); //4767:1
-            __out.AppendLine(false); //4767:14
-            __out.Append("                // TODO:MetaDslx - non-compilation-unit imports"); //4768:1
-            __out.AppendLine(false); //4768:64
-            __out.Append("                return null;"); //4769:1
-            __out.AppendLine(false); //4769:29
-            __out.Append("            }"); //4770:1
+            __out.Append("            {"); //4766:1
+            __out.AppendLine(false); //4766:14
+            __out.Append("                return this.GetCompilationUnitBinder(unit, inUsing: inUsing, inScript: InScript);"); //4767:1
+            __out.AppendLine(false); //4767:98
+            __out.Append("            }"); //4768:1
+            __out.AppendLine(false); //4768:14
+            __out.Append("            else"); //4769:1
+            __out.AppendLine(false); //4769:17
+            __out.Append("            {"); //4770:1
             __out.AppendLine(false); //4770:14
-            __out.Append("        }"); //4771:1
-            __out.AppendLine(false); //4771:10
-            __out.AppendLine(true); //4772:1
+            __out.Append("                // TODO:MetaDslx - non-compilation-unit imports"); //4771:1
+            __out.AppendLine(false); //4771:64
+            __out.Append("                return null;"); //4772:1
+            __out.AppendLine(false); //4772:29
+            __out.Append("            }"); //4773:1
+            __out.AppendLine(false); //4773:14
+            __out.Append("        }"); //4774:1
+            __out.AppendLine(false); //4774:10
+            __out.AppendLine(true); //4775:1
             var __loop104_results = 
-                (from rule in __Enumerate((Instances.ParserRules).GetEnumerator()) //4773:9
+                (from rule in __Enumerate((Instances.ParserRules).GetEnumerator()) //4776:9
                 select new { rule = rule}
-                ).ToList(); //4773:4
+                ).ToList(); //4776:4
             for (int __loop104_iteration = 0; __loop104_iteration < __loop104_results.Count; ++__loop104_iteration)
             {
                 var __tmp62 = __loop104_results[__loop104_iteration];
                 var rule = __tmp62.rule;
-                if (rule.Alternatives.Count > 0) //4774:5
+                if (rule.Alternatives.Count > 0) //4777:5
                 {
                     var __loop105_results = 
-                        (from alt in __Enumerate((rule.Alternatives).GetEnumerator()) //4775:11
+                        (from alt in __Enumerate((rule.Alternatives).GetEnumerator()) //4778:11
                         select new { alt = alt}
-                        ).ToList(); //4775:6
+                        ).ToList(); //4778:6
                     for (int __loop105_iteration = 0; __loop105_iteration < __loop105_results.Count; ++__loop105_iteration)
                     {
                         var __tmp63 = __loop105_results[__loop105_iteration];
                         var alt = __tmp63.alt;
                         bool __tmp65_outputWritten = false;
-                        string __tmp64Prefix = "		"; //4776:1
+                        string __tmp64Prefix = "		"; //4779:1
                         StringBuilder __tmp66 = new StringBuilder();
                         __tmp66.Append(GenerateBinderFactoryVisit(alt));
                         using(StreamReader __tmp66Reader = new StreamReader(this.__ToStream(__tmp66.ToString())))
@@ -45066,14 +45070,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         }
                         if (__tmp65_outputWritten)
                         {
-                            __out.AppendLine(false); //4776:36
+                            __out.AppendLine(false); //4779:36
                         }
                     }
                 }
-                else //4778:5
+                else //4781:5
                 {
                     bool __tmp68_outputWritten = false;
-                    string __tmp67Prefix = "		"; //4779:1
+                    string __tmp67Prefix = "		"; //4782:1
                     StringBuilder __tmp69 = new StringBuilder();
                     __tmp69.Append(GenerateBinderFactoryVisit(rule));
                     using(StreamReader __tmp69Reader = new StreamReader(this.__ToStream(__tmp69.ToString())))
@@ -45098,23 +45102,23 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     }
                     if (__tmp68_outputWritten)
                     {
-                        __out.AppendLine(false); //4779:37
+                        __out.AppendLine(false); //4782:37
                     }
                 }
             }
-            __out.Append("    }"); //4782:1
-            __out.AppendLine(false); //4782:6
-            __out.Append("}"); //4783:1
-            __out.AppendLine(false); //4783:2
+            __out.Append("    }"); //4785:1
+            __out.AppendLine(false); //4785:6
+            __out.Append("}"); //4786:1
+            __out.AppendLine(false); //4786:2
             return __out.ToString();
         }
 
-        public string GenerateBinderFactoryVisit(Antlr4ParserRule rule) //4787:1
+        public string GenerateBinderFactoryVisit(Antlr4ParserRule rule) //4790:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.AppendLine(true); //4788:1
+            __out.AppendLine(true); //4791:1
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "public Binder Visit"; //4789:1
+            string __tmp3_line = "public Binder Visit"; //4792:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -45137,7 +45141,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = "("; //4789:38
+            string __tmp5_line = "("; //4792:38
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -45160,7 +45164,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp6_last) __out.AppendLine(true);
                 }
             }
-            string __tmp7_line = " parent)"; //4789:55
+            string __tmp7_line = " parent)"; //4792:55
             if (!string.IsNullOrEmpty(__tmp7_line))
             {
                 __out.Append(__tmp7_line);
@@ -45169,29 +45173,29 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //4789:63
+                __out.AppendLine(false); //4792:63
             }
-            __out.Append("{"); //4790:1
-            __out.AppendLine(false); //4790:2
-            if (rule == Instances.MainRule()) //4791:6
+            __out.Append("{"); //4793:1
+            __out.AppendLine(false); //4793:2
+            if (rule == Instances.MainRule()) //4794:6
             {
-                __out.Append("	return this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);"); //4792:1
-                __out.AppendLine(false); //4792:95
+                __out.Append("	return this.GetCompilationUnitBinder(parent, inUsing: IsInUsing(parent), inScript: InScript);"); //4795:1
+                __out.AppendLine(false); //4795:95
             }
-            else //4793:3
+            else //4796:3
             {
-                __out.Append("    if (!parent.FullSpan.Contains(this.Position))"); //4794:1
-                __out.AppendLine(false); //4794:50
-                __out.Append("    {"); //4795:1
-                __out.AppendLine(false); //4795:6
-                __out.Append("        return VisitParent(parent);"); //4796:1
-                __out.AppendLine(false); //4796:36
-                __out.Append("    }"); //4797:1
-                __out.AppendLine(false); //4797:6
-                __out.Append("	object use = null;"); //4798:1
-                __out.AppendLine(false); //4798:20
+                __out.Append("    if (!parent.FullSpan.Contains(this.Position))"); //4797:1
+                __out.AppendLine(false); //4797:50
+                __out.Append("    {"); //4798:1
+                __out.AppendLine(false); //4798:6
+                __out.Append("        return VisitParent(parent);"); //4799:1
+                __out.AppendLine(false); //4799:36
+                __out.Append("    }"); //4800:1
+                __out.AppendLine(false); //4800:6
+                __out.Append("	object use = null;"); //4801:1
+                __out.AppendLine(false); //4801:20
                 bool __tmp9_outputWritten = false;
-                string __tmp8Prefix = "	"; //4799:1
+                string __tmp8Prefix = "	"; //4802:1
                 StringBuilder __tmp10 = new StringBuilder();
                 __tmp10.Append(GenerateBinderFactoryVisitElemUses(rule));
                 using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
@@ -45216,26 +45220,26 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp9_outputWritten)
                 {
-                    __out.AppendLine(false); //4799:44
+                    __out.AppendLine(false); //4802:44
                 }
-                __out.Append("	Binder resultBinder = null;"); //4800:1
-                __out.AppendLine(false); //4800:29
-                __out.Append("	if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))"); //4801:1
-                __out.AppendLine(false); //4801:70
-                __out.Append("	{"); //4802:1
-                __out.AppendLine(false); //4802:3
-                __out.Append("		resultBinder = VisitParent(parent);"); //4803:1
-                __out.AppendLine(false); //4803:38
+                __out.Append("	Binder resultBinder = null;"); //4803:1
+                __out.AppendLine(false); //4803:29
+                __out.Append("	if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))"); //4804:1
+                __out.AppendLine(false); //4804:70
+                __out.Append("	{"); //4805:1
+                __out.AppendLine(false); //4805:3
+                __out.Append("		resultBinder = VisitParent(parent);"); //4806:1
+                __out.AppendLine(false); //4806:38
                 var __loop106_results = 
-                    (from annot in __Enumerate((rule.Annotations.BinderAnnotations).GetEnumerator()) //4804:10
+                    (from annot in __Enumerate((rule.Annotations.BinderAnnotations).GetEnumerator()) //4807:10
                     select new { annot = annot}
-                    ).ToList(); //4804:4
+                    ).ToList(); //4807:4
                 for (int __loop106_iteration = 0; __loop106_iteration < __loop106_results.Count; ++__loop106_iteration)
                 {
                     var __tmp11 = __loop106_results[__loop106_iteration];
                     var annot = __tmp11.annot;
                     bool __tmp13_outputWritten = false;
-                    string __tmp14_line = "		resultBinder = this.Create"; //4805:1
+                    string __tmp14_line = "		resultBinder = this.Create"; //4808:1
                     if (!string.IsNullOrEmpty(__tmp14_line))
                     {
                         __out.Append(__tmp14_line);
@@ -45258,7 +45262,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp15_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp16_line = "Binder(resultBinder, parent"; //4805:41
+                    string __tmp16_line = "Binder(resultBinder, parent"; //4808:41
                     if (!string.IsNullOrEmpty(__tmp16_line))
                     {
                         __out.Append(__tmp16_line);
@@ -45281,7 +45285,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp17_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp18_line = ");"; //4805:97
+                    string __tmp18_line = ");"; //4808:97
                     if (!string.IsNullOrEmpty(__tmp18_line))
                     {
                         __out.Append(__tmp18_line);
@@ -45290,13 +45294,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp13_outputWritten) __out.AppendLine(true);
                     if (__tmp13_outputWritten)
                     {
-                        __out.AppendLine(false); //4805:99
+                        __out.AppendLine(false); //4808:99
                     }
                 }
-                __out.Append("		this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);"); //4807:1
-                __out.AppendLine(false); //4807:67
+                __out.Append("		this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);"); //4810:1
+                __out.AppendLine(false); //4810:67
                 bool __tmp20_outputWritten = false;
-                string __tmp19Prefix = "		"; //4808:1
+                string __tmp19Prefix = "		"; //4811:1
                 StringBuilder __tmp21 = new StringBuilder();
                 __tmp21.Append(GenerateBinderFactoryVisitBody(rule));
                 using(StreamReader __tmp21Reader = new StreamReader(this.__ToStream(__tmp21.ToString())))
@@ -45321,31 +45325,31 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp20_outputWritten)
                 {
-                    __out.AppendLine(false); //4808:41
+                    __out.AppendLine(false); //4811:41
                 }
-                __out.Append("	}"); //4809:1
-                __out.AppendLine(false); //4809:3
-                __out.Append("	return resultBinder;"); //4810:1
-                __out.AppendLine(false); //4810:22
+                __out.Append("	}"); //4812:1
+                __out.AppendLine(false); //4812:3
+                __out.Append("	return resultBinder;"); //4813:1
+                __out.AppendLine(false); //4813:22
             }
-            __out.Append("}"); //4812:1
-            __out.AppendLine(false); //4812:2
+            __out.Append("}"); //4815:1
+            __out.AppendLine(false); //4815:2
             return __out.ToString();
         }
 
-        public string GenerateBinderFactoryVisitBody(Antlr4ParserRule rule) //4816:1
+        public string GenerateBinderFactoryVisitBody(Antlr4ParserRule rule) //4819:1
         {
             StringBuilder __out = new StringBuilder();
-            if (rule.ContainsBinderAnnotations && (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //4817:48
-            where elem.HasBinderAnnotations //4817:70
+            if (rule.ContainsBinderAnnotations && (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //4820:48
+            where elem.HasBinderAnnotations //4820:70
             select new { elem = elem}
-            ).GetEnumerator().MoveNext()) //4817:2
+            ).GetEnumerator().MoveNext()) //4820:2
             {
                 var __loop108_results = 
-                    (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //4818:8
-                    where elem.ContainsBinderAnnotations //4818:30
+                    (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //4821:8
+                    where elem.ContainsBinderAnnotations //4821:30
                     select new { elem = elem}
-                    ).ToList(); //4818:3
+                    ).ToList(); //4821:3
                 for (int __loop108_iteration = 0; __loop108_iteration < __loop108_results.Count; ++__loop108_iteration)
                 {
                     var __tmp1 = __loop108_results[__loop108_iteration];
@@ -45370,20 +45374,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     }
                     if (__tmp3_outputWritten)
                     {
-                        __out.AppendLine(false); //4819:48
+                        __out.AppendLine(false); //4822:48
                     }
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateBinderFactoryVisitElementBody(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //4824:1
+        public string GenerateBinderFactoryVisitElementBody(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //4827:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.HasBinderAnnotations) //4825:3
+            if (elem.HasBinderAnnotations) //4828:3
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "if (use == Use"; //4826:1
+                string __tmp3_line = "if (use == Use"; //4829:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -45406,7 +45410,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ")"; //4826:31
+                string __tmp5_line = ")"; //4829:31
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -45415,22 +45419,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //4826:32
+                    __out.AppendLine(false); //4829:32
                 }
-                __out.Append("{"); //4827:1
-                __out.AppendLine(false); //4827:2
+                __out.Append("{"); //4830:1
+                __out.AppendLine(false); //4830:2
                 var __loop109_results = 
-                    (from annot in __Enumerate((elem.Annotations.BinderAnnotations).GetEnumerator()) //4828:12
+                    (from annot in __Enumerate((elem.Annotations.BinderAnnotations).GetEnumerator()) //4831:12
                     select new { annot = annot}
-                    ).ToList(); //4828:6
+                    ).ToList(); //4831:6
                 for (int __loop109_iteration = 0; __loop109_iteration < __loop109_results.Count; ++__loop109_iteration)
                 {
                     var __tmp6 = __loop109_results[__loop109_iteration];
                     var annot = __tmp6.annot;
-                    if (elem.IsList) //4829:4
+                    if (elem.IsList) //4832:4
                     {
                         bool __tmp8_outputWritten = false;
-                        string __tmp9_line = "	resultBinder = this.Create"; //4830:1
+                        string __tmp9_line = "	resultBinder = this.Create"; //4833:1
                         if (!string.IsNullOrEmpty(__tmp9_line))
                         {
                             __out.Append(__tmp9_line);
@@ -45453,7 +45457,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp10_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp11_line = "Binder(resultBinder, parent."; //4830:40
+                        string __tmp11_line = "Binder(resultBinder, parent."; //4833:40
                         if (!string.IsNullOrEmpty(__tmp11_line))
                         {
                             __out.Append(__tmp11_line);
@@ -45476,7 +45480,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp12_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp13_line = ".Node"; //4830:84
+                        string __tmp13_line = ".Node"; //4833:84
                         if (!string.IsNullOrEmpty(__tmp13_line))
                         {
                             __out.Append(__tmp13_line);
@@ -45499,7 +45503,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp14_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp15_line = ");"; //4830:118
+                        string __tmp15_line = ");"; //4833:118
                         if (!string.IsNullOrEmpty(__tmp15_line))
                         {
                             __out.Append(__tmp15_line);
@@ -45508,13 +45512,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (__tmp8_outputWritten) __out.AppendLine(true);
                         if (__tmp8_outputWritten)
                         {
-                            __out.AppendLine(false); //4830:120
+                            __out.AppendLine(false); //4833:120
                         }
                     }
-                    else //4831:4
+                    else //4834:4
                     {
                         bool __tmp17_outputWritten = false;
-                        string __tmp18_line = "	resultBinder = this.Create"; //4832:1
+                        string __tmp18_line = "	resultBinder = this.Create"; //4835:1
                         if (!string.IsNullOrEmpty(__tmp18_line))
                         {
                             __out.Append(__tmp18_line);
@@ -45537,7 +45541,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp19_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp20_line = "Binder(resultBinder, parent."; //4832:40
+                        string __tmp20_line = "Binder(resultBinder, parent."; //4835:40
                         if (!string.IsNullOrEmpty(__tmp20_line))
                         {
                             __out.Append(__tmp20_line);
@@ -45577,7 +45581,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp22_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp23_line = ");"; //4832:113
+                        string __tmp23_line = ");"; //4835:113
                         if (!string.IsNullOrEmpty(__tmp23_line))
                         {
                             __out.Append(__tmp23_line);
@@ -45586,25 +45590,25 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (__tmp17_outputWritten) __out.AppendLine(true);
                         if (__tmp17_outputWritten)
                         {
-                            __out.AppendLine(false); //4832:115
+                            __out.AppendLine(false); //4835:115
                         }
                     }
                 }
-                __out.Append("	this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);"); //4835:1
-                __out.AppendLine(false); //4835:65
-                __out.Append("}"); //4836:1
-                __out.AppendLine(false); //4836:2
+                __out.Append("	this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);"); //4838:1
+                __out.AppendLine(false); //4838:65
+                __out.Append("}"); //4839:1
+                __out.AppendLine(false); //4839:2
             }
             return __out.ToString();
         }
 
-        public string GenerateBinderFactoryVisitTokenAltBody(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //4840:1
+        public string GenerateBinderFactoryVisitTokenAltBody(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //4843:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.HasBinderAnnotations) //4841:3
+            if (elem.HasBinderAnnotations) //4844:3
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "if (use == Use"; //4842:1
+                string __tmp3_line = "if (use == Use"; //4845:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -45627,7 +45631,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ")"; //4842:31
+                string __tmp5_line = ")"; //4845:31
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -45636,12 +45640,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //4842:32
+                    __out.AppendLine(false); //4845:32
                 }
-                __out.Append("{"); //4843:1
-                __out.AppendLine(false); //4843:2
+                __out.Append("{"); //4846:1
+                __out.AppendLine(false); //4846:2
                 bool __tmp7_outputWritten = false;
-                string __tmp8_line = "	switch (parent."; //4844:1
+                string __tmp8_line = "	switch (parent."; //4847:1
                 if (!string.IsNullOrEmpty(__tmp8_line))
                 {
                     __out.Append(__tmp8_line);
@@ -45664,7 +45668,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp9_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp10_line = ".GetKind().Switch())"; //4844:33
+                string __tmp10_line = ".GetKind().Switch())"; //4847:33
                 if (!string.IsNullOrEmpty(__tmp10_line))
                 {
                     __out.Append(__tmp10_line);
@@ -45673,20 +45677,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp7_outputWritten) __out.AppendLine(true);
                 if (__tmp7_outputWritten)
                 {
-                    __out.AppendLine(false); //4844:53
+                    __out.AppendLine(false); //4847:53
                 }
-                __out.Append("	{"); //4845:1
-                __out.AppendLine(false); //4845:3
+                __out.Append("	{"); //4848:1
+                __out.AppendLine(false); //4848:3
                 var __loop110_results = 
-                    (from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //4846:11
+                    (from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //4849:11
                     select new { alt = alt}
-                    ).ToList(); //4846:5
+                    ).ToList(); //4849:5
                 for (int __loop110_iteration = 0; __loop110_iteration < __loop110_results.Count; ++__loop110_iteration)
                 {
                     var __tmp11 = __loop110_results[__loop110_iteration];
                     var alt = __tmp11.alt;
                     bool __tmp13_outputWritten = false;
-                    string __tmp14_line = "		case "; //4847:1
+                    string __tmp14_line = "		case "; //4850:1
                     if (!string.IsNullOrEmpty(__tmp14_line))
                     {
                         __out.Append(__tmp14_line);
@@ -45709,7 +45713,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp15_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp16_line = "SyntaxKind."; //4847:33
+                    string __tmp16_line = "SyntaxKind."; //4850:33
                     if (!string.IsNullOrEmpty(__tmp16_line))
                     {
                         __out.Append(__tmp16_line);
@@ -45732,7 +45736,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp17_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp18_line = ":"; //4847:59
+                    string __tmp18_line = ":"; //4850:59
                     if (!string.IsNullOrEmpty(__tmp18_line))
                     {
                         __out.Append(__tmp18_line);
@@ -45741,18 +45745,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp13_outputWritten) __out.AppendLine(true);
                     if (__tmp13_outputWritten)
                     {
-                        __out.AppendLine(false); //4847:60
+                        __out.AppendLine(false); //4850:60
                     }
                     var __loop111_results = 
-                        (from annot in __Enumerate((alt.Annotations.BinderAnnotations).GetEnumerator()) //4848:12
+                        (from annot in __Enumerate((alt.Annotations.BinderAnnotations).GetEnumerator()) //4851:12
                         select new { annot = annot}
-                        ).ToList(); //4848:6
+                        ).ToList(); //4851:6
                     for (int __loop111_iteration = 0; __loop111_iteration < __loop111_results.Count; ++__loop111_iteration)
                     {
                         var __tmp19 = __loop111_results[__loop111_iteration];
                         var annot = __tmp19.annot;
                         bool __tmp21_outputWritten = false;
-                        string __tmp22_line = "			resultBinder = this.Create"; //4849:1
+                        string __tmp22_line = "			resultBinder = this.Create"; //4852:1
                         if (!string.IsNullOrEmpty(__tmp22_line))
                         {
                             __out.Append(__tmp22_line);
@@ -45775,7 +45779,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp23_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp24_line = "Binder(resultBinder, parent."; //4849:42
+                        string __tmp24_line = "Binder(resultBinder, parent."; //4852:42
                         if (!string.IsNullOrEmpty(__tmp24_line))
                         {
                             __out.Append(__tmp24_line);
@@ -45815,7 +45819,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp26_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp27_line = ");"; //4849:115
+                        string __tmp27_line = ");"; //4852:115
                         if (!string.IsNullOrEmpty(__tmp27_line))
                         {
                             __out.Append(__tmp27_line);
@@ -45824,51 +45828,51 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (__tmp21_outputWritten) __out.AppendLine(true);
                         if (__tmp21_outputWritten)
                         {
-                            __out.AppendLine(false); //4849:117
+                            __out.AppendLine(false); //4852:117
                         }
                     }
-                    __out.Append("			break;"); //4851:1
-                    __out.AppendLine(false); //4851:10
+                    __out.Append("			break;"); //4854:1
+                    __out.AppendLine(false); //4854:10
                 }
-                __out.Append("		default:"); //4853:1
-                __out.AppendLine(false); //4853:11
-                __out.Append("			break;"); //4854:1
-                __out.AppendLine(false); //4854:10
-                __out.Append("	}"); //4855:1
-                __out.AppendLine(false); //4855:3
-                __out.Append("	this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);"); //4856:1
-                __out.AppendLine(false); //4856:65
-                __out.Append("}"); //4857:1
-                __out.AppendLine(false); //4857:2
+                __out.Append("		default:"); //4856:1
+                __out.AppendLine(false); //4856:11
+                __out.Append("			break;"); //4857:1
+                __out.AppendLine(false); //4857:10
+                __out.Append("	}"); //4858:1
+                __out.AppendLine(false); //4858:3
+                __out.Append("	this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);"); //4859:1
+                __out.AppendLine(false); //4859:65
+                __out.Append("}"); //4860:1
+                __out.AppendLine(false); //4860:2
             }
             return __out.ToString();
         }
 
-        public string GenerateBinderFactoryVisitElemUses(Antlr4ParserRule rule) //4861:1
+        public string GenerateBinderFactoryVisitElemUses(Antlr4ParserRule rule) //4864:1
         {
             StringBuilder __out = new StringBuilder();
-            if (rule.ContainsBinderAnnotations && (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //4862:48
-            where elem.HasBinderAnnotations //4862:70
+            if (rule.ContainsBinderAnnotations && (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //4865:48
+            where elem.HasBinderAnnotations //4865:70
             select new { elem = elem}
-            ).GetEnumerator().MoveNext()) //4862:2
+            ).GetEnumerator().MoveNext()) //4865:2
             {
-                __out.Append("if (this.ForChild)"); //4863:1
-                __out.AppendLine(false); //4863:19
-                __out.Append("{"); //4864:1
-                __out.AppendLine(false); //4864:2
+                __out.Append("if (this.ForChild)"); //4866:1
+                __out.AppendLine(false); //4866:19
+                __out.Append("{"); //4867:1
+                __out.AppendLine(false); //4867:2
                 var __loop113_results = 
-                    (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //4865:8
-                    where elem.HasBinderAnnotations //4865:30
+                    (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //4868:8
+                    where elem.HasBinderAnnotations //4868:30
                     select new { elem = elem}
-                    ).ToList(); //4865:3
+                    ).ToList(); //4868:3
                 for (int __loop113_iteration = 0; __loop113_iteration < __loop113_results.Count; ++__loop113_iteration)
                 {
                     var __tmp1 = __loop113_results[__loop113_iteration];
                     var elem = __tmp1.elem;
-                    if (elem.IsList) //4866:4
+                    if (elem.IsList) //4869:4
                     {
                         bool __tmp3_outputWritten = false;
-                        string __tmp4_line = "	if (LookupPosition.IsInNode(this.Position, parent."; //4867:1
+                        string __tmp4_line = "	if (LookupPosition.IsInNode(this.Position, parent."; //4870:1
                         if (!string.IsNullOrEmpty(__tmp4_line))
                         {
                             __out.Append(__tmp4_line);
@@ -45891,7 +45895,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp5_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp6_line = ".Node)) use = Use"; //4867:68
+                        string __tmp6_line = ".Node)) use = Use"; //4870:68
                         if (!string.IsNullOrEmpty(__tmp6_line))
                         {
                             __out.Append(__tmp6_line);
@@ -45914,7 +45918,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp7_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp8_line = ";"; //4867:101
+                        string __tmp8_line = ";"; //4870:101
                         if (!string.IsNullOrEmpty(__tmp8_line))
                         {
                             __out.Append(__tmp8_line);
@@ -45923,13 +45927,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (__tmp3_outputWritten) __out.AppendLine(true);
                         if (__tmp3_outputWritten)
                         {
-                            __out.AppendLine(false); //4867:102
+                            __out.AppendLine(false); //4870:102
                         }
                     }
-                    else //4868:4
+                    else //4871:4
                     {
                         bool __tmp10_outputWritten = false;
-                        string __tmp11_line = "	if (LookupPosition.IsInNode(this.Position, parent."; //4869:1
+                        string __tmp11_line = "	if (LookupPosition.IsInNode(this.Position, parent."; //4872:1
                         if (!string.IsNullOrEmpty(__tmp11_line))
                         {
                             __out.Append(__tmp11_line);
@@ -45952,7 +45956,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp12_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp13_line = ")) use = Use"; //4869:68
+                        string __tmp13_line = ")) use = Use"; //4872:68
                         if (!string.IsNullOrEmpty(__tmp13_line))
                         {
                             __out.Append(__tmp13_line);
@@ -45975,7 +45979,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp14_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp15_line = ";"; //4869:96
+                        string __tmp15_line = ";"; //4872:96
                         if (!string.IsNullOrEmpty(__tmp15_line))
                         {
                             __out.Append(__tmp15_line);
@@ -45984,20 +45988,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (__tmp10_outputWritten) __out.AppendLine(true);
                         if (__tmp10_outputWritten)
                         {
-                            __out.AppendLine(false); //4869:97
+                            __out.AppendLine(false); //4872:97
                         }
                     }
                 }
-                __out.Append("}"); //4872:1
-                __out.AppendLine(false); //4872:2
+                __out.Append("}"); //4875:1
+                __out.AppendLine(false); //4875:2
             }
             return __out.ToString();
         }
 
-        public string GenerateBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //4876:1
+        public string GenerateBinderFactoryVisitElement(Antlr4ParserRule rule, Antlr4ParserRuleElement elem) //4879:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.IsFixedTokenAltBlock) //4877:3
+            if (elem.IsFixedTokenAltBlock) //4880:3
             {
                 bool __tmp2_outputWritten = false;
                 StringBuilder __tmp3 = new StringBuilder();
@@ -46019,10 +46023,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //4878:53
+                    __out.AppendLine(false); //4881:53
                 }
             }
-            else //4879:3
+            else //4882:3
             {
                 bool __tmp5_outputWritten = false;
                 StringBuilder __tmp6 = new StringBuilder();
@@ -46044,37 +46048,37 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp5_outputWritten)
                 {
-                    __out.AppendLine(false); //4880:52
+                    __out.AppendLine(false); //4883:52
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateBoundKind() //4884:1
+        public string GenerateBoundKind() //4887:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.Append("using System;"); //4885:1
-            __out.AppendLine(false); //4885:14
-            __out.Append("using System.Diagnostics;"); //4886:1
-            __out.AppendLine(false); //4886:26
-            __out.Append("using System.Collections.Generic;"); //4887:1
-            __out.AppendLine(false); //4887:34
-            __out.Append("using System.Collections.Immutable;"); //4888:1
-            __out.AppendLine(false); //4888:36
-            __out.Append("using System.Linq;"); //4889:1
-            __out.AppendLine(false); //4889:19
-            __out.Append("using System.Text;"); //4890:1
-            __out.AppendLine(false); //4890:19
-            __out.Append("using System.Threading.Tasks;"); //4891:1
-            __out.AppendLine(false); //4891:30
-            __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //4892:1
-            __out.AppendLine(false); //4892:37
-            __out.Append("using Roslyn.Utilities;"); //4893:1
-            __out.AppendLine(false); //4893:24
-            __out.AppendLine(true); //4894:1
-            var lang = Properties.LanguageName; //4895:2
+            __out.Append("using System;"); //4888:1
+            __out.AppendLine(false); //4888:14
+            __out.Append("using System.Diagnostics;"); //4889:1
+            __out.AppendLine(false); //4889:26
+            __out.Append("using System.Collections.Generic;"); //4890:1
+            __out.AppendLine(false); //4890:34
+            __out.Append("using System.Collections.Immutable;"); //4891:1
+            __out.AppendLine(false); //4891:36
+            __out.Append("using System.Linq;"); //4892:1
+            __out.AppendLine(false); //4892:19
+            __out.Append("using System.Text;"); //4893:1
+            __out.AppendLine(false); //4893:19
+            __out.Append("using System.Threading.Tasks;"); //4894:1
+            __out.AppendLine(false); //4894:30
+            __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //4895:1
+            __out.AppendLine(false); //4895:37
+            __out.Append("using Roslyn.Utilities;"); //4896:1
+            __out.AppendLine(false); //4896:24
+            __out.AppendLine(true); //4897:1
+            var lang = Properties.LanguageName; //4898:2
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "namespace "; //4896:1
+            string __tmp3_line = "namespace "; //4899:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -46097,7 +46101,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = ".Binding"; //4896:40
+            string __tmp5_line = ".Binding"; //4899:40
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -46106,12 +46110,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //4896:48
+                __out.AppendLine(false); //4899:48
             }
-            __out.Append("{"); //4897:1
-            __out.AppendLine(false); //4897:2
+            __out.Append("{"); //4900:1
+            __out.AppendLine(false); //4900:2
             bool __tmp7_outputWritten = false;
-            string __tmp8_line = "    public class "; //4898:1
+            string __tmp8_line = "    public class "; //4901:1
             if (!string.IsNullOrEmpty(__tmp8_line))
             {
                 __out.Append(__tmp8_line);
@@ -46134,7 +46138,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp9_last) __out.AppendLine(true);
                 }
             }
-            string __tmp10_line = "BoundKind : BoundKind"; //4898:24
+            string __tmp10_line = "BoundKind : BoundKind"; //4901:24
             if (!string.IsNullOrEmpty(__tmp10_line))
             {
                 __out.Append(__tmp10_line);
@@ -46143,20 +46147,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp7_outputWritten) __out.AppendLine(true);
             if (__tmp7_outputWritten)
             {
-                __out.AppendLine(false); //4898:45
+                __out.AppendLine(false); //4901:45
             }
-            __out.Append("    {"); //4899:1
-            __out.AppendLine(false); //4899:6
+            __out.Append("    {"); //4902:1
+            __out.AppendLine(false); //4902:6
             var __loop114_results = 
-                (from annot in __Enumerate((Instances.CustomAnnotations).GetEnumerator()) //4900:9
+                (from annot in __Enumerate((Instances.CustomAnnotations).GetEnumerator()) //4903:9
                 select new { annot = annot}
-                ).ToList(); //4900:4
+                ).ToList(); //4903:4
             for (int __loop114_iteration = 0; __loop114_iteration < __loop114_results.Count; ++__loop114_iteration)
             {
                 var __tmp11 = __loop114_results[__loop114_iteration];
                 var annot = __tmp11.annot;
                 bool __tmp13_outputWritten = false;
-                string __tmp14_line = "        public const string "; //4901:1
+                string __tmp14_line = "        public const string "; //4904:1
                 if (!string.IsNullOrEmpty(__tmp14_line))
                 {
                     __out.Append(__tmp14_line);
@@ -46179,7 +46183,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp15_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp16_line = " = nameof("; //4901:41
+                string __tmp16_line = " = nameof("; //4904:41
                 if (!string.IsNullOrEmpty(__tmp16_line))
                 {
                     __out.Append(__tmp16_line);
@@ -46202,7 +46206,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp17_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp18_line = ");"; //4901:63
+                string __tmp18_line = ");"; //4904:63
                 if (!string.IsNullOrEmpty(__tmp18_line))
                 {
                     __out.Append(__tmp18_line);
@@ -46211,12 +46215,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp13_outputWritten) __out.AppendLine(true);
                 if (__tmp13_outputWritten)
                 {
-                    __out.AppendLine(false); //4901:65
+                    __out.AppendLine(false); //4904:65
                 }
             }
-            __out.AppendLine(true); //4903:1
+            __out.AppendLine(true); //4906:1
             bool __tmp20_outputWritten = false;
-            string __tmp21_line = "        protected "; //4904:1
+            string __tmp21_line = "        protected "; //4907:1
             if (!string.IsNullOrEmpty(__tmp21_line))
             {
                 __out.Append(__tmp21_line);
@@ -46239,7 +46243,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp22_last) __out.AppendLine(true);
                 }
             }
-            string __tmp23_line = "BoundKind(string name)"; //4904:25
+            string __tmp23_line = "BoundKind(string name)"; //4907:25
             if (!string.IsNullOrEmpty(__tmp23_line))
             {
                 __out.Append(__tmp23_line);
@@ -46248,17 +46252,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp20_outputWritten) __out.AppendLine(true);
             if (__tmp20_outputWritten)
             {
-                __out.AppendLine(false); //4904:47
+                __out.AppendLine(false); //4907:47
             }
-            __out.Append("            : base(name)"); //4905:1
-            __out.AppendLine(false); //4905:25
-            __out.Append("        {"); //4906:1
-            __out.AppendLine(false); //4906:10
-            __out.Append("        }"); //4907:1
-            __out.AppendLine(false); //4907:10
-            __out.AppendLine(true); //4908:1
+            __out.Append("            : base(name)"); //4908:1
+            __out.AppendLine(false); //4908:25
+            __out.Append("        {"); //4909:1
+            __out.AppendLine(false); //4909:10
+            __out.Append("        }"); //4910:1
+            __out.AppendLine(false); //4910:10
+            __out.AppendLine(true); //4911:1
             bool __tmp25_outputWritten = false;
-            string __tmp26_line = "        protected "; //4909:1
+            string __tmp26_line = "        protected "; //4912:1
             if (!string.IsNullOrEmpty(__tmp26_line))
             {
                 __out.Append(__tmp26_line);
@@ -46281,7 +46285,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp27_last) __out.AppendLine(true);
                 }
             }
-            string __tmp28_line = "BoundKind(EnumObject retargetedValue)"; //4909:25
+            string __tmp28_line = "BoundKind(EnumObject retargetedValue)"; //4912:25
             if (!string.IsNullOrEmpty(__tmp28_line))
             {
                 __out.Append(__tmp28_line);
@@ -46290,17 +46294,17 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp25_outputWritten) __out.AppendLine(true);
             if (__tmp25_outputWritten)
             {
-                __out.AppendLine(false); //4909:62
+                __out.AppendLine(false); //4912:62
             }
-            __out.Append("            : base(retargetedValue)"); //4910:1
-            __out.AppendLine(false); //4910:36
-            __out.Append("        {"); //4911:1
-            __out.AppendLine(false); //4911:10
-            __out.Append("        }"); //4912:1
-            __out.AppendLine(false); //4912:10
-            __out.AppendLine(true); //4913:1
+            __out.Append("            : base(retargetedValue)"); //4913:1
+            __out.AppendLine(false); //4913:36
+            __out.Append("        {"); //4914:1
+            __out.AppendLine(false); //4914:10
+            __out.Append("        }"); //4915:1
+            __out.AppendLine(false); //4915:10
+            __out.AppendLine(true); //4916:1
             bool __tmp30_outputWritten = false;
-            string __tmp31_line = "        static "; //4914:1
+            string __tmp31_line = "        static "; //4917:1
             if (!string.IsNullOrEmpty(__tmp31_line))
             {
                 __out.Append(__tmp31_line);
@@ -46323,7 +46327,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp32_last) __out.AppendLine(true);
                 }
             }
-            string __tmp33_line = "BoundKind()"; //4914:22
+            string __tmp33_line = "BoundKind()"; //4917:22
             if (!string.IsNullOrEmpty(__tmp33_line))
             {
                 __out.Append(__tmp33_line);
@@ -46332,12 +46336,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp30_outputWritten) __out.AppendLine(true);
             if (__tmp30_outputWritten)
             {
-                __out.AppendLine(false); //4914:33
+                __out.AppendLine(false); //4917:33
             }
-            __out.Append("        {"); //4915:1
-            __out.AppendLine(false); //4915:10
+            __out.Append("        {"); //4918:1
+            __out.AppendLine(false); //4918:10
             bool __tmp35_outputWritten = false;
-            string __tmp36_line = "            EnumObject.AutoInit<"; //4916:1
+            string __tmp36_line = "            EnumObject.AutoInit<"; //4919:1
             if (!string.IsNullOrEmpty(__tmp36_line))
             {
                 __out.Append(__tmp36_line);
@@ -46360,7 +46364,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp37_last) __out.AppendLine(true);
                 }
             }
-            string __tmp38_line = "BoundKind>();"; //4916:39
+            string __tmp38_line = "BoundKind>();"; //4919:39
             if (!string.IsNullOrEmpty(__tmp38_line))
             {
                 __out.Append(__tmp38_line);
@@ -46369,13 +46373,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp35_outputWritten) __out.AppendLine(true);
             if (__tmp35_outputWritten)
             {
-                __out.AppendLine(false); //4916:52
+                __out.AppendLine(false); //4919:52
             }
-            __out.Append("        }"); //4917:1
-            __out.AppendLine(false); //4917:10
-            __out.AppendLine(true); //4918:1
+            __out.Append("        }"); //4920:1
+            __out.AppendLine(false); //4920:10
+            __out.AppendLine(true); //4921:1
             bool __tmp40_outputWritten = false;
-            string __tmp41_line = "        public static implicit operator "; //4919:1
+            string __tmp41_line = "        public static implicit operator "; //4922:1
             if (!string.IsNullOrEmpty(__tmp41_line))
             {
                 __out.Append(__tmp41_line);
@@ -46398,7 +46402,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp42_last) __out.AppendLine(true);
                 }
             }
-            string __tmp43_line = "BoundKind(string name)"; //4919:47
+            string __tmp43_line = "BoundKind(string name)"; //4922:47
             if (!string.IsNullOrEmpty(__tmp43_line))
             {
                 __out.Append(__tmp43_line);
@@ -46407,12 +46411,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp40_outputWritten) __out.AppendLine(true);
             if (__tmp40_outputWritten)
             {
-                __out.AppendLine(false); //4919:69
+                __out.AppendLine(false); //4922:69
             }
-            __out.Append("        {"); //4920:1
-            __out.AppendLine(false); //4920:10
+            __out.Append("        {"); //4923:1
+            __out.AppendLine(false); //4923:10
             bool __tmp45_outputWritten = false;
-            string __tmp46_line = "            return FromString<"; //4921:1
+            string __tmp46_line = "            return FromString<"; //4924:1
             if (!string.IsNullOrEmpty(__tmp46_line))
             {
                 __out.Append(__tmp46_line);
@@ -46435,7 +46439,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp47_last) __out.AppendLine(true);
                 }
             }
-            string __tmp48_line = "BoundKind>(name);"; //4921:37
+            string __tmp48_line = "BoundKind>(name);"; //4924:37
             if (!string.IsNullOrEmpty(__tmp48_line))
             {
                 __out.Append(__tmp48_line);
@@ -46444,13 +46448,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp45_outputWritten) __out.AppendLine(true);
             if (__tmp45_outputWritten)
             {
-                __out.AppendLine(false); //4921:54
+                __out.AppendLine(false); //4924:54
             }
-            __out.Append("        }"); //4922:1
-            __out.AppendLine(false); //4922:10
-            __out.AppendLine(true); //4923:1
+            __out.Append("        }"); //4925:1
+            __out.AppendLine(false); //4925:10
+            __out.AppendLine(true); //4926:1
             bool __tmp50_outputWritten = false;
-            string __tmp51_line = "        public static explicit operator "; //4924:1
+            string __tmp51_line = "        public static explicit operator "; //4927:1
             if (!string.IsNullOrEmpty(__tmp51_line))
             {
                 __out.Append(__tmp51_line);
@@ -46473,7 +46477,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp52_last) __out.AppendLine(true);
                 }
             }
-            string __tmp53_line = "BoundKind(int value)"; //4924:47
+            string __tmp53_line = "BoundKind(int value)"; //4927:47
             if (!string.IsNullOrEmpty(__tmp53_line))
             {
                 __out.Append(__tmp53_line);
@@ -46482,12 +46486,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp50_outputWritten) __out.AppendLine(true);
             if (__tmp50_outputWritten)
             {
-                __out.AppendLine(false); //4924:67
+                __out.AppendLine(false); //4927:67
             }
-            __out.Append("        {"); //4925:1
-            __out.AppendLine(false); //4925:10
+            __out.Append("        {"); //4928:1
+            __out.AppendLine(false); //4928:10
             bool __tmp55_outputWritten = false;
-            string __tmp56_line = "            return FromIntUnsafe<"; //4926:1
+            string __tmp56_line = "            return FromIntUnsafe<"; //4929:1
             if (!string.IsNullOrEmpty(__tmp56_line))
             {
                 __out.Append(__tmp56_line);
@@ -46510,7 +46514,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp57_last) __out.AppendLine(true);
                 }
             }
-            string __tmp58_line = "BoundKind>(value);"; //4926:40
+            string __tmp58_line = "BoundKind>(value);"; //4929:40
             if (!string.IsNullOrEmpty(__tmp58_line))
             {
                 __out.Append(__tmp58_line);
@@ -46519,48 +46523,48 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp55_outputWritten) __out.AppendLine(true);
             if (__tmp55_outputWritten)
             {
-                __out.AppendLine(false); //4926:58
+                __out.AppendLine(false); //4929:58
             }
-            __out.Append("        }"); //4927:1
-            __out.AppendLine(false); //4927:10
-            __out.Append("    }"); //4928:1
-            __out.AppendLine(false); //4928:6
-            __out.Append("}"); //4929:1
-            __out.AppendLine(false); //4929:2
+            __out.Append("        }"); //4930:1
+            __out.AppendLine(false); //4930:10
+            __out.Append("    }"); //4931:1
+            __out.AppendLine(false); //4931:6
+            __out.Append("}"); //4932:1
+            __out.AppendLine(false); //4932:2
             return __out.ToString();
         }
 
-        public string GenerateBoundNodeFactoryVisitor() //4932:1
+        public string GenerateBoundNodeFactoryVisitor() //4935:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.Append("using System;"); //4933:1
-            __out.AppendLine(false); //4933:14
-            __out.Append("using System.Diagnostics;"); //4934:1
-            __out.AppendLine(false); //4934:26
-            __out.Append("using System.Collections.Generic;"); //4935:1
-            __out.AppendLine(false); //4935:34
-            __out.Append("using System.Collections.Immutable;"); //4936:1
-            __out.AppendLine(false); //4936:36
-            __out.Append("using System.Linq;"); //4937:1
-            __out.AppendLine(false); //4937:19
-            __out.Append("using System.Text;"); //4938:1
-            __out.AppendLine(false); //4938:19
-            __out.Append("using System.Threading.Tasks;"); //4939:1
-            __out.AppendLine(false); //4939:30
-            __out.Append("using Microsoft.CodeAnalysis;"); //4940:1
-            __out.AppendLine(false); //4940:30
-            __out.Append("using Microsoft.CodeAnalysis.PooledObjects;"); //4941:1
-            __out.AppendLine(false); //4941:44
-            __out.Append("using MetaDslx.CodeAnalysis;"); //4942:1
-            __out.AppendLine(false); //4942:29
-            __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //4943:1
-            __out.AppendLine(false); //4943:37
-            __out.Append("using MetaDslx.CodeAnalysis.Syntax;"); //4944:1
-            __out.AppendLine(false); //4944:36
-            __out.Append("using Roslyn.Utilities;"); //4945:1
-            __out.AppendLine(false); //4945:24
+            __out.Append("using System;"); //4936:1
+            __out.AppendLine(false); //4936:14
+            __out.Append("using System.Diagnostics;"); //4937:1
+            __out.AppendLine(false); //4937:26
+            __out.Append("using System.Collections.Generic;"); //4938:1
+            __out.AppendLine(false); //4938:34
+            __out.Append("using System.Collections.Immutable;"); //4939:1
+            __out.AppendLine(false); //4939:36
+            __out.Append("using System.Linq;"); //4940:1
+            __out.AppendLine(false); //4940:19
+            __out.Append("using System.Text;"); //4941:1
+            __out.AppendLine(false); //4941:19
+            __out.Append("using System.Threading.Tasks;"); //4942:1
+            __out.AppendLine(false); //4942:30
+            __out.Append("using Microsoft.CodeAnalysis;"); //4943:1
+            __out.AppendLine(false); //4943:30
+            __out.Append("using Microsoft.CodeAnalysis.PooledObjects;"); //4944:1
+            __out.AppendLine(false); //4944:44
+            __out.Append("using MetaDslx.CodeAnalysis;"); //4945:1
+            __out.AppendLine(false); //4945:29
+            __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //4946:1
+            __out.AppendLine(false); //4946:37
+            __out.Append("using MetaDslx.CodeAnalysis.Syntax;"); //4947:1
+            __out.AppendLine(false); //4947:36
+            __out.Append("using Roslyn.Utilities;"); //4948:1
+            __out.AppendLine(false); //4948:24
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "using "; //4946:1
+            string __tmp3_line = "using "; //4949:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -46583,7 +46587,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = ".Syntax;"; //4946:36
+            string __tmp5_line = ".Syntax;"; //4949:36
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -46592,10 +46596,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //4946:44
+                __out.AppendLine(false); //4949:44
             }
             bool __tmp7_outputWritten = false;
-            string __tmp8_line = "using "; //4947:1
+            string __tmp8_line = "using "; //4950:1
             if (!string.IsNullOrEmpty(__tmp8_line))
             {
                 __out.Append(__tmp8_line);
@@ -46618,7 +46622,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp9_last) __out.AppendLine(true);
                 }
             }
-            string __tmp10_line = ".Symbols;"; //4947:36
+            string __tmp10_line = ".Symbols;"; //4950:36
             if (!string.IsNullOrEmpty(__tmp10_line))
             {
                 __out.Append(__tmp10_line);
@@ -46627,12 +46631,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp7_outputWritten) __out.AppendLine(true);
             if (__tmp7_outputWritten)
             {
-                __out.AppendLine(false); //4947:45
+                __out.AppendLine(false); //4950:45
             }
-            __out.AppendLine(true); //4948:1
-            var lang = Properties.LanguageName; //4949:2
+            __out.AppendLine(true); //4951:1
+            var lang = Properties.LanguageName; //4952:2
             bool __tmp12_outputWritten = false;
-            string __tmp13_line = "namespace "; //4950:1
+            string __tmp13_line = "namespace "; //4953:1
             if (!string.IsNullOrEmpty(__tmp13_line))
             {
                 __out.Append(__tmp13_line);
@@ -46655,7 +46659,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp14_last) __out.AppendLine(true);
                 }
             }
-            string __tmp15_line = ".Binding"; //4950:40
+            string __tmp15_line = ".Binding"; //4953:40
             if (!string.IsNullOrEmpty(__tmp15_line))
             {
                 __out.Append(__tmp15_line);
@@ -46664,12 +46668,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp12_outputWritten) __out.AppendLine(true);
             if (__tmp12_outputWritten)
             {
-                __out.AppendLine(false); //4950:48
+                __out.AppendLine(false); //4953:48
             }
-            __out.Append("{"); //4951:1
-            __out.AppendLine(false); //4951:2
+            __out.Append("{"); //4954:1
+            __out.AppendLine(false); //4954:2
             bool __tmp17_outputWritten = false;
-            string __tmp18_line = "	// Make sure to keep this in sync with "; //4952:1
+            string __tmp18_line = "	// Make sure to keep this in sync with "; //4955:1
             if (!string.IsNullOrEmpty(__tmp18_line))
             {
                 __out.Append(__tmp18_line);
@@ -46692,7 +46696,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp19_last) __out.AppendLine(true);
                 }
             }
-            string __tmp20_line = "IsBindableNodeVisitor"; //4952:47
+            string __tmp20_line = "IsBindableNodeVisitor"; //4955:47
             if (!string.IsNullOrEmpty(__tmp20_line))
             {
                 __out.Append(__tmp20_line);
@@ -46701,10 +46705,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp17_outputWritten) __out.AppendLine(true);
             if (__tmp17_outputWritten)
             {
-                __out.AppendLine(false); //4952:68
+                __out.AppendLine(false); //4955:68
             }
             bool __tmp22_outputWritten = false;
-            string __tmp23_line = "    public class "; //4953:1
+            string __tmp23_line = "    public class "; //4956:1
             if (!string.IsNullOrEmpty(__tmp23_line))
             {
                 __out.Append(__tmp23_line);
@@ -46727,7 +46731,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp24_last) __out.AppendLine(true);
                 }
             }
-            string __tmp25_line = "BoundNodeFactoryVisitor : BoundNodeFactoryVisitor, I"; //4953:24
+            string __tmp25_line = "BoundNodeFactoryVisitor : BoundNodeFactoryVisitor, I"; //4956:24
             if (!string.IsNullOrEmpty(__tmp25_line))
             {
                 __out.Append(__tmp25_line);
@@ -46750,7 +46754,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp26_last) __out.AppendLine(true);
                 }
             }
-            string __tmp27_line = "SyntaxVisitor<ArrayBuilder<object>, BoundNode>"; //4953:82
+            string __tmp27_line = "SyntaxVisitor<ArrayBuilder<object>, BoundNode>"; //4956:82
             if (!string.IsNullOrEmpty(__tmp27_line))
             {
                 __out.Append(__tmp27_line);
@@ -46759,12 +46763,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp22_outputWritten) __out.AppendLine(true);
             if (__tmp22_outputWritten)
             {
-                __out.AppendLine(false); //4953:128
+                __out.AppendLine(false); //4956:128
             }
-            __out.Append("    {"); //4954:1
-            __out.AppendLine(false); //4954:6
+            __out.Append("    {"); //4957:1
+            __out.AppendLine(false); //4957:6
             bool __tmp29_outputWritten = false;
-            string __tmp30_line = "        public "; //4955:1
+            string __tmp30_line = "        public "; //4958:1
             if (!string.IsNullOrEmpty(__tmp30_line))
             {
                 __out.Append(__tmp30_line);
@@ -46787,7 +46791,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp31_last) __out.AppendLine(true);
                 }
             }
-            string __tmp32_line = "BoundNodeFactoryVisitor(BoundTree boundTree)"; //4955:22
+            string __tmp32_line = "BoundNodeFactoryVisitor(BoundTree boundTree)"; //4958:22
             if (!string.IsNullOrEmpty(__tmp32_line))
             {
                 __out.Append(__tmp32_line);
@@ -46796,26 +46800,26 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp29_outputWritten) __out.AppendLine(true);
             if (__tmp29_outputWritten)
             {
-                __out.AppendLine(false); //4955:66
+                __out.AppendLine(false); //4958:66
             }
-            __out.Append("			: base(boundTree)"); //4956:1
-            __out.AppendLine(false); //4956:21
-            __out.Append("        {"); //4957:1
-            __out.AppendLine(false); //4957:10
-            __out.AppendLine(true); //4958:1
-            __out.Append("        }"); //4959:1
-            __out.AppendLine(false); //4959:10
+            __out.Append("			: base(boundTree)"); //4959:1
+            __out.AppendLine(false); //4959:21
+            __out.Append("        {"); //4960:1
+            __out.AppendLine(false); //4960:10
+            __out.AppendLine(true); //4961:1
+            __out.Append("        }"); //4962:1
+            __out.AppendLine(false); //4962:10
             var __loop115_results = 
-                (from annot in __Enumerate((Instances.CustomAnnotations).GetEnumerator()) //4960:9
+                (from annot in __Enumerate((Instances.CustomAnnotations).GetEnumerator()) //4963:9
                 select new { annot = annot}
-                ).ToList(); //4960:4
+                ).ToList(); //4963:4
             for (int __loop115_iteration = 0; __loop115_iteration < __loop115_results.Count; ++__loop115_iteration)
             {
                 var __tmp33 = __loop115_results[__loop115_iteration];
                 var annot = __tmp33.annot;
-                __out.AppendLine(true); //4961:1
+                __out.AppendLine(true); //4964:1
                 bool __tmp35_outputWritten = false;
-                string __tmp36_line = "        protected BoundNode CreateBound"; //4962:1
+                string __tmp36_line = "        protected BoundNode CreateBound"; //4965:1
                 if (!string.IsNullOrEmpty(__tmp36_line))
                 {
                     __out.Append(__tmp36_line);
@@ -46838,7 +46842,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp37_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp38_line = "(BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)"; //4962:52
+                string __tmp38_line = "(BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)"; //4965:52
                 if (!string.IsNullOrEmpty(__tmp38_line))
                 {
                     __out.Append(__tmp38_line);
@@ -46847,12 +46851,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp35_outputWritten) __out.AppendLine(true);
                 if (__tmp35_outputWritten)
                 {
-                    __out.AppendLine(false); //4962:156
+                    __out.AppendLine(false); //4965:156
                 }
-                __out.Append("        {"); //4963:1
-                __out.AppendLine(false); //4963:10
+                __out.Append("        {"); //4966:1
+                __out.AppendLine(false); //4966:10
                 bool __tmp40_outputWritten = false;
-                string __tmp41_line = "            return this.CreateBound"; //4964:1
+                string __tmp41_line = "            return this.CreateBound"; //4967:1
                 if (!string.IsNullOrEmpty(__tmp41_line))
                 {
                     __out.Append(__tmp41_line);
@@ -46875,7 +46879,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp42_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp43_line = "Core(boundTree, childBoundNodes, syntax, hasErrors);"; //4964:48
+                string __tmp43_line = "Core(boundTree, childBoundNodes, syntax, hasErrors);"; //4967:48
                 if (!string.IsNullOrEmpty(__tmp43_line))
                 {
                     __out.Append(__tmp43_line);
@@ -46884,13 +46888,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp40_outputWritten) __out.AppendLine(true);
                 if (__tmp40_outputWritten)
                 {
-                    __out.AppendLine(false); //4964:100
+                    __out.AppendLine(false); //4967:100
                 }
-                __out.Append("        }"); //4965:1
-                __out.AppendLine(false); //4965:10
-                __out.AppendLine(true); //4966:1
+                __out.Append("        }"); //4968:1
+                __out.AppendLine(false); //4968:10
+                __out.AppendLine(true); //4969:1
                 bool __tmp45_outputWritten = false;
-                string __tmp46_line = "        protected virtual BoundNode CreateBound"; //4967:1
+                string __tmp46_line = "        protected virtual BoundNode CreateBound"; //4970:1
                 if (!string.IsNullOrEmpty(__tmp46_line))
                 {
                     __out.Append(__tmp46_line);
@@ -46913,7 +46917,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp47_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp48_line = "Core(BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)"; //4967:60
+                string __tmp48_line = "Core(BoundTree boundTree, ImmutableArray<object> childBoundNodes, LanguageSyntaxNode syntax, bool hasErrors)"; //4970:60
                 if (!string.IsNullOrEmpty(__tmp48_line))
                 {
                     __out.Append(__tmp48_line);
@@ -46922,12 +46926,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp45_outputWritten) __out.AppendLine(true);
                 if (__tmp45_outputWritten)
                 {
-                    __out.AppendLine(false); //4967:168
+                    __out.AppendLine(false); //4970:168
                 }
-                __out.Append("        {"); //4968:1
-                __out.AppendLine(false); //4968:10
+                __out.Append("        {"); //4971:1
+                __out.AppendLine(false); //4971:10
                 bool __tmp50_outputWritten = false;
-                string __tmp51_line = "            return new Bound"; //4969:1
+                string __tmp51_line = "            return new Bound"; //4972:1
                 if (!string.IsNullOrEmpty(__tmp51_line))
                 {
                     __out.Append(__tmp51_line);
@@ -46950,7 +46954,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp52_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp53_line = "("; //4969:41
+                string __tmp53_line = "("; //4972:41
                 if (!string.IsNullOrEmpty(__tmp53_line))
                 {
                     __out.Append(__tmp53_line);
@@ -46973,7 +46977,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp54_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp55_line = "BoundKind."; //4969:48
+                string __tmp55_line = "BoundKind."; //4972:48
                 if (!string.IsNullOrEmpty(__tmp55_line))
                 {
                     __out.Append(__tmp55_line);
@@ -46996,7 +47000,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp56_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp57_line = ", boundTree, childBoundNodes, syntax, hasErrors);"; //4969:70
+                string __tmp57_line = ", boundTree, childBoundNodes, syntax, hasErrors);"; //4972:70
                 if (!string.IsNullOrEmpty(__tmp57_line))
                 {
                     __out.Append(__tmp57_line);
@@ -47005,32 +47009,32 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp50_outputWritten) __out.AppendLine(true);
                 if (__tmp50_outputWritten)
                 {
-                    __out.AppendLine(false); //4969:119
+                    __out.AppendLine(false); //4972:119
                 }
-                __out.Append("        }"); //4970:1
-                __out.AppendLine(false); //4970:10
+                __out.Append("        }"); //4973:1
+                __out.AppendLine(false); //4973:10
             }
-            __out.AppendLine(true); //4972:1
+            __out.AppendLine(true); //4975:1
             var __loop116_results = 
-                (from rule in __Enumerate((Instances.ParserRules).GetEnumerator()) //4973:9
+                (from rule in __Enumerate((Instances.ParserRules).GetEnumerator()) //4976:9
                 select new { rule = rule}
-                ).ToList(); //4973:4
+                ).ToList(); //4976:4
             for (int __loop116_iteration = 0; __loop116_iteration < __loop116_results.Count; ++__loop116_iteration)
             {
                 var __tmp58 = __loop116_results[__loop116_iteration];
                 var rule = __tmp58.rule;
-                if (rule.Alternatives.Count > 0) //4974:5
+                if (rule.Alternatives.Count > 0) //4977:5
                 {
                     var __loop117_results = 
-                        (from alt in __Enumerate((rule.Alternatives).GetEnumerator()) //4975:11
+                        (from alt in __Enumerate((rule.Alternatives).GetEnumerator()) //4978:11
                         select new { alt = alt}
-                        ).ToList(); //4975:6
+                        ).ToList(); //4978:6
                     for (int __loop117_iteration = 0; __loop117_iteration < __loop117_results.Count; ++__loop117_iteration)
                     {
                         var __tmp59 = __loop117_results[__loop117_iteration];
                         var alt = __tmp59.alt;
                         bool __tmp61_outputWritten = false;
-                        string __tmp60Prefix = "		"; //4976:1
+                        string __tmp60Prefix = "		"; //4979:1
                         StringBuilder __tmp62 = new StringBuilder();
                         __tmp62.Append(GenerateBoundNodeFactoryVisit(alt));
                         using(StreamReader __tmp62Reader = new StreamReader(this.__ToStream(__tmp62.ToString())))
@@ -47055,14 +47059,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         }
                         if (__tmp61_outputWritten)
                         {
-                            __out.AppendLine(false); //4976:39
+                            __out.AppendLine(false); //4979:39
                         }
                     }
                 }
-                else //4978:5
+                else //4981:5
                 {
                     bool __tmp64_outputWritten = false;
-                    string __tmp63Prefix = "		"; //4979:1
+                    string __tmp63Prefix = "		"; //4982:1
                     StringBuilder __tmp65 = new StringBuilder();
                     __tmp65.Append(GenerateBoundNodeFactoryVisit(rule));
                     using(StreamReader __tmp65Reader = new StreamReader(this.__ToStream(__tmp65.ToString())))
@@ -47087,23 +47091,23 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     }
                     if (__tmp64_outputWritten)
                     {
-                        __out.AppendLine(false); //4979:40
+                        __out.AppendLine(false); //4982:40
                     }
                 }
             }
-            __out.Append("    }"); //4982:1
-            __out.AppendLine(false); //4982:6
-            __out.Append("}"); //4983:1
-            __out.AppendLine(false); //4983:2
+            __out.Append("    }"); //4985:1
+            __out.AppendLine(false); //4985:6
+            __out.Append("}"); //4986:1
+            __out.AppendLine(false); //4986:2
             return __out.ToString();
         }
 
-        public string GenerateBoundNodeFactoryVisit(Antlr4ParserRule rule) //4987:1
+        public string GenerateBoundNodeFactoryVisit(Antlr4ParserRule rule) //4990:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.AppendLine(true); //4988:1
+            __out.AppendLine(true); //4991:1
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "public BoundNode Visit"; //4989:1
+            string __tmp3_line = "public BoundNode Visit"; //4992:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -47126,7 +47130,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = "("; //4989:41
+            string __tmp5_line = "("; //4992:41
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -47149,7 +47153,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp6_last) __out.AppendLine(true);
                 }
             }
-            string __tmp7_line = " node, ArrayBuilder<object> childBoundNodesForParent)"; //4989:58
+            string __tmp7_line = " node, ArrayBuilder<object> childBoundNodesForParent)"; //4992:58
             if (!string.IsNullOrEmpty(__tmp7_line))
             {
                 __out.Append(__tmp7_line);
@@ -47158,57 +47162,57 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //4989:111
+                __out.AppendLine(false); //4992:111
             }
-            __out.Append("{"); //4990:1
-            __out.AppendLine(false); //4990:2
-            __out.Append("	if (node == null || node.IsMissing) return null;"); //4991:1
-            __out.AppendLine(false); //4991:50
-            __out.Append("	var state = this.State;"); //4992:1
-            __out.AppendLine(false); //4992:25
-            __out.Append("	if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;"); //4993:1
-            __out.AppendLine(false); //4993:94
-            __out.Append("	else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;"); //4994:1
-            __out.AppendLine(false); //4994:98
-            __out.Append("	try"); //4995:1
-            __out.AppendLine(false); //4995:5
-            __out.Append("	{"); //4996:1
-            __out.AppendLine(false); //4996:3
-            __out.Append("		if (state == BoundNodeFactoryState.InChild)"); //4997:1
-            __out.AppendLine(false); //4997:46
-            __out.Append("		{"); //4998:1
-            __out.AppendLine(false); //4998:4
-            __out.Append("			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))"); //4999:1
-            __out.AppendLine(false); //4999:76
-            __out.Append("			{"); //5000:1
-            __out.AppendLine(false); //5000:5
-            __out.Append("				childBoundNodesForParent.Add(cachedBoundNode);"); //5001:1
-            __out.AppendLine(false); //5001:51
-            __out.Append("				return cachedBoundNode;"); //5002:1
-            __out.AppendLine(false); //5002:28
-            __out.Append("			}"); //5003:1
+            __out.Append("{"); //4993:1
+            __out.AppendLine(false); //4993:2
+            __out.Append("	if (node == null || node.IsMissing) return null;"); //4994:1
+            __out.AppendLine(false); //4994:50
+            __out.Append("	var state = this.State;"); //4995:1
+            __out.AppendLine(false); //4995:25
+            __out.Append("	if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;"); //4996:1
+            __out.AppendLine(false); //4996:94
+            __out.Append("	else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;"); //4997:1
+            __out.AppendLine(false); //4997:98
+            __out.Append("	try"); //4998:1
+            __out.AppendLine(false); //4998:5
+            __out.Append("	{"); //4999:1
+            __out.AppendLine(false); //4999:3
+            __out.Append("		if (state == BoundNodeFactoryState.InChild)"); //5000:1
+            __out.AppendLine(false); //5000:46
+            __out.Append("		{"); //5001:1
+            __out.AppendLine(false); //5001:4
+            __out.Append("			if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))"); //5002:1
+            __out.AppendLine(false); //5002:76
+            __out.Append("			{"); //5003:1
             __out.AppendLine(false); //5003:5
-            if (rule.HasBoundNodeAnnotations) //5004:5
+            __out.Append("				childBoundNodesForParent.Add(cachedBoundNode);"); //5004:1
+            __out.AppendLine(false); //5004:51
+            __out.Append("				return cachedBoundNode;"); //5005:1
+            __out.AppendLine(false); //5005:28
+            __out.Append("			}"); //5006:1
+            __out.AppendLine(false); //5006:5
+            if (rule.HasBoundNodeAnnotations) //5007:5
             {
-                __out.Append("			else"); //5005:1
-                __out.AppendLine(false); //5005:8
-                __out.Append("			{"); //5006:1
-                __out.AppendLine(false); //5006:5
-                __out.Append("				childBoundNodesForParent.Add(node);"); //5007:1
-                __out.AppendLine(false); //5007:40
-                __out.Append("				return null;"); //5008:1
-                __out.AppendLine(false); //5008:17
-                __out.Append("			}"); //5009:1
+                __out.Append("			else"); //5008:1
+                __out.AppendLine(false); //5008:8
+                __out.Append("			{"); //5009:1
                 __out.AppendLine(false); //5009:5
+                __out.Append("				childBoundNodesForParent.Add(node);"); //5010:1
+                __out.AppendLine(false); //5010:40
+                __out.Append("				return null;"); //5011:1
+                __out.AppendLine(false); //5011:17
+                __out.Append("			}"); //5012:1
+                __out.AppendLine(false); //5012:5
             }
-            __out.Append("		}"); //5011:1
-            __out.AppendLine(false); //5011:4
-            if (rule.HasBoundNodeAnnotations) //5012:4
+            __out.Append("		}"); //5014:1
+            __out.AppendLine(false); //5014:4
+            if (rule.HasBoundNodeAnnotations) //5015:4
             {
-                __out.Append("		var childBoundNodes = ArrayBuilder<object>.GetInstance();"); //5013:1
-                __out.AppendLine(false); //5013:60
+                __out.Append("		var childBoundNodes = ArrayBuilder<object>.GetInstance();"); //5016:1
+                __out.AppendLine(false); //5016:60
                 bool __tmp9_outputWritten = false;
-                string __tmp8Prefix = "		"; //5014:1
+                string __tmp8Prefix = "		"; //5017:1
                 StringBuilder __tmp10 = new StringBuilder();
                 __tmp10.Append(GenerateBoundNodeFactoryVisitChildren(rule));
                 using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
@@ -47233,14 +47237,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp9_outputWritten)
                 {
-                    __out.AppendLine(false); //5014:48
+                    __out.AppendLine(false); //5017:48
                 }
-                __out.Append("		if (state == BoundNodeFactoryState.InParent)"); //5015:1
-                __out.AppendLine(false); //5015:47
-                __out.Append("		{"); //5016:1
-                __out.AppendLine(false); //5016:4
+                __out.Append("		if (state == BoundNodeFactoryState.InParent)"); //5018:1
+                __out.AppendLine(false); //5018:47
+                __out.Append("		{"); //5019:1
+                __out.AppendLine(false); //5019:4
                 bool __tmp12_outputWritten = false;
-                string __tmp13_line = "			Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes"; //5017:1
+                string __tmp13_line = "			Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes"; //5020:1
                 if (!string.IsNullOrEmpty(__tmp13_line))
                 {
                     __out.Append(__tmp13_line);
@@ -47263,7 +47267,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp14_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp15_line = " is BoundNode);"; //5017:69
+                string __tmp15_line = " is BoundNode);"; //5020:69
                 if (!string.IsNullOrEmpty(__tmp15_line))
                 {
                     __out.Append(__tmp15_line);
@@ -47272,10 +47276,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp12_outputWritten) __out.AppendLine(true);
                 if (__tmp12_outputWritten)
                 {
-                    __out.AppendLine(false); //5017:84
+                    __out.AppendLine(false); //5020:84
                 }
                 bool __tmp17_outputWritten = false;
-                string __tmp18_line = "			if (childBoundNodes.Count == 1 && childBoundNodes"; //5018:1
+                string __tmp18_line = "			if (childBoundNodes.Count == 1 && childBoundNodes"; //5021:1
                 if (!string.IsNullOrEmpty(__tmp18_line))
                 {
                     __out.Append(__tmp18_line);
@@ -47298,7 +47302,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp19_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp20_line = " is BoundNode) return (BoundNode)childBoundNodes"; //5018:60
+                string __tmp20_line = " is BoundNode) return (BoundNode)childBoundNodes"; //5021:60
                 if (!string.IsNullOrEmpty(__tmp20_line))
                 {
                     __out.Append(__tmp20_line);
@@ -47321,7 +47325,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp21_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp22_line = ";"; //5018:115
+                string __tmp22_line = ";"; //5021:115
                 if (!string.IsNullOrEmpty(__tmp22_line))
                 {
                     __out.Append(__tmp22_line);
@@ -47330,29 +47334,29 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp17_outputWritten) __out.AppendLine(true);
                 if (__tmp17_outputWritten)
                 {
-                    __out.AppendLine(false); //5018:116
+                    __out.AppendLine(false); //5021:116
                 }
-                __out.Append("			else return null;"); //5019:1
-                __out.AppendLine(false); //5019:21
-                __out.Append("		}"); //5020:1
-                __out.AppendLine(false); //5020:4
-                __out.Append("		else if (state == BoundNodeFactoryState.InNode)"); //5021:1
-                __out.AppendLine(false); //5021:50
-                __out.Append("		{"); //5022:1
-                __out.AppendLine(false); //5022:4
-                __out.Append("			BoundNode resultNode;"); //5023:1
-                __out.AppendLine(false); //5023:25
-                string children = "childBoundNodes.ToImmutableAndFree()"; //5024:6
+                __out.Append("			else return null;"); //5022:1
+                __out.AppendLine(false); //5022:21
+                __out.Append("		}"); //5023:1
+                __out.AppendLine(false); //5023:4
+                __out.Append("		else if (state == BoundNodeFactoryState.InNode)"); //5024:1
+                __out.AppendLine(false); //5024:50
+                __out.Append("		{"); //5025:1
+                __out.AppendLine(false); //5025:4
+                __out.Append("			BoundNode resultNode;"); //5026:1
+                __out.AppendLine(false); //5026:25
+                string children = "childBoundNodes.ToImmutableAndFree()"; //5027:6
                 var __loop118_results = 
-                    (from annot in __Enumerate((rule.Annotations.BoundNodeAnnotations.Reverse()).GetEnumerator()) //5025:12
+                    (from annot in __Enumerate((rule.Annotations.BoundNodeAnnotations.Reverse()).GetEnumerator()) //5028:12
                     select new { annot = annot}
-                    ).ToList(); //5025:6
+                    ).ToList(); //5028:6
                 for (int __loop118_iteration = 0; __loop118_iteration < __loop118_results.Count; ++__loop118_iteration)
                 {
                     var __tmp23 = __loop118_results[__loop118_iteration];
                     var annot = __tmp23.annot;
                     bool __tmp25_outputWritten = false;
-                    string __tmp26_line = "			resultNode = this.CreateBound"; //5026:1
+                    string __tmp26_line = "			resultNode = this.CreateBound"; //5029:1
                     if (!string.IsNullOrEmpty(__tmp26_line))
                     {
                         __out.Append(__tmp26_line);
@@ -47375,7 +47379,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp27_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp28_line = "(this.BoundTree, "; //5026:45
+                    string __tmp28_line = "(this.BoundTree, "; //5029:45
                     if (!string.IsNullOrEmpty(__tmp28_line))
                     {
                         __out.Append(__tmp28_line);
@@ -47415,7 +47419,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp30_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp31_line = ", syntax: node, hasErrors: false);"; //5026:101
+                    string __tmp31_line = ", syntax: node, hasErrors: false);"; //5029:101
                     if (!string.IsNullOrEmpty(__tmp31_line))
                     {
                         __out.Append(__tmp31_line);
@@ -47424,33 +47428,33 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp25_outputWritten) __out.AppendLine(true);
                     if (__tmp25_outputWritten)
                     {
-                        __out.AppendLine(false); //5026:135
+                        __out.AppendLine(false); //5029:135
                     }
                     children = "ImmutableArray.Create<object>(resultNode)";
                 }
-                __out.Append("			childBoundNodesForParent.Add(resultNode); "); //5029:1
-                __out.AppendLine(false); //5029:46
-                __out.Append("			return resultNode;"); //5030:1
-                __out.AppendLine(false); //5030:22
-                __out.Append("		}"); //5031:1
-                __out.AppendLine(false); //5031:4
-                __out.Append("		else"); //5032:1
-                __out.AppendLine(false); //5032:7
-                __out.Append("		{"); //5033:1
-                __out.AppendLine(false); //5033:4
-                __out.Append("			Debug.Assert(false);"); //5034:1
-                __out.AppendLine(false); //5034:24
-                __out.Append("			childBoundNodesForParent.Add(node);"); //5035:1
-                __out.AppendLine(false); //5035:39
-                __out.Append("			return null;"); //5036:1
-                __out.AppendLine(false); //5036:16
-                __out.Append("		}"); //5037:1
-                __out.AppendLine(false); //5037:4
+                __out.Append("			childBoundNodesForParent.Add(resultNode); "); //5032:1
+                __out.AppendLine(false); //5032:46
+                __out.Append("			return resultNode;"); //5033:1
+                __out.AppendLine(false); //5033:22
+                __out.Append("		}"); //5034:1
+                __out.AppendLine(false); //5034:4
+                __out.Append("		else"); //5035:1
+                __out.AppendLine(false); //5035:7
+                __out.Append("		{"); //5036:1
+                __out.AppendLine(false); //5036:4
+                __out.Append("			Debug.Assert(false);"); //5037:1
+                __out.AppendLine(false); //5037:24
+                __out.Append("			childBoundNodesForParent.Add(node);"); //5038:1
+                __out.AppendLine(false); //5038:39
+                __out.Append("			return null;"); //5039:1
+                __out.AppendLine(false); //5039:16
+                __out.Append("		}"); //5040:1
+                __out.AppendLine(false); //5040:4
             }
-            else //5038:4
+            else //5041:4
             {
                 bool __tmp33_outputWritten = false;
-                string __tmp32Prefix = "		"; //5039:1
+                string __tmp32Prefix = "		"; //5042:1
                 StringBuilder __tmp34 = new StringBuilder();
                 __tmp34.Append(GenerateBoundNodeFactoryVisitChildren(rule));
                 using(StreamReader __tmp34Reader = new StreamReader(this.__ToStream(__tmp34.ToString())))
@@ -47475,14 +47479,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp33_outputWritten)
                 {
-                    __out.AppendLine(false); //5039:48
+                    __out.AppendLine(false); //5042:48
                 }
-                __out.Append("		if (state == BoundNodeFactoryState.InParent)"); //5040:1
-                __out.AppendLine(false); //5040:47
-                __out.Append("		{"); //5041:1
-                __out.AppendLine(false); //5041:4
+                __out.Append("		if (state == BoundNodeFactoryState.InParent)"); //5043:1
+                __out.AppendLine(false); //5043:47
+                __out.Append("		{"); //5044:1
+                __out.AppendLine(false); //5044:4
                 bool __tmp36_outputWritten = false;
-                string __tmp37_line = "			Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent"; //5042:1
+                string __tmp37_line = "			Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent"; //5045:1
                 if (!string.IsNullOrEmpty(__tmp37_line))
                 {
                     __out.Append(__tmp37_line);
@@ -47505,7 +47509,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp38_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp39_line = " is BoundNode);"; //5042:87
+                string __tmp39_line = " is BoundNode);"; //5045:87
                 if (!string.IsNullOrEmpty(__tmp39_line))
                 {
                     __out.Append(__tmp39_line);
@@ -47514,10 +47518,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp36_outputWritten) __out.AppendLine(true);
                 if (__tmp36_outputWritten)
                 {
-                    __out.AppendLine(false); //5042:102
+                    __out.AppendLine(false); //5045:102
                 }
                 bool __tmp41_outputWritten = false;
-                string __tmp42_line = "			if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent"; //5043:1
+                string __tmp42_line = "			if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent"; //5046:1
                 if (!string.IsNullOrEmpty(__tmp42_line))
                 {
                     __out.Append(__tmp42_line);
@@ -47540,7 +47544,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp43_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp44_line = " is BoundNode) return (BoundNode)childBoundNodesForParent"; //5043:78
+                string __tmp44_line = " is BoundNode) return (BoundNode)childBoundNodesForParent"; //5046:78
                 if (!string.IsNullOrEmpty(__tmp44_line))
                 {
                     __out.Append(__tmp44_line);
@@ -47563,7 +47567,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp45_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp46_line = ";"; //5043:142
+                string __tmp46_line = ";"; //5046:142
                 if (!string.IsNullOrEmpty(__tmp46_line))
                 {
                     __out.Append(__tmp46_line);
@@ -47572,44 +47576,44 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp41_outputWritten) __out.AppendLine(true);
                 if (__tmp41_outputWritten)
                 {
-                    __out.AppendLine(false); //5043:143
+                    __out.AppendLine(false); //5046:143
                 }
-                __out.Append("			else return null;"); //5044:1
-                __out.AppendLine(false); //5044:21
-                __out.Append("		}"); //5045:1
-                __out.AppendLine(false); //5045:4
-                __out.Append("		else"); //5046:1
-                __out.AppendLine(false); //5046:7
-                __out.Append("		{"); //5047:1
-                __out.AppendLine(false); //5047:4
-                __out.Append("			return null;"); //5048:1
-                __out.AppendLine(false); //5048:16
-                __out.Append("		}"); //5049:1
-                __out.AppendLine(false); //5049:4
+                __out.Append("			else return null;"); //5047:1
+                __out.AppendLine(false); //5047:21
+                __out.Append("		}"); //5048:1
+                __out.AppendLine(false); //5048:4
+                __out.Append("		else"); //5049:1
+                __out.AppendLine(false); //5049:7
+                __out.Append("		{"); //5050:1
+                __out.AppendLine(false); //5050:4
+                __out.Append("			return null;"); //5051:1
+                __out.AppendLine(false); //5051:16
+                __out.Append("		}"); //5052:1
+                __out.AppendLine(false); //5052:4
             }
-            __out.Append("	}"); //5051:1
-            __out.AppendLine(false); //5051:3
-            __out.Append("	finally"); //5052:1
-            __out.AppendLine(false); //5052:9
-            __out.Append("	{"); //5053:1
-            __out.AppendLine(false); //5053:3
-            __out.Append("		this.State = state;"); //5054:1
-            __out.AppendLine(false); //5054:22
-            __out.Append("	}"); //5055:1
-            __out.AppendLine(false); //5055:3
-            __out.Append("}"); //5056:1
-            __out.AppendLine(false); //5056:2
+            __out.Append("	}"); //5054:1
+            __out.AppendLine(false); //5054:3
+            __out.Append("	finally"); //5055:1
+            __out.AppendLine(false); //5055:9
+            __out.Append("	{"); //5056:1
+            __out.AppendLine(false); //5056:3
+            __out.Append("		this.State = state;"); //5057:1
+            __out.AppendLine(false); //5057:22
+            __out.Append("	}"); //5058:1
+            __out.AppendLine(false); //5058:3
+            __out.Append("}"); //5059:1
+            __out.AppendLine(false); //5059:2
             return __out.ToString();
         }
 
-        public string GenerateBoundNodeFactoryVisitChildren(Antlr4ParserRule rule) //5059:1
+        public string GenerateBoundNodeFactoryVisitChildren(Antlr4ParserRule rule) //5062:1
         {
             StringBuilder __out = new StringBuilder();
-            string childBoundNodesName = rule.HasBoundNodeAnnotations ? "childBoundNodes" : "childBoundNodesForParent"; //5060:2
+            string childBoundNodesName = rule.HasBoundNodeAnnotations ? "childBoundNodes" : "childBoundNodesForParent"; //5063:2
             var __loop119_results = 
-                (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //5061:7
+                (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //5064:7
                 select new { elem = elem}
-                ).ToList(); //5061:2
+                ).ToList(); //5064:2
             for (int __loop119_iteration = 0; __loop119_iteration < __loop119_results.Count; ++__loop119_iteration)
             {
                 var __tmp1 = __loop119_results[__loop119_iteration];
@@ -47634,21 +47638,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp3_outputWritten)
                 {
-                    __out.AppendLine(false); //5062:87
+                    __out.AppendLine(false); //5065:87
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateBoundNodeFactoryVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem, string childBoundNodesName) //5066:1
+        public string GenerateBoundNodeFactoryVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem, string childBoundNodesName) //5069:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.ContainsBoundNodeAnnotations) //5067:2
+            if (elem.ContainsBoundNodeAnnotations) //5070:2
             {
-                if (!elem.IsToken && !elem.IsFixedTokenAltBlock) //5068:3
+                if (!elem.IsToken && !elem.IsFixedTokenAltBlock) //5071:3
                 {
                     bool __tmp2_outputWritten = false;
-                    string __tmp3_line = "if (node."; //5069:1
+                    string __tmp3_line = "if (node."; //5072:1
                     if (!string.IsNullOrEmpty(__tmp3_line))
                     {
                         __out.Append(__tmp3_line);
@@ -47671,7 +47675,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp4_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp5_line = " != null)"; //5069:26
+                    string __tmp5_line = " != null)"; //5072:26
                     if (!string.IsNullOrEmpty(__tmp5_line))
                     {
                         __out.Append(__tmp5_line);
@@ -47680,12 +47684,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp2_outputWritten) __out.AppendLine(true);
                     if (__tmp2_outputWritten)
                     {
-                        __out.AppendLine(false); //5069:35
+                        __out.AppendLine(false); //5072:35
                     }
-                    __out.Append("{"); //5070:1
-                    __out.AppendLine(false); //5070:2
+                    __out.Append("{"); //5073:1
+                    __out.AppendLine(false); //5073:2
                     bool __tmp7_outputWritten = false;
-                    string __tmp6Prefix = "	"; //5071:1
+                    string __tmp6Prefix = "	"; //5074:1
                     StringBuilder __tmp8 = new StringBuilder();
                     __tmp8.Append(GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(elem, childBoundNodesName));
                     using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
@@ -47710,12 +47714,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     }
                     if (__tmp7_outputWritten)
                     {
-                        __out.AppendLine(false); //5071:93
+                        __out.AppendLine(false); //5074:93
                     }
-                    __out.Append("}"); //5072:1
-                    __out.AppendLine(false); //5072:2
+                    __out.Append("}"); //5075:1
+                    __out.AppendLine(false); //5075:2
                 }
-                else //5073:3
+                else //5076:3
                 {
                     bool __tmp10_outputWritten = false;
                     StringBuilder __tmp11 = new StringBuilder();
@@ -47737,20 +47741,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     }
                     if (__tmp10_outputWritten)
                     {
-                        __out.AppendLine(false); //5074:92
+                        __out.AppendLine(false); //5077:92
                     }
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(Antlr4ParserRuleElement elem, string childBoundNodesName) //5079:1
+        public string GenerateBoundNodeFactoryVisitChildrenElementWithLookupPosition(Antlr4ParserRuleElement elem, string childBoundNodesName) //5082:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.IsList) //5080:3
+            if (elem.IsList) //5083:3
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node."; //5081:1
+                string __tmp3_line = "if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node."; //5084:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -47773,7 +47777,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ".Node))"; //5081:108
+                string __tmp5_line = ".Node))"; //5084:108
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -47782,12 +47786,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //5081:115
+                    __out.AppendLine(false); //5084:115
                 }
-                __out.Append("{"); //5082:1
-                __out.AppendLine(false); //5082:2
+                __out.Append("{"); //5085:1
+                __out.AppendLine(false); //5085:2
                 bool __tmp7_outputWritten = false;
-                string __tmp6Prefix = "	"; //5083:1
+                string __tmp6Prefix = "	"; //5086:1
                 StringBuilder __tmp8 = new StringBuilder();
                 __tmp8.Append(GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName));
                 using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
@@ -47812,15 +47816,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp7_outputWritten)
                 {
-                    __out.AppendLine(false); //5083:92
+                    __out.AppendLine(false); //5086:92
                 }
-                __out.Append("}"); //5084:1
-                __out.AppendLine(false); //5084:2
+                __out.Append("}"); //5087:1
+                __out.AppendLine(false); //5087:2
             }
-            else if (elem.IsToken || elem.IsFixedTokenAltBlock) //5085:3
+            else if (elem.IsToken || elem.IsFixedTokenAltBlock) //5088:3
             {
                 bool __tmp10_outputWritten = false;
-                string __tmp11_line = "if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node."; //5086:1
+                string __tmp11_line = "if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node."; //5089:1
                 if (!string.IsNullOrEmpty(__tmp11_line))
                 {
                     __out.Append(__tmp11_line);
@@ -47843,7 +47847,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp12_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp13_line = ")))"; //5086:150
+                string __tmp13_line = ")))"; //5089:150
                 if (!string.IsNullOrEmpty(__tmp13_line))
                 {
                     __out.Append(__tmp13_line);
@@ -47852,12 +47856,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp10_outputWritten) __out.AppendLine(true);
                 if (__tmp10_outputWritten)
                 {
-                    __out.AppendLine(false); //5086:153
+                    __out.AppendLine(false); //5089:153
                 }
-                __out.Append("{"); //5087:1
-                __out.AppendLine(false); //5087:2
+                __out.Append("{"); //5090:1
+                __out.AppendLine(false); //5090:2
                 bool __tmp15_outputWritten = false;
-                string __tmp14Prefix = "	"; //5088:1
+                string __tmp14Prefix = "	"; //5091:1
                 StringBuilder __tmp16 = new StringBuilder();
                 __tmp16.Append(GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName));
                 using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
@@ -47882,19 +47886,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp15_outputWritten)
                 {
-                    __out.AppendLine(false); //5088:92
+                    __out.AppendLine(false); //5091:92
                 }
-                __out.Append("}"); //5089:1
-                __out.AppendLine(false); //5089:2
-            }
-            else //5090:3
-            {
-                __out.Append("if (state == BoundNodeFactoryState.InParent)"); //5091:1
-                __out.AppendLine(false); //5091:45
-                __out.Append("{"); //5092:1
+                __out.Append("}"); //5092:1
                 __out.AppendLine(false); //5092:2
+            }
+            else //5093:3
+            {
+                __out.Append("if (state == BoundNodeFactoryState.InParent)"); //5094:1
+                __out.AppendLine(false); //5094:45
+                __out.Append("{"); //5095:1
+                __out.AppendLine(false); //5095:2
                 bool __tmp18_outputWritten = false;
-                string __tmp19_line = "	if (LookupPosition.IsInNode(this.Position, node."; //5093:1
+                string __tmp19_line = "	if (LookupPosition.IsInNode(this.Position, node."; //5096:1
                 if (!string.IsNullOrEmpty(__tmp19_line))
                 {
                     __out.Append(__tmp19_line);
@@ -47917,7 +47921,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp20_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp21_line = "))"; //5093:66
+                string __tmp21_line = "))"; //5096:66
                 if (!string.IsNullOrEmpty(__tmp21_line))
                 {
                     __out.Append(__tmp21_line);
@@ -47926,12 +47930,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp18_outputWritten) __out.AppendLine(true);
                 if (__tmp18_outputWritten)
                 {
-                    __out.AppendLine(false); //5093:68
+                    __out.AppendLine(false); //5096:68
                 }
-                __out.Append("	{"); //5094:1
-                __out.AppendLine(false); //5094:3
+                __out.Append("	{"); //5097:1
+                __out.AppendLine(false); //5097:3
                 bool __tmp23_outputWritten = false;
-                string __tmp22Prefix = "		"; //5095:1
+                string __tmp22Prefix = "		"; //5098:1
                 StringBuilder __tmp24 = new StringBuilder();
                 __tmp24.Append(GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(elem, childBoundNodesName));
                 using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
@@ -47956,22 +47960,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp23_outputWritten)
                 {
-                    __out.AppendLine(false); //5095:93
+                    __out.AppendLine(false); //5098:93
                 }
-                __out.Append("	}"); //5096:1
-                __out.AppendLine(false); //5096:3
-                __out.Append("}"); //5097:1
-                __out.AppendLine(false); //5097:2
-                __out.Append("else"); //5098:1
-                __out.AppendLine(false); //5098:5
-                __out.Append("{"); //5099:1
-                __out.AppendLine(false); //5099:2
-                if (elem.HasBoundNodeAnnotations) //5100:4
+                __out.Append("	}"); //5099:1
+                __out.AppendLine(false); //5099:3
+                __out.Append("}"); //5100:1
+                __out.AppendLine(false); //5100:2
+                __out.Append("else"); //5101:1
+                __out.AppendLine(false); //5101:5
+                __out.Append("{"); //5102:1
+                __out.AppendLine(false); //5102:2
+                if (elem.HasBoundNodeAnnotations) //5103:4
                 {
-                    if (elem.IsList) //5101:5
+                    if (elem.IsList) //5104:5
                     {
                         bool __tmp26_outputWritten = false;
-                        string __tmp25Prefix = "	"; //5102:1
+                        string __tmp25Prefix = "	"; //5105:1
                         StringBuilder __tmp27 = new StringBuilder();
                         __tmp27.Append(childBoundNodesName);
                         using(StreamReader __tmp27Reader = new StreamReader(this.__ToStream(__tmp27.ToString())))
@@ -47994,7 +47998,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp27_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp28_line = ".Add(node."; //5102:23
+                        string __tmp28_line = ".Add(node."; //5105:23
                         if (!string.IsNullOrEmpty(__tmp28_line))
                         {
                             __out.Append(__tmp28_line);
@@ -48017,7 +48021,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp29_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp30_line = ".Node);"; //5102:49
+                        string __tmp30_line = ".Node);"; //5105:49
                         if (!string.IsNullOrEmpty(__tmp30_line))
                         {
                             __out.Append(__tmp30_line);
@@ -48026,13 +48030,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (__tmp26_outputWritten) __out.AppendLine(true);
                         if (__tmp26_outputWritten)
                         {
-                            __out.AppendLine(false); //5102:56
+                            __out.AppendLine(false); //5105:56
                         }
                     }
-                    else //5103:5
+                    else //5106:5
                     {
                         bool __tmp32_outputWritten = false;
-                        string __tmp31Prefix = "	"; //5104:1
+                        string __tmp31Prefix = "	"; //5107:1
                         StringBuilder __tmp33 = new StringBuilder();
                         __tmp33.Append(childBoundNodesName);
                         using(StreamReader __tmp33Reader = new StreamReader(this.__ToStream(__tmp33.ToString())))
@@ -48055,7 +48059,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp33_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp34_line = ".Add(node."; //5104:23
+                        string __tmp34_line = ".Add(node."; //5107:23
                         if (!string.IsNullOrEmpty(__tmp34_line))
                         {
                             __out.Append(__tmp34_line);
@@ -48078,7 +48082,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp35_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp36_line = ");"; //5104:49
+                        string __tmp36_line = ");"; //5107:49
                         if (!string.IsNullOrEmpty(__tmp36_line))
                         {
                             __out.Append(__tmp36_line);
@@ -48087,14 +48091,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (__tmp32_outputWritten) __out.AppendLine(true);
                         if (__tmp32_outputWritten)
                         {
-                            __out.AppendLine(false); //5104:51
+                            __out.AppendLine(false); //5107:51
                         }
                     }
                 }
-                else //5106:4
+                else //5109:4
                 {
                     bool __tmp38_outputWritten = false;
-                    string __tmp39_line = "	this.Visit(node."; //5107:1
+                    string __tmp39_line = "	this.Visit(node."; //5110:1
                     if (!string.IsNullOrEmpty(__tmp39_line))
                     {
                         __out.Append(__tmp39_line);
@@ -48117,7 +48121,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp40_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp41_line = ", "; //5107:34
+                    string __tmp41_line = ", "; //5110:34
                     if (!string.IsNullOrEmpty(__tmp41_line))
                     {
                         __out.Append(__tmp41_line);
@@ -48140,7 +48144,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp42_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp43_line = ");"; //5107:57
+                    string __tmp43_line = ");"; //5110:57
                     if (!string.IsNullOrEmpty(__tmp43_line))
                     {
                         __out.Append(__tmp43_line);
@@ -48149,22 +48153,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp38_outputWritten) __out.AppendLine(true);
                     if (__tmp38_outputWritten)
                     {
-                        __out.AppendLine(false); //5107:59
+                        __out.AppendLine(false); //5110:59
                     }
                 }
-                __out.Append("}"); //5109:1
-                __out.AppendLine(false); //5109:2
+                __out.Append("}"); //5112:1
+                __out.AppendLine(false); //5112:2
             }
             return __out.ToString();
         }
 
-        public string GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(Antlr4ParserRuleElement elem, string childBoundNodesName) //5113:1
+        public string GenerateBoundNodeFactoryVisitChildrenElementWithBoundChildren(Antlr4ParserRuleElement elem, string childBoundNodesName) //5116:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.HasBoundNodeAnnotations && !elem.IsToken && !elem.IsFixedTokenAltBlock) //5114:2
+            if (elem.HasBoundNodeAnnotations && !elem.IsToken && !elem.IsFixedTokenAltBlock) //5117:2
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "var childBoundNodesOf"; //5115:1
+                string __tmp3_line = "var childBoundNodesOf"; //5118:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -48187,7 +48191,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = " = ArrayBuilder<object>.GetInstance();"; //5115:38
+                string __tmp5_line = " = ArrayBuilder<object>.GetInstance();"; //5118:38
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -48196,7 +48200,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //5115:76
+                    __out.AppendLine(false); //5118:76
                 }
                 bool __tmp7_outputWritten = false;
                 StringBuilder __tmp8 = new StringBuilder();
@@ -48218,10 +48222,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp7_outputWritten)
                 {
-                    __out.AppendLine(false); //5116:89
+                    __out.AppendLine(false); //5119:89
                 }
                 bool __tmp10_outputWritten = false;
-                string __tmp11_line = "BoundNode bound"; //5117:1
+                string __tmp11_line = "BoundNode bound"; //5120:1
                 if (!string.IsNullOrEmpty(__tmp11_line))
                 {
                     __out.Append(__tmp11_line);
@@ -48244,7 +48248,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp12_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp13_line = ";"; //5117:32
+                string __tmp13_line = ";"; //5120:32
                 if (!string.IsNullOrEmpty(__tmp13_line))
                 {
                     __out.Append(__tmp13_line);
@@ -48253,19 +48257,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp10_outputWritten) __out.AppendLine(true);
                 if (__tmp10_outputWritten)
                 {
-                    __out.AppendLine(false); //5117:33
+                    __out.AppendLine(false); //5120:33
                 }
-                string children = "childBoundNodesOf" + elem.RedName() + ".ToImmutableAndFree()"; //5118:3
+                string children = "childBoundNodesOf" + elem.RedName() + ".ToImmutableAndFree()"; //5121:3
                 var __loop120_results = 
-                    (from annot in __Enumerate((elem.Annotations.BoundNodeAnnotations.Reverse()).GetEnumerator()) //5119:9
+                    (from annot in __Enumerate((elem.Annotations.BoundNodeAnnotations.Reverse()).GetEnumerator()) //5122:9
                     select new { annot = annot}
-                    ).ToList(); //5119:3
+                    ).ToList(); //5122:3
                 for (int __loop120_iteration = 0; __loop120_iteration < __loop120_results.Count; ++__loop120_iteration)
                 {
                     var __tmp14 = __loop120_results[__loop120_iteration];
                     var annot = __tmp14.annot;
                     bool __tmp16_outputWritten = false;
-                    string __tmp17_line = "bound"; //5120:1
+                    string __tmp17_line = "bound"; //5123:1
                     if (!string.IsNullOrEmpty(__tmp17_line))
                     {
                         __out.Append(__tmp17_line);
@@ -48288,7 +48292,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp18_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp19_line = " = this.CreateBound"; //5120:22
+                    string __tmp19_line = " = this.CreateBound"; //5123:22
                     if (!string.IsNullOrEmpty(__tmp19_line))
                     {
                         __out.Append(__tmp19_line);
@@ -48311,7 +48315,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp20_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp21_line = "(this.BoundTree, "; //5120:53
+                    string __tmp21_line = "(this.BoundTree, "; //5123:53
                     if (!string.IsNullOrEmpty(__tmp21_line))
                     {
                         __out.Append(__tmp21_line);
@@ -48351,7 +48355,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp23_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp24_line = ", syntax: node."; //5120:109
+                    string __tmp24_line = ", syntax: node."; //5123:109
                     if (!string.IsNullOrEmpty(__tmp24_line))
                     {
                         __out.Append(__tmp24_line);
@@ -48374,7 +48378,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp25_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp26_line = ", hasErrors: false);"; //5120:140
+                    string __tmp26_line = ", hasErrors: false);"; //5123:140
                     if (!string.IsNullOrEmpty(__tmp26_line))
                     {
                         __out.Append(__tmp26_line);
@@ -48383,7 +48387,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp16_outputWritten) __out.AppendLine(true);
                     if (__tmp16_outputWritten)
                     {
-                        __out.AppendLine(false); //5120:160
+                        __out.AppendLine(false); //5123:160
                     }
                     children = "ImmutableArray.Create<object>(bound" + elem.RedName() + ")";
                 }
@@ -48405,7 +48409,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp29_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp30_line = ".Add(bound"; //5123:22
+                string __tmp30_line = ".Add(bound"; //5126:22
                 if (!string.IsNullOrEmpty(__tmp30_line))
                 {
                     __out.Append(__tmp30_line);
@@ -48428,7 +48432,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp31_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp32_line = ");"; //5123:48
+                string __tmp32_line = ");"; //5126:48
                 if (!string.IsNullOrEmpty(__tmp32_line))
                 {
                     __out.Append(__tmp32_line);
@@ -48437,10 +48441,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp28_outputWritten) __out.AppendLine(true);
                 if (__tmp28_outputWritten)
                 {
-                    __out.AppendLine(false); //5123:50
+                    __out.AppendLine(false); //5126:50
                 }
             }
-            else //5124:2
+            else //5127:2
             {
                 bool __tmp34_outputWritten = false;
                 StringBuilder __tmp35 = new StringBuilder();
@@ -48462,19 +48466,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp34_outputWritten)
                 {
-                    __out.AppendLine(false); //5125:74
+                    __out.AppendLine(false); //5128:74
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateBoundNodeFactoryVisitChildrenElement(Antlr4ParserRuleElement elem, string childBoundNodesName) //5129:1
+        public string GenerateBoundNodeFactoryVisitChildrenElement(Antlr4ParserRuleElement elem, string childBoundNodesName) //5132:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.IsList) //5130:3
+            if (elem.IsList) //5133:3
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "foreach (var item in node."; //5131:1
+                string __tmp3_line = "foreach (var item in node."; //5134:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -48497,7 +48501,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ")"; //5131:43
+                string __tmp5_line = ")"; //5134:43
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -48506,16 +48510,16 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //5131:44
+                    __out.AppendLine(false); //5134:44
                 }
-                __out.Append("{"); //5132:1
-                __out.AppendLine(false); //5132:2
-                __out.Append("	if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))"); //5133:1
-                __out.AppendLine(false); //5133:94
-                __out.Append("	{"); //5134:1
-                __out.AppendLine(false); //5134:3
+                __out.Append("{"); //5135:1
+                __out.AppendLine(false); //5135:2
+                __out.Append("	if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))"); //5136:1
+                __out.AppendLine(false); //5136:94
+                __out.Append("	{"); //5137:1
+                __out.AppendLine(false); //5137:3
                 bool __tmp7_outputWritten = false;
-                string __tmp8_line = "		this.Visit(item, "; //5135:1
+                string __tmp8_line = "		this.Visit(item, "; //5138:1
                 if (!string.IsNullOrEmpty(__tmp8_line))
                 {
                     __out.Append(__tmp8_line);
@@ -48538,7 +48542,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp9_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp10_line = ");"; //5135:41
+                string __tmp10_line = ");"; //5138:41
                 if (!string.IsNullOrEmpty(__tmp10_line))
                 {
                     __out.Append(__tmp10_line);
@@ -48547,14 +48551,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp7_outputWritten) __out.AppendLine(true);
                 if (__tmp7_outputWritten)
                 {
-                    __out.AppendLine(false); //5135:43
+                    __out.AppendLine(false); //5138:43
                 }
-                __out.Append("	}"); //5136:1
-                __out.AppendLine(false); //5136:3
-                __out.Append("}"); //5137:1
-                __out.AppendLine(false); //5137:2
+                __out.Append("	}"); //5139:1
+                __out.AppendLine(false); //5139:3
+                __out.Append("}"); //5140:1
+                __out.AppendLine(false); //5140:2
             }
-            else if (elem.IsFixedTokenAltBlock) //5138:3
+            else if (elem.IsFixedTokenAltBlock) //5141:3
             {
                 bool __tmp12_outputWritten = false;
                 StringBuilder __tmp13 = new StringBuilder();
@@ -48576,10 +48580,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp12_outputWritten)
                 {
-                    __out.AppendLine(false); //5139:71
+                    __out.AppendLine(false); //5142:71
                 }
             }
-            else if (elem.IsToken) //5140:3
+            else if (elem.IsToken) //5143:3
             {
                 bool __tmp15_outputWritten = false;
                 StringBuilder __tmp16 = new StringBuilder();
@@ -48601,13 +48605,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp15_outputWritten)
                 {
-                    __out.AppendLine(false); //5141:68
+                    __out.AppendLine(false); //5144:68
                 }
             }
-            else //5142:3
+            else //5145:3
             {
                 bool __tmp18_outputWritten = false;
-                string __tmp19_line = "this.Visit(node."; //5143:1
+                string __tmp19_line = "this.Visit(node."; //5146:1
                 if (!string.IsNullOrEmpty(__tmp19_line))
                 {
                     __out.Append(__tmp19_line);
@@ -48630,7 +48634,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp20_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp21_line = ", "; //5143:33
+                string __tmp21_line = ", "; //5146:33
                 if (!string.IsNullOrEmpty(__tmp21_line))
                 {
                     __out.Append(__tmp21_line);
@@ -48653,7 +48657,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp22_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp23_line = ");"; //5143:56
+                string __tmp23_line = ");"; //5146:56
                 if (!string.IsNullOrEmpty(__tmp23_line))
                 {
                     __out.Append(__tmp23_line);
@@ -48662,19 +48666,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp18_outputWritten) __out.AppendLine(true);
                 if (__tmp18_outputWritten)
                 {
-                    __out.AppendLine(false); //5143:58
+                    __out.AppendLine(false); //5146:58
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateBoundNodeFactoryVisitTokenAltBody(Antlr4ParserRuleElement elem, string childBoundNodesName) //5147:1
+        public string GenerateBoundNodeFactoryVisitTokenAltBody(Antlr4ParserRuleElement elem, string childBoundNodesName) //5150:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.ContainsBoundNodeAnnotations) //5148:2
+            if (elem.ContainsBoundNodeAnnotations) //5151:2
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "switch (node."; //5149:1
+                string __tmp3_line = "switch (node."; //5152:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -48697,7 +48701,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ".GetKind().Switch())"; //5149:30
+                string __tmp5_line = ".GetKind().Switch())"; //5152:30
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -48706,21 +48710,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //5149:50
+                    __out.AppendLine(false); //5152:50
                 }
-                __out.Append("{"); //5150:1
-                __out.AppendLine(false); //5150:2
+                __out.Append("{"); //5153:1
+                __out.AppendLine(false); //5153:2
                 var __loop121_results = 
-                    (from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //5151:10
-                    where alt.HasBoundNodeAnnotations //5151:30
+                    (from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //5154:10
+                    where alt.HasBoundNodeAnnotations //5154:30
                     select new { alt = alt}
-                    ).ToList(); //5151:4
+                    ).ToList(); //5154:4
                 for (int __loop121_iteration = 0; __loop121_iteration < __loop121_results.Count; ++__loop121_iteration)
                 {
                     var __tmp6 = __loop121_results[__loop121_iteration];
                     var alt = __tmp6.alt;
                     bool __tmp8_outputWritten = false;
-                    string __tmp9_line = "	case "; //5152:1
+                    string __tmp9_line = "	case "; //5155:1
                     if (!string.IsNullOrEmpty(__tmp9_line))
                     {
                         __out.Append(__tmp9_line);
@@ -48743,7 +48747,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp10_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp11_line = "SyntaxKind."; //5152:32
+                    string __tmp11_line = "SyntaxKind."; //5155:32
                     if (!string.IsNullOrEmpty(__tmp11_line))
                     {
                         __out.Append(__tmp11_line);
@@ -48766,7 +48770,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp12_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp13_line = ":"; //5152:58
+                    string __tmp13_line = ":"; //5155:58
                     if (!string.IsNullOrEmpty(__tmp13_line))
                     {
                         __out.Append(__tmp13_line);
@@ -48775,10 +48779,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp8_outputWritten) __out.AppendLine(true);
                     if (__tmp8_outputWritten)
                     {
-                        __out.AppendLine(false); //5152:59
+                        __out.AppendLine(false); //5155:59
                     }
                     bool __tmp15_outputWritten = false;
-                    string __tmp16_line = "		BoundNode bound"; //5153:1
+                    string __tmp16_line = "		BoundNode bound"; //5156:1
                     if (!string.IsNullOrEmpty(__tmp16_line))
                     {
                         __out.Append(__tmp16_line);
@@ -48801,7 +48805,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp17_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp18_line = ";"; //5153:33
+                    string __tmp18_line = ";"; //5156:33
                     if (!string.IsNullOrEmpty(__tmp18_line))
                     {
                         __out.Append(__tmp18_line);
@@ -48810,19 +48814,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp15_outputWritten) __out.AppendLine(true);
                     if (__tmp15_outputWritten)
                     {
-                        __out.AppendLine(false); //5153:34
+                        __out.AppendLine(false); //5156:34
                     }
-                    string children = "ImmutableArray<object>.Empty"; //5154:5
+                    string children = "ImmutableArray<object>.Empty"; //5157:5
                     var __loop122_results = 
-                        (from annot in __Enumerate((alt.Annotations.BoundNodeAnnotations.Reverse()).GetEnumerator()) //5155:11
+                        (from annot in __Enumerate((alt.Annotations.BoundNodeAnnotations.Reverse()).GetEnumerator()) //5158:11
                         select new { annot = annot}
-                        ).ToList(); //5155:5
+                        ).ToList(); //5158:5
                     for (int __loop122_iteration = 0; __loop122_iteration < __loop122_results.Count; ++__loop122_iteration)
                     {
                         var __tmp19 = __loop122_results[__loop122_iteration];
                         var annot = __tmp19.annot;
                         bool __tmp21_outputWritten = false;
-                        string __tmp22_line = "		bound"; //5156:1
+                        string __tmp22_line = "		bound"; //5159:1
                         if (!string.IsNullOrEmpty(__tmp22_line))
                         {
                             __out.Append(__tmp22_line);
@@ -48845,7 +48849,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp23_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp24_line = " = this.CreateBound"; //5156:23
+                        string __tmp24_line = " = this.CreateBound"; //5159:23
                         if (!string.IsNullOrEmpty(__tmp24_line))
                         {
                             __out.Append(__tmp24_line);
@@ -48868,7 +48872,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp25_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp26_line = "(this.BoundTree, "; //5156:54
+                        string __tmp26_line = "(this.BoundTree, "; //5159:54
                         if (!string.IsNullOrEmpty(__tmp26_line))
                         {
                             __out.Append(__tmp26_line);
@@ -48908,7 +48912,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                                 if (!__tmp28_last) __out.AppendLine(true);
                             }
                         }
-                        string __tmp29_line = ", syntax: node, hasErrors: false);"; //5156:110
+                        string __tmp29_line = ", syntax: node, hasErrors: false);"; //5159:110
                         if (!string.IsNullOrEmpty(__tmp29_line))
                         {
                             __out.Append(__tmp29_line);
@@ -48917,12 +48921,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (__tmp21_outputWritten) __out.AppendLine(true);
                         if (__tmp21_outputWritten)
                         {
-                            __out.AppendLine(false); //5156:144
+                            __out.AppendLine(false); //5159:144
                         }
                         children = "ImmutableArray.Create(bound" + alt.RedName() + ")";
                     }
                     bool __tmp31_outputWritten = false;
-                    string __tmp30Prefix = "		"; //5159:1
+                    string __tmp30Prefix = "		"; //5162:1
                     StringBuilder __tmp32 = new StringBuilder();
                     __tmp32.Append(childBoundNodesName);
                     using(StreamReader __tmp32Reader = new StreamReader(this.__ToStream(__tmp32.ToString())))
@@ -48945,7 +48949,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp32_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp33_line = ".Add(bound"; //5159:24
+                    string __tmp33_line = ".Add(bound"; //5162:24
                     if (!string.IsNullOrEmpty(__tmp33_line))
                     {
                         __out.Append(__tmp33_line);
@@ -48968,7 +48972,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp34_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp35_line = ");"; //5159:49
+                    string __tmp35_line = ");"; //5162:49
                     if (!string.IsNullOrEmpty(__tmp35_line))
                     {
                         __out.Append(__tmp35_line);
@@ -48977,28 +48981,28 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp31_outputWritten) __out.AppendLine(true);
                     if (__tmp31_outputWritten)
                     {
-                        __out.AppendLine(false); //5159:51
+                        __out.AppendLine(false); //5162:51
                     }
-                    __out.Append("		break;"); //5160:1
-                    __out.AppendLine(false); //5160:9
+                    __out.Append("		break;"); //5163:1
+                    __out.AppendLine(false); //5163:9
                 }
-                __out.Append("	default:"); //5162:1
-                __out.AppendLine(false); //5162:10
-                __out.Append("		break;"); //5163:1
-                __out.AppendLine(false); //5163:9
-                __out.Append("}"); //5164:1
-                __out.AppendLine(false); //5164:2
+                __out.Append("	default:"); //5165:1
+                __out.AppendLine(false); //5165:10
+                __out.Append("		break;"); //5166:1
+                __out.AppendLine(false); //5166:9
+                __out.Append("}"); //5167:1
+                __out.AppendLine(false); //5167:2
             }
             return __out.ToString();
         }
 
-        public string GenerateBoundNodeFactoryVisitTokenBody(Antlr4ParserRuleElement elem, string childBoundNodesName) //5168:1
+        public string GenerateBoundNodeFactoryVisitTokenBody(Antlr4ParserRuleElement elem, string childBoundNodesName) //5171:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.HasBoundNodeAnnotations) //5169:2
+            if (elem.HasBoundNodeAnnotations) //5172:2
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "if (node."; //5170:1
+                string __tmp3_line = "if (node."; //5173:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -49021,7 +49025,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ".GetKind() == "; //5170:26
+                string __tmp5_line = ".GetKind() == "; //5173:26
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -49044,7 +49048,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp6_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp7_line = "SyntaxKind."; //5170:65
+                string __tmp7_line = "SyntaxKind."; //5173:65
                 if (!string.IsNullOrEmpty(__tmp7_line))
                 {
                     __out.Append(__tmp7_line);
@@ -49067,7 +49071,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp8_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp9_line = ")"; //5170:87
+                string __tmp9_line = ")"; //5173:87
                 if (!string.IsNullOrEmpty(__tmp9_line))
                 {
                     __out.Append(__tmp9_line);
@@ -49076,12 +49080,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //5170:88
+                    __out.AppendLine(false); //5173:88
                 }
-                __out.Append("{"); //5171:1
-                __out.AppendLine(false); //5171:2
+                __out.Append("{"); //5174:1
+                __out.AppendLine(false); //5174:2
                 bool __tmp11_outputWritten = false;
-                string __tmp12_line = "	BoundNode bound"; //5172:1
+                string __tmp12_line = "	BoundNode bound"; //5175:1
                 if (!string.IsNullOrEmpty(__tmp12_line))
                 {
                     __out.Append(__tmp12_line);
@@ -49104,7 +49108,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp13_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp14_line = ";"; //5172:33
+                string __tmp14_line = ";"; //5175:33
                 if (!string.IsNullOrEmpty(__tmp14_line))
                 {
                     __out.Append(__tmp14_line);
@@ -49113,19 +49117,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp11_outputWritten) __out.AppendLine(true);
                 if (__tmp11_outputWritten)
                 {
-                    __out.AppendLine(false); //5172:34
+                    __out.AppendLine(false); //5175:34
                 }
-                string children = "ImmutableArray<object>.Empty"; //5173:3
+                string children = "ImmutableArray<object>.Empty"; //5176:3
                 var __loop123_results = 
-                    (from annot in __Enumerate((elem.Annotations.BoundNodeAnnotations.Reverse()).GetEnumerator()) //5174:9
+                    (from annot in __Enumerate((elem.Annotations.BoundNodeAnnotations.Reverse()).GetEnumerator()) //5177:9
                     select new { annot = annot}
-                    ).ToList(); //5174:3
+                    ).ToList(); //5177:3
                 for (int __loop123_iteration = 0; __loop123_iteration < __loop123_results.Count; ++__loop123_iteration)
                 {
                     var __tmp15 = __loop123_results[__loop123_iteration];
                     var annot = __tmp15.annot;
                     bool __tmp17_outputWritten = false;
-                    string __tmp18_line = "	bound"; //5175:1
+                    string __tmp18_line = "	bound"; //5178:1
                     if (!string.IsNullOrEmpty(__tmp18_line))
                     {
                         __out.Append(__tmp18_line);
@@ -49148,7 +49152,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp19_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp20_line = " = this.CreateBound"; //5175:23
+                    string __tmp20_line = " = this.CreateBound"; //5178:23
                     if (!string.IsNullOrEmpty(__tmp20_line))
                     {
                         __out.Append(__tmp20_line);
@@ -49171,7 +49175,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp21_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp22_line = "(this.BoundTree, "; //5175:54
+                    string __tmp22_line = "(this.BoundTree, "; //5178:54
                     if (!string.IsNullOrEmpty(__tmp22_line))
                     {
                         __out.Append(__tmp22_line);
@@ -49211,7 +49215,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp24_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp25_line = ", syntax: node, hasErrors: false);"; //5175:110
+                    string __tmp25_line = ", syntax: node, hasErrors: false);"; //5178:110
                     if (!string.IsNullOrEmpty(__tmp25_line))
                     {
                         __out.Append(__tmp25_line);
@@ -49220,12 +49224,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp17_outputWritten) __out.AppendLine(true);
                     if (__tmp17_outputWritten)
                     {
-                        __out.AppendLine(false); //5175:144
+                        __out.AppendLine(false); //5178:144
                     }
                     children = "ImmutableArray.Create(bound" + elem.RedName() + ")";
                 }
                 bool __tmp27_outputWritten = false;
-                string __tmp26Prefix = "	"; //5178:1
+                string __tmp26Prefix = "	"; //5181:1
                 StringBuilder __tmp28 = new StringBuilder();
                 __tmp28.Append(childBoundNodesName);
                 using(StreamReader __tmp28Reader = new StreamReader(this.__ToStream(__tmp28.ToString())))
@@ -49248,7 +49252,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp28_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp29_line = ".Add(bound"; //5178:23
+                string __tmp29_line = ".Add(bound"; //5181:23
                 if (!string.IsNullOrEmpty(__tmp29_line))
                 {
                     __out.Append(__tmp29_line);
@@ -49271,7 +49275,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp30_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp31_line = ");"; //5178:49
+                string __tmp31_line = ");"; //5181:49
                 if (!string.IsNullOrEmpty(__tmp31_line))
                 {
                     __out.Append(__tmp31_line);
@@ -49280,43 +49284,43 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp27_outputWritten) __out.AppendLine(true);
                 if (__tmp27_outputWritten)
                 {
-                    __out.AppendLine(false); //5178:51
+                    __out.AppendLine(false); //5181:51
                 }
-                __out.Append("}"); //5179:1
-                __out.AppendLine(false); //5179:2
+                __out.Append("}"); //5182:1
+                __out.AppendLine(false); //5182:2
             }
             return __out.ToString();
         }
 
-        public string GenerateIsBindableNodeVisitor() //5184:1
+        public string GenerateIsBindableNodeVisitor() //5187:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.Append("using System;"); //5185:1
-            __out.AppendLine(false); //5185:14
-            __out.Append("using System.Diagnostics;"); //5186:1
-            __out.AppendLine(false); //5186:26
-            __out.Append("using System.Collections.Generic;"); //5187:1
-            __out.AppendLine(false); //5187:34
-            __out.Append("using System.Collections.Immutable;"); //5188:1
-            __out.AppendLine(false); //5188:36
-            __out.Append("using System.Linq;"); //5189:1
-            __out.AppendLine(false); //5189:19
-            __out.Append("using System.Text;"); //5190:1
-            __out.AppendLine(false); //5190:19
-            __out.Append("using System.Threading.Tasks;"); //5191:1
-            __out.AppendLine(false); //5191:30
-            __out.Append("using Microsoft.CodeAnalysis;"); //5192:1
-            __out.AppendLine(false); //5192:30
-            __out.Append("using MetaDslx.CodeAnalysis;"); //5193:1
-            __out.AppendLine(false); //5193:29
-            __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //5194:1
-            __out.AppendLine(false); //5194:37
-            __out.Append("using MetaDslx.CodeAnalysis.Syntax;"); //5195:1
-            __out.AppendLine(false); //5195:36
-            __out.Append("using Roslyn.Utilities;"); //5196:1
-            __out.AppendLine(false); //5196:24
+            __out.Append("using System;"); //5188:1
+            __out.AppendLine(false); //5188:14
+            __out.Append("using System.Diagnostics;"); //5189:1
+            __out.AppendLine(false); //5189:26
+            __out.Append("using System.Collections.Generic;"); //5190:1
+            __out.AppendLine(false); //5190:34
+            __out.Append("using System.Collections.Immutable;"); //5191:1
+            __out.AppendLine(false); //5191:36
+            __out.Append("using System.Linq;"); //5192:1
+            __out.AppendLine(false); //5192:19
+            __out.Append("using System.Text;"); //5193:1
+            __out.AppendLine(false); //5193:19
+            __out.Append("using System.Threading.Tasks;"); //5194:1
+            __out.AppendLine(false); //5194:30
+            __out.Append("using Microsoft.CodeAnalysis;"); //5195:1
+            __out.AppendLine(false); //5195:30
+            __out.Append("using MetaDslx.CodeAnalysis;"); //5196:1
+            __out.AppendLine(false); //5196:29
+            __out.Append("using MetaDslx.CodeAnalysis.Binding;"); //5197:1
+            __out.AppendLine(false); //5197:37
+            __out.Append("using MetaDslx.CodeAnalysis.Syntax;"); //5198:1
+            __out.AppendLine(false); //5198:36
+            __out.Append("using Roslyn.Utilities;"); //5199:1
+            __out.AppendLine(false); //5199:24
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "using "; //5197:1
+            string __tmp3_line = "using "; //5200:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -49339,7 +49343,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = ".Syntax;"; //5197:36
+            string __tmp5_line = ".Syntax;"; //5200:36
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -49348,10 +49352,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //5197:44
+                __out.AppendLine(false); //5200:44
             }
             bool __tmp7_outputWritten = false;
-            string __tmp8_line = "using "; //5198:1
+            string __tmp8_line = "using "; //5201:1
             if (!string.IsNullOrEmpty(__tmp8_line))
             {
                 __out.Append(__tmp8_line);
@@ -49374,7 +49378,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp9_last) __out.AppendLine(true);
                 }
             }
-            string __tmp10_line = ".Symbols;"; //5198:36
+            string __tmp10_line = ".Symbols;"; //5201:36
             if (!string.IsNullOrEmpty(__tmp10_line))
             {
                 __out.Append(__tmp10_line);
@@ -49383,12 +49387,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp7_outputWritten) __out.AppendLine(true);
             if (__tmp7_outputWritten)
             {
-                __out.AppendLine(false); //5198:45
+                __out.AppendLine(false); //5201:45
             }
-            __out.AppendLine(true); //5199:1
-            var lang = Properties.LanguageName; //5200:2
+            __out.AppendLine(true); //5202:1
+            var lang = Properties.LanguageName; //5203:2
             bool __tmp12_outputWritten = false;
-            string __tmp13_line = "namespace "; //5201:1
+            string __tmp13_line = "namespace "; //5204:1
             if (!string.IsNullOrEmpty(__tmp13_line))
             {
                 __out.Append(__tmp13_line);
@@ -49411,7 +49415,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp14_last) __out.AppendLine(true);
                 }
             }
-            string __tmp15_line = ".Binding"; //5201:40
+            string __tmp15_line = ".Binding"; //5204:40
             if (!string.IsNullOrEmpty(__tmp15_line))
             {
                 __out.Append(__tmp15_line);
@@ -49420,12 +49424,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp12_outputWritten) __out.AppendLine(true);
             if (__tmp12_outputWritten)
             {
-                __out.AppendLine(false); //5201:48
+                __out.AppendLine(false); //5204:48
             }
-            __out.Append("{"); //5202:1
-            __out.AppendLine(false); //5202:2
+            __out.Append("{"); //5205:1
+            __out.AppendLine(false); //5205:2
             bool __tmp17_outputWritten = false;
-            string __tmp18_line = "	// Make sure to keep this in sync with "; //5203:1
+            string __tmp18_line = "	// Make sure to keep this in sync with "; //5206:1
             if (!string.IsNullOrEmpty(__tmp18_line))
             {
                 __out.Append(__tmp18_line);
@@ -49448,7 +49452,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp19_last) __out.AppendLine(true);
                 }
             }
-            string __tmp20_line = "BoundNodeFactoryVisitor"; //5203:47
+            string __tmp20_line = "BoundNodeFactoryVisitor"; //5206:47
             if (!string.IsNullOrEmpty(__tmp20_line))
             {
                 __out.Append(__tmp20_line);
@@ -49457,10 +49461,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp17_outputWritten) __out.AppendLine(true);
             if (__tmp17_outputWritten)
             {
-                __out.AppendLine(false); //5203:70
+                __out.AppendLine(false); //5206:70
             }
             bool __tmp22_outputWritten = false;
-            string __tmp23_line = "    public class "; //5204:1
+            string __tmp23_line = "    public class "; //5207:1
             if (!string.IsNullOrEmpty(__tmp23_line))
             {
                 __out.Append(__tmp23_line);
@@ -49483,7 +49487,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp24_last) __out.AppendLine(true);
                 }
             }
-            string __tmp25_line = "IsBindableNodeVisitor : IsBindableNodeVisitor, I"; //5204:24
+            string __tmp25_line = "IsBindableNodeVisitor : IsBindableNodeVisitor, I"; //5207:24
             if (!string.IsNullOrEmpty(__tmp25_line))
             {
                 __out.Append(__tmp25_line);
@@ -49506,7 +49510,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp26_last) __out.AppendLine(true);
                 }
             }
-            string __tmp27_line = "SyntaxVisitor<bool>"; //5204:78
+            string __tmp27_line = "SyntaxVisitor<bool>"; //5207:78
             if (!string.IsNullOrEmpty(__tmp27_line))
             {
                 __out.Append(__tmp27_line);
@@ -49515,12 +49519,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp22_outputWritten) __out.AppendLine(true);
             if (__tmp22_outputWritten)
             {
-                __out.AppendLine(false); //5204:97
+                __out.AppendLine(false); //5207:97
             }
-            __out.Append("    {"); //5205:1
-            __out.AppendLine(false); //5205:6
+            __out.Append("    {"); //5208:1
+            __out.AppendLine(false); //5208:6
             bool __tmp29_outputWritten = false;
-            string __tmp30_line = "        public "; //5206:1
+            string __tmp30_line = "        public "; //5209:1
             if (!string.IsNullOrEmpty(__tmp30_line))
             {
                 __out.Append(__tmp30_line);
@@ -49543,7 +49547,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp31_last) __out.AppendLine(true);
                 }
             }
-            string __tmp32_line = "IsBindableNodeVisitor(BoundTree boundTree)"; //5206:22
+            string __tmp32_line = "IsBindableNodeVisitor(BoundTree boundTree)"; //5209:22
             if (!string.IsNullOrEmpty(__tmp32_line))
             {
                 __out.Append(__tmp32_line);
@@ -49552,36 +49556,36 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp29_outputWritten) __out.AppendLine(true);
             if (__tmp29_outputWritten)
             {
-                __out.AppendLine(false); //5206:64
+                __out.AppendLine(false); //5209:64
             }
-            __out.Append("			: base(boundTree)"); //5207:1
-            __out.AppendLine(false); //5207:21
-            __out.Append("        {"); //5208:1
-            __out.AppendLine(false); //5208:10
-            __out.AppendLine(true); //5209:1
-            __out.Append("        }"); //5210:1
-            __out.AppendLine(false); //5210:10
-            __out.AppendLine(true); //5211:1
+            __out.Append("			: base(boundTree)"); //5210:1
+            __out.AppendLine(false); //5210:21
+            __out.Append("        {"); //5211:1
+            __out.AppendLine(false); //5211:10
+            __out.AppendLine(true); //5212:1
+            __out.Append("        }"); //5213:1
+            __out.AppendLine(false); //5213:10
+            __out.AppendLine(true); //5214:1
             var __loop124_results = 
-                (from rule in __Enumerate((Instances.ParserRules).GetEnumerator()) //5212:9
+                (from rule in __Enumerate((Instances.ParserRules).GetEnumerator()) //5215:9
                 select new { rule = rule}
-                ).ToList(); //5212:4
+                ).ToList(); //5215:4
             for (int __loop124_iteration = 0; __loop124_iteration < __loop124_results.Count; ++__loop124_iteration)
             {
                 var __tmp33 = __loop124_results[__loop124_iteration];
                 var rule = __tmp33.rule;
-                if (rule.Alternatives.Count > 0) //5213:5
+                if (rule.Alternatives.Count > 0) //5216:5
                 {
                     var __loop125_results = 
-                        (from alt in __Enumerate((rule.Alternatives).GetEnumerator()) //5214:11
+                        (from alt in __Enumerate((rule.Alternatives).GetEnumerator()) //5217:11
                         select new { alt = alt}
-                        ).ToList(); //5214:6
+                        ).ToList(); //5217:6
                     for (int __loop125_iteration = 0; __loop125_iteration < __loop125_results.Count; ++__loop125_iteration)
                     {
                         var __tmp34 = __loop125_results[__loop125_iteration];
                         var alt = __tmp34.alt;
                         bool __tmp36_outputWritten = false;
-                        string __tmp35Prefix = "		"; //5215:1
+                        string __tmp35Prefix = "		"; //5218:1
                         StringBuilder __tmp37 = new StringBuilder();
                         __tmp37.Append(GenerateIsBindableNodeVisit(alt));
                         using(StreamReader __tmp37Reader = new StreamReader(this.__ToStream(__tmp37.ToString())))
@@ -49606,14 +49610,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         }
                         if (__tmp36_outputWritten)
                         {
-                            __out.AppendLine(false); //5215:37
+                            __out.AppendLine(false); //5218:37
                         }
                     }
                 }
-                else //5217:5
+                else //5220:5
                 {
                     bool __tmp39_outputWritten = false;
-                    string __tmp38Prefix = "		"; //5218:1
+                    string __tmp38Prefix = "		"; //5221:1
                     StringBuilder __tmp40 = new StringBuilder();
                     __tmp40.Append(GenerateIsBindableNodeVisit(rule));
                     using(StreamReader __tmp40Reader = new StreamReader(this.__ToStream(__tmp40.ToString())))
@@ -49638,23 +49642,23 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     }
                     if (__tmp39_outputWritten)
                     {
-                        __out.AppendLine(false); //5218:38
+                        __out.AppendLine(false); //5221:38
                     }
                 }
             }
-            __out.Append("    }"); //5221:1
-            __out.AppendLine(false); //5221:6
-            __out.Append("}"); //5222:1
-            __out.AppendLine(false); //5222:2
+            __out.Append("    }"); //5224:1
+            __out.AppendLine(false); //5224:6
+            __out.Append("}"); //5225:1
+            __out.AppendLine(false); //5225:2
             return __out.ToString();
         }
 
-        public string GenerateIsBindableNodeVisit(Antlr4ParserRule rule) //5226:1
+        public string GenerateIsBindableNodeVisit(Antlr4ParserRule rule) //5229:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.AppendLine(true); //5227:1
+            __out.AppendLine(true); //5230:1
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "public bool Visit"; //5228:1
+            string __tmp3_line = "public bool Visit"; //5231:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -49677,7 +49681,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = "("; //5228:36
+            string __tmp5_line = "("; //5231:36
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -49700,7 +49704,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp6_last) __out.AppendLine(true);
                 }
             }
-            string __tmp7_line = " node)"; //5228:53
+            string __tmp7_line = " node)"; //5231:53
             if (!string.IsNullOrEmpty(__tmp7_line))
             {
                 __out.Append(__tmp7_line);
@@ -49709,35 +49713,35 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //5228:59
+                __out.AppendLine(false); //5231:59
             }
-            __out.Append("{"); //5229:1
-            __out.AppendLine(false); //5229:2
-            __out.Append("	var state = this.State;"); //5230:1
-            __out.AppendLine(false); //5230:25
-            __out.Append("	if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;"); //5231:1
-            __out.AppendLine(false); //5231:94
-            __out.Append("	else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;"); //5232:1
-            __out.AppendLine(false); //5232:98
-            __out.Append("	try"); //5233:1
-            __out.AppendLine(false); //5233:5
-            __out.Append("	{"); //5234:1
-            __out.AppendLine(false); //5234:3
-            __out.Append("		if (state == BoundNodeFactoryState.InChild) return false;"); //5235:1
-            __out.AppendLine(false); //5235:60
-            if (rule.HasBoundNodeAnnotations) //5236:3
+            __out.Append("{"); //5232:1
+            __out.AppendLine(false); //5232:2
+            __out.Append("	var state = this.State;"); //5233:1
+            __out.AppendLine(false); //5233:25
+            __out.Append("	if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;"); //5234:1
+            __out.AppendLine(false); //5234:94
+            __out.Append("	else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;"); //5235:1
+            __out.AppendLine(false); //5235:98
+            __out.Append("	try"); //5236:1
+            __out.AppendLine(false); //5236:5
+            __out.Append("	{"); //5237:1
+            __out.AppendLine(false); //5237:3
+            __out.Append("		if (state == BoundNodeFactoryState.InChild) return false;"); //5238:1
+            __out.AppendLine(false); //5238:60
+            if (rule.HasBoundNodeAnnotations) //5239:3
             {
-                __out.Append("		if (state == BoundNodeFactoryState.InNode) "); //5237:1
-                __out.AppendLine(false); //5237:46
-                __out.Append("		{"); //5238:1
-                __out.AppendLine(false); //5238:4
-                __out.Append("			return true;"); //5239:1
-                __out.AppendLine(false); //5239:16
-                __out.Append("		}"); //5240:1
-                __out.AppendLine(false); //5240:4
+                __out.Append("		if (state == BoundNodeFactoryState.InNode) "); //5240:1
+                __out.AppendLine(false); //5240:46
+                __out.Append("		{"); //5241:1
+                __out.AppendLine(false); //5241:4
+                __out.Append("			return true;"); //5242:1
+                __out.AppendLine(false); //5242:16
+                __out.Append("		}"); //5243:1
+                __out.AppendLine(false); //5243:4
             }
             bool __tmp9_outputWritten = false;
-            string __tmp8Prefix = "		"; //5242:1
+            string __tmp8Prefix = "		"; //5245:1
             StringBuilder __tmp10 = new StringBuilder();
             __tmp10.Append(GenerateIsBindableNodeVisitChildren(rule));
             using(StreamReader __tmp10Reader = new StreamReader(this.__ToStream(__tmp10.ToString())))
@@ -49762,33 +49766,33 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             }
             if (__tmp9_outputWritten)
             {
-                __out.AppendLine(false); //5242:46
+                __out.AppendLine(false); //5245:46
             }
-            __out.Append("		return false;"); //5243:1
-            __out.AppendLine(false); //5243:16
-            __out.Append("	}"); //5244:1
-            __out.AppendLine(false); //5244:3
-            __out.Append("	finally"); //5245:1
-            __out.AppendLine(false); //5245:9
-            __out.Append("	{"); //5246:1
-            __out.AppendLine(false); //5246:3
-            __out.Append("		this.State = state;"); //5247:1
-            __out.AppendLine(false); //5247:22
-            __out.Append("	}"); //5248:1
-            __out.AppendLine(false); //5248:3
-            __out.Append("}"); //5249:1
-            __out.AppendLine(false); //5249:2
+            __out.Append("		return false;"); //5246:1
+            __out.AppendLine(false); //5246:16
+            __out.Append("	}"); //5247:1
+            __out.AppendLine(false); //5247:3
+            __out.Append("	finally"); //5248:1
+            __out.AppendLine(false); //5248:9
+            __out.Append("	{"); //5249:1
+            __out.AppendLine(false); //5249:3
+            __out.Append("		this.State = state;"); //5250:1
+            __out.AppendLine(false); //5250:22
+            __out.Append("	}"); //5251:1
+            __out.AppendLine(false); //5251:3
+            __out.Append("}"); //5252:1
+            __out.AppendLine(false); //5252:2
             return __out.ToString();
         }
 
-        public string GenerateIsBindableNodeVisitChildren(Antlr4ParserRule rule) //5252:1
+        public string GenerateIsBindableNodeVisitChildren(Antlr4ParserRule rule) //5255:1
         {
             StringBuilder __out = new StringBuilder();
             var __loop126_results = 
-                (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //5253:7
-                where elem.ContainsBoundNodeAnnotations //5253:29
+                (from elem in __Enumerate((rule.AllElements).GetEnumerator()) //5256:7
+                where elem.ContainsBoundNodeAnnotations //5256:29
                 select new { elem = elem}
-                ).ToList(); //5253:2
+                ).ToList(); //5256:2
             for (int __loop126_iteration = 0; __loop126_iteration < __loop126_results.Count; ++__loop126_iteration)
             {
                 var __tmp1 = __loop126_results[__loop126_iteration];
@@ -49813,21 +49817,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp3_outputWritten)
                 {
-                    __out.AppendLine(false); //5254:64
+                    __out.AppendLine(false); //5257:64
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateIsBindableNodeVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem) //5258:1
+        public string GenerateIsBindableNodeVisitChildrenElementWithNullCheck(Antlr4ParserRuleElement elem) //5261:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.ContainsBoundNodeAnnotations) //5259:2
+            if (elem.ContainsBoundNodeAnnotations) //5262:2
             {
-                if (!elem.IsToken && !elem.IsFixedTokenAltBlock) //5260:3
+                if (!elem.IsToken && !elem.IsFixedTokenAltBlock) //5263:3
                 {
                     bool __tmp2_outputWritten = false;
-                    string __tmp3_line = "if (node."; //5261:1
+                    string __tmp3_line = "if (node."; //5264:1
                     if (!string.IsNullOrEmpty(__tmp3_line))
                     {
                         __out.Append(__tmp3_line);
@@ -49850,7 +49854,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp4_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp5_line = " != null)"; //5261:26
+                    string __tmp5_line = " != null)"; //5264:26
                     if (!string.IsNullOrEmpty(__tmp5_line))
                     {
                         __out.Append(__tmp5_line);
@@ -49859,12 +49863,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp2_outputWritten) __out.AppendLine(true);
                     if (__tmp2_outputWritten)
                     {
-                        __out.AppendLine(false); //5261:35
+                        __out.AppendLine(false); //5264:35
                     }
-                    __out.Append("{"); //5262:1
-                    __out.AppendLine(false); //5262:2
+                    __out.Append("{"); //5265:1
+                    __out.AppendLine(false); //5265:2
                     bool __tmp7_outputWritten = false;
-                    string __tmp6Prefix = "	"; //5263:1
+                    string __tmp6Prefix = "	"; //5266:1
                     StringBuilder __tmp8 = new StringBuilder();
                     __tmp8.Append(GenerateIsBindableNodeVisitChildrenElementWithLookupPosition(elem));
                     using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
@@ -49889,12 +49893,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     }
                     if (__tmp7_outputWritten)
                     {
-                        __out.AppendLine(false); //5263:70
+                        __out.AppendLine(false); //5266:70
                     }
-                    __out.Append("}"); //5264:1
-                    __out.AppendLine(false); //5264:2
+                    __out.Append("}"); //5267:1
+                    __out.AppendLine(false); //5267:2
                 }
-                else //5265:3
+                else //5268:3
                 {
                     bool __tmp10_outputWritten = false;
                     StringBuilder __tmp11 = new StringBuilder();
@@ -49916,20 +49920,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     }
                     if (__tmp10_outputWritten)
                     {
-                        __out.AppendLine(false); //5266:69
+                        __out.AppendLine(false); //5269:69
                     }
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateIsBindableNodeVisitChildrenElementWithLookupPosition(Antlr4ParserRuleElement elem) //5271:1
+        public string GenerateIsBindableNodeVisitChildrenElementWithLookupPosition(Antlr4ParserRuleElement elem) //5274:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.IsList) //5272:3
+            if (elem.IsList) //5275:3
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node."; //5273:1
+                string __tmp3_line = "if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node."; //5276:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -49952,7 +49956,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ".Node))"; //5273:108
+                string __tmp5_line = ".Node))"; //5276:108
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -49961,12 +49965,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //5273:115
+                    __out.AppendLine(false); //5276:115
                 }
-                __out.Append("{"); //5274:1
-                __out.AppendLine(false); //5274:2
+                __out.Append("{"); //5277:1
+                __out.AppendLine(false); //5277:2
                 bool __tmp7_outputWritten = false;
-                string __tmp6Prefix = "	"; //5275:1
+                string __tmp6Prefix = "	"; //5278:1
                 StringBuilder __tmp8 = new StringBuilder();
                 __tmp8.Append(GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(elem));
                 using(StreamReader __tmp8Reader = new StreamReader(this.__ToStream(__tmp8.ToString())))
@@ -49991,15 +49995,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp7_outputWritten)
                 {
-                    __out.AppendLine(false); //5275:69
+                    __out.AppendLine(false); //5278:69
                 }
-                __out.Append("}"); //5276:1
-                __out.AppendLine(false); //5276:2
+                __out.Append("}"); //5279:1
+                __out.AppendLine(false); //5279:2
             }
-            else if (elem.IsToken || elem.IsFixedTokenAltBlock) //5277:3
+            else if (elem.IsToken || elem.IsFixedTokenAltBlock) //5280:3
             {
                 bool __tmp10_outputWritten = false;
-                string __tmp11_line = "if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node."; //5278:1
+                string __tmp11_line = "if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node."; //5281:1
                 if (!string.IsNullOrEmpty(__tmp11_line))
                 {
                     __out.Append(__tmp11_line);
@@ -50022,7 +50026,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp12_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp13_line = ")))"; //5278:150
+                string __tmp13_line = ")))"; //5281:150
                 if (!string.IsNullOrEmpty(__tmp13_line))
                 {
                     __out.Append(__tmp13_line);
@@ -50031,12 +50035,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp10_outputWritten) __out.AppendLine(true);
                 if (__tmp10_outputWritten)
                 {
-                    __out.AppendLine(false); //5278:153
+                    __out.AppendLine(false); //5281:153
                 }
-                __out.Append("{"); //5279:1
-                __out.AppendLine(false); //5279:2
+                __out.Append("{"); //5282:1
+                __out.AppendLine(false); //5282:2
                 bool __tmp15_outputWritten = false;
-                string __tmp14Prefix = "	"; //5280:1
+                string __tmp14Prefix = "	"; //5283:1
                 StringBuilder __tmp16 = new StringBuilder();
                 __tmp16.Append(GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(elem));
                 using(StreamReader __tmp16Reader = new StreamReader(this.__ToStream(__tmp16.ToString())))
@@ -50061,19 +50065,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp15_outputWritten)
                 {
-                    __out.AppendLine(false); //5280:69
+                    __out.AppendLine(false); //5283:69
                 }
-                __out.Append("}"); //5281:1
-                __out.AppendLine(false); //5281:2
-            }
-            else //5282:3
-            {
-                __out.Append("if (state == BoundNodeFactoryState.InParent)"); //5283:1
-                __out.AppendLine(false); //5283:45
-                __out.Append("{"); //5284:1
+                __out.Append("}"); //5284:1
                 __out.AppendLine(false); //5284:2
+            }
+            else //5285:3
+            {
+                __out.Append("if (state == BoundNodeFactoryState.InParent)"); //5286:1
+                __out.AppendLine(false); //5286:45
+                __out.Append("{"); //5287:1
+                __out.AppendLine(false); //5287:2
                 bool __tmp18_outputWritten = false;
-                string __tmp19_line = "	if (LookupPosition.IsInNode(this.Position, node."; //5285:1
+                string __tmp19_line = "	if (LookupPosition.IsInNode(this.Position, node."; //5288:1
                 if (!string.IsNullOrEmpty(__tmp19_line))
                 {
                     __out.Append(__tmp19_line);
@@ -50096,7 +50100,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp20_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp21_line = "))"; //5285:66
+                string __tmp21_line = "))"; //5288:66
                 if (!string.IsNullOrEmpty(__tmp21_line))
                 {
                     __out.Append(__tmp21_line);
@@ -50105,12 +50109,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp18_outputWritten) __out.AppendLine(true);
                 if (__tmp18_outputWritten)
                 {
-                    __out.AppendLine(false); //5285:68
+                    __out.AppendLine(false); //5288:68
                 }
-                __out.Append("	{"); //5286:1
-                __out.AppendLine(false); //5286:3
+                __out.Append("	{"); //5289:1
+                __out.AppendLine(false); //5289:3
                 bool __tmp23_outputWritten = false;
-                string __tmp22Prefix = "		"; //5287:1
+                string __tmp22Prefix = "		"; //5290:1
                 StringBuilder __tmp24 = new StringBuilder();
                 __tmp24.Append(GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(elem));
                 using(StreamReader __tmp24Reader = new StreamReader(this.__ToStream(__tmp24.ToString())))
@@ -50135,18 +50139,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp23_outputWritten)
                 {
-                    __out.AppendLine(false); //5287:70
+                    __out.AppendLine(false); //5290:70
                 }
-                __out.Append("	}"); //5288:1
-                __out.AppendLine(false); //5288:3
-                __out.Append("}"); //5289:1
-                __out.AppendLine(false); //5289:2
-                __out.Append("else"); //5290:1
-                __out.AppendLine(false); //5290:5
-                __out.Append("{"); //5291:1
-                __out.AppendLine(false); //5291:2
+                __out.Append("	}"); //5291:1
+                __out.AppendLine(false); //5291:3
+                __out.Append("}"); //5292:1
+                __out.AppendLine(false); //5292:2
+                __out.Append("else"); //5293:1
+                __out.AppendLine(false); //5293:5
+                __out.Append("{"); //5294:1
+                __out.AppendLine(false); //5294:2
                 bool __tmp26_outputWritten = false;
-                string __tmp27_line = "	if (this.Visit(node."; //5292:1
+                string __tmp27_line = "	if (this.Visit(node."; //5295:1
                 if (!string.IsNullOrEmpty(__tmp27_line))
                 {
                     __out.Append(__tmp27_line);
@@ -50169,7 +50173,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp28_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp29_line = ")) return true;"; //5292:38
+                string __tmp29_line = ")) return true;"; //5295:38
                 if (!string.IsNullOrEmpty(__tmp29_line))
                 {
                     __out.Append(__tmp29_line);
@@ -50178,23 +50182,23 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp26_outputWritten) __out.AppendLine(true);
                 if (__tmp26_outputWritten)
                 {
-                    __out.AppendLine(false); //5292:53
+                    __out.AppendLine(false); //5295:53
                 }
-                __out.Append("}"); //5293:1
-                __out.AppendLine(false); //5293:2
+                __out.Append("}"); //5296:1
+                __out.AppendLine(false); //5296:2
             }
             return __out.ToString();
         }
 
-        public string GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(Antlr4ParserRuleElement elem) //5297:1
+        public string GenerateIsBindableNodeVisitChildrenElementWithBoundChildren(Antlr4ParserRuleElement elem) //5300:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.HasBoundNodeAnnotations && !elem.IsToken && !elem.IsFixedTokenAltBlock) //5298:2
+            if (elem.HasBoundNodeAnnotations && !elem.IsToken && !elem.IsFixedTokenAltBlock) //5301:2
             {
-                __out.Append("return true;"); //5299:1
-                __out.AppendLine(false); //5299:13
+                __out.Append("return true;"); //5302:1
+                __out.AppendLine(false); //5302:13
             }
-            else //5300:2
+            else //5303:2
             {
                 bool __tmp2_outputWritten = false;
                 StringBuilder __tmp3 = new StringBuilder();
@@ -50216,19 +50220,19 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //5301:51
+                    __out.AppendLine(false); //5304:51
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateIsBindableNodeVisitChildrenElement(Antlr4ParserRuleElement elem) //5305:1
+        public string GenerateIsBindableNodeVisitChildrenElement(Antlr4ParserRuleElement elem) //5308:1
         {
             StringBuilder __out = new StringBuilder();
-            if (elem.IsList) //5306:3
+            if (elem.IsList) //5309:3
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "foreach (var item in node."; //5307:1
+                string __tmp3_line = "foreach (var item in node."; //5310:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -50251,7 +50255,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ")"; //5307:43
+                string __tmp5_line = ")"; //5310:43
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -50260,22 +50264,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //5307:44
+                    __out.AppendLine(false); //5310:44
                 }
-                __out.Append("{"); //5308:1
-                __out.AppendLine(false); //5308:2
-                __out.Append("	if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))"); //5309:1
-                __out.AppendLine(false); //5309:94
-                __out.Append("	{"); //5310:1
-                __out.AppendLine(false); //5310:3
-                __out.Append("		if (this.Visit(item)) return true;"); //5311:1
-                __out.AppendLine(false); //5311:37
-                __out.Append("	}"); //5312:1
-                __out.AppendLine(false); //5312:3
-                __out.Append("}"); //5313:1
-                __out.AppendLine(false); //5313:2
+                __out.Append("{"); //5311:1
+                __out.AppendLine(false); //5311:2
+                __out.Append("	if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))"); //5312:1
+                __out.AppendLine(false); //5312:94
+                __out.Append("	{"); //5313:1
+                __out.AppendLine(false); //5313:3
+                __out.Append("		if (this.Visit(item)) return true;"); //5314:1
+                __out.AppendLine(false); //5314:37
+                __out.Append("	}"); //5315:1
+                __out.AppendLine(false); //5315:3
+                __out.Append("}"); //5316:1
+                __out.AppendLine(false); //5316:2
             }
-            else if (elem.IsFixedTokenAltBlock) //5314:3
+            else if (elem.IsFixedTokenAltBlock) //5317:3
             {
                 bool __tmp7_outputWritten = false;
                 StringBuilder __tmp8 = new StringBuilder();
@@ -50297,10 +50301,10 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp7_outputWritten)
                 {
-                    __out.AppendLine(false); //5315:48
+                    __out.AppendLine(false); //5318:48
                 }
             }
-            else if (elem.IsToken) //5316:3
+            else if (elem.IsToken) //5319:3
             {
                 bool __tmp10_outputWritten = false;
                 StringBuilder __tmp11 = new StringBuilder();
@@ -50322,13 +50326,13 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 }
                 if (__tmp10_outputWritten)
                 {
-                    __out.AppendLine(false); //5317:45
+                    __out.AppendLine(false); //5320:45
                 }
             }
-            else //5318:3
+            else //5321:3
             {
                 bool __tmp13_outputWritten = false;
-                string __tmp14_line = "if (this.Visit(node."; //5319:1
+                string __tmp14_line = "if (this.Visit(node."; //5322:1
                 if (!string.IsNullOrEmpty(__tmp14_line))
                 {
                     __out.Append(__tmp14_line);
@@ -50351,7 +50355,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp15_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp16_line = ")) return true;"; //5319:37
+                string __tmp16_line = ")) return true;"; //5322:37
                 if (!string.IsNullOrEmpty(__tmp16_line))
                 {
                     __out.Append(__tmp16_line);
@@ -50360,22 +50364,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp13_outputWritten) __out.AppendLine(true);
                 if (__tmp13_outputWritten)
                 {
-                    __out.AppendLine(false); //5319:52
+                    __out.AppendLine(false); //5322:52
                 }
             }
             return __out.ToString();
         }
 
-        public string GenerateIsBindableNodeVisitTokenAltBody(Antlr4ParserRuleElement elem) //5323:1
+        public string GenerateIsBindableNodeVisitTokenAltBody(Antlr4ParserRuleElement elem) //5326:1
         {
             StringBuilder __out = new StringBuilder();
-            if ((from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //5324:14
-            where alt.HasBoundNodeAnnotations //5324:34
+            if ((from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //5327:14
+            where alt.HasBoundNodeAnnotations //5327:34
             select new { alt = alt}
-            ).GetEnumerator().MoveNext()) //5324:2
+            ).GetEnumerator().MoveNext()) //5327:2
             {
                 bool __tmp2_outputWritten = false;
-                string __tmp3_line = "switch (node."; //5325:1
+                string __tmp3_line = "switch (node."; //5328:1
                 if (!string.IsNullOrEmpty(__tmp3_line))
                 {
                     __out.Append(__tmp3_line);
@@ -50398,7 +50402,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                         if (!__tmp4_last) __out.AppendLine(true);
                     }
                 }
-                string __tmp5_line = ".GetKind().Switch())"; //5325:30
+                string __tmp5_line = ".GetKind().Switch())"; //5328:30
                 if (!string.IsNullOrEmpty(__tmp5_line))
                 {
                     __out.Append(__tmp5_line);
@@ -50407,21 +50411,21 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                 if (__tmp2_outputWritten) __out.AppendLine(true);
                 if (__tmp2_outputWritten)
                 {
-                    __out.AppendLine(false); //5325:50
+                    __out.AppendLine(false); //5328:50
                 }
-                __out.Append("{"); //5326:1
-                __out.AppendLine(false); //5326:2
+                __out.Append("{"); //5329:1
+                __out.AppendLine(false); //5329:2
                 var __loop128_results = 
-                    (from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //5327:10
-                    where alt.HasBoundNodeAnnotations //5327:30
+                    (from alt in __Enumerate((elem.BlockItems).GetEnumerator()) //5330:10
+                    where alt.HasBoundNodeAnnotations //5330:30
                     select new { alt = alt}
-                    ).ToList(); //5327:4
+                    ).ToList(); //5330:4
                 for (int __loop128_iteration = 0; __loop128_iteration < __loop128_results.Count; ++__loop128_iteration)
                 {
                     var __tmp6 = __loop128_results[__loop128_iteration];
                     var alt = __tmp6.alt;
                     bool __tmp8_outputWritten = false;
-                    string __tmp9_line = "	case "; //5328:1
+                    string __tmp9_line = "	case "; //5331:1
                     if (!string.IsNullOrEmpty(__tmp9_line))
                     {
                         __out.Append(__tmp9_line);
@@ -50444,7 +50448,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp10_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp11_line = "SyntaxKind."; //5328:32
+                    string __tmp11_line = "SyntaxKind."; //5331:32
                     if (!string.IsNullOrEmpty(__tmp11_line))
                     {
                         __out.Append(__tmp11_line);
@@ -50467,7 +50471,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                             if (!__tmp12_last) __out.AppendLine(true);
                         }
                     }
-                    string __tmp13_line = ":"; //5328:58
+                    string __tmp13_line = ":"; //5331:58
                     if (!string.IsNullOrEmpty(__tmp13_line))
                     {
                         __out.Append(__tmp13_line);
@@ -50476,22 +50480,22 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (__tmp8_outputWritten) __out.AppendLine(true);
                     if (__tmp8_outputWritten)
                     {
-                        __out.AppendLine(false); //5328:59
+                        __out.AppendLine(false); //5331:59
                     }
                 }
-                __out.Append("		return true;"); //5330:1
-                __out.AppendLine(false); //5330:15
-                __out.Append("}"); //5331:1
-                __out.AppendLine(false); //5331:2
+                __out.Append("		return true;"); //5333:1
+                __out.AppendLine(false); //5333:15
+                __out.Append("}"); //5334:1
+                __out.AppendLine(false); //5334:2
             }
             return __out.ToString();
         }
 
-        public string GenerateIsBindableNodeVisitTokenBody(Antlr4ParserRuleElement elem) //5335:1
+        public string GenerateIsBindableNodeVisitTokenBody(Antlr4ParserRuleElement elem) //5338:1
         {
             StringBuilder __out = new StringBuilder();
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "if (node."; //5336:1
+            string __tmp3_line = "if (node."; //5339:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -50514,7 +50518,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = ".GetKind() == "; //5336:26
+            string __tmp5_line = ".GetKind() == "; //5339:26
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -50537,7 +50541,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp6_last) __out.AppendLine(true);
                 }
             }
-            string __tmp7_line = "SyntaxKind."; //5336:65
+            string __tmp7_line = "SyntaxKind."; //5339:65
             if (!string.IsNullOrEmpty(__tmp7_line))
             {
                 __out.Append(__tmp7_line);
@@ -50560,7 +50564,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp8_last) __out.AppendLine(true);
                 }
             }
-            string __tmp9_line = ")"; //5336:87
+            string __tmp9_line = ")"; //5339:87
             if (!string.IsNullOrEmpty(__tmp9_line))
             {
                 __out.Append(__tmp9_line);
@@ -50569,40 +50573,40 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //5336:88
+                __out.AppendLine(false); //5339:88
             }
-            __out.Append("{"); //5337:1
-            __out.AppendLine(false); //5337:2
-            __out.Append("	return true;"); //5338:1
-            __out.AppendLine(false); //5338:14
-            __out.Append("}"); //5339:1
-            __out.AppendLine(false); //5339:2
+            __out.Append("{"); //5340:1
+            __out.AppendLine(false); //5340:2
+            __out.Append("	return true;"); //5341:1
+            __out.AppendLine(false); //5341:14
+            __out.Append("}"); //5342:1
+            __out.AppendLine(false); //5342:2
             return __out.ToString();
         }
 
-        public string GenerateSymbolBuilder() //5342:1
+        public string GenerateSymbolBuilder() //5345:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.Append("using System;"); //5343:1
-            __out.AppendLine(false); //5343:14
-            __out.Append("using System.Collections.Generic;"); //5344:1
-            __out.AppendLine(false); //5344:34
-            __out.Append("using System.Linq;"); //5345:1
-            __out.AppendLine(false); //5345:19
-            __out.Append("using System.Text;"); //5346:1
-            __out.AppendLine(false); //5346:19
-            __out.Append("using System.Threading.Tasks;"); //5347:1
-            __out.AppendLine(false); //5347:30
-            __out.Append("using System.Threading;"); //5348:1
-            __out.AppendLine(false); //5348:24
-            __out.Append("using MetaDslx.Core;"); //5349:1
-            __out.AppendLine(false); //5349:21
-            __out.Append("using MetaDslx.Compiler;"); //5350:1
-            __out.AppendLine(false); //5350:25
-            __out.Append("using MetaDslx.Compiler.Binding;"); //5351:1
-            __out.AppendLine(false); //5351:33
+            __out.Append("using System;"); //5346:1
+            __out.AppendLine(false); //5346:14
+            __out.Append("using System.Collections.Generic;"); //5347:1
+            __out.AppendLine(false); //5347:34
+            __out.Append("using System.Linq;"); //5348:1
+            __out.AppendLine(false); //5348:19
+            __out.Append("using System.Text;"); //5349:1
+            __out.AppendLine(false); //5349:19
+            __out.Append("using System.Threading.Tasks;"); //5350:1
+            __out.AppendLine(false); //5350:30
+            __out.Append("using System.Threading;"); //5351:1
+            __out.AppendLine(false); //5351:24
+            __out.Append("using MetaDslx.Core;"); //5352:1
+            __out.AppendLine(false); //5352:21
+            __out.Append("using MetaDslx.Compiler;"); //5353:1
+            __out.AppendLine(false); //5353:25
+            __out.Append("using MetaDslx.Compiler.Binding;"); //5354:1
+            __out.AppendLine(false); //5354:33
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "using "; //5352:1
+            string __tmp3_line = "using "; //5355:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -50625,7 +50629,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = ".Symbols;"; //5352:36
+            string __tmp5_line = ".Symbols;"; //5355:36
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -50634,11 +50638,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //5352:45
+                __out.AppendLine(false); //5355:45
             }
-            __out.AppendLine(true); //5353:1
+            __out.AppendLine(true); //5356:1
             bool __tmp7_outputWritten = false;
-            string __tmp8_line = "namespace "; //5354:1
+            string __tmp8_line = "namespace "; //5357:1
             if (!string.IsNullOrEmpty(__tmp8_line))
             {
                 __out.Append(__tmp8_line);
@@ -50661,7 +50665,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp9_last) __out.AppendLine(true);
                 }
             }
-            string __tmp10_line = ".Binding"; //5354:40
+            string __tmp10_line = ".Binding"; //5357:40
             if (!string.IsNullOrEmpty(__tmp10_line))
             {
                 __out.Append(__tmp10_line);
@@ -50670,12 +50674,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp7_outputWritten) __out.AppendLine(true);
             if (__tmp7_outputWritten)
             {
-                __out.AppendLine(false); //5354:48
+                __out.AppendLine(false); //5357:48
             }
-            __out.Append("{"); //5355:1
-            __out.AppendLine(false); //5355:2
+            __out.Append("{"); //5358:1
+            __out.AppendLine(false); //5358:2
             bool __tmp12_outputWritten = false;
-            string __tmp13_line = "    public class "; //5356:1
+            string __tmp13_line = "    public class "; //5359:1
             if (!string.IsNullOrEmpty(__tmp13_line))
             {
                 __out.Append(__tmp13_line);
@@ -50698,7 +50702,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp14_last) __out.AppendLine(true);
                 }
             }
-            string __tmp15_line = "SymbolBuilder : SymbolBuilder"; //5356:43
+            string __tmp15_line = "SymbolBuilder : SymbolBuilder"; //5359:43
             if (!string.IsNullOrEmpty(__tmp15_line))
             {
                 __out.Append(__tmp15_line);
@@ -50707,12 +50711,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp12_outputWritten) __out.AppendLine(true);
             if (__tmp12_outputWritten)
             {
-                __out.AppendLine(false); //5356:72
+                __out.AppendLine(false); //5359:72
             }
-            __out.Append("    {"); //5357:1
-            __out.AppendLine(false); //5357:6
+            __out.Append("    {"); //5360:1
+            __out.AppendLine(false); //5360:6
             bool __tmp17_outputWritten = false;
-            string __tmp18_line = "        public "; //5358:1
+            string __tmp18_line = "        public "; //5361:1
             if (!string.IsNullOrEmpty(__tmp18_line))
             {
                 __out.Append(__tmp18_line);
@@ -50735,7 +50739,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp19_last) __out.AppendLine(true);
                 }
             }
-            string __tmp20_line = "SymbolBuilder(CompilationBase compilation) : base(compilation)"; //5358:41
+            string __tmp20_line = "SymbolBuilder(CompilationBase compilation) : base(compilation)"; //5361:41
             if (!string.IsNullOrEmpty(__tmp20_line))
             {
                 __out.Append(__tmp20_line);
@@ -50744,15 +50748,15 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp17_outputWritten) __out.AppendLine(true);
             if (__tmp17_outputWritten)
             {
-                __out.AppendLine(false); //5358:103
+                __out.AppendLine(false); //5361:103
             }
-            __out.Append("        {"); //5359:1
-            __out.AppendLine(false); //5359:10
-            __out.Append("        }"); //5360:1
-            __out.AppendLine(false); //5360:10
-            __out.AppendLine(true); //5361:1
+            __out.Append("        {"); //5362:1
+            __out.AppendLine(false); //5362:10
+            __out.Append("        }"); //5363:1
+            __out.AppendLine(false); //5363:10
+            __out.AppendLine(true); //5364:1
             bool __tmp22_outputWritten = false;
-            string __tmp23_line = "        private "; //5362:1
+            string __tmp23_line = "        private "; //5365:1
             if (!string.IsNullOrEmpty(__tmp23_line))
             {
                 __out.Append(__tmp23_line);
@@ -50775,7 +50779,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp24_last) __out.AppendLine(true);
                 }
             }
-            string __tmp25_line = "Factory _factory;"; //5362:42
+            string __tmp25_line = "Factory _factory;"; //5365:42
             if (!string.IsNullOrEmpty(__tmp25_line))
             {
                 __out.Append(__tmp25_line);
@@ -50784,11 +50788,11 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp22_outputWritten) __out.AppendLine(true);
             if (__tmp22_outputWritten)
             {
-                __out.AppendLine(false); //5362:59
+                __out.AppendLine(false); //5365:59
             }
-            __out.AppendLine(true); //5363:1
+            __out.AppendLine(true); //5366:1
             bool __tmp27_outputWritten = false;
-            string __tmp28_line = "        private "; //5364:1
+            string __tmp28_line = "        private "; //5367:1
             if (!string.IsNullOrEmpty(__tmp28_line))
             {
                 __out.Append(__tmp28_line);
@@ -50811,7 +50815,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp29_last) __out.AppendLine(true);
                 }
             }
-            string __tmp30_line = "Factory Factory"; //5364:42
+            string __tmp30_line = "Factory Factory"; //5367:42
             if (!string.IsNullOrEmpty(__tmp30_line))
             {
                 __out.Append(__tmp30_line);
@@ -50820,20 +50824,20 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp27_outputWritten) __out.AppendLine(true);
             if (__tmp27_outputWritten)
             {
-                __out.AppendLine(false); //5364:57
+                __out.AppendLine(false); //5367:57
             }
-            __out.Append("        {"); //5365:1
-            __out.AppendLine(false); //5365:10
-            __out.Append("            get"); //5366:1
-            __out.AppendLine(false); //5366:16
-            __out.Append("            {"); //5367:1
-            __out.AppendLine(false); //5367:14
-            __out.Append("                if (_factory == null)"); //5368:1
-            __out.AppendLine(false); //5368:38
-            __out.Append("                {"); //5369:1
-            __out.AppendLine(false); //5369:18
+            __out.Append("        {"); //5368:1
+            __out.AppendLine(false); //5368:10
+            __out.Append("            get"); //5369:1
+            __out.AppendLine(false); //5369:16
+            __out.Append("            {"); //5370:1
+            __out.AppendLine(false); //5370:14
+            __out.Append("                if (_factory == null)"); //5371:1
+            __out.AppendLine(false); //5371:38
+            __out.Append("                {"); //5372:1
+            __out.AppendLine(false); //5372:18
             bool __tmp32_outputWritten = false;
-            string __tmp33_line = "                    Interlocked.CompareExchange(ref _factory, new "; //5370:1
+            string __tmp33_line = "                    Interlocked.CompareExchange(ref _factory, new "; //5373:1
             if (!string.IsNullOrEmpty(__tmp33_line))
             {
                 __out.Append(__tmp33_line);
@@ -50856,7 +50860,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp34_last) __out.AppendLine(true);
                 }
             }
-            string __tmp35_line = "Factory(this.ModelBuilder), null);"; //5370:92
+            string __tmp35_line = "Factory(this.ModelBuilder), null);"; //5373:92
             if (!string.IsNullOrEmpty(__tmp35_line))
             {
                 __out.Append(__tmp35_line);
@@ -50865,39 +50869,39 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp32_outputWritten) __out.AppendLine(true);
             if (__tmp32_outputWritten)
             {
-                __out.AppendLine(false); //5370:126
+                __out.AppendLine(false); //5373:126
             }
-            __out.Append("                }"); //5371:1
-            __out.AppendLine(false); //5371:18
-            __out.Append("                return _factory;"); //5372:1
-            __out.AppendLine(false); //5372:33
-            __out.Append("            }"); //5373:1
-            __out.AppendLine(false); //5373:14
-            __out.Append("        }"); //5374:1
-            __out.AppendLine(false); //5374:10
-            __out.AppendLine(true); //5375:1
-            __out.Append("        protected override MutableSymbol CreateSymbolCore(Type symbolType)"); //5376:1
-            __out.AppendLine(false); //5376:75
-            __out.Append("        {"); //5377:1
+            __out.Append("                }"); //5374:1
+            __out.AppendLine(false); //5374:18
+            __out.Append("                return _factory;"); //5375:1
+            __out.AppendLine(false); //5375:33
+            __out.Append("            }"); //5376:1
+            __out.AppendLine(false); //5376:14
+            __out.Append("        }"); //5377:1
             __out.AppendLine(false); //5377:10
-            __out.Append("            return this.Factory.Create(symbolType);"); //5378:1
-            __out.AppendLine(false); //5378:52
-            __out.Append("        }"); //5379:1
-            __out.AppendLine(false); //5379:10
-            __out.Append("    }"); //5380:1
-            __out.AppendLine(false); //5380:6
-            __out.Append("}"); //5381:1
-            __out.AppendLine(false); //5381:2
+            __out.AppendLine(true); //5378:1
+            __out.Append("        protected override MutableSymbol CreateSymbolCore(Type symbolType)"); //5379:1
+            __out.AppendLine(false); //5379:75
+            __out.Append("        {"); //5380:1
+            __out.AppendLine(false); //5380:10
+            __out.Append("            return this.Factory.Create(symbolType);"); //5381:1
+            __out.AppendLine(false); //5381:52
+            __out.Append("        }"); //5382:1
+            __out.AppendLine(false); //5382:10
+            __out.Append("    }"); //5383:1
+            __out.AppendLine(false); //5383:6
+            __out.Append("}"); //5384:1
+            __out.AppendLine(false); //5384:2
             return __out.ToString();
         }
 
-        public string GenerateSymbolFacts() //5384:1
+        public string GenerateSymbolFacts() //5387:1
         {
             StringBuilder __out = new StringBuilder();
-            __out.Append("using MetaDslx.CodeAnalysis.Symbols;"); //5385:1
-            __out.AppendLine(false); //5385:37
+            __out.Append("using MetaDslx.CodeAnalysis.Symbols;"); //5388:1
+            __out.AppendLine(false); //5388:37
             bool __tmp2_outputWritten = false;
-            string __tmp3_line = "using "; //5386:1
+            string __tmp3_line = "using "; //5389:1
             if (!string.IsNullOrEmpty(__tmp3_line))
             {
                 __out.Append(__tmp3_line);
@@ -50920,7 +50924,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp4_last) __out.AppendLine(true);
                 }
             }
-            string __tmp5_line = ".Syntax.InternalSyntax;"; //5386:36
+            string __tmp5_line = ".Syntax.InternalSyntax;"; //5389:36
             if (!string.IsNullOrEmpty(__tmp5_line))
             {
                 __out.Append(__tmp5_line);
@@ -50929,18 +50933,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp2_outputWritten) __out.AppendLine(true);
             if (__tmp2_outputWritten)
             {
-                __out.AppendLine(false); //5386:59
+                __out.AppendLine(false); //5389:59
             }
-            __out.Append("using System;"); //5387:1
-            __out.AppendLine(false); //5387:14
-            __out.Append("using System.Collections.Generic;"); //5388:1
-            __out.AppendLine(false); //5388:34
-            __out.Append("using System.Text;"); //5389:1
-            __out.AppendLine(false); //5389:19
-            __out.AppendLine(true); //5390:1
-            var lang = Properties.LanguageName; //5391:2
+            __out.Append("using System;"); //5390:1
+            __out.AppendLine(false); //5390:14
+            __out.Append("using System.Collections.Generic;"); //5391:1
+            __out.AppendLine(false); //5391:34
+            __out.Append("using System.Text;"); //5392:1
+            __out.AppendLine(false); //5392:19
+            __out.AppendLine(true); //5393:1
+            var lang = Properties.LanguageName; //5394:2
             bool __tmp7_outputWritten = false;
-            string __tmp8_line = "namespace "; //5392:1
+            string __tmp8_line = "namespace "; //5395:1
             if (!string.IsNullOrEmpty(__tmp8_line))
             {
                 __out.Append(__tmp8_line);
@@ -50963,7 +50967,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp9_last) __out.AppendLine(true);
                 }
             }
-            string __tmp10_line = ".Symbols"; //5392:40
+            string __tmp10_line = ".Symbols"; //5395:40
             if (!string.IsNullOrEmpty(__tmp10_line))
             {
                 __out.Append(__tmp10_line);
@@ -50972,12 +50976,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp7_outputWritten) __out.AppendLine(true);
             if (__tmp7_outputWritten)
             {
-                __out.AppendLine(false); //5392:48
+                __out.AppendLine(false); //5395:48
             }
-            __out.Append("{"); //5393:1
-            __out.AppendLine(false); //5393:2
+            __out.Append("{"); //5396:1
+            __out.AppendLine(false); //5396:2
             bool __tmp12_outputWritten = false;
-            string __tmp13_line = "    public class "; //5394:1
+            string __tmp13_line = "    public class "; //5397:1
             if (!string.IsNullOrEmpty(__tmp13_line))
             {
                 __out.Append(__tmp13_line);
@@ -51000,7 +51004,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
                     if (!__tmp14_last) __out.AppendLine(true);
                 }
             }
-            string __tmp15_line = "SymbolFacts : SymbolFacts"; //5394:24
+            string __tmp15_line = "SymbolFacts : SymbolFacts"; //5397:24
             if (!string.IsNullOrEmpty(__tmp15_line))
             {
                 __out.Append(__tmp15_line);
@@ -51009,14 +51013,14 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator //1:1
             if (__tmp12_outputWritten) __out.AppendLine(true);
             if (__tmp12_outputWritten)
             {
-                __out.AppendLine(false); //5394:49
+                __out.AppendLine(false); //5397:49
             }
-            __out.Append("    {"); //5395:1
-            __out.AppendLine(false); //5395:6
-            __out.Append("    }"); //5396:1
-            __out.AppendLine(false); //5396:6
-            __out.Append("}"); //5397:1
-            __out.AppendLine(false); //5397:2
+            __out.Append("    {"); //5398:1
+            __out.AppendLine(false); //5398:6
+            __out.Append("    }"); //5399:1
+            __out.AppendLine(false); //5399:6
+            __out.Append("}"); //5400:1
+            __out.AppendLine(false); //5400:2
             return __out.ToString();
         }
 
