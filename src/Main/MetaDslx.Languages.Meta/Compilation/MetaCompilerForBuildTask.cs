@@ -70,7 +70,7 @@ namespace MetaDslx.Languages.Meta
             _compilation.ForceComplete();
         }
 
-        public void Generate()
+        public void Generate(bool forceOverwrite = false)
         {
             if (!this.HasErrors)
             {

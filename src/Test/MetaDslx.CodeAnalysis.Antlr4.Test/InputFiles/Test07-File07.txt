@@ -1,0 +1,7 @@
+test07 namespace Test07
+{
+	arrow V1 -> V2;
+	vertex V2;
+	arrow V2 -> V3;
+	arrow V3 -> V4;
+}

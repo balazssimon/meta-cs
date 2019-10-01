@@ -319,7 +319,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         private void GenerateOutputFile(string filePath, string fileContent, bool overwrite = true)
         {
-            if (overwrite || !File.Exists(filePath))
+            if (this.ForceOverwriteGeneratedFiles || overwrite || !File.Exists(filePath))
             {
                 if (overwrite)
                 {

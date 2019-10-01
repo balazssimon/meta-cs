@@ -1,0 +1,5 @@
+test08 namespace Test08
+{
+	arrow V1 -> V2;
+	vertex V2;
+}

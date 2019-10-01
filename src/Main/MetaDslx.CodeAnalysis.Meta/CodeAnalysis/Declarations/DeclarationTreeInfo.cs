@@ -76,7 +76,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             Debug.Assert(this.collectNameStack >= 0);
             Debug.Assert(this.qualifierStack == 0);
             ++this.collectNameStack;
-            if (this.collectNameStack == 1)
+            if (this.collectNameStack == 1 && this.nonDeclarationStack == 0)
             {
                 this.currentName = new ArrayBuilder<Identifier>();
                 this.Names.Add(this.currentName);

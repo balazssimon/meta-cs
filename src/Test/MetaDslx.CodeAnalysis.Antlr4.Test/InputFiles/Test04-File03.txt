@@ -1,0 +1,11 @@
+test04 namespace Test04A
+{
+	arrow V1 -> Test04B.V2;
+	vertex V1;
+}
+
+test04 namespace Test04B
+{
+	vertex V2;
+	arrow Test04A.V1 -> V2;
+}

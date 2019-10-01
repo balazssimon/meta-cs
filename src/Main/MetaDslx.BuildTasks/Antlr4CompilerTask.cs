@@ -65,7 +65,7 @@ namespace MetaDslx.BuildTasks
         private bool Compile(ITaskItem taskItem)
         {
             string filePath = taskItem.ItemSpec;
-            Log.LogMessage(MessageImportance.High, "{0}: generating code for '{1}'", this.Name, filePath);
+            Log.LogMessage(MessageImportance.Low, "{0}: generating code for '{1}'", this.Name, filePath);
             if (!File.Exists(filePath))
             {
                 Log.LogError("{0}: FAILED to generate code for '{1}': the file does not exits.", this.Name, filePath);
@@ -92,12 +92,12 @@ namespace MetaDslx.BuildTasks
             var compiler = this.CreateCompiler(filePath, outputPath);
             try
             {
+                bool hasIntermediateOutputPath = !string.IsNullOrWhiteSpace(this.IntermediateOutputPath);
                 compiler.Compile();
-                compiler.Generate();
+                compiler.Generate(hasIntermediateOutputPath);
                 this.LogDiagnostics(compiler.GetDiagnostics());
                 if (!compiler.HasErrors)
                 {
-                    bool hasIntermediateOutputPath = !string.IsNullOrWhiteSpace(this.IntermediateOutputPath);
                     foreach (var file in compiler.GetGeneratedFileList())
                     {
                         _generatedCodeFiles.Add((ITaskItem)new TaskItem(file));
@@ -105,9 +105,9 @@ namespace MetaDslx.BuildTasks
                         {
                             _generatedIntermediateCodeFiles.Add((ITaskItem)new TaskItem(file));
                         }
-                        Log.LogMessage(MessageImportance.High, "{0}: generated file: '{1}'.", this.Name, file);
+                        Log.LogMessage(MessageImportance.Low, "{0}: generated file: '{1}'.", this.Name, file);
                     }
-                    Log.LogMessage(MessageImportance.High, "{0}: SUCCESSFULLY generated code for '{1}'.", this.Name, filePath);
+                    Log.LogMessage(MessageImportance.Low, "{0}: SUCCESSFULLY generated code for '{1}'.", this.Name, filePath);
                     return true;
                 }
                 else
@@ -155,41 +155,6 @@ namespace MetaDslx.BuildTasks
                         break;
                 }
             }
-            /*StringBuilder sb = new StringBuilder();
-            foreach (var message in diagnostics)
-            {
-                var position = message.Location.GetMappedLineSpan();
-                sb.Clear();
-                sb.Append(position.Path);
-                sb.Append(string.Format("({0},{1},{2},{3})", position.StartLinePosition.Line + 1, position.StartLinePosition.Character + 1, position.EndLinePosition.Line + 1, position.EndLinePosition.Character + 1));
-                sb.Append(": ");
-                sb.Append(message.Descriptor.Category);
-                sb.Append(" ");
-                MessageImportance importance = MessageImportance.High;
-                switch (message.Severity)
-                {
-                    case DiagnosticSeverity.Info:
-                        sb.Append("info");
-                        importance = MessageImportance.Normal;
-                        break;
-                    case DiagnosticSeverity.Warning:
-                        sb.Append("warning");
-                        break;
-                    case DiagnosticSeverity.Error:
-                        sb.Append("error");
-                        break;
-                    case DiagnosticSeverity.Hidden:
-                    default:
-                        sb.Append("hidden");
-                        importance = MessageImportance.Low;
-                        break;
-                }
-                sb.Append(" ");
-                sb.Append(message.Descriptor.Id);
-                sb.Append(": ");
-                sb.Append(message.GetMessage());
-                Log.LogMessage(importance, sb.ToString());
-            }*/
         }
 
     }

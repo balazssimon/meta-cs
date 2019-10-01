@@ -37,6 +37,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string InputFilePath { get; private set; }
         public string OutputDirectory { get; protected set; }
         public bool GenerateOutput { get; set; }
+        public bool ForceOverwriteGeneratedFiles { get; private set; }
         protected DiagnosticBag DiagnosticBag { get; set; }
 
         public bool HasErrors
@@ -120,7 +121,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.diagnostics = this.DiagnosticBag.ToReadOnly();
         }
 
-        public void Generate()
+        public void Generate(bool forceOverwrite = false)
         {
             if (!this.compiled)
             {
@@ -130,6 +131,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             if (this.generated) return;
             else this.generated = true;
             if (this.HasErrors) return;
+            if (forceOverwrite) this.ForceOverwriteGeneratedFiles = true;
             this.DoGenerate();
         }
 

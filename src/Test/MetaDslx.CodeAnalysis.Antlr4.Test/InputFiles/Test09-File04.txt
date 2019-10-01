@@ -1,0 +1,4 @@
+test09 namespace Test09
+{
+	arrow V1 -> V2;
+}

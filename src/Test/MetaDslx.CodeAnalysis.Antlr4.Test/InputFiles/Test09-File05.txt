@@ -1,0 +1,5 @@
+test09 namespace Test09
+{
+	vertex V1;
+	arrow V1 -> V2;
+}

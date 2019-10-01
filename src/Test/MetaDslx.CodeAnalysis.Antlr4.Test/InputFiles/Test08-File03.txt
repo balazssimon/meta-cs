@@ -1,0 +1,11 @@
+test08 namespace Test08A
+{
+	arrow V1 -> Test08B.V2;
+	vertex V1;
+}
+
+test08 namespace Test08B
+{
+	vertex V2;
+	arrow Test08A.V1 -> V2;
+}

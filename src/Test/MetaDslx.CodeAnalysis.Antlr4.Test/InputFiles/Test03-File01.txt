@@ -1,0 +1,6 @@
+test03 namespace Test03
+{
+	vertex V1;
+	vertex V2;
+	arrow V1 -> V2;
+}

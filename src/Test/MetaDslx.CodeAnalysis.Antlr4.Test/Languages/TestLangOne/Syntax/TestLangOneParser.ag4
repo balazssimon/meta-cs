@@ -8,7 +8,7 @@ options
 
 main: test* EOF;
 
-test: test01 | test02 | test03 | test04 | test05 | test06 | test07 | test08 | test09 | test10;
+test: test01 | test02 | test03 | test04 | test05 | test06 | test07 | test08 | test09 | test10 | test11;
 
 // ===== Test01 =====
 
@@ -128,11 +128,11 @@ namespaceBody06 : TOpenBrace declaration06* TCloseBrace;
 
 declaration06 : vertex06 | arrow06;
 
-$SymbolDef(Vertex)
+$SymbolDef(symbolType=Vertex,merge=true)
 vertex06 : KVertex name TSemicolon;
 
 $SymbolDef(Arrow)
-arrow06 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope) source=qualifiedName TArrow $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope) target=qualifiedName TSemicolon;
+arrow06 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true) source=qualifiedName TArrow $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true) target=qualifiedName TSemicolon;
 
 // ===== Test07 =====
 
@@ -156,12 +156,12 @@ arrow07 : KArrow source07 TArrow target07 TSemicolon;
 
 $Property(Source)
 $Property(name=Declarations,owner=CurrentScope) 
-$SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope)
+$SymbolDef(symbolType=Vertex,merge=true)
 source07 : qualifiedName;
 
 $Property(Target)
 $Property(name=Declarations,owner=CurrentScope) 
-$SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope)
+$SymbolDef(symbolType=Vertex,merge=true)
 target07 : qualifiedName;
 
 // ===== Test08 =====
@@ -182,9 +182,9 @@ $Property(Declarations)
 $SymbolDef(Arrow)
 arrow08 : KArrow source08 TArrow target08 TSemicolon;
 
-source08 : $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope) qualifiedName;
+source08 : $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true) qualifiedName;
 
-target08 : $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope) qualifiedName;
+target08 : $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true) qualifiedName;
 
 // ===== Test09 =====
 
@@ -203,7 +203,7 @@ $SymbolDef(Vertex)
 vertex09 : KVertex name TSemicolon;
 
 $SymbolDef(Arrow)
-arrow09 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope) source=qualifiedName TArrow $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope) target=qualifiedName TSemicolon;
+arrow09 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true) source=qualifiedName TArrow $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true) target=qualifiedName TSemicolon;
 
 // ===== Test10 =====
 
@@ -220,7 +220,26 @@ $SymbolDef(Vertex)
 vertex10 : KVertex name TSemicolon;
 
 $SymbolDef(Arrow)
-arrow10 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope) source=qualifiedName TArrow $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true,owner=CurrentScope) target=qualifiedName TSemicolon;
+arrow10 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true) source=qualifiedName TArrow $Property(Target) $Property(name=Declarations,owner=CurrentScope) $SymbolDef(symbolType=Vertex,merge=true) target=qualifiedName TSemicolon;
+
+// ===== Test11 =====
+
+test11: KTest11 namespaceDeclaration11;
+
+$SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
+namespaceDeclaration11: KNamespace qualifiedName namespaceBody11;
+
+$Scope
+$Property(Declarations)
+namespaceBody11 : TOpenBrace declaration11* TCloseBrace;
+
+declaration11 : vertex11 | arrow11;
+
+$SymbolDef(Vertex)
+vertex11 : KVertex name TSemicolon;
+
+$SymbolDef(Arrow)
+arrow11 : KArrow $Property(Source) $SymbolUse(Vertex) source=qualifiedName TArrow $Property(Target) $SymbolUse(Vertex) target=qualifiedName TSemicolon;
 
 
 // ===== General =====

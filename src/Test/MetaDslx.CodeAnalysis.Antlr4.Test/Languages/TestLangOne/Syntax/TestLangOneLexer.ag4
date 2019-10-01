@@ -33,6 +33,15 @@ KTest07 : 'test07';
 KTest08 : 'test08';
 KTest09 : 'test09';
 KTest10 : 'test10';
+KTest11 : 'test11';
+KTest12 : 'test12';
+KTest13 : 'test13';
+KTest14 : 'test14';
+KTest15 : 'test15';
+KTest16 : 'test16';
+KTest17 : 'test17';
+KTest18 : 'test18';
+KTest19 : 'test19';
 KNull : 'null';
 
 // Tokens
