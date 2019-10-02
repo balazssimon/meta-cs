@@ -102,5 +102,75 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
             Assert.Equal(v1, a1.Source);
             Assert.Equal(v2, a1.Target);
         }
+
+        [Fact]
+        public void File05()
+        {
+            var comp = Compile(TestId, "05");
+            var model = comp.Model;
+            var modelSymbols = model.Symbols.ToList();
+            Assert.Equal(4, modelSymbols.Count);
+            var ns1 = Assert.IsAssignableFrom<Namespace>(modelSymbols[0]);
+            Assert.Equal($"Test{TestId}", ns1.Name);
+            var ns1decls = ns1.Declarations;
+            Assert.Equal(3, ns1decls.Count);
+            var v1 = Assert.IsAssignableFrom<Vertex>(ns1decls[0]);
+            Assert.Equal("V1", v1.Name);
+            var v2 = Assert.IsAssignableFrom<Vertex>(ns1decls[1]);
+            Assert.Equal("V2", v2.Name);
+            var a1 = Assert.IsAssignableFrom<Arrow>(ns1decls[2]);
+            Assert.Equal(v1, a1.Source);
+            Assert.Equal(v2, a1.Target);
+        }
+
+        [Fact]
+        public void File06()
+        {
+            var comp = Compile(TestId, "06");
+            var model = comp.Model;
+            var modelSymbols = model.Symbols.ToList();
+            Assert.Equal(4, modelSymbols.Count);
+            var ns1 = Assert.IsAssignableFrom<Namespace>(modelSymbols[0]);
+            Assert.Equal($"Test{TestId}", ns1.Name);
+            var ns1decls = ns1.Declarations;
+            Assert.Equal(3, ns1decls.Count);
+            var v1 = Assert.IsAssignableFrom<Vertex>(ns1decls[0]);
+            Assert.Equal("V1", v1.Name);
+            var v2 = Assert.IsAssignableFrom<Vertex>(ns1decls[1]);
+            Assert.Equal("V2", v2.Name);
+            var a1 = Assert.IsAssignableFrom<Arrow>(ns1decls[2]);
+            Assert.Equal(v1, a1.Source);
+            Assert.Equal(v2, a1.Target);
+        }
+
+        [Fact]
+        public void File07()
+        {
+            var comp = Compile(TestId, "07");
+            var model = comp.Model;
+            var modelSymbols = model.Symbols.ToList();
+            Assert.Equal(8, modelSymbols.Count);
+            var ns1 = Assert.IsAssignableFrom<Namespace>(modelSymbols[0]);
+            Assert.Equal($"Test{TestId}", ns1.Name);
+            var ns1decls = ns1.Declarations;
+            Assert.Equal(7, ns1decls.Count);
+            var v1 = Assert.IsAssignableFrom<Vertex>(ns1decls[0]);
+            Assert.Equal("V1", v1.Name);
+            var v2 = Assert.IsAssignableFrom<Vertex>(ns1decls[1]);
+            Assert.Equal("V2", v2.Name);
+            var a1 = Assert.IsAssignableFrom<Arrow>(ns1decls[2]);
+            Assert.Equal(v1, a1.Source);
+            Assert.Equal(v2, a1.Target);
+            var v3 = Assert.IsAssignableFrom<Vertex>(ns1decls[3]);
+            Assert.Equal("V3", v3.Name);
+            var a2 = Assert.IsAssignableFrom<Arrow>(ns1decls[4]);
+            Assert.Equal(v2, a2.Source);
+            Assert.Equal(v3, a2.Target);
+            var v4 = Assert.IsAssignableFrom<Vertex>(ns1decls[5]);
+            Assert.Equal("V4", v4.Name);
+            var a3 = Assert.IsAssignableFrom<Arrow>(ns1decls[6]);
+            Assert.Equal(v3, a3.Source);
+            Assert.Equal(v4, a3.Target);
+        }
     }
 }

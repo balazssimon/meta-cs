@@ -12,7 +12,7 @@ test: test01 | test02 | test03 | test04 | test05 | test06 | test07 | test08 | te
 
 // ===== Test01 =====
 
-test01: KTest01 namespaceDeclaration01*;
+test01: KTest01 namespaceDeclaration01;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration01: KNamespace qualifiedName namespaceBody01;
@@ -31,7 +31,7 @@ arrow01 : KArrow $Property(Source) $SymbolUse(Vertex) source=qualifier TArrow $P
 
 // ===== Test02 =====
 
-test02: KTest02 namespaceDeclaration02*;
+test02: KTest02 namespaceDeclaration02;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration02: KNamespace qualifiedName namespaceBody02;
@@ -59,7 +59,7 @@ target02 : qualifier;
 
 // ===== Test03 =====
 
-test03: KTest03 namespaceDeclaration03*;
+test03: KTest03 namespaceDeclaration03;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration03: KNamespace qualifiedName namespaceBody03;
@@ -81,7 +81,7 @@ target03 : $Property(Target) $SymbolUse(Vertex) qualifier;
 
 // ===== Test04 =====
 
-test04: KTest04 namespaceDeclaration04*;
+test04: KTest04 namespaceDeclaration04;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration04: KNamespace qualifiedName namespaceBody04;
@@ -100,7 +100,7 @@ arrow04 : KArrow $Property(Source) $SymbolUse(Vertex) source=qualifier TArrow $P
 
 // ===== Test05 =====
 
-test05: KTest05 namespaceDeclaration05*;
+test05: KTest05 namespaceDeclaration05;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration05: KNamespace qualifiedName $Scope $Property(Declarations) namespaceBody05;
@@ -117,7 +117,7 @@ arrow05 : KArrow $Property(Source) $SymbolUse(Vertex) source=qualifier TArrow $P
 
 // ===== Test06 =====
 
-test06: KTest06 namespaceDeclaration06*;
+test06: KTest06 namespaceDeclaration06;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration06: KNamespace qualifiedName namespaceBody06;
@@ -136,7 +136,7 @@ arrow06 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScop
 
 // ===== Test07 =====
 
-test07: KTest07 namespaceDeclaration07*;
+test07: KTest07 namespaceDeclaration07;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration07: KNamespace qualifiedName namespaceBody07;
@@ -166,7 +166,7 @@ target07 : name;
 
 // ===== Test08 =====
 
-test08: KTest08 namespaceDeclaration08*;
+test08: KTest08 namespaceDeclaration08;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration08: KNamespace qualifiedName namespaceBody08;
@@ -188,7 +188,7 @@ target08 : $Property(Target) $Property(name=Declarations,owner=CurrentScope) $Sy
 
 // ===== Test09 =====
 
-test09: KTest09 namespaceDeclaration09*;
+test09: KTest09 namespaceDeclaration09;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration09: KNamespace qualifiedName namespaceBody09;
@@ -207,7 +207,7 @@ arrow09 : KArrow $Property(Source) $Property(name=Declarations,owner=CurrentScop
 
 // ===== Test10 =====
 
-test10: KTest10 namespaceDeclaration10*;
+test10: KTest10 namespaceDeclaration10;
 
 $SymbolDef(symbolType=Namespace,nestingProperty=Members,merge=true)
 namespaceDeclaration10: KNamespace qualifiedName $Scope $Property(Declarations) namespaceBody10;

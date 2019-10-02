@@ -1,5 +1,0 @@
-test05 namespace Test05
-{
-	vertex V1;
-	arrow V1 -> V2;
-}
