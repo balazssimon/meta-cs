@@ -1,0 +1,10 @@
+﻿namespace Xsd05.Hello = hw:"http://www.hello.org/test"
+{
+	enum Colors
+	{
+		Red,
+		Green,
+		[Enum(name="Blueish")]
+		Blue
+	}
+}

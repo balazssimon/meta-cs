@@ -1,0 +1,18 @@
+participant I
+participant "c:Conveyor"
+participant "p2:Package"
+participant "p1:Package"
+
+I->+"c:Conveyor": Accept(p1)
+opt p2 != null
+	"c:Conveyor"->+"p2:Package": Smash()
+	"p2:Package"->+"Player": DecreasePoints()
+	"Player"-->>-"p2:Package":
+	"p2:Package"->+"c:Conveyor": Remove(p2)
+	"c:Conveyor"-->>-"p2:Package":
+	"p2:Package"-->>-"c:Conveyor":
+	destroy "p2:Package"
+end
+"c:Conveyor"->+"p1:Package": SetCarrier(c)
+"p1:Package"-->>-"c:Conveyor":
+"c:Conveyor"-->>-I:

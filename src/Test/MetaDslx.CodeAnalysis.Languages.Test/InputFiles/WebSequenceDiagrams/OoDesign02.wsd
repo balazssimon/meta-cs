@@ -1,0 +1,21 @@
+title Cancellation token
+
+participant Client
+participant "ct:CancellationToken"
+participant Server
+participant ServerWork
+
+Client-->>*"ct:CancellationToken": <<create>>
+activate Client
+
+Client->>+Server: LongTask(ct)
+
+
+loop !canceled
+    Server->+ServerWork: DoWork()
+    Server->"ct:CancellationToken": canceled=IsCanceled()
+    deactivate ServerWork
+end
+
+Client->"ct:CancellationToken": Cancel()
+deactivate Server

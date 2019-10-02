@@ -1,0 +1,26 @@
+title Proactor
+
+participant Application
+participant "ch:CompletionHandler"
+participant Proactor
+participant EventQueue
+participant AsyncOp
+participant Handle
+
+Application->>+Proactor: Start()
+activate Application
+
+Application-->>*"ch:CompletionHandler": <<create>>
+Application->>+AsyncOp: AsyncOperation(ch,params)
+AsyncOp->+Handle: LongOp(params)
+Handle-->>-AsyncOp: result
+AsyncOp->-EventQueue: AddEvent(e,result)
+
+loop
+  Proactor->+EventQueue: RemoveEvent()
+  EventQueue-->>-Proactor: e,result
+  Proactor->+"ch:CompletionHandler": HandleEvent(e,result)
+  "ch:CompletionHandler"-->>Proactor:
+  deactivate Proactor
+  deactivate "ch:CompletionHandler"
+end loop

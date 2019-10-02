@@ -1,0 +1,15 @@
+participant Controller
+participant "t:IncomingTruck"
+participant "target:Carrier"
+participant "package:Package"
+participant "package:PerishablePackage"
+
+Controller->+"t:IncomingTruck": Step()
+    alt perishable
+    	"t:IncomingTruck"-->>*"package:PerishablePackage": <<create>>
+    else
+    	"t:IncomingTruck"-->>*"package:Package": <<create>>
+    end
+	"t:IncomingTruck"->+"target:Carrier": Accept(package)
+	"target:Carrier"-->>-"t:IncomingTruck":		
+"t:IncomingTruck"-->>-Controller:

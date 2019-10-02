@@ -1,0 +1,8 @@
+﻿namespace Wsdl01.Hello = hw:"http://www.hello.org/HelloNs"
+{
+	interface IHello
+	{
+		oneway DivideO();
+	}
+}
+

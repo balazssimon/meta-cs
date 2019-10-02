@@ -1,0 +1,13 @@
+participant I
+participant "g:Ground"
+participant "p:Package"
+
+I->+"g:Ground": Accept(p)
+"g:Ground"->+"p:Package": Smash()
+"p:Package"->+"Player": DecreasePoints()
+"Player"-->>-"p:Package":
+"p:Package"->+"g:Ground": Remove(p)
+"g:Ground"-->>-"p:Package":
+"p:Package"-->>-"g:Ground":
+destroy "p:Package"
+"g:Ground"-->>-I:

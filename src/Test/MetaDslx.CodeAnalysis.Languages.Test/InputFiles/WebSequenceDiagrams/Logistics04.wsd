@@ -1,0 +1,15 @@
+participant Controller
+participant "p:PerishablePackage"
+participant "carrier:Carrier"
+
+Controller->+"p:PerishablePackage": Step()
+	opt timeToSpoil==0
+		"p:PerishablePackage"->+"p:PerishablePackage": Explode()
+		"p:PerishablePackage"->+"Player": DecreasePoints()
+		"Player"-->>-"p:PerishablePackage": 
+		"p:PerishablePackage"->+"carrier:Carrier": Remove(package)
+		"carrier:Carrier"-->>-"p:PerishablePackage":
+		"p:PerishablePackage"-->>-"p:PerishablePackage": 
+	end
+"p:PerishablePackage"-->>-Controller:
+destroy "p:PerishablePackage"

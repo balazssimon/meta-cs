@@ -1,0 +1,27 @@
+title Reactor
+
+participant Application
+participant "eh:EventHandler"
+participant Reactor
+participant EventQueue
+participant "h:Handle"
+
+Application-->>*"eh:EventHandler": <<create>>
+activate Application
+Application->Reactor: RegisterHandler(h,eh)
+Application->Reactor: Start()
+activate Reactor
+
+loop
+    Reactor->EventQueue: RemoveEvent()
+    activate EventQueue
+    "h:Handle"->EventQueue: AddEvent(h,e)
+    EventQueue-->>Reactor: h,e
+    deactivate EventQueue
+    Reactor->+"eh:EventHandler": HandleEvent(h,e)
+    "eh:EventHandler"->+"h:Handle": GetResult()
+    "h:Handle"-->>-"eh:EventHandler": result
+    "eh:EventHandler"-->>Reactor:
+    deactivate "eh:EventHandler"
+    deactivate Reactor
+end loop

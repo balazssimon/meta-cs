@@ -1,0 +1,45 @@
+title Authentication Sequence
+
+A->B: Authentication Request
+note right of B: B thinks about it
+B->A: Authentication Response
+
+A->*B: textACreatesB
+B->A: textASyncB
+B-->A: textAReturnB
+B->>A: textAAsyncB
+B-->>A: textAReturnB
+destroy B
+
+alt textAlt1
+    A->B: textAlt1AB
+else textAlt2
+    A->B: textAlt2AB
+else textAlt3
+    A->B: textAlt3AB
+end
+
+opt textOpt
+    A->B: textOptAB
+end
+
+loop textLoop
+    A->B: textLoopAB
+end
+
+A->A: textAA
+
+note over A,B: text1
+note left of A: text2
+note right of A
+    multiline
+    text
+end note
+
+A->ref over B: refInput1
+    refText1
+end ref -->> B: refOutput1
+
+ref over B: refInput2
+    refText2
+end ref

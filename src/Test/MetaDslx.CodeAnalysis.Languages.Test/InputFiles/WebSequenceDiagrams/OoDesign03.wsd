@@ -1,0 +1,42 @@
+title Future
+
+participant Client
+participant ClientWork
+participant Server
+participant "f:Future"
+participant ServerWork
+
+Client->+Server: CallLongTask()
+activate Client
+
+Server-->>*"f:Future": <<create>>
+Server->>+ServerWork: LongTask(f)
+Server-->>-Client: f
+
+Client->ClientWork: DoWork()
+activate ClientWork
+
+Client->"f:Future": IsCompleted()
+deactivate ClientWork
+activate "f:Future"
+
+Client->ClientWork: DoWork()
+activate ClientWork
+deactivate "f:Future"
+
+Client->"f:Future": Wait()
+deactivate ClientWork
+activate "f:Future"
+
+ServerWork->+"f:Future": SetResult(result)
+"f:Future"-->>-Client: result;
+deactivate ServerWork
+deactivate "f:Future"
+deactivate "f:Future"
+
+Client->"f:Future": IsCanceled()
+
+Client->"f:Future": IsFaulted()
+
+Client->+"f:Future": GetResult()
+"f:Future"-->>-Client: result

@@ -1,0 +1,22 @@
+participant Controller
+participant "c:Conveyor"
+participant "pp:PackagePosition"
+participant "target:Carrier"
+participant "package:Package"
+
+Controller->+"c:Conveyor": Step()
+    loop for all pp:PackagePosition
+        "c:Conveyor"->+"pp:PackagePosition": Move()
+        "pp:PackagePosition"->+"c:Conveyor": GetLength()
+        "c:Conveyor"-->>-"pp:PackagePosition": length
+        opt position>length
+            "pp:PackagePosition"->+"c:Conveyor": GetTarget()
+            "c:Conveyor"-->>-"pp:PackagePosition": "target"
+            "pp:PackagePosition"->+"target:Carrier": Accept(package)
+            "target:Carrier"-->>-"pp:PackagePosition": 
+            "pp:PackagePosition"->+"c:Conveyor": Remove(pp)
+            "c:Conveyor"-->>-"pp:PackagePosition":
+        end   
+		"pp:PackagePosition"-->>-"c:Conveyor":		
+    end loop
+"c:Conveyor"-->>-Controller:

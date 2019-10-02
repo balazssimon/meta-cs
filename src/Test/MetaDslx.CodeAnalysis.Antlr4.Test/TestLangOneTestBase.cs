@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne;
 using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Symbols;
 using MetaDslx.CodeAnalysis.Binding;
+using MetaDslx.Tests;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,6 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
         public TestLangOneTestBase()
         {
             DebugAssertListener = new DebugAssertUnitTestTraceListener();
-            Trace.Listeners.Clear();
-            Trace.Listeners.Add(DebugAssertListener);
         }
 
         protected TestLangOneCompilation Compile(string testId, string fileId, bool assertEmptyDiagnostics = true)
@@ -43,14 +42,7 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
 
         public void Dispose()
         {
-            if (DebugAssertListener.AssertionFailures.Count > 0)
-            {
-                // TODO: Create a message for the failure.
-                DebugAssertListener.ClearAssertions();
-                DebugAssertListener.AllowedFailures.Clear();
-                Assert.True(false);
-                // TODO: Fail the test using the message created above.
-            }
+            DebugAssertListener.Dispose();
         }
     }
 }

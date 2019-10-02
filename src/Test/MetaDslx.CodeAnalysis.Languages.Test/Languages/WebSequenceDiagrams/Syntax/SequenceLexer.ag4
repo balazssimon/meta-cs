@@ -12,14 +12,17 @@ channels {
 
 $Token(kind=ReservedKeyword, first=KTitle, last=KLoop)
 KTitle : 'title' -> mode(LineEndText);
+KParticipant : 'participant' -> mode(LineEndText);
 KNote : 'note' -> mode(NoteId);
 KDestroy : 'destroy' -> mode(LineEndText);
 KAlt : 'alt' -> mode(LineEndText);
 KElse : 'else' -> mode(LineEndText);
 KEnd : 'end' -> mode(LineEndText);
 KOpt : 'opt' -> mode(LineEndText);
-KLoop : 'loop' -> mode(LineEndText);
 KRef : 'ref' -> mode(RefId);
+KActivate : 'activate' -> mode(LineEndText);
+KDeactivate : 'deactivate' -> mode(LineEndText);
+KLoop : 'loop' -> mode(LineEndText);
 
 $Token(kind=GeneralComment)
 LSingleLineComment : '//' ~[\r\n]* -> channel(COMMENT);
@@ -27,9 +30,9 @@ $Token(kind=GeneralComment)
 LCommentStart : '/*' .*? '*/' -> channel(COMMENT);
 
 TCreate : ('->' | '->>' | '-->>' | '-->') WhiteSpaceChar* '*' -> mode(ArrowEndText);
-TSync: '->' -> mode(ArrowEndText);
-TAsync: '->>' -> mode(ArrowEndText);
-TReturn: ('-->>' | '-->') -> mode(ArrowEndText);
+TSync: '->' WhiteSpaceChar* ('+' | '-')? -> mode(ArrowEndText);
+TAsync: '->>' WhiteSpaceChar* ('+' | '-')? -> mode(ArrowEndText);
+TReturn: ('-->>' | '-->') WhiteSpaceChar* ('+' | '-')? -> mode(ArrowEndText);
 TMinus : '-' -> type(LIdentifier);
 
 $Token(kind=Whitespace)

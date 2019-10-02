@@ -5,12 +5,12 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
-namespace MetaDslx.CodeAnalysis.Antlr4Test
+namespace MetaDslx.Tests
 {
     /// <summary>
     /// TraceListener used for trapping assertion failures during unit tests.
     /// </summary>
-    public class DebugAssertUnitTestTraceListener : DefaultTraceListener
+    public class DebugAssertUnitTestTraceListener : DefaultTraceListener, IDisposable
     {
         /// <summary>
         /// Defines an assertion by the method it failed in and the messages it
@@ -117,18 +117,38 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
         /// Creates a new instance of this trace listener with the default name
         /// DebugAssertUnitTestTraceListener.
         /// </summary>
-        public DebugAssertUnitTestTraceListener() : this("DebugAssertUnitTestListener") { }
+        public DebugAssertUnitTestTraceListener(bool autoRegister = true) : this("DebugAssertUnitTestListener", autoRegister) { }
 
         /// <summary>
         /// Creates a new instance of this trace listener with the specified name.
         /// </summary>
         /// <param name="name"></param>
-        public DebugAssertUnitTestTraceListener(String name) : base()
+        public DebugAssertUnitTestTraceListener(string name, bool autoRegister = true) : base()
         {
             AssertUiEnabled = false;
             Name = name;
             AllowedFailures = new List<Assertion>();
             assertionFailures = new List<Assertion>();
+            if (autoRegister) this.Register();
+        }
+
+        public void Register()
+        {
+            Trace.Listeners.Add(this);
+        }
+
+        public void Unregister()
+        {
+            Trace.Listeners.Remove(this);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (!disposing)
+            {
+                this.Unregister();
+            }
         }
 
         /// <summary>

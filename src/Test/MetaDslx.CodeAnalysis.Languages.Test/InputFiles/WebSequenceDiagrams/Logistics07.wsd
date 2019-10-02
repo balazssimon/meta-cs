@@ -1,0 +1,35 @@
+participant I
+participant "ct:ConveyorTarget"
+participant "c:Conveyor"
+participant "pp1:PackagePosition"
+participant "p1:Package"
+participant "pp2:PackagePosition"
+participant "p2:Package"
+participant "Player"
+
+I->+"ct:ConveyorTarget": Accept(p1)
+"ct:ConveyorTarget"-->>*"pp1:PackagePosition": <<create>>
+"ct:ConveyorTarget"->+"pp1:PackagePosition": PackagePosition(c, p1, ct.position)
+"pp1:PackagePosition"->+"p1:Package": SetCarrier(pp1)
+"p1:Package"-->>-"pp1:PackagePosition":
+"pp1:PackagePosition"-->>-"ct:ConveyorTarget":
+"ct:ConveyorTarget"->+"c:Conveyor": Accept(pp1)
+loop for all pp2 in packages on conveyor
+	"c:Conveyor"->+"pp2:PackagePosition": SmashBy(pp1)
+	"pp2:PackagePosition"->+"pp1:PackagePosition": GetPosition()
+	"pp1:PackagePosition"-->>-"pp2:PackagePosition": pos1
+	opt abs(pos1-pp2.position") < epsilon
+		"pp2:PackagePosition"->+"p2:Package": Smash()
+		"p2:Package"->+"Player": DecreasePoints()
+		"Player"-->>-"p2:Package":
+		"p2:Package"->+"pp2:PackagePosition": Remove(p2)
+		"pp2:PackagePosition"->+"c:Conveyor": Remove(pp2)
+		"c:Conveyor"-->>-"pp2:PackagePosition":
+		"pp2:PackagePosition"-->>-"p2:Package":
+		"p2:Package"-->>-"pp2:PackagePosition":
+		destroy "p2:Package"
+	end
+	"pp2:PackagePosition"-->>-"c:Conveyor":
+end loop
+"c:Conveyor"-->>-"ct:ConveyorTarget":
+"ct:ConveyorTarget"-->>-I:

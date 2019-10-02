@@ -1,0 +1,20 @@
+﻿namespace Xsd14.Hello = hw:"http://www.hello.org/test"
+{
+	struct IntValues
+	{
+		int[] Items;
+	}
+
+	struct NameValues
+	{
+		[Element(wrapped=true, items="Name")]
+		string[] Names;
+	}
+
+	struct Values
+	{
+		IntValues[] A;
+		NameValues[] B;
+	}
+	
+}

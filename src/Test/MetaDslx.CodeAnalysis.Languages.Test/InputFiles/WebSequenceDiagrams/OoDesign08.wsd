@@ -1,0 +1,17 @@
+title Half-sync-half-async: sync->async
+
+participant SyncService
+participant "t:Task"
+participant Queue
+participant AsyncService
+participant ExternalService
+
+SyncService-->>*"t:Task": <<create>>(ch,params)
+activate SyncService
+SyncService->+Queue: Enqueue(t)
+Queue->>+AsyncService: Notify()
+Queue-->>-SyncService:
+AsyncService->+Queue: Dequeue()
+deactivate SyncService
+Queue-->>-AsyncService: t
+AsyncService->>ExternalService: Call(params)

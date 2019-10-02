@@ -1,0 +1,8 @@
+﻿namespace Xsd08.Hello = hw:"http://www.hello.org/test"
+{
+	struct IntList
+	{
+		[Element(wrapped=true, items="values")]
+		int[] items;
+	}
+}

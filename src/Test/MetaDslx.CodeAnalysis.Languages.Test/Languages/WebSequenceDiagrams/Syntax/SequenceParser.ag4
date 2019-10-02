@@ -9,14 +9,18 @@ main : interaction EOF;
 
 $SymbolDef(Interaction)
 $Scope
-interaction : line*;
+interaction : line* lastLine?;
 
 line : declaration? LCrLf;
+lastLine : declaration LCrLf?;
 
 $Property(Declarations)
 declaration
 	: title
+	| participant
 	| destroy
+	| activate
+	| deactivate
 	| arrow
 	| alt
 	| opt
@@ -27,11 +31,19 @@ declaration
 
 title: KTitle $Property(Name) text?;
 
+participant: KParticipant lifeLineName?;
+
 $SymbolDef(Message)
 arrow: $Property(Source) source=lifeLineName $Property(Kind) type=arrowType $Property(Target) target=lifeLineName TColon $Property(Text) $Value text?;
 
 $SymbolDef(Destroy)
 destroy: KDestroy $Property(Lifeline) lifeLineName?;
+
+$SymbolDef(Activate)
+activate: KActivate $Property(Lifeline) lifeLineName?;
+
+$SymbolDef(Deactivate)
+deactivate: KDeactivate $Property(Lifeline) lifeLineName?;
 
 $SymbolDef(MultiFragment)
 $Property(Fragments)

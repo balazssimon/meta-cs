@@ -39,5 +39,7 @@
 	<Antlr4Version>4.6.6</Antlr4Version>
 	<Antlr4BuildTasksVersion>1.0.4</Antlr4BuildTasksVersion>
 	<MicrosoftBuildVersion>16.0.461</MicrosoftBuildVersion>
+	<MicrosoftNetDskTestVersion>16.3.0</MicrosoftNetDskTestVersion>
+	<XUnitVersion>2.4.1</XUnitVersion>
   </PropertyGroup>
 </Project>

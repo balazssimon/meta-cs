@@ -35,9 +35,21 @@
 		Lifeline Target;
 	}
 
-	class Destroy : Declaration
+	abstract class LifelineEvent : Declaration
 	{
 		Lifeline Lifeline;
+	}
+
+	class Destroy : LifelineEvent
+	{
+	}
+
+	class Activate : LifelineEvent
+	{
+	}
+
+	class Deactivate : LifelineEvent
+	{
 	}
 
 	enum FragmentKind

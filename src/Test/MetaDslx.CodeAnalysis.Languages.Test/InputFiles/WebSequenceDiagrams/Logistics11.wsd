@@ -1,0 +1,9 @@
+participant Controller
+participant "s:Conveyor"
+participant "target:Carrier"
+participant "package:Package"
+
+Controller->+"s:Conveyor": Step()
+	"s:Conveyor"->+"target:Carrier": Accept(package)
+	"target:Carrier"-->>-"s:Conveyor":		
+"s:Conveyor"-->>-Controller:

@@ -1,0 +1,8 @@
+title Asynchronous Completion Token (ACT)
+
+Client->>Server: Request(ACT1,Params1)
+Client->>Server: Request(ACT2,Params2)
+Client->>Server: Request(ACT3,Params3)
+Server->>Client: ACT1,Result1
+Server->>Client: ACT3,Result2
+Server->>Client: ACT2,Result3

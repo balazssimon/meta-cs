@@ -1,0 +1,18 @@
+participant I
+participant "s:Switch"
+participant "p2:Package"
+participant "p1:Package"
+
+I->+"s:Switch": Accept(p1)
+opt p2 != null
+	"s:Switch"->+"p2:Package": Smash()
+	"p2:Package"->+"Player": DecreasePoints()
+	"Player"-->>-"p2:Package":
+	"p2:Package"->+"s:Switch": Remove(p2)
+	"s:Switch"-->>-"p2:Package":
+	"p2:Package"-->>-"s:Switch":
+	destroy "p2:Package"
+end
+"s:Switch"->+"p1:Package": SetCarrier(s)
+"p1:Package"-->>-"s:Switch":
+"s:Switch"-->>-I:

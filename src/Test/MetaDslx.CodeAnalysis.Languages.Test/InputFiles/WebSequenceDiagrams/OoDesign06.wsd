@@ -1,0 +1,36 @@
+title Active Object
+
+participant Client
+participant Proxy
+participant "f:Future"
+participant Scheduler
+participant TaskQueue
+participant "t:Task"
+participant ActiveObject
+
+Client->+Proxy: Method(params)
+activate Client
+Proxy-->>*"f:Future": <<create>>
+Proxy-->>*"t:Task": <<create>>(f,params)
+Proxy->+Scheduler: Add(t)
+Scheduler->+TaskQueue: AddTask(t)
+Proxy-->>Client: f
+deactivate Proxy
+deactivate Scheduler
+deactivate TaskQueue
+
+"f:Future"->>+Scheduler: Dispatch()
+deactivate Client
+Scheduler->+TaskQueue: RemoveTask()
+TaskQueue-->>-Scheduler: t
+Scheduler->+"t:Task": Execute()
+"t:Task"->+ActiveObject: Method(params)
+ActiveObject-->>-"t:Task": result
+"t:Task"->+"f:Future": SetResult(result)
+"f:Future"-->>-"t:Task":
+deactivate "t:Task"
+deactivate Scheduler
+
+Client->+"f:Future": GetResult()
+activate Client
+"f:Future"-->>-Client: result

@@ -21,11 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.VisualStudio", "Main\MetaDslx.VisualStudio\MetaDslx.VisualStudio.csproj", "{EDB7CFD1-F190-41F1-817D-EB2B11AAFE48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.CodeAnalysis.Meta.Test", "Test\MetaDslx.CodeAnalysis.Meta.Test\MetaDslx.CodeAnalysis.Meta.Test.csproj", "{5FBB3EAC-4F54-4338-8FD5-81C8A4BB6621}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Meta.Test", "Test\MetaDslx.CodeAnalysis.Meta.Test\MetaDslx.CodeAnalysis.Meta.Test.csproj", "{5FBB3EAC-4F54-4338-8FD5-81C8A4BB6621}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.CodeAnalysis.Antlr4.Test", "Test\MetaDslx.CodeAnalysis.Antlr4.Test\MetaDslx.CodeAnalysis.Antlr4.Test.csproj", "{2CC800CB-6B20-43FF-81AE-80439C6BB3DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Antlr4.Test", "Test\MetaDslx.CodeAnalysis.Antlr4.Test\MetaDslx.CodeAnalysis.Antlr4.Test.csproj", "{2CC800CB-6B20-43FF-81AE-80439C6BB3DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDslx.CodeAnalysis.Languages.Test", "Test\MetaDslx.CodeAnalysis.Languages.Test\MetaDslx.CodeAnalysis.Languages.Test.csproj", "{D1207131-5D5F-4C31-9FAA-B77E93DBA89F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Languages.Test", "Test\MetaDslx.CodeAnalysis.Languages.Test\MetaDslx.CodeAnalysis.Languages.Test.csproj", "{D1207131-5D5F-4C31-9FAA-B77E93DBA89F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Tests", "Test\MetaDslx.Tests\MetaDslx.Tests.csproj", "{11A6DE1A-36AD-42C8-ACB8-559DF13E2128}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{D1207131-5D5F-4C31-9FAA-B77E93DBA89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1207131-5D5F-4C31-9FAA-B77E93DBA89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1207131-5D5F-4C31-9FAA-B77E93DBA89F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11A6DE1A-36AD-42C8-ACB8-559DF13E2128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A6DE1A-36AD-42C8-ACB8-559DF13E2128}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11A6DE1A-36AD-42C8-ACB8-559DF13E2128}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11A6DE1A-36AD-42C8-ACB8-559DF13E2128}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

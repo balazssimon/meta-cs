@@ -1,0 +1,9 @@
+participant Controller
+participant "s:Switch"
+participant "currentTarget:Carrier"
+participant "package:Package"
+
+Controller->+"s:Switch": Step()
+	"s:Switch"->+"currentTarget:Carrier": Accept(package)
+	"currentTarget:Carrier"-->>-"s:Switch":		
+"s:Switch"-->>-Controller:

@@ -1,0 +1,81 @@
+﻿namespace Xsd10.Hello = hw:"http://www.hello.org/test"
+{
+	struct Complex
+	{
+		double Re;
+		double Im;
+	}
+
+	struct StringNulls
+	{
+		string String;
+		string? NullString;
+		string[] StringArray;
+		string[]? StringNullArray;
+		string?[] NullStringArray;
+		string?[]? NullStringNullArray;
+		[Element(wrapped=true)]
+		string[] WrappedStringArray;
+		[Element(wrapped=true)]
+		string[]? WrappedStringNullArray;
+		[Element(wrapped=true)]
+		string?[] WrappedNullStringArray;
+		[Element(wrapped=true)]
+		string?[]? WrappedNullStringNullArray;
+	}
+
+	struct LongNulls
+	{
+		long Long;
+		long? NullLong;
+		long[] LongArray;
+		long?[] NullLongArray;
+		long[]? LongNullArray;
+		long?[]? NullLongNullArray;
+		[Element(wrapped=true)]
+		long[] WrappedLongArray;
+		[Element(wrapped=true)]
+		long?[] WrappedNullLongArray;
+		[Element(wrapped=true)]
+		long[]? WrappedLongNullArray;
+		[Element(wrapped=true)]
+		long?[]? WrappedNullLongNullArray;
+	}
+
+	struct ByteNulls
+	{
+		byte Byte;
+		byte? NullByte;
+		byte[] ByteArray;
+		byte?[] NullByteArray;
+		byte[]? ByteNullArray;
+		byte?[]? NullByteNullArray;
+		[Element(wrapped=true)]
+		byte[] WrappedByteArray;
+		[Element(wrapped=true)]
+		byte?[] WrappedNullByteArray;
+		[Element(wrapped=true)]
+		byte[]? WrappedByteNullArray;
+		[Element(wrapped=true)]
+		byte?[]? WrappedNullByteNullArray;
+	}
+
+	struct ComplexNulls
+	{
+		Complex Complex;
+		Complex? NullComplex;
+		Complex[] ComplexArray;
+		Complex[]? ComplexNullArray;
+		Complex?[] NullComplexArray;
+		Complex?[]? NullComplexNullArray;
+		[Element(wrapped=true)]
+		Complex[] WrappedComplexArray;
+		[Element(wrapped=true)]
+		Complex[]? WrappedComplexNullArray;
+		[Element(wrapped=true)]
+		Complex?[] WrappedNullComplexArray;
+		[Element(wrapped=true)]
+		Complex?[]? WrappedNullComplexNullArray;
+	}
+
+}

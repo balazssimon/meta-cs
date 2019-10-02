@@ -1,0 +1,49 @@
+title Authentication Sequence
+
+participant A
+participant B
+
+Alice->Bob: Authentication Request->aa:aab
+note right of Bob: Bob thinks about it
+Bob->Alice: Authentication Response
+
+A-> *B: text
+B->A: text
+B-->A: text
+B->>A: text
+B-->>A: text
+destroy B
+
+alt text1
+    A->B: "text"
+else text2
+    A->B: text
+end
+
+opt text
+    A->B: text
+end
+
+loop text
+    A->B: text
+end
+
+title Authentication Sequence2
+
+A->A: text
+
+note over A,B: text1
+note left of A: text2
+note right of A
+    multiline
+    text
+end note a
+
+
+A->ref over B: input
+    text
+end ref -> A: output
+
+ref over B: input
+    text
+end ref

@@ -1,0 +1,18 @@
+participant I
+participant "ot:OutgoingTruck"
+participant "p:Package"
+participant "Player"
+
+I->+"ot:OutgoingTruck": Accept(p)
+	"ot:OutgoingTruck"->+"p:Package": GetColor()
+	"p:Package"-->>-"ot:OutgoingTruck": color
+	alt color = expectedColor
+		"ot:OutgoingTruck"->+"Player": IncreasePoints()
+		"Player"-->>-"ot:OutgoingTruck":
+	else else
+		"ot:OutgoingTruck"->+"Player": DecreasePoints()
+		"Player"-->>-"ot:OutgoingTruck":
+	end
+	"ot:OutgoingTruck"->+"p:Package": SetCarrier(null)
+	"p:Package"-->>-"ot:OutgoingTruck":
+"ot:OutgoingTruck"-->>-I:

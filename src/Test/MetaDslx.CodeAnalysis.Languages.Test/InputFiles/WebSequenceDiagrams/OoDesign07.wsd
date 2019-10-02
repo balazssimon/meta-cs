@@ -1,0 +1,20 @@
+title Half-sync-half-async: async->sync
+
+participant EventSource
+participant AsyncService
+participant "t:Task"
+participant Queue
+participant SyncService
+
+EventSource->>+AsyncService: Notify()
+AsyncService->+EventSource: Get()
+EventSource-->>-AsyncService: result
+AsyncService-->>*"t:Task": <<create>>(result)
+AsyncService->+Queue: Enqueue(t)
+Queue->>+SyncService: Notify()
+Queue-->>-AsyncService:
+deactivate AsyncService
+SyncService->+Queue: Dequeue()
+Queue-->>-SyncService: t
+
+SyncService->+SyncService: Process(t)
