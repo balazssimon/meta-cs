@@ -18,7 +18,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
             Assert.Equal(174, modelSymbols.Count);
         }
 
-        [Fact]
+
+        [Fact(Skip = "TODO")]
         public void HelloWorldTest()
         {
             var comp = Compile("HelloWorld");
