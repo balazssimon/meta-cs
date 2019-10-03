@@ -8,15 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Antlr4Roslyn Remove="InputFiles\Meta\**" />
-    <Compile Remove="InputFiles\Meta\**" />
-    <EmbeddedResource Remove="InputFiles\Meta\**" />
-    <MetaGenerator Remove="InputFiles\Meta\**" />
-    <MetaModel Remove="InputFiles\Meta\**" />
-    <None Remove="InputFiles\Meta\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Antlr4.Runtime" Version="$(Antlr4Version)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNetDskTestVersion)" />
     <PackageReference Include="xunit" Version="$(XUnitVersion)" />
@@ -40,6 +31,15 @@
   <ItemGroup>
     <Folder Include="Languages\WebSequenceDiagrams\" />
     <Folder Include="Languages\Soal\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4Roslyn Update="Languages\RailDsl\Syntax\RailDslLexer.ag4">
+      <CustomToolNamespace>RailDsl.Syntax</CustomToolNamespace>
+    </Antlr4Roslyn>
+    <Antlr4Roslyn Update="Languages\RailDsl\Syntax\RailDslParser.ag4">
+      <CustomToolNamespace>RailDsl.Syntax</CustomToolNamespace>
+    </Antlr4Roslyn>
   </ItemGroup>
 
 </Project>

@@ -1068,6 +1068,16 @@ namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
                 this.lastTokenOrTrivia = null;
             }
 			
+            private GreenNode VisitTerminal(IToken token, [Properties.LanguageName]SyntaxKind kind)
+            {
+                return this.syntaxParser.VisitTerminal(token, kind, ref this.lastTokenOrTrivia);
+            }
+
+            public GreenNode VisitTerminal(IToken token)
+            {
+                return this.VisitTerminal(token, null);
+            }
+			
             private GreenNode VisitTerminal(ITerminalNode node, [Properties.LanguageName]SyntaxKind kind)
             {
                 return this.syntaxParser.VisitTerminal(node, kind, ref this.lastTokenOrTrivia);
@@ -4670,25 +4680,25 @@ function string GetDeclarationTreeBuilderVisitElement(Antlr4ParserRule rule, Ant
 	end if
 	loop (annot:elem.Annotations.Annotations.Reverse())
 		if (annot.Name == MetaCompilerAnnotationInfo.Identifier)
-			body = GenerateDeclarationTreeBuilderIdentifier(annot, "node."+elem.RedName(), body);
+			body = GenerateDeclarationTreeBuilderIdentifier(annot, name, body);
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.Qualifier)
-			body = GenerateDeclarationTreeBuilderQualifier(annot, "node."+elem.RedName(), body);
+			body = GenerateDeclarationTreeBuilderQualifier(annot, name, body);
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.Name)
-			body = GenerateDeclarationTreeBuilderName(annot, "node."+elem.RedName(), body);
+			body = GenerateDeclarationTreeBuilderName(annot, name, body);
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.Scope)
-			body = GenerateDeclarationTreeBuilderScope(annot, "node."+elem.RedName(), body);
+			body = GenerateDeclarationTreeBuilderScope(annot, name, body);
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.SymbolDef)
-			body = GenerateDeclarationTreeBuilderSymbolDef(annot, "node."+elem.RedName(), body);
+			body = GenerateDeclarationTreeBuilderSymbolDef(annot, name, body);
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.SymbolUse)
-			body = GenerateDeclarationTreeBuilderSymbolUse(annot, "node."+elem.RedName(), body);
+			body = GenerateDeclarationTreeBuilderSymbolUse(annot, name, body);
 		end if
 		if (annot.Name == MetaCompilerAnnotationInfo.Property && !annot.HasProperty("value"))
-			body = GenerateDeclarationTreeBuilderProperty(annot, "node."+elem.RedName(), body);
+			body = GenerateDeclarationTreeBuilderProperty(annot, name, body);
 		end if
 	end loop
 	return body;
@@ -5120,7 +5130,11 @@ var childBoundNodesOf[elem.RedName()] = ArrayBuilder<object>.GetInstance();
 BoundNode bound[elem.RedName()];
 	[string children = "childBoundNodesOf"+elem.RedName()+".ToImmutableAndFree()"]
 	[loop (annot:elem.Annotations.BoundNodeAnnotations.Reverse())]
+		[if (elem.IsList)]
+bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: (LanguageSyntaxNode)node.[elem.RedName()].Node, hasErrors: false);
+		[else]
 bound[elem.RedName()] = this.CreateBound[annot.Name](this.BoundTree, [children][annot.GetAnnotationParams()], syntax: node.[elem.RedName()], hasErrors: false);
+		[end if]
 	[children = "ImmutableArray.Create<object>(bound"+elem.RedName()+")"]
 	[end loop]
 [childBoundNodesName].Add(bound[elem.RedName()]);

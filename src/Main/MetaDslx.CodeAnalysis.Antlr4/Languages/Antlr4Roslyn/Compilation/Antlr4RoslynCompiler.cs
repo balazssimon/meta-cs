@@ -1290,7 +1290,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 for (int j = 0; j < elements.Count; j++)
                 {
                     if (j == i || elements[j].IsBlock) continue;
-                    if (elements[j].Name == elements[i].Name)
+                    if (elements[j].Name == elements[i].Name || elements[j].Type == elements[i].Name)
                     {
                         renameNeeded = true;
                         break;

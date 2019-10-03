@@ -1,0 +1,330 @@
+﻿parser grammar RailDslParser;
+
+options
+{
+    tokenVocab = RailDslLexer; 
+	generateCompiler=true;
+}
+
+main: station EOF;
+
+$SymbolDef(Station)
+station: KStation name TOpenBrace $Property(Declarations) declaration* TCloseBrace;
+
+declaration:
+	vertex |
+	track |
+	trackObject |
+	trainRoute |
+	train
+;
+
+trackObject:
+	segment |
+	point
+;
+
+$Property(name=Declarations,owner=CurrentScope)
+$SymbolDef(symbolType=Vertex,merge=true)
+vertexRef : name;
+
+$SymbolDef(symbolType=Vertex,merge=true)
+vertex:
+	innerVertex |
+	trackEnd |
+	stationBorder
+;
+
+innerVertex: KVertex name TSemicolon;
+
+$Property(Kind)
+$Value(VertexKind.TrackEnd)
+trackEnd: KTrack KEnd name TSemicolon;
+
+$Property(Kind)
+$Value(VertexKind.StationBorder)
+stationBorder: KStation KBorder name TSemicolon;
+
+$SymbolDef(Segment)
+segment: KSegment (name TColon)? $Property(Start) start=vertexRef TArrow $Property(End) end=vertexRef (TOpenParen segmentProperties? TCloseParen)? segmentBody;
+segmentProperties : segmentProperty (TComma segmentProperty)*;
+segmentBody 
+	: TSemicolon #emptySegmentBody
+	| TOpenBrace $Property(Objects) segmentObject* TCloseBrace #nonEmptySegmentBody
+	;
+
+segmentProperty: 
+	lengthProperty |
+	speedLimitProperty |
+	errorProperty
+;
+
+$Property(Length)
+lengthProperty: KLength TAssign numberLiteral;
+$Property(SpeedLimit)
+speedLimitProperty: KSpeedLimit TAssign speedLimit;
+speedLimit
+	: $Value(SpeedLimit.Stop) TStop 
+	| $Value(SpeedLimit.Speed40) TSpeed40 
+	| $Value(SpeedLimit.Speed80) TSpeed80 
+	| $Value(SpeedLimit.Speed120) TSpeed120 
+	| $Value(SpeedLimit.Max) TMax;
+$Property(Error)
+errorProperty: KError TAssign booleanLiteral;
+$Property(Closed)
+closedProperty: KClosed TAssign booleanLiteral;
+$Property(Active)
+activeProperty: KActive TAssign booleanLiteral;
+$Property(Locked)
+lockedProperty: KLocked TAssign booleanLiteral;
+$Property(Position)
+positionProperty: KPosition TAssign position;
+$Property(Speed)
+speedProperty: KSpeed TAssign numberLiteral;
+$Property(Acceleration)
+accelerationProperty: KAcceleration TAssign numberLiteral;
+
+$SymbolDef(SegmentPosition)
+position: positionAt? side? orientation?;
+
+positionAt
+	: $Property(name=AtStart,value=true) KStart #positionAtStart
+	| $Property(name=AtEnd,value=true) KEnd   #positionAtEnd
+	| $Property(Position) numberLiteral #customPosition
+	;
+
+$Property(Side)
+$EnumValue(Side)
+side: KLeft | KRight | KBoth;
+
+$Property(Orientation)
+$EnumValue(Orientation)
+orientation : KForwards | KBackwards;
+
+segmentObject:
+	signal |
+	levelCrossing |
+	derailer |
+	platform
+;
+
+$SymbolDef(Derailer)
+derailer:
+	KDerailer name?  (TOpenParen derailerProperties? TCloseParen)? TSemicolon
+;
+derailerProperties : derailerProperty (TComma derailerProperty)*;
+derailerProperty:
+	positionProperty |
+	speedLimitProperty |
+	activeProperty |
+	errorProperty
+;
+
+$SymbolDef(LevelCrossing)
+levelCrossing:
+	KLevel KCrossing name? (TOpenParen levelCrossingProperties? TCloseParen)? TSemicolon
+;
+levelCrossingProperties : levelCrossingProperty (TComma levelCrossingProperty)*;
+levelCrossingProperty:
+	positionProperty |
+	speedLimitProperty |
+	closedProperty |
+	errorProperty
+;
+
+$SymbolDef(Signal)
+signal:
+	KSignal signalHeader? signalKinds TSemicolon
+;
+signalHeader: name (TOpenParen signalProperties? TCloseParen)? TColon;
+signalProperties : signalProperty (TComma signalProperty)*;
+signalProperty:
+	positionProperty |
+	speedLimitProperty |
+	errorProperty
+;
+
+signalKinds : signalKind (TComma signalKind)*;
+signalKind
+	: $Property(name=Main,value=true) KMain #mainSignalKind
+	| $Property(name=Shunting,value=true) KShunting #shuntingSignalKind
+	| KDistant KFor $Property(DistantFor) $SymbolUse(Signal) identifier #distantSignalKind
+;
+
+$SymbolDef(Platform)
+platform:
+	KPlatform name (TOpenParen platformProperties? TCloseParen)?  TSemicolon
+;
+platformProperties : platformProperty (TComma platformProperty)*;
+platformProperty:
+	positionProperty |
+	speedLimitProperty |
+	lengthProperty |
+	errorProperty
+;
+
+$SymbolDef(Point)
+point:
+	$Property(name=Kind,value=PointKind.FixedCrossing) fixedCrossing |
+	$Property(name=Kind,value=PointKind.SimplePoint) simplePoint |
+	$Property(name=Kind,value=PointKind.DoublePoint) doublePoint |
+	$Property(name=Kind,value=PointKind.SingleSlipPoint) singleSlipPoint |
+	$Property(name=Kind,value=PointKind.DoubleSlipPoint) doubleSlipPoint
+;
+
+fixedCrossing:
+	KCrossing (name? TColon)? start1=inputVertexRef slash1=TSlash start2=inputVertexRef TArrow end1=outputVertexRef slash2=TSlash end2=outputVertexRef TSemicolon
+;
+
+simplePoint:
+	KSimple KPoint pointHeader? start1=inputVertexRef TArrow end1=outputVertexRef selectedStart1=selectedEnd? slash1=TSlash end2=outputVertexRef selectedEnd1=selectedEnd? TSemicolon
+;
+
+doublePoint:
+	KDouble KPoint pointHeader? start1=inputVertexRef TArrow end1=outputVertexRef selectedEnd1=selectedEnd? slash1=TSlash end2=outputVertexRef selectedEnd2=selectedEnd? slash2=TSlash end3=outputVertexRef selectedEnd3=selectedEnd? TSemicolon
+;
+
+singleSlipPoint:
+	KSingle KSlip KPoint pointHeader? start1=inputVertexRef selectedStart1=selectedEnd? slash1=TSlash start2=inputVertexRef selectedStart2=selectedEnd? TArrow end1=outputVertexRef selectedEnd1=selectedEnd? slash2=TSlash end2=outputVertexRef selectedEnd2=selectedEnd? TSemicolon
+;
+
+doubleSlipPoint:
+	KDouble KSlip KPoint pointHeader? start1=inputVertexRef selectedStart1=selectedEnd? slash1=TSlash start2=inputVertexRef selectedStart2=selectedEnd? TArrow end1=outputVertexRef selectedEnd1=selectedEnd? slash2=TSlash end2=outputVertexRef selectedEnd2=selectedEnd? TSemicolon
+;
+pointHeader: name? (TOpenParen pointProperties? TCloseParen)? TColon;
+pointProperties: pointProperty (TComma pointProperty)*;
+pointProperty:
+	lengthProperty |
+	speedLimitProperty |
+	lockedProperty |
+	errorProperty
+;
+inputVertexRef : $Property(Inputs) vertexRef;
+outputVertexRef : $Property(Outputs) vertexRef;
+$SelectedEndPoint
+selectedEnd : TAsterisk;
+
+$SymbolDef(Track)
+track:
+	KTrack (name TColon)? $Property(Elements) trackObjectRef (TComma $Property(Elements) trackObjectRef)* TSemicolon
+;
+trackObjectRef : $SymbolUse(TrackObject) identifier;
+
+$SymbolDef(Train)
+train:
+	KTrain trainHeader? trainBody
+;
+trainHeader: name? (TOpenParen trainProperties? TCloseParen);
+trainProperties: trainProperty (TComma trainProperty)*;
+trainProperty:
+	lengthProperty |
+	speedProperty |
+	accelerationProperty
+;
+trainBody 
+	: TSemicolon #emptyTrainBody
+	| TOpenBrace $Property(Segments) trainSegment* TCloseBrace #nonEmptyTrainBody
+	;
+
+$SymbolDef(TrainSegment)
+trainSegment:
+	KSegment trackObjectRef (TOpenParen trainSegmentProperties? TCloseParen)? TSemicolon
+;
+trainSegmentProperties: trainSegmentProperty (TComma trainSegmentProperty)*;
+trainSegmentProperty:
+	positionProperty |
+	lengthProperty
+;
+
+$SymbolDef(TrainRoute)
+trainRoute: $Property(name=Kind,value=TrainRouteKind.Shunting) KShunting? KTrain KRoute trainRouteHeader trainRouteBody;
+trainRouteHeader: name (TOpenParen trainRouteProperties? TCloseParen)? TColon;
+trainRouteProperties: trainRouteProperty (TComma trainRouteProperty)*;
+trainRouteProperty:
+	lockedProperty
+;
+trainRouteBody : TOpenBrace trainRouteStart trainRouteEnd trainRouteObject* TCloseBrace;
+
+$Property(StartSignal)
+trainRouteStart:
+	KStart KSignal $SymbolUse(Signal) identifier TSemicolon
+;
+
+$Property(EndSignal)
+trainRouteEnd:
+	KEnd KSignal $SymbolUse(Signal) identifier TSemicolon
+;
+
+trainRouteObject : trainRoutePathObject | trainRouteProtectionObject;
+
+$Property(Path)
+trainRoutePathObject:
+	trainRoutePoint |
+	trainRouteSegment
+;
+
+$Property(ProtectionObjects)
+trainRouteProtectionObject
+	: KProtection trainRoutePoint #trainRouteProtectionPoint
+	| KProtection trainRouteSegment #trainRouteProtectionSegment
+;
+
+$SymbolDef(TrainRoutePoint)
+trainRoutePoint:
+	KPoint $Property(OriginalPoint) $SymbolUse(Point) identifier (TOpenParen trainRouteObjectProperties? TCloseParen)? TColon $SelectedEndPoint start=vertexRef TArrow $SelectedEndPoint end=vertexRef TSemicolon
+;
+
+$SymbolDef(TrainRouteSegment)
+trainRouteSegment:
+	KSegment $Property(OriginalSegment) $SymbolUse(Segment) identifier (TOpenParen trainRouteObjectProperties? TCloseParen)? TSemicolon
+;
+
+trainRouteObjectProperties : trainRouteObjectProperty (TComma trainRouteObjectProperty)*;
+
+trainRouteObjectProperty:
+	speedLimitProperty
+;
+
+// Additional rules for lexer:
+
+$Name
+name : identifier;
+
+$Name
+qualifiedName : qualifier;
+
+$Qualifier
+qualifier : identifier (TDot identifier)*;
+
+// Identifiers
+$Identifier
+identifier : NormalIdentifier | TStop | TMax;
+
+// Literals
+literal 
+    : nullLiteral
+	| booleanLiteral
+	| numberLiteral
+    | stringLiteral
+	;
+
+// Null literal
+$Value
+nullLiteral : KNull;
+
+// Boolean literals
+$Value
+booleanLiteral : KTrue | KFalse;
+
+// Number literals
+numberLiteral : integerLiteral | decimalLiteral | scientificLiteral;
+$Value
+integerLiteral : LInteger | TSpeed40 | TSpeed80 | TSpeed120;
+$Value
+decimalLiteral : LDecimal;
+$Value
+scientificLiteral : LScientific;
+
+// String literals
+$Value
+stringLiteral : LRegularString;

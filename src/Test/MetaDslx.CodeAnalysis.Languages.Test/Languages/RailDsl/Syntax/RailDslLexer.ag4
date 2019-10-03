@@ -1,0 +1,150 @@
+﻿lexer grammar RailDslLexer;
+
+options
+{
+	generateCompiler=true;
+}
+
+channels
+{
+	COMMENT,
+	WHITESPACE
+}
+
+// Keywords
+$Token(first=KStation,last=KFalse,kind=ReservedKeyword)
+KStation : 'station';
+KVertex : 'vertex';
+KTrack : 'track';
+KEnd : 'end';
+KBorder : 'border';
+KSegment : 'segment';
+KTrain : 'train';
+KLength : 'length';
+KSpeedLimit : 'speedLimit';
+KError : 'error';
+KClosed : 'closed';
+KActive : 'active';
+KLocked : 'locked';
+KPosition : 'position';
+KSpeed : 'speed';
+KAcceleration : 'acceleration';
+KStart : 'start';
+KForwards : 'forwards';
+KBackwards : 'backwards';
+KLeft : 'left';
+KRight : 'right';
+KBoth : 'both';
+KDerailer : 'derailer';
+KLevel : 'level';
+KCrossing : 'crossing';
+KSignal : 'signal';
+KMain : 'main';
+KShunting : 'shunting';
+KDistant : 'distant';
+KFor : 'for';
+KPlatform : 'platform';
+KPoint : 'point';
+KSimple : 'simple';
+KSingle : 'single';
+KDouble : 'double';
+KSlip : 'slip';
+KProtection : 'protection';
+KRoute : 'route';
+KNull : 'null';
+KTrue : 'true';
+KFalse : 'false';
+
+
+// Tokens
+TSemicolon : ';';
+TColon : ':';
+TDot : '.';
+$Token(defaultSeparator=true)
+TComma : ',';
+TAssign : '=';
+TOpenParen : '(';
+TCloseParen : ')';
+TOpenBracket : '[';
+TCloseBracket : ']';
+TOpenBrace : '{';
+TCloseBrace : '}';
+TLessThan : '<';
+TGreaterThan : '>';
+TQuestion : '?';
+TArrow : '->';
+TSlash : '/';
+TAsterisk : '*';
+TStop : 'Stop';
+TSpeed40 : '40';
+TSpeed80 : '80';
+TSpeed120 : '120';
+TMax : 'Max';
+
+$Token(kind=Identifier, defaultIdentifier=true)
+NormalIdentifier : IdentifierBegin IdentifierCharacter*;
+fragment IdentifierBegin : [a-zA-Z_];
+fragment IdentifierCharacter : [a-zA-Z0-9_];
+fragment IdentifierGeneralBegin : [a-zA-Z_];
+fragment IdentifierGeneralCharacter : [a-zA-Z0-9_];
+
+$Token(kind=Number)
+LInteger : DecimalDigits | Hexadecimal;
+$Token(kind=Number)
+LDecimal : DecimalDigit+ '.' DecimalDigit+;
+$Token(kind=Number)
+LScientific : LDecimal [eE] Sign? DecimalDigit+;
+fragment DecimalDigits : DecimalDigit+;
+fragment DecimalDigit : [0-9];
+fragment Sign : '+' | '-';
+fragment Hexadecimal : ('0x'|'0X') HexDigit*;
+fragment HexDigit : [0-9a-fA-F];
+
+$Token(kind=String)
+LRegularString
+    : '"' DoubleQuoteTextCharacter* '"'
+    | '\'' SingleQuoteTextCharacter* '\'';
+
+$Token(kind=String)
+LDoubleQuoteVerbatimString : '@"' DoubleQuoteTextVerbatimCharacter* '"';
+$Token(kind=String)
+LSingleQuoteVerbatimString : '@\'' SingleQuoteTextVerbatimCharacter* '\'';
+
+fragment SingleQuoteTextCharacter 
+    : SingleQuoteTextSimple | CharacterEscapeSimple | CharacterEscapeUnicode;
+fragment SingleQuoteTextSimple 
+    : ~('\'' | '\\' | '\u000A' | '\u000D' | '\u0085' | '\u2028' | '\u2029');
+fragment SingleQuoteTextVerbatimCharacter 
+    : ~'\'' | SingleQuoteTextVerbatimCharacterEscape;
+fragment SingleQuoteTextVerbatimCharacterEscape : '\'' '\'';
+fragment SingleQuoteTextVerbatimCharacters : SingleQuoteTextVerbatimCharacter+;
+fragment DoubleQuoteTextCharacter 
+    : DoubleQuoteTextSimple | CharacterEscapeSimple | CharacterEscapeUnicode;
+fragment DoubleQuoteTextSimple 
+    : ~('"' | '\\' | '\u000A' | '\u000D' | '\u0085' | '\u2028' | '\u2029');
+fragment DoubleQuoteTextVerbatimCharacter 
+    : ~'"' | DoubleQuoteTextVerbatimCharacterEscape;
+fragment DoubleQuoteTextVerbatimCharacterEscape : '"' '"';
+fragment DoubleQuoteTextVerbatimCharacters : DoubleQuoteTextVerbatimCharacter+;
+fragment CharacterEscapeSimple : '\\' CharacterEscapeSimpleCharacter;
+fragment CharacterEscapeSimpleCharacter 
+    : '\'' | '"' | '\\' | '0' | 'a' | 'b' | 'f' | 'n' | 'r' | 't' | 'v'; 
+fragment CharacterEscapeUnicode
+    : '\\u' HexDigit HexDigit HexDigit HexDigit
+    | '\\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit;
+
+// Whitespace and comments
+$Token(kind=Whitespace)
+LUtf8Bom : [\u00EF][\u00BB][\u00BF] -> channel(WHITESPACE);
+$Token(kind=Whitespace, defaultWhitespace=true)
+LWhiteSpace : [\u0020\u0009\u000B\u000C\u00A0\u001A]+ -> channel(WHITESPACE);
+$Token(kind=Whitespace, endOfLine=true, defaultEndOfLine=true)
+LCrLf : '\r'? '\n' -> channel(WHITESPACE);
+$Token(kind=Whitespace, endOfLine=true)
+LLineEnd : [\u0085\u2028\u2029] -> channel(WHITESPACE);
+
+$Token(kind=GeneralComment)
+LSingleLineComment : '//' ~[\r\n]* -> channel(COMMENT);
+$Token(kind=GeneralComment)
+LMultilineComment : '/*' .*? '*/' -> channel(COMMENT);
+
