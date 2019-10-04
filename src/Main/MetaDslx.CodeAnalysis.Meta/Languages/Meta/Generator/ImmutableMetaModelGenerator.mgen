@@ -629,7 +629,7 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	[end loop]
 	}
 	^
-	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate(global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
+	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate([cls.CSharpName(model, ClassKind.Builder)] _this, global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
 	{
 	}
 	^
@@ -990,7 +990,7 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)](this);
 	}
 	^
-	protected override void MValidate(global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
+	public override void MValidate(global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
 	{
 		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)]_MValidate(this, diagnostics);
 	}

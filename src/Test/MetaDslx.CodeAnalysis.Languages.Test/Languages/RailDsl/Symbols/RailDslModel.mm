@@ -14,7 +14,7 @@
 		Main,
 		Shunting
 	}
-
+	
 	enum PointKind
 	{
 		FixedCrossing,

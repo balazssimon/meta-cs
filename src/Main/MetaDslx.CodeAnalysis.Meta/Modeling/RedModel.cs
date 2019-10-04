@@ -2395,6 +2395,23 @@ namespace MetaDslx.Modeling
             }
         }
 
+        public void PurgeWeakSymbols()
+        {
+            ModelUpdateContext ctx = null;
+            try
+            {
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.PurgeWeakSymbols();
+                } while (!this.EndUpdate(ctx));
+            }
+            finally
+            {
+                this.FinalizeUpdate(ctx);
+            }
+        }
+
         public override string ToString()
         {
             return this.Green.ToString();
@@ -2922,6 +2939,23 @@ namespace MetaDslx.Modeling
             foreach (var model in this.Models)
             {
                 model.Validate(diagnostics);
+            }
+        }
+
+        public void PurgeWeakSymbols()
+        {
+            ModelUpdateContext ctx = null;
+            try
+            {
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.PurgeWeakSymbols();
+                } while (!this.EndUpdate(ctx));
+            }
+            finally
+            {
+                this.FinalizeUpdate(ctx);
             }
         }
     }
