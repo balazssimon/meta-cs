@@ -217,7 +217,7 @@ expression
     | condition=expression TQuestion thenBranch=expression TColon elseBranch=expression #conditionalExpression
     | left=expression operator=(TAssign | TAssignPlus | TAssignMinus | TAssignAsterisk | 
                   TAssignSlash | TAssignPercent | TAssignAmp | TAssignPipe |
-                  TAssignHat | TAssignLeftShift | TAssignRightShift) expression #assignmentExpression
+                  TAssignHat | TAssignLeftShift | TAssignRightShift) right=expression #assignmentExpression
     | anonymousFunctionSignature TArrow expression #lambdaExpression;
 
 //*** Common rules:

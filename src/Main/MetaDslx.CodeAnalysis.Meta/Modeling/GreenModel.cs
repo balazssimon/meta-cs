@@ -660,6 +660,21 @@ namespace MetaDslx.Modeling
             return this;
         }
 
+        internal GreenModel PurgeWeakSymbols(HashSet<SymbolId> strongSymbols)
+        {
+            var symbols = this.symbols;
+            var references = this.references;
+            foreach (var id in this.symbols.Keys)
+            {
+                if (!strongSymbols.Contains(id))
+                {
+                    symbols = symbols.Remove(id);
+                    references = references.Remove(id);
+                }
+            }
+            return this.Update(this.name, this.version, symbols, this.strongSymbols, this.lazyProperties, references);
+        }
+
         public override string ToString()
         {
             return this.Name + " (" + this.Version + ")";
@@ -768,6 +783,16 @@ namespace MetaDslx.Modeling
             foreach (var model in this.models.Values)
             {
                 result = result.UpdateModel(model.ReplaceSymbol(sid, targetSid));
+            }
+            return result;
+        }
+
+        internal GreenModelGroup PurgeWeakSymbols(HashSet<SymbolId> strongSymbols)
+        {
+            GreenModelGroup result = this;
+            foreach (var model in this.models.Values)
+            {
+                result = result.UpdateModel(model.PurgeWeakSymbols(strongSymbols));
             }
             return result;
         }
@@ -2677,6 +2702,84 @@ namespace MetaDslx.Modeling
             }
             return SpecializedCollections.EmptyEnumerable<object>();
         }
+
+        public void PurgeWeakSymbols()
+        {
+            if (this.group != null)
+            {
+                var strongSymbols = this.CollectStrongSymbols();
+                this.group = this.group.PurgeWeakSymbols(strongSymbols);
+            }
+            else
+            {
+                if (this.model.StrongSymbols.Count < this.model.Symbols.Count)
+                {
+                    var strongSymbols = this.CollectStrongSymbols();
+                    this.model = this.model.PurgeWeakSymbols(strongSymbols);
+                }
+            }
+        }
+
+        private HashSet<SymbolId> CollectStrongSymbols()
+        {
+            var result = new HashSet<SymbolId>();
+            if (this.group != null)
+            {
+                foreach (var model in this.group.Models.Values)
+                {
+                    result.UnionWith(model.StrongSymbols);
+                }
+                bool repeat = true;
+                while (repeat)
+                {
+                    repeat = false;
+                    foreach (var model in this.group.Models.Values)
+                    {
+                        if (model.StrongSymbols.Count < model.Symbols.Count)
+                        {
+                            repeat = this.CollectStrongSymbols(result, model);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                result.UnionWith(this.model.StrongSymbols);
+                if (this.model.StrongSymbols.Count < this.model.Symbols.Count)
+                {
+                    this.CollectStrongSymbols(result, this.model);
+                }
+            }
+            return result;
+        }
+
+        private bool CollectStrongSymbols(HashSet<SymbolId> strongSymbols, GreenModel model)
+        {
+            Debug.Assert(model.LazyProperties.IsEmpty);
+            Debug.Assert(model.StrongSymbols.Count < model.Symbols.Count);
+            bool result = false;
+            bool repeat = true;
+            while (repeat)
+            {
+                repeat = false;
+                foreach (var refs in model.References)
+                {
+                    if (strongSymbols.Contains(refs.Key)) continue;
+                    foreach (var refSymbolId in refs.Value.Keys)
+                    {
+                        if (strongSymbols.Contains(refSymbolId))
+                        {
+                            repeat = true;
+                            result = true;
+                            strongSymbols.Add(refs.Key);
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
 
         private class ModelRef
         {

@@ -70,6 +70,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.tokens = this.syntaxParser.CommonTokenStream.GetTokens();
                 this.lastTokenOrTrivia = null;
             }
+            private GreenNode VisitTerminal(IToken token, MetaSyntaxKind kind)
+            {
+                return this.syntaxParser.VisitTerminal(token, kind, ref this.lastTokenOrTrivia);
+            }
+            public GreenNode VisitTerminal(IToken token)
+            {
+                return this.VisitTerminal(token, null);
+            }
             private GreenNode VisitTerminal(ITerminalNode node, MetaSyntaxKind kind)
             {
                 return this.syntaxParser.VisitTerminal(node, kind, ref this.lastTokenOrTrivia);

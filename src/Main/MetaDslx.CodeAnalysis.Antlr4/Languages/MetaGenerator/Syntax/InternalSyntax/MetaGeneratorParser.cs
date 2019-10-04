@@ -6996,6 +6996,7 @@ public partial class MetaGeneratorParser : Parser {
 	public partial class AssignmentExpressionContext : ExpressionContext {
 		public ExpressionContext left;
 		public IToken @operator;
+		public ExpressionContext right;
 		public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
 		}
@@ -7489,7 +7490,7 @@ public partial class MetaGeneratorParser : Parser {
 							_errHandler.ReportMatch(this);
 							Consume();
 						}
-						State = 899; expression(3);
+						State = 899; ((AssignmentExpressionContext)_localctx).right = expression(3);
 						}
 						break;
 
