@@ -628,6 +628,11 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 		[end if]
 	[end loop]
 	}
+	^
+	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate(global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
+	{
+	}
+	^
 	[loop(cls->op:Operations)]
 	^
 	/// <summary>
@@ -983,6 +988,11 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 	protected override void MInit()
 	{
 		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)](this);
+	}
+	^
+	protected override void MValidate(global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
+	{
+		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[cls.CSharpName(model, ClassKind.Immutable)]_MValidate(this, diagnostics);
 	}
 	^
 	public override [metaNs]MetaModel MMetaModel

@@ -63,6 +63,8 @@ namespace MetaDslx.Modeling
         void MSetOrAddLazy(ModelProperty property, LazyValue value);
         void MMakeCreated();
 
+        void MValidate(DiagnosticBag diagnostics);
+
         ImmutableSymbol ToImmutable();
         ImmutableSymbol ToImmutable(ImmutableModel immutableModel);
     }
@@ -642,9 +644,9 @@ namespace MetaDslx.Modeling
             }
         }
 
-        protected virtual void MInit()
-        {
-        }
+        protected abstract void MInit();
+
+        public virtual void MValidate(DiagnosticBag diagnostics) { }
 
         internal void MCallInit()
         {
@@ -2385,6 +2387,14 @@ namespace MetaDslx.Modeling
             }
         }
 
+        public void Validate(DiagnosticBag diagnostics)
+        {
+            foreach(var symbol in this.Symbols)
+            {
+                symbol.MValidate(diagnostics);
+            }
+        }
+
         public override string ToString()
         {
             return this.Green.ToString();
@@ -2904,6 +2914,14 @@ namespace MetaDslx.Modeling
             finally
             {
                 this.FinalizeUpdate(ctx);
+            }
+        }
+
+        public void Validate(DiagnosticBag diagnostics)
+        {
+            foreach (var model in this.Models)
+            {
+                model.Validate(diagnostics);
             }
         }
     }
