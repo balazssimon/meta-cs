@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetaDslx.Modeling.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -1076,7 +1077,7 @@ namespace MetaDslx.Modeling
 
         public override void AddLazy(Func<T> item)
         {
-            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, LazyValue.CreateSingle((Func<object>)(object)item), this.symbol.MIsBeingCreated);
+            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, LazyValue.Create((Func<object>)(object)item), this.symbol.MIsBeingCreated);
         }
 
         public override void AddRangeLazy(IEnumerable<Func<T>> items)
@@ -1499,7 +1500,7 @@ namespace MetaDslx.Modeling
 
         public override void AddLazy(Func<T> item)
         {
-            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, LazyValue.CreateSingle((Func<object>)(object)item), this.symbol.MIsBeingCreated);
+            this.symbol.MModel.AddLazyItem(this.symbol.MId, this.property, LazyValue.Create((Func<object>)(object)item), this.symbol.MIsBeingCreated);
         }
 
         public override void AddRangeLazy(IEnumerable<Func<T>> items)

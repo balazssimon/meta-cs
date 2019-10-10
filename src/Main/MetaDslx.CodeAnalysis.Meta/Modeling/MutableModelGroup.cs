@@ -1,0 +1,403 @@
+﻿using MetaDslx.Modeling.Internal;
+using Microsoft.CodeAnalysis;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading;
+
+namespace MetaDslx.Modeling
+{
+    public sealed class MutableModelGroup : IModelGroup
+    {
+        private GreenModelGroup green;
+        private ThreadLocal<GreenModelUpdater> updater;
+        private WeakReference<ImmutableModelGroup> immutableModelGroup;
+        private ConditionalWeakTable<ModelId, MutableModel> models;
+        private ConditionalWeakTable<SymbolId, MutableSymbol> symbols;
+
+        public MutableModelGroup()
+            : this(GreenModelGroup.Empty, null)
+        {
+        }
+
+        internal MutableModelGroup(GreenModelGroup green, ImmutableModelGroup immutableModelGroup)
+        {
+            this.green = green;
+            this.updater = new ThreadLocal<GreenModelUpdater>();
+            this.immutableModelGroup = new WeakReference<ImmutableModelGroup>(immutableModelGroup);
+            this.models = new ConditionalWeakTable<ModelId, MutableModel>();
+            this.symbols = new ConditionalWeakTable<SymbolId, MutableSymbol>();
+        }
+
+        internal GreenModelGroup Green
+        {
+            get
+            {
+                GreenModelUpdater updater = this.updater.Value;
+                if (updater != null) return updater.Group;
+                else return this.green;
+            }
+        }
+        internal GreenModelUpdater Updater
+        {
+            get
+            {
+                return this.updater.Value;
+            }
+        }
+        public IEnumerable<MutableModel> References
+        {
+            get
+            {
+                foreach (var mid in this.Green.References.Keys)
+                {
+                    yield return this.GetExistingReference(mid);
+                }
+            }
+        }
+        public IEnumerable<MutableModel> Models
+        {
+            get
+            {
+                foreach (var mid in this.Green.Models.Keys)
+                {
+                    yield return this.GetExistingModel(mid);
+                }
+            }
+        }
+
+        IEnumerable<IModel> IModelGroup.Models => this.Models;
+
+        private ImmutableModel GetImmutableReference(ModelId mid)
+        {
+            ImmutableModelGroup result;
+            if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
+            {
+                return result.GetReference(mid);
+            }
+            return null;
+        }
+
+        private ImmutableModel GetImmutableModel(ModelId mid)
+        {
+            ImmutableModelGroup result;
+            if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
+            {
+                return result.GetModel(mid);
+            }
+            return null;
+        }
+
+        private MutableModel GetExistingReference(ModelId mid)
+        {
+            return this.models.GetValue(mid, key => new MutableModel(key, this, true, null));
+        }
+
+        private MutableModel GetExistingModel(ModelId mid)
+        {
+            return this.models.GetValue(mid, key => new MutableModel(key, this, false, null));
+        }
+
+        public MutableModel GetReference(ModelId mid)
+        {
+            if (mid == null || !this.Green.References.ContainsKey(mid)) return null;
+            return this.GetExistingReference(mid);
+        }
+
+        public MutableModel GetModel(ModelId mid)
+        {
+            if (mid == null || !this.Green.Models.ContainsKey(mid)) return null;
+            return this.GetExistingModel(mid);
+        }
+
+
+        internal MutableSymbol GetExistingReferenceSymbol(ModelId mid, SymbolId sid)
+        {
+            return this.symbols.GetValue(sid, key => key.CreateMutable(this.GetExistingReference(mid), false));
+        }
+
+        internal MutableSymbol GetExistingModelSymbol(ModelId mid, SymbolId sid)
+        {
+            return this.symbols.GetValue(sid, key => key.CreateMutable(this.GetExistingModel(mid), false));
+        }
+
+        internal void RegisterSymbol(SymbolId sid, MutableSymbol symbol)
+        {
+            this.symbols.Add(sid, symbol);
+        }
+
+        internal MutableSymbol ResolveSymbol(SymbolId sid)
+        {
+            MutableSymbol result;
+            if (this.symbols.TryGetValue(sid, out result) && result != null)
+            {
+                return result;
+            }
+            foreach (var modelEntry in this.Green.Models)
+            {
+                if (modelEntry.Value.Symbols.ContainsKey(sid))
+                {
+                    return this.GetExistingModelSymbol(modelEntry.Key, sid);
+                }
+            }
+            foreach (var modelEntry in this.Green.References)
+            {
+                if (modelEntry.Value.Symbols.ContainsKey(sid))
+                {
+                    return this.GetExistingReferenceSymbol(modelEntry.Key, sid);
+                }
+            }
+            return null;
+        }
+
+        internal bool ContainsSymbol(SymbolId sid)
+        {
+            if (sid == null) return false;
+            return this.Green.ContainsSymbol(sid);
+        }
+
+        public bool ContainsSymbol(ImmutableSymbol symbol)
+        {
+            if (symbol == null) return false;
+            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).MId);
+        }
+
+        public bool ContainsSymbol(MutableSymbol symbol)
+        {
+            if (symbol == null) return false;
+            return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
+        }
+
+        public void EvaluateLazyValues(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ModelUpdateContext ctx = null;
+            try
+            {
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.EvaluateLazyValues(cancellationToken);
+                } while (!this.EndUpdate(ctx));
+            }
+            finally
+            {
+                this.FinalizeUpdate(ctx);
+            }
+        }
+
+        public ImmutableModelGroup ToImmutable(bool evaluateLazyValues = true, CancellationToken cancellationToken = default)
+        {
+            ImmutableModelGroup result;
+            if (this.immutableModelGroup.TryGetTarget(out result) && result != null && result.Green == this.Green)
+            {
+                return result;
+            }
+            else
+            {
+                if (evaluateLazyValues) this.EvaluateLazyValues(cancellationToken);
+                result = new ImmutableModelGroup(this.Green, this);
+                Interlocked.Exchange(ref this.immutableModelGroup, new WeakReference<ImmutableModelGroup>(result));
+                return result;
+            }
+        }
+
+        internal ModelUpdateContext BeginUpdate()
+        {
+            GreenModelUpdater updater = this.updater.Value;
+            if (updater != null)
+            {
+                return new ModelUpdateContext(false, updater, this.green);
+            }
+            else
+            {
+                GreenModelGroup green = this.green;
+                updater = new GreenModelUpdater(green, this);
+                this.updater.Value = updater;
+                return new ModelUpdateContext(true, updater, green);
+            }
+        }
+
+        internal bool EndUpdate(ModelUpdateContext context)
+        {
+            if (context.NewUpdater)
+            {
+                this.updater.Value = null;
+                return Interlocked.CompareExchange(ref this.green, context.Updater.Group, context.OriginalModelGroup) == context.OriginalModelGroup;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        internal void FinalizeUpdate(ModelUpdateContext context)
+        {
+            if (context != null && context.NewUpdater)
+            {
+                this.updater.Value = null;
+            }
+        }
+
+        private void AddReference(GreenModel reference)
+        {
+            ModelUpdateContext ctx = null;
+            try
+            {
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.AddModelReference(reference);
+                } while (!this.EndUpdate(ctx));
+            }
+            finally
+            {
+                this.FinalizeUpdate(ctx);
+            }
+        }
+
+        public void AddReference(ImmutableModelGroup reference)
+        {
+            GreenModelGroup gmg = reference.Green;
+            foreach (var greenReference in gmg.References)
+            {
+                this.AddReference(greenReference.Value);
+            }
+            foreach (var greenModel in gmg.Models)
+            {
+                this.AddReference(greenModel.Value);
+            }
+        }
+
+        public void AddReference(ImmutableModel reference)
+        {
+            if (reference.ModelGroup != null)
+            {
+                GreenModelGroup gmg = reference.ModelGroup.Green;
+                foreach (var greenReference in gmg.References)
+                {
+                    this.AddReference(greenReference.Value);
+                }
+                foreach (var greenModel in gmg.Models)
+                {
+                    this.AddReference(greenModel.Value);
+                }
+            }
+            else
+            {
+                this.AddReference(reference.Green);
+            }
+        }
+
+        public void AddReference(MutableModelGroup reference)
+        {
+            GreenModelGroup gmg = reference.Green;
+            foreach (var greenReference in gmg.References)
+            {
+                this.AddReference(greenReference.Value);
+            }
+            foreach (var greenModel in gmg.Models)
+            {
+                this.AddReference(greenModel.Value);
+            }
+        }
+
+        public void AddReference(MutableModel reference)
+        {
+            if (reference.ModelGroup != null)
+            {
+                GreenModelGroup gmg = reference.ModelGroup.Green;
+                foreach (var greenReference in gmg.References)
+                {
+                    this.AddReference(greenReference.Value);
+                }
+                foreach (var greenModel in gmg.Models)
+                {
+                    this.AddReference(greenModel.Value);
+                }
+            }
+            else
+            {
+                this.AddReference(reference.Green);
+            }
+        }
+
+        public void AddModel(ImmutableModel model)
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
+
+        public void AddModel(MutableModel model)
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
+
+        public MutableModel CreateModel(string name = null, ModelVersion version = default)
+        {
+            ModelId mid = new ModelId();
+            MutableModel model = new MutableModel(mid, this, false, null);
+            this.models.Add(mid, model);
+            GreenModel greenModel;
+            ModelUpdateContext ctx = null;
+            try
+            {
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    greenModel = ctx.Updater.CreateModel(mid, name, version);
+                } while (!this.EndUpdate(ctx));
+            }
+            finally
+            {
+                this.FinalizeUpdate(ctx);
+            }
+            return model;
+        }
+
+        public void ExecuteTransaction(Action transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
+            ModelUpdateContext ctx = null;
+            try
+            {
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    transaction();
+                } while (!this.EndUpdate(ctx));
+            }
+            finally
+            {
+                this.FinalizeUpdate(ctx);
+            }
+        }
+
+        public void Validate(DiagnosticBag diagnostics)
+        {
+            foreach (var model in this.Models)
+            {
+                model.Validate(diagnostics);
+            }
+        }
+
+        public void PurgeWeakSymbols()
+        {
+            ModelUpdateContext ctx = null;
+            try
+            {
+                do
+                {
+                    ctx = this.BeginUpdate();
+                    ctx.Updater.PurgeWeakSymbols();
+                } while (!this.EndUpdate(ctx));
+            }
+            finally
+            {
+                this.FinalizeUpdate(ctx);
+            }
+        }
+    }
+
+}
