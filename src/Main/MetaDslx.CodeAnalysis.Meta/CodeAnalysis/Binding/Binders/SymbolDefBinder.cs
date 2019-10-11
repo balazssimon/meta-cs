@@ -15,16 +15,16 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class SymbolDefBinder : Binder
     {
-        private readonly Type _symbolType;
-        private readonly Type _nestingSymbolType;
+        private readonly Type _type;
+        private readonly Type _nestingType;
         private ImmutableArray<DeclaredSymbol> _declaredSymbols;
         private readonly LanguageSyntaxNode _syntax;
 
-        public SymbolDefBinder(Binder next, LanguageSyntaxNode syntax, Type symbolType, Type nestingSymbolType) 
+        public SymbolDefBinder(Binder next, LanguageSyntaxNode syntax, Type type, Type nestingType) 
             : base(next)
         {
-            _symbolType = symbolType;
-            _nestingSymbolType = nestingSymbolType;
+            _type = type;
+            _nestingType = nestingType;
             _syntax = syntax;
             _declaredSymbols = default;
         }

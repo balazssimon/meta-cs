@@ -13,15 +13,15 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
 {
     public class BoundSymbolUse : BoundSymbols
     {
-        private ImmutableArray<Type> _symbolTypes;
-        private ImmutableArray<Type> _nestingSymbolTypes;
+        private ImmutableArray<Type> _types;
+        private ImmutableArray<Type> _nestingTypes;
         private ImmutableArray<Symbol> _lazySymbols;
 
-        public BoundSymbolUse(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes, LanguageSyntaxNode syntax, bool hasErrors = false)
+        public BoundSymbolUse(BoundKind kind, BoundTree boundTree, ImmutableArray<object> childBoundNodes, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes, LanguageSyntaxNode syntax, bool hasErrors = false)
             : base(kind, boundTree, childBoundNodes, syntax, hasErrors)
         {
-            _symbolTypes = symbolTypes;
-            _nestingSymbolTypes = nestingSymbolTypes;
+            _types = types;
+            _nestingTypes = nestingTypes;
         }
 
         public override ImmutableArray<Symbol> Symbols

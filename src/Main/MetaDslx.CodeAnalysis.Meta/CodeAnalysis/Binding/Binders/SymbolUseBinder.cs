@@ -16,23 +16,23 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class SymbolUseBinder : Binder
     {
-        private readonly ImmutableArray<ModelObjectDescriptor> _symbolTypes;
-        private readonly ImmutableArray<ModelObjectDescriptor> _nestingSymbolTypes;
+        private readonly ImmutableArray<ModelObjectDescriptor> _types;
+        private readonly ImmutableArray<ModelObjectDescriptor> _nestingTypes;
         private readonly LanguageSyntaxNode _syntax;
         private readonly bool _attributeTypeOnly;
 
-        public SymbolUseBinder(Binder next, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes)
+        public SymbolUseBinder(Binder next, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
             : base(next)
         {
             _syntax = syntax;
-            _symbolTypes = symbolTypes.Select(type => ModelObjectDescriptor.GetSymbolInfo(type)).ToImmutableArray();
-            _nestingSymbolTypes = nestingSymbolTypes.Select(type => ModelObjectDescriptor.GetSymbolInfo(type)).ToImmutableArray();
-            if (symbolTypes.Length > 0)
+            _types = types.Select(type => ModelObjectDescriptor.GetDescriptor(type)).ToImmutableArray();
+            _nestingTypes = nestingTypes.Select(type => ModelObjectDescriptor.GetDescriptor(type)).ToImmutableArray();
+            if (types.Length > 0)
             {
                 _attributeTypeOnly = true;
-                foreach (var symbolType in symbolTypes)
+                foreach (var type in types)
                 {
-                    if (!typeof(MetaAttribute).IsAssignableFrom(symbolType))
+                    if (!typeof(MetaAttribute).IsAssignableFrom(type))
                     {
                         _attributeTypeOnly = false;
                         break;
@@ -68,10 +68,10 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             for (int i = 0; i < identifiers.Length; i++)
             {
                 bool last = i == identifiers.Length - 1;
-                var symbolTypes = last ? _symbolTypes : _nestingSymbolTypes;
+                var types = last ? _types : _nestingTypes;
                 var identifier = identifiers[i];
                 LookupResult lookupResult = LookupResult.GetInstance();
-                this.LookupSymbolsSimpleName(lookupResult, new LookupConstraints(identifier.Name, identifier.MetadataName, symbolTypes, qualifierOpt));
+                this.LookupSymbolsSimpleName(lookupResult, new LookupConstraints(identifier.Name, identifier.MetadataName, types, qualifierOpt));
                 var symbol = this.ResultSymbol(lookupResult, identifier.Name, identifier.MetadataName, identifier.Syntax, identifier.BoundTree.DiagnosticBag, false, out bool wasError, qualifierOpt, LookupOptions.Default);
                 Debug.Assert(symbol != null);
                 result.Add(symbol);

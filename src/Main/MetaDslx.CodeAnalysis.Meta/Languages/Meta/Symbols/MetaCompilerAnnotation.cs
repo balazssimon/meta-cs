@@ -48,17 +48,17 @@ namespace MetaDslx.Languages.Meta
 
         public static readonly string[][] WellKnownAnnotationProperties =
         {
-            new string[] { "symbolType" },
-            new string[] { "symbolType" },
+            new string[] { "type" },
+            new string[] { "type" },
             new string[] { "name" },
-            new string[] { "symbolType", "symbolTypes" },
+            new string[] { "type", "types" },
             new string[] { "value" },
             new string[] { "enumType" },
-            new string[] { "name", "value", "owner", "ownerSymbolType" },
+            new string[] { "name", "value", "owner", "ownerType" },
             new string[] { },
             new string[] { "local" },
-            new string[] { "symbolType", "nestingProperty", "merge" },
-            new string[] { "symbolType", "symbolTypes" },
+            new string[] { "type", "nestingProperty", "merge" },
+            new string[] { "type", "types" },
             new string[] { "kind", "first", "last", "defaultSeparator", "defaultIdentifier", "defaultWhitespace", "defaultEndOfLine", "endOfLine" },
         };
 
@@ -85,10 +85,10 @@ namespace MetaDslx.Languages.Meta
 
         static MetaCompilerAnnotationInfo()
         {
-            DefaultProperties.Add(Attribute, "symbolType");
-            DefaultProperties.Add(Root, "symbolType");
-            DefaultProperties.Add(SymbolDef, "symbolType");
-            DefaultProperties.Add(SymbolUse, "symbolType");
+            DefaultProperties.Add(Attribute, "type");
+            DefaultProperties.Add(Root, "type");
+            DefaultProperties.Add(SymbolDef, "type");
+            DefaultProperties.Add(SymbolUse, "type");
             DefaultProperties.Add(Property, "name");
             DefaultProperties.Add(Identifier, "name");
             DefaultProperties.Add(Value, "value");
@@ -301,13 +301,13 @@ namespace MetaDslx.Languages.Meta
             string result = "";
             if (this.Name == MetaCompilerAnnotationInfo.SymbolDef)
             {
-                if (this.HasProperty("symbolType"))
+                if (this.HasProperty("type"))
                 {
-                    result = ", symbolType: typeof(Symbols." + this.GetValue("symbolType") + ")";
+                    result = ", type: typeof(Symbols." + this.GetValue("type") + ")";
                 }
                 else
                 {
-                    result = ", symbolType: null";
+                    result = ", type: null";
                 }
                 if (this.HasProperty("nestingProperty"))
                 {
@@ -327,15 +327,15 @@ namespace MetaDslx.Languages.Meta
             }
             if (this.Name == MetaCompilerAnnotationInfo.SymbolUse || this.Name == MetaCompilerAnnotationInfo.Attribute)
             {
-                if (this.HasProperty("symbolType"))
+                if (this.HasProperty("type"))
                 {
-                    result = ", symbolTypes: ImmutableArray.Create(typeof(Symbols." + this.GetValue("symbolType") + "))";
+                    result = ", types: ImmutableArray.Create(typeof(Symbols." + this.GetValue("type") + "))";
                 }
-                else if (this.HasProperty("symbolTypes"))
+                else if (this.HasProperty("types"))
                 {
-                    result = ", symbolTypes: ImmutableArray.Create(";
+                    result = ", types: ImmutableArray.Create(";
                     string comma = "";
-                    foreach (var type in this.GetValues("symbolTypes"))
+                    foreach (var type in this.GetValues("types"))
                     {
                         result += comma + "typeof(Symbols." + type + ")";
                         comma = ", ";
@@ -344,7 +344,7 @@ namespace MetaDslx.Languages.Meta
                 }
                 else
                 {
-                    result = ", symbolTypes: ImmutableArray<Type>.Empty";
+                    result = ", types: ImmutableArray<Type>.Empty";
                 }
             }
             if (this.Name == MetaCompilerAnnotationInfo.Property)
@@ -358,9 +358,9 @@ namespace MetaDslx.Languages.Meta
                 {
                     result = result + ", owner: SymbolPropertyOwner." + this.GetValue("owner");
                 }
-                if (this.HasProperty("ownerSymbolType"))
+                if (this.HasProperty("ownerType"))
                 {
-                    result = result + ", ownerSymbolType: typeof(Symbols." + this.GetValue("ownerSymbolType") + ")";
+                    result = result + ", ownerType: typeof(Symbols." + this.GetValue("ownerType") + ")";
                 }
             }
             if (this.Name == MetaCompilerAnnotationInfo.Value && this.HasProperty("value"))

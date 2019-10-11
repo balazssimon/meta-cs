@@ -7,8 +7,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class AttributeBinder : SymbolUseBinder
     {
-        public AttributeBinder(Binder next, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes) 
-            : base(next, syntax, symbolTypes, nestingSymbolTypes)
+        public AttributeBinder(Binder next, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes) 
+            : base(next, syntax, types, nestingTypes)
         {
             
         }

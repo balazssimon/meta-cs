@@ -83,49 +83,49 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new ScopeBinder(parentBinder, syntax);
         }
 
-        protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType, string nestingProperty = null, bool merge = false)
+        protected virtual Binder CreateSymbolDefBinder(Binder parentBinder, LanguageSyntaxNode syntax, Type type, string nestingProperty = null, bool merge = false)
         {
-            return this.CreateSymbolDefBinderCore(parentBinder, syntax, symbolType);
+            return this.CreateSymbolDefBinderCore(parentBinder, syntax, type);
         }
 
-        protected virtual Binder CreateSymbolDefBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, Type symbolType)
+        protected virtual Binder CreateSymbolDefBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, Type type)
         {
-            return new SymbolDefBinder(parentBinder, syntax, symbolType, symbolType);
+            return new SymbolDefBinder(parentBinder, syntax, type, type);
         }
 
-        protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes)
+        protected virtual Binder CreateSymbolUseBinder(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> types)
         {
-            return this.CreateSymbolUseBinderCore(parentBinder, syntax, symbolTypes, ImmutableArray<Type>.Empty);
+            return this.CreateSymbolUseBinderCore(parentBinder, syntax, types, ImmutableArray<Type>.Empty);
         }
 
-        protected virtual Binder CreateSymbolUseBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes)
+        protected virtual Binder CreateSymbolUseBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
         {
-            return new SymbolUseBinder(parentBinder, syntax, symbolTypes, nestingSymbolTypes);
+            return new SymbolUseBinder(parentBinder, syntax, types, nestingTypes);
         }
 
-        protected virtual Binder CreateAttributeBinder(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes)
+        protected virtual Binder CreateAttributeBinder(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> types)
         {
-            return this.CreateAttributeBinderCore(parentBinder, syntax, symbolTypes, ImmutableArray<Type>.Empty);
+            return this.CreateAttributeBinderCore(parentBinder, syntax, types, ImmutableArray<Type>.Empty);
         }
 
-        protected virtual Binder CreateAttributeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> symbolTypes, ImmutableArray<Type> nestingSymbolTypes)
+        protected virtual Binder CreateAttributeBinderCore(Binder parentBinder, LanguageSyntaxNode syntax, ImmutableArray<Type> types, ImmutableArray<Type> nestingTypes)
         {
-            return new AttributeBinder(parentBinder, syntax, symbolTypes, nestingSymbolTypes);
+            return new AttributeBinder(parentBinder, syntax, types, nestingTypes);
         }
 
-        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null)
+        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null)
         {
-            return this.CreatePropertyBinderCore(parentBinder, syntax, name, default, owner, ownerSymbolType);
+            return this.CreatePropertyBinderCore(parentBinder, syntax, name, default, owner, ownerType);
         }
 
-        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, object value, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null)
+        protected virtual Binder CreatePropertyBinder(Binder parentBinder, SyntaxNodeOrToken syntax, string name, object value, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null)
         {
-            return this.CreatePropertyBinderCore(parentBinder, syntax, name, new Optional<object>(value), owner, ownerSymbolType);
+            return this.CreatePropertyBinderCore(parentBinder, syntax, name, new Optional<object>(value), owner, ownerType);
         }
 
-        protected virtual Binder CreatePropertyBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, string name, Optional<object> valueOpt, SymbolPropertyOwner owner, Type ownerSymbolType)
+        protected virtual Binder CreatePropertyBinderCore(Binder parentBinder, SyntaxNodeOrToken syntax, string name, Optional<object> valueOpt, SymbolPropertyOwner owner, Type ownerType)
         {
-            return new PropertyBinder(parentBinder, name, valueOpt, owner, ownerSymbolType);
+            return new PropertyBinder(parentBinder, name, valueOpt, owner, ownerType);
         }
 
         protected virtual Binder CreateIdentifierBinder(Binder parentBinder, SyntaxNodeOrToken syntax)

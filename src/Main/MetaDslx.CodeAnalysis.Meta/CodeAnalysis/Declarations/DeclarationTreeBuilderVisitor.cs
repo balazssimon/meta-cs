@@ -113,9 +113,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
         }
 
         //***
-        protected DeclarationTreeInfo BeginSymbolDef(LanguageSyntaxNode node, Type symbolType, string nestingProperty = null, bool merge = false)
+        protected DeclarationTreeInfo BeginSymbolDef(LanguageSyntaxNode node, Type type, string nestingProperty = null, bool merge = false)
         {
-            var result = this.BeginDeclaration(symbolType, node);
+            var result = this.BeginDeclaration(type, node);
             if (nestingProperty != null) result.RegisterNestingProperty(nestingProperty);
             if (merge) result.RegisterMerge(merge);
             return result;
@@ -126,9 +126,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return this.EndDeclaration();
         }
 
-        protected void BeginProperty(LanguageSyntaxNode node, string name, object value = null, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerSymbolType = null)
+        protected void BeginProperty(LanguageSyntaxNode node, string name, object value = null, SymbolPropertyOwner owner = SymbolPropertyOwner.CurrentSymbol, Type ownerType = null)
         {
-            this.PropertyStack.Push(new Property(node, name, owner, ownerSymbolType));
+            this.PropertyStack.Push(new Property(node, name, owner, ownerType));
         }
 
         protected void EndProperty()
@@ -158,7 +158,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.BeginQualifier();
         }
 
-        protected void BeginSymbolUse(LanguageSyntaxNode node, ImmutableArray<Type> symbolTypes)
+        protected void BeginSymbolUse(LanguageSyntaxNode node, ImmutableArray<Type> types)
         {
             this.BeginNoDeclaration(null, node);
         }
