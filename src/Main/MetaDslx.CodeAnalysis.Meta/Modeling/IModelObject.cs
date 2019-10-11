@@ -6,18 +6,18 @@ using System.Text;
 
 namespace MetaDslx.Modeling
 {
-    public interface IMetaSymbol
+    public interface IModelObject
     {
         MetaModel MMetaModel { get; }
         MetaClass MMetaClass { get; }
-        SymbolId MId { get; }
+        ObjectId MId { get; }
         IModel MModel { get; }
 
         string MName { get; }
-        IMetaSymbol MType { get; }
+        IModelObject MType { get; }
 
-        IMetaSymbol MParent { get; }
-        IReadOnlyList<IMetaSymbol> MChildren { get; }
+        IModelObject MParent { get; }
+        IReadOnlyList<IModelObject> MChildren { get; }
 
         IReadOnlyList<ModelProperty> MProperties { get; }
         IReadOnlyList<ModelProperty> MAllProperties { get; }
@@ -29,10 +29,5 @@ namespace MetaDslx.Modeling
         T MGetReference<T>(ModelProperty property) where T : class;
         bool MHasConcreteValue(ModelProperty property);
         bool MIsSet(ModelProperty property);
-        /*
-        IReadOnlyList<IMetaSymbol> MGetImports();
-        IReadOnlyList<IMetaSymbol> MGetBases();
-        IReadOnlyList<IMetaSymbol> MGetAllBases();
-        IReadOnlyList<IMetaSymbol> MGetMembers();*/
     }
 }

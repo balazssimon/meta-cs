@@ -7,22 +7,22 @@ namespace MetaDslx.Modeling.Internal
 {
     internal sealed class GreenLazyEvalEntry : IEquatable<GreenLazyEvalEntry>
     {
-        private SymbolId symbol;
+        private ObjectId objectId;
         private ModelProperty property;
 
-        public GreenLazyEvalEntry(SymbolId symbol, ModelProperty property)
+        public GreenLazyEvalEntry(ObjectId objectId, ModelProperty property)
         {
-            this.symbol = symbol;
+            this.objectId = objectId;
             this.property = property;
         }
 
-        public SymbolId Symbol { get { return this.symbol; } }
+        public ObjectId ObjectId { get { return this.objectId; } }
         public ModelProperty Property { get { return this.property; } }
 
         public bool Equals(GreenLazyEvalEntry other)
         {
             if (other == null) return false;
-            return this.symbol == other.symbol && this.property == other.property;
+            return this.objectId == other.objectId && this.property == other.property;
         }
 
         public override bool Equals(object obj)
@@ -32,7 +32,7 @@ namespace MetaDslx.Modeling.Internal
 
         public override int GetHashCode()
         {
-            return Hash.Combine(this.symbol.GetHashCode(), this.property.GetHashCode());
+            return Hash.Combine(this.objectId.GetHashCode(), this.property.GetHashCode());
         }
     }
 

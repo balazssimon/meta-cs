@@ -17,7 +17,7 @@ namespace MetaDslx.Modeling
     internal enum ModelPropertyFlags : uint
     {
         None = 0x0000,
-        Symbol = 0x0001,
+        ModelObject = 0x0001,
         Collection = 0x0002,
         Readonly = 0x0004,
         Derived = 0x0008,
@@ -52,7 +52,7 @@ namespace MetaDslx.Modeling
     {
         private static object lockObject = new object();
         private ModelPropertyInitState state;
-        private ModelSymbolInfo declaringSymbol;
+        private ModelObjectDescriptor declaringDescriptor;
         private string name;
         private ModelPropertyFlags flags;
         private MetaModelPropertyFlags metaFlags;
@@ -64,7 +64,7 @@ namespace MetaDslx.Modeling
         private ImmutableList<ModelProperty> oppositeProperties;
         private Lazy<MetaProperty> metaProperty = null;
 
-        private ModelProperty(ModelSymbolInfo declaringSymbol, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty)
+        private ModelProperty(ModelObjectDescriptor declaringDescriptor, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (immutableTypeInfo == null) throw new ArgumentNullException(nameof(immutableTypeInfo));
@@ -74,12 +74,12 @@ namespace MetaDslx.Modeling
             {
                 throw new ArgumentException("The immutable and mutable types must must be of the same kind: either a single value or a collection.");
             }
-            this.declaringSymbol = declaringSymbol;
+            this.declaringDescriptor = declaringDescriptor;
             this.name = name;
             this.flags = ModelPropertyFlags.None;
-            if (typeof(ImmutableSymbolBase).IsAssignableFrom(immutableTypeInfo.Type) || typeof(MutableSymbolBase).IsAssignableFrom(mutableTypeInfo.Type))
+            if (typeof(ImmutableObjectBase).IsAssignableFrom(immutableTypeInfo.Type) || typeof(MutableObjectBase).IsAssignableFrom(mutableTypeInfo.Type))
             {
-                this.flags |= ModelPropertyFlags.Symbol;
+                this.flags |= ModelPropertyFlags.ModelObject;
             }
             if (immutableTypeInfo.CollectionType != null && mutableTypeInfo.CollectionType != null)
             {
@@ -87,8 +87,8 @@ namespace MetaDslx.Modeling
             }
             this.immutableTypeInfo = immutableTypeInfo;
             this.mutableTypeInfo = mutableTypeInfo;
-            FieldInfo info = declaringSymbol.SymbolDescriptorType.GetField(name + "Property", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-            if (info == null) throw new InvalidOperationException("Cannot find static field '" + name + "Property' in " + declaringSymbol.SymbolDescriptorType.FullName + ".");
+            FieldInfo info = declaringDescriptor.DescriptorType.GetField(name + "Property", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            if (info == null) throw new InvalidOperationException("Cannot find static field '" + name + "Property' in " + declaringDescriptor.DescriptorType.FullName + ".");
             this.annotations = info.GetCustomAttributes().ToImmutableList();
             this.state = ModelPropertyInitState.None;
             this.subsettedProperties = ImmutableList<ModelProperty>.Empty;
@@ -100,23 +100,23 @@ namespace MetaDslx.Modeling
 
         public static ModelProperty Register(Type declaringType, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty = null)
         {
-            ModelSymbolInfo symbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(declaringType);
-            ModelProperty result = new ModelProperty(symbolInfo, name, immutableTypeInfo, mutableTypeInfo, metaProperty);
-            symbolInfo.AddProperty(result);
+            ModelObjectDescriptor descriptor = ModelObjectDescriptor.GetDescriptorForDescriptorType(declaringType);
+            ModelProperty result = new ModelProperty(descriptor, name, immutableTypeInfo, mutableTypeInfo, metaProperty);
+            descriptor.AddProperty(result);
             return result;
         }
 
         public static ModelProperty Register(Type declaringType, string name, Type valueType)
         {
-            ModelSymbolInfo symbolInfo = ModelSymbolInfo.GetDescriptorSymbolInfo(declaringType);
-            ModelProperty result = new ModelProperty(symbolInfo, name, new ModelPropertyTypeInfo(valueType, null), new ModelPropertyTypeInfo(valueType, null), null);
-            symbolInfo.AddProperty(result);
+            ModelObjectDescriptor descriptor = ModelObjectDescriptor.GetDescriptorForDescriptorType(declaringType);
+            ModelProperty result = new ModelProperty(descriptor, name, new ModelPropertyTypeInfo(valueType, null), new ModelPropertyTypeInfo(valueType, null), null);
+            descriptor.AddProperty(result);
             return result;
         }
 
-        public ModelSymbolInfo DeclaringSymbol { get { return this.declaringSymbol; } }
+        public ModelObjectDescriptor DeclaringDescriptor { get { return this.declaringDescriptor; } }
         public string Name { get { return this.name; } }
-        public bool IsSymbol { get { return this.flags.HasFlag(ModelPropertyFlags.Symbol); } }
+        public bool IsModelObject { get { return this.flags.HasFlag(ModelPropertyFlags.ModelObject); } }
         public bool IsCollection { get { return this.flags.HasFlag(ModelPropertyFlags.Collection); } }
         public bool IsReadonly
         {
@@ -345,13 +345,13 @@ namespace MetaDslx.Modeling
                     if (annot is SubsetsAttribute)
                     {
                         SubsetsAttribute propAnnot = (SubsetsAttribute)annot;
-                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetDescriptorSymbolInfo(propAnnot.DeclaringType);
-                        ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
+                        ModelObjectDescriptor descriptor = ModelObjectDescriptor.GetDescriptorForDescriptorType(propAnnot.DeclaringType);
+                        ModelProperty prop = descriptor.GetDeclaredProperty(propAnnot.PropertyName);
                         if (prop == null)
                         {
                             throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property cannot be found.");
                         }
-                        if ((propSymbol == this.declaringSymbol || this.declaringSymbol.AllBaseSymbols.Contains(propSymbol)))
+                        if ((descriptor == this.declaringDescriptor || this.declaringDescriptor.AllBaseDescriptors.Contains(descriptor)))
                         {
                             if (!this.IsCollection || !this.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetting property must be a collection of unique values.");
                             if (!prop.IsCollection || !prop.IsUnique) throw new InvalidOperationException("Error subsetting property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The subsetted property must be a collection of unique values.");
@@ -365,13 +365,13 @@ namespace MetaDslx.Modeling
                     else if (annot is RedefinesAttribute)
                     {
                         RedefinesAttribute propAnnot = (RedefinesAttribute)annot;
-                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetDescriptorSymbolInfo(propAnnot.DeclaringType);
-                        ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
+                        ModelObjectDescriptor descriptor = ModelObjectDescriptor.GetDescriptorForDescriptorType(propAnnot.DeclaringType);
+                        ModelProperty prop = descriptor.GetDeclaredProperty(propAnnot.PropertyName);
                         if (prop == null)
                         {
                             throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefined property cannot be found.");
                         }
-                        if ((propSymbol == this.declaringSymbol || this.declaringSymbol.AllBaseSymbols != null && this.declaringSymbol.AllBaseSymbols.Contains(propSymbol)))
+                        if ((descriptor == this.declaringDescriptor || this.declaringDescriptor.AllBaseDescriptors != null && this.declaringDescriptor.AllBaseDescriptors.Contains(descriptor)))
                         {
                             if (this.IsCollection ^ prop.IsCollection) throw new InvalidOperationException("Error redefining property: " + this.FullDeclaredName + "->" + prop.FullDeclaredName + ". The redefining and the redefined property must be of the same kind: either a single value or a collection.");
                             if (this.IsCollection && prop.IsCollection)
@@ -388,8 +388,8 @@ namespace MetaDslx.Modeling
                     else if (annot is OppositeAttribute)
                     {
                         OppositeAttribute propAnnot = (OppositeAttribute)annot;
-                        ModelSymbolInfo propSymbol = ModelSymbolInfo.GetDescriptorSymbolInfo(propAnnot.DeclaringType);
-                        ModelProperty prop = propSymbol.GetDeclaredProperty(propAnnot.PropertyName);
+                        ModelObjectDescriptor descriptor = ModelObjectDescriptor.GetDescriptorForDescriptorType(propAnnot.DeclaringType);
+                        ModelProperty prop = descriptor.GetDeclaredProperty(propAnnot.PropertyName);
                         if (prop == null)
                         {
                             throw new InvalidOperationException("Error in setting opposite property: " + this.FullDeclaredName + "->" + propAnnot.DeclaringType+"."+propAnnot.PropertyName + ". The opposite property cannot be found.");
@@ -401,7 +401,7 @@ namespace MetaDslx.Modeling
                             if (oppositeAnnot is OppositeAttribute)
                             {
                                 OppositeAttribute propOppositeAnnot = (OppositeAttribute)oppositeAnnot;
-                                if (propOppositeAnnot.DeclaringType == this.declaringSymbol.SymbolDescriptorType &&
+                                if (propOppositeAnnot.DeclaringType == this.declaringDescriptor.DescriptorType &&
                                     propOppositeAnnot.PropertyName == this.name)
                                 {
                                     foundThisProperty = true;
@@ -484,12 +484,12 @@ namespace MetaDslx.Modeling
 
         public string FullDeclaredName
         {
-            get { return this.DeclaringSymbol.SymbolDescriptorType.FullName + "." + this.Name; }
+            get { return this.DeclaringDescriptor.DescriptorType.FullName + "." + this.Name; }
         }
 
         public override string ToString()
         {
-            return this.DeclaringSymbol.SymbolDescriptorType.Name + "." + this.Name;
+            return this.DeclaringDescriptor.DescriptorType.Name + "." + this.Name;
         }
     }
 
@@ -540,7 +540,7 @@ namespace MetaDslx.Modeling
         public ImmutableHashSet<ModelProperty> DerivedUnionProperties { get { return this.derivedUnionProperties; } }
         public ImmutableHashSet<ModelProperty> OppositeProperties { get { return this.oppositeProperties; } }
 
-        internal void AddRedefinedProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        internal void AddRedefinedProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (!this.equivalentProperties.Contains(property))
@@ -548,21 +548,21 @@ namespace MetaDslx.Modeling
                 this.equivalentProperties = this.equivalentProperties.Add(property);
                 if (firstCall)
                 {
-                    ModelPropertyInfo propInfo = symbolInfo.GetOrCreatePropertyInfo(property);
+                    ModelPropertyInfo propInfo = descriptor.GetOrCreatePropertyInfo(property);
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        propInfo.AddRedefinedProperty(symbolInfo, eqProp, false);
+                        propInfo.AddRedefinedProperty(descriptor, eqProp, false);
                     }
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddRedefinedProperty(symbolInfo, property, false);
+                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
+                        eqPropInfo.AddRedefinedProperty(descriptor, property, false);
                     }
                 }
             }
         }
 
-        internal void SetRepresentingProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        internal void SetRepresentingProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             this.representingProperty = property;
@@ -570,13 +570,13 @@ namespace MetaDslx.Modeling
             {
                 foreach (var eqProp in this.equivalentProperties)
                 {
-                    ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
-                    eqPropInfo.SetRepresentingProperty(symbolInfo, property, false);
+                    ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
+                    eqPropInfo.SetRepresentingProperty(descriptor, property, false);
                 }
             }
         }
 
-        internal void AddSupersetProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        internal void AddSupersetProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (this.equivalentProperties.Contains(property)) return;
@@ -587,14 +587,14 @@ namespace MetaDslx.Modeling
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddSupersetProperty(symbolInfo, property, false);
+                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
+                        eqPropInfo.AddSupersetProperty(descriptor, property, false);
                     }
                 }
             }
         }
 
-        internal void AddSubsetProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        internal void AddSubsetProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (this.equivalentProperties.Contains(property)) return;
@@ -605,13 +605,13 @@ namespace MetaDslx.Modeling
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddSubsetProperty(symbolInfo, property, false);
+                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
+                        eqPropInfo.AddSubsetProperty(descriptor, property, false);
                     }
                 }
             }
         }
-        internal void AddSubsettedProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        internal void AddSubsettedProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (this.equivalentProperties.Contains(property)) return;
@@ -622,14 +622,14 @@ namespace MetaDslx.Modeling
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddSubsettedProperty(symbolInfo, property, false);
+                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
+                        eqPropInfo.AddSubsettedProperty(descriptor, property, false);
                     }
                 }
             }
         }
 
-        internal void AddSubsettingProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        internal void AddSubsettingProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (this.equivalentProperties.Contains(property)) return;
@@ -640,14 +640,14 @@ namespace MetaDslx.Modeling
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddSubsettingProperty(symbolInfo, property, false);
+                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
+                        eqPropInfo.AddSubsettingProperty(descriptor, property, false);
                     }
                 }
             }
         }
 
-        internal void AddDerivedUnionProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        internal void AddDerivedUnionProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (this.equivalentProperties.Contains(property)) return;
@@ -658,14 +658,14 @@ namespace MetaDslx.Modeling
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddDerivedUnionProperty(symbolInfo, property, false);
+                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
+                        eqPropInfo.AddDerivedUnionProperty(descriptor, property, false);
                     }
                 }
             }
         }
 
-        internal void AddOppositeProperty(ModelSymbolInfo symbolInfo, ModelProperty property, bool firstCall)
+        internal void AddOppositeProperty(ModelObjectDescriptor descriptor, ModelProperty property, bool firstCall)
         {
             if (property == null) return;
             if (!this.oppositeProperties.Contains(property))
@@ -675,8 +675,8 @@ namespace MetaDslx.Modeling
                 {
                     foreach (var eqProp in this.equivalentProperties)
                     {
-                        ModelPropertyInfo eqPropInfo = symbolInfo.GetOrCreatePropertyInfo(eqProp);
-                        eqPropInfo.AddOppositeProperty(symbolInfo, property, false);
+                        ModelPropertyInfo eqPropInfo = descriptor.GetOrCreatePropertyInfo(eqProp);
+                        eqPropInfo.AddOppositeProperty(descriptor, property, false);
                     }
                 }
             }

@@ -16,7 +16,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly ImmutableArray<ReferenceDirective> _referenceDirectives;
 
         public RootSingleDeclaration(
-            ModelSymbolInfo kind,
+            ModelObjectDescriptor kind,
             SyntaxReference treeNode, 
             ImmutableArray<SingleDeclaration> children, 
             ImmutableArray<ReferenceDirective> referenceDirectives,

@@ -316,7 +316,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             }
         }
 
-        public virtual bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        public virtual bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
         {
             symbol = null;
             return false;

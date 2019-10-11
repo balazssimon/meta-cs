@@ -75,7 +75,7 @@ namespace MetaDslx.Languages.Meta
             if (!this.HasErrors)
             {
                 var compiledModel = _compilation.Model;
-                ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Symbols);
+                ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
                 string generatedCSharpModel = mmgen.Generate();
                 File.WriteAllText(_outputFilePath, generatedCSharpModel);
             }

@@ -5,26 +5,26 @@ using System.Text;
 
 namespace MetaDslx.Modeling
 {
-    public abstract class SymbolId
+    public abstract class ObjectId
     {
         private readonly string id;
-        public SymbolId()
+        public ObjectId()
         {
             this.id = Guid.NewGuid().ToString();
         }
         public string Id { get { return this.id; } }
-        public abstract ModelSymbolInfo SymbolInfo { get; }
-        public abstract ImmutableSymbolBase CreateImmutable(ImmutableModel model);
-        public abstract MutableSymbolBase CreateMutable(MutableModel model, bool creating);
-        public string DisplayTypeName => this.SymbolInfo?.ImmutableType?.Name;
+        public abstract ModelObjectDescriptor Descriptor { get; }
+        public abstract ImmutableObjectBase CreateImmutable(ImmutableModel model);
+        public abstract MutableObjectBase CreateMutable(MutableModel model, bool creating);
+        public string DisplayTypeName => this.Descriptor?.ImmutableType?.Name;
 
-        public static bool operator ==(SymbolId left, SymbolId right)
+        public static bool operator ==(ObjectId left, ObjectId right)
         {
             if ((object)left == null) return (object)right == null;
             else return left.Equals(right);
         }
 
-        public static bool operator !=(SymbolId left, SymbolId right)
+        public static bool operator !=(ObjectId left, ObjectId right)
         {
             if ((object)left == null) return (object)right != null;
             else return !left.Equals(right);
@@ -32,16 +32,16 @@ namespace MetaDslx.Modeling
 
         public override bool Equals(object obj)
         {
-            if (obj is SymbolId other)
+            if (obj is ObjectId other)
             {
-                return this.id == other.id && object.ReferenceEquals(this.SymbolInfo, other.SymbolInfo);
+                return this.id == other.id && object.ReferenceEquals(this.Descriptor, other.Descriptor);
             }
             return false;
         }
 
         public override int GetHashCode()
         {
-            return Hash.Combine(this.id.GetHashCode(), this.SymbolInfo.GetHashCode());
+            return Hash.Combine(this.id.GetHashCode(), this.Descriptor.GetHashCode());
         }
 
         public override string ToString()

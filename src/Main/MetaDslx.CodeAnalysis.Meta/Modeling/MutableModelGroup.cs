@@ -14,7 +14,7 @@ namespace MetaDslx.Modeling
         private ThreadLocal<GreenModelUpdater> updater;
         private WeakReference<ImmutableModelGroup> immutableModelGroup;
         private ConditionalWeakTable<ModelId, MutableModel> models;
-        private ConditionalWeakTable<SymbolId, MutableSymbol> symbols;
+        private ConditionalWeakTable<ObjectId, MutableObject> objects;
 
         public MutableModelGroup()
             : this(GreenModelGroup.Empty, null)
@@ -27,7 +27,7 @@ namespace MetaDslx.Modeling
             this.updater = new ThreadLocal<GreenModelUpdater>();
             this.immutableModelGroup = new WeakReference<ImmutableModelGroup>(immutableModelGroup);
             this.models = new ConditionalWeakTable<ModelId, MutableModel>();
-            this.symbols = new ConditionalWeakTable<SymbolId, MutableSymbol>();
+            this.objects = new ConditionalWeakTable<ObjectId, MutableObject>();
         }
 
         internal GreenModelGroup Green
@@ -112,66 +112,66 @@ namespace MetaDslx.Modeling
         }
 
 
-        internal MutableSymbol GetExistingReferenceSymbol(ModelId mid, SymbolId sid)
+        internal MutableObject GetExistingReferenceObject(ModelId mid, ObjectId oid)
         {
-            return this.symbols.GetValue(sid, key => key.CreateMutable(this.GetExistingReference(mid), false));
+            return this.objects.GetValue(oid, key => key.CreateMutable(this.GetExistingReference(mid), false));
         }
 
-        internal MutableSymbol GetExistingModelSymbol(ModelId mid, SymbolId sid)
+        internal MutableObject GetExistingModelObject(ModelId mid, ObjectId oid)
         {
-            return this.symbols.GetValue(sid, key => key.CreateMutable(this.GetExistingModel(mid), false));
+            return this.objects.GetValue(oid, key => key.CreateMutable(this.GetExistingModel(mid), false));
         }
 
-        internal void RegisterSymbol(SymbolId sid, MutableSymbol symbol)
+        internal void RegisterObject(ObjectId oid, MutableObject obj)
         {
-            this.symbols.Add(sid, symbol);
+            this.objects.Add(oid, obj);
         }
 
-        internal MutableSymbol ResolveSymbol(SymbolId sid)
+        internal MutableObject ResolveObject(ObjectId oid)
         {
-            MutableSymbol result;
-            if (this.symbols.TryGetValue(sid, out result) && result != null)
+            MutableObject result;
+            if (this.objects.TryGetValue(oid, out result) && result != null)
             {
                 return result;
             }
             foreach (var modelEntry in this.Green.Models)
             {
-                if (modelEntry.Value.Symbols.ContainsKey(sid))
+                if (modelEntry.Value.Objects.ContainsKey(oid))
                 {
-                    return this.GetExistingModelSymbol(modelEntry.Key, sid);
+                    return this.GetExistingModelObject(modelEntry.Key, oid);
                 }
             }
             foreach (var modelEntry in this.Green.References)
             {
-                if (modelEntry.Value.Symbols.ContainsKey(sid))
+                if (modelEntry.Value.Objects.ContainsKey(oid))
                 {
-                    return this.GetExistingReferenceSymbol(modelEntry.Key, sid);
+                    return this.GetExistingReferenceObject(modelEntry.Key, oid);
                 }
             }
             return null;
         }
 
-        internal bool ContainsSymbol(SymbolId sid)
+        internal bool ContainsObject(ObjectId oid)
         {
-            if (sid == null) return false;
-            return this.Green.ContainsSymbol(sid);
+            if (oid == null) return false;
+            return this.Green.ContainsObject(oid);
         }
 
-        public bool ContainsSymbol(ImmutableSymbol symbol)
+        public bool ContainsObject(ImmutableObject obj)
         {
-            if (symbol == null) return false;
-            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).MId);
+            if (obj == null) return false;
+            return this.ContainsObject(((ImmutableObjectBase)obj).MId);
         }
 
-        public bool ContainsSymbol(MutableSymbol symbol)
+        public bool ContainsObject(MutableObject obj)
         {
-            if (symbol == null) return false;
-            return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
+            if (obj == null) return false;
+            return this.ContainsObject(((MutableObjectBase)obj).MId);
         }
 
         public void EvaluateLazyValues(CancellationToken cancellationToken = default(CancellationToken))
         {
-            ModelUpdateContext ctx = null;
+            GreenModelUpdateContext ctx = null;
             try
             {
                 do
@@ -202,23 +202,23 @@ namespace MetaDslx.Modeling
             }
         }
 
-        internal ModelUpdateContext BeginUpdate()
+        internal GreenModelUpdateContext BeginUpdate()
         {
             GreenModelUpdater updater = this.updater.Value;
             if (updater != null)
             {
-                return new ModelUpdateContext(false, updater, this.green);
+                return new GreenModelUpdateContext(false, updater, this.green);
             }
             else
             {
                 GreenModelGroup green = this.green;
                 updater = new GreenModelUpdater(green, this);
                 this.updater.Value = updater;
-                return new ModelUpdateContext(true, updater, green);
+                return new GreenModelUpdateContext(true, updater, green);
             }
         }
 
-        internal bool EndUpdate(ModelUpdateContext context)
+        internal bool EndUpdate(GreenModelUpdateContext context)
         {
             if (context.NewUpdater)
             {
@@ -231,7 +231,7 @@ namespace MetaDslx.Modeling
             }
         }
 
-        internal void FinalizeUpdate(ModelUpdateContext context)
+        internal void FinalizeUpdate(GreenModelUpdateContext context)
         {
             if (context != null && context.NewUpdater)
             {
@@ -241,7 +241,7 @@ namespace MetaDslx.Modeling
 
         private void AddReference(GreenModel reference)
         {
-            ModelUpdateContext ctx = null;
+            GreenModelUpdateContext ctx = null;
             try
             {
                 do
@@ -340,7 +340,7 @@ namespace MetaDslx.Modeling
             MutableModel model = new MutableModel(mid, this, false, null);
             this.models.Add(mid, model);
             GreenModel greenModel;
-            ModelUpdateContext ctx = null;
+            GreenModelUpdateContext ctx = null;
             try
             {
                 do
@@ -359,7 +359,7 @@ namespace MetaDslx.Modeling
         public void ExecuteTransaction(Action transaction)
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
-            ModelUpdateContext ctx = null;
+            GreenModelUpdateContext ctx = null;
             try
             {
                 do
@@ -382,15 +382,15 @@ namespace MetaDslx.Modeling
             }
         }
 
-        public void PurgeWeakSymbols()
+        public void PurgeWeakObjects()
         {
-            ModelUpdateContext ctx = null;
+            GreenModelUpdateContext ctx = null;
             try
             {
                 do
                 {
                     ctx = this.BeginUpdate();
-                    ctx.Updater.PurgeWeakSymbols();
+                    ctx.Updater.PurgeWeakObjects();
                 } while (!this.EndUpdate(ctx));
             }
             finally

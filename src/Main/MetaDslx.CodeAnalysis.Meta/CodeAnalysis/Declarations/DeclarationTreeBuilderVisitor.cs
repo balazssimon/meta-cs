@@ -57,7 +57,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.PropertyStack.Count > 0 ? this.PropertyStack.Peek() : default; }
         }
 
-        private RootSingleDeclaration CreateRoot(LanguageSyntaxNode node, ModelSymbolInfo kind)
+        private RootSingleDeclaration CreateRoot(LanguageSyntaxNode node, ModelObjectDescriptor kind)
         {
             return this.CreateRoot(node, kind.ImmutableType);
         }
@@ -258,7 +258,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             ImmutableArray<Diagnostic> diagnostics;
             if (declaration.Kind == null && declaration.Type != null)
             {
-                diagnostics = ImmutableArray.Create((Diagnostic)new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_SymbolTypeNotFound, declaration.Type), new SourceLocation(declaration.Node)));
+                diagnostics = ImmutableArray.Create((Diagnostic)new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_ModelObjectDescriptorNotFound, declaration.Type), new SourceLocation(declaration.Node)));
             }
             else
             {

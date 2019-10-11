@@ -14,49 +14,44 @@ using System.Threading.Tasks;
 
 namespace MetaDslx.Modeling.Internal
 {
-    internal class Unassigned
-    {
-
-    }
-
     internal class GreenModel
     {
         private readonly ModelId id;
         private readonly string name;
         private readonly ModelVersion version;
-        private readonly ImmutableList<SymbolId> strongSymbols;
+        private readonly ImmutableList<ObjectId> strongObjects;
         // TODO: replace with immutable weak dictionaries:
-        private readonly ImmutableDictionary<SymbolId, GreenSymbol> symbols;
-        private readonly ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties;
-        private readonly ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> references;
+        private readonly ImmutableDictionary<ObjectId, GreenObject> objects;
+        private readonly ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> lazyProperties;
+        private readonly ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>> references;
 
         internal GreenModel(ModelId id, string name, ModelVersion version)
         {
             this.id = id;
             this.name = name;
             this.version = version;
-            this.symbols = ImmutableDictionary<SymbolId, GreenSymbol>.Empty;
-            this.strongSymbols = ImmutableList<SymbolId>.Empty;
-            this.lazyProperties = ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>.Empty;
-            this.references = ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>>.Empty;
+            this.objects = ImmutableDictionary<ObjectId, GreenObject>.Empty;
+            this.strongObjects = ImmutableList<ObjectId>.Empty;
+            this.lazyProperties = ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>.Empty;
+            this.references = ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>>.Empty;
         }
 
         private GreenModel(ModelId id,
             string name,
             ModelVersion version,
-            ImmutableDictionary<SymbolId, GreenSymbol> symbols,
-            ImmutableList<SymbolId> strongSymbols,
-            ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties,
-            ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> references)
+            ImmutableDictionary<ObjectId, GreenObject> objects,
+            ImmutableList<ObjectId> strongObjects,
+            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> lazyProperties,
+            ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>> references)
         {
-            Debug.Assert(symbols != null);
+            Debug.Assert(objects != null);
             Debug.Assert(lazyProperties != null);
             Debug.Assert(references != null);
             this.id = id;
             this.name = name;
             this.version = version;
-            this.symbols = symbols;
-            this.strongSymbols = strongSymbols;
+            this.objects = objects;
+            this.strongObjects = strongObjects;
             this.lazyProperties = lazyProperties;
             this.references = references;
         }
@@ -64,16 +59,16 @@ namespace MetaDslx.Modeling.Internal
         internal GreenModel Update(
             string name,
             ModelVersion version,
-            ImmutableDictionary<SymbolId, GreenSymbol> symbols,
-            ImmutableList<SymbolId> strongSymbols,
-            ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> lazyProperties,
-            ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> references)
+            ImmutableDictionary<ObjectId, GreenObject> objects,
+            ImmutableList<ObjectId> strongObjects,
+            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> lazyProperties,
+            ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>> references)
         {
-            if (this.name != name || this.version != version || this.symbols != symbols || 
-                this.strongSymbols != strongSymbols || 
+            if (this.name != name || this.version != version || this.objects != objects || 
+                this.strongObjects != strongObjects || 
                 this.lazyProperties != lazyProperties || this.references != references)
             {
-                return new GreenModel(this.id, name, version, symbols, strongSymbols, lazyProperties, references);
+                return new GreenModel(this.id, name, version, objects, strongObjects, lazyProperties, references);
             }
             return this;
         }
@@ -81,87 +76,87 @@ namespace MetaDslx.Modeling.Internal
         internal ModelId Id { get { return this.id; } }
         internal string Name { get { return this.name; } }
         internal ModelVersion Version { get { return this.version; } }
-        internal ImmutableDictionary<SymbolId, GreenSymbol> Symbols { get { return this.symbols; } }
-        internal ImmutableList<SymbolId> StrongSymbols { get { return this.strongSymbols; } }
-        internal ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> LazyProperties { get { return this.lazyProperties; } }
-        internal ImmutableDictionary<SymbolId, ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>> References { get { return this.references; } }
+        internal ImmutableDictionary<ObjectId, GreenObject> Objects { get { return this.objects; } }
+        internal ImmutableList<ObjectId> StrongObjects { get { return this.strongObjects; } }
+        internal ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> LazyProperties { get { return this.lazyProperties; } }
+        internal ImmutableDictionary<ObjectId, ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>> References { get { return this.references; } }
 
-        internal GreenModel AddSymbol(SymbolId id, bool weak)
+        internal GreenModel AddObject(ObjectId oid, bool weak)
         {
-            Debug.Assert(!this.symbols.ContainsKey(id), "The green model already contains this symbol.");
-            return this.Update(this.name, this.version, this.symbols.Add(id, id.SymbolInfo.EmptyGreenSymbol), weak ? this.strongSymbols : this.strongSymbols.Add(id), this.lazyProperties, this.references);
+            Debug.Assert(!this.objects.ContainsKey(oid), "The green model already contains this object.");
+            return this.Update(this.name, this.version, this.objects.Add(oid, oid.Descriptor.EmptyGreenObject), weak ? this.strongObjects : this.strongObjects.Add(oid), this.lazyProperties, this.references);
         }
 
-        internal GreenModel RemoveSymbol(SymbolId id)
+        internal GreenModel RemoveObject(ObjectId oid)
         {
-            Debug.Assert(!this.lazyProperties.ContainsKey(id));
-            ImmutableDictionary<SymbolId, GreenSymbol> symbols = this.symbols;
-            ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> refs;
-            if (this.references.TryGetValue(id, out refs))
+            Debug.Assert(!this.lazyProperties.ContainsKey(oid));
+            ImmutableDictionary<ObjectId, GreenObject> objects = this.objects;
+            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> refs;
+            if (this.references.TryGetValue(oid, out refs))
             {
                 foreach (var refEntry in refs)
                 {
-                    GreenSymbol symbol;
-                    if (this.symbols.TryGetValue(refEntry.Key, out symbol))
+                    GreenObject green;
+                    if (this.objects.TryGetValue(refEntry.Key, out green))
                     {
-                        GreenSymbol oldSymbol = symbol;
+                        GreenObject oldGreen = green;
                         foreach (var prop in refEntry.Value)
                         {
                             object value;
-                            if (symbol.Properties.TryGetValue(prop, out value))
+                            if (green.Properties.TryGetValue(prop, out value))
                             {
                                 if (value is GreenList)
                                 {
                                     GreenList list = (GreenList)value;
-                                    symbol = symbol.Update(
-                                        symbol.Parent == id ? null : symbol.Parent,
-                                        symbol.Children.RemoveAll(item => item == id),
-                                        symbol.Properties.SetItem(prop, list.RemoveAll(id)));
+                                    green = green.Update(
+                                        green.Parent == oid ? null : green.Parent,
+                                        green.Children.RemoveAll(item => item == oid),
+                                        green.Properties.SetItem(prop, list.RemoveAll(oid)));
                                 }
-                                else if ((SymbolId)value == id)
+                                else if ((ObjectId)value == oid)
                                 {
-                                    symbol = symbol.Update(
-                                        symbol.Parent == id ? null : symbol.Parent,
-                                        symbol.Children.RemoveAll(item => item == id),
-                                        symbol.Properties.SetItem(prop, GreenSymbol.Unassigned));
+                                    green = green.Update(
+                                        green.Parent == oid ? null : green.Parent,
+                                        green.Children.RemoveAll(item => item == oid),
+                                        green.Properties.SetItem(prop, GreenObject.Unassigned));
                                 }
                             }
                         }
-                        if (symbol != oldSymbol)
+                        if (green != oldGreen)
                         {
-                            symbols.SetItem(refEntry.Key, symbol);
+                            objects.SetItem(refEntry.Key, green);
                         }
                     }
                 }
                 return this.Update(
                     this.name,
                     this.version,
-                    symbols.Remove(id),
-                    this.strongSymbols.Remove(id),
-                    this.lazyProperties.Remove(id),
-                    this.references.Remove(id));
+                    objects.Remove(oid),
+                    this.strongObjects.Remove(oid),
+                    this.lazyProperties.Remove(oid),
+                    this.references.Remove(oid));
             }
             return this;
         }
 
-        internal GreenModel ReplaceSymbol(SymbolId id, SymbolId targetSid)
+        internal GreenModel ReplaceObject(ObjectId oid, ObjectId targetOid)
         {
-            Debug.Assert(!this.lazyProperties.ContainsKey(id));
-            ImmutableDictionary<SymbolId, GreenSymbol> symbols = this.symbols;
-            ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> refs;
-            if (this.references.TryGetValue(id, out refs))
+            Debug.Assert(!this.lazyProperties.ContainsKey(oid));
+            ImmutableDictionary<ObjectId, GreenObject> objects = this.objects;
+            ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> refs;
+            if (this.references.TryGetValue(oid, out refs))
             {
-                ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>> targetRefs;
-                if (!this.references.TryGetValue(targetSid, out targetRefs))
+                ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>> targetRefs;
+                if (!this.references.TryGetValue(targetOid, out targetRefs))
                 {
-                    targetRefs = ImmutableDictionary<SymbolId, ImmutableHashSet<ModelProperty>>.Empty;
+                    targetRefs = ImmutableDictionary<ObjectId, ImmutableHashSet<ModelProperty>>.Empty;
                 }
                 foreach (var refEntry in refs)
                 {
-                    GreenSymbol symbol;
-                    if (this.symbols.TryGetValue(refEntry.Key, out symbol))
+                    GreenObject green;
+                    if (this.objects.TryGetValue(refEntry.Key, out green))
                     {
-                        GreenSymbol oldSymbol = symbol;
+                        GreenObject oldGreen = green;
                         ImmutableHashSet<ModelProperty> targetProps;
                         if (!targetRefs.TryGetValue(refEntry.Key, out targetProps))
                         {
@@ -170,30 +165,30 @@ namespace MetaDslx.Modeling.Internal
                         foreach (var prop in refEntry.Value)
                         {
                             object value;
-                            if (symbol.Properties.TryGetValue(prop, out value))
+                            if (green.Properties.TryGetValue(prop, out value))
                             {
                                 if (value is GreenList)
                                 {
                                     GreenList list = (GreenList)value;
-                                    symbol = symbol.Update(
-                                        symbol.Parent == id ? targetSid : symbol.Parent,
-                                        symbol.Children.Replace(id, targetSid),
-                                        symbol.Properties.SetItem(prop, list.Replace(id, targetSid)));
+                                    green = green.Update(
+                                        green.Parent == oid ? targetOid : green.Parent,
+                                        green.Children.Replace(oid, targetOid),
+                                        green.Properties.SetItem(prop, list.Replace(oid, targetOid)));
                                     targetProps = targetProps.Add(prop);
                                 }
-                                else if ((SymbolId)value == id)
+                                else if ((ObjectId)value == oid)
                                 {
-                                    symbol = symbol.Update(
-                                        symbol.Parent == id ? targetSid : symbol.Parent,
-                                        symbol.Children.Replace(id, targetSid),
-                                        symbol.Properties.SetItem(prop, targetSid));
+                                    green = green.Update(
+                                        green.Parent == oid ? targetOid : green.Parent,
+                                        green.Children.Replace(oid, targetOid),
+                                        green.Properties.SetItem(prop, targetOid));
                                     targetProps = targetProps.Add(prop);
                                 }
                             }
                         }
-                        if (symbol != oldSymbol)
+                        if (green != oldGreen)
                         {
-                            symbols.SetItem(refEntry.Key, symbol);
+                            objects.SetItem(refEntry.Key, green);
                         }
                         if (targetProps.Count > 0)
                         {
@@ -204,27 +199,27 @@ namespace MetaDslx.Modeling.Internal
                 return this.Update(
                     this.name,
                     this.version,
-                    symbols.Remove(id),
-                    this.strongSymbols.Remove(id), 
-                    this.lazyProperties.Remove(id), 
-                    targetRefs.Count > 0 ? this.references.Remove(id).SetItem(targetSid, targetRefs) : this.references.Remove(id));
+                    objects.Remove(oid),
+                    this.strongObjects.Remove(oid), 
+                    this.lazyProperties.Remove(oid), 
+                    targetRefs.Count > 0 ? this.references.Remove(oid).SetItem(targetOid, targetRefs) : this.references.Remove(oid));
             }
             return this;
         }
 
-        internal GreenModel PurgeWeakSymbols(HashSet<SymbolId> strongSymbols)
+        internal GreenModel PurgeWeakObjects(HashSet<ObjectId> strongObjects)
         {
-            var symbols = this.symbols;
+            var objects = this.objects;
             var references = this.references;
-            foreach (var id in this.symbols.Keys)
+            foreach (var id in this.objects.Keys)
             {
-                if (!strongSymbols.Contains(id))
+                if (!strongObjects.Contains(id))
                 {
-                    symbols = symbols.Remove(id);
+                    objects = objects.Remove(id);
                     references = references.Remove(id);
                 }
             }
-            return this.Update(this.name, this.version, symbols, this.strongSymbols, this.lazyProperties, references);
+            return this.Update(this.name, this.version, objects, this.strongObjects, this.lazyProperties, references);
         }
 
         public override string ToString()

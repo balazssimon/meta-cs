@@ -86,7 +86,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             return null;
         }
 
-        public override bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        public override bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
         {
             Debug.Assert(modelObject != null);
             if (_models.Contains(modelObject.MModel))

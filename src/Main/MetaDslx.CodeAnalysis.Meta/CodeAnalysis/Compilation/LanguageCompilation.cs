@@ -2572,9 +2572,9 @@ namespace MetaDslx.CodeAnalysis
             EventQueue?.TryEnqueue(new SymbolDeclaredCompilationEvent(this, symbol));
         }
 
-        public ImmutableDictionary<IMetaSymbol, Symbol> BuildModelObjectToSymbolMap()
+        public ImmutableDictionary<IModelObject, Symbol> BuildModelObjectToSymbolMap()
         {
-            var builder = ImmutableDictionary.CreateBuilder<IMetaSymbol, Symbol>();
+            var builder = ImmutableDictionary.CreateBuilder<IModelObject, Symbol>();
             Stack<Symbol> stack = new Stack<Symbol>();
             stack.Push(this.GlobalNamespace);
             while (stack.Count > 0)

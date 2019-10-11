@@ -291,5 +291,10 @@ namespace MetaDslx.CodeAnalysis
         {
             return new LanguageDiagnostic(new LanguageDiagnosticInfo(this, args), Location.None);
         }
+
+        public LanguageDiagnostic ToDiagnostic(Location location, params object[] args)
+        {
+            return new LanguageDiagnostic(new LanguageDiagnosticInfo(this, args), location);
+        }
     }
 }

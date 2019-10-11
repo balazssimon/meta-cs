@@ -229,7 +229,7 @@ namespace MetaDslx.CodeAnalysis.Syntax
             return value;
         }
 
-        public virtual TypeKind ToTypeKind(ModelSymbolInfo info)
+        public virtual TypeKind ToTypeKind(ModelObjectDescriptor info)
         {
             return TypeKind.Class;
         }

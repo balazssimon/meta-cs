@@ -10,13 +10,13 @@ using System.Threading;
 
 namespace MetaDslx.Modeling
 {
-    public abstract class MutableSymbolBase : MutableSymbol
+    public abstract class MutableObjectBase : MutableObject
     {
         private bool creating;
-        private SymbolId id;
+        private ObjectId id;
         private MutableModel model;
 
-        protected MutableSymbolBase(SymbolId id, MutableModel model, bool creating)
+        protected MutableObjectBase(ObjectId id, MutableModel model, bool creating)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
             if (model == null) throw new ArgumentNullException(nameof(model));
@@ -25,19 +25,19 @@ namespace MetaDslx.Modeling
             this.creating = creating;
         }
 
-        public ImmutableSymbol ToImmutable()
+        public ImmutableObject ToImmutable()
         {
             ImmutableModel immutableModel = this.model.ToImmutable();
-            return immutableModel.GetSymbol(this);
+            return immutableModel.GetObject(this);
         }
 
-        public ImmutableSymbol ToImmutable(ImmutableModel immutableModel)
+        public ImmutableObject ToImmutable(ImmutableModel immutableModel)
         {
             if (immutableModel == null) throw new ArgumentNullException(nameof(immutableModel));
-            return immutableModel.GetSymbol(this);
+            return immutableModel.GetObject(this);
         }
 
-        public SymbolId MId { get { return this.id; } }
+        public ObjectId MId { get { return this.id; } }
         internal bool MIsBeingCreated { get { return this.creating; } }
         public bool MIsReadOnly { get { return this.model.IsReadOnly; } }
 
@@ -45,17 +45,17 @@ namespace MetaDslx.Modeling
         public abstract MetaClass MMetaClass { get; }
 
         public MutableModel MModel { get { return this.model; } }
-        IModel IMetaSymbol.MModel { get { return this.MModel; } }
-        public MutableSymbol MParent { get { return this.model.MParent(this.id); } }
-        public ImmutableModelList<MutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
+        IModel IModelObject.MModel { get { return this.MModel; } }
+        public MutableObject MParent { get { return this.model.MParent(this.id); } }
+        public ImmutableModelList<MutableObject> MChildren { get { return this.model.MChildren(this.id); } }
 
-        IMetaSymbol IMetaSymbol.MParent { get { return this.model.MParent(this.id); } }
-        IReadOnlyList<IMetaSymbol> IMetaSymbol.MChildren { get { return this.model.MChildren(this.id); } }
+        IModelObject IModelObject.MParent { get { return this.model.MParent(this.id); } }
+        IReadOnlyList<IModelObject> IModelObject.MChildren { get { return this.model.MChildren(this.id); } }
 
-        public IReadOnlyList<IMetaSymbol> MGetImports() { return this.model.MGetImports(this); }
-        public IReadOnlyList<IMetaSymbol> MGetBases() { return this.model.MGetBases(this); }
-        public IReadOnlyList<IMetaSymbol> MGetAllBases() { return this.model.MGetAllBases(this); }
-        public IReadOnlyList<IMetaSymbol> MGetMembers() { return this.model.MGetMembers(this); }
+        public IReadOnlyList<IModelObject> MGetImports() { return this.model.MGetImports(this); }
+        public IReadOnlyList<IModelObject> MGetBases() { return this.model.MGetBases(this); }
+        public IReadOnlyList<IModelObject> MGetAllBases() { return this.model.MGetAllBases(this); }
+        public IReadOnlyList<IModelObject> MGetMembers() { return this.model.MGetMembers(this); }
 
         public IReadOnlyList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public IReadOnlyList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -82,7 +82,7 @@ namespace MetaDslx.Modeling
         {
             get
             {
-                ModelProperty nameProperty = this.id.SymbolInfo.NameProperty;
+                ModelProperty nameProperty = this.id.Descriptor.NameProperty;
                 if (nameProperty != null)
                 {
                     object nameObj = this.MGet(nameProperty);
@@ -93,42 +93,42 @@ namespace MetaDslx.Modeling
             }
             set
             {
-                ModelProperty nameProperty = this.id.SymbolInfo.NameProperty;
+                ModelProperty nameProperty = this.id.Descriptor.NameProperty;
                 if (nameProperty != null)
                 {
                     this.SetReference(nameProperty, value);
                 }
             }
         }
-        public MutableSymbol MType
+        public MutableObject MType
         {
             get
             {
-                ModelProperty typeProperty = this.id.SymbolInfo.TypeProperty;
+                ModelProperty typeProperty = this.id.Descriptor.TypeProperty;
                 if (typeProperty != null)
                 {
                     object typeObj = this.MGet(typeProperty);
-                    return typeObj as MutableSymbol;
+                    return typeObj as MutableObject;
                 }
                 return null;
             }
             set
             {
-                ModelProperty typeProperty = this.id.SymbolInfo.TypeProperty;
+                ModelProperty typeProperty = this.id.Descriptor.TypeProperty;
                 if (typeProperty != null)
                 {
                     this.SetReference(typeProperty, value);
                 }
             }
         }
-        public bool MIsNamespace { get { return this.id.SymbolInfo.IsNamespace; } }
-        public bool MIsType { get { return this.id.SymbolInfo.IsType; } }
-        public bool MIsNamedType { get { return this.id.SymbolInfo.IsNamedType; } }
+        public bool MIsNamespace { get { return this.id.Descriptor.IsNamespace; } }
+        public bool MIsType { get { return this.id.Descriptor.IsType; } }
+        public bool MIsNamedType { get { return this.id.Descriptor.IsNamedType; } }
 
-        public bool MIsScope { get { return this.id.SymbolInfo.IsScope; } }
-        public bool MIsLocalScope { get { return this.id.SymbolInfo.IsLocalScope; } }
+        public bool MIsScope { get { return this.id.Descriptor.IsScope; } }
+        public bool MIsLocalScope { get { return this.id.Descriptor.IsLocalScope; } }
 
-        IMetaSymbol IMetaSymbol.MType
+        IModelObject IModelObject.MType
         {
             get
             {
@@ -167,13 +167,13 @@ namespace MetaDslx.Modeling
 
         public void MSet(ModelProperty property, object value)
         {
-            if (property.IsCollection) throw new ModelException(Location.None, ModelErrorCode.ERR_CannotReassignCollectionProperty.ToDiagnosticInfo(property, this));
+            if (property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotReassignCollectionProperty.ToDiagnosticWithNoLocation(property, this));
             this.model.SetValue(this.id, property, value, this.creating);
         }
 
         public void MSetLazy(ModelProperty property, LazyValue value)
         {
-            if (property.IsCollection) throw new ModelException(value.Location, ModelErrorCode.ERR_CannotReassignCollectionProperty.ToDiagnosticInfo(property, this));
+            if (property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotReassignCollectionProperty.ToDiagnostic(value.Location, property, this));
             this.model.SetLazyValue(this.id, property, value, this.creating);
         }
 
@@ -203,19 +203,19 @@ namespace MetaDslx.Modeling
 
         public void MAddRange(ModelProperty property, IEnumerable<object> values)
         {
-            if (!property.IsCollection) throw new ModelException(Location.None, ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticInfo(property, this));
+            if (!property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(property, this));
             this.model.AddItems(this.id, property, values, this.creating);
         }
 
         public void MAddRangeLazy(ModelProperty property, LazyValue values)
         {
-            if (!property.IsCollection) throw new ModelException(values.Location, ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticInfo(property, this));
+            if (!property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnostic(values.Location, property, this));
             this.model.AddLazyItems(this.id, property, values, this.creating);
         }
 
         public void MAddRangeLazy(ModelProperty property, IEnumerable<LazyValue> values)
         {
-            if (!property.IsCollection) throw new ModelException(Location.None, ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticInfo(property, this));
+            if (!property.IsCollection) throw new ModelException(ModelErrorCode.ERR_CannotAddMultipleValuesToNonCollectionProperty.ToDiagnosticWithNoLocation(property, this));
             this.model.AddLazyItems(this.id, property, values, this.creating);
         }
 
@@ -276,7 +276,7 @@ namespace MetaDslx.Modeling
         protected void SetReference<T>(ModelProperty property, T value)
             where T : class
         {
-            if (value is MutableSymbolBase && ((MutableSymbolBase)(object)value).model != this.model)
+            if (value is MutableObjectBase && ((MutableObjectBase)(object)value).model != this.model)
             {
                 value = (T)this.model.ToRedValue(this.model.ToGreenValue(value));
             }
@@ -331,7 +331,7 @@ namespace MetaDslx.Modeling
 
         public override bool Equals(object obj)
         {
-            if (obj is IMetaSymbol other)
+            if (obj is IModelObject other)
             {
                 return this.id.Equals(other.MId);
             }

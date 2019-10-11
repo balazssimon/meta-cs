@@ -10,12 +10,12 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
     public class MetaNamespaceSymbol : NamespaceSymbol, IMetaMetadataSymbol
     {
-        private IMetaSymbol _metaObject;
+        private IModelObject _metaObject;
         private Symbol _container;
         private ImmutableArray<Symbol> _lazyMembers;
         private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
 
-        public MetaNamespaceSymbol(IMetaSymbol metaObject, Symbol container)
+        public MetaNamespaceSymbol(IModelObject metaObject, Symbol container)
         {
             if (metaObject == null) throw new ArgumentNullException(nameof(metaObject));
             _metaObject = metaObject;
@@ -42,9 +42,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override string Name => _metaObject.MName;
 
-        public override ModelSymbolInfo ModelSymbolInfo => _metaObject.MId.SymbolInfo;
+        public override ModelObjectDescriptor ModelSymbolInfo => _metaObject.MId.Descriptor;
 
-        public override IMetaSymbol ModelObject => _metaObject;
+        public override IModelObject ModelObject => _metaObject;
 
         public override ImmutableArray<Symbol> GetMembers()
         {
@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             if (_lazyTypeMembers.IsDefault)
             {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, MetaSymbolMap.GetNamedTypeSymbols(_metaObject.MChildren.Where(child => child.MId.SymbolInfo.IsNamedType)));
+                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, MetaSymbolMap.GetNamedTypeSymbols(_metaObject.MChildren.Where(child => child.MId.Descriptor.IsNamedType)));
             }
             return _lazyTypeMembers;
         }

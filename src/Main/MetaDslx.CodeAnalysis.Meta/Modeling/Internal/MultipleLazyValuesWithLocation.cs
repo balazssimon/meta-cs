@@ -5,21 +5,14 @@ using System.Text;
 
 namespace MetaDslx.Modeling.Internal
 {
-    internal class MultipleLazyValuesWithLocation : MultipleLazyValues
+    internal class MultipleLazyValuesWithLocation<T> : MultipleLazyValues<T>
     {
-        private DiagnosticBag diagnostics;
         private Location location;
 
-        internal MultipleLazyValuesWithLocation(Func<IEnumerable<object>> lazy, Location location, DiagnosticBag diagnostics)
+        internal MultipleLazyValuesWithLocation(Func<IEnumerable<T>> lazy, Location location)
             : base(lazy)
         {
-            this.diagnostics = diagnostics;
             this.location = location;
-        }
-
-        internal override DiagnosticBag Diagnostics
-        {
-            get { return this.diagnostics; }
         }
 
         internal override Location Location

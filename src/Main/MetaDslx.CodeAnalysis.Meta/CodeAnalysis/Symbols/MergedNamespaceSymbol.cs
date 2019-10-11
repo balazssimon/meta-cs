@@ -192,7 +192,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
             return members.ToImmutableAndFree();
         }
 
-        public override ModelSymbolInfo ModelSymbolInfo => _namespacesToMerge[0].ModelSymbolInfo;
+        public override ModelObjectDescriptor ModelSymbolInfo => _namespacesToMerge[0].ModelSymbolInfo;
 
         public override string Name
         {

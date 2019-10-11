@@ -25,16 +25,16 @@ namespace MetaDslx.Modeling
 
     public sealed class LazyEvalEntry : IEquatable<LazyEvalEntry>
     {
-        private IMetaSymbol symbol;
+        private IModelObject symbol;
         private ModelProperty property;
 
-        public LazyEvalEntry(IMetaSymbol symbol, ModelProperty property)
+        public LazyEvalEntry(IModelObject symbol, ModelProperty property)
         {
             this.symbol = symbol;
             this.property = property;
         }
 
-        public IMetaSymbol Symbol { get { return this.symbol; } }
+        public IModelObject Symbol { get { return this.symbol; } }
         public ModelProperty Property { get { return this.property; } }
 
         public bool Equals(LazyEvalEntry other)

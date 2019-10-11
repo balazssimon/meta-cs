@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public readonly NamespaceOrTypeSymbol QualifierOpt;
         public readonly string Name;
         public readonly string MetadataName;
-        public readonly ImmutableArray<ModelSymbolInfo> SymbolTypes;
+        public readonly ImmutableArray<ModelObjectDescriptor> SymbolTypes;
         public readonly ConsList<TypeSymbol> BasesBeingResolved;
         public readonly LookupOptions Options;
         public readonly bool Diagnose;
@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public LookupConstraints(
             string name = null,
             string metadataName = null,
-            ImmutableArray<ModelSymbolInfo> symbolTypes = default,
+            ImmutableArray<ModelObjectDescriptor> symbolTypes = default,
             NamespaceOrTypeSymbol qualifierOpt = null,
             ConsList<TypeSymbol> basesBeingResolved = null,
             Binder originalBinder = null,
@@ -49,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual LookupConstraints Update(
             string name,
             string metadataName,
-            ImmutableArray<ModelSymbolInfo> symbolTypes,
+            ImmutableArray<ModelObjectDescriptor> symbolTypes,
             NamespaceOrTypeSymbol qualifierOpt,
             ConsList<TypeSymbol> basesBeingResolved,
             Binder originalBinder,

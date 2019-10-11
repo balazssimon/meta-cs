@@ -12,14 +12,14 @@ namespace MetaDslx.Modeling
         private GreenModelGroup green;
         private WeakReference<MutableModelGroup> mutableModelGroup;
         private ConditionalWeakTable<ModelId, ImmutableModel> models;
-        private ConditionalWeakTable<SymbolId, ImmutableSymbolBase> symbols;
+        private ConditionalWeakTable<ObjectId, ImmutableObjectBase> objects;
 
         internal ImmutableModelGroup(GreenModelGroup green, MutableModelGroup mutableModelGroup)
         {
             this.green = green;
             this.mutableModelGroup = new WeakReference<MutableModelGroup>(mutableModelGroup);
             this.models = new ConditionalWeakTable<ModelId, ImmutableModel>();
-            this.symbols = new ConditionalWeakTable<SymbolId, ImmutableSymbolBase>();
+            this.objects = new ConditionalWeakTable<ObjectId, ImmutableObjectBase>();
         }
 
         internal GreenModelGroup Green { get { return this.green; } }
@@ -90,56 +90,56 @@ namespace MetaDslx.Modeling
         }
 
 
-        internal ImmutableSymbolBase GetExistingReferenceSymbol(ModelId mid, SymbolId sid)
+        internal ImmutableObjectBase GetExistingReferenceObject(ModelId mid, ObjectId sid)
         {
-            return this.symbols.GetValue(sid, key => key.CreateImmutable(this.GetExistingReference(mid)));
+            return this.objects.GetValue(sid, key => key.CreateImmutable(this.GetExistingReference(mid)));
         }
 
-        internal ImmutableSymbolBase GetExistingModelSymbol(ModelId mid, SymbolId sid)
+        internal ImmutableObjectBase GetExistingModelObject(ModelId mid, ObjectId sid)
         {
-            return this.symbols.GetValue(sid, key => key.CreateImmutable(this.GetExistingModel(mid)));
+            return this.objects.GetValue(sid, key => key.CreateImmutable(this.GetExistingModel(mid)));
         }
 
-        internal ImmutableSymbolBase ResolveSymbol(SymbolId sid)
+        internal ImmutableObjectBase ResolveObject(ObjectId sid)
         {
-            ImmutableSymbolBase result;
-            if (this.symbols.TryGetValue(sid, out result) && result != null)
+            ImmutableObjectBase result;
+            if (this.objects.TryGetValue(sid, out result) && result != null)
             {
                 return result;
             }
             foreach (var modelEntry in this.Green.Models)
             {
-                if (modelEntry.Value.Symbols.ContainsKey(sid))
+                if (modelEntry.Value.Objects.ContainsKey(sid))
                 {
-                    return this.GetExistingModelSymbol(modelEntry.Key, sid);
+                    return this.GetExistingModelObject(modelEntry.Key, sid);
                 }
             }
             foreach (var modelEntry in this.Green.References)
             {
-                if (modelEntry.Value.Symbols.ContainsKey(sid))
+                if (modelEntry.Value.Objects.ContainsKey(sid))
                 {
-                    return this.GetExistingReferenceSymbol(modelEntry.Key, sid);
+                    return this.GetExistingReferenceObject(modelEntry.Key, sid);
                 }
             }
             return null;
         }
 
-        internal bool ContainsSymbol(SymbolId sid)
+        internal bool ContainsObject(ObjectId sid)
         {
             if (sid == null) return false;
-            return this.Green.ContainsSymbol(sid);
+            return this.Green.ContainsObject(sid);
         }
 
-        public bool ContainsSymbol(ImmutableSymbol symbol)
+        public bool ContainsObject(ImmutableObject obj)
         {
-            if (symbol == null) return false;
-            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).MId);
+            if (obj == null) return false;
+            return this.ContainsObject(((ImmutableObjectBase)obj).MId);
         }
 
-        public bool ContainsSymbol(MutableSymbol symbol)
+        public bool ContainsObject(MutableObject obj)
         {
-            if (symbol == null) return false;
-            return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
+            if (obj == null) return false;
+            return this.ContainsObject(((MutableObjectBase)obj).MId);
         }
 
         public MutableModelGroup ToMutable(bool createNew = false)

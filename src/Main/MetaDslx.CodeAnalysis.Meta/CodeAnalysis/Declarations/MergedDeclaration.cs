@@ -17,7 +17,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
         private readonly ImmutableArray<SingleDeclaration> _declarations;
         private ImmutableArray<MergedDeclaration> _lazyChildren;
         private ImmutableArray<string> _lazyChildNames;
-        private MutableSymbolBase _modelObject;
+        private MutableObjectBase _modelObject;
 
         public MergedDeclaration(ImmutableArray<SingleDeclaration> declarations)
             : base(declarations.IsEmpty ? null : declarations[0].Name,
@@ -43,7 +43,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        public override ModelSymbolInfo Kind
+        public override ModelObjectDescriptor Kind
         {
             get
             {
@@ -164,7 +164,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             return new MergedDeclaration(mergedDeclaration._declarations.Add(declaration));
         }
 
-        public MutableSymbolBase GetModelObject(MutableSymbolBase parentObject, MutableModel model, DiagnosticBag diagnostics)
+        public MutableObjectBase GetModelObject(MutableObjectBase parentObject, MutableModel model, DiagnosticBag diagnostics)
         {
             if (_modelObject == null)
             {

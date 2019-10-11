@@ -5,24 +5,24 @@ using System.Text;
 
 namespace MetaDslx.Modeling.Internal
 {
-    internal class GreenSymbol
+    internal class GreenObject
     {
-        internal static readonly GreenSymbol Empty = new GreenSymbol();
-        internal static readonly object Unassigned = new Unassigned();
+        internal static readonly GreenObject Empty = new GreenObject();
+        internal static readonly object Unassigned = new object();
 
-        private SymbolId parent;
-        private ImmutableList<SymbolId> children;
+        private ObjectId parent;
+        private ImmutableList<ObjectId> children;
         private ImmutableDictionary<ModelProperty, object> properties;
 
-        private GreenSymbol()
+        private GreenObject()
         {
-            this.children = ImmutableList<SymbolId>.Empty;
+            this.children = ImmutableList<ObjectId>.Empty;
             this.properties = ImmutableDictionary<ModelProperty, object>.Empty;
         }
 
-        private GreenSymbol(
-            SymbolId parent,
-            ImmutableList<SymbolId> children,
+        private GreenObject(
+            ObjectId parent,
+            ImmutableList<ObjectId> children,
             ImmutableDictionary<ModelProperty, object> properties)
         {
             this.parent = parent;
@@ -30,28 +30,28 @@ namespace MetaDslx.Modeling.Internal
             this.properties = properties;
         }
 
-        internal GreenSymbol Update(
-            SymbolId parent,
-            ImmutableList<SymbolId> children,
+        internal GreenObject Update(
+            ObjectId parent,
+            ImmutableList<ObjectId> children,
             ImmutableDictionary<ModelProperty, object> properties)
         {
             if (this.parent != parent || this.children != children || this.properties != properties)
             {
-                return new GreenSymbol(parent, children, properties);
+                return new GreenObject(parent, children, properties);
             }
             return this;
         }
 
-        internal static GreenSymbol CreateWithProperties(ImmutableArray<ModelProperty> properties)
+        internal static GreenObject CreateWithProperties(ImmutableArray<ModelProperty> properties)
         {
-            return GreenSymbol.Empty.Update(
+            return GreenObject.Empty.Update(
                 null,
-                ImmutableList<SymbolId>.Empty,
-                properties.ToImmutableDictionary(p => p, p => GreenSymbol.Unassigned));
+                ImmutableList<ObjectId>.Empty,
+                properties.ToImmutableDictionary(p => p, p => GreenObject.Unassigned));
         }
 
-        internal SymbolId Parent { get { return this.parent; } }
-        internal ImmutableList<SymbolId> Children { get { return this.children; } }
+        internal ObjectId Parent { get { return this.parent; } }
+        internal ImmutableList<ObjectId> Children { get { return this.children; } }
         internal ImmutableDictionary<ModelProperty, object> Properties { get { return this.properties; } }
     }
 

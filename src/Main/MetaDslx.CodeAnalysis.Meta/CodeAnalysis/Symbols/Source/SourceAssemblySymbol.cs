@@ -1802,7 +1802,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override AssemblyMetadata GetMetadata() => null;
 
-        public bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        public bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
         {
             if (modelObject == null)
             {
@@ -1820,7 +1820,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return false;
         }
 
-        public Symbol GetSymbol(IMetaSymbol modelObject)
+        public Symbol GetSymbol(IModelObject modelObject)
         {
             if (this.TryGetSymbol(modelObject, out Symbol symbol))
             {

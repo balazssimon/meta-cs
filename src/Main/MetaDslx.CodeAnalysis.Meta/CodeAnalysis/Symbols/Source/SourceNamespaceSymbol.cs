@@ -23,7 +23,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
         private readonly Symbol _container;
         private readonly MergedDeclaration _declaration;
         private readonly SymbolCompletionState _state;
-        private readonly MutableSymbolBase _modelObject;
+        private readonly MutableObjectBase _modelObject;
         private SourceDeclaration _sourceDeclaration;
 
         public SourceNamespaceSymbol(
@@ -39,7 +39,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
             if (declaration.Kind != null)
             {
-                _modelObject = declaration.GetModelObject(container?.ModelObject as MutableSymbolBase, module.ModelBuilder, diagnostics);
+                _modelObject = declaration.GetModelObject(container?.ModelObject as MutableObjectBase, module.ModelBuilder, diagnostics);
                 Debug.Assert(_modelObject != null);
             }
 
@@ -54,9 +54,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         internal protected override MutableModel ModelBuilder => _module.ModelBuilder;
 
-        public override IMetaSymbol ModelObject => _modelObject;
+        public override IModelObject ModelObject => _modelObject;
 
-        public override ModelSymbolInfo ModelSymbolInfo => _declaration.Kind;
+        public override ModelObjectDescriptor ModelSymbolInfo => _declaration.Kind;
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 

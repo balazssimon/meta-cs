@@ -18,7 +18,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
     public class SingleDeclaration : Declaration
     {
-        private readonly ModelSymbolInfo _kind;
+        private readonly ModelObjectDescriptor _kind;
         private readonly SyntaxReference _syntaxReference;
         private readonly SourceLocation _nameLocation;
         private readonly ImmutableArray<SingleDeclaration> _children;
@@ -34,7 +34,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public SingleDeclaration(
             string name, 
-            ModelSymbolInfo kind,
+            ModelObjectDescriptor kind,
             SyntaxReference syntaxReference,
             SourceLocation nameLocation,
             bool canMerge,
@@ -52,7 +52,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.Diagnostics = diagnostics;
         }
 
-        public override ModelSymbolInfo Kind
+        public override ModelObjectDescriptor Kind
         {
             get { return this._kind; }
         }

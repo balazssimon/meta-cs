@@ -11,49 +11,33 @@ namespace MetaDslx.Modeling
 {
     public class ModelException : Exception
     {
-        private Location location;
-        private LanguageDiagnosticInfo diagnosticInfo;
+        private Diagnostic diagnostic;
 
-        public ModelException(Location location, LanguageDiagnosticInfo diagnosticInfo)
-            : this(location, diagnosticInfo, null)
+        public ModelException(Diagnostic diagnostic)
+            : this(diagnostic, null)
         {
         }
 
-        public ModelException(Location location, LanguageDiagnosticInfo diagnosticInfo, Exception innerException)
-            : base(string.Format(diagnosticInfo.GetMessage()), innerException)
+        public ModelException(Diagnostic diagnostic, Exception innerException)
+            : base(string.Format(diagnostic.GetMessage()), innerException)
         {
-            this.location = location;
-            this.diagnosticInfo = diagnosticInfo;
+            this.diagnostic = diagnostic;
         }
 
-        public Location Location
+        public Diagnostic Diagnostic
         {
-            get { return this.location; }
-        }
-
-        public LanguageDiagnosticInfo LanguageDiagnosticInfo
-        {
-            get { return this.diagnosticInfo; }
+            get { return this.diagnostic; }
         }
     }
 
-    public sealed class LazyEvaluationException : ModelException
+    public class LazyEvaluationException : ModelException
     {
-        internal LazyEvaluationException(Location location, LazyEvaluationDiagnosticInfo diagnosticInfo)
-            : base(location, diagnosticInfo)
+        public LazyEvaluationException(Diagnostic diagnostic) : base(diagnostic)
         {
         }
 
-        internal LazyEvaluationException(Location location, LazyEvaluationDiagnosticInfo diagnosticInfo, Exception innerException)
-            : base(location, diagnosticInfo, innerException)
+        public LazyEvaluationException(Diagnostic diagnostic, Exception innerException) : base(diagnostic, innerException)
         {
-        }
-
-        public ImmutableArray<LazyEvalEntry> EvaluationStack
-        {
-            get { return ((LazyEvaluationDiagnosticInfo)this.LanguageDiagnosticInfo).EvaluationStack; }
         }
     }
-
-
 }

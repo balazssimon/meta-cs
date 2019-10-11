@@ -292,7 +292,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Retargeting
             return _underlyingModule.GetMetadata();
         }
 
-        public override bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        public override bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
         {
             return _underlyingModule.TryGetSymbol(modelObject, out symbol);
         }

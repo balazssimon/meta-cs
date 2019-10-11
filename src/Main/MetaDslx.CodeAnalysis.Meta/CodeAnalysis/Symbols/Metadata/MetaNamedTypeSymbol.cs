@@ -13,13 +13,13 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
     public class MetaNamedTypeSymbol : NamedTypeSymbol, IMetaMetadataSymbol
     {
-        private IMetaSymbol _metaObject;
+        private IModelObject _metaObject;
         private Symbol _container;
         private ImmutableArray<string> _lazyMemberNames;
         private ImmutableArray<Symbol> _lazyMembers;
         private ImmutableArray<NamedTypeSymbol> _lazyTypeMembers;
 
-        public MetaNamedTypeSymbol(IMetaSymbol metaObject, Symbol container)
+        public MetaNamedTypeSymbol(IModelObject metaObject, Symbol container)
         {
             Debug.Assert(metaObject != null);
             _metaObject = metaObject;
@@ -32,9 +32,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 
         public override LanguageSymbolKind Kind => LanguageSymbolKind.NamedType;
 
-        public override ModelSymbolInfo ModelSymbolInfo => _metaObject.MId.SymbolInfo;
+        public override ModelObjectDescriptor ModelSymbolInfo => _metaObject.MId.Descriptor;
 
-        public override IMetaSymbol ModelObject => _metaObject;
+        public override IModelObject ModelObject => _metaObject;
 
         public override IEnumerable<string> MemberNames
         {
@@ -64,7 +64,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             var result = ArrayBuilder<NamedTypeSymbol>.GetInstance();
             foreach (var prop in _metaObject.MProperties.Where(p => p.IsBaseScope))
             {
-                foreach (var baseType in (IEnumerable<IMetaSymbol>)_metaObject.MGet(prop))
+                foreach (var baseType in (IEnumerable<IModelObject>)_metaObject.MGet(prop))
                 {
                     result.Add(MetaSymbolMap.GetNamedTypeSymbol(baseType));
                 }
@@ -95,7 +95,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         {
             if (_lazyTypeMembers.IsDefault)
             {
-                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, MetaSymbolMap.GetNamedTypeSymbols(_metaObject.MChildren.Where(child => child.MId.SymbolInfo.IsNamedType)));
+                ImmutableInterlocked.InterlockedInitialize(ref _lazyTypeMembers, MetaSymbolMap.GetNamedTypeSymbols(_metaObject.MChildren.Where(child => child.MId.Descriptor.IsNamedType)));
             }
             return _lazyTypeMembers;
         }

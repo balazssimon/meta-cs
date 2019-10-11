@@ -42,9 +42,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                     {
                         foreach (var model in _module.Models)
                         {
-                            foreach (var ms in model.Symbols)
+                            foreach (var ms in model.Objects)
                             {
-                                if (ms.MParent == null && ms.MId.SymbolInfo.IsNamespace)
+                                if (ms.MParent == null && ms.MId.Descriptor.IsNamespace)
                                 {
                                     names.Add(ms.MName);
                                 }
@@ -71,9 +71,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                     {
                         foreach (var model in _module.Models)
                         {
-                            foreach (var ms in model.Symbols)
+                            foreach (var ms in model.Objects)
                             {
-                                if (ms.MParent == null && ms.MId.SymbolInfo.IsType) 
+                                if (ms.MParent == null && ms.MId.Descriptor.IsType) 
                                 {
                                     names.Add(ms.MName);
                                 }
@@ -98,7 +98,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 {
                     foreach (var model in _module.Models)
                     {
-                        foreach (var ms in model.Symbols)
+                        foreach (var ms in model.Objects)
                         {
                             if (ms.MParent == null)
                             {
@@ -135,9 +135,9 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
                 {
                     foreach (var model in _module.Models)
                     {
-                        foreach (var ms in model.Symbols)
+                        foreach (var ms in model.Objects)
                         {
-                            if (ms.MParent == null && ms.MId.SymbolInfo.IsNamedType)
+                            if (ms.MParent == null && ms.MId.Descriptor.IsNamedType)
                             {
                                 var symbol = MetaSymbolMap.GetNamedTypeSymbol(ms);
                                 symbols.Add(symbol);

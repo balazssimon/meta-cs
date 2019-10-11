@@ -12,15 +12,15 @@ namespace MetaDslx.Languages.Meta.Symbols
 {
     public static class MetaConstants
     {
-        private static ImmutableList<IMetaSymbol> types = ImmutableList<IMetaSymbol>.Empty;
+        private static ImmutableList<IModelObject> types = ImmutableList<IModelObject>.Empty;
 
-        public static ImmutableList<IMetaSymbol> Types
+        public static ImmutableList<IModelObject> Types
         {
             get
             {
                 if (MetaConstants.types.Count == 0 && MetaInstance.IsInitialized)
                 {
-                    ImmutableList<IMetaSymbol>.Builder typesBuilder = ImmutableList.CreateBuilder<IMetaSymbol>();
+                    ImmutableList<IModelObject>.Builder typesBuilder = ImmutableList.CreateBuilder<IModelObject>();
                     typesBuilder.Add(MetaInstance.Object);
                     typesBuilder.Add(MetaInstance.String);
                     typesBuilder.Add(MetaInstance.Int);

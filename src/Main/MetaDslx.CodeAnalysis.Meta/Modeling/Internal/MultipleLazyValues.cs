@@ -6,11 +6,11 @@ using System.Text;
 
 namespace MetaDslx.Modeling.Internal
 {
-    internal class MultipleLazyValues : LazyValue
+    internal class MultipleLazyValues<T> : LazyValue
     {
-        private Func<IEnumerable<object>> lazy;
+        private Func<IEnumerable<T>> lazy;
 
-        internal MultipleLazyValues(Func<IEnumerable<object>> lazy)
+        internal MultipleLazyValues(Func<IEnumerable<T>> lazy)
         {
             this.lazy = lazy;
         }
@@ -20,14 +20,16 @@ namespace MetaDslx.Modeling.Internal
             get { return false; }
         }
 
-        internal Func<IEnumerable<object>> Lazy
+        internal override object LazyConstructor => this.Lazy;
+
+        internal Func<IEnumerable<T>> Lazy
         {
             get { return this.lazy; }
         }
 
         internal protected override object[] CreateRedValues()
         {
-            return lazy()?.ToArray() ?? EmptyArray<object>.Instance;
+            return lazy()?.Cast<object>().ToArray() ?? EmptyArray<object>.Instance;
         }
     }
 }

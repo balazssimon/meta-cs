@@ -4,15 +4,15 @@ using System.Text;
 
 namespace MetaDslx.Modeling
 {
-    public interface ImmutableSymbol : IMetaSymbol
+    public interface ImmutableObject : IModelObject
     {
         new ImmutableModel MModel { get; }
-        new ImmutableSymbol MParent { get; }
-        new ImmutableModelList<ImmutableSymbol> MChildren { get; }
+        new ImmutableObject MParent { get; }
+        new ImmutableModelList<ImmutableObject> MChildren { get; }
 
-        new ImmutableSymbol MType { get; }
+        new ImmutableObject MType { get; }
 
-        MutableSymbol ToMutable();
-        MutableSymbol ToMutable(MutableModel mutableModel);
+        MutableObject ToMutable();
+        MutableObject ToMutable(MutableModel mutableModel);
     }
 }

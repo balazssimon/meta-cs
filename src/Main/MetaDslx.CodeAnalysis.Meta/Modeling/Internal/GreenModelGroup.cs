@@ -54,64 +54,64 @@ namespace MetaDslx.Modeling.Internal
             return this.Update(this.models.SetItem(model.Id, model), this.references);
         }
 
-        internal bool SymbolExists(SymbolId sid)
+        internal bool ObjectExists(ObjectId oid)
         {
             foreach (var model in this.models.Values)
             {
-                if (model.Symbols.ContainsKey(sid)) return true;
+                if (model.Objects.ContainsKey(oid)) return true;
             }
             foreach (var model in this.references.Values)
             {
-                if (model.Symbols.ContainsKey(sid)) return true;
+                if (model.Objects.ContainsKey(oid)) return true;
             }
             return false;
         }
 
-        internal bool ContainsSymbol(SymbolId sid)
+        internal bool ContainsObject(ObjectId oid)
         {
             foreach (var model in this.models.Values)
             {
-                if (model.Symbols.ContainsKey(sid)) return true;
+                if (model.Objects.ContainsKey(oid)) return true;
             }
             return false;
         }
 
-        internal bool ContainsSymbol(ModelId mid, SymbolId sid)
+        internal bool ContainsObject(ModelId mid, ObjectId oid)
         {
             GreenModel model;
             if (!this.models.TryGetValue(mid, out model))
             {
                 return false;
             }
-            return model.Symbols.ContainsKey(sid);
+            return model.Objects.ContainsKey(oid);
         }
 
-        internal GreenModelGroup RemoveSymbol(SymbolId sid)
+        internal GreenModelGroup RemoveObject(ObjectId oid)
         {
             GreenModelGroup result = this;
             foreach (var model in this.models.Values)
             {
-                result = result.UpdateModel(model.RemoveSymbol(sid));
+                result = result.UpdateModel(model.RemoveObject(oid));
             }
             return result;
         }
 
-        internal GreenModelGroup ReplaceSymbol(SymbolId sid, SymbolId targetSid)
+        internal GreenModelGroup ReplaceObject(ObjectId oid, ObjectId targetOid)
         {
             GreenModelGroup result = this;
             foreach (var model in this.models.Values)
             {
-                result = result.UpdateModel(model.ReplaceSymbol(sid, targetSid));
+                result = result.UpdateModel(model.ReplaceObject(oid, targetOid));
             }
             return result;
         }
 
-        internal GreenModelGroup PurgeWeakSymbols(HashSet<SymbolId> strongSymbols)
+        internal GreenModelGroup PurgeWeakObjects(HashSet<ObjectId> strongObjects)
         {
             GreenModelGroup result = this;
             foreach (var model in this.models.Values)
             {
-                result = result.UpdateModel(model.PurgeWeakSymbols(strongSymbols));
+                result = result.UpdateModel(model.PurgeWeakObjects(strongObjects));
             }
             return result;
         }

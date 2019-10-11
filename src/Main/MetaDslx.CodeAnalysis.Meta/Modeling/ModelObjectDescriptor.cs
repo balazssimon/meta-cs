@@ -14,7 +14,7 @@ namespace MetaDslx.Modeling
 {
 
     [Flags]
-    internal enum MetaModelSymbolFlags : uint
+    internal enum MetaModelObjectFlags : uint
     {
         None = 0x0000,
         Scope = 0x0001,
@@ -23,21 +23,21 @@ namespace MetaDslx.Modeling
         Local = 0x0008
     }
 
-    public sealed class ModelSymbolInfo
+    public sealed class ModelObjectDescriptor
     {
         private static Type[] EmptyTypeArray = new Type[0];
         private static object[] EmptyObjectArray = new object[0];
 
-        private static ImmutableDictionary<Type, ModelSymbolInfo> descriptors = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
-        private static ImmutableDictionary<Type, ModelSymbolInfo> immutableTypes = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
-        private static ImmutableDictionary<Type, ModelSymbolInfo> mutableTypes = ImmutableDictionary<Type, ModelSymbolInfo>.Empty;
+        private static ImmutableDictionary<Type, ModelObjectDescriptor> descriptors = ImmutableDictionary<Type, ModelObjectDescriptor>.Empty;
+        private static ImmutableDictionary<Type, ModelObjectDescriptor> immutableTypes = ImmutableDictionary<Type, ModelObjectDescriptor>.Empty;
+        private static ImmutableDictionary<Type, ModelObjectDescriptor> mutableTypes = ImmutableDictionary<Type, ModelObjectDescriptor>.Empty;
 
         private bool initialized;
-        private bool initializedBaseSymbols;
-        private Type symbolDescriptorType;
-        private GreenSymbol emptyGreenSymbol;
-        private MetaModelSymbolFlags metaFlags;
-        private ModelSymbolDescriptorAttribute descriptor;
+        private bool initializedBaseDescriptors;
+        private Type descriptorType;
+        private GreenObject emptyGreenObject;
+        private MetaModelObjectFlags metaFlags;
+        private ModelObjectDescriptorAttribute descriptor;
         private ConstructorInfo _idConstructor;
         private Type idType;
         private Type immutableType;
@@ -45,164 +45,164 @@ namespace MetaDslx.Modeling
         private ModelProperty nameProperty;
         private ModelProperty typeProperty;
         private ImmutableArray<Attribute> annotations;
-        private ImmutableList<ModelSymbolInfo> baseSymbols;
+        private ImmutableList<ModelObjectDescriptor> baseDescriptors;
         private ImmutableList<ModelProperty> declaredProperties;
         private ImmutableDictionary<ModelProperty, ModelPropertyInfo> propertyInfo;
         private ImmutableArray<ModelProperty> properties;
 
-        private ModelSymbolInfo(Type symbolDescriptorType)
+        private ModelObjectDescriptor(Type descriptorType)
         {
             this.initialized = false;
-            this.initializedBaseSymbols = false;
-            this.symbolDescriptorType = symbolDescriptorType;
-            this.annotations = symbolDescriptorType.GetCustomAttributes(false).OfType<Attribute>().ToImmutableArray();
-            this.metaFlags = MetaModelSymbolFlags.None;
+            this.initializedBaseDescriptors = false;
+            this.descriptorType = descriptorType;
+            this.annotations = descriptorType.GetCustomAttributes(false).OfType<Attribute>().ToImmutableArray();
+            this.metaFlags = MetaModelObjectFlags.None;
             foreach (var annot in this.annotations)
             {
-                if (annot is ModelSymbolDescriptorAttribute)
+                if (annot is ModelObjectDescriptorAttribute)
                 {
-                    ModelSymbolDescriptorAttribute da = (ModelSymbolDescriptorAttribute)annot;
+                    ModelObjectDescriptorAttribute da = (ModelObjectDescriptorAttribute)annot;
                     this.idType = da.IdType;
                     this.immutableType = da.ImmutableType;
                     this.mutableType = da.MutableType;
                 }
                 else if (annot is LocalAttribute)
                 {
-                    this.metaFlags |= MetaModelSymbolFlags.Local;
+                    this.metaFlags |= MetaModelObjectFlags.Local;
                 }
                 else if (annot is ScopeAttribute)
                 {
-                    this.metaFlags |= MetaModelSymbolFlags.Scope;
+                    this.metaFlags |= MetaModelObjectFlags.Scope;
                 }
                 else if (annot is LocalScopeAttribute)
                 {
-                    this.metaFlags |= MetaModelSymbolFlags.LocalScope;
+                    this.metaFlags |= MetaModelObjectFlags.LocalScope;
                 }
                 else if (annot is TypeAttribute)
                 {
-                    this.metaFlags |= MetaModelSymbolFlags.Type;
+                    this.metaFlags |= MetaModelObjectFlags.Type;
                 }
             }
             this.nameProperty = null;
             this.typeProperty = null;
-            this.emptyGreenSymbol = GreenSymbol.Empty;
-            this.baseSymbols = ImmutableList<ModelSymbolInfo>.Empty;
+            this.emptyGreenObject = GreenObject.Empty;
+            this.baseDescriptors = ImmutableList<ModelObjectDescriptor>.Empty;
             this.declaredProperties = ImmutableList<ModelProperty>.Empty;
             this.propertyInfo = ImmutableDictionary<ModelProperty, ModelPropertyInfo>.Empty;
             this.properties = ImmutableArray<ModelProperty>.Empty;
         }
 
-        public static ModelSymbolInfo GetSymbolInfo(Type type)
+        public static ModelObjectDescriptor GetDescriptor(Type type)
         {
             if (type == null) return null;
-            ModelSymbolInfo result = null;
-            if (ModelSymbolInfo.immutableTypes.TryGetValue(type, out result))
+            ModelObjectDescriptor result = null;
+            if (ModelObjectDescriptor.immutableTypes.TryGetValue(type, out result))
             {
                 return result;
             }
-            if (ModelSymbolInfo.mutableTypes.TryGetValue(type, out result))
+            if (ModelObjectDescriptor.mutableTypes.TryGetValue(type, out result))
             {
                 return result;
             }
             return result;
         }
 
-        public static ModelSymbolInfo GetDescriptorSymbolInfo(Type symbolDescriptorType)
+        public static ModelObjectDescriptor GetDescriptorForDescriptorType(Type descriptorType)
         {
-            ImmutableDictionary<Type, ModelSymbolInfo> oldSymbols;
-            ImmutableDictionary<Type, ModelSymbolInfo> newSymbols;
-            ModelSymbolInfo newSymbolInfo = null;
+            ImmutableDictionary<Type, ModelObjectDescriptor> oldDescriptors;
+            ImmutableDictionary<Type, ModelObjectDescriptor> newDescriptors;
+            ModelObjectDescriptor newDescriptor = null;
             do
             {
-                oldSymbols = ModelSymbolInfo.descriptors;
-                ModelSymbolInfo result;
-                if (oldSymbols.TryGetValue(symbolDescriptorType, out result))
+                oldDescriptors = ModelObjectDescriptor.descriptors;
+                ModelObjectDescriptor result;
+                if (oldDescriptors.TryGetValue(descriptorType, out result))
                 {
-                    newSymbolInfo = result;
+                    newDescriptor = result;
                     break;
                 }
                 else
                 {
-                    if (newSymbolInfo == null) newSymbolInfo = new ModelSymbolInfo(symbolDescriptorType);
-                    newSymbols = oldSymbols.Add(symbolDescriptorType, newSymbolInfo);
+                    if (newDescriptor == null) newDescriptor = new ModelObjectDescriptor(descriptorType);
+                    newDescriptors = oldDescriptors.Add(descriptorType, newDescriptor);
                 }
-            } while (Interlocked.CompareExchange(ref ModelSymbolInfo.descriptors, newSymbols, oldSymbols) != oldSymbols);
-            if (newSymbolInfo.immutableType != null)
+            } while (Interlocked.CompareExchange(ref ModelObjectDescriptor.descriptors, newDescriptors, oldDescriptors) != oldDescriptors);
+            if (newDescriptor.immutableType != null)
             {
                 do
                 {
-                    oldSymbols = ModelSymbolInfo.immutableTypes;
-                    ModelSymbolInfo result;
-                    if (oldSymbols.TryGetValue(newSymbolInfo.immutableType, out result))
+                    oldDescriptors = ModelObjectDescriptor.immutableTypes;
+                    ModelObjectDescriptor result;
+                    if (oldDescriptors.TryGetValue(newDescriptor.immutableType, out result))
                     {
                         break;
                     }
                     else
                     {
-                        newSymbols = oldSymbols.Add(newSymbolInfo.immutableType, newSymbolInfo);
+                        newDescriptors = oldDescriptors.Add(newDescriptor.immutableType, newDescriptor);
                     }
-                } while (Interlocked.CompareExchange(ref ModelSymbolInfo.immutableTypes, newSymbols, oldSymbols) != oldSymbols);
+                } while (Interlocked.CompareExchange(ref ModelObjectDescriptor.immutableTypes, newDescriptors, oldDescriptors) != oldDescriptors);
             }
-            if (newSymbolInfo.mutableType != null)
+            if (newDescriptor.mutableType != null)
             {
                 do
                 {
-                    oldSymbols = ModelSymbolInfo.mutableTypes;
-                    ModelSymbolInfo result;
-                    if (oldSymbols.TryGetValue(newSymbolInfo.mutableType, out result))
+                    oldDescriptors = ModelObjectDescriptor.mutableTypes;
+                    ModelObjectDescriptor result;
+                    if (oldDescriptors.TryGetValue(newDescriptor.mutableType, out result))
                     {
                         break;
                     }
                     else
                     {
-                        newSymbols = oldSymbols.Add(newSymbolInfo.mutableType, newSymbolInfo);
+                        newDescriptors = oldDescriptors.Add(newDescriptor.mutableType, newDescriptor);
                     }
-                } while (Interlocked.CompareExchange(ref ModelSymbolInfo.mutableTypes, newSymbols, oldSymbols) != oldSymbols);
+                } while (Interlocked.CompareExchange(ref ModelObjectDescriptor.mutableTypes, newDescriptors, oldDescriptors) != oldDescriptors);
             }
-            return newSymbolInfo;
+            return newDescriptor;
         }
 
         internal ModelProperty GetDeclaredProperty(string name)
         {
-            RuntimeHelpers.RunClassConstructor(this.symbolDescriptorType.TypeHandle);
+            RuntimeHelpers.RunClassConstructor(this.descriptorType.TypeHandle);
             return this.declaredProperties.FirstOrDefault(p => p.Name == name);
         }
 
-        public static ImmutableDictionary<Type, ModelSymbolInfo> Symbols
+        public static ImmutableDictionary<Type, ModelObjectDescriptor> Descriptors
         {
-            get { return ModelSymbolInfo.descriptors; }
+            get { return ModelObjectDescriptor.descriptors; }
         }
 
-        private void AddBaseSymbol(ModelSymbolInfo baseSymbol)
+        private void AddBaseDescriptor(ModelObjectDescriptor baseDescriptor)
         {
-            if (this.initializedBaseSymbols) throw new InvalidOperationException("Cannot add a base symbol to an initialized symbol.");
-            ImmutableList<ModelSymbolInfo> oldBaseSymbols;
-            ImmutableList<ModelSymbolInfo> newBaseSymbols;
+            if (this.initializedBaseDescriptors) throw new InvalidOperationException("Cannot add a base descriptor to an initialized descriptor.");
+            ImmutableList<ModelObjectDescriptor> oldBaseDescriptors;
+            ImmutableList<ModelObjectDescriptor> newBaseDescriptors;
             do
             {
-                oldBaseSymbols = this.baseSymbols;
-                if (!oldBaseSymbols.Contains(baseSymbol))
+                oldBaseDescriptors = this.baseDescriptors;
+                if (!oldBaseDescriptors.Contains(baseDescriptor))
                 {
-                    newBaseSymbols = oldBaseSymbols.Add(baseSymbol);
+                    newBaseDescriptors = oldBaseDescriptors.Add(baseDescriptor);
                 }
                 else
                 {
-                    newBaseSymbols = oldBaseSymbols;
+                    newBaseDescriptors = oldBaseDescriptors;
                 }
-            } while (Interlocked.CompareExchange(ref this.baseSymbols, newBaseSymbols, oldBaseSymbols) != oldBaseSymbols);
-            if (baseSymbol.IsScope)
+            } while (Interlocked.CompareExchange(ref this.baseDescriptors, newBaseDescriptors, oldBaseDescriptors) != oldBaseDescriptors);
+            if (baseDescriptor.IsScope)
             {
-                this.metaFlags |= MetaModelSymbolFlags.Scope;
+                this.metaFlags |= MetaModelObjectFlags.Scope;
             }
-            if (baseSymbol.IsType)
+            if (baseDescriptor.IsType)
             {
-                this.metaFlags |= MetaModelSymbolFlags.Type;
+                this.metaFlags |= MetaModelObjectFlags.Type;
             }
         }
 
         internal void AddProperty(ModelProperty property)
         {
-            if (this.initialized) throw new InvalidOperationException("Cannot register a property into an initialized symbol.");
+            if (this.initialized) throw new InvalidOperationException("Cannot register a property into an initialized descriptor.");
             if (this.declaredProperties.Any(p => p.Name == property.Name))
             {
                 throw new InvalidOperationException("A property with name '" + property.Name + "' is already declared for " + this.ToString());
@@ -220,7 +220,7 @@ namespace MetaDslx.Modeling
         }
 
         internal bool Initialized { get { return this.initialized; } }
-        internal Type SymbolDescriptorType { get { return this.symbolDescriptorType; } }
+        internal Type DescriptorType { get { return this.descriptorType; } }
         public ImmutableArray<Attribute> Annotations { get { return this.annotations; } }
 
         public string Name => this.ImmutableType.Name;
@@ -235,72 +235,72 @@ namespace MetaDslx.Modeling
             get { return this.mutableType; }
         }
 
-        public SymbolId CreateSymbolId()
+        public ObjectId CreateObjectId()
         {
             if (_idConstructor == null)
             {
                 Interlocked.CompareExchange(ref _idConstructor, idType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, EmptyTypeArray, null), null);
             }
-            return (SymbolId)_idConstructor.Invoke(EmptyObjectArray);
+            return (ObjectId)_idConstructor.Invoke(EmptyObjectArray);
         }
 
-        public MutableSymbolBase CreateMutable(MutableModel model, bool weakReference = false)
+        public MutableObjectBase CreateMutable(MutableModel model, bool weakReference = false, bool makeCreated = true)
         {
-            var symbol = model.CreateSymbol(this.CreateSymbolId(), false);
-            symbol.MCallInit();
-            symbol.MMakeCreated();
-            return symbol;
+            var obj = model.CreateObject(this.CreateObjectId(), false);
+            obj.MCallInit();
+            if (makeCreated) obj.MMakeCreated();
+            return obj;
         }
 
-        internal ImmutableSymbolBase CreateImmutable(ImmutableModel model)
+        internal ImmutableObjectBase CreateImmutable(ImmutableModel model)
         {
-            return this.CreateSymbolId().CreateImmutable(model);
+            return this.CreateObjectId().CreateImmutable(model);
         }
 
-        public ImmutableList<ModelSymbolInfo> BaseSymbols
+        public ImmutableList<ModelObjectDescriptor> BaseDescriptors
         {
             get
             {
-                if (!this.initializedBaseSymbols) this.InitializeBaseSymbols();
-                return this.baseSymbols;
+                if (!this.initializedBaseDescriptors) this.InitializeBaseDescriptors();
+                return this.baseDescriptors;
             }
         }
 
-        private ImmutableArray<ModelSymbolInfo> lazyAllBaseSymbols;
-        public ImmutableArray<ModelSymbolInfo> AllBaseSymbols
+        private ImmutableArray<ModelObjectDescriptor> lazyAllBaseDescriptors;
+        public ImmutableArray<ModelObjectDescriptor> AllBaseDescriptors
         {
             get
             {
-                if (lazyAllBaseSymbols == default)
+                if (lazyAllBaseDescriptors == default)
                 {
-                    var builder = ArrayBuilder<ModelSymbolInfo>.GetInstance();
+                    var builder = ArrayBuilder<ModelObjectDescriptor>.GetInstance();
                     try
                     {
-                        this.CollectAllBaseSymbols(builder);
+                        this.CollectAllBaseDescriptors(builder);
                     }
                     finally
                     {
-                        ImmutableInterlocked.InterlockedCompareExchange(ref lazyAllBaseSymbols, builder.ToImmutableAndFree(), default);
+                        ImmutableInterlocked.InterlockedCompareExchange(ref lazyAllBaseDescriptors, builder.ToImmutableAndFree(), default);
                     }
                 }
-                return lazyAllBaseSymbols;
+                return lazyAllBaseDescriptors;
             }
         }
 
-        private void CollectAllBaseSymbols(ArrayBuilder<ModelSymbolInfo> baseSymbols)
+        private void CollectAllBaseDescriptors(ArrayBuilder<ModelObjectDescriptor> baseDescriptors)
         {
-            foreach (var item in this.BaseSymbols)
+            foreach (var item in this.BaseDescriptors)
             {
-                if (!baseSymbols.Contains(item))
+                if (!baseDescriptors.Contains(item))
                 {
-                    foreach (var baseItem in item.AllBaseSymbols)
+                    foreach (var baseItem in item.AllBaseDescriptors)
                     {
-                        if (!baseSymbols.Contains(baseItem))
+                        if (!baseDescriptors.Contains(baseItem))
                         {
-                            baseSymbols.Add(baseItem);
+                            baseDescriptors.Add(baseItem);
                         }
                     }
-                    baseSymbols.Add(item);
+                    baseDescriptors.Add(item);
                 }
             }
         }
@@ -312,7 +312,7 @@ namespace MetaDslx.Modeling
             get
             {
                 if (!this.initialized) this.Initialize();
-                return this.metaFlags.HasFlag(MetaModelSymbolFlags.Local);
+                return this.metaFlags.HasFlag(MetaModelObjectFlags.Local);
             }
         }
         public bool IsScope
@@ -320,7 +320,7 @@ namespace MetaDslx.Modeling
             get
             {
                 if (!this.initialized) this.Initialize();
-                return this.metaFlags.HasFlag(MetaModelSymbolFlags.Scope);
+                return this.metaFlags.HasFlag(MetaModelObjectFlags.Scope);
             }
         }
         public bool IsLocalScope
@@ -328,7 +328,7 @@ namespace MetaDslx.Modeling
             get
             {
                 if (!this.initialized) this.Initialize();
-                return this.metaFlags.HasFlag(MetaModelSymbolFlags.LocalScope);
+                return this.metaFlags.HasFlag(MetaModelObjectFlags.LocalScope);
             }
         }
         public bool IsType
@@ -336,7 +336,7 @@ namespace MetaDslx.Modeling
             get
             {
                 if (!this.initialized) this.Initialize();
-                return this.metaFlags.HasFlag(MetaModelSymbolFlags.Type);
+                return this.metaFlags.HasFlag(MetaModelObjectFlags.Type);
             }
         }
         public bool HasName
@@ -396,33 +396,33 @@ namespace MetaDslx.Modeling
                 return this.propertyInfo;
             }
         }
-        internal GreenSymbol EmptyGreenSymbol
+        internal GreenObject EmptyGreenObject
         {
             get
             {
                 if (!this.initialized) this.Initialize();
-                return this.emptyGreenSymbol;
+                return this.emptyGreenObject;
             }
         }
 
-        private void InitializeBaseSymbols()
+        private void InitializeBaseDescriptors()
         {
-            if (this.initializedBaseSymbols) return;
+            if (this.initializedBaseDescriptors) return;
             lock (this)
             {
-                if (this.initializedBaseSymbols) return;
+                if (this.initializedBaseDescriptors) return;
                 foreach (var annot in this.annotations)
                 {
-                    if (annot is ModelSymbolDescriptorAttribute)
+                    if (annot is ModelObjectDescriptorAttribute)
                     {
-                        ModelSymbolDescriptorAttribute descrAnnot = (ModelSymbolDescriptorAttribute)annot;
-                        foreach (var baseType in descrAnnot.BaseSymbolDescriptors)
+                        ModelObjectDescriptorAttribute descrAnnot = (ModelObjectDescriptorAttribute)annot;
+                        foreach (var baseType in descrAnnot.BaseDescriptors)
                         {
-                            this.AddBaseSymbol(ModelSymbolInfo.GetDescriptorSymbolInfo(baseType));
+                            this.AddBaseDescriptor(ModelObjectDescriptor.GetDescriptorForDescriptorType(baseType));
                         }
                     }
                 }
-                this.initializedBaseSymbols = true;
+                this.initializedBaseDescriptors = true;
             }
         }
 
@@ -432,12 +432,12 @@ namespace MetaDslx.Modeling
             lock (this)
             {
                 if (this.initialized) return;
-                this.InitializeBaseSymbols();
+                this.InitializeBaseDescriptors();
                 this.initialized = true;
-                RuntimeHelpers.RunClassConstructor(this.symbolDescriptorType.TypeHandle);
+                RuntimeHelpers.RunClassConstructor(this.descriptorType.TypeHandle);
                 this.CreateProperties();
                 this.CreatePropertyInfo();
-                this.CreateEmptyGreenSymbol();
+                this.CreateEmptyGreenObject();
             }
         }
 
@@ -457,9 +457,9 @@ namespace MetaDslx.Modeling
                         this.typeProperty = prop;
                     }
                 }
-                foreach (var baseSymbol in this.baseSymbols.Reverse())
+                foreach (var baseDescriptor in this.baseDescriptors.Reverse())
                 {
-                    foreach (var prop in baseSymbol.Properties.Reverse())
+                    foreach (var prop in baseDescriptor.Properties.Reverse())
                     {
                         if (!properties.Contains(prop))
                         {
@@ -469,7 +469,7 @@ namespace MetaDslx.Modeling
                                 this.nameProperty = prop;
                                 if (prop.IsLocal)
                                 {
-                                    this.metaFlags |= MetaModelSymbolFlags.Local;
+                                    this.metaFlags |= MetaModelObjectFlags.Local;
                                 }
                             }
                             if (this.typeProperty == null && prop.IsType)
@@ -629,9 +629,9 @@ namespace MetaDslx.Modeling
             return result;
         }
 
-        private void CreateEmptyGreenSymbol()
+        private void CreateEmptyGreenObject()
         {
-            Interlocked.Exchange(ref this.emptyGreenSymbol, GreenSymbol.CreateWithProperties(this.Properties));
+            Interlocked.Exchange(ref this.emptyGreenObject, GreenObject.CreateWithProperties(this.Properties));
         }
 
         public bool HasAffectedProperties(ModelProperty property)
@@ -653,7 +653,7 @@ namespace MetaDslx.Modeling
         {
             if (this.immutableType != null) return this.immutableType.FullName;
             else if (this.mutableType != null) return this.mutableType.FullName;
-            else if (this.symbolDescriptorType != null) return this.symbolDescriptorType.FullName;
+            else if (this.descriptorType != null) return this.descriptorType.FullName;
             else return base.ToString();
         }
     }

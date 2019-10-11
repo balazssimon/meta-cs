@@ -13,7 +13,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Symbols\ImmutableMetaModel.mm");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
+            var modelSymbols = model.Objects.ToList();
             Assert.Equal(115, modelSymbols.Count);
         }
 
@@ -22,7 +22,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile(@"..\..\..\Languages\Soal\Symbols\Soal.mm");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
+            var modelSymbols = model.Objects.ToList();
             Assert.Equal(155, modelSymbols.Count);
         }
 
@@ -31,7 +31,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile(@"..\..\..\..\MetaDslx.CodeAnalysis.Antlr4.Test\Languages\TestLangOne\Symbols\TestLangOne.mm");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
+            var modelSymbols = model.Objects.ToList();
             Assert.Equal(29, modelSymbols.Count);
         }
 
@@ -40,7 +40,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile(@"..\..\..\Languages\WebSequenceDiagrams\Symbols\UmlModel.mm");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
+            var modelSymbols = model.Objects.ToList();
             Assert.Equal(47, modelSymbols.Count);
         }
 

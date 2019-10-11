@@ -549,15 +549,15 @@ namespace MetaDslx.Languages.Meta.Generator
             return mmodel.Namespace.Declarations.Contains(mdecl);
         }
 
-        public ImmutableList<ImmutableSymbol> GetSymbolInstances(MetaModel mmodel)
+        public ImmutableList<ImmutableObject> GetSymbolInstances(MetaModel mmodel)
         {
-            ImmutableList<ImmutableSymbol>.Builder result = ImmutableList.CreateBuilder<ImmutableSymbol>();
-            var rootSymbols = mmodel.MModel.Symbols.Where(s => s.MParent == null);
+            ImmutableList<ImmutableObject>.Builder result = ImmutableList.CreateBuilder<ImmutableObject>();
+            var rootSymbols = mmodel.MModel.Objects.Where(s => s.MParent == null);
             foreach (var item in rootSymbols)
             {
                 this.CollectSymbolInstances(item, result);
             }
-            foreach (var item in mmodel.MModel.Symbols)
+            foreach (var item in mmodel.MModel.Objects)
             {
                 if (!result.Contains(item) && !(item is MetaRootNamespace) && (!(item is MetaType) || !MetaConstants.Types.Contains((MetaType)item)))
                 {
@@ -567,7 +567,7 @@ namespace MetaDslx.Languages.Meta.Generator
             return result.ToImmutable();
         }
 
-        private void CollectSymbolInstances(ImmutableSymbol symbol, ImmutableList<ImmutableSymbol>.Builder result)
+        private void CollectSymbolInstances(ImmutableObject symbol, ImmutableList<ImmutableObject>.Builder result)
         {
             if (!(symbol is MetaRootNamespace))
             {
@@ -579,11 +579,11 @@ namespace MetaDslx.Languages.Meta.Generator
             }
         }
 
-        public ImmutableDictionary<ImmutableSymbol, string> GetSymbolInstanceNames(MetaModel mmodel)
+        public ImmutableDictionary<ImmutableObject, string> GetSymbolInstanceNames(MetaModel mmodel)
         {
-            ImmutableDictionary<ImmutableSymbol, string>.Builder result = ImmutableDictionary.CreateBuilder<ImmutableSymbol, string>();
+            ImmutableDictionary<ImmutableObject, string>.Builder result = ImmutableDictionary.CreateBuilder<ImmutableObject, string>();
             int tmpCounter = 0;
-            foreach (var item in mmodel.MModel.Symbols)
+            foreach (var item in mmodel.MModel.Objects)
             {
                 if (!(item is MetaRootNamespace))
                 {

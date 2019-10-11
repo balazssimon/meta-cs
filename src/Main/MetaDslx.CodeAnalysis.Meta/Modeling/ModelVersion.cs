@@ -8,15 +8,11 @@ namespace MetaDslx.Modeling
     {
         private readonly ushort _major;
         private readonly ushort _minor;
-        private readonly ushort _build;
-        private readonly ushort _revision;
 
-        public ModelVersion(ushort major, ushort minor, ushort build, ushort revision)
+        public ModelVersion(ushort major, ushort minor)
         {
             _major = major;
             _minor = minor;
-            _build = build;
-            _revision = revision;
         }
 
         public int Major
@@ -29,19 +25,9 @@ namespace MetaDslx.Modeling
             get { return _minor; }
         }
 
-        public int Build
-        {
-            get { return _build; }
-        }
-
-        public int Revision
-        {
-            get { return _revision; }
-        }
-
         private ulong ToInteger()
         {
-            return ((ulong)_major << 48) | ((ulong)_minor << 32) | ((ulong)_build << 16) | _revision;
+            return ((ulong)_major << 16) | _minor;
         }
 
         public int CompareTo(ModelVersion other)
@@ -63,7 +49,7 @@ namespace MetaDslx.Modeling
 
         public override int GetHashCode()
         {
-            return ((_major & 0x000f) << 28) | ((_minor & 0x00ff) << 20) | ((_build & 0x00ff) << 12) | (_revision & 0x0fff);
+            return ((_major & 0x00ff) << 12) | (_minor & 0x0fff);
         }
 
         public static bool operator ==(ModelVersion left, ModelVersion right)
@@ -102,17 +88,17 @@ namespace MetaDslx.Modeling
         /// <exception cref="InvalidCastException">Major, minor, build or revision number are less than 0 or greater than 0xFFFF.</exception>
         public static explicit operator ModelVersion(Version version)
         {
-            return new ModelVersion((ushort)version.Major, (ushort)version.Minor, (ushort)version.Build, (ushort)version.Revision);
+            return new ModelVersion((ushort)version.Major, (ushort)version.Minor);
         }
 
         public static explicit operator Version(ModelVersion version)
         {
-            return new Version(version.Major, version.Minor, version.Build, version.Revision);
+            return new Version(version.Major, version.Minor);
         }
 
         public override string ToString()
         {
-            return string.Format("{0}.{1}.{2}.{3}", _major, _minor, _build, _revision);
+            return string.Format("{0}.{1}", _major, _minor);
         }
     }
 

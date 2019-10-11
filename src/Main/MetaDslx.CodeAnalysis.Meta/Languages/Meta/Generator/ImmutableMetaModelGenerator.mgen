@@ -1,5 +1,5 @@
 ﻿namespace MetaDslx.Languages.Meta.Generator;
-generator ImmutableMetaModelGenerator for IEnumerable<ImmutableSymbol>;
+generator ImmutableMetaModelGenerator for IEnumerable<ImmutableObject>;
 
 using MetaDslx.Modeling;
 using MetaDslx.Languages.Meta.Symbols;
@@ -37,8 +37,8 @@ extern function string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.N
 extern function string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
 extern function string CSharpName(MetaProperty mproperty, MetaModel mmodel, PropertyKind kind = PropertyKind.None, bool fullName = false)
 extern function string CSharpName(MetaConstant mconst, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
-extern function ImmutableList<ImmutableSymbol> GetSymbolInstances(MetaModel mmodel)
-extern function ImmutableDictionary<ImmutableSymbol, string> GetSymbolInstanceNames(MetaModel mmodel)
+extern function ImmutableList<ImmutableObject> GetInstances(MetaModel mmodel)
+extern function ImmutableDictionary<ImmutableObject, string> GetInstanceNames(MetaModel mmodel)
 extern function string GetFieldName(MetaProperty mproperty, MetaClass mclass)
 extern function bool IsReferenceType(MetaType mtype)
 
@@ -167,8 +167,8 @@ end template
 template GenerateMetaModelBuilderInstance(MetaModel model)
 [string metaNs = model.IsMetaMetaModel() ? "" : Properties.MetaNs + "."]
 [bool metaMetaModel = model.IsMetaMetaModel()]
-[ImmutableList<ImmutableSymbol> symbolList = model.GetSymbolInstances()]
-[ImmutableDictionary<ImmutableSymbol, string> symbolNames = model.GetSymbolInstanceNames()]
+[ImmutableList<ImmutableObject> instances = model.GetInstances()]
+[ImmutableDictionary<ImmutableObject, string> instanceNames = model.GetInstanceNames()]
 internal class [model.CSharpName(ModelKind.BuilderInstance)]
 {
 	internal static [model.CSharpName(ModelKind.BuilderInstance)] instance = new [model.CSharpName(ModelKind.BuilderInstance)]();
@@ -194,8 +194,8 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 		[end if]
 	[end loop]
 ^
-	[loop(symbol:symbolList)]
-	[GenerateSymbolInstanceDeclaration(model, metaMetaModel, symbol, symbolNames)]
+	[loop(obj:instances)]
+	[GenerateInstanceDeclaration(model, metaMetaModel, obj, instanceNames)]
 	[end loop]
 ^
 	internal [model.CSharpName(ModelKind.BuilderInstance)]()
@@ -217,7 +217,7 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 			this.creating = true;
 		}
 		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[model.CSharpName(ModelKind.BuilderInstance)](this);
-		this.CreateSymbols();
+		this.CreateInstances();
 		lock (this)
 		{
 			this.created = true;
@@ -230,50 +230,50 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 		this.Model.EvaluateLazyValues();
 	}
 ^
-	private void CreateSymbols()
+	private void CreateInstances()
 	{
-		[Properties.MetaNs].MetaFactory factory = new [Properties.MetaNs].MetaFactory(this.Model, [Properties.CoreNs].ModelFactoryFlags.DontMakeSymbolsCreated);
+		[Properties.MetaNs].MetaFactory factory = new [Properties.MetaNs].MetaFactory(this.Model, [Properties.CoreNs].ModelFactoryFlags.DontMakeObjectsCreated);
 ^
-		[loop(symbol:symbolList)]
-		[GenerateSymbolInstance(model, metaMetaModel, symbol, symbolNames)]
+		[loop(obj:instances)]
+		[GenerateInstance(model, metaMetaModel, obj, instanceNames)]
 		[end loop]
 ^
-		[loop(symbol:symbolList)]
-		[GenerateSymbolInstanceProperties(model, metaMetaModel, symbol, symbolNames)]
+		[loop(obj:instances)]
+		[GenerateInstanceProperties(model, metaMetaModel, obj, instanceNames)]
 		[end loop]
 ^
-		foreach (global::MetaDslx.Modeling.MutableSymbol symbol in this.Model.Symbols)
+		foreach (global::MetaDslx.Modeling.MutableObject obj in this.Model.Objects)
 		{
-			symbol.MMakeCreated();
+			obj.MMakeCreated();
 		}
 	}
 }
 end template
 
-template GenerateSymbolInstanceDeclaration(MetaModel model, bool metaMetaModel, ImmutableSymbol symbol, ImmutableDictionary<ImmutableSymbol, string> symbolNames)
-[if (symbol != null && symbol.MMetaClass != null && symbolNames.ContainsKey(symbol))]
-	[string name = symbolNames[symbol]]
+template GenerateInstanceDeclaration(MetaModel model, bool metaMetaModel, ImmutableObject obj, ImmutableDictionary<ImmutableObject, string> instanceNames)
+[if (obj != null && obj.MMetaClass != null && instanceNames.ContainsKey(obj))]
+	[string name = instanceNames[obj]]
 	[if (metaMetaModel)]
 		[if (name.StartsWith("__"))]
-private [symbol.MMetaClass.CSharpName(model, ClassKind.Builder)] [name];
+private [obj.MMetaClass.CSharpName(model, ClassKind.Builder)] [name];
 		[else]
-internal [symbol.MMetaClass.CSharpName(model, ClassKind.Builder)] [name];
+internal [obj.MMetaClass.CSharpName(model, ClassKind.Builder)] [name];
 		[end if]
 	[else]
 		[if (name.StartsWith("__"))]
-private [symbol.MMetaClass.CSharpName(model, ClassKind.Builder, true)] [name];
+private [obj.MMetaClass.CSharpName(model, ClassKind.Builder, true)] [name];
 		[else]
-internal [symbol.MMetaClass.CSharpName(model, ClassKind.Builder, true)] [name];
+internal [obj.MMetaClass.CSharpName(model, ClassKind.Builder, true)] [name];
 		[end if]
 	[end if]
 [end if]
 end template
 
-template GenerateSymbolInstance(MetaModel model, bool metaMetaModel, ImmutableSymbol symbol, ImmutableDictionary<ImmutableSymbol, string> symbolNames)
-[if (symbol != null && symbol.MMetaClass != null && symbolNames.ContainsKey(symbol))]
-	[string name = symbolNames[symbol]]
-[name] = factory.[symbol.MMetaClass.CSharpName(model, ClassKind.Immutable)]();
-	[if (symbol is MetaModel)]
+template GenerateInstance(MetaModel model, bool metaMetaModel, ImmutableObject obj, ImmutableDictionary<ImmutableObject, string> instanceNames)
+[if (obj != null && obj.MMetaClass != null && instanceNames.ContainsKey(obj))]
+	[string name = instanceNames[obj]]
+[name] = factory.[obj.MMetaClass.CSharpName(model, ClassKind.Immutable)]();
+	[if (obj is MetaModel)]
 		[if (metaMetaModel)]
 MetaMetaModel = [name];
 		[else]
@@ -283,18 +283,18 @@ MetaModel = [name];
 [end if]
 end template
 
-template GenerateSymbolInstanceProperties(MetaModel model, bool metaMetaModel, ImmutableSymbol symbol, ImmutableDictionary<ImmutableSymbol, string> symbolNames)
-[if (symbol != null && symbol.MMetaClass != null && symbolNames.ContainsKey(symbol))]
-	[loop(symbol->prop:MProperties where !prop.IsDerived && !prop.IsDerivedUnion)]
-		[object propValue = symbol.MGet(prop)]
-[GenerateSymbolInstancePropertyValue(model, metaMetaModel, symbol, prop, propValue, symbolNames)]
+template GenerateInstanceProperties(MetaModel model, bool metaMetaModel, ImmutableObject obj, ImmutableDictionary<ImmutableObject, string> instanceNames)
+[if (obj != null && obj.MMetaClass != null && instanceNames.ContainsKey(obj))]
+	[loop(obj->prop:MProperties where !prop.IsDerived && !prop.IsDerivedUnion)]
+		[object propValue = obj.MGet(prop)]
+[GenerateInstancePropertyValue(model, metaMetaModel, obj, prop, propValue, instanceNames)]
 	[end loop]
 [end if]
 end template
 
-template GenerateSymbolInstancePropertyValue(MetaModel model, bool metaMetaModel, ImmutableSymbol symbol, ModelProperty prop, object value, ImmutableDictionary<ImmutableSymbol, string> symbolNames)
-[string name = symbolNames[symbol]]
-[ImmutableSymbol valueSymbol = value as ImmutableSymbol]
+template GenerateInstancePropertyValue(MetaModel model, bool metaMetaModel, ImmutableObject obj, ModelProperty prop, object value, ImmutableDictionary<ImmutableObject, string> instanceNames)
+[string name = instanceNames[obj]]
+[ImmutableObject valueObject = value as ImmutableObject]
 [MetaDeclaration valueDecl = value as MetaDeclaration]
 [IEnumerable<object> valueCollection = value as IEnumerable<object>]
 [if (value == null)]
@@ -321,24 +321,24 @@ template GenerateSymbolInstancePropertyValue(MetaModel model, bool metaMetaModel
 	[else]
 [name].[prop.Name]Lazy = () => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, true)].ToMutable();
 	[end if]
-[else if (valueSymbol != null && symbolNames.ContainsKey(valueSymbol))]
-[name].[prop.Name]Lazy = () => [symbolNames[valueSymbol]];
+[else if (valueObject != null && instanceNames.ContainsKey(valueObject))]
+[name].[prop.Name]Lazy = () => [instanceNames[valueObject]];
 [else if (valueDecl != null && valueDecl is MetaType)]
 [name].[prop.Name]Lazy = () => [((MetaType)valueDecl).CSharpName(model, ClassKind.Immutable, true)];
 [else if (valueDecl != null && valueDecl is MetaConstant)]
 [name].[prop.Name]Lazy = () => [((MetaConstant)valueDecl).CSharpName(model, ClassKind.Immutable, true)];
 [else if (valueCollection != null)]
 	[loop(cvalue:valueCollection)]
-[GenerateSymbolInstancePropertyCollectionValue(model, metaMetaModel, symbol, prop, cvalue, symbolNames)]
+[GenerateInstancePropertyCollectionValue(model, metaMetaModel, obj, prop, cvalue, instanceNames)]
 	[end loop]
 [else]
 // TODO: [name].[prop.Name]
 [end if]
 end template
 
-template GenerateSymbolInstancePropertyCollectionValue(MetaModel model, bool metaMetaModel, ImmutableSymbol symbol, ModelProperty prop, object value, ImmutableDictionary<ImmutableSymbol, string> symbolNames)
-[string name = symbolNames[symbol]]
-[ImmutableSymbol valueSymbol = value as ImmutableSymbol]
+template GenerateInstancePropertyCollectionValue(MetaModel model, bool metaMetaModel, ImmutableObject obj, ModelProperty prop, object value, ImmutableDictionary<ImmutableObject, string> instanceNames)
+[string name = instanceNames[obj]]
+[ImmutableObject valueObject = value as ImmutableObject]
 [MetaDeclaration valueDecl = value as MetaDeclaration]
 [IEnumerable<object> valueCollection = value as IEnumerable<object>]
 [if (value == null)]
@@ -365,8 +365,8 @@ template GenerateSymbolInstancePropertyCollectionValue(MetaModel model, bool met
 	[else]
 [name].[prop.Name].AddLazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, true)].ToMutable());
 	[end if]
-[else if (valueSymbol != null && symbolNames.ContainsKey(valueSymbol))]
-[name].[prop.Name].AddLazy(() => [symbolNames[valueSymbol]]);
+[else if (valueObject != null && instanceNames.ContainsKey(valueObject))]
+[name].[prop.Name].AddLazy(() => [instanceNames[valueObject]]);
 [else if (valueDecl != null && valueDecl is MetaType)]
 [name].[prop.Name].AddLazy(() => [((MetaType)valueDecl).CSharpName(model, ClassKind.Immutable, true)]);
 [else if (valueDecl != null && valueDecl is MetaConstant)]
@@ -388,7 +388,7 @@ public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFa
 		[model.CSharpName(ModelKind.Descriptor)].Initialize();
 	}
 ^
-	public override [Properties.CoreNs].MutableSymbol Create(string type)
+	public override [Properties.CoreNs].MutableObject Create(string type)
 	{
 		switch (type)
 		{
@@ -398,7 +398,7 @@ public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFa
 				[end if]
 			[end loop]
 			default:
-				throw new [Properties.CoreNs].ModelException(global::Microsoft.CodeAnalysis.Location.None, new global::MetaDslx.CodeAnalysis.LanguageDiagnosticInfo([Properties.CoreNs].ModelErrorCode.ERR_UnknownTypeName, type));
+				throw new [Properties.CoreNs].ModelException([Properties.CoreNs].ModelErrorCode.ERR_UnknownTypeName.ToDiagnosticWithNoLocation(type));
 		}
 	}
 	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
@@ -409,8 +409,8 @@ public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFa
 	/// </summary>
 	public [cls.CSharpName(model, ClassKind.Builder)] [cls.CSharpName(model, ClassKind.FactoryMethod)]()
 	{
-		[Properties.CoreNs].MutableSymbol symbol = this.CreateSymbol(new [cls.CSharpName(model, ClassKind.Id)]());
-		return ([cls.CSharpName(model, ClassKind.Builder)])symbol;
+		[Properties.CoreNs].MutableObject obj = this.CreateObject(new [cls.CSharpName(model, ClassKind.Id)]());
+		return ([cls.CSharpName(model, ClassKind.Builder)])obj;
 	}
 		[end if]
 	[end loop]
@@ -451,30 +451,26 @@ end template
 template GenerateDescriptorClass(MetaModel model, MetaClass cls)
 [GenerateDocumentation(cls)]
 [GenerateAttributes(cls)]
-["["+Properties.CoreNs].ModelSymbolDescriptorAttribute(typeof([cls.CSharpName(null, ClassKind.Id, true)]), typeof([cls.CSharpName(null, ClassKind.Immutable, true)]), typeof([cls.CSharpName(null, ClassKind.Builder, true)])[GetDescriptorAncestors(model, cls)])["]"]
+["["+Properties.CoreNs].ModelObjectDescriptorAttribute(typeof([cls.CSharpName(null, ClassKind.Id, true)]), typeof([cls.CSharpName(null, ClassKind.Immutable, true)]), typeof([cls.CSharpName(null, ClassKind.Builder, true)])[GetDescriptorAncestors(model, cls)])["]"]
 public static class [cls.CSharpName(model, ClassKind.Descriptor)]
 {
-	private static [Properties.CoreNs].ModelSymbolInfo modelSymbolInfo;
+	private static [Properties.CoreNs].ModelObjectDescriptor descriptor;
 ^
 	static [cls.CSharpName(model, ClassKind.Descriptor)]()
 	{
-		modelSymbolInfo = [Properties.CoreNs].ModelSymbolInfo.GetDescriptorSymbolInfo(typeof([cls.CSharpName(model, ClassKind.Descriptor)]));
+		descriptor = [Properties.CoreNs].ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof([cls.CSharpName(model, ClassKind.Descriptor)]));
 	}
 ^
 	internal static void Initialize()
 	{
 	}
 ^
-	public static [Properties.CoreNs].ModelSymbolInfo SymbolInfo
+	public static [Properties.CoreNs].ModelObjectDescriptor MDescriptor
 	{
-		get { return modelSymbolInfo; }
+		get { return descriptor; }
 	}
 ^
-	[if (cls.Name == "MetaClass")]
-	public static [Properties.MetaNs].MetaClass _MetaClass
-	[else]
-	public static [Properties.MetaNs].MetaClass MetaClass
-	[end if]
+	public static [Properties.MetaNs].MetaClass MMetaClass
 	{
 		get { return [cls.CSharpName(null, ClassKind.ImmutableInstance, true)]; }
 	}
@@ -490,7 +486,7 @@ function string GetDescriptorAncestors(MetaModel model, MetaClass cls)
 		result += "typeof("+super.CSharpName(model, ClassKind.Descriptor, true)+")"+delim;
 	end loop
 	if (result.Length > 0)
-		result = ", BaseSymbolDescriptors = new global::System.Type[] { "+result+" }";
+		result = ", BaseDescriptors = new global::System.Type[] { "+result+" }";
 	end if
 	return result;
 end function
@@ -771,16 +767,16 @@ template GenerateClassInternal(MetaModel model, MetaClass cls)
 end template
 
 template GenerateIdClass(MetaModel model, MetaClass cls)
-internal class [cls.CSharpName(model, ClassKind.Id)] : [Properties.CoreNs].SymbolId
+internal class [cls.CSharpName(model, ClassKind.Id)] : [Properties.CoreNs].ObjectId
 {
-	public override [Properties.CoreNs].ModelSymbolInfo SymbolInfo { get { return [cls.CSharpName(null, ClassKind.Descriptor, true)].SymbolInfo; } }
+	public override [Properties.CoreNs].ModelObjectDescriptor Descriptor { get { return [cls.CSharpName(null, ClassKind.Descriptor, true)].MDescriptor; } }
 ^
-	public override [Properties.CoreNs].ImmutableSymbolBase CreateImmutable([Properties.CoreNs].ImmutableModel model)
+	public override [Properties.CoreNs].ImmutableObjectBase CreateImmutable([Properties.CoreNs].ImmutableModel model)
 	{
 		return new [cls.CSharpName(model, ClassKind.ImmutableImpl)](this, model);
 	}
 ^
-	public override [Properties.CoreNs].MutableSymbolBase CreateMutable([Properties.CoreNs].MutableModel model, bool creating)
+	public override [Properties.CoreNs].MutableObjectBase CreateMutable([Properties.CoreNs].MutableModel model, bool creating)
 	{
 		return new [cls.CSharpName(model, ClassKind.BuilderImpl)](this, model, creating);
 	}
@@ -829,7 +825,7 @@ function string GetImmutableAncestors(MetaModel model, MetaClass cls)
 		result += super.CSharpName(model, ClassKind.Immutable, true)+delim;
 	end loop
 	if (result == "") 
-		result = Properties.CoreNs+".ImmutableSymbol";
+		result = Properties.CoreNs+".ImmutableObject";
 	end if
 	result = " : "+result;
 	return result;
@@ -871,7 +867,7 @@ function string GetBuilderAncestors(MetaModel model, MetaClass cls)
 		result += super.CSharpName(model, ClassKind.Builder, true)+delim;
 	end loop
 	if (result == "") 
-		result = Properties.CoreNs+".MutableSymbol";
+		result = Properties.CoreNs+".MutableObject";
 	end if
 	result = " : "+result;
 	return result;
@@ -879,13 +875,13 @@ end function
 
 template GenerateImmutableImplClass(MetaModel model, MetaClass cls)
 [string metaNs = model.IsMetaMetaModel() ? "" : Properties.MetaNs + "."]
-internal class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [Properties.CoreNs].ImmutableSymbolBase, [cls.CSharpName(model, ClassKind.Immutable)]
+internal class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [Properties.CoreNs].ImmutableObjectBase, [cls.CSharpName(model, ClassKind.Immutable)]
 {
 	[loop(cls->prop:GetAllProperties())]
 	[GenerateImmutableField(model, cls, prop)]
 	[end loop]
 	^
-	internal [cls.CSharpName(model, ClassKind.ImmutableImpl)]([Properties.CoreNs].SymbolId id, [Properties.CoreNs].ImmutableModel model)
+	internal [cls.CSharpName(model, ClassKind.ImmutableImpl)]([Properties.CoreNs].ObjectId id, [Properties.CoreNs].ImmutableModel model)
 		: base(id, model)
 	{
 	}
@@ -974,13 +970,13 @@ end template
 
 template GenerateBuilderImplClass(MetaModel model, MetaClass cls)
 [string metaNs = model.IsMetaMetaModel() ? "" : Properties.MetaNs + "."]
-internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.CoreNs].MutableSymbolBase, [cls.CSharpName(model, ClassKind.Builder)]
+internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.CoreNs].MutableObjectBase, [cls.CSharpName(model, ClassKind.Builder)]
 {
 	[loop(cls->prop:GetAllProperties() where prop.Type is MetaCollectionType)]
 	[GenerateBuilderField(model, cls, prop)]
 	[end loop]
 	^
-	internal [cls.CSharpName(model, ClassKind.BuilderImpl)]([Properties.CoreNs].SymbolId id, [Properties.CoreNs].MutableModel model, bool creating)
+	internal [cls.CSharpName(model, ClassKind.BuilderImpl)]([Properties.CoreNs].ObjectId id, [Properties.CoreNs].MutableModel model, bool creating)
 		: base(id, model, creating)
 	{
 	}

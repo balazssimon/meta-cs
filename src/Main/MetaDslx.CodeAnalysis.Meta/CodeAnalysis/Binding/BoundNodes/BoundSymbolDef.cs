@@ -112,7 +112,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
         protected virtual void SetPropertyValues(DeclaredSymbol symbol, DiagnosticBag diagnostics, CancellationToken cancellationToken)
         {
             var properties = this.GetProperties(null, cancellationToken);
-            var modelObject = (MutableSymbolBase)symbol.ModelObject;
+            var modelObject = (MutableObjectBase)symbol.ModelObject;
             if (modelObject == null) return;
             foreach (var boundProperty in properties)
             {

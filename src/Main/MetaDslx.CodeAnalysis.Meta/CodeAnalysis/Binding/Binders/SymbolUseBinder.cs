@@ -16,8 +16,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
 {
     public class SymbolUseBinder : Binder
     {
-        private readonly ImmutableArray<ModelSymbolInfo> _symbolTypes;
-        private readonly ImmutableArray<ModelSymbolInfo> _nestingSymbolTypes;
+        private readonly ImmutableArray<ModelObjectDescriptor> _symbolTypes;
+        private readonly ImmutableArray<ModelObjectDescriptor> _nestingSymbolTypes;
         private readonly LanguageSyntaxNode _syntax;
         private readonly bool _attributeTypeOnly;
 
@@ -25,8 +25,8 @@ namespace MetaDslx.CodeAnalysis.Binding.Binders
             : base(next)
         {
             _syntax = syntax;
-            _symbolTypes = symbolTypes.Select(type => ModelSymbolInfo.GetSymbolInfo(type)).ToImmutableArray();
-            _nestingSymbolTypes = nestingSymbolTypes.Select(type => ModelSymbolInfo.GetSymbolInfo(type)).ToImmutableArray();
+            _symbolTypes = symbolTypes.Select(type => ModelObjectDescriptor.GetSymbolInfo(type)).ToImmutableArray();
+            _nestingSymbolTypes = nestingSymbolTypes.Select(type => ModelObjectDescriptor.GetSymbolInfo(type)).ToImmutableArray();
             if (symbolTypes.Length > 0)
             {
                 _attributeTypeOnly = true;

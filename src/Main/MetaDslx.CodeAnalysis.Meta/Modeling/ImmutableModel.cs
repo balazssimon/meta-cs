@@ -20,7 +20,7 @@ namespace MetaDslx.Modeling
 
         // Used in standalone models:
         private GreenModel green;
-        private ConditionalWeakTable<SymbolId, ImmutableSymbol> symbols;
+        private ConditionalWeakTable<ObjectId, ImmutableObject> objects;
 
         internal ImmutableModel(ModelId id, ImmutableModelGroup group, GreenModel green, bool readOnly, MutableModel mutableModel)
         {
@@ -28,7 +28,7 @@ namespace MetaDslx.Modeling
             this.group = group;
             this.green = green;
             this.readOnly = readOnly;
-            this.symbols = null;
+            this.objects = null;
             this.mutableModel = new WeakReference<MutableModel>(mutableModel);
         }
 
@@ -38,7 +38,7 @@ namespace MetaDslx.Modeling
             this.group = null;
             this.green = green;
             this.readOnly = false;
-            this.symbols = new ConditionalWeakTable<SymbolId, ImmutableSymbol>();
+            this.objects = new ConditionalWeakTable<ObjectId, ImmutableObject>();
             this.mutableModel = new WeakReference<MutableModel>(mutableModel);
         }
 
@@ -47,81 +47,81 @@ namespace MetaDslx.Modeling
         public ModelVersion Version { get { return this.green.Version; } }
         internal GreenModel Green { get { return this.green; } }
         public ImmutableModelGroup ModelGroup { get { return this.group; } }
-        public IEnumerable<ImmutableSymbol> Symbols
+        public IEnumerable<ImmutableObject> Objects
         {
             get
             {
-                foreach (var sid in this.Green.StrongSymbols)
+                foreach (var sid in this.Green.StrongObjects)
                 {
-                    yield return this.GetExistingSymbol(sid);
+                    yield return this.GetExistingObject(sid);
                 }
             }
         }
 
-        IEnumerable<IMetaSymbol> IModel.Symbols => this.Symbols;
+        IEnumerable<IModelObject> IModel.Objects => this.Objects;
 
-        internal ImmutableSymbol GetExistingSymbol(SymbolId sid)
+        internal ImmutableObject GetExistingObject(ObjectId sid)
         {
             if (sid == null) return null;
             if (this.group != null)
             {
-                if (this.readOnly) return this.group.GetExistingReferenceSymbol(this.id, sid);
-                else return this.group.GetExistingModelSymbol(this.id, sid);
+                if (this.readOnly) return this.group.GetExistingReferenceObject(this.id, sid);
+                else return this.group.GetExistingModelObject(this.id, sid);
             }
             else
             {
-                return this.symbols.GetValue(sid, key => key.CreateImmutable(this));
+                return this.objects.GetValue(sid, key => key.CreateImmutable(this));
             }
         }
 
-        internal ImmutableSymbol ResolveSymbol(SymbolId sid)
+        internal ImmutableObject ResolveObject(ObjectId sid)
         {
             if (this.group != null)
             {
-                return this.group.ResolveSymbol(sid);
+                return this.group.ResolveObject(sid);
             }
             else
             {
-                if (!this.ContainsSymbol(sid)) return null;
-                return this.GetExistingSymbol(sid);
+                if (!this.ContainsObject(sid)) return null;
+                return this.GetExistingObject(sid);
             }
         }
 
-        internal ImmutableSymbol GetSymbol(SymbolId sid)
+        internal ImmutableObject GetObject(ObjectId sid)
         {
             if (sid == null) return null;
-            if (!this.ContainsSymbol(sid)) return null;
-            return this.GetExistingSymbol(sid);
+            if (!this.ContainsObject(sid)) return null;
+            return this.GetExistingObject(sid);
         }
 
-        public ImmutableSymbol GetSymbol(MutableSymbol symbol)
+        public ImmutableObject GetObject(MutableObject obj)
         {
-            if (symbol == null) return null;
-            return this.GetSymbol(((MutableSymbolBase)symbol).MId);
+            if (obj == null) return null;
+            return this.GetObject(((MutableObjectBase)obj).MId);
         }
 
-        public ImmutableSymbol GetSymbol(ImmutableSymbol symbol)
+        public ImmutableObject GetObject(ImmutableObject obj)
         {
-            if (symbol == null) return null;
-            return this.GetSymbol(((ImmutableSymbolBase)symbol).MId);
+            if (obj == null) return null;
+            return this.GetObject(((ImmutableObjectBase)obj).MId);
         }
 
-        internal bool ContainsSymbol(SymbolId sid)
+        internal bool ContainsObject(ObjectId sid)
         {
             if (sid == null) return false;
-            return this.Green.Symbols.ContainsKey(sid);
+            return this.Green.Objects.ContainsKey(sid);
         }
 
-        public bool ContainsSymbol(MutableSymbol symbol)
+        public bool ContainsObject(MutableObject obj)
         {
-            if (symbol == null) return false;
-            return this.ContainsSymbol(((MutableSymbolBase)symbol).MId);
+            if (obj == null) return false;
+            return this.ContainsObject(((MutableObjectBase)obj).MId);
         }
 
-        public bool ContainsSymbol(ImmutableSymbol symbol)
+        public bool ContainsObject(ImmutableObject obj)
         {
-            if (symbol == null) return false;
-            return this.ContainsSymbol(((ImmutableSymbolBase)symbol).MId);
+            if (obj == null) return false;
+            return this.ContainsObject(((ImmutableObjectBase)obj).MId);
         }
 
         public MutableModel ToMutable(bool createNew = false)
@@ -149,13 +149,13 @@ namespace MetaDslx.Modeling
 
         internal object ToGreenValue(object value)
         {
-            if (value is ImmutableSymbolBase)
+            if (value is ImmutableObjectBase)
             {
-                return ((ImmutableSymbolBase)value).MId;
+                return ((ImmutableObjectBase)value).MId;
             }
-            if (value is MutableSymbolBase)
+            if (value is MutableObjectBase)
             {
-                return ((MutableSymbolBase)value).MId;
+                return ((MutableObjectBase)value).MId;
             }
             return value;
         }
@@ -165,13 +165,13 @@ namespace MetaDslx.Modeling
             if (value is GreenDerivedValue)
             {
                 object redValue = ((GreenDerivedValue)value).CreateRedValue();
-                if (value is ImmutableSymbolBase)
+                if (value is ImmutableObjectBase)
                 {
-                    return this.ResolveSymbol(((ImmutableSymbolBase)value).MId);
+                    return this.ResolveObject(((ImmutableObjectBase)value).MId);
                 }
-                else if (value is MutableSymbolBase)
+                else if (value is MutableObjectBase)
                 {
-                    return this.ResolveSymbol(((MutableSymbolBase)value).MId);
+                    return this.ResolveObject(((MutableObjectBase)value).MId);
                 }
                 return redValue;
             }
@@ -179,7 +179,7 @@ namespace MetaDslx.Modeling
             {
                 return null;
             }
-            else if (value == GreenSymbol.Unassigned)
+            else if (value == GreenObject.Unassigned)
             {
                 return null;
             }
@@ -188,9 +188,9 @@ namespace MetaDslx.Modeling
                 Debug.Assert(false);
                 return null;
             }
-            else if (value is SymbolId)
+            else if (value is ObjectId)
             {
-                return this.ResolveSymbol((SymbolId)value);
+                return this.ResolveObject((ObjectId)value);
             }
             else
             {
@@ -199,30 +199,30 @@ namespace MetaDslx.Modeling
         }
 
 
-        private object GetGreenValue(SymbolId sid, ModelProperty property)
+        private object GetGreenValue(ObjectId sid, ModelProperty property)
         {
-            GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            GreenObject green;
+            if (this.green.Objects.TryGetValue(sid, out green))
             {
                 object greenValue;
-                ModelPropertyInfo mpi = sid.SymbolInfo.GetPropertyInfo(property);
+                ModelPropertyInfo mpi = sid.Descriptor.GetPropertyInfo(property);
                 if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
-                if (greenSymbol.Properties.TryGetValue(property, out greenValue))
+                if (green.Properties.TryGetValue(property, out greenValue))
                 {
                     return greenValue;
                 }
             }
-            return GreenSymbol.Unassigned;
+            return GreenObject.Unassigned;
         }
 
-        internal object GetValue(SymbolId sid, ModelProperty property)
+        internal object GetValue(ObjectId sid, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
             var greenValue = this.GetGreenValue(sid, property);
             return this.ToRedValue(greenValue);
         }
 
-        internal ImmutableModelSet<T> GetSet<T>(SymbolId sid, ModelProperty property)
+        internal ImmutableModelSet<T> GetSet<T>(ObjectId sid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
             var greenValue = this.GetGreenValue(sid, property);
@@ -233,7 +233,7 @@ namespace MetaDslx.Modeling
             return ImmutableModelSet<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
         }
 
-        internal ImmutableModelList<T> GetList<T>(SymbolId sid, ModelProperty property)
+        internal ImmutableModelList<T> GetList<T>(ObjectId sid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
             var greenValue = this.GetGreenValue(sid, property);
@@ -244,27 +244,27 @@ namespace MetaDslx.Modeling
             return ImmutableModelList<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
         }
 
-        internal ImmutableSymbol MParent(SymbolId sid)
+        internal ImmutableObject MParent(ObjectId sid)
         {
-            GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            GreenObject green;
+            if (this.green.Objects.TryGetValue(sid, out green))
             {
-                return this.GetExistingSymbol(greenSymbol.Parent);
+                return this.GetExistingObject(green.Parent);
             }
             return null;
         }
 
-        internal ImmutableModelList<ImmutableSymbol> MChildren(SymbolId sid)
+        internal ImmutableModelList<ImmutableObject> MChildren(ObjectId sid)
         {
-            GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            GreenObject green;
+            if (this.green.Objects.TryGetValue(sid, out green))
             {
-                return ImmutableModelList<ImmutableSymbol>.FromSymbolIdList(greenSymbol.Children, this);
+                return ImmutableModelList<ImmutableObject>.FromObjectIdList(green.Children, this);
             }
-            return ImmutableModelList<ImmutableSymbol>.Empty;
+            return ImmutableModelList<ImmutableObject>.Empty;
         }
 
-        internal ImmutableModelList<ImmutableSymbol> MGetImports(SymbolId sid)
+        internal ImmutableModelList<ImmutableObject> MGetImports(ObjectId sid)
         {
             GreenList result = GreenList.EmptyUnique;
             foreach (var prop in this.MProperties(sid))
@@ -286,25 +286,25 @@ namespace MetaDslx.Modeling
                     }
                 }
             }
-            return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
+            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this);
         }
 
-        internal ImmutableModelList<ImmutableSymbol> MGetBases(SymbolId sid)
+        internal ImmutableModelList<ImmutableObject> MGetBases(ObjectId sid)
         {
             GreenList result = this.CollectBases(sid);
             result = result.Remove(sid);
-            return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
+            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this);
         }
 
-        internal ImmutableModelList<ImmutableSymbol> MGetAllBases(SymbolId sid)
+        internal ImmutableModelList<ImmutableObject> MGetAllBases(ObjectId sid)
         {
             GreenList result = GreenList.EmptyUnique;
             this.CollectAllBases(sid, ref result);
             result = result.Remove(sid);
-            return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
+            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this);
         }
 
-        private GreenList CollectBases(SymbolId sid)
+        private GreenList CollectBases(ObjectId sid)
         {
             GreenList result = GreenList.EmptyUnique;
             foreach (var prop in this.MProperties(sid))
@@ -329,7 +329,7 @@ namespace MetaDslx.Modeling
             return result;
         }
 
-        private void CollectAllBases(SymbolId sid, ref GreenList result)
+        private void CollectAllBases(ObjectId sid, ref GreenList result)
         {
             if (sid == null) return;
 
@@ -340,11 +340,11 @@ namespace MetaDslx.Modeling
             var bases = this.CollectBases(sid);
             foreach (var item in bases)
             {
-                this.CollectAllBases(item as SymbolId, ref result);
+                this.CollectAllBases(item as ObjectId, ref result);
             }
         }
 
-        internal ImmutableModelList<ImmutableSymbol> MGetMembers(SymbolId sid)
+        internal ImmutableModelList<ImmutableObject> MGetMembers(ObjectId sid)
         {
             GreenList result = GreenList.EmptyUnique;
             foreach (var prop in this.MProperties(sid))
@@ -366,12 +366,12 @@ namespace MetaDslx.Modeling
                     }
                 }
             }
-            return ImmutableModelList<ImmutableSymbol>.FromGreenList(result, this);
+            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this);
         }
 
-        internal IReadOnlyList<ModelProperty> MProperties(SymbolId sid)
+        internal IReadOnlyList<ModelProperty> MProperties(ObjectId sid)
         {
-            ModelSymbolInfo msi = sid.SymbolInfo;
+            ModelObjectDescriptor msi = sid.Descriptor;
             if (msi != null)
             {
                 return msi.Properties;
@@ -379,17 +379,17 @@ namespace MetaDslx.Modeling
             return ImmutableArray<ModelProperty>.Empty;
         }
 
-        internal IReadOnlyList<ModelProperty> MAllProperties(SymbolId sid)
+        internal IReadOnlyList<ModelProperty> MAllProperties(ObjectId sid)
         {
-            GreenSymbol greenSymbol;
-            if (this.green.Symbols.TryGetValue(sid, out greenSymbol))
+            GreenObject green;
+            if (this.green.Objects.TryGetValue(sid, out green))
             {
-                return greenSymbol.Properties.Keys.ToList();
+                return green.Properties.Keys.ToList();
             }
             return ImmutableList<ModelProperty>.Empty;
         }
 
-        internal object MGet(SymbolId sid, ModelProperty property)
+        internal object MGet(ObjectId sid, ModelProperty property)
         {
             if (property.IsCollection)
             {
@@ -401,7 +401,7 @@ namespace MetaDslx.Modeling
             }
         }
 
-        internal bool MHasConcreteValue(SymbolId sid, ModelProperty property)
+        internal bool MHasConcreteValue(ObjectId sid, ModelProperty property)
         {
             if (property.IsCollection)
             {
@@ -410,11 +410,11 @@ namespace MetaDslx.Modeling
             else
             {
                 var greenValue = this.GetGreenValue(sid, property);
-                return greenValue != GreenSymbol.Unassigned && !(greenValue is LazyValue) && !(greenValue is GreenDerivedValue);
+                return greenValue != GreenObject.Unassigned && !(greenValue is LazyValue) && !(greenValue is GreenDerivedValue);
             }
         }
 
-        internal bool MIsSet(SymbolId sid, ModelProperty property)
+        internal bool MIsSet(ObjectId sid, ModelProperty property)
         {
             if (property.IsCollection)
             {
@@ -423,7 +423,7 @@ namespace MetaDslx.Modeling
             else
             {
                 var greenValue = this.GetGreenValue(sid, property);
-                return greenValue != GreenSymbol.Unassigned;
+                return greenValue != GreenObject.Unassigned;
             }
         }
 

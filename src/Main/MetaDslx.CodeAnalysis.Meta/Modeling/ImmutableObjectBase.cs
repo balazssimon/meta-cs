@@ -8,12 +8,12 @@ using System.Threading;
 
 namespace MetaDslx.Modeling
 {
-    public abstract class ImmutableSymbolBase : ImmutableSymbol
+    public abstract class ImmutableObjectBase : ImmutableObject
     {
-        private SymbolId id;
+        private ObjectId id;
         private ImmutableModel model;
 
-        protected ImmutableSymbolBase(SymbolId id, ImmutableModel model)
+        protected ImmutableObjectBase(ObjectId id, ImmutableModel model)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
             if (model == null) throw new ArgumentNullException(nameof(model));
@@ -21,35 +21,35 @@ namespace MetaDslx.Modeling
             this.model = model;
         }
 
-        public MutableSymbol ToMutable()
+        public MutableObject ToMutable()
         {
             MutableModel mutableModel = this.model.ToMutable();
-            return mutableModel.GetSymbol(this);
+            return mutableModel.GetObject(this);
         }
 
-        public MutableSymbol ToMutable(MutableModel mutableModel)
+        public MutableObject ToMutable(MutableModel mutableModel)
         {
             if (mutableModel == null) throw new ArgumentNullException(nameof(mutableModel));
-            return mutableModel.GetSymbol(this);
+            return mutableModel.GetObject(this);
         }
 
-        public SymbolId MId { get { return this.id; } }
+        public ObjectId MId { get { return this.id; } }
 
         public abstract MetaModel MMetaModel { get; }
         public abstract MetaClass MMetaClass { get; }
 
         public ImmutableModel MModel { get { return this.model; } }
-        IModel IMetaSymbol.MModel { get { return this.MModel; } }
-        public ImmutableSymbol MParent { get { return this.model.MParent(this.id); } }
-        public ImmutableModelList<ImmutableSymbol> MChildren { get { return this.model.MChildren(this.id); } }
+        IModel IModelObject.MModel { get { return this.MModel; } }
+        public ImmutableObject MParent { get { return this.model.MParent(this.id); } }
+        public ImmutableModelList<ImmutableObject> MChildren { get { return this.model.MChildren(this.id); } }
 
-        IMetaSymbol IMetaSymbol.MParent { get { return this.model.MParent(this.id); } }
-        IReadOnlyList<IMetaSymbol> IMetaSymbol.MChildren { get { return this.model.MChildren(this.id); } }
+        IModelObject IModelObject.MParent { get { return this.model.MParent(this.id); } }
+        IReadOnlyList<IModelObject> IModelObject.MChildren { get { return this.model.MChildren(this.id); } }
 
-        public IReadOnlyList<IMetaSymbol> MGetImports() { return this.model.MGetImports(this.id); }
-        public IReadOnlyList<IMetaSymbol> MGetBases() { return this.model.MGetBases(this.id); }
-        public IReadOnlyList<IMetaSymbol> MGetAllBases() { return this.model.MGetAllBases(this.id); }
-        public IReadOnlyList<IMetaSymbol> MGetMembers() { return this.model.MGetMembers(this.id); }
+        public IReadOnlyList<IModelObject> MGetImports() { return this.model.MGetImports(this.id); }
+        public IReadOnlyList<IModelObject> MGetBases() { return this.model.MGetBases(this.id); }
+        public IReadOnlyList<IModelObject> MGetAllBases() { return this.model.MGetAllBases(this.id); }
+        public IReadOnlyList<IModelObject> MGetMembers() { return this.model.MGetMembers(this.id); }
 
         public IReadOnlyList<ModelProperty> MProperties { get { return this.model.MProperties(this.id); } }
         public IReadOnlyList<ModelProperty> MAllProperties { get { return this.model.MAllProperties(this.id); } }
@@ -72,7 +72,7 @@ namespace MetaDslx.Modeling
         {
             get
             {
-                ModelProperty nameProperty = this.id.SymbolInfo.NameProperty;
+                ModelProperty nameProperty = this.id.Descriptor.NameProperty;
                 if (nameProperty != null)
                 {
                     object nameObj = this.MGet(nameProperty);
@@ -82,21 +82,21 @@ namespace MetaDslx.Modeling
                 return null;
             }
         }
-        public ImmutableSymbol MType
+        public ImmutableObject MType
         {
             get
             {
-                ModelProperty typeProperty = this.id.SymbolInfo.TypeProperty;
+                ModelProperty typeProperty = this.id.Descriptor.TypeProperty;
                 if (typeProperty != null)
                 {
                     object typeObj = this.MGet(typeProperty);
-                    return typeObj as ImmutableSymbol;
+                    return typeObj as ImmutableObject;
                 }
                 return null;
             }
         }
 
-        IMetaSymbol IMetaSymbol.MType
+        IModelObject IModelObject.MType
         {
             get
             {
@@ -174,7 +174,7 @@ namespace MetaDslx.Modeling
 
         public override bool Equals(object obj)
         {
-            if (obj is IMetaSymbol other)
+            if (obj is IModelObject other)
             {
                 return this.id.Equals(other.MId);
             }

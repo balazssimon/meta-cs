@@ -9,6 +9,6 @@ namespace MetaDslx.Modeling
         ModelId Id { get; }
         string Name { get; }
         ModelVersion Version { get; }
-        IEnumerable<IMetaSymbol> Symbols { get; }
+        IEnumerable<IModelObject> Objects { get; }
     }
 }

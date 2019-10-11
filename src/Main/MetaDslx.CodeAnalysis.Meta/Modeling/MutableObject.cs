@@ -6,17 +6,17 @@ using System.Text;
 
 namespace MetaDslx.Modeling
 {
-    public interface MutableSymbol : IMetaSymbol
+    public interface MutableObject : IModelObject
     {
         bool MIsReadOnly { get; }
         new MutableModel MModel { get; }
-        new MutableSymbol MParent { get; }
-        new ImmutableModelList<MutableSymbol> MChildren { get; }
+        new MutableObject MParent { get; }
+        new ImmutableModelList<MutableObject> MChildren { get; }
 
         void MAttachProperty(ModelProperty property);
 
         new string MName { get; set; }
-        new MutableSymbol MType { get; set; }
+        new MutableObject MType { get; set; }
 
 
         // TODO:MetaDslx - provide initialization, e.g. MInit, MTrySet, etc.
@@ -33,8 +33,8 @@ namespace MetaDslx.Modeling
 
         void MValidate(DiagnosticBag diagnostics);
 
-        ImmutableSymbol ToImmutable();
-        ImmutableSymbol ToImmutable(ImmutableModel immutableModel);
+        ImmutableObject ToImmutable();
+        ImmutableObject ToImmutable(ImmutableModel immutableModel);
     }
 
 }

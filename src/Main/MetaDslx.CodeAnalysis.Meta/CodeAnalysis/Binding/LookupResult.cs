@@ -211,7 +211,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             return new SingleLookupResult(LookupResultKind.NotAnAttributeType, symbol, error);
         }
 
-        public static SingleLookupResult WrongSymbol(Symbol unwrappedSymbol, Symbol symbol, ImmutableArray<ModelSymbolInfo> expectedKinds, bool diagnose)
+        public static SingleLookupResult WrongSymbol(Symbol unwrappedSymbol, Symbol symbol, ImmutableArray<ModelObjectDescriptor> expectedKinds, bool diagnose)
         {
             var psb = PooledStringBuilder.GetInstance();
             var sb = psb.Builder;
@@ -220,7 +220,7 @@ namespace MetaDslx.CodeAnalysis.Binding
                 if (sb.Length > 0) sb.Append(", ");
                 sb.Append(kind.Name);
             }
-            var diagInfo = diagnose ? new LanguageDiagnosticInfo(ModelErrorCode.ERR_BadSymbol, unwrappedSymbol.Name, unwrappedSymbol.ModelSymbolInfo.Name, sb.ToString()) : null;
+            var diagInfo = diagnose ? new LanguageDiagnosticInfo(ModelErrorCode.ERR_BadModelObject, unwrappedSymbol.Name, unwrappedSymbol.ModelSymbolInfo.Name, sb.ToString()) : null;
             return new SingleLookupResult(LookupResultKind.WrongSymbol, symbol, diagInfo);
         }
 

@@ -41,7 +41,7 @@ namespace MetaDslx.Languages.Meta.Symbols
                 if (_annotations == null)
                 {
                     var builder = ImmutableDictionary.CreateBuilder<string, Symbol>();
-                    foreach (var annot in Model.Symbols)
+                    foreach (var annot in Model.Objects)
                     {
                         var symbol = new MetaNamedTypeSymbol(annot, _container);
                         builder.Add(annot.MName, symbol);
@@ -65,7 +65,7 @@ namespace MetaDslx.Languages.Meta.Symbols
             return model.ToImmutable();
         }
 
-        private static IMetaSymbol CreateAnnotation(string name, MetaFactory factory)
+        private static IModelObject CreateAnnotation(string name, MetaFactory factory)
         {
             //var annot = factory.MetaAnnotation();
             var annot = factory.MetaAttribute();

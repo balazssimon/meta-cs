@@ -8,17 +8,17 @@ namespace MetaDslx.Modeling.Internal
     {
         private LazyValue lazy;
 
-        internal GreenDerivedValue(LazyValue lazy)
+        public GreenDerivedValue(LazyValue lazy)
         {
             this.lazy = lazy;
         }
 
-        internal LazyValue Lazy
+        public LazyValue Lazy
         {
             get { return this.lazy; }
         }
 
-        internal object CreateRedValue()
+        public object CreateRedValue()
         {
             return lazy.CreateRedValue();
         }

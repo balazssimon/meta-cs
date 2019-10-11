@@ -56,7 +56,7 @@ namespace MetaDslx.CodeAnalysis.Symbols
                         result = null;
                     }
                 }
-                else if (key is IMetaSymbol metaSymbol)
+                else if (key is IModelObject metaSymbol)
                 {
                     foreach (var module in this.Modules)
                     {

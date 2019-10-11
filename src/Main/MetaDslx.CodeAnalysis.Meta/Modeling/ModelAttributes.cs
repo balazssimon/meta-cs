@@ -5,24 +5,24 @@ using System.Text;
 namespace MetaDslx.Modeling
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public sealed class ModelSymbolDescriptorAttribute : Attribute
+    public sealed class ModelObjectDescriptorAttribute : Attribute
     {
         private static Type[] EmptyTypeArray = new Type[0];
 
-        public ModelSymbolDescriptorAttribute()
+        public ModelObjectDescriptorAttribute()
         {
-            this.BaseSymbolDescriptors = EmptyTypeArray;
+            this.BaseDescriptors = EmptyTypeArray;
         }
 
-        public ModelSymbolDescriptorAttribute(Type idType, Type immutableType, Type mutableType)
+        public ModelObjectDescriptorAttribute(Type idType, Type immutableType, Type mutableType)
         {
             this.IdType = idType;
             this.ImmutableType = immutableType;
             this.MutableType = mutableType;
-            this.BaseSymbolDescriptors = EmptyTypeArray;
+            this.BaseDescriptors = EmptyTypeArray;
         }
 
-        public Type[] BaseSymbolDescriptors { get; set; }
+        public Type[] BaseDescriptors { get; set; }
         public Type IdType { get; }
         public Type ImmutableType { get; }
         public Type MutableType { get; }

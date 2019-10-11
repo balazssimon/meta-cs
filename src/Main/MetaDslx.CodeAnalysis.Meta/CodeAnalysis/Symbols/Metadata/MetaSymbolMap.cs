@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
     public class MetaSymbolMap
     {
-        private ConcurrentDictionary<IMetaSymbol, Symbol> map = new ConcurrentDictionary<IMetaSymbol, Symbol>();
+        private ConcurrentDictionary<IModelObject, Symbol> map = new ConcurrentDictionary<IModelObject, Symbol>();
         private ModuleSymbol _module;
         private bool _autoCreateSymbols;
 
@@ -32,7 +32,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         }
 
         public bool TryGetSymbol<TMeta, T>(TMeta metaSymbol, out T symbol)
-            where TMeta : IMetaSymbol
+            where TMeta : IModelObject
             where T : Symbol
         {
             if (metaSymbol == null || !map.TryGetValue(metaSymbol, out Symbol cachedSymbol))
@@ -45,7 +45,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
         }
 
         private T GetSymbol<TMeta, T>(TMeta metaSymbol, Func<TMeta, T> createSymbol)
-            where TMeta : IMetaSymbol
+            where TMeta : IModelObject
             where T : Symbol
         {
             if (metaSymbol == null) return null;
@@ -66,65 +66,65 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
             {
                 yield break;
             }
-            foreach (var modelObject in _module.ModelBuilder.Symbols)
+            foreach (var modelObject in _module.ModelBuilder.Objects)
             {
                 yield return this.GetSymbol(modelObject);
             }
         }
 
-        public Symbol GetSymbol(IMetaSymbol metaSymbol)
+        public Symbol GetSymbol(IModelObject metaSymbol)
         {
-            if (metaSymbol.MId.SymbolInfo.IsNamespace) return GetNamespaceSymbol(metaSymbol);
-            if (metaSymbol.MId.SymbolInfo.IsNamedType) return GetNamedTypeSymbol(metaSymbol);
-            if (metaSymbol.MId.SymbolInfo.IsName) return GetNameSymbol(metaSymbol);
+            if (metaSymbol.MId.Descriptor.IsNamespace) return GetNamespaceSymbol(metaSymbol);
+            if (metaSymbol.MId.Descriptor.IsNamedType) return GetNamedTypeSymbol(metaSymbol);
+            if (metaSymbol.MId.Descriptor.IsName) return GetNameSymbol(metaSymbol);
             return new UnsupportedMetaSymbol(metaSymbol);
         }
 
-        private Symbol GetContainerSymbol(IMetaSymbol metaSymbol)
+        private Symbol GetContainerSymbol(IModelObject metaSymbol)
         {
             if (metaSymbol.MParent == null) return _module;
             else return GetSymbol(metaSymbol.MParent);
         }
 
-        public void RegisterSymbol(IMetaSymbol modelObject, Symbol symbol)
+        public void RegisterSymbol(IModelObject modelObject, Symbol symbol)
         {
             map.TryAdd(modelObject, symbol);
         }
 
-        public ImmutableArray<Symbol> GetSymbols(IEnumerable<IMetaSymbol> csharpSymbols)
+        public ImmutableArray<Symbol> GetSymbols(IEnumerable<IModelObject> csharpSymbols)
         {
             return csharpSymbols.Select(symbol => GetSymbol(symbol)).ToImmutableArray();
         }
 
-        public NamespaceSymbol GetNamespaceSymbol(IMetaSymbol metaSymbol)
+        public NamespaceSymbol GetNamespaceSymbol(IModelObject metaSymbol)
         {
-            Debug.Assert(metaSymbol.MId.SymbolInfo.IsNamespace, "Symbol must be a namespace.");
+            Debug.Assert(metaSymbol.MId.Descriptor.IsNamespace, "Symbol must be a namespace.");
             return GetSymbol(metaSymbol, ms => new MetaNamespaceSymbol(ms, GetContainerSymbol(ms)));
         }
 
-        public ImmutableArray<NamespaceSymbol> GetNamespaceSymbols(IEnumerable<IMetaSymbol> metaSymbols)
+        public ImmutableArray<NamespaceSymbol> GetNamespaceSymbols(IEnumerable<IModelObject> metaSymbols)
         {
             return metaSymbols.Select(symbol => GetNamespaceSymbol(symbol)).ToImmutableArray();
         }
 
-        public NamedTypeSymbol GetNamedTypeSymbol(IMetaSymbol metaSymbol)
+        public NamedTypeSymbol GetNamedTypeSymbol(IModelObject metaSymbol)
         {
-            Debug.Assert(metaSymbol.MId.SymbolInfo.IsNamedType, "Symbol must be a named type.");
+            Debug.Assert(metaSymbol.MId.Descriptor.IsNamedType, "Symbol must be a named type.");
             return GetSymbol(metaSymbol, ms => new MetaNamedTypeSymbol(ms, GetContainerSymbol(ms)));
         }
 
-        public ImmutableArray<NamedTypeSymbol> GetNamedTypeSymbols(IEnumerable<IMetaSymbol> metaSymbols)
+        public ImmutableArray<NamedTypeSymbol> GetNamedTypeSymbols(IEnumerable<IModelObject> metaSymbols)
         {
             return metaSymbols.Select(symbol => GetNamedTypeSymbol(symbol)).ToImmutableArray();
         }
 
-        public MetaMemberSymbol GetNameSymbol(IMetaSymbol metaSymbol)
+        public MetaMemberSymbol GetNameSymbol(IModelObject metaSymbol)
         {
-            Debug.Assert(metaSymbol.MId.SymbolInfo.IsName, "Symbol must be a name.");
+            Debug.Assert(metaSymbol.MId.Descriptor.IsName, "Symbol must be a name.");
             return GetSymbol(metaSymbol, ms => new MetaMemberSymbol(ms, GetContainerSymbol(ms)));
         }
 
-        public ImmutableArray<MetaMemberSymbol> GetNameSymbols(IEnumerable<IMetaSymbol> metaSymbols)
+        public ImmutableArray<MetaMemberSymbol> GetNameSymbols(IEnumerable<IModelObject> metaSymbols)
         {
             return metaSymbols.Select(symbol => GetNameSymbol(symbol)).ToImmutableArray();
         }

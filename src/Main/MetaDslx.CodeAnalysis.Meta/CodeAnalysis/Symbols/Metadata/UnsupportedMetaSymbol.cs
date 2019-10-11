@@ -9,18 +9,18 @@ namespace MetaDslx.CodeAnalysis.Symbols.Metadata
 {
     public class UnsupportedMetaSymbol : Symbol, IMetaErrorSymbol
     {
-        private IMetaSymbol _symbol;
+        private IModelObject _symbol;
 
-        internal UnsupportedMetaSymbol(IMetaSymbol symbol)
+        internal UnsupportedMetaSymbol(IModelObject symbol)
         {
             _symbol = symbol;
         }
 
-        public IMetaSymbol Symbol => _symbol;
+        public IModelObject Symbol => _symbol;
 
         public override LanguageSymbolKind Kind => LanguageSymbolKind.ErrorType;
 
-        public override ModelSymbolInfo ModelSymbolInfo => _symbol.MId.SymbolInfo;
+        public override ModelObjectDescriptor ModelSymbolInfo => _symbol.MId.Descriptor;
 
         public override Symbol ContainingSymbol => null;
 

@@ -18,20 +18,21 @@ namespace MetaDslx.Modeling
 
         public MutableModel Model { get { return this.model; } }
 
-        protected MutableSymbol CreateSymbol(SymbolId id)
+        protected MutableObject CreateObject(ObjectId id)
         {
-            MutableSymbolBase symbol = this.model.CreateSymbol(id, this.flags.HasFlag(ModelFactoryFlags.CreateWeakSymbols));
-            symbol.MCallInit();
-            if (!this.flags.HasFlag(ModelFactoryFlags.DontMakeSymbolsCreated)) symbol.MMakeCreated();
-            return symbol;
+            MutableObjectBase obj = this.model.CreateObject(id, this.flags.HasFlag(ModelFactoryFlags.CreateWeakObjects));
+            obj.MCallInit();
+            if (!this.flags.HasFlag(ModelFactoryFlags.DontMakeObjectsCreated)) obj.MMakeCreated();
+            return obj;
         }
 
-        public MutableSymbol Create(Type type)
+        public MutableObject Create(Type type)
         {
             // TODO: instantiate any type from any model
             return this.Create(type.Name);
         }
-        public abstract MutableSymbol Create(string type);
+
+        public abstract MutableObject Create(string type);
     }
 
 

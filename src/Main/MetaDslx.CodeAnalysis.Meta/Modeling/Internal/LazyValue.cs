@@ -14,14 +14,11 @@ namespace MetaDslx.Modeling.Internal
 
         }
 
+        internal abstract object LazyConstructor { get; }
+
         internal virtual bool IsSingleValue
         {
             get { return true; }
-        }
-
-        internal virtual DiagnosticBag Diagnostics
-        {
-            get { return null; }
         }
 
         internal virtual Location Location
@@ -42,13 +39,13 @@ namespace MetaDslx.Modeling.Internal
         internal object CreateGreenValue()
         {
             object value = this.CreateRedValue();
-            if (value is MutableSymbolBase)
+            if (value is MutableObjectBase)
             {
-                return ((MutableSymbolBase)value).MId;
+                return ((MutableObjectBase)value).MId;
             }
-            else if (value is ImmutableSymbolBase)
+            else if (value is ImmutableObjectBase)
             {
-                return ((ImmutableSymbolBase)value).MId;
+                return ((ImmutableObjectBase)value).MId;
             }
             return value;
         }
@@ -59,46 +56,31 @@ namespace MetaDslx.Modeling.Internal
             for (int i = 0; i < values.Length; i++)
             {
                 var value = values[i];
-                if (value is MutableSymbolBase)
+                if (value is MutableObjectBase)
                 {
-                    values[i] = ((MutableSymbolBase)value).MId;
+                    values[i] = ((MutableObjectBase)value).MId;
                 }
-                else if (value is ImmutableSymbolBase)
+                else if (value is ImmutableObjectBase)
                 {
-                    values[i] = ((ImmutableSymbolBase)value).MId;
+                    values[i] = ((ImmutableObjectBase)value).MId;
                 }
             }
             return values;
         }
 
-        public static LazyValue Create(Func<object> lazy)
+        public static LazyValue Create<T>(Func<T> lazy, Location location = null)
         {
-            return new SingleLazyValue(lazy);
+            return object.ReferenceEquals(location, null) ? new SingleLazyValue<T>(lazy) : new SingleLazyValueWithLocation<T>(lazy, location);
         }
 
-        public static LazyValue Create(Func<object> lazy, Location location, DiagnosticBag diagnostics)
+        public static LazyValue CreateMulti<T>(Func<IEnumerable<T>> lazy, Location location = null)
         {
-            return new SingleLazyValueWithLocation(lazy, location, diagnostics);
+            return object.ReferenceEquals(location, null) ? new MultipleLazyValues<T>(lazy) : new MultipleLazyValuesWithLocation<T>(lazy, location);
         }
 
-        public static LazyValue CreateMultiple(Func<IEnumerable<object>> lazy)
+        public static IEnumerable<LazyValue> CreateMulti<T>(IEnumerable<Func<T>> lazy, Location location = null)
         {
-            return new MultipleLazyValues(lazy);
-        }
-
-        public static LazyValue CreateMultiple(Func<IEnumerable<object>> lazy, Location location, DiagnosticBag diagnostics)
-        {
-            return new MultipleLazyValuesWithLocation(lazy, location, diagnostics);
-        }
-
-        public static IEnumerable<LazyValue> CreateMultiple(IEnumerable<Func<object>> lazy)
-        {
-            return lazy.Select(l => Create(l));
-        }
-
-        public static IEnumerable<LazyValue> CreateMultiple(IEnumerable<Func<object>> lazy, Location location, DiagnosticBag diagnostics)
-        {
-            return lazy.Select(l => Create(l, location, diagnostics));
+            return lazy.Select(l => Create(l, location));
         }
     }
 

@@ -8,9 +8,9 @@ namespace MetaDslx.Modeling
     public enum ModelFactoryFlags
     {
         None = 0x00,
-        DontMakeSymbolsCreated = 0x01,
-        CreateWeakSymbols = 0x02,
-        CreateStrongSymbols = 0x04
+        DontMakeObjectsCreated = 0x01,
+        CreateWeakObjects = 0x02,
+        CreateStrongObjects = 0x04
     }
 
 }

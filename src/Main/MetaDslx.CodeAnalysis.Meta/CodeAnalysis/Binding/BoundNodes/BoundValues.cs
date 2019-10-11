@@ -41,7 +41,7 @@ namespace MetaDslx.CodeAnalysis.Binding.BoundNodes
                 var symbol = values[i] as Symbol;
                 if (symbol != null)
                 {
-                    string text = symbol.ToString()+"{"+symbol.ModelObject?.MId?.SymbolInfo?.ImmutableType?.Name+"}";
+                    string text = symbol.ToString()+"{"+symbol.ModelObject?.MId?.Descriptor?.ImmutableType?.Name+"}";
                     while (symbol != null)
                     {
                         symbol = symbol.ContainingNamespaceOrType();

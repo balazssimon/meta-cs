@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.parentPropertyToAddTo; }
         }
 
-        public abstract ModelSymbolInfo Kind { get; }
+        public abstract ModelObjectDescriptor Kind { get; }
 
         public ImmutableArray<Declaration> Children
         {

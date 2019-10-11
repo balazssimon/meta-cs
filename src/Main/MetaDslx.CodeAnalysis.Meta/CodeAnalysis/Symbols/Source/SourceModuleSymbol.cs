@@ -463,7 +463,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             return null;
         }
 
-        public override bool TryGetSymbol(IMetaSymbol modelObject, out Symbol symbol)
+        public override bool TryGetSymbol(IModelObject modelObject, out Symbol symbol)
         {
             symbol = null;
             return false;

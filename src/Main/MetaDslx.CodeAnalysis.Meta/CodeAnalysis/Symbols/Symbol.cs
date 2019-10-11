@@ -36,13 +36,13 @@ namespace MetaDslx.CodeAnalysis.Symbols
         // to the VB version.
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        public virtual ModelSymbolInfo ModelSymbolInfo => null;
+        public virtual ModelObjectDescriptor ModelSymbolInfo => null;
 
         public virtual Language Language => Language.None;
 
         internal protected virtual MutableModel ModelBuilder => null;
 
-        public virtual IMetaSymbol ModelObject => null;
+        public virtual IModelObject ModelObject => null;
 
         /// <summary>
         /// True if this Symbol should be completed by calling ForceComplete.
