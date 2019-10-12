@@ -549,7 +549,7 @@ namespace MetaDslx.Languages.Meta.Generator
             return mmodel.Namespace.Declarations.Contains(mdecl);
         }
 
-        public ImmutableList<ImmutableObject> GetSymbolInstances(MetaModel mmodel)
+        public ImmutableList<ImmutableObject> GetInstances(MetaModel mmodel)
         {
             ImmutableList<ImmutableObject>.Builder result = ImmutableList.CreateBuilder<ImmutableObject>();
             var rootSymbols = mmodel.MModel.Objects.Where(s => s.MParent == null);
@@ -579,7 +579,7 @@ namespace MetaDslx.Languages.Meta.Generator
             }
         }
 
-        public ImmutableDictionary<ImmutableObject, string> GetSymbolInstanceNames(MetaModel mmodel)
+        public ImmutableDictionary<ImmutableObject, string> GetInstanceNames(MetaModel mmodel)
         {
             ImmutableDictionary<ImmutableObject, string>.Builder result = ImmutableDictionary.CreateBuilder<ImmutableObject, string>();
             int tmpCounter = 0;

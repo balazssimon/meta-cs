@@ -256,9 +256,9 @@ namespace MetaDslx.CodeAnalysis.Declarations
         {
             DeclarationTreeInfo parent = declaration.Parent;
             ImmutableArray<Diagnostic> diagnostics;
-            if (declaration.Kind == null && declaration.Type != null)
+            if (declaration.Kind == null && declaration.ModelObjectType != null)
             {
-                diagnostics = ImmutableArray.Create((Diagnostic)new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_ModelObjectDescriptorNotFound, declaration.Type), new SourceLocation(declaration.Node)));
+                diagnostics = ImmutableArray.Create((Diagnostic)new LanguageDiagnostic(new LanguageDiagnosticInfo(ModelErrorCode.ERR_ModelObjectDescriptorNotFound, declaration.ModelObjectType), new SourceLocation(declaration.Node)));
             }
             else
             {

@@ -26,7 +26,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.Parent = parent;
             this.Parent = parent;
             this.ParentPropertyToAddTo = parentPropertyToAddTo;
-            this.Type = type;
+            this.ModelObjectType = type;
             this.Node = node;
             this.Names = new ArrayBuilder<ArrayBuilder<Identifier>>();
             this.Members = new ArrayBuilder<SingleDeclaration>();
@@ -38,10 +38,10 @@ namespace MetaDslx.CodeAnalysis.Declarations
         public DeclarationTreeInfo ParentDeclaration { get; private set; }
         public DeclarationTreeInfo Parent { get; private set; }
         public LanguageSyntaxNode Node { get; private set; }
-        public Type Type { get; private set; }
+        public Type ModelObjectType { get; private set; }
         public ModelObjectDescriptor Kind
         {
-            get { return ModelObjectDescriptor.GetSymbolInfo(this.Type); }
+            get { return ModelObjectDescriptor.GetDescriptor(this.ModelObjectType); }
         }
         public bool Merge { get; private set; }
         public bool Detached { get; private set; }
@@ -189,7 +189,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                         var ancestorSymbol = current.ParentDeclaration;
                         while (ancestorSymbol != null)
                         {
-                            if (OwnerType == null || OwnerType.IsAssignableFrom(ancestorSymbol.Type)) return ancestorSymbol;
+                            if (OwnerType == null || OwnerType.IsAssignableFrom(ancestorSymbol.ModelObjectType)) return ancestorSymbol;
                             ancestorSymbol = ancestorSymbol.ParentDeclaration;
                         }
                         return null;
@@ -197,7 +197,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                         var ancestorScope = current.Parent;
                         while (ancestorScope != null)
                         {
-                            if (OwnerType == null || OwnerType.IsAssignableFrom(ancestorScope.Type)) return ancestorScope;
+                            if (OwnerType == null || OwnerType.IsAssignableFrom(ancestorScope.ModelObjectType)) return ancestorScope;
                             ancestorScope = ancestorScope.ParentScope;
                         }
                         return null;
