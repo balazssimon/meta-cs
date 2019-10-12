@@ -43,11 +43,11 @@ namespace MetaDslx.CodeAnalysis.Declarations
             }
         }
 
-        public override ModelObjectDescriptor Kind
+        public override ModelObjectDescriptor ModelObjectType
         {
             get
             {
-                return this._declarations.IsEmpty ? null : this._declarations[0].Kind;
+                return this._declarations.IsEmpty ? null : this._declarations[0].ModelObjectType;
             }
         }
 
@@ -171,7 +171,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 lock (this) // We must lock, we do not want to create multiple symbols for the same declaration
                 {
                     if (_modelObject != null) return _modelObject;
-                    var modelObject = this.Kind.CreateMutable(model);
+                    var modelObject = this.ModelObjectType.CreateMutable(model);
                     modelObject.MName = this.Name;
                     if (parentObject != null && !string.IsNullOrEmpty(this.ParentPropertyToAddTo))
                     {

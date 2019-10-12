@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
             _container = container;
             _declaration = declaration;
 
-            if (declaration.Kind != null)
+            if (declaration.ModelObjectType != null)
             {
                 _modelObject = declaration.GetModelObject(container?.ModelObject as MutableObjectBase, module.ModelBuilder, diagnostics);
                 Debug.Assert(_modelObject != null);
@@ -56,7 +56,7 @@ namespace MetaDslx.CodeAnalysis.Symbols.Source
 
         public override IModelObject ModelObject => _modelObject;
 
-        public override ModelObjectDescriptor ModelSymbolInfo => _declaration.Kind;
+        public override ModelObjectDescriptor ModelSymbolInfo => _declaration.ModelObjectType;
 
         public override MergedDeclaration MergedDeclaration => _declaration;
 

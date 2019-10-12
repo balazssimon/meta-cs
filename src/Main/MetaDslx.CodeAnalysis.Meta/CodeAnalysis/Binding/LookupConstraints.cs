@@ -14,7 +14,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public readonly NamespaceOrTypeSymbol QualifierOpt;
         public readonly string Name;
         public readonly string MetadataName;
-        public readonly ImmutableArray<ModelObjectDescriptor> SymbolKinds;
+        public readonly ImmutableArray<ModelObjectDescriptor> ModelObjectTypes;
         public readonly ConsList<TypeSymbol> BasesBeingResolved;
         public readonly LookupOptions Options;
         public readonly bool Diagnose;
@@ -25,7 +25,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public LookupConstraints(
             string name = null,
             string metadataName = null,
-            ImmutableArray<ModelObjectDescriptor> symbolKinds = default,
+            ImmutableArray<ModelObjectDescriptor> modelObjectTypes = default,
             NamespaceOrTypeSymbol qualifierOpt = null,
             ConsList<TypeSymbol> basesBeingResolved = null,
             Binder originalBinder = null,
@@ -37,7 +37,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             QualifierOpt = qualifierOpt;
             Name = name;
             MetadataName = metadataName ?? name;
-            SymbolKinds = symbolKinds;
+            ModelObjectTypes = modelObjectTypes;
             BasesBeingResolved = basesBeingResolved;
             OriginalBinder = originalBinder;
             AccessThroughType = accessThroughType;
@@ -49,7 +49,7 @@ namespace MetaDslx.CodeAnalysis.Binding
         public virtual LookupConstraints Update(
             string name,
             string metadataName,
-            ImmutableArray<ModelObjectDescriptor> symbolKinds,
+            ImmutableArray<ModelObjectDescriptor> modelObjectTypes,
             NamespaceOrTypeSymbol qualifierOpt,
             ConsList<TypeSymbol> basesBeingResolved,
             Binder originalBinder,
@@ -59,58 +59,58 @@ namespace MetaDslx.CodeAnalysis.Binding
             HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
             if (!ReferenceEquals(qualifierOpt, this.QualifierOpt) || name != this.Name || metadataName != this.MetadataName ||
-                symbolKinds != this.SymbolKinds || !ReferenceEquals(basesBeingResolved, this.BasesBeingResolved) || !ReferenceEquals(originalBinder, this.OriginalBinder) ||
+                modelObjectTypes != this.ModelObjectTypes || !ReferenceEquals(basesBeingResolved, this.BasesBeingResolved) || !ReferenceEquals(originalBinder, this.OriginalBinder) ||
                 !ReferenceEquals(accessThroughType, this.AccessThroughType) ||
                 options != this.Options || diagnose != this.Diagnose || !ReferenceEquals(useSiteDiagnostics, this.UseSiteDiagnostics))
             {
-                return new LookupConstraints(name, metadataName, symbolKinds, qualifierOpt, basesBeingResolved, originalBinder, accessThroughType, options, diagnose, useSiteDiagnostics);
+                return new LookupConstraints(name, metadataName, modelObjectTypes, qualifierOpt, basesBeingResolved, originalBinder, accessThroughType, options, diagnose, useSiteDiagnostics);
             }
             return this;
         }
 
         public LookupConstraints WithName(string name, string metadataName = null)
         {
-            return Update(name, metadataName ?? name, this.SymbolKinds, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
+            return Update(name, metadataName ?? name, this.ModelObjectTypes, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
         }
 
         public LookupConstraints WithQualifier(NamespaceOrTypeSymbol qualifierOpt)
         {
-            return Update(this.Name, this.MetadataName, this.SymbolKinds, qualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
+            return Update(this.Name, this.MetadataName, this.ModelObjectTypes, qualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
         }
 
         public LookupConstraints WithOptions(LookupOptions options)
         {
-            return Update(this.Name, this.MetadataName, this.SymbolKinds, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, options, this.Diagnose, this.UseSiteDiagnostics);
+            return Update(this.Name, this.MetadataName, this.ModelObjectTypes, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, options, this.Diagnose, this.UseSiteDiagnostics);
         }
 
         public LookupConstraints WithDiagnose(bool diagnose)
         {
-            return Update(this.Name, this.MetadataName, this.SymbolKinds, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, diagnose, this.UseSiteDiagnostics);
+            return Update(this.Name, this.MetadataName, this.ModelObjectTypes, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, diagnose, this.UseSiteDiagnostics);
         }
 
         public LookupConstraints WithDiagnoseAndOriginalBinder(bool diagnose, Binder originalBinder)
         {
-            return Update(this.Name, this.MetadataName, this.SymbolKinds, this.QualifierOpt, this.BasesBeingResolved, originalBinder, this.AccessThroughType, this.Options, diagnose, this.UseSiteDiagnostics);
+            return Update(this.Name, this.MetadataName, this.ModelObjectTypes, this.QualifierOpt, this.BasesBeingResolved, originalBinder, this.AccessThroughType, this.Options, diagnose, this.UseSiteDiagnostics);
         }
 
         public LookupConstraints WithOriginalBinder(Binder originalBinder)
         {
-            return Update(this.Name, this.MetadataName, this.SymbolKinds, this.QualifierOpt, this.BasesBeingResolved, originalBinder, this.AccessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
+            return Update(this.Name, this.MetadataName, this.ModelObjectTypes, this.QualifierOpt, this.BasesBeingResolved, originalBinder, this.AccessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
         }
 
         public LookupConstraints WithUseSiteDiagnostics(HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            return Update(this.Name, this.MetadataName, this.SymbolKinds, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose, useSiteDiagnostics);
+            return Update(this.Name, this.MetadataName, this.ModelObjectTypes, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, this.AccessThroughType, this.Options, this.Diagnose, useSiteDiagnostics);
         }
 
         public LookupConstraints WithAccessThroughType(TypeSymbol accessThroughType)
         {
-            return Update(this.Name, this.MetadataName, this.SymbolKinds, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, accessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
+            return Update(this.Name, this.MetadataName, this.ModelObjectTypes, this.QualifierOpt, this.BasesBeingResolved, this.OriginalBinder, accessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
         }
 
         public LookupConstraints WithQualifierAndAccessThroughType(NamespaceOrTypeSymbol qualifierOpt, TypeSymbol accessThroughType)
         {
-            return Update(this.Name, this.MetadataName, this.SymbolKinds, qualifierOpt, this.BasesBeingResolved, this.OriginalBinder, accessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
+            return Update(this.Name, this.MetadataName, this.ModelObjectTypes, qualifierOpt, this.BasesBeingResolved, this.OriginalBinder, accessThroughType, this.Options, this.Diagnose, this.UseSiteDiagnostics);
         }
 
         public virtual bool AreValid()
