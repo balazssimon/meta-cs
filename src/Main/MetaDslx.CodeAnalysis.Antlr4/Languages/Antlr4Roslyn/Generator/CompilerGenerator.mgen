@@ -20,6 +20,7 @@ using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Symbols;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
+[Instances.ParserHeader]
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace]
@@ -73,6 +74,7 @@ using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
+[Instances.ParserHeader]
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace].Syntax
@@ -721,6 +723,7 @@ using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Binding;
 using [Properties.DefaultNamespace].Symbols;
+[Instances.ParserHeader]
 ^
 namespace [Properties.DefaultNamespace]
 {
@@ -1004,6 +1007,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Parser;
+[Instances.ParserHeader]
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
@@ -1238,13 +1242,14 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using [Properties.DefaultNamespace];
-using [Properties.DefaultNamespace].Syntax;
-using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis;
+using [Properties.DefaultNamespace];
+using [Properties.DefaultNamespace].Syntax;
+using [Properties.DefaultNamespace].Syntax.InternalSyntax;
+[Instances.ParserHeader]
 
 namespace [Properties.DefaultNamespace]
 {
@@ -2684,6 +2689,7 @@ namespace [Properties.DefaultNamespace]
     using Microsoft.CodeAnalysis.Text;
 	using [Properties.DefaultNamespace].Syntax;
     using [Properties.DefaultNamespace].Syntax.InternalSyntax;
+	[Instances.ParserHeader]
 ^
 	[GenerateSyntaxVisitor()]
 ^
@@ -4506,6 +4512,7 @@ using MetaDslx.CodeAnalysis.Declarations;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
+[Instances.ParserHeader]
 ^
 namespace [Properties.DefaultNamespace].Binding
 {
@@ -4740,6 +4747,7 @@ using MetaDslx.CodeAnalysis.Syntax;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
+[Instances.ParserHeader]
 ^
 namespace [Properties.DefaultNamespace].Binding
 {
@@ -4964,6 +4972,7 @@ using Roslyn.Utilities;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
+[Instances.ParserHeader]
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace].Binding
@@ -5220,6 +5229,7 @@ using Roslyn.Utilities;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
+[Instances.ParserHeader]
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace].Binding
@@ -5364,12 +5374,13 @@ if (node.[elem.RedName()].GetKind() == [Properties.LanguageName]SyntaxKind.[elem
 end template
 
 template GenerateSymbolFacts()
-using MetaDslx.CodeAnalysis.Symbols;
-using [Properties.DefaultNamespace];
-using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MetaDslx.CodeAnalysis.Symbols;
+using [Properties.DefaultNamespace];
+using [Properties.DefaultNamespace].Syntax.InternalSyntax;
+[Instances.ParserHeader]
 ^
 [var lang = Properties.LanguageName]
 namespace [Properties.DefaultNamespace].Symbols

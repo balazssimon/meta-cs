@@ -9,7 +9,7 @@
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <LangVersion>preview</LangVersion>
     <IsPackable>false</IsPackable>
-    <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
+    <MetaDslxDisableAntlr4RoslynGenerator>true</MetaDslxDisableAntlr4RoslynGenerator>
   </PropertyGroup>
 
   <ItemGroup>

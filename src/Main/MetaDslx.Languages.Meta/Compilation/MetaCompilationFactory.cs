@@ -15,7 +15,7 @@ using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Binding;
-using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.Meta.Model;
 using System.Diagnostics;
 
 namespace MetaDslx.Languages.Meta

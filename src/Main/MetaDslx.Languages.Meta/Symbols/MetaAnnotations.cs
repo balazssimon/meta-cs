@@ -1,6 +1,7 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
 using MetaDslx.Languages.Meta.Binding;
+using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling;
 using System;
 using System.Collections.Generic;

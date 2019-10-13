@@ -38,6 +38,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
 
         public bool IsLexer { get; private set; }
         public bool IsParser { get; private set; }
+        public string LexerHeader { get; private set; }
+        public string ParserHeader { get; private set; }
         public bool GenerateCompiler { get; private set; }
         public bool GenerateLanguageService { get; private set; }
         public bool IgnoreRoslynRules { get; private set; }
@@ -184,7 +186,9 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             RoslynRuleCollector ruleCollector = new RoslynRuleCollector(this);
             ruleCollector.Visit(this.ParseTree);
             this.IsLexer = ruleCollector.IsLexer;
+            this.LexerHeader = ruleCollector.LexerHeader;
             this.IsParser = ruleCollector.IsParser;
+            this.ParserHeader = ruleCollector.ParserHeader;
             this.GenerateCompiler = ruleCollector.GenerateCompiler;
             this.GenerateLanguageService = ruleCollector.GenerateLanguageService;
             this.IgnoreRoslynRules = ruleCollector.IgnoreRoslynRules;
@@ -887,6 +891,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public bool GenerateCompiler { get; private set; }
         public bool GenerateLanguageService { get; private set; }
         public bool IgnoreRoslynRules { get; private set; }
+        public string LexerHeader => this.lexerHeader;
+        public string ParserHeader => this.parserHeader;
 
         public RoslynRuleCollector(Antlr4RoslynCompiler compiler)
         {
@@ -1093,10 +1099,12 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 if (scopeName == null || scopeName == "parser")
                 {
                     this.parserHeader = action;
+                    this.Grammar.ParserHeader = action;
                 }
                 if (scopeName == null || scopeName == "lexer")
                 {
                     this.lexerHeader = action;
+                    this.Grammar.LexerHeader = action;
                 }
             }
             return base.VisitAction(context);
@@ -1835,6 +1843,8 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string Name { get; set; }
         public string ErrorCodeCategory { get; set; }
         public string MessagePrefix { get; set; }
+        public string LexerHeader { get; set; }
+        public string ParserHeader { get; set; }
         public List<MetaCompilerAnnotation> CustomAnnotations { get; private set; }
         public HashSet<string> Imports { get; private set; }
         public HashSet<string> ParserRuleElemUses { get; private set; }
