@@ -69,7 +69,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             get { return this.parentPropertyToAddTo; }
         }
 
-        public abstract ModelObjectDescriptor ModelObjectType { get; }
+        public abstract ModelObjectDescriptor Kind { get; }
 
         public ImmutableArray<Declaration> Children
         {
@@ -85,17 +85,17 @@ namespace MetaDslx.CodeAnalysis.Declarations
 
         public bool IsType
         {
-            get { return this.ModelObjectType?.IsType ?? false; }
+            get { return this.Kind?.IsType ?? false; }
         }
 
         public bool IsNamespace
         {
-            get { return this.ModelObjectType?.IsNamespace ?? false; }
+            get { return this.Kind?.IsNamespace ?? false; }
         }
 
         public bool IsName
         {
-            get { return this.ModelObjectType?.IsName ?? false; }
+            get { return this.Kind?.IsName ?? false; }
         }
 
         public bool IsScript

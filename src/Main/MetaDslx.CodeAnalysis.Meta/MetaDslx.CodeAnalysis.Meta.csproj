@@ -10,7 +10,7 @@
     <ApplyNgenOptimization>partial</ApplyNgenOptimization>
     <IsPackable>false</IsPackable>
     <MetaDslxCompileMetaModelCore>true</MetaDslxCompileMetaModelCore>
-    <MetaDslxDisableMetaModelGenerator>true</MetaDslxDisableMetaModelGenerator>
+    <MetaDslxDisableMetaModelGenerator>false</MetaDslxDisableMetaModelGenerator>
     <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
   </PropertyGroup>
 

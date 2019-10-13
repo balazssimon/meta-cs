@@ -52,7 +52,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             this.Diagnostics = diagnostics;
         }
 
-        public override ModelObjectDescriptor ModelObjectType
+        public override ModelObjectDescriptor Kind
         {
             get { return this._kind; }
         }
@@ -150,7 +150,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
                 if (otherDecl.Name == null) return false;
 
                 // kind and name must match
-                if ((thisDecl.ModelObjectType != otherDecl.ModelObjectType) ||
+                if ((thisDecl.Kind != otherDecl.Kind) ||
                     (thisDecl.Name != otherDecl.Name))
                 {
                     return false;
@@ -163,7 +163,7 @@ namespace MetaDslx.CodeAnalysis.Declarations
             public override int GetHashCode()
             {
                 var thisDecl = _decl;
-                return Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.ModelObjectType?.GetHashCode() ?? 0);
+                return Hash.Combine(thisDecl.Name?.GetHashCode() ?? 0, thisDecl.Kind?.GetHashCode() ?? 0);
             }
         }
     }

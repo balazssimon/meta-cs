@@ -215,8 +215,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaElementBuilder MetaElement()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaElementId());
-			return (MetaElementBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaElementId());
+			return (MetaElementBuilder)obj;
 		}
 	
 		/// <summary>
@@ -224,8 +224,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaDocumentedElementBuilder MetaDocumentedElement()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaDocumentedElementId());
-			return (MetaDocumentedElementBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaDocumentedElementId());
+			return (MetaDocumentedElementBuilder)obj;
 		}
 	
 		/// <summary>
@@ -233,8 +233,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaNamedElementBuilder MetaNamedElement()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaNamedElementId());
-			return (MetaNamedElementBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaNamedElementId());
+			return (MetaNamedElementBuilder)obj;
 		}
 	
 		/// <summary>
@@ -242,8 +242,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaTypedElementBuilder MetaTypedElement()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaTypedElementId());
-			return (MetaTypedElementBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaTypedElementId());
+			return (MetaTypedElementBuilder)obj;
 		}
 	
 		/// <summary>
@@ -251,8 +251,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaTypeBuilder MetaType()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaTypeId());
-			return (MetaTypeBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaTypeId());
+			return (MetaTypeBuilder)obj;
 		}
 	
 		/// <summary>
@@ -260,8 +260,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaNamedTypeBuilder MetaNamedType()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaNamedTypeId());
-			return (MetaNamedTypeBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaNamedTypeId());
+			return (MetaNamedTypeBuilder)obj;
 		}
 	
 		/// <summary>
@@ -269,8 +269,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaAttributeBuilder MetaAttribute()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaAttributeId());
-			return (MetaAttributeBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaAttributeId());
+			return (MetaAttributeBuilder)obj;
 		}
 	
 		/// <summary>
@@ -278,8 +278,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaDeclarationBuilder MetaDeclaration()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaDeclarationId());
-			return (MetaDeclarationBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaDeclarationId());
+			return (MetaDeclarationBuilder)obj;
 		}
 	
 		/// <summary>
@@ -287,8 +287,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaNamespaceBuilder MetaNamespace()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaNamespaceId());
-			return (MetaNamespaceBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaNamespaceId());
+			return (MetaNamespaceBuilder)obj;
 		}
 	
 		/// <summary>
@@ -296,8 +296,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaModelBuilder MetaModel()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaModelId());
-			return (MetaModelBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaModelId());
+			return (MetaModelBuilder)obj;
 		}
 	
 		/// <summary>
@@ -305,8 +305,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaCollectionTypeBuilder MetaCollectionType()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaCollectionTypeId());
-			return (MetaCollectionTypeBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaCollectionTypeId());
+			return (MetaCollectionTypeBuilder)obj;
 		}
 	
 		/// <summary>
@@ -314,8 +314,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaNullableTypeBuilder MetaNullableType()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaNullableTypeId());
-			return (MetaNullableTypeBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaNullableTypeId());
+			return (MetaNullableTypeBuilder)obj;
 		}
 	
 		/// <summary>
@@ -323,8 +323,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaPrimitiveTypeBuilder MetaPrimitiveType()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaPrimitiveTypeId());
-			return (MetaPrimitiveTypeBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaPrimitiveTypeId());
+			return (MetaPrimitiveTypeBuilder)obj;
 		}
 	
 		/// <summary>
@@ -332,8 +332,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaEnumBuilder MetaEnum()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaEnumId());
-			return (MetaEnumBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaEnumId());
+			return (MetaEnumBuilder)obj;
 		}
 	
 		/// <summary>
@@ -341,8 +341,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaEnumLiteralBuilder MetaEnumLiteral()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaEnumLiteralId());
-			return (MetaEnumLiteralBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaEnumLiteralId());
+			return (MetaEnumLiteralBuilder)obj;
 		}
 	
 		/// <summary>
@@ -350,8 +350,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaConstantBuilder MetaConstant()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaConstantId());
-			return (MetaConstantBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaConstantId());
+			return (MetaConstantBuilder)obj;
 		}
 	
 		/// <summary>
@@ -359,8 +359,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaClassBuilder MetaClass()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaClassId());
-			return (MetaClassBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaClassId());
+			return (MetaClassBuilder)obj;
 		}
 	
 		/// <summary>
@@ -368,8 +368,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaOperationBuilder MetaOperation()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaOperationId());
-			return (MetaOperationBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaOperationId());
+			return (MetaOperationBuilder)obj;
 		}
 	
 		/// <summary>
@@ -377,8 +377,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaParameterBuilder MetaParameter()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaParameterId());
-			return (MetaParameterBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaParameterId());
+			return (MetaParameterBuilder)obj;
 		}
 	
 		/// <summary>
@@ -386,8 +386,8 @@ namespace MetaDslx.Languages.Meta.Symbols
 		/// </summary>
 		public MetaPropertyBuilder MetaProperty()
 		{
-			global::MetaDslx.Modeling.MutableObject symbol = this.CreateObject(new MetaPropertyId());
-			return (MetaPropertyBuilder)symbol;
+			global::MetaDslx.Modeling.MutableObject obj = this.CreateObject(new MetaPropertyId());
+			return (MetaPropertyBuilder)obj;
 		}
 	}
 	
@@ -876,23 +876,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaElementId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaElementBuilder))]
 		public static class MetaElement
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaElement()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaElement));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaElement));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaElement; }
 			}
@@ -907,23 +907,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaDocumentedElementId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDocumentedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDocumentedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaElement) })]
 		public static class MetaDocumentedElement
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaDocumentedElement()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaDocumentedElement));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaDocumentedElement));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaDocumentedElement; }
 			}
@@ -938,23 +938,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaNamedElementId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDocumentedElement) })]
 		public static class MetaNamedElement
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaNamedElement()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNamedElement));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNamedElement));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaNamedElement; }
 			}
@@ -970,23 +970,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaTypedElementId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaTypedElement), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaTypedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaElement) })]
 		public static class MetaTypedElement
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaTypedElement()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaTypedElement));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaTypedElement));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaTypedElement; }
 			}
@@ -1003,23 +1003,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaTypeBuilder))]
 		public static class MetaType
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaType()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaType));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaType));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaType; }
 			}
@@ -1028,23 +1028,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaNamedTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamedTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType), typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaNamedType
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaNamedType()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNamedType));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNamedType));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaNamedType; }
 			}
@@ -1053,23 +1053,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaAttributeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAttribute), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaAttributeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaAttribute
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaAttribute()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaAttribute));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaAttribute));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaAttribute; }
 			}
@@ -1078,23 +1078,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaDeclarationId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDeclaration), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaDeclarationBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaDeclaration
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaDeclaration()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaDeclaration));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaDeclaration));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaDeclaration; }
 			}
@@ -1118,23 +1118,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaNamespaceId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamespace), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNamespaceBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration) })]
 		public static class MetaNamespace
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaNamespace()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNamespace));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNamespace));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaNamespace; }
 			}
@@ -1159,23 +1159,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaModelId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaModel), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaModelBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaModel
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaModel()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaModel));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaModel));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaModel; }
 			}
@@ -1197,23 +1197,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaCollectionTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaCollectionType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaCollectionTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaCollectionType
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaCollectionType()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaCollectionType));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaCollectionType));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaCollectionType; }
 			}
@@ -1234,23 +1234,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaNullableTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNullableType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaNullableTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
 		public static class MetaNullableType
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaNullableType()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNullableType));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaNullableType));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaNullableType; }
 			}
@@ -1265,23 +1265,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaPrimitiveTypeId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaPrimitiveType), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaPrimitiveTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
 		public static class MetaPrimitiveType
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaPrimitiveType()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaPrimitiveType));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaPrimitiveType));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaPrimitiveType; }
 			}
@@ -1291,23 +1291,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaEnumId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnum), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
 		public static class MetaEnum
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaEnum()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaEnum));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaEnum));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaEnum; }
 			}
@@ -1332,23 +1332,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaEnumLiteralId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteral), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaEnumLiteralBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaEnumLiteral
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaEnumLiteral()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaEnumLiteral));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaEnumLiteral));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaEnumLiteral; }
 			}
@@ -1365,23 +1365,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaConstantId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaConstant), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaConstantBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaConstant
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaConstant()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaConstant));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaConstant));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaConstant; }
 			}
@@ -1391,23 +1391,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaClassId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaClass), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaClassBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
 		public static class MetaClass
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaClass()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaClass));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaClass));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass _MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaClass; }
 			}
@@ -1446,23 +1446,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaOperationId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaOperation), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaOperationBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
 		public static class MetaOperation
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaOperation()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaOperation));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaOperation));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaOperation; }
 			}
@@ -1493,23 +1493,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaParameterId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaParameter), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaParameterBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaParameter
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaParameter()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaParameter));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaParameter));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaParameter; }
 			}
@@ -1525,23 +1525,23 @@ namespace MetaDslx.Languages.Meta.Symbols
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Symbols.Internal.MetaPropertyId), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaProperty), typeof(global::MetaDslx.Languages.Meta.Symbols.MetaPropertyBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
 		public static class MetaProperty
 		{
-			private static global::MetaDslx.Modeling.ModelObjectDescriptor modelSymbolInfo;
+			private static global::MetaDslx.Modeling.ModelObjectDescriptor descriptor;
 		
 			static MetaProperty()
 			{
-				modelSymbolInfo = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaProperty));
+				descriptor = global::MetaDslx.Modeling.ModelObjectDescriptor.GetDescriptorForDescriptorType(typeof(MetaProperty));
 			}
 		
 			internal static void Initialize()
 			{
 			}
 		
-			public static global::MetaDslx.Modeling.ModelObjectDescriptor SymbolInfo
+			public static global::MetaDslx.Modeling.ModelObjectDescriptor MDescriptor
 			{
-				get { return modelSymbolInfo; }
+				get { return descriptor; }
 			}
 		
-			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MetaClass
+			public static global::MetaDslx.Languages.Meta.Symbols.MetaClass MMetaClass
 			{
 				get { return global::MetaDslx.Languages.Meta.Symbols.MetaInstance.MetaProperty; }
 			}
@@ -1602,7 +1602,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaElementId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaElement.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaElement.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -1700,7 +1700,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaDocumentedElementId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDocumentedElement.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -1845,7 +1845,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaNamedElementId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedElement.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -2031,7 +2031,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaTypedElementId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaTypedElement.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -2170,7 +2170,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaTypeId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaType.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaType.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -2253,7 +2253,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaNamedTypeId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedType.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamedType.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -2479,7 +2479,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaAttributeId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAttribute.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaAttribute.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -2685,7 +2685,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaDeclarationId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaDeclaration.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -2932,7 +2932,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaNamespaceId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNamespace.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -3235,7 +3235,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaModelId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaModel.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaModel.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -3483,7 +3483,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaCollectionTypeId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaCollectionType.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaCollectionType.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -3628,7 +3628,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaNullableTypeId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNullableType.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaNullableType.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -3752,7 +3752,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaPrimitiveTypeId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaPrimitiveType.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaPrimitiveType.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -4039,7 +4039,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaEnumId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnum.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnum.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -4356,7 +4356,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaEnumLiteralId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaEnumLiteral.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -4624,7 +4624,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaConstantId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaConstant.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaConstant.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -4932,7 +4932,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaClassId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaClass.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaClass.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -5327,7 +5327,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaOperationId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaOperation.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaOperation.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -5590,7 +5590,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaParameterId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaParameter.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -5858,7 +5858,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 	
 	internal class MetaPropertyId : global::MetaDslx.Modeling.ObjectId
 	{
-		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaProperty.SymbolInfo; } }
+		public override global::MetaDslx.Modeling.ModelObjectDescriptor Descriptor { get { return global::MetaDslx.Languages.Meta.Symbols.MetaDescriptor.MetaProperty.MDescriptor; } }
 	
 		public override global::MetaDslx.Modeling.ImmutableObjectBase CreateImmutable(global::MetaDslx.Modeling.ImmutableModel model)
 		{
@@ -6253,7 +6253,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		internal MetaPropertyBuilder MetaElement_Attributes;
 		internal MetaClassBuilder MetaDocumentedElement;
 		internal MetaPropertyBuilder MetaDocumentedElement_Documentation;
-		private MetaOperationBuilder __tmp26;
+		private MetaOperationBuilder __tmp33;
 		internal MetaClassBuilder MetaNamedElement;
 		internal MetaPropertyBuilder MetaNamedElement_Name;
 		internal MetaClassBuilder MetaTypedElement;
@@ -6292,16 +6292,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		internal MetaPropertyBuilder MetaClass_SuperClasses;
 		internal MetaPropertyBuilder MetaClass_Properties;
 		internal MetaPropertyBuilder MetaClass_Operations;
-		private MetaOperationBuilder __tmp27;
+		private MetaOperationBuilder __tmp34;
 		private MetaParameterBuilder __tmp54;
-		private MetaOperationBuilder __tmp28;
+		private MetaOperationBuilder __tmp35;
 		private MetaParameterBuilder __tmp56;
-		private MetaOperationBuilder __tmp29;
+		private MetaOperationBuilder __tmp36;
 		private MetaParameterBuilder __tmp58;
-		private MetaOperationBuilder __tmp30;
-		private MetaOperationBuilder __tmp31;
-		private MetaOperationBuilder __tmp32;
-		private MetaOperationBuilder __tmp33;
+		private MetaOperationBuilder __tmp37;
+		private MetaOperationBuilder __tmp38;
+		private MetaOperationBuilder __tmp39;
+		private MetaOperationBuilder __tmp40;
 		internal MetaClassBuilder MetaOperation;
 		internal MetaPropertyBuilder MetaOperation_Parent;
 		internal MetaPropertyBuilder MetaOperation_Parameters;
@@ -6309,12 +6309,12 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		internal MetaClassBuilder MetaParameter;
 		internal MetaPropertyBuilder MetaParameter_Operation;
 		internal MetaEnumBuilder MetaPropertyKind;
-		private MetaEnumLiteralBuilder __tmp35;
-		private MetaEnumLiteralBuilder __tmp36;
-		private MetaEnumLiteralBuilder __tmp37;
-		private MetaEnumLiteralBuilder __tmp38;
-		private MetaEnumLiteralBuilder __tmp39;
-		private MetaEnumLiteralBuilder __tmp40;
+		private MetaEnumLiteralBuilder __tmp25;
+		private MetaEnumLiteralBuilder __tmp26;
+		private MetaEnumLiteralBuilder __tmp27;
+		private MetaEnumLiteralBuilder __tmp28;
+		private MetaEnumLiteralBuilder __tmp29;
+		private MetaEnumLiteralBuilder __tmp30;
 		internal MetaClassBuilder MetaProperty;
 		internal MetaPropertyBuilder MetaProperty_Kind;
 		internal MetaPropertyBuilder MetaProperty_Class;
@@ -6339,8 +6339,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 		private MetaConstantBuilder __tmp18;
 		private MetaConstantBuilder __tmp19;
 		private MetaConstantBuilder __tmp20;
-		private MetaCollectionTypeBuilder __tmp25;
-		private MetaCollectionTypeBuilder __tmp34;
+		private MetaCollectionTypeBuilder __tmp31;
+		private MetaCollectionTypeBuilder __tmp32;
 		private MetaCollectionTypeBuilder __tmp41;
 		private MetaCollectionTypeBuilder __tmp42;
 		private MetaCollectionTypeBuilder __tmp43;
@@ -6374,7 +6374,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 				this.creating = true;
 			}
 			MetaImplementationProvider.Implementation.MetaBuilderInstance(this);
-			this.CreateSymbols();
+			this.CreateInstances();
 			lock (this)
 			{
 				this.created = true;
@@ -6387,7 +6387,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			this.Model.EvaluateLazyValues();
 		}
 	
-		private void CreateSymbols()
+		private void CreateInstances()
 		{
 			global::MetaDslx.Languages.Meta.Symbols.MetaFactory factory = new global::MetaDslx.Languages.Meta.Symbols.MetaFactory(this.Model, global::MetaDslx.Modeling.ModelFactoryFlags.DontMakeObjectsCreated);
 	
@@ -6399,7 +6399,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaElement_Attributes = factory.MetaProperty();
 			MetaDocumentedElement = factory.MetaClass();
 			MetaDocumentedElement_Documentation = factory.MetaProperty();
-			__tmp26 = factory.MetaOperation();
+			__tmp33 = factory.MetaOperation();
 			MetaNamedElement = factory.MetaClass();
 			MetaNamedElement_Name = factory.MetaProperty();
 			MetaTypedElement = factory.MetaClass();
@@ -6438,16 +6438,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaClass_SuperClasses = factory.MetaProperty();
 			MetaClass_Properties = factory.MetaProperty();
 			MetaClass_Operations = factory.MetaProperty();
-			__tmp27 = factory.MetaOperation();
+			__tmp34 = factory.MetaOperation();
 			__tmp54 = factory.MetaParameter();
-			__tmp28 = factory.MetaOperation();
+			__tmp35 = factory.MetaOperation();
 			__tmp56 = factory.MetaParameter();
-			__tmp29 = factory.MetaOperation();
+			__tmp36 = factory.MetaOperation();
 			__tmp58 = factory.MetaParameter();
-			__tmp30 = factory.MetaOperation();
-			__tmp31 = factory.MetaOperation();
-			__tmp32 = factory.MetaOperation();
-			__tmp33 = factory.MetaOperation();
+			__tmp37 = factory.MetaOperation();
+			__tmp38 = factory.MetaOperation();
+			__tmp39 = factory.MetaOperation();
+			__tmp40 = factory.MetaOperation();
 			MetaOperation = factory.MetaClass();
 			MetaOperation_Parent = factory.MetaProperty();
 			MetaOperation_Parameters = factory.MetaProperty();
@@ -6455,12 +6455,12 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaParameter = factory.MetaClass();
 			MetaParameter_Operation = factory.MetaProperty();
 			MetaPropertyKind = factory.MetaEnum();
-			__tmp35 = factory.MetaEnumLiteral();
-			__tmp36 = factory.MetaEnumLiteral();
-			__tmp37 = factory.MetaEnumLiteral();
-			__tmp38 = factory.MetaEnumLiteral();
-			__tmp39 = factory.MetaEnumLiteral();
-			__tmp40 = factory.MetaEnumLiteral();
+			__tmp25 = factory.MetaEnumLiteral();
+			__tmp26 = factory.MetaEnumLiteral();
+			__tmp27 = factory.MetaEnumLiteral();
+			__tmp28 = factory.MetaEnumLiteral();
+			__tmp29 = factory.MetaEnumLiteral();
+			__tmp30 = factory.MetaEnumLiteral();
 			MetaProperty = factory.MetaClass();
 			MetaProperty_Kind = factory.MetaProperty();
 			MetaProperty_Class = factory.MetaProperty();
@@ -6486,8 +6486,8 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			__tmp18 = factory.MetaConstant();
 			__tmp19 = factory.MetaConstant();
 			__tmp20 = factory.MetaConstant();
-			__tmp25 = factory.MetaCollectionType();
-			__tmp34 = factory.MetaCollectionType();
+			__tmp31 = factory.MetaCollectionType();
+			__tmp32 = factory.MetaCollectionType();
 			__tmp41 = factory.MetaCollectionType();
 			__tmp42 = factory.MetaCollectionType();
 			__tmp43 = factory.MetaCollectionType();
@@ -6574,7 +6574,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaElement.Name = "MetaElement";
 			// MetaElement.IsAbstract = null;
 			MetaElement.Properties.AddLazy(() => MetaElement_Attributes);
-			MetaElement_Attributes.TypeLazy = () => __tmp25;
+			MetaElement_Attributes.TypeLazy = () => __tmp31;
 			MetaElement_Attributes.Name = "Attributes";
 			MetaElement_Attributes.Documentation = null;
 			// MetaElement_Attributes.Kind = null;
@@ -6586,16 +6586,16 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			// MetaDocumentedElement.IsAbstract = null;
 			MetaDocumentedElement.SuperClasses.AddLazy(() => MetaElement);
 			MetaDocumentedElement.Properties.AddLazy(() => MetaDocumentedElement_Documentation);
-			MetaDocumentedElement.Operations.AddLazy(() => __tmp26);
+			MetaDocumentedElement.Operations.AddLazy(() => __tmp33);
 			MetaDocumentedElement_Documentation.TypeLazy = () => String;
 			MetaDocumentedElement_Documentation.Name = "Documentation";
 			MetaDocumentedElement_Documentation.Documentation = null;
 			// MetaDocumentedElement_Documentation.Kind = null;
 			MetaDocumentedElement_Documentation.ClassLazy = () => MetaDocumentedElement;
-			__tmp26.Name = "GetDocumentationLines";
-			__tmp26.Documentation = null;
-			__tmp26.ParentLazy = () => MetaDocumentedElement;
-			__tmp26.ReturnTypeLazy = () => __tmp49;
+			__tmp33.Name = "GetDocumentationLines";
+			__tmp33.Documentation = null;
+			__tmp33.ParentLazy = () => MetaDocumentedElement;
+			__tmp33.ReturnTypeLazy = () => __tmp50;
 			MetaNamedElement.MetaModelLazy = () => __tmp5;
 			MetaNamedElement.NamespaceLazy = () => __tmp4;
 			MetaNamedElement.Documentation = null;
@@ -6676,7 +6676,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaNamespace_DefinedMetaModel.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
 			MetaNamespace_DefinedMetaModel.ClassLazy = () => MetaNamespace;
 			MetaNamespace_DefinedMetaModel.OppositeProperties.AddLazy(() => MetaModel_Namespace);
-			MetaNamespace_Declarations.TypeLazy = () => __tmp42;
+			MetaNamespace_Declarations.TypeLazy = () => __tmp44;
 			MetaNamespace_Declarations.Name = "Declarations";
 			MetaNamespace_Declarations.Documentation = null;
 			MetaNamespace_Declarations.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -6772,7 +6772,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaEnum.SuperClasses.AddLazy(() => MetaType);
 			MetaEnum.Properties.AddLazy(() => MetaEnum_EnumLiterals);
 			MetaEnum.Properties.AddLazy(() => MetaEnum_Operations);
-			MetaEnum_EnumLiterals.TypeLazy = () => __tmp34;
+			MetaEnum_EnumLiterals.TypeLazy = () => __tmp32;
 			MetaEnum_EnumLiterals.Name = "EnumLiterals";
 			MetaEnum_EnumLiterals.Documentation = null;
 			MetaEnum_EnumLiterals.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -6818,19 +6818,19 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaClass.Properties.AddLazy(() => MetaClass_SuperClasses);
 			MetaClass.Properties.AddLazy(() => MetaClass_Properties);
 			MetaClass.Properties.AddLazy(() => MetaClass_Operations);
-			MetaClass.Operations.AddLazy(() => __tmp27);
-			MetaClass.Operations.AddLazy(() => __tmp28);
-			MetaClass.Operations.AddLazy(() => __tmp29);
-			MetaClass.Operations.AddLazy(() => __tmp30);
-			MetaClass.Operations.AddLazy(() => __tmp31);
-			MetaClass.Operations.AddLazy(() => __tmp32);
-			MetaClass.Operations.AddLazy(() => __tmp33);
+			MetaClass.Operations.AddLazy(() => __tmp34);
+			MetaClass.Operations.AddLazy(() => __tmp35);
+			MetaClass.Operations.AddLazy(() => __tmp36);
+			MetaClass.Operations.AddLazy(() => __tmp37);
+			MetaClass.Operations.AddLazy(() => __tmp38);
+			MetaClass.Operations.AddLazy(() => __tmp39);
+			MetaClass.Operations.AddLazy(() => __tmp40);
 			MetaClass_IsAbstract.TypeLazy = () => Bool;
 			MetaClass_IsAbstract.Name = "IsAbstract";
 			MetaClass_IsAbstract.Documentation = null;
 			// MetaClass_IsAbstract.Kind = null;
 			MetaClass_IsAbstract.ClassLazy = () => MetaClass;
-			MetaClass_SuperClasses.TypeLazy = () => __tmp50;
+			MetaClass_SuperClasses.TypeLazy = () => __tmp49;
 			MetaClass_SuperClasses.Attributes.Add(BaseScopeAttribute);
 			MetaClass_SuperClasses.Name = "SuperClasses";
 			MetaClass_SuperClasses.Documentation = null;
@@ -6848,49 +6848,49 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaClass_Operations.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
 			MetaClass_Operations.ClassLazy = () => MetaClass;
 			MetaClass_Operations.OppositeProperties.AddLazy(() => MetaOperation_Parent);
-			__tmp27.Name = "GetAllSuperClasses";
-			__tmp27.Documentation = null;
-			__tmp27.ParentLazy = () => MetaClass;
-			__tmp27.Parameters.AddLazy(() => __tmp54);
-			__tmp27.ReturnTypeLazy = () => __tmp53;
+			__tmp34.Name = "GetAllSuperClasses";
+			__tmp34.Documentation = null;
+			__tmp34.ParentLazy = () => MetaClass;
+			__tmp34.Parameters.AddLazy(() => __tmp54);
+			__tmp34.ReturnTypeLazy = () => __tmp53;
 			__tmp54.TypeLazy = () => Bool;
 			__tmp54.Name = "includeSelf";
 			__tmp54.Documentation = null;
-			__tmp54.OperationLazy = () => __tmp27;
-			__tmp28.Name = "GetAllSuperProperties";
-			__tmp28.Documentation = null;
-			__tmp28.ParentLazy = () => MetaClass;
-			__tmp28.Parameters.AddLazy(() => __tmp56);
-			__tmp28.ReturnTypeLazy = () => __tmp55;
+			__tmp54.OperationLazy = () => __tmp34;
+			__tmp35.Name = "GetAllSuperProperties";
+			__tmp35.Documentation = null;
+			__tmp35.ParentLazy = () => MetaClass;
+			__tmp35.Parameters.AddLazy(() => __tmp56);
+			__tmp35.ReturnTypeLazy = () => __tmp55;
 			__tmp56.TypeLazy = () => Bool;
 			__tmp56.Name = "includeSelf";
 			__tmp56.Documentation = null;
-			__tmp56.OperationLazy = () => __tmp28;
-			__tmp29.Name = "GetAllSuperOperations";
-			__tmp29.Documentation = null;
-			__tmp29.ParentLazy = () => MetaClass;
-			__tmp29.Parameters.AddLazy(() => __tmp58);
-			__tmp29.ReturnTypeLazy = () => __tmp57;
+			__tmp56.OperationLazy = () => __tmp35;
+			__tmp36.Name = "GetAllSuperOperations";
+			__tmp36.Documentation = null;
+			__tmp36.ParentLazy = () => MetaClass;
+			__tmp36.Parameters.AddLazy(() => __tmp58);
+			__tmp36.ReturnTypeLazy = () => __tmp57;
 			__tmp58.TypeLazy = () => Bool;
 			__tmp58.Name = "includeSelf";
 			__tmp58.Documentation = null;
-			__tmp58.OperationLazy = () => __tmp29;
-			__tmp30.Name = "GetAllProperties";
-			__tmp30.Documentation = null;
-			__tmp30.ParentLazy = () => MetaClass;
-			__tmp30.ReturnTypeLazy = () => __tmp59;
-			__tmp31.Name = "GetAllOperations";
-			__tmp31.Documentation = null;
-			__tmp31.ParentLazy = () => MetaClass;
-			__tmp31.ReturnTypeLazy = () => __tmp60;
-			__tmp32.Name = "GetAllFinalProperties";
-			__tmp32.Documentation = null;
-			__tmp32.ParentLazy = () => MetaClass;
-			__tmp32.ReturnTypeLazy = () => __tmp61;
-			__tmp33.Name = "GetAllFinalOperations";
-			__tmp33.Documentation = null;
-			__tmp33.ParentLazy = () => MetaClass;
-			__tmp33.ReturnTypeLazy = () => __tmp62;
+			__tmp58.OperationLazy = () => __tmp36;
+			__tmp37.Name = "GetAllProperties";
+			__tmp37.Documentation = null;
+			__tmp37.ParentLazy = () => MetaClass;
+			__tmp37.ReturnTypeLazy = () => __tmp59;
+			__tmp38.Name = "GetAllOperations";
+			__tmp38.Documentation = null;
+			__tmp38.ParentLazy = () => MetaClass;
+			__tmp38.ReturnTypeLazy = () => __tmp60;
+			__tmp39.Name = "GetAllFinalProperties";
+			__tmp39.Documentation = null;
+			__tmp39.ParentLazy = () => MetaClass;
+			__tmp39.ReturnTypeLazy = () => __tmp61;
+			__tmp40.Name = "GetAllFinalOperations";
+			__tmp40.Documentation = null;
+			__tmp40.ParentLazy = () => MetaClass;
+			__tmp40.ReturnTypeLazy = () => __tmp62;
 			MetaOperation.MetaModelLazy = () => __tmp5;
 			MetaOperation.NamespaceLazy = () => __tmp4;
 			MetaOperation.Documentation = null;
@@ -6908,7 +6908,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaOperation_Parent.ClassLazy = () => MetaOperation;
 			MetaOperation_Parent.OppositeProperties.AddLazy(() => MetaClass_Operations);
 			MetaOperation_Parent.OppositeProperties.AddLazy(() => MetaEnum_Operations);
-			MetaOperation_Parameters.TypeLazy = () => __tmp43;
+			MetaOperation_Parameters.TypeLazy = () => __tmp45;
 			MetaOperation_Parameters.Name = "Parameters";
 			MetaOperation_Parameters.Documentation = null;
 			MetaOperation_Parameters.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaPropertyKind.Containment;
@@ -6937,36 +6937,36 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			MetaPropertyKind.NamespaceLazy = () => __tmp4;
 			MetaPropertyKind.Documentation = null;
 			MetaPropertyKind.Name = "MetaPropertyKind";
-			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp35);
-			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp36);
-			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp37);
-			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp38);
-			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp39);
-			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp40);
-			__tmp35.TypeLazy = () => MetaPropertyKind;
-			__tmp35.Name = "Normal";
-			__tmp35.Documentation = null;
-			__tmp35.EnumLazy = () => MetaPropertyKind;
-			__tmp36.TypeLazy = () => MetaPropertyKind;
-			__tmp36.Name = "Readonly";
-			__tmp36.Documentation = null;
-			__tmp36.EnumLazy = () => MetaPropertyKind;
-			__tmp37.TypeLazy = () => MetaPropertyKind;
-			__tmp37.Name = "Lazy";
-			__tmp37.Documentation = null;
-			__tmp37.EnumLazy = () => MetaPropertyKind;
-			__tmp38.TypeLazy = () => MetaPropertyKind;
-			__tmp38.Name = "Derived";
-			__tmp38.Documentation = null;
-			__tmp38.EnumLazy = () => MetaPropertyKind;
-			__tmp39.TypeLazy = () => MetaPropertyKind;
-			__tmp39.Name = "DerivedUnion";
-			__tmp39.Documentation = null;
-			__tmp39.EnumLazy = () => MetaPropertyKind;
-			__tmp40.TypeLazy = () => MetaPropertyKind;
-			__tmp40.Name = "Containment";
-			__tmp40.Documentation = null;
-			__tmp40.EnumLazy = () => MetaPropertyKind;
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp25);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp26);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp27);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp28);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp29);
+			MetaPropertyKind.EnumLiterals.AddLazy(() => __tmp30);
+			__tmp25.TypeLazy = () => MetaPropertyKind;
+			__tmp25.Name = "Normal";
+			__tmp25.Documentation = null;
+			__tmp25.EnumLazy = () => MetaPropertyKind;
+			__tmp26.TypeLazy = () => MetaPropertyKind;
+			__tmp26.Name = "Readonly";
+			__tmp26.Documentation = null;
+			__tmp26.EnumLazy = () => MetaPropertyKind;
+			__tmp27.TypeLazy = () => MetaPropertyKind;
+			__tmp27.Name = "Lazy";
+			__tmp27.Documentation = null;
+			__tmp27.EnumLazy = () => MetaPropertyKind;
+			__tmp28.TypeLazy = () => MetaPropertyKind;
+			__tmp28.Name = "Derived";
+			__tmp28.Documentation = null;
+			__tmp28.EnumLazy = () => MetaPropertyKind;
+			__tmp29.TypeLazy = () => MetaPropertyKind;
+			__tmp29.Name = "DerivedUnion";
+			__tmp29.Documentation = null;
+			__tmp29.EnumLazy = () => MetaPropertyKind;
+			__tmp30.TypeLazy = () => MetaPropertyKind;
+			__tmp30.Name = "Containment";
+			__tmp30.Documentation = null;
+			__tmp30.EnumLazy = () => MetaPropertyKind;
 			MetaProperty.MetaModelLazy = () => __tmp5;
 			MetaProperty.NamespaceLazy = () => __tmp4;
 			MetaProperty.Documentation = null;
@@ -6992,13 +6992,13 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			// MetaProperty_Class.Kind = null;
 			MetaProperty_Class.ClassLazy = () => MetaProperty;
 			MetaProperty_Class.OppositeProperties.AddLazy(() => MetaClass_Properties);
-			MetaProperty_OppositeProperties.TypeLazy = () => __tmp44;
+			MetaProperty_OppositeProperties.TypeLazy = () => __tmp42;
 			MetaProperty_OppositeProperties.Name = "OppositeProperties";
 			MetaProperty_OppositeProperties.Documentation = null;
 			// MetaProperty_OppositeProperties.Kind = null;
 			MetaProperty_OppositeProperties.ClassLazy = () => MetaProperty;
 			MetaProperty_OppositeProperties.OppositeProperties.AddLazy(() => MetaProperty_OppositeProperties);
-			MetaProperty_SubsettedProperties.TypeLazy = () => __tmp45;
+			MetaProperty_SubsettedProperties.TypeLazy = () => __tmp43;
 			MetaProperty_SubsettedProperties.Name = "SubsettedProperties";
 			MetaProperty_SubsettedProperties.Documentation = null;
 			// MetaProperty_SubsettedProperties.Kind = null;
@@ -7101,20 +7101,20 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			__tmp20.NamespaceLazy = () => __tmp4;
 			__tmp20.Documentation = null;
 			__tmp20.Name = "LocalScopeAttribute";
-			__tmp25.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp25.InnerTypeLazy = () => MetaAttribute;
-			__tmp34.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp34.InnerTypeLazy = () => MetaEnumLiteral;
+			__tmp31.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
+			__tmp31.InnerTypeLazy = () => MetaAttribute;
+			__tmp32.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
+			__tmp32.InnerTypeLazy = () => MetaEnumLiteral;
 			__tmp41.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
 			__tmp41.InnerTypeLazy = () => MetaOperation;
 			__tmp42.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp42.InnerTypeLazy = () => MetaDeclaration;
+			__tmp42.InnerTypeLazy = () => MetaProperty;
 			__tmp43.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp43.InnerTypeLazy = () => MetaParameter;
+			__tmp43.InnerTypeLazy = () => MetaProperty;
 			__tmp44.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp44.InnerTypeLazy = () => MetaProperty;
+			__tmp44.InnerTypeLazy = () => MetaDeclaration;
 			__tmp45.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp45.InnerTypeLazy = () => MetaProperty;
+			__tmp45.InnerTypeLazy = () => MetaParameter;
 			__tmp46.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
 			__tmp46.InnerTypeLazy = () => MetaProperty;
 			__tmp47.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
@@ -7122,9 +7122,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			__tmp48.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
 			__tmp48.InnerTypeLazy = () => MetaProperty;
 			__tmp49.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp49.InnerTypeLazy = () => String;
+			__tmp49.InnerTypeLazy = () => MetaClass;
 			__tmp50.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
-			__tmp50.InnerTypeLazy = () => MetaClass;
+			__tmp50.InnerTypeLazy = () => String;
 			__tmp51.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
 			__tmp51.InnerTypeLazy = () => MetaProperty;
 			__tmp52.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
@@ -7144,9 +7144,9 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
 			__tmp62.Kind = global::MetaDslx.Languages.Meta.Symbols.MetaCollectionKind.List;
 			__tmp62.InnerTypeLazy = () => MetaOperation;
 	
-			foreach (global::MetaDslx.Modeling.MutableObject symbol in this.Model.Objects)
+			foreach (global::MetaDslx.Modeling.MutableObject obj in this.Model.Objects)
 			{
-				symbol.MMakeCreated();
+				obj.MMakeCreated();
 			}
 		}
 	}
