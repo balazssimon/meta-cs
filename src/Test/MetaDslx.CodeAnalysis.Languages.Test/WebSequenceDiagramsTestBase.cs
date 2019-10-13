@@ -1,6 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Languages.Test.Languages.WebSequenceDiagrams;
-using MetaDslx.CodeAnalysis.Languages.Test.Languages.WebSequenceDiagrams.Symbols;
+using MetaDslx.CodeAnalysis.Languages.Test.Languages.WebSequenceDiagrams.Model;
 using MetaDslx.Tests;
 using System;
 using System.Collections.Generic;

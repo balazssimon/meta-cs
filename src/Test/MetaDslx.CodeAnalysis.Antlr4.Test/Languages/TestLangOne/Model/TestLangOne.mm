@@ -1,4 +1,4 @@
-﻿namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Symbols
+﻿namespace MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Model
 {
 	metamodel TestLangOne;
 

@@ -70,14 +70,10 @@ namespace MetaDslx.Languages.Meta.Generator
     internal class ImmutableMetaModelGeneratorExtensions : IImmutableMetaModelGeneratorExtensions
     {
         private ImmutableMetaModelGenerator _generator;
-        private string _coreNs;
-        private string _metaNs;
 
         public ImmutableMetaModelGeneratorExtensions(ImmutableMetaModelGenerator generator)
         {
             _generator = generator;
-            _coreNs = _generator.Properties.CoreNs;
-            _metaNs = _generator.Properties.MetaNs;
         }
 
         public string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false)
@@ -192,9 +188,9 @@ namespace MetaDslx.Languages.Meta.Generator
                 switch (kind)
                 {
                     case ClassKind.Immutable:
-                        return _coreNs + ".ImmutableObject";
+                        return _generator.Properties.CoreNs + ".ImmutableObject";
                     case ClassKind.Builder:
-                        return _coreNs + ".MutableObject";
+                        return _generator.Properties.CoreNs + ".MutableObject";
                     case ClassKind.ImmutableInstance:
                         return "ModelObject";
                     case ClassKind.BuilderInstance:
@@ -226,7 +222,7 @@ namespace MetaDslx.Languages.Meta.Generator
                 if (kind == ClassKind.ImmutableInstance || kind == ClassKind.BuilderInstance || kind == ClassKind.FactoryMethod)
                 {
                     //string fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !this.ContainsType(mmodel, mtype));
-                    result = _metaNs + ".MetaInstance." + result;
+                    result = _generator.Properties.MetaNs + ".MetaInstance." + result;
                 }
             }
             return result;
@@ -523,7 +519,7 @@ namespace MetaDslx.Languages.Meta.Generator
         {
             if (mmodel == null || mmodel.Namespace == null) return false;
             string fullName = "global::" + this.CSharpName(mmodel.Namespace, NamespaceKind.Public, true);
-            return fullName == _metaNs;
+            return fullName == _generator.Properties.MetaNs;
         }
 
         private bool IsSameModel(MetaModel m1, MetaModel m2)

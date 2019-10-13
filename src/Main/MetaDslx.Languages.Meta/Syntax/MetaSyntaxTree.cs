@@ -15,8 +15,6 @@ using Microsoft.CodeAnalysis;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
-
-using MetaDslx.Languages.Meta.Model;
 namespace MetaDslx.Languages.Meta
 {
     /// <summary>

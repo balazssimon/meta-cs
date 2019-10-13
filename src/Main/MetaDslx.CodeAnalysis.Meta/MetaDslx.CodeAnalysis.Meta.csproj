@@ -11,7 +11,7 @@
     <IsPackable>false</IsPackable>
     <MetaDslxCompileMetaModelCore>true</MetaDslxCompileMetaModelCore>
     <MetaDslxMetaModelCoreNamespace>MetaDslx.Languages.Meta.Model</MetaDslxMetaModelCoreNamespace>
-    <MetaDslxDisableMetaModelGenerator>true</MetaDslxDisableMetaModelGenerator>
+    <MetaDslxDisableMetaModelGenerator>false</MetaDslxDisableMetaModelGenerator>
     <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
   </PropertyGroup>
 
@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MetaModel Update="Languages\Meta\Symbols\ImmutableMetaModel.mm">
+    <MetaModel Update="Languages\Meta\Model\ImmutableMetaModel.mm">
       <OutputLocation>CurrentDirectory</OutputLocation>
     </MetaModel>
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal;
-using MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Symbols;
+using MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Model;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;

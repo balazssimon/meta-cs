@@ -1,4 +1,4 @@
-﻿using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Symbols;
+﻿using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

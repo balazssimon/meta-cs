@@ -2,7 +2,7 @@
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.Languages.Meta;
-using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.VisualStudio.Classification;
 using Microsoft.CodeAnalysis;

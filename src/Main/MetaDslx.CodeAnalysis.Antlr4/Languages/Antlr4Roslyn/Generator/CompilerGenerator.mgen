@@ -1007,7 +1007,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Syntax.InternalSyntax;
 using Microsoft.CodeAnalysis.Text;
 using MetaDslx.Languages.Antlr4Roslyn.Parser;
-[Instances.ParserHeader]
 
 namespace [Properties.DefaultNamespace].Syntax.InternalSyntax
 {
@@ -1249,7 +1248,6 @@ using Microsoft.CodeAnalysis;
 using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
-[Instances.ParserHeader]
 
 namespace [Properties.DefaultNamespace]
 {
@@ -2689,7 +2687,6 @@ namespace [Properties.DefaultNamespace]
     using Microsoft.CodeAnalysis.Text;
 	using [Properties.DefaultNamespace].Syntax;
     using [Properties.DefaultNamespace].Syntax.InternalSyntax;
-	[Instances.ParserHeader]
 ^
 	[GenerateSyntaxVisitor()]
 ^

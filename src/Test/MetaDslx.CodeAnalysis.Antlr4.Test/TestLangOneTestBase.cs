@@ -1,5 +1,5 @@
 ﻿using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne;
-using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Symbols;
+using MetaDslx.CodeAnalysis.Antlr4Test.Languages.TestLanguageOne.Model;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.Tests;
 using Microsoft.CodeAnalysis;

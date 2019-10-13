@@ -1,5 +1,10 @@
 ﻿parser grammar SequenceParser;
 
+@header
+{
+using MetaDslx.CodeAnalysis.Languages.Test.Languages.WebSequenceDiagrams.Model;
+}
+
 options {
 	tokenVocab=SequenceLexer;
 	generateCompiler=true;
@@ -50,25 +55,25 @@ $Property(Fragments)
 alt: altFragment elseFragment* end;
 
 $SymbolDef(Fragment)
-$Property(name=Kind, value=Symbols.FragmentKind.Alt)
+$Property(name=Kind, value=FragmentKind.Alt)
 altFragment: KAlt $Property(Text) $Value condition=text? LCrLf fragmentBody;
 
 $SymbolDef(Fragment)
-$Property(name=Kind, value=Symbols.FragmentKind.Else)
+$Property(name=Kind, value=FragmentKind.Else)
 elseFragment: KElse $Property(Text) $Value condition=text? LCrLf fragmentBody;
 
 $SymbolDef(Fragment)
-$Property(name=Kind, value=Symbols.FragmentKind.Loop)
+$Property(name=Kind, value=FragmentKind.Loop)
 loop: loopFragment end;
 loopFragment: KLoop $Property(Text) $Value condition=text? LCrLf fragmentBody;
 
 $SymbolDef(Fragment)
-$Property(name=Kind, value=Symbols.FragmentKind.Opt)
+$Property(name=Kind, value=FragmentKind.Opt)
 opt: optFragment end;
 optFragment: KOpt $Property(Text) $Value condition=text? LCrLf fragmentBody;
 
 $SymbolDef(RefFragment)
-$Property(name=Kind, value=Symbols.FragmentKind.Ref)
+$Property(name=Kind, value=FragmentKind.Ref)
 ref: simpleRefFragment | messageRefFragment;
 
 simpleRefFragment: KRef (over=text TColon)? refText=text? LCrLf $Property(Text) $Value simpleBody KEndRef;

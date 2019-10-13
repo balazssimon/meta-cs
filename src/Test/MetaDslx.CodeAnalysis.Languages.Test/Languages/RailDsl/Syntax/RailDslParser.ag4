@@ -1,5 +1,10 @@
 ﻿parser grammar RailDslParser;
 
+@header
+{
+using RailDsl.Model;
+}
+
 options
 {
     tokenVocab = RailDslLexer; 
@@ -151,7 +156,7 @@ signalKind
 	| KDistant KFor $Property(DistantFor) $SymbolUse(Signal) identifier #distantSignalKind
 ;
 
-$SymbolDef(Platform)
+$SymbolDef(Model.Platform)
 platform:
 	KPlatform name (TOpenParen platformProperties? TCloseParen)?  TSemicolon
 ;

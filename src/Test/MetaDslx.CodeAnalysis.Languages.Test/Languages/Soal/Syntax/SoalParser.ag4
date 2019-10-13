@@ -1,5 +1,10 @@
 ﻿parser grammar SoalParser;
 
+@header
+{
+using MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Model;
+}
+
 options {
 	tokenVocab=SoalLexer;
 	generateCompiler=true;
@@ -60,10 +65,10 @@ declaration : enumDeclaration | structDeclaration | databaseDeclaration | interf
 
 // Enums
 
-$SymbolDef(Enum)
+$SymbolDef(Model.Enum)
 enumDeclaration : annotationList? KEnum name (TColon enumBase)? enumBody;
 
-enumBase : $Property(BaseType) $SymbolUse(Enum) qualifier;
+enumBase : $Property(BaseType) $SymbolUse(Model.Enum) qualifier;
 
 $Scope
 enumBody: TOpenBrace enumLiterals? TCloseBrace;
@@ -157,7 +162,7 @@ componentServiceOrReferenceBody
 	| TOpenBrace componentServiceOrReferenceElement* TCloseBrace #componentServiceOrReferenceNonEmptyBody;
 
 componentServiceOrReferenceElement
-	: KBinding $Property(Binding) $SymbolUse(Binding) qualifier TSemicolon;
+	: KBinding $Property(Binding) $SymbolUse(Model.Binding) qualifier TSemicolon;
 
 $Property(Properties)
 $SymbolDef(Property)
@@ -216,7 +221,7 @@ deploymentElement
 	;
 
 $Property(Environments)
-$SymbolDef(Environment)
+$SymbolDef(Model.Environment)
 environmentDeclaration : KEnvironment name environmentBody;
 
 $Scope
@@ -239,7 +244,7 @@ databaseReference : KDatabase $SymbolUse(Database) qualifier TSemicolon;
 
 // Binding
 
-$SymbolDef(Binding)
+$SymbolDef(Model.Binding)
 bindingDeclaration : KBinding name bindingBody;
 
 $Scope
@@ -361,7 +366,7 @@ endpointProperty
 	| endpointAddressProperty
 	;
 
-endpointBindingProperty : KBinding $Property(Binding) $SymbolUse(Binding) qualifier TSemicolon;
+endpointBindingProperty : KBinding $Property(Binding) $SymbolUse(Model.Binding) qualifier TSemicolon;
 endpointAddressProperty : KAddress $Property(Address) stringLiteral TSemicolon;
 
 // Types
