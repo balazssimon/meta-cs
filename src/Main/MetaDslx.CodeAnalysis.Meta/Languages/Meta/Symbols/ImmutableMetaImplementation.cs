@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetaDslx.Modeling;
 
-namespace MetaDslx.Languages.Meta.Symbols
+namespace MetaDslx.Languages.Meta.Model
 {
     public static class MetaConstants
     {
@@ -43,7 +43,7 @@ namespace MetaDslx.Languages.Meta.Symbols
         }
     }
 }
-namespace MetaDslx.Languages.Meta.Symbols.Internal
+namespace MetaDslx.Languages.Meta.Model.Internal
 {
     //*
     internal class MetaImplementation : MetaImplementationBase
@@ -70,7 +70,7 @@ namespace MetaDslx.Languages.Meta.Symbols.Internal
             _this.Void = f.MetaPrimitiveType();
             _this.Void.Name = "void";
             _this.ModelObject = f.MetaPrimitiveType();
-            _this.ModelObject.Name = "symbol";
+            _this.ModelObject.Name = "ModelObject";
             _this.NameAttribute = f.MetaAttribute();
             _this.NameAttribute.Name = "NameAttribute";
             _this.TypeAttribute = f.MetaAttribute();

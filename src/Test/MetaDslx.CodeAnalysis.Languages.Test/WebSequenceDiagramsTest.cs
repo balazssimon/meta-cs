@@ -14,8 +14,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Everything");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(25, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(25, modelObjects.Count);
         }
 
         [Fact]
@@ -23,8 +23,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics01");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(7, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(7, modelObjects.Count);
         }
 
         [Fact]
@@ -32,8 +32,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics02");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(27, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(27, modelObjects.Count);
         }
 
         [Fact]
@@ -41,8 +41,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics03");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(14, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(14, modelObjects.Count);
         }
 
         [Fact]
@@ -50,8 +50,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics04");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(20, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(20, modelObjects.Count);
         }
 
         [Fact]
@@ -59,8 +59,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics05");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(21, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(21, modelObjects.Count);
         }
 
         [Fact]
@@ -68,8 +68,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics06");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(6, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(6, modelObjects.Count);
         }
 
         [Fact]
@@ -77,8 +77,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics07");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(47, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(47, modelObjects.Count);
         }
 
         [Fact]
@@ -86,8 +86,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics08");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(19, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(19, modelObjects.Count);
         }
 
         [Fact]
@@ -95,8 +95,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics09");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(25, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(25, modelObjects.Count);
         }
 
         [Fact]
@@ -104,8 +104,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics10");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(24, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(24, modelObjects.Count);
         }
 
         [Fact]
@@ -113,8 +113,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics11");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(14, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(14, modelObjects.Count);
         }
 
         [Fact]
@@ -122,8 +122,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("Logistics01");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(7, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(7, modelObjects.Count);
         }
 
         [Fact]
@@ -131,8 +131,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("OoDesign01");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(9, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(9, modelObjects.Count);
         }
 
         [Fact]
@@ -140,8 +140,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("OoDesign02");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(18, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(18, modelObjects.Count);
         }
 
         [Fact]
@@ -149,8 +149,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("OoDesign03");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(37, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(37, modelObjects.Count);
         }
 
         [Fact]
@@ -158,8 +158,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("OoDesign04");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(30, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(30, modelObjects.Count);
         }
 
         [Fact]
@@ -167,8 +167,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("OoDesign05");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(28, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(28, modelObjects.Count);
         }
 
         [Fact]
@@ -176,8 +176,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("OoDesign06");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(41, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(41, modelObjects.Count);
         }
 
         [Fact]
@@ -185,8 +185,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("OoDesign07");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(22, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(22, modelObjects.Count);
         }
 
         [Fact]
@@ -194,8 +194,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("OoDesign08");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(20, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(20, modelObjects.Count);
         }
 
         [Fact]
@@ -203,8 +203,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("test1");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(5, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(5, modelObjects.Count);
         }
 
         [Fact]
@@ -212,8 +212,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("test2");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(27, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(27, modelObjects.Count);
         }
 
         [Fact]
@@ -221,8 +221,8 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
         {
             var comp = Compile("test3");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(11, modelSymbols.Count);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(11, modelObjects.Count);
         }
     }
 }

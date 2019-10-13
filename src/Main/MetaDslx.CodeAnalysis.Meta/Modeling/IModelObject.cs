@@ -1,4 +1,4 @@
-﻿using MetaDslx.Languages.Meta.Symbols;
+﻿using MetaDslx.Languages.Meta.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

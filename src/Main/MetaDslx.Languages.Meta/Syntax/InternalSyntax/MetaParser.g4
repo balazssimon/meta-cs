@@ -21,7 +21,7 @@ qualifier : identifier (TDot identifier)*;
                          
 attribute : TOpenBracket qualifier TCloseBracket;
 
-                                                                            
+                                                                      
 namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
 
       
@@ -55,7 +55,7 @@ classDeclaration : attribute*                                       KAbstract? K
       
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor :                                  qualifier;
+classAncestor :                            qualifier;
 classMemberDeclaration 
 	:                       fieldDeclaration 
 	|                       operationDeclaration
@@ -89,7 +89,7 @@ typeReference : collectionType | simpleType;
                     
 simpleType : primitiveType | objectType | nullableType | classType;
 
-                                            
+                                      
 classType : qualifier;
 
            

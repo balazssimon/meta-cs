@@ -1,4 +1,4 @@
-﻿namespace MetaDslx.Languages.Meta.Symbols
+﻿namespace MetaDslx.Languages.Meta.Model
 {
 	/*
 	Represents the MetaModel.
@@ -21,7 +21,7 @@
 	const MetaAttribute ScopeAttribute;
 	const MetaAttribute BaseScopeAttribute;
 	const MetaAttribute LocalScopeAttribute;
-
+	
 	/*
 	Represents an element.
 	*/

@@ -25,10 +25,10 @@ trackObject:
 ;
 
 $Property(name=Declarations,owner=CurrentScope)
-$SymbolDef(symbolType=Vertex,merge=true)
+$SymbolDef(type=Vertex,merge=true)
 vertexRef : name;
 
-$SymbolDef(symbolType=Vertex,merge=true)
+$SymbolDef(type=Vertex,merge=true)
 vertex:
 	innerVertex |
 	trackEnd |

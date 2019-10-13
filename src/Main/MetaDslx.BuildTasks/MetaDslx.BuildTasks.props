@@ -10,6 +10,7 @@
     <MetaDslxBuildTaskPath Condition=" '$(MSBuildRuntimeType)' == 'Core' ">..\tools\netstandard2.0</MetaDslxBuildTaskPath>
     <MetaDslxBuildTaskPath Condition=" '$(MSBuildRuntimeType)' != 'Core' ">..\tools\net461</MetaDslxBuildTaskPath>
     <MetaDslxCompileMetaModelCore Condition="'$(MetaDslxCompileMetaModelCore)' == ''">false</MetaDslxCompileMetaModelCore>
+    <MetaDslxMetaModelCoreNamespace Condition="'$(MetaDslxMetaModelCoreNamespace)' == ''">MetaDslx.Languages.Meta.Model</MetaDslxMetaModelCoreNamespace>
     <MetaDslxDisableMetaModelGenerator Condition="'$(MetaDslxDisableMetaModelGenerator)' == ''">false</MetaDslxDisableMetaModelGenerator>
     <MetaDslxDisableMetaGeneratorGenerator Condition="'$(MetaDslxDisableMetaGeneratorGenerator)' == ''">false</MetaDslxDisableMetaGeneratorGenerator>
     <MetaDslxDisableAntlr4RoslynGenerator Condition="'$(MetaDslxDisableAntlr4RoslynGenerator)' == ''">false</MetaDslxDisableAntlr4RoslynGenerator>

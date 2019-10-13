@@ -1,4 +1,4 @@
-﻿using MetaDslx.Languages.Meta.Symbols;
+﻿using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling.Internal;
 using Microsoft.CodeAnalysis;
 using System;

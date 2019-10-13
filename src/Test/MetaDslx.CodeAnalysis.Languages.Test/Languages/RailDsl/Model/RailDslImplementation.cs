@@ -4,7 +4,7 @@ using System.Text;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 
-namespace RailDsl.Symbols.Internal
+namespace RailDsl.Model.Internal
 {
     internal class RailDslImplementation : RailDslImplementationBase
     {

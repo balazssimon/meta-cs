@@ -204,7 +204,8 @@
       Encoding="%(MetaModel.Encoding)"
       SourceCodeFiles="@(MetaModel -> '%(FullPath)')"
       ContinueOnError="false"
-      CompileMetaModelCore="$(MetaDslxCompileMetaModelCore)">
+      CompileMetaModelCore="$(MetaDslxCompileMetaModelCore)"
+      MetaModelCoreNamespace="$(MetaDslxMetaModelCoreNamespace)">
 
       <Output ItemName="MetaModelGeneratedCodeFiles" TaskParameter="GeneratedIntermediateCodeFiles" />
     </MetaModelGenerationTask>

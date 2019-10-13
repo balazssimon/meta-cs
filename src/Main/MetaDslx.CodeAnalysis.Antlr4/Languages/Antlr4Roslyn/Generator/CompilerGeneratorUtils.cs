@@ -402,7 +402,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
             return "null";
         }
 
-        public static string GetSymbolType(this MetaCompilerAnnotations annots, string name)
+        public static string GetObjectType(this MetaCompilerAnnotations annots, string name)
         {
             foreach (var annot in annots.Annotations)
             {
@@ -410,18 +410,18 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Generator
                 {
                     foreach (var prop in annot.Properties)
                     {
-                        if (prop.Name == "symbolType") return "typeof(Symbols." + prop.Value + ")";
+                        if (prop.Name == "type") return "typeof(" + prop.Value + ")";
                     }
                 }
             }
             return "null";
         }
 
-        public static string GetSymbolType(this MetaCompilerAnnotation annot)
+        public static string GetObjectType(this MetaCompilerAnnotation annot)
         {
             foreach (var prop in annot.Properties)
             {
-                if (prop.Name == "symbolType") return "typeof(Symbols." + prop.Value + ")";
+                if (prop.Name == "type") return "typeof(" + prop.Value + ")";
             }
             return "null";
         }

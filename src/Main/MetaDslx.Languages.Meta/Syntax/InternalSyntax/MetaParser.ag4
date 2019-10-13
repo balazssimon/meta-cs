@@ -21,7 +21,7 @@ $Property(Attributes)
 $SymbolUse(MetaAttribute)
 attribute : TOpenBracket qualifier TCloseBracket;
 
-$SymbolDef(symbolType=MetaNamespace,nestingProperty=Declarations,merge=true)
+$SymbolDef(type=MetaNamespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration: attribute* KNamespace qualifiedName namespaceBody;
 
 $Scope
@@ -55,7 +55,7 @@ classDeclaration : attribute* $Property(name=IsAbstract,value=true) KAbstract? K
 $Scope
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
 classAncestors : classAncestor (TComma classAncestor)*;
-classAncestor : $SymbolUse(symbolType=MetaClass) qualifier;
+classAncestor : $SymbolUse(type=MetaClass) qualifier;
 classMemberDeclaration 
 	: $Property(Properties) fieldDeclaration 
 	| $Property(Operations) operationDeclaration
@@ -89,7 +89,7 @@ typeReference : collectionType | simpleType;
 $SymbolUse(MetaType)
 simpleType : primitiveType | objectType | nullableType | classType;
 
-$SymbolUse(symbolTypes=(MetaClass,MetaEnum))
+$SymbolUse(types=(MetaClass,MetaEnum))
 classType : qualifier;
 
 $Identifier

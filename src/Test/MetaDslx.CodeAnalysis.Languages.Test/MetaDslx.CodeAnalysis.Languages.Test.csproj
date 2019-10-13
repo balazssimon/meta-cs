@@ -29,11 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Languages\WebSequenceDiagrams\" />
-    <Folder Include="Languages\Soal\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Antlr4Roslyn Update="Languages\RailDsl\Syntax\RailDslLexer.ag4">
       <CustomToolNamespace>RailDsl.Syntax</CustomToolNamespace>
     </Antlr4Roslyn>

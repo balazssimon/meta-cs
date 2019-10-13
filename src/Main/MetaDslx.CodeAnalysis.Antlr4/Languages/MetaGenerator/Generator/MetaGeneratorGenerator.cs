@@ -416,7 +416,7 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
             {
                 WriteLine("// If you see an error at this line, create a class called {0}Extensions", generatorName);
                 WriteLine("// which implements the interface I{0}Extensions", generatorName);
-                WriteLine("private I{0}Extensions extensionFunctions = new {0}Extensions();", generatorName);
+                WriteLine("private I{0}Extensions extensionFunctions;", generatorName);
             }
         }
 
@@ -496,6 +496,10 @@ namespace MetaDslx.Languages.MetaGenerator.Generator
                 string propertiesName = "Properties";
                 if (config.identifier() != null) propertiesName = config.identifier().GetText();
                 WriteLine("this.{0} = new __{0}();", propertiesName);
+            }
+            if (this.ExternFunctions.Count > 0)
+            {
+                WriteLine("this.extensionFunctions = new {0}Extensions(this);", name);
             }
             DecIndent();
             WriteLine("}");

@@ -1,4 +1,4 @@
-﻿namespace RailDsl.Symbols
+﻿namespace RailDsl.Model
 {
     metamodel RailDsl;
 

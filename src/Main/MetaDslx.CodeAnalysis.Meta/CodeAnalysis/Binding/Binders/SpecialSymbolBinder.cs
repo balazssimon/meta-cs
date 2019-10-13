@@ -1,7 +1,4 @@
 ﻿using MetaDslx.CodeAnalysis.Symbols;
-using MetaDslx.Languages.Meta.Symbols;
-using Microsoft.CodeAnalysis;
-using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

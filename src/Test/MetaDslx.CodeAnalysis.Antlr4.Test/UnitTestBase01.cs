@@ -16,9 +16,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
         {
             var comp = Compile(TestId, "01");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(4, modelSymbols.Count);
-            var ns1 = Assert.IsAssignableFrom<Namespace>(modelSymbols[0]);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(4, modelObjects.Count);
+            var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
             Assert.Equal($"Test{TestId}", ns1.Name);
             var ns1decls = ns1.Declarations;
             Assert.Equal(3, ns1decls.Count);
@@ -36,9 +36,9 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
         {
             var comp = Compile(TestId, "02");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(4, modelSymbols.Count);
-            var ns1 = Assert.IsAssignableFrom<Namespace>(modelSymbols[0]);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(4, modelObjects.Count);
+            var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
             Assert.Equal($"Test{TestId}", ns1.Name);
             var ns1decls = ns1.Declarations;
             Assert.Equal(3, ns1decls.Count);
@@ -56,11 +56,11 @@ namespace MetaDslx.CodeAnalysis.Antlr4Test
         {
             var comp = Compile(TestId, "03");
             var model = comp.Model;
-            var modelSymbols = model.Symbols.ToList();
-            Assert.Equal(6, modelSymbols.Count);
-            var ns1 = Assert.IsAssignableFrom<Namespace>(modelSymbols[0]);
+            var modelObjects = model.Objects.ToList();
+            Assert.Equal(6, modelObjects.Count);
+            var ns1 = Assert.IsAssignableFrom<Namespace>(modelObjects[0]);
             Assert.Equal($"Test{TestId}A", ns1.Name);
-            var ns2 = Assert.IsAssignableFrom<Namespace>(modelSymbols[1]);
+            var ns2 = Assert.IsAssignableFrom<Namespace>(modelObjects[1]);
             Assert.Equal($"Test{TestId}B", ns2.Name);
             var ns1decls = ns1.Declarations;
             Assert.Equal(2, ns1decls.Count);

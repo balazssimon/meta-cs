@@ -98,7 +98,7 @@ simpleLine: text LCrLf;
 arrowType : $Value(MessageKind.Sync) TSync | $Value(MessageKind.Async) TAsync | $Value(MessageKind.Return) TReturn | $Value(MessageKind.Create) TCreate;
 
 $Property(name=Declarations, owner=CurrentScope)
-$SymbolDef(symbolType=Lifeline, merge=true)
+$SymbolDef(type=Lifeline, merge=true)
 lifeLineName : name;
 
 $Name

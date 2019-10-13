@@ -45,7 +45,7 @@ annotationPropertyValue
 	| typeofValue
 	;
 
-$SymbolDef(symbolType=Namespace,nestingProperty=Declarations,merge=true)
+$SymbolDef(type=Namespace,nestingProperty=Declarations,merge=true)
 namespaceDeclaration : annotationList? KNamespace qualifiedName TAssign (namespacePrefix TColon)? namespaceUri namespaceBody;
 
 namespacePrefix : $Property(Prefix) $Value identifier;

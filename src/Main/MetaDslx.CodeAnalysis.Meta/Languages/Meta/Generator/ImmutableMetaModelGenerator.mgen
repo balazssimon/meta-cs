@@ -2,12 +2,12 @@
 generator ImmutableMetaModelGenerator for IEnumerable<ImmutableObject>;
 
 using MetaDslx.Modeling;
-using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.Meta.Model;
 using System.Collections.Immutable;
 
 properties Properties
 	string CoreNs = "global::MetaDslx.Modeling";
-	string MetaNs = "global::MetaDslx.Languages.Meta.Symbols";
+	string MetaNs = "";
 end properties
 
 template Generate()

@@ -16,6 +16,7 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Syntax;
 using MetaDslx.CodeAnalysis.Syntax.InternalSyntax;
+using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Symbols;
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
@@ -716,6 +717,7 @@ using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.CodeAnalysis.Symbols;
 using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.CodeAnalysis.Symbols.Metadata;
+using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Binding;
 using [Properties.DefaultNamespace].Symbols;
@@ -1236,6 +1238,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 using MetaDslx.CodeAnalysis;
@@ -4500,6 +4503,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Declarations;
+using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
 ^
@@ -4518,7 +4522,7 @@ namespace [Properties.DefaultNamespace].Binding
             bool isSubmission)
         {
             var builder = new [Properties.LanguageName]DeclarationTreeBuilderVisitor(syntaxTree, scriptClassName, isSubmission);
-            return builder.CreateRoot(syntaxTree.GetRoot(), [Instances.MainRule().Annotations.GetSymbolType(MetaCompilerAnnotationInfo.Root)]);
+            return builder.CreateRoot(syntaxTree.GetRoot(), [Instances.MainRule().Annotations.GetObjectType(MetaCompilerAnnotationInfo.Root)]);
         }
    		[loop(rule:Instances.ParserRules)]
 			[if (rule.Alternatives.Count > 0)]
@@ -4733,6 +4737,7 @@ using Microsoft.CodeAnalysis;
 using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
+using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
 ^
@@ -4956,6 +4961,7 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
+using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
 ^
@@ -5211,6 +5217,7 @@ using MetaDslx.CodeAnalysis;
 using MetaDslx.CodeAnalysis.Binding;
 using MetaDslx.CodeAnalysis.Syntax;
 using Roslyn.Utilities;
+using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax;
 using [Properties.DefaultNamespace].Symbols;
 ^
@@ -5356,50 +5363,9 @@ if (node.[elem.RedName()].GetKind() == [Properties.LanguageName]SyntaxKind.[elem
 }
 end template
 
-template GenerateSymbolBuilder()
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using MetaDslx.Core;
-using MetaDslx.Compiler;
-using MetaDslx.Compiler.Binding;
-using [Properties.DefaultNamespace].Symbols;
-^
-namespace [Properties.DefaultNamespace].Binding
-{
-    public class [Properties.LanguageName]SymbolBuilder : SymbolBuilder
-    {
-        public [Properties.LanguageName]SymbolBuilder(CompilationBase compilation) : base(compilation)
-        {
-        }
-^
-        private [Properties.LanguageName]Factory _factory;
-^
-        private [Properties.LanguageName]Factory Factory
-        {
-            get
-            {
-                if (_factory == null)
-                {
-                    Interlocked.CompareExchange(ref _factory, new [Properties.LanguageName]Factory(this.ModelBuilder), null);
-                }
-                return _factory;
-            }
-        }
-^
-        protected override MutableSymbol CreateSymbolCore(Type symbolType)
-        {
-            return this.Factory.Create(symbolType);
-        }
-    }
-}
-end template
-
 template GenerateSymbolFacts()
 using MetaDslx.CodeAnalysis.Symbols;
+using [Properties.DefaultNamespace];
 using [Properties.DefaultNamespace].Syntax.InternalSyntax;
 using System;
 using System.Collections.Generic;

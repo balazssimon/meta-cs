@@ -68,7 +68,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
         public string GeneratedBoundKind { get; private set; }
         public string GeneratedBoundNodeFactoryVisitor { get; private set; }
         public string GeneratedIsBindableNodeVisitor { get; private set; }
-        public string GeneratedSymbolBuilder { get; private set; }
         public string GeneratedSymbolFacts { get; private set; }
         //public string GeneratedLanguageService { get; private set; }
 
@@ -394,7 +393,6 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
             this.GeneratedBoundKind = generator.GenerateBoundKind();
             this.GeneratedBoundNodeFactoryVisitor = generator.GenerateBoundNodeFactoryVisitor();
             this.GeneratedIsBindableNodeVisitor = generator.GenerateIsBindableNodeVisitor();
-            this.GeneratedSymbolBuilder = generator.GenerateSymbolBuilder();
 
             if (this.OutputDirectory == null) return;
 
@@ -425,8 +423,7 @@ namespace MetaDslx.Languages.Antlr4Roslyn.Compilation
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"IsBindableNodeVisitor.cs"), this.GeneratedIsBindableNodeVisitor);
                 this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"CompilationFactory.cs"), this.GeneratedCompilationFactory, false);
                 /*this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"ScriptCompilationInfo.cs"), this.GeneratedScriptCompilationInfo);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);
-                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Binding\" + this.LanguageName + @"SymbolBuilder.cs"), this.GeneratedSymbolBuilder);*/
+                this.GenerateOutputFile(Path.Combine(this.OutputDirectory, @"Compilation\" + this.LanguageName + @"Feature.cs"), this.GeneratedFeature);*/
             }
         }
 

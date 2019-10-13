@@ -21,15 +21,17 @@ namespace MetaDslx.Languages.Meta
         private string _outputDirectory;
         private string _outputFilePath;
         private bool _compileMetaModelCore;
+        private string _metaModelCoreNamespace;
 
         private MetaCompilation _compilation;
 
-        public MetaCompilerForBuildTask(string inputFilePath, string outputDirectory, bool compileMetaModelCore)
+        public MetaCompilerForBuildTask(string inputFilePath, string outputDirectory, bool compileMetaModelCore, string metaModelCoreNamespace)
         {
             _inputFilePath = inputFilePath;
             _outputDirectory = outputDirectory;
             _outputFilePath = Path.Combine(_outputDirectory, Path.ChangeExtension(Path.GetFileName(_inputFilePath), ".cs"));
             _compileMetaModelCore = compileMetaModelCore;
+            _metaModelCoreNamespace = metaModelCoreNamespace;
         }
 
         public bool HasErrors
@@ -76,6 +78,7 @@ namespace MetaDslx.Languages.Meta
             {
                 var compiledModel = _compilation.Model;
                 ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
+                mmgen.Properties.MetaNs = "global::"+_metaModelCoreNamespace;
                 string generatedCSharpModel = mmgen.Generate();
                 File.WriteAllText(_outputFilePath, generatedCSharpModel);
             }
