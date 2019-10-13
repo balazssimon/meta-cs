@@ -5223,6 +5223,8 @@ namespace MetaDslx.Languages.Meta
     using Microsoft.CodeAnalysis.Text;
 	using MetaDslx.Languages.Meta.Syntax;
     using MetaDslx.Languages.Meta.Syntax.InternalSyntax;
+	
+	using MetaDslx.Languages.Meta.Model;
 
 	public interface IMetaSyntaxVisitor
 	{

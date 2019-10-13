@@ -10,6 +10,7 @@ using MetaDslx.CodeAnalysis.Declarations;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Syntax;
 using MetaDslx.Languages.Meta.Symbols;
+
 using MetaDslx.Languages.Meta.Model;
 
 namespace MetaDslx.Languages.Meta.Binding

@@ -20,6 +20,9 @@
 #pragma warning disable 419
 
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax {
+
+using MetaDslx.Languages.Meta.Model;
+
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;

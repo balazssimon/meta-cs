@@ -303,7 +303,7 @@ namespace MetaDslx.Languages.Meta
             {
                 if (this.HasProperty("type"))
                 {
-                    result = ", type: typeof(Symbols." + this.GetValue("type") + ")";
+                    result = ", type: typeof(" + this.GetValue("type") + ")";
                 }
                 else
                 {
@@ -329,7 +329,7 @@ namespace MetaDslx.Languages.Meta
             {
                 if (this.HasProperty("type"))
                 {
-                    result = ", types: ImmutableArray.Create(typeof(Symbols." + this.GetValue("type") + "))";
+                    result = ", types: ImmutableArray.Create(typeof(" + this.GetValue("type") + "))";
                 }
                 else if (this.HasProperty("types"))
                 {
@@ -337,7 +337,7 @@ namespace MetaDslx.Languages.Meta
                     string comma = "";
                     foreach (var type in this.GetValues("types"))
                     {
-                        result += comma + "typeof(Symbols." + type + ")";
+                        result += comma + "typeof(" + type + ")";
                         comma = ", ";
                     }
                     result += ")";
@@ -360,7 +360,7 @@ namespace MetaDslx.Languages.Meta
                 }
                 if (this.HasProperty("ownerType"))
                 {
-                    result = result + ", ownerType: typeof(Symbols." + this.GetValue("ownerType") + ")";
+                    result = result + ", ownerType: typeof(" + this.GetValue("ownerType") + ")";
                 }
             }
             if (this.Name == MetaCompilerAnnotationInfo.Value && this.HasProperty("value"))
@@ -371,7 +371,7 @@ namespace MetaDslx.Languages.Meta
             {
                 if (this.HasProperty("enumType"))
                 {
-                    result = ", enumType: typeof(Symbols." + this.GetValue("enumType") + ")";
+                    result = ", enumType: typeof(" + this.GetValue("enumType") + ")";
                 }
                 else
                 {

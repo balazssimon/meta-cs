@@ -20,6 +20,9 @@
 #pragma warning disable 419
 
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax {
+
+using MetaDslx.Languages.Meta.Model;
+
 using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Misc;

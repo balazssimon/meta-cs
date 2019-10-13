@@ -1,5 +1,10 @@
 parser grammar MetaParser;
 
+@header 
+{
+using MetaDslx.Languages.Meta.Model;
+}
+
 options
 {
     tokenVocab = MetaLexer; 

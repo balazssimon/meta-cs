@@ -21,6 +21,9 @@
 
 namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax {
 
+using MetaDslx.Languages.Meta.Model;
+
+
 using Antlr4.Runtime.Misc;
 using IErrorNode = Antlr4.Runtime.Tree.IErrorNode;
 using ITerminalNode = Antlr4.Runtime.Tree.ITerminalNode;
