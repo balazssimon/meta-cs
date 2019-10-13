@@ -19,6 +19,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+// CoreNs=[Properties.CoreNs]
+// MetaNs=[Properties.MetaNs]
 ^
 	[loop(Instances->mm:typeof(MetaModel))]
 [GenerateMetamodel(mm)]
@@ -106,6 +108,7 @@ public class [model.CSharpName(ModelKind.ImmutableInstance)]
 		get { return [model.CSharpName(ModelKind.ImmutableInstance)].initialized; }
 	}
 ^
+	// global::[CSharpName(model.Namespace, NamespaceKind.Public, true)]==[Properties.MetaNs]
 	[if (metaMetaModel)]
 	public static readonly [metaNs]MetaModel MetaMetaModel;
 	[else]

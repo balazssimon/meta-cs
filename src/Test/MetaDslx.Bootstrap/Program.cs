@@ -6,6 +6,7 @@ using MetaDslx.CodeAnalysis.Symbols.Source;
 using MetaDslx.Languages.Meta;
 using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
+using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -59,7 +60,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
@@ -124,7 +125,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(compiledModel);
             using (StreamWriter writer = new StreamWriter("Model.txt"))
             {
-                foreach (var symbol in compiledModel.Symbols)
+                foreach (var symbol in compiledModel.Objects)
                 {
                     writer.WriteLine(symbol);
                     foreach (var prop in symbol.MProperties)
@@ -158,8 +159,8 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            /*/
-            ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Symbols);
+            //*/
+            ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
             //File.WriteAllText("Soal.txt", generatedCsharpModel);
             //File.WriteAllText("../../../Soal.cs", generatedCsharpModel);

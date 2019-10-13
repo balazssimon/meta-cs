@@ -6529,7 +6529,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             // __tmp4.MetaModel = null;
             __tmp4.NamespaceLazy = () => __tmp3;
             __tmp4.Documentation = null;
-            __tmp4.Name = "Symbols";
+            __tmp4.Name = "Model";
             __tmp4.DefinedMetaModelLazy = () => __tmp5;
             __tmp4.Declarations.AddLazy(() => MetaElement);
             __tmp4.Declarations.AddLazy(() => MetaDocumentedElement);

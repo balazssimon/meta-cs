@@ -521,7 +521,7 @@ namespace MetaDslx.Languages.Meta.Generator
 
         public bool IsMetaMetaModel(MetaModel mmodel)
         {
-            if (mmodel == null) return false;
+            if (mmodel == null || mmodel.Namespace == null) return false;
             string fullName = "global::" + this.CSharpName(mmodel.Namespace, NamespaceKind.Public, true);
             return fullName == _metaNs;
         }
