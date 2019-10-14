@@ -92,6 +92,8 @@
 		containment list<PackageableElement> PackagedElement;
 		containment list<Type> OwnedType subsets PackagedElement;
 		containment list<Package> NestedPackage subsets PackagedElement;
+		containment list<PackageImport> PackageImport;
+		containment list<PackageMerge> PackageMerge;
 	}
 
 	association Package.PackagedElement with PackageableElement.OwningPackage;
@@ -303,5 +305,38 @@
 	class PackageMerge
 	{
 		Package MergedPackage;
+	}
+
+	class PackageImport
+	{
+		Package ImportedPackage;
+	}
+
+	class LiteralBoolean
+	{
+	}
+
+	class LiteralString
+	{
+	}
+
+	class LiteralInteger
+	{
+	}
+
+	class LiteralReal
+	{
+	}
+
+	class LiteralUnlimitedNatural
+	{
+	}
+
+	class Constraint
+	{
+	}
+
+	class OpaqueExpression
+	{
 	}
 }

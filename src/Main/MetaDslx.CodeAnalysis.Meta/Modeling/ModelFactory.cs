@@ -1,38 +1,59 @@
-﻿using System;
+﻿using MetaDslx.Languages.Meta.Model;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace MetaDslx.Modeling
 {
-    public abstract class ModelFactory
+    public class ModelFactory : ModelFactoryBase
     {
-        private MutableModel model;
-        private ModelFactoryFlags flags;
+        private readonly string _metaModelNamespace;
+        private readonly Type _metaInstanceType;
+        private readonly Assembly _metaModelAssembly;
+        private readonly ConcurrentDictionary<string, ModelObjectDescriptor> _descriptors;
 
-        public ModelFactory(MutableModel model, ModelFactoryFlags flags)
+        public ModelFactory(MutableModel model, ModelFactoryFlags flags = ModelFactoryFlags.None)
+            : base(model, flags)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-            this.model = model;
-            this.flags = flags;
         }
 
-        public MutableModel Model { get { return this.model; } }
-
-        protected MutableObject CreateObject(ObjectId id)
+        public ModelFactory(MutableModel model, Type metaInstanceType, ModelFactoryFlags flags = ModelFactoryFlags.None)
+            : base(model, flags)
         {
-            MutableObjectBase obj = this.model.CreateObject(id, this.flags.HasFlag(ModelFactoryFlags.CreateWeakObjects));
-            obj.MCallInit();
-            if (!this.flags.HasFlag(ModelFactoryFlags.DontMakeObjectsCreated)) obj.MMakeCreated();
-            return obj;
+            if (metaInstanceType == null) throw new ArgumentNullException(nameof(metaInstanceType));
+            _metaInstanceType = metaInstanceType;
+            _metaModelAssembly = _metaInstanceType.Assembly;
+            _metaModelNamespace = metaInstanceType.Namespace + ".";
+            _descriptors = new ConcurrentDictionary<string, ModelObjectDescriptor>();
         }
 
-        public MutableObject Create(Type type)
+        public Type MetaInstanceType => _metaInstanceType;
+
+        public override MutableObject Create(string type)
         {
-            // TODO: instantiate any type from any model
-            return this.Create(type.Name);
+            string fullTypeName = _metaModelNamespace + type;
+            return this.CreateByFullTypeName(fullTypeName);
         }
 
-        public abstract MutableObject Create(string type);
+        public override MutableObject Create(Type type)
+        {
+            return this.CreateByFullTypeName(type.FullName);
+        }
+
+        private MutableObject CreateByFullTypeName(string fullTypeName)
+        {
+            if (!_descriptors.TryGetValue(fullTypeName, out var result))
+            {
+                Type resolvedType = _metaModelAssembly.GetType(fullTypeName, false);
+                if (resolvedType == null) throw new ModelException(ModelErrorCode.ERR_UnknownTypeName.ToDiagnosticWithNoLocation(fullTypeName));
+                result = ModelObjectDescriptor.GetDescriptor(resolvedType);
+                if (result == null) throw new ModelException(ModelErrorCode.ERR_UnknownTypeName.ToDiagnosticWithNoLocation(fullTypeName));
+                _descriptors.TryAdd(fullTypeName, result);
+            }
+            return this.CreateObject(result.CreateObjectId());
+        }
     }
 
 

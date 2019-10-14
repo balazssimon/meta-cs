@@ -66,6 +66,7 @@
 	{
 		MetaNamespace Namespace;
 		derived MetaModel MetaModel;
+		derived string FullName;
 	}
 
 	[Scope]

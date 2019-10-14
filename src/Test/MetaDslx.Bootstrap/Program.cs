@@ -8,6 +8,8 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.Mof.Model;
+using MetaDslx.Languages.Xmi;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -15,6 +17,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Xml;
 
 namespace MetaDslx.Bootstrap
 {
@@ -60,7 +63,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
@@ -159,7 +162,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            //*/
+            /*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
             //File.WriteAllText("Soal.txt", generatedCsharpModel);
@@ -229,6 +232,10 @@ namespace MetaDslx.Bootstrap
 
             /*/
             WebSequenceDiagramsTest();
+            //*/
+
+            //*/
+            XmiTest();
             //*/
         }
 
@@ -369,6 +376,21 @@ namespace MetaDslx.Bootstrap
             SequenceCompilation compilation = SequenceCompilation.Create("Sequence").WithOptions(options).AddSyntaxTrees(st);
             compilation.ForceComplete();
             var model = compilation.Model;
+            Console.WriteLine(model);
+        }
+        //*/
+
+        //*/
+        public static void XmiTest()
+        {
+            MofDescriptor.Initialize();
+
+            //string fileName = "../../../MOF.xmi";
+            string fileName = "../../../UML.xmi";
+
+            string xmiCode = File.ReadAllText(fileName);
+            XmiSerializer xmi = new XmiSerializer(typeof(MofInstance));
+            var model = xmi.ReadModel(xmiCode);
             Console.WriteLine(model);
         }
         //*/

@@ -377,16 +377,24 @@ template GenerateInstancePropertyCollectionValue(MetaModel model, bool metaMetaM
 end template
 
 template GenerateFactory(MetaModel model)
+[string metaNs = model.IsMetaMetaModel() ? "" : Properties.MetaNs + "."]
+[bool metaMetaModel = model.IsMetaMetaModel()]
 /// <summary>
 /// Factory class for creating instances of model elements.
 /// </summary>
-public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFactory
+public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFactoryBase
 {
 	public [model.CSharpName(ModelKind.Factory)]([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
 		: base(model, flags)
 	{
 		[model.CSharpName(ModelKind.Descriptor)].Initialize();
 	}
+^
+	[if (metaMetaModel)]
+	public override [metaNs].MetaModel MetaModel => [model.CSharpName(ModelKind.ImmutableInstance, true)].MetaMetaModel;
+	[else]
+	public override [metaNs].MetaModel MetaModel => [model.CSharpName(ModelKind.ImmutableInstance, true)].MetaModel;
+	[end if]
 ^
 	public override [Properties.CoreNs].MutableObject Create(string type)
 	{

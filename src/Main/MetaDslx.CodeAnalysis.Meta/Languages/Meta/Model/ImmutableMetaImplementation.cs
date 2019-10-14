@@ -87,6 +87,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
         {
             base.MetaDeclaration(_this);
             _this.MetaModelLazy = () => _this.Namespace?.DefinedMetaModel;
+            _this.FullNameLazy = () => _this.Namespace != null ? _this.Namespace.FullName + "." + _this.Name : _this.Name;
         }
         /*
         public override void MetaFunction(MetaFunctionBuilder _this)
@@ -229,6 +230,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             }
             return ImmutableModelList<MetaOperation>.CreateUnique(result);
         }
+
     }
     //*/
 }

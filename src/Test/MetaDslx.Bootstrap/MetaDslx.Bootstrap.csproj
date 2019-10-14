@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.Languages.Meta\MetaDslx.Languages.Meta.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.Languages.Omg\MetaDslx.Languages.Omg.csproj" />
     <ProjectReference Include="..\..\Main\MetaDslx.BuildTasks\MetaDslx.BuildTasks.csproj" PrivateAssets="All" />
   </ItemGroup>
 
