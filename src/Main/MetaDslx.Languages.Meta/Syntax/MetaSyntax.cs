@@ -2333,7 +2333,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    private FieldModifierSyntax fieldModifier;
 	    private TypeReferenceSyntax typeReference;
 	    private NameSyntax name;
-	    private RedefinitionsOrSubsettingsSyntax redefinitionsOrSubsettings;
+	    private SyntaxNode redefinitionsOrSubsettings;
 	
 	    public FieldDeclarationSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
 	        : base(green, syntaxTree, position)
@@ -2366,9 +2366,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 		{ 
 			get { return this.GetRed(ref this.name, 3); } 
 		}
-	    public RedefinitionsOrSubsettingsSyntax RedefinitionsOrSubsettings 
+	    public SyntaxList<RedefinitionsOrSubsettingsSyntax> RedefinitionsOrSubsettings 
 		{ 
-			get { return this.GetRed(ref this.redefinitionsOrSubsettings, 4); } 
+			get
+			{
+				var red = this.GetRed(ref this.redefinitionsOrSubsettings, 4);
+				if (red != null) return new SyntaxList<RedefinitionsOrSubsettingsSyntax>(red);
+				return default;
+			} 
 		}
 	    public SyntaxToken TSemicolon 
 		{ 
@@ -2431,9 +2436,14 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.FieldModifier, this.TypeReference, Name, this.RedefinitionsOrSubsettings, this.TSemicolon);
 		}
 	
-	    public FieldDeclarationSyntax WithRedefinitionsOrSubsettings(RedefinitionsOrSubsettingsSyntax redefinitionsOrSubsettings)
+	    public FieldDeclarationSyntax WithRedefinitionsOrSubsettings(SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings)
 		{
 			return this.Update(this.Attribute, this.FieldModifier, this.TypeReference, this.Name, RedefinitionsOrSubsettings, this.TSemicolon);
+		}
+	
+	    public FieldDeclarationSyntax AddRedefinitionsOrSubsettings(params RedefinitionsOrSubsettingsSyntax[] redefinitionsOrSubsettings)
+		{
+			return this.WithRedefinitionsOrSubsettings(this.RedefinitionsOrSubsettings.AddRange(redefinitionsOrSubsettings));
 		}
 	
 	    public FieldDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
@@ -2441,7 +2451,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.Update(this.Attribute, this.FieldModifier, this.TypeReference, this.Name, this.RedefinitionsOrSubsettings, TSemicolon);
 		}
 	
-	    public FieldDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, RedefinitionsOrSubsettingsSyntax redefinitionsOrSubsettings, SyntaxToken tSemicolon)
+	    public FieldDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
 				this.FieldModifier != fieldModifier ||
@@ -6554,7 +6564,7 @@ namespace MetaDslx.Languages.Meta
 		    var fieldModifier = (FieldModifierSyntax)this.Visit(node.FieldModifier);
 		    var typeReference = (TypeReferenceSyntax)this.Visit(node.TypeReference);
 		    var name = (NameSyntax)this.Visit(node.Name);
-		    var redefinitionsOrSubsettings = (RedefinitionsOrSubsettingsSyntax)this.Visit(node.RedefinitionsOrSubsettings);
+		    var redefinitionsOrSubsettings = this.VisitList(node.RedefinitionsOrSubsettings);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
 			return node.Update(attribute, fieldModifier, typeReference, name, redefinitionsOrSubsettings, tSemicolon);
 		}
@@ -7355,13 +7365,13 @@ namespace MetaDslx.Languages.Meta
 		    return (ClassMemberDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.ClassMemberDeclaration((Syntax.InternalSyntax.OperationDeclarationGreen)operationDeclaration.Green).CreateRed();
 		}
 		
-		public FieldDeclarationSyntax FieldDeclaration(SyntaxList<AttributeSyntax> attribute, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, RedefinitionsOrSubsettingsSyntax redefinitionsOrSubsettings, SyntaxToken tSemicolon)
+		public FieldDeclarationSyntax FieldDeclaration(SyntaxList<AttributeSyntax> attribute, FieldModifierSyntax fieldModifier, TypeReferenceSyntax typeReference, NameSyntax name, SyntaxList<RedefinitionsOrSubsettingsSyntax> redefinitionsOrSubsettings, SyntaxToken tSemicolon)
 		{
 		    if (typeReference == null) throw new ArgumentNullException(nameof(typeReference));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (FieldDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), fieldModifier == null ? null : (Syntax.InternalSyntax.FieldModifierGreen)fieldModifier.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, redefinitionsOrSubsettings == null ? null : (Syntax.InternalSyntax.RedefinitionsOrSubsettingsGreen)redefinitionsOrSubsettings.Green, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (FieldDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.FieldDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), fieldModifier == null ? null : (Syntax.InternalSyntax.FieldModifierGreen)fieldModifier.Green, (Syntax.InternalSyntax.TypeReferenceGreen)typeReference.Green, (Syntax.InternalSyntax.NameGreen)name.Green, Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<RedefinitionsOrSubsettingsGreen>(redefinitionsOrSubsettings.Node), (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public FieldDeclarationSyntax FieldDeclaration(TypeReferenceSyntax typeReference, NameSyntax name)

@@ -1035,16 +1035,15 @@ namespace MetaDslx.Languages.Meta.Binding
 				}
 				if (node.RedefinitionsOrSubsettings != null)
 				{
-					if (state == BoundNodeFactoryState.InParent)
+					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.RedefinitionsOrSubsettings.Node))
 					{
-						if (LookupPosition.IsInNode(this.Position, node.RedefinitionsOrSubsettings))
+						foreach (var item in node.RedefinitionsOrSubsettings)
 						{
-							if (this.Visit(node.RedefinitionsOrSubsettings)) return true;
+							if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))
+							{
+								if (this.Visit(item)) return true;
+							}
 						}
-					}
-					else
-					{
-						if (this.Visit(node.RedefinitionsOrSubsettings)) return true;
 					}
 				}
 				return false;

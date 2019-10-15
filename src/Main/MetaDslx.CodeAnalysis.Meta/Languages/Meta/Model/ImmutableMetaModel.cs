@@ -1113,14 +1113,16 @@ namespace MetaDslx.Languages.Meta.Model
 					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_Namespace);
 			
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty MetaModelProperty =
+            [global::MetaDslx.Modeling.DerivedAttribute]
+            public static readonly global::MetaDslx.Modeling.ModelProperty MetaModelProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaDeclaration), "MetaModel",
 			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModel), null),
 			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder), null),
 					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_MetaModel);
 			
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
-			public static readonly global::MetaDslx.Modeling.ModelProperty FullNameProperty =
+            [global::MetaDslx.Modeling.DerivedAttribute]
+            public static readonly global::MetaDslx.Modeling.ModelProperty FullNameProperty =
 			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaDeclaration), "FullName",
 			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
 			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),

@@ -67,7 +67,7 @@ classMemberDeclaration
 	;
 
                         
-fieldDeclaration : attribute*                 fieldModifier?                 typeReference name redefinitionsOrSubsettings? TSemicolon;
+fieldDeclaration : attribute*                 fieldModifier?                 typeReference name redefinitionsOrSubsettings* TSemicolon;
 fieldModifier 
 	:                                      KContainment 
 	|                                   KReadonly 

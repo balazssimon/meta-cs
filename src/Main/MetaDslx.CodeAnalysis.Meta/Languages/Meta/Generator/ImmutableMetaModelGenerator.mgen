@@ -391,9 +391,9 @@ public class [model.CSharpName(ModelKind.Factory)] : [Properties.CoreNs].ModelFa
 	}
 ^
 	[if (metaMetaModel)]
-	public override [metaNs].MetaModel MetaModel => [model.CSharpName(ModelKind.ImmutableInstance, true)].MetaMetaModel;
+	public override [metaNs]MetaModel MMetaModel => [model.CSharpName(ModelKind.ImmutableInstance, true)].MetaMetaModel;
 	[else]
-	public override [metaNs].MetaModel MetaModel => [model.CSharpName(ModelKind.ImmutableInstance, true)].MetaModel;
+	public override [metaNs]MetaModel MMetaModel => [model.CSharpName(ModelKind.ImmutableInstance, true)].MetaModel;
 	[end if]
 ^
 	public override [Properties.CoreNs].MutableObject Create(string type)
@@ -523,6 +523,12 @@ template GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, Me
 [end if]
 [if(prop.Kind != MetaPropertyKind.Normal && prop.Kind != MetaPropertyKind.Containment)]
 ["["+Properties.CoreNs+".ReadonlyAttribute]"]
+[end if]
+[if(prop.Kind == MetaPropertyKind.Derived)]
+["["+Properties.CoreNs+".DerivedAttribute]"]
+[end if]
+[if(prop.Kind == MetaPropertyKind.DerivedUnion)]
+["["+Properties.CoreNs+".DerivedUnionAttribute]"]
 [end if]
 [loop(p:prop.OppositeProperties)]
 ["["+Properties.CoreNs+".OppositeAttribute(typeof("][p.Class.CSharpName(model, ClassKind.Descriptor, true)]["), \""][p.CSharpName(model)]["\")]"]

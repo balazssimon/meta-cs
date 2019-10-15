@@ -441,7 +441,13 @@ namespace MetaDslx.Languages.Meta.Binding
 					this.EndProperty();
 				}
 				this.Visit(node.Name);
-				this.Visit(node.RedefinitionsOrSubsettings);
+				if (node.RedefinitionsOrSubsettings != null)
+				{
+					foreach (var child in node.RedefinitionsOrSubsettings)
+					{
+						this.Visit(child);
+					}
+				}
 			}
 			finally
 			{

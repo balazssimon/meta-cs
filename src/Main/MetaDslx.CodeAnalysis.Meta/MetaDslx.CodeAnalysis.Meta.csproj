@@ -11,7 +11,7 @@
     <IsPackable>false</IsPackable>
     <MetaDslxCompileMetaModelCore>true</MetaDslxCompileMetaModelCore>
     <MetaDslxMetaModelCoreNamespace>MetaDslx.Languages.Meta.Model</MetaDslxMetaModelCoreNamespace>
-    <MetaDslxDisableMetaModelGenerator>false</MetaDslxDisableMetaModelGenerator>
+    <MetaDslxDisableMetaModelGenerator>true</MetaDslxDisableMetaModelGenerator>
     <MetaDslxDisableMetaGeneratorGenerator>false</MetaDslxDisableMetaGeneratorGenerator>
   </PropertyGroup>
 

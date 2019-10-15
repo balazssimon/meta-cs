@@ -1624,16 +1624,15 @@ namespace MetaDslx.Languages.Meta.Binding
 				}
 				if (node.RedefinitionsOrSubsettings != null)
 				{
-					if (state == BoundNodeFactoryState.InParent)
+					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.RedefinitionsOrSubsettings.Node))
 					{
-						if (LookupPosition.IsInNode(this.Position, node.RedefinitionsOrSubsettings))
+						foreach (var item in node.RedefinitionsOrSubsettings)
 						{
-							this.Visit(node.RedefinitionsOrSubsettings, childBoundNodes);
+							if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))
+							{
+								this.Visit(item, childBoundNodes);
+							}
 						}
-					}
-					else
-					{
-						this.Visit(node.RedefinitionsOrSubsettings, childBoundNodes);
 					}
 				}
 				if (state == BoundNodeFactoryState.InParent)

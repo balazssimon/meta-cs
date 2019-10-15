@@ -8,8 +8,8 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.Languages.Mof.Generator;
-using MetaDslx.Languages.Mof.Model;
+//using MetaDslx.Languages.Mof.Generator;
+//using MetaDslx.Languages.Mof.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -63,11 +63,11 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.Model;
             Console.WriteLine(coreModel);
 
-            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Symbols\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
@@ -234,7 +234,7 @@ namespace MetaDslx.Bootstrap
             WebSequenceDiagramsTest();
             //*/
 
-            //*/
+            /*/
             XmiTest();
             //*/
         }
@@ -380,7 +380,7 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        //*/
+        /*/
         public static void XmiTest()
         {
             MofDescriptor.Initialize();

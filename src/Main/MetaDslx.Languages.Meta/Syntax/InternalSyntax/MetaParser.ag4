@@ -67,7 +67,7 @@ classMemberDeclaration
 	;
 
 $SymbolDef(MetaProperty)
-fieldDeclaration : attribute* $Property(Kind) fieldModifier? $Property(Type) typeReference name redefinitionsOrSubsettings? TSemicolon;
+fieldDeclaration : attribute* $Property(Kind) fieldModifier? $Property(Type) typeReference name redefinitionsOrSubsettings* TSemicolon;
 fieldModifier 
 	: $Value(MetaPropertyKind.Containment) KContainment 
 	| $Value(MetaPropertyKind.Readonly) KReadonly 

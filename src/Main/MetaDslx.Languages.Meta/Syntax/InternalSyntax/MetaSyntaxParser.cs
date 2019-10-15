@@ -627,16 +627,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					name = NameGreen.__Missing;
 				}
-				MetaParser.RedefinitionsOrSubsettingsContext redefinitionsOrSubsettingsContext = context.redefinitionsOrSubsettings();
-				RedefinitionsOrSubsettingsGreen redefinitionsOrSubsettings = null;
-				if (redefinitionsOrSubsettingsContext != null)
-				{
-					redefinitionsOrSubsettings = (RedefinitionsOrSubsettingsGreen)this.Visit(redefinitionsOrSubsettingsContext);
-				}
-				else
-				{
-					redefinitionsOrSubsettings = RedefinitionsOrSubsettingsGreen.__Missing;
-				}
+			    MetaParser.RedefinitionsOrSubsettingsContext[] redefinitionsOrSubsettingsContext = context.redefinitionsOrSubsettings();
+			    var redefinitionsOrSubsettingsBuilder = _pool.Allocate<RedefinitionsOrSubsettingsGreen>();
+			    for (int i = 0; i < redefinitionsOrSubsettingsContext.Length; i++)
+			    {
+			        redefinitionsOrSubsettingsBuilder.Add((RedefinitionsOrSubsettingsGreen)this.Visit(redefinitionsOrSubsettingsContext[i]));
+			    }
+				var redefinitionsOrSubsettings = redefinitionsOrSubsettingsBuilder.ToList();
+				_pool.Free(redefinitionsOrSubsettingsBuilder);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
 				return this.factory.FieldDeclaration(attribute, fieldModifier, typeReference, name, redefinitionsOrSubsettings, tSemicolon);
 			}

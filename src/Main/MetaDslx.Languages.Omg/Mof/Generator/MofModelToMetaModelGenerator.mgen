@@ -27,6 +27,17 @@ namespace [namespaceName]
 }
 end template
 
+template GenerateEnum(Enumeration enm)
+[GenerateComment(enm)]
+enum [enm.Name]
+{
+	[loop(enm->lit:OwnedLiteral; separator sep = ",")]
+    [GenerateComment(lit)]
+    [lit.Name][sep]
+	[end loop]
+}
+end template
+
 template GenerateClass(Class cls)
 [GenerateComment(cls)]
 [cls.IsAbstract ? "abstract " : ""]class [cls.Name][GenerateBaseClasses(cls)]
