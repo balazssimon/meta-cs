@@ -15,6 +15,7 @@ namespace MetaDslx.Languages.Meta.Generator
     internal enum ModelKind
     {
         None,
+        MetaModel,
         ImmutableInstance,
         BuilderInstance,
         Descriptor,
@@ -102,12 +103,57 @@ namespace MetaDslx.Languages.Meta.Generator
             return result;
         }
 
+        public string CSharpName(IMetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
+        {
+            if (mmodel == null) return string.Empty;
+            string result;
+            switch (kind)
+            {
+                case ModelKind.MetaModel:
+                    result = mmodel.Name + "MetaModel";
+                    break;
+                case ModelKind.ImmutableInstance:
+                    result = mmodel.Name + "Instance";
+                    break;
+                case ModelKind.BuilderInstance:
+                    result = mmodel.Name + "BuilderInstance";
+                    break;
+                case ModelKind.Descriptor:
+                    result = mmodel.Name + "Descriptor";
+                    break;
+                case ModelKind.Factory:
+                    result = mmodel.Name + "Factory";
+                    break;
+                case ModelKind.Implementation:
+                    result = mmodel.Name + "Implementation";
+                    break;
+                case ModelKind.ImplementationBase:
+                    result = mmodel.Name + "ImplementationBase";
+                    break;
+                case ModelKind.ImplementationProvider:
+                    result = mmodel.Name + "ImplementationProvider";
+                    break;
+                default:
+                    result = mmodel.Name;
+                    break;
+            }
+            if (fullName)
+            {
+                if (mmodel.Namespace == null) result = "global::" + result;
+                else result = "global::" + mmodel.Namespace + "." + result;
+            }
+            return result;
+        }
+
         public string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
         {
             if (mmodel == null) return string.Empty;
             string result;
             switch (kind)
             {
+                case ModelKind.MetaModel:
+                    result = mmodel.Name + "MetaModel";
+                    break;
                 case ModelKind.ImmutableInstance:
                     result = mmodel.Name + "Instance";
                     break;

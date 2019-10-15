@@ -13,7 +13,7 @@
 	const PrimitiveType String;
 	// UnlimitedNatural is a primitive type representing unlimited natural values.
 	const PrimitiveType UnlimitedNatural;
-
+	
 	abstract class Element
 	{
 		Element Owner;
@@ -407,7 +407,7 @@
 		Operation PostContext subsets Context;
 		Operation BodyContext subsets Context;
 	}
-
+	
 	association Constraint.Context with Namespace.OwnedRule;
 	association Constraint.Specification with ValueSpecification.OwningConstraint;
 	association Constraint.PreContext with Operation.Precondition;

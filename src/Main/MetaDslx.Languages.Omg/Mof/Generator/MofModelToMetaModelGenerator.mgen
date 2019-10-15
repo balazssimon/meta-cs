@@ -16,6 +16,10 @@ namespace [namespaceName]
 {
     metamodel [metaModelName](Uri="[uri]"); 
 ^
+	[loop(Instances->enm:typeof(Enumeration))]
+^
+    [GenerateEnum(enm)]
+	[end loop]
 	[loop(Instances->cls:typeof(Class))]
 ^
     [GenerateClass(cls)]
@@ -33,7 +37,7 @@ enum [enm.Name]
 {
 	[loop(enm->lit:OwnedLiteral; separator sep = ",")]
     [GenerateComment(lit)]
-    [lit.Name][sep]
+    [lit.Name.ToPascalCase()][sep]
 	[end loop]
 }
 end template
@@ -106,7 +110,7 @@ end template
 template GenerateOperation(Operation op)
 [if (!hasloop(op->Class->prop:OwnedAttribute where op.Name == prop.Name && prop.IsDerived && !prop.IsDerivedUnion))]
 [GenerateComment(op)]
-[op.IsAbstract ? "abstract " : ""][GenerateReturnType(op)] [op.Name.ToPascalCase()]([GenerateParams(op)]);
+[GenerateReturnType(op)] [op.Name.ToPascalCase()]([GenerateParams(op)]);
 [end if]
 end template
 

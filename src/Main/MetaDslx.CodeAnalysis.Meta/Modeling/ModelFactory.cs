@@ -10,7 +10,7 @@ namespace MetaDslx.Modeling
     public class ModelFactory : ModelFactoryBase
     {
         private readonly string _metaModelNamespace;
-        private readonly Type _metaInstanceType;
+        private readonly IMetaModel _metaModel;
         private readonly Assembly _metaModelAssembly;
         private readonly ConcurrentDictionary<string, ModelObjectDescriptor> _descriptors;
 
@@ -19,17 +19,17 @@ namespace MetaDslx.Modeling
         {
         }
 
-        public ModelFactory(MutableModel model, Type metaInstanceType, ModelFactoryFlags flags = ModelFactoryFlags.None)
+        public ModelFactory(MutableModel model, IMetaModel metaModel, ModelFactoryFlags flags = ModelFactoryFlags.None)
             : base(model, flags)
         {
-            if (metaInstanceType == null) throw new ArgumentNullException(nameof(metaInstanceType));
-            _metaInstanceType = metaInstanceType;
-            _metaModelAssembly = _metaInstanceType.Assembly;
-            _metaModelNamespace = metaInstanceType.Namespace + ".";
+            if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
+            _metaModel = metaModel;
+            _metaModelAssembly = metaModel.GetType().Assembly;
+            _metaModelNamespace = metaModel.Namespace + ".";
             _descriptors = new ConcurrentDictionary<string, ModelObjectDescriptor>();
         }
 
-        public Type MetaInstanceType => _metaInstanceType;
+        public override IMetaModel MMetaModel => _metaModel;
 
         public override MutableObject Create(string type)
         {

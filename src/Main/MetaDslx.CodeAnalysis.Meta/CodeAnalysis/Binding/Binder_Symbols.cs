@@ -1026,7 +1026,7 @@ namespace MetaDslx.CodeAnalysis.Binding
             {
                 return (symbol.ContainingModule == compilation.SourceModule) ?
                     BestSymbolLocation.FromSourceModule :
-                    object.ReferenceEquals(symbol.ModelObject.MModel, MetaInstance.Model) ?
+                    object.ReferenceEquals(symbol.ModelObject.MModel, MetaInstance.MModel) ?
                     BestSymbolLocation.FromMetaLibrary :
                     BestSymbolLocation.FromAddedModule;
             }

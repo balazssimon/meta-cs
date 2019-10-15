@@ -50,7 +50,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
     {
         internal override void MetaBuilderInstance(Internal.MetaBuilderInstance _this)
         {
-            MetaFactory f = new MetaFactory(_this.Model);
+            MetaFactory f = new MetaFactory(_this.MModel);
             _this.Object = f.MetaPrimitiveType();
             _this.Object.Name = "object";
             _this.String = f.MetaPrimitiveType();

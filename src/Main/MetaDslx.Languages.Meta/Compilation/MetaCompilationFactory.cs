@@ -48,7 +48,7 @@ namespace MetaDslx.Languages.Meta
 
         public override Symbol CreateSpecialSymbol(ModuleSymbol module, object key)
         {
-            if (module is MetaModuleSymbol metaModule && metaModule.Models.Contains(MetaInstance.Model))
+            if (module is MetaModuleSymbol metaModule && metaModule.Models.Contains(MetaInstance.MModel))
             {
                 var specialType = MetaConstants.Types.FirstOrDefault(c => c.MName == key.ToString());
                 if (specialType != null)

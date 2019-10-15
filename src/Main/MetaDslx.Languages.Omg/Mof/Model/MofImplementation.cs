@@ -8,7 +8,7 @@ namespace MetaDslx.Languages.Mof.Model.Internal
     {
         internal override void MofBuilderInstance(MofBuilderInstance _this)
         {
-            MofFactory f = new MofFactory(_this.Model);
+            MofFactory f = new MofFactory(_this.MModel);
             _this.Boolean = f.PrimitiveType();
             _this.Boolean.Name = "Boolean";
             _this.String = f.PrimitiveType();

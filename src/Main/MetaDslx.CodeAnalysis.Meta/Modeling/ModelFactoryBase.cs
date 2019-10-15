@@ -17,8 +17,8 @@ namespace MetaDslx.Modeling
             this.flags = flags;
         }
 
-        //public abstract MetaModel MetaModel { get; }
-        public MutableModel Model { get { return this.model; } }
+        public abstract IMetaModel MMetaModel { get; }
+        public MutableModel MModel { get { return this.model; } }
 
         protected MutableObject CreateObject(ObjectId id)
         {

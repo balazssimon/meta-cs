@@ -8,7 +8,7 @@ namespace MetaDslx.Modeling
 {
     public interface IModelObject
     {
-        MetaModel MMetaModel { get; }
+        IMetaModel MMetaModel { get; }
         MetaClass MMetaClass { get; }
         ObjectId MId { get; }
         IModel MModel { get; }

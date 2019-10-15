@@ -64,10 +64,11 @@ namespace MetaDslx.Bootstrap
             //*/
 
             //*/
-            ImmutableModel coreModel = MetaInstance.Model;
+            ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
-            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
@@ -162,12 +163,13 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            /*/
+            //*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
+            File.WriteAllText("Model.txt", generatedCsharpModel);
             //File.WriteAllText("Soal.txt", generatedCsharpModel);
             //File.WriteAllText("../../../Soal.cs", generatedCsharpModel);
-            File.WriteAllText(@"..\..\..\..\..\Main\MetaDslx.Core\Languages\Meta\Symbols\ImmutableMetaModel.cs", generatedCsharpModel);
+            //File.WriteAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.cs", generatedCsharpModel);
             //File.WriteAllText("ImmutableMetaModel.txt", generatedCsharpModel);
             //File.WriteAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.cs", generatedCsharpModel);
             //*/

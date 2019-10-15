@@ -14,16 +14,16 @@ namespace MetaDslx.Modeling
 {
     public class XmiSerializer
     {
-        private Type _metaInstanceType;
+        private IMetaModel _metaModel;
 
-        public XmiSerializer(Type metaInstanceType)
+        public XmiSerializer(IMetaModel metaModel)
         {
-            _metaInstanceType = metaInstanceType;
+            _metaModel = metaModel;
         }
 
         public ImmutableModel ReadModelFromFile(string xmiFilePath)
         {
-            XmiReader reader = new XmiReader(_metaInstanceType);
+            XmiReader reader = new XmiReader(_metaModel);
             reader.LoadXmiFile(xmiFilePath, ".");
             var diagnostics = reader.Diagnostics.ToReadOnly();
             if (diagnostics.Length > 0)
@@ -35,7 +35,7 @@ namespace MetaDslx.Modeling
 
         public ImmutableModel ReadModel(string xmiCode)
         {
-            XmiReader reader = new XmiReader(_metaInstanceType);
+            XmiReader reader = new XmiReader(_metaModel);
             reader.LoadXmiCode(null, xmiCode);
             var diagnostics = reader.Diagnostics.ToReadOnly();
             if (diagnostics.Length > 0)
@@ -102,7 +102,7 @@ namespace MetaDslx.Modeling
             _xml.WriteStartElement(Xmi, "XMI", XmiNamespace);
             IEnumerable<IModelObject> allObjects = model.ModelGroup != null ? model.ModelGroup.Models.SelectMany(m => m.Objects) : model.Objects.Where(obj => obj.MParent == null);
             IEnumerable<IModelObject> rootObjects = allObjects.Where(obj => obj.MParent == null);
-            IEnumerable<MetaModel> metaModels = allObjects.Select(obj => obj.MMetaModel).Distinct();
+            IEnumerable<IMetaModel> metaModels = allObjects.Select(obj => obj.MMetaModel).Distinct();
             foreach (var mm in metaModels)
             {
                 _xml.WriteAttributeString("xmlns", mm.Name.ToCamelCase(), null, mm.Uri);
@@ -218,21 +218,21 @@ namespace MetaDslx.Modeling
 
     internal class XmiReader
     {
-        private Type _metaInstanceType;
+        private IMetaModel _metaModel;
         private MutableModelGroup _modelGroup;
         private MutableModel _mainModel;
         private DiagnosticBag _diagnostics;
         private Dictionary<string, XmiFileReader> _readers;
 
-        public XmiReader(Type metaInstanceType)
+        public XmiReader(IMetaModel metaModel)
         {
-            _metaInstanceType = metaInstanceType;
+            _metaModel = metaModel;
             _modelGroup = new MutableModelGroup();
             _diagnostics = new DiagnosticBag();
             _readers = new Dictionary<string, XmiFileReader>();
         }
 
-        internal Type MetaInstanceType => _metaInstanceType;
+        internal IMetaModel MetaModel => _metaModel;
 
         internal MutableModelGroup ModelGroup => _modelGroup;
 
@@ -295,7 +295,7 @@ namespace MetaDslx.Modeling
             _xmiCode = xmiCode;
             _xmiReader = xmiReader;
             _model = _xmiReader.ModelGroup.CreateModel();
-            _factory = new ModelFactory(_model, _xmiReader.MetaInstanceType, ModelFactoryFlags.DontMakeObjectsCreated);
+            _factory = new ModelFactory(_model, _xmiReader.MetaModel, ModelFactoryFlags.DontMakeObjectsCreated);
             _objects = new Dictionary<string, MutableObjectBase>();
         }
 

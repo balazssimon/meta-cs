@@ -47,7 +47,7 @@ namespace MetaDslx.Languages.Meta
         {
             if (_compilation == null)
             {
-                ImmutableModel coreModel = MetaInstance.Model;
+                ImmutableModel coreModel = MetaInstance.MModel;
                 string text = File.ReadAllText(_inputFilePath);
                 var tree = MetaSyntaxTree.ParseText(text, path: _inputFilePath);
 

@@ -167,13 +167,13 @@ namespace MetaDslx.Modeling
             if (value is GreenDerivedValue)
             {
                 object redValue = ((GreenDerivedValue)value).CreateRedValue();
-                if (value is ImmutableObjectBase)
+                if (redValue is ImmutableObjectBase)
                 {
-                    return this.ResolveObject(((ImmutableObjectBase)value).MId);
+                    return this.ResolveObject(((ImmutableObjectBase)redValue).MId);
                 }
-                else if (value is MutableObjectBase)
+                else if (redValue is MutableObjectBase)
                 {
-                    return this.ResolveObject(((MutableObjectBase)value).MId);
+                    return this.ResolveObject(((MutableObjectBase)redValue).MId);
                 }
                 return redValue;
             }
