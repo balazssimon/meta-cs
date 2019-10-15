@@ -20,5 +20,12 @@ namespace MetaDslx.Languages.Mof.Model.Internal
             _this.UnlimitedNatural = f.PrimitiveType();
             _this.UnlimitedNatural.Name = "UnlimitedNatural";
         }
+
+        public override void MultiplicityElement(MultiplicityElementBuilder _this)
+        {
+            base.MultiplicityElement(_this);
+            _this.IsUnique = true;
+            _this.UpperLazy = () => ((LiteralUnlimitedNaturalBuilder)_this.UpperValue)?.Value ?? 1;
+        }
     }
 }

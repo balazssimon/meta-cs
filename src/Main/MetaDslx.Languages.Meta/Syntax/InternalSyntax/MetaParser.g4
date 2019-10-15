@@ -73,6 +73,7 @@ fieldModifier
 	|                                   KReadonly 
 	|                               KLazy 
 	|                                  KDerived
+	|                                       KUnion
 	;
 
 redefinitionsOrSubsettings : redefinitions | subsettings;

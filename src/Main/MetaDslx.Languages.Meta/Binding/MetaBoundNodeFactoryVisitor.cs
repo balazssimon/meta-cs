@@ -1702,6 +1702,11 @@ namespace MetaDslx.Languages.Meta.Binding
 							boundKDerived = this.CreateBoundValue(this.BoundTree, ImmutableArray<object>.Empty, value: MetaPropertyKind.Derived, syntax: node, hasErrors: false);
 							childBoundNodesForParent.Add(boundKDerived);
 							break;
+						case MetaSyntaxKind.KUnion:
+							BoundNode boundKUnion;
+							boundKUnion = this.CreateBoundValue(this.BoundTree, ImmutableArray<object>.Empty, value: MetaPropertyKind.DerivedUnion, syntax: node, hasErrors: false);
+							childBoundNodesForParent.Add(boundKUnion);
+							break;
 						default:
 							break;
 					}

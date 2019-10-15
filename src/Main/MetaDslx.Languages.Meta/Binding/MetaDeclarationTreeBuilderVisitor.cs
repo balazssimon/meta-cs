@@ -461,6 +461,8 @@ namespace MetaDslx.Languages.Meta.Binding
 					break;
 				case MetaSyntaxKind.KDerived:
 					break;
+				case MetaSyntaxKind.KUnion:
+					break;
 				default:
 					break;
 			}

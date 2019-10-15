@@ -292,7 +292,7 @@ namespace MetaDslx.Modeling
         protected void SetLazyValue<T>(ModelProperty property, Func<T> value)
             where T : struct
         {
-            this.model.SetLazyValue(this.id, property, LazyValue.Create((Func<object>)(object)value), this.creating);
+            this.model.SetLazyValue(this.id, property, LazyValue.Create((Func<object>)(() => value())), this.creating);
         }
 
         protected Func<T> GetLazyReference<T>(ModelProperty property)

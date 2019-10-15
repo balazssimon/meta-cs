@@ -661,6 +661,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					fieldModifier = (InternalSyntaxToken)this.VisitTerminal(context.KDerived());
 				}
+				else 	if (context.KUnion() != null)
+				{
+					fieldModifier = (InternalSyntaxToken)this.VisitTerminal(context.KUnion());
+				}
 				else
 				{
 					fieldModifier = this.factory.MissingToken(SyntaxKind.MissingToken);

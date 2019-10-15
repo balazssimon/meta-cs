@@ -73,6 +73,7 @@ fieldModifier
 	| $Value(MetaPropertyKind.Readonly) KReadonly 
 	| $Value(MetaPropertyKind.Lazy) KLazy 
 	| $Value(MetaPropertyKind.Derived) KDerived
+	| $Value(MetaPropertyKind.DerivedUnion) KUnion
 	;
 
 redefinitionsOrSubsettings : redefinitions | subsettings;

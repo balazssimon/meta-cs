@@ -1071,6 +1071,7 @@ namespace MetaDslx.Languages.Meta.Binding
 						case MetaSyntaxKind.KReadonly:
 						case MetaSyntaxKind.KLazy:
 						case MetaSyntaxKind.KDerived:
+						case MetaSyntaxKind.KUnion:
 							return true;
 					}
 				}

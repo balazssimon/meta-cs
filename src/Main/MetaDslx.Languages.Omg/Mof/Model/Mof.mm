@@ -95,7 +95,7 @@
 	abstract class Classifier : Type, Namespace
 	{
 		bool IsAbstract;
-		list<Generalization> Generalization;
+		containment list<Generalization> Generalization;
 	}
 
 	class Package : Namespace, PackageableElement
@@ -135,8 +135,8 @@
 	class Class : Classifier
 	{
 		derived list<Class> SuperClass;
-		containment list<Property> OwnedAttribute;
-		containment list<Operation> OwnedOperation;
+		containment list<Property> OwnedAttribute subsets Element.OwnedElement;
+		containment list<Operation> OwnedOperation subsets Element.OwnedElement;
 	}
 
 	abstract class Feature
@@ -160,7 +160,7 @@
 
 	class Property : StructuralFeature
 	{
-		Class Class;
+		Class Class subsets Element.Owner;
 		ValueSpecification DefaultValue subsets Element.OwnedElement;
 		bool IsID;
 		bool IsDerived;
@@ -215,7 +215,7 @@
 
 	class Operation : BehavioralFeature
 	{
-		Class Class;
+		Class Class subsets Element.Owner;
 		bool IsAbstract;
 		bool IsQuery;
 		derived bool IsOrdered;
@@ -247,13 +247,13 @@
 		Return
 	}
 
-	class Generalization
+	class Generalization : DirectedRelationship
 	{
-		Classifier General;
-		Classifier Specific;
+		Classifier General subsets DirectedRelationship.Target;
+		Classifier Specific subsets DirectedRelationship.Source, Element.Owner;
 	}
 
-	association Classifier.Generalization with Generalization.General;
+	//association Classifier.Generalization with Generalization.General;
 	association Classifier.Generalization with Generalization.Specific;
 
 	abstract class ValueSpecification : TypedElement, PackageableElement
@@ -402,7 +402,7 @@
 	{
 		Namespace Context;
 		list<Element> ConstrainedElement;
-		ValueSpecification Specification;
+		containment ValueSpecification Specification;
 		Operation PreContext subsets Context;
 		Operation PostContext subsets Context;
 		Operation BodyContext subsets Context;

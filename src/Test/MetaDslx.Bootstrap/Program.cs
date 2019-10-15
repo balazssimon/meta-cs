@@ -8,6 +8,7 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
+using MetaDslx.Languages.Mof.Generator;
 using MetaDslx.Languages.Mof.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -384,14 +385,18 @@ namespace MetaDslx.Bootstrap
         {
             MofDescriptor.Initialize();
 
-            string fileName = "../../../MOF.xmi";
-            //string fileName = "../../../UML.xmi";
+            //string fileName = "../../../MOF.xmi";
+            string fileName = "../../../UML.xmi";
 
             try
             {
                 XmiSerializer xmi = new XmiSerializer(typeof(MofInstance));
-                var model = xmi.ReadModel(fileName);
+                var model = xmi.ReadModelFromFile(fileName);
                 Console.WriteLine(model);
+                xmi.WriteModelToFile("../../../UML2.xmi", model);
+                MofModelToMetaModelGenerator mgen = new MofModelToMetaModelGenerator(model.Objects);
+                string metaCode = mgen.Generate("MetaDslx.Languages.Uml.Model", "Uml", "http://www.omg.org/spec/UML/20161101");
+                File.WriteAllText("../../../Uml.txt", metaCode);
             }
             catch(ModelException mex)
             {

@@ -35,6 +35,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseKReadonly = new object();
 		public static object UseKLazy = new object();
 		public static object UseKDerived = new object();
+		public static object UseKUnion = new object();
 		public static object UseNameUseList = new object();
 		public static object UsePrimitiveType = new object();
 		public static object UseCollectionKind = new object();

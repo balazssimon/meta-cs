@@ -59,6 +59,7 @@ KLazy : 'lazy';
 KSynthetized : 'synthetized';
 KInherited : 'inherited';
 KDerived : 'derived';
+KUnion : 'union';
 KStatic : 'static';
 
 // Tokens

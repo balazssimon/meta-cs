@@ -108,6 +108,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSynthetized:
 				case MetaTokensSyntaxKind.KInherited:
 				case MetaTokensSyntaxKind.KDerived:
+				case MetaTokensSyntaxKind.KUnion:
 				case MetaTokensSyntaxKind.KStatic:
 				case MetaTokensSyntaxKind.TSemicolon:
 				case MetaTokensSyntaxKind.TColon:
@@ -231,6 +232,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSynthetized:
 				case MetaTokensSyntaxKind.KInherited:
 				case MetaTokensSyntaxKind.KDerived:
+				case MetaTokensSyntaxKind.KUnion:
 				case MetaTokensSyntaxKind.KStatic:
 				case MetaTokensSyntaxKind.TSemicolon:
 				case MetaTokensSyntaxKind.TColon:
@@ -382,6 +384,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaTokensSyntaxKind.KInherited;
 				case "derived":
 					return MetaTokensSyntaxKind.KDerived;
+				case "union":
+					return MetaTokensSyntaxKind.KUnion;
 				case "static":
 					return MetaTokensSyntaxKind.KStatic;
 				case ";":
@@ -581,6 +585,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return "inherited";
 				case MetaTokensSyntaxKind.KDerived:
 					return "derived";
+				case MetaTokensSyntaxKind.KUnion:
+					return "union";
 				case MetaTokensSyntaxKind.KStatic:
 					return "static";
 				case MetaTokensSyntaxKind.TSemicolon:
@@ -739,6 +745,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSynthetized:
 				case MetaTokensSyntaxKind.KInherited:
 				case MetaTokensSyntaxKind.KDerived:
+				case MetaTokensSyntaxKind.KUnion:
 				case MetaTokensSyntaxKind.KStatic:
 					return MetaTokenKind.ReservedKeyword;
 				case MetaTokensSyntaxKind.IdentifierNormal:
@@ -873,6 +880,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				case MetaTokensSyntaxKind.KSynthetized:
 				case MetaTokensSyntaxKind.KInherited:
 				case MetaTokensSyntaxKind.KDerived:
+				case MetaTokensSyntaxKind.KUnion:
 				case MetaTokensSyntaxKind.KStatic:
 					return true;
 				default:
@@ -928,6 +936,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				yield return MetaTokensSyntaxKind.KSynthetized;
 				yield return MetaTokensSyntaxKind.KInherited;
 				yield return MetaTokensSyntaxKind.KDerived;
+				yield return MetaTokensSyntaxKind.KUnion;
 				yield return MetaTokensSyntaxKind.KStatic;
         }
 
@@ -1027,6 +1036,8 @@ namespace MetaDslx.Languages.Meta.Syntax
 					return MetaTokensSyntaxKind.KInherited;
 				case "derived":
 					return MetaTokensSyntaxKind.KDerived;
+				case "union":
+					return MetaTokensSyntaxKind.KUnion;
 				case "static":
 					return MetaTokensSyntaxKind.KStatic;
 				default:

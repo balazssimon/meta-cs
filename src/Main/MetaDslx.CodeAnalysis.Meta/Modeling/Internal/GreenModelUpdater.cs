@@ -1299,13 +1299,14 @@ namespace MetaDslx.Modeling.Internal
                     if (valueAddedToOpposite == null)
                     {
                         valueAddedToOpposite = new HashSet<ModelProperty>();
-                    }
-                    foreach (var oppositeProp in propertyInfo.OppositeProperties)
-                    {
-                        ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
-                        if (!valueAddedToOpposite.Contains(oppositeProp))
+
+                        foreach (var oppositeProp in propertyInfo.OppositeProperties)
                         {
-                            this.SlowAddValueCore(valueObjectRef.Model.Id, valueId, oppositeRepProp, reassign, -1, oid, valueAddedToOpposite, valueAddedToSelf);
+                            ModelProperty oppositeRepProp = this.GetRepresentingProperty(valueId, oppositeProp);
+                            if (!valueAddedToOpposite.Contains(oppositeProp))
+                            {
+                                this.SlowAddValueCore(valueObjectRef.Model.Id, valueId, oppositeRepProp, reassign, -1, oid, valueAddedToOpposite, valueAddedToSelf);
+                            }
                         }
                     }
                 }

@@ -1,0 +1,158 @@
+﻿namespace MetaDslx.Languages.Mof.Generator;
+generator MofModelToMetaModelGenerator for IEnumerable<ImmutableObject>;
+
+using MetaDslx.Modeling;
+using MetaDslx.Languages.Mof.Model;
+using System.Collections.Immutable;
+using Roslyn.Utilities;
+
+properties Properties
+	string Namespace = "";
+	string ModelName = "";
+end properties
+
+template Generate(string namespaceName, string metaModelName, string uri)
+namespace [namespaceName]
+{
+    metamodel [metaModelName](Uri="[uri]"); 
+^
+	[loop(Instances->cls:typeof(Class))]
+^
+    [GenerateClass(cls)]
+	[end loop]
+^
+	[loop(Instances->assoc:typeof(Association))]
+    [GenerateAssociation(assoc)]
+	[end loop]
+}
+end template
+
+template GenerateClass(Class cls)
+[GenerateComment(cls)]
+[cls.IsAbstract ? "abstract " : ""]class [cls.Name][GenerateBaseClasses(cls)]
+{
+	[loop(cls->prop:OwnedAttribute)]
+	[GenerateProperty(prop)]
+	[end loop]
+	[loop(cls->op:OwnedOperation)]
+	[GenerateOperation(op)]
+	[end loop]
+}
+end template
+
+template GenerateBaseClasses(Class cls)
+[string sep = " : "]
+[loop(cls->Generalization->gen:General)]
+[sep][gen.Name]\
+[sep = ", "]
+[end loop]
+end template
+
+template GenerateProperty(Property prop)
+[GenerateComment(prop)]
+[GenerateDerived(prop)][GenerateType(prop, prop.Type)] [prop.Name.ToPascalCase()][GenerateRedefines(prop)][GenerateSubsets(prop)];
+end template
+
+template GenerateDerived(Property prop)
+[prop.IsDerivedUnion ? "union " : (prop.IsDerived ? "derived " : "")]
+end template
+
+template GenerateType(MultiplicityElement me, Model.Type t)
+[(me.Upper > 1 || me.Upper < 0) ? (me.IsUnique ? (me.IsOrdered ? "list<" : "set<") : (me.IsOrdered ? "multi_list<" : "multi_set<")) : ""][GeneratePrimitiveType(t)][(me.Upper > 1 || me.Upper < 0) ? ">" : ""]
+end template
+
+function string GeneratePrimitiveType(Model.Type t)
+	switch (t.Name)
+		case "Boolean": return "bool";
+		case "String": return "string";
+		case "Integer": return "int";
+		case "Real": return "double";
+		case "UnlimitedNatural": return "long";
+		default: return t.Name;
+	end switch
+end function
+
+template GenerateRedefines(Property prop)
+[string sep = " redefines "]
+[loop(prop->rprop:RedefinedProperty)]
+	[if (rprop.Class != null)]
+[sep][rprop.Class.Name].[rprop.Name.ToPascalCase()]\
+[sep = ", "]
+	[end if]
+[end loop]
+end template
+
+template GenerateSubsets(Property prop)
+[string sep = " subsets "]
+[loop(prop->sprop:SubsettedProperty)]
+	[if (sprop.Class != null)]
+[sep][sprop.Class.Name].[sprop.Name.ToPascalCase()]\
+[sep = ", "]
+	[end if]
+[end loop]
+end template
+
+template GenerateOperation(Operation op)
+[if (!hasloop(op->Class->prop:OwnedAttribute where op.Name == prop.Name && prop.IsDerived && !prop.IsDerivedUnion))]
+[GenerateComment(op)]
+[op.IsAbstract ? "abstract " : ""][GenerateReturnType(op)] [op.Name.ToPascalCase()]([GenerateParams(op)]);
+[end if]
+end template
+
+template GenerateReturnType(Operation op)
+[if (hasloop(op->param:OwnedParameter where param.Direction == ParameterDirectionKind.Return))]
+	[loop(op->param:OwnedParameter where param.Direction == ParameterDirectionKind.Return)]
+[GenerateType(param, param.Type)]
+	[end loop]
+[else]
+void
+[end if]
+end template
+
+template GenerateParams(Operation op)
+[loop(op->param:OwnedParameter where param.Direction != ParameterDirectionKind.Return; separator sep = ", ")]
+[GenerateType(param, param.Type)] [param.Name][sep]\
+[end loop]
+end template
+
+template GenerateAssociation(Association assoc)
+[if (assoc.OwnedEnd.Count == 0 && assoc.MemberEnd.Count == 2)]
+[GenerateComment(assoc)]
+[Property first = assoc.MemberEnd[0]]
+[Property second = assoc.MemberEnd[1]]
+association [first.Class.Name].[first.Name.ToPascalCase()] with [second.Class.Name].[second.Name.ToPascalCase()];
+[end if]
+end template
+
+template GenerateComment(Element elem)
+[if (hasloop(elem->OwnedComment))]
+/*
+	[loop (elem->OwnedComment->text:Body)]
+[text]
+		[if (elem is Operation)]
+[GenerateSpecification((Operation)elem)]
+		[else if (elem is Property)]
+			[var prop = (Property)elem]
+			[if (prop.IsDerived && !prop.IsDerivedUnion)]
+				[loop(prop->Class->op:OwnedOperation where op.Name == prop.Name)]
+[GenerateSpecification(op)]
+				[end loop]
+			[end if]
+		[end if]
+	[end loop]
+*/
+[end if]
+end template
+
+template GenerateSpecification(Namespace ns)
+[if (ns != null && hasloop(ns->OwnedRule->spec:Specification->expr:typeof(OpaqueExpression)))]
+^
+	[loop (ns->rule:OwnedRule->spec:Specification->expr:typeof(OpaqueExpression))]
+		[loop (rule->OwnedComment->commentText:Body)]
+[commentText]
+		[end loop]
+[rule.Name]:
+    [expr.Body]
+	[end loop]
+[end if]
+end template

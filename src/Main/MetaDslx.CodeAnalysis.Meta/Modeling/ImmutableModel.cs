@@ -60,6 +60,8 @@ namespace MetaDslx.Modeling
 
         IEnumerable<IModelObject> IModel.Objects => this.Objects;
 
+        IModelGroup IModel.ModelGroup => this.ModelGroup;
+
         internal ImmutableObject GetExistingObject(ObjectId sid)
         {
             if (sid == null) return null;

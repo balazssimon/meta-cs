@@ -10,5 +10,6 @@ namespace MetaDslx.Modeling
         string Name { get; }
         ModelVersion Version { get; }
         IEnumerable<IModelObject> Objects { get; }
+        IModelGroup ModelGroup { get; }
     }
 }

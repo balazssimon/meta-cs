@@ -1,5 +1,7 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.Languages.Meta.Model;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,38 +21,215 @@ namespace MetaDslx.Modeling
             _metaInstanceType = metaInstanceType;
         }
 
-        public ImmutableModel ReadModel(string xmiFilePath)
+        public ImmutableModel ReadModelFromFile(string xmiFilePath)
         {
-            XmiLoader loader = new XmiLoader(_metaInstanceType);
-            loader.LoadXmiFile(xmiFilePath, ".");
-            var diagnostics = loader.Diagnostics.ToReadOnly();
+            XmiReader reader = new XmiReader(_metaInstanceType);
+            reader.LoadXmiFile(xmiFilePath, ".");
+            var diagnostics = reader.Diagnostics.ToReadOnly();
             if (diagnostics.Length > 0)
             {
                 throw new ModelException(diagnostics[0]);
             }
-            return loader.Model.ToImmutable();
+            return reader.Model.ToImmutable();
         }
 
-        public void WriteModel(XmlWriter writer, IModel model)
+        public ImmutableModel ReadModel(string xmiCode)
         {
+            XmiReader reader = new XmiReader(_metaInstanceType);
+            reader.LoadXmiCode(null, xmiCode);
+            var diagnostics = reader.Diagnostics.ToReadOnly();
+            if (diagnostics.Length > 0)
+            {
+                throw new ModelException(diagnostics[0]);
+            }
+            return reader.Model.ToImmutable();
+        }
+
+        public string WriteModel(IModel model)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.Encoding = Encoding.UTF8;
+            settings.OmitXmlDeclaration = false;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (XmlWriter writer = XmlWriter.Create(stream, settings))
+                {
+                    var xmiWriter = new XmiWriter(writer);
+                    xmiWriter.WriteModel(model);
+                }
+                return Encoding.UTF8.GetString(stream.ToArray());
+            }
+        }
+
+        public void WriteModelToFile(string xmiFilePath, IModel model)
+        {
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.Encoding = Encoding.UTF8;
+            settings.OmitXmlDeclaration = false;
+            using (StreamWriter stream = new StreamWriter(xmiFilePath))
+            using (XmlWriter writer = XmlWriter.Create(stream, settings))
+            {
+                var xmiWriter = new XmiWriter(writer);
+                xmiWriter.WriteModel(model);
+            }
         }
 
     }
 
-    internal class XmiLoader
+    internal class XmiWriter
+    {
+        private const string Xmi = "xmi";
+        private const string XmiNamespace = "http://www.omg.org/spec/XMI/20131001";
+        private XmlWriter _xml;
+        private Dictionary<string, string> _namespaces;
+
+        public XmiWriter(XmlWriter xmlWriter)
+        {
+            _xml = xmlWriter;
+            _namespaces = new Dictionary<string, string>();
+        }
+
+        private string GetNamespace(string prefix)
+        {
+            _namespaces.TryGetValue(prefix, out var result);
+            return result;
+        }
+
+        public void WriteModel(IModel model)
+        {
+            _xml.WriteStartElement(Xmi, "XMI", XmiNamespace);
+            IEnumerable<IModelObject> allObjects = model.ModelGroup != null ? model.ModelGroup.Models.SelectMany(m => m.Objects) : model.Objects.Where(obj => obj.MParent == null);
+            IEnumerable<IModelObject> rootObjects = allObjects.Where(obj => obj.MParent == null);
+            IEnumerable<MetaModel> metaModels = allObjects.Select(obj => obj.MMetaModel).Distinct();
+            foreach (var mm in metaModels)
+            {
+                _xml.WriteAttributeString("xmlns", mm.Name.ToCamelCase(), null, mm.Uri);
+            }
+            foreach (var obj in rootObjects)
+            {
+                this.WriteObject(obj, null);
+            }
+            _xml.WriteEndElement();
+        }
+
+        private void WriteObject(IModelObject obj, string parentProperty)
+        {
+            var mm = obj.MMetaModel;
+            if (parentProperty != null)
+            {
+                _xml.WriteStartElement(parentProperty.ToCamelCase());
+            }
+            else
+            {
+                _xml.WriteStartElement(mm.Name.ToCamelCase(), obj.MId.DisplayTypeName, mm.Uri);
+            }
+            _xml.WriteAttributeString(Xmi, "type", XmiNamespace, mm.Name.ToCamelCase() + ":" + obj.MId.DisplayTypeName);
+            _xml.WriteAttributeString(Xmi, "id", XmiNamespace, obj.MId.Id);
+            HashSet<IModelObject> written = new HashSet<IModelObject>();
+            foreach (var prop in obj.MProperties)
+            {
+                bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
+                //if (oppositeIsContainment) continue;
+                bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
+                if (!prop.IsCollection && (!prop.IsContainment || !isModelObjectType))
+                {
+                    if (isModelObjectType)
+                    {
+                        var value = obj.MGet(prop) as IModelObject;
+                        if (value != null)
+                        {
+                            _xml.WriteAttributeString(prop.Name.ToCamelCase(), value.MId.Id); 
+                        }
+                    }
+                    else
+                    {
+                        var value = obj.MGet(prop)?.ToString();
+                        if (value != null)
+                        {
+                            _xml.WriteAttributeString(prop.Name.ToCamelCase(), value);
+                        }
+                    }
+                }
+            }
+            foreach (var prop in obj.MProperties)
+            {
+                bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
+                //if (oppositeIsContainment) continue;
+                bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
+                if (prop.IsCollection && (!prop.IsContainment || !isModelObjectType))
+                {
+                    if (isModelObjectType)
+                    {
+                        var value = obj.MGet(prop) as IModelObject;
+                        if (value != null)
+                        {
+                            _xml.WriteStartElement(prop.Name.ToCamelCase());
+                            _xml.WriteAttributeString(Xmi, "idref", XmiNamespace, value.MId.Id);
+                            _xml.WriteEndElement();
+                        }
+                    }
+                    else
+                    {
+                        var values = obj.MGet(prop) as System.Collections.IEnumerable;
+                        if (values != null)
+                        {
+                            foreach (var value in values)
+                            {
+                                _xml.WriteElementString(prop.Name.ToCamelCase(), value.ToString());
+                            }
+                        }
+                    }
+                }
+            }
+            foreach (var prop in obj.MProperties.Reverse())
+            {
+                bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
+                if (prop.IsContainment && isModelObjectType)
+                {
+                    if (prop.IsCollection)
+                    {
+                        var children = obj.MGet(prop) as System.Collections.IEnumerable;
+                        if (children != null)
+                        {
+                            foreach (IModelObject child in children)
+                            {
+                                if (child != null && written.Add(child))
+                                {
+                                    this.WriteObject(child, prop.Name);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var child = obj.MGet(prop) as IModelObject;
+                        if (child != null && written.Add(child))
+                        {
+                            this.WriteObject(child, prop.Name);
+                        }
+                    }
+                }
+            }
+            _xml.WriteEndElement();
+        }
+    }
+
+    internal class XmiReader
     {
         private Type _metaInstanceType;
         private MutableModelGroup _modelGroup;
         private MutableModel _mainModel;
         private DiagnosticBag _diagnostics;
-        private Dictionary<string, XmiFileLoader> _loaders;
+        private Dictionary<string, XmiFileReader> _readers;
 
-        public XmiLoader(Type metaInstanceType)
+        public XmiReader(Type metaInstanceType)
         {
             _metaInstanceType = metaInstanceType;
             _modelGroup = new MutableModelGroup();
             _diagnostics = new DiagnosticBag();
-            _loaders = new Dictionary<string, XmiFileLoader>();
+            _readers = new Dictionary<string, XmiFileReader>();
         }
 
         internal Type MetaInstanceType => _metaInstanceType;
@@ -64,12 +243,12 @@ namespace MetaDslx.Modeling
         public void LoadXmiCode(string filePath, string xmiCode)
         {
             string fullPath = filePath != null ? Path.GetFullPath(filePath) : string.Empty;
-            if (!_loaders.ContainsKey(fullPath))
+            if (!_readers.ContainsKey(fullPath))
             {
-                var loader = new XmiFileLoader(_loaders.Count == 0, filePath, xmiCode, this);
-                _loaders.Add(fullPath, loader);
-                loader.ReadModel();
-                if (loader.IsMainLoader) _mainModel = loader.Model;
+                var reader = new XmiFileReader(_readers.Count == 0, filePath, xmiCode, this);
+                _readers.Add(fullPath, reader);
+                reader.ReadModel();
+                if (reader.IsMainReader) _mainModel = reader.Model;
             }
         }
 
@@ -90,37 +269,37 @@ namespace MetaDslx.Modeling
                 relativeFilePath = Path.Combine(Path.GetDirectoryName(currentFilePath), relativeFilePath);
             }
             string fullPath = Path.GetFullPath(relativeFilePath);
-            if (_loaders.TryGetValue(fullPath, out var loader))
+            if (_readers.TryGetValue(fullPath, out var reader))
             {
-                return loader.ResolveObject(id);
+                return reader.ResolveObject(id);
             }
             return null;
         }
     }
 
-    internal class XmiFileLoader
+    internal class XmiFileReader
     {
-        private bool _isMainLoader;
+        private bool _isMainReader;
         private string _filePath;
         private string _xmiCode;
         private XNamespace _xmiNamespace;
-        private XmiLoader _xmiLoader;
+        private XmiReader _xmiReader;
         private MutableModel _model;
         private ModelFactory _factory;
         private Dictionary<string, MutableObjectBase> _objects;
 
-        public XmiFileLoader(bool isMainLoader, string filePath, string xmiCode, XmiLoader xmiLoader)
+        public XmiFileReader(bool isMainReader, string filePath, string xmiCode, XmiReader xmiReader)
         {
-            _isMainLoader = isMainLoader;
+            _isMainReader = isMainReader;
             _filePath = filePath;
             _xmiCode = xmiCode;
-            _xmiLoader = xmiLoader;
-            _model = _xmiLoader.ModelGroup.CreateModel();
-            _factory = new ModelFactory(_model, _xmiLoader.MetaInstanceType, ModelFactoryFlags.DontMakeObjectsCreated);
+            _xmiReader = xmiReader;
+            _model = _xmiReader.ModelGroup.CreateModel();
+            _factory = new ModelFactory(_model, _xmiReader.MetaInstanceType, ModelFactoryFlags.DontMakeObjectsCreated);
             _objects = new Dictionary<string, MutableObjectBase>();
         }
 
-        public bool IsMainLoader => _isMainLoader;
+        public bool IsMainReader => _isMainReader;
         public MutableModel Model => _model;
 
         internal Location GetLocation(XObject xobj)
@@ -133,12 +312,12 @@ namespace MetaDslx.Modeling
 
         internal void AddError(XObject xobj, string message)
         {
-            _xmiLoader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(xobj), message));
+            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(xobj), message));
         }
 
         internal void AddError(XObject xobj, ModelException mex)
         {
-            _xmiLoader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(xobj), mex.Diagnostic.GetMessage()));
+            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(xobj), mex.Diagnostic.GetMessage()));
         }
 
         public void ReadModel()
@@ -173,7 +352,7 @@ namespace MetaDslx.Modeling
                     string objId = hrefValue[1];
                     if (!string.IsNullOrWhiteSpace(hrefFilePath))
                     {
-                        _xmiLoader.LoadXmiFile(hrefFilePath, _filePath);
+                        _xmiReader.LoadXmiFile(hrefFilePath, _filePath);
                     }
                 }
                 return;
@@ -222,7 +401,7 @@ namespace MetaDslx.Modeling
                     string objId = hrefValue[1];
                     if (!string.IsNullOrWhiteSpace(hrefFilePath))
                     {
-                        obj = _xmiLoader.ResolveObject(hrefFilePath, _filePath, objId);
+                        obj = _xmiReader.ResolveObject(hrefFilePath, _filePath, objId);
                     }
                 }
                 if (obj == null)
@@ -351,11 +530,13 @@ namespace MetaDslx.Modeling
                     else if (property.ImmutableTypeInfo.Type == typeof(int))
                     {
                         int.TryParse(propertyValue, out int intValue);
+                        if (propertyValue == "*") intValue = -1;
                         value = intValue;
                     }
                     else if (property.ImmutableTypeInfo.Type == typeof(long))
                     {
                         long.TryParse(propertyValue, out long longValue);
+                        if (propertyValue == "*") longValue = -1;
                         value = longValue;
                     }
                     else if (property.ImmutableTypeInfo.Type == typeof(float))
@@ -389,12 +570,4 @@ namespace MetaDslx.Modeling
         }
     }
 
-    internal static class StringExtensions
-    {
-        public static string ToPascalCase(this string identifier)
-        {
-            if (string.IsNullOrEmpty(identifier)) return identifier;
-            else return char.ToUpper(identifier[0]) + identifier.Substring(1);
-        }
-    }
 }
