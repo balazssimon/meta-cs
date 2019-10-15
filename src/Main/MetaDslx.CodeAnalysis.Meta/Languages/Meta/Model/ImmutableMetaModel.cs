@@ -6842,7 +6842,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaNamespace_DefinedMetaModel.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Containment;
 			MetaNamespace_DefinedMetaModel.ClassLazy = () => MetaNamespace;
 			MetaNamespace_DefinedMetaModel.OppositeProperties.AddLazy(() => MetaModel_Namespace);
-			MetaNamespace_Declarations.TypeLazy = () => __tmp42;
+			MetaNamespace_Declarations.TypeLazy = () => __tmp41;
 			MetaNamespace_Declarations.Name = "Declarations";
 			MetaNamespace_Declarations.Documentation = null;
 			MetaNamespace_Declarations.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Containment;
@@ -6938,7 +6938,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaEnum_EnumLiterals.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Containment;
 			MetaEnum_EnumLiterals.ClassLazy = () => MetaEnum;
 			MetaEnum_EnumLiterals.OppositeProperties.AddLazy(() => MetaEnumLiteral_Enum);
-			MetaEnum_Operations.TypeLazy = () => __tmp41;
+			MetaEnum_Operations.TypeLazy = () => __tmp42;
 			MetaEnum_Operations.Name = "Operations";
 			MetaEnum_Operations.Documentation = null;
 			MetaEnum_Operations.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Containment;
@@ -7244,9 +7244,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp26.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp26.InnerTypeLazy = () => MetaEnumLiteral;
 			__tmp41.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp41.InnerTypeLazy = () => MetaOperation;
+			__tmp41.InnerTypeLazy = () => MetaDeclaration;
 			__tmp42.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp42.InnerTypeLazy = () => MetaDeclaration;
+			__tmp42.InnerTypeLazy = () => MetaOperation;
 			__tmp43.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp43.InnerTypeLazy = () => MetaParameter;
 			__tmp44.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;

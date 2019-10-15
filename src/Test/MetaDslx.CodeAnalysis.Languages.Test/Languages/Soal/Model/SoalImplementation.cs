@@ -50,7 +50,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Model
         internal override void SoalBuilderInstance(SoalBuilderInstance _this)
         {
             base.SoalBuilderInstance(_this);
-            SoalFactory f = new SoalFactory(_this.Model);
+            SoalFactory f = new SoalFactory(_this.MModel);
             _this.Object = f.PrimitiveType();
             _this.Object.Name = "object";
             _this.String = f.PrimitiveType();

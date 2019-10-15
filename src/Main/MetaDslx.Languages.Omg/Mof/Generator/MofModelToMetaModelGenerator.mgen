@@ -69,7 +69,11 @@ template GenerateProperty(Property prop)
 end template
 
 template GenerateDerived(Property prop)
+[if (prop.Upper > 1 || prop.Upper < 0)]
 [prop.IsDerivedUnion ? "union " : (prop.IsDerived ? "derived " : "")]
+[else if (!prop.IsDerivedUnion)]
+[prop.IsDerived ? "derived " : ""]
+[end if]
 end template
 
 template GenerateType(MultiplicityElement me, Model.Type t)

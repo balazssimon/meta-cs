@@ -30,7 +30,7 @@ namespace MetaDslx.CodeAnalysis.Languages.Test
                 Create("MetaModelCompilation").
                 AddSyntaxTrees(st).
                 AddReferences(
-                    ModelReference.CreateFromModel(MetaInstance.Model)
+                    ModelReference.CreateFromModel(MetaInstance.MModel)
                     ).
                 WithOptions(options);
             compilation.ForceComplete();

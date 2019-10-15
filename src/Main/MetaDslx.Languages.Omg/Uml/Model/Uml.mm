@@ -430,7 +430,7 @@
     	/*
     	The ActivityGroup immediately containing this ActivityGroup, if it is directly owned by another ActivityGroup.
     	*/
-    	union ActivityGroup SuperGroup subsets Element.Owner;
+    	ActivityGroup SuperGroup subsets Element.Owner;
     	/*
     	The Activity that directly or indirectly contains this ActivityGroup.
     	
@@ -3424,7 +3424,7 @@
     	/*
     	The Element that owns this Element.
     	*/
-    	union Element Owner;
+    	Element Owner;
     	/*
     	The query allOwnedElements() gives all of the direct and indirect ownedElements of an Element.
     	
@@ -3581,7 +3581,7 @@
     	/*
     	Specifies the Namespace that owns the NamedElement.
     	*/
-    	union Namespace Namespace subsets Element.Owner;
+    	Namespace Namespace subsets Element.Owner;
     	/*
     	A name that allows the NamedElement to be identified within a hierarchy of nested Namespaces. It is constructed from the names of the containing Namespaces starting at the root of the hierarchy and ending with the name of the NamedElement itself.
     	
@@ -4447,7 +4447,7 @@
     	/*
     	The Classifiers that have this Feature as a feature.
     	*/
-    	union Classifier FeaturingClassifier;
+    	Classifier FeaturingClassifier;
     	/*
     	Specifies whether this Feature characterizes individual instances classified by the Classifier (false) or the Classifier itself (true).
     	*/

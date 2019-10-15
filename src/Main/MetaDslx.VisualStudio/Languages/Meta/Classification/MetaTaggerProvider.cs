@@ -44,7 +44,7 @@ namespace MetaDslx.VisualStudio.Languages.Meta.Classification
 
         protected override ICompilation CreateCompilation(string filePath, string sourceText, CancellationToken cancellationToken)
         {
-            var metaModelReference = ModelReference.CreateFromModel(MetaInstance.Model);
+            var metaModelReference = ModelReference.CreateFromModel(MetaInstance.MModel);
             var tree = MetaSyntaxTree.ParseText(sourceText, path: filePath, cancellationToken: cancellationToken);
             BinderFlags binderFlags = BinderFlags.IgnoreAccessibility;
             BinderFlags binderFlags2 = BinderFlags.IgnoreMetaLibraryDuplicatedTypes;

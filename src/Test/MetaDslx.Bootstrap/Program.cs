@@ -8,8 +8,9 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
-//using MetaDslx.Languages.Mof.Generator;
-//using MetaDslx.Languages.Mof.Model;
+using MetaDslx.Languages.Mof.Generator;
+using MetaDslx.Languages.Mof.Model;
+using MetaDslx.Languages.Uml.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -63,7 +64,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            //*/
+            /*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
@@ -163,7 +164,7 @@ namespace MetaDslx.Bootstrap
 
             //*/
 
-            //*/
+            /*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
             File.WriteAllText("Model.txt", generatedCsharpModel);
@@ -236,7 +237,7 @@ namespace MetaDslx.Bootstrap
             WebSequenceDiagramsTest();
             //*/
 
-            /*/
+            //*/
             XmiTest();
             //*/
         }
@@ -382,17 +383,18 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        /*/
+        //*/
         public static void XmiTest()
         {
             MofDescriptor.Initialize();
+            UmlDescriptor.Initialize();
 
             //string fileName = "../../../MOF.xmi";
             string fileName = "../../../UML.xmi";
 
             try
             {
-                XmiSerializer xmi = new XmiSerializer(typeof(MofInstance));
+                XmiSerializer xmi = new XmiSerializer(MofInstance.MMetaModel);
                 var model = xmi.ReadModelFromFile(fileName);
                 Console.WriteLine(model);
                 xmi.WriteModelToFile("../../../UML2.xmi", model);
