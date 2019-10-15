@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.omg.org/spec/UML/20131001" xmlns:mofext="http://www.omg.org/spec/MOF/20131001">
+	<uml:Package xmi:type="uml:Package" xmi:id="_0" name="DI" URI="http://www.omg.org/spec/DD/20131001/DI">
+		<ownedComment xmi:type="uml:Comment" xmi:id="_ownedComment.0" annotatedElement="_0">
+			<body>The Diagram Interchange (DI) package enables interchange of graphical information that language users have control over, such as position of nodes and line routing points. Language specifications specialize elements of DI to define diagram interchange elements for a language.</body>
+		</ownedComment>
+		<packageImport xmi:type="uml:PackageImport" xmi:id="_packageImport.0">
+			<importedPackage href="DC.xmi#_0"/>
+		</packageImport>
+		<packageImport xmi:type="uml:PackageImport" xmi:id="_packageImport.1">
+			<importedPackage href="UML.xmi#_0"/>
+		</packageImport>
+		<packagedElement xmi:type="uml:Class" xmi:id="DiagramElement" name="DiagramElement" isAbstract="true">
+			<ownedComment xmi:type="uml:Comment" xmi:id="DiagramElement-_ownedComment.0" annotatedElement="DiagramElement">
+				<body>DiagramElement is the abstract super type of all elements in diagrams, including diagrams themselves. When contained in a diagram, diagram elements are laid out relative to the diagram’s origin.</body>
+			</ownedComment>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="DiagramElement-modelElement" name="modelElement" isReadOnly="true" isDerived="true" isDerivedUnion="true" association="A_modelElement_diagramElement">
+				<ownedComment xmi:type="uml:Comment" xmi:id="DiagramElement-modelElement-_ownedComment.0" annotatedElement="DiagramElement-modelElement">
+					<body>a reference to a depicted model element, which can be any MOF-based element</body>
+				</ownedComment>
+				<type xmi:type="uml:Class" href="UML.xmi#Element"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="DiagramElement-modelElement-_upperValue" value="*"/>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="DiagramElement-modelElement-_lowerValue"/>
+			</ownedAttribute>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="DiagramElement-owningElement" name="owningElement" type="DiagramElement" isReadOnly="true" isDerived="true" isDerivedUnion="true" association="A_ownedElement_owningElement">
+				<ownedComment xmi:type="uml:Comment" xmi:id="DiagramElement-owningElement-_ownedComment.0" annotatedElement="DiagramElement-owningElement">
+					<body>a reference to the diagram element that directly owns this diagram element.</body>
+				</ownedComment>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="DiagramElement-owningElement-_lowerValue"/>
+			</ownedAttribute>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="DiagramElement-ownedElement" name="ownedElement" type="DiagramElement" isOrdered="true" isReadOnly="true" isDerived="true" isDerivedUnion="true" aggregation="composite" association="A_ownedElement_owningElement">
+				<ownedComment xmi:type="uml:Comment" xmi:id="DiagramElement-ownedElement-_ownedComment.0" annotatedElement="DiagramElement-ownedElement">
+					<body>a collection of diagram elements that are directly owned by this diagram element.</body>
+				</ownedComment>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="DiagramElement-ownedElement-_upperValue" value="*"/>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="DiagramElement-ownedElement-_lowerValue"/>
+			</ownedAttribute>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="DiagramElement-localStyle" name="localStyle" type="Style" aggregation="composite" association="A_localStyle_styledElement">
+				<ownedComment xmi:type="uml:Comment" xmi:id="DiagramElement-localStyle-_ownedComment.0" annotatedElement="DiagramElement-localStyle">
+					<body>a reference to an optional locally-owned style for this diagram element.</body>
+				</ownedComment>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="DiagramElement-localStyle-_lowerValue"/>
+			</ownedAttribute>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="DiagramElement-sharedStyle" name="sharedStyle" type="Style" association="A_sharedStyle_styledElement">
+				<ownedComment xmi:type="uml:Comment" xmi:id="DiagramElement-sharedStyle-_ownedComment.0" annotatedElement="DiagramElement-sharedStyle">
+					<body>a reference to an optional shared style element for this diagram element.</body>
+				</ownedComment>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="DiagramElement-sharedStyle-_lowerValue"/>
+			</ownedAttribute>
+		</packagedElement>
+		<packagedElement xmi:type="uml:Class" xmi:id="Edge" name="Edge" isAbstract="true">
+			<ownedComment xmi:type="uml:Comment" xmi:id="Edge-_ownedComment.0" annotatedElement="Edge">
+				<body>Edge is a diagram element that renders as a polyline, connecting a source diagram element to a target diagram element, and is positioned relative to the origin of the diagram.</body>
+			</ownedComment>
+			<generalization xmi:type="uml:Generalization" xmi:id="Edge-_generalization.0" general="DiagramElement"/>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="Edge-source" name="source" type="DiagramElement" isReadOnly="true" isDerived="true" isDerivedUnion="true" association="A_source_sourceEdge">
+				<ownedComment xmi:type="uml:Comment" xmi:id="Edge-source-_ownedComment.0" annotatedElement="Edge-source">
+					<body>the edge's source diagram element, i.e. where the edge starts from.</body>
+				</ownedComment>
+			</ownedAttribute>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="Edge-target" name="target" type="DiagramElement" isReadOnly="true" isDerived="true" isDerivedUnion="true" association="A_target_targetEdge">
+				<ownedComment xmi:type="uml:Comment" xmi:id="Edge-target-_ownedComment.0" annotatedElement="Edge-target">
+					<body>the edge's target diagram element, i.e. where the edge ends at.</body>
+				</ownedComment>
+			</ownedAttribute>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="Edge-waypoint" name="waypoint" isOrdered="true" isUnique="false">
+				<ownedComment xmi:type="uml:Comment" xmi:id="Edge-waypoint-_ownedComment.0" annotatedElement="Edge-waypoint">
+					<body>an optional list of points relative to the origin of the nesting diagram that specifies the connected line segments of the edge</body>
+				</ownedComment>
+				<type xmi:type="uml:DataType" href="DC.xmi#Point"/>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Edge-waypoint-_upperValue" value="*"/>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="Edge-waypoint-_lowerValue"/>
+			</ownedAttribute>
+		</packagedElement>
+		<packagedElement xmi:type="uml:Class" xmi:id="Diagram" name="Diagram" isAbstract="true">
+			<ownedComment xmi:type="uml:Comment" xmi:id="Diagram-_ownedComment.0" annotatedElement="Diagram">
+				<body>Diagram is an abstract container of a graph of diagram elements. Diagrams are diagram elements with an origin point in the x-y coordinate system. Their elements are laid out relative to their origin point.</body>
+			</ownedComment>
+			<generalization xmi:type="uml:Generalization" xmi:id="Diagram-_generalization.0" general="Shape"/>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="Diagram-name" name="name">
+				<ownedComment xmi:type="uml:Comment" xmi:id="Diagram-name-_ownedComment.0" annotatedElement="Diagram-name">
+					<body>the name of the diagram.</body>
+				</ownedComment>
+				<type xmi:type="uml:PrimitiveType" href="PrimitiveTypes.xmi#String"/>
+				<defaultValue xmi:type="uml:LiteralString" xmi:id="Diagram-name-_defaultValue" value="">
+					<type xmi:type="uml:PrimitiveType" href="PrimitiveTypes.xmi#String"/>
+				</defaultValue>
+			</ownedAttribute>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="Diagram-documentation" name="documentation">
+				<ownedComment xmi:type="uml:Comment" xmi:id="Diagram-documentation-_ownedComment.0" annotatedElement="Diagram-documentation">
+					<body>the documentation of the diagram.</body>
+				</ownedComment>
+				<type xmi:type="uml:PrimitiveType" href="PrimitiveTypes.xmi#String"/>
+				<defaultValue xmi:type="uml:LiteralString" xmi:id="Diagram-documentation-_defaultValue" value="">
+					<type xmi:type="uml:PrimitiveType" href="PrimitiveTypes.xmi#String"/>
+				</defaultValue>
+			</ownedAttribute>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="Diagram-resolution" name="resolution">
+				<ownedComment xmi:type="uml:Comment" xmi:id="Diagram-resolution-_ownedComment.0" annotatedElement="Diagram-resolution">
+					<body>the resolution of the diagram expressed in user units per inch.</body>
+				</ownedComment>
+				<type xmi:type="uml:PrimitiveType" href="PrimitiveTypes.xmi#Real"/>
+				<defaultValue xmi:type="uml:LiteralReal" xmi:id="Diagram-resolution-_defaultValue" value="300"/>
+			</ownedAttribute>
+		</packagedElement>
+		<packagedElement xmi:type="uml:Class" xmi:id="Shape" name="Shape" isAbstract="true">
+			<ownedComment xmi:type="uml:Comment" xmi:id="Shape-_ownedComment.0" annotatedElement="Shape">
+				<body>Shape is a diagram element with given bounds that is laid out relative to the origin of the diagram</body>
+			</ownedComment>
+			<generalization xmi:type="uml:Generalization" xmi:id="Shape-_generalization.0" general="DiagramElement"/>
+			<ownedAttribute xmi:type="uml:Property" xmi:id="Shape-bounds" name="bounds">
+				<ownedComment xmi:type="uml:Comment" xmi:id="Shape-bounds-_ownedComment.0" annotatedElement="Shape-bounds">
+					<body>the optional bounds of the shape relative to the origin of its nesting plane.</body>
+				</ownedComment>
+				<type xmi:type="uml:DataType" href="DC.xmi#Bounds"/>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="Shape-bounds-_lowerValue"/>
+			</ownedAttribute>
+		</packagedElement>
+		<packagedElement xmi:type="uml:Class" xmi:id="Style" name="Style" isAbstract="true">
+			<ownedComment xmi:type="uml:Comment" xmi:id="Style-_ownedComment.0" annotatedElement="Style">
+				<body>Style contains formatting properties that affect the appearance or style of diagram elements, including diagram themselves.</body>
+			</ownedComment>
+		</packagedElement>
+		<packagedElement xmi:type="uml:Association" xmi:id="A_target_targetEdge" name="A_target_targetEdge" memberEnd="Edge-target A_target_targetEdge-targetEdge">
+			<ownedEnd xmi:type="uml:Property" xmi:id="A_target_targetEdge-targetEdge" name="targetEdge" type="Edge" isReadOnly="true" isDerived="true" isDerivedUnion="true" association="A_target_targetEdge">
+				<ownedComment xmi:type="uml:Comment" xmi:id="A_target_targetEdge-targetEdge-_ownedComment.0" annotatedElement="A_target_targetEdge-targetEdge">
+					<body>a collection of edges that reference this diagram element as a target.</body>
+				</ownedComment>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="A_target_targetEdge-targetEdge-_upperValue" value="*"/>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="A_target_targetEdge-targetEdge-_lowerValue"/>
+			</ownedEnd>
+		</packagedElement>
+		<packagedElement xmi:type="uml:Association" xmi:id="A_source_sourceEdge" name="A_source_sourceEdge" memberEnd="Edge-source A_source_sourceEdge-sourceEdge">
+			<ownedEnd xmi:type="uml:Property" xmi:id="A_source_sourceEdge-sourceEdge" name="sourceEdge" type="Edge" isReadOnly="true" isDerived="true" isDerivedUnion="true" association="A_source_sourceEdge">
+				<ownedComment xmi:type="uml:Comment" xmi:id="A_source_sourceEdge-sourceEdge-_ownedComment.0" annotatedElement="A_source_sourceEdge-sourceEdge">
+					<body>a collection of edges that reference this diagram element as a source.</body>
+				</ownedComment>
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="A_source_sourceEdge-sourceEdge-_upperValue" value="*"/>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="A_source_sourceEdge-sourceEdge-_lowerValue"/>
+			</ownedEnd>
+		</packagedElement>
+		<packagedElement xmi:type="uml:Association" xmi:id="A_ownedElement_owningElement" name="A_ownedElement_owningElement" memberEnd="DiagramElement-ownedElement DiagramElement-owningElement"/>
+		<packagedElement xmi:type="uml:Association" xmi:id="A_modelElement_diagramElement" name="A_modelElement_diagramElement" memberEnd="DiagramElement-modelElement A_modelElement_diagramElement-diagramElement">
+			<ownedEnd xmi:type="uml:Property" xmi:id="A_modelElement_diagramElement-diagramElement" name="diagramElement" type="DiagramElement" isReadOnly="true" isDerived="true" isDerivedUnion="true" association="A_modelElement_diagramElement">
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="A_modelElement_diagramElement-diagramElement-_upperValue" value="*"/>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="A_modelElement_diagramElement-diagramElement-_lowerValue"/>
+			</ownedEnd>
+		</packagedElement>
+		<packagedElement xmi:type="uml:Association" xmi:id="A_sharedStyle_styledElement" name="A_sharedStyle_styledElement" memberEnd="DiagramElement-sharedStyle A_sharedStyle_styledElement-styledElement">
+			<ownedEnd xmi:type="uml:Property" xmi:id="A_sharedStyle_styledElement-styledElement" name="styledElement" type="DiagramElement" association="A_sharedStyle_styledElement">
+				<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="A_sharedStyle_styledElement-styledElement-_upperValue" value="*"/>
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="A_sharedStyle_styledElement-styledElement-_lowerValue"/>
+			</ownedEnd>
+		</packagedElement>
+		<packagedElement xmi:type="uml:Association" xmi:id="A_localStyle_styledElement" name="A_localStyle_styledElement" memberEnd="DiagramElement-localStyle A_localStyle_styledElement-styledElement">
+			<ownedEnd xmi:type="uml:Property" xmi:id="A_localStyle_styledElement-styledElement" name="styledElement" type="DiagramElement" association="A_localStyle_styledElement">
+				<lowerValue xmi:type="uml:LiteralInteger" xmi:id="A_localStyle_styledElement-styledElement-_lowerValue"/>
+			</ownedEnd>
+		</packagedElement>
+	</uml:Package>
+	<mofext:Tag xmi:type="mofext:Tag" xmi:id="_6" name="org.omg.xmi.nsPrefix" value="di" element="_0"/>
+</xmi:XMI>

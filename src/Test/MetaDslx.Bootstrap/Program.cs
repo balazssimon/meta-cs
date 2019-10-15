@@ -9,7 +9,6 @@ using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Mof.Model;
-using MetaDslx.Languages.Xmi;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -385,13 +384,19 @@ namespace MetaDslx.Bootstrap
         {
             MofDescriptor.Initialize();
 
-            //string fileName = "../../../MOF.xmi";
-            string fileName = "../../../UML.xmi";
+            string fileName = "../../../MOF.xmi";
+            //string fileName = "../../../UML.xmi";
 
-            string xmiCode = File.ReadAllText(fileName);
-            XmiSerializer xmi = new XmiSerializer(typeof(MofInstance));
-            var model = xmi.ReadModel(xmiCode);
-            Console.WriteLine(model);
+            try
+            {
+                XmiSerializer xmi = new XmiSerializer(typeof(MofInstance));
+                var model = xmi.ReadModel(fileName);
+                Console.WriteLine(model);
+            }
+            catch(ModelException mex)
+            {
+                Console.WriteLine(mex.Diagnostic.ToString());
+            }
         }
         //*/
     }

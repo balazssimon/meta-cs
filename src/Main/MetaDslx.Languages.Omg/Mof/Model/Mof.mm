@@ -16,15 +16,19 @@
 
 	abstract class Element
 	{
-		containment list<Element> OwnedElement; // ???
+		Element Owner;
+		containment list<Element> OwnedElement;
 		list<Tag> Tag;
 		containment list<Comment> OwnedComment;
 		list<Comment> Comment;
+		list<Relationship> Relationship;
 	}
+
+	association Element.Owner with Element.OwnedElement;
 
 	class Comment
 	{
-		Element OwningElement;
+		Element OwningElement redefines Element.Owner;
 		list<Element> AnnotatedElement;
 		list<string> Body;
 	}
@@ -48,12 +52,13 @@
 		string Name;
 		derived string QualifiedName;
 		VisibilityKind Visibility;
+		Namespace Namespace;
+		derived Namespace MemberNamespace;
 	}
 
 	abstract class PackageableElement : NamedElement
 	{
 		Package OwningPackage;
-		list<PackageMerge> PackageMerge;
 	}
 
 	enum VisibilityKind
@@ -78,7 +83,14 @@
 
 	abstract class Namespace : NamedElement
 	{
+		containment list<Constraint> OwnedRule;
+		containment list<NamedElement> OwnedMember;
+		derived list<NamedElement> Member;
+		containment list<PackageImport> PackageImport;
 	}
+
+	association Namespace.OwnedMember with NamedElement.Namespace;
+	association Namespace.Member with NamedElement.MemberNamespace;
 
 	abstract class Classifier : Type, Namespace
 	{
@@ -88,11 +100,11 @@
 
 	class Package : Namespace, PackageableElement
 	{
+		string URI;
 		Package NestingPackage redefines PackageableElement.OwningPackage;
-		containment list<PackageableElement> PackagedElement;
+		containment list<PackageableElement> PackagedElement subsets Namespace.OwnedMember;
 		containment list<Type> OwnedType subsets PackagedElement;
 		containment list<Package> NestedPackage subsets PackagedElement;
-		containment list<PackageImport> PackageImport;
 		containment list<PackageMerge> PackageMerge;
 	}
 
@@ -131,10 +143,12 @@
 	{
 	}
 
-	abstract class MultiplicityElement
+	abstract class MultiplicityElement : Element
 	{
 		bool IsOrdered;
 		bool IsUnique;
+		ValueSpecification LowerValue subsets Element.OwnedElement;
+		ValueSpecification UpperValue subsets Element.OwnedElement;
 		derived long Lower;
 		derived long Upper;
 	}
@@ -147,12 +161,15 @@
 	class Property : StructuralFeature
 	{
 		Class Class;
+		ValueSpecification DefaultValue subsets Element.OwnedElement;
 		bool IsID;
 		bool IsDerived;
 		bool IsDerivedUnion;
 		AggregationKind Aggregation;
 		list<Association> Association;
 		list<Association> OwningAssociation subsets Association;
+		list<Property> RedefinedProperty;
+		list<Property> SubsettedProperty;
 		derived Property Opposite;
 		derived string Default;
 		derived bool IsComposite;
@@ -167,13 +184,23 @@
 		Composite
 	}
 
-	abstract class Relationship
+	abstract class Relationship : Element
 	{
+		derived list<Element> RelatedElement;
+	}
+
+	association Relationship.RelatedElement with Element.Relationship;
+
+	abstract class DirectedRelationship : Relationship
+	{
+		list<Element> Source subsets Relationship.RelatedElement;
+		list<Element> Target subsets Relationship.RelatedElement;
 	}
 
 	class Association : Classifier, Relationship
 	{
-		containment list<Property> OwnedEnd subsets MemberEnd;
+		bool IsDerived;
+		containment list<Property> OwnedEnd subsets MemberEnd, Namespace.OwnedMember;
 		list<Property> MemberEnd;
 		list<Property> NavigableOwnedEnd subsets OwnedEnd;
 	}
@@ -181,21 +208,33 @@
 	association Association.OwnedEnd with Property.OwningAssociation;
 	association Association.MemberEnd with Property.Association;
 
-	class Operation
+	abstract class BehavioralFeature : Feature, Namespace
+	{
+		bool IsReadOnly;
+	}
+
+	class Operation : BehavioralFeature
 	{
 		Class Class;
+		bool IsAbstract;
+		bool IsQuery;
 		derived bool IsOrdered;
 		derived bool IsUnique;
 		derived long Lower;
 		derived long Upper;
 		containment list<Parameter> OwnedParameter;
 		list<Type> RaisedException;
+		list<Operation> RedefinedOperation;
+		containment list<Constraint> Precondition;
+		containment list<Constraint> Postcondition;
+		containment list<Constraint> BodyCondition;
 	}
 
 	association Operation.Class with Class.OwnedOperation;
 
 	class Parameter : TypedElement, MultiplicityElement
 	{
+		bool IsStream;
 		Operation Operation;
 		ParameterDirectionKind Direction;
 	}
@@ -217,9 +256,17 @@
 	association Classifier.Generalization with Generalization.General;
 	association Classifier.Generalization with Generalization.Specific;
 
-	abstract class ValueSpecification
+	abstract class ValueSpecification : TypedElement, PackageableElement
 	{
+		Constraint OwningConstraint subsets Element.Owner;
+		MultiplicityElement OwningLower subsets Element.Owner;
+		MultiplicityElement OwningUpper subsets Element.Owner;
+		Property OwningProperty subsets Element.Owner;
 	}
+
+	association ValueSpecification.OwningLower with MultiplicityElement.LowerValue;
+	association ValueSpecification.OwningUpper with MultiplicityElement.UpperValue;
+	association ValueSpecification.OwningProperty with Property.DefaultValue;
 
 	class InstanceValue : ValueSpecification
 	{
@@ -302,41 +349,74 @@
 		ObjectInstance Object;
 	}
 
-	class PackageMerge
+	class PackageMerge : DirectedRelationship
 	{
-		Package MergedPackage;
+		Package MergedPackage subsets DirectedRelationship.Target;
+		Package ReceivingPackage subsets DirectedRelationship.Source, Element.Owner;
 	}
 
-	class PackageImport
+	association PackageMerge.ReceivingPackage with Package.PackageMerge;
+
+	class PackageImport : DirectedRelationship
 	{
-		Package ImportedPackage;
+		Package ImportedPackage subsets DirectedRelationship.Target;
+		Namespace ImportingNamespace subsets DirectedRelationship.Source, Element.Owner;
 	}
 
-	class LiteralBoolean
+	association PackageImport.ImportingNamespace with Namespace.PackageImport;
+
+	class LiteralSpecification : ValueSpecification
 	{
 	}
-
-	class LiteralString
-	{
-	}
-
-	class LiteralInteger
-	{
-	}
-
-	class LiteralReal
-	{
-	}
-
-	class LiteralUnlimitedNatural
+	
+	class LiteralNull : LiteralSpecification
 	{
 	}
 
-	class Constraint
+	class LiteralBoolean : LiteralSpecification
 	{
+		bool Value;
 	}
 
-	class OpaqueExpression
+	class LiteralString : LiteralSpecification
 	{
+		string Value;
+	}
+
+	class LiteralInteger : LiteralSpecification
+	{
+		int Value;
+	}
+
+	class LiteralReal : LiteralSpecification
+	{
+		double Value;
+	}
+
+	class LiteralUnlimitedNatural : LiteralSpecification
+	{
+		long Value;
+	}
+
+	class Constraint : PackageableElement
+	{
+		Namespace Context;
+		list<Element> ConstrainedElement;
+		ValueSpecification Specification;
+		Operation PreContext subsets Context;
+		Operation PostContext subsets Context;
+		Operation BodyContext subsets Context;
+	}
+
+	association Constraint.Context with Namespace.OwnedRule;
+	association Constraint.Specification with ValueSpecification.OwningConstraint;
+	association Constraint.PreContext with Operation.Precondition;
+	association Constraint.PostContext with Operation.Postcondition;
+	association Constraint.BodyContext with Operation.BodyCondition;
+
+	class OpaqueExpression : ValueSpecification
+	{
+		string Body;
+		string Language;
 	}
 }
