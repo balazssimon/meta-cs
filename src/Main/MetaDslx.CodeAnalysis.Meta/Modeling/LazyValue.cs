@@ -1,11 +1,12 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using MetaDslx.Modeling.Internal;
+using Microsoft.CodeAnalysis;
 using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MetaDslx.Modeling.Internal
+namespace MetaDslx.Modeling
 {
     public abstract class LazyValue
     {

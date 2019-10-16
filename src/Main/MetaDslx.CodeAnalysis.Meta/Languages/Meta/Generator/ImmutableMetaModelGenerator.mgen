@@ -33,7 +33,7 @@ extern function string GetEnumValueOf(MetaModel mmodel, Enum menum)
 extern function string GetAttributeValueOf(MetaModel mmodel, MetaAttribute mattr)
 extern function string GetAttributeName(MetaAttribute mattr)
 extern function string CSharpName(MetaNamespace mnamespace, NamespaceKind kind = NamespaceKind.Public, bool fullName = false)
-extern function string CSharpName(MetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
+extern function string CSharpName(IMetaModel mmodel, ModelKind kind = ModelKind.None, bool fullName = false)
 extern function string CSharpName(MetaType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
 extern function string CSharpName(MetaProperty mproperty, MetaModel mmodel, PropertyKind kind = PropertyKind.None, bool fullName = false)
 extern function string CSharpName(MetaConstant mconst, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
@@ -111,6 +111,11 @@ internal class [model.CSharpName(ModelKind.MetaModel)] : [Properties.CoreNs].IMe
 	public string Uri => "[model.Uri]";
 	public [Properties.CoreNs].IModelGroup ModelGroup => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.ModelGroup;
 	public string Namespace => "[model.Namespace.CSharpName(NamespaceKind.Public, true)]";
+^
+	public [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
+	{
+		return new [model.CSharpName(ModelKind.Factory)](model, flags);
+	}
 ^
     public override string ToString()
     {
@@ -622,6 +627,20 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]([cls.CSharpName(model, ClassKind.Builder)] _this)
 	{
 		this.Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors(_this);
+		[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly)]
+			[if(!(prop.Type is MetaCollectionType))]
+		_this.[prop.CSharpName(model, PropertyKind.Builder)] = this.[cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)](_this);
+			[else]
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRange(this.[cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)](_this));
+			[end if]
+		[end loop]
+		[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
+			[if(!(prop.Type is MetaCollectionType))]
+		_this.[prop.CSharpName(model, PropertyKind.Builder)]Lazy = () => this.[cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)](_this);
+			[else]
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy(() => [Properties.CoreNs].LazyValue.CreateMulti(this.[cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)](_this)));
+			[end if]
+		[end loop]
 	}
 ^
 	/// <summary>
@@ -638,19 +657,20 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	[end loop]
 	}
 	^
-	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate([cls.CSharpName(model, ClassKind.Builder)] _this, global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
-	{
-	}
+	[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly || prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
+	/// <summary>
+	/// Calculates the initial value of the property: [cls.CSharpName(model, ClassKind.Immutable)].[prop.CSharpName(model)]
+	/// </summary	public abstract [prop.Type.CSharpName(model, ClassKind.Builder, true)] [cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)]([cls.CSharpName(model, ClassKind.Builder)] _this);
+	[end loop]
+	^
+	public abstract void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate([cls.CSharpName(model, ClassKind.Builder)] _this, global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics);
 	^
 	[loop(cls->op:Operations)]
 	^
 	/// <summary>
 	/// Implements the operation: [cls.CSharpName(model, ClassKind.Immutable)].[op.Name]()
 	/// </summary>
-	public virtual [op.ReturnType.CSharpName(model, ClassKind.Immutable, true)] [cls.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, cls, op)])
-	{
-		throw new NotImplementedException();
-	}
+	public abstract [op.ReturnType.CSharpName(model, ClassKind.Immutable, true)] [cls.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, cls, op)]);
 	[end loop]
 	^
 	[end loop]
@@ -660,10 +680,7 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	/// <summary>
 	/// Implements the operation: [enm.CSharpName(model, ClassKind.Immutable)].[op.Name]
 	/// </summary>
-	public virtual [op.ReturnType.CSharpName(model, ClassKind.Immutable, true)] [enm.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, enm, op)])
-	{
-		throw new NotImplementedException();
-	}
+	public abstract [op.ReturnType.CSharpName(model, ClassKind.Immutable, true)] [enm.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, enm, op)]);
 	[end loop]
 	^
 	[end loop]
@@ -956,6 +973,11 @@ internal class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [Properties.Co
 	string [Properties.CoreNs].IMetaModel.Uri => "[model.Uri]";
 	[Properties.CoreNs].IModelGroup [Properties.CoreNs].IModel.ModelGroup => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.ModelGroup;
 	string [Properties.CoreNs].IMetaModel.Namespace => "[model.Namespace.CSharpName(NamespaceKind.Public, true)]";
+^
+	public [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
+	{
+		return new [model.CSharpName(ModelKind.Factory)](model, flags);
+	}
 	[end if]
 }
 end template
@@ -992,7 +1014,7 @@ template GenerateImmutableOperationImpl(MetaModel model, MetaClass cls, MetaOper
 ^
 [op.ReturnType.CSharpName(model, ClassKind.Immutable, true)] [op.Parent.CSharpName(model, ClassKind.Immutable, true)].[op.Name]([GetClassParameters(model, (MetaClass)op.Parent, op)])
 {
-    [GetReturn(model, op)][model.CSharpName(ModelKind.ImplementationProvider, true)].Implementation.[op.Parent.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetClassImplCallParameterNames(model, op)]);
+    [GetReturn(model, op)][model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[op.Parent.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetClassImplCallParameterNames(model, op)]);
 }
 end template
 
@@ -1064,6 +1086,11 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 	string [Properties.CoreNs].IMetaModel.Uri => "[model.Uri]";
 	[Properties.CoreNs].IModelGroup [Properties.CoreNs].IModel.ModelGroup => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.ModelGroup;
 	string [Properties.CoreNs].IMetaModel.Namespace => "[model.Namespace.CSharpName(NamespaceKind.Public, true)]";
+^
+	public [Properties.CoreNs].IModelFactory CreateFactory([Properties.CoreNs].MutableModel model, [Properties.CoreNs].ModelFactoryFlags flags = [Properties.CoreNs].ModelFactoryFlags.None)
+	{
+		return new [model.CSharpName(ModelKind.Factory)](model, flags);
+	}
 	[end if]
 }
 end template

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MetaDslx.Modeling
 {
-    public abstract class ModelFactoryBase
+    public abstract class ModelFactoryBase : IModelFactory
     {
         private MutableModel model;
         private ModelFactoryFlags flags;
