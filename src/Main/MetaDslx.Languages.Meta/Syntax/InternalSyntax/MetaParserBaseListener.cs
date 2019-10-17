@@ -351,6 +351,19 @@ public partial class MetaParserBaseListener : IMetaParserListener {
 	public virtual void ExitFieldModifier([NotNull] MetaParser.FieldModifierContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.defaultValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDefaultValue([NotNull] MetaParser.DefaultValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.defaultValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDefaultValue([NotNull] MetaParser.DefaultValueContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.redefinitionsOrSubsettings"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

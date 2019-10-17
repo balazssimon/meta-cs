@@ -67,7 +67,7 @@ classMemberDeclaration
 	;
 
                         
-fieldDeclaration : attribute*                 fieldModifier?                 typeReference name redefinitionsOrSubsettings* TSemicolon;
+fieldDeclaration : attribute*                 fieldModifier?                 typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
 fieldModifier 
 	:                                      KContainment 
 	|                                   KReadonly 
@@ -75,6 +75,8 @@ fieldModifier
 	|                                  KDerived
 	|                                       KUnion
 	;
+                       
+defaultValue : TAssign        stringLiteral;
 
 redefinitionsOrSubsettings : redefinitions | subsettings;
 redefinitions : KRedefines                                nameUseList?;
@@ -133,7 +135,7 @@ collectionKind
 	;
 	
                          
-operationDeclaration : attribute* KBuilder? KStatic?                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute*                                      KBuilder? KStatic?                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
 
 parameterList : parameter (TComma parameter)*;
 

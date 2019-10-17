@@ -627,18 +627,26 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]([cls.CSharpName(model, ClassKind.Builder)] _this)
 	{
 		this.Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors(_this);
-		[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly)]
-			[if(!(prop.Type is MetaCollectionType))]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)] = this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)](_this);
-			[else]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRange(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)](_this));
-			[end if]
-		[end loop]
-		[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
-			[if(!(prop.Type is MetaCollectionType))]
+		[loop(cls->prop:Properties)]
+			[if (prop.DefaultValue != null)]
+					[if(!(prop.Type is MetaCollectionType))]
+		_this.[prop.CSharpName(model, PropertyKind.Builder)] = [prop.DefaultValue];
+					[else]
+		// ERROR: default value for collection
+		// _this.[prop.CSharpName(model, PropertyKind.Builder)] = [prop.DefaultValue];
+					[end if]
+			[else if (prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
+				[if(!(prop.Type is MetaCollectionType))]
 		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
-			[else]
+				[else]
 		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy<[cls.CSharpName(model, ClassKind.Builder)]>(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
+				[end if]
+			[else if (prop.Kind == MetaPropertyKind.Readonly)]
+				[if(!(prop.Type is MetaCollectionType))]
+		_this.[prop.CSharpName(model, PropertyKind.Builder)] = this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)](_this);
+				[else]
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRange(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)](_this));
+				[end if]
 			[end if]
 		[end loop]
 	}

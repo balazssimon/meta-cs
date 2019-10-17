@@ -1622,6 +1622,20 @@ namespace MetaDslx.Languages.Meta.Binding
 						this.Visit(node.Name, childBoundNodes);
 					}
 				}
+				if (node.DefaultValue != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.DefaultValue))
+						{
+							this.Visit(node.DefaultValue, childBoundNodes);
+						}
+					}
+					else
+					{
+						this.Visit(node.DefaultValue, childBoundNodes);
+					}
+				}
 				if (node.RedefinitionsOrSubsettings != null)
 				{
 					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.RedefinitionsOrSubsettings.Node))
@@ -1718,6 +1732,72 @@ namespace MetaDslx.Languages.Meta.Binding
 				}
 				else
 				{
+					return null;
+				}
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public BoundNode VisitDefaultValue(DefaultValueSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			if (node == null || node.IsMissing) return null;
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild)
+				{
+					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+					{
+						childBoundNodesForParent.Add(cachedBoundNode);
+						return cachedBoundNode;
+					}
+					else
+					{
+						childBoundNodesForParent.Add(node);
+						return null;
+					}
+				}
+				var childBoundNodes = ArrayBuilder<object>.GetInstance();
+				if (node.StringLiteral != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.StringLiteral))
+						{
+							var childBoundNodesOfStringLiteral = ArrayBuilder<object>.GetInstance();
+							this.Visit(node.StringLiteral, childBoundNodesOfStringLiteral);
+							BoundNode boundStringLiteral;
+							boundStringLiteral = this.CreateBoundValue(this.BoundTree, childBoundNodesOfStringLiteral.ToImmutableAndFree(), syntax: node.StringLiteral, hasErrors: false);
+							childBoundNodes.Add(boundStringLiteral);
+						}
+					}
+					else
+					{
+						childBoundNodes.Add(node.StringLiteral);
+					}
+				}
+				if (state == BoundNodeFactoryState.InParent)
+				{
+					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
+					if (childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode) return (BoundNode)childBoundNodes[0];
+					else return null;
+				}
+				else if (state == BoundNodeFactoryState.InNode)
+				{
+					BoundNode resultNode;
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "DefaultValue", syntax: node, hasErrors: false);
+					childBoundNodesForParent.Add(resultNode); 
+					return resultNode;
+				}
+				else
+				{
+					Debug.Assert(false);
+					childBoundNodesForParent.Add(node);
 					return null;
 				}
 			}
@@ -2799,6 +2879,15 @@ namespace MetaDslx.Languages.Meta.Binding
 								this.Visit(item, childBoundNodes);
 							}
 						}
+					}
+				}
+				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KBuilder)))
+				{
+					if (node.KBuilder.GetKind() == MetaSyntaxKind.KBuilder)
+					{
+						BoundNode boundKBuilder;
+						boundKBuilder = this.CreateBoundProperty(this.BoundTree, ImmutableArray<object>.Empty, name: "IsBuilder", value: true, syntax: node, hasErrors: false);
+						childBoundNodes.Add(boundKBuilder);
 					}
 				}
 				if (node.ReturnType != null)

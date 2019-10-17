@@ -441,6 +441,7 @@ namespace MetaDslx.Languages.Meta.Binding
 					this.EndProperty();
 				}
 				this.Visit(node.Name);
+				this.Visit(node.DefaultValue);
 				if (node.RedefinitionsOrSubsettings != null)
 				{
 					foreach (var child in node.RedefinitionsOrSubsettings)
@@ -471,6 +472,19 @@ namespace MetaDslx.Languages.Meta.Binding
 					break;
 				default:
 					break;
+			}
+		}
+		
+		public virtual void VisitDefaultValue(DefaultValueSyntax node)
+		{
+			this.BeginProperty(node, name: "DefaultValue");
+			try
+			{
+				this.Visit(node.StringLiteral);
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
@@ -711,6 +725,11 @@ namespace MetaDslx.Languages.Meta.Binding
 					{
 						this.Visit(child);
 					}
+				}
+				switch (node.KBuilder.GetKind().Switch())
+				{
+					default:
+						break;
 				}
 				this.BeginProperty(node.ReturnType, name: "ReturnType");
 				try

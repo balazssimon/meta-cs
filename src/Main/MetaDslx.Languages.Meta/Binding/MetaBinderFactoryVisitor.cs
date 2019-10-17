@@ -44,6 +44,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseKList = new object();
 		public static object UseKMultiSet = new object();
 		public static object UseKMultiList = new object();
+		public static object UseKBuilder = new object();
 		public static object UseReturnType = new object();
 		public static object UseParameterList = new object();
 		public static object UseSource = new object();
@@ -65,6 +66,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseEnumValue = new object();
 		public static object Use = new object();
 		public static object UseClassBody = new object();
+		public static object UseDefaultValue = new object();
 		public static object UseVoidType = new object();
 		public static object UseCollectionType = new object();
 		public static object UseObjectType = new object();
@@ -594,6 +596,32 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitDefaultValue(DefaultValueSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.StringLiteral)) use = UseStringLiteral;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "DefaultValue");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseStringLiteral)
+				{
+					resultBinder = this.CreateValueBinder(resultBinder, parent.StringLiteral);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitRedefinitionsOrSubsettings(RedefinitionsOrSubsettingsSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -922,6 +950,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			object use = null;
 			if (this.ForChild)
 			{
+				if (LookupPosition.IsInNode(this.Position, parent.KBuilder)) use = UseKBuilder;
 				if (LookupPosition.IsInNode(this.Position, parent.ReturnType)) use = UseReturnType;
 				if (LookupPosition.IsInNode(this.Position, parent.ParameterList)) use = UseParameterList;
 			}
@@ -931,6 +960,11 @@ namespace MetaDslx.Languages.Meta.Binding
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(MetaOperation));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseKBuilder)
+				{
+					resultBinder = this.CreatePropertyBinder(resultBinder, parent.KBuilder, name: "IsBuilder", value: true);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
 				if (use == UseReturnType)
 				{
 					resultBinder = this.CreatePropertyBinder(resultBinder, parent.ReturnType, name: "ReturnType");

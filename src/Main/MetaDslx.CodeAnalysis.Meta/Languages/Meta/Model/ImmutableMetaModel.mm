@@ -148,7 +148,7 @@
 	class MetaOperation : MetaNamedElement
 	{
 		MetaType Parent;
-		bool IsBuilder;
+		bool IsBuilder = "false";
 		containment list<MetaParameter> Parameters;
 		MetaType ReturnType;
 	}
@@ -177,6 +177,7 @@
 	{
 		MetaPropertyKind Kind;
 		MetaClass Class;
+		string DefaultValue;
 		list<MetaProperty> OppositeProperties;
 		list<MetaProperty> SubsettedProperties;
 		list<MetaProperty> SubsettingProperties;

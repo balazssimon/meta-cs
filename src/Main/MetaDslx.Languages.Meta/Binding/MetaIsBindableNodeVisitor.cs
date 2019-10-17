@@ -1033,6 +1033,20 @@ namespace MetaDslx.Languages.Meta.Binding
 						if (this.Visit(node.Name)) return true;
 					}
 				}
+				if (node.DefaultValue != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.DefaultValue))
+						{
+							if (this.Visit(node.DefaultValue)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.DefaultValue)) return true;
+					}
+				}
 				if (node.RedefinitionsOrSubsettings != null)
 				{
 					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.RedefinitionsOrSubsettings.Node))
@@ -1072,6 +1086,40 @@ namespace MetaDslx.Languages.Meta.Binding
 						case MetaSyntaxKind.KDerived:
 						case MetaSyntaxKind.KUnion:
 							return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitDefaultValue(DefaultValueSyntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				if (node.StringLiteral != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.StringLiteral))
+						{
+							return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.StringLiteral)) return true;
 					}
 				}
 				return false;
@@ -1699,6 +1747,13 @@ namespace MetaDslx.Languages.Meta.Binding
 								if (this.Visit(item)) return true;
 							}
 						}
+					}
+				}
+				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KBuilder)))
+				{
+					if (node.KBuilder.GetKind() == MetaSyntaxKind.KBuilder)
+					{
+						return true;
 					}
 				}
 				if (node.ReturnType != null)

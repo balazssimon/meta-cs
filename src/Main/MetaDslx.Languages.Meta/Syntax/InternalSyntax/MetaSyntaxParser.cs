@@ -627,6 +627,16 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					name = NameGreen.__Missing;
 				}
+				MetaParser.DefaultValueContext defaultValueContext = context.defaultValue();
+				DefaultValueGreen defaultValue = null;
+				if (defaultValueContext != null)
+				{
+					defaultValue = (DefaultValueGreen)this.Visit(defaultValueContext);
+				}
+				else
+				{
+					defaultValue = DefaultValueGreen.__Missing;
+				}
 			    MetaParser.RedefinitionsOrSubsettingsContext[] redefinitionsOrSubsettingsContext = context.redefinitionsOrSubsettings();
 			    var redefinitionsOrSubsettingsBuilder = _pool.Allocate<RedefinitionsOrSubsettingsGreen>();
 			    for (int i = 0; i < redefinitionsOrSubsettingsContext.Length; i++)
@@ -636,7 +646,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				var redefinitionsOrSubsettings = redefinitionsOrSubsettingsBuilder.ToList();
 				_pool.Free(redefinitionsOrSubsettingsBuilder);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.FieldDeclaration(attribute, fieldModifier, typeReference, name, redefinitionsOrSubsettings, tSemicolon);
+				return this.factory.FieldDeclaration(attribute, fieldModifier, typeReference, name, defaultValue, redefinitionsOrSubsettings, tSemicolon);
 			}
 			
 			public override GreenNode VisitFieldModifier(MetaParser.FieldModifierContext context)
@@ -668,6 +678,23 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 					fieldModifier = this.factory.MissingToken(SyntaxKind.MissingToken);
 				}
 				return this.factory.FieldModifier(fieldModifier);
+			}
+			
+			public override GreenNode VisitDefaultValue(MetaParser.DefaultValueContext context)
+			{
+				if (context == null) return DefaultValueGreen.__Missing;
+				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), MetaSyntaxKind.TAssign);
+				MetaParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
+				StringLiteralGreen stringLiteral = null;
+				if (stringLiteralContext != null)
+				{
+					stringLiteral = (StringLiteralGreen)this.Visit(stringLiteralContext);
+				}
+				else
+				{
+					stringLiteral = StringLiteralGreen.__Missing;
+				}
+				return this.factory.DefaultValue(tAssign, stringLiteral);
 			}
 			
 			public override GreenNode VisitRedefinitionsOrSubsettings(MetaParser.RedefinitionsOrSubsettingsContext context)

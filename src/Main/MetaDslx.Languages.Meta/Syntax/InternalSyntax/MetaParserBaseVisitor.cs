@@ -302,6 +302,17 @@ public partial class MetaParserBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	public virtual Result VisitFieldModifier([NotNull] MetaParser.FieldModifierContext context) { return VisitChildren(context); }
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.defaultValue"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitDefaultValue([NotNull] MetaParser.DefaultValueContext context) { return VisitChildren(context); }
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.redefinitionsOrSubsettings"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>

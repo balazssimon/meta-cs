@@ -49,6 +49,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string ClassMemberDeclaration = nameof(ClassMemberDeclaration);
 		public const string FieldDeclaration = nameof(FieldDeclaration);
 		public const string FieldModifier = nameof(FieldModifier);
+		public const string DefaultValue = nameof(DefaultValue);
 		public const string RedefinitionsOrSubsettings = nameof(RedefinitionsOrSubsettings);
 		public const string Redefinitions = nameof(Redefinitions);
 		public const string Subsettings = nameof(Subsettings);
