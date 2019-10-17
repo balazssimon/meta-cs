@@ -227,115 +227,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             return ImmutableModelList<MetaOperation>.CreateUnique(result);
         }
 
-        public override void MetaElement_MValidate(MetaElementBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaDocumentedElement_MValidate(MetaDocumentedElementBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaNamedElement_MValidate(MetaNamedElementBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaTypedElement_MValidate(MetaTypedElementBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaType_MValidate(MetaTypeBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaNamedType_MValidate(MetaNamedTypeBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaAttribute_MValidate(MetaAttributeBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override MetaModelBuilder MetaDeclaration_CalculateProperty_MetaModel(MetaDeclarationBuilder _this)
+        public override MetaModelBuilder MetaDeclaration_ComputeProperty_MetaModel(MetaDeclarationBuilder _this)
         {
             return _this.Namespace?.DefinedMetaModel;
         }
 
-        public override string MetaDeclaration_CalculateProperty_FullName(MetaDeclarationBuilder _this)
+        public override string MetaDeclaration_ComputeProperty_FullName(MetaDeclarationBuilder _this)
         {
             return _this.Namespace != null ? _this.Namespace.FullName + "." + _this.Name : _this.Name;
         }
 
-        public override void MetaDeclaration_MValidate(MetaDeclarationBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaNamespace_MValidate(MetaNamespaceBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaModel_MValidate(MetaModelBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaCollectionType_MValidate(MetaCollectionTypeBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaNullableType_MValidate(MetaNullableTypeBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaPrimitiveType_MValidate(MetaPrimitiveTypeBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaEnum_MValidate(MetaEnumBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaEnumLiteral_MValidate(MetaEnumLiteralBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaConstant_MValidate(MetaConstantBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaClass_MValidate(MetaClassBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaOperation_MValidate(MetaOperationBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaParameter_MValidate(MetaParameterBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
-
-        public override void MetaProperty_MValidate(MetaPropertyBuilder _this, DiagnosticBag diagnostics)
-        {
-            
-        }
     }
     //*/
 }

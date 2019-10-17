@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MetaDslx.Modeling;
 
 namespace MetaDslx.Languages.Mof.Model.Internal
 {
@@ -25,7 +26,76 @@ namespace MetaDslx.Languages.Mof.Model.Internal
         {
             base.MultiplicityElement(_this);
             _this.IsUnique = true;
-            _this.UpperLazy = () => ((LiteralUnlimitedNaturalBuilder)_this.UpperValue)?.Value ?? 1;
+        }
+
+        public override string NamedElement_ComputeProperty_QualifiedName(NamedElementBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override NamespaceBuilder NamedElement_ComputeProperty_MemberNamespace(NamedElementBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override MutableModelList<NamedElementBuilder> Namespace_ComputeProperty_Member(NamespaceBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override MutableModelList<ClassBuilder> Class_ComputeProperty_SuperClass(ClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long MultiplicityElement_ComputeProperty_Lower(MultiplicityElementBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long MultiplicityElement_ComputeProperty_Upper(MultiplicityElementBuilder _this)
+        {
+            return ((LiteralUnlimitedNaturalBuilder)_this.UpperValue)?.Value ?? 1;
+        }
+
+        public override PropertyBuilder Property_ComputeProperty_Opposite(PropertyBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string Property_ComputeProperty_Default(PropertyBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Property_ComputeProperty_IsComposite(PropertyBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override MutableModelList<ElementBuilder> Relationship_ComputeProperty_RelatedElement(RelationshipBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Operation_ComputeProperty_IsOrdered(OperationBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Operation_ComputeProperty_IsUnique(OperationBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long Operation_ComputeProperty_Lower(OperationBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long Operation_ComputeProperty_Upper(OperationBuilder _this)
+        {
+            throw new NotImplementedException();
         }
     }
 }

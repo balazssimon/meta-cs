@@ -82,14 +82,18 @@ namespace MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Model
         public override void Declaration(DeclarationBuilder _this)
         {
             base.Declaration(_this);
-            _this.FullNameLazy =
-                () =>
-                {
-                    if (_this.Namespace == null) return _this.Name;
-                    else return _this.Namespace.FullName + "." + _this.Name;
-                };
         }
 
+        public override ImmutableModelList<string> DocumentedElement_GetDocumentationLines(DocumentedElement _this)
+        {
+            return ImmutableModelList<string>.Empty;
+        }
+
+        public override string Declaration_ComputeProperty_FullName(DeclarationBuilder _this)
+        {
+            if (_this.Namespace == null) return _this.Name;
+            else return _this.Namespace.FullName + "." + _this.Name;
+        }
     }
 
 }

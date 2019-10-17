@@ -629,16 +629,16 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 		this.Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors(_this);
 		[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly)]
 			[if(!(prop.Type is MetaCollectionType))]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)] = this.[cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)](_this);
+		_this.[prop.CSharpName(model, PropertyKind.Builder)] = this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)](_this);
 			[else]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRange(this.[cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)](_this));
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRange(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)](_this));
 			[end if]
 		[end loop]
 		[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
 			[if(!(prop.Type is MetaCollectionType))]
-		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)]);
+		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
 			[else]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)]);
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy<[cls.CSharpName(model, ClassKind.Builder)]>(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
 			[end if]
 		[end loop]
 	}
@@ -659,9 +659,9 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	^
 	[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly || prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
 	/// <summary>
-	/// Calculates the value of the property: [cls.CSharpName(model, ClassKind.Immutable)].[prop.CSharpName(model)]
+	/// Computes the value of the property: [cls.CSharpName(model, ClassKind.Immutable)].[prop.CSharpName(model)]
 	/// </summary	
-	public abstract [prop.Type.CSharpName(model, ClassKind.Builder, true)] [cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)]([cls.CSharpName(model, ClassKind.Builder)] _this);
+	public abstract [prop.Type.CSharpName(model, ClassKind.Builder, true)] [cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]([cls.CSharpName(model, ClassKind.Builder)] _this);
 	[end loop]
 	^
 	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate([cls.CSharpName(model, ClassKind.Builder)] _this, global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)

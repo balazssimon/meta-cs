@@ -50,10 +50,25 @@ namespace MetaDslx.Modeling
         {
             this.AddLazy(LazyValue.Create(item));
         }
+        public void AddLazy<TContext>(Func<TContext, T> item)
+            where TContext: MutableObject
+        {
+            this.AddLazy(LazyValue.Create(item));
+        }
         public void AddRangeLazy(IEnumerable<Func<T>> items)
         {
             this.AddRangeLazy(items.Select(f => LazyValue.Create(f)));
         }
+        public void AddRangeLazy(Func<IEnumerable<T>> items)
+        {
+            this.AddLazy(LazyValue.CreateMulti(items));
+        }
+        public void AddRangeLazy<TContext>(Func<TContext, IEnumerable<T>> items)
+            where TContext : MutableObject
+        {
+            this.AddLazy(LazyValue.CreateMulti(items));
+        }
+
 
         IEnumerator IEnumerable.GetEnumerator()
         {
