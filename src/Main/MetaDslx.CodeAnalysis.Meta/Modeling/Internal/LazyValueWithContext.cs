@@ -39,7 +39,7 @@ namespace MetaDslx.Modeling.Internal
         }
     }
 
-    internal abstract class LazyValueWithContext<TImmutableContext, TMutableContext, T> : LazyValue<T>
+    internal abstract class LazyValueWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable> : LazyValue
         where TImmutableContext : ImmutableObject
         where TMutableContext : MutableObject
     {

@@ -262,12 +262,12 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             
         }
 
-        public override MetaModelBuilder MetaDeclaration_InitProperty_MetaModel(MetaDeclarationBuilder _this)
+        public override MetaModelBuilder MetaDeclaration_CalculateProperty_MetaModel(MetaDeclarationBuilder _this)
         {
             return _this.Namespace?.DefinedMetaModel;
         }
 
-        public override string MetaDeclaration_InitProperty_FullName(MetaDeclarationBuilder _this)
+        public override string MetaDeclaration_CalculateProperty_FullName(MetaDeclarationBuilder _this)
         {
             return _this.Namespace != null ? _this.Namespace.FullName + "." + _this.Name : _this.Name;
         }

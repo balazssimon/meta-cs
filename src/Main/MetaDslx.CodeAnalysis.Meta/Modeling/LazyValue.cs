@@ -107,18 +107,18 @@ namespace MetaDslx.Modeling
             return lazy.Select(l => Create(l, location));
         }
 
-        public static LazyValue<T> Create<TImmutableContext, TMutableContext, T>(Func<TImmutableContext, T> immutableLazy, Func<TMutableContext, T> mutableLazy, Location location = null)
+        public static LazyValue Create<TImmutableContext, TMutableContext, TImmutable, TMutable>(Func<TImmutableContext, TImmutable> immutableLazy, Func<TMutableContext, TMutable> mutableLazy, Location location = null)
             where TImmutableContext : ImmutableObject
             where TMutableContext : MutableObject
         {
-            return object.ReferenceEquals(location, null) ? new SingleLazyValueWithContext<TImmutableContext, TMutableContext, T>(immutableLazy, mutableLazy) : new SingleLazyValueWithContextAndLocation<TImmutableContext, TMutableContext, T>(immutableLazy, mutableLazy, location);
+            return object.ReferenceEquals(location, null) ? new SingleLazyValueWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy) : new SingleLazyValueWithContextAndLocation<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy, location);
         }
 
-        public static LazyValue<T> CreateMulti<TImmutableContext, TMutableContext, T>(Func<TImmutableContext, IEnumerable<T>> immutableLazy, Func<TMutableContext, IEnumerable<T>> mutableLazy, Location location = null)
+        public static LazyValue CreateMulti<TImmutableContext, TMutableContext, TImmutable, TMutable>(Func<TImmutableContext, IEnumerable<TImmutable>> immutableLazy, Func<TMutableContext, IEnumerable<TMutable>> mutableLazy, Location location = null)
             where TImmutableContext : ImmutableObject
             where TMutableContext : MutableObject
         {
-            return object.ReferenceEquals(location, null) ? new MultipleLazyValuesWithContext<TImmutableContext, TMutableContext, T>(immutableLazy, mutableLazy) : new MultipleLazyValuesWithContextAndLocation<TImmutableContext, TMutableContext, T>(immutableLazy, mutableLazy, location);
+            return object.ReferenceEquals(location, null) ? new MultipleLazyValuesWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy) : new MultipleLazyValuesWithContextAndLocation<TImmutableContext, TMutableContext, TImmutable, TMutable>(immutableLazy, mutableLazy, location);
         }
     }
 

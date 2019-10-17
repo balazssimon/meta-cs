@@ -22,13 +22,13 @@ namespace MetaDslx.Modeling.Internal
         }
     }
 
-    internal class SingleLazyValueWithContextAndLocation<TImmutableContext, TMutableContext, T> : SingleLazyValueWithContext<TImmutableContext, TMutableContext, T>
+    internal class SingleLazyValueWithContextAndLocation<TImmutableContext, TMutableContext, TImmutable, TMutable> : SingleLazyValueWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable>
         where TImmutableContext : ImmutableObject
         where TMutableContext : MutableObject
     {
         private Location location;
 
-        internal SingleLazyValueWithContextAndLocation(Func<TImmutableContext, T> immutableLazy, Func<TMutableContext, T> mutableLazy, Location location)
+        internal SingleLazyValueWithContextAndLocation(Func<TImmutableContext, TImmutable> immutableLazy, Func<TMutableContext, TMutable> mutableLazy, Location location)
             : base(immutableLazy, mutableLazy)
         {
             this.location = location;

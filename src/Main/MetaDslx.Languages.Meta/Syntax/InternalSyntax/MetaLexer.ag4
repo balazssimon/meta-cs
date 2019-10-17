@@ -60,6 +60,7 @@ KSynthetized : 'synthetized';
 KInherited : 'inherited';
 KDerived : 'derived';
 KUnion : 'union';
+KBuilder : 'builder';
 KStatic : 'static';
 
 // Tokens

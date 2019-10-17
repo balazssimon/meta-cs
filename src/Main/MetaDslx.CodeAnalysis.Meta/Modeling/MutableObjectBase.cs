@@ -292,7 +292,39 @@ namespace MetaDslx.Modeling
         protected void SetLazyValue<T>(ModelProperty property, Func<T> value)
             where T : struct
         {
-            this.model.SetLazyValue(this.id, property, LazyValue.Create((Func<object>)(() => value())), this.creating);
+            this.model.SetLazyValue(this.id, property, LazyValue.Create(value), this.creating);
+        }
+
+        protected void SetLazyValue<TContext, T>(ModelProperty property, Func<TContext, T> value)
+            where TContext : IModelObject
+            where T : struct
+        {
+            this.model.SetLazyValue(this.id, property, LazyValue.Create(value), this.creating);
+        }
+
+        protected void SetLazyValue<TContext, T>(ModelProperty property, Func<TContext, IEnumerable<T>> value)
+            where TContext : IModelObject
+            where T : struct
+        {
+            this.model.SetLazyValue(this.id, property, LazyValue.CreateMulti(value), this.creating);
+        }
+
+        protected void SetLazyValue<TImmutableContext, TMutableContext, TImmutable, TMutable>(ModelProperty property, Func<TImmutableContext, TImmutable> immutableValue, Func<TMutableContext, TMutable> mutableValue)
+            where TImmutableContext : ImmutableObject
+            where TMutableContext : MutableObject
+            where TImmutable : struct
+            where TMutable : struct
+        {
+            this.model.SetLazyValue(this.id, property, LazyValue.Create(immutableValue, mutableValue), this.creating);
+        }
+
+        protected void SetLazyValue<TImmutableContext, TMutableContext, TImmutable, TMutable>(ModelProperty property, Func<TImmutableContext, IEnumerable<TImmutable>> immutableValue, Func<TMutableContext, IEnumerable<TMutable>> mutableValue)
+            where TImmutableContext : ImmutableObject
+            where TMutableContext : MutableObject
+            where TImmutable : struct
+            where TMutable : struct
+        {
+            this.model.SetLazyValue(this.id, property, LazyValue.CreateMulti(immutableValue, mutableValue), this.creating);
         }
 
         protected Func<T> GetLazyReference<T>(ModelProperty property)
@@ -305,6 +337,38 @@ namespace MetaDslx.Modeling
             where T : class
         {
             this.model.SetLazyValue(this.id, property, LazyValue.Create(value), this.creating);
+        }
+
+        protected void SetLazyReference<TContext, T>(ModelProperty property, Func<TContext, T> value)
+            where TContext : IModelObject
+            where T : class
+        {
+            this.model.SetLazyValue(this.id, property, LazyValue.Create(value), this.creating);
+        }
+
+        protected void SetLazyReference<TContext, T>(ModelProperty property, Func<TContext, IEnumerable<T>> value)
+            where TContext : IModelObject
+            where T : class
+        {
+            this.model.SetLazyValue(this.id, property, LazyValue.CreateMulti(value), this.creating);
+        }
+
+        protected void SetLazyReference<TImmutableContext, TMutableContext, TImmutable, TMutable>(ModelProperty property, Func<TImmutableContext, TImmutable> immutableValue, Func<TMutableContext, TMutable> mutableValue)
+            where TImmutableContext : ImmutableObject
+            where TMutableContext : MutableObject
+            where TImmutable : class
+            where TMutable : class
+        {
+            this.model.SetLazyValue(this.id, property, LazyValue.Create(immutableValue, mutableValue), this.creating);
+        }
+
+        protected void SetLazyReference<TImmutableContext, TMutableContext, TImmutable, TMutable>(ModelProperty property, Func<TImmutableContext, IEnumerable<TImmutable>> immutableValue, Func<TMutableContext, IEnumerable<TMutable>> mutableValue)
+            where TImmutableContext : ImmutableObject
+            where TMutableContext : MutableObject
+            where TImmutable : class
+            where TMutable : class
+        {
+            this.model.SetLazyValue(this.id, property, LazyValue.CreateMulti(immutableValue, mutableValue), this.creating);
         }
 
         protected MutableModelSet<T> GetSet<T>(ModelProperty property, ref MutableModelSet<T> value)

@@ -26,14 +26,14 @@ namespace MetaDslx.Modeling.Internal
         }
     }
 
-    internal class MultipleLazyValuesWithContext<TImmutableContext, TMutableContext, T> : LazyValueWithContext<TImmutableContext, TMutableContext, T>
+    internal class MultipleLazyValuesWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable> : LazyValueWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable>
         where TImmutableContext : ImmutableObject
         where TMutableContext : MutableObject
     {
-        private Func<TImmutableContext, IEnumerable<T>> immutableLazy;
-        private Func<TMutableContext, IEnumerable<T>> mutableLazy;
+        private Func<TImmutableContext, IEnumerable<TImmutable>> immutableLazy;
+        private Func<TMutableContext, IEnumerable<TMutable>> mutableLazy;
 
-        internal MultipleLazyValuesWithContext(Func<TImmutableContext, IEnumerable<T>> immutableLazy, Func<TMutableContext, IEnumerable<T>> mutableLazy)
+        internal MultipleLazyValuesWithContext(Func<TImmutableContext, IEnumerable<TImmutable>> immutableLazy, Func<TMutableContext, IEnumerable<TMutable>> mutableLazy)
         {
             this.immutableLazy = immutableLazy;
             this.mutableLazy = mutableLazy;
@@ -43,17 +43,17 @@ namespace MetaDslx.Modeling.Internal
 
         internal override object LazyConstructor => this.mutableLazy;
 
-        internal protected override T[] CreateTypedRedValues(IModel model, ObjectId context)
+        internal protected override object[] CreateRedValues(IModel model, ObjectId context)
         {
             if (model is MutableModel mutableM)
             {
                 var redContext = mutableM.ResolveObject(context);
-                return this.mutableLazy((TMutableContext)redContext).ToArray();
+                return Array.ConvertAll(this.mutableLazy((TMutableContext)redContext).ToArray(), item => (object)item);
             }
             else if (model is ImmutableModel immutableM)
             {
                 var redContext = immutableM.ResolveObject(context);
-                return this.immutableLazy((TImmutableContext)redContext).ToArray();
+                return Array.ConvertAll(this.immutableLazy((TImmutableContext)redContext).ToArray(), item => (object)item);
             }
             Debug.Assert(false);
             return default;

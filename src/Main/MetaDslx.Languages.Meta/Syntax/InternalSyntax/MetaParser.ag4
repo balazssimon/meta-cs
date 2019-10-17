@@ -133,7 +133,7 @@ collectionKind
 	;
 	
 $SymbolDef(MetaOperation)
-operationDeclaration : attribute* KStatic? $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute* KBuilder? KStatic? $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
 
 parameterList : parameter (TComma parameter)*;
 

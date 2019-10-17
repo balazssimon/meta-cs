@@ -133,7 +133,7 @@ collectionKind
 	;
 	
                          
-operationDeclaration : attribute* KStatic?                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute* KBuilder? KStatic?                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
 
 parameterList : parameter (TComma parameter)*;
 

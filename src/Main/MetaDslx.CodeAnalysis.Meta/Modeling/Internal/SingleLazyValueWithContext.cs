@@ -23,14 +23,14 @@ namespace MetaDslx.Modeling.Internal
         }
     }
 
-    internal class SingleLazyValueWithContext<TImmutableContext, TMutableContext, T> : LazyValueWithContext<TImmutableContext, TMutableContext, T>
+    internal class SingleLazyValueWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable> : LazyValueWithContext<TImmutableContext, TMutableContext, TImmutable, TMutable>
         where TImmutableContext : ImmutableObject
         where TMutableContext : MutableObject
     {
-        private Func<TImmutableContext, T> immutableLazy;
-        private Func<TMutableContext, T> mutableLazy;
+        private Func<TImmutableContext, TImmutable> immutableLazy;
+        private Func<TMutableContext, TMutable> mutableLazy;
 
-        internal SingleLazyValueWithContext(Func<TImmutableContext, T> immutableLazy, Func<TMutableContext, T> mutableLazy)
+        internal SingleLazyValueWithContext(Func<TImmutableContext, TImmutable> immutableLazy, Func<TMutableContext, TMutable> mutableLazy)
         {
             this.immutableLazy = immutableLazy;
             this.mutableLazy = mutableLazy;
@@ -38,7 +38,7 @@ namespace MetaDslx.Modeling.Internal
 
         internal override object LazyConstructor => this.mutableLazy;
 
-        internal protected override T CreateTypedRedValue(IModel model, ObjectId context)
+        internal protected override object CreateRedValue(IModel model, ObjectId context)
         {
             if (model is MutableModel mutableM)
             {

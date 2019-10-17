@@ -5094,6 +5094,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	{
 	    internal static readonly OperationDeclarationGreen __Missing = new OperationDeclarationGreen();
 	    private GreenNode attribute;
+	    private InternalSyntaxToken kBuilder;
 	    private InternalSyntaxToken kStatic;
 	    private ReturnTypeGreen returnType;
 	    private NameGreen name;
@@ -5102,14 +5103,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    private InternalSyntaxToken tCloseParen;
 	    private InternalSyntaxToken tSemicolon;
 	
-	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kBuilder, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	        : base(kind, null, null)
 	    {
-			this.SlotCount = 8;
+			this.SlotCount = 9;
 			if (attribute != null)
 			{
 				this.AdjustFlagsAndWidth(attribute);
 				this.attribute = attribute;
+			}
+			if (kBuilder != null)
+			{
+				this.AdjustFlagsAndWidth(kBuilder);
+				this.kBuilder = kBuilder;
 			}
 			if (kStatic != null)
 			{
@@ -5148,14 +5154,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kBuilder, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			this.SlotCount = 8;
+			this.SlotCount = 9;
 			if (attribute != null)
 			{
 				this.AdjustFlagsAndWidth(attribute);
 				this.attribute = attribute;
+			}
+			if (kBuilder != null)
+			{
+				this.AdjustFlagsAndWidth(kBuilder);
+				this.kBuilder = kBuilder;
 			}
 			if (kStatic != null)
 			{
@@ -5201,6 +5212,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
+	    public InternalSyntaxToken KBuilder { get { return this.kBuilder; } }
 	    public InternalSyntaxToken KStatic { get { return this.kStatic; } }
 	    public ReturnTypeGreen ReturnType { get { return this.returnType; } }
 	    public NameGreen Name { get { return this.name; } }
@@ -5219,13 +5231,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.attribute;
-	            case 1: return this.kStatic;
-	            case 2: return this.returnType;
-	            case 3: return this.name;
-	            case 4: return this.tOpenParen;
-	            case 5: return this.parameterList;
-	            case 6: return this.tCloseParen;
-	            case 7: return this.tSemicolon;
+	            case 1: return this.kBuilder;
+	            case 2: return this.kStatic;
+	            case 3: return this.returnType;
+	            case 4: return this.name;
+	            case 5: return this.tOpenParen;
+	            case 6: return this.parameterList;
+	            case 7: return this.tCloseParen;
+	            case 8: return this.tSemicolon;
 	            default: return null;
 	        }
 	    }
@@ -5236,17 +5249,18 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.kStatic, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, diagnostics, this.GetAnnotations());
+	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.kBuilder, this.kStatic, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.kStatic, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), annotations);
+	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.kBuilder, this.kStatic, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public OperationDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+	    public OperationDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kBuilder, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
+				this.KBuilder != kBuilder ||
 				this.KStatic != kStatic ||
 				this.ReturnType != returnType ||
 				this.Name != name ||
@@ -5255,7 +5269,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.TCloseParen != tCloseParen ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(attribute, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(attribute, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -7493,9 +7507,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public OperationDeclarationGreen OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+		public OperationDeclarationGreen OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kBuilder, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	#if DEBUG
+			if (kBuilder != null && kBuilder.Kind != MetaSyntaxKind.KBuilder) throw new ArgumentException(nameof(kBuilder));
 			if (kStatic != null && kStatic.Kind != MetaSyntaxKind.KStatic) throw new ArgumentException(nameof(kStatic));
 			if (returnType == null) throw new ArgumentNullException(nameof(returnType));
 			if (name == null) throw new ArgumentNullException(nameof(name));
@@ -7506,7 +7521,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 			if (tSemicolon.Kind != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
 	#endif
-	        return new OperationDeclarationGreen(MetaSyntaxKind.OperationDeclaration, attribute.Node, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	        return new OperationDeclarationGreen(MetaSyntaxKind.OperationDeclaration, attribute.Node, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 	    }
 	
 		public ParameterListGreen ParameterList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen> parameter)

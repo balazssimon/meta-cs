@@ -4022,22 +4022,31 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return default;
 			} 
 		}
+	    public SyntaxToken KBuilder 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
+				var greenToken = green.KBuilder;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+			}
+		}
 	    public SyntaxToken KStatic 
 		{ 
 			get 
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
 				var greenToken = green.KStatic;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
 			}
 		}
 	    public ReturnTypeSyntax ReturnType 
 		{ 
-			get { return this.GetRed(ref this.returnType, 2); } 
+			get { return this.GetRed(ref this.returnType, 3); } 
 		}
 	    public NameSyntax Name 
 		{ 
-			get { return this.GetRed(ref this.name, 3); } 
+			get { return this.GetRed(ref this.name, 4); } 
 		}
 	    public SyntaxToken TOpenParen 
 		{ 
@@ -4045,12 +4054,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
 				var greenToken = green.TOpenParen;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(5), this.GetChildIndex(5));
 			}
 		}
 	    public ParameterListSyntax ParameterList 
 		{ 
-			get { return this.GetRed(ref this.parameterList, 5); } 
+			get { return this.GetRed(ref this.parameterList, 6); } 
 		}
 	    public SyntaxToken TCloseParen 
 		{ 
@@ -4058,7 +4067,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
 				var greenToken = green.TCloseParen;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(6), this.GetChildIndex(6));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(7), this.GetChildIndex(7));
 			}
 		}
 	    public SyntaxToken TSemicolon 
@@ -4067,7 +4076,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(7), this.GetChildIndex(7));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(8), this.GetChildIndex(8));
 			}
 		}
 	
@@ -4076,9 +4085,9 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        switch (index)
 	        {
 				case 0: return this.GetRed(ref this.attribute, 0);
-				case 2: return this.GetRed(ref this.returnType, 2);
-				case 3: return this.GetRed(ref this.name, 3);
-				case 5: return this.GetRed(ref this.parameterList, 5);
+				case 3: return this.GetRed(ref this.returnType, 3);
+				case 4: return this.GetRed(ref this.name, 4);
+				case 6: return this.GetRed(ref this.parameterList, 6);
 				default: return null;
 	        }
 	    }
@@ -4088,16 +4097,16 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        switch (index)
 	        {
 				case 0: return this.attribute;
-				case 2: return this.returnType;
-				case 3: return this.name;
-				case 5: return this.parameterList;
+				case 3: return this.returnType;
+				case 4: return this.name;
+				case 6: return this.parameterList;
 				default: return null;
 	        }
 	    }
 	
 	    public OperationDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Attribute, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
@@ -4105,44 +4114,50 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
+	    public OperationDeclarationSyntax WithKBuilder(SyntaxToken kBuilder)
+		{
+			return this.Update(this.Attribute, KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+		}
+	
 	    public OperationDeclarationSyntax WithKStatic(SyntaxToken kStatic)
 		{
-			return this.Update(this.Attribute, KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KBuilder, KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithReturnType(ReturnTypeSyntax returnType)
 		{
-			return this.Update(this.Attribute, this.KStatic, ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KBuilder, this.KStatic, ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Attribute, this.KStatic, this.ReturnType, Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithTOpenParen(SyntaxToken tOpenParen)
 		{
-			return this.Update(this.Attribute, this.KStatic, this.ReturnType, this.Name, TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithParameterList(ParameterListSyntax parameterList)
 		{
-			return this.Update(this.Attribute, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithTCloseParen(SyntaxToken tCloseParen)
 		{
-			return this.Update(this.Attribute, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.Attribute, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, TSemicolon);
+			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, TSemicolon);
 		}
 	
-	    public OperationDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+	    public OperationDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kBuilder, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
+				this.KBuilder != kBuilder ||
 				this.KStatic != kStatic ||
 				this.ReturnType != returnType ||
 				this.Name != name ||
@@ -4151,7 +4166,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				this.TCloseParen != tCloseParen ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationDeclaration(attribute, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationDeclaration(attribute, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -6739,6 +6754,7 @@ namespace MetaDslx.Languages.Meta
 		public virtual SyntaxNode VisitOperationDeclaration(OperationDeclarationSyntax node)
 		{
 		    var attribute = this.VisitList(node.Attribute);
+		    var kBuilder = this.VisitToken(node.KBuilder);
 		    var kStatic = this.VisitToken(node.KStatic);
 		    var returnType = (ReturnTypeSyntax)this.Visit(node.ReturnType);
 		    var name = (NameSyntax)this.Visit(node.Name);
@@ -6746,7 +6762,7 @@ namespace MetaDslx.Languages.Meta
 		    var parameterList = (ParameterListSyntax)this.Visit(node.ParameterList);
 		    var tCloseParen = this.VisitToken(node.TCloseParen);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(attribute, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+			return node.Update(attribute, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 		}
 		
 		public virtual SyntaxNode VisitParameterList(ParameterListSyntax node)
@@ -7562,8 +7578,9 @@ namespace MetaDslx.Languages.Meta
 		    return (CollectionKindSyntax)MetaLanguage.Instance.InternalSyntaxFactory.CollectionKind((InternalSyntaxToken)collectionKind.Node).CreateRed();
 		}
 		
-		public OperationDeclarationSyntax OperationDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+		public OperationDeclarationSyntax OperationDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kBuilder, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 		{
+		    if (kBuilder != null && kBuilder.GetKind() != MetaSyntaxKind.KBuilder) throw new ArgumentException(nameof(kBuilder));
 		    if (kStatic != null && kStatic.GetKind() != MetaSyntaxKind.KStatic) throw new ArgumentException(nameof(kStatic));
 		    if (returnType == null) throw new ArgumentNullException(nameof(returnType));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
@@ -7573,12 +7590,12 @@ namespace MetaDslx.Languages.Meta
 		    if (tCloseParen.GetKind() != MetaSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (OperationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kStatic.Node, (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (OperationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kBuilder.Node, (InternalSyntaxToken)kStatic.Node, (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public OperationDeclarationSyntax OperationDeclaration(ReturnTypeSyntax returnType, NameSyntax name)
 		{
-			return this.OperationDeclaration(default, default, returnType, name, this.Token(MetaSyntaxKind.TOpenParen), default, this.Token(MetaSyntaxKind.TCloseParen), this.Token(MetaSyntaxKind.TSemicolon));
+			return this.OperationDeclaration(default, default, default, returnType, name, this.Token(MetaSyntaxKind.TOpenParen), default, this.Token(MetaSyntaxKind.TCloseParen), this.Token(MetaSyntaxKind.TSemicolon));
 		}
 		
 		public ParameterListSyntax ParameterList(SeparatedSyntaxList<ParameterSyntax> parameter)

@@ -322,19 +322,19 @@ template GenerateInstancePropertyValue(MetaModel model, bool metaMetaModel, Immu
 [else if (value is Enum)]
 [name].[prop.Name] = [GetEnumValueOf(model, (Enum)value)];
 [else if (value is MetaExternalType)]
-[name].[prop.Name]Lazy = () => [((MetaExternalType)value).Name.ToPascalCase()];
+[name].Set[prop.Name]Lazy(() => [((MetaExternalType)value).Name.ToPascalCase()]);
 [else if (value is MetaPrimitiveType/* && MetaConstants.Types.Contains((MetaType)value)*/)]
 	[if (metaMetaModel)]
-[name].[prop.Name]Lazy = () => [((MetaPrimitiveType)value).Name.ToPascalCase()];
+[name].Set[prop.Name]Lazy(() => [((MetaPrimitiveType)value).Name.ToPascalCase()]);
 	[else]
-[name].[prop.Name]Lazy = () => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, true)].ToMutable();
+[name].Set[prop.Name]Lazy(() => [((MetaPrimitiveType)value).CSharpName(model, ClassKind.ImmutableInstance, true)].ToMutable());
 	[end if]
 [else if (valueObject != null && instanceNames.ContainsKey(valueObject))]
-[name].[prop.Name]Lazy = () => [instanceNames[valueObject]];
+[name].Set[prop.Name]Lazy(() => [instanceNames[valueObject]]);
 [else if (valueDecl != null && valueDecl is MetaType)]
-[name].[prop.Name]Lazy = () => [((MetaType)valueDecl).CSharpName(model, ClassKind.Immutable, true)];
+[name].Set[prop.Name]Lazy(() => [((MetaType)valueDecl).CSharpName(model, ClassKind.Immutable, true)]);
 [else if (valueDecl != null && valueDecl is MetaConstant)]
-[name].[prop.Name]Lazy = () => [((MetaConstant)valueDecl).CSharpName(model, ClassKind.Immutable, true)];
+[name].Set[prop.Name]Lazy(() => [((MetaConstant)valueDecl).CSharpName(model, ClassKind.Immutable, true)]);
 [else if (valueCollection != null)]
 	[loop(cvalue:valueCollection)]
 [GenerateInstancePropertyCollectionValue(model, metaMetaModel, obj, prop, cvalue, instanceNames)]
@@ -629,16 +629,16 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 		this.Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors(_this);
 		[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly)]
 			[if(!(prop.Type is MetaCollectionType))]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)] = this.[cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)](_this);
+		_this.[prop.CSharpName(model, PropertyKind.Builder)] = this.[cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)](_this);
 			[else]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRange(this.[cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)](_this));
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRange(this.[cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)](_this));
 			[end if]
 		[end loop]
 		[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
 			[if(!(prop.Type is MetaCollectionType))]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)]Lazy = () => this.[cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)](_this);
+		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)]);
 			[else]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy(() => [Properties.CoreNs].LazyValue.CreateMulti(this.[cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)](_this)));
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)]);
 			[end if]
 		[end loop]
 	}
@@ -659,9 +659,9 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	^
 	[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly || prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
 	/// <summary>
-	/// Calculates the initial value of the property: [cls.CSharpName(model, ClassKind.Immutable)].[prop.CSharpName(model)]
+	/// Calculates the value of the property: [cls.CSharpName(model, ClassKind.Immutable)].[prop.CSharpName(model)]
 	/// </summary	
-	public abstract [prop.Type.CSharpName(model, ClassKind.Builder, true)] [cls.CSharpName(model, ClassKind.Immutable)]_InitProperty_[prop.CSharpName(model)]([cls.CSharpName(model, ClassKind.Builder)] _this);
+	public abstract [prop.Type.CSharpName(model, ClassKind.Builder, true)] [cls.CSharpName(model, ClassKind.Immutable)]_CalculateProperty_[prop.CSharpName(model)]([cls.CSharpName(model, ClassKind.Builder)] _this);
 	[end loop]
 	^
 	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate([cls.CSharpName(model, ClassKind.Builder)] _this, global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)
@@ -930,7 +930,15 @@ new \
 		[if (prop.Class.GetAllSuperProperties(false).Any(p => p.Name == prop.Name))]
 new \
 		[end if]
-Func<[prop.Type.CSharpName(model, ClassKind.Builder, true)]> [prop.CSharpName(model, PropertyKind.Builder)]Lazy { get; set; }
+void Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(global::System.Func<[prop.Type.CSharpName(model, ClassKind.Builder, true)]> lazy);
+		[if (prop.Class.GetAllSuperProperties(false).Any(p => p.Name == prop.Name))]
+new \
+		[end if]
+void Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(global::System.Func<[prop.Class.CSharpName(model, ClassKind.Builder)], [prop.Type.CSharpName(model, ClassKind.Builder, true)]> lazy);
+		[if (prop.Class.GetAllSuperProperties(false).Any(p => p.Name == prop.Name))]
+new \
+		[end if]
+void Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(global::System.Func<[prop.Class.CSharpName(model, ClassKind.Immutable)], [prop.Type.CSharpName(model, ClassKind.Immutable, true)]> immutableLazy, global::System.Func<[prop.Class.CSharpName(model, ClassKind.Builder)], [prop.Type.CSharpName(model, ClassKind.Builder, true)]> mutableLazy);
 	[end if]
 end template
 
@@ -1177,19 +1185,30 @@ public [prop.Type.CSharpName(model, ClassKind.Builder, true)] [prop.Name]
 }
 [if(!(prop.Type is MetaCollectionType))]
 ^
-	[if (cls.GetAllFinalProperties().Contains(prop))]
-public Func<[prop.Type.CSharpName(model, ClassKind.Builder, true)]> [prop.Name]Lazy
-	[else]
-["[DebuggerBrowsable(DebuggerBrowsableState.Never)]"]
-Func<[prop.Type.CSharpName(model, ClassKind.Builder, true)]> [prop.Class.CSharpName(model, ClassKind.Builder, true)].[prop.Name]Lazy
-	[end if]
+void [prop.Class.CSharpName(model, ClassKind.Builder, true)].Set[prop.Name]Lazy(global::System.Func<[prop.Type.CSharpName(model, ClassKind.Builder, true)]> lazy)
 {
 	[if (prop.Type.IsReferenceType())]
-	get { return this.GetLazyReference<[prop.Type.CSharpName(model, ClassKind.Builder, true)]>([prop.CSharpName(null, PropertyKind.Descriptor, true)]); }
-	set { this.SetLazyReference([prop.CSharpName(model, PropertyKind.Descriptor, true)], value); }
+	this.SetLazyReference([prop.CSharpName(model, PropertyKind.Descriptor, true)], lazy);
 	[else]
-	get { return this.GetLazyValue<[prop.Type.CSharpName(model, ClassKind.Builder, true)]>([prop.CSharpName(null, PropertyKind.Descriptor, true)]); }
-	set { this.SetLazyValue([prop.CSharpName(model, PropertyKind.Descriptor, true)], value); }
+	this.SetLazyValue([prop.CSharpName(model, PropertyKind.Descriptor, true)], lazy);
+	[end if]
+}
+^
+void [prop.Class.CSharpName(model, ClassKind.Builder, true)].Set[prop.Name]Lazy(global::System.Func<[prop.Class.CSharpName(model, ClassKind.Builder, true)], [prop.Type.CSharpName(model, ClassKind.Builder, true)]> lazy)
+{
+	[if (prop.Type.IsReferenceType())]
+	this.SetLazyReference([prop.CSharpName(model, PropertyKind.Descriptor, true)], lazy);
+	[else]
+	this.SetLazyValue([prop.CSharpName(model, PropertyKind.Descriptor, true)], lazy);
+	[end if]
+}
+^
+void [prop.Class.CSharpName(model, ClassKind.Builder, true)].Set[prop.Name]Lazy(global::System.Func<[prop.Class.CSharpName(model, ClassKind.Immutable, true)], [prop.Type.CSharpName(model, ClassKind.Immutable, true)]> immutableLazy, global::System.Func<[prop.Class.CSharpName(model, ClassKind.Builder, true)], [prop.Type.CSharpName(model, ClassKind.Builder, true)]> mutableLazy)
+{
+	[if (prop.Type.IsReferenceType())]
+	this.SetLazyReference([prop.CSharpName(model, PropertyKind.Descriptor, true)], immutableLazy, mutableLazy);
+	[else]
+	this.SetLazyValue([prop.CSharpName(model, PropertyKind.Descriptor, true)], immutableLazy, mutableLazy);
 	[end if]
 }
 [end if]

@@ -1005,6 +1005,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			    }
 				var attribute = attributeBuilder.ToList();
 				_pool.Free(attributeBuilder);
+				InternalSyntaxToken kBuilder = (InternalSyntaxToken)this.VisitTerminal(context.KBuilder());
 				InternalSyntaxToken kStatic = (InternalSyntaxToken)this.VisitTerminal(context.KStatic());
 				MetaParser.ReturnTypeContext returnTypeContext = context.returnType();
 				ReturnTypeGreen returnType = null;
@@ -1039,7 +1040,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				}
 				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), MetaSyntaxKind.TCloseParen);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.OperationDeclaration(attribute, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+				return this.factory.OperationDeclaration(attribute, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 			}
 			
 			public override GreenNode VisitParameterList(MetaParser.ParameterListContext context)
