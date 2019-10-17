@@ -4098,6 +4098,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 	public sealed class OperationDeclarationSyntax : MetaSyntaxNode
 	{
 	    private SyntaxNode attribute;
+	    private SyntaxNode operationModifier;
 	    private ReturnTypeSyntax returnType;
 	    private NameSyntax name;
 	    private ParameterListSyntax parameterList;
@@ -4121,31 +4122,22 @@ namespace MetaDslx.Languages.Meta.Syntax
 				return default;
 			} 
 		}
-	    public SyntaxToken KBuilder 
+	    public SyntaxList<OperationModifierSyntax> OperationModifier 
 		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
-				var greenToken = green.KBuilder;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(1), this.GetChildIndex(1));
-			}
-		}
-	    public SyntaxToken KStatic 
-		{ 
-			get 
-			{ 
-				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
-				var greenToken = green.KStatic;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(2), this.GetChildIndex(2));
-			}
+			get
+			{
+				var red = this.GetRed(ref this.operationModifier, 1);
+				if (red != null) return new SyntaxList<OperationModifierSyntax>(red);
+				return default;
+			} 
 		}
 	    public ReturnTypeSyntax ReturnType 
 		{ 
-			get { return this.GetRed(ref this.returnType, 3); } 
+			get { return this.GetRed(ref this.returnType, 2); } 
 		}
 	    public NameSyntax Name 
 		{ 
-			get { return this.GetRed(ref this.name, 4); } 
+			get { return this.GetRed(ref this.name, 3); } 
 		}
 	    public SyntaxToken TOpenParen 
 		{ 
@@ -4153,12 +4145,12 @@ namespace MetaDslx.Languages.Meta.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
 				var greenToken = green.TOpenParen;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(5), this.GetChildIndex(5));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(4), this.GetChildIndex(4));
 			}
 		}
 	    public ParameterListSyntax ParameterList 
 		{ 
-			get { return this.GetRed(ref this.parameterList, 6); } 
+			get { return this.GetRed(ref this.parameterList, 5); } 
 		}
 	    public SyntaxToken TCloseParen 
 		{ 
@@ -4166,7 +4158,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
 				var greenToken = green.TCloseParen;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(7), this.GetChildIndex(7));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(6), this.GetChildIndex(6));
 			}
 		}
 	    public SyntaxToken TSemicolon 
@@ -4175,7 +4167,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 			{ 
 				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationDeclarationGreen)this.Green;
 				var greenToken = green.TSemicolon;
-				return new SyntaxToken(this, greenToken, this.GetChildPosition(8), this.GetChildIndex(8));
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(7), this.GetChildIndex(7));
 			}
 		}
 	
@@ -4184,9 +4176,10 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        switch (index)
 	        {
 				case 0: return this.GetRed(ref this.attribute, 0);
-				case 3: return this.GetRed(ref this.returnType, 3);
-				case 4: return this.GetRed(ref this.name, 4);
-				case 6: return this.GetRed(ref this.parameterList, 6);
+				case 1: return this.GetRed(ref this.operationModifier, 1);
+				case 2: return this.GetRed(ref this.returnType, 2);
+				case 3: return this.GetRed(ref this.name, 3);
+				case 5: return this.GetRed(ref this.parameterList, 5);
 				default: return null;
 	        }
 	    }
@@ -4196,16 +4189,17 @@ namespace MetaDslx.Languages.Meta.Syntax
 	        switch (index)
 	        {
 				case 0: return this.attribute;
-				case 3: return this.returnType;
-				case 4: return this.name;
-				case 6: return this.parameterList;
+				case 1: return this.operationModifier;
+				case 2: return this.returnType;
+				case 3: return this.name;
+				case 5: return this.parameterList;
 				default: return null;
 	        }
 	    }
 	
 	    public OperationDeclarationSyntax WithAttribute(SyntaxList<AttributeSyntax> attribute)
 		{
-			return this.Update(Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(Attribute, this.OperationModifier, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax AddAttribute(params AttributeSyntax[] attribute)
@@ -4213,51 +4207,50 @@ namespace MetaDslx.Languages.Meta.Syntax
 			return this.WithAttribute(this.Attribute.AddRange(attribute));
 		}
 	
-	    public OperationDeclarationSyntax WithKBuilder(SyntaxToken kBuilder)
+	    public OperationDeclarationSyntax WithOperationModifier(SyntaxList<OperationModifierSyntax> operationModifier)
 		{
-			return this.Update(this.Attribute, KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, OperationModifier, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
-	    public OperationDeclarationSyntax WithKStatic(SyntaxToken kStatic)
+	    public OperationDeclarationSyntax AddOperationModifier(params OperationModifierSyntax[] operationModifier)
 		{
-			return this.Update(this.Attribute, this.KBuilder, KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.WithOperationModifier(this.OperationModifier.AddRange(operationModifier));
 		}
 	
 	    public OperationDeclarationSyntax WithReturnType(ReturnTypeSyntax returnType)
 		{
-			return this.Update(this.Attribute, this.KBuilder, this.KStatic, ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.OperationModifier, ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithName(NameSyntax name)
 		{
-			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.OperationModifier, this.ReturnType, Name, this.TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithTOpenParen(SyntaxToken tOpenParen)
 		{
-			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.OperationModifier, this.ReturnType, this.Name, TOpenParen, this.ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithParameterList(ParameterListSyntax parameterList)
 		{
-			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, ParameterList, this.TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.OperationModifier, this.ReturnType, this.Name, this.TOpenParen, ParameterList, this.TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithTCloseParen(SyntaxToken tCloseParen)
 		{
-			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, TCloseParen, this.TSemicolon);
+			return this.Update(this.Attribute, this.OperationModifier, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, TCloseParen, this.TSemicolon);
 		}
 	
 	    public OperationDeclarationSyntax WithTSemicolon(SyntaxToken tSemicolon)
 		{
-			return this.Update(this.Attribute, this.KBuilder, this.KStatic, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, TSemicolon);
+			return this.Update(this.Attribute, this.OperationModifier, this.ReturnType, this.Name, this.TOpenParen, this.ParameterList, this.TCloseParen, TSemicolon);
 		}
 	
-	    public OperationDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxToken kBuilder, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+	    public OperationDeclarationSyntax Update(SyntaxList<AttributeSyntax> attribute, SyntaxList<OperationModifierSyntax> operationModifier, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
-				this.KBuilder != kBuilder ||
-				this.KStatic != kStatic ||
+				this.OperationModifier != operationModifier ||
 				this.ReturnType != returnType ||
 				this.Name != name ||
 				this.TOpenParen != tOpenParen ||
@@ -4265,7 +4258,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 				this.TCloseParen != tCloseParen ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationDeclaration(attribute, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationDeclaration(attribute, operationModifier, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 	            var annotations = this.GetAnnotations();
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
@@ -4287,6 +4280,248 @@ namespace MetaDslx.Languages.Meta.Syntax
 	    public override void Accept(IMetaSyntaxVisitor visitor)
 	    {
 	        visitor.VisitOperationDeclaration(this);
+	    }
+	}
+	
+	public sealed class OperationModifierSyntax : MetaSyntaxNode
+	{
+	    private OperationModifierBuilderSyntax operationModifierBuilder;
+	    private OperationModifierReadonlySyntax operationModifierReadonly;
+	
+	    public OperationModifierSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public OperationModifierSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public OperationModifierBuilderSyntax OperationModifierBuilder 
+		{ 
+			get { return this.GetRed(ref this.operationModifierBuilder, 0); } 
+		}
+	    public OperationModifierReadonlySyntax OperationModifierReadonly 
+		{ 
+			get { return this.GetRed(ref this.operationModifierReadonly, 1); } 
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.GetRed(ref this.operationModifierBuilder, 0);
+				case 1: return this.GetRed(ref this.operationModifierReadonly, 1);
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				case 0: return this.operationModifierBuilder;
+				case 1: return this.operationModifierReadonly;
+				default: return null;
+	        }
+	    }
+	
+	    public OperationModifierSyntax WithOperationModifierBuilder(OperationModifierBuilderSyntax operationModifierBuilder)
+		{
+			return this.Update(operationModifierBuilder);
+		}
+	
+	    public OperationModifierSyntax WithOperationModifierReadonly(OperationModifierReadonlySyntax operationModifierReadonly)
+		{
+			return this.Update(operationModifierReadonly);
+		}
+	
+	    public OperationModifierSyntax Update(OperationModifierBuilderSyntax operationModifierBuilder)
+	    {
+	        if (this.OperationModifierBuilder != operationModifierBuilder)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationModifier(operationModifierBuilder);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationModifierSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public OperationModifierSyntax Update(OperationModifierReadonlySyntax operationModifierReadonly)
+	    {
+	        if (this.OperationModifierReadonly != operationModifierReadonly)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationModifier(operationModifierReadonly);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationModifierSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitOperationModifier(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitOperationModifier(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitOperationModifier(this);
+	    }
+	}
+	
+	public sealed class OperationModifierBuilderSyntax : MetaSyntaxNode
+	{
+	
+	    public OperationModifierBuilderSyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public OperationModifierBuilderSyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KBuilder 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationModifierBuilderGreen)this.Green;
+				var greenToken = green.KBuilder;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public OperationModifierBuilderSyntax WithKBuilder(SyntaxToken kBuilder)
+		{
+			return this.Update(KBuilder);
+		}
+	
+	    public OperationModifierBuilderSyntax Update(SyntaxToken kBuilder)
+	    {
+	        if (this.KBuilder != kBuilder)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationModifierBuilder(kBuilder);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationModifierBuilderSyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitOperationModifierBuilder(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitOperationModifierBuilder(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitOperationModifierBuilder(this);
+	    }
+	}
+	
+	public sealed class OperationModifierReadonlySyntax : MetaSyntaxNode
+	{
+	
+	    public OperationModifierReadonlySyntax(InternalSyntaxNode green, MetaSyntaxTree syntaxTree, int position)
+	        : base(green, syntaxTree, position)
+	    {
+	    }
+	
+	    public OperationModifierReadonlySyntax(InternalSyntaxNode green, MetaSyntaxNode parent, int position)
+	        : base(green, parent, position)
+	    {
+	    }
+	
+	    public SyntaxToken KReadonly 
+		{ 
+			get 
+			{ 
+				var green = (global::MetaDslx.Languages.Meta.Syntax.InternalSyntax.OperationModifierReadonlyGreen)this.Green;
+				var greenToken = green.KReadonly;
+				return new SyntaxToken(this, greenToken, this.GetChildPosition(0), this.GetChildIndex(0));
+			}
+		}
+	
+	    public override SyntaxNode GetNodeSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public override SyntaxNode GetCachedSlot(int index)
+	    {
+	        switch (index)
+	        {
+				default: return null;
+	        }
+	    }
+	
+	    public OperationModifierReadonlySyntax WithKReadonly(SyntaxToken kReadonly)
+		{
+			return this.Update(KReadonly);
+		}
+	
+	    public OperationModifierReadonlySyntax Update(SyntaxToken kReadonly)
+	    {
+	        if (this.KReadonly != kReadonly)
+	        {
+	            var newNode = MetaLanguage.Instance.SyntaxFactory.OperationModifierReadonly(kReadonly);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationModifierReadonlySyntax)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public override TResult Accept<TArg, TResult>(IMetaSyntaxVisitor<TArg, TResult> visitor, TArg argument)
+	    {
+	        return visitor.VisitOperationModifierReadonly(this, argument);
+	    }
+	
+	    public override TResult Accept<TResult>(IMetaSyntaxVisitor<TResult> visitor)
+	    {
+	        return visitor.VisitOperationModifierReadonly(this);
+	    }
+	
+	    public override void Accept(IMetaSyntaxVisitor visitor)
+	    {
+	        visitor.VisitOperationModifierReadonly(this);
 	    }
 	}
 	
@@ -5435,6 +5670,12 @@ namespace MetaDslx.Languages.Meta
 		
 		void VisitOperationDeclaration(OperationDeclarationSyntax node);
 		
+		void VisitOperationModifier(OperationModifierSyntax node);
+		
+		void VisitOperationModifierBuilder(OperationModifierBuilderSyntax node);
+		
+		void VisitOperationModifierReadonly(OperationModifierReadonlySyntax node);
+		
 		void VisitParameterList(ParameterListSyntax node);
 		
 		void VisitParameter(ParameterSyntax node);
@@ -5671,6 +5912,21 @@ namespace MetaDslx.Languages.Meta
 		    this.DefaultVisit(node);
 		}
 		
+		public virtual void VisitOperationModifier(OperationModifierSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitOperationModifierBuilder(OperationModifierBuilderSyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
+		public virtual void VisitOperationModifierReadonly(OperationModifierReadonlySyntax node)
+		{
+		    this.DefaultVisit(node);
+		}
+		
 		public virtual void VisitParameterList(ParameterListSyntax node)
 		{
 		    this.DefaultVisit(node);
@@ -5815,6 +6071,12 @@ namespace MetaDslx.Languages.Meta
 		TResult VisitCollectionKind(CollectionKindSyntax node, TArg argument);
 		
 		TResult VisitOperationDeclaration(OperationDeclarationSyntax node, TArg argument);
+		
+		TResult VisitOperationModifier(OperationModifierSyntax node, TArg argument);
+		
+		TResult VisitOperationModifierBuilder(OperationModifierBuilderSyntax node, TArg argument);
+		
+		TResult VisitOperationModifierReadonly(OperationModifierReadonlySyntax node, TArg argument);
 		
 		TResult VisitParameterList(ParameterListSyntax node, TArg argument);
 		
@@ -6052,6 +6314,21 @@ namespace MetaDslx.Languages.Meta
 		    return this.DefaultVisit(node, argument);
 		}
 		
+		public virtual TResult VisitOperationModifier(OperationModifierSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitOperationModifierBuilder(OperationModifierBuilderSyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
+		public virtual TResult VisitOperationModifierReadonly(OperationModifierReadonlySyntax node, TArg argument)
+		{
+		    return this.DefaultVisit(node, argument);
+		}
+		
 		public virtual TResult VisitParameterList(ParameterListSyntax node, TArg argument)
 		{
 		    return this.DefaultVisit(node, argument);
@@ -6194,6 +6471,12 @@ namespace MetaDslx.Languages.Meta
 		TResult VisitCollectionKind(CollectionKindSyntax node);
 		
 		TResult VisitOperationDeclaration(OperationDeclarationSyntax node);
+		
+		TResult VisitOperationModifier(OperationModifierSyntax node);
+		
+		TResult VisitOperationModifierBuilder(OperationModifierBuilderSyntax node);
+		
+		TResult VisitOperationModifierReadonly(OperationModifierReadonlySyntax node);
 		
 		TResult VisitParameterList(ParameterListSyntax node);
 		
@@ -6427,6 +6710,21 @@ namespace MetaDslx.Languages.Meta
 		}
 		
 		public virtual TResult VisitOperationDeclaration(OperationDeclarationSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitOperationModifier(OperationModifierSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitOperationModifierBuilder(OperationModifierBuilderSyntax node)
+		{
+		    return this.DefaultVisit(node);
+		}
+		
+		public virtual TResult VisitOperationModifierReadonly(OperationModifierReadonlySyntax node)
 		{
 		    return this.DefaultVisit(node);
 		}
@@ -6882,15 +7180,43 @@ namespace MetaDslx.Languages.Meta
 		public virtual SyntaxNode VisitOperationDeclaration(OperationDeclarationSyntax node)
 		{
 		    var attribute = this.VisitList(node.Attribute);
-		    var kBuilder = this.VisitToken(node.KBuilder);
-		    var kStatic = this.VisitToken(node.KStatic);
+		    var operationModifier = this.VisitList(node.OperationModifier);
 		    var returnType = (ReturnTypeSyntax)this.Visit(node.ReturnType);
 		    var name = (NameSyntax)this.Visit(node.Name);
 		    var tOpenParen = this.VisitToken(node.TOpenParen);
 		    var parameterList = (ParameterListSyntax)this.Visit(node.ParameterList);
 		    var tCloseParen = this.VisitToken(node.TCloseParen);
 		    var tSemicolon = this.VisitToken(node.TSemicolon);
-			return node.Update(attribute, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+			return node.Update(attribute, operationModifier, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+		}
+		
+		public virtual SyntaxNode VisitOperationModifier(OperationModifierSyntax node)
+		{
+			var oldOperationModifierBuilder = node.OperationModifierBuilder;
+			if (oldOperationModifierBuilder != null)
+			{
+			    var newOperationModifierBuilder = (OperationModifierBuilderSyntax)this.Visit(oldOperationModifierBuilder);
+				return node.Update(newOperationModifierBuilder);
+			}
+			var oldOperationModifierReadonly = node.OperationModifierReadonly;
+			if (oldOperationModifierReadonly != null)
+			{
+			    var newOperationModifierReadonly = (OperationModifierReadonlySyntax)this.Visit(oldOperationModifierReadonly);
+				return node.Update(newOperationModifierReadonly);
+			}
+			return node;   
+		}
+		
+		public virtual SyntaxNode VisitOperationModifierBuilder(OperationModifierBuilderSyntax node)
+		{
+		    var kBuilder = this.VisitToken(node.KBuilder);
+			return node.Update(kBuilder);
+		}
+		
+		public virtual SyntaxNode VisitOperationModifierReadonly(OperationModifierReadonlySyntax node)
+		{
+		    var kReadonly = this.VisitToken(node.KReadonly);
+			return node.Update(kReadonly);
 		}
 		
 		public virtual SyntaxNode VisitParameterList(ParameterListSyntax node)
@@ -7719,10 +8045,8 @@ namespace MetaDslx.Languages.Meta
 		    return (CollectionKindSyntax)MetaLanguage.Instance.InternalSyntaxFactory.CollectionKind((InternalSyntaxToken)collectionKind.Node).CreateRed();
 		}
 		
-		public OperationDeclarationSyntax OperationDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxToken kBuilder, SyntaxToken kStatic, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
+		public OperationDeclarationSyntax OperationDeclaration(SyntaxList<AttributeSyntax> attribute, SyntaxList<OperationModifierSyntax> operationModifier, ReturnTypeSyntax returnType, NameSyntax name, SyntaxToken tOpenParen, ParameterListSyntax parameterList, SyntaxToken tCloseParen, SyntaxToken tSemicolon)
 		{
-		    if (kBuilder != null && kBuilder.GetKind() != MetaSyntaxKind.KBuilder) throw new ArgumentException(nameof(kBuilder));
-		    if (kStatic != null && kStatic.GetKind() != MetaSyntaxKind.KStatic) throw new ArgumentException(nameof(kStatic));
 		    if (returnType == null) throw new ArgumentNullException(nameof(returnType));
 		    if (name == null) throw new ArgumentNullException(nameof(name));
 		    if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
@@ -7731,12 +8055,48 @@ namespace MetaDslx.Languages.Meta
 		    if (tCloseParen.GetKind() != MetaSyntaxKind.TCloseParen) throw new ArgumentException(nameof(tCloseParen));
 		    if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 		    if (tSemicolon.GetKind() != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
-		    return (OperationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), (InternalSyntaxToken)kBuilder.Node, (InternalSyntaxToken)kStatic.Node, (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
+		    return (OperationDeclarationSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<AttributeGreen>(attribute.Node), Microsoft.CodeAnalysis.Syntax.InternalSyntax.GreenNodeExtensions.ToGreenList<OperationModifierGreen>(operationModifier.Node), (Syntax.InternalSyntax.ReturnTypeGreen)returnType.Green, (Syntax.InternalSyntax.NameGreen)name.Green, (InternalSyntaxToken)tOpenParen.Node, parameterList == null ? null : (Syntax.InternalSyntax.ParameterListGreen)parameterList.Green, (InternalSyntaxToken)tCloseParen.Node, (InternalSyntaxToken)tSemicolon.Node).CreateRed();
 		}
 		
 		public OperationDeclarationSyntax OperationDeclaration(ReturnTypeSyntax returnType, NameSyntax name)
 		{
-			return this.OperationDeclaration(default, default, default, returnType, name, this.Token(MetaSyntaxKind.TOpenParen), default, this.Token(MetaSyntaxKind.TCloseParen), this.Token(MetaSyntaxKind.TSemicolon));
+			return this.OperationDeclaration(default, default, returnType, name, this.Token(MetaSyntaxKind.TOpenParen), default, this.Token(MetaSyntaxKind.TCloseParen), this.Token(MetaSyntaxKind.TSemicolon));
+		}
+		
+		public OperationModifierSyntax OperationModifier(OperationModifierBuilderSyntax operationModifierBuilder)
+		{
+		    if (operationModifierBuilder == null) throw new ArgumentNullException(nameof(operationModifierBuilder));
+		    return (OperationModifierSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationModifier((Syntax.InternalSyntax.OperationModifierBuilderGreen)operationModifierBuilder.Green).CreateRed();
+		}
+		
+		public OperationModifierSyntax OperationModifier(OperationModifierReadonlySyntax operationModifierReadonly)
+		{
+		    if (operationModifierReadonly == null) throw new ArgumentNullException(nameof(operationModifierReadonly));
+		    return (OperationModifierSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationModifier((Syntax.InternalSyntax.OperationModifierReadonlyGreen)operationModifierReadonly.Green).CreateRed();
+		}
+		
+		public OperationModifierBuilderSyntax OperationModifierBuilder(SyntaxToken kBuilder)
+		{
+		    if (kBuilder == null) throw new ArgumentNullException(nameof(kBuilder));
+		    if (kBuilder.GetKind() != MetaSyntaxKind.KBuilder) throw new ArgumentException(nameof(kBuilder));
+		    return (OperationModifierBuilderSyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationModifierBuilder((InternalSyntaxToken)kBuilder.Node).CreateRed();
+		}
+		
+		public OperationModifierBuilderSyntax OperationModifierBuilder()
+		{
+			return this.OperationModifierBuilder(this.Token(MetaSyntaxKind.KBuilder));
+		}
+		
+		public OperationModifierReadonlySyntax OperationModifierReadonly(SyntaxToken kReadonly)
+		{
+		    if (kReadonly == null) throw new ArgumentNullException(nameof(kReadonly));
+		    if (kReadonly.GetKind() != MetaSyntaxKind.KReadonly) throw new ArgumentException(nameof(kReadonly));
+		    return (OperationModifierReadonlySyntax)MetaLanguage.Instance.InternalSyntaxFactory.OperationModifierReadonly((InternalSyntaxToken)kReadonly.Node).CreateRed();
+		}
+		
+		public OperationModifierReadonlySyntax OperationModifierReadonly()
+		{
+			return this.OperationModifierReadonly(this.Token(MetaSyntaxKind.KReadonly));
 		}
 		
 		public ParameterListSyntax ParameterList(SeparatedSyntaxList<ParameterSyntax> parameter)
@@ -7908,6 +8268,9 @@ namespace MetaDslx.Languages.Meta
 				typeof(CollectionTypeSyntax),
 				typeof(CollectionKindSyntax),
 				typeof(OperationDeclarationSyntax),
+				typeof(OperationModifierSyntax),
+				typeof(OperationModifierBuilderSyntax),
+				typeof(OperationModifierReadonlySyntax),
 				typeof(ParameterListSyntax),
 				typeof(ParameterSyntax),
 				typeof(AssociationDeclarationSyntax),

@@ -5202,8 +5202,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	{
 	    internal static readonly OperationDeclarationGreen __Missing = new OperationDeclarationGreen();
 	    private GreenNode attribute;
-	    private InternalSyntaxToken kBuilder;
-	    private InternalSyntaxToken kStatic;
+	    private GreenNode operationModifier;
 	    private ReturnTypeGreen returnType;
 	    private NameGreen name;
 	    private InternalSyntaxToken tOpenParen;
@@ -5211,24 +5210,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	    private InternalSyntaxToken tCloseParen;
 	    private InternalSyntaxToken tSemicolon;
 	
-	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kBuilder, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, GreenNode operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	        : base(kind, null, null)
 	    {
-			this.SlotCount = 9;
+			this.SlotCount = 8;
 			if (attribute != null)
 			{
 				this.AdjustFlagsAndWidth(attribute);
 				this.attribute = attribute;
 			}
-			if (kBuilder != null)
+			if (operationModifier != null)
 			{
-				this.AdjustFlagsAndWidth(kBuilder);
-				this.kBuilder = kBuilder;
-			}
-			if (kStatic != null)
-			{
-				this.AdjustFlagsAndWidth(kStatic);
-				this.kStatic = kStatic;
+				this.AdjustFlagsAndWidth(operationModifier);
+				this.operationModifier = operationModifier;
 			}
 			if (returnType != null)
 			{
@@ -5262,24 +5256,19 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			}
 	    }
 	
-	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, InternalSyntaxToken kBuilder, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	    public OperationDeclarationGreen(MetaSyntaxKind kind, GreenNode attribute, GreenNode operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
 	        : base(kind, diagnostics, annotations)
 	    {
-			this.SlotCount = 9;
+			this.SlotCount = 8;
 			if (attribute != null)
 			{
 				this.AdjustFlagsAndWidth(attribute);
 				this.attribute = attribute;
 			}
-			if (kBuilder != null)
+			if (operationModifier != null)
 			{
-				this.AdjustFlagsAndWidth(kBuilder);
-				this.kBuilder = kBuilder;
-			}
-			if (kStatic != null)
-			{
-				this.AdjustFlagsAndWidth(kStatic);
-				this.kStatic = kStatic;
+				this.AdjustFlagsAndWidth(operationModifier);
+				this.operationModifier = operationModifier;
 			}
 			if (returnType != null)
 			{
@@ -5320,8 +5309,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		}
 	
 	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> Attribute { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen>(this.attribute); } }
-	    public InternalSyntaxToken KBuilder { get { return this.kBuilder; } }
-	    public InternalSyntaxToken KStatic { get { return this.kStatic; } }
+	    public Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> OperationModifier { get { return new Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen>(this.operationModifier); } }
 	    public ReturnTypeGreen ReturnType { get { return this.returnType; } }
 	    public NameGreen Name { get { return this.name; } }
 	    public InternalSyntaxToken TOpenParen { get { return this.tOpenParen; } }
@@ -5339,14 +5327,13 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	        switch (index)
 	        {
 	            case 0: return this.attribute;
-	            case 1: return this.kBuilder;
-	            case 2: return this.kStatic;
-	            case 3: return this.returnType;
-	            case 4: return this.name;
-	            case 5: return this.tOpenParen;
-	            case 6: return this.parameterList;
-	            case 7: return this.tCloseParen;
-	            case 8: return this.tSemicolon;
+	            case 1: return this.operationModifier;
+	            case 2: return this.returnType;
+	            case 3: return this.name;
+	            case 4: return this.tOpenParen;
+	            case 5: return this.parameterList;
+	            case 6: return this.tCloseParen;
+	            case 7: return this.tSemicolon;
 	            default: return null;
 	        }
 	    }
@@ -5357,19 +5344,18 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	
 	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
 	    {
-	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.kBuilder, this.kStatic, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, diagnostics, this.GetAnnotations());
+	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.operationModifier, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, diagnostics, this.GetAnnotations());
 	    }
 	
 	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
 	    {
-	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.kBuilder, this.kStatic, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), annotations);
+	        return new OperationDeclarationGreen(this.Kind, this.attribute, this.operationModifier, this.returnType, this.name, this.tOpenParen, this.parameterList, this.tCloseParen, this.tSemicolon, this.GetDiagnostics(), annotations);
 	    }
 	
-	    public OperationDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kBuilder, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+	    public OperationDeclarationGreen Update(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	        if (this.Attribute != attribute ||
-				this.KBuilder != kBuilder ||
-				this.KStatic != kStatic ||
+				this.OperationModifier != operationModifier ||
 				this.ReturnType != returnType ||
 				this.Name != name ||
 				this.TOpenParen != tOpenParen ||
@@ -5377,7 +5363,7 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				this.TCloseParen != tCloseParen ||
 				this.TSemicolon != tSemicolon)
 	        {
-	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(attribute, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationDeclaration(attribute, operationModifier, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
 	            var diags = this.GetDiagnostics();
 	            if (diags != null && diags.Length > 0)
 	               newNode = newNode.WithDiagnostics(diags);
@@ -5385,6 +5371,275 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 	            if (annotations != null && annotations.Length > 0)
 	               newNode = newNode.WithAnnotations(annotations);
 				return (OperationDeclarationGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class OperationModifierGreen : GreenSyntaxNode
+	{
+	    internal static readonly OperationModifierGreen __Missing = new OperationModifierGreen();
+	    private OperationModifierBuilderGreen operationModifierBuilder;
+	    private OperationModifierReadonlyGreen operationModifierReadonly;
+	
+	    public OperationModifierGreen(MetaSyntaxKind kind, OperationModifierBuilderGreen operationModifierBuilder, OperationModifierReadonlyGreen operationModifierReadonly)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 2;
+			if (operationModifierBuilder != null)
+			{
+				this.AdjustFlagsAndWidth(operationModifierBuilder);
+				this.operationModifierBuilder = operationModifierBuilder;
+			}
+			if (operationModifierReadonly != null)
+			{
+				this.AdjustFlagsAndWidth(operationModifierReadonly);
+				this.operationModifierReadonly = operationModifierReadonly;
+			}
+	    }
+	
+	    public OperationModifierGreen(MetaSyntaxKind kind, OperationModifierBuilderGreen operationModifierBuilder, OperationModifierReadonlyGreen operationModifierReadonly, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 2;
+			if (operationModifierBuilder != null)
+			{
+				this.AdjustFlagsAndWidth(operationModifierBuilder);
+				this.operationModifierBuilder = operationModifierBuilder;
+			}
+			if (operationModifierReadonly != null)
+			{
+				this.AdjustFlagsAndWidth(operationModifierReadonly);
+				this.operationModifierReadonly = operationModifierReadonly;
+			}
+	    }
+	
+		private OperationModifierGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.OperationModifier, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public OperationModifierBuilderGreen OperationModifierBuilder { get { return this.operationModifierBuilder; } }
+	    public OperationModifierReadonlyGreen OperationModifierReadonly { get { return this.operationModifierReadonly; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Meta.Syntax.OperationModifierSyntax(this, (MetaSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.operationModifierBuilder;
+	            case 1: return this.operationModifierReadonly;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(MetaSyntaxVisitor<TResult> visitor) => visitor.VisitOperationModifierGreen(this);
+	
+	    public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitOperationModifierGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new OperationModifierGreen(this.Kind, this.operationModifierBuilder, this.operationModifierReadonly, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new OperationModifierGreen(this.Kind, this.operationModifierBuilder, this.operationModifierReadonly, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public OperationModifierGreen Update(OperationModifierBuilderGreen operationModifierBuilder)
+	    {
+	        if (this.operationModifierBuilder != operationModifierBuilder)
+	        {
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationModifier(operationModifierBuilder);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationModifierGreen)newNode;
+	        }
+	        return this;
+	    }
+	
+	    public OperationModifierGreen Update(OperationModifierReadonlyGreen operationModifierReadonly)
+	    {
+	        if (this.operationModifierReadonly != operationModifierReadonly)
+	        {
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationModifier(operationModifierReadonly);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationModifierGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class OperationModifierBuilderGreen : GreenSyntaxNode
+	{
+	    internal static readonly OperationModifierBuilderGreen __Missing = new OperationModifierBuilderGreen();
+	    private InternalSyntaxToken kBuilder;
+	
+	    public OperationModifierBuilderGreen(MetaSyntaxKind kind, InternalSyntaxToken kBuilder)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (kBuilder != null)
+			{
+				this.AdjustFlagsAndWidth(kBuilder);
+				this.kBuilder = kBuilder;
+			}
+	    }
+	
+	    public OperationModifierBuilderGreen(MetaSyntaxKind kind, InternalSyntaxToken kBuilder, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (kBuilder != null)
+			{
+				this.AdjustFlagsAndWidth(kBuilder);
+				this.kBuilder = kBuilder;
+			}
+	    }
+	
+		private OperationModifierBuilderGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.OperationModifierBuilder, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public InternalSyntaxToken KBuilder { get { return this.kBuilder; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Meta.Syntax.OperationModifierBuilderSyntax(this, (MetaSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.kBuilder;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(MetaSyntaxVisitor<TResult> visitor) => visitor.VisitOperationModifierBuilderGreen(this);
+	
+	    public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitOperationModifierBuilderGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new OperationModifierBuilderGreen(this.Kind, this.kBuilder, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new OperationModifierBuilderGreen(this.Kind, this.kBuilder, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public OperationModifierBuilderGreen Update(InternalSyntaxToken kBuilder)
+	    {
+	        if (this.KBuilder != kBuilder)
+	        {
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationModifierBuilder(kBuilder);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationModifierBuilderGreen)newNode;
+	        }
+	        return this;
+	    }
+	}
+	
+	internal class OperationModifierReadonlyGreen : GreenSyntaxNode
+	{
+	    internal static readonly OperationModifierReadonlyGreen __Missing = new OperationModifierReadonlyGreen();
+	    private InternalSyntaxToken kReadonly;
+	
+	    public OperationModifierReadonlyGreen(MetaSyntaxKind kind, InternalSyntaxToken kReadonly)
+	        : base(kind, null, null)
+	    {
+			this.SlotCount = 1;
+			if (kReadonly != null)
+			{
+				this.AdjustFlagsAndWidth(kReadonly);
+				this.kReadonly = kReadonly;
+			}
+	    }
+	
+	    public OperationModifierReadonlyGreen(MetaSyntaxKind kind, InternalSyntaxToken kReadonly, DiagnosticInfo[] diagnostics, SyntaxAnnotation[] annotations)
+	        : base(kind, diagnostics, annotations)
+	    {
+			this.SlotCount = 1;
+			if (kReadonly != null)
+			{
+				this.AdjustFlagsAndWidth(kReadonly);
+				this.kReadonly = kReadonly;
+			}
+	    }
+	
+		private OperationModifierReadonlyGreen()
+			: base((MetaSyntaxKind)MetaSyntaxKind.OperationModifierReadonly, null, null)
+		{
+			this.flags &= ~NodeFlags.IsNotMissing;
+		}
+	
+	    public InternalSyntaxToken KReadonly { get { return this.kReadonly; } }
+	
+	    protected override SyntaxNode CreateRed(SyntaxNode parent, int position)
+	    {
+	        return new global::MetaDslx.Languages.Meta.Syntax.OperationModifierReadonlySyntax(this, (MetaSyntaxNode)parent, position);
+	    }
+	
+	    protected override GreenNode GetSlot(int index)
+	    {
+	        switch (index)
+	        {
+	            case 0: return this.kReadonly;
+	            default: return null;
+	        }
+	    }
+	
+	    public override TResult Accept<TResult>(MetaSyntaxVisitor<TResult> visitor) => visitor.VisitOperationModifierReadonlyGreen(this);
+	
+	    public override void Accept(MetaSyntaxVisitor visitor) => visitor.VisitOperationModifierReadonlyGreen(this);
+	
+	    public override InternalSyntaxNode WithDiagnostics(DiagnosticInfo[] diagnostics)
+	    {
+	        return new OperationModifierReadonlyGreen(this.Kind, this.kReadonly, diagnostics, this.GetAnnotations());
+	    }
+	
+	    public override InternalSyntaxNode WithAnnotations(SyntaxAnnotation[] annotations)
+	    {
+	        return new OperationModifierReadonlyGreen(this.Kind, this.kReadonly, this.GetDiagnostics(), annotations);
+	    }
+	
+	    public OperationModifierReadonlyGreen Update(InternalSyntaxToken kReadonly)
+	    {
+	        if (this.KReadonly != kReadonly)
+	        {
+	            InternalSyntaxNode newNode = MetaLanguage.Instance.InternalSyntaxFactory.OperationModifierReadonly(kReadonly);
+	            var diags = this.GetDiagnostics();
+	            if (diags != null && diags.Length > 0)
+	               newNode = newNode.WithDiagnostics(diags);
+	            var annotations = this.GetAnnotations();
+	            if (annotations != null && annotations.Length > 0)
+	               newNode = newNode.WithAnnotations(annotations);
+				return (OperationModifierReadonlyGreen)newNode;
 	        }
 	        return this;
 	    }
@@ -6557,6 +6812,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual void VisitCollectionTypeGreen(CollectionTypeGreen node) => this.DefaultVisit(node);
 		public virtual void VisitCollectionKindGreen(CollectionKindGreen node) => this.DefaultVisit(node);
 		public virtual void VisitOperationDeclarationGreen(OperationDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual void VisitOperationModifierGreen(OperationModifierGreen node) => this.DefaultVisit(node);
+		public virtual void VisitOperationModifierBuilderGreen(OperationModifierBuilderGreen node) => this.DefaultVisit(node);
+		public virtual void VisitOperationModifierReadonlyGreen(OperationModifierReadonlyGreen node) => this.DefaultVisit(node);
 		public virtual void VisitParameterListGreen(ParameterListGreen node) => this.DefaultVisit(node);
 		public virtual void VisitParameterGreen(ParameterGreen node) => this.DefaultVisit(node);
 		public virtual void VisitAssociationDeclarationGreen(AssociationDeclarationGreen node) => this.DefaultVisit(node);
@@ -6614,6 +6872,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 		public virtual TResult VisitCollectionTypeGreen(CollectionTypeGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitCollectionKindGreen(CollectionKindGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitOperationDeclarationGreen(OperationDeclarationGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitOperationModifierGreen(OperationModifierGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitOperationModifierBuilderGreen(OperationModifierBuilderGreen node) => this.DefaultVisit(node);
+		public virtual TResult VisitOperationModifierReadonlyGreen(OperationModifierReadonlyGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitParameterListGreen(ParameterListGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitParameterGreen(ParameterGreen node) => this.DefaultVisit(node);
 		public virtual TResult VisitAssociationDeclarationGreen(AssociationDeclarationGreen node) => this.DefaultVisit(node);
@@ -7635,11 +7896,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			return result;
 	    }
 	
-		public OperationDeclarationGreen OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, InternalSyntaxToken kBuilder, InternalSyntaxToken kStatic, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
+		public OperationDeclarationGreen OperationDeclaration(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<AttributeGreen> attribute, Microsoft.CodeAnalysis.Syntax.InternalSyntax.SyntaxList<OperationModifierGreen> operationModifier, ReturnTypeGreen returnType, NameGreen name, InternalSyntaxToken tOpenParen, ParameterListGreen parameterList, InternalSyntaxToken tCloseParen, InternalSyntaxToken tSemicolon)
 	    {
 	#if DEBUG
-			if (kBuilder != null && kBuilder.Kind != MetaSyntaxKind.KBuilder) throw new ArgumentException(nameof(kBuilder));
-			if (kStatic != null && kStatic.Kind != MetaSyntaxKind.KStatic) throw new ArgumentException(nameof(kStatic));
 			if (returnType == null) throw new ArgumentNullException(nameof(returnType));
 			if (name == null) throw new ArgumentNullException(nameof(name));
 			if (tOpenParen == null) throw new ArgumentNullException(nameof(tOpenParen));
@@ -7649,7 +7908,73 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			if (tSemicolon == null) throw new ArgumentNullException(nameof(tSemicolon));
 			if (tSemicolon.Kind != MetaSyntaxKind.TSemicolon) throw new ArgumentException(nameof(tSemicolon));
 	#endif
-	        return new OperationDeclarationGreen(MetaSyntaxKind.OperationDeclaration, attribute.Node, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	        return new OperationDeclarationGreen(MetaSyntaxKind.OperationDeclaration, attribute.Node, operationModifier.Node, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+	    }
+	
+		public OperationModifierGreen OperationModifier(OperationModifierBuilderGreen operationModifierBuilder)
+	    {
+	#if DEBUG
+		    if (operationModifierBuilder == null) throw new ArgumentNullException(nameof(operationModifierBuilder));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.OperationModifier, operationModifierBuilder, out hash);
+			if (cached != null) return (OperationModifierGreen)cached;
+			var result = new OperationModifierGreen(MetaSyntaxKind.OperationModifier, operationModifierBuilder, null);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public OperationModifierGreen OperationModifier(OperationModifierReadonlyGreen operationModifierReadonly)
+	    {
+	#if DEBUG
+		    if (operationModifierReadonly == null) throw new ArgumentNullException(nameof(operationModifierReadonly));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.OperationModifier, operationModifierReadonly, out hash);
+			if (cached != null) return (OperationModifierGreen)cached;
+			var result = new OperationModifierGreen(MetaSyntaxKind.OperationModifier, null, operationModifierReadonly);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public OperationModifierBuilderGreen OperationModifierBuilder(InternalSyntaxToken kBuilder)
+	    {
+	#if DEBUG
+			if (kBuilder == null) throw new ArgumentNullException(nameof(kBuilder));
+			if (kBuilder.Kind != MetaSyntaxKind.KBuilder) throw new ArgumentException(nameof(kBuilder));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.OperationModifierBuilder, kBuilder, out hash);
+			if (cached != null) return (OperationModifierBuilderGreen)cached;
+			var result = new OperationModifierBuilderGreen(MetaSyntaxKind.OperationModifierBuilder, kBuilder);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
+	    }
+	
+		public OperationModifierReadonlyGreen OperationModifierReadonly(InternalSyntaxToken kReadonly)
+	    {
+	#if DEBUG
+			if (kReadonly == null) throw new ArgumentNullException(nameof(kReadonly));
+			if (kReadonly.Kind != MetaSyntaxKind.KReadonly) throw new ArgumentException(nameof(kReadonly));
+	#endif
+			int hash;
+			var cached = SyntaxNodeCache.TryGetNode((int)(MetaSyntaxKind)MetaSyntaxKind.OperationModifierReadonly, kReadonly, out hash);
+			if (cached != null) return (OperationModifierReadonlyGreen)cached;
+			var result = new OperationModifierReadonlyGreen(MetaSyntaxKind.OperationModifierReadonly, kReadonly);
+			if (hash >= 0)
+			{
+				SyntaxNodeCache.AddNode(result, hash);
+			}
+			return result;
 	    }
 	
 		public ParameterListGreen ParameterList(Microsoft.CodeAnalysis.Syntax.InternalSyntax.SeparatedSyntaxList<ParameterGreen> parameter)
@@ -7909,6 +8234,9 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				typeof(CollectionTypeGreen),
 				typeof(CollectionKindGreen),
 				typeof(OperationDeclarationGreen),
+				typeof(OperationModifierGreen),
+				typeof(OperationModifierBuilderGreen),
+				typeof(OperationModifierReadonlyGreen),
 				typeof(ParameterListGreen),
 				typeof(ParameterGreen),
 				typeof(AssociationDeclarationGreen),

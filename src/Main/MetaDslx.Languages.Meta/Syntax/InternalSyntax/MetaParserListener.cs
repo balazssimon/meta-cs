@@ -497,6 +497,39 @@ public interface IMetaParserListener : IParseTreeListener {
 	void ExitOperationDeclaration([NotNull] MetaParser.OperationDeclarationContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.operationModifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOperationModifier([NotNull] MetaParser.OperationModifierContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.operationModifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOperationModifier([NotNull] MetaParser.OperationModifierContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.operationModifierBuilder"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOperationModifierBuilder([NotNull] MetaParser.OperationModifierBuilderContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.operationModifierBuilder"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOperationModifierBuilder([NotNull] MetaParser.OperationModifierBuilderContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.operationModifierReadonly"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOperationModifierReadonly([NotNull] MetaParser.OperationModifierReadonlyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.operationModifierReadonly"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOperationModifierReadonly([NotNull] MetaParser.OperationModifierReadonlyContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.parameterList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

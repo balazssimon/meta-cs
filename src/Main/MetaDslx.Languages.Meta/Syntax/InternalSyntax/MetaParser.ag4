@@ -135,7 +135,13 @@ collectionKind
 	;
 	
 $SymbolDef(MetaOperation)
-operationDeclaration : attribute* $Property(name=IsBuilder,value=true) KBuilder? KStatic? $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute* operationModifier* $Property(ReturnType) returnType name TOpenParen $Property(Parameters) parameterList? TCloseParen TSemicolon;
+
+operationModifier : operationModifierBuilder | operationModifierReadonly;
+$Property(name=IsBuilder,value=true) 
+operationModifierBuilder : KBuilder;
+$Property(name=IsReadonly,value=true)
+operationModifierReadonly : KReadonly;
 
 parameterList : parameter (TComma parameter)*;
 

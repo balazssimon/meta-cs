@@ -135,7 +135,13 @@ collectionKind
 	;
 	
                          
-operationDeclaration : attribute*                                      KBuilder? KStatic?                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
+operationDeclaration : attribute* operationModifier*                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
+
+operationModifier : operationModifierBuilder | operationModifierReadonly;
+                                     
+operationModifierBuilder : KBuilder;
+                                     
+operationModifierReadonly : KReadonly;
 
 parameterList : parameter (TComma parameter)*;
 

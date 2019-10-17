@@ -146,7 +146,7 @@
 	abstract class MultiplicityElement : Element
 	{
 		bool IsOrdered;
-		bool IsUnique;
+		bool IsUnique = "true";
 		ValueSpecification LowerValue subsets Element.OwnedElement;
 		ValueSpecification UpperValue subsets Element.OwnedElement;
 		derived long Lower;

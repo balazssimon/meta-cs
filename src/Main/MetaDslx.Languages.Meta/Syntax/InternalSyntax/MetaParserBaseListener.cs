@@ -585,6 +585,45 @@ public partial class MetaParserBaseListener : IMetaParserListener {
 	public virtual void ExitOperationDeclaration([NotNull] MetaParser.OperationDeclarationContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.operationModifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOperationModifier([NotNull] MetaParser.OperationModifierContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.operationModifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOperationModifier([NotNull] MetaParser.OperationModifierContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.operationModifierBuilder"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOperationModifierBuilder([NotNull] MetaParser.OperationModifierBuilderContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.operationModifierBuilder"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOperationModifierBuilder([NotNull] MetaParser.OperationModifierBuilderContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.operationModifierReadonly"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOperationModifierReadonly([NotNull] MetaParser.OperationModifierReadonlyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.operationModifierReadonly"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOperationModifierReadonly([NotNull] MetaParser.OperationModifierReadonlyContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.parameterList"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

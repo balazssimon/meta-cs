@@ -328,11 +328,11 @@
     	/*
     	If true, this Activity must not make any changes to objects. The default is false (an Activity may make nonlocal changes). (This is an assertion, not an executable property. It may be used by an execution engine to optimize model execution. If the assertion is violated by the Activity, then the model is ill-formed.) 
     	*/
-    	bool IsReadOnly;
+    	bool IsReadOnly = "false";
     	/*
     	If true, all invocations of the Activity are handled by the same execution.
     	*/
-    	bool IsSingleExecution;
+    	bool IsSingleExecution = "false";
     	/*
     	ActivityNodes coordinated by the Activity.
     	*/
@@ -396,7 +396,7 @@
     	The minimum number of tokens that must traverse the ActivityEdge at the same time. If no weight is specified, this is equivalent to specifying a constant value of 1.
     	*/
     	ValueSpecification Weight subsets Element.OwnedElement;
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     }
 
     /*
@@ -439,7 +439,7 @@
     	    else inActivity
     	    endif)
     	*/
-    	Activity ContainingActivity();
+    	readonly Activity ContainingActivity();
     }
 
     /*
@@ -487,8 +487,8 @@
     	    else activity
     	    endif)
     	*/
-    	Activity ContainingActivity();
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly Activity ContainingActivity();
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     }
 
     /*
@@ -514,11 +514,11 @@
     	/*
     	Indicates whether the ActivityPartition groups other ActivityPartitions along a dimension.
     	*/
-    	bool IsDimension;
+    	bool IsDimension = "false";
     	/*
     	Indicates whether the ActivityPartition represents an entity to which the partitioning structure does not apply.
     	*/
-    	bool IsExternal;
+    	bool IsExternal = "false";
     	/*
     	ActivityNodes immediately contained in the ActivityPartition.
     	*/
@@ -665,7 +665,7 @@
     	/*
     	Indicates whether incoming tokens having objects with the same identity are combined into one by the JoinNode.
     	*/
-    	bool IsCombineDuplicate;
+    	bool IsCombineDuplicate = "true";
     	/*
     	A ValueSpecification giving the condition under which the JoinNode will offer a token on its outgoing ActivityEdge. If no joinSpec is specified, then the JoinNode will offer an outgoing token if tokens are offered on all of its incoming ActivityEdges (an "and" condition).
     	*/
@@ -687,11 +687,11 @@
     	/*
     	Indicates whether the objects in the ObjectFlow are passed by multicasting.
     	*/
-    	bool IsMulticast;
+    	bool IsMulticast = "false";
     	/*
     	Indicates whether the objects in the ObjectFlow are gathered from respondents to multicasting.
     	*/
-    	bool IsMultireceive;
+    	bool IsMultireceive = "false";
     	/*
     	A Behavior used to select tokens from a source ObjectNode.
     	*/
@@ -714,11 +714,11 @@
     	/*
     	Indicates whether the type of the ObjectNode is to be treated as representing control values that may traverse ControlFlows.
     	*/
-    	bool IsControlType;
+    	bool IsControlType = "false";
     	/*
     	Indicates how the tokens held by the ObjectNode are ordered for selection to traverse ActivityEdges outgoing from the ObjectNode.
     	*/
-    	ObjectNodeOrderingKind Ordering;
+    	ObjectNodeOrderingKind Ordering/* unhandled default value: InstanceValue */;
     	/*
     	A Behavior used to select tokens to be offered on outgoing ActivityEdges.
     	*/
@@ -750,7 +750,7 @@
     	    else a.containingActivity()=activityScope
     	    endif)
     	*/
-    	bool IsAccessibleBy(Action a);
+    	readonly bool IsAccessibleBy(Action a);
     }
 
     /*
@@ -862,21 +862,21 @@
     	/*
     	The specified Boolean value.
     	*/
-    	bool Value;
+    	bool Value = "false";
     	/*
     	The query booleanValue() gives the value.
     	
     	spec:
     	    result = (value)
     	*/
-    	bool BooleanValue();
+    	readonly bool BooleanValue();
     	/*
     	The query isComputable() is redefined to be true.
     	
     	spec:
     	    result = (true)
     	*/
-    	bool IsComputable();
+    	readonly bool IsComputable();
     }
 
     /*
@@ -887,21 +887,21 @@
     	/*
     	The specified Integer value.
     	*/
-    	int Value;
+    	int Value = "0";
     	/*
     	The query integerValue() gives the value.
     	
     	spec:
     	    result = (value)
     	*/
-    	int IntegerValue();
+    	readonly int IntegerValue();
     	/*
     	The query isComputable() is redefined to be true.
     	
     	spec:
     	    result = (true)
     	*/
-    	bool IsComputable();
+    	readonly bool IsComputable();
     }
 
     /*
@@ -915,14 +915,14 @@
     	spec:
     	    result = (true)
     	*/
-    	bool IsComputable();
+    	readonly bool IsComputable();
     	/*
     	The query isNull() returns true.
     	
     	spec:
     	    result = (true)
     	*/
-    	bool IsNull();
+    	readonly bool IsNull();
     }
 
     /*
@@ -940,14 +940,14 @@
     	spec:
     	    result = (true)
     	*/
-    	bool IsComputable();
+    	readonly bool IsComputable();
     	/*
     	The query realValue() gives the value.
     	
     	spec:
     	    result = (value)
     	*/
-    	double RealValue();
+    	readonly double RealValue();
     }
 
     /*
@@ -972,14 +972,14 @@
     	spec:
     	    result = (true)
     	*/
-    	bool IsComputable();
+    	readonly bool IsComputable();
     	/*
     	The query stringValue() gives the value.
     	
     	spec:
     	    result = (value)
     	*/
-    	string StringValue();
+    	readonly string StringValue();
     }
 
     /*
@@ -990,21 +990,21 @@
     	/*
     	The specified UnlimitedNatural value.
     	*/
-    	long Value;
+    	long Value = "0";
     	/*
     	The query isComputable() is redefined to be true.
     	
     	spec:
     	    result = (true)
     	*/
-    	bool IsComputable();
+    	readonly bool IsComputable();
     	/*
     	The query unlimitedValue() gives the value.
     	
     	spec:
     	    result = (value)
     	*/
-    	long UnlimitedValue();
+    	readonly long UnlimitedValue();
     }
 
     /*
@@ -1048,7 +1048,7 @@
     	spec:
     	    result = (false)
     	*/
-    	bool IsIntegral();
+    	readonly bool IsIntegral();
     	/*
     	The query isNonNegative() tells whether an integer expression has a non-negative value.
     	
@@ -1057,7 +1057,7 @@
     	spec:
     	    result = (false)
     	*/
-    	bool IsNonNegative();
+    	readonly bool IsNonNegative();
     	/*
     	The query isPositive() tells whether an integer expression has a positive value.
     	
@@ -1066,7 +1066,7 @@
     	pre:
     	    self.isIntegral()
     	*/
-    	bool IsPositive();
+    	readonly bool IsPositive();
     	/*
     	The query value() gives an integer value for an expression intended to produce one.
     	
@@ -1075,7 +1075,7 @@
     	spec:
     	    result = (0)
     	*/
-    	int Value();
+    	readonly int Value();
     }
 
     /*
@@ -1100,7 +1100,7 @@
     	    else operand->iterate(op; stringValue: String = '' | stringValue.concat(op.stringValue()))
     	    endif)
     	*/
-    	string StringValue();
+    	readonly string StringValue();
     }
 
     /*
@@ -1111,7 +1111,7 @@
     	/*
     	The value of firstEvent is related to the constrainedElement. If firstEvent is true, then the corresponding observation event is the first time instant the execution enters the constrainedElement. If firstEvent is false, then the corresponding observation event is the last time instant the execution is within the constrainedElement.
     	*/
-    	bool FirstEvent;
+    	bool FirstEvent = "true";
     	/*
     	TheTimeInterval constraining the duration.
     	*/
@@ -1160,7 +1160,7 @@
     	/*
     	The value of firstEvent is related to the event. If firstEvent is true, then the corresponding observation event is the first time instant the execution enters the event Element. If firstEvent is false, then the corresponding observation event is the time instant the execution exits the event Element.
     	*/
-    	bool FirstEvent;
+    	bool FirstEvent = "true";
     }
 
     /*
@@ -1174,14 +1174,14 @@
     	spec:
     	    result = (null)
     	*/
-    	bool BooleanValue();
+    	readonly bool BooleanValue();
     	/*
     	The query integerValue() gives a single Integer value when one can be computed.
     	
     	spec:
     	    result = (null)
     	*/
-    	int IntegerValue();
+    	readonly int IntegerValue();
     	/*
     	The query isCompatibleWith() determines if this ValueSpecification is compatible with the specified ParameterableElement. This ValueSpecification is compatible with ParameterableElement p if the kind of this ValueSpecification is the same as or a subtype of the kind of p. Further, if p is a TypedElement, then the type of this ValueSpecification must be conformant with the type of p.
     	
@@ -1189,42 +1189,42 @@
     	    result = (self.oclIsKindOf(p.oclType()) and (p.oclIsKindOf(TypedElement) implies 
     	    self.type.conformsTo(p.oclAsType(TypedElement).type)))
     	*/
-    	bool IsCompatibleWith(ParameterableElement p);
+    	readonly bool IsCompatibleWith(ParameterableElement p);
     	/*
     	The query isComputable() determines whether a value specification can be computed in a model. This operation cannot be fully defined in OCL. A conforming implementation is expected to deliver true for this operation for all ValueSpecifications that it can compute, and to compute all of those for which the operation is true. A conforming implementation is expected to be able to compute at least the value of all LiteralSpecifications.
     	
     	spec:
     	    result = (false)
     	*/
-    	bool IsComputable();
+    	readonly bool IsComputable();
     	/*
     	The query isNull() returns true when it can be computed that the value is null.
     	
     	spec:
     	    result = (false)
     	*/
-    	bool IsNull();
+    	readonly bool IsNull();
     	/*
     	The query realValue() gives a single Real value when one can be computed.
     	
     	spec:
     	    result = (null)
     	*/
-    	double RealValue();
+    	readonly double RealValue();
     	/*
     	The query stringValue() gives a single String value when one can be computed.
     	
     	spec:
     	    result = (null)
     	*/
-    	string StringValue();
+    	readonly string StringValue();
     	/*
     	The query unlimitedValue() gives a single UnlimitedNatural value when one can be computed.
     	
     	spec:
     	    result = (null)
     	*/
-    	long UnlimitedValue();
+    	readonly long UnlimitedValue();
     }
 
     /*
@@ -1310,7 +1310,7 @@
     	spec:
     	    result = (self.include.addition->union(self.include.addition->collect(uc | uc.allIncludedUseCases()))->asSet())
     	*/
-    	set<UseCase> AllIncludedUseCases();
+    	readonly set<UseCase> AllIncludedUseCases();
     }
 
     /*
@@ -1328,7 +1328,7 @@
     	/*
     	Specifies whether the Association is derived from other model elements such as other Associations.
     	*/
-    	bool IsDerived;
+    	bool IsDerived = "false";
     	/*
     	Each end represents participation of instances of the Classifier connected to the end in links of the Association.
     	*/
@@ -1367,11 +1367,11 @@
     	/*
     	If true, the Class does not provide a complete declaration and cannot be instantiated. An abstract Class is typically used as a target of Associations or Generalizations.
     	*/
-    	bool IsAbstract redefines Classifier.IsAbstract;
+    	bool IsAbstract = "false" redefines Classifier.IsAbstract;
     	/*
     	Determines whether an object specified by this Class is active or not. If true, then the owning Class is referred to as an active Class. If false, then such a Class is referred to as a passive Class.
     	*/
-    	bool IsActive;
+    	bool IsActive = "false";
     	/*
     	The Classifiers owned by the Class that are not ownedBehaviors.
     	*/
@@ -1431,7 +1431,7 @@
     	/*
     	If true, the Component is defined at design-time, but at run-time (or execution-time) an object specified by the Component does not exist, that is, the Component is instantiated indirectly, through the instantiation of its realizing Classifiers or parts.
     	*/
-    	bool IsIndirectlyInstantiated;
+    	bool IsIndirectlyInstantiated = "true";
     	/*
     	The set of PackageableElements that a Component owns. In the namespace of a Component, all model elements that are involved in or related to its definition may be owned or imported explicitly. These may include e.g., Classes, Interfaces, Components, Packages, UseCases, Dependencies (e.g., mappings), and Artifacts.
     	*/
@@ -1599,15 +1599,15 @@
     	/*
     	Specifies whether requests arriving at this Port are sent to the classifier behavior of this EncapsulatedClassifier. Such a Port is referred to as a behavior Port. Any invocation of a BehavioralFeature targeted at a behavior Port will be handled by the instance of the owning EncapsulatedClassifier itself, rather than by any instances that it may contain.
     	*/
-    	bool IsBehavior;
+    	bool IsBehavior = "false";
     	/*
     	Specifies the way that the provided and required Interfaces are derived from the Port’s Type.
     	*/
-    	bool IsConjugated;
+    	bool IsConjugated = "false";
     	/*
     	If true, indicates that this Port is used to provide the published functionality of an EncapsulatedClassifier.  If false, this Port is used to implement the EncapsulatedClassifier but is not part of the essential externally-visible functionality of the EncapsulatedClassifier and can, therefore, be altered or deleted along with the internal implementation of the EncapsulatedClassifier and other properties that are considered part of its implementation.
     	*/
-    	bool IsService;
+    	bool IsService = "true";
     	/*
     	An optional ProtocolStateMachine which describes valid interactions at this interaction point.
     	*/
@@ -1639,14 +1639,14 @@
     	    else type.oclAsType(Classifier).allRealizedInterfaces() 
     	    endif)
     	*/
-    	set<Interface> BasicProvided();
+    	readonly set<Interface> BasicProvided();
     	/*
     	The union of the sets of Interfaces used by the type of the Port and its supertypes.
     	
     	spec:
     	    result = ( type.oclAsType(Classifier).allUsedInterfaces() )
     	*/
-    	set<Interface> BasicRequired();
+    	readonly set<Interface> BasicRequired();
     }
 
     /*
@@ -1679,7 +1679,7 @@
     	spec:
     	    result = (allFeatures()->select(oclIsKindOf(ConnectableElement))->collect(oclAsType(ConnectableElement))->asSet())
     	*/
-    	set<ConnectableElement> AllRoles();
+    	readonly set<ConnectableElement> AllRoles();
     }
 
     /*
@@ -1782,7 +1782,7 @@
     	/*
     	Determines the precise type of the Pseudostate and can be one of: entryPoint, exitPoint, initial, deepHistory, shallowHistory, join, fork, junction, terminate or choice.
     	*/
-    	PseudostateKind Kind;
+    	PseudostateKind Kind/* unhandled default value: InstanceValue */;
     	/*
     	The State that owns this Pseudostate and in which it appears.
     	*/
@@ -1846,7 +1846,7 @@
     	      state <> null  implies  state.container.belongsToPSM()
     	    endif )
     	*/
-    	bool BelongsToPSM();
+    	readonly bool BelongsToPSM();
     	/*
     	The operation containingStateMachine() returns the StateMachine in which this Region is defined.
     	
@@ -1858,7 +1858,7 @@
     	      stateMachine
     	    endif)
     	*/
-    	StateMachine ContainingStateMachine();
+    	readonly StateMachine ContainingStateMachine();
     	/*
     	The query isConsistentWith specifies that a Region can be redefined by any Region for which the redefinition context is valid (see the isRedefinitionContextValid operation). Note that consistency requirements for the redefinition of Vertices and Transitions within a redefining Region are specified by the isConsistentWith and isRedefinitionContextValid operations for Vertex (and its subclasses) and Transition.
     	
@@ -1867,7 +1867,7 @@
     	pre:
     	    redefiningElement.isRedefinitionContextValid(self)
     	*/
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     	/*
     	The query isRedefinitionContextValid() specifies whether the redefinition contexts of a Region are properly related to the redefinition contexts of the specified Region to allow this element to redefine the other. The containing StateMachine or State of a redefining Region must Redefine the containing StateMachine or State of the redefined Region.
     	
@@ -1886,7 +1886,7 @@
     	      false
     	    endif)
     	*/
-    	bool IsRedefinitionContextValid(RedefinableElement redefinedElement);
+    	readonly bool IsRedefinitionContextValid(RedefinableElement redefinedElement);
     }
 
     /*
@@ -1964,7 +1964,7 @@
     	spec:
     	    result = (container.containingStateMachine())
     	*/
-    	StateMachine ContainingStateMachine();
+    	readonly StateMachine ContainingStateMachine();
     	/*
     	The query isConsistentWith specifies that a non-final State can only be redefined by a non-final State (this is overridden by FinalState to allow a FinalState to be redefined by a FinalState) and, if the redefined State is a submachine State, then the redefining State must be a submachine state whose submachine is a redefinition of the submachine of the redefined State. Note that consistency requirements for the redefinition of Regions and connectionPoint Pseudostates within a composite State and connection ConnectionPoints of a submachine State are specified by the isConsistentWith and isRedefinitionContextValid operations for Region and Vertex (and its subclasses, Pseudostate and ConnectionPointReference).
     	
@@ -1976,7 +1976,7 @@
     	pre:
     	    redefiningElement.isRedefinitionContextValid(self)
     	*/
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     }
 
     /*
@@ -2014,7 +2014,7 @@
     	    	endif
     	    endif)
     	*/
-    	Region LCA(Vertex s1, Vertex s2);
+    	readonly Region LCA(Vertex s1, Vertex s2);
     	/*
     	The query ancestor(s1, s2) checks whether Vertex s2 is an ancestor of Vertex s1.
     	
@@ -2033,14 +2033,14 @@
     	    	 endif
     	    endif  )
     	*/
-    	bool Ancestor(Vertex s1, Vertex s2);
+    	readonly bool Ancestor(Vertex s1, Vertex s2);
     	/*
     	The query isConsistentWith specifies that a StateMachine can be redefined by any other StateMachine for which the redefinition context is valid (see the isRedefinitionContextValid operation). Note that consistency requirements for the redefinition of Regions and connectionPoint Pseudostates owned by a StateMachine are specified by the isConsistentWith and isRedefinitionContextValid operations for Region and Vertex (and its subclass Pseudostate).
     	
     	spec:
     	    result = true
     	*/
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     	/*
     	The query isRedefinitionContextValid specifies whether the redefinition context of a StateMachine is properly related to the redefinition contexts of a StateMachine it redefines. The requirement is that the context BehavioredClassifier of a redefining StateMachine must specialize the context Classifier of the redefined StateMachine. If the redefining StateMachine does not have a context BehavioredClassifier, then then the redefining StateMachine also must not have a context BehavioredClassifier but must, instead, specialize the redefining StateMachine.
     	
@@ -2054,7 +2054,7 @@
     	        parentContext <> null and context.allParents()->includes(parentContext)
     	      endif)
     	*/
-    	bool IsRedefinitionContextValid(RedefinableElement redefinedElement);
+    	readonly bool IsRedefinitionContextValid(RedefinableElement redefinedElement);
     	/*
     	This utility funciton is like the LCA, except that it returns the nearest composite State that contains both input Vertices.
     	
@@ -2068,7 +2068,7 @@
     	    else LCAState(v1.container.state, v2.container.state)
     	    endif endif endif)
     	*/
-    	State LCAState(Vertex v1, Vertex v2);
+    	readonly State LCAState(Vertex v1, Vertex v2);
     }
 
     /*
@@ -2091,7 +2091,7 @@
     	/*
     	Indicates the precise type of the Transition.
     	*/
-    	TransitionKind Kind;
+    	TransitionKind Kind/* unhandled default value: InstanceValue */;
     	/*
     	The Transition that is redefined by this Transition.
     	*/
@@ -2121,7 +2121,7 @@
     	spec:
     	    result = (container.containingStateMachine())
     	*/
-    	StateMachine ContainingStateMachine();
+    	readonly StateMachine ContainingStateMachine();
     	/*
     	The query isConsistentWith specifies that a redefining Transition is consistent with a redefined Transition provided that the source Vertex of the redefining Transition redefines the source Vertex of the redefined Transition.
     	
@@ -2131,7 +2131,7 @@
     	pre:
     	    redefiningElement.isRedefinitionContextValid(self)
     	*/
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     }
 
     /*
@@ -2190,7 +2190,7 @@
     	    
     	    )
     	*/
-    	StateMachine ContainingStateMachine();
+    	readonly StateMachine ContainingStateMachine();
     	/*
     	This utility operation returns true if the Vertex is contained in the State s (input argument).
     	
@@ -2205,7 +2205,7 @@
     	    	endif
     	    endif)
     	*/
-    	bool IsContainedInState(State s);
+    	readonly bool IsContainedInState(State s);
     	/*
     	This utility query returns true if the Vertex is contained in the Region r (input argument).
     	
@@ -2220,7 +2220,7 @@
     	    	endif
     	    endif)
     	*/
-    	bool IsContainedInRegion(Region r);
+    	readonly bool IsContainedInRegion(Region r);
     	/*
     	The query isRedefinitionContextValid specifies that the redefinition context of a redefining Vertex is properly related to the redefinition context of the redefined Vertex if the owner of the redefining Vertex is a redefinition of the owner of the redefined Vertex. Note that the owner of a Vertex may be a Region, a StateMachine (for a connectionPoint Pseudostate), or a State (for a connectionPoint Pseudostate or a connection ConnectionPointReference), all of which are RedefinableElements.
     	
@@ -2230,7 +2230,7 @@
     	    result = (redefinedElement.oclIsKindOf(Vertex) and
     	      owner.oclAsType(RedefinableElement).redefinedElement->includes(redefinedElement.owner))
     	*/
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     }
 
     /*
@@ -2400,7 +2400,7 @@
     	spec:
     	    result = (memberEnd->reject(p | ownedEnd->includes(p.oclAsType(ExtensionEnd)))->any(true))
     	*/
-    	Property MetaclassEnd();
+    	readonly Property MetaclassEnd();
     }
 
     /*
@@ -2423,7 +2423,7 @@
     	spec:
     	    result = (if lowerValue=null then 0 else lowerValue.integerValue() endif)
     	*/
-    	int LowerBound();
+    	readonly int LowerBound();
     }
 
     /*
@@ -2512,7 +2512,7 @@
     	     ownedStereotype->union(ownedPackages.allApplicableStereotypes())->flatten()->asSet()
     	    )
     	*/
-    	set<Stereotype> AllApplicableStereotypes();
+    	readonly set<Stereotype> AllApplicableStereotypes();
     	/*
     	The query containingProfile() returns the closest profile directly or indirectly containing this package (or this package itself, if it is a profile).
     	
@@ -2523,7 +2523,7 @@
     	    	self.namespace.oclAsType(Package).containingProfile()
     	    endif)
     	*/
-    	Profile ContainingProfile();
+    	readonly Profile ContainingProfile();
     	/*
     	The query makesVisible() defines whether a Package makes an element visible outside itself. Elements with no visibility and elements with public visibility are made visible.
     	
@@ -2534,21 +2534,21 @@
     	    (elementImport->select(ei|ei.importedElement = VisibilityKind::public)->collect(importedElement.oclAsType(NamedElement))->includes(el)) or
     	    (packageImport->select(visibility = VisibilityKind::public)->collect(importedPackage.member->includes(el))->notEmpty()))
     	*/
-    	bool MakesVisible(NamedElement el);
+    	readonly bool MakesVisible(NamedElement el);
     	/*
     	The query mustBeOwned() indicates whether elements of this type must have an owner.
     	
     	spec:
     	    result = (false)
     	*/
-    	bool MustBeOwned();
+    	readonly bool MustBeOwned();
     	/*
     	The query visibleMembers() defines which members of a Package can be accessed outside it.
     	
     	spec:
     	    result = (member->select( m | m.oclIsKindOf(PackageableElement) and self.makesVisible(m))->collect(oclAsType(PackageableElement))->asSet())
     	*/
-    	set<PackageableElement> VisibleMembers();
+    	readonly set<PackageableElement> VisibleMembers();
     }
 
     /*
@@ -2597,7 +2597,7 @@
     	/*
     	Specifies that the Profile filtering rules for the metaclasses of the referenced metamodel shall be strictly applied.
     	*/
-    	bool IsStrict;
+    	bool IsStrict = "false";
     }
 
     /*
@@ -2622,7 +2622,7 @@
     	spec:
     	    result = (self.namespace.oclAsType(Package).containingProfile())
     	*/
-    	Profile ContainingProfile();
+    	readonly Profile ContainingProfile();
     }
 
     /*
@@ -2659,7 +2659,7 @@
     	/*
     	Specifies the operation which defines the semantics of this combination of InteractionFragments.
     	*/
-    	InteractionOperatorKind InteractionOperator;
+    	InteractionOperatorKind InteractionOperator/* unhandled default value: InstanceValue */;
     	/*
     	The set of operands of the combined fragment.
     	*/
@@ -2685,7 +2685,7 @@
     	/*
     	True: when the Continuation is at the end of the enclosing InteractionFragment and False when it is in the beginning.
     	*/
-    	bool Setting;
+    	bool Setting = "true";
     }
 
     /*
@@ -2745,7 +2745,7 @@
     	         union(oppGate.combinedFragment.enclosingOperand.oclAsType(InteractionFragment)->asSet())
     	    endif)
     	*/
-    	bool IsOutsideCF();
+    	readonly bool IsOutsideCF();
     	/*
     	This query returns true if this Gate is attached to the boundary of a CombinedFragment, and its other end (if present) is inside of an InteractionOperator of the same CombinedFragment.
     	
@@ -2760,14 +2760,14 @@
     	    in combinedFragment = oppGate.combinedFragment.enclosingOperand.combinedFragment
     	    endif)
     	*/
-    	bool IsInsideCF();
+    	readonly bool IsInsideCF();
     	/*
     	This query returns true value if this Gate is an actualGate of an InteractionUse.
     	
     	spec:
     	    result = (interactionUse->notEmpty())
     	*/
-    	bool IsActual();
+    	readonly bool IsActual();
     	/*
     	This query returns true if this Gate is a formalGate of an Interaction.
     	
@@ -2775,7 +2775,7 @@
     	spec:
     	    result = (interaction->notEmpty())
     	*/
-    	bool IsFormal();
+    	readonly bool IsFormal();
     	/*
     	This query returns the name of the gate, either the explicit name (.name) or the constructed name ('out_" or 'in_' concatenated in front of .message.name) if the explicit name is not present.
     	
@@ -2793,7 +2793,7 @@
     	      endif
     	    endif)
     	*/
-    	string GetName();
+    	readonly string GetName();
     	/*
     	This query returns true if the name of this Gate matches the name of the in parameter Gate, and the messages for the two Gates correspond. The Message for one Gate (say A) corresponds to the Message for another Gate (say B) if (A and B have the same name value) and (if A is a sendEvent then B is a receiveEvent) and (if A is a receiveEvent then B is a sendEvent) and (A and B have the same messageSort value) and (A and B have the same signature value).
     	
@@ -2805,7 +2805,7 @@
     	    self.message.receiveEvent->includes(self) implies gateToMatch.message.sendEvent->includes(gateToMatch) and
     	    self.message.signature = gateToMatch.message.signature)
     	*/
-    	bool Matches(Gate gateToMatch);
+    	readonly bool Matches(Gate gateToMatch);
     	/*
     	The query isDistinguishableFrom() specifies that two Gates may coexist in the same Namespace, without an explicit name property. The association end formalGate subsets ownedElement, and since the Gate name attribute
     	is optional, it is allowed to have two formal gates without an explicit name, but having derived names which are distinct.
@@ -2813,7 +2813,7 @@
     	spec:
     	    result = (true)
     	*/
-    	bool IsDistinguishableFrom(NamedElement n, Namespace ns);
+    	readonly bool IsDistinguishableFrom(NamedElement n, Namespace ns);
     	/*
     	If the Gate is an inside Combined Fragment Gate, this operation returns the InteractionOperand that the opposite end of this Gate is included within.
     	
@@ -2829,7 +2829,7 @@
     	      else null
     	    endif)
     	*/
-    	InteractionOperand GetOperand();
+    	readonly InteractionOperand GetOperand();
     }
 
     /*
@@ -3008,7 +3008,7 @@
     	/*
     	The sort of communication reflected by the Message.
     	*/
-    	MessageSort MessageSort;
+    	MessageSort MessageSort/* unhandled default value: InstanceValue */;
     	/*
     	References the Receiving of the Message.
     	*/
@@ -3027,7 +3027,7 @@
     	spec:
     	    result = (true)
     	*/
-    	bool IsDistinguishableFrom(NamedElement n, Namespace ns);
+    	readonly bool IsDistinguishableFrom(NamedElement n, Namespace ns);
     }
 
     /*
@@ -3047,7 +3047,7 @@
     	pre:
     	    message->notEmpty()
     	*/
-    	set<MessageEnd> OppositeEnd();
+    	readonly set<MessageEnd> OppositeEnd();
     	/*
     	This query returns value true if this MessageEnd is a sendEvent.
     	
@@ -3056,7 +3056,7 @@
     	spec:
     	    result = (message.sendEvent->asSet()->includes(self))
     	*/
-    	bool IsSend();
+    	readonly bool IsSend();
     	/*
     	This query returns value true if this MessageEnd is a receiveEvent.
     	
@@ -3066,7 +3066,7 @@
     	spec:
     	    result = (message.receiveEvent->asSet()->includes(self))
     	*/
-    	bool IsReceive();
+    	readonly bool IsReceive();
     	/*
     	This query returns a set including the enclosing InteractionFragment this MessageEnd is enclosed within.
     	
@@ -3101,7 +3101,7 @@
     	      endif
     	    endif)
     	*/
-    	set<InteractionFragment> EnclosingFragment();
+    	readonly set<InteractionFragment> EnclosingFragment();
     }
 
     /*
@@ -3431,14 +3431,14 @@
     	spec:
     	    result = (ownedElement->union(ownedElement->collect(e | e.allOwnedElements()))->asSet())
     	*/
-    	set<Element> AllOwnedElements();
+    	readonly set<Element> AllOwnedElements();
     	/*
     	The query mustBeOwned() indicates whether Elements of this type must have an owner. Subclasses of Element that do not require an owner must override this operation.
     	
     	spec:
     	    result = (true)
     	*/
-    	bool MustBeOwned();
+    	readonly bool MustBeOwned();
     }
 
     /*
@@ -3461,7 +3461,7 @@
     	/*
     	Specifies the visibility of the imported PackageableElement within the importingNamespace, i.e., whether the  importedElement will in turn be visible to other Namespaces. If the ElementImport is public, the importedElement will be visible outside the importingNamespace while, if the ElementImport is private, it will not.
     	*/
-    	VisibilityKind Visibility;
+    	VisibilityKind Visibility/* unhandled default value: InstanceValue */;
     	/*
     	The query getName() returns the name under which the imported PackageableElement will be known in the importing namespace.
     	
@@ -3472,7 +3472,7 @@
     	      importedElement.name
     	    endif)
     	*/
-    	string GetName();
+    	readonly string GetName();
     }
 
     /*
@@ -3483,11 +3483,11 @@
     	/*
     	For a multivalued multiplicity, this attribute specifies whether the values in an instantiation of this MultiplicityElement are sequentially ordered.
     	*/
-    	bool IsOrdered;
+    	bool IsOrdered = "false";
     	/*
     	For a multivalued multiplicity, this attributes specifies whether the values in an instantiation of this MultiplicityElement are unique.
     	*/
-    	bool IsUnique;
+    	bool IsUnique = "true";
     	/*
     	The lower bound of the multiplicity interval.
     	
@@ -3516,7 +3516,7 @@
     	spec:
     	    result = ((other.lowerBound() <= self.lowerBound()) and ((other.upperBound() = *) or (self.upperBound() <= other.upperBound())))
     	*/
-    	bool CompatibleWith(MultiplicityElement other);
+    	readonly bool CompatibleWith(MultiplicityElement other);
     	/*
     	The query includesMultiplicity() checks whether this multiplicity includes all the cardinalities allowed by the specified multiplicity.
     	
@@ -3525,14 +3525,14 @@
     	spec:
     	    result = ((self.lowerBound() <= M.lowerBound()) and (self.upperBound() >= M.upperBound()))
     	*/
-    	bool IncludesMultiplicity(MultiplicityElement M);
+    	readonly bool IncludesMultiplicity(MultiplicityElement M);
     	/*
     	The operation is determines if the upper and lower bound of the ranges are the ones given.
     	
     	spec:
     	    result = (lowerbound = self.lowerBound() and upperbound = self.upperBound())
     	*/
-    	bool Is(int lowerbound, long upperbound);
+    	readonly bool Is(int lowerbound, long upperbound);
     	/*
     	The query isMultivalued() checks whether this multiplicity has an upper bound greater than one.
     	
@@ -3541,21 +3541,21 @@
     	spec:
     	    result = (upperBound() > 1)
     	*/
-    	bool IsMultivalued();
+    	readonly bool IsMultivalued();
     	/*
     	The query lowerBound() returns the lower bound of the multiplicity as an integer, which is the integerValue of lowerValue, if this is given, and 1 otherwise.
     	
     	spec:
     	    result = (if (lowerValue=null or lowerValue.integerValue()=null) then 1 else lowerValue.integerValue() endif)
     	*/
-    	int LowerBound();
+    	readonly int LowerBound();
     	/*
     	The query upperBound() returns the upper bound of the multiplicity for a bounded multiplicity as an unlimited natural, which is the unlimitedNaturalValue of upperValue, if given, and 1, otherwise.
     	
     	spec:
     	    result = (if (upperValue=null or upperValue.unlimitedValue()=null) then 1 else upperValue.unlimitedValue() endif)
     	*/
-    	long UpperBound();
+    	readonly long UpperBound();
     }
 
     /*
@@ -3615,7 +3615,7 @@
     	      endif
     	    endif)
     	*/
-    	list<Namespace> AllNamespaces();
+    	readonly list<Namespace> AllNamespaces();
     	/*
     	The query allOwningPackages() returns the set of all the enclosing Namespaces of this NamedElement, working outwards, that are Packages, up to but not including the first such Namespace that is not a Package.
     	
@@ -3628,7 +3628,7 @@
     	      null
     	    endif)
     	*/
-    	set<Package> AllOwningPackages();
+    	readonly set<Package> AllOwningPackages();
     	/*
     	The query isDistinguishableFrom() determines whether two NamedElements may logically co-exist within a Namespace. By default, two named elements are distinguishable if (a) they have types neither of which is a kind of the other or (b) they have different names.
     	
@@ -3637,14 +3637,14 @@
     	        ns.getNamesOfMember(self)->intersection(ns.getNamesOfMember(n))->isEmpty()
     	    )
     	*/
-    	bool IsDistinguishableFrom(NamedElement n, Namespace ns);
+    	readonly bool IsDistinguishableFrom(NamedElement n, Namespace ns);
     	/*
     	The query separator() gives the string that is used to separate names when constructing a qualifiedName.
     	
     	spec:
     	    result = ('::')
     	*/
-    	string Separator();
+    	readonly string Separator();
     }
 
     /*
@@ -3685,7 +3685,7 @@
     	spec:
     	    result = (imps->reject(imp1  | imps->exists(imp2 | not imp1.isDistinguishableFrom(imp2, self))))
     	*/
-    	set<PackageableElement> ExcludeCollisions(set<PackageableElement> imps);
+    	readonly set<PackageableElement> ExcludeCollisions(set<PackageableElement> imps);
     	/*
     	The query getNamesOfMember() gives a set of all of the names that a member would have in a Namespace, taking importing into account. In general a member can have multiple names in a Namespace if it is imported more than once with different aliases.
     	
@@ -3701,14 +3701,14 @@
     	      endif
     	    endif)
     	*/
-    	set<string> GetNamesOfMember(NamedElement element);
+    	readonly set<string> GetNamesOfMember(NamedElement element);
     	/*
     	The query importMembers() defines which of a set of PackageableElements are actually imported into the Namespace. This excludes hidden ones, i.e., those which have names that conflict with names of ownedMembers, and it also excludes PackageableElements that would have the indistinguishable names when imported.
     	
     	spec:
     	    result = (self.excludeCollisions(imps)->select(imp | self.ownedMember->forAll(mem | imp.isDistinguishableFrom(mem, self))))
     	*/
-    	set<PackageableElement> ImportMembers(set<PackageableElement> imps);
+    	readonly set<PackageableElement> ImportMembers(set<PackageableElement> imps);
     	/*
     	The Boolean query membersAreDistinguishable() determines whether all of the Namespace's members are distinguishable within it.
     	
@@ -3717,7 +3717,7 @@
     	       member->excluding(memb)->forAll(other |
     	           memb.isDistinguishableFrom(other, self))))
     	*/
-    	bool MembersAreDistinguishable();
+    	readonly bool MembersAreDistinguishable();
     }
 
     /*
@@ -3728,7 +3728,7 @@
     	/*
     	A PackageableElement must have a visibility specified if it is owned by a Namespace. The default visibility is public.
     	*/
-    	VisibilityKind Visibility redefines NamedElement.Visibility;
+    	VisibilityKind Visibility/* unhandled default value: InstanceValue */ redefines NamedElement.Visibility;
     }
 
     /*
@@ -3747,7 +3747,7 @@
     	/*
     	Specifies the visibility of the imported PackageableElements within the importingNamespace, i.e., whether imported Elements will in turn be visible to other Namespaces. If the PackageImport is public, the imported Elements will be visible outside the importingNamespace, while, if the PackageImport is private, they will not.
     	*/
-    	VisibilityKind Visibility;
+    	VisibilityKind Visibility/* unhandled default value: InstanceValue */;
     }
 
     /*
@@ -3769,14 +3769,14 @@
     	spec:
     	    result = (self.oclIsKindOf(p.oclType()))
     	*/
-    	bool IsCompatibleWith(ParameterableElement p);
+    	readonly bool IsCompatibleWith(ParameterableElement p);
     	/*
     	The query isTemplateParameter() determines if this ParameterableElement is exposed as a formal TemplateParameter.
     	
     	spec:
     	    result = (templateParameter->notEmpty())
     	*/
-    	bool IsTemplateParameter();
+    	readonly bool IsTemplateParameter();
     }
 
     /*
@@ -3816,14 +3816,14 @@
     	spec:
     	    result = (ownedTemplateSignature <> null)
     	*/
-    	bool IsTemplate();
+    	readonly bool IsTemplate();
     	/*
     	The query parameterableElements() returns the set of ParameterableElements that may be used as the parameteredElements for a TemplateParameter of this TemplateableElement. By default, this set includes all the ownedElements. Subclasses may override this operation if they choose to restrict the set of ParameterableElements.
     	
     	spec:
     	    result = (self.allOwnedElements()->select(oclIsKindOf(ParameterableElement)).oclAsType(ParameterableElement)->asSet())
     	*/
-    	set<ParameterableElement> ParameterableElements();
+    	readonly set<ParameterableElement> ParameterableElements();
     }
 
     /*
@@ -3929,7 +3929,7 @@
     	spec:
     	    result = (false)
     	*/
-    	bool ConformsTo(Type other);
+    	readonly bool ConformsTo(Type other);
     }
 
     /*
@@ -3982,7 +3982,7 @@
     	/*
     	Tells whether the Behavior can be invoked while it is still executing from a previous invocation.
     	*/
-    	bool IsReentrant;
+    	bool IsReentrant = "true";
     	/*
     	References a list of Parameters to the Behavior which describes the order and type of arguments that can be given when the Behavior is invoked and of the values which will be returned when the Behavior completes its execution.
     	*/
@@ -4021,21 +4021,21 @@
     	    endif
     	        
     	*/
-    	BehavioredClassifier BehavioredClassifier(Element from);
+    	readonly BehavioredClassifier BehavioredClassifier(Element from);
     	/*
     	The in and inout ownedParameters of the Behavior.
     	
     	spec:
     	    result = (ownedParameter->select(direction=ParameterDirectionKind::_'in' or direction=ParameterDirectionKind::inout))
     	*/
-    	list<Parameter> InputParameters();
+    	readonly list<Parameter> InputParameters();
     	/*
     	The out, inout and return ownedParameters.
     	
     	spec:
     	    result = (ownedParameter->select(direction=ParameterDirectionKind::out or direction=ParameterDirectionKind::inout or direction=ParameterDirectionKind::return))
     	*/
-    	list<Parameter> OutputParameters();
+    	readonly list<Parameter> OutputParameters();
     }
 
     /*
@@ -4080,7 +4080,7 @@
     	        a.type.oclIsKindOf(DataType) and
     	          hasAllDataTypeAttributes(a.type.oclAsType(DataType))))
     	*/
-    	bool HasAllDataTypeAttributes(DataType d);
+    	readonly bool HasAllDataTypeAttributes(DataType d);
     }
 
     /*
@@ -4124,7 +4124,7 @@
     	/*
     	Specifies whether the TimeEvent is specified as an absolute or relative time.
     	*/
-    	bool IsRelative;
+    	bool IsRelative = "false";
     	/*
     	Specifies the time of the TimeEvent.
     	*/
@@ -4169,11 +4169,11 @@
     	/*
     	Specifies the semantics of concurrent calls to the same passive instance (i.e., an instance originating from a Class with isActive being false). Active instances control access to their own BehavioralFeatures.
     	*/
-    	CallConcurrencyKind Concurrency;
+    	CallConcurrencyKind Concurrency/* unhandled default value: InstanceValue */;
     	/*
     	If true, then the BehavioralFeature does not have an implementation, and one must be supplied by a more specific Classifier. If false, the BehavioralFeature must have an implementation in the Classifier or one must be inherited.
     	*/
-    	bool IsAbstract;
+    	bool IsAbstract = "false";
     	/*
     	A Behavior that implements the BehavioralFeature. There may be at most one Behavior for a particular pairing of a Classifier (as owner of the Behavior) and a BehavioralFeature (as specification of the Behavior).
     	*/
@@ -4200,21 +4200,21 @@
     	                  isStream=p.isStream,isOrdered=p.isOrdered,isUnique=p.isUnique,lower=p.lower, upper=p.upper }))
     	      )
     	*/
-    	bool IsDistinguishableFrom(NamedElement n, Namespace ns);
+    	readonly bool IsDistinguishableFrom(NamedElement n, Namespace ns);
     	/*
     	The ownedParameters with direction in and inout.
     	
     	spec:
     	    result = (ownedParameter->select(direction=ParameterDirectionKind::_'in' or direction=ParameterDirectionKind::inout))
     	*/
-    	list<Parameter> InputParameters();
+    	readonly list<Parameter> InputParameters();
     	/*
     	The ownedParameters with direction out, inout, or return.
     	
     	spec:
     	    result = (ownedParameter->select(direction=ParameterDirectionKind::out or direction=ParameterDirectionKind::inout or direction=ParameterDirectionKind::return))
     	*/
-    	list<Parameter> OutputParameters();
+    	readonly list<Parameter> OutputParameters();
     }
 
     /*
@@ -4255,11 +4255,11 @@
     	/*
     	If true, the Classifier can only be instantiated by instantiating one of its specializations. An abstract Classifier is intended to be used by other Classifiers e.g., as the target of Associations or Generalizations.
     	*/
-    	bool IsAbstract;
+    	bool IsAbstract = "false";
     	/*
     	If true, the Classifier cannot be specialized.
     	*/
-    	bool IsFinalSpecialization;
+    	bool IsFinalSpecialization = "false";
     	/*
     	The optional RedefinableTemplateSignature specifying the formal template parameters.
     	*/
@@ -4298,14 +4298,14 @@
     	spec:
     	    result = (member->select(oclIsKindOf(Feature))->collect(oclAsType(Feature))->asSet())
     	*/
-    	set<Feature> AllFeatures();
+    	readonly set<Feature> AllFeatures();
     	/*
     	The query allParents() gives all of the direct and indirect ancestors of a generalized Classifier.
     	
     	spec:
     	    result = (parents()->union(parents()->collect(allParents())->asSet()))
     	*/
-    	set<Classifier> AllParents();
+    	readonly set<Classifier> AllParents();
     	/*
     	The query conformsTo() gives true for a Classifier that defines a type that conforms to another. This is used, for example, in the specification of signature conformance for operations.
     	
@@ -4317,7 +4317,7 @@
     	      false
     	    endif)
     	*/
-    	bool ConformsTo(Type other);
+    	readonly bool ConformsTo(Type other);
     	/*
     	The query hasVisibilityOf() determines whether a NamedElement is visible in the classifier. Non-private members are visible. It is only called when the argument is something owned by a parent.
     	
@@ -4326,7 +4326,7 @@
     	spec:
     	    result = (n.visibility <> VisibilityKind::private)
     	*/
-    	bool HasVisibilityOf(NamedElement n);
+    	readonly bool HasVisibilityOf(NamedElement n);
     	/*
     	The query inherit() defines how to inherit a set of elements passed as its argument.  It excludes redefined elements from the result.
     	
@@ -4337,7 +4337,7 @@
     	        select(redefinedElement->includes(inh.oclAsType(RedefinableElement)))
     	           ->notEmpty()))
     	*/
-    	set<NamedElement> Inherit(set<NamedElement> inhs);
+    	readonly set<NamedElement> Inherit(set<NamedElement> inhs);
     	/*
     	The query inheritableMembers() gives all of the members of a Classifier that may be inherited in one of its descendants, subject to whatever visibility restrictions apply.
     	
@@ -4346,28 +4346,28 @@
     	spec:
     	    result = (member->select(m | c.hasVisibilityOf(m)))
     	*/
-    	set<NamedElement> InheritableMembers(Classifier c);
+    	readonly set<NamedElement> InheritableMembers(Classifier c);
     	/*
     	The query isTemplate() returns whether this Classifier is actually a template.
     	
     	spec:
     	    result = (ownedTemplateSignature <> null or general->exists(g | g.isTemplate()))
     	*/
-    	bool IsTemplate();
+    	readonly bool IsTemplate();
     	/*
     	The query maySpecializeType() determines whether this classifier may have a generalization relationship to classifiers of the specified type. By default a classifier may specialize classifiers of the same or a more general type. It is intended to be redefined by classifiers that have different specialization constraints.
     	
     	spec:
     	    result = (self.oclIsKindOf(c.oclType()))
     	*/
-    	bool MaySpecializeType(Classifier c);
+    	readonly bool MaySpecializeType(Classifier c);
     	/*
     	The query parents() gives all of the immediate ancestors of a generalized Classifier.
     	
     	spec:
     	    result = (generalization.general->asSet())
     	*/
-    	set<Classifier> Parents();
+    	readonly set<Classifier> Parents();
     	/*
     	The Interfaces directly realized by this Classifier
     	
@@ -4376,7 +4376,7 @@
     	      select(oclIsKindOf(Realization) and supplier->forAll(oclIsKindOf(Interface))))->
     	          collect(supplier.oclAsType(Interface))->asSet())
     	*/
-    	set<Interface> DirectlyRealizedInterfaces();
+    	readonly set<Interface> DirectlyRealizedInterfaces();
     	/*
     	The Interfaces directly used by this Classifier
     	
@@ -4385,29 +4385,29 @@
     	      select(oclIsKindOf(Usage) and client->forAll(oclIsKindOf(Interface))))->
     	        collect(client.oclAsType(Interface))->asSet())
     	*/
-    	set<Interface> DirectlyUsedInterfaces();
+    	readonly set<Interface> DirectlyUsedInterfaces();
     	/*
     	The Interfaces realized by this Classifier and all of its generalizations
     	
     	spec:
     	    result = (directlyRealizedInterfaces()->union(self.allParents()->collect(directlyRealizedInterfaces()))->asSet())
     	*/
-    	set<Interface> AllRealizedInterfaces();
+    	readonly set<Interface> AllRealizedInterfaces();
     	/*
     	The Interfaces used by this Classifier and all of its generalizations
     	
     	spec:
     	    result = (directlyUsedInterfaces()->union(self.allParents()->collect(directlyUsedInterfaces()))->asSet())
     	*/
-    	set<Interface> AllUsedInterfaces();
-    	bool IsSubstitutableFor(Classifier contract);
+    	readonly set<Interface> AllUsedInterfaces();
+    	readonly bool IsSubstitutableFor(Classifier contract);
     	/*
     	The query allAttributes gives an ordered set of all owned and inherited attributes of the Classifier. All owned attributes appear before any inherited attributes, and the attributes inherited from any more specific parent Classifier appear before those of any more general parent Classifier. However, if the Classifier has multiple immediate parents, then the relative ordering of the sets of attributes from those parents is not defined.
     	
     	spec:
     	    result = (attribute->asSequence()->union(parents()->asSequence().allAttributes())->select(p | member->includes(p))->asOrderedSet())
     	*/
-    	list<Property> AllAttributes();
+    	readonly list<Property> AllAttributes();
     	/*
     	All StructuralFeatures related to the Classifier that may have Slots, including direct attributes, inherited attributes, private attributes in generalizations, and memberEnds of Associations, but excluding redefined StructuralFeatures.
     	
@@ -4417,7 +4417,7 @@
     	       union(self.inherit(self.allParents()->collect(p | p.attribute)->asSet())->
     	         collect(oclAsType(StructuralFeature)))->asSet())
     	*/
-    	set<StructuralFeature> AllSlottableFeatures();
+    	readonly set<StructuralFeature> AllSlottableFeatures();
     }
 
     /*
@@ -4428,7 +4428,7 @@
     	/*
     	Constrains the required relationship between an actual parameter and the parameteredElement for this formal parameter.
     	*/
-    	bool AllowSubstitutable;
+    	bool AllowSubstitutable = "true";
     	/*
     	The classifiers that constrain the argument that can be used for the parameter. If the allowSubstitutable attribute is true, then any Classifier that is compatible with this constraining Classifier can be substituted; otherwise, it must be either this Classifier or one of its specializations. If this property is empty, there are no constraints on the Classifier that can be used as an argument.
     	*/
@@ -4451,7 +4451,7 @@
     	/*
     	Specifies whether this Feature characterizes individual instances classified by the Classifier (false) or the Classifier itself (true).
     	*/
-    	bool IsStatic;
+    	bool IsStatic = "false";
     }
 
     /*
@@ -4470,7 +4470,7 @@
     	/*
     	Indicates whether the specific Classifier can be used wherever the general Classifier can be used. If true, the execution traces of the specific Classifier shall be a superset of the execution traces of the general Classifier. If false, there is no such constraint on execution traces. If unset, the modeler has not stated whether there is such a constraint or not.
     	*/
-    	bool IsSubstitutable;
+    	bool IsSubstitutable = "true";
     	/*
     	The specializing Classifier in the Generalization relationship.
     	*/
@@ -4489,11 +4489,11 @@
     	/*
     	Indicates (via the associated Generalizations) whether or not the set of specific Classifiers are covering for a particular general classifier. When isCovering is true, every instance of a particular general Classifier is also an instance of at least one of its specific Classifiers for the GeneralizationSet. When isCovering is false, there are one or more instances of the particular general Classifier that are not instances of at least one of its specific Classifiers defined for the GeneralizationSet.
     	*/
-    	bool IsCovering;
+    	bool IsCovering = "false";
     	/*
     	Indicates whether or not the set of specific Classifiers in a Generalization relationship have instance in common. If isDisjoint is true, the specific Classifiers for a particular GeneralizationSet have no members in common; that is, their intersection is empty. If isDisjoint is false, the specific Classifiers in a particular GeneralizationSet have one or more members in common; that is, their intersection is not empty.
     	*/
-    	bool IsDisjoint;
+    	bool IsDisjoint = "false";
     	/*
     	Designates the Classifier that is defined as the power type for the associated GeneralizationSet, if there is one.
     	*/
@@ -4561,7 +4561,7 @@
     	/*
     	Specifies whether an execution of the BehavioralFeature leaves the state of the system unchanged (isQuery=true) or whether side effects may occur (isQuery=false).
     	*/
-    	bool IsQuery;
+    	bool IsQuery = "false";
     	/*
     	Specifies whether the return parameter is unique or not, if present. This information is derived from the return result for this Operation.
     	
@@ -4647,14 +4647,14 @@
     	pre:
     	    redefiningElement.isRedefinitionContextValid(self)
     	*/
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     	/*
     	The query returnResult() returns the set containing the return parameter of the Operation if one exists, otherwise, it returns an empty set
     	
     	spec:
     	    result = (ownedParameter->select (direction = ParameterDirectionKind::return))
     	*/
-    	set<Parameter> ReturnResult();
+    	readonly set<Parameter> ReturnResult();
     }
 
     /*
@@ -4687,7 +4687,7 @@
     	/*
     	Indicates whether a parameter is being sent into or out of a behavioral element.
     	*/
-    	ParameterDirectionKind Direction;
+    	ParameterDirectionKind Direction/* unhandled default value: InstanceValue */;
     	/*
     	Specifies the effect that executions of the owner of the Parameter have on objects passed in or out of the parameter.
     	*/
@@ -4695,11 +4695,11 @@
     	/*
     	Tells whether an output parameter may emit a value to the exclusion of the other outputs.
     	*/
-    	bool IsException;
+    	bool IsException = "false";
     	/*
     	Tells whether an input parameter may accept values while its behavior is executing, or whether an output parameter may post values while the behavior is executing.
     	*/
-    	bool IsStream;
+    	bool IsStream = "false";
     	/*
     	The Operation owning this parameter.
     	*/
@@ -4733,7 +4733,7 @@
     	/*
     	Specifies the kind of aggregation that applies to the Property.
     	*/
-    	AggregationKind Aggregation;
+    	AggregationKind Aggregation/* unhandled default value: InstanceValue */;
     	/*
     	The Association of which this Property is a member, if any.
     	*/
@@ -4768,15 +4768,15 @@
     	/*
     	Specifies whether the Property is derived, i.e., whether its value or values can be computed from other information.
     	*/
-    	bool IsDerived;
+    	bool IsDerived = "false";
     	/*
     	Specifies whether the property is derived as the union of all of the Properties that are constrained to subset it.
     	*/
-    	bool IsDerivedUnion;
+    	bool IsDerivedUnion = "false";
     	/*
     	True indicates this property can be used to uniquely identify an instance of the containing Class.
     	*/
-    	bool IsID;
+    	bool IsID = "false";
     	/*
     	In the case where the Property is one end of a binary association this gives the other end.
     	
@@ -4811,7 +4811,7 @@
     	spec:
     	    result = (not classifier->isEmpty())
     	*/
-    	bool IsAttribute();
+    	readonly bool IsAttribute();
     	/*
     	The query isCompatibleWith() determines if this Property is compatible with the specified ParameterableElement. This Property is compatible with ParameterableElement p if the kind of this Property is thesame as or a subtype of the kind of p. Further, if p is a TypedElement, then the type of this Property must be conformant with the type of p.
     	
@@ -4819,7 +4819,7 @@
     	    result = (self.oclIsKindOf(p.oclType()) and (p.oclIsKindOf(TypeElement) implies
     	    self.type.conformsTo(p.oclAsType(TypedElement).type)))
     	*/
-    	bool IsCompatibleWith(ParameterableElement p);
+    	readonly bool IsCompatibleWith(ParameterableElement p);
     	/*
     	The query isConsistentWith() specifies, for any two Properties in a context in which redefinition is possible, whether redefinition would be logically consistent. A redefining Property is consistent with a redefined Property if the type of the redefining Property conforms to the type of the redefined Property, and the multiplicity of the redefining Property (if specified) is contained in the multiplicity of the redefined Property.
     	
@@ -4833,14 +4833,14 @@
     	      ((prop.upperBound()->notEmpty() and self.upperBound()->notEmpty()) implies prop.lowerBound() <= self.lowerBound()) and 
     	      (self.isComposite implies prop.isComposite)))
     	*/
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     	/*
     	The query isNavigable() indicates whether it is possible to navigate across the property.
     	
     	spec:
     	    result = (not classifier->isEmpty() or association.navigableOwnedEnd->includes(self))
     	*/
-    	bool IsNavigable();
+    	readonly bool IsNavigable();
     	/*
     	The query subsettingContext() gives the context for subsetting a Property. It consists, in the case of an attribute, of the corresponding Classifier, and in the case of an association end, all of the Classifiers at the other ends.
     	
@@ -4854,7 +4854,7 @@
     	      endif
     	    endif)
     	*/
-    	set<Type> SubsettingContext();
+    	readonly set<Type> SubsettingContext();
     }
 
     /*
@@ -4865,7 +4865,7 @@
     	/*
     	Indicates whether it is possible to further redefine a RedefinableElement. If the value is true, then it is not possible to further redefine the RedefinableElement.
     	*/
-    	bool IsLeaf;
+    	bool IsLeaf = "false";
     	/*
     	The RedefinableElement that is being redefined by this element.
     	*/
@@ -4882,14 +4882,14 @@
     	pre:
     	    redefiningElement.isRedefinitionContextValid(self)
     	*/
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     	/*
     	The query isRedefinitionContextValid() specifies whether the redefinition contexts of this RedefinableElement are properly related to the redefinition contexts of the specified RedefinableElement to allow this element to redefine the other. By default at least one of the redefinition contexts of this element must be a specialization of at least one of the redefinition contexts of the specified element.
     	
     	spec:
     	    result = (redefinitionContext->exists(c | c.allParents()->includesAll(redefinedElement.redefinitionContext)))
     	*/
-    	bool IsRedefinitionContextValid(RedefinableElement redefinedElement);
+    	readonly bool IsRedefinitionContextValid(RedefinableElement redefinedElement);
     }
 
     /*
@@ -4920,7 +4920,7 @@
     	pre:
     	    redefiningElement.isRedefinitionContextValid(self)
     	*/
-    	bool IsConsistentWith(RedefinableElement redefiningElement);
+    	readonly bool IsConsistentWith(RedefinableElement redefiningElement);
     }
 
     /*
@@ -4950,7 +4950,7 @@
     	/*
     	If isReadOnly is true, the StructuralFeature may not be written to after initialization.
     	*/
-    	bool IsReadOnly;
+    	bool IsReadOnly = "false";
     }
 
     /*
@@ -5031,7 +5031,7 @@
     	/*
     	Indicates whether there is a single OutputPin for a SignalEvent occurrence, or multiple OutputPins for attribute values of the instance of the Signal associated with a SignalEvent occurrence.
     	*/
-    	bool IsUnmarshall;
+    	bool IsUnmarshall = "false";
     	/*
     	OutputPins holding the values received from an Event occurrence.
     	*/
@@ -5066,7 +5066,7 @@
     	/*
     	If true, the Action can begin a new, concurrent execution, even if there is already another execution of the Action ongoing. If false, the Action cannot begin a new execution until any previous execution has completed.
     	*/
-    	bool IsLocallyReentrant;
+    	bool IsLocallyReentrant = "false";
     	/*
     	A Constraint that must be satisfied when execution of the Action is completed.
     	*/
@@ -5085,15 +5085,15 @@
     	spec:
     	    result = (self->asSet())
     	*/
-    	set<Action> AllActions();
+    	readonly set<Action> AllActions();
     	/*
     	Returns all the ActivityNodes directly or indirectly owned by this Action. This includes at least all the Pins of the Action.
     	
     	spec:
     	    result = (input.oclAsType(Pin)->asSet()->union(output->asSet()))
     	*/
-    	set<ActivityNode> AllOwnedNodes();
-    	Behavior ContainingBehavior();
+    	readonly set<ActivityNode> AllOwnedNodes();
+    	readonly Behavior ContainingBehavior();
     }
 
     /*
@@ -5119,7 +5119,7 @@
     	/*
     	Specifies whether existing values of the StructuralFeature should be removed before adding the new value.
     	*/
-    	bool IsReplaceAll;
+    	bool IsReplaceAll = "false";
     }
 
     /*
@@ -5134,7 +5134,7 @@
     	/*
     	Specifies whether existing values of the Variable should be removed before adding the new value.
     	*/
-    	bool IsReplaceAll;
+    	bool IsReplaceAll = "false";
     }
 
     /*
@@ -5156,7 +5156,7 @@
     	/*
     	If true, the call is synchronous and the caller waits for completion of the invoked Behavior. If false, the call is asynchronous and the caller proceeds immediately and cannot receive return values.
     	*/
-    	bool IsSynchronous;
+    	bool IsSynchronous = "true";
     	/*
     	The OutputPins on which the reply values from the invocation are placed (if the call is synchronous).
     	*/
@@ -5164,11 +5164,11 @@
     	/*
     	Return the in and inout ownedParameters of the Behavior or Operation being called. (This operation is abstract and should be overridden by subclasses of CallAction.)
     	*/
-    	list<Parameter> InputParameters();
+    	readonly list<Parameter> InputParameters();
     	/*
     	Return the inout, out and return ownedParameters of the Behavior or Operation being called. (This operation is abstract and should be overridden by subclasses of CallAction.)
     	*/
-    	list<Parameter> OutputParameters();
+    	readonly list<Parameter> OutputParameters();
     }
 
     /*
@@ -5186,14 +5186,14 @@
     	spec:
     	    result = (behavior.outputParameters())
     	*/
-    	list<Parameter> OutputParameters();
+    	readonly list<Parameter> OutputParameters();
     	/*
     	Return the in and inout ownedParameters of the Behavior being called.
     	
     	spec:
     	    result = (behavior.inputParameters())
     	*/
-    	list<Parameter> InputParameters();
+    	readonly list<Parameter> InputParameters();
     }
 
     /*
@@ -5215,14 +5215,14 @@
     	spec:
     	    result = (operation.outputParameters())
     	*/
-    	list<Parameter> OutputParameters();
+    	readonly list<Parameter> OutputParameters();
     	/*
     	Return the in and inout ownedParameters of the Operation being called.
     	
     	spec:
     	    result = (operation.inputParameters())
     	*/
-    	list<Parameter> InputParameters();
+    	readonly list<Parameter> InputParameters();
     }
 
     /*
@@ -5301,11 +5301,11 @@
     	/*
     	If true, the modeler asserts that the test for at least one Clause of the ConditionalNode will succeed.
     	*/
-    	bool IsAssured;
+    	bool IsAssured = "false";
     	/*
     	If true, the modeler asserts that the test for at most one Clause of the ConditionalNode will succeed.
     	*/
-    	bool IsDeterminate;
+    	bool IsDeterminate = "false";
     	/*
     	The OutputPins that onto which are moved values from the bodyOutputs of the Clause selected for execution.
     	*/
@@ -5316,7 +5316,7 @@
     	spec:
     	    result = (self->asSet())
     	*/
-    	set<Action> AllActions();
+    	readonly set<Action> AllActions();
     }
 
     /*
@@ -5375,11 +5375,11 @@
     	/*
     	Specifies whether links in which the object participates are destroyed along with the object.
     	*/
-    	bool IsDestroyLinks;
+    	bool IsDestroyLinks = "false";
     	/*
     	Specifies whether objects owned by the object (via composition) are destroyed along with the object.
     	*/
-    	bool IsDestroyOwnedObjects;
+    	bool IsDestroyOwnedObjects = "false";
     	/*
     	The InputPin providing the object to be destroyed.
     	*/
@@ -5413,7 +5413,7 @@
     	/*
     	The mode in which the ExpansionRegion executes its contents. If parallel, executions are concurrent. If iterative, executions are sequential. If stream, a stream of values flows into a single execution.
     	*/
-    	ExpansionKind Mode;
+    	ExpansionKind Mode/* unhandled default value: InstanceValue */;
     	/*
     	The ExpansionNodes that form the output collections of the ExpansionRegion.
     	*/
@@ -5461,7 +5461,7 @@
     	spec:
     	    result = (endData->asSequence()->first().end.association)
     	*/
-    	Association Association();
+    	readonly Association Association();
     }
 
     /*
@@ -5476,14 +5476,14 @@
     	/*
     	Specifies whether the existing links emanating from the object on this end should be destroyed before creating a new link.
     	*/
-    	bool IsReplaceAll;
+    	bool IsReplaceAll = "false";
     	/*
     	Adds the insertAt InputPin (if any) to the set of all Pins.
     	
     	spec:
     	    result = (self.LinkEndData::allPins()->including(insertAt))
     	*/
-    	multi_set<InputPin> AllPins();
+    	readonly multi_set<InputPin> AllPins();
     }
 
     /*
@@ -5509,7 +5509,7 @@
     	spec:
     	    result = (value->asBag()->union(qualifier.value))
     	*/
-    	multi_set<InputPin> AllPins();
+    	readonly multi_set<InputPin> AllPins();
     }
 
     /*
@@ -5524,14 +5524,14 @@
     	/*
     	Specifies whether to destroy duplicates of the value in nonunique Association ends.
     	*/
-    	bool IsDestroyDuplicates;
+    	bool IsDestroyDuplicates = "false";
     	/*
     	Adds the destroyAt InputPin (if any) to the set of all Pins.
     	
     	spec:
     	    result = (self.LinkEndData::allPins()->including(destroyAt))
     	*/
-    	multi_set<InputPin> AllPins();
+    	readonly multi_set<InputPin> AllPins();
     }
 
     /*
@@ -5554,7 +5554,7 @@
     	/*
     	If true, the test is performed before the first execution of the bodyPart. If false, the bodyPart is executed once before the test is performed.
     	*/
-    	bool IsTestedFirst;
+    	bool IsTestedFirst = "false";
     	/*
     	A list of OutputPins that hold the values of the loop variables during an execution of the loop. When the test fails, the values are moved to the result OutputPins of the loop.
     	*/
@@ -5581,14 +5581,14 @@
     	spec:
     	    result = (self->asSet())
     	*/
-    	set<Action> AllActions();
+    	readonly set<Action> AllActions();
     	/*
     	Return the loopVariable OutputPins in addition to other source nodes for the LoopNode as a StructuredActivityNode.
     	
     	spec:
     	    result = (self.StructuredActivityNode::sourceNodes()->union(loopVariable))
     	*/
-    	set<ActivityNode> SourceNodes();
+    	readonly set<ActivityNode> SourceNodes();
     }
 
     /*
@@ -5629,7 +5629,7 @@
     	/*
     	Indicates whether the Pin provides data to the Action or just controls how the Action executes.
     	*/
-    	bool IsControl;
+    	bool IsControl = "false";
     }
 
     /*
@@ -5685,7 +5685,7 @@
     	/*
     	Indicates whether the input object must be directly classified by the given Classifier or whether it may also be an instance of a specialization of the given Classifier.
     	*/
-    	bool IsDirect;
+    	bool IsDirect = "false";
     	/*
     	The InputPin that holds the object whose classification is to be tested.
     	*/
@@ -5711,7 +5711,7 @@
     	spec:
     	    result = (endData->select(value=null).end->asOrderedSet())
     	*/
-    	list<Property> OpenEnd();
+    	readonly list<Property> OpenEnd();
     }
 
     /*
@@ -5793,7 +5793,7 @@
     	/*
     	Specifies whether existing Classifiers should be removed before adding the new Classifiers.
     	*/
-    	bool IsReplaceAll;
+    	bool IsReplaceAll = "false";
     	/*
     	A set of Classifiers to be added to the Classifiers of the given object.
     	*/
@@ -5820,7 +5820,7 @@
     	/*
     	Indicates whether the order of the input collection should determine the order in which the reducer Behavior is applied to its elements.
     	*/
-    	bool IsOrdered;
+    	bool IsOrdered = "false";
     	/*
     	A Behavior that is repreatedly applied to two elements of the input collection to produce a value that is of the same type as elements of the collection.
     	*/
@@ -5839,7 +5839,7 @@
     	/*
     	Specifies whether to remove duplicates of the value in nonunique StructuralFeatures.
     	*/
-    	bool IsRemoveDuplicates;
+    	bool IsRemoveDuplicates = "false";
     	/*
     	An InputPin that provides the position of an existing value to remove in ordered, nonunique structural features. The type of the removeAt InputPin is UnlimitedNatural, but the value cannot be zero or unlimited.
     	*/
@@ -5854,7 +5854,7 @@
     	/*
     	Specifies whether to remove duplicates of the value in nonunique Variables.
     	*/
-    	bool IsRemoveDuplicates;
+    	bool IsRemoveDuplicates = "false";
     	/*
     	An InputPin that provides the position of an existing value to remove in ordered, nonunique Variables. The type of the removeAt InputPin is UnlimitedNatural, but the value cannot be zero or unlimited.
     	*/
@@ -5947,14 +5947,14 @@
     	spec:
     	    result = (self.behavior().outputParameters())
     	*/
-    	list<Parameter> OutputParameters();
+    	readonly list<Parameter> OutputParameters();
     	/*
     	Return the in and inout ownedParameters of the Behavior being called.
     	
     	spec:
     	    result = (self.behavior().inputParameters())
     	*/
-    	list<Parameter> InputParameters();
+    	readonly list<Parameter> InputParameters();
     	/*
     	If the type of the object InputPin is a Behavior, then that Behavior. Otherwise, if the type of the object InputPin is a BehavioredClassifier, then the classifierBehavior of that BehavioredClassifier.
     	
@@ -5968,7 +5968,7 @@
     	    endif
     	    endif)
     	*/
-    	Behavior Behavior();
+    	readonly Behavior Behavior();
     }
 
     /*
@@ -6002,7 +6002,7 @@
     	/*
     	If true, then any object used by an Action within the StructuredActivityNode cannot be accessed by any Action outside the node until the StructuredActivityNode as a whole completes. Any concurrent Actions that would result in accessing such objects are required to have their execution deferred until the completion of the StructuredActivityNode.
     	*/
-    	bool MustIsolate;
+    	bool MustIsolate = "false";
     	/*
     	The ActivityNodes immediately contained in the StructuredActivityNode.
     	*/
@@ -6025,14 +6025,14 @@
     	spec:
     	    result = (node->select(oclIsKindOf(Action)).oclAsType(Action).allActions()->including(self)->asSet())
     	*/
-    	set<Action> AllActions();
+    	readonly set<Action> AllActions();
     	/*
     	Returns all the ActivityNodes contained directly or indirectly within this StructuredActivityNode, in addition to the Pins of the StructuredActivityNode.
     	
     	spec:
     	    result = (self.Action::allOwnedNodes()->union(node)->union(node->select(oclIsKindOf(Action)).oclAsType(Action).allOwnedNodes())->asSet())
     	*/
-    	set<ActivityNode> AllOwnedNodes();
+    	readonly set<ActivityNode> AllOwnedNodes();
     	/*
     	Return those ActivityNodes contained immediately within the StructuredActivityNode that may act as sources of edges owned by the StructuredActivityNode.
     	
@@ -6040,7 +6040,7 @@
     	    result = (node->union(input.oclAsType(ActivityNode)->asSet())->
     	      union(node->select(oclIsKindOf(Action)).oclAsType(Action).output)->asSet())
     	*/
-    	set<ActivityNode> SourceNodes();
+    	readonly set<ActivityNode> SourceNodes();
     	/*
     	Return those ActivityNodes contained immediately within the StructuredActivityNode that may act as targets of edges owned by the StructuredActivityNode.
     	
@@ -6048,14 +6048,14 @@
     	    result = (node->union(output.oclAsType(ActivityNode)->asSet())->
     	      union(node->select(oclIsKindOf(Action)).oclAsType(Action).input)->asSet())
     	*/
-    	set<ActivityNode> TargetNodes();
+    	readonly set<ActivityNode> TargetNodes();
     	/*
     	The Activity that directly or indirectly contains this StructuredActivityNode (considered as an Action).
     	
     	spec:
     	    result = (self.Action::containingActivity())
     	*/
-    	Activity ContainingActivity();
+    	readonly Activity ContainingActivity();
     }
 
     /*

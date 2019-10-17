@@ -148,7 +148,8 @@
 	class MetaOperation : MetaNamedElement
 	{
 		MetaType Parent;
-		bool IsBuilder = "false";
+		bool IsBuilder;
+		bool IsReadonly;
 		containment list<MetaParameter> Parameters;
 		MetaType ReturnType;
 	}

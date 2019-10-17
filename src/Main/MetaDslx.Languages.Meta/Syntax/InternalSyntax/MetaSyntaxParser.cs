@@ -1032,8 +1032,14 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			    }
 				var attribute = attributeBuilder.ToList();
 				_pool.Free(attributeBuilder);
-				InternalSyntaxToken kBuilder = (InternalSyntaxToken)this.VisitTerminal(context.KBuilder());
-				InternalSyntaxToken kStatic = (InternalSyntaxToken)this.VisitTerminal(context.KStatic());
+			    MetaParser.OperationModifierContext[] operationModifierContext = context.operationModifier();
+			    var operationModifierBuilder = _pool.Allocate<OperationModifierGreen>();
+			    for (int i = 0; i < operationModifierContext.Length; i++)
+			    {
+			        operationModifierBuilder.Add((OperationModifierGreen)this.Visit(operationModifierContext[i]));
+			    }
+				var operationModifier = operationModifierBuilder.ToList();
+				_pool.Free(operationModifierBuilder);
 				MetaParser.ReturnTypeContext returnTypeContext = context.returnType();
 				ReturnTypeGreen returnType = null;
 				if (returnTypeContext != null)
@@ -1067,7 +1073,37 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				}
 				InternalSyntaxToken tCloseParen = (InternalSyntaxToken)this.VisitTerminal(context.TCloseParen(), MetaSyntaxKind.TCloseParen);
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.OperationDeclaration(attribute, kBuilder, kStatic, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+				return this.factory.OperationDeclaration(attribute, operationModifier, returnType, name, tOpenParen, parameterList, tCloseParen, tSemicolon);
+			}
+			
+			public override GreenNode VisitOperationModifier(MetaParser.OperationModifierContext context)
+			{
+				if (context == null) return OperationModifierGreen.__Missing;
+				MetaParser.OperationModifierBuilderContext operationModifierBuilderContext = context.operationModifierBuilder();
+				if (operationModifierBuilderContext != null) 
+				{
+					return this.factory.OperationModifier((OperationModifierBuilderGreen)this.Visit(operationModifierBuilderContext));
+				}
+				MetaParser.OperationModifierReadonlyContext operationModifierReadonlyContext = context.operationModifierReadonly();
+				if (operationModifierReadonlyContext != null) 
+				{
+					return this.factory.OperationModifier((OperationModifierReadonlyGreen)this.Visit(operationModifierReadonlyContext));
+				}
+				return OperationModifierGreen.__Missing;
+			}
+			
+			public override GreenNode VisitOperationModifierBuilder(MetaParser.OperationModifierBuilderContext context)
+			{
+				if (context == null) return OperationModifierBuilderGreen.__Missing;
+				InternalSyntaxToken kBuilder = (InternalSyntaxToken)this.VisitTerminal(context.KBuilder(), MetaSyntaxKind.KBuilder);
+				return this.factory.OperationModifierBuilder(kBuilder);
+			}
+			
+			public override GreenNode VisitOperationModifierReadonly(MetaParser.OperationModifierReadonlyContext context)
+			{
+				if (context == null) return OperationModifierReadonlyGreen.__Missing;
+				InternalSyntaxToken kReadonly = (InternalSyntaxToken)this.VisitTerminal(context.KReadonly(), MetaSyntaxKind.KReadonly);
+				return this.factory.OperationModifierReadonly(kReadonly);
 			}
 			
 			public override GreenNode VisitParameterList(MetaParser.ParameterListContext context)

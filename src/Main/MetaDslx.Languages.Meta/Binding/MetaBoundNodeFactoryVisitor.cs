@@ -2881,13 +2881,17 @@ namespace MetaDslx.Languages.Meta.Binding
 						}
 					}
 				}
-				if (state == BoundNodeFactoryState.InNode || (state == BoundNodeFactoryState.InParent && LookupPosition.IsInNode(this.Position, node.KBuilder)))
+				if (node.OperationModifier != null)
 				{
-					if (node.KBuilder.GetKind() == MetaSyntaxKind.KBuilder)
+					if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, node.OperationModifier.Node))
 					{
-						BoundNode boundKBuilder;
-						boundKBuilder = this.CreateBoundProperty(this.BoundTree, ImmutableArray<object>.Empty, name: "IsBuilder", value: true, syntax: node, hasErrors: false);
-						childBoundNodes.Add(boundKBuilder);
+						foreach (var item in node.OperationModifier)
+						{
+							if (state != BoundNodeFactoryState.InParent || LookupPosition.IsInNode(this.Position, item))
+							{
+								this.Visit(item, childBoundNodes);
+							}
+						}
 					}
 				}
 				if (node.ReturnType != null)
@@ -2950,6 +2954,163 @@ namespace MetaDslx.Languages.Meta.Binding
 				{
 					BoundNode resultNode;
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), type: typeof(MetaOperation), syntax: node, hasErrors: false);
+					childBoundNodesForParent.Add(resultNode); 
+					return resultNode;
+				}
+				else
+				{
+					Debug.Assert(false);
+					childBoundNodesForParent.Add(node);
+					return null;
+				}
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public BoundNode VisitOperationModifier(OperationModifierSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			if (node == null || node.IsMissing) return null;
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild)
+				{
+					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+					{
+						childBoundNodesForParent.Add(cachedBoundNode);
+						return cachedBoundNode;
+					}
+				}
+				if (node.OperationModifierBuilder != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.OperationModifierBuilder))
+						{
+							this.Visit(node.OperationModifierBuilder, childBoundNodesForParent);
+						}
+					}
+					else
+					{
+						this.Visit(node.OperationModifierBuilder, childBoundNodesForParent);
+					}
+				}
+				if (node.OperationModifierReadonly != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.OperationModifierReadonly))
+						{
+							this.Visit(node.OperationModifierReadonly, childBoundNodesForParent);
+						}
+					}
+					else
+					{
+						this.Visit(node.OperationModifierReadonly, childBoundNodesForParent);
+					}
+				}
+				if (state == BoundNodeFactoryState.InParent)
+				{
+					Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode);
+					if (childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode) return (BoundNode)childBoundNodesForParent[0];
+					else return null;
+				}
+				else
+				{
+					return null;
+				}
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public BoundNode VisitOperationModifierBuilder(OperationModifierBuilderSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			if (node == null || node.IsMissing) return null;
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild)
+				{
+					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+					{
+						childBoundNodesForParent.Add(cachedBoundNode);
+						return cachedBoundNode;
+					}
+					else
+					{
+						childBoundNodesForParent.Add(node);
+						return null;
+					}
+				}
+				var childBoundNodes = ArrayBuilder<object>.GetInstance();
+				if (state == BoundNodeFactoryState.InParent)
+				{
+					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
+					if (childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode) return (BoundNode)childBoundNodes[0];
+					else return null;
+				}
+				else if (state == BoundNodeFactoryState.InNode)
+				{
+					BoundNode resultNode;
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "IsBuilder", value: true, syntax: node, hasErrors: false);
+					childBoundNodesForParent.Add(resultNode); 
+					return resultNode;
+				}
+				else
+				{
+					Debug.Assert(false);
+					childBoundNodesForParent.Add(node);
+					return null;
+				}
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public BoundNode VisitOperationModifierReadonly(OperationModifierReadonlySyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			if (node == null || node.IsMissing) return null;
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild)
+				{
+					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+					{
+						childBoundNodesForParent.Add(cachedBoundNode);
+						return cachedBoundNode;
+					}
+					else
+					{
+						childBoundNodesForParent.Add(node);
+						return null;
+					}
+				}
+				var childBoundNodes = ArrayBuilder<object>.GetInstance();
+				if (state == BoundNodeFactoryState.InParent)
+				{
+					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
+					if (childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode) return (BoundNode)childBoundNodes[0];
+					else return null;
+				}
+				else if (state == BoundNodeFactoryState.InNode)
+				{
+					BoundNode resultNode;
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "IsReadonly", value: true, syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}

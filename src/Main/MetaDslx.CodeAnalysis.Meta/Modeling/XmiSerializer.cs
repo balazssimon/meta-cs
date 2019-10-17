@@ -130,6 +130,7 @@ namespace MetaDslx.Modeling
             HashSet<IModelObject> written = new HashSet<IModelObject>();
             foreach (var prop in obj.MProperties)
             {
+                if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
                 //if (oppositeIsContainment) continue;
                 bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
@@ -155,6 +156,7 @@ namespace MetaDslx.Modeling
             }
             foreach (var prop in obj.MProperties)
             {
+                if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
                 //if (oppositeIsContainment) continue;
                 bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
@@ -185,6 +187,7 @@ namespace MetaDslx.Modeling
             }
             foreach (var prop in obj.MProperties.Reverse())
             {
+                if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
                 if (prop.IsContainment && isModelObjectType)
                 {

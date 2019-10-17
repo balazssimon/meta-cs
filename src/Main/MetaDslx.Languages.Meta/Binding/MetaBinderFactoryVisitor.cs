@@ -44,7 +44,6 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseKList = new object();
 		public static object UseKMultiSet = new object();
 		public static object UseKMultiList = new object();
-		public static object UseKBuilder = new object();
 		public static object UseReturnType = new object();
 		public static object UseParameterList = new object();
 		public static object UseSource = new object();
@@ -72,6 +71,8 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseObjectType = new object();
 		public static object UseNullableType = new object();
 		public static object UseClassType = new object();
+		public static object UseOperationModifierBuilder = new object();
+		public static object UseOperationModifierReadonly = new object();
 		public static object UseParameter = new object();
 		public static object UseNullLiteral = new object();
 		public static object UseBooleanLiteral = new object();
@@ -84,6 +85,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseClassAncestor = new object();
 		public static object UseRedefinitions = new object();
 		public static object UseSubsettings = new object();
+		public static object UseOperationModifier = new object();
 		public static object UseMetamodelPropertyList = new object();
 		public static object UseRedefinitionsOrSubsettings = new object();
 
@@ -950,7 +952,6 @@ namespace MetaDslx.Languages.Meta.Binding
 			object use = null;
 			if (this.ForChild)
 			{
-				if (LookupPosition.IsInNode(this.Position, parent.KBuilder)) use = UseKBuilder;
 				if (LookupPosition.IsInNode(this.Position, parent.ReturnType)) use = UseReturnType;
 				if (LookupPosition.IsInNode(this.Position, parent.ParameterList)) use = UseParameterList;
 			}
@@ -960,11 +961,6 @@ namespace MetaDslx.Languages.Meta.Binding
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(MetaOperation));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
-				if (use == UseKBuilder)
-				{
-					resultBinder = this.CreatePropertyBinder(resultBinder, parent.KBuilder, name: "IsBuilder", value: true);
-					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
-				}
 				if (use == UseReturnType)
 				{
 					resultBinder = this.CreatePropertyBinder(resultBinder, parent.ReturnType, name: "ReturnType");
@@ -975,6 +971,56 @@ namespace MetaDslx.Languages.Meta.Binding
 					resultBinder = this.CreatePropertyBinder(resultBinder, parent.ParameterList, name: "Parameters");
 					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
 				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitOperationModifier(OperationModifierSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitOperationModifierBuilder(OperationModifierBuilderSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsBuilder", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitOperationModifierReadonly(OperationModifierReadonlySyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "IsReadonly", value: true);
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
 		}

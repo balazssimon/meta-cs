@@ -726,10 +726,12 @@ namespace MetaDslx.Languages.Meta.Binding
 						this.Visit(child);
 					}
 				}
-				switch (node.KBuilder.GetKind().Switch())
+				if (node.OperationModifier != null)
 				{
-					default:
-						break;
+					foreach (var child in node.OperationModifier)
+					{
+						this.Visit(child);
+					}
 				}
 				this.BeginProperty(node.ReturnType, name: "ReturnType");
 				try
@@ -754,6 +756,36 @@ namespace MetaDslx.Languages.Meta.Binding
 			finally
 			{
 				this.EndSymbolDef();
+			}
+		}
+		
+		public virtual void VisitOperationModifier(OperationModifierSyntax node)
+		{
+			this.Visit(node.OperationModifierBuilder);
+			this.Visit(node.OperationModifierReadonly);
+		}
+		
+		public virtual void VisitOperationModifierBuilder(OperationModifierBuilderSyntax node)
+		{
+			this.BeginProperty(node, name: "IsBuilder", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitOperationModifierReadonly(OperationModifierReadonlySyntax node)
+		{
+			this.BeginProperty(node, name: "IsReadonly", value: true);
+			try
+			{
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		

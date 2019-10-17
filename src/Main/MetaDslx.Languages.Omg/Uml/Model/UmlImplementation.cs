@@ -7,12 +7,12 @@ namespace MetaDslx.Languages.Uml.Model.Internal
 {
     class UmlImplementation : UmlImplementationBase
     {
-        public override ImmutableModelSet<Action> Action_AllActions(Action _this)
+        public override IReadOnlyCollection<Action> Action_AllActions(Action _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<ActivityNode> Action_AllOwnedNodes(Action _this)
+        public override IReadOnlyCollection<ActivityNode> Action_AllOwnedNodes(Action _this)
         {
             throw new NotImplementedException();
         }
@@ -47,12 +47,12 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<TypeBuilder> Association_ComputeProperty_EndType(AssociationBuilder _this)
+        public override IReadOnlyCollection<TypeBuilder> Association_ComputeProperty_EndType(AssociationBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> BehavioralFeature_InputParameters(BehavioralFeature _this)
+        public override IReadOnlyList<Parameter> BehavioralFeature_InputParameters(BehavioralFeature _this)
         {
             throw new NotImplementedException();
         }
@@ -62,7 +62,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> BehavioralFeature_OutputParameters(BehavioralFeature _this)
+        public override IReadOnlyList<Parameter> BehavioralFeature_OutputParameters(BehavioralFeature _this)
         {
             throw new NotImplementedException();
         }
@@ -77,82 +77,82 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> Behavior_InputParameters(Behavior _this)
+        public override IReadOnlyList<Parameter> Behavior_InputParameters(Behavior _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> Behavior_OutputParameters(Behavior _this)
+        public override IReadOnlyList<Parameter> Behavior_OutputParameters(Behavior _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> CallAction_InputParameters(CallAction _this)
+        public override IReadOnlyList<Parameter> CallAction_InputParameters(CallAction _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> CallAction_OutputParameters(CallAction _this)
+        public override IReadOnlyList<Parameter> CallAction_OutputParameters(CallAction _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> CallBehaviorAction_InputParameters(CallBehaviorAction _this)
+        public override IReadOnlyList<Parameter> CallBehaviorAction_InputParameters(CallBehaviorAction _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> CallBehaviorAction_OutputParameters(CallBehaviorAction _this)
+        public override IReadOnlyList<Parameter> CallBehaviorAction_OutputParameters(CallBehaviorAction _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> CallOperationAction_InputParameters(CallOperationAction _this)
+        public override IReadOnlyList<Parameter> CallOperationAction_InputParameters(CallOperationAction _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> CallOperationAction_OutputParameters(CallOperationAction _this)
+        public override IReadOnlyList<Parameter> CallOperationAction_OutputParameters(CallOperationAction _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Property> Classifier_AllAttributes(Classifier _this)
+        public override IReadOnlyList<Property> Classifier_AllAttributes(Classifier _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Feature> Classifier_AllFeatures(Classifier _this)
+        public override IReadOnlyCollection<Feature> Classifier_AllFeatures(Classifier _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Classifier> Classifier_AllParents(Classifier _this)
+        public override IReadOnlyCollection<Classifier> Classifier_AllParents(Classifier _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Interface> Classifier_AllRealizedInterfaces(Classifier _this)
+        public override IReadOnlyCollection<Interface> Classifier_AllRealizedInterfaces(Classifier _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<StructuralFeature> Classifier_AllSlottableFeatures(Classifier _this)
+        public override IReadOnlyCollection<StructuralFeature> Classifier_AllSlottableFeatures(Classifier _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Interface> Classifier_AllUsedInterfaces(Classifier _this)
+        public override IReadOnlyCollection<Interface> Classifier_AllUsedInterfaces(Classifier _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<ClassifierBuilder> Classifier_ComputeProperty_General(ClassifierBuilder _this)
+        public override IReadOnlyCollection<ClassifierBuilder> Classifier_ComputeProperty_General(ClassifierBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<NamedElementBuilder> Classifier_ComputeProperty_InheritedMember(ClassifierBuilder _this)
+        public override IReadOnlyCollection<NamedElementBuilder> Classifier_ComputeProperty_InheritedMember(ClassifierBuilder _this)
         {
             throw new NotImplementedException();
         }
@@ -162,12 +162,12 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Interface> Classifier_DirectlyRealizedInterfaces(Classifier _this)
+        public override IReadOnlyCollection<Interface> Classifier_DirectlyRealizedInterfaces(Classifier _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Interface> Classifier_DirectlyUsedInterfaces(Classifier _this)
+        public override IReadOnlyCollection<Interface> Classifier_DirectlyUsedInterfaces(Classifier _this)
         {
             throw new NotImplementedException();
         }
@@ -177,12 +177,12 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<NamedElement> Classifier_Inherit(Classifier _this, ImmutableModelSet<NamedElement> inhs)
+        public override IReadOnlyCollection<NamedElement> Classifier_Inherit(Classifier _this, IReadOnlyCollection<NamedElement> inhs)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<NamedElement> Classifier_InheritableMembers(Classifier _this, Classifier c)
+        public override IReadOnlyCollection<NamedElement> Classifier_InheritableMembers(Classifier _this, Classifier c)
         {
             throw new NotImplementedException();
         }
@@ -202,42 +202,42 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Classifier> Classifier_Parents(Classifier _this)
+        public override IReadOnlyCollection<Classifier> Classifier_Parents(Classifier _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<ExtensionBuilder> Class_ComputeProperty_Extension(ClassBuilder _this)
+        public override IReadOnlyCollection<ExtensionBuilder> Class_ComputeProperty_Extension(ClassBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<ClassBuilder> Class_ComputeProperty_SuperClass(ClassBuilder _this)
+        public override IReadOnlyCollection<ClassBuilder> Class_ComputeProperty_SuperClass(ClassBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<InterfaceBuilder> Component_ComputeProperty_Provided(ComponentBuilder _this)
+        public override IReadOnlyCollection<InterfaceBuilder> Component_ComputeProperty_Provided(ComponentBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<InterfaceBuilder> Component_ComputeProperty_Required(ComponentBuilder _this)
+        public override IReadOnlyCollection<InterfaceBuilder> Component_ComputeProperty_Required(ComponentBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Action> ConditionalNode_AllActions(ConditionalNode _this)
+        public override IReadOnlyCollection<Action> ConditionalNode_AllActions(ConditionalNode _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<ConnectorEndBuilder> ConnectableElement_ComputeProperty_End(ConnectableElementBuilder _this)
+        public override IReadOnlyCollection<ConnectorEndBuilder> ConnectableElement_ComputeProperty_End(ConnectableElementBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override bool ConnectionPointReference_IsConsistentWith(ConnectionPointReference _this, RedefinableElement redefiningElement)
+        public override bool ConnectionPointReference_IsConsistentWith(ConnectionPointReferenceBuilder _this, RedefinableElementBuilder redefiningElement)
         {
             throw new NotImplementedException();
         }
@@ -252,7 +252,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<PackageableElementBuilder> DeploymentTarget_ComputeProperty_DeployedElement(DeploymentTargetBuilder _this)
+        public override IReadOnlyCollection<PackageableElementBuilder> DeploymentTarget_ComputeProperty_DeployedElement(DeploymentTargetBuilder _this)
         {
             throw new NotImplementedException();
         }
@@ -262,7 +262,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Element> Element_AllOwnedElements(Element _this)
+        public override IReadOnlyCollection<Element> Element_AllOwnedElements(Element _this)
         {
             throw new NotImplementedException();
         }
@@ -272,7 +272,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<PortBuilder> EncapsulatedClassifier_ComputeProperty_OwnedPort(EncapsulatedClassifierBuilder _this)
+        public override IReadOnlyCollection<PortBuilder> EncapsulatedClassifier_ComputeProperty_OwnedPort(EncapsulatedClassifierBuilder _this)
         {
             throw new NotImplementedException();
         }
@@ -307,7 +307,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override bool FinalState_IsConsistentWith(FinalState _this, RedefinableElement redefiningElement)
+        public override bool FinalState_IsConsistentWith(FinalStateBuilder _this, RedefinableElementBuilder redefiningElement)
         {
             throw new NotImplementedException();
         }
@@ -362,17 +362,17 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<InputPin> LinkEndCreationData_AllPins(LinkEndCreationData _this)
+        public override IReadOnlyCollection<InputPin> LinkEndCreationData_AllPins(LinkEndCreationData _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<InputPin> LinkEndData_AllPins(LinkEndData _this)
+        public override IReadOnlyCollection<InputPin> LinkEndData_AllPins(LinkEndData _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<InputPin> LinkEndDestructionData_AllPins(LinkEndDestructionData _this)
+        public override IReadOnlyCollection<InputPin> LinkEndDestructionData_AllPins(LinkEndDestructionData _this)
         {
             throw new NotImplementedException();
         }
@@ -437,17 +437,17 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Action> LoopNode_AllActions(LoopNode _this)
+        public override IReadOnlyCollection<Action> LoopNode_AllActions(LoopNode _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<ActivityNode> LoopNode_SourceNodes(LoopNode _this)
+        public override IReadOnlyCollection<ActivityNode> LoopNode_SourceNodes(LoopNode _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<InteractionFragment> MessageEnd_EnclosingFragment(MessageEnd _this)
+        public override IReadOnlyCollection<InteractionFragment> MessageEnd_EnclosingFragment(MessageEnd _this)
         {
             throw new NotImplementedException();
         }
@@ -462,7 +462,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<MessageEnd> MessageEnd_OppositeEnd(MessageEnd _this)
+        public override IReadOnlyCollection<MessageEnd> MessageEnd_OppositeEnd(MessageEnd _this)
         {
             throw new NotImplementedException();
         }
@@ -517,17 +517,17 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Namespace> NamedElement_AllNamespaces(NamedElement _this)
+        public override IReadOnlyList<Namespace> NamedElement_AllNamespaces(NamedElement _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Package> NamedElement_AllOwningPackages(NamedElement _this)
+        public override IReadOnlyCollection<Package> NamedElement_AllOwningPackages(NamedElement _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<DependencyBuilder> NamedElement_ComputeProperty_ClientDependency(NamedElementBuilder _this)
+        public override IReadOnlyCollection<DependencyBuilder> NamedElement_ComputeProperty_ClientDependency(NamedElementBuilder _this)
         {
             throw new NotImplementedException();
         }
@@ -547,22 +547,22 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<PackageableElementBuilder> Namespace_ComputeProperty_ImportedMember(NamespaceBuilder _this)
+        public override IReadOnlyCollection<PackageableElementBuilder> Namespace_ComputeProperty_ImportedMember(NamespaceBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<PackageableElement> Namespace_ExcludeCollisions(Namespace _this, ImmutableModelSet<PackageableElement> imps)
+        public override IReadOnlyCollection<PackageableElement> Namespace_ExcludeCollisions(Namespace _this, IReadOnlyCollection<PackageableElement> imps)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<string> Namespace_GetNamesOfMember(Namespace _this, NamedElement element)
+        public override IReadOnlyCollection<string> Namespace_GetNamesOfMember(Namespace _this, NamedElement element)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<PackageableElement> Namespace_ImportMembers(Namespace _this, ImmutableModelSet<PackageableElement> imps)
+        public override IReadOnlyCollection<PackageableElement> Namespace_ImportMembers(Namespace _this, IReadOnlyCollection<PackageableElement> imps)
         {
             throw new NotImplementedException();
         }
@@ -627,27 +627,27 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Parameter> Operation_ReturnResult(Operation _this)
+        public override IReadOnlyCollection<Parameter> Operation_ReturnResult(Operation _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Stereotype> Package_AllApplicableStereotypes(Package _this)
+        public override IReadOnlyCollection<Stereotype> Package_AllApplicableStereotypes(Package _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<PackageBuilder> Package_ComputeProperty_NestedPackage(PackageBuilder _this)
+        public override IReadOnlyCollection<PackageBuilder> Package_ComputeProperty_NestedPackage(PackageBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<StereotypeBuilder> Package_ComputeProperty_OwnedStereotype(PackageBuilder _this)
+        public override IReadOnlyCollection<StereotypeBuilder> Package_ComputeProperty_OwnedStereotype(PackageBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<TypeBuilder> Package_ComputeProperty_OwnedType(PackageBuilder _this)
+        public override IReadOnlyCollection<TypeBuilder> Package_ComputeProperty_OwnedType(PackageBuilder _this)
         {
             throw new NotImplementedException();
         }
@@ -667,7 +667,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<PackageableElement> Package_VisibleMembers(Package _this)
+        public override IReadOnlyCollection<PackageableElement> Package_VisibleMembers(Package _this)
         {
             throw new NotImplementedException();
         }
@@ -687,22 +687,22 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Interface> Port_BasicProvided(Port _this)
+        public override IReadOnlyCollection<Interface> Port_BasicProvided(Port _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Interface> Port_BasicRequired(Port _this)
+        public override IReadOnlyCollection<Interface> Port_BasicRequired(Port _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<InterfaceBuilder> Port_ComputeProperty_Provided(PortBuilder _this)
+        public override IReadOnlyCollection<InterfaceBuilder> Port_ComputeProperty_Provided(PortBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<InterfaceBuilder> Port_ComputeProperty_Required(PortBuilder _this)
+        public override IReadOnlyCollection<InterfaceBuilder> Port_ComputeProperty_Required(PortBuilder _this)
         {
             throw new NotImplementedException();
         }
@@ -737,22 +737,22 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Type> Property_SubsettingContext(Property _this)
+        public override IReadOnlyCollection<Type> Property_SubsettingContext(Property _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<OperationBuilder> ProtocolTransition_ComputeProperty_Referred(ProtocolTransitionBuilder _this)
+        public override IReadOnlyCollection<OperationBuilder> ProtocolTransition_ComputeProperty_Referred(ProtocolTransitionBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override bool Pseudostate_IsConsistentWith(Pseudostate _this, RedefinableElement redefiningElement)
+        public override bool Pseudostate_IsConsistentWith(PseudostateBuilder _this, RedefinableElementBuilder redefiningElement)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Property> ReadLinkAction_OpenEnd(ReadLinkAction _this)
+        public override IReadOnlyList<Property> ReadLinkAction_OpenEnd(ReadLinkAction _this)
         {
             throw new NotImplementedException();
         }
@@ -767,7 +767,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<TemplateParameterBuilder> RedefinableTemplateSignature_ComputeProperty_InheritedParameter(RedefinableTemplateSignatureBuilder _this)
+        public override IReadOnlyCollection<TemplateParameterBuilder> RedefinableTemplateSignature_ComputeProperty_InheritedParameter(RedefinableTemplateSignatureBuilder _this)
         {
             throw new NotImplementedException();
         }
@@ -807,12 +807,12 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> StartObjectBehaviorAction_InputParameters(StartObjectBehaviorAction _this)
+        public override IReadOnlyList<Parameter> StartObjectBehaviorAction_InputParameters(StartObjectBehaviorAction _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelList<Parameter> StartObjectBehaviorAction_OutputParameters(StartObjectBehaviorAction _this)
+        public override IReadOnlyList<Parameter> StartObjectBehaviorAction_OutputParameters(StartObjectBehaviorAction _this)
         {
             throw new NotImplementedException();
         }
@@ -887,12 +887,12 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<Action> StructuredActivityNode_AllActions(StructuredActivityNode _this)
+        public override IReadOnlyCollection<Action> StructuredActivityNode_AllActions(StructuredActivityNode _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<ActivityNode> StructuredActivityNode_AllOwnedNodes(StructuredActivityNode _this)
+        public override IReadOnlyCollection<ActivityNode> StructuredActivityNode_AllOwnedNodes(StructuredActivityNode _this)
         {
             throw new NotImplementedException();
         }
@@ -902,22 +902,22 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<ActivityNode> StructuredActivityNode_SourceNodes(StructuredActivityNode _this)
+        public override IReadOnlyCollection<ActivityNode> StructuredActivityNode_SourceNodes(StructuredActivityNode _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<ActivityNode> StructuredActivityNode_TargetNodes(StructuredActivityNode _this)
+        public override IReadOnlyCollection<ActivityNode> StructuredActivityNode_TargetNodes(StructuredActivityNode _this)
         {
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<ConnectableElement> StructuredClassifier_AllRoles(StructuredClassifier _this)
+        public override IReadOnlyCollection<ConnectableElement> StructuredClassifier_AllRoles(StructuredClassifier _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<PropertyBuilder> StructuredClassifier_ComputeProperty_Part(StructuredClassifierBuilder _this)
+        public override IReadOnlyCollection<PropertyBuilder> StructuredClassifier_ComputeProperty_Part(StructuredClassifierBuilder _this)
         {
             throw new NotImplementedException();
         }
@@ -927,7 +927,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<ParameterableElement> TemplateableElement_ParameterableElements(TemplateableElement _this)
+        public override IReadOnlyCollection<ParameterableElement> TemplateableElement_ParameterableElements(TemplateableElement _this)
         {
             throw new NotImplementedException();
         }
@@ -952,7 +952,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override ImmutableModelSet<UseCase> UseCase_AllIncludedUseCases(UseCase _this)
+        public override IReadOnlyCollection<UseCase> UseCase_AllIncludedUseCases(UseCase _this)
         {
             throw new NotImplementedException();
         }
@@ -1002,12 +1002,12 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<TransitionBuilder> Vertex_ComputeProperty_Incoming(VertexBuilder _this)
+        public override IReadOnlyCollection<TransitionBuilder> Vertex_ComputeProperty_Incoming(VertexBuilder _this)
         {
             throw new NotImplementedException();
         }
 
-        public override MutableModelSet<TransitionBuilder> Vertex_ComputeProperty_Outgoing(VertexBuilder _this)
+        public override IReadOnlyCollection<TransitionBuilder> Vertex_ComputeProperty_Outgoing(VertexBuilder _this)
         {
             throw new NotImplementedException();
         }

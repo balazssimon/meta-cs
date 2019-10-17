@@ -67,6 +67,9 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string CollectionType = nameof(CollectionType);
 		public const string CollectionKind = nameof(CollectionKind);
 		public const string OperationDeclaration = nameof(OperationDeclaration);
+		public const string OperationModifier = nameof(OperationModifier);
+		public const string OperationModifierBuilder = nameof(OperationModifierBuilder);
+		public const string OperationModifierReadonly = nameof(OperationModifierReadonly);
 		public const string ParameterList = nameof(ParameterList);
 		public const string Parameter = nameof(Parameter);
 		public const string AssociationDeclaration = nameof(AssociationDeclaration);

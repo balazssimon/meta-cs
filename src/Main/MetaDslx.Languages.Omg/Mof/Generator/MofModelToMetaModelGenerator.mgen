@@ -11,6 +11,8 @@ properties Properties
 	string ModelName = "";
 end properties
 
+extern function string GenerateDefaultValue(Property property)
+
 template Generate(string namespaceName, string metaModelName, string uri)
 namespace [namespaceName]
 {
@@ -65,7 +67,7 @@ end template
 
 template GenerateProperty(Property prop)
 [GenerateComment(prop)]
-[GenerateDerived(prop)][GenerateType(prop, prop.Type)] [prop.Name.ToPascalCase()][GenerateRedefines(prop)][GenerateSubsets(prop)];
+[GenerateDerived(prop)][GenerateType(prop, prop.Type)] [prop.Name.ToPascalCase()][prop.GenerateDefaultValue()][GenerateRedefines(prop)][GenerateSubsets(prop)];
 end template
 
 template GenerateDerived(Property prop)
@@ -119,6 +121,9 @@ template GenerateOperation(Operation op)
 end template
 
 template GenerateReturnType(Operation op)
+[if (op.IsQuery)]
+readonly \
+[end if]
 [if (hasloop(op->param:OwnedParameter where param.Direction == ParameterDirectionKind.Return))]
 	[loop(op->param:OwnedParameter where param.Direction == ParameterDirectionKind.Return)]
 [GenerateType(param, param.Type)]

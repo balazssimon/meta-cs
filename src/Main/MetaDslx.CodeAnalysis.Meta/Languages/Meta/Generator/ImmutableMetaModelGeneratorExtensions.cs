@@ -43,7 +43,9 @@ namespace MetaDslx.Languages.Meta.Generator
         FactoryMethod,
         Implementation,
         ImmutableImpl,
-        BuilderImpl
+        BuilderImpl,
+        ImmutableOperation,
+        BuilderOperation
     }
 
     internal enum PropertyKind
@@ -235,6 +237,11 @@ namespace MetaDslx.Languages.Meta.Generator
         private string CSharpName(MetaCollectionType mtype, MetaModel mmodel, ClassKind kind = ClassKind.None, bool fullName = false)
         {
             string result = this.CSharpName(mtype.InnerType, mmodel, kind, fullName);
+            if (kind == ClassKind.BuilderOperation || kind == ClassKind.ImmutableOperation)
+            {
+                if (mtype.Kind == MetaCollectionKind.List || mtype.Kind == MetaCollectionKind.MultiList) return "global::System.Collections.Generic.IReadOnlyList<" + result + ">";
+                else return "global::System.Collections.Generic.IReadOnlyCollection<" + result + ">";
+            }
             string collectionName;
             switch (mtype.Kind)
             {
@@ -299,6 +306,7 @@ namespace MetaDslx.Languages.Meta.Generator
                     result = result + "Id";
                     break;
                 case ClassKind.Builder:
+                case ClassKind.BuilderOperation:
                     result = result + "Builder";
                     break;
                 case ClassKind.ImmutableImpl:
@@ -683,6 +691,54 @@ namespace MetaDslx.Languages.Meta.Generator
         {
             if (mannot.Name.EndsWith("Attribute")) return mannot.Name;
             else return mannot.Name + "Attribute";
+        }
+
+        public string GetImmBldCallParameterNames(MetaModel mmodel, MetaOperation operation, ClassKind kind)
+        {
+            string result = "_this" + GetImmBldConversion(mmodel, operation.Parent, kind);
+            foreach (var param in operation.Parameters)
+            {
+                result += ", " + param.Name + this.GetImmBldConversion(mmodel, param.Type, kind);
+            }
+            return result;
+        }
+
+        public string GetImmBldReturn(MetaModel mmodel, MetaOperation operation, ClassKind kind)
+        {
+            return this.GetImmBldConversion(mmodel, operation.ReturnType, kind);
+        }
+
+        private string GetImmBldConversion(MetaModel mmodel, MetaType type, ClassKind kind)
+        {
+            if (kind == ClassKind.BuilderOperation)
+            {
+                if (type is MetaClass)
+                {
+                    return ".ToMutable()";
+                }
+                else if (type is MetaCollectionType mct)
+                {
+                    if (mct.InnerType is MetaClass)
+                    {
+                        return ".Select(obj => obj.ToMutable()).ToList()";
+                    }
+                }
+            }
+            if (kind == ClassKind.ImmutableOperation)
+            {
+                if (type is MetaClass)
+                {
+                    return ".ToImmutable()";
+                }
+                else if (type is MetaCollectionType mct)
+                {
+                    if (mct.InnerType is MetaClass)
+                    {
+                        return ".Select(obj => obj.ToImmutable()).ToList()";
+                    }
+                }
+            }
+            return string.Empty;
         }
     }
     //*/

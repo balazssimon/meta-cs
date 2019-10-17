@@ -330,6 +330,27 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitOperationDeclaration([NotNull] MetaParser.OperationDeclarationContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.operationModifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOperationModifier([NotNull] MetaParser.OperationModifierContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.operationModifierBuilder"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOperationModifierBuilder([NotNull] MetaParser.OperationModifierBuilderContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.operationModifierReadonly"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOperationModifierReadonly([NotNull] MetaParser.OperationModifierReadonlyContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.parameterList"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
