@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MetaDslx.Modeling.Internal
 {
-    internal class SingleLazyValue<T> : LazyValue
+    internal class SingleLazyValue<T> : LazyValue<T>
     {
         private Func<T> lazy;
 
@@ -13,14 +13,9 @@ namespace MetaDslx.Modeling.Internal
             this.lazy = lazy;
         }
 
-        internal override object LazyConstructor => this.Lazy;
+        internal override object LazyConstructor => this.lazy;
 
-        internal Func<T> Lazy
-        {
-            get { return this.lazy; }
-        }
-
-        internal protected override object CreateRedValue()
+        internal protected override T CreateTypedRedValue(IModel model, ObjectId context)
         {
             return lazy();
         }

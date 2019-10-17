@@ -410,11 +410,11 @@ namespace MetaDslx.Modeling
             return value;
         }
 
-        internal object ToRedValue(object value)
+        internal object ToRedValue(object value, ObjectId context)
         {
             if (value is GreenDerivedValue)
             {
-                object redValue = ((GreenDerivedValue)value).CreateRedValue();
+                object redValue = ((GreenDerivedValue)value).CreateRedValue(this, context);
                 if (value is ImmutableObjectBase)
                 {
                     return this.ResolveObject(((ImmutableObjectBase)value).MId);
@@ -495,7 +495,7 @@ namespace MetaDslx.Modeling
                     ctx = this.BeginUpdate();
                     value = ctx.Updater.GetValue(this.id, oid, property, true);
                 } while (!this.EndUpdate(ctx));
-                value = this.ToRedValue(value);
+                value = this.ToRedValue(value, oid);
             }
             finally
             {

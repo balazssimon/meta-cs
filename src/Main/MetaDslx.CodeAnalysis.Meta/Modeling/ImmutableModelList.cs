@@ -11,7 +11,24 @@ namespace MetaDslx.Modeling
 {
     public abstract class ImmutableModelList<T> : IImmutableModelCollection<T>, IReadOnlyList<T>
     {
-        public static readonly ImmutableModelList<T> Empty = new ImmutableModelListFromEnumerable<T>();
+        public static readonly ImmutableModelList<T> Empty = new ImmutableModelListFromEnumerable<T>(true);
+        public static readonly ImmutableModelList<T> EmptyNonUnique = new ImmutableModelListFromEnumerable<T>(false);
+
+        /*public MutableModelList<TMutable> ToMutable<TMutable>()
+        {
+            var mutableItems = this.Select(item => item is ImmutableObject immObj ? (TMutable)immObj.ToMutable() : (TMutable)(object)item);
+            if (this.IsUnique) return MutableModelList<TMutable>.CreateUnique(mutableItems);
+            else return MutableModelList<TMutable>.CreateNonUnique(mutableItems);
+        }
+
+        public MutableModelList<TMutable> ToMutable<TMutable>(MutableModel model)
+        {
+            var mutableItems = this.Select(item => item is ImmutableObject immObj ? (TMutable)immObj.ToMutable(model) : (TMutable)(object)item);
+            if (this.IsUnique) return MutableModelList<TMutable>.CreateUnique(mutableItems);
+            else return MutableModelList<TMutable>.CreateNonUnique(mutableItems);
+        }*/
+
+        public abstract bool IsUnique { get; }
 
         public abstract T this[int index] { get; }
 
@@ -30,12 +47,12 @@ namespace MetaDslx.Modeling
         {
             return new ImmutableModelListFromEnumerable<T>(items, true);
         }
-
+        
         public static ImmutableModelList<T> CreateNonUnique(IEnumerable<T> items)
         {
             return new ImmutableModelListFromEnumerable<T>(items, false);
         }
-
+        /*
         public static ImmutableModelList<T> CreateUnique(ISet<T> items)
         {
             return new ImmutableModelListFromEnumerable<T>(items, true);
@@ -49,16 +66,16 @@ namespace MetaDslx.Modeling
         public static ImmutableModelList<T> CreateNonUnique(ImmutableList<T> items)
         {
             return new ImmutableModelListFromEnumerable<T>(items, false);
+        }*/
+
+        internal static ImmutableModelList<T> FromGreenList(GreenList green, ImmutableModel model, ObjectId context)
+        {
+            return new ImmutableModelListFromGreenListImmutable<T>(green, model, context);
         }
 
-        internal static ImmutableModelList<T> FromGreenList(GreenList green, ImmutableModel model)
+        internal static ImmutableModelList<T> FromGreenList(GreenList green, MutableModel model, ObjectId context)
         {
-            return new ImmutableModelListFromGreenListImmutable<T>(green, model);
-        }
-
-        internal static ImmutableModelList<T> FromGreenList(GreenList green, MutableModel model)
-        {
-            return new ImmutableModelListFromGreenListMutable<T>(green, model);
+            return new ImmutableModelListFromGreenListMutable<T>(green, model, context);
         }
 
         internal static ImmutableModelList<T> FromObjectIdList(ImmutableList<ObjectId> green, ImmutableModel model)
@@ -75,28 +92,35 @@ namespace MetaDslx.Modeling
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ImmutableModelListFromEnumerable<T> : ImmutableModelList<T>
     {
+        private bool unique;
         private ImmutableList<T> items;
 
-        internal ImmutableModelListFromEnumerable()
+        internal ImmutableModelListFromEnumerable(bool unique)
         {
+            this.unique = unique;
             this.items = ImmutableList<T>.Empty;
         }
 
         internal ImmutableModelListFromEnumerable(IEnumerable<T> items, bool unique)
         {
+            this.unique = unique;
             if (unique) this.items = items.Distinct().ToImmutableList();
             else this.items = items.ToImmutableList();
         }
 
         internal ImmutableModelListFromEnumerable(ISet<T> items, bool unique)
         {
+            this.unique = unique;
             this.items = items.ToImmutableList();
         }
 
         internal ImmutableModelListFromEnumerable(ImmutableHashSet<T> items, bool unique)
         {
+            this.unique = unique;
             this.items = items.ToImmutableList();
         }
+
+        public override bool IsUnique => this.unique;
 
         public override T this[int index]
         {
@@ -126,16 +150,20 @@ namespace MetaDslx.Modeling
     {
         private GreenList green;
         private ImmutableModel model;
+        private ObjectId context;
 
-        internal ImmutableModelListFromGreenListImmutable(GreenList green, ImmutableModel model)
+        internal ImmutableModelListFromGreenListImmutable(GreenList green, ImmutableModel model, ObjectId context)
         {
             this.green = green;
             this.model = model;
+            this.context = context;
         }
+
+        public override bool IsUnique => this.green.IsUnique;
 
         public override T this[int index]
         {
-            get { return (T)this.model.ToRedValue(this.green[index]); }
+            get { return (T)this.model.ToRedValue(this.green[index], context); }
         }
 
         public override int Count { get { return this.green.Count; } }
@@ -149,7 +177,7 @@ namespace MetaDslx.Modeling
         {
             foreach (var value in this.green)
             {
-                yield return (T)this.model.ToRedValue(value);
+                yield return (T)this.model.ToRedValue(value, context);
             }
         }
 
@@ -164,16 +192,20 @@ namespace MetaDslx.Modeling
     {
         private GreenList green;
         private MutableModel model;
+        private ObjectId context;
 
-        internal ImmutableModelListFromGreenListMutable(GreenList green, MutableModel model)
+        internal ImmutableModelListFromGreenListMutable(GreenList green, MutableModel model, ObjectId context)
         {
             this.green = green;
             this.model = model;
+            this.context = context;
         }
+
+        public override bool IsUnique => this.green.IsUnique;
 
         public override T this[int index]
         {
-            get { return (T)this.model.ToRedValue(this.green[index]); }
+            get { return (T)this.model.ToRedValue(this.green[index], context); }
         }
 
         public override int Count { get { return this.green.Count; } }
@@ -187,7 +219,7 @@ namespace MetaDslx.Modeling
         {
             foreach (var value in this.green)
             {
-                yield return (T)this.model.ToRedValue(value);
+                yield return (T)this.model.ToRedValue(value, context);
             }
         }
 
@@ -208,6 +240,8 @@ namespace MetaDslx.Modeling
             this.green = green;
             this.model = model;
         }
+
+        public override bool IsUnique => false;
 
         public override T this[int index]
         {
@@ -246,6 +280,8 @@ namespace MetaDslx.Modeling
             this.green = green;
             this.model = model;
         }
+
+        public override bool IsUnique => false;
 
         public override T this[int index]
         {

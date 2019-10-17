@@ -18,9 +18,9 @@ namespace MetaDslx.Modeling.Internal
             get { return this.lazy; }
         }
 
-        public object CreateRedValue()
+        public object CreateRedValue(IModel model, ObjectId context)
         {
-            return lazy.CreateRedValue();
+            return lazy.CreateRedValue(model, context);
         }
     }
 }

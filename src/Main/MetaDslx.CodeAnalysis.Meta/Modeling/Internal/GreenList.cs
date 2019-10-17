@@ -39,6 +39,8 @@ namespace MetaDslx.Modeling.Internal
             return this;
         }
 
+        internal bool IsUnique => this.unique;
+
         internal int Count
         {
             get { return this.items.Count; }

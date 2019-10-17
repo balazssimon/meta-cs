@@ -1695,12 +1695,12 @@ namespace MetaDslx.Modeling.Internal
                         {
                             if (lazyValue.IsSingleValue)
                             {
-                                object value = this.LazyEvalValue(lazyValue);
+                                object value = this.LazyEvalValue(lazyValue, oid);
                                 this.SetValue(mid, oid, property, true, value);
                             }
                             else
                             {
-                                IEnumerable<object> values = this.LazyEvalValues(lazyValue);
+                                IEnumerable<object> values = this.LazyEvalValues(lazyValue, oid);
                                 foreach (var value in values)
                                 {
                                     this.AddItem(mid, oid, property, true, false, -1, value);
@@ -1725,7 +1725,7 @@ namespace MetaDslx.Modeling.Internal
                                 {
                                     try
                                     {
-                                        object value = this.LazyEvalValue(lazyItem);
+                                        object value = this.LazyEvalValue(lazyItem, oid);
                                         if (value != null)
                                         {
                                             this.AddItem(mid, oid, property, true, false, -1, value);
@@ -1740,7 +1740,7 @@ namespace MetaDslx.Modeling.Internal
                                 {
                                     try
                                     {
-                                        IEnumerable<object> values = this.LazyEvalValues(lazyItem);
+                                        IEnumerable<object> values = this.LazyEvalValues(lazyItem, oid);
                                         foreach (var value in values)
                                         {
                                             if (value != null)
@@ -1770,11 +1770,11 @@ namespace MetaDslx.Modeling.Internal
         /// </summary>
         /// <param name="lazyValue"></param>
         /// <returns></returns>
-        private object LazyEvalValue(LazyValue lazyValue)
+        private object LazyEvalValue(LazyValue lazyValue, ObjectId context)
         {
             try
             {
-                return lazyValue.CreateGreenValue();
+                return lazyValue.CreateGreenValue(this.redModel, context);
             }
             catch (LazyEvaluationException)
             {
@@ -1796,11 +1796,11 @@ namespace MetaDslx.Modeling.Internal
         /// </summary>
         /// <param name="lazyValue"></param>
         /// <returns></returns>
-        private IEnumerable<object> LazyEvalValues(LazyValue lazyValues)
+        private IEnumerable<object> LazyEvalValues(LazyValue lazyValues, ObjectId context)
         {
             try
             {
-                return lazyValues.CreateGreenValues();
+                return lazyValues.CreateGreenValues(this.redModel, context);
             }
             catch (LazyEvaluationException)
             {

@@ -276,9 +276,9 @@ namespace MetaDslx.Modeling
         protected void SetReference<T>(ModelProperty property, T value)
             where T : class
         {
-            if (value is MutableObjectBase && ((MutableObjectBase)(object)value).model != this.model)
+            if (value is MutableObjectBase mutableObj && mutableObj.model != this.model)
             {
-                value = (T)this.model.ToRedValue(this.model.ToGreenValue(value));
+                value = (T)this.model.ToRedValue(this.model.ToGreenValue(value), mutableObj.id);
             }
             this.model.SetValue(this.id, property, value, this.creating);
         }

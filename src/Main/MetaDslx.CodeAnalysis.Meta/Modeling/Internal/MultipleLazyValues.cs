@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MetaDslx.Modeling.Internal
 {
-    internal class MultipleLazyValues<T> : LazyValue
+    internal class MultipleLazyValues<T> : LazyValue<T>
     {
         private Func<IEnumerable<T>> lazy;
 
@@ -15,21 +15,13 @@ namespace MetaDslx.Modeling.Internal
             this.lazy = lazy;
         }
 
-        internal override bool IsSingleValue
-        {
-            get { return false; }
-        }
+        internal override bool IsSingleValue => false;
 
-        internal override object LazyConstructor => this.Lazy;
+        internal override object LazyConstructor => this.lazy;
 
-        internal Func<IEnumerable<T>> Lazy
+        internal protected override T[] CreateTypedRedValues(IModel model, ObjectId context)
         {
-            get { return this.lazy; }
-        }
-
-        internal protected override object[] CreateRedValues()
-        {
-            return lazy()?.Cast<object>().ToArray() ?? EmptyArray<object>.Instance;
+            return lazy()?.ToArray() ?? EmptyArray<T>.Instance;
         }
     }
 }

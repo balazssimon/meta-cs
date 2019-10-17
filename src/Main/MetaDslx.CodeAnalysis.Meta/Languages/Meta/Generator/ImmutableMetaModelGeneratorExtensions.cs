@@ -31,7 +31,7 @@ namespace MetaDslx.Languages.Meta.Generator
         Internal
     }
 
-    internal enum ClassKind
+    public enum ClassKind
     {
         None,
         Id,

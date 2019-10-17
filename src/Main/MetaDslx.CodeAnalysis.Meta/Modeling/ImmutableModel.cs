@@ -51,9 +51,9 @@ namespace MetaDslx.Modeling
         {
             get
             {
-                foreach (var sid in this.Green.StrongObjects)
+                foreach (var oid in this.Green.StrongObjects)
                 {
-                    yield return this.GetExistingObject(sid);
+                    yield return this.GetExistingObject(oid);
                 }
             }
         }
@@ -62,38 +62,38 @@ namespace MetaDslx.Modeling
 
         IModelGroup IModel.ModelGroup => this.ModelGroup;
 
-        internal ImmutableObject GetExistingObject(ObjectId sid)
+        internal ImmutableObject GetExistingObject(ObjectId oid)
         {
-            if (sid == null) return null;
+            if (oid == null) return null;
             if (this.group != null)
             {
-                if (this.readOnly) return this.group.GetExistingReferenceObject(this.id, sid);
-                else return this.group.GetExistingModelObject(this.id, sid);
+                if (this.readOnly) return this.group.GetExistingReferenceObject(this.id, oid);
+                else return this.group.GetExistingModelObject(this.id, oid);
             }
             else
             {
-                return this.objects.GetValue(sid, key => key.CreateImmutable(this));
+                return this.objects.GetValue(oid, key => key.CreateImmutable(this));
             }
         }
 
-        internal ImmutableObject ResolveObject(ObjectId sid)
+        internal ImmutableObject ResolveObject(ObjectId oid)
         {
             if (this.group != null)
             {
-                return this.group.ResolveObject(sid);
+                return this.group.ResolveObject(oid);
             }
             else
             {
-                if (!this.ContainsObject(sid)) return null;
-                return this.GetExistingObject(sid);
+                if (!this.ContainsObject(oid)) return null;
+                return this.GetExistingObject(oid);
             }
         }
 
-        internal ImmutableObject GetObject(ObjectId sid)
+        internal ImmutableObject GetObject(ObjectId oid)
         {
-            if (sid == null) return null;
-            if (!this.ContainsObject(sid)) return null;
-            return this.GetExistingObject(sid);
+            if (oid == null) return null;
+            if (!this.ContainsObject(oid)) return null;
+            return this.GetExistingObject(oid);
         }
 
         public ImmutableObject GetObject(MutableObject obj)
@@ -108,10 +108,10 @@ namespace MetaDslx.Modeling
             return this.GetObject(((ImmutableObjectBase)obj).MId);
         }
 
-        internal bool ContainsObject(ObjectId sid)
+        internal bool ContainsObject(ObjectId oid)
         {
-            if (sid == null) return false;
-            return this.Green.Objects.ContainsKey(sid);
+            if (oid == null) return false;
+            return this.Green.Objects.ContainsKey(oid);
         }
 
         public bool ContainsObject(MutableObject obj)
@@ -162,11 +162,11 @@ namespace MetaDslx.Modeling
             return value;
         }
 
-        internal object ToRedValue(object value)
+        internal object ToRedValue(object value, ObjectId context)
         {
             if (value is GreenDerivedValue)
             {
-                object redValue = ((GreenDerivedValue)value).CreateRedValue();
+                object redValue = ((GreenDerivedValue)value).CreateRedValue(this, context);
                 if (redValue is ImmutableObjectBase)
                 {
                     return this.ResolveObject(((ImmutableObjectBase)redValue).MId);
@@ -201,13 +201,13 @@ namespace MetaDslx.Modeling
         }
 
 
-        private object GetGreenValue(ObjectId sid, ModelProperty property)
+        private object GetGreenValue(ObjectId oid, ModelProperty property)
         {
             GreenObject green;
-            if (this.green.Objects.TryGetValue(sid, out green))
+            if (this.green.Objects.TryGetValue(oid, out green))
             {
                 object greenValue;
-                ModelPropertyInfo mpi = sid.Descriptor.GetPropertyInfo(property);
+                ModelPropertyInfo mpi = oid.Descriptor.GetPropertyInfo(property);
                 if (mpi != null && mpi.RepresentingProperty != null) property = mpi.RepresentingProperty;
                 if (green.Properties.TryGetValue(property, out greenValue))
                 {
@@ -217,65 +217,65 @@ namespace MetaDslx.Modeling
             return GreenObject.Unassigned;
         }
 
-        internal object GetValue(ObjectId sid, ModelProperty property)
+        internal object GetValue(ObjectId oid, ModelProperty property)
         {
             Debug.Assert(!property.IsCollection);
-            var greenValue = this.GetGreenValue(sid, property);
-            return this.ToRedValue(greenValue);
+            var greenValue = this.GetGreenValue(oid, property);
+            return this.ToRedValue(greenValue, oid);
         }
 
-        internal ImmutableModelSet<T> GetSet<T>(ObjectId sid, ModelProperty property)
+        internal ImmutableModelSet<T> GetSet<T>(ObjectId oid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            var greenValue = this.GetGreenValue(sid, property);
+            var greenValue = this.GetGreenValue(oid, property);
             if (greenValue is GreenList)
             {
-                return ImmutableModelSet<T>.FromGreenList((GreenList)greenValue, this);
+                return ImmutableModelSet<T>.FromGreenList((GreenList)greenValue, this, oid);
             }
-            return ImmutableModelSet<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
+            return ImmutableModelSet<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this, oid);
         }
 
-        internal ImmutableModelList<T> GetList<T>(ObjectId sid, ModelProperty property)
+        internal ImmutableModelList<T> GetList<T>(ObjectId oid, ModelProperty property)
         {
             Debug.Assert(property.IsCollection);
-            var greenValue = this.GetGreenValue(sid, property);
+            var greenValue = this.GetGreenValue(oid, property);
             if (greenValue is GreenList)
             {
-                return ImmutableModelList<T>.FromGreenList((GreenList)greenValue, this);
+                return ImmutableModelList<T>.FromGreenList((GreenList)greenValue, this, oid);
             }
-            return ImmutableModelList<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this);
+            return ImmutableModelList<T>.FromGreenList(property.IsUnique ? GreenList.EmptyUnique : GreenList.EmptyNonUnique, this, oid);
         }
 
-        internal ImmutableObject MParent(ObjectId sid)
+        internal ImmutableObject MParent(ObjectId oid)
         {
             GreenObject green;
-            if (this.green.Objects.TryGetValue(sid, out green))
+            if (this.green.Objects.TryGetValue(oid, out green))
             {
                 return this.GetExistingObject(green.Parent);
             }
             return null;
         }
 
-        internal ImmutableModelList<ImmutableObject> MChildren(ObjectId sid)
+        internal ImmutableModelList<ImmutableObject> MChildren(ObjectId oid)
         {
             GreenObject green;
-            if (this.green.Objects.TryGetValue(sid, out green))
+            if (this.green.Objects.TryGetValue(oid, out green))
             {
                 return ImmutableModelList<ImmutableObject>.FromObjectIdList(green.Children, this);
             }
             return ImmutableModelList<ImmutableObject>.Empty;
         }
 
-        internal ImmutableModelList<ImmutableObject> MGetImports(ObjectId sid)
+        internal ImmutableModelList<ImmutableObject> MGetImports(ObjectId oid)
         {
             GreenList result = GreenList.EmptyUnique;
-            foreach (var prop in this.MProperties(sid))
+            foreach (var prop in this.MProperties(oid))
             {
                 if (prop.IsImport)
                 {
                     if (prop.IsCollection)
                     {
-                        var items = this.GetGreenValue(sid, prop) as GreenList;
+                        var items = this.GetGreenValue(oid, prop) as GreenList;
                         if (items != null)
                         {
                             result = result.AddRange(items);
@@ -283,39 +283,39 @@ namespace MetaDslx.Modeling
                     }
                     else
                     {
-                        var item = this.GetGreenValue(sid, prop);
+                        var item = this.GetGreenValue(oid, prop);
                         result = result.Add(item);
                     }
                 }
             }
-            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this);
+            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this, oid);
         }
 
-        internal ImmutableModelList<ImmutableObject> MGetBases(ObjectId sid)
+        internal ImmutableModelList<ImmutableObject> MGetBases(ObjectId oid)
         {
-            GreenList result = this.CollectBases(sid);
-            result = result.Remove(sid);
-            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this);
+            GreenList result = this.CollectBases(oid);
+            result = result.Remove(oid);
+            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this, oid);
         }
 
-        internal ImmutableModelList<ImmutableObject> MGetAllBases(ObjectId sid)
-        {
-            GreenList result = GreenList.EmptyUnique;
-            this.CollectAllBases(sid, ref result);
-            result = result.Remove(sid);
-            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this);
-        }
-
-        private GreenList CollectBases(ObjectId sid)
+        internal ImmutableModelList<ImmutableObject> MGetAllBases(ObjectId oid)
         {
             GreenList result = GreenList.EmptyUnique;
-            foreach (var prop in this.MProperties(sid))
+            this.CollectAllBases(oid, ref result);
+            result = result.Remove(oid);
+            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this, oid);
+        }
+
+        private GreenList CollectBases(ObjectId oid)
+        {
+            GreenList result = GreenList.EmptyUnique;
+            foreach (var prop in this.MProperties(oid))
             {
                 if (prop.IsBaseScope)
                 {
                     if (prop.IsCollection)
                     {
-                        var items = this.GetGreenValue(sid, prop) as GreenList;
+                        var items = this.GetGreenValue(oid, prop) as GreenList;
                         if (items != null)
                         {
                             result = result.AddRange(items);
@@ -323,7 +323,7 @@ namespace MetaDslx.Modeling
                     }
                     else
                     {
-                        var item = this.GetGreenValue(sid, prop);
+                        var item = this.GetGreenValue(oid, prop);
                         result = result.Add(item);
                     }
                 }
@@ -331,31 +331,31 @@ namespace MetaDslx.Modeling
             return result;
         }
 
-        private void CollectAllBases(ObjectId sid, ref GreenList result)
+        private void CollectAllBases(ObjectId oid, ref GreenList result)
         {
-            if (sid == null) return;
+            if (oid == null) return;
 
             var oldResult = result;
-            result = result.Add(sid);
+            result = result.Add(oid);
             if (result == oldResult) return;
 
-            var bases = this.CollectBases(sid);
+            var bases = this.CollectBases(oid);
             foreach (var item in bases)
             {
                 this.CollectAllBases(item as ObjectId, ref result);
             }
         }
 
-        internal ImmutableModelList<ImmutableObject> MGetMembers(ObjectId sid)
+        internal ImmutableModelList<ImmutableObject> MGetMembers(ObjectId oid)
         {
             GreenList result = GreenList.EmptyUnique;
-            foreach (var prop in this.MProperties(sid))
+            foreach (var prop in this.MProperties(oid))
             {
                 if (prop.CanResolve)
                 {
                     if (prop.IsCollection)
                     {
-                        var items = this.GetGreenValue(sid, prop) as GreenList;
+                        var items = this.GetGreenValue(oid, prop) as GreenList;
                         if (items != null)
                         {
                             result = result.AddRange(items);
@@ -363,17 +363,17 @@ namespace MetaDslx.Modeling
                     }
                     else
                     {
-                        var item = this.GetGreenValue(sid, prop);
+                        var item = this.GetGreenValue(oid, prop);
                         result = result.Add(item);
                     }
                 }
             }
-            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this);
+            return ImmutableModelList<ImmutableObject>.FromGreenList(result, this, oid);
         }
 
-        internal IReadOnlyList<ModelProperty> MProperties(ObjectId sid)
+        internal IReadOnlyList<ModelProperty> MProperties(ObjectId oid)
         {
-            ModelObjectDescriptor msi = sid.Descriptor;
+            ModelObjectDescriptor msi = oid.Descriptor;
             if (msi != null)
             {
                 return msi.Properties;
@@ -381,29 +381,29 @@ namespace MetaDslx.Modeling
             return ImmutableArray<ModelProperty>.Empty;
         }
 
-        internal IReadOnlyList<ModelProperty> MAllProperties(ObjectId sid)
+        internal IReadOnlyList<ModelProperty> MAllProperties(ObjectId oid)
         {
             GreenObject green;
-            if (this.green.Objects.TryGetValue(sid, out green))
+            if (this.green.Objects.TryGetValue(oid, out green))
             {
                 return green.Properties.Keys.ToList();
             }
             return ImmutableList<ModelProperty>.Empty;
         }
 
-        internal object MGet(ObjectId sid, ModelProperty property)
+        internal object MGet(ObjectId oid, ModelProperty property)
         {
             if (property.IsCollection)
             {
-                return this.GetList<object>(sid, property);
+                return this.GetList<object>(oid, property);
             }
             else
             {
-                return this.GetValue(sid, property);
+                return this.GetValue(oid, property);
             }
         }
 
-        internal bool MHasConcreteValue(ObjectId sid, ModelProperty property)
+        internal bool MHasConcreteValue(ObjectId oid, ModelProperty property)
         {
             if (property.IsCollection)
             {
@@ -411,12 +411,12 @@ namespace MetaDslx.Modeling
             }
             else
             {
-                var greenValue = this.GetGreenValue(sid, property);
+                var greenValue = this.GetGreenValue(oid, property);
                 return greenValue != GreenObject.Unassigned && !(greenValue is LazyValue) && !(greenValue is GreenDerivedValue);
             }
         }
 
-        internal bool MIsSet(ObjectId sid, ModelProperty property)
+        internal bool MIsSet(ObjectId oid, ModelProperty property)
         {
             if (property.IsCollection)
             {
@@ -424,7 +424,7 @@ namespace MetaDslx.Modeling
             }
             else
             {
-                var greenValue = this.GetGreenValue(sid, property);
+                var greenValue = this.GetGreenValue(oid, property);
                 return greenValue != GreenObject.Unassigned;
             }
         }
