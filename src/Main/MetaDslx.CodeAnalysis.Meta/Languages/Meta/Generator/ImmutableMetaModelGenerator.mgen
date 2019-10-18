@@ -632,12 +632,12 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 		this.Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors(_this);
 		[loop(cls->prop:Properties)]
 			[if (prop.DefaultValue != null)]
-					[if(!(prop.Type is MetaCollectionType))]
+				[if(!(prop.Type is MetaCollectionType))]
 		_this.[prop.CSharpName(model, PropertyKind.Builder)] = [prop.DefaultValue];
-					[else]
+				[else]
 		// ERROR: default value for collection
 		// _this.[prop.CSharpName(model, PropertyKind.Builder)] = [prop.DefaultValue];
-					[end if]
+				[end if]
 			[else if (prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
 				[if(!(prop.Type is MetaCollectionType))]
 		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
@@ -685,27 +685,16 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	/// <summary>
 	/// Implements the operation: [cls.CSharpName(model, ClassKind.Immutable)].[op.Name]()
 	/// </summary>
-			[if (op.IsReadonly)]
-	public abstract [op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [cls.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, cls, op, ClassKind.ImmutableOperation)]);
-			[else]
 	public virtual [op.ReturnType.CSharpName(model, ClassKind.ImmutableOperation, true)] [cls.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, cls, op, ClassKind.ImmutableOperation)])
 	{
 		[GetReturn(model, op, ClassKind.ImmutableOperation)]this.[op.Parent.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImmBldCallParameterNames(model, op, ClassKind.BuilderOperation)])[GetImmBldReturn(model, op, ClassKind.ImmutableOperation)];
 	}
-			[end if]
 		[end if]
 	^
 	/// <summary>
 	/// Implements the operation: [cls.CSharpName(model, ClassKind.Builder)].[op.Name]()
 	/// </summary>
-		[if (op.IsReadonly && !op.IsBuilder)]
-	public virtual [op.ReturnType.CSharpName(model, ClassKind.BuilderOperation, true)] [cls.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, cls, op, ClassKind.BuilderOperation)])
-	{
-		[GetReturn(model, op, ClassKind.BuilderOperation)]this.[op.Parent.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImmBldCallParameterNames(model, op, ClassKind.ImmutableOperation)])[GetImmBldReturn(model, op, ClassKind.BuilderOperation)];
-	}
-		[else]
 	public abstract [op.ReturnType.CSharpName(model, ClassKind.BuilderOperation, true)] [cls.CSharpName(model, ClassKind.Immutable)]_[op.Name]([GetImplParameters(model, cls, op, ClassKind.BuilderOperation)]);
-		[end if]
 	[end loop]
 	^
 	[end loop]
