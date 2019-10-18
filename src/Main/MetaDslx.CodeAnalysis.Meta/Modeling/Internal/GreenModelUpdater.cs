@@ -1686,6 +1686,7 @@ namespace MetaDslx.Modeling.Internal
             }
             try
             {
+                var redModel = this.redModel ?? this.redModelGroup.GetModel(mid);
                 this.lazyEvalStack.Add(entry);
                 if (this.TryGetValueCore(mid, oid, property, false, true, out greenValue))
                 {
@@ -1695,12 +1696,12 @@ namespace MetaDslx.Modeling.Internal
                         {
                             if (lazyValue.IsSingleValue)
                             {
-                                object value = this.LazyEvalValue(lazyValue, oid);
+                                object value = this.LazyEvalValue(lazyValue, redModel, oid);
                                 this.SetValue(mid, oid, property, true, value);
                             }
                             else
                             {
-                                IEnumerable<object> values = this.LazyEvalValues(lazyValue, oid);
+                                IEnumerable<object> values = this.LazyEvalValues(lazyValue, redModel, oid);
                                 foreach (var value in values)
                                 {
                                     this.AddItem(mid, oid, property, true, false, -1, value);
@@ -1725,7 +1726,7 @@ namespace MetaDslx.Modeling.Internal
                                 {
                                     try
                                     {
-                                        object value = this.LazyEvalValue(lazyItem, oid);
+                                        object value = this.LazyEvalValue(lazyItem, redModel, oid);
                                         if (value != null)
                                         {
                                             this.AddItem(mid, oid, property, true, false, -1, value);
@@ -1740,7 +1741,7 @@ namespace MetaDslx.Modeling.Internal
                                 {
                                     try
                                     {
-                                        IEnumerable<object> values = this.LazyEvalValues(lazyItem, oid);
+                                        IEnumerable<object> values = this.LazyEvalValues(lazyItem, redModel, oid);
                                         foreach (var value in values)
                                         {
                                             if (value != null)
@@ -1770,11 +1771,11 @@ namespace MetaDslx.Modeling.Internal
         /// </summary>
         /// <param name="lazyValue"></param>
         /// <returns></returns>
-        private object LazyEvalValue(LazyValue lazyValue, ObjectId context)
+        private object LazyEvalValue(LazyValue lazyValue, IModel redModel, ObjectId context)
         {
             try
             {
-                return lazyValue.CreateGreenValue(this.redModel, context);
+                return lazyValue.CreateGreenValue(redModel, context);
             }
             catch (LazyEvaluationException)
             {
@@ -1796,11 +1797,11 @@ namespace MetaDslx.Modeling.Internal
         /// </summary>
         /// <param name="lazyValue"></param>
         /// <returns></returns>
-        private IEnumerable<object> LazyEvalValues(LazyValue lazyValues, ObjectId context)
+        private IEnumerable<object> LazyEvalValues(LazyValue lazyValues, IModel redModel, ObjectId context)
         {
             try
             {
-                return lazyValues.CreateGreenValues(this.redModel, context);
+                return lazyValues.CreateGreenValues(redModel, context);
             }
             catch (LazyEvaluationException)
             {

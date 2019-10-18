@@ -46,7 +46,7 @@ extern function string GetImmBldReturn(MetaModel mmodel, MetaOperation operation
 
 
 template GenerateDocumentation(MetaDocumentedElement elem)
-[ImmutableModelList<string> lines = elem.GetDocumentationLines()]
+[var lines = elem.GetDocumentationLines()]
 [if (lines.Count > 0)]
 /**
  * <summary>

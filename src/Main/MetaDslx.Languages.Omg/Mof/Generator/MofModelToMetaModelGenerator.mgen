@@ -12,6 +12,7 @@ properties Properties
 end properties
 
 extern function string GenerateDefaultValue(Property property)
+extern function IEnumerable<string> Lines(string text)
 
 template Generate(string namespaceName, string metaModelName, string uri)
 namespace [namespaceName]
@@ -140,43 +141,46 @@ template GenerateParams(Operation op)
 end template
 
 template GenerateAssociation(Association assoc)
-[if (assoc.OwnedEnd.Count == 0 && assoc.MemberEnd.Count == 2)]
+[if (assoc.MemberEnd.Count == 2)]
 [GenerateComment(assoc)]
 [Property first = assoc.MemberEnd[0]]
 [Property second = assoc.MemberEnd[1]]
+	[if (assoc.OwnedEnd.Count == 0)]
 association [first.Class.Name].[first.Name.ToPascalCase()] with [second.Class.Name].[second.Name.ToPascalCase()];
+	[else]
+// association [first.Type.Name].[first.Name.ToPascalCase()] with [second.Type.Name].[second.Name.ToPascalCase()];
+	[end if]
 [end if]
 end template
 
 template GenerateComment(Element elem)
-[if (hasloop(elem->OwnedComment))]
-/*
 	[loop (elem->OwnedComment->text:Body)]
-[text]
-		[if (elem is Operation)]
-[GenerateSpecification((Operation)elem)]
-		[else if (elem is Property)]
-			[var prop = (Property)elem]
-			[if (prop.IsDerived && !prop.IsDerivedUnion)]
-				[loop(prop->Class->op:OwnedOperation where op.Name == prop.Name)]
-[GenerateSpecification(op)]
-				[end loop]
-			[end if]
-		[end if]
+		[loop (line:Lines(text))]
+// [line]
+		[end loop]
 	[end loop]
-*/
-[end if]
+	[if (elem is Operation)]
+[GenerateSpecification((Operation)elem)]
+	[else if (elem is Property)]
+		[var prop = (Property)elem]
+		[if (prop.IsDerived && !prop.IsDerivedUnion)]
+		[loop(prop->Class->op:OwnedOperation where op.Name == prop.Name)]
+[GenerateSpecification(op)]
+		[end loop]
+		[end if]
+	[end if]
 end template
 
 template GenerateSpecification(Namespace ns)
-[if (ns != null && hasloop(ns->OwnedRule->spec:Specification->expr:typeof(OpaqueExpression)))]
-^
 	[loop (ns->rule:OwnedRule->spec:Specification->expr:typeof(OpaqueExpression))]
 		[loop (rule->OwnedComment->commentText:Body)]
-[commentText]
+			[loop (line:Lines(commentText))]
+// [line]
+			[end loop]
 		[end loop]
-[rule.Name]:
-    [expr.Body]
+// [rule.Name]:
+		[loop (line:Lines(expr.Body))]
+//     [line]
+		[end loop]
 	[end loop]
-[end if]
 end template

@@ -85,26 +85,19 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             
         }
 
-        /*
-        public override void MetaFunction(MetaFunctionBuilder _this)
+        public override MetaModelBuilder MetaDeclaration_ComputeProperty_MetaModel(MetaDeclarationBuilder _this)
         {
-            base.MetaFunction(_this);
-            _this.TypeLazy = () =>
-                {
-                    MetaFactory f = new MetaFactory(_this.MModel, ModelFactoryFlags.CreateWeakSymbols);
-                    MetaFunctionTypeBuilder ft = f.MetaFunctionType();
-                    foreach (var param in _this.Parameters)
-                    {
-                        ft.ParameterTypes.Add(param.Type);
-                    }
-                    ft.ReturnType = _this.ReturnType;
-                    return ft;
-                };
+            return _this.Namespace?.DefinedMetaModel;
         }
-        */
-        public override ImmutableModelList<string> MetaDocumentedElement_GetDocumentationLines(MetaDocumentedElement _this)
+
+        public override string MetaDeclaration_ComputeProperty_FullName(MetaDeclarationBuilder _this)
         {
-            if (_this.Documentation == null) return ImmutableModelList<string>.Empty;
+            return _this.Namespace != null ? _this.Namespace.FullName + "." + _this.Name : _this.Name;
+        }
+
+        public override IReadOnlyList<string> MetaDocumentedElement_GetDocumentationLines(MetaDocumentedElementBuilder _this)
+        {
+            if (_this.Documentation == null) return ImmutableList<string>.Empty;
             List<string> result = new List<string>();
             MemoryStream stream = new MemoryStream();
             StreamWriter writer = new StreamWriter(stream);
@@ -123,17 +116,17 @@ namespace MetaDslx.Languages.Meta.Model.Internal
                     }
                 }
             }
-            return ImmutableModelList<string>.CreateNonUnique(result);
+            return result;
         }
 
-        public override ImmutableModelList<MetaClass> MetaClass_GetAllSuperClasses(MetaClass _this, bool includeSelf)
+        public override IReadOnlyList<MetaClassBuilder> MetaClass_GetAllSuperClasses(MetaClassBuilder _this, bool includeSelf)
         {
-            List<MetaClass> result = new List<MetaClass>();
+            var result = new List<MetaClassBuilder>();
             result.Add(_this);
             int i = 0;
-            while(i < result.Count)
+            while (i < result.Count)
             {
-                MetaClass current = result[i];
+                MetaClassBuilder current = result[i];
                 foreach (var sup in current.SuperClasses)
                 {
                     if (!result.Contains(sup))
@@ -145,16 +138,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
             }
             if (!includeSelf) result.RemoveAt(0);
             result.Reverse();
-            /*if (includeSelf) result.Add(_this);
-            throw new NotImplementedException("TODO:MetaDslx");*/
-            //result.AddRange(_this.MGetAllBases().Cast<MetaClass>());
-            return ImmutableModelList<MetaClass>.CreateUnique(result);
+            return result;
         }
 
-        public override ImmutableModelList<MetaProperty> MetaClass_GetAllSuperProperties(MetaClass _this, bool includeSelf)
+        public override IReadOnlyList<MetaPropertyBuilder> MetaClass_GetAllSuperProperties(MetaClassBuilder _this, bool includeSelf)
         {
-            List<MetaProperty> result = new List<MetaProperty>();
-            ImmutableModelList<MetaClass> supers = _this.GetAllSuperClasses(includeSelf);
+            var result = new List<MetaPropertyBuilder>();
+            var supers = _this.GetAllSuperClasses(includeSelf);
             foreach (var sup in supers)
             {
                 foreach (var prop in sup.Properties)
@@ -162,13 +152,13 @@ namespace MetaDslx.Languages.Meta.Model.Internal
                     result.Add(prop);
                 }
             }
-            return ImmutableModelList<MetaProperty>.CreateUnique(result);
+            return result;
         }
 
-        public override ImmutableModelList<MetaOperation> MetaClass_GetAllSuperOperations(MetaClass _this, bool includeSelf)
+        public override IReadOnlyList<MetaOperationBuilder> MetaClass_GetAllSuperOperations(MetaClassBuilder _this, bool includeSelf)
         {
-            List<MetaOperation> result = new List<MetaOperation>();
-            ImmutableModelList<MetaClass> supers = _this.GetAllSuperClasses(includeSelf);
+            var result = new List<MetaOperationBuilder>();
+            var supers = _this.GetAllSuperClasses(includeSelf);
             foreach (var sup in supers)
             {
                 foreach (var op in sup.Operations)
@@ -176,67 +166,56 @@ namespace MetaDslx.Languages.Meta.Model.Internal
                     result.Add(op);
                 }
             }
-            return ImmutableModelList<MetaOperation>.CreateUnique(result);
+            return result;
         }
 
-        public override ImmutableModelList<MetaProperty> MetaClass_GetAllProperties(MetaClass _this)
+        public override IReadOnlyList<MetaPropertyBuilder> MetaClass_GetAllProperties(MetaClassBuilder _this)
         {
             return _this.GetAllSuperProperties(true);
         }
 
-        public override ImmutableModelList<MetaOperation> MetaClass_GetAllOperations(MetaClass _this)
+        public override IReadOnlyList<MetaOperationBuilder> MetaClass_GetAllOperations(MetaClassBuilder _this)
         {
             return _this.GetAllSuperOperations(true);
         }
 
-        public override ImmutableModelList<MetaProperty> MetaClass_GetAllFinalProperties(MetaClass _this)
+        public override IReadOnlyList<MetaPropertyBuilder> MetaClass_GetAllFinalProperties(MetaClassBuilder _this)
         {
-            ImmutableModelList<MetaProperty> props = _this.GetAllProperties();
-            List<MetaProperty> result = new List<MetaProperty>(props);
+            var props = _this.GetAllProperties();
+            var result = new List<MetaPropertyBuilder>(props);
             result.Reverse();
             int i = result.Count - 1;
             while (i >= 0)
             {
                 string name = result[i].Name;
-                MetaProperty prop = result.First(p => p.Name == name);
+                MetaPropertyBuilder prop = result.First(p => p.Name == name);
                 if (prop != result[i])
                 {
                     result.RemoveAt(i);
                 }
                 --i;
             }
-            return ImmutableModelList<MetaProperty>.CreateUnique(result);
+            return result;
         }
 
-        public override ImmutableModelList<MetaOperation> MetaClass_GetAllFinalOperations(MetaClass _this)
+        public override IReadOnlyList<MetaOperationBuilder> MetaClass_GetAllFinalOperations(MetaClassBuilder _this)
         {
-            ImmutableModelList<MetaOperation> ops = _this.GetAllOperations();
-            List<MetaOperation> result = new List<MetaOperation>(ops);
+            var ops = _this.GetAllOperations();
+            var result = new List<MetaOperationBuilder>(ops);
             result.Reverse();
             int i = result.Count - 1;
             while (i >= 0)
             {
                 string name = result[i].Name;
-                MetaOperation op = result.First(o => o.Name == name);
+                MetaOperationBuilder op = result.First(o => o.Name == name);
                 if (op != result[i])
                 {
                     result.RemoveAt(i);
                 }
                 --i;
             }
-            return ImmutableModelList<MetaOperation>.CreateUnique(result);
+            return result;
         }
-
-        public override MetaModelBuilder MetaDeclaration_ComputeProperty_MetaModel(MetaDeclarationBuilder _this)
-        {
-            return _this.Namespace?.DefinedMetaModel;
-        }
-
-        public override string MetaDeclaration_ComputeProperty_FullName(MetaDeclarationBuilder _this)
-        {
-            return _this.Namespace != null ? _this.Namespace.FullName + "." + _this.Name : _this.Name;
-        }
-
     }
     //*/
 }

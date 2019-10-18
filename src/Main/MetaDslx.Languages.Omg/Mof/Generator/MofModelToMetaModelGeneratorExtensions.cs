@@ -27,5 +27,12 @@ namespace MetaDslx.Languages.Mof.Generator
             if (result != null) return " = \"" + result + "\"";
             else return "/* unhandled default value: " + value.MId.DisplayTypeName + " */";
         }
+
+        public IEnumerable<string> Lines(string text)
+        {
+            if (text == null) return new string[0];
+            var result = text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            return result;
+        }
     }
 }
