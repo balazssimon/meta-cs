@@ -48,11 +48,9 @@ extern function string GetImmBldReturn(MetaModel mmodel, MetaOperation operation
 template GenerateDocumentation(MetaDocumentedElement elem)
 [var lines = elem.GetDocumentationLines()]
 [if (lines.Count > 0)]
-/// <summary>
 	[loop(line:lines)]
-/// [line]
+///[line]
 	[end loop]
-/// </summary>
 [end if]
 end template
 

@@ -1,6 +1,6 @@
 ﻿namespace MetaDslx.Languages.Meta.Model
 {
-	/*
+	/**
 	Represents the MetaModel.
 	*/
 	metamodel Meta(Uri="http://metadslx.core/1.0"); 
@@ -22,7 +22,7 @@
 	const MetaAttribute BaseScopeAttribute;
 	const MetaAttribute LocalScopeAttribute;
 	
-	/*
+	/**
 	Represents an element.
 	*/
 	abstract class MetaElement

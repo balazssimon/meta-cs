@@ -44,7 +44,7 @@ namespace MetaDslx.Languages.Meta.Binding
                     break;
                 case MetaSyntaxKind.ClassDeclaration:
                     var cls = (ClassDeclarationSyntax)syntax;
-                    this.SetDocumentation(mobj, cls.KClass, cls.Attribute);
+                    this.SetDocumentation(mobj, cls.KAbstract != null ? cls.KAbstract : cls.KClass, cls.Attribute);
                     break;
                 case MetaSyntaxKind.FieldDeclaration:
                     var fld = (FieldDeclarationSyntax)syntax;

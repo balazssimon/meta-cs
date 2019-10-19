@@ -1521,6 +1521,9 @@
     /// </summary>
     class ConnectorEnd : MultiplicityElement
     {
+		/// <summary>
+		/// The Connector of which the ConnectorEnd is the endpoint.
+		/// </summary>
 		Connector Connector subsets Element.Owner;
     	/// <summary>
     	/// A derived property referencing the corresponding end on the Association which types the Connector owing this ConnectorEnd, if any. It is derived by selecting the end at the same place in the ordering of Association ends as this ConnectorEnd.
@@ -2640,8 +2643,17 @@
     /// </summary>
     class Gate : MessageEnd
     {
+    	/// <summary>
+    	/// The CombinedFragment to which the Gate is attached to.
+    	/// </summary>
 		CombinedFragment CombinedFragment subsets Element.Owner;
+    	/// <summary>
+    	/// The InteractionUse of which the Gate is an actual gate.
+    	/// </summary>
 		InteractionUse InteractionUse subsets Element.Owner;
+		/// <summary>
+    	/// The Interaction that owns the Gate.
+    	/// </summary>
 		Interaction Interaction subsets NamedElement.Namespace;
     	/// <summary>
     	/// This query returns true if this Gate is attached to the boundary of a CombinedFragment, and its other end (if present)  is outside of the same CombinedFragment.
@@ -2828,6 +2840,9 @@
     /// </summary>
     class InteractionOperand : InteractionFragment, Namespace
     {
+    	/// <summary>
+    	/// The CombinedFragment that contains the InteractionOperand.
+    	/// </summary>
 		CombinedFragment CombinedFragment subsets Element.Owner;
     	/// <summary>
     	/// The fragments of the operand.
@@ -2911,11 +2926,11 @@
     	/// </summary>
     	Interaction Interaction subsets NamedElement.Namespace;
     	/// <summary>
-    	/// The derived kind of the Message (complete, lost, found, or unknown).
+    	/// The kind of the Message (complete, lost, found, or unknown).
     	/// </summary>
     	// spec:
     	//     result = (messageKind)
-    	derived MessageKind MessageKind;
+    	MessageKind MessageKind;
     	/// <summary>
     	/// The sort of communication reflected by the Message.
     	/// </summary>
@@ -4884,6 +4899,9 @@
     /// </summary>
     abstract class Action : ExecutableNode
     {
+	    /// <summary>
+    	/// The Interaction that owns the Action.
+    	/// </summary>
 		Interaction Interaction subsets NamedElement.Namespace;
     	/// <summary>
     	/// The context Classifier of the Behavior that contains this Action, or the Behavior itself if it has no context.

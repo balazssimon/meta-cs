@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Model
 {
     using Internal;
+    using System.Collections.Immutable;
 
     public class SoalAnnotations
     {
@@ -84,9 +85,9 @@ namespace MetaDslx.CodeAnalysis.Languages.Test.Languages.Soal.Model
             base.Declaration(_this);
         }
 
-        public override ImmutableModelList<string> DocumentedElement_GetDocumentationLines(DocumentedElement _this)
+        public override IReadOnlyList<string> DocumentedElement_GetDocumentationLines(DocumentedElementBuilder _this)
         {
-            return ImmutableModelList<string>.Empty;
+            return ImmutableArray<string>.Empty;
         }
 
         public override string Declaration_ComputeProperty_FullName(DeclarationBuilder _this)
