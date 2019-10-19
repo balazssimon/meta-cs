@@ -2,6 +2,27 @@
 {
     metamodel Uml(Uri="http://www.omg.org/spec/UML/20161101"); 
 
+    /// <summary>
+	/// Boolean is used for logical expressions, consisting of the predefined values true and false.
+    /// </summary>
+	const PrimitiveType Boolean;
+    /// <summary>
+	/// Integer is a primitive type representing integer values.
+    /// </summary>
+	const PrimitiveType Integer;
+    /// <summary>
+	/// Real is a primitive type representing the mathematical concept of real.
+    /// </summary>
+	const PrimitiveType Real;
+    /// <summary>
+	/// String is a sequence of characters in some suitable character set used to display information 
+	/// about the model. Character sets may include non-Roman alphabets and characters.
+    /// </summary>
+	const PrimitiveType String;
+    /// <summary>
+	/// UnlimitedNatural is a primitive type representing unlimited natural values.
+    /// </summary>
+	const PrimitiveType UnlimitedNatural;
 
     /// <summary>
     /// ObjectNodeOrderingKind is an enumeration indicating queuing order for offering the tokens held by an ObjectNode.
@@ -4109,6 +4130,10 @@
     /// </summary>
     abstract class Classifier : Namespace, Type, TemplateableElement, RedefinableElement
     {
+	    /// <summary>
+    	/// The Class owning the Classifier.
+    	/// </summary>
+		Class NestingClass subsets NamedElement.Namespace;
     	/// <summary>
     	/// All of the Properties that are direct (i.e., not inherited or imported) attributes of the Classifier.
     	/// </summary>
@@ -6385,5 +6410,6 @@
 	association CombinedFragment.Operand with InteractionOperand.CombinedFragment;
 	association InteractionUse.ActualGate with Gate.InteractionUse;
 	association Interaction.FormalGate with Gate.Interaction;
+    association Class.NestedClassifier with Classifier.NestingClass;
 	
 }

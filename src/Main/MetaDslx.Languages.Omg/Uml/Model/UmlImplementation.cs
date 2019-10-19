@@ -18,6 +18,21 @@ namespace MetaDslx.Languages.Uml.Model.Internal
 
     class UmlImplementation : UmlImplementationBase
     {
+        internal override void UmlBuilderInstance(UmlBuilderInstance _this)
+        {
+            UmlFactory f = new UmlFactory(_this.MModel);
+            _this.Boolean = f.PrimitiveType();
+            _this.Boolean.Name = "Boolean";
+            _this.String = f.PrimitiveType();
+            _this.String.Name = "String";
+            _this.Integer = f.PrimitiveType();
+            _this.Integer.Name = "Integer";
+            _this.Real = f.PrimitiveType();
+            _this.Real.Name = "Real";
+            _this.UnlimitedNatural = f.PrimitiveType();
+            _this.UnlimitedNatural.Name = "UnlimitedNatural";
+        }
+
         // Return this Action and all Actions contained directly or indirectly in it. By default only the Action itself is returned, but the operation is overridden for StructuredActivityNodes.
         // spec:
         //     result = (self->asSet())
@@ -189,7 +204,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //             )
         public override BehavioredClassifierBuilder Behavior_ComputeProperty_Context(BehaviorBuilder _this)
         {
-            // if (_this.NestingClass != null) return null; // TODO
+            if (_this.NestingClass != null) return null; 
             var b = _this.BehavioredClassifier(_this.Owner);
             if (b is BehaviorBuilder behavior && behavior.Context != null) return behavior.Context;
             else return b;
@@ -1622,7 +1637,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (if self.type = String then defaultValue.stringValue() else null endif)
         public override string Parameter_ComputeProperty_Default(ParameterBuilder _this)
         {
-            return _this.DefaultValue?.StringValue(); // TODO: String type check
+            return _this.Type == UmlInstance.String ? _this.DefaultValue?.StringValue() : null;
         }
 
         // The union of the sets of Interfaces realized by the type of the Port and its supertypes, or directly the type of the Port if the Port is typed by an Interface.
