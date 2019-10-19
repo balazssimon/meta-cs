@@ -148,7 +148,7 @@ template GenerateAssociation(Association assoc)
 	[if (assoc.OwnedEnd.Count == 0)]
 association [first.Class.Name].[first.Name.ToPascalCase()] with [second.Class.Name].[second.Name.ToPascalCase()];
 	[else]
-// association [first.Type.Name].[first.Name.ToPascalCase()] with [second.Type.Name].[second.Name.ToPascalCase()];
+// association [second.Type.Name].[first.Name.ToPascalCase()] with [first.Type.Name].[second.Name.ToPascalCase()];
 	[end if]
 [end if]
 end template

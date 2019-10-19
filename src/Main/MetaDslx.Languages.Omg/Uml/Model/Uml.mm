@@ -1678,6 +1678,9 @@
     // A Gate is a MessageEnd which serves as a connection point for relating a Message which has a MessageEnd (sendEvent / receiveEvent) outside an InteractionFragment with another Message which has a MessageEnd (receiveEvent / sendEvent)  inside that InteractionFragment.
     class Gate : MessageEnd
     {
+		CombinedFragment CombinedFragment subsets Element.Owner;
+		InteractionUse InteractionUse subsets Element.Owner;
+		Interaction Interaction subsets NamedElement.Namespace;
     	// This query returns true if this Gate is attached to the boundary of a CombinedFragment, and its other end (if present)  is outside of the same CombinedFragment.
     	// spec:
     	//     result = (self.oppositeEnd()-> notEmpty() and combinedFragment->notEmpty() implies
@@ -1809,6 +1812,7 @@
     // An InteractionOperand is contained in a CombinedFragment. An InteractionOperand represents one operand of the expression given by the enclosing CombinedFragment.
     class InteractionOperand : InteractionFragment, Namespace
     {
+		CombinedFragment CombinedFragment subsets Element.Owner;
     	// The fragments of the operand.
     	list<InteractionFragment> Fragment subsets Namespace.OwnedMember;
     	// Constraint of the operand.
@@ -1854,10 +1858,8 @@
     	Connector Connector;
     	// The enclosing Interaction owning the Message.
     	Interaction Interaction subsets NamedElement.Namespace;
-    	// The derived kind of the Message (complete, lost, found, or unknown).
-    	// spec:
-    	//     result = (messageKind)
-    	derived MessageKind MessageKind;
+    	// The kind of the Message (complete, lost, found, or unknown).
+    	MessageKind MessageKind;
     	// The sort of communication reflected by the Message.
     	MessageSort MessageSort/* unhandled default value: InstanceValue */;
     	// References the Receiving of the Message.
@@ -3856,5 +3858,9 @@
 	// MetaDslx:
 	association Connector.End with ConnectorEnd.Connector;
 	association Interaction.Action with Action.Interaction;
+	association CombinedFragment.CfragmentGate with Gate.CombinedFragment;
+	association CombinedFragment.Operand with InteractionOperand.CombinedFragment;
+	association InteractionUse.ActualGate with Gate.InteractionUse;
+	association Interaction.FormalGate with Gate.Interaction;
 
 }

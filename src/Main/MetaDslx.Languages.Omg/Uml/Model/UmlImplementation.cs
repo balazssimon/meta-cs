@@ -211,14 +211,18 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return _this.OwnedParameter.Where(p => p.Direction == ParameterDirectionKind.Out || p.Direction == ParameterDirectionKind.Inout || p.Direction == ParameterDirectionKind.Return).ToList();
         }
 
+        // Return the in and inout ownedParameters of the Behavior or Operation being called. (This operation is abstract and should be overridden by subclasses of CallAction.)
         public override IReadOnlyList<ParameterBuilder> CallAction_InputParameters(CallActionBuilder _this)
         {
-            throw new NotImplementedException();
+            Debug.Assert(false, "abstract method");
+            return ImmutableArray<ParameterBuilder>.Empty;
         }
 
+        // Return the inout, out and return ownedParameters of the Behavior or Operation being called. (This operation is abstract and should be overridden by subclasses of CallAction.)
         public override IReadOnlyList<ParameterBuilder> CallAction_OutputParameters(CallActionBuilder _this)
         {
-            throw new NotImplementedException();
+            Debug.Assert(false, "abstract method");
+            return ImmutableArray<ParameterBuilder>.Empty;
         }
 
         // Return the in and inout ownedParameters of the Behavior being called.
@@ -700,44 +704,175 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return d.OwnedAttribute.All(a => a.Type is DataTypeBuilder dataType && _this.HasAllDataTypeAttributes(dataType));
         }
 
+        // This query returns the name of the gate, either the explicit name (.name) or the constructed name ('out_" or 'in_' concatenated in front of .message.name) if the explicit name is not present.
+        // spec:
+        //     result = (if name->notEmpty() then name->asOrderedSet()->first()
+        //     else  if isActual() or isOutsideCF() 
+        //       then if isSend() 
+        //         then 'out_'.concat(self.message.name->asOrderedSet()->first())
+        //         else 'in_'.concat(self.message.name->asOrderedSet()->first())
+        //         endif
+        //       else if isSend()
+        //         then 'in_'.concat(self.message.name->asOrderedSet()->first())
+        //         else 'out_'.concat(self.message.name->asOrderedSet()->first())
+        //         endif
+        //       endif
+        //     endif)
         public override string Gate_GetName(GateBuilder _this)
         {
-            throw new NotImplementedException();
+            if (_this.Name != null) return _this.Name;
+            else if (_this.IsActual() || _this.IsOutsideCF())
+            {
+                if (_this.IsSend()) return "out_" + _this.Message.Name;
+                else return "in_" + _this.Message.Name;
+            }
+            else
+            {
+                if (_this.IsSend()) return "in_" + _this.Message.Name;
+                else return "out_" + _this.Message.Name;
+            }
         }
 
+        // If the Gate is an inside Combined Fragment Gate, this operation returns the InteractionOperand that the opposite end of this Gate is included within.
+        // spec:
+        //     result = (if isInsideCF() then
+        //       let oppEnd : MessageEnd = self.oppositeEnd()->asOrderedSet()->first() in
+        //         if oppEnd.oclIsKindOf(MessageOccurrenceSpecification)
+        //         then let oppMOS : MessageOccurrenceSpecification = oppEnd.oclAsType(MessageOccurrenceSpecification)
+        //             in oppMOS.enclosingOperand->asOrderedSet()->first()
+        //         else let oppGate : Gate = oppEnd.oclAsType(Gate)
+        //             in oppGate.combinedFragment.enclosingOperand->asOrderedSet()->first()
+        //         endif
+        //       else null
+        //     endif)
         public override InteractionOperandBuilder Gate_GetOperand(GateBuilder _this)
         {
-            throw new NotImplementedException();
+            if (_this.IsInsideCF())
+            {
+                var oppEnd = _this.OppositeEnd().First();
+                if (oppEnd is MessageOccurrenceSpecificationBuilder oppMOS)
+                {
+                    return oppMOS.EnclosingOperand;
+                }
+                else
+                {
+                    var oppGate = oppEnd as GateBuilder;
+                    return oppGate.CombinedFragment.EnclosingOperand;
+                }
+            }
+            return null;
         }
 
+        // This query returns true value if this Gate is an actualGate of an InteractionUse.
+        // spec:
+        //     result = (interactionUse->notEmpty())
         public override bool Gate_IsActual(GateBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.InteractionUse != null;
         }
 
+        // The query isDistinguishableFrom() specifies that two Gates may coexist in the same Namespace, without an explicit name property. The association end formalGate subsets ownedElement, and since the Gate name attribute
+        // is optional, it is allowed to have two formal gates without an explicit name, but having derived names which are distinct.
+        // spec:
+        //     result = (true)
         public override bool Gate_IsDistinguishableFrom(GateBuilder _this, NamedElementBuilder n, NamespaceBuilder ns)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
+        // This query returns true if this Gate is a formalGate of an Interaction.
+        // <p>interaction-&gt;notEmpty()</p>
+        // spec:
+        //     result = (interaction->notEmpty())
         public override bool Gate_IsFormal(GateBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Interaction != null;
         }
 
+        // This query returns true if this Gate is attached to the boundary of a CombinedFragment, and its other end (if present) is inside of an InteractionOperator of the same CombinedFragment.
+        // spec:
+        //     result = (self.oppositeEnd()-> notEmpty() and combinedFragment->notEmpty() implies
+        //     let oppEnd : MessageEnd = self.oppositeEnd()->asOrderedSet()->first() in
+        //     if oppEnd.oclIsKindOf(MessageOccurrenceSpecification)
+        //     then let oppMOS : MessageOccurrenceSpecification
+        //     = oppEnd.oclAsType(MessageOccurrenceSpecification)
+        //     in combinedFragment = oppMOS.enclosingOperand.combinedFragment
+        //     else let oppGate : Gate = oppEnd.oclAsType(Gate)
+        //     in combinedFragment = oppGate.combinedFragment.enclosingOperand.combinedFragment
+        //     endif)
         public override bool Gate_IsInsideCF(GateBuilder _this)
         {
-            throw new NotImplementedException();
+            if (_this.OppositeEnd().Count == 0 || _this.CombinedFragment == null) return false;
+            var oppEnd = _this.OppositeEnd().First();
+            if (oppEnd is MessageOccurrenceSpecificationBuilder oppMOS)
+            {
+                return _this.CombinedFragment == oppMOS.EnclosingOperand.CombinedFragment;
+            }
+            else
+            {
+                var oppGate = oppEnd as GateBuilder;
+                return _this.CombinedFragment == oppGate.CombinedFragment.EnclosingOperand.CombinedFragment;
+            }
         }
 
+        // This query returns true if this Gate is attached to the boundary of a CombinedFragment, and its other end (if present)  is outside of the same CombinedFragment.
+        // spec:
+        //     result = (self.oppositeEnd()-> notEmpty() and combinedFragment->notEmpty() implies
+        //     let oppEnd : MessageEnd = self.oppositeEnd()->asOrderedSet()->first() in
+        //     if oppEnd.oclIsKindOf(MessageOccurrenceSpecification) 
+        //     then let oppMOS : MessageOccurrenceSpecification = oppEnd.oclAsType(MessageOccurrenceSpecification)
+        //     in  self.combinedFragment.enclosingInteraction.oclAsType(InteractionFragment)->asSet()->
+        //          union(self.combinedFragment.enclosingOperand.oclAsType(InteractionFragment)->asSet()) =
+        //          oppMOS.enclosingInteraction.oclAsType(InteractionFragment)->asSet()->
+        //          union(oppMOS.enclosingOperand.oclAsType(InteractionFragment)->asSet())
+        //     else let oppGate : Gate = oppEnd.oclAsType(Gate) 
+        //     in self.combinedFragment.enclosingInteraction.oclAsType(InteractionFragment)->asSet()->
+        //          union(self.combinedFragment.enclosingOperand.oclAsType(InteractionFragment)->asSet()) =
+        //          oppGate.combinedFragment.enclosingInteraction.oclAsType(InteractionFragment)->asSet()->
+        //          union(oppGate.combinedFragment.enclosingOperand.oclAsType(InteractionFragment)->asSet())
+        //     endif)
         public override bool Gate_IsOutsideCF(GateBuilder _this)
         {
-            throw new NotImplementedException();
+            if (_this.OppositeEnd().Count == 0 || _this.CombinedFragment == null) return false;
+            var oppEnd = _this.OppositeEnd().First();
+            if (oppEnd is MessageOccurrenceSpecificationBuilder oppMOS)
+            {
+                var thisInteraction = _this.CombinedFragment.EnclosingInteraction as InteractionFragmentBuilder;
+                var thisOperand = _this.CombinedFragment.EnclosingOperand as InteractionFragmentBuilder;
+                var oppInteraction = oppMOS.EnclosingInteraction as InteractionFragmentBuilder;
+                var oppOperand = oppMOS.EnclosingOperand as InteractionFragmentBuilder;
+                return (thisInteraction == oppInteraction && thisOperand == oppOperand) || (thisInteraction == oppOperand && thisOperand == oppInteraction);
+            }
+            else
+            {
+                var oppGate = oppEnd as GateBuilder;
+                var thisInteraction = _this.CombinedFragment.EnclosingInteraction as InteractionFragmentBuilder;
+                var thisOperand = _this.CombinedFragment.EnclosingOperand as InteractionFragmentBuilder;
+                var oppInteraction = oppGate.CombinedFragment.EnclosingInteraction as InteractionFragmentBuilder;
+                var oppOperand = oppGate.CombinedFragment.EnclosingOperand as InteractionFragmentBuilder;
+                return (thisInteraction == oppInteraction && thisOperand == oppOperand) || (thisInteraction == oppOperand && thisOperand == oppInteraction);
+            }
         }
 
+        // This query returns true if the name of this Gate matches the name of the in parameter Gate, and the messages for the two Gates correspond. The Message for one Gate (say A) corresponds to the Message for another Gate (say B) if (A and B have the same name value) and (if A is a sendEvent then B is a receiveEvent) and (if A is a receiveEvent then B is a sendEvent) and (A and B have the same messageSort value) and (A and B have the same signature value).
+        // spec:
+        //     result = (self.getName() = gateToMatch.getName() and 
+        //     self.message.messageSort = gateToMatch.message.messageSort and
+        //     self.message.name = gateToMatch.message.name and
+        //     self.message.sendEvent->includes(self) implies gateToMatch.message.receiveEvent->includes(gateToMatch)  and
+        //     self.message.receiveEvent->includes(self) implies gateToMatch.message.sendEvent->includes(gateToMatch) and
+        //     self.message.signature = gateToMatch.message.signature)
         public override bool Gate_Matches(GateBuilder _this, GateBuilder gateToMatch)
         {
-            throw new NotImplementedException();
+            if (_this.GetName() != gateToMatch.GetName()) return false;
+            var thisMessage = _this.Message;
+            var gateMessage = gateToMatch.Message;
+            if (thisMessage.MessageSort != gateMessage.MessageSort) return false;
+            if (thisMessage.Name != gateMessage.Name) return false;
+            if (thisMessage.SendEvent == _this && gateMessage.ReceiveEvent != gateToMatch) return false;
+            if (thisMessage.ReceiveEvent == _this && gateMessage.SendEvent != gateToMatch) return false;
+            if (thisMessage.Signature != gateMessage.Signature) return false;
+            return true;
         }
 
         // Returns the Association acted on by this LinkAction.
@@ -925,7 +1060,32 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     endif)
         public override IReadOnlyCollection<InteractionFragmentBuilder> MessageEnd_EnclosingFragment(MessageEndBuilder _this)
         {
-            throw new NotImplementedException();
+            if (_this is GateBuilder endGate)
+            {
+                if (endGate.IsOutsideCF())
+                {
+                    var result = new HashSet<InteractionFragmentBuilder>();
+                    result.Add(endGate.CombinedFragment.EnclosingInteraction);
+                    result.Add(endGate.CombinedFragment.EnclosingOperand);
+                    return result;
+                }
+                else if (endGate.IsInsideCF()) return ImmutableArray.Create(endGate.CombinedFragment);
+                else if (endGate.IsFormal()) return ImmutableArray.Create(endGate.Interaction);
+                else if (endGate.IsActual())
+                {
+                    var result = new HashSet<InteractionFragmentBuilder>();
+                    result.Add(endGate.InteractionUse.EnclosingInteraction);
+                    result.Add(endGate.InteractionUse.EnclosingOperand);
+                    return result;
+                }
+                else return ImmutableArray<InteractionFragmentBuilder>.Empty;
+            }
+            else
+            {
+                var endMOS = _this as MessageOccurrenceSpecificationBuilder;
+                if (endMOS.EnclosingInteraction != null) return ImmutableArray.Create(endMOS.EnclosingInteraction);
+                else return ImmutableArray.Create(endMOS.EnclosingOperand);
+            }
         }
 
         // This query returns value true if this MessageEnd is a receiveEvent.
@@ -963,14 +1123,6 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             if (_this.Message.ReceiveEvent == _this) result.Add(_this.Message.SendEvent);
             else result.Add(_this.Message.ReceiveEvent);
             return result;
-        }
-
-        // The derived kind of the Message (complete, lost, found, or unknown).
-        // spec:
-        //     result = (messageKind)
-        public override MessageKind Message_ComputeProperty_MessageKind(MessageBuilder _this)
-        {
-            throw new NotImplementedException();
         }
 
         // The query isDistinguishableFrom() specifies that any two Messages may coexist in the same Namespace, regardless of their names.
@@ -1481,7 +1633,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     endif)
         public override IReadOnlyCollection<InterfaceBuilder> Port_BasicProvided(PortBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Type is InterfaceBuilder intf ? ImmutableArray.Create(intf) : (_this.Type as ClassifierBuilder)?.AllRealizedInterfaces() ?? ImmutableArray<InterfaceBuilder>.Empty;
         }
 
         // The union of the sets of Interfaces used by the type of the Port and its supertypes.
@@ -1797,9 +1949,14 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             else return _this.Ancestor(s1, s2.Container.State);
         }
 
+        // The query isConsistentWith specifies that a StateMachine can be redefined by any other StateMachine for which the redefinition context is valid (see the isRedefinitionContextValid operation). 
+        // Note that consistency requirements for the redefinition of Regions and connectionPoint Pseudostates owned by a StateMachine are specified by the isConsistentWith and isRedefinitionContextValid 
+        // operations for Region and Vertex (and its subclass Pseudostate).
+        // spec:
+        //     result = true
         public override bool StateMachine_IsConsistentWith(StateMachineBuilder _this, RedefinableElementBuilder redefiningElement)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         // The query isRedefinitionContextValid specifies whether the redefinition context of a StateMachine is properly related to the redefinition contexts of a StateMachine it redefines. The requirement is that the context BehavioredClassifier of a redefining StateMachine must specialize the context Classifier of the redefined StateMachine. If the redefining StateMachine does not have a context BehavioredClassifier, then then the redefining StateMachine also must not have a context BehavioredClassifier but must, instead, specialize the redefining StateMachine.
@@ -1955,29 +2112,57 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return sb.ToString();
         }
 
+        // Returns this StructuredActivityNode and all Actions contained in it.
+        // spec:
+        //     result = (node->select(oclIsKindOf(Action)).oclAsType(Action).allActions()->including(self)->asSet())
         public override IReadOnlyCollection<ActionBuilder> StructuredActivityNode_AllActions(StructuredActivityNodeBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = _this.Node.OfType<ActionBuilder>().SelectMany(a => a.AllActions()).ToSet();
+            result.Add(_this);
+            return result;
         }
 
+        // Returns all the ActivityNodes contained directly or indirectly within this StructuredActivityNode, in addition to the Pins of the StructuredActivityNode.
+        // spec:
+        //     result = (self.Action::allOwnedNodes()->union(node)->union(node->select(oclIsKindOf(Action)).oclAsType(Action).allOwnedNodes())->asSet())
         public override IReadOnlyCollection<ActivityNodeBuilder> StructuredActivityNode_AllOwnedNodes(StructuredActivityNodeBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = this.Action_AllOwnedNodes(_this).ToSet();
+            result.UnionWith(_this.Node);
+            result.UnionWith(_this.Node.OfType<ActionBuilder>().SelectMany(a => a.AllOwnedNodes()));
+            return result;
         }
 
+        // The Activity that directly or indirectly contains this StructuredActivityNode (considered as an Action).
+        // spec:
+        //     result = (self.Action::containingActivity())
         public override ActivityBuilder StructuredActivityNode_ContainingActivity(StructuredActivityNodeBuilder _this)
         {
-            throw new NotImplementedException();
+            return this.ActivityGroup_ContainingActivity(_this); // TODO: UML bug?
         }
 
+        // Return those ActivityNodes contained immediately within the StructuredActivityNode that may act as sources of edges owned by the StructuredActivityNode.
+        // spec:
+        //     result = (node->union(input.oclAsType(ActivityNode)->asSet())->
+        //       union(node->select(oclIsKindOf(Action)).oclAsType(Action).output)->asSet())
         public override IReadOnlyCollection<ActivityNodeBuilder> StructuredActivityNode_SourceNodes(StructuredActivityNodeBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = _this.Node.ToSet();
+            result.UnionWith(_this.Input.OfType<ActivityNodeBuilder>());
+            result.UnionWith(_this.Node.OfType<ActionBuilder>().SelectMany(a => a.Output));
+            return result;
         }
 
+        // Return those ActivityNodes contained immediately within the StructuredActivityNode that may act as targets of edges owned by the StructuredActivityNode.
+        // spec:
+        //     result = (node->union(output.oclAsType(ActivityNode)->asSet())->
+        //       union(node->select(oclIsKindOf(Action)).oclAsType(Action).input)->asSet())
         public override IReadOnlyCollection<ActivityNodeBuilder> StructuredActivityNode_TargetNodes(StructuredActivityNodeBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = _this.Node.ToSet();
+            result.UnionWith(_this.Output.OfType<ActivityNodeBuilder>());
+            result.UnionWith(_this.Node.OfType<ActionBuilder>().SelectMany(a => a.Input));
+            return result;
         }
 
         // All features of type ConnectableElement, equivalent to all direct and inherited roles.
