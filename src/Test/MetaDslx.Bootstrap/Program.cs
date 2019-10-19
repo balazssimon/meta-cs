@@ -9,7 +9,6 @@ using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
 using MetaDslx.Languages.Mof.Generator;
-using MetaDslx.Languages.Mof.Model;
 using MetaDslx.Languages.Uml.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
@@ -387,15 +386,15 @@ namespace MetaDslx.Bootstrap
         //*/
         public static void XmiTest()
         {
-            MofDescriptor.Initialize();
+            MetaDslx.Languages.Mof.Model.MofDescriptor.Initialize();
             UmlDescriptor.Initialize();
 
             //string fileName = "../../../MOF.xmi";
             string fileName = "../../../UML.xmi";
-
+            //Class cls;
             try
             {
-                XmiSerializer xmi = new XmiSerializer(MofInstance.MMetaModel);
+                XmiSerializer xmi = new XmiSerializer(MetaDslx.Languages.Mof.Model.MofInstance.MMetaModel);
                 var model = xmi.ReadModelFromFile(fileName);
                 Console.WriteLine(model);
                 xmi.WriteModelToFile("../../../UML2.xmi", model);

@@ -3122,6 +3122,7 @@
     // An Action is the fundamental unit of executable functionality. The execution of an Action represents some transformation or processing in the modeled system. Actions provide the ExecutableNodes within Activities and may also be used within Interactions.
     abstract class Action : ExecutableNode
     {
+		Interaction Interaction subsets Element.Owner;
     	// The context Classifier of the Behavior that contains this Action, or the Behavior itself if it has no context.
     	// spec:
     	//     result = (let behavior: Behavior = self.containingBehavior() in
@@ -3854,5 +3855,6 @@
 
 	// MetaDslx:
 	association Connector.End with ConnectorEnd.Connector;
+	association Interaction.Action with Action.Interaction;
 
 }

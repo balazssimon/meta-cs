@@ -8,26 +8,60 @@ using MetaDslx.Modeling;
 
 namespace MetaDslx.Languages.Uml.Model.Internal
 {
+    internal static class IEnumerableExtensions
+    {
+        public static HashSet<T> ToSet<T>(this IEnumerable<T> items)
+        {
+            return new HashSet<T>(items);
+        }
+    }
+
     class UmlImplementation : UmlImplementationBase
     {
+        // Return this Action and all Actions contained directly or indirectly in it. By default only the Action itself is returned, but the operation is overridden for StructuredActivityNodes.
+        // spec:
+        //     result = (self->asSet())
         public override IReadOnlyCollection<ActionBuilder> Action_AllActions(ActionBuilder _this)
         {
-            throw new NotImplementedException();
+            return ImmutableArray.Create(_this);
         }
 
+        // Returns all the ActivityNodes directly or indirectly owned by this Action. This includes at least all the Pins of the Action.
+        // spec:
+        //     result = (input.oclAsType(Pin)->asSet()->union(output->asSet()))
         public override IReadOnlyCollection<ActivityNodeBuilder> Action_AllOwnedNodes(ActionBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = _this.Input.OfType<PinBuilder>().ToSet();
+            result.UnionWith(_this.Output);
+            return result;
         }
 
+        // The context Classifier of the Behavior that contains this Action, or the Behavior itself if it has no context.
+        // spec:
+        //     result = (let behavior: Behavior = self.containingBehavior() in
+        //     if behavior=null then null
+        //     else if behavior._'context' = null then behavior
+        //     else behavior._'context'
+        //     endif
+        //     endif)
         public override ClassifierBuilder Action_ComputeProperty_Context(ActionBuilder _this)
         {
-            throw new NotImplementedException();
+            var behavior = _this.ContainingBehavior();
+            return behavior?.Context ?? behavior;
         }
 
+        // spec:
+        //     result = (if inStructuredNode<>null then inStructuredNode.containingBehavior() 
+        //     else if activity<>null then activity
+        //     else interaction 
+        //     endif
+        //     endif
+        //     )
         public override BehaviorBuilder Action_ContainingBehavior(ActionBuilder _this)
         {
-            throw new NotImplementedException();
+            if (_this.InStructuredNode != null) return _this.InStructuredNode.ContainingBehavior();
+            else if (_this.Activity != null) return _this.Activity;
+            else return _this.Interaction;
         }
 
         // spec:
@@ -71,22 +105,55 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (memberEnd->collect(type)->asSet())
         public override IReadOnlyCollection<TypeBuilder> Association_ComputeProperty_EndType(AssociationBuilder _this)
         {
-            return new HashSet<TypeBuilder>(_this.MemberEnd.Select(me => me.Type));
+            return _this.MemberEnd.Select(me => me.Type).ToSet();
         }
 
+        // The ownedParameters with direction in and inout.
+        // spec:
+        //     result = (ownedParameter->select(direction=ParameterDirectionKind::_'in' or direction=ParameterDirectionKind::inout))
         public override IReadOnlyList<ParameterBuilder> BehavioralFeature_InputParameters(BehavioralFeatureBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.OwnedParameter.Where(p => p.Direction == ParameterDirectionKind.In || p.Direction == ParameterDirectionKind.Inout).ToList();
         }
 
+        // The query isDistinguishableFrom() determines whether two BehavioralFeatures may coexist in the same Namespace. It specifies that they must have different signatures.
+        // spec:
+        //     result = ((n.oclIsKindOf(BehavioralFeature) and ns.getNamesOfMember(self)->intersection(ns.getNamesOfMember(n))->notEmpty()) implies
+        //       Set{self}->including(n.oclAsType(BehavioralFeature))->isUnique(ownedParameter->collect(p|
+        //       Tuple { name=p.name, type=p.type,effect=p.effect,direction=p.direction,isException=p.isException,
+        //                   isStream=p.isStream,isOrdered=p.isOrdered,isUnique=p.isUnique,lower=p.lower, upper=p.upper }))
+        //       )
         public override bool BehavioralFeature_IsDistinguishableFrom(BehavioralFeatureBuilder _this, NamedElementBuilder n, NamespaceBuilder ns)
         {
-            throw new NotImplementedException();
+            if (n is BehavioralFeatureBuilder nBehavior && ns.GetNamesOfMember(_this).Any(m => ns.GetNamesOfMember(n).Contains(m)))
+            {
+                if (_this.OwnedParameter.Count != nBehavior.OwnedParameter.Count) return true;
+                for (int i = 0; i < _this.OwnedParameter.Count; i++)
+                {
+                    var thisParam = _this.OwnedParameter[i];
+                    var otherParam = nBehavior.OwnedParameter[i];
+                    if (thisParam.Name != otherParam.Name) return true;
+                    if (thisParam.Type != otherParam.Type) return true;
+                    if (thisParam.Effect != otherParam.Effect) return true;
+                    if (thisParam.Direction != otherParam.Direction) return true;
+                    if (thisParam.IsException != otherParam.IsException) return true;
+                    if (thisParam.IsStream != otherParam.IsStream) return true;
+                    if (thisParam.IsOrdered != otherParam.IsOrdered) return true;
+                    if (thisParam.IsUnique != otherParam.IsUnique) return true;
+                    if (thisParam.Lower != otherParam.Lower) return true;
+                    if (thisParam.Upper != otherParam.Upper) return true;
+                }
+                return false;
+            }
+            return true;
         }
 
+        // The ownedParameters with direction out, inout, or return.
+        // spec:
+        //     result = (ownedParameter->select(direction=ParameterDirectionKind::out or direction=ParameterDirectionKind::inout or direction=ParameterDirectionKind::return))
         public override IReadOnlyList<ParameterBuilder> BehavioralFeature_OutputParameters(BehavioralFeatureBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.OwnedParameter.Where(p => p.Direction == ParameterDirectionKind.Out || p.Direction == ParameterDirectionKind.Inout || p.Direction == ParameterDirectionKind.Return).ToList();
         }
 
         // The first BehavioredClassifier reached by following the chain of owner relationships from the Behavior, if any.
@@ -154,114 +221,230 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
+        // Return the in and inout ownedParameters of the Behavior being called.
+        // spec:
+        //     result = (behavior.inputParameters())
         public override IReadOnlyList<ParameterBuilder> CallBehaviorAction_InputParameters(CallBehaviorActionBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Behavior.InputParameters();
         }
 
+        // Return the inout, out and return ownedParameters of the Behavior being called.
+        // spec:
+        //     result = (behavior.outputParameters())
         public override IReadOnlyList<ParameterBuilder> CallBehaviorAction_OutputParameters(CallBehaviorActionBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Behavior.OutputParameters();
         }
 
+        // Return the in and inout ownedParameters of the Operation being called.
+        // spec:
+        //     result = (operation.inputParameters())
         public override IReadOnlyList<ParameterBuilder> CallOperationAction_InputParameters(CallOperationActionBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Operation.InputParameters();
         }
 
+        // Return the inout, out and return ownedParameters of the Operation being called.
+        // spec:
+        //     result = (operation.outputParameters())
         public override IReadOnlyList<ParameterBuilder> CallOperationAction_OutputParameters(CallOperationActionBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Operation.OutputParameters();
         }
 
+        // The query allAttributes gives an ordered set of all owned and inherited attributes of the Classifier. All owned attributes appear before any inherited attributes, and the attributes inherited from any more specific parent Classifier appear before those of any more general parent Classifier. However, if the Classifier has multiple immediate parents, then the relative ordering of the sets of attributes from those parents is not defined.
+        // spec:
+        //     result = (attribute->asSequence()->union(parents()->asSequence().allAttributes())->select(p | member->includes(p))->asOrderedSet())
         public override IReadOnlyList<PropertyBuilder> Classifier_AllAttributes(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = new List<PropertyBuilder>(_this.Attribute);
+            foreach (var parent in _this.Parents())
+            {
+                foreach (var attr in parent.AllAttributes())
+                {
+                    if (!result.Contains(attr)) result.Add(attr);
+                }
+            }
+            return result.Where(p => _this.Member.Contains(p)).ToList();
         }
 
+        // The query allFeatures() gives all of the Features in the namespace of the Classifier. In general, through mechanisms such as inheritance, this will be a larger set than feature.
+        // spec:
+        //     result = (member->select(oclIsKindOf(Feature))->collect(oclAsType(Feature))->asSet())
         public override IReadOnlyCollection<FeatureBuilder> Classifier_AllFeatures(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Member.OfType<FeatureBuilder>().ToSet();
         }
 
+        // The query allParents() gives all of the direct and indirect ancestors of a generalized Classifier.
+        // spec:
+        //     result = (parents()->union(parents()->collect(allParents())->asSet()))
         public override IReadOnlyCollection<ClassifierBuilder> Classifier_AllParents(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            var parents = _this.Parents();
+            var result = new HashSet<ClassifierBuilder>(parents);
+            foreach (var p in parents)
+            {
+                result.UnionWith(p.AllParents());
+            }
+            return result;
         }
 
+        // The Interfaces realized by this Classifier and all of its generalizations
+        // spec:
+        //     result = (directlyRealizedInterfaces()->union(self.allParents()->collect(directlyRealizedInterfaces()))->asSet())
         public override IReadOnlyCollection<InterfaceBuilder> Classifier_AllRealizedInterfaces(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = new HashSet<InterfaceBuilder>(_this.DirectlyRealizedInterfaces());
+            foreach (var p in _this.AllParents())
+            {
+                result.UnionWith(p.DirectlyRealizedInterfaces());
+            }
+            return result;
         }
 
+        // All StructuralFeatures related to the Classifier that may have Slots, including direct attributes, inherited attributes, private attributes in generalizations, and memberEnds of Associations, but excluding redefined StructuralFeatures.
+        // spec:
+        //     result = (member->select(oclIsKindOf(StructuralFeature))->
+        //       collect(oclAsType(StructuralFeature))->
+        //        union(self.inherit(self.allParents()->collect(p | p.attribute)->asSet())->
+        //          collect(oclAsType(StructuralFeature)))->asSet())
         public override IReadOnlyCollection<StructuralFeatureBuilder> Classifier_AllSlottableFeatures(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = new HashSet<StructuralFeatureBuilder>(_this.Member.OfType<StructuralFeatureBuilder>());
+            foreach (var parent in _this.AllParents())
+            {
+                result.UnionWith(parent.Attribute);
+            }
+            return result;
         }
 
+        // The Interfaces used by this Classifier and all of its generalizations
+        // spec:
+        //     result = (directlyUsedInterfaces()->union(self.allParents()->collect(directlyUsedInterfaces()))->asSet())
         public override IReadOnlyCollection<InterfaceBuilder> Classifier_AllUsedInterfaces(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = new HashSet<InterfaceBuilder>(_this.DirectlyUsedInterfaces());
+            foreach (var p in _this.AllParents())
+            {
+                result.UnionWith(p.DirectlyUsedInterfaces());
+            }
+            return result;
         }
 
+        // The generalizing Classifiers for this Classifier.
+        // spec:
+        //     result = (parents())
         public override IReadOnlyCollection<ClassifierBuilder> Classifier_ComputeProperty_General(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Parents();
         }
 
+        // All elements inherited by this Classifier from its general Classifiers.
+        // spec:
+        //     result = (inherit(parents()->collect(inheritableMembers(self))->asSet()))
         public override IReadOnlyCollection<NamedElementBuilder> Classifier_ComputeProperty_InheritedMember(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Inherit(_this.Parents().SelectMany(p => p.InheritableMembers(_this)).ToSet()).ToSet();
         }
 
+        // The query conformsTo() gives true for a Classifier that defines a type that conforms to another. This is used, for example, in the specification of signature conformance for operations.
+        // spec:
+        //     result = (if other.oclIsKindOf(Classifier) then
+        //       let otherClassifier : Classifier = other.oclAsType(Classifier) in
+        //         self = otherClassifier or allParents()->includes(otherClassifier)
+        //     else
+        //       false
+        //     endif)
         public override bool Classifier_ConformsTo(ClassifierBuilder _this, TypeBuilder other)
         {
-            throw new NotImplementedException();
+            return other is ClassifierBuilder otherClassifier && (_this == otherClassifier || _this.AllParents().Contains(otherClassifier));
         }
 
+        // The Interfaces directly realized by this Classifier
+        // spec:
+        //     result = ((clientDependency->
+        //       select(oclIsKindOf(Realization) and supplier->forAll(oclIsKindOf(Interface))))->
+        //           collect(supplier.oclAsType(Interface))->asSet())
         public override IReadOnlyCollection<InterfaceBuilder> Classifier_DirectlyRealizedInterfaces(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.ClientDependency.Where(dep => dep is RealizationBuilder && dep.Supplier.All(sup => sup is InterfaceBuilder)).SelectMany(dep => dep.Supplier.OfType<InterfaceBuilder>()).ToSet();
         }
 
+        // The Interfaces directly used by this Classifier
+        // spec:
+        //     result = ((supplierDependency->
+        //       select(oclIsKindOf(Usage) and client->forAll(oclIsKindOf(Interface))))->
+        //         collect(client.oclAsType(Interface))->asSet())
         public override IReadOnlyCollection<InterfaceBuilder> Classifier_DirectlyUsedInterfaces(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.ClientDependency.Where(dep => dep is UsageBuilder && dep.Client.All(sup => sup is InterfaceBuilder)).SelectMany(dep => dep.Client.OfType<InterfaceBuilder>()).ToSet();
         }
 
+        // The query hasVisibilityOf() determines whether a NamedElement is visible in the classifier. Non-private members are visible. It is only called when the argument is something owned by a parent.
+        // pre:
+        //     allParents()->including(self)->collect(member)->includes(n)
+        // spec:
+        //     result = (n.visibility <> VisibilityKind::private)
         public override bool Classifier_HasVisibilityOf(ClassifierBuilder _this, NamedElementBuilder n)
         {
-            throw new NotImplementedException();
+            Debug.Assert(_this.Member.Contains(n) || _this.AllParents().Any(p => p.Member.Contains(n)));
+            return n.Visibility != VisibilityKind.Private;
         }
 
+        // The query inherit() defines how to inherit a set of elements passed as its argument.  It excludes redefined elements from the result.
+        // spec:
+        //     result = (inhs->reject(inh |
+        //       inh.oclIsKindOf(RedefinableElement) and
+        //       ownedMember->select(oclIsKindOf(RedefinableElement))->
+        //         select(redefinedElement->includes(inh.oclAsType(RedefinableElement)))
+        //            ->notEmpty()))
         public override IReadOnlyCollection<NamedElementBuilder> Classifier_Inherit(ClassifierBuilder _this, IReadOnlyCollection<NamedElementBuilder> inhs)
         {
-            throw new NotImplementedException();
+            return inhs.Where(inh => !(inh is RedefinableElementBuilder re && !_this.OwnedMember.OfType<RedefinableElementBuilder>().Where(m => m.RedefinedElement.Contains(re)).Any())).ToSet();
         }
 
+        // The query inheritableMembers() gives all of the members of a Classifier that may be inherited in one of its descendants, subject to whatever visibility restrictions apply.
+        // pre:
+        //     c.allParents()->includes(self)
+        // spec:
+        //     result = (member->select(m | c.hasVisibilityOf(m)))
         public override IReadOnlyCollection<NamedElementBuilder> Classifier_InheritableMembers(ClassifierBuilder _this, ClassifierBuilder c)
         {
-            throw new NotImplementedException();
+            Debug.Assert(c.AllParents().Contains(_this));
+            return _this.Member.Where(m => c.HasVisibilityOf(m)).ToSet();
         }
 
+        // spec:
+        //     result = (substitution.contract->includes(contract))
         public override bool Classifier_IsSubstitutableFor(ClassifierBuilder _this, ClassifierBuilder contract)
         {
-            throw new NotImplementedException();
+            return _this.Substitution.Any(sub => sub.Contract == contract);
         }
 
+        // The query isTemplate() returns whether this Classifier is actually a template.
+        // spec:
+        //     result = (ownedTemplateSignature <> null or general->exists(g | g.isTemplate()))
         public override bool Classifier_IsTemplate(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.OwnedTemplateSignature != null || _this.General.Any(g => g.IsTemplate());
         }
 
+        // The query maySpecializeType() determines whether this classifier may have a generalization relationship to classifiers of the specified type. By default a classifier may specialize classifiers of the same or a more general type. It is intended to be redefined by classifiers that have different specialization constraints.
+        // spec:
+        //     result = (self.oclIsKindOf(c.oclType()))
         public override bool Classifier_MaySpecializeType(ClassifierBuilder _this, ClassifierBuilder c)
         {
-            throw new NotImplementedException();
+            return c.GetType().IsAssignableFrom(_this.GetType());
         }
 
+        // The query parents() gives all of the immediate ancestors of a generalized Classifier.
+        // spec:
+        //     result = (generalization.general->asSet())
         public override IReadOnlyCollection<ClassifierBuilder> Classifier_Parents(ClassifierBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Generalization.Select(g => g.General).ToSet();
         }
 
         // This property is used when the Class is acting as a metaclass. It references the Extensions that specify additional properties of the metaclass. The property is derived from the Extensions whose memberEnds are typed by the Class.
@@ -288,7 +471,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (self.general()->select(oclIsKindOf(Class))->collect(oclAsType(Class))->asSet())
         public override IReadOnlyCollection<ClassBuilder> Class_ComputeProperty_SuperClass(ClassBuilder _this)
         {
-            return new HashSet<ClassBuilder>(_this.General.Where(cls => cls is ClassBuilder).Cast<ClassBuilder>());
+            return _this.General.Where(cls => cls is ClassBuilder).Cast<ClassBuilder>().ToSet();
         }
 
         // The Interfaces that the Component exposes to its environment. These Interfaces may be Realized by the Component or any of its realizingClassifiers, or they may be the Interfaces that are provided by its public Ports.
@@ -303,15 +486,15 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         public override IReadOnlyCollection<InterfaceBuilder> Component_ComputeProperty_Provided(ComponentBuilder _this)
         {
             var ris = _this.AllRealizedInterfaces();
-            var realizingClassifiers = new HashSet<ClassifierBuilder>(_this.Realization.SelectMany(r => r.RealizingClassifier));
+            var realizingClassifiers = _this.Realization.SelectMany(r => r.RealizingClassifier).ToSet();
             realizingClassifiers.UnionWith(_this.AllParents().OfType<ComponentBuilder>().SelectMany(p => p.Realization.SelectMany(r => r.RealizingClassifier)));
-            var allRealizingClassifiers = new HashSet<ClassifierBuilder>(realizingClassifiers);
+            var allRealizingClassifiers = realizingClassifiers;
             allRealizingClassifiers.UnionWith(realizingClassifiers.SelectMany(rc => rc.AllParents()));
-            var realizingClassifierInterfaces = new HashSet<InterfaceBuilder>(allRealizingClassifiers.SelectMany(arc => arc.AllRealizedInterfaces()));
-            var ports = new HashSet<PortBuilder>(_this.AllParents().OfType<ComponentBuilder>().SelectMany(p => p.OwnedPort));
+            var realizingClassifierInterfaces = allRealizingClassifiers.SelectMany(arc => arc.AllRealizedInterfaces());
+            var ports = _this.AllParents().OfType<ComponentBuilder>().SelectMany(p => p.OwnedPort).ToSet();
             ports.UnionWith(_this.OwnedPort);
-            var providedByPorts = new HashSet<InterfaceBuilder>(ports.SelectMany(p => p.Provided));
-            var result = new HashSet<InterfaceBuilder>(ris);
+            var providedByPorts = ports.SelectMany(p => p.Provided);
+            var result = ris.ToSet();
             result.UnionWith(realizingClassifierInterfaces);
             result.UnionWith(providedByPorts);
             return result;
@@ -330,23 +513,26 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         public override IReadOnlyCollection<InterfaceBuilder> Component_ComputeProperty_Required(ComponentBuilder _this)
         {
             var uis = _this.AllUsedInterfaces();
-            var realizingClassifiers = new HashSet<ClassifierBuilder>(_this.Realization.SelectMany(r => r.RealizingClassifier));
+            var realizingClassifiers = _this.Realization.SelectMany(r => r.RealizingClassifier).ToSet();
             realizingClassifiers.UnionWith(_this.AllParents().OfType<ComponentBuilder>().SelectMany(p => p.Realization.SelectMany(r => r.RealizingClassifier)));
-            var allRealizingClassifiers = new HashSet<ClassifierBuilder>(realizingClassifiers);
+            var allRealizingClassifiers = realizingClassifiers.ToSet();
             allRealizingClassifiers.UnionWith(realizingClassifiers.SelectMany(rc => rc.AllParents()));
-            var realizingClassifierInterfaces = new HashSet<InterfaceBuilder>(allRealizingClassifiers.SelectMany(arc => arc.AllUsedInterfaces()));
-            var ports = new HashSet<PortBuilder>(_this.AllParents().OfType<ComponentBuilder>().SelectMany(p => p.OwnedPort));
+            var realizingClassifierInterfaces = allRealizingClassifiers.SelectMany(arc => arc.AllUsedInterfaces()).ToSet();
+            var ports = _this.AllParents().OfType<ComponentBuilder>().SelectMany(p => p.OwnedPort).ToSet();
             ports.UnionWith(_this.OwnedPort);
-            var requiredByPorts = new HashSet<InterfaceBuilder>(ports.SelectMany(p => p.Required));
+            var requiredByPorts = ports.SelectMany(p => p.Required);
             var result = new HashSet<InterfaceBuilder>(uis);
             result.UnionWith(realizingClassifierInterfaces);
             result.UnionWith(requiredByPorts);
             return result;
         }
 
+        // Return only this ConditionalNode. This prevents Actions within the ConditionalNode from having their OutputPins used as bodyOutputs or decider Pins in containing LoopNodes or ConditionalNodes.
+        // spec:
+        //     result = (self->asSet())
         public override IReadOnlyCollection<ActionBuilder> ConditionalNode_AllActions(ConditionalNodeBuilder _this)
         {
-            throw new NotImplementedException();
+            return ImmutableArray.Create(_this);
         }
 
         // A set of ConnectorEnds that attach to this ConnectableElement.
@@ -354,7 +540,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (ConnectorEnd.allInstances()->select(role = self))
         public override IReadOnlyCollection<ConnectorEndBuilder> ConnectableElement_ComputeProperty_End(ConnectableElementBuilder _this)
         {
-            return new HashSet<ConnectorEndBuilder>(_this.MModel.Objects.OfType<ConnectorEndBuilder>().Where(ce => ce.Role == _this));
+            return _this.MModel.Objects.OfType<ConnectorEndBuilder>().Where(ce => ce.Role == _this).ToSet();
         }
 
         // The query isConsistentWith() specifies a ConnectionPointReference can only be redefined by a ConnectionPointReference.
@@ -403,7 +589,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (deployment.deployedArtifact->select(oclIsKindOf(Artifact))->collect(oclAsType(Artifact).manifestation)->collect(utilizedElement)->asSet())
         public override IReadOnlyCollection<PackageableElementBuilder> DeploymentTarget_ComputeProperty_DeployedElement(DeploymentTargetBuilder _this)
         {
-            return new HashSet<PackageableElementBuilder>(_this.Deployment.SelectMany(d => d.DeployedArtifact).OfType<ArtifactBuilder>().SelectMany(a => a.Manifestation).Select(m => m.UtilizedElement));
+            return _this.Deployment.SelectMany(d => d.DeployedArtifact).OfType<ArtifactBuilder>().SelectMany(a => a.Manifestation).Select(m => m.UtilizedElement).ToSet();
         }
 
         // The query getName() returns the name under which the imported PackageableElement will be known in the importing namespace.
@@ -504,9 +690,14 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return redefiningElement is FinalStateBuilder;
         }
 
+        // The hasAllDataTypeAttributes query tests whether the types of the attributes of the given DataType are all DataTypes, and similarly for all those DataTypes.
+        // spec:
+        //     result = (d.ownedAttribute->forAll(a |
+        //         a.type.oclIsKindOf(DataType) and
+        //           hasAllDataTypeAttributes(a.type.oclAsType(DataType))))
         public override bool FunctionBehavior_HasAllDataTypeAttributes(FunctionBehaviorBuilder _this, DataTypeBuilder d)
         {
-            throw new NotImplementedException();
+            return d.OwnedAttribute.All(a => a.Type is DataTypeBuilder dataType && _this.HasAllDataTypeAttributes(dataType));
         }
 
         public override string Gate_GetName(GateBuilder _this)
@@ -549,24 +740,42 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             throw new NotImplementedException();
         }
 
+        // Returns the Association acted on by this LinkAction.
+        // spec:
+        //     result = (endData->asSequence()->first().end.association)
         public override AssociationBuilder LinkAction_Association(LinkActionBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.EndData.FirstOrDefault()?.End.Association;
         }
 
+        // Adds the insertAt InputPin (if any) to the set of all Pins.
+        // spec:
+        //     result = (self.LinkEndData::allPins()->including(insertAt))
         public override IReadOnlyCollection<InputPinBuilder> LinkEndCreationData_AllPins(LinkEndCreationDataBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = this.LinkEndData_AllPins(_this).ToSet();
+            result.Add(_this.InsertAt);
+            return result;
         }
 
+        // Returns all the InputPins referenced by this LinkEndData. By default this includes the value and qualifier InputPins, but subclasses may override the operation to add other InputPins.
+        // spec:
+        //     result = (value->asBag()->union(qualifier.value))
         public override IReadOnlyCollection<InputPinBuilder> LinkEndData_AllPins(LinkEndDataBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = _this.Qualifier.Select(q => q.Value).ToSet();
+            result.Add(_this.Value);
+            return result;
         }
 
+        // Adds the destroyAt InputPin (if any) to the set of all Pins.
+        // spec:
+        //     result = (self.LinkEndData::allPins()->including(destroyAt))
         public override IReadOnlyCollection<InputPinBuilder> LinkEndDestructionData_AllPins(LinkEndDestructionDataBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = this.LinkEndData_AllPins(_this).ToSet();
+            result.Add(_this.DestroyAt);
+            return result;
         }
 
         // The query booleanValue() gives the value.
@@ -665,14 +874,22 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return _this.Value;
         }
 
+        // Return only this LoopNode. This prevents Actions within the LoopNode from having their OutputPins used as bodyOutputs or decider Pins in containing LoopNodes or ConditionalNodes.
+        // spec:
+        //     result = (self->asSet())
         public override IReadOnlyCollection<ActionBuilder> LoopNode_AllActions(LoopNodeBuilder _this)
         {
-            throw new NotImplementedException();
+            return ImmutableArray.Create(_this);
         }
 
+        // Return the loopVariable OutputPins in addition to other source nodes for the LoopNode as a StructuredActivityNode.
+        // spec:
+        //     result = (self.StructuredActivityNode::sourceNodes()->union(loopVariable))
         public override IReadOnlyCollection<ActivityNodeBuilder> LoopNode_SourceNodes(LoopNodeBuilder _this)
         {
-            throw new NotImplementedException();
+            var result = this.StructuredActivityNode_SourceNodes(_this).ToSet();
+            result.UnionWith(_this.LoopVariable);
+            return result;
         }
 
         // This query returns a set including the enclosing InteractionFragment this MessageEnd is enclosed within.
@@ -884,7 +1101,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         {
             if (_this.Namespace is PackageBuilder owningPackage)
             {
-                var result = new HashSet<PackageBuilder>(owningPackage.AllOwningPackages());
+                var result = owningPackage.AllOwningPackages().ToSet();
                 result.Add(owningPackage);
                 return result;
             }
@@ -896,7 +1113,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (Dependency.allInstances()->select(d | d.client->includes(self)))
         public override IReadOnlyCollection<DependencyBuilder> NamedElement_ComputeProperty_ClientDependency(NamedElementBuilder _this)
         {
-            return new HashSet<DependencyBuilder>(_this.MModel.Objects.OfType<DependencyBuilder>().Where(d => d.Client.Contains(_this)));
+            return _this.MModel.Objects.OfType<DependencyBuilder>().Where(d => d.Client.Contains(_this)).ToSet();
         }
 
         // A name that allows the NamedElement to be identified within a hierarchy of nested Namespaces. It is constructed from the names of the containing Namespaces starting at the root of the hierarchy and ending with the name of the NamedElement itself.
@@ -942,7 +1159,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (self.importMembers(elementImport.importedElement->asSet()->union(packageImport.importedPackage->collect(p | p.visibleMembers()))->asSet()))
         public override IReadOnlyCollection<PackageableElementBuilder> Namespace_ComputeProperty_ImportedMember(NamespaceBuilder _this)
         {
-            var result = new HashSet<PackageableElementBuilder>(_this.ElementImport.Select(ei => ei.ImportedElement));
+            var result = _this.ElementImport.Select(ei => ei.ImportedElement).ToSet();
             foreach (var pi in _this.PackageImport)
             {
                 result.UnionWith(pi.ImportedPackage.VisibleMembers());
@@ -955,7 +1172,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (imps->reject(imp1  | imps->exists(imp2 | not imp1.isDistinguishableFrom(imp2, self))))
         public override IReadOnlyCollection<PackageableElementBuilder> Namespace_ExcludeCollisions(NamespaceBuilder _this, IReadOnlyCollection<PackageableElementBuilder> imps)
         {
-            return new HashSet<PackageableElementBuilder>(imps.Where(imp1 => !imps.Any(imp2 => !imp1.IsDistinguishableFrom(imp2, _this))));
+            return imps.Where(imp1 => !imps.Any(imp2 => !imp1.IsDistinguishableFrom(imp2, _this))).ToSet();
         }
 
         // The query getNamesOfMember() gives a set of all of the names that a member would have in a Namespace, taking importing into account. In general a member can have multiple names in a Namespace if it is imported more than once with different aliases.
@@ -979,8 +1196,8 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             else
             {
                 var elementImports = _this.ElementImport.Where(ei => ei.ImportedElement == element).Select(ei => ei.ImportedElement);
-                if (elementImports.Any()) return new HashSet<string>(elementImports.Select(el => el.Name));
-                else return new HashSet<string>(_this.PackageImport.Where(pi => pi.ImportedPackage.VisibleMembers().OfType<NamedElementBuilder>().Contains(element)).SelectMany(pi => pi.ImportedPackage.GetNamesOfMember(element)));
+                if (elementImports.Any()) return elementImports.Select(el => el.Name).ToSet();
+                else return _this.PackageImport.Where(pi => pi.ImportedPackage.VisibleMembers().OfType<NamedElementBuilder>().Contains(element)).SelectMany(pi => pi.ImportedPackage.GetNamesOfMember(element)).ToSet();
             }
         }
 
@@ -989,7 +1206,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (self.excludeCollisions(imps)->select(imp | self.ownedMember->forAll(mem | imp.isDistinguishableFrom(mem, self))))
         public override IReadOnlyCollection<PackageableElementBuilder> Namespace_ImportMembers(NamespaceBuilder _this, IReadOnlyCollection<PackageableElementBuilder> imps)
         {
-            return new HashSet<PackageableElementBuilder>(_this.ExcludeCollisions(imps).Where(imp => _this.OwnedMember.All(mem => imp.IsDistinguishableFrom(mem, _this))));
+            return _this.ExcludeCollisions(imps).Where(imp => _this.OwnedMember.All(mem => imp.IsDistinguishableFrom(mem, _this))).ToSet();
         }
 
         // The Boolean query membersAreDistinguishable() determines whether all of the Namespace's members are distinguishable within it.
@@ -1052,39 +1269,102 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return 0;
         }
 
+        // Specifies whether the return parameter is ordered or not, if present.  This information is derived from the return result for this Operation.
+        // spec:
+        //     result = (if returnResult()->notEmpty() then returnResult()-> exists(isOrdered) else false endif)
         public override bool Operation_ComputeProperty_IsOrdered(OperationBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.ReturnResult().Any(res => res.IsOrdered);
         }
 
+        // Specifies whether the return parameter is unique or not, if present. This information is derived from the return result for this Operation.
+        // spec:
+        //     result = (if returnResult()->notEmpty() then returnResult()->exists(isUnique) else true endif)
         public override bool Operation_ComputeProperty_IsUnique(OperationBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.ReturnResult().Any(res => res.IsUnique);
         }
 
+        // Specifies the lower multiplicity of the return parameter, if present. This information is derived from the return result for this Operation.
+        // spec:
+        //     result = (if returnResult()->notEmpty() then returnResult()->any(true).lower else null endif)
         public override int Operation_ComputeProperty_Lower(OperationBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.ReturnResult().FirstOrDefault()?.Lower ?? 0;
         }
 
+        // The return type of the operation, if present. This information is derived from the return result for this Operation.
+        // spec:
+        //     result = (if returnResult()->notEmpty() then returnResult()->any(true).type else null endif)
         public override TypeBuilder Operation_ComputeProperty_Type(OperationBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.ReturnResult().FirstOrDefault()?.Type;
         }
 
+        // The upper multiplicity of the return parameter, if present. This information is derived from the return result for this Operation.
+        // spec:
+        //     result = (if returnResult()->notEmpty() then returnResult()->any(true).upper else null endif)
         public override long Operation_ComputeProperty_Upper(OperationBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.ReturnResult().FirstOrDefault()?.Upper ?? 0;
         }
 
+        // The query isConsistentWith() specifies, for any two Operations in a context in which redefinition is possible, whether redefinition would be consistent. 
+        // A redefining operation is consistent with a redefined operation if it has the same number of owned parameters, and for each parameter the following holds:
+        // - Direction, ordering and uniqueness are the same.
+        // - The corresponding types are covariant, contravariant or invariant.
+        // - The multiplicities are compatible, depending on the parameter direction.
+        // spec:
+        //     result = (redefiningElement.oclIsKindOf(Operation) and
+        //     let op : Operation = redefiningElement.oclAsType(Operation) in
+        //     	self.ownedParameter->size() = op.ownedParameter->size() and
+        //     	Sequence{1..self.ownedParameter->size()}->
+        //     		forAll(i |  
+        //     		  let redefiningParam : Parameter = op.ownedParameter->at(i),
+        //                    redefinedParam : Parameter = self.ownedParameter->at(i) in
+        //                      (redefiningParam.isUnique = redefinedParam.isUnique) and
+        //                      (redefiningParam.isOrdered = redefinedParam. isOrdered) and
+        //                      (redefiningParam.direction = redefinedParam.direction) and
+        //                      (redefiningParam.type.conformsTo(redefinedParam.type) or
+        //                          redefinedParam.type.conformsTo(redefiningParam.type)) and
+        //                      (redefiningParam.direction = ParameterDirectionKind::inout implies
+        //                              (redefinedParam.compatibleWith(redefiningParam) and
+        //                              redefiningParam.compatibleWith(redefinedParam))) and
+        //                      (redefiningParam.direction = ParameterDirectionKind::_'in' implies
+        //                              redefinedParam.compatibleWith(redefiningParam)) and
+        //                      ((redefiningParam.direction = ParameterDirectionKind::out or
+        //                           redefiningParam.direction = ParameterDirectionKind::return) implies
+        //                              redefiningParam.compatibleWith(redefinedParam))
+        //     		))
+        // pre:
+        //     redefiningElement.isRedefinitionContextValid(self)
         public override bool Operation_IsConsistentWith(OperationBuilder _this, RedefinableElementBuilder redefiningElement)
         {
-            throw new NotImplementedException();
+            Debug.Assert(redefiningElement.IsRedefinitionContextValid(_this));
+            var op = redefiningElement as OperationBuilder;
+            if (op == null) return false;
+            if (op.OwnedParameter.Count != _this.OwnedParameter.Count) return false;
+            for (int i = 0; i < _this.OwnedParameter.Count; i++)
+            {
+                var redefiningParam = op.OwnedParameter[i];
+                var redefinedParam = _this.OwnedParameter[i];
+                if (redefiningParam.IsUnique != redefinedParam.IsUnique) return false;
+                if (redefiningParam.IsOrdered != redefinedParam.IsOrdered) return false;
+                if (redefiningParam.Direction != redefinedParam.Direction) return false;
+                if (!redefiningParam.Type.ConformsTo(redefinedParam.Type) && !redefinedParam.Type.ConformsTo(redefiningParam.Type)) return false;
+                if (redefiningParam.Direction != ParameterDirectionKind.Inout || redefinedParam.CompatibleWith(redefiningParam) && redefiningParam.CompatibleWith(redefinedParam)) return false;
+                if (redefiningParam.Direction != ParameterDirectionKind.In || redefinedParam.CompatibleWith(redefiningParam)) return false;
+                if (redefiningParam.Direction != ParameterDirectionKind.Out && redefiningParam.Direction != ParameterDirectionKind.Return || redefiningParam.CompatibleWith(redefinedParam)) return false;
+            }
+            return true;
         }
 
+        // The query returnResult() returns the set containing the return parameter of the Operation if one exists, otherwise, it returns an empty set
+        // spec:
+        //     result = (ownedParameter->select (direction = ParameterDirectionKind::return))
         public override IReadOnlyCollection<ParameterBuilder> Operation_ReturnResult(OperationBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.OwnedParameter.Where(p => p.Direction == ParameterDirectionKind.Return).ToSet();
         }
 
         // The query allApplicableStereotypes() returns all the directly or indirectly owned stereotypes, including stereotypes contained in sub-profiles.
@@ -1095,7 +1375,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         public override IReadOnlyCollection<StereotypeBuilder> Package_AllApplicableStereotypes(PackageBuilder _this)
         {
             var ownedPackages = _this.OwnedMember.OfType<PackageBuilder>();
-            var result = new HashSet<StereotypeBuilder>(_this.OwnedStereotype);
+            var result = _this.OwnedStereotype.ToSet();
             result.UnionWith(ownedPackages.SelectMany(p => p.AllApplicableStereotypes()));
             return result;
         }
@@ -1105,7 +1385,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (packagedElement->select(oclIsKindOf(Package))->collect(oclAsType(Package))->asSet())
         public override IReadOnlyCollection<PackageBuilder> Package_ComputeProperty_NestedPackage(PackageBuilder _this)
         {
-            return new HashSet<PackageBuilder>(_this.PackagedElement.OfType<PackageBuilder>());
+            return _this.PackagedElement.OfType<PackageBuilder>().ToSet();
         }
 
         // References the Stereotypes that are owned by the Package.
@@ -1113,7 +1393,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (packagedElement->select(oclIsKindOf(Stereotype))->collect(oclAsType(Stereotype))->asSet())
         public override IReadOnlyCollection<StereotypeBuilder> Package_ComputeProperty_OwnedStereotype(PackageBuilder _this)
         {
-            return new HashSet<StereotypeBuilder>(_this.PackagedElement.OfType<StereotypeBuilder>());
+            return _this.PackagedElement.OfType<StereotypeBuilder>().ToSet();
         }
 
         // References the packaged elements that are Types.
@@ -1121,7 +1401,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (packagedElement->select(oclIsKindOf(Type))->collect(oclAsType(Type))->asSet())
         public override IReadOnlyCollection<TypeBuilder> Package_ComputeProperty_OwnedType(PackageBuilder _this)
         {
-            return new HashSet<TypeBuilder>(_this.PackagedElement.OfType<TypeBuilder>());
+            return _this.PackagedElement.OfType<TypeBuilder>().ToSet();
         }
 
         // The query containingProfile() returns the closest profile directly or indirectly containing this package (or this package itself, if it is a profile).
@@ -1166,7 +1446,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (member->select( m | m.oclIsKindOf(PackageableElement) and self.makesVisible(m))->collect(oclAsType(PackageableElement))->asSet())
         public override IReadOnlyCollection<PackageableElementBuilder> Package_VisibleMembers(PackageBuilder _this)
         {
-            return new HashSet<PackageableElementBuilder>(_this.Member.Where(m => m is PackageableElementBuilder && _this.MakesVisible(m)).Cast<PackageableElementBuilder>());
+            return _this.Member.Where(m => m is PackageableElementBuilder && _this.MakesVisible(m)).Cast<PackageableElementBuilder>().ToSet();
         }
 
         // The query isCompatibleWith() determines if this ParameterableElement is compatible with the specified ParameterableElement. By default, this ParameterableElement is compatible with another ParameterableElement p if the kind of this ParameterableElement is the same as or a subtype of the kind of p. Subclasses of ParameterableElement should override this operation to specify different compatibility constraints.
@@ -1185,9 +1465,12 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return _this.TemplateParameter != null;
         }
 
+        // A String that represents a value to be used when no argument is supplied for the Parameter.
+        // spec:
+        //     result = (if self.type = String then defaultValue.stringValue() else null endif)
         public override string Parameter_ComputeProperty_Default(ParameterBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.DefaultValue?.StringValue(); // TODO: String type check
         }
 
         // The union of the sets of Interfaces realized by the type of the Port and its supertypes, or directly the type of the Port if the Port is typed by an Interface.
@@ -1225,39 +1508,95 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return _this.IsConjugated ? _this.BasicRequired() : _this.BasicProvided();
         }
 
+        // If isComposite is true, the object containing the attribute is a container for the object or value contained in the attribute. This is a derived value, indicating whether the aggregation of the Property is composite or not.
+        // spec:
+        //     result = (aggregation = AggregationKind::composite)
         public override bool Property_ComputeProperty_IsComposite(PropertyBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Aggregation == AggregationKind.Composite;
         }
 
+        // In the case where the Property is one end of a binary association this gives the other end.
+        // spec:
+        //     result = (if association <> null and association.memberEnd->size() = 2
+        //     then
+        //         association.memberEnd->any(e | e <> self)
+        //     else
+        //         null
+        //     endif)
         public override PropertyBuilder Property_ComputeProperty_Opposite(PropertyBuilder _this)
         {
-            throw new NotImplementedException();
+            if (_this.Association?.MemberEnd.Count == 2)
+            {
+                if (_this.Association.MemberEnd[0] == _this) return _this.Association.MemberEnd[1];
+                if (_this.Association.MemberEnd[1] == _this) return _this.Association.MemberEnd[0];
+            }
+            return null;
         }
 
+        // The query isAttribute() is true if the Property is defined as an attribute of some Classifier.
+        // spec:
+        //     result = (not classifier->isEmpty())
         public override bool Property_IsAttribute(PropertyBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Class != null;
         }
 
+        // The query isCompatibleWith() determines if this Property is compatible with the specified ParameterableElement. This Property is compatible with ParameterableElement p if 
+        // the kind of this Property is thesame as or a subtype of the kind of p. Further, if p is a TypedElement, then the type of this Property must be conformant with the type of p.
+        // spec:
+        //     result = (self.oclIsKindOf(p.oclType()) and (p.oclIsKindOf(TypeElement) implies
+        //     self.type.conformsTo(p.oclAsType(TypedElement).type)))
         public override bool Property_IsCompatibleWith(PropertyBuilder _this, ParameterableElementBuilder p)
         {
-            throw new NotImplementedException();
+            return p.GetType().IsAssignableFrom(_this.GetType()) && (!(p is TypedElementBuilder te) || _this.Type.ConformsTo(te.Type));
         }
 
+        // The query isConsistentWith() specifies, for any two Properties in a context in which redefinition is possible, whether redefinition would be logically consistent. 
+        // A redefining Property is consistent with a redefined Property if the type of the redefining Property conforms to the type of the redefined Property, and the 
+        // multiplicity of the redefining Property (if specified) is contained in the multiplicity of the redefined Property.
+        // pre:
+        //     redefiningElement.isRedefinitionContextValid(self)
+        // spec:
+        //     result = (redefiningElement.oclIsKindOf(Property) and 
+        //       let prop : Property = redefiningElement.oclAsType(Property) in 
+        //       (prop.type.conformsTo(self.type) and 
+        //       ((prop.lowerBound()->notEmpty() and self.lowerBound()->notEmpty()) implies prop.lowerBound() >= self.lowerBound()) and 
+        //       ((prop.upperBound()->notEmpty() and self.upperBound()->notEmpty()) implies prop.lowerBound() <= self.lowerBound()) and 
+        //       (self.isComposite implies prop.isComposite)))
         public override bool Property_IsConsistentWith(PropertyBuilder _this, RedefinableElementBuilder redefiningElement)
         {
-            throw new NotImplementedException();
+            Debug.Assert(redefiningElement.IsRedefinitionContextValid(_this));
+            var prop = redefiningElement as PropertyBuilder;
+            if (prop == null) return false;
+            var thisUpper = _this.UpperBound();
+            var propUpper = prop.UpperBound();
+            return prop.Type.ConformsTo(_this.Type) && prop.LowerBound() >= _this.LowerBound() && (thisUpper < 0 || propUpper <= thisUpper) && (!_this.IsComposite || prop.IsComposite);
         }
 
+        // The query isNavigable() indicates whether it is possible to navigate across the property.
+        // spec:
+        //     result = (not classifier->isEmpty() or association.navigableOwnedEnd->includes(self))
         public override bool Property_IsNavigable(PropertyBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Class != null || _this.Association.NavigableOwnedEnd.Contains(_this);
         }
 
+        // The query subsettingContext() gives the context for subsetting a Property. It consists, in the case of an attribute, of the corresponding Classifier, and in the case of an association end, all of the Classifiers at the other ends.
+        // spec:
+        //     result = (if association <> null
+        //     then association.memberEnd->excluding(self)->collect(type)->asSet()
+        //     else 
+        //       if classifier<>null
+        //       then classifier->asSet()
+        //       else Set{} 
+        //       endif
+        //     endif)
         public override IReadOnlyCollection<TypeBuilder> Property_SubsettingContext(PropertyBuilder _this)
         {
-            throw new NotImplementedException();
+            if (_this.Association != null) return _this.Association.MemberEnd.Where(me => me != _this).Select(me => me.Type).ToSet();
+            else if (_this.Class != null) return ImmutableArray.Create(_this.Class);
+            else return ImmutableArray<TypeBuilder>.Empty;
         }
 
         // This association refers to the associated Operation. It is derived from the Operation of the CallEvent Trigger when applicable.
@@ -1265,7 +1604,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (trigger->collect(event)->select(oclIsKindOf(CallEvent))->collect(oclAsType(CallEvent).operation)->asSet())
         public override IReadOnlyCollection<OperationBuilder> ProtocolTransition_ComputeProperty_Referred(ProtocolTransitionBuilder _this)
         {
-            return new HashSet<OperationBuilder>(_this.Trigger.Select(t => t.Event).OfType<CallEventBuilder>().Select(e => e.Operation));
+            return _this.Trigger.Select(t => t.Event).OfType<CallEventBuilder>().Select(e => e.Operation).ToSet();
         }
 
         // The query isConsistentWith() specifies a Pseudostate can only be redefined by a Pseudostate of the same kind.
@@ -1280,29 +1619,55 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return redefiningElement is PseudostateBuilder && ((PseudostateBuilder)redefiningElement).Kind == _this.Kind;
         }
 
+        // Returns the ends corresponding to endData with no value InputPin. (A well-formed ReadLinkAction is constrained to have only one of these.)
+        // spec:
+        //     result = (endData->select(value=null).end->asOrderedSet())
         public override IReadOnlyList<PropertyBuilder> ReadLinkAction_OpenEnd(ReadLinkActionBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.EndData.Where(ed => ed.Value == null).Select(ed => ed.End).Distinct().ToList();
         }
 
+        // The query isConsistentWith() specifies, for any two RedefinableElements in a context in which redefinition is possible, whether redefinition would be logically consistent. By default, this is false; this operation must be overridden for subclasses of RedefinableElement to define the consistency conditions.
+        // spec:
+        //     result = (false)
+        // pre:
+        //     redefiningElement.isRedefinitionContextValid(self)
         public override bool RedefinableElement_IsConsistentWith(RedefinableElementBuilder _this, RedefinableElementBuilder redefiningElement)
         {
-            throw new NotImplementedException();
+            Debug.Assert(redefiningElement.IsRedefinitionContextValid(_this));
+            return false;
         }
 
+        // The query isRedefinitionContextValid() specifies whether the redefinition contexts of this RedefinableElement are properly related to the redefinition contexts of the specified RedefinableElement to allow this element to redefine the other. By default at least one of the redefinition contexts of this element must be a specialization of at least one of the redefinition contexts of the specified element.
+        // spec:
+        //     result = (redefinitionContext->exists(c | c.allParents()->includesAll(redefinedElement.redefinitionContext)))
         public override bool RedefinableElement_IsRedefinitionContextValid(RedefinableElementBuilder _this, RedefinableElementBuilder redefinedElement)
         {
-            throw new NotImplementedException();
+            foreach (var c in _this.RedefinitionContext)
+            {
+                var parents = c.AllParents();
+                if (redefinedElement.RedefinitionContext.All(rc => parents.Contains(rc))) return true;
+            }
+            return false;
         }
 
+        // The formal template parameters of the extended signatures.
+        // spec:
+        //     result = (if extendedSignature->isEmpty() then Set{} else extendedSignature.parameter->asSet() endif)
         public override IReadOnlyCollection<TemplateParameterBuilder> RedefinableTemplateSignature_ComputeProperty_InheritedParameter(RedefinableTemplateSignatureBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.ExtendedSignature.SelectMany(es => es.Parameter).ToSet();
         }
 
+        // The query isConsistentWith() specifies, for any two RedefinableTemplateSignatures in a context in which redefinition is possible, whether redefinition would be logically consistent. A redefining template signature is always consistent with a redefined template signature, as redefinition only adds new formal parameters.
+        // spec:
+        //     result = (redefiningElement.oclIsKindOf(RedefinableTemplateSignature))
+        // pre:
+        //     redefiningElement.isRedefinitionContextValid(self)
         public override bool RedefinableTemplateSignature_IsConsistentWith(RedefinableTemplateSignatureBuilder _this, RedefinableElementBuilder redefiningElement)
         {
-            throw new NotImplementedException();
+            Debug.Assert(redefiningElement.IsRedefinitionContextValid(_this));
+            return redefiningElement is RedefinableTemplateSignatureBuilder;
         }
 
         // The operation belongsToPSM () checks if the Region belongs to a ProtocolStateMachine.
@@ -1376,19 +1741,37 @@ namespace MetaDslx.Languages.Uml.Model.Internal
             return false;
         }
 
+        // If the type of the object InputPin is a Behavior, then that Behavior. Otherwise, if the type of the object InputPin is a BehavioredClassifier, then the classifierBehavior of that BehavioredClassifier.
+        // spec:
+        //     result = (if object.type.oclIsKindOf(Behavior) then
+        //       object.type.oclAsType(Behavior)
+        //     else if object.type.oclIsKindOf(BehavioredClassifier) then
+        //       object.type.oclAsType(BehavioredClassifier).classifierBehavior
+        //     else
+        //       null
+        //     endif
+        //     endif)
         public override BehaviorBuilder StartObjectBehaviorAction_Behavior(StartObjectBehaviorActionBuilder _this)
         {
-            throw new NotImplementedException();
+            if (_this.Object.Type is BehaviorBuilder behavior) return behavior;
+            else if (_this.Object.Type is BehavioredClassifierBuilder bc) return bc.ClassifierBehavior;
+            else return null;
         }
 
+        // Return the in and inout ownedParameters of the Behavior being called.
+        // spec:
+        //     result = (self.behavior().inputParameters())
         public override IReadOnlyList<ParameterBuilder> StartObjectBehaviorAction_InputParameters(StartObjectBehaviorActionBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Behavior().InputParameters();
         }
 
+        // Return the inout, out and return ownedParameters of the Behavior being called.
+        // spec:
+        //     result = (self.behavior().outputParameters())
         public override IReadOnlyList<ParameterBuilder> StartObjectBehaviorAction_OutputParameters(StartObjectBehaviorActionBuilder _this)
         {
-            throw new NotImplementedException();
+            return _this.Behavior().OutputParameters();
         }
 
         // The query ancestor(s1, s2) checks whether Vertex s2 is an ancestor of Vertex s1.
@@ -1602,7 +1985,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (allFeatures()->select(oclIsKindOf(ConnectableElement))->collect(oclAsType(ConnectableElement))->asSet())
         public override IReadOnlyCollection<ConnectableElementBuilder> StructuredClassifier_AllRoles(StructuredClassifierBuilder _this)
         {
-            return new HashSet<ConnectableElementBuilder>(_this.AllFeatures().OfType<ConnectableElementBuilder>());
+            return _this.AllFeatures().OfType<ConnectableElementBuilder>().ToSet();
         }
 
         // The Properties specifying instances that the StructuredClassifier owns by composition. This collection is derived, selecting those owned Properties where isComposite is true.
@@ -1610,7 +1993,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (ownedAttribute->select(isComposite))
         public override IReadOnlyCollection<PropertyBuilder> StructuredClassifier_ComputeProperty_Part(StructuredClassifierBuilder _this)
         {
-            return new HashSet<PropertyBuilder>(_this.OwnedAttribute.Where(attr => attr.IsComposite));
+            return _this.OwnedAttribute.Where(attr => attr.IsComposite).ToSet();
         }
 
         // The query isTemplate() returns whether this TemplateableElement is actually a template.
@@ -1626,7 +2009,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (self.allOwnedElements()->select(oclIsKindOf(ParameterableElement)).oclAsType(ParameterableElement)->asSet())
         public override IReadOnlyCollection<ParameterableElementBuilder> TemplateableElement_ParameterableElements(TemplateableElementBuilder _this)
         {
-            return new HashSet<ParameterableElementBuilder>(_this.AllOwnedElements().OfType<ParameterableElementBuilder>());
+            return _this.AllOwnedElements().OfType<ParameterableElementBuilder>().ToSet();
         }
 
         // References the Classifier in which context this element may be redefined.
@@ -1670,7 +2053,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         public override IReadOnlyCollection<UseCaseBuilder> UseCase_AllIncludedUseCases(UseCaseBuilder _this)
         {
             var additions = _this.Include.Select(inc => inc.Addition);
-            var result = new HashSet<UseCaseBuilder>(additions);
+            var result = additions.ToSet();
             foreach (var uc in additions)
             {
                 result.UnionWith(uc.AllIncludedUseCases());
@@ -1759,7 +2142,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (Transition.allInstances()->select(target=self))
         public override IReadOnlyCollection<TransitionBuilder> Vertex_ComputeProperty_Incoming(VertexBuilder _this)
         {
-            return new HashSet<TransitionBuilder>(_this.MModel.Objects.OfType<TransitionBuilder>().Where(t => t.Target == _this));
+            return _this.MModel.Objects.OfType<TransitionBuilder>().Where(t => t.Target == _this).ToSet();
         }
 
         // Specifies the Transitions departing from this Vertex.
@@ -1767,7 +2150,7 @@ namespace MetaDslx.Languages.Uml.Model.Internal
         //     result = (Transition.allInstances()->select(source=self))
         public override IReadOnlyCollection<TransitionBuilder> Vertex_ComputeProperty_Outgoing(VertexBuilder _this)
         {
-            return new HashSet<TransitionBuilder>(_this.MModel.Objects.OfType<TransitionBuilder>().Where(t => t.Source == _this));
+            return _this.MModel.Objects.OfType<TransitionBuilder>().Where(t => t.Source == _this).ToSet();
         }
 
         // References the Classifier in which context this element may be redefined.
