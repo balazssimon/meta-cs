@@ -12,7 +12,7 @@ properties Properties
 end properties
 
 extern function string GenerateDefaultValue(Property property)
-extern function IEnumerable<string> Lines(string text)
+extern function IEnumerable<string> CommentLines(string text, bool escapeHtml)
 
 template Generate(string namespaceName, string metaModelName, string uri)
 namespace [namespaceName]
@@ -154,11 +154,15 @@ association [first.Class.Name].[first.Name.ToPascalCase()] with [second.Class.Na
 end template
 
 template GenerateComment(Element elem)
-	[loop (elem->OwnedComment->text:Body)]
-		[loop (line:Lines(text))]
-// [line]
+[if (hasloop (elem->OwnedComment->text:Body where !string.IsNullOrWhiteSpace(text)))]
+/// <summary>
+	[loop (elem->OwnedComment->text:Body where !string.IsNullOrWhiteSpace(text))]
+		[loop (line:CommentLines(text, true))]
+/// [line]
 		[end loop]
 	[end loop]
+/// </summary>
+[end if]
 	[if (elem is Operation)]
 [GenerateSpecification((Operation)elem)]
 	[else if (elem is Property)]
@@ -173,13 +177,15 @@ end template
 
 template GenerateSpecification(Namespace ns)
 	[loop (ns->rule:OwnedRule->spec:Specification->expr:typeof(OpaqueExpression))]
-		[loop (rule->OwnedComment->commentText:Body)]
-			[loop (line:Lines(commentText))]
-// [line]
+		[loop (rule->OwnedComment->commentText:Body where !string.IsNullOrWhiteSpace(commentText))]
+/// <para>
+			[loop (line:CommentLines(commentText, true))]
+/// [line]
 			[end loop]
+/// </para>
 		[end loop]
 // [rule.Name]:
-		[loop (line:Lines(expr.Body))]
+		[loop (line:CommentLines(expr.Body, false))]
 //     [line]
 		[end loop]
 	[end loop]

@@ -28,9 +28,10 @@ namespace MetaDslx.Languages.Mof.Generator
             else return "/* unhandled default value: " + value.MId.DisplayTypeName + " */";
         }
 
-        public IEnumerable<string> Lines(string text)
+        public IEnumerable<string> CommentLines(string text, bool escapeHtml)
         {
             if (text == null) return new string[0];
+            if (escapeHtml) text = text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
             var result = text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             return result;
         }

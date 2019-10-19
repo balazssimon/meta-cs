@@ -69,10 +69,11 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(coreModel);
 
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
             //string text = File.ReadAllText(@"..\..\..\Calculator.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Uml\Model\Uml.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -391,7 +392,8 @@ namespace MetaDslx.Bootstrap
 
             //string fileName = "../../../MOF.xmi";
             string fileName = "../../../UML.xmi";
-            //Class cls;
+            Class cls;
+            
             try
             {
                 XmiSerializer xmi = new XmiSerializer(MetaDslx.Languages.Mof.Model.MofInstance.MMetaModel);

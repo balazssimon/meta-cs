@@ -95,6 +95,16 @@ namespace MetaDslx.Languages.Meta.Binding
 
         }
 
+        protected virtual Binder CreateDocumentationBinder(Binder parentBinder, LanguageSyntaxNode syntax)
+        {
+            return this.CreateDocumentationBinderCore(parentBinder, syntax);
+        }
+
+        protected virtual Binder CreateDocumentationBinderCore(Binder parentBinder, LanguageSyntaxNode syntax)
+        {
+            return new DocumentationBinder(parentBinder, syntax);
+        }
+
         protected virtual Binder CreateOppositeBinder(Binder parentBinder, LanguageSyntaxNode syntax)
         {
             return this.CreateOppositeBinderCore(parentBinder, syntax);
@@ -248,6 +258,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "DefinedMetaModel");
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(MetaModel));
+				resultBinder = this.CreateDocumentationBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -340,6 +351,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(MetaEnum));
+				resultBinder = this.CreateDocumentationBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -399,6 +411,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(MetaEnumLiteral));
+				resultBinder = this.CreateDocumentationBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;
@@ -446,6 +459,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(MetaClass));
+				resultBinder = this.CreateDocumentationBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseKAbstract)
 				{
@@ -567,6 +581,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(MetaProperty));
+				resultBinder = this.CreateDocumentationBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseFieldModifier)
 				{
@@ -960,6 +975,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreateSymbolDefBinder(resultBinder, parent, type: typeof(MetaOperation));
+				resultBinder = this.CreateDocumentationBinder(resultBinder, parent);
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseReturnType)
 				{

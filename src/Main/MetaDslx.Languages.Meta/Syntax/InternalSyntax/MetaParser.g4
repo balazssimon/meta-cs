@@ -34,6 +34,7 @@ namespaceBody : TOpenBrace metamodelDeclaration declaration* TCloseBrace;
 
                            
                      
+              
 metamodelDeclaration: attribute* KMetamodel name (TOpenParen metamodelPropertyList? TCloseParen)? TSemicolon;
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
@@ -47,15 +48,18 @@ metamodelUriProperty : IUri TAssign        stringLiteral;
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
 
                     
+              
 enumDeclaration : attribute* KEnum name enumBody;
       
 enumBody : TOpenBrace                         enumValues (TSemicolon enumMemberDeclaration*)? TCloseBrace;
 enumValues : enumValue (TComma enumValue)*;
                            
+              
 enumValue : attribute* name;
 enumMemberDeclaration :                       operationDeclaration;
 
                      
+              
 classDeclaration : attribute*                                       KAbstract? KClass name (TColon                         classAncestors)? classBody;
       
 classBody : TOpenBrace classMemberDeclaration* TCloseBrace;
@@ -67,6 +71,7 @@ classMemberDeclaration
 	;
 
                         
+              
 fieldDeclaration : attribute*                 fieldModifier?                 typeReference name defaultValue? redefinitionsOrSubsettings* TSemicolon;
 fieldModifier 
 	:                                      KContainment 
@@ -135,6 +140,7 @@ collectionKind
 	;
 	
                          
+              
 operationDeclaration : attribute* operationModifier*                       returnType name TOpenParen                       parameterList? TCloseParen TSemicolon;
 
 operationModifier : operationModifierBuilder | operationModifierReadonly;
