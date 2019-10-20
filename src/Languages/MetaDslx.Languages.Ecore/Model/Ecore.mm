@@ -3,71 +3,71 @@
 	metamodel Ecore(Uri="http://www.eclipse.org/emf/2002/Ecore"); 
 
 	/// EJavaObject is a type representing the object type. In Java it is java.lang.Object. In .NET it is System.Object.
-	const EDataType EJavaObject;
+	const EDataType EJavaObject = "object";
 	/// EJavaClass is a type representing the type concept. In Java it is java.lang.Class. In .NET it is System.Type.
-	const EDataType EJavaClass;
+	const EDataType EJavaClass = "global::System.Type";
 	/// EBoolean is used for logical expressions, consisting of the predefined values true and false.
 
-	const EDataType EBoolean;
+	const EDataType EBoolean = "bool";
 	/// EString is a sequence of characters in some suitable character set used to display information 
 	/// about the model. Character sets may include non-Roman alphabets and characters.
-	const EDataType EString;
+	const EDataType EString = "string";
 	/// EByte is a primitive type representing byte values.
 
-	const EDataType EByte;
+	const EDataType EByte = "byte";
 	/// EByteArray is a primitive type representing a byte array.
-	const EDataType EByteArray;
+	const EDataType EByteArray = "byte[]";
 	/// EChar is a primitive type representing character values.
-	const EDataType EChar;
+	const EDataType EChar = "char";
 	/// EShort is a primitive type representing short integer values.
-	const EDataType EShort;
+	const EDataType EShort = "short";
 	/// EInt is a primitive type representing integer values.
-	const EDataType EInt;
+	const EDataType EInt = "int";
 	/// ELong is a primitive type representing long integer values.
-	const EDataType ELong;
+	const EDataType ELong = "long";
 	/// EFloat is a primitive type representing the mathematical concept of real.
-	const EDataType EFloat;
+	const EDataType EFloat = "float";
 	/// EDouble is a primitive type representing the mathematical concept of real.
-	const EDataType EDouble;
+	const EDataType EDouble = "double";
 
 	/// EByteObject is a reference type representing byte values.
-	const EDataType EByteObject;
+	const EDataType EByteObject = "byte?";
 	/// ECharObject is a reference type representing character values.
-	const EDataType ECharObject;
+	const EDataType ECharObject = "char?";
 	/// EShortObject is a reference type representing short integer values.
-	const EDataType EShortObject;
+	const EDataType EShortObject = "short?";
 	/// EIntObject is a reference type representing integer values.
-	const EDataType EIntObject;
+	const EDataType EIntObject = "int?";
 	/// ELongObject is a reference type representing long integer values.
-	const EDataType ELongObject;
+	const EDataType ELongObject = "long?";
 	/// EFloatObject is a reference type representing the mathematical concept of real.
-	const EDataType EFloatObject;
+	const EDataType EFloatObject = "float?";
 	/// EDoubleObject is a reference type representing the mathematical concept of real.
-	const EDataType EDoubleObject;
+	const EDataType EDoubleObject = "double?";
 
 	/// EDate is a reference type representing a date.
-	const EDataType EDate;
+	const EDataType EDate = "global::System.DateTime";
 	/// EBigInteger is a reference type representing an unlimited integer value.
-	const EDataType EBigInteger;
+	const EDataType EBigInteger = "global::System.Numerics.BigInteger";
 	/// EBigDecimal is a reference type representing an unlimited decimal value.
-	const EDataType EBigDecimal;
+	const EDataType EBigDecimal = "decimal";
 
 	/// EResource is a reference type representing a model. In Ecore it is org.eclipse.emf.ecore.resource.Resource. In MetaDslx it is MetaDslx.Modeling.IModel.
-	const EDataType EResource;
+	const EDataType EResource = "global::MetaDslx.Modeling.IModel";
 	/// EResourceSet is a reference type representing a model group. In Ecore it is org.eclipse.emf.ecore.resource.ResourceSet. In MetaDslx it is MetaDslx.Modeling.IModelGroup.
-	const EDataType EResourceSet;
+	const EDataType EResourceSet = "global::MetaDslx.Modeling.IModelGroup";
 
 	/// EFeatureMap is a reference type representing a feature map.
-	const EDataType EFeatureMap;
+	const EDataType EFeatureMap = "global::System.Collections.Generic.Dictionary<EStructuralFeature,object>";
 	/// EFeatureMapEntry is a reference type representing a feature map entry.
-	const EDataType EFeatureMapEntry;
+	const EDataType EFeatureMapEntry = "global::System.Collections.Generic.KeyValuePair<EStructuralFeature,object>";
 
 	/// EEList is a reference type representing an ecore EList.
-	const EDataType EEList;
+	const EDataType EEList = "global::System.Collections.Generic.IReadOnlyList<object>";
 	/// EEnumerator is a reference type representing an enumerator.
-	const EDataType EEnumerator;
+	const EDataType EEnumerator = "global::System.Collections.IEnumerator";
 	/// ETreeIterator is a reference type representing a tree iterator.
-	const EDataType ETreeIterator;
+	const EDataType ETreeIterator = "global::System.Collections.IEnumerator";
 
 
 	class EObject
@@ -78,12 +78,12 @@
 		EObject EContainer();
 		EStructuralFeature EContainingFeature();
 		EReference EContainmentFeature();
-		// EEList EContents();
-		// ETreeIterator EAllContents();
-		// EEList ECrossReferences();
-		// EJavaObject EGet(EStructuralFeature feature);
-		// EJavaObject EGet(EStructuralFeature feature, bool resolve);
-		// EJavaObject ESet(EStructuralFeature feature, EJavaObject newValue);
+		EEList EContents();
+		ETreeIterator EAllContents();
+		EEList ECrossReferences();
+		EJavaObject EGet(EStructuralFeature feature);
+		EJavaObject EGet(EStructuralFeature feature, bool resolve);
+		EJavaObject ESet(EStructuralFeature feature, EJavaObject newValue);
 		bool EIsSet(EStructuralFeature feature);
 		void EUnset(EStructuralFeature feature);
 	}
@@ -99,7 +99,7 @@
 		EPackage EPackage;
 		EObject Create(EClass eClass);
 		EObject CreateFromString(EDataType eDataType, string literalValue);
-		// string ConvertToString(EDataType eDataType, EJavaObject instanceValue); // TODO
+		string ConvertToString(EDataType eDataType, EJavaObject instanceValue);
 	}
 
 	abstract class ENamedElement : EModelElement
@@ -141,9 +141,12 @@
 		EPackage EPackage;
 		containment list<ETypeParameter> ETypeParameters;
 
-		// EJavaClass InstanceClass; // TODO
-		// EJavaObject DefaultValue; // TODO
-		// bool IsInstance(EJavaObject @object); // TODO
+		EJavaClass InstanceClass;
+		EJavaObject DefaultValue;
+		/// <summary>
+		/// Returns whether the object is an instance of this classifier.
+		/// </summary>
+		bool IsInstance(EJavaObject @object);
 		int GetClassifierID();
 	}
 
@@ -187,7 +190,7 @@
 	{
 		EEnum EEnum;
 		int Value;
-		// EEnumerator Instance; // TODO
+		EEnumerator Instance;
 	}
 
 	class ETypedElement : ENamedElement
@@ -210,11 +213,11 @@
 		bool Volatile;
 		bool Transient;
 		string DefaultValueLiteral;
-		// EJavaObject DefaultValue;
+		EJavaObject DefaultValue;
 		bool Unsettable;
 		bool Derived;
 		int GetFeatureID();
-		// EJavaClass GetContainerClass();
+		EJavaClass GetContainerClass();
 	}
 
 	class EAttribute : EStructuralFeature

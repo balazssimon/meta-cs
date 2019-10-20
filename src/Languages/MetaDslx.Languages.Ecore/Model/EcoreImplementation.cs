@@ -1,72 +1,206 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using MetaDslx.Modeling;
 
 namespace MetaDslx.Languages.Ecore.Model.Internal
 {
     internal class EcoreImplementation : EcoreImplementationBase
     {
-        internal override void EcoreBuilderInstance(EcoreBuilderInstance _this)
+        public override int EClassifier_GetClassifierID(EClassifierBuilder _this)
         {
-            EcoreFactory f = new EcoreFactory(_this.MModel);
-            _this.EJavaObject = f.EDataType();
-            _this.EJavaObject.Name = "EJavaObject";
-            _this.EJavaClass = f.EDataType();
-            _this.EJavaClass.Name = "EJavaClass";
-            _this.EBoolean = f.EDataType();
-            _this.EBoolean.Name = "EBoolean";
-            _this.EString = f.EDataType();
-            _this.EString.Name = "EString";
-            _this.EByte = f.EDataType();
-            _this.EByte.Name = "EByte";
-            _this.EByteArray = f.EDataType();
-            _this.EByteArray.Name = "EByteArray";
-            _this.EChar = f.EDataType();
-            _this.EChar.Name = "EChar";
-            _this.EShort = f.EDataType();
-            _this.EShort.Name = "EShort";
-            _this.EInt = f.EDataType();
-            _this.EInt.Name = "EInt";
-            _this.ELong = f.EDataType();
-            _this.ELong.Name = "ELong";
-            _this.EFloat = f.EDataType();
-            _this.EFloat.Name = "EFloat";
-            _this.EDouble = f.EDataType();
-            _this.EDouble.Name = "EDouble";
-            _this.EByteObject = f.EDataType();
-            _this.EByteObject.Name = "EByteObject";
-            _this.ECharObject = f.EDataType();
-            _this.ECharObject.Name = "ECharObject";
-            _this.EShortObject = f.EDataType();
-            _this.EShortObject.Name = "EShortObject";
-            _this.EIntObject = f.EDataType();
-            _this.EIntObject.Name = "EIntObject";
-            _this.ELongObject = f.EDataType();
-            _this.ELongObject.Name = "ELongObject";
-            _this.EFloatObject = f.EDataType();
-            _this.EFloatObject.Name = "EFloatObject";
-            _this.EDoubleObject = f.EDataType();
-            _this.EDoubleObject.Name = "EDoubleObject";
-            _this.EDate = f.EDataType();
-            _this.EDate.Name = "EDate";
-            _this.EBigInteger = f.EDataType();
-            _this.EBigInteger.Name = "EBigInteger";
-            _this.EBigDecimal = f.EDataType();
-            _this.EBigDecimal.Name = "EBigDecimal";
-            _this.EResource = f.EDataType();
-            _this.EResource.Name = "EResource";
-            _this.EResourceSet = f.EDataType();
-            _this.EResourceSet.Name = "EResourceSet";
-            _this.EFeatureMap = f.EDataType();
-            _this.EFeatureMap.Name = "EFeatureMap";
-            _this.EFeatureMapEntry = f.EDataType();
-            _this.EFeatureMapEntry.Name = "EFeatureMapEntry";
-            _this.EEList = f.EDataType();
-            _this.EEList.Name = "EEList";
-            _this.EEnumerator = f.EDataType();
-            _this.EEnumerator.Name = "EEnumerator";
-            _this.ETreeIterator = f.EDataType();
-            _this.ETreeIterator.Name = "ETreeIterator";
+            throw new NotImplementedException();
+        }
+
+        public override bool EClassifier_IsInstance(EClassifierBuilder _this, object @object)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<EAttributeBuilder> EClass_ComputeProperty_EAllAttributes(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<EReferenceBuilder> EClass_ComputeProperty_EAllContainments(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<EGenericTypeBuilder> EClass_ComputeProperty_EAllGenericSuperTypes(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<EOperationBuilder> EClass_ComputeProperty_EAllOperation(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<EReferenceBuilder> EClass_ComputeProperty_EAllReferences(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<EStructuralFeatureBuilder> EClass_ComputeProperty_EAllStructuralFeatures(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<EClassBuilder> EClass_ComputeProperty_EAllSuperTypes(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<EAttributeBuilder> EClass_ComputeProperty_EAttributes(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EAttributeBuilder EClass_ComputeProperty_EIDAttribute(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<EReferenceBuilder> EClass_ComputeProperty_EReferences(EClassBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EStructuralFeatureBuilder EClass_GetStructuralFeature(EClassBuilder _this, int featureID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EStructuralFeatureBuilder EClass_GetStructuralFeature(EClassBuilder _this, string featureName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool EClass_IsSuperTypeOf(EClassBuilder _this, EClassBuilder someClass)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EEnumLiteralBuilder EEnum_GetEEnumLiteral(EEnumBuilder _this, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EEnumLiteralBuilder EEnum_GetEEnumLiteral(EEnumBuilder _this, int value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string EFactory_ConvertToString(EFactoryBuilder _this, EDataTypeBuilder eDataType, object instanceValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EObjectBuilder EFactory_Create(EFactoryBuilder _this, EClassBuilder eClass)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EObjectBuilder EFactory_CreateFromString(EFactoryBuilder _this, EDataTypeBuilder eDataType, string literalValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EAnnotationBuilder EModelElement_GetEAnnotation(EModelElementBuilder _this, string source)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerator EObject_EAllContents(EObjectBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EClassBuilder EObject_EClass(EObjectBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EObjectBuilder EObject_EContainer(EObjectBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EStructuralFeatureBuilder EObject_EContainingFeature(EObjectBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EReferenceBuilder EObject_EContainmentFeature(EObjectBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<object> EObject_EContents(EObjectBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IReadOnlyList<object> EObject_ECrossReferences(EObjectBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object EObject_EGet(EObjectBuilder _this, EStructuralFeatureBuilder feature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object EObject_EGet(EObjectBuilder _this, EStructuralFeatureBuilder feature, bool resolve)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool EObject_EIsProxy(EObjectBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool EObject_EIsSet(EObjectBuilder _this, EStructuralFeatureBuilder feature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IModel EObject_EResource(EObjectBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object EObject_ESet(EObjectBuilder _this, EStructuralFeatureBuilder feature, object newValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void EObject_EUnset(EObjectBuilder _this, EStructuralFeatureBuilder feature)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EClassifierBuilder EPackage_GetEClassifier(EPackageBuilder _this, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override EClassBuilder EReference_ComputeProperty_EReferenceType(EReferenceBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Type EStructuralFeature_GetContainerClass(EStructuralFeatureBuilder _this)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int EStructuralFeature_GetFeatureID(EStructuralFeatureBuilder _this)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="railDsl" nsURI="http://www.bme.hu/iit/vke/raildsl" nsPrefix="railDsl">
+  <eClassifiers xsi:type="ecore:EClass" name="Station" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="declarations" upperBound="-1"
+        eType="#//Declaration" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Declaration" abstract="true" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TrackObject" abstract="true" eSuperTypes="#//Declaration #//RouteObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Vertex" eSuperTypes="#//Declaration">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//VertexKind"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Segment" eSuperTypes="#//TrackObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="start" eType="#//Vertex"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="end" eType="#//Vertex"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objects" upperBound="-1"
+        eType="#//SegmentObject" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SegmentObject" abstract="true" eSuperTypes="#//NamedElement #//RouteObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="position" eType="#//SegmentPosition"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Derailer" eSuperTypes="#//SegmentObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="active" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LevelCrossing" eSuperTypes="#//SegmentObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="closed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Signal" eSuperTypes="#//SegmentObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="distantFor" eType="#//Signal"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="main" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shunting" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Platform" eSuperTypes="#//SegmentObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SegmentPosition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="atStart" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="atEnd" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="position" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="side" eType="#//Side"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="orientation" eType="#//Orientation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="segment" eType="#//Segment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Point" eSuperTypes="#//TrackObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputs" upperBound="-1"
+        eType="#//Vertex"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputs" upperBound="-1"
+        eType="#//Vertex"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//PointKind"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectedInput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectedOutput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locked" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Track" eSuperTypes="#//Declaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" unique="false"
+        upperBound="-1" eType="#//TrackObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SpeedLimit">
+    <eLiterals name="Stop"/>
+    <eLiterals name="Speed40" value="2"/>
+    <eLiterals name="Speed80" value="3"/>
+    <eLiterals name="Speed120" value="4"/>
+    <eLiterals name="Max" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PointKind">
+    <eLiterals name="FixedCrossing"/>
+    <eLiterals name="SimplePoint" value="1"/>
+    <eLiterals name="DoublePoint" value="2"/>
+    <eLiterals name="SingleSlipPoint" value="3"/>
+    <eLiterals name="DoubleSlipPoint" value="4"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="VertexKind">
+    <eLiterals name="InnerVertex"/>
+    <eLiterals name="TrackEnd" value="1"/>
+    <eLiterals name="StationBorder" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Orientation">
+    <eLiterals name="Forwards"/>
+    <eLiterals name="Backwards" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Side">
+    <eLiterals name="Both"/>
+    <eLiterals name="Right" value="1"/>
+    <eLiterals name="Left" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Train" eSuperTypes="#//Declaration">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="speed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="segments" upperBound="-1"
+        eType="#//TrainSegment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="position" eType="#//SegmentPosition"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="acceleration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TrainSegment">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="position" eType="#//SegmentPosition"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RouteObject" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="speedLimit" eType="#//SpeedLimit"
+        defaultValueLiteral="Max"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="error" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TrainRoute" eSuperTypes="#//Declaration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="path" upperBound="-1" eType="#//TrainRouteObject"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//TrainRouteKind"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="startSignal" eType="#//Signal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="endSignal" eType="#//Signal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="protectionObjects" upperBound="-1"
+        eType="#//TrainRouteObject" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conflictingRoutes" upperBound="-1"
+        eType="#//TrainRoute"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locked" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="TrainRouteKind">
+    <eLiterals name="Main"/>
+    <eLiterals name="Shunting" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TrainRouteObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="speedLimit" eType="#//SpeedLimit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TrainRoutePoint" eSuperTypes="#//TrainRouteObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalPoint" eType="#//Point"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectedInput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectedOutput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TrainRouteSegment" eSuperTypes="#//TrainRouteObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="originalSegment" eType="#//Segment"/>
+  </eClassifiers>
+</ecore:EPackage>

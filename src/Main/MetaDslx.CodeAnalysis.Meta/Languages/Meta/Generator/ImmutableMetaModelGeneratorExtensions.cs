@@ -693,12 +693,26 @@ namespace MetaDslx.Languages.Meta.Generator
             {
                 return !((MetaExternalType)mtype).IsValueType;
             }
-            MetaPrimitiveType primitive = mtype as MetaPrimitiveType;
-            if (primitive != null)
-            {
-                return primitive.Name == "string" || primitive.Name == "object" || primitive.Name == "ModelObject";
-            }
             if (mtype is MetaClass) return true;
+            if (mtype is MetaConstant || mtype is MetaPrimitiveType)
+            {
+                string name = mtype.MName;
+                switch (name)
+                {
+                    case "bool":
+                    case "byte":
+                    case "short":
+                    case "int":
+                    case "long":
+                    case "float":
+                    case "double":
+                    case "char":
+                    case "decimal":
+                        return false;
+                    default:
+                        return true;
+                }
+            }
             return false;
         }
 

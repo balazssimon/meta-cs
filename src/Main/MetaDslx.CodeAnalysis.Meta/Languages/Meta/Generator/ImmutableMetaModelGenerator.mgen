@@ -252,9 +252,16 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 	private void CreateInstances()
 	{
 		[Properties.MetaNs].MetaFactory factory = new [Properties.MetaNs].MetaFactory(this.MModel, [Properties.CoreNs].ModelFactoryFlags.DontMakeObjectsCreated);
+		[if (!metaMetaModel)]
+		[model.CSharpName(ModelKind.Factory)] constantFactory = new [model.CSharpName(ModelKind.Factory)](this.MModel, global::MetaDslx.Modeling.ModelFactoryFlags.DontMakeObjectsCreated);
+		[end if]
 ^
 		[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
+			[if (metaMetaModel)]
 		[cst.CSharpName(model, ClassKind.BuilderInstance)] = factory.[cst.Type.CSharpName(model, ClassKind.Immutable)]();
+			[else]
+		[cst.CSharpName(model, ClassKind.BuilderInstance)] = constantFactory.[cst.Type.CSharpName(model, ClassKind.Immutable)]();
+			[end if]
 			[if (cst.DotNetName != null)]
 		[cst.CSharpName(model, ClassKind.BuilderInstance)].MName = "[cst.DotNetName]";
 			[end if]
