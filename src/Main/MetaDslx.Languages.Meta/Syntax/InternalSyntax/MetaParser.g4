@@ -39,10 +39,12 @@ metamodelDeclaration: attribute* KMetamodel name (TOpenParen metamodelPropertyLi
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
 
-metamodelProperty : metamodelUriProperty;
+metamodelProperty : metamodelUriProperty | metamodelPrefixProperty;
 
               
 metamodelUriProperty : IUri TAssign        stringLiteral;
+                 
+metamodelPrefixProperty : IPrefix TAssign        stringLiteral;
 
                         
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
@@ -91,7 +93,9 @@ subsettings : KSubsets                                nameUseList?;
 nameUseList : qualifier (TComma qualifier)*;
 
                         
-constDeclaration : KConst                 typeReference name TSemicolon;
+constDeclaration : KConst                 typeReference name constValue? TSemicolon;
+                     
+constValue : TAssign        stringLiteral;
 
                     
 returnType : typeReference | voidType;
@@ -102,7 +106,7 @@ typeReference : collectionType | simpleType;
                     
 simpleType : primitiveType | objectType | nullableType | classType;
 
-                                      
+                                                   
 classType : qualifier;
 
            
@@ -166,6 +170,7 @@ identifier
 	: IdentifierNormal 
 	| IdentifierVerbatim
 	| IUri
+	| IPrefix
 	;
 
 // Literals

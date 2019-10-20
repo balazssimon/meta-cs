@@ -156,6 +156,17 @@ public interface IMetaParserListener : IParseTreeListener {
 	void ExitMetamodelUriProperty([NotNull] MetaParser.MetamodelUriPropertyContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.metamodelPrefixProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMetamodelPrefixProperty([NotNull] MetaParser.MetamodelPrefixPropertyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.metamodelPrefixProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMetamodelPrefixProperty([NotNull] MetaParser.MetamodelPrefixPropertyContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.declaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -363,6 +374,17 @@ public interface IMetaParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitConstDeclaration([NotNull] MetaParser.ConstDeclarationContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaParser.constValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterConstValue([NotNull] MetaParser.ConstValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaParser.constValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitConstValue([NotNull] MetaParser.ConstValueContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaParser.returnType"/>.

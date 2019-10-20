@@ -8,6 +8,7 @@ namespace MetaDslx.Modeling
     public interface IMetaModel : IModel
     {
         string Uri { get; }
+        string Prefix { get; }
         string Namespace { get; }
     }
 }

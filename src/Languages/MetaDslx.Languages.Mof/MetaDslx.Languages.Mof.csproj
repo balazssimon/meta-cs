@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\Versions.props" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MetaDslx.Languages.Mof</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <NoStdLib>true</NoStdLib>
+    <ApplyNgenOptimization>partial</ApplyNgenOptimization>
+    <LangVersion>preview</LangVersion>
+    <MetaDslxDisableAntlr4RoslynGenerator>false</MetaDslxDisableAntlr4RoslynGenerator>
+	
+    <!-- NuGet -->
+    <IsPackable>true</IsPackable>
+    <Authors>Balazs Simon</Authors>
+    <PackageId>MetaDslx.Languages.Mof</PackageId>
+    <PackageDescription>
+      The complete implementation of the MOF standard.
+    </PackageDescription>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageOutputPath>..\..\..\..\..\nuget\</PackageOutputPath>
+    <RepositoryUrl>https://github.com/balazssimon/meta-cs.git</RepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Optional: Declare that the Repository URL can be published to NuSpec -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
+    <!-- This is useful if you generate files during the build -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>	
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
+    <PackageReference Include="System.Memory" Version="$(SystemMemoryVersion)" />
+    <PackageReference Include="System.Reflection.Metadata" Version="$(SystemReflectionMetadataVersion)" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="$(SystemRuntimeCompilerServicesUnsafeVersion)" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="$(SystemThreadingTasksExtensionsVersion)" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="$(SystemTextEncodingCodePagesVersion)" />
+    <PackageReference Include="MetaDslx.BuildTasks" Version="$(BootstrapVersion)" PrivateAssets="all" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Antlr4\MetaDslx.CodeAnalysis.Antlr4.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Common\MetaDslx.CodeAnalysis.Common.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.CSharp\MetaDslx.CodeAnalysis.CSharp.csproj" />
+    <ProjectReference Include="..\..\Main\MetaDslx.CodeAnalysis.Meta\MetaDslx.CodeAnalysis.Meta.csproj" />
+  </ItemGroup>
+
+</Project>

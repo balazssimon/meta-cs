@@ -186,11 +186,25 @@ namespace MetaDslx.Languages.Meta.Binding
 		public virtual void VisitMetamodelProperty(MetamodelPropertySyntax node)
 		{
 			this.Visit(node.MetamodelUriProperty);
+			this.Visit(node.MetamodelPrefixProperty);
 		}
 		
 		public virtual void VisitMetamodelUriProperty(MetamodelUriPropertySyntax node)
 		{
 			this.BeginProperty(node, name: "Uri");
+			try
+			{
+				this.Visit(node.StringLiteral);
+			}
+			finally
+			{
+				this.EndProperty();
+			}
+		}
+		
+		public virtual void VisitMetamodelPrefixProperty(MetamodelPrefixPropertySyntax node)
+		{
+			this.BeginProperty(node, name: "Prefix");
 			try
 			{
 				this.Visit(node.StringLiteral);
@@ -554,10 +568,24 @@ namespace MetaDslx.Languages.Meta.Binding
 					this.EndProperty();
 				}
 				this.Visit(node.Name);
+				this.Visit(node.ConstValue);
 			}
 			finally
 			{
 				this.EndSymbolDef();
+			}
+		}
+		
+		public virtual void VisitConstValue(ConstValueSyntax node)
+		{
+			this.BeginProperty(node, name: "DotNetName");
+			try
+			{
+				this.Visit(node.StringLiteral);
+			}
+			finally
+			{
+				this.EndProperty();
 			}
 		}
 		
@@ -620,7 +648,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		
 		public virtual void VisitClassType(ClassTypeSyntax node)
 		{
-			this.BeginSymbolUse(node, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum)));
+			this.BeginSymbolUse(node, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum), typeof(MetaConstant)));
 			try
 			{
 				this.Visit(node.Qualifier);

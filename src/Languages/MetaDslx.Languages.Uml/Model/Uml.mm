@@ -3504,6 +3504,7 @@
     	/// <summary>
     	/// The name of the NamedElement.
     	/// </summary>
+		[Name]
     	string Name;
     	/// <summary>
     	/// The StringExpression used to define the name of this NamedElement.
@@ -3591,6 +3592,7 @@
     	/// <summary>
     	/// A collection of NamedElements identifiable within the Namespace, either by being owned or by being introduced by importing or inheritance.
     	/// </summary>
+		[Scope]
     	union set<NamedElement> Member;
     	/// <summary>
     	/// A collection of NamedElements owned by the Namespace.
@@ -3834,6 +3836,7 @@
     /// <summary>
     /// A Type constrains the values represented by a TypedElement.
     /// </summary>
+	[Type]
     abstract class Type : PackageableElement
     {
     	/// <summary>
@@ -3856,6 +3859,7 @@
     	/// <summary>
     	/// The type of the TypedElement.
     	/// </summary>
+		[Type]
     	Type Type;
     }
 

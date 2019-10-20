@@ -155,6 +155,7 @@ namespace MetaDslx.Languages.Meta.Generator
             if (mtype is MetaNullableType) return this.CSharpName((MetaNullableType)mtype, mmodel, kind, fullName);
             if (mtype is MetaEnum) return this.CSharpName((MetaEnum)mtype, mmodel, kind, fullName);
             if (mtype is MetaClass) return this.CSharpName((MetaClass)mtype, mmodel, kind, fullName);
+            if (mtype is MetaConstant) return this.CSharpName((MetaConstant)mtype, mmodel, kind, fullName);
             return string.Empty;
         }
 
@@ -448,6 +449,20 @@ namespace MetaDslx.Languages.Meta.Generator
                     case ClassKind.Implementation:
                         fullNamePrefix = this.CSharpName(mmodel, this.ToModelKind(kind), !this.ContainsDeclaration(mmodel, mconst));
                         result = fullNamePrefix + "." + result;
+                        break;
+                    case ClassKind.Immutable:
+                    case ClassKind.Builder:
+                    case ClassKind.ImmutableOperation:
+                    case ClassKind.BuilderOperation:
+                        if (mconst.DotNetName != null)
+                        {
+                            result = mconst.DotNetName;
+                        }
+                        else
+                        {
+                            fullNamePrefix = this.CSharpName(mconst.Namespace, this.ToNamespaceKind(kind), fullName);
+                            result = "global::" + fullNamePrefix + "." + result;
+                        }
                         break;
                     default:
                         fullNamePrefix = this.CSharpName(mconst.Namespace, this.ToNamespaceKind(kind), fullName);

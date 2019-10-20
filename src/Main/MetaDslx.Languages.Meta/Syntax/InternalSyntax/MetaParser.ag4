@@ -39,10 +39,12 @@ metamodelDeclaration: attribute* KMetamodel name (TOpenParen metamodelPropertyLi
 
 metamodelPropertyList : metamodelProperty (TComma metamodelProperty)*;
 
-metamodelProperty : metamodelUriProperty;
+metamodelProperty : metamodelUriProperty | metamodelPrefixProperty;
 
 $Property(Uri)
 metamodelUriProperty : IUri TAssign $Value stringLiteral;
+$Property(Prefix)
+metamodelPrefixProperty : IPrefix TAssign $Value stringLiteral;
 
 $Property(Declarations) 
 declaration : enumDeclaration | classDeclaration | associationDeclaration | constDeclaration;
@@ -91,7 +93,9 @@ $SymbolUse(MetaProperty)
 nameUseList : qualifier (TComma qualifier)*;
 
 $SymbolDef(MetaConstant)
-constDeclaration : KConst $Property(Type) typeReference name TSemicolon;
+constDeclaration : KConst $Property(Type) typeReference name constValue? TSemicolon;
+$Property(DotNetName)
+constValue : TAssign $Value stringLiteral;
 
 $SymbolUse(MetaType)
 returnType : typeReference | voidType;
@@ -102,7 +106,7 @@ typeReference : collectionType | simpleType;
 $SymbolUse(MetaType)
 simpleType : primitiveType | objectType | nullableType | classType;
 
-$SymbolUse(types=(MetaClass,MetaEnum))
+$SymbolUse(types=(MetaClass,MetaEnum,MetaConstant))
 classType : qualifier;
 
 $Identifier
@@ -166,6 +170,7 @@ identifier
 	: IdentifierNormal 
 	| IdentifierVerbatim
 	| IUri
+	| IPrefix
 	;
 
 // Literals

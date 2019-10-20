@@ -5,22 +5,22 @@
 	*/
 	metamodel Meta(Uri="http://metadslx.core/1.0"); 
 
-	const MetaPrimitiveType Object;
-	const MetaPrimitiveType String;
-	const MetaPrimitiveType Int;
-	const MetaPrimitiveType Long;
-	const MetaPrimitiveType Float;
-	const MetaPrimitiveType Double;
-	const MetaPrimitiveType Byte;
-	const MetaPrimitiveType Bool;
-	const MetaPrimitiveType Void;
-	const MetaPrimitiveType ModelObject;
+	const MetaPrimitiveType Object = "object";
+	const MetaPrimitiveType String = "string";
+	const MetaPrimitiveType Int = "int";
+	const MetaPrimitiveType Long = "long";
+	const MetaPrimitiveType Float = "float";
+	const MetaPrimitiveType Double = "double";
+	const MetaPrimitiveType Byte = "byte";
+	const MetaPrimitiveType Bool = "bool";
+	const MetaPrimitiveType Void = "void";
+	const MetaPrimitiveType ModelObject = "IModelObject";
 	
-	const MetaAttribute NameAttribute;
-	const MetaAttribute TypeAttribute;
-	const MetaAttribute ScopeAttribute;
-	const MetaAttribute BaseScopeAttribute;
-	const MetaAttribute LocalScopeAttribute;
+	const MetaAttribute NameAttribute = "NameAttribute";
+	const MetaAttribute TypeAttribute = "TypeAttribute";
+	const MetaAttribute ScopeAttribute = "ScopeAttribute";
+	const MetaAttribute BaseScopeAttribute = "BaseScopeAttribute";
+	const MetaAttribute LocalScopeAttribute = "LocalScopeAttribute";
 	
 	/**
 	Represents an element.
@@ -81,6 +81,7 @@
 	class MetaModel : MetaNamedElement
 	{
 		string Uri;
+		string Prefix;
 		MetaNamespace Namespace;
 	}
 
@@ -123,8 +124,9 @@
 
 	association MetaEnumLiteral.Enum with MetaEnum.EnumLiterals;
 
-	class MetaConstant : MetaDeclaration, MetaTypedElement
+	class MetaConstant : MetaDeclaration, MetaTypedElement, MetaType
 	{
+		string DotNetName;
 	}
 
 	[Scope]

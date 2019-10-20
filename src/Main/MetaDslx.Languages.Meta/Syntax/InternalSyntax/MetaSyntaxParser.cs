@@ -295,16 +295,16 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 			{
 				if (context == null) return MetamodelPropertyGreen.__Missing;
 				MetaParser.MetamodelUriPropertyContext metamodelUriPropertyContext = context.metamodelUriProperty();
-				MetamodelUriPropertyGreen metamodelUriProperty = null;
-				if (metamodelUriPropertyContext != null)
+				if (metamodelUriPropertyContext != null) 
 				{
-					metamodelUriProperty = (MetamodelUriPropertyGreen)this.Visit(metamodelUriPropertyContext);
+					return this.factory.MetamodelProperty((MetamodelUriPropertyGreen)this.Visit(metamodelUriPropertyContext));
 				}
-				else
+				MetaParser.MetamodelPrefixPropertyContext metamodelPrefixPropertyContext = context.metamodelPrefixProperty();
+				if (metamodelPrefixPropertyContext != null) 
 				{
-					metamodelUriProperty = MetamodelUriPropertyGreen.__Missing;
+					return this.factory.MetamodelProperty((MetamodelPrefixPropertyGreen)this.Visit(metamodelPrefixPropertyContext));
 				}
-				return this.factory.MetamodelProperty(metamodelUriProperty);
+				return MetamodelPropertyGreen.__Missing;
 			}
 			
 			public override GreenNode VisitMetamodelUriProperty(MetaParser.MetamodelUriPropertyContext context)
@@ -323,6 +323,24 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 					stringLiteral = StringLiteralGreen.__Missing;
 				}
 				return this.factory.MetamodelUriProperty(iUri, tAssign, stringLiteral);
+			}
+			
+			public override GreenNode VisitMetamodelPrefixProperty(MetaParser.MetamodelPrefixPropertyContext context)
+			{
+				if (context == null) return MetamodelPrefixPropertyGreen.__Missing;
+				InternalSyntaxToken iPrefix = (InternalSyntaxToken)this.VisitTerminal(context.IPrefix(), MetaSyntaxKind.IPrefix);
+				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), MetaSyntaxKind.TAssign);
+				MetaParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
+				StringLiteralGreen stringLiteral = null;
+				if (stringLiteralContext != null)
+				{
+					stringLiteral = (StringLiteralGreen)this.Visit(stringLiteralContext);
+				}
+				else
+				{
+					stringLiteral = StringLiteralGreen.__Missing;
+				}
+				return this.factory.MetamodelPrefixProperty(iPrefix, tAssign, stringLiteral);
 			}
 			
 			public override GreenNode VisitDeclaration(MetaParser.DeclarationContext context)
@@ -790,8 +808,35 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				{
 					name = NameGreen.__Missing;
 				}
+				MetaParser.ConstValueContext constValueContext = context.constValue();
+				ConstValueGreen constValue = null;
+				if (constValueContext != null)
+				{
+					constValue = (ConstValueGreen)this.Visit(constValueContext);
+				}
+				else
+				{
+					constValue = ConstValueGreen.__Missing;
+				}
 				InternalSyntaxToken tSemicolon = (InternalSyntaxToken)this.VisitTerminal(context.TSemicolon(), MetaSyntaxKind.TSemicolon);
-				return this.factory.ConstDeclaration(kConst, typeReference, name, tSemicolon);
+				return this.factory.ConstDeclaration(kConst, typeReference, name, constValue, tSemicolon);
+			}
+			
+			public override GreenNode VisitConstValue(MetaParser.ConstValueContext context)
+			{
+				if (context == null) return ConstValueGreen.__Missing;
+				InternalSyntaxToken tAssign = (InternalSyntaxToken)this.VisitTerminal(context.TAssign(), MetaSyntaxKind.TAssign);
+				MetaParser.StringLiteralContext stringLiteralContext = context.stringLiteral();
+				StringLiteralGreen stringLiteral = null;
+				if (stringLiteralContext != null)
+				{
+					stringLiteral = (StringLiteralGreen)this.Visit(stringLiteralContext);
+				}
+				else
+				{
+					stringLiteral = StringLiteralGreen.__Missing;
+				}
+				return this.factory.ConstValue(tAssign, stringLiteral);
 			}
 			
 			public override GreenNode VisitReturnType(MetaParser.ReturnTypeContext context)
@@ -1211,6 +1256,10 @@ namespace MetaDslx.Languages.Meta.Syntax.InternalSyntax
 				else 	if (context.IUri() != null)
 				{
 					identifier = (InternalSyntaxToken)this.VisitTerminal(context.IUri());
+				}
+				else 	if (context.IPrefix() != null)
+				{
+					identifier = (InternalSyntaxToken)this.VisitTerminal(context.IPrefix());
 				}
 				else
 				{

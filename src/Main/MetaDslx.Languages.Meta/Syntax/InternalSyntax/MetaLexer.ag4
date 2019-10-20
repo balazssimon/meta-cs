@@ -111,6 +111,7 @@ THatAssign : '^=';
 TBarAssign : '|=';
 
 IUri : 'Uri';
+IPrefix : 'Prefix';
 
 //IdentifierGeneral : IdentifierGeneralBegin IdentifierGeneralCharacter*;
 $Token(kind=Identifier, defaultIdentifier=true)

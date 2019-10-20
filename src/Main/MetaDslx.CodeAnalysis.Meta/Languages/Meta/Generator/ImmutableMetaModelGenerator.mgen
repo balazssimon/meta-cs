@@ -108,6 +108,7 @@ internal class [model.CSharpName(ModelKind.MetaModel)] : [Properties.CoreNs].IMe
 	public [Properties.CoreNs].ModelVersion Version => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Version;
 	public global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> Objects => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Objects;
 	public string Uri => "[model.Uri]";
+	public string Prefix => "[model.Prefix]";
 	public [Properties.CoreNs].IModelGroup ModelGroup => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.ModelGroup;
 	public string Namespace => "[model.Namespace.CSharpName(NamespaceKind.Public, true)]";
 ^
@@ -230,8 +231,12 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 			if (this.creating || this.created) return;
 			this.creating = true;
 		}
-		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[model.CSharpName(ModelKind.BuilderInstance)](this);
 		this.CreateInstances();
+		[model.CSharpName(ModelKind.ImplementationProvider)].Implementation.[model.CSharpName(ModelKind.BuilderInstance)](this);
+        foreach (global::MetaDslx.Modeling.MutableObject obj in this.MModel.Objects)
+        {
+            obj.MMakeCreated();
+        }
 		lock (this)
 		{
 			this.created = true;
@@ -248,6 +253,13 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 	{
 		[Properties.MetaNs].MetaFactory factory = new [Properties.MetaNs].MetaFactory(this.MModel, [Properties.CoreNs].ModelFactoryFlags.DontMakeObjectsCreated);
 ^
+		[loop(model.Namespace.Declarations->cst:typeof(MetaConstant))]
+		[cst.CSharpName(model, ClassKind.BuilderInstance)] = factory.[cst.Type.CSharpName(model, ClassKind.Immutable)]();
+			[if (cst.DotNetName != null)]
+		[cst.CSharpName(model, ClassKind.BuilderInstance)].MName = "[cst.DotNetName]";
+			[end if]
+		[end loop]
+^
 		[loop(obj:instances)]
 		[GenerateInstance(model, metaMetaModel, obj, instanceNames)]
 		[end loop]
@@ -255,11 +267,6 @@ internal class [model.CSharpName(ModelKind.BuilderInstance)]
 		[loop(obj:instances)]
 		[GenerateInstanceProperties(model, metaMetaModel, obj, instanceNames)]
 		[end loop]
-^
-		foreach (global::MetaDslx.Modeling.MutableObject obj in this.MModel.Objects)
-		{
-			obj.MMakeCreated();
-		}
 	}
 }
 end template
@@ -451,7 +458,8 @@ public static class [model.CSharpName(ModelKind.Descriptor)]
 	{
 	}
 ^
-	public const string Uri = "[model.Uri]";
+	public const string MUri = "[model.Uri]";
+	public const string MPrefix = "[model.Prefix]";
 	[loop(model.Namespace.Declarations->cls:typeof(MetaClass))]
 ^
 	[GenerateDescriptorClass(model, cls)]
@@ -1035,6 +1043,7 @@ internal class [cls.CSharpName(model, ClassKind.ImmutableImpl)] : [Properties.Co
 	[Properties.CoreNs].ModelVersion [Properties.CoreNs].IModel.Version => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Version;
 	global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> [Properties.CoreNs].IModel.Objects => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Objects;
 	string [Properties.CoreNs].IMetaModel.Uri => this.Uri;
+	string [Properties.CoreNs].IMetaModel.Prefix => this.Prefix;
 	[Properties.CoreNs].IModelGroup [Properties.CoreNs].IModel.ModelGroup => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.ModelGroup;
 	string [Properties.CoreNs].IMetaModel.Namespace => this.Namespace.FullName;
 ^
@@ -1152,6 +1161,7 @@ internal class [cls.CSharpName(model, ClassKind.BuilderImpl)] : [Properties.Core
 	[Properties.CoreNs].ModelVersion [Properties.CoreNs].IModel.Version => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Version;
 	global::System.Collections.Generic.IEnumerable<global::MetaDslx.Modeling.IModelObject> [Properties.CoreNs].IModel.Objects => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.Objects;
 	string [Properties.CoreNs].IMetaModel.Uri => this.Uri;
+	string [Properties.CoreNs].IMetaModel.Prefix => this.Prefix;
 	[Properties.CoreNs].IModelGroup [Properties.CoreNs].IModel.ModelGroup => [model.CSharpName(ModelKind.ImmutableInstance)].MModel.ModelGroup;
 	string [Properties.CoreNs].IMetaModel.Namespace => this.Namespace.FullName;
 ^

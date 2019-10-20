@@ -57,6 +57,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object UseDeclaration = new object();
 		public static object UseName = new object();
 		public static object UseMetamodelUriProperty = new object();
+		public static object UseMetamodelPrefixProperty = new object();
 		public static object UseEnumDeclaration = new object();
 		public static object UseClassDeclaration = new object();
 		public static object UseAssociationDeclaration = new object();
@@ -66,6 +67,7 @@ namespace MetaDslx.Languages.Meta.Binding
 		public static object Use = new object();
 		public static object UseClassBody = new object();
 		public static object UseDefaultValue = new object();
+		public static object UseConstValue = new object();
 		public static object UseVoidType = new object();
 		public static object UseCollectionType = new object();
 		public static object UseObjectType = new object();
@@ -312,6 +314,32 @@ namespace MetaDslx.Languages.Meta.Binding
 			{
 				resultBinder = VisitParent(parent);
 				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Uri");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseStringLiteral)
+				{
+					resultBinder = this.CreateValueBinder(resultBinder, parent.StringLiteral);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
+		public Binder VisitMetamodelPrefixProperty(MetamodelPrefixPropertySyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.StringLiteral)) use = UseStringLiteral;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "Prefix");
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 				if (use == UseStringLiteral)
 				{
@@ -748,6 +776,32 @@ namespace MetaDslx.Languages.Meta.Binding
 			return resultBinder;
 		}
 		
+		public Binder VisitConstValue(ConstValueSyntax parent)
+		{
+		    if (!parent.FullSpan.Contains(this.Position))
+		    {
+		        return VisitParent(parent);
+		    }
+			object use = null;
+			if (this.ForChild)
+			{
+				if (LookupPosition.IsInNode(this.Position, parent.StringLiteral)) use = UseStringLiteral;
+			}
+			Binder resultBinder = null;
+			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
+			{
+				resultBinder = VisitParent(parent);
+				resultBinder = this.CreatePropertyBinder(resultBinder, parent, name: "DotNetName");
+				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
+				if (use == UseStringLiteral)
+				{
+					resultBinder = this.CreateValueBinder(resultBinder, parent.StringLiteral);
+					this.BinderFactory.TryAddBinder(parent, use, ref resultBinder);
+				}
+			}
+			return resultBinder;
+		}
+		
 		public Binder VisitReturnType(ReturnTypeSyntax parent)
 		{
 		    if (!parent.FullSpan.Contains(this.Position))
@@ -827,7 +881,7 @@ namespace MetaDslx.Languages.Meta.Binding
 			if (!this.BinderFactory.TryGetBinder(parent, use, out resultBinder))
 			{
 				resultBinder = VisitParent(parent);
-				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum)));
+				resultBinder = this.CreateSymbolUseBinder(resultBinder, parent, types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum), typeof(MetaConstant)));
 				this.BinderFactory.TryAddBinder(parent, null, ref resultBinder);
 			}
 			return resultBinder;

@@ -416,6 +416,20 @@ namespace MetaDslx.Languages.Meta.Binding
 						if (this.Visit(node.MetamodelUriProperty)) return true;
 					}
 				}
+				if (node.MetamodelPrefixProperty != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.MetamodelPrefixProperty))
+						{
+							if (this.Visit(node.MetamodelPrefixProperty)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.MetamodelPrefixProperty)) return true;
+					}
+				}
 				return false;
 			}
 			finally
@@ -425,6 +439,40 @@ namespace MetaDslx.Languages.Meta.Binding
 		}
 		
 		public bool VisitMetamodelUriProperty(MetamodelUriPropertySyntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				if (node.StringLiteral != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.StringLiteral))
+						{
+							return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.StringLiteral)) return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitMetamodelPrefixProperty(MetamodelPrefixPropertySyntax node)
 		{
 			var state = this.State;
 			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
@@ -1305,6 +1353,54 @@ namespace MetaDslx.Languages.Meta.Binding
 					else
 					{
 						if (this.Visit(node.Name)) return true;
+					}
+				}
+				if (node.ConstValue != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.ConstValue))
+						{
+							if (this.Visit(node.ConstValue)) return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.ConstValue)) return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public bool VisitConstValue(ConstValueSyntax node)
+		{
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild) return false;
+				if (state == BoundNodeFactoryState.InNode) 
+				{
+					return true;
+				}
+				if (node.StringLiteral != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.StringLiteral))
+						{
+							return true;
+						}
+					}
+					else
+					{
+						if (this.Visit(node.StringLiteral)) return true;
 					}
 				}
 				return false;

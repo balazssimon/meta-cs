@@ -36,6 +36,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string MetamodelPropertyList = nameof(MetamodelPropertyList);
 		public const string MetamodelProperty = nameof(MetamodelProperty);
 		public const string MetamodelUriProperty = nameof(MetamodelUriProperty);
+		public const string MetamodelPrefixProperty = nameof(MetamodelPrefixProperty);
 		public const string Declaration = nameof(Declaration);
 		public const string EnumDeclaration = nameof(EnumDeclaration);
 		public const string EnumBody = nameof(EnumBody);
@@ -55,6 +56,7 @@ namespace MetaDslx.Languages.Meta.Syntax
 		public const string Subsettings = nameof(Subsettings);
 		public const string NameUseList = nameof(NameUseList);
 		public const string ConstDeclaration = nameof(ConstDeclaration);
+		public const string ConstValue = nameof(ConstValue);
 		public const string ReturnType = nameof(ReturnType);
 		public const string TypeOfReference = nameof(TypeOfReference);
 		public const string TypeReference = nameof(TypeReference);

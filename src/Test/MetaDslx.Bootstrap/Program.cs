@@ -8,8 +8,6 @@ using MetaDslx.Languages.Meta.Binding;
 using MetaDslx.Languages.Meta.Generator;
 using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Languages.Meta.Symbols;
-using MetaDslx.Languages.Mof.Generator;
-using MetaDslx.Languages.Uml.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using System;
@@ -64,7 +62,7 @@ namespace MetaDslx.Bootstrap
             Console.WriteLine(test.SayHello("me"));
             //*/
 
-            /*/
+            //*/
             ImmutableModel coreModel = MetaInstance.MModel;
             Console.WriteLine(coreModel);
 
@@ -73,7 +71,8 @@ namespace MetaDslx.Bootstrap
             //string text = File.ReadAllText(@"..\..\..\..\..\..\..\soal-cs\Src\Main\MetaDslx.Languages.Soal\Symbols\Soal.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Test\WebSequenceDiagramsModel\Symbols\UmlModel.mm");
             //string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Mof\Model\Mof.mm");
-            string text = File.ReadAllText(@"..\..\..\..\..\Main\MetaDslx.Languages.Omg\Uml\Model\Uml.mm");
+            //string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Uml\Model\Uml.mm");
+            string text = File.ReadAllText(@"..\..\..\..\..\Languages\MetaDslx.Languages.Ecore\Model\Ecore.mm");
 
             var tree = MetaSyntaxTree.ParseText(text);
             var declarations = MetaDeclarationTreeBuilderVisitor.ForTree((MetaSyntaxTree)tree, "Script", false);
@@ -238,7 +237,7 @@ namespace MetaDslx.Bootstrap
             WebSequenceDiagramsTest();
             //*/
 
-            //*/
+            /*/
             XmiTest();
             //*/
         }
@@ -384,7 +383,7 @@ namespace MetaDslx.Bootstrap
         }
         //*/
 
-        //*/
+        /*/
         public static void XmiTest()
         {
             MetaDslx.Languages.Mof.Model.MofDescriptor.Initialize();

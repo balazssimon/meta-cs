@@ -83,17 +83,32 @@ namespace MetaDslx.Modeling
         private const string Xmi = "xmi";
         private const string XmiNamespace = "http://www.omg.org/spec/XMI/20131001";
         private XmlWriter _xml;
-        private Dictionary<string, string> _namespaces;
+        private Dictionary<IMetaModel, (string, string)> _namespaces;
 
         public XmiWriter(XmlWriter xmlWriter)
         {
             _xml = xmlWriter;
-            _namespaces = new Dictionary<string, string>();
+            _namespaces = new Dictionary<IMetaModel, (string, string)>();
         }
 
-        private string GetNamespace(string prefix)
+        private (string, string) RegisterNamespace(IMetaModel metaModel)
         {
-            _namespaces.TryGetValue(prefix, out var result);
+            string prefix = metaModel.Prefix ?? metaModel.Name.ToCamelCase();
+            int index = 1;
+            string currentPrefix = prefix;
+            while (_namespaces.Values.Any(v => v.Item1 == currentPrefix))
+            {
+                ++index;
+                currentPrefix = prefix + index;
+            }
+            var result = (currentPrefix, metaModel.Uri ?? metaModel.Namespace + "." + metaModel.Name);
+            _namespaces.Add(metaModel, result);
+            return result;
+        }
+
+        private (string, string) GetNamespace(IMetaModel metaModel)
+        {
+            _namespaces.TryGetValue(metaModel, out var result);
             return result;
         }
 
@@ -105,7 +120,8 @@ namespace MetaDslx.Modeling
             IEnumerable<IMetaModel> metaModels = allObjects.Select(obj => obj.MMetaModel).Distinct();
             foreach (var mm in metaModels)
             {
-                _xml.WriteAttributeString("xmlns", mm.Name.ToCamelCase(), null, mm.Uri);
+                var ns = this.RegisterNamespace(mm);
+                _xml.WriteAttributeString("xmlns", ns.Item1, null, ns.Item2);
             }
             foreach (var obj in rootObjects)
             {
@@ -117,15 +133,16 @@ namespace MetaDslx.Modeling
         private void WriteObject(IModelObject obj, string parentProperty)
         {
             var mm = obj.MMetaModel;
+            var ns = this.GetNamespace(mm);
             if (parentProperty != null)
             {
                 _xml.WriteStartElement(parentProperty.ToCamelCase());
             }
             else
             {
-                _xml.WriteStartElement(mm.Name.ToCamelCase(), obj.MId.DisplayTypeName, mm.Uri);
+                _xml.WriteStartElement(ns.Item1, obj.MId.DisplayTypeName, ns.Item2);
             }
-            _xml.WriteAttributeString(Xmi, "type", XmiNamespace, mm.Name.ToCamelCase() + ":" + obj.MId.DisplayTypeName);
+            _xml.WriteAttributeString(Xmi, "type", XmiNamespace, ns.Item1 + ":" + obj.MId.DisplayTypeName);
             _xml.WriteAttributeString(Xmi, "id", XmiNamespace, obj.MId.Id);
             HashSet<IModelObject> written = new HashSet<IModelObject>();
             foreach (var prop in obj.MProperties)

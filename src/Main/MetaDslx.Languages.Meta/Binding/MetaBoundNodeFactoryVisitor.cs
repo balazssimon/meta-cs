@@ -678,6 +678,20 @@ namespace MetaDslx.Languages.Meta.Binding
 						this.Visit(node.MetamodelUriProperty, childBoundNodesForParent);
 					}
 				}
+				if (node.MetamodelPrefixProperty != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.MetamodelPrefixProperty))
+						{
+							this.Visit(node.MetamodelPrefixProperty, childBoundNodesForParent);
+						}
+					}
+					else
+					{
+						this.Visit(node.MetamodelPrefixProperty, childBoundNodesForParent);
+					}
+				}
 				if (state == BoundNodeFactoryState.InParent)
 				{
 					Debug.Assert(childBoundNodesForParent.Count == 1 && childBoundNodesForParent[0] is BoundNode);
@@ -745,6 +759,72 @@ namespace MetaDslx.Languages.Meta.Binding
 				{
 					BoundNode resultNode;
 					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Uri", syntax: node, hasErrors: false);
+					childBoundNodesForParent.Add(resultNode); 
+					return resultNode;
+				}
+				else
+				{
+					Debug.Assert(false);
+					childBoundNodesForParent.Add(node);
+					return null;
+				}
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public BoundNode VisitMetamodelPrefixProperty(MetamodelPrefixPropertySyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			if (node == null || node.IsMissing) return null;
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild)
+				{
+					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+					{
+						childBoundNodesForParent.Add(cachedBoundNode);
+						return cachedBoundNode;
+					}
+					else
+					{
+						childBoundNodesForParent.Add(node);
+						return null;
+					}
+				}
+				var childBoundNodes = ArrayBuilder<object>.GetInstance();
+				if (node.StringLiteral != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.StringLiteral))
+						{
+							var childBoundNodesOfStringLiteral = ArrayBuilder<object>.GetInstance();
+							this.Visit(node.StringLiteral, childBoundNodesOfStringLiteral);
+							BoundNode boundStringLiteral;
+							boundStringLiteral = this.CreateBoundValue(this.BoundTree, childBoundNodesOfStringLiteral.ToImmutableAndFree(), syntax: node.StringLiteral, hasErrors: false);
+							childBoundNodes.Add(boundStringLiteral);
+						}
+					}
+					else
+					{
+						childBoundNodes.Add(node.StringLiteral);
+					}
+				}
+				if (state == BoundNodeFactoryState.InParent)
+				{
+					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
+					if (childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode) return (BoundNode)childBoundNodes[0];
+					else return null;
+				}
+				else if (state == BoundNodeFactoryState.InNode)
+				{
+					BoundNode resultNode;
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "Prefix", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -2100,6 +2180,20 @@ namespace MetaDslx.Languages.Meta.Binding
 						this.Visit(node.Name, childBoundNodes);
 					}
 				}
+				if (node.ConstValue != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.ConstValue))
+						{
+							this.Visit(node.ConstValue, childBoundNodes);
+						}
+					}
+					else
+					{
+						this.Visit(node.ConstValue, childBoundNodes);
+					}
+				}
 				if (state == BoundNodeFactoryState.InParent)
 				{
 					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
@@ -2110,6 +2204,72 @@ namespace MetaDslx.Languages.Meta.Binding
 				{
 					BoundNode resultNode;
 					resultNode = this.CreateBoundSymbolDef(this.BoundTree, childBoundNodes.ToImmutableAndFree(), type: typeof(MetaConstant), syntax: node, hasErrors: false);
+					childBoundNodesForParent.Add(resultNode); 
+					return resultNode;
+				}
+				else
+				{
+					Debug.Assert(false);
+					childBoundNodesForParent.Add(node);
+					return null;
+				}
+			}
+			finally
+			{
+				this.State = state;
+			}
+		}
+		
+		public BoundNode VisitConstValue(ConstValueSyntax node, ArrayBuilder<object> childBoundNodesForParent)
+		{
+			if (node == null || node.IsMissing) return null;
+			var state = this.State;
+			if (this.State == BoundNodeFactoryState.InParent) this.State = BoundNodeFactoryState.InNode;
+			else if (this.State == BoundNodeFactoryState.InNode) this.State = BoundNodeFactoryState.InChild;
+			try
+			{
+				if (state == BoundNodeFactoryState.InChild)
+				{
+					if (this.BoundTree.TryGetBoundNode(node, out BoundNode cachedBoundNode))
+					{
+						childBoundNodesForParent.Add(cachedBoundNode);
+						return cachedBoundNode;
+					}
+					else
+					{
+						childBoundNodesForParent.Add(node);
+						return null;
+					}
+				}
+				var childBoundNodes = ArrayBuilder<object>.GetInstance();
+				if (node.StringLiteral != null)
+				{
+					if (state == BoundNodeFactoryState.InParent)
+					{
+						if (LookupPosition.IsInNode(this.Position, node.StringLiteral))
+						{
+							var childBoundNodesOfStringLiteral = ArrayBuilder<object>.GetInstance();
+							this.Visit(node.StringLiteral, childBoundNodesOfStringLiteral);
+							BoundNode boundStringLiteral;
+							boundStringLiteral = this.CreateBoundValue(this.BoundTree, childBoundNodesOfStringLiteral.ToImmutableAndFree(), syntax: node.StringLiteral, hasErrors: false);
+							childBoundNodes.Add(boundStringLiteral);
+						}
+					}
+					else
+					{
+						childBoundNodes.Add(node.StringLiteral);
+					}
+				}
+				if (state == BoundNodeFactoryState.InParent)
+				{
+					Debug.Assert(childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode);
+					if (childBoundNodes.Count == 1 && childBoundNodes[0] is BoundNode) return (BoundNode)childBoundNodes[0];
+					else return null;
+				}
+				else if (state == BoundNodeFactoryState.InNode)
+				{
+					BoundNode resultNode;
+					resultNode = this.CreateBoundProperty(this.BoundTree, childBoundNodes.ToImmutableAndFree(), name: "DotNetName", syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}
@@ -2489,7 +2649,7 @@ namespace MetaDslx.Languages.Meta.Binding
 				else if (state == BoundNodeFactoryState.InNode)
 				{
 					BoundNode resultNode;
-					resultNode = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodes.ToImmutableAndFree(), types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum)), syntax: node, hasErrors: false);
+					resultNode = this.CreateBoundSymbolUse(this.BoundTree, childBoundNodes.ToImmutableAndFree(), types: ImmutableArray.Create(typeof(MetaClass), typeof(MetaEnum), typeof(MetaConstant)), syntax: node, hasErrors: false);
 					childBoundNodesForParent.Add(resultNode); 
 					return resultNode;
 				}

@@ -113,6 +113,13 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitMetamodelUriProperty([NotNull] MetaParser.MetamodelUriPropertyContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.metamodelPrefixProperty"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMetamodelPrefixProperty([NotNull] MetaParser.MetamodelPrefixPropertyContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.declaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -244,6 +251,13 @@ public interface IMetaParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitConstDeclaration([NotNull] MetaParser.ConstDeclarationContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaParser.constValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConstValue([NotNull] MetaParser.ConstValueContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaParser.returnType"/>.

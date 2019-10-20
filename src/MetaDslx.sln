@@ -29,7 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.CodeAnalysis.Langu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Tests", "Test\MetaDslx.Tests\MetaDslx.Tests.csproj", "{11A6DE1A-36AD-42C8-ACB8-559DF13E2128}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Omg", "Main\MetaDslx.Languages.Omg\MetaDslx.Languages.Omg.csproj", "{F815602F-A5AE-4DA4-8070-9CDE7D58A531}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Mof", "Languages\MetaDslx.Languages.Mof\MetaDslx.Languages.Mof.csproj", "{1168999C-5FF2-43D6-A0D1-619F1323F540}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Ecore", "Languages\MetaDslx.Languages.Ecore\MetaDslx.Languages.Ecore.csproj", "{49C7C72B-3A37-459E-883A-EC030FD85172}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDslx.Languages.Uml", "Languages\MetaDslx.Languages.Uml\MetaDslx.Languages.Uml.csproj", "{B75EE4BD-A7A1-4298-824E-BBCF0074F837}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,10 +93,18 @@ Global
 		{11A6DE1A-36AD-42C8-ACB8-559DF13E2128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11A6DE1A-36AD-42C8-ACB8-559DF13E2128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11A6DE1A-36AD-42C8-ACB8-559DF13E2128}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F815602F-A5AE-4DA4-8070-9CDE7D58A531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F815602F-A5AE-4DA4-8070-9CDE7D58A531}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F815602F-A5AE-4DA4-8070-9CDE7D58A531}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F815602F-A5AE-4DA4-8070-9CDE7D58A531}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1168999C-5FF2-43D6-A0D1-619F1323F540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1168999C-5FF2-43D6-A0D1-619F1323F540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1168999C-5FF2-43D6-A0D1-619F1323F540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1168999C-5FF2-43D6-A0D1-619F1323F540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49C7C72B-3A37-459E-883A-EC030FD85172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49C7C72B-3A37-459E-883A-EC030FD85172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49C7C72B-3A37-459E-883A-EC030FD85172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49C7C72B-3A37-459E-883A-EC030FD85172}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B75EE4BD-A7A1-4298-824E-BBCF0074F837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B75EE4BD-A7A1-4298-824E-BBCF0074F837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B75EE4BD-A7A1-4298-824E-BBCF0074F837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B75EE4BD-A7A1-4298-824E-BBCF0074F837}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
