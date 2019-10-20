@@ -3577,6 +3577,7 @@
     /// <summary>
     /// A Namespace is an Element in a model that owns and/or imports a set of NamedElements that can be identified by name.
     /// </summary>
+	[Scope]
     abstract class Namespace : NamedElement
     {
     	/// <summary>
@@ -3592,7 +3593,6 @@
     	/// <summary>
     	/// A collection of NamedElements identifiable within the Namespace, either by being owned or by being introduced by importing or inheritance.
     	/// </summary>
-		[Scope]
     	union set<NamedElement> Member;
     	/// <summary>
     	/// A collection of NamedElements owned by the Namespace.
