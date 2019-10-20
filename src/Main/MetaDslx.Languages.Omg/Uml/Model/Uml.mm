@@ -741,7 +741,7 @@
     	/// <summary>
     	/// Indicates how the tokens held by the ObjectNode are ordered for selection to traverse ActivityEdges outgoing from the ObjectNode.
     	/// </summary>
-    	ObjectNodeOrderingKind Ordering/* unhandled default value: InstanceValue */;
+    	ObjectNodeOrderingKind Ordering = "ObjectNodeOrderingKind.FIFO";
     	/// <summary>
     	/// A Behavior used to select tokens to be offered on outgoing ActivityEdges.
     	/// </summary>
@@ -1343,7 +1343,7 @@
     class AssociationClass : Class, Association
     {
     }
-
+	
     /// <summary>
     /// A Class classifies a set of objects and specifies the features that characterize the structure and behavior of those objects.  A Class may have an internal structure and Ports.
     /// </summary>
@@ -1763,7 +1763,7 @@
     	/// <summary>
     	/// Determines the precise type of the Pseudostate and can be one of: entryPoint, exitPoint, initial, deepHistory, shallowHistory, join, fork, junction, terminate or choice.
     	/// </summary>
-    	PseudostateKind Kind/* unhandled default value: InstanceValue */;
+    	PseudostateKind Kind = "PseudostateKind.Initial";
     	/// <summary>
     	/// The State that owns this Pseudostate and in which it appears.
     	/// </summary>
@@ -2055,7 +2055,7 @@
     	/// <summary>
     	/// Indicates the precise type of the Transition.
     	/// </summary>
-    	TransitionKind Kind/* unhandled default value: InstanceValue */;
+    	TransitionKind Kind = "TransitionKind.External";
     	/// <summary>
     	/// The Transition that is redefined by this Transition.
     	/// </summary>
@@ -2597,7 +2597,7 @@
     	/// <summary>
     	/// Specifies the operation which defines the semantics of this combination of InteractionFragments.
     	/// </summary>
-    	InteractionOperatorKind InteractionOperator/* unhandled default value: InstanceValue */;
+    	InteractionOperatorKind InteractionOperator = "InteractionOperatorKind.Seq";
     	/// <summary>
     	/// The set of operands of the combined fragment.
     	/// </summary>
@@ -2955,7 +2955,7 @@
     	/// <summary>
     	/// The sort of communication reflected by the Message.
     	/// </summary>
-    	MessageSort MessageSort/* unhandled default value: InstanceValue */;
+    	MessageSort MessageSort = "MessageSort.SynchCall";
     	/// <summary>
     	/// References the Receiving of the Message.
     	/// </summary>
@@ -3402,7 +3402,7 @@
     	/// <summary>
     	/// Specifies the visibility of the imported PackageableElement within the importingNamespace, i.e., whether the  importedElement will in turn be visible to other Namespaces. If the ElementImport is public, the importedElement will be visible outside the importingNamespace while, if the ElementImport is private, it will not.
     	/// </summary>
-    	VisibilityKind Visibility/* unhandled default value: InstanceValue */;
+    	VisibilityKind Visibility = "VisibilityKind.Public";
     	/// <summary>
     	/// The query getName() returns the name under which the imported PackageableElement will be known in the importing namespace.
     	/// </summary>
@@ -3649,7 +3649,7 @@
     	/// <summary>
     	/// A PackageableElement must have a visibility specified if it is owned by a Namespace. The default visibility is public.
     	/// </summary>
-    	VisibilityKind Visibility/* unhandled default value: InstanceValue */ redefines NamedElement.Visibility;
+    	VisibilityKind Visibility = "VisibilityKind.Public" redefines NamedElement.Visibility;
     }
 
     /// <summary>
@@ -3668,7 +3668,7 @@
     	/// <summary>
     	/// Specifies the visibility of the imported PackageableElements within the importingNamespace, i.e., whether imported Elements will in turn be visible to other Namespaces. If the PackageImport is public, the imported Elements will be visible outside the importingNamespace, while, if the PackageImport is private, they will not.
     	/// </summary>
-    	VisibilityKind Visibility/* unhandled default value: InstanceValue */;
+    	VisibilityKind Visibility = "VisibilityKind.Public";
     }
 
     /// <summary>
@@ -4080,7 +4080,7 @@
     	/// <summary>
     	/// Specifies the semantics of concurrent calls to the same passive instance (i.e., an instance originating from a Class with isActive being false). Active instances control access to their own BehavioralFeatures.
     	/// </summary>
-    	CallConcurrencyKind Concurrency/* unhandled default value: InstanceValue */;
+    	CallConcurrencyKind Concurrency = "CallConcurrencyKind.Sequential";
     	/// <summary>
     	/// If true, then the BehavioralFeature does not have an implementation, and one must be supplied by a more specific Classifier. If false, the BehavioralFeature must have an implementation in the Classifier or one must be inherited.
     	/// </summary>
@@ -4575,7 +4575,7 @@
     	/// <summary>
     	/// Indicates whether a parameter is being sent into or out of a behavioral element.
     	/// </summary>
-    	ParameterDirectionKind Direction/* unhandled default value: InstanceValue */;
+    	ParameterDirectionKind Direction = "ParameterDirectionKind.In";
     	/// <summary>
     	/// Specifies the effect that executions of the owner of the Parameter have on objects passed in or out of the parameter.
     	/// </summary>
@@ -4621,7 +4621,7 @@
     	/// <summary>
     	/// Specifies the kind of aggregation that applies to the Property.
     	/// </summary>
-    	AggregationKind Aggregation/* unhandled default value: InstanceValue */;
+    	AggregationKind Aggregation = "AggregationKind.None";
     	/// <summary>
     	/// The Association of which this Property is a member, if any.
     	/// </summary>
@@ -5293,7 +5293,7 @@
     	/// <summary>
     	/// The mode in which the ExpansionRegion executes its contents. If parallel, executions are concurrent. If iterative, executions are sequential. If stream, a stream of values flows into a single execution.
     	/// </summary>
-    	ExpansionKind Mode/* unhandled default value: InstanceValue */;
+    	ExpansionKind Mode = "ExpansionKind.Iterative";
     	/// <summary>
     	/// The ExpansionNodes that form the output collections of the ExpansionRegion.
     	/// </summary>

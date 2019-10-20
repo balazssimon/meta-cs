@@ -168,7 +168,7 @@ namespace MetaDslx.Bootstrap
             /*/
             ImmutableMetaModelGenerator mmgen = new ImmutableMetaModelGenerator(compiledModel.Objects);
             string generatedCsharpModel = mmgen.Generate();
-            File.WriteAllText("Model.txt", generatedCsharpModel);
+            File.WriteAllText("Model.cs.txt", generatedCsharpModel);
             //File.WriteAllText("Soal.txt", generatedCsharpModel);
             //File.WriteAllText("../../../Soal.cs", generatedCsharpModel);
             //File.WriteAllText(@"..\..\..\..\..\Main\MetaDslx.CodeAnalysis.Meta\Languages\Meta\Model\ImmutableMetaModel.cs", generatedCsharpModel);
@@ -392,8 +392,7 @@ namespace MetaDslx.Bootstrap
 
             //string fileName = "../../../MOF.xmi";
             string fileName = "../../../UML.xmi";
-            Class cls;
-            
+
             try
             {
                 XmiSerializer xmi = new XmiSerializer(MetaDslx.Languages.Mof.Model.MofInstance.MMetaModel);

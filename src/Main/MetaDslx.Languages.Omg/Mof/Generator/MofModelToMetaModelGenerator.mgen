@@ -162,6 +162,15 @@ template GenerateComment(Element elem)
 		[end loop]
 	[end loop]
 /// </summary>
+	[if (elem is Operation)]
+		[loop (elem->typeof(Operation)->param:OwnedParameter->OwnedComment->text:Body where !string.IsNullOrWhiteSpace(text))]
+/// <param name="[param.Name]">
+			[loop (line:CommentLines(text, true))]
+/// [line]
+			[end loop]
+/// </param>
+		[end loop]
+	[end if]
 [end if]
 	[if (elem is Operation)]
 [GenerateSpecification((Operation)elem)]

@@ -1,4 +1,5 @@
 ﻿using MetaDslx.Languages.Mof.Model;
+using Roslyn.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,6 +25,7 @@ namespace MetaDslx.Languages.Mof.Generator
             if (value is LiteralReal lr) result = lr.Value.ToString();
             if (value is LiteralUnlimitedNatural lun) result = lun.Value.ToString();
             if (value is LiteralString ls) result = ls.Value.Replace("\\", "\\\\").Replace("\"", "\\\"");
+            if (value is InstanceValue iv && iv.Instance is EnumerationLiteral el) result = el.Enumeration.Name + "." + el.Name.ToPascalCase();
             if (result != null) return " = \"" + result + "\"";
             else return "/* unhandled default value: " + value.MId.DisplayTypeName + " */";
         }

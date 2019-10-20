@@ -830,6 +830,9 @@ template GenerateImmutableClass(MetaModel model, MetaClass cls)
 public interface [cls.CSharpName(model, ClassKind.Immutable)][GetImmutableAncestors(model, cls)][metaMetaModel && cls.Name == "MetaModel" ? ", "+Properties.CoreNs+".IMetaModel" : ""]
 {
 	[if (metaMetaModel && cls.Name == "MetaModel")]
+	/// <summary>
+	/// The name of the metamodel.
+	/// </summary>
 	new string Name { get; }
 	[end if]
 	[loop(cls->prop:Properties)]
@@ -840,7 +843,15 @@ public interface [cls.CSharpName(model, ClassKind.Immutable)][GetImmutableAncest
 	[GenerateImmutableOperation(model, op)]
 	[end loop]
 ^
+	/// <summary>
+	/// Convert the <see cref="[cls.CSharpName(model, ClassKind.Immutable)]"/> object to a builder <see cref="[cls.CSharpName(model, ClassKind.Builder)]"/> object.
+	/// </summary>
 	new [cls.CSharpName(model, ClassKind.Builder, true)] ToMutable();
+	/// <summary>
+	/// Convert the <see cref="[cls.CSharpName(model, ClassKind.Immutable)]"/> object to a builder <see cref="[cls.CSharpName(model, ClassKind.Builder)]"/> object
+	/// by taking the builder version from the given model.
+	/// </summary>
+	/// <param name="model">The mutable model from which the return value is taken from.</param>
 	new [cls.CSharpName(model, ClassKind.Builder, true)] ToMutable([Properties.CoreNs].MutableModel model);
 }
 end template
@@ -884,6 +895,9 @@ template GenerateBuilderClass(MetaModel model, MetaClass cls)
 public interface [cls.CSharpName(model, ClassKind.Builder)][GetBuilderAncestors(model, cls)][metaMetaModel && cls.Name == "MetaModel" ? ", "+Properties.CoreNs+".IMetaModel" : ""]
 {
 	[if (metaMetaModel && cls.Name == "MetaModel")]
+	/// <summary>
+	/// The name of the metamodel.
+	/// </summary>
 	new string Name { get; set; }
 	[end if]
 	[loop(cls->prop:Properties)]
@@ -894,7 +908,15 @@ public interface [cls.CSharpName(model, ClassKind.Builder)][GetBuilderAncestors(
 	[GenerateBuilderOperation(model, op)]
 	[end loop]
 ^
+	/// <summary>
+	/// Convert the <see cref="[cls.CSharpName(model, ClassKind.Builder)]"/> object to an immutable <see cref="[cls.CSharpName(model, ClassKind.Immutable)]"/> object.
+	/// </summary>
 	new [cls.CSharpName(model, ClassKind.Immutable, true)] ToImmutable();
+	/// <summary>
+	/// Convert the <see cref="[cls.CSharpName(model, ClassKind.Builder)]"/> object to an immutable <see cref="[cls.CSharpName(model, ClassKind.Immutable)]"/> object
+	/// by taking the immutable version from the given model.
+	/// </summary>
+	/// <param name="model">The immutable model from which the return value is taken from.</param>
 	new [cls.CSharpName(model, ClassKind.Immutable, true)] ToImmutable([Properties.CoreNs].ImmutableModel model);
 }
 end template
@@ -915,10 +937,12 @@ new \
 new \
 		[end if]
 void Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(global::System.Func<[prop.Type.CSharpName(model, ClassKind.Builder, true)]> lazy);
+[GenerateDocumentation(prop)]
 		[if (prop.Class.GetAllSuperProperties(false).Any(p => p.Name == prop.Name))]
 new \
 		[end if]
 void Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(global::System.Func<[prop.Class.CSharpName(model, ClassKind.Builder)], [prop.Type.CSharpName(model, ClassKind.Builder, true)]> lazy);
+[GenerateDocumentation(prop)]
 		[if (prop.Class.GetAllSuperProperties(false).Any(p => p.Name == prop.Name))]
 new \
 		[end if]
