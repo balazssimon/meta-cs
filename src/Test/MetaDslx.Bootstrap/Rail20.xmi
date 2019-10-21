@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ASCII"?>
+<railDsl:Station xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:railDsl="http://www.bme.hu/iit/vke/raildsl" name="Rail20">
+  <declarations xsi:type="railDsl:Segment" name="S1" start="//@declarations.5" end="//@declarations.13"/>
+  <declarations xsi:type="railDsl:Segment" name="S2" start="//@declarations.14" end="//@declarations.15">
+    <objects xsi:type="railDsl:Platform" name="P1">
+      <position leftside="true"/>
+    </objects>
+  </declarations>
+  <declarations xsi:type="railDsl:Segment" name="S3" start="//@declarations.16" end="//@declarations.6"/>
+  <declarations xsi:type="railDsl:Segment" name="S4" start="//@declarations.17" end="//@declarations.18">
+    <objects xsi:type="railDsl:Platform" name="P2">
+      <position/>
+    </objects>
+  </declarations>
+  <declarations xsi:type="railDsl:Segment" name="S5" start="//@declarations.19" end="//@declarations.7"/>
+  <declarations xsi:type="railDsl:StationBorder" name="V1"/>
+  <declarations xsi:type="railDsl:StationBorder" name="V6"/>
+  <declarations xsi:type="railDsl:TrackEnd" name="V10"/>
+  <declarations xsi:type="railDsl:DoublePoint" name="P1" start1="//@declarations.13" end1="//@declarations.14" end2="//@declarations.17" end3="//@declarations.19"/>
+  <declarations xsi:type="railDsl:SimplePoint" name="P2" start1="//@declarations.16" end1="//@declarations.15" end2="//@declarations.18"/>
+  <declarations xsi:type="railDsl:Track" name="T1" elements="//@declarations.0 //@declarations.1 //@declarations.2"/>
+  <declarations xsi:type="railDsl:Track" name="T2" elements="//@declarations.3"/>
+  <declarations xsi:type="railDsl:Track" name="T3" elements="//@declarations.4"/>
+  <declarations xsi:type="railDsl:InnerVertex" name="V2"/>
+  <declarations xsi:type="railDsl:InnerVertex" name="V3"/>
+  <declarations xsi:type="railDsl:InnerVertex" name="V4"/>
+  <declarations xsi:type="railDsl:InnerVertex" name="V5"/>
+  <declarations xsi:type="railDsl:InnerVertex" name="V7"/>
+  <declarations xsi:type="railDsl:InnerVertex" name="V8"/>
+  <declarations xsi:type="railDsl:InnerVertex" name="V9"/>
+</railDsl:Station>

@@ -710,7 +710,7 @@ namespace MetaDslx.Modeling.Internal
             GreenModel model = objectRef.Model;
             ImmutableHashSet<ModelProperty> properties;
             int counter = 0;
-            bool changed = true;
+            bool changed = false;
             bool evaluatedAny = true;
             while (evaluatedAny)
             {
@@ -718,11 +718,10 @@ namespace MetaDslx.Modeling.Internal
                 evaluatedAny = false;
                 if (model.LazyProperties.TryGetValue(oid, out properties))
                 {
-                    changed = properties.Count > 0;
                     var propList = objectRef.Id.Descriptor.Properties;
                     foreach (var prop in propList)
                     {
-                        if (properties.Contains(prop))
+                        if (properties.Contains(prop) && !prop.IsDerived)
                         {
                             properties = properties.Remove(prop);
                             this.GetValue(mid, oid, prop, true);
@@ -731,7 +730,11 @@ namespace MetaDslx.Modeling.Internal
                     }
                     foreach (var prop in properties)
                     {
-                        this.GetValue(mid, oid, prop, true);
+                        if (!prop.IsDerived)
+                        {
+                            this.GetValue(mid, oid, prop, true);
+                            evaluatedAny = true;
+                        }
                     }
                     if (evaluatedAny)
                     {
@@ -743,7 +746,7 @@ namespace MetaDslx.Modeling.Internal
                     if (counter >= 100) break; // exit after 100 iterations to prevent infinite loop
                 }
             }
-            Debug.Assert(!model.LazyProperties.ContainsKey(oid));
+            Debug.Assert(!model.LazyProperties.ContainsKey(oid) || model.LazyProperties[oid].All(p => p.IsDerived));
             return changed;
         }
 
@@ -753,7 +756,7 @@ namespace MetaDslx.Modeling.Internal
             if (model == null) return false;
             if (model.LazyProperties.Count == 0) return false;
             int counter = 0;
-            bool changed = true;
+            bool changed = false;
             bool evaluatedAny = true;
             while (evaluatedAny)
             {
@@ -779,7 +782,7 @@ namespace MetaDslx.Modeling.Internal
                 ++counter;
                 if (counter >= 100) break; // exit after 100 iterations to prevent infinite loop
             }
-            Debug.Assert(model.LazyProperties.Count == 0);
+            Debug.Assert(model.LazyProperties.Values.All(props => props.All(p => p.IsDerived)));
             return changed;
         }
 

@@ -15,19 +15,46 @@ using System.Xml.XPath;
 
 namespace MetaDslx.Languages.Ecore
 {
-    public class EcoreXmiSerializer
+    public class XmiReadOptions
     {
-        private IMetaModel _metaModel;
-
-        public EcoreXmiSerializer(IMetaModel metaModel)
+        public XmiReadOptions()
         {
-            _metaModel = metaModel;
+            this.NamespaceToMetamodelMap = new Dictionary<string, IMetaModel>();
+            this.UriToFileMap = new Dictionary<string, string>();
+            this.XmiNamespaces = new HashSet<string>();
         }
 
-        public ImmutableModel ReadModelFromFile(string xmiFilePath)
+        public HashSet<string> XmiNamespaces { get; set; }
+        public Dictionary<string,IMetaModel> NamespaceToMetamodelMap { get; }
+        public Dictionary<string,string> UriToFileMap { get; }
+    }
+
+    public class EcoreXmiSerializer
+    {
+        public ImmutableModel ReadModel(string xmiCode, IMetaModel metaModel)
         {
-            XmiReader reader = new XmiReader(_metaModel);
-            reader.LoadXmiFile(xmiFilePath, ".");
+            if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
+            if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
+            var options = new XmiReadOptions();
+            options.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
+            return this.ReadModelFromFile(xmiCode, options);
+        }
+
+        public ImmutableModel ReadModelFromFile(string xmiFilePath, IMetaModel metaModel)
+        {
+            if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
+            if (metaModel == null) throw new ArgumentNullException(nameof(metaModel));
+            var options = new XmiReadOptions();
+            options.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
+            return this.ReadModelFromFile(xmiFilePath, options);
+        }
+
+        public ImmutableModel ReadModelFromFile(string xmiFilePath, XmiReadOptions options)
+        {
+            if (xmiFilePath == null) throw new ArgumentNullException(nameof(xmiFilePath));
+            if (options == null) throw new ArgumentNullException(nameof(options));
+            XmiReader reader = new XmiReader(options);
+            reader.LoadXmiFile(new Uri(Path.GetFullPath(xmiFilePath)), null);
             var diagnostics = reader.Diagnostics.ToReadOnly();
             if (diagnostics.Length > 0)
             {
@@ -36,9 +63,11 @@ namespace MetaDslx.Languages.Ecore
             return reader.Model.ToImmutable();
         }
 
-        public ImmutableModel ReadModel(string xmiCode)
+        public ImmutableModel ReadModel(string xmiCode, XmiReadOptions options)
         {
-            XmiReader reader = new XmiReader(_metaModel);
+            if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
+            if (options == null) throw new ArgumentNullException(nameof(options));
+            XmiReader reader = new XmiReader(options);
             reader.LoadXmiCode(null, xmiCode);
             var diagnostics = reader.Diagnostics.ToReadOnly();
             if (diagnostics.Length > 0)
@@ -87,6 +116,7 @@ namespace MetaDslx.Languages.Ecore
         private const string XmiNamespace = "http://www.omg.org/spec/XMI/20131001";
         private XmlWriter _xml;
         private Dictionary<IMetaModel, (string, string)> _namespaces;
+        private IModel _model;
 
         public XmiWriter(XmlWriter xmlWriter)
         {
@@ -117,8 +147,9 @@ namespace MetaDslx.Languages.Ecore
 
         public void WriteModel(IModel model)
         {
+            _model = model;
             _xml.WriteStartElement(Xmi, "XMI", XmiNamespace);
-            IEnumerable<IModelObject> allObjects = model.ModelGroup != null ? model.ModelGroup.Models.SelectMany(m => m.Objects) : model.Objects.Where(obj => obj.MParent == null);
+            IEnumerable<IModelObject> allObjects = /*model.ModelGroup != null ? model.ModelGroup.Models.SelectMany(m => m.Objects) :*/ model.Objects.Where(obj => obj.MParent == null);
             IEnumerable<IModelObject> rootObjects = allObjects.Where(obj => obj.MParent == null);
             IEnumerable<IMetaModel> metaModels = allObjects.Select(obj => obj.MMetaModel).Distinct();
             foreach (var mm in metaModels)
@@ -161,7 +192,14 @@ namespace MetaDslx.Languages.Ecore
                         var value = obj.MGet(prop) as IModelObject;
                         if (value != null)
                         {
-                            _xml.WriteAttributeString(prop.Name.ToCamelCase(), value.MId.Id); 
+                            if (value.MModel == _model)
+                            {
+                                _xml.WriteAttributeString(prop.Name.ToCamelCase(), value.MId.Id);
+                            }
+                            else
+                            {
+                                _xml.WriteAttributeString(prop.Name.ToCamelCase(), "!!!REF!!!");
+                            }
                         }
                     }
                     else
@@ -188,7 +226,14 @@ namespace MetaDslx.Languages.Ecore
                         if (value != null)
                         {
                             _xml.WriteStartElement(prop.Name.ToCamelCase());
-                            _xml.WriteAttributeString(Xmi, "idref", XmiNamespace, value.MId.Id);
+                            if (value.MModel == _model)
+                            {
+                                _xml.WriteAttributeString(Xmi, "idref", XmiNamespace, value.MId.Id);
+                            }
+                            else
+                            {
+                                _xml.WriteAttributeString(Xmi, "idref", XmiNamespace, "!!!REF!!!");
+                            }
                             _xml.WriteEndElement();
                         }
                     }
@@ -241,92 +286,136 @@ namespace MetaDslx.Languages.Ecore
 
     internal class XmiReader
     {
-        private IMetaModel _metaModel;
+        private XmiReadOptions _options;
         private MutableModelGroup _modelGroup;
         private MutableModel _mainModel;
         private DiagnosticBag _diagnostics;
         private Dictionary<string, XmiFileReader> _readers;
 
-        public XmiReader(IMetaModel metaModel)
+        public XmiReader(XmiReadOptions options)
         {
-            _metaModel = metaModel;
+            _options = options;
             _modelGroup = new MutableModelGroup();
             _diagnostics = new DiagnosticBag();
             _readers = new Dictionary<string, XmiFileReader>();
         }
 
-        internal IMetaModel MetaModel => _metaModel;
+        internal XmiReadOptions Options => _options;
+        internal DiagnosticBag Diagnostics => _diagnostics;
 
         internal MutableModelGroup ModelGroup => _modelGroup;
 
-        internal DiagnosticBag Diagnostics => _diagnostics;
-
         public MutableModel Model => _mainModel;
 
-        public void LoadXmiCode(string filePath, string xmiCode)
+        public XmiFileReader LoadXmiCode(Uri fileUri, string xmiCode)
         {
-            string fullPath = filePath != null ? Path.GetFullPath(filePath) : string.Empty;
-            if (!_readers.ContainsKey(fullPath))
+            string absoluteUri = fileUri != null ? fileUri.AbsoluteUri : string.Empty;
+            if (!_readers.TryGetValue(absoluteUri, out var reader))
             {
-                var reader = new XmiFileReader(_readers.Count == 0, filePath, xmiCode, this);
-                _readers.Add(fullPath, reader);
-                reader.ReadModel();
+                reader = new XmiFileReader(_readers.Count == 0, fileUri, xmiCode, this);
+                _readers.Add(absoluteUri, reader);
+                reader.CreateObjects();
                 if (reader.IsMainReader) _mainModel = reader.Model;
             }
+            bool finished = !reader.IsMainReader;
+            while (!finished)
+            {
+                finished = true;
+                var unfinishedReaders = _readers.Values.Where(r => !r.IsFinished).ToList();
+                foreach (var rdr in unfinishedReaders)
+                {
+                    if (!rdr.IsFinished)
+                    {
+                        rdr.ReadObjects();
+                        finished = false;
+                    }
+                }
+            }
+            return reader;
         }
 
-        public void LoadXmiFile(string relativeFilePath, string currentFilePath)
+        public XmiFileReader LoadXmiFile(Uri currentUri, string relativeUri)
         {
-            if (!relativeFilePath.Contains(':'))
+            Uri fileUri;
+            if (relativeUri != null)
             {
-                relativeFilePath = Path.Combine(Path.GetDirectoryName(currentFilePath), relativeFilePath);
+                if (!_options.UriToFileMap.TryGetValue(relativeUri, out var mappedUri))
+                {
+                    mappedUri = relativeUri;
+                }
+                fileUri = new Uri(currentUri, mappedUri);
             }
-            string xmiCode = File.ReadAllText(relativeFilePath);
-            this.LoadXmiCode(relativeFilePath, xmiCode);
+            else
+            {
+                fileUri = currentUri;
+            }
+            // TODO: download HTTP file
+            if (fileUri.IsFile)
+            {
+                var filePath = fileUri.AbsolutePath;
+                string xmiCode = File.ReadAllText(filePath);
+                return this.LoadXmiCode(fileUri, xmiCode);
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public IEnumerable<MutableObjectBase> ResolveObjects(string relativeFilePath, string currentFilePath, string id, XObject location)
+        public List<MutableObjectBase> ResolveObjects(Uri currentUri, string relativeUri, string id, XObject location)
         {
-            if (!relativeFilePath.Contains(':'))
+            if (!_options.UriToFileMap.TryGetValue(relativeUri, out var mappedUri))
             {
-                relativeFilePath = Path.Combine(Path.GetDirectoryName(currentFilePath), relativeFilePath);
+                mappedUri = relativeUri;
             }
-            string fullPath = Path.GetFullPath(relativeFilePath);
-            if (_readers.TryGetValue(fullPath, out var reader))
+            var fileUri = new Uri(currentUri, mappedUri);
+            var absoluteUri = fileUri.AbsoluteUri;
+            if (!_readers.TryGetValue(absoluteUri, out var reader))
             {
-                return reader.ResolveObjects(id, location, null);
+                reader = this.LoadXmiFile(currentUri, relativeUri);
+                if (reader == null)
+                {
+                    return new List<MutableObjectBase>();
+                }
             }
-            return null;
+            return reader.ResolveObjectsByReference(location, id, null);
         }
     }
 
     internal class XmiFileReader
     {
         private static readonly XNamespace _xsiNamespace = "http://www.w3.org/2001/XMLSchema-instance";
+        private static readonly string[] _wellKnownXmiNamespaces = new string[] { "http://www.omg.org/XMI", "http://www.omg.org/spec/XMI" };
         private bool _isMainReader;
-        private string _filePath;
+        private bool _isFinished;
+        private Uri _fileUri;
         private string _xmiCode;
-        private XNamespace _xmiNamespace;
         private XmiReader _xmiReader;
         private MutableModel _model;
-        private ModelFactory _factory;
         private XElement _root;
+        private Dictionary<string, ModelFactory> _namespaceToFactoryMap;
         private Dictionary<string, MutableObjectBase> _objectsById;
+        private Dictionary<string, List<MutableObjectBase>> _objectsByName;
         private Dictionary<(int,int), MutableObjectBase> _objectsByPosition;
+        private Dictionary<MutableObjectBase, XElement> _elementsByObject;
 
-        public XmiFileReader(bool isMainReader, string filePath, string xmiCode, XmiReader xmiReader)
+        public XmiFileReader(bool isMainReader, Uri fileUri, string xmiCode, XmiReader xmiReader)
         {
             _isMainReader = isMainReader;
-            _filePath = filePath;
+            _fileUri = fileUri;
             _xmiCode = xmiCode;
             _xmiReader = xmiReader;
             _model = _xmiReader.ModelGroup.CreateModel();
-            _factory = new ModelFactory(_model, _xmiReader.MetaModel, ModelFactoryFlags.DontMakeObjectsCreated);
+            _namespaceToFactoryMap = new Dictionary<string, ModelFactory>();
             _objectsById = new Dictionary<string, MutableObjectBase>();
+            _objectsByName = new Dictionary<string, List<MutableObjectBase>>();
             _objectsByPosition = new Dictionary<(int, int), MutableObjectBase>();
+            _elementsByObject = new Dictionary<MutableObjectBase, XElement>();
         }
 
+        internal XmiReadOptions Options => _xmiReader.Options;
         public bool IsMainReader => _isMainReader;
+        public bool IsFinished => _isFinished;
         public MutableModel Model => _model;
 
         internal Location GetLocation(XObject xobj)
@@ -334,71 +423,81 @@ namespace MetaDslx.Languages.Ecore
             if (xobj == null) return Location.None;
             IXmlLineInfo info = xobj;
             var lineSpan = new LinePositionSpan(new LinePosition(info.LineNumber - 1, info.LinePosition - 1), new LinePosition(info.LineNumber - 1, info.LinePosition - 1));
-            return new ExternalFileLocation(_filePath ?? string.Empty, new TextSpan(), lineSpan);
+            return new ExternalFileLocation(_fileUri?.AbsolutePath ?? string.Empty, new TextSpan(), lineSpan);
         }
 
-        internal void AddError(XObject xobj, string message)
+        internal void AddError(XObject location, string message)
         {
-            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(xobj), message));
+            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(location), message));
         }
 
-        internal void AddError(XObject xobj, ModelException mex)
+        internal void AddError(XObject location, ModelException mex)
         {
-            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(xobj), mex.Diagnostic.GetMessage()));
+            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(location), mex.Diagnostic.GetMessage()));
         }
 
-        public void ReadModel()
+        private ModelFactory GetFactory(XObject location, string nsName, bool reportError = true)
         {
-            List<MutableObjectBase> ownerStack = new List<MutableObjectBase>();
+            if (_namespaceToFactoryMap.TryGetValue(nsName, out var factory) && factory != null) return factory;
+            if (this.Options.NamespaceToMetamodelMap.TryGetValue(nsName, out var metaModel) && metaModel != null)
+            {
+                factory = new ModelFactory(_model, metaModel, ModelFactoryFlags.DontMakeObjectsCreated);
+                _namespaceToFactoryMap.Add(nsName, factory);
+                return factory;
+            }
+            else
+            {
+                if (!reportError) this.AddError(location, string.Format("No metamodel is specified for the namespace '{0}'. Use the XmiReadOptions.NamespaceToMetamodelMap property to register the metamodel for the given namespace.", nsName));
+                return null;
+            }
+        }
+
+        private bool IsXmiNamespace(string nsName)
+        {
+            foreach (var xmiNs in _wellKnownXmiNamespaces)
+            {
+                if (nsName.StartsWith(xmiNs)) return true;
+            }
+            foreach (var xmiNs in this.Options.XmiNamespaces)
+            {
+                if (nsName == xmiNs) return true;
+            }
+            return false;
+        }
+
+        public void CreateObjects()
+        {
             var document = XDocument.Parse(_xmiCode, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
             _root = document.Root;
-            // if (root.Name.LocalName != "XMI") this.AddError(root, "XML root must be an 'xmi:XMI' element.");
-            _xmiNamespace = _root.Name.NamespaceName;
-            foreach (var child in _root.Elements())
-            {
-                this.CreateObject(child, null);
-            }
-            foreach (var child in _root.Elements())
-            {
-                this.ReadObject(child, null);
-            }
+            this.CreateObject(document.Root, null, null);
         }
 
-        private void CreateObject(XElement element, MutableObjectBase parent)
+        public void ReadObjects()
         {
-            XAttribute xmiTypeAttribute = element.Attribute(_xmiNamespace + "type");
-            XAttribute xsiTypeAttribute = element.Attribute(_xsiNamespace + "type");
-            XAttribute idrefAttribute = element.Attribute(_xmiNamespace + "idref");
-            XAttribute idAttribute = element.Attribute(_xmiNamespace + "id");
-            XAttribute hrefAttribute = element.Attribute("href");
-            if (hrefAttribute != null)
+            this.ReadObject(_root, null);
+            foreach (var mobj in _model.Objects)
             {
-                string[] hrefValue = hrefAttribute.Value.Split('#');
-                if (hrefValue.Length >= 2)
-                {
-                    string hrefFilePath = hrefValue[0];
-                    string objId = hrefValue[1];
-                    if (!string.IsNullOrWhiteSpace(hrefFilePath))
-                    {
-                        _xmiReader.LoadXmiFile(hrefFilePath, _filePath);
-                    }
-                }
-                return;
+                mobj.MMakeCreated();
             }
-            if (idrefAttribute != null) return;
+            _isFinished = true;
+        }
+
+        private void CreateObject(XElement element, MutableObjectBase parent, ModelFactory currentFactory)
+        {
+            XAttribute xmiTypeAttribute = GetXmiTypeAttribute(element);
+            XAttribute xsiTypeAttribute = GetXsiTypeAttribute(element);
+            XAttribute idAttribute = GetXmiIdAttribute(element);
             string typePrefix = null;
             string typeName = null;
-            if (xmiTypeAttribute != null)
+            ModelFactory factory = null;
+            if (xmiTypeAttribute != null || xsiTypeAttribute != null)
             {
-                string[] typeValue = xmiTypeAttribute.Value.Split(':');
+                var typeAttribute = xmiTypeAttribute ?? xsiTypeAttribute;
+                string[] typeValue = typeAttribute.Value.Split(':');
                 typePrefix = typeValue.Length >= 2 ? typeValue[0] : null;
                 typeName = typeValue.Length >= 2 ? typeValue[1] : typeValue[0];
-            }
-            if (xsiTypeAttribute != null)
-            {
-                string[] typeValue = xsiTypeAttribute.Value.Split(':');
-                typePrefix = typeValue.Length >= 2 ? typeValue[0] : null;
-                typeName = typeValue.Length >= 2 ? typeValue[1] : typeValue[0];
+                var typeNs = typePrefix != null ? element.GetNamespaceOfPrefix(typePrefix) : element.GetDefaultNamespace();
+                factory = GetFactory(typeAttribute, typeNs.NamespaceName);
             }
             if (typeName == null)
             {
@@ -411,104 +510,179 @@ namespace MetaDslx.Languages.Ecore
                         if (typeof(ImmutableObject).IsAssignableFrom(property.ImmutableTypeInfo.Type))
                         {
                             typeName = property.ImmutableTypeInfo.Type.Name;
+                            var typeNs = element.Parent != null ? element.Parent.Name.Namespace : element.Name.Namespace;
+                            factory = GetFactory(element, typeNs.NamespaceName) ?? currentFactory;
+                            if (factory == null)
+                            {
+                                this.AddError(element, "Unable to find a model factory for this element.");
+                            }
                         }
                     }
                 }
             }
             MutableObjectBase obj = null;
-            if (idAttribute != null)
+            if (factory != null && typeName != null)
             {
-                if (typeName == null)
+                obj = (MutableObjectBase)factory.Create(typeName);
+                string parentPropertyName = element.Name.LocalName.ToPascalCase();
+                ModelProperty parentProperty = parent?.MGetProperty(parentPropertyName);
+                if (parentProperty != null)
                 {
-                    this.AddError(element, $"Element '{element.Name}' must have an attribute 'xmi:type' or 'xsi:type'.");
-                    return;
+                    try
+                    {
+                        parent.MAdd(parentProperty, obj);
+                    }
+                    catch (ModelException mex)
+                    {
+                        this.AddError(element, mex);
+                    }
                 }
-                obj = (MutableObjectBase)_factory.Create(typeName);
-                string id = idAttribute.Value;
-                if (_objectsById.ContainsKey(id))
+                this.RegisterObjectByPosition(element, obj);
+                foreach (var nameProp in obj.MAllProperties.Where(p => p.IsName))
                 {
-                    this.AddError(element, $"Element '{element.Name}' with id '{id}' already exists.");
-                    return;
+                    var nameAttr = element.Attribute(nameProp.Name.ToCamelCase());
+                    if (nameAttr != null)
+                    {
+                        string name = nameAttr.Value;
+                        try
+                        {
+                            obj.MAdd(nameProp, name);
+                        }
+                        catch (ModelException mex)
+                        {
+                            this.AddError(element, mex);
+                        }
+                        this.RegisterObjectByName(nameAttr, name, obj);
+                    }
                 }
-                else
+                if (idAttribute != null)
                 {
-                    _objectsById.Add(id, obj);
+                    string id = idAttribute.Value;
+                    this.RegisterObjectById(idAttribute, id, obj);
                 }
-            }
-            else if (typeName != null)
-            {
-                obj = (MutableObjectBase)_factory.Create(typeName);
-                IXmlLineInfo info = element;
-                _objectsByPosition.Add((info.LineNumber, info.LinePosition), obj);
             }
             foreach (var child in element.Elements())
             {
-                this.CreateObject(child, obj);
+                this.CreateObject(child, obj, factory ?? currentFactory);
+            }
+        }
+
+        private XAttribute GetXmiAttribute(XElement element, string attributeName)
+        {
+            foreach (var attr in element.Attributes())
+            {
+                if (attr.Name.LocalName == attributeName && this.IsXmiNamespace(attr.Name.NamespaceName)) return attr;
+            }
+            return null;
+        }
+
+        private XAttribute GetXmiTypeAttribute(XElement element)
+        {
+            return GetXmiAttribute(element, "type");
+        }
+
+        private XAttribute GetXsiTypeAttribute(XElement element)
+        {
+            return element.Attribute(_xsiNamespace + "type");
+        }
+
+        private XAttribute GetXmiIdAttribute(XElement element)
+        {
+            return GetXmiAttribute(element, "id");
+        }
+
+        private XAttribute GetXmiIdrefAttribute(XElement element)
+        {
+            return GetXmiAttribute(element, "idref");
+        }
+
+        private XAttribute GetHrefAttribute(XElement element)
+        {
+            return element.Attribute("href");
+        }
+
+        private bool RegisterObjectByPosition(XElement location, MutableObjectBase mobj)
+        {
+            IXmlLineInfo info = location;
+            var pos = (info.LineNumber, info.LinePosition);
+            if (_objectsByPosition.TryGetValue(pos, out var existing))
+            {
+                this.AddError(location, string.Format("A model object is already registered for position {0}.", pos));
+                return false;
+            }
+            else
+            {
+                _objectsByPosition.Add(pos, mobj);
+            }
+            if (_elementsByObject.TryGetValue(mobj, out var existingElem) && existingElem != location)
+            {
+                this.AddError(location, string.Format("The element is already registered for another model object.", pos));
+                return false;
+            }
+            else
+            {
+                _elementsByObject.Add(mobj, location);
+                return true;
+            }
+        }
+
+        private bool RegisterObjectByName(XObject location, string name, MutableObjectBase mobj)
+        {
+            if (!_objectsByName.TryGetValue(name, out var mobjs))
+            {
+                mobjs = new List<MutableObjectBase>();
+                _objectsByName.Add(name, mobjs);
+            }
+            mobjs.Add(mobj);
+            return true;
+        }
+
+        private bool RegisterObjectById(XObject location, string id, MutableObjectBase mobj)
+        {
+            if (_objectsById.TryGetValue(id, out var existing))
+            {
+                this.AddError(location, string.Format("Model object with identifier '{0}' already exists.", id));
+                return false;
+            }
+            else
+            {
+                _objectsById.Add(id, mobj);
+                return true;
             }
         }
 
         private void ReadObject(XElement element, MutableObjectBase parent)
         {
-            MutableObjectBase[] obj = null;
-            XAttribute xmiTypeAttribute = element.Attribute(_xmiNamespace + "type");
-            XAttribute xsiTypeAttribute = element.Attribute(_xsiNamespace + "type");
-            XAttribute idrefAttribute = element.Attribute(_xmiNamespace + "idref");
-            XAttribute idAttribute = element.Attribute(_xmiNamespace + "id");
-            XAttribute hrefAttribute = element.Attribute("href");
-            var currentObj = this.ResolveObject(element);
-            if (hrefAttribute != null)
+            MutableObjectBase currentObj = ResolveObjectByPosition(element, false);
+            string parentPropertyName = element.Name.LocalName.ToPascalCase();
+            ModelProperty parentProperty = parent?.MGetProperty(parentPropertyName);
+            if (parentProperty != null)
             {
-                obj = this.ResolveObjects(hrefAttribute.Value, hrefAttribute, element);
-                if (obj == null) return;
-            }
-            if (idrefAttribute != null)
-            {
-                obj = this.ResolveObjects(idrefAttribute.Value, idrefAttribute, element);
-                if (obj == null) return;
-            }
-            if (idAttribute != null)
-            {
-                obj = this.ResolveObjects(idAttribute.Value, idAttribute, element);
-                if (obj == null) return;
-            }
-            if (obj == null)
-            {
-                if (currentObj != null)
+                if (currentObj == null)
                 {
-                    obj = new MutableObjectBase[] { currentObj };
-                }
-                else
-                {
-                    obj = null;
-                }
-            }
-            string parentProperty = element.Name.LocalName.ToPascalCase();
-            if (parent != null)
-            {
-                ModelProperty prop = parent.MGetProperty(parentProperty);
-                if (prop == null)
-                {
-                    this.AddError(element, $"Model object '{parent.MName}' ({parent.MMetaClass.Name}) has no '{parentProperty}' property.");
-                }
-                else
-                {
-                    try
+                    XAttribute idrefAttribute = GetXmiIdrefAttribute(element);
+                    XAttribute hrefAttribute = GetHrefAttribute(element);
+                    if (idrefAttribute != null || hrefAttribute != null)
                     {
-                        if (obj != null)
+                        var refAttribute = idrefAttribute ?? hrefAttribute;
+                        var reference = refAttribute.Value;
+                        foreach (var resolvedObj in ResolveObjectsByReference(refAttribute, reference, element))
                         {
-                            foreach (var o in obj)
+                            try
                             {
-                                parent.MAdd(prop, o);
+                                parent.MAdd(parentProperty, resolvedObj);
+                            }
+                            catch (ModelException mex)
+                            {
+                                this.AddError(element, mex);
                             }
                         }
-                        else
-                        {
-                            this.AssignProperty(parent, element);
-                        }
+                        return;
                     }
-                    catch (ModelException mex)
+                    else
                     {
-                        this.AddError(element, mex);
+                        this.AssignProperty(currentObj, element);
+                        return;
                     }
                 }
             }
@@ -516,12 +690,12 @@ namespace MetaDslx.Languages.Ecore
             {
                 foreach (var attr in element.Attributes())
                 {
-                    this.AssignProperty(currentObj, attr);
+                    this.AssignProperty(currentObj, element, attr);
                 }
-                foreach (var child in element.Elements())
-                {
-                    this.ReadObject(child, currentObj);
-                }
+            }
+            foreach (var child in element.Elements())
+            {
+                this.ReadObject(child, currentObj);
             }
         }
 
@@ -531,37 +705,37 @@ namespace MetaDslx.Languages.Ecore
             {
                 string propertyName = element.Name.LocalName.ToPascalCase();
                 string propertyValue = element.Value;
-                this.AssignProperty(obj, element, propertyName, propertyValue);
+                this.AssignProperty(obj, element, element, propertyName, propertyValue);
             }
         }
 
-        private void AssignProperty(MutableObjectBase obj, XAttribute attribute)
+        private void AssignProperty(MutableObjectBase obj, XElement element, XAttribute attribute)
         {
             if (attribute.Name.NamespaceName == string.Empty)
             {
                 string propertyName = attribute.Name.LocalName.ToPascalCase();
                 string propertyValue = attribute.Value;
-                this.AssignProperty(obj, attribute, propertyName, propertyValue);
+                this.AssignProperty(obj, attribute, element, propertyName, propertyValue);
             }
         }
 
-        private void AssignProperty(MutableObjectBase obj, XObject xobj, string propertyName, string propertyValue)
+        private void AssignProperty(MutableObjectBase obj, XObject location, XElement context, string propertyName, string propertyValue)
         {
-            if (propertyName == "Href") return;
             ModelProperty property = obj.MGetProperty(propertyName);
             if (property == null)
             {
-                this.AddError(xobj, $"Model object '{obj.MName}' ({obj.MMetaClass.Name}) has no '{propertyName}' property.");
+                this.AddError(location, $"Model object '{obj.MName}' ({obj.MMetaClass.Name}) has no '{propertyName}' property.");
             }
             else
             {
+                if (property.IsName) return;
                 try
                 {
                     IEnumerable<object> values = null;
                     object value = null;
                     if (typeof(ImmutableObject).IsAssignableFrom(property.ImmutableTypeInfo.Type))
                     {
-                        values = this.ResolveObjects(propertyValue, xobj, _root);
+                        values = this.ResolveObjectsByReference(location, propertyValue, context);
                     }
                     else if (property.ImmutableTypeInfo.Type.IsEnum)
                     {
@@ -571,7 +745,7 @@ namespace MetaDslx.Languages.Ecore
                         }
                         catch (Exception)
                         {
-                            this.AddError(xobj, $"Value '{propertyValue}' is invalid for the enum type '{property.ImmutableTypeInfo.Type.FullName}'.");
+                            this.AddError(location, $"Value '{propertyValue}' is invalid for the enum type '{property.ImmutableTypeInfo.Type.FullName}'.");
                             return;
                         }
                     }
@@ -607,7 +781,7 @@ namespace MetaDslx.Languages.Ecore
                     }
                     else
                     {
-                        this.AddError(xobj, $"Unhandled value type: {property.ImmutableTypeInfo.Type.FullName}.");
+                        this.AddError(location, $"Unhandled value type: {property.ImmutableTypeInfo.Type.FullName}.");
                         return;
                     }
                     if (values != null)
@@ -624,85 +798,237 @@ namespace MetaDslx.Languages.Ecore
                 }
                 catch (ModelException mex)
                 {
-                    this.AddError(xobj, mex);
+                    this.AddError(location, mex);
                 }
             }
         }
 
-        public MutableObjectBase ResolveSingleObjectById(string id, XObject location)
+        public MutableObjectBase ResolveObjectById(XObject location, string id, bool reportError = true)
         {
             if (_objectsById.TryGetValue(id, out var result))
             {
                 return result;
             }
-            this.AddError(location, $"Model object referenced by value '{id}' cannot be resolved.");
+            if (reportError) this.AddError(location, $"Model object referenced by identifier '{id}' cannot be resolved.");
             return null;
         }
 
-        public MutableObjectBase[] ResolveObjects(string ids, XObject location, XElement root)
+        public List<MutableObjectBase> ResolveObjectsByName(XObject location, string name, bool reportError = true)
         {
-            string[] idArray = ids.Split(new char[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-            if (idArray.Length == 0) return null;
-            List<MutableObjectBase> result = new List<MutableObjectBase>();
-            foreach (var id in idArray)
+            if (_objectsByName.TryGetValue(name, out var result))
             {
-                var objs = this.ResolveObjectsByIdOrXPath(id, location, root);
-                if (objs == null) return null;
-                result.AddRange(objs);
+                return result;
             }
-            return result.ToArray();
+            if (reportError) this.AddError(location, $"Model object referenced by name '{name}' cannot be resolved.");
+            return null;
         }
 
-        private IEnumerable<MutableObjectBase> ResolveObjectsByIdOrXPath(string id, XObject location, XElement root)
+        public MutableObjectBase ResolveObjectByPosition(XObject location, bool reportError = true)
         {
-            string xpath = id;
-            string[] hrefValue = id.Split('#');
+            IXmlLineInfo info = location;
+            var pos = (info.LineNumber, info.LinePosition);
+            if (_objectsByPosition.TryGetValue(pos, out var result))
+            {
+                return result;
+            }
+            if (reportError) this.AddError(location, $"Model object referenced by position '{pos}' cannot be resolved.");
+            return null;
+        }
+
+        public XElement ResolveElementByObject(MutableObjectBase mobj, XObject location, bool reportError = true)
+        {
+            if (_elementsByObject.TryGetValue(mobj, out var result))
+            {
+                return result;
+            }
+            if (reportError) this.AddError(location, $"Element cannot be resolved based on the model object.");
+            return null;
+        }
+
+        public List<MutableObjectBase> ResolveObjectsByReference(XObject location, string reference, XElement context)
+        {
+            if (context == null) context = _root;
+            string[] idArray = reference.Split(new char[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            List<MutableObjectBase> result = new List<MutableObjectBase>();
+            if (idArray.Length == 0) return result;
+            foreach (var id in idArray)
+            {
+                this.ResolveObjectsByXPointer(location, id, context, result);
+            }
+            if (result.Count == 0)
+            {
+                this.AddError(location, $"Unable to resolve reference '{reference}'.");
+            }
+            return result;
+        }
+
+        private bool ResolveObjectsByXPointer(XObject location, string reference, XElement context, List<MutableObjectBase> result)
+        {
+            string localReference = reference;
+            string[] hrefValue = reference.Split('#');
             if (hrefValue.Length >= 2)
             {
                 string hrefFilePath = hrefValue[0];
                 string objId = hrefValue[1];
                 if (string.IsNullOrWhiteSpace(hrefFilePath))
                 {
-                    xpath = objId;
+                    localReference = objId;
                 }
                 else
                 {
-                    return _xmiReader.ResolveObjects(hrefFilePath, _filePath, objId, location);
+                    var externalObjects = _xmiReader.ResolveObjects(_fileUri, hrefFilePath, objId, location);
+                    result.AddRange(externalObjects);
+                    return externalObjects.Count > 0;
                 }
             }
-            if (_objectsById.TryGetValue(xpath, out var result))
+            return this.ResolveObjectsByLocalXPointer(location, localReference, context, result);
+        }
+
+        private bool ResolveObjectsByLocalXPointer(XObject location, string reference, XElement context, List<MutableObjectBase> result)
+        {
+            if (!reference.Contains("/"))
             {
-                return new MutableObjectBase[] { result }; 
+                var mobj = this.ResolveObjectById(location, reference, false);
+                if (mobj != null)
+                {
+                    result.Add(mobj);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            var currentReference = reference;
+            List<XElement> currentElements = new List<XElement>();
+            currentElements.Add(context);
+            while (!string.IsNullOrWhiteSpace(currentReference))
+            {
+                (currentReference, currentElements) = this.ResolveXPointPart(location, currentReference, currentElements, result);
+            }
+            return currentElements.Count > 0;
+        }
+
+        private (string, List<XElement>) ResolveXPointPart(XObject location, string currentReference, List<XElement> currentElements, List<MutableObjectBase> result)
+        {
+            string nextReference = null;
+            bool resolveByElementNameRecursive = currentReference.StartsWith("//@");
+            bool resolveByElementName = currentReference.StartsWith("/@");
+            string elementName = null;
+            int index = -1;
+            bool resolveByObjectName = false;
+            bool resolveByObjectNameRecursive = false;
+            if (resolveByElementNameRecursive || resolveByElementName)
+            {
+                (elementName, nextReference) = this.GetNextXPointPart(currentReference.Substring(resolveByElementNameRecursive ? 3 : 2));
+                int dotIndex = elementName.LastIndexOf('.');
+                if (dotIndex >= 0)
+                {
+                    var indexStr = elementName.Substring(dotIndex + 1);
+                    elementName = elementName.Substring(0, dotIndex);
+                    if (!int.TryParse(indexStr, out index)) index = -1;
+                }
+            }
+            else 
+            {
+                resolveByObjectNameRecursive = currentReference.StartsWith("//");
+                resolveByObjectName = !resolveByObjectNameRecursive && currentReference.StartsWith("/");
+                if (resolveByObjectNameRecursive || resolveByObjectName)
+                {
+                    (elementName, nextReference) = this.GetNextXPointPart(currentReference.Substring(resolveByObjectNameRecursive ? 2 : 1));
+                }
+                else
+                {
+                    nextReference = null;
+                }
+            }
+            if (resolveByElementName || resolveByElementNameRecursive)
+            {
+                var nextElements = new List<XElement>();
+                var context = resolveByElementName ? currentElements : new List<XElement>() { _root };
+                foreach (var currentElement in context)
+                {
+                    int i = 0;
+                    var items = resolveByElementName ? currentElement.Descendants(elementName) : currentElement.DescendantsAndSelf(elementName);
+                    foreach (var refElem in items)
+                    {
+                        var elem = ResolveObjectByPosition(refElem, false);
+                        if (elem != null && (index < 0 || i == index))
+                        {
+                            if (nextReference == null)
+                            {
+                                result.Add(elem);
+                            }
+                            else
+                            {
+                                nextElements.Add(refElem);
+                            }
+                        }
+                        ++i;
+                    }
+                }
+                return (nextReference, nextElements);
+            }
+            if (resolveByObjectNameRecursive)
+            {
+                var nextElements = new List<XElement>();
+                var mobjs = this.ResolveObjectsByName(location, elementName, false);
+                if (mobjs != null && mobjs.Count > 0)
+                {
+                    if (nextReference == null) result.AddRange(mobjs);
+                    else nextElements.AddRange(mobjs.Select(mobj => ResolveElementByObject(mobj, location)).Where(mobj => mobj != null));
+                    return (nextReference, nextElements);
+                }
+                return (nextReference, nextElements);
+            }
+            if (resolveByObjectName)
+            {
+                var nextElements = new List<XElement>();
+                foreach (var parentElement in currentElements)
+                {
+                    var mobj = ResolveObjectByPosition(parentElement);
+                    foreach (var child in mobj.MChildren)
+                    {
+                        if (child.MName == elementName)
+                        {
+                            if (nextReference == null)
+                            {
+                                result.Add((MutableObjectBase)child);
+                            }
+                            else
+                            {
+                                var childElem = ResolveElementByObject(mobj, location);
+                                if (childElem != null)
+                                {
+                                    nextElements.Add(childElem);
+                                }
+                            }
+                        }
+                    }
+                }
+                return (nextReference, nextElements);
+            }
+            this.AddError(location, $"Unable to process reference '{currentReference}', because it is of an unknown format.");
+            return (null, new List<XElement>());
+        }
+
+        private (string, string) GetNextXPointPart(string currentReference)
+        {
+            int slashIndex = currentReference.IndexOf('/');
+            var elementName = currentReference;
+            if (slashIndex >= 0)
+            {
+                elementName = currentReference.Substring(0, slashIndex);
+                currentReference = currentReference.Substring(slashIndex);
             }
             else
             {
-                IEnumerable<XElement> list = root.XPathSelectElements(xpath);
-                List<MutableObjectBase> objs = new List<MutableObjectBase>();
-                foreach (XElement el in list)
-                {
-                    var obj = this.ResolveObject(el);
-                    if (obj == null)
-                    {
-                        this.AddError(location, $"Model object referenced by value '{id}' cannot be resolved.");
-                        return null;
-                    }
-                    else
-                    {
-                        objs.Add(obj);
-                    }
-                }
-                return objs;
+                currentReference = null;
             }
-            this.AddError(location, $"Model object referenced by value '{id}' cannot be resolved.");
-            return null;
+            return (elementName, currentReference);
         }
 
-        public MutableObjectBase ResolveObject(XElement element)
-        {
-            IXmlLineInfo info = element;
-            if (_objectsByPosition.TryGetValue((info.LineNumber, info.LinePosition), out var result)) return result;
-            else return null;
-        }
+
     }
 
 }
