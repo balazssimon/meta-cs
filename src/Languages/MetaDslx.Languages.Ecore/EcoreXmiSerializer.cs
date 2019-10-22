@@ -1,4 +1,5 @@
-﻿using MetaDslx.Languages.Meta.Model;
+﻿using MetaDslx.Languages.Ecore.Model;
+using MetaDslx.Languages.Meta.Model;
 using MetaDslx.Modeling;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -19,20 +20,94 @@ namespace MetaDslx.Languages.Ecore
     {
         public XmiReadOptions()
         {
+            this.XmiRoot = true;
+            this.XmiNamespaces = new HashSet<string>();
             this.NamespaceToMetamodelMap = new Dictionary<string, IMetaModel>();
             this.UriToFileMap = new Dictionary<string, string>();
             this.UriToModelMap = new Dictionary<string, IModel>();
-            this.XmiNamespaces = new HashSet<string>();
         }
 
+        public XmiReadOptions(IMetaModel metaModel)
+            : this()
+        {
+            this.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
+        }
+
+        public bool XmiRoot { get; set; }
         public HashSet<string> XmiNamespaces { get; set; }
         public Dictionary<string, IMetaModel> NamespaceToMetamodelMap { get; }
         public Dictionary<string, string> UriToFileMap { get; }
         public Dictionary<string, IModel> UriToModelMap { get; }
     }
 
+    public class MetaDslxXmiReadOptions : XmiReadOptions
+    {
+        public MetaDslxXmiReadOptions()
+        {
+            this.UriToModelMap.Add(MetaInstance.MMetaModel.Uri, MetaInstance.MModel);
+        }
+
+        public MetaDslxXmiReadOptions(IMetaModel metaModel)
+            : base(metaModel)
+        {
+            this.UriToModelMap.Add(MetaInstance.MMetaModel.Uri, MetaInstance.MModel);
+        }
+    }
+
+    public class EcoreXmiReadOptions : XmiReadOptions
+    {
+        public EcoreXmiReadOptions()
+        {
+            this.XmiRoot = false;
+            this.UriToModelMap.Add(EcoreXmiSerializer.EcoreMetamodelUri, EcoreInstance.MModel);
+        }
+
+        public EcoreXmiReadOptions(IMetaModel metaModel)
+            : base(metaModel)
+        {
+            this.XmiRoot = false;
+            this.UriToModelMap.Add(EcoreXmiSerializer.EcoreMetamodelUri, EcoreInstance.MModel);
+        }
+    }
+
+    public class XmiWriteOptions
+    {
+        public XmiWriteOptions()
+        {
+            this.XmiRoot = true;
+            this.XmiNamespace = "http://www.omg.org/spec/XMI";
+            this.MetamodelToNamespaceMap = new Dictionary<IMetaModel, string>();
+            this.ModelToUriMap = new Dictionary<IModel, string>();
+        }
+
+        public bool XmiRoot { get; set; }
+        public string XmiNamespace { get; set; }
+        public Dictionary<IMetaModel, string> MetamodelToNamespaceMap { get; }
+        public Dictionary<IModel, string> ModelToUriMap { get; }
+    }
+
+    public class MetaDslxXmiWriteOptions : XmiWriteOptions
+    {
+        public MetaDslxXmiWriteOptions()
+        {
+            this.ModelToUriMap.Add(MetaInstance.MModel, MetaInstance.MMetaModel.Uri);
+        }
+    }
+
+    public class EcoreXmiWriteOptions : XmiWriteOptions
+    {
+        public EcoreXmiWriteOptions()
+        {
+            this.XmiRoot = false;
+            this.XmiNamespace = "http://www.omg.org/XMI";
+            this.ModelToUriMap.Add(EcoreInstance.MModel, EcoreXmiSerializer.EcoreMetamodelUri);
+        }
+    }
+
     public class EcoreXmiSerializer
     {
+        public const string EcoreMetamodelUri = "http://www.eclipse.org/emf/2002/Ecore";
+
         public ImmutableModel ReadModel(string xmiCode, IMetaModel metaModel)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
@@ -79,7 +154,7 @@ namespace MetaDslx.Languages.Ecore
             return reader.Model.ToImmutable();
         }
 
-        public string WriteModel(IModel model)
+        public string WriteModel(IModel model, XmiWriteOptions options)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
@@ -89,14 +164,19 @@ namespace MetaDslx.Languages.Ecore
             {
                 using (XmlWriter writer = XmlWriter.Create(stream, settings))
                 {
-                    var xmiWriter = new XmiWriter(writer);
-                    xmiWriter.WriteModel(model);
+                    var xmiWriter = new XmiWriter(writer, options, model);
+                    xmiWriter.WriteModel();
+                    var diagnostics = xmiWriter.Diagnostics.ToReadOnly();
+                    if (diagnostics.Length > 0)
+                    {
+                        throw new ModelException(diagnostics[0]);
+                    }
                 }
                 return Encoding.UTF8.GetString(stream.ToArray());
             }
         }
 
-        public void WriteModelToFile(string xmiFilePath, IModel model)
+        public void WriteModelToFile(string xmiFilePath, IModel model, XmiWriteOptions options)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
@@ -105,8 +185,13 @@ namespace MetaDslx.Languages.Ecore
             using (StreamWriter stream = new StreamWriter(xmiFilePath))
             using (XmlWriter writer = XmlWriter.Create(stream, settings))
             {
-                var xmiWriter = new XmiWriter(writer);
-                xmiWriter.WriteModel(model);
+                var xmiWriter = new XmiWriter(writer, options, model);
+                xmiWriter.WriteModel();
+                var diagnostics = xmiWriter.Diagnostics.ToReadOnly();
+                if (diagnostics.Length > 0)
+                {
+                    throw new ModelException(diagnostics[0]);
+                }
             }
         }
 
@@ -115,23 +200,34 @@ namespace MetaDslx.Languages.Ecore
     internal class XmiWriter
     {
         private const string Xmi = "xmi";
-        private const string XmiNamespace = "http://www.omg.org/spec/XMI/20131001";
         private XmlWriter _xml;
         private Dictionary<IMetaModel, (string, string)> _namespaces;
-        private IModel _model;
+        private IModel _mainModel;
+        private XmiWriteOptions _options;
+        private DiagnosticBag _diagnostics;
+        private IEnumerable<IModelObject> _allObjects;
 
-        public XmiWriter(XmlWriter xmlWriter)
+        public XmiWriter(XmlWriter xmlWriter, XmiWriteOptions options, IModel mainModel)
         {
             _xml = xmlWriter;
+            _options = options;
             _namespaces = new Dictionary<IMetaModel, (string, string)>();
+            _diagnostics = new DiagnosticBag();
+            _mainModel = mainModel;
         }
+
+        internal XmiWriteOptions Options => _options;
+        internal DiagnosticBag Diagnostics => _diagnostics;
+        internal IModelGroup ModelGroup => _mainModel.ModelGroup;
+        public IModel Model => _mainModel;
 
         private (string, string) RegisterNamespace(IMetaModel metaModel)
         {
-            string prefix = metaModel.Prefix ?? metaModel.Name.ToCamelCase();
+            if (_namespaces.TryGetValue(metaModel, out var ns)) return ns;
+            string prefix = string.IsNullOrWhiteSpace(metaModel.Prefix) ? metaModel.Name.ToCamelCase() : metaModel.Prefix;
             int index = 1;
             string currentPrefix = prefix;
-            while (_namespaces.Values.Any(v => v.Item1 == currentPrefix))
+            while (_namespaces.Values.Any(v => v.Item1 == currentPrefix) || currentPrefix == Xmi)
             {
                 ++index;
                 currentPrefix = prefix + index;
@@ -147,29 +243,46 @@ namespace MetaDslx.Languages.Ecore
             return result;
         }
 
-        public void WriteModel(IModel model)
+        public void WriteModel()
         {
-            _model = model;
-            _xml.WriteStartElement(Xmi, "XMI", XmiNamespace);
-            IEnumerable<IModelObject> allObjects = /*model.ModelGroup != null ? model.ModelGroup.Models.SelectMany(m => m.Objects) :*/ model.Objects.Where(obj => obj.MParent == null);
-            IEnumerable<IModelObject> rootObjects = allObjects.Where(obj => obj.MParent == null);
-            IEnumerable<IMetaModel> metaModels = allObjects.Select(obj => obj.MMetaModel).Distinct();
+            _allObjects = _mainModel.Objects.Where(obj => obj.MParent == null);
+            List<IModelObject> rootObjects = _allObjects.Where(obj => obj.MParent == null).ToList();
+            IModelObject xmiRoot = null;
+            if (_options.XmiRoot)
+            {
+                _xml.WriteStartElement(Xmi, "XMI", _options.XmiNamespace);
+                this.WriteXmlNamespaces();
+                foreach (var obj in rootObjects)
+                {
+                    this.WriteObject(obj, null);
+                }
+                _xml.WriteEndElement();
+            }
+            else
+            {
+                if (rootObjects.Count > 1)
+                {
+                    this.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(Location.None, "Multiple root model objects found. If the XMI root is not used the number model objects with no parent must be exactly one."));
+                }
+                xmiRoot = rootObjects.FirstOrDefault();
+                this.WriteObject(xmiRoot, null);
+            }
+        }
+
+        private void WriteXmlNamespaces()
+        {
+            IEnumerable<IMetaModel> metaModels = _allObjects.Select(obj => obj.MMetaModel).Distinct();
             foreach (var mm in metaModels)
             {
                 var ns = this.RegisterNamespace(mm);
                 _xml.WriteAttributeString("xmlns", ns.Item1, null, ns.Item2);
             }
-            foreach (var obj in rootObjects)
-            {
-                this.WriteObject(obj, null);
-            }
-            _xml.WriteEndElement();
         }
 
         private void WriteObject(IModelObject obj, string parentProperty)
         {
             var mm = obj.MMetaModel;
-            var ns = this.GetNamespace(mm);
+            var ns = this.RegisterNamespace(mm);
             if (parentProperty != null)
             {
                 _xml.WriteStartElement(parentProperty.ToCamelCase());
@@ -178,8 +291,12 @@ namespace MetaDslx.Languages.Ecore
             {
                 _xml.WriteStartElement(ns.Item1, obj.MId.DisplayTypeName, ns.Item2);
             }
-            _xml.WriteAttributeString(Xmi, "type", XmiNamespace, ns.Item1 + ":" + obj.MId.DisplayTypeName);
-            _xml.WriteAttributeString(Xmi, "id", XmiNamespace, obj.MId.Id);
+            if (!_options.XmiRoot && obj.MParent == null)
+            {
+                this.WriteXmlNamespaces();
+            }
+            _xml.WriteAttributeString(Xmi, "type", _options.XmiNamespace, ns.Item1 + ":" + obj.MId.DisplayTypeName);
+            _xml.WriteAttributeString(Xmi, "id", _options.XmiNamespace, obj.MId.Id);
             HashSet<IModelObject> written = new HashSet<IModelObject>();
             foreach (var prop in obj.MProperties)
             {
@@ -194,7 +311,7 @@ namespace MetaDslx.Languages.Ecore
                         var value = obj.MGet(prop) as IModelObject;
                         if (value != null)
                         {
-                            if (value.MModel == _model)
+                            if (value.MModel == _mainModel)
                             {
                                 _xml.WriteAttributeString(prop.Name.ToCamelCase(), value.MId.Id);
                             }
@@ -228,13 +345,13 @@ namespace MetaDslx.Languages.Ecore
                         if (value != null)
                         {
                             _xml.WriteStartElement(prop.Name.ToCamelCase());
-                            if (value.MModel == _model)
+                            if (value.MModel == _mainModel)
                             {
-                                _xml.WriteAttributeString(Xmi, "idref", XmiNamespace, value.MId.Id);
+                                _xml.WriteAttributeString(Xmi, "idref", _options.XmiNamespace, value.MId.Id);
                             }
                             else
                             {
-                                _xml.WriteAttributeString(Xmi, "idref", XmiNamespace, "!!!REF!!!");
+                                _xml.WriteAttributeString(Xmi, "idref", _options.XmiNamespace, "!!!REF!!!");
                             }
                             _xml.WriteEndElement();
                         }
@@ -458,12 +575,12 @@ namespace MetaDslx.Languages.Ecore
 
         internal void AddError(XObject location, string message)
         {
-            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(location), message));
+            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(GetLocation(location), message));
         }
 
         internal void AddError(XObject location, ModelException mex)
         {
-            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(location), mex.Diagnostic.GetMessage()));
+            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(GetLocation(location), mex.Diagnostic.GetMessage()));
         }
 
         private ModelFactory GetFactory(XObject location, string nsName, bool reportError = true)
@@ -499,7 +616,7 @@ namespace MetaDslx.Languages.Ecore
         {
             var document = XDocument.Parse(_xmiCode, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
             _root = document.Root;
-            this.CreateObject(document.Root, null, null);
+            this.CreateObject(_root, null, null);
         }
 
         public void ReadObjects()
@@ -531,9 +648,14 @@ namespace MetaDslx.Languages.Ecore
             }
             if (typeName == null)
             {
-                string parentProperty = element.Name.LocalName.ToPascalCase();
-                if (parent != null)
+                if (parent == null)
                 {
+                    typeName = element.Name.LocalName.ToPascalCase();
+                    factory = GetFactory(element, element.Name.Namespace.NamespaceName);
+                }
+                else
+                {
+                    string parentProperty = element.Name.LocalName.ToPascalCase();
                     ModelProperty property = parent.MGetProperty(parentProperty);
                     if (property != null)
                     {
@@ -686,9 +808,10 @@ namespace MetaDslx.Languages.Ecore
                         var reference = refAttribute.Value;
                         foreach (var resolvedObj in ResolveObjectsByReference(refAttribute, reference, element))
                         {
+                            var value = resolvedObj;
                             try
                             {
-                                parent.MAdd(parentProperty, resolvedObj);
+                                parent.MAdd(parentProperty, ResolveMetaConstantValue(parentProperty, resolvedObj));
                             }
                             catch (ModelException mex)
                             {
@@ -806,12 +929,12 @@ namespace MetaDslx.Languages.Ecore
                     {
                         foreach (var v in values)
                         {
-                            obj.MAdd(property, v);
+                            obj.MAdd(property, ResolveMetaConstantValue(property, v));
                         }
                     }
                     else
                     {
-                        obj.MAdd(property, value);
+                        obj.MAdd(property, ResolveMetaConstantValue(property, value));
                     }
                 }
                 catch (ModelException mex)
@@ -819,6 +942,16 @@ namespace MetaDslx.Languages.Ecore
                     this.AddError(location, mex);
                 }
             }
+        }
+
+        private object ResolveMetaConstantValue(ModelProperty property, object value)
+        {
+            if (property.ImmutableTypeInfo.Type != typeof(MetaConstant))
+            {
+                if (value is MetaConstant metaConstant) return metaConstant.Value;
+                else if (value is MetaConstantBuilder metaConstantBuilder) return metaConstantBuilder.Value;
+            }
+            return value;
         }
 
         public MutableObjectBase ResolveObjectById(XObject location, string id, bool reportError = true)

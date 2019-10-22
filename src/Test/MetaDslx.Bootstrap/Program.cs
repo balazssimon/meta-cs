@@ -427,12 +427,9 @@ namespace MetaDslx.Bootstrap
             try
             {
                 var xmi = new EcoreXmiSerializer();
-                var options = new XmiReadOptions();
-                options.NamespaceToMetamodelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
-                options.UriToModelMap.Add("http://www.eclipse.org/emf/2002/Ecore", EcoreInstance.MModel);
-                var model = xmi.ReadModelFromFile(fileName, options);
+                var model = xmi.ReadModelFromFile(fileName, new EcoreXmiReadOptions(EcoreInstance.MMetaModel));
                 Console.WriteLine(model);
-                xmi.WriteModelToFile("../../../RailDsl2.ecore", model);
+                xmi.WriteModelToFile("../../../RailDsl2.ecore", model, new EcoreXmiWriteOptions());
                 //MofModelToMetaModelGenerator mgen = new MofModelToMetaModelGenerator(model.Objects);
                 //string metaCode = mgen.Generate("MetaDslx.Languages.Uml.Model", "Uml", "http://www.omg.org/spec/UML/20161101");
                 //File.WriteAllText("../../../Uml.txt", metaCode);

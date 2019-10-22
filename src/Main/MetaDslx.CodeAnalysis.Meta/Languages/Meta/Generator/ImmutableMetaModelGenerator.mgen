@@ -307,7 +307,7 @@ end template
 template GenerateInstanceProperties(MetaModel model, bool metaMetaModel, ImmutableObject obj, ImmutableDictionary<ImmutableObject, string> instanceNames)
 [if (obj != null && obj.MMetaClass != null && instanceNames.ContainsKey(obj))]
 	[loop(obj->prop:MProperties where !prop.IsDerived && !prop.IsDerivedUnion)]
-		[if (metaMetaModel && obj is MetaConstant && prop.Name == "Value")]
+		[if (obj is MetaConstant && prop.Name == "Value")]
 			[string name = instanceNames[obj]]
 [name].SetValueLazy(() => [((MetaConstant)obj).CSharpName(model, ClassKind.BuilderInstance)]);
 		[else]
@@ -652,7 +652,7 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 			[if (metaMetaModel && cls.Name == "MetaConstant" && prop.Name == "Value")]
 			[else if (prop.DefaultValue != null)]
 				[if(!(prop.Type is MetaCollectionType))]
-		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy([prop.DefaultValue]);
+		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(() => [prop.DefaultValue]);
 				[else]
 		// ERROR: default value for collection
 		// _this.[prop.CSharpName(model, PropertyKind.Builder)] = [prop.DefaultValue];

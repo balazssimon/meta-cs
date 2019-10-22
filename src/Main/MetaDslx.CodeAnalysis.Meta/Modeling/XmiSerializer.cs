@@ -332,12 +332,12 @@ namespace MetaDslx.Modeling
 
         internal void AddError(XObject xobj, string message)
         {
-            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(xobj), message));
+            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(GetLocation(xobj), message));
         }
 
         internal void AddError(XObject xobj, ModelException mex)
         {
-            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiLoadError.ToDiagnostic(GetLocation(xobj), mex.Diagnostic.GetMessage()));
+            _xmiReader.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnostic(GetLocation(xobj), mex.Diagnostic.GetMessage()));
         }
 
         public void ReadModel()
