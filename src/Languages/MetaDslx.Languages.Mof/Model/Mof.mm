@@ -1,6 +1,6 @@
 ﻿namespace MetaDslx.Languages.Mof.Model
 {
-	metamodel Mof(Uri="http://www.omg.org/spec/MOF/20131001"); 
+	metamodel Mof(Uri="http://www.omg.org/spec/MOF"); 
 
 	// Boolean is used for logical expressions, consisting of the predefined values true and false.
 	const PrimitiveType Boolean;

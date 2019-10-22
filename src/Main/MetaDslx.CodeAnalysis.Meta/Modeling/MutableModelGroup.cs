@@ -56,6 +56,9 @@ namespace MetaDslx.Modeling
                 }
             }
         }
+
+        IEnumerable<IModel> IModelGroup.References => this.References;
+
         public IEnumerable<MutableModel> Models
         {
             get
@@ -68,6 +71,22 @@ namespace MetaDslx.Modeling
         }
 
         IEnumerable<IModel> IModelGroup.Models => this.Models;
+
+        public IEnumerable<MutableObject> Objects
+        {
+            get
+            {
+                foreach (var mid in this.Green.Models.Keys)
+                {
+                    foreach (var mobj in this.GetExistingModel(mid).Objects)
+                    {
+                        yield return mobj;
+                    }
+                }
+            }
+        }
+
+        IEnumerable<IModelObject> IModelGroup.Objects => this.Objects;
 
         private ImmutableModel GetImmutableReference(ModelId mid)
         {

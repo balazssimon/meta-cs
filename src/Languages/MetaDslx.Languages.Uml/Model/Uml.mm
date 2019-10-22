@@ -1,6 +1,6 @@
 ﻿namespace MetaDslx.Languages.Uml.Model
 {
-    metamodel Uml(Uri="http://www.omg.org/spec/UML/20161101"); 
+    metamodel Uml(Uri="http://www.omg.org/spec/UML"); 
 
     /// <summary>
 	/// Boolean is used for logical expressions, consisting of the predefined values true and false.

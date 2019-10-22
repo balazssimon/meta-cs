@@ -19,6 +19,9 @@ namespace [namespaceName]
 {
     metamodel [metaModelName](Uri="[uri]"); 
 ^
+	[loop(Instances->pt:typeof(PrimitiveType))]
+    [GeneratePrimitiveType(pt)]
+	[end loop]
 	[loop(Instances->enm:typeof(Enumeration))]
 ^
     [GenerateEnum(enm)]
@@ -32,6 +35,11 @@ namespace [namespaceName]
     [GenerateAssociation(assoc)]
 	[end loop]
 }
+end template
+
+template GeneratePrimitiveType(PrimitiveType pt)
+[GenerateComment(pt)]
+const PrimitiveType [pt.Name];
 end template
 
 template GenerateEnum(Enumeration enm)
@@ -148,7 +156,7 @@ template GenerateAssociation(Association assoc)
 	[if (assoc.OwnedEnd.Count == 0)]
 association [first.Class.Name].[first.Name.ToPascalCase()] with [second.Class.Name].[second.Name.ToPascalCase()];
 	[else]
-// association [second.Type.Name].[first.Name.ToPascalCase()] with [first.Type.Name].[second.Name.ToPascalCase()];
+// association [first.Type.Name].[second.Name.ToPascalCase()] with [second.Type.Name].[first.Name.ToPascalCase()];
 	[end if]
 [end if]
 end template

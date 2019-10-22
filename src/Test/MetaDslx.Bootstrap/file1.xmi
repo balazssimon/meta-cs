@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmi:XMI xmlns:mof="http://www.omg.org/spec/MOF" xmlns:xmi="http://www.omg.org/spec/XMI">
+  <mof:Package xmi:type="mof:Package" xmi:id="0a9afab7-7ffb-4c30-abbd-28da4da54fc3" name="PrimitiveTypes" uRI="http://www.omg.org/spec/PrimitiveTypes/20161101">
+    <tag xmi:idref="179e426b-7504-418a-a69f-63987f2bbc68" />
+    <packagedElement xmi:type="mof:PrimitiveType" xmi:id="7a87012d-a862-43a0-a83a-b8e035e8d317" name="Boolean">
+      <comment xmi:idref="fd8213e3-02e1-4d87-b4ba-eae9ad23ac7c" />
+      <tag xmi:idref="84e4b281-ba2a-40d9-879f-0ff9c40faff4" />
+      <ownedComment xmi:type="mof:Comment" xmi:id="fd8213e3-02e1-4d87-b4ba-eae9ad23ac7c">
+        <annotatedElement xmi:idref="7a87012d-a862-43a0-a83a-b8e035e8d317" />
+        <body>Boolean is used for logical expressions, consisting of the predefined values true and false.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="mof:PrimitiveType" xmi:id="78c8e4b3-8e58-4227-bc65-6e4000434a5c" name="Integer">
+      <comment xmi:idref="ce401d8e-223e-4ec4-a3f5-d63e03a8cd9b" />
+      <tag xmi:idref="52faf971-f7fc-47f0-9e85-73ae41e72b17" />
+      <ownedComment xmi:type="mof:Comment" xmi:id="ce401d8e-223e-4ec4-a3f5-d63e03a8cd9b">
+        <annotatedElement xmi:idref="78c8e4b3-8e58-4227-bc65-6e4000434a5c" />
+        <body>Integer is a primitive type representing integer values.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="mof:PrimitiveType" xmi:id="c4395ec6-3618-45c3-ac83-b77341f916e5" name="Real">
+      <comment xmi:idref="ddc9eb52-68ed-4282-b328-f663ddc7ff01" />
+      <tag xmi:idref="8ed03a4a-f1fe-45f2-95f5-fdc64ec8446a" />
+      <ownedComment xmi:type="mof:Comment" xmi:id="ddc9eb52-68ed-4282-b328-f663ddc7ff01">
+        <annotatedElement xmi:idref="c4395ec6-3618-45c3-ac83-b77341f916e5" />
+        <body>Real is a primitive type representing the mathematical concept of real.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="mof:PrimitiveType" xmi:id="0709c4e8-b8a8-40d5-b3d1-e9071a2f856e" name="String">
+      <comment xmi:idref="feb298b0-e060-4632-860c-04afbd8ffcac" />
+      <tag xmi:idref="ecd18038-fe7f-4186-bb07-5698b1e5fd6e" />
+      <ownedComment xmi:type="mof:Comment" xmi:id="feb298b0-e060-4632-860c-04afbd8ffcac">
+        <annotatedElement xmi:idref="0709c4e8-b8a8-40d5-b3d1-e9071a2f856e" />
+        <body>String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="mof:PrimitiveType" xmi:id="a8cb5dc6-cb48-46b7-9c1a-aa15af0fb3de" name="UnlimitedNatural">
+      <comment xmi:idref="92e75af7-7db9-4cfe-abf3-ce1296574db3" />
+      <tag xmi:idref="9d29b851-fff9-41d6-bc8f-9eddc6119d6f" />
+      <ownedComment xmi:type="mof:Comment" xmi:id="92e75af7-7db9-4cfe-abf3-ce1296574db3">
+        <annotatedElement xmi:idref="a8cb5dc6-cb48-46b7-9c1a-aa15af0fb3de" />
+        <body>UnlimitedNatural is a primitive type representing unlimited natural values.</body>
+      </ownedComment>
+    </packagedElement>
+  </mof:Package>
+  <mof:Tag xmi:type="mof:Tag" xmi:id="179e426b-7504-418a-a69f-63987f2bbc68" name="org.omg.xmi.nsPrefix" value="primitives">
+    <element xmi:idref="0a9afab7-7ffb-4c30-abbd-28da4da54fc3" />
+  </mof:Tag>
+  <mof:Tag xmi:type="mof:Tag" xmi:id="84e4b281-ba2a-40d9-879f-0ff9c40faff4" name="org.omg.xmi.schemaType" value="http://www.w3.org/2001/XMLSchema#boolean">
+    <element xmi:idref="7a87012d-a862-43a0-a83a-b8e035e8d317" />
+  </mof:Tag>
+  <mof:Tag xmi:type="mof:Tag" xmi:id="52faf971-f7fc-47f0-9e85-73ae41e72b17" name="org.omg.xmi.schemaType" value="http://www.w3.org/2001/XMLSchema#integer">
+    <element xmi:idref="78c8e4b3-8e58-4227-bc65-6e4000434a5c" />
+  </mof:Tag>
+  <mof:Tag xmi:type="mof:Tag" xmi:id="8ed03a4a-f1fe-45f2-95f5-fdc64ec8446a" name="org.omg.xmi.schemaType" value="http://www.w3.org/2001/XMLSchema#double">
+    <element xmi:idref="c4395ec6-3618-45c3-ac83-b77341f916e5" />
+  </mof:Tag>
+  <mof:Tag xmi:type="mof:Tag" xmi:id="ecd18038-fe7f-4186-bb07-5698b1e5fd6e" name="org.omg.xmi.schemaType" value="http://www.w3.org/2001/XMLSchema#string">
+    <element xmi:idref="0709c4e8-b8a8-40d5-b3d1-e9071a2f856e" />
+  </mof:Tag>
+  <mof:Tag xmi:type="mof:Tag" xmi:id="9d29b851-fff9-41d6-bc8f-9eddc6119d6f" name="org.omg.xmi.schemaType" value="http://www.w3.org/2001/XMLSchema#string">
+    <element xmi:idref="a8cb5dc6-cb48-46b7-9c1a-aa15af0fb3de" />
+  </mof:Tag>
+</xmi:XMI>

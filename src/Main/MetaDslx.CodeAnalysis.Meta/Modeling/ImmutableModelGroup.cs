@@ -24,8 +24,6 @@ namespace MetaDslx.Modeling
 
         internal GreenModelGroup Green { get { return this.green; } }
 
-        IEnumerable<IModel> IModelGroup.Models => this.Models;
-
         public IEnumerable<ImmutableModel> References
         {
             get
@@ -36,6 +34,8 @@ namespace MetaDslx.Modeling
                 }
             }
         }
+        IEnumerable<IModel> IModelGroup.References => this.References;
+
         public IEnumerable<ImmutableModel> Models
         {
             get
@@ -46,6 +46,24 @@ namespace MetaDslx.Modeling
                 }
             }
         }
+
+        IEnumerable<IModel> IModelGroup.Models => this.Models;
+
+        public IEnumerable<ImmutableObject> Objects
+        {
+            get
+            {
+                foreach (var mid in this.Green.Models.Keys)
+                {
+                    foreach (var mobj in this.GetExistingModel(mid).Objects)
+                    {
+                        yield return mobj;
+                    } 
+                }
+            }
+        }
+
+        IEnumerable<IModelObject> IModelGroup.Objects => this.Objects;
 
         private MutableModel GetMutableReference(ModelId mid)
         {
