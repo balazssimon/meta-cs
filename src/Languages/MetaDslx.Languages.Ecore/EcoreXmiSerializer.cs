@@ -21,12 +21,14 @@ namespace MetaDslx.Languages.Ecore
         {
             this.NamespaceToMetamodelMap = new Dictionary<string, IMetaModel>();
             this.UriToFileMap = new Dictionary<string, string>();
+            this.UriToModelMap = new Dictionary<string, IModel>();
             this.XmiNamespaces = new HashSet<string>();
         }
 
         public HashSet<string> XmiNamespaces { get; set; }
-        public Dictionary<string,IMetaModel> NamespaceToMetamodelMap { get; }
-        public Dictionary<string,string> UriToFileMap { get; }
+        public Dictionary<string, IMetaModel> NamespaceToMetamodelMap { get; }
+        public Dictionary<string, string> UriToFileMap { get; }
+        public Dictionary<string, IModel> UriToModelMap { get; }
     }
 
     public class EcoreXmiSerializer
@@ -315,7 +317,7 @@ namespace MetaDslx.Languages.Ecore
                 reader = new XmiFileReader(_readers.Count == 0, fileUri, xmiCode, this);
                 _readers.Add(absoluteUri, reader);
                 reader.CreateObjects();
-                if (reader.IsMainReader) _mainModel = reader.Model;
+                if (reader.IsMainReader) _mainModel = (MutableModel)reader.Model;
             }
             bool finished = !reader.IsMainReader;
             while (!finished)
@@ -362,20 +364,42 @@ namespace MetaDslx.Languages.Ecore
             }
         }
 
-        public List<MutableObjectBase> ResolveObjects(Uri currentUri, string relativeUri, string id, XObject location)
+        private XmiFileReader LoadXmiModel(Uri fileUri, IModel model)
         {
+            string absoluteUri = fileUri != null ? fileUri.AbsoluteUri : string.Empty;
+            if (!_readers.TryGetValue(absoluteUri, out var reader))
+            {
+                reader = new XmiFileReader(fileUri, model, this);
+                _readers.Add(absoluteUri, reader);
+                if (model is MutableModel mutableModel) _modelGroup.AddReference(mutableModel);
+                else if (model is ImmutableModel immmutableModel) _modelGroup.AddReference(immmutableModel);
+            }
+            return reader;
+        }
+
+        public List<IModelObject> ResolveObjects(Uri currentUri, string relativeUri, string id, XObject location)
+        {
+            XmiFileReader reader;
             if (!_options.UriToFileMap.TryGetValue(relativeUri, out var mappedUri))
             {
                 mappedUri = relativeUri;
             }
             var fileUri = new Uri(currentUri, mappedUri);
             var absoluteUri = fileUri.AbsoluteUri;
-            if (!_readers.TryGetValue(absoluteUri, out var reader))
+            if (_options.UriToModelMap.TryGetValue(relativeUri, out var mappedModel))
             {
-                reader = this.LoadXmiFile(currentUri, relativeUri);
-                if (reader == null)
+                reader = this.LoadXmiModel(fileUri, mappedModel);
+                if (reader == null) return new List<IModelObject>();
+            }
+            else
+            {
+                if (!_readers.TryGetValue(absoluteUri, out reader))
                 {
-                    return new List<MutableObjectBase>();
+                    reader = this.LoadXmiFile(currentUri, relativeUri);
+                    if (reader == null)
+                    {
+                        return new List<IModelObject>();
+                    }
                 }
             }
             return reader.ResolveObjectsByReference(location, id, null);
@@ -391,11 +415,10 @@ namespace MetaDslx.Languages.Ecore
         private Uri _fileUri;
         private string _xmiCode;
         private XmiReader _xmiReader;
-        private MutableModel _model;
+        private IModel _model;
         private XElement _root;
         private Dictionary<string, ModelFactory> _namespaceToFactoryMap;
         private Dictionary<string, MutableObjectBase> _objectsById;
-        private Dictionary<string, List<MutableObjectBase>> _objectsByName;
         private Dictionary<(int,int), MutableObjectBase> _objectsByPosition;
         private Dictionary<MutableObjectBase, XElement> _elementsByObject;
 
@@ -408,15 +431,22 @@ namespace MetaDslx.Languages.Ecore
             _model = _xmiReader.ModelGroup.CreateModel();
             _namespaceToFactoryMap = new Dictionary<string, ModelFactory>();
             _objectsById = new Dictionary<string, MutableObjectBase>();
-            _objectsByName = new Dictionary<string, List<MutableObjectBase>>();
             _objectsByPosition = new Dictionary<(int, int), MutableObjectBase>();
             _elementsByObject = new Dictionary<MutableObjectBase, XElement>();
+        }
+
+        public XmiFileReader(Uri fileUri, IModel model, XmiReader xmiReader)
+        {
+            _fileUri = fileUri;
+            _model = model;
+            _xmiReader = xmiReader;
+            _isFinished = true;
         }
 
         internal XmiReadOptions Options => _xmiReader.Options;
         public bool IsMainReader => _isMainReader;
         public bool IsFinished => _isFinished;
-        public MutableModel Model => _model;
+        public IModel Model => _model;
 
         internal Location GetLocation(XObject xobj)
         {
@@ -441,7 +471,7 @@ namespace MetaDslx.Languages.Ecore
             if (_namespaceToFactoryMap.TryGetValue(nsName, out var factory) && factory != null) return factory;
             if (this.Options.NamespaceToMetamodelMap.TryGetValue(nsName, out var metaModel) && metaModel != null)
             {
-                factory = new ModelFactory(_model, metaModel, ModelFactoryFlags.DontMakeObjectsCreated);
+                factory = new ModelFactory((MutableModel)_model, metaModel, ModelFactoryFlags.DontMakeObjectsCreated);
                 _namespaceToFactoryMap.Add(nsName, factory);
                 return factory;
             }
@@ -475,7 +505,7 @@ namespace MetaDslx.Languages.Ecore
         public void ReadObjects()
         {
             this.ReadObject(_root, null);
-            foreach (var mobj in _model.Objects)
+            foreach (var mobj in ((MutableModel)_model).Objects)
             {
                 mobj.MMakeCreated();
             }
@@ -552,7 +582,6 @@ namespace MetaDslx.Languages.Ecore
                         {
                             this.AddError(element, mex);
                         }
-                        this.RegisterObjectByName(nameAttr, name, obj);
                     }
                 }
                 if (idAttribute != null)
@@ -624,17 +653,6 @@ namespace MetaDslx.Languages.Ecore
                 _elementsByObject.Add(mobj, location);
                 return true;
             }
-        }
-
-        private bool RegisterObjectByName(XObject location, string name, MutableObjectBase mobj)
-        {
-            if (!_objectsByName.TryGetValue(name, out var mobjs))
-            {
-                mobjs = new List<MutableObjectBase>();
-                _objectsByName.Add(name, mobjs);
-            }
-            mobjs.Add(mobj);
-            return true;
         }
 
         private bool RegisterObjectById(XObject location, string id, MutableObjectBase mobj)
@@ -813,16 +831,6 @@ namespace MetaDslx.Languages.Ecore
             return null;
         }
 
-        public List<MutableObjectBase> ResolveObjectsByName(XObject location, string name, bool reportError = true)
-        {
-            if (_objectsByName.TryGetValue(name, out var result))
-            {
-                return result;
-            }
-            if (reportError) this.AddError(location, $"Model object referenced by name '{name}' cannot be resolved.");
-            return null;
-        }
-
         public MutableObjectBase ResolveObjectByPosition(XObject location, bool reportError = true)
         {
             IXmlLineInfo info = location;
@@ -845,11 +853,11 @@ namespace MetaDslx.Languages.Ecore
             return null;
         }
 
-        public List<MutableObjectBase> ResolveObjectsByReference(XObject location, string reference, XElement context)
+        public List<IModelObject> ResolveObjectsByReference(XObject location, string reference, XElement context)
         {
             if (context == null) context = _root;
             string[] idArray = reference.Split(new char[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-            List<MutableObjectBase> result = new List<MutableObjectBase>();
+            List<IModelObject> result = new List<IModelObject>();
             if (idArray.Length == 0) return result;
             foreach (var id in idArray)
             {
@@ -862,7 +870,7 @@ namespace MetaDslx.Languages.Ecore
             return result;
         }
 
-        private bool ResolveObjectsByXPointer(XObject location, string reference, XElement context, List<MutableObjectBase> result)
+        private bool ResolveObjectsByXPointer(XObject location, string reference, XElement context, List<IModelObject> result)
         {
             string localReference = reference;
             string[] hrefValue = reference.Split('#');
@@ -884,7 +892,7 @@ namespace MetaDslx.Languages.Ecore
             return this.ResolveObjectsByLocalXPointer(location, localReference, context, result);
         }
 
-        private bool ResolveObjectsByLocalXPointer(XObject location, string reference, XElement context, List<MutableObjectBase> result)
+        private bool ResolveObjectsByLocalXPointer(XObject location, string reference, XElement context, List<IModelObject> result)
         {
             if (!reference.Contains("/"))
             {
@@ -900,116 +908,132 @@ namespace MetaDslx.Languages.Ecore
                 }
             }
             var currentReference = reference;
-            List<XElement> currentElements = new List<XElement>();
-            currentElements.Add(context);
+            bool currentElementsAreModelObjects = false;
+            List<object> currentElements = null;
             while (!string.IsNullOrWhiteSpace(currentReference))
             {
-                (currentReference, currentElements) = this.ResolveXPointPart(location, currentReference, currentElements, result);
+                (currentReference, currentElements, currentElementsAreModelObjects) = this.ResolveXPointPart(location, currentReference, currentElements, currentElementsAreModelObjects);
             }
-            return currentElements.Count > 0;
+            if (currentElements != null && currentElements.Count > 0)
+            {
+                if (currentElementsAreModelObjects) result.AddRange(currentElements.OfType<IModelObject>());
+                else result.AddRange(currentElements.OfType<XElement>().Select(e => ResolveObjectByPosition(e)));
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        private (string, List<XElement>) ResolveXPointPart(XObject location, string currentReference, List<XElement> currentElements, List<MutableObjectBase> result)
+        private (string, List<object>, bool) ResolveXPointPart(XObject location, string currentReference, List<object> currentElements, bool currentElementsAreModelObjects)
         {
             string nextReference = null;
-            bool resolveByElementNameRecursive = currentReference.StartsWith("//@");
-            bool resolveByElementName = currentReference.StartsWith("/@");
+            bool recursive = currentReference.StartsWith("//");
+            bool resolveByElementName = currentReference.StartsWith("//@") || currentReference.StartsWith("/@");
+            bool resolveByObjectName = !resolveByElementName && currentReference.StartsWith("/");
             string elementName = null;
+
+            if (resolveByElementName) (elementName, nextReference) = this.GetNextXPointPart(currentReference.Substring(recursive ? 3 : 2));
+            else  if (resolveByObjectName) (elementName, nextReference) = this.GetNextXPointPart(currentReference.Substring(recursive ? 2 : 1));
+            else nextReference = null;
+            
             int index = -1;
-            bool resolveByObjectName = false;
-            bool resolveByObjectNameRecursive = false;
-            if (resolveByElementNameRecursive || resolveByElementName)
+            int openIndex = elementName.IndexOf('[');
+            int closeIndex = elementName.LastIndexOf(']');
+            int dotIndex = elementName.LastIndexOf('.');
+            if (openIndex >= 0 && closeIndex == elementName.Length)
             {
-                (elementName, nextReference) = this.GetNextXPointPart(currentReference.Substring(resolveByElementNameRecursive ? 3 : 2));
-                int dotIndex = elementName.LastIndexOf('.');
-                if (dotIndex >= 0)
-                {
-                    var indexStr = elementName.Substring(dotIndex + 1);
-                    elementName = elementName.Substring(0, dotIndex);
-                    if (!int.TryParse(indexStr, out index)) index = -1;
-                }
+                var indexStr = elementName.Substring(openIndex + 1, closeIndex - openIndex - 1);
+                if (int.TryParse(indexStr, out index)) index -= 1;
+                else index = -1;
+                elementName = elementName.Substring(0, openIndex);
             }
-            else 
+            else if (dotIndex >= 0)
             {
-                resolveByObjectNameRecursive = currentReference.StartsWith("//");
-                resolveByObjectName = !resolveByObjectNameRecursive && currentReference.StartsWith("/");
-                if (resolveByObjectNameRecursive || resolveByObjectName)
-                {
-                    (elementName, nextReference) = this.GetNextXPointPart(currentReference.Substring(resolveByObjectNameRecursive ? 2 : 1));
-                }
-                else
-                {
-                    nextReference = null;
-                }
+                var indexStr = elementName.Substring(dotIndex + 1);
+                if (!int.TryParse(indexStr, out index)) index = -1;
+                elementName = elementName.Substring(0, dotIndex);
             }
-            if (resolveByElementName || resolveByElementNameRecursive)
+            
+            if (resolveByElementName)
             {
-                var nextElements = new List<XElement>();
-                var context = resolveByElementName ? currentElements : new List<XElement>() { _root };
-                foreach (var currentElement in context)
+                var nextElements = new List<object>();
+                IEnumerable<XElement> parentElements = null;
+                if (currentElements == null)
                 {
+                    if (recursive)
+                    {
+                        parentElements = _root.DescendantsAndSelf(elementName);
+                    }
+                    else
+                    {
+                        parentElements = _root.Name == elementName ? ImmutableArray.Create(_root) : ImmutableArray<XElement>.Empty;
+                    }
                     int i = 0;
-                    var items = resolveByElementName ? currentElement.Descendants(elementName) : currentElement.DescendantsAndSelf(elementName);
-                    foreach (var refElem in items)
+                    foreach (var refElem in parentElements)
                     {
                         var elem = ResolveObjectByPosition(refElem, false);
                         if (elem != null && (index < 0 || i == index))
                         {
-                            if (nextReference == null)
-                            {
-                                result.Add(elem);
-                            }
-                            else
-                            {
-                                nextElements.Add(refElem);
-                            }
+                            nextElements.Add(refElem);
                         }
                         ++i;
                     }
                 }
-                return (nextReference, nextElements);
-            }
-            if (resolveByObjectNameRecursive)
-            {
-                var nextElements = new List<XElement>();
-                var mobjs = this.ResolveObjectsByName(location, elementName, false);
-                if (mobjs != null && mobjs.Count > 0)
+                else
                 {
-                    if (nextReference == null) result.AddRange(mobjs);
-                    else nextElements.AddRange(mobjs.Select(mobj => ResolveElementByObject(mobj, location)).Where(mobj => mobj != null));
-                    return (nextReference, nextElements);
+                    if (currentElementsAreModelObjects) parentElements = currentElements.OfType<MutableObjectBase>().Select(mobj => ResolveElementByObject(mobj, location));
+                    else parentElements = currentElements.OfType<XElement>();
+                    foreach (var parentElement in parentElements)
+                    {
+                        int i = 0;
+                        var items = recursive ? parentElement.Descendants(elementName) : parentElement.Elements(elementName);
+                        foreach (var refElem in items)
+                        {
+                            var elem = ResolveObjectByPosition(refElem, false);
+                            if (elem != null && (index < 0 || i == index))
+                            {
+                                nextElements.Add(refElem);
+                            }
+                            ++i;
+                        }
+                    }
                 }
-                return (nextReference, nextElements);
+                return (nextReference, nextElements, false);
             }
+
             if (resolveByObjectName)
             {
-                var nextElements = new List<XElement>();
-                foreach (var parentElement in currentElements)
+                var nextElements = new List<object>();
+                if (currentElements == null)
                 {
-                    var mobj = ResolveObjectByPosition(parentElement);
-                    foreach (var child in mobj.MChildren)
+                    if (recursive) nextElements.AddRange(_model.Objects.Where(mobj => mobj.MName == elementName));
+                    else nextElements.AddRange(_model.Objects.Where(mobj => mobj.MParent == null && mobj.MName == elementName));
+                }
+                else
+                {
+                    IEnumerable<IModelObject> parentObjects = null;
+                    if (currentElementsAreModelObjects) parentObjects = currentElements.OfType<IModelObject>();
+                    else parentObjects = currentElements.OfType<XElement>().Select(e => ResolveObjectByPosition(e));
+                    foreach (var parentObject in parentObjects)
                     {
-                        if (child.MName == elementName)
+                        int i = 0;
+                        var descendants = recursive ? GetModelObjectsRecursive(parentObject, elementName) : parentObject.MChildren.Where(mobj => mobj.MName == elementName);
+                        foreach (var child in descendants)
                         {
-                            if (nextReference == null)
+                            if (child.MName == elementName)
                             {
-                                result.Add((MutableObjectBase)child);
-                            }
-                            else
-                            {
-                                var childElem = ResolveElementByObject(mobj, location);
-                                if (childElem != null)
-                                {
-                                    nextElements.Add(childElem);
-                                }
+                                nextElements.Add(child);
+                                ++i;
                             }
                         }
                     }
                 }
-                return (nextReference, nextElements);
+                return (nextReference, nextElements, true);
             }
             this.AddError(location, $"Unable to process reference '{currentReference}', because it is of an unknown format.");
-            return (null, new List<XElement>());
+            return (null, null, false);
         }
 
         private (string, string) GetNextXPointPart(string currentReference)
@@ -1028,6 +1052,17 @@ namespace MetaDslx.Languages.Ecore
             return (elementName, currentReference);
         }
 
+        private IEnumerable<IModelObject> GetModelObjectsRecursive(IModelObject parent, string name)
+        {
+            foreach (var child in parent.MChildren)
+            {
+                if (child.MName == name) yield return child;
+                foreach (var descendant in GetModelObjectsRecursive(child, name))
+                {
+                    yield return descendant;
+                }
+            }
+        }
 
     }
 

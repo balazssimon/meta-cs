@@ -307,8 +307,13 @@ end template
 template GenerateInstanceProperties(MetaModel model, bool metaMetaModel, ImmutableObject obj, ImmutableDictionary<ImmutableObject, string> instanceNames)
 [if (obj != null && obj.MMetaClass != null && instanceNames.ContainsKey(obj))]
 	[loop(obj->prop:MProperties where !prop.IsDerived && !prop.IsDerivedUnion)]
-		[object propValue = obj.MGet(prop)]
+		[if (metaMetaModel && obj is MetaConstant && prop.Name == "Value")]
+			[string name = instanceNames[obj]]
+[name].SetValueLazy(() => [((MetaConstant)obj).CSharpName(model, ClassKind.BuilderInstance)]);
+		[else]
+			[object propValue = obj.MGet(prop)]
 [GenerateInstancePropertyValue(model, metaMetaModel, obj, prop, propValue, instanceNames)]
+		[end if]
 	[end loop]
 [end if]
 end template
@@ -582,6 +587,8 @@ internal class [model.CSharpName(ModelKind.ImplementationProvider)]
 end template
 
 template GenerateImplementationBase(MetaModel model)
+[string metaNs = model.IsMetaMetaModel() ? "" : Properties.MetaNs + "."]
+[bool metaMetaModel = model.IsMetaMetaModel()]
 /// <summary>
 /// Base class for implementing the behavior of the model elements.
 /// This class has to be be overriden in [model.CSharpName(ModelKind.Implementation, true)] to provide custom
@@ -642,9 +649,10 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	{
 		this.Call[cls.CSharpName(model, ClassKind.Immutable)]SuperConstructors(_this);
 		[loop(cls->prop:Properties)]
-			[if (prop.DefaultValue != null)]
+			[if (metaMetaModel && cls.Name == "MetaConstant" && prop.Name == "Value")]
+			[else if (prop.DefaultValue != null)]
 				[if(!(prop.Type is MetaCollectionType))]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)] = [prop.DefaultValue];
+		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy([prop.DefaultValue]);
 				[else]
 		// ERROR: default value for collection
 		// _this.[prop.CSharpName(model, PropertyKind.Builder)] = [prop.DefaultValue];
@@ -657,9 +665,9 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 				[end if]
 			[else if (prop.Kind == MetaPropertyKind.Readonly)]
 				[if(!(prop.Type is MetaCollectionType))]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)] = this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)](_this);
+		_this.Set[prop.CSharpName(model, PropertyKind.Builder)]Lazy(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
 				[else]
-		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRange(this.[cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)](_this));
+		_this.[prop.CSharpName(model, PropertyKind.Builder)].AddRangeLazy([cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]);
 				[end if]
 			[end if]
 		[end loop]
@@ -680,10 +688,13 @@ internal abstract class [model.CSharpName(ModelKind.ImplementationBase)]
 	}
 	^
 	[loop(cls->prop:Properties where prop.Kind == MetaPropertyKind.Readonly || prop.Kind == MetaPropertyKind.Lazy || prop.Kind == MetaPropertyKind.Derived)]
+		[if (metaMetaModel && cls.Name == "MetaConstant" && prop.Name == "Value")]
+		[else]
 	/// <summary>
 	/// Computes the value of the property: [cls.CSharpName(model, ClassKind.Immutable)].[prop.CSharpName(model)]
 	/// </summary	
 	public abstract [prop.Type.CSharpName(model, ClassKind.BuilderOperation, true)] [cls.CSharpName(model, ClassKind.Immutable)]_ComputeProperty_[prop.CSharpName(model)]([cls.CSharpName(model, ClassKind.Builder)] _this);
+		[end if]
 	[end loop]
 	^
 	public virtual void [cls.CSharpName(model, ClassKind.Immutable)]_MValidate([cls.CSharpName(model, ClassKind.Builder)] _this, global::Microsoft.CodeAnalysis.DiagnosticBag diagnostics)

@@ -14,7 +14,7 @@
 	const MetaPrimitiveType Byte = "byte";
 	const MetaPrimitiveType Bool = "bool";
 	const MetaPrimitiveType Void = "void";
-	const MetaPrimitiveType ModelObject = "IModelObject";
+	const MetaPrimitiveType ModelObject = "global::MetaDslx.Modeling.IModelObject";
 	
 	const MetaAttribute NameAttribute = "NameAttribute";
 	const MetaAttribute TypeAttribute = "TypeAttribute";
@@ -127,6 +127,7 @@
 	class MetaConstant : MetaDeclaration, MetaTypedElement, MetaType
 	{
 		string DotNetName;
+		readonly ModelObject Value;
 	}
 
 	[Scope]

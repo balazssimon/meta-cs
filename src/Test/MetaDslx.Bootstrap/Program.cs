@@ -428,9 +428,8 @@ namespace MetaDslx.Bootstrap
             {
                 var xmi = new EcoreXmiSerializer();
                 var options = new XmiReadOptions();
-                options.UriToFileMap.Add("http://www.eclipse.org/emf/2002/Ecore", "Ecore.ecore");
-                var metaModel = EcoreInstance.MMetaModel;
-                options.NamespaceToMetamodelMap.Add(metaModel.Uri, metaModel);
+                options.NamespaceToMetamodelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MMetaModel);
+                options.UriToModelMap.Add("http://www.eclipse.org/emf/2002/Ecore", EcoreInstance.MModel);
                 var model = xmi.ReadModelFromFile(fileName, options);
                 Console.WriteLine(model);
                 xmi.WriteModelToFile("../../../RailDsl2.ecore", model);

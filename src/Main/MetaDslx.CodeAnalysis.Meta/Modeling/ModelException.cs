@@ -19,7 +19,7 @@ namespace MetaDslx.Modeling
         }
 
         public ModelException(Diagnostic diagnostic, Exception innerException)
-            : base(string.Format(diagnostic.GetMessage()), innerException)
+            : base(diagnostic.GetMessage(), innerException)
         {
             this.diagnostic = diagnostic;
         }

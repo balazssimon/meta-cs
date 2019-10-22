@@ -1,125 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xmi:XMI xmlns="http://www.eclipse.org/emf/2002/Ecore" xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
-  <EClass xmi:type=":EClass" xmi:id="42288290-7eb4-4d62-9348-c4e99f4e4d94" name="Station">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="709005f9-1666-4b72-b4a0-d5ac699898bd" changeable="True" eContainingClass="42288290-7eb4-4d62-9348-c4e99f4e4d94" name="declarations" eType="87b1a010-1153-4cd3-97ee-483a7ad8db7d" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
+  <EClass xmi:type=":EClass" xmi:id="1b1b10d8-80ab-4db7-9194-357d6c4b2030" name="Station">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="32c19a97-10e0-4a5a-9cb9-c5a936e549dc" changeable="True" eContainingClass="1b1b10d8-80ab-4db7-9194-357d6c4b2030" name="declarations" eType="71df0ca5-a080-4946-9ab6-30dd9403697f" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="87b1a010-1153-4cd3-97ee-483a7ad8db7d" name="Declaration" abstract="True" />
-  <EClass xmi:type=":EClass" xmi:id="fa814252-7b8f-4df1-aacb-0ef8c0487033" name="TrackObject" abstract="True">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="12b80f66-e082-4811-bef0-b3c5c96b425e" changeable="True" eContainingClass="fa814252-7b8f-4df1-aacb-0ef8c0487033" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="71df0ca5-a080-4946-9ab6-30dd9403697f" name="Declaration" abstract="True" />
+  <EClass xmi:type=":EClass" xmi:id="b870ff91-b029-474d-9364-98629a3ef25f" name="TrackObject" abstract="True">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="ad16a8a9-865b-403e-b2e3-edd614f80da9" changeable="True" eContainingClass="b870ff91-b029-474d-9364-98629a3ef25f" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="4dbda6a6-85ca-454f-97f8-0bc914f353c7" name="Vertex">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="edc4d0ef-0e6f-4384-a8e3-22e152adf729" changeable="True" eContainingClass="4dbda6a6-85ca-454f-97f8-0bc914f353c7" name="kind" eType="6dccfdf8-a2fb-41bd-acfc-baee85e1c7e9" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="e142588c-b918-4aab-b9c8-8c3210b17d52" name="Vertex">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="3f498635-9c2c-484a-b1f3-e8ad7172aa89" changeable="True" eContainingClass="e142588c-b918-4aab-b9c8-8c3210b17d52" name="kind" eType="8ee9b8d0-13db-4f46-865f-8a04f4592450" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="f124694e-9250-4f03-b47a-122d8ade5e5b" name="Segment">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="4a52c9ad-2301-40f1-9014-4ebc3fd16ea7" changeable="True" eContainingClass="f124694e-9250-4f03-b47a-122d8ade5e5b" name="start" eType="4dbda6a6-85ca-454f-97f8-0bc914f353c7" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="c8ccab7d-5f43-473c-8581-25ebba689dec" changeable="True" eContainingClass="f124694e-9250-4f03-b47a-122d8ade5e5b" name="end" eType="4dbda6a6-85ca-454f-97f8-0bc914f353c7" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="8f1bb2ac-36b4-487d-b6b3-0fda0b6ce961" changeable="True" eContainingClass="f124694e-9250-4f03-b47a-122d8ade5e5b" name="objects" eType="04dc8747-95d0-4660-a33e-04b9478cbf65" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
+  <EClass xmi:type=":EClass" xmi:id="d1c1e56f-735c-4dd3-9c11-c639858d0c67" name="Segment">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="3937c311-572e-4aca-8144-a77f26a25c2d" changeable="True" eContainingClass="d1c1e56f-735c-4dd3-9c11-c639858d0c67" name="start" eType="e142588c-b918-4aab-b9c8-8c3210b17d52" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="d0bbc14b-5066-45b5-8b86-df5de3992ef9" changeable="True" eContainingClass="d1c1e56f-735c-4dd3-9c11-c639858d0c67" name="end" eType="e142588c-b918-4aab-b9c8-8c3210b17d52" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="d14e0790-3a39-4215-b8cc-6c84b0565a5e" changeable="True" eContainingClass="d1c1e56f-735c-4dd3-9c11-c639858d0c67" name="objects" eType="d4325eca-68b6-4be1-9670-149a1034b115" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="04dc8747-95d0-4660-a33e-04b9478cbf65" name="SegmentObject" abstract="True">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="1b8092c3-67d7-444d-901b-a92bb49d90ef" changeable="True" eContainingClass="04dc8747-95d0-4660-a33e-04b9478cbf65" name="position" eType="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" ordered="True" unique="True" upperBound="1" containment="True" resolveProxies="True" />
+  <EClass xmi:type=":EClass" xmi:id="d4325eca-68b6-4be1-9670-149a1034b115" name="SegmentObject" abstract="True">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="0057586b-0e35-4377-bf86-7537128b129a" changeable="True" eContainingClass="d4325eca-68b6-4be1-9670-149a1034b115" name="position" eType="21cde036-ac05-4775-8865-5877e3126682" ordered="True" unique="True" upperBound="1" containment="True" resolveProxies="True" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="222c8913-cf9e-4161-a7d7-3acbb1db733e" name="Derailer">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="7f116b1b-f7e9-4b98-bfad-c6ec03d32982" changeable="True" eContainingClass="222c8913-cf9e-4161-a7d7-3acbb1db733e" name="active" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="33d29c46-29c2-47f8-9113-72a15c85a851" name="Derailer">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="c628b41c-f592-4ad3-b9c5-e9215e17be71" changeable="True" eContainingClass="33d29c46-29c2-47f8-9113-72a15c85a851" name="active" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="a22b56c5-9d1e-4ce3-b4f6-f5cc252df805" name="LevelCrossing">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="82c87c0a-7e2d-44c0-9564-ffc84cffde35" changeable="True" eContainingClass="a22b56c5-9d1e-4ce3-b4f6-f5cc252df805" name="closed" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="901fb271-a4b7-4c76-b8dc-ac0c7e7e13d0" changeable="True" eContainingClass="a22b56c5-9d1e-4ce3-b4f6-f5cc252df805" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="3258aae4-5006-4401-a8db-641e13f80b2d" name="LevelCrossing">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="970b3931-01b2-4ae3-9193-45d46fe1c8c3" changeable="True" eContainingClass="3258aae4-5006-4401-a8db-641e13f80b2d" name="closed" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="314716b6-a1c6-4293-805f-52c9a3d8fe15" changeable="True" eContainingClass="3258aae4-5006-4401-a8db-641e13f80b2d" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="b4179b7b-4e40-44c9-b47f-c93c956f2fbf" name="Signal">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="2d0b2643-5814-4920-b9ea-de636b67b57b" changeable="True" eContainingClass="b4179b7b-4e40-44c9-b47f-c93c956f2fbf" name="distantFor" eType="b4179b7b-4e40-44c9-b47f-c93c956f2fbf" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="cc504a10-9e57-4aa1-b3f1-5216bcb3ca76" changeable="True" eContainingClass="b4179b7b-4e40-44c9-b47f-c93c956f2fbf" name="main" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="cb26dd77-9675-4ad7-a54f-cf4bdacad9db" changeable="True" eContainingClass="b4179b7b-4e40-44c9-b47f-c93c956f2fbf" name="shunting" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="f884e936-7f8b-41d5-9047-bcd90ebf2f98" name="Signal">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="2a4ce51e-f826-439c-925f-be11e03e7a1f" changeable="True" eContainingClass="f884e936-7f8b-41d5-9047-bcd90ebf2f98" name="distantFor" eType="f884e936-7f8b-41d5-9047-bcd90ebf2f98" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="68d71cee-ec33-4777-b695-bf3c2a1ab15d" changeable="True" eContainingClass="f884e936-7f8b-41d5-9047-bcd90ebf2f98" name="main" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="aae91cd2-bc48-438c-b2c0-86e47eb19c9c" changeable="True" eContainingClass="f884e936-7f8b-41d5-9047-bcd90ebf2f98" name="shunting" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="34ad2074-94ff-4965-9109-334276d3f64d" name="Platform">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="8088fd99-e47d-4eca-bf27-b6341e23c5c1" changeable="True" eContainingClass="34ad2074-94ff-4965-9109-334276d3f64d" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="79478e86-c970-44ce-acca-66531d2bc45c" name="Platform">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="255e4721-6b83-43e4-8448-6536c7db7dfc" changeable="True" eContainingClass="79478e86-c970-44ce-acca-66531d2bc45c" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" name="SegmentPosition">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="58901044-74a2-4b05-accb-03d15652373f" changeable="True" eContainingClass="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" name="atStart" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="780a6134-3f5d-4908-9eb3-220c0a7fbf99" changeable="True" eContainingClass="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" name="atEnd" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="fc59b248-a2c6-4764-82d9-b2e4707a177d" changeable="True" eContainingClass="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" name="position" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="0c502cbe-6535-4071-961e-687d12ba9a81" changeable="True" eContainingClass="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" name="side" eType="0b1b1d2e-139f-4bb0-bfa2-ba2ece699c60" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="85503e09-b6d7-4232-a7ae-ac0d68a6f550" changeable="True" eContainingClass="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" name="orientation" eType="072c4669-e26b-48c6-82d5-11e67a986ecd" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="3a639373-3987-4ddc-b42b-eea52168da91" changeable="True" eContainingClass="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" name="segment" eType="f124694e-9250-4f03-b47a-122d8ade5e5b" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+  <EClass xmi:type=":EClass" xmi:id="21cde036-ac05-4775-8865-5877e3126682" name="SegmentPosition">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="21ffbc1e-68af-4bb1-a16d-e2c0345039c4" changeable="True" eContainingClass="21cde036-ac05-4775-8865-5877e3126682" name="atStart" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="a7b909a9-a5e1-4cc1-8740-4e02364f2566" changeable="True" eContainingClass="21cde036-ac05-4775-8865-5877e3126682" name="atEnd" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="b5eb1663-36be-4e18-b814-30368684c54e" changeable="True" eContainingClass="21cde036-ac05-4775-8865-5877e3126682" name="position" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="f0a9854a-a76b-4f27-87e0-5e8ef372ef2f" changeable="True" eContainingClass="21cde036-ac05-4775-8865-5877e3126682" name="side" eType="b5531aa3-5a20-4ddc-8609-9751f23af765" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="75d110bb-e3d5-424e-9366-cfc26ce9a762" changeable="True" eContainingClass="21cde036-ac05-4775-8865-5877e3126682" name="orientation" eType="fe168482-9d84-4551-a71a-b14dbe82fee3" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="dc5016a8-fc50-483b-acd3-5daf282202dc" changeable="True" eContainingClass="21cde036-ac05-4775-8865-5877e3126682" name="segment" eType="d1c1e56f-735c-4dd3-9c11-c639858d0c67" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="733a583d-94bb-41fa-88b7-de129979c266" name="Point">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="53036fa0-1d9c-417d-ac4b-00b1e7f0d157" changeable="True" eContainingClass="733a583d-94bb-41fa-88b7-de129979c266" name="inputs" eType="4dbda6a6-85ca-454f-97f8-0bc914f353c7" ordered="True" unique="True" upperBound="-1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="4721ec80-058c-4efa-b0fb-1e1b4057c646" changeable="True" eContainingClass="733a583d-94bb-41fa-88b7-de129979c266" name="outputs" eType="4dbda6a6-85ca-454f-97f8-0bc914f353c7" ordered="True" unique="True" upperBound="-1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="9f1c9d7b-cef0-4ab7-bff5-f61d3c50e070" changeable="True" eContainingClass="733a583d-94bb-41fa-88b7-de129979c266" name="kind" eType="12514e84-1b1e-4e68-8a9e-f3db55950bf8" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="f8a65aba-c965-4354-8e70-a8f6cc8d4de9" changeable="True" eContainingClass="733a583d-94bb-41fa-88b7-de129979c266" name="selectedInput" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="f9f002ba-0bc2-410a-b3a1-46e1fd4713e7" changeable="True" eContainingClass="733a583d-94bb-41fa-88b7-de129979c266" name="selectedOutput" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="2eb119e4-ade6-45f7-a830-f4b3fe9fc6f0" changeable="True" eContainingClass="733a583d-94bb-41fa-88b7-de129979c266" name="locked" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="ca0df87e-9a6e-4815-be31-5ac48cb06302" name="Point">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="db3181c6-8f48-48ca-ad06-4eed35297ab2" changeable="True" eContainingClass="ca0df87e-9a6e-4815-be31-5ac48cb06302" name="inputs" eType="e142588c-b918-4aab-b9c8-8c3210b17d52" ordered="True" unique="True" upperBound="-1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="3a30045f-126f-467c-a595-7472b9fd8810" changeable="True" eContainingClass="ca0df87e-9a6e-4815-be31-5ac48cb06302" name="outputs" eType="e142588c-b918-4aab-b9c8-8c3210b17d52" ordered="True" unique="True" upperBound="-1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="a7041b0b-bb1b-4c15-be7b-894b318de049" changeable="True" eContainingClass="ca0df87e-9a6e-4815-be31-5ac48cb06302" name="kind" eType="0cb020f7-49ab-4274-a129-2b56b4ff4b37" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="0aaf6626-5b93-4c1a-a66c-a20c5d8c830d" changeable="True" eContainingClass="ca0df87e-9a6e-4815-be31-5ac48cb06302" name="selectedInput" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="13da2f45-373b-459b-a49b-5351df290cf6" changeable="True" eContainingClass="ca0df87e-9a6e-4815-be31-5ac48cb06302" name="selectedOutput" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="a873df68-be8b-46f9-9927-f17641a0e114" changeable="True" eContainingClass="ca0df87e-9a6e-4815-be31-5ac48cb06302" name="locked" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="2f02c946-6b4f-423b-86d6-2be07d3119d6" name="Track">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="f5ee97a2-798f-47d4-afa2-ef399eef521e" changeable="True" eContainingClass="2f02c946-6b4f-423b-86d6-2be07d3119d6" name="elements" eType="fa814252-7b8f-4df1-aacb-0ef8c0487033" ordered="True" unique="False" upperBound="-1" resolveProxies="True" />
+  <EClass xmi:type=":EClass" xmi:id="d59a0530-4c44-4fb7-b714-edc750fa481b" name="Track">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="1d3e3db3-cbae-42dd-b003-32c48398177d" changeable="True" eContainingClass="d59a0530-4c44-4fb7-b714-edc750fa481b" name="elements" eType="b870ff91-b029-474d-9364-98629a3ef25f" ordered="True" unique="False" upperBound="-1" resolveProxies="True" />
   </EClass>
-  <EEnum xmi:type=":EEnum" xmi:id="acfb4e68-767c-4541-aa5c-f6657cee824b" serializable="True" name="SpeedLimit">
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="e4690378-6be6-4a3e-826c-facc9d2fcf5b" name="Stop" eEnum="acfb4e68-767c-4541-aa5c-f6657cee824b" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="24b53678-d955-472d-be02-dbc5ccf7f97a" name="Speed40" eEnum="acfb4e68-767c-4541-aa5c-f6657cee824b" value="2" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="d7fdf5d9-a3ea-4ef9-9546-319c9bfdaa27" name="Speed80" eEnum="acfb4e68-767c-4541-aa5c-f6657cee824b" value="3" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="f6aab6a2-07c5-4fa5-9e2c-973ac82d5145" name="Speed120" eEnum="acfb4e68-767c-4541-aa5c-f6657cee824b" value="4" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="bc138a5c-be37-42e9-9eff-791da25a60a1" name="Max" eEnum="acfb4e68-767c-4541-aa5c-f6657cee824b" value="5" />
+  <EEnum xmi:type=":EEnum" xmi:id="69ad35d4-3b01-4643-9024-6dd20e34b36d" serializable="True" name="SpeedLimit">
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="5162eaa3-2b5e-4626-969f-aa5c1e7fe9e1" name="Stop" eEnum="69ad35d4-3b01-4643-9024-6dd20e34b36d" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="c30c0091-5ed8-408b-a063-1b4d2d1847c8" name="Speed40" eEnum="69ad35d4-3b01-4643-9024-6dd20e34b36d" value="2" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="c13cb781-e341-467f-b124-e7207c77f817" name="Speed80" eEnum="69ad35d4-3b01-4643-9024-6dd20e34b36d" value="3" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="0c856434-b21d-4919-896f-5ed313a3141d" name="Speed120" eEnum="69ad35d4-3b01-4643-9024-6dd20e34b36d" value="4" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="36b3430d-0810-4574-b583-4318a34eeb5c" name="Max" eEnum="69ad35d4-3b01-4643-9024-6dd20e34b36d" value="5" />
   </EEnum>
-  <EEnum xmi:type=":EEnum" xmi:id="12514e84-1b1e-4e68-8a9e-f3db55950bf8" serializable="True" name="PointKind">
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="cca15837-4b5d-4a2a-b118-9dd9781f4f35" name="FixedCrossing" eEnum="12514e84-1b1e-4e68-8a9e-f3db55950bf8" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="881ea4ea-a4db-425a-aab9-696f80b47847" name="SimplePoint" eEnum="12514e84-1b1e-4e68-8a9e-f3db55950bf8" value="1" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="9e138026-a62b-4984-9154-4fd4231d9c4a" name="DoublePoint" eEnum="12514e84-1b1e-4e68-8a9e-f3db55950bf8" value="2" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="fc567f38-d9ba-4089-a270-ef162510514a" name="SingleSlipPoint" eEnum="12514e84-1b1e-4e68-8a9e-f3db55950bf8" value="3" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="f5e38132-c432-4519-857d-fd1dcc68d502" name="DoubleSlipPoint" eEnum="12514e84-1b1e-4e68-8a9e-f3db55950bf8" value="4" />
+  <EEnum xmi:type=":EEnum" xmi:id="0cb020f7-49ab-4274-a129-2b56b4ff4b37" serializable="True" name="PointKind">
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="0754f671-d338-4ade-82e2-6a1e2520de47" name="FixedCrossing" eEnum="0cb020f7-49ab-4274-a129-2b56b4ff4b37" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="1d06bef8-1d16-4ac3-b83c-4cb31070ca3e" name="SimplePoint" eEnum="0cb020f7-49ab-4274-a129-2b56b4ff4b37" value="1" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="98eebb82-6be7-4de9-8556-3dc4928bc29e" name="DoublePoint" eEnum="0cb020f7-49ab-4274-a129-2b56b4ff4b37" value="2" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="899ef4d1-edd4-48b2-8b6d-8dfb7eda6b84" name="SingleSlipPoint" eEnum="0cb020f7-49ab-4274-a129-2b56b4ff4b37" value="3" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="c6db569d-a494-4d46-b19f-3c7ba576997f" name="DoubleSlipPoint" eEnum="0cb020f7-49ab-4274-a129-2b56b4ff4b37" value="4" />
   </EEnum>
-  <EEnum xmi:type=":EEnum" xmi:id="6dccfdf8-a2fb-41bd-acfc-baee85e1c7e9" serializable="True" name="VertexKind">
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="40c47bec-5d33-491b-a1bc-3b2cce23f684" name="InnerVertex" eEnum="6dccfdf8-a2fb-41bd-acfc-baee85e1c7e9" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="30557bb8-998c-4dbc-ad77-f036b4f502f9" name="TrackEnd" eEnum="6dccfdf8-a2fb-41bd-acfc-baee85e1c7e9" value="1" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="79d86c2e-12d7-4a91-804f-89143d26b390" name="StationBorder" eEnum="6dccfdf8-a2fb-41bd-acfc-baee85e1c7e9" value="2" />
+  <EEnum xmi:type=":EEnum" xmi:id="8ee9b8d0-13db-4f46-865f-8a04f4592450" serializable="True" name="VertexKind">
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="e9d08009-c0a9-4fab-ac67-7224c26007af" name="InnerVertex" eEnum="8ee9b8d0-13db-4f46-865f-8a04f4592450" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="8cee00a5-018b-46d4-ba15-7eb3d2389786" name="TrackEnd" eEnum="8ee9b8d0-13db-4f46-865f-8a04f4592450" value="1" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="c0e83206-175e-4139-afcd-bbda54c48dea" name="StationBorder" eEnum="8ee9b8d0-13db-4f46-865f-8a04f4592450" value="2" />
   </EEnum>
-  <EClass xmi:type=":EClass" xmi:id="317ac889-5fd9-4a37-a245-1e1ec30f6976" name="NamedElement" abstract="True">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="314261a6-de18-4c96-a7ef-2098af950cca" changeable="True" eContainingClass="317ac889-5fd9-4a37-a245-1e1ec30f6976" name="name" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="3d5f5001-8bad-4d5b-99b2-4c5baa7d2288" name="NamedElement" abstract="True">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="9a59d299-fdc2-4111-baf0-e9d46968c706" changeable="True" eContainingClass="3d5f5001-8bad-4d5b-99b2-4c5baa7d2288" name="name" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EEnum xmi:type=":EEnum" xmi:id="072c4669-e26b-48c6-82d5-11e67a986ecd" serializable="True" name="Orientation">
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="f3db9f67-f8a9-4eb7-bd16-ced2b51de9ad" name="Forwards" eEnum="072c4669-e26b-48c6-82d5-11e67a986ecd" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="060306ba-0919-465d-beec-a037bbec46bd" name="Backwards" eEnum="072c4669-e26b-48c6-82d5-11e67a986ecd" value="1" />
+  <EEnum xmi:type=":EEnum" xmi:id="fe168482-9d84-4551-a71a-b14dbe82fee3" serializable="True" name="Orientation">
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="9c5aee30-e0d2-415c-a007-e8951fcc63a5" name="Forwards" eEnum="fe168482-9d84-4551-a71a-b14dbe82fee3" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="10e5b8de-8d66-48cd-82c0-da4e7c5ca9d6" name="Backwards" eEnum="fe168482-9d84-4551-a71a-b14dbe82fee3" value="1" />
   </EEnum>
-  <EEnum xmi:type=":EEnum" xmi:id="0b1b1d2e-139f-4bb0-bfa2-ba2ece699c60" serializable="True" name="Side">
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="e14c9b75-1da6-4138-8832-875b01a5631e" name="Both" eEnum="0b1b1d2e-139f-4bb0-bfa2-ba2ece699c60" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="8c42b09e-e3a4-4264-a746-dbe0b474bcb6" name="Right" eEnum="0b1b1d2e-139f-4bb0-bfa2-ba2ece699c60" value="1" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="5c717235-129a-4870-bb3d-983273af16b0" name="Left" eEnum="0b1b1d2e-139f-4bb0-bfa2-ba2ece699c60" value="2" />
+  <EEnum xmi:type=":EEnum" xmi:id="b5531aa3-5a20-4ddc-8609-9751f23af765" serializable="True" name="Side">
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="8e9e607d-d576-4cd1-bb5b-db80e00601c5" name="Both" eEnum="b5531aa3-5a20-4ddc-8609-9751f23af765" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="416c8eb0-6bbe-4e3b-a2f3-7177be7fb644" name="Right" eEnum="b5531aa3-5a20-4ddc-8609-9751f23af765" value="1" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="1ed704de-a4bc-4311-a381-05f6a8085f28" name="Left" eEnum="b5531aa3-5a20-4ddc-8609-9751f23af765" value="2" />
   </EEnum>
-  <EClass xmi:type=":EClass" xmi:id="26bb6b41-b3bf-44ea-aa40-5bd6ae4fa559" name="Train">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="f88cf887-322c-4044-b45a-fcf16224c1ea" changeable="True" eContainingClass="26bb6b41-b3bf-44ea-aa40-5bd6ae4fa559" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="bc3d2269-8823-4087-80e3-947f6cfb4bcf" changeable="True" eContainingClass="26bb6b41-b3bf-44ea-aa40-5bd6ae4fa559" name="speed" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="60e9426b-51bd-4f78-995b-095fe7abb30d" changeable="True" eContainingClass="26bb6b41-b3bf-44ea-aa40-5bd6ae4fa559" name="segments" eType="06fdfb37-a56a-4cda-abcd-eb21e152984d" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="a48fbab4-6442-4074-b8a4-92a8e1a356e8" changeable="True" eContainingClass="26bb6b41-b3bf-44ea-aa40-5bd6ae4fa559" name="position" eType="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="0ca7fb95-2067-4d3a-85e7-2eaf6af74064" changeable="True" eContainingClass="26bb6b41-b3bf-44ea-aa40-5bd6ae4fa559" name="acceleration" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="3d38a5c2-5583-40ee-bb4c-a880c937a60a" name="Train">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="b3c4107a-aefe-4127-ae67-a9fd39856896" changeable="True" eContainingClass="3d38a5c2-5583-40ee-bb4c-a880c937a60a" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="48889a6c-458f-44c5-8e2f-5c7b85000615" changeable="True" eContainingClass="3d38a5c2-5583-40ee-bb4c-a880c937a60a" name="speed" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="c996d067-e915-4d7b-b74b-52f33766caa6" changeable="True" eContainingClass="3d38a5c2-5583-40ee-bb4c-a880c937a60a" name="segments" eType="53d094a2-8506-46fe-8215-4f140dc432a3" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="d720eb3e-9b33-4150-b1f3-b66227b96c0d" changeable="True" eContainingClass="3d38a5c2-5583-40ee-bb4c-a880c937a60a" name="position" eType="21cde036-ac05-4775-8865-5877e3126682" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="597ef8fd-d7d8-4023-9cf7-fcd8c39e3e2e" changeable="True" eContainingClass="3d38a5c2-5583-40ee-bb4c-a880c937a60a" name="acceleration" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="06fdfb37-a56a-4cda-abcd-eb21e152984d" name="TrainSegment">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="cf9641c2-43cd-481b-bf3f-4d93382e06b4" changeable="True" eContainingClass="06fdfb37-a56a-4cda-abcd-eb21e152984d" name="position" eType="ea84a48c-c3f0-4f3e-baf2-4cd6bce7688d" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="a1e25c87-fe30-4a67-af91-d5f88330bbcc" changeable="True" eContainingClass="06fdfb37-a56a-4cda-abcd-eb21e152984d" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="53d094a2-8506-46fe-8215-4f140dc432a3" name="TrainSegment">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="ac57e7e8-b30f-4572-8666-b36b5db4a076" changeable="True" eContainingClass="53d094a2-8506-46fe-8215-4f140dc432a3" name="position" eType="21cde036-ac05-4775-8865-5877e3126682" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="f6fa34c1-42dd-4bca-b6fa-da884f7557bd" changeable="True" eContainingClass="53d094a2-8506-46fe-8215-4f140dc432a3" name="length" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="d1e9ed31-8505-4ea1-9fef-8476af3689f2" name="RouteObject" abstract="True">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="af84dde3-875c-4995-967b-3ba3d83b2020" defaultValueLiteral="Max" changeable="True" eContainingClass="d1e9ed31-8505-4ea1-9fef-8476af3689f2" name="speedLimit" eType="acfb4e68-767c-4541-aa5c-f6657cee824b" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="e8925b72-f1a0-4f67-889c-3a9d6aaa324a" changeable="True" eContainingClass="d1e9ed31-8505-4ea1-9fef-8476af3689f2" name="error" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="010faeb7-42ad-4b77-bdd1-7729d5ebbd58" name="RouteObject" abstract="True">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="bcd967b5-56c0-4693-94ca-e3a131c6ff68" defaultValueLiteral="Max" changeable="True" eContainingClass="010faeb7-42ad-4b77-bdd1-7729d5ebbd58" name="speedLimit" eType="69ad35d4-3b01-4643-9024-6dd20e34b36d" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="b01daa84-ddac-4287-b447-52f9144e43e2" changeable="True" eContainingClass="010faeb7-42ad-4b77-bdd1-7729d5ebbd58" name="error" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="2b1704ed-4af6-497b-b46b-dffdd773d323" name="TrainRoute">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="a27885eb-b69a-4a66-9402-e72cadf461dd" changeable="True" eContainingClass="2b1704ed-4af6-497b-b46b-dffdd773d323" name="path" eType="f45c73d7-a0c6-46c9-99db-666f8f7fb732" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="5335fed0-06a9-405b-88ad-6a3bbdeeae0f" changeable="True" eContainingClass="2b1704ed-4af6-497b-b46b-dffdd773d323" name="kind" eType="9667b1c5-d064-4cfb-ac38-2f4e702e72e0" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="8dc6caad-b0cf-4e61-958a-fa50ffb6043f" changeable="True" eContainingClass="2b1704ed-4af6-497b-b46b-dffdd773d323" name="startSignal" eType="b4179b7b-4e40-44c9-b47f-c93c956f2fbf" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="4124a537-aeb0-4457-b92c-cb059213c44e" changeable="True" eContainingClass="2b1704ed-4af6-497b-b46b-dffdd773d323" name="endSignal" eType="b4179b7b-4e40-44c9-b47f-c93c956f2fbf" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="9a5f8d0d-d829-4cb3-a3f7-9a7129ee4bc3" changeable="True" eContainingClass="2b1704ed-4af6-497b-b46b-dffdd773d323" name="protectionObjects" eType="f45c73d7-a0c6-46c9-99db-666f8f7fb732" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="f3238657-611b-4e70-b56f-5d2718c2dca2" changeable="True" eContainingClass="2b1704ed-4af6-497b-b46b-dffdd773d323" name="conflictingRoutes" eType="2b1704ed-4af6-497b-b46b-dffdd773d323" ordered="True" unique="True" upperBound="-1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="f5cbf340-aa10-4e9d-a723-eaccb63a236d" changeable="True" eContainingClass="2b1704ed-4af6-497b-b46b-dffdd773d323" name="locked" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="ee7dc560-99dc-4275-80f9-685c297dc6f5" name="TrainRoute">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="31092b27-54c3-4638-b4ee-8519f8c22bf2" changeable="True" eContainingClass="ee7dc560-99dc-4275-80f9-685c297dc6f5" name="path" eType="d7219887-5516-41c0-8564-2e6551b4288c" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="407f55c7-833c-40f0-83df-21603dce6f7c" changeable="True" eContainingClass="ee7dc560-99dc-4275-80f9-685c297dc6f5" name="kind" eType="f48ff856-72ba-40eb-b7e8-9fce20dfe67d" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="cce15c7b-9548-42a5-9e95-4c8eddd2abb1" changeable="True" eContainingClass="ee7dc560-99dc-4275-80f9-685c297dc6f5" name="startSignal" eType="f884e936-7f8b-41d5-9047-bcd90ebf2f98" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="caed2e62-9f51-496a-86c3-2a021f05bec0" changeable="True" eContainingClass="ee7dc560-99dc-4275-80f9-685c297dc6f5" name="endSignal" eType="f884e936-7f8b-41d5-9047-bcd90ebf2f98" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="aa0fcc82-d357-43c6-9942-e02962bee9fa" changeable="True" eContainingClass="ee7dc560-99dc-4275-80f9-685c297dc6f5" name="protectionObjects" eType="d7219887-5516-41c0-8564-2e6551b4288c" ordered="True" unique="True" upperBound="-1" containment="True" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="0e14be77-382d-495f-ba71-9d5de023d53e" changeable="True" eContainingClass="ee7dc560-99dc-4275-80f9-685c297dc6f5" name="conflictingRoutes" eType="ee7dc560-99dc-4275-80f9-685c297dc6f5" ordered="True" unique="True" upperBound="-1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="95b75e80-7371-4350-ad0b-969778cc166a" changeable="True" eContainingClass="ee7dc560-99dc-4275-80f9-685c297dc6f5" name="locked" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EEnum xmi:type=":EEnum" xmi:id="9667b1c5-d064-4cfb-ac38-2f4e702e72e0" serializable="True" name="TrainRouteKind">
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="8ef1a23b-f8ae-4b9f-8e85-361e5107f532" name="Main" eEnum="9667b1c5-d064-4cfb-ac38-2f4e702e72e0" />
-    <eLiterals xmi:type=":EEnumLiteral" xmi:id="eeede20f-6c5b-43c8-9e36-d8c7fb51ea1b" name="Shunting" eEnum="9667b1c5-d064-4cfb-ac38-2f4e702e72e0" value="1" />
+  <EEnum xmi:type=":EEnum" xmi:id="f48ff856-72ba-40eb-b7e8-9fce20dfe67d" serializable="True" name="TrainRouteKind">
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="cedd5625-47eb-4839-bd42-11730a4ed484" name="Main" eEnum="f48ff856-72ba-40eb-b7e8-9fce20dfe67d" />
+    <eLiterals xmi:type=":EEnumLiteral" xmi:id="e4e75ef0-80ed-404a-ae60-54d345f9cf06" name="Shunting" eEnum="f48ff856-72ba-40eb-b7e8-9fce20dfe67d" value="1" />
   </EEnum>
-  <EClass xmi:type=":EClass" xmi:id="f45c73d7-a0c6-46c9-99db-666f8f7fb732" name="TrainRouteObject">
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="58955f57-66b4-430a-bb48-8d393e3fa058" changeable="True" eContainingClass="f45c73d7-a0c6-46c9-99db-666f8f7fb732" name="speedLimit" eType="acfb4e68-767c-4541-aa5c-f6657cee824b" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="d7219887-5516-41c0-8564-2e6551b4288c" name="TrainRouteObject">
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="8f0c9e40-c0aa-48c8-9f4d-a0bb3da03dbe" changeable="True" eContainingClass="d7219887-5516-41c0-8564-2e6551b4288c" name="speedLimit" eType="69ad35d4-3b01-4643-9024-6dd20e34b36d" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="c8ab36ea-b9e7-4e1f-9ce6-abc8b0ebbc5b" name="TrainRoutePoint">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="57d758a3-f8a7-479c-873b-9a285c71b44a" changeable="True" eContainingClass="c8ab36ea-b9e7-4e1f-9ce6-abc8b0ebbc5b" name="originalPoint" eType="733a583d-94bb-41fa-88b7-de129979c266" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="ef723dd3-8adb-4ce6-ad93-6533344e8dc9" changeable="True" eContainingClass="c8ab36ea-b9e7-4e1f-9ce6-abc8b0ebbc5b" name="selectedInput" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
-    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="8e1f2d6f-ea71-4170-8238-16de7678cea3" changeable="True" eContainingClass="c8ab36ea-b9e7-4e1f-9ce6-abc8b0ebbc5b" name="selectedOutput" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+  <EClass xmi:type=":EClass" xmi:id="7f4ff354-dd9e-401c-b3f5-3df865f72e93" name="TrainRoutePoint">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="77205766-10ae-49c0-a226-bd48f0f4c1c3" changeable="True" eContainingClass="7f4ff354-dd9e-401c-b3f5-3df865f72e93" name="originalPoint" eType="ca0df87e-9a6e-4815-be31-5ac48cb06302" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="947dd187-ee6e-4dbd-a09b-04305d640d36" changeable="True" eContainingClass="7f4ff354-dd9e-401c-b3f5-3df865f72e93" name="selectedInput" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
+    <eStructuralFeatures xmi:type=":EAttribute" xmi:id="73021cc2-634d-4623-ae49-80279b8e3587" changeable="True" eContainingClass="7f4ff354-dd9e-401c-b3f5-3df865f72e93" name="selectedOutput" eType="!!!REF!!!" ordered="True" unique="True" upperBound="1" />
   </EClass>
-  <EClass xmi:type=":EClass" xmi:id="bc0ba094-53a2-475b-999a-d3cf2929ef96" name="TrainRouteSegment">
-    <eStructuralFeatures xmi:type=":EReference" xmi:id="874dbf63-c727-46a7-91f7-21ba3366f013" changeable="True" eContainingClass="bc0ba094-53a2-475b-999a-d3cf2929ef96" name="originalSegment" eType="f124694e-9250-4f03-b47a-122d8ade5e5b" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
+  <EClass xmi:type=":EClass" xmi:id="18b35f93-8f5d-4a89-83a6-265fb00b1d50" name="TrainRouteSegment">
+    <eStructuralFeatures xmi:type=":EReference" xmi:id="ae0c83f4-fc05-4306-8afc-f5d7e8bf4a47" changeable="True" eContainingClass="18b35f93-8f5d-4a89-83a6-265fb00b1d50" name="originalSegment" eType="d1c1e56f-735c-4dd3-9c11-c639858d0c67" ordered="True" unique="True" upperBound="1" resolveProxies="True" />
   </EClass>
 </xmi:XMI>
