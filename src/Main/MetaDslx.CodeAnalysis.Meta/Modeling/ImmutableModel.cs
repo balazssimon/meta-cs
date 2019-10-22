@@ -416,6 +416,19 @@ namespace MetaDslx.Modeling
             }
         }
 
+        internal bool MHasDefaultValue(ObjectId oid, ModelProperty property)
+        {
+            var greenValue = this.GetGreenValue(oid, property);
+            if (property.IsCollection)
+            {
+                return greenValue is GreenList greenList && greenList.Count == 0;
+            }
+            else
+            {
+                return greenValue == GreenObject.Unassigned || (greenValue == null && property.DefaultValue == null) || (property.DefaultValue != null && property.DefaultValue.Equals(greenValue));
+            }
+        }
+
         internal bool MIsSet(ObjectId oid, ModelProperty property)
         {
             if (property.IsCollection)
@@ -427,6 +440,20 @@ namespace MetaDslx.Modeling
                 var greenValue = this.GetGreenValue(oid, property);
                 return greenValue != GreenObject.Unassigned;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is IModel other)
+            {
+                return this.id.Equals(other.Id);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.id.GetHashCode();
         }
 
         public override string ToString()

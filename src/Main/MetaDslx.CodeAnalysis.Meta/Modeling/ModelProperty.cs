@@ -63,8 +63,9 @@ namespace MetaDslx.Modeling
         private ImmutableList<ModelProperty> redefinedProperties;
         private ImmutableList<ModelProperty> oppositeProperties;
         private Lazy<MetaProperty> metaProperty = null;
+        private object defaultValue = null;
 
-        private ModelProperty(ModelObjectDescriptor declaringDescriptor, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty)
+        private ModelProperty(ModelObjectDescriptor declaringDescriptor, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty, object defaultValue)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (immutableTypeInfo == null) throw new ArgumentNullException(nameof(immutableTypeInfo));
@@ -96,20 +97,21 @@ namespace MetaDslx.Modeling
             this.oppositeProperties = ImmutableList<ModelProperty>.Empty;
             if (metaProperty != null) this.metaProperty = new Lazy<MetaProperty>(metaProperty, true);
             else this.metaProperty = new Lazy<MetaProperty>(() => null, true);
+            this.defaultValue = defaultValue;
         }
 
-        public static ModelProperty Register(Type declaringType, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty = null)
+        public static ModelProperty Register(Type declaringType, string name, ModelPropertyTypeInfo immutableTypeInfo, ModelPropertyTypeInfo mutableTypeInfo, Func<MetaProperty> metaProperty = null, object defaultValue = null)
         {
             ModelObjectDescriptor descriptor = ModelObjectDescriptor.GetDescriptorForDescriptorType(declaringType);
-            ModelProperty result = new ModelProperty(descriptor, name, immutableTypeInfo, mutableTypeInfo, metaProperty);
+            ModelProperty result = new ModelProperty(descriptor, name, immutableTypeInfo, mutableTypeInfo, metaProperty, defaultValue);
             descriptor.AddProperty(result);
             return result;
         }
 
-        public static ModelProperty Register(Type declaringType, string name, Type valueType)
+        public static ModelProperty Register(Type declaringType, string name, Type valueType, object defaultValue = null)
         {
             ModelObjectDescriptor descriptor = ModelObjectDescriptor.GetDescriptorForDescriptorType(declaringType);
-            ModelProperty result = new ModelProperty(descriptor, name, new ModelPropertyTypeInfo(valueType, null), new ModelPropertyTypeInfo(valueType, null), null);
+            ModelProperty result = new ModelProperty(descriptor, name, new ModelPropertyTypeInfo(valueType, null), new ModelPropertyTypeInfo(valueType, null), null, defaultValue);
             descriptor.AddProperty(result);
             return result;
         }
@@ -246,6 +248,22 @@ namespace MetaDslx.Modeling
 
         public ModelPropertyTypeInfo ImmutableTypeInfo { get { return this.immutableTypeInfo; } }
         public ModelPropertyTypeInfo MutableTypeInfo { get { return this.mutableTypeInfo; } }
+
+        public object DefaultValue
+        {
+            get
+            {
+                if (this.ImmutableTypeInfo.Type.IsValueType)
+                {
+                    return this.defaultValue ?? Activator.CreateInstance(this.ImmutableTypeInfo.Type);
+                }
+                else
+                {
+                    return this.defaultValue;
+                }
+            }
+        }
+
         public ImmutableList<Attribute> Annotations { get { return this.annotations; } }
         public ImmutableList<ModelProperty> SubsettedProperties
         {

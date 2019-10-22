@@ -528,16 +528,17 @@ template GenerateDescriptorProperty(MetaModel model, MetaClass cls, MetaProperty
 [GenerateAttributes(prop)]
 [GenerateDescriptorPropertyAttributes(model, cls, prop)]
 public static readonly [Properties.CoreNs].ModelProperty [prop.CSharpName(model, PropertyKind.Descriptor)] =
-    [Properties.CoreNs].ModelProperty.Register(typeof([cls.CSharpName(model, ClassKind.Descriptor)]), "[prop.CSharpName(model)]",
+    [Properties.CoreNs].ModelProperty.Register(declaringType: typeof([cls.CSharpName(model, ClassKind.Descriptor)]), name: "[prop.CSharpName(model)]",
 [if (prop.Type is MetaCollectionType)]
 	[MetaCollectionType collType = (MetaCollectionType)prop.Type]
-        new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpName(null, ClassKind.Immutable, true)]), typeof([prop.Type.CSharpName(null, ClassKind.Immutable, true)])),
-        new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpName(null, ClassKind.Builder, true)]), typeof([prop.Type.CSharpName(null, ClassKind.Builder, true)])),
+        immutableTypeInfo: new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpName(null, ClassKind.Immutable, true)]), typeof([prop.Type.CSharpName(null, ClassKind.Immutable, true)])),
+        mutableTypeInfo: new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([collType.InnerType.CSharpName(null, ClassKind.Builder, true)]), typeof([prop.Type.CSharpName(null, ClassKind.Builder, true)])),
 [else]
-        new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([prop.Type.CSharpName(null, ClassKind.Immutable, true)]), null),
-        new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([prop.Type.CSharpName(null, ClassKind.Builder, true)]), null),
+        immutableTypeInfo: new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([prop.Type.CSharpName(null, ClassKind.Immutable, true)]), null),
+        mutableTypeInfo: new [Properties.CoreNs].ModelPropertyTypeInfo(typeof([prop.Type.CSharpName(null, ClassKind.Builder, true)]), null),
 [end if]
-		() => [prop.CSharpName(null, PropertyKind.ImmutableInstance, true)]);
+		metaProperty: () => [prop.CSharpName(null, PropertyKind.ImmutableInstance, true)],
+		defaultValue: [prop.DefaultValue != null ? prop.DefaultValue : "null"]);
 end template
 
 template GenerateDescriptorPropertyAttributes(MetaModel model, MetaClass cls, MetaProperty prop)

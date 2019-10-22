@@ -27,6 +27,7 @@ namespace MetaDslx.Modeling
         object MGet(ModelProperty property);
         T MGetValue<T>(ModelProperty property) where T : struct;
         T MGetReference<T>(ModelProperty property) where T : class;
+        bool MHasDefaultValue(ModelProperty property);
         bool MHasConcreteValue(ModelProperty property);
         bool MIsSet(ModelProperty property);
     }

@@ -59,14 +59,14 @@ namespace MetaDslx.Languages.Ecore
         public EcoreXmiReadOptions()
         {
             this.XmiRoot = false;
-            this.UriToModelMap.Add(EcoreXmiSerializer.EcoreMetamodelUri, EcoreInstance.MModel);
+            this.UriToModelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MModel);
         }
 
         public EcoreXmiReadOptions(IMetaModel metaModel)
             : base(metaModel)
         {
             this.XmiRoot = false;
-            this.UriToModelMap.Add(EcoreXmiSerializer.EcoreMetamodelUri, EcoreInstance.MModel);
+            this.UriToModelMap.Add(EcoreInstance.MMetaModel.Uri, EcoreInstance.MModel);
         }
     }
 
@@ -78,12 +78,14 @@ namespace MetaDslx.Languages.Ecore
             this.XmiNamespace = "http://www.omg.org/spec/XMI";
             this.MetamodelToNamespaceMap = new Dictionary<IMetaModel, string>();
             this.ModelToUriMap = new Dictionary<IModel, string>();
+            this.ModelToFileMap = new Dictionary<IModel, string>();
         }
 
         public bool XmiRoot { get; set; }
         public string XmiNamespace { get; set; }
         public Dictionary<IMetaModel, string> MetamodelToNamespaceMap { get; }
         public Dictionary<IModel, string> ModelToUriMap { get; }
+        public Dictionary<IModel, string> ModelToFileMap { get; }
     }
 
     public class MetaDslxXmiWriteOptions : XmiWriteOptions
@@ -100,14 +102,12 @@ namespace MetaDslx.Languages.Ecore
         {
             this.XmiRoot = false;
             this.XmiNamespace = "http://www.omg.org/XMI";
-            this.ModelToUriMap.Add(EcoreInstance.MModel, EcoreXmiSerializer.EcoreMetamodelUri);
+            this.ModelToUriMap.Add(EcoreInstance.MModel, EcoreInstance.MMetaModel.Uri);
         }
     }
 
     public class EcoreXmiSerializer
     {
-        public const string EcoreMetamodelUri = "http://www.eclipse.org/emf/2002/Ecore";
-
         public ImmutableModel ReadModel(string xmiCode, IMetaModel metaModel)
         {
             if (xmiCode == null) throw new ArgumentNullException(nameof(xmiCode));
@@ -302,7 +302,7 @@ namespace MetaDslx.Languages.Ecore
             {
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
-                //if (oppositeIsContainment) continue;
+                if (oppositeIsContainment) continue;
                 bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
                 if (!prop.IsCollection && (!prop.IsContainment || !isModelObjectType))
                 {
@@ -317,16 +317,21 @@ namespace MetaDslx.Languages.Ecore
                             }
                             else
                             {
-                                _xml.WriteAttributeString(prop.Name.ToCamelCase(), "!!!REF!!!");
+                                _xml.WriteAttributeString(prop.Name.ToCamelCase(), ExternalIdRef(value));
                             }
                         }
                     }
-                    else
+                    else 
                     {
-                        var value = obj.MGet(prop)?.ToString();
-                        if (value != null)
+                        if (!obj.MHasDefaultValue(prop))
                         {
-                            _xml.WriteAttributeString(prop.Name.ToCamelCase(), value);
+                            var value = obj.MGet(prop);
+                            if (value != null)
+                            {
+                                var valueStr = value.ToString();
+                                if (value.GetType() == typeof(bool)) valueStr = valueStr.ToLower();
+                                _xml.WriteAttributeString(prop.Name.ToCamelCase(), valueStr);
+                            }
                         }
                     }
                 }
@@ -335,25 +340,28 @@ namespace MetaDslx.Languages.Ecore
             {
                 if (prop.IsDerived || prop.IsDerivedUnion) continue;
                 bool oppositeIsContainment = prop.OppositeProperties.Any(p => p.IsContainment);
-                //if (oppositeIsContainment) continue;
+                if (oppositeIsContainment) continue;
                 bool isModelObjectType = typeof(IModelObject).IsAssignableFrom(prop.ImmutableTypeInfo.Type);
                 if (prop.IsCollection && (!prop.IsContainment || !isModelObjectType))
                 {
                     if (isModelObjectType)
                     {
-                        var value = obj.MGet(prop) as IModelObject;
-                        if (value != null)
+                        var values = obj.MGet(prop) as System.Collections.IEnumerable;
+                        if (values != null)
                         {
-                            _xml.WriteStartElement(prop.Name.ToCamelCase());
-                            if (value.MModel == _mainModel)
+                            foreach (IModelObject value in values)
                             {
-                                _xml.WriteAttributeString(Xmi, "idref", _options.XmiNamespace, value.MId.Id);
+                                _xml.WriteStartElement(prop.Name.ToCamelCase());
+                                if (value.MModel == _mainModel)
+                                {
+                                    _xml.WriteAttributeString(Xmi, "idref", _options.XmiNamespace, value.MId.Id);
+                                }
+                                else
+                                {
+                                    _xml.WriteAttributeString(Xmi, "idref", _options.XmiNamespace, ExternalIdRef(value));
+                                }
+                                _xml.WriteEndElement();
                             }
-                            else
-                            {
-                                _xml.WriteAttributeString(Xmi, "idref", _options.XmiNamespace, "!!!REF!!!");
-                            }
-                            _xml.WriteEndElement();
                         }
                     }
                     else
@@ -400,6 +408,46 @@ namespace MetaDslx.Languages.Ecore
                 }
             }
             _xml.WriteEndElement();
+        }
+
+        private string ExternalIdRef(IModelObject obj)
+        {
+            obj = ModelObjectToConstant(obj);
+            if (_options.ModelToFileMap.TryGetValue(obj.MModel, out var filePath))
+            {
+                return string.Format("{0}#{1}", filePath, obj.MId.Id);
+            }
+            else if (_options.ModelToUriMap.TryGetValue(obj.MModel, out var uri))
+            {
+                if (!string.IsNullOrWhiteSpace(obj.MName))
+                {
+                    var nameList = obj.MModel.Objects.Where(o => o.MName == obj.MName).ToList();
+                    if (nameList.Count == 1)
+                    {
+                        return string.Format("{0}#//{1}", uri, obj.MName);
+                    }
+                    else
+                    {
+                        return string.Format("{0}#//{1}[{2}]", uri, obj.MName, nameList.IndexOf(obj) + 1);
+                    }
+                }
+                else
+                {
+                    this.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnosticWithNoLocation(string.Format("Cannot reference object '{0}' with no name through an external URI. Try specifying an external file for the model through the XmiWriteOptions.ModelToFileMap property.", obj.ToString())));
+                    return "***ERROR***";
+                }
+            }
+            else
+            {
+                this.Diagnostics.Add(ModelErrorCode.ERR_XmiError.ToDiagnosticWithNoLocation(string.Format("There is no external file or URI defined for model '{0}'. Use the XmiWriteOptions.ModelToFileMap or XmiWriteOptions.ModelToUriMap property to specify the external file or URI, respectively.", obj.MModel.ToString())));
+                return "***ERROR***";
+            }
+        }
+
+        private IModelObject ModelObjectToConstant(IModelObject obj)
+        {
+            var cst = obj.MModel.Objects.OfType<MetaConstant>().Where(c => c.Value == obj).FirstOrDefault();
+            return cst ?? obj;
         }
     }
 

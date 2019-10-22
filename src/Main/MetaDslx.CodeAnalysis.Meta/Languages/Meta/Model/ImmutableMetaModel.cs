@@ -1387,10 +1387,11 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty AttributesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaElement), "Attributes",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaAttribute), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaElement_Attributes);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaElement), name: "Attributes",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaAttribute), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttribute>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaAttributeBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaElement_Attributes,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaDocumentedElementId), typeof(global::MetaDslx.Languages.Meta.Model.MetaDocumentedElement), typeof(global::MetaDslx.Languages.Meta.Model.MetaDocumentedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaElement) })]
@@ -1418,10 +1419,11 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty DocumentationProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaDocumentedElement), "Documentation",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDocumentedElement_Documentation);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDocumentedElement), name: "Documentation",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDocumentedElement_Documentation,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNamedElementId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedElement), typeof(global::MetaDslx.Languages.Meta.Model.MetaNamedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDocumentedElement) })]
@@ -1450,10 +1452,11 @@ namespace MetaDslx.Languages.Meta.Model
 			
 			[global::MetaDslx.Modeling.NameAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaNamedElement), "Name",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamedElement_Name);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamedElement), name: "Name",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamedElement_Name,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaTypedElementId), typeof(global::MetaDslx.Languages.Meta.Model.MetaTypedElement), typeof(global::MetaDslx.Languages.Meta.Model.MetaTypedElementBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaElement) })]
@@ -1482,10 +1485,11 @@ namespace MetaDslx.Languages.Meta.Model
 			
 			[global::MetaDslx.Modeling.TypeAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty TypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaTypedElement), "Type",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaTypedElement_Type);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaTypedElement), name: "Type",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaTypedElement_Type,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.TypeAttribute]
@@ -1590,26 +1594,29 @@ namespace MetaDslx.Languages.Meta.Model
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaNamespace), "Declarations")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NamespaceProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaDeclaration), "Namespace",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_Namespace);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "Namespace",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_Namespace,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty MetaModelProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaDeclaration), "MetaModel",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModel), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_MetaModel);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "MetaModel",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModel), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_MetaModel,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			[global::MetaDslx.Modeling.DerivedAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty FullNameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaDeclaration), "FullName",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_FullName);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaDeclaration), name: "FullName",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaDeclaration_FullName,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ScopeAttribute]
@@ -1640,18 +1647,20 @@ namespace MetaDslx.Languages.Meta.Model
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaModel), "Namespace")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty DefinedMetaModelProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaNamespace), "DefinedMetaModel",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModel), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace_DefinedMetaModel);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamespace), name: "DefinedMetaModel",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModel), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace_DefinedMetaModel,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaDeclaration), "Namespace")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty DeclarationsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaNamespace), "Declarations",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclaration), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaDeclaration>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclarationBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaDeclarationBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace_Declarations);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNamespace), name: "Declarations",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclaration), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaDeclaration>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaDeclarationBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaDeclarationBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNamespace_Declarations,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaModelId), typeof(global::MetaDslx.Languages.Meta.Model.MetaModel), typeof(global::MetaDslx.Languages.Meta.Model.MetaModelBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement) })]
@@ -1679,23 +1688,26 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty UriProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaModel), "Uri",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Uri);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Uri",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Uri,
+					defaultValue: null);
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty PrefixProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaModel), "Prefix",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Prefix);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Prefix",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Prefix,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaNamespace), "DefinedMetaModel")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty NamespaceProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaModel), "Namespace",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Namespace);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaModel), name: "Namespace",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespace), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaNamespaceBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaModel_Namespace,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaCollectionTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionType), typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
@@ -1723,16 +1735,18 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty KindProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaCollectionType), "Kind",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionKind), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionKind), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaCollectionType_Kind);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaCollectionType), name: "Kind",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionKind), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaCollectionKind), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaCollectionType_Kind,
+					defaultValue: null);
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty InnerTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaCollectionType), "InnerType",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaCollectionType_InnerType);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaCollectionType), name: "InnerType",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaCollectionType_InnerType,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaNullableTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaNullableType), typeof(global::MetaDslx.Languages.Meta.Model.MetaNullableTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaType) })]
@@ -1760,10 +1774,11 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty InnerTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaNullableType), "InnerType",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNullableType_InnerType);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaNullableType), name: "InnerType",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaNullableType_InnerType,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaPrimitiveTypeId), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveType), typeof(global::MetaDslx.Languages.Meta.Model.MetaPrimitiveTypeBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaType) })]
@@ -1819,18 +1834,20 @@ namespace MetaDslx.Languages.Meta.Model
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaEnumLiteral), "Enum")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EnumLiteralsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaEnum), "EnumLiterals",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteral), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaEnumLiteral>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnum_EnumLiterals);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnum), name: "EnumLiterals",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteral), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaEnumLiteral>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnum_EnumLiterals,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Parent")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperationsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaEnum), "Operations",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaOperation>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnum_Operations);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnum), name: "Operations",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaOperation>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnum_Operations,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaEnumLiteralId), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteral), typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumLiteralBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
@@ -1860,10 +1877,11 @@ namespace MetaDslx.Languages.Meta.Model
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaEnum), "EnumLiterals")]
 			[global::MetaDslx.Modeling.RedefinesAttribute(typeof(MetaDescriptor.MetaTypedElement), "Type")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty EnumProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaEnumLiteral), "Enum",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnumLiteral_Enum);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaEnumLiteral), name: "Enum",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaEnum), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaEnumBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaEnumLiteral_Enum,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaConstantId), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstant), typeof(global::MetaDslx.Languages.Meta.Model.MetaConstantBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaDeclaration), typeof(MetaDescriptor.MetaTypedElement), typeof(MetaDescriptor.MetaType) })]
@@ -1891,17 +1909,19 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty DotNetNameProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaConstant), "DotNetName",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant_DotNetName);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaConstant), name: "DotNetName",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant_DotNetName,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.ReadonlyAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ValueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaConstant), "Value",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Modeling.IModelObject), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Modeling.IModelObject), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant_Value);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaConstant), name: "Value",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Modeling.IModelObject), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Modeling.IModelObject), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaConstant_Value,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ScopeAttribute]
@@ -1930,33 +1950,37 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsAbstractProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaClass), "IsAbstract",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_IsAbstract);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "IsAbstract",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_IsAbstract,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.BaseScopeAttribute]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SuperClassesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaClass), "SuperClasses",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaClass), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaClass>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaClassBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_SuperClasses);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "SuperClasses",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaClass), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaClass>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaClassBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_SuperClasses,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "Class")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty PropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaClass), "Properties",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_Properties);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "Properties",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_Properties,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Parent")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperationsProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaClass), "Operations",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaOperation>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_Operations);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaClass), name: "Operations",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaOperation>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaClass_Operations,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.LocalScopeAttribute]
@@ -1987,36 +2011,41 @@ namespace MetaDslx.Languages.Meta.Model
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaClass), "Operations")]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaEnum), "Operations")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ParentProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaOperation), "Parent",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Parent);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Parent",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Parent,
+					defaultValue: null);
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsBuilderProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaOperation), "IsBuilder",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_IsBuilder);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "IsBuilder",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_IsBuilder,
+					defaultValue: null);
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty IsReadonlyProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaOperation), "IsReadonly",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_IsReadonly);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "IsReadonly",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(bool), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_IsReadonly,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.ContainmentAttribute]
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaParameter), "Operation")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ParametersProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaOperation), "Parameters",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaParameter), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaParameter>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaParameterBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaParameterBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Parameters);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "Parameters",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaParameter), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaParameter>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaParameterBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaParameterBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_Parameters,
+					defaultValue: null);
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty ReturnTypeProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaOperation), "ReturnType",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_ReturnType);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaOperation), name: "ReturnType",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaType), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaTypeBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaOperation_ReturnType,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaParameterId), typeof(global::MetaDslx.Languages.Meta.Model.MetaParameter), typeof(global::MetaDslx.Languages.Meta.Model.MetaParameterBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
@@ -2045,10 +2074,11 @@ namespace MetaDslx.Languages.Meta.Model
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaOperation), "Parameters")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OperationProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaParameter), "Operation",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaParameter_Operation);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaParameter), name: "Operation",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperation), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaOperationBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaParameter_Operation,
+					defaultValue: null);
 		}
 	
 		[global::MetaDslx.Modeling.ModelObjectDescriptorAttribute(typeof(global::MetaDslx.Languages.Meta.Model.Internal.MetaPropertyId), typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), BaseDescriptors = new global::System.Type[] { typeof(MetaDescriptor.MetaNamedElement), typeof(MetaDescriptor.MetaTypedElement) })]
@@ -2076,58 +2106,66 @@ namespace MetaDslx.Languages.Meta.Model
 			}
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty KindProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaProperty), "Kind",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyKind), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyKind), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_Kind);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "Kind",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyKind), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyKind), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_Kind,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaClass), "Properties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty ClassProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaProperty), "Class",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaClass), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_Class);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "Class",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaClass), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaClassBuilder), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_Class,
+					defaultValue: null);
 			
 			public static readonly global::MetaDslx.Modeling.ModelProperty DefaultValueProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaProperty), "DefaultValue",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_DefaultValue);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "DefaultValue",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(string), null),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_DefaultValue,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "OppositeProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty OppositePropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaProperty), "OppositeProperties",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_OppositeProperties);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "OppositeProperties",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_OppositeProperties,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "SubsettingProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SubsettedPropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaProperty), "SubsettedProperties",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_SubsettedProperties);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "SubsettedProperties",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_SubsettedProperties,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "SubsettedProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty SubsettingPropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaProperty), "SubsettingProperties",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_SubsettingProperties);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "SubsettingProperties",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_SubsettingProperties,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "RedefiningProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty RedefinedPropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaProperty), "RedefinedProperties",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_RedefinedProperties);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "RedefinedProperties",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_RedefinedProperties,
+					defaultValue: null);
 			
 			[global::MetaDslx.Modeling.OppositeAttribute(typeof(MetaDescriptor.MetaProperty), "RedefinedProperties")]
 			public static readonly global::MetaDslx.Modeling.ModelProperty RedefiningPropertiesProperty =
-			    global::MetaDslx.Modeling.ModelProperty.Register(typeof(MetaProperty), "RedefiningProperties",
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
-			        new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
-					() => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_RedefiningProperties);
+			    global::MetaDslx.Modeling.ModelProperty.Register(declaringType: typeof(MetaProperty), name: "RedefiningProperties",
+			        immutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaProperty), typeof(global::MetaDslx.Modeling.ImmutableModelList<global::MetaDslx.Languages.Meta.Model.MetaProperty>)),
+			        mutableTypeInfo: new global::MetaDslx.Modeling.ModelPropertyTypeInfo(typeof(global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder), typeof(global::MetaDslx.Modeling.MutableModelList<global::MetaDslx.Languages.Meta.Model.MetaPropertyBuilder>)),
+					metaProperty: () => global::MetaDslx.Languages.Meta.Model.MetaInstance.MetaProperty_RedefiningProperties,
+					defaultValue: null);
 		}
 	}
 }
@@ -7908,16 +7946,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		internal MetaPropertyBuilder MetaClass_SuperClasses;
 		internal MetaPropertyBuilder MetaClass_Properties;
 		internal MetaPropertyBuilder MetaClass_Operations;
-		private MetaOperationBuilder __tmp36;
-		private MetaParameterBuilder __tmp55;
-		private MetaOperationBuilder __tmp37;
-		private MetaParameterBuilder __tmp57;
-		private MetaOperationBuilder __tmp38;
-		private MetaParameterBuilder __tmp59;
 		private MetaOperationBuilder __tmp39;
+		private MetaParameterBuilder __tmp55;
 		private MetaOperationBuilder __tmp40;
+		private MetaParameterBuilder __tmp57;
 		private MetaOperationBuilder __tmp41;
+		private MetaParameterBuilder __tmp59;
 		private MetaOperationBuilder __tmp42;
+		private MetaOperationBuilder __tmp43;
+		private MetaOperationBuilder __tmp44;
+		private MetaOperationBuilder __tmp45;
 		internal MetaClassBuilder MetaOperation;
 		internal MetaPropertyBuilder MetaOperation_Parent;
 		internal MetaPropertyBuilder MetaOperation_IsBuilder;
@@ -7947,9 +7985,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 		private MetaCollectionTypeBuilder __tmp26;
 		private MetaCollectionTypeBuilder __tmp27;
 		private MetaCollectionTypeBuilder __tmp29;
-		private MetaCollectionTypeBuilder __tmp43;
-		private MetaCollectionTypeBuilder __tmp44;
-		private MetaCollectionTypeBuilder __tmp45;
+		private MetaCollectionTypeBuilder __tmp36;
+		private MetaCollectionTypeBuilder __tmp37;
+		private MetaCollectionTypeBuilder __tmp38;
 		private MetaCollectionTypeBuilder __tmp46;
 		private MetaCollectionTypeBuilder __tmp47;
 		private MetaCollectionTypeBuilder __tmp48;
@@ -8096,16 +8134,16 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaClass_SuperClasses = factory.MetaProperty();
 			MetaClass_Properties = factory.MetaProperty();
 			MetaClass_Operations = factory.MetaProperty();
-			__tmp36 = factory.MetaOperation();
-			__tmp55 = factory.MetaParameter();
-			__tmp37 = factory.MetaOperation();
-			__tmp57 = factory.MetaParameter();
-			__tmp38 = factory.MetaOperation();
-			__tmp59 = factory.MetaParameter();
 			__tmp39 = factory.MetaOperation();
+			__tmp55 = factory.MetaParameter();
 			__tmp40 = factory.MetaOperation();
+			__tmp57 = factory.MetaParameter();
 			__tmp41 = factory.MetaOperation();
+			__tmp59 = factory.MetaParameter();
 			__tmp42 = factory.MetaOperation();
+			__tmp43 = factory.MetaOperation();
+			__tmp44 = factory.MetaOperation();
+			__tmp45 = factory.MetaOperation();
 			MetaOperation = factory.MetaClass();
 			MetaOperation_Parent = factory.MetaProperty();
 			MetaOperation_IsBuilder = factory.MetaProperty();
@@ -8135,9 +8173,9 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp26 = factory.MetaCollectionType();
 			__tmp27 = factory.MetaCollectionType();
 			__tmp29 = factory.MetaCollectionType();
-			__tmp43 = factory.MetaCollectionType();
-			__tmp44 = factory.MetaCollectionType();
-			__tmp45 = factory.MetaCollectionType();
+			__tmp36 = factory.MetaCollectionType();
+			__tmp37 = factory.MetaCollectionType();
+			__tmp38 = factory.MetaCollectionType();
 			__tmp46 = factory.MetaCollectionType();
 			__tmp47 = factory.MetaCollectionType();
 			__tmp48 = factory.MetaCollectionType();
@@ -8304,7 +8342,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaElement.Name = "MetaElement";
 			// MetaElement.IsAbstract = null;
 			MetaElement.Properties.AddLazy(() => MetaElement_Attributes);
-			MetaElement_Attributes.SetTypeLazy(() => __tmp27);
+			MetaElement_Attributes.SetTypeLazy(() => __tmp25);
 			MetaElement_Attributes.Name = "Attributes";
 			MetaElement_Attributes.Documentation = "";
 			// MetaElement_Attributes.Kind = null;
@@ -8414,7 +8452,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaNamespace_DefinedMetaModel.SetClassLazy(() => MetaNamespace);
 			MetaNamespace_DefinedMetaModel.DefaultValue = null;
 			MetaNamespace_DefinedMetaModel.OppositeProperties.AddLazy(() => MetaModel_Namespace);
-			MetaNamespace_Declarations.SetTypeLazy(() => __tmp26);
+			MetaNamespace_Declarations.SetTypeLazy(() => __tmp27);
 			MetaNamespace_Declarations.Name = "Declarations";
 			MetaNamespace_Declarations.Documentation = "";
 			MetaNamespace_Declarations.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Containment;
@@ -8517,14 +8555,14 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaEnum.SuperClasses.AddLazy(() => MetaType);
 			MetaEnum.Properties.AddLazy(() => MetaEnum_EnumLiterals);
 			MetaEnum.Properties.AddLazy(() => MetaEnum_Operations);
-			MetaEnum_EnumLiterals.SetTypeLazy(() => __tmp45);
+			MetaEnum_EnumLiterals.SetTypeLazy(() => __tmp37);
 			MetaEnum_EnumLiterals.Name = "EnumLiterals";
 			MetaEnum_EnumLiterals.Documentation = "";
 			MetaEnum_EnumLiterals.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Containment;
 			MetaEnum_EnumLiterals.SetClassLazy(() => MetaEnum);
 			MetaEnum_EnumLiterals.DefaultValue = null;
 			MetaEnum_EnumLiterals.OppositeProperties.AddLazy(() => MetaEnumLiteral_Enum);
-			MetaEnum_Operations.SetTypeLazy(() => __tmp25);
+			MetaEnum_Operations.SetTypeLazy(() => __tmp26);
 			MetaEnum_Operations.Name = "Operations";
 			MetaEnum_Operations.Documentation = "";
 			MetaEnum_Operations.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Containment;
@@ -8578,20 +8616,20 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaClass.Properties.AddLazy(() => MetaClass_SuperClasses);
 			MetaClass.Properties.AddLazy(() => MetaClass_Properties);
 			MetaClass.Properties.AddLazy(() => MetaClass_Operations);
-			MetaClass.Operations.AddLazy(() => __tmp36);
-			MetaClass.Operations.AddLazy(() => __tmp37);
-			MetaClass.Operations.AddLazy(() => __tmp38);
 			MetaClass.Operations.AddLazy(() => __tmp39);
 			MetaClass.Operations.AddLazy(() => __tmp40);
 			MetaClass.Operations.AddLazy(() => __tmp41);
 			MetaClass.Operations.AddLazy(() => __tmp42);
+			MetaClass.Operations.AddLazy(() => __tmp43);
+			MetaClass.Operations.AddLazy(() => __tmp44);
+			MetaClass.Operations.AddLazy(() => __tmp45);
 			MetaClass_IsAbstract.SetTypeLazy(() => Bool);
 			MetaClass_IsAbstract.Name = "IsAbstract";
 			MetaClass_IsAbstract.Documentation = "";
 			// MetaClass_IsAbstract.Kind = null;
 			MetaClass_IsAbstract.SetClassLazy(() => MetaClass);
 			MetaClass_IsAbstract.DefaultValue = null;
-			MetaClass_SuperClasses.SetTypeLazy(() => __tmp51);
+			MetaClass_SuperClasses.SetTypeLazy(() => __tmp50);
 			MetaClass_SuperClasses.Attributes.Add(BaseScopeAttribute);
 			MetaClass_SuperClasses.Name = "SuperClasses";
 			MetaClass_SuperClasses.Documentation = "";
@@ -8612,63 +8650,63 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaClass_Operations.SetClassLazy(() => MetaClass);
 			MetaClass_Operations.DefaultValue = null;
 			MetaClass_Operations.OppositeProperties.AddLazy(() => MetaOperation_Parent);
-			__tmp36.Name = "GetAllSuperClasses";
-			__tmp36.Documentation = "";
-			__tmp36.SetParentLazy(() => MetaClass);
-			// __tmp36.IsBuilder = null;
-			// __tmp36.IsReadonly = null;
-			__tmp36.Parameters.AddLazy(() => __tmp55);
-			__tmp36.SetReturnTypeLazy(() => __tmp54);
-			__tmp55.SetTypeLazy(() => Bool);
-			__tmp55.Name = "includeSelf";
-			__tmp55.Documentation = null;
-			__tmp55.SetOperationLazy(() => __tmp36);
-			__tmp37.Name = "GetAllSuperProperties";
-			__tmp37.Documentation = "";
-			__tmp37.SetParentLazy(() => MetaClass);
-			// __tmp37.IsBuilder = null;
-			// __tmp37.IsReadonly = null;
-			__tmp37.Parameters.AddLazy(() => __tmp57);
-			__tmp37.SetReturnTypeLazy(() => __tmp56);
-			__tmp57.SetTypeLazy(() => Bool);
-			__tmp57.Name = "includeSelf";
-			__tmp57.Documentation = null;
-			__tmp57.SetOperationLazy(() => __tmp37);
-			__tmp38.Name = "GetAllSuperOperations";
-			__tmp38.Documentation = "";
-			__tmp38.SetParentLazy(() => MetaClass);
-			// __tmp38.IsBuilder = null;
-			// __tmp38.IsReadonly = null;
-			__tmp38.Parameters.AddLazy(() => __tmp59);
-			__tmp38.SetReturnTypeLazy(() => __tmp58);
-			__tmp59.SetTypeLazy(() => Bool);
-			__tmp59.Name = "includeSelf";
-			__tmp59.Documentation = null;
-			__tmp59.SetOperationLazy(() => __tmp38);
-			__tmp39.Name = "GetAllProperties";
+			__tmp39.Name = "GetAllSuperClasses";
 			__tmp39.Documentation = "";
 			__tmp39.SetParentLazy(() => MetaClass);
 			// __tmp39.IsBuilder = null;
 			// __tmp39.IsReadonly = null;
-			__tmp39.SetReturnTypeLazy(() => __tmp60);
-			__tmp40.Name = "GetAllOperations";
+			__tmp39.Parameters.AddLazy(() => __tmp55);
+			__tmp39.SetReturnTypeLazy(() => __tmp54);
+			__tmp55.SetTypeLazy(() => Bool);
+			__tmp55.Name = "includeSelf";
+			__tmp55.Documentation = null;
+			__tmp55.SetOperationLazy(() => __tmp39);
+			__tmp40.Name = "GetAllSuperProperties";
 			__tmp40.Documentation = "";
 			__tmp40.SetParentLazy(() => MetaClass);
 			// __tmp40.IsBuilder = null;
 			// __tmp40.IsReadonly = null;
-			__tmp40.SetReturnTypeLazy(() => __tmp61);
-			__tmp41.Name = "GetAllFinalProperties";
+			__tmp40.Parameters.AddLazy(() => __tmp57);
+			__tmp40.SetReturnTypeLazy(() => __tmp56);
+			__tmp57.SetTypeLazy(() => Bool);
+			__tmp57.Name = "includeSelf";
+			__tmp57.Documentation = null;
+			__tmp57.SetOperationLazy(() => __tmp40);
+			__tmp41.Name = "GetAllSuperOperations";
 			__tmp41.Documentation = "";
 			__tmp41.SetParentLazy(() => MetaClass);
 			// __tmp41.IsBuilder = null;
 			// __tmp41.IsReadonly = null;
-			__tmp41.SetReturnTypeLazy(() => __tmp62);
-			__tmp42.Name = "GetAllFinalOperations";
+			__tmp41.Parameters.AddLazy(() => __tmp59);
+			__tmp41.SetReturnTypeLazy(() => __tmp58);
+			__tmp59.SetTypeLazy(() => Bool);
+			__tmp59.Name = "includeSelf";
+			__tmp59.Documentation = null;
+			__tmp59.SetOperationLazy(() => __tmp41);
+			__tmp42.Name = "GetAllProperties";
 			__tmp42.Documentation = "";
 			__tmp42.SetParentLazy(() => MetaClass);
 			// __tmp42.IsBuilder = null;
 			// __tmp42.IsReadonly = null;
-			__tmp42.SetReturnTypeLazy(() => __tmp43);
+			__tmp42.SetReturnTypeLazy(() => __tmp60);
+			__tmp43.Name = "GetAllOperations";
+			__tmp43.Documentation = "";
+			__tmp43.SetParentLazy(() => MetaClass);
+			// __tmp43.IsBuilder = null;
+			// __tmp43.IsReadonly = null;
+			__tmp43.SetReturnTypeLazy(() => __tmp61);
+			__tmp44.Name = "GetAllFinalProperties";
+			__tmp44.Documentation = "";
+			__tmp44.SetParentLazy(() => MetaClass);
+			// __tmp44.IsBuilder = null;
+			// __tmp44.IsReadonly = null;
+			__tmp44.SetReturnTypeLazy(() => __tmp62);
+			__tmp45.Name = "GetAllFinalOperations";
+			__tmp45.Documentation = "";
+			__tmp45.SetParentLazy(() => MetaClass);
+			// __tmp45.IsBuilder = null;
+			// __tmp45.IsReadonly = null;
+			__tmp45.SetReturnTypeLazy(() => __tmp46);
 			MetaOperation.SetNamespaceLazy(() => __tmp4);
 			MetaOperation.Documentation = "";
 			MetaOperation.Attributes.Add(LocalScopeAttribute);
@@ -8700,7 +8738,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			// MetaOperation_IsReadonly.Kind = null;
 			MetaOperation_IsReadonly.SetClassLazy(() => MetaOperation);
 			MetaOperation_IsReadonly.DefaultValue = null;
-			MetaOperation_Parameters.SetTypeLazy(() => __tmp48);
+			MetaOperation_Parameters.SetTypeLazy(() => __tmp51);
 			MetaOperation_Parameters.Name = "Parameters";
 			MetaOperation_Parameters.Documentation = "";
 			MetaOperation_Parameters.Kind = global::MetaDslx.Languages.Meta.Model.MetaPropertyKind.Containment;
@@ -8793,7 +8831,7 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			// MetaProperty_DefaultValue.Kind = null;
 			MetaProperty_DefaultValue.SetClassLazy(() => MetaProperty);
 			MetaProperty_DefaultValue.DefaultValue = null;
-			MetaProperty_OppositeProperties.SetTypeLazy(() => __tmp46);
+			MetaProperty_OppositeProperties.SetTypeLazy(() => __tmp38);
 			MetaProperty_OppositeProperties.Name = "OppositeProperties";
 			MetaProperty_OppositeProperties.Documentation = "";
 			// MetaProperty_OppositeProperties.Kind = null;
@@ -8807,21 +8845,21 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			MetaProperty_SubsettedProperties.SetClassLazy(() => MetaProperty);
 			MetaProperty_SubsettedProperties.DefaultValue = null;
 			MetaProperty_SubsettedProperties.OppositeProperties.AddLazy(() => MetaProperty_SubsettingProperties);
-			MetaProperty_SubsettingProperties.SetTypeLazy(() => __tmp49);
+			MetaProperty_SubsettingProperties.SetTypeLazy(() => __tmp48);
 			MetaProperty_SubsettingProperties.Name = "SubsettingProperties";
 			MetaProperty_SubsettingProperties.Documentation = "";
 			// MetaProperty_SubsettingProperties.Kind = null;
 			MetaProperty_SubsettingProperties.SetClassLazy(() => MetaProperty);
 			MetaProperty_SubsettingProperties.DefaultValue = null;
 			MetaProperty_SubsettingProperties.OppositeProperties.AddLazy(() => MetaProperty_SubsettedProperties);
-			MetaProperty_RedefinedProperties.SetTypeLazy(() => __tmp50);
+			MetaProperty_RedefinedProperties.SetTypeLazy(() => __tmp49);
 			MetaProperty_RedefinedProperties.Name = "RedefinedProperties";
 			MetaProperty_RedefinedProperties.Documentation = "";
 			// MetaProperty_RedefinedProperties.Kind = null;
 			MetaProperty_RedefinedProperties.SetClassLazy(() => MetaProperty);
 			MetaProperty_RedefinedProperties.DefaultValue = null;
 			MetaProperty_RedefinedProperties.OppositeProperties.AddLazy(() => MetaProperty_RedefiningProperties);
-			MetaProperty_RedefiningProperties.SetTypeLazy(() => __tmp44);
+			MetaProperty_RedefiningProperties.SetTypeLazy(() => __tmp36);
 			MetaProperty_RedefiningProperties.Name = "RedefiningProperties";
 			MetaProperty_RedefiningProperties.Documentation = "";
 			// MetaProperty_RedefiningProperties.Kind = null;
@@ -8834,31 +8872,31 @@ namespace MetaDslx.Languages.Meta.Model.Internal
 			__tmp20.Prefix = null;
 			__tmp20.SetNamespaceLazy(() => __tmp4);
 			__tmp25.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp25.SetInnerTypeLazy(() => MetaOperation);
+			__tmp25.SetInnerTypeLazy(() => MetaAttribute);
 			__tmp26.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp26.SetInnerTypeLazy(() => MetaDeclaration);
+			__tmp26.SetInnerTypeLazy(() => MetaOperation);
 			__tmp27.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp27.SetInnerTypeLazy(() => MetaAttribute);
+			__tmp27.SetInnerTypeLazy(() => MetaDeclaration);
 			__tmp29.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp29.SetInnerTypeLazy(() => String);
-			__tmp43.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp43.SetInnerTypeLazy(() => MetaOperation);
-			__tmp44.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp44.SetInnerTypeLazy(() => MetaProperty);
-			__tmp45.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp45.SetInnerTypeLazy(() => MetaEnumLiteral);
+			__tmp36.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp36.SetInnerTypeLazy(() => MetaProperty);
+			__tmp37.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp37.SetInnerTypeLazy(() => MetaEnumLiteral);
+			__tmp38.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
+			__tmp38.SetInnerTypeLazy(() => MetaProperty);
 			__tmp46.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp46.SetInnerTypeLazy(() => MetaProperty);
+			__tmp46.SetInnerTypeLazy(() => MetaOperation);
 			__tmp47.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp47.SetInnerTypeLazy(() => MetaProperty);
 			__tmp48.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp48.SetInnerTypeLazy(() => MetaParameter);
+			__tmp48.SetInnerTypeLazy(() => MetaProperty);
 			__tmp49.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp49.SetInnerTypeLazy(() => MetaProperty);
 			__tmp50.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp50.SetInnerTypeLazy(() => MetaProperty);
+			__tmp50.SetInnerTypeLazy(() => MetaClass);
 			__tmp51.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
-			__tmp51.SetInnerTypeLazy(() => MetaClass);
+			__tmp51.SetInnerTypeLazy(() => MetaParameter);
 			__tmp52.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;
 			__tmp52.SetInnerTypeLazy(() => MetaProperty);
 			__tmp53.Kind = global::MetaDslx.Languages.Meta.Model.MetaCollectionKind.List;

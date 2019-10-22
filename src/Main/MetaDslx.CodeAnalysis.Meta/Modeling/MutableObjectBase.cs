@@ -155,6 +155,11 @@ namespace MetaDslx.Modeling
             return this.model.MGet(this, property);
         }
 
+        public bool MHasDefaultValue(ModelProperty property)
+        {
+            return this.model.MHasDefaultValue(this.id, property);
+        }
+
         public bool MHasConcreteValue(ModelProperty property)
         {
             return this.model.MHasConcreteValue(this.id, property);

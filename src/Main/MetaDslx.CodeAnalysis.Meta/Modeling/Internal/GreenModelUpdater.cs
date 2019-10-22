@@ -834,8 +834,7 @@ namespace MetaDslx.Modeling.Internal
                 {
                     if (!returnUnassignedValue)
                     {
-                        value = null;
-                        return false;
+                        value = property.DefaultValue;
                     }
                     return true;
                 }
@@ -849,28 +848,7 @@ namespace MetaDslx.Modeling.Internal
             value = null;
             ObjectRef objectRef = this.ResolveObjectRef(mid, oid, false);
             if (objectRef == null) return false;
-            GreenObject green = objectRef.Object;
-            if (green == null) return false;
-            if (green.Properties.TryGetValue(property, out value))
-            {
-                if (value != GreenObject.Unassigned)
-                {
-                    if (!returnLazyValue && value is LazyValue)
-                    {
-                        value = null;
-                        return false;
-                    }
-                    return true;
-                }
-                else
-                {
-                    if (!returnUnassignedValue)
-                    {
-                        value = null;
-                    }
-                }
-            }
-            return false;
+            return this.TryGetValueCore(objectRef, property, returnUnassignedValue, returnLazyValue, out value);
         }
 
         private bool CheckOldValue(ObjectRef objectRef, ModelProperty property, bool reassign, object oldValue)
@@ -1009,7 +987,8 @@ namespace MetaDslx.Modeling.Internal
                 }
             }
             GreenObject green = objectRef.Object;
-            green = green.Update(green.Parent, green.Children, green.Properties.SetItem(property, value));
+            if (value == property.DefaultValue) green = green.Update(green.Parent, green.Children, green.Properties.SetItem(property, GreenObject.Unassigned));
+            else green = green.Update(green.Parent, green.Children, green.Properties.SetItem(property, value));
             objectRef.Update(green);
             return true;
         }

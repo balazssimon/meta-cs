@@ -14,5 +14,19 @@ namespace MetaDslx.Modeling
         }
 
         public string Guid { get { return this.guid; } }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ModelId other)
+            {
+                return this.guid == other.guid;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.guid.GetHashCode();
+        }
     }
 }
